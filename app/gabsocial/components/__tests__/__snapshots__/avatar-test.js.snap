@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Avatar /> Autoplay renders a animated avatar 1`] = `
+<div
+  className="account__avatar"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  style={
+    Object {
+      "backgroundImage": "url(/animated/alice.gif)",
+      "height": "100px",
+      "width": "100px",
+    }
+  }
+/>
+`;
+
+exports[`<Avatar /> Still renders a still avatar 1`] = `
+<div
+  className="account__avatar"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+  style={
+    Object {
+      "backgroundImage": "url(/static/alice.jpg)",
+      "height": "100px",
+      "width": "100px",
+    }
+  }
+/>
+`;

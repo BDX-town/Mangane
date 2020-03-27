@@ -1,0 +1,146 @@
+.account__header {
+	&.inactive {
+		opacity: 0.5;
+		.account__header__image,
+		.account__avatar {filter: grayscale(100%);}
+	}
+	&__info {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+	}
+	&__image {
+		overflow: hidden;
+		height: 350px;
+		position: relative;
+		background: darken($ui-base-color, 4%);
+		@media screen and (max-width:895px) {height: 225px;}
+		&--none {height: 125px;}
+		img {
+			object-fit: cover;
+			display: block;
+			width: 100%;
+			height: 100%;
+			margin: 0;
+		}
+	}
+	&__bar {
+		display: block;
+		min-height: 74px;
+		width: 100%;
+		position: relative;
+		background: lighten($ui-base-color, 4%);
+		@media (min-width:895px) {height: 74px;}
+	}
+	&__avatar {
+		display: block;
+		position: absolute;
+		border: 5px solid lighten($ui-base-color, 4%);
+		left: 0;
+		top: -90px;
+		border-radius: 50%;
+		height: 200px;
+		width: 200px;
+		background-color: darken($ui-base-color, 8%);
+
+		// NOTE - patch fix for avatar size. Wrapper may not be needed when I do polish up on the page
+		.account__avatar {
+			width: 200px;
+			height: 200px;
+			background-size: 200px 200px;
+		}
+		@media screen and (max-width:895px) {
+			top: -45px;
+			left: 10px;
+			height: 90px;
+			width: 90px;
+			.account__avatar {
+				width: 90px;
+				height: 90px;
+				background-size: 90px 90px;
+			}
+		}
+
+	}
+	&__extra {
+	    display: flex;
+    	flex-direction: row;
+    	height: 100%;
+		margin: 0 auto;
+    	padding-left: 310px;
+    	width: 100%;
+    	max-width: 1200px;
+		box-sizing: border-box;
+		position: relative;
+		@media (min-width:895px) and (max-width:1190px) {
+			max-width: 900px;
+			padding-left: 300px;
+		}
+		@media screen and (max-width:895px) {
+			max-width: 900px;
+			padding: 10px 10px 0 10px;
+			flex-direction: column-reverse;
+			min-height: 50px;
+		}
+		&__buttons {
+			display: flex;
+			align-items: center;
+			margin-left: auto;
+			.icon-button {
+				border: 1px solid lighten($ui-base-color, 12%);
+				border-radius: 4px;
+				box-sizing: content-box;
+				padding: 2px;
+			}
+			.button {margin-right: 10px;}
+		}
+		&__links {
+			display: flex;
+			font-size: 14px;
+			color: $darker-text-color;
+			@media screen and (max-width:895px) {
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			a {
+				display: inline-block;
+				text-decoration: none;
+				padding: 16px 22px;
+				text-align: center;
+				@media screen and (max-width:1190px) {padding: 16px;}
+				> span {
+					display: block;
+					&:first-of-type {
+						color: $primary-text-color;
+						font-size: 20px;
+						font-weight: 800;
+						line-height: 24px;
+						@media screen and (max-width:895px) {
+							font-size: 16px;
+							line-height: 20px;
+						}
+					}
+					&:last-of-type {
+						color: $ui-secondary-color;
+						font-size: 12px;
+						line-height: 14px;
+						padding-top: 2px;
+					}
+				}
+				&:hover,
+				&.active {border-bottom: 2px solid $primary-text-color;}
+				&.score {border-bottom:none !important;}
+			}
+		}
+	} // end .account__header__extra
+	@media screen and (max-width:895px) {
+		.account-mobile-container {
+			display: block;
+			background: lighten($ui-base-color, 4%);
+			margin-top: 10px;
+			position: relative;
+			padding: 10px 10px 0px;
+			&--nonuser {padding: 10px 10px 15px;}
+		}
+	}
+} // end .account__header

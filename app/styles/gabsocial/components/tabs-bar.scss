@@ -1,0 +1,260 @@
+.tabs-bar {
+	display: flex;
+	box-sizing: border-box;
+	background: $gab-brand-default;
+	flex: 0 0 auto;
+	overflow-y: auto;
+	height: 50px;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	transition: transform 0.2s ease;
+
+	&--collapsed {
+		@media screen and (max-width: 895px) {
+			margin-top: -50px;
+			transform: translateY(-50px);
+		}
+	}
+
+	&__container {
+		display: flex;
+		box-sizing: border-box;
+		width:100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 15px;
+
+		// NOTE - might need to adjust this based on column sizing
+		@media screen and (max-width: $nav-breakpoint-4) {padding: 0 10px;}
+	}
+
+	&__split {
+		display: flex;
+		width: auto;
+
+		&--left {
+			margin-right: auto;
+		}
+
+		&--right {
+			margin-left: auto;
+			padding-top: 8px;
+		}
+	}
+
+	&__search-container {
+		display: block;
+		width: 251px;
+
+		@media screen and (max-width: 895px) {
+			display: none;
+		}
+	}
+
+	&__profile {
+		position: relative;
+		overflow: hidden;
+		margin: 0 0 0 20px;
+		height: 34px;
+		width: 34px;
+
+		.account__avatar {
+			width: 34px;
+			height: 34px;
+			background-size: cover;
+		}
+
+		.compose__action-bar {
+			display: block;
+			position: absolute;
+			top: 0;
+			right: 0;
+			left: -5px;
+			bottom: 0;
+
+			i {
+				display: none;
+			}
+
+			@media screen and (max-width: 895px) {
+				display: none;
+			}
+		}
+	}
+
+	&__sidebar-btn {
+		display: block;
+		position: absolute;
+		top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+		width: 30px;
+		opacity: 0;
+
+		@media (min-width: 895px) {
+			display: none;
+		}
+	}
+
+	&__page-name {
+		display: block;
+    margin-left: 18px;
+    line-height: 30px;
+    font-weight: 600;
+    font-size: 18px;
+		color: #fff;
+
+		@media (min-width: 895px) {
+			display: none;
+		}
+	}
+
+	&__button-compose {
+		display: block;
+		@media screen and (max-width: $nav-breakpoint-3) {display: none;}
+		width: 70px;
+		height: 34px;
+		margin-left: 20px;
+		border-radius: 4px;
+		background-image: url('../images/sprite-main-navigation.png');
+		background-color: $nav-ui-highlight-color !important;
+		background-repeat: no-repeat;
+		background-size: 161px 152px;
+		background-position: 18px 2px;
+		transition: background-color 0.2s;
+		&:hover {
+			background-color: darken($nav-ui-highlight-color, 10%) !important;
+			background-position: 18px -98px;
+			box-shadow: inset 0px 0px 6px darken($gab-brand-default, 10%);
+		}
+		span {display: none;}
+	}
+
+	&__button {
+		margin-left: 12px;
+    height: 34px;
+	}
+
+	.flex {
+		display: flex;
+	}
+
+}
+
+.tabs-bar__link {
+	display: flex;
+	flex: 1 1 auto;
+	margin: 0 20px 0 0;
+	color: white;
+	text-decoration: none;
+	position: relative;
+
+	@media screen and (max-width: 895px) {
+		width: 36px;
+		margin: 4px 4px 0 0;
+		justify-content: center;
+
+		& > span {display: none;}
+	}
+
+	> span {
+		font-size: 15px;
+		line-height: 50px;
+    margin-left: 4px;
+	}
+
+	&--search {
+		@media (min-width: 895px) {
+			display: none;
+		}
+	}
+
+	&__icon {
+		width: 20px;
+		background-repeat: no-repeat;
+		background-image: url('../images/sprite-main-navigation-links.png');
+		background-size: auto 84px;
+
+		@media screen and (max-width: 895px) {
+			width: 32px;
+			background-size: auto 120px;
+		}
+
+		&.home {
+			background-position: 0 18px;
+			@media screen and (max-width: 895px) {
+				background-position: 4px 11px;
+			}
+		}
+		&.notifications {
+			background-position: -137px 18px;
+			@media screen and (max-width: 895px) {
+				background-position: -192px 11px;
+			}
+		}
+		&.groups {
+			background-position: -280px 18px;
+			@media screen and (max-width: 895px) {
+				background-position: -397px 11px;
+			}
+		}
+		&.tabs-bar__link__icon--search {
+			background-position: -697px 18px;
+			@media screen and (max-width: 895px) {
+				background-position: -992px 11px;
+			}
+		}
+	}
+
+	&.optional {
+		display: none;
+		@media screen and (max-width: $nav-breakpoint-2) {
+			display: flex;
+			background-position: -992px 11px;
+		}
+	}
+
+	&::before {
+		content: "";
+    display: block;
+    width: 100%;
+    height: 0;
+    background: $nav-ui-highlight-color;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+		transition: 0.2s;
+	}
+
+	&.active::before,
+	&:hover::before {
+		height: 7px;
+	}
+	&--logo {
+		display: block;
+		width: 80px;
+		height: 50px;
+		margin-right: 30px;
+		border: none;
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 100% calc(100% - 25px);
+		filter: brightness(0%) grayscale(100%) invert(100%);
+		& span {display: none !important;}
+		&:hover {
+			border: none !important;
+		}
+
+
+	}
+	&--no-highlight,
+	&--no-highlight:hover,
+	&--no-highlight.active,
+	&--no-highlight:active,
+	&--no-highlight:focus {
+		background: transparent !important;
+		border-bottom-color: transparent !important;
+	}
+}

@@ -1,0 +1,176 @@
+.sidebar-menu {
+  display: flex;
+  position: fixed;
+  flex-direction: column;
+  width: 275px;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #fff;
+  transform: translateX(-275px);
+  transition: all 0.15s linear;
+  z-index: 10001;
+
+  &__root {
+    display: none;
+  }
+
+  &__wrapper {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background-color: transparent;
+    transition: background-color 0.2s linear;
+    transition-delay: 0.1s;
+  }
+
+  &__content {
+    display: flex;
+    flex: 1 1;
+    flex-direction: column;
+    padding-bottom: 40px;
+    overflow: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  &__section {
+    display: flex;
+    flex-direction: column;
+    padding: 4px 0;
+    border-top: 1px solid #ddd;
+
+    &--borderless {
+      margin: 0;
+      border-top: none;
+    }
+  }
+
+  @media (max-width: 400px) {
+    width: 90vw;
+  }
+}
+
+.sidebar-menu__root--visible {
+  display: block;
+
+  .sidebar-menu {
+    transform: translateX(0);
+  }
+
+  .sidebar-menu__wrapper {
+    background-color: rgba(0,0,0,0.3);
+  }
+}
+
+.sidebar-menu-header {
+  display: flex;
+  height: 46px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #ddd;
+  box-sizing: border-box;
+  align-items: center;
+
+  &__title {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #000;
+  }
+
+  &__btn {
+    margin-left: auto;
+  }
+}
+
+.sidebar-menu-profile {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 14px 18px;
+
+  &__avatar {
+    display: block;
+    width: 56px;
+    height: 56px;
+  }
+
+  &__name {
+    display: block;
+    margin-top: 10px;
+
+    .display-name__account {
+      display: block;
+      margin-top: 2px;
+    }
+  }
+
+  &__stats {
+    display: flex;
+    margin-top: 12px;
+  }
+}
+
+.sidebar-menu-profile-stat {
+  display: flex;
+  font-size: 14px;
+  text-decoration: none;
+
+  &:not(:first-of-type) {
+    margin-left: 18px;
+  }
+
+  &__value {
+    display: flex;
+    margin-right: 3px;
+    font-weight: 700;
+    color: #000;
+  }
+
+  &__label {
+    display: flex;
+    color: #444;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.sidebar-menu-item {
+  display: flex;
+  padding: 16px 18px;
+  cursor: pointer;
+  text-decoration: none;
+  color: #666;
+  font-size: 15px;
+  font-weight: 400;
+
+  &:hover {
+    background-color: rgba($gab-brand-default, 0.1);
+
+    .fa {
+      color: #000;
+    }
+  }
+
+  .fa {
+    margin-right: 10px;
+  }
+
+  &:hover {
+    &__title {
+      color: #000;
+    }
+  }
+}
+
+.sidebar-menu .wtf-panel {
+  box-shadow: none !important;
+  margin: 0;
+}

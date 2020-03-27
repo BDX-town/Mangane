@@ -1,0 +1,100 @@
+@import 'gabsocial-light/variables';
+
+$glinner-yellow:  #fff360;
+$glinner-orange:  #ffa254;
+$glinner-brown:   #726253;
+$glinner-steel:   #b1bcbf;
+$glinner-navy:    #536172;
+$glinner-tan:     #e9d5cf;
+$glinner-cream:   #e8e5dd;
+$glinner-mustard: #bcbb65;
+$glinner-sky:     #aadaea;
+$glinner-teal:    #267893;
+$glinner-dirt:    #74733c;
+
+$gab-brand-default:         $glinner-teal;
+$gab-background-base-light: darken($glinner-sky, 17%);
+$gab-background:            darken($glinner-cream, 7%);
+$ui-base-color:             darken($glinner-sky, 17%);
+$ui-highlight-color:        lighten($glinner-orange, 20%);
+$nav-ui-highlight-color:    $glinner-sky;
+$ui-base-lighter-color:     darken($glinner-orange, 35%);
+
+$bg-size: 720px;
+
+@import 'application';
+@import 'gabsocial-light/diff';
+
+body.app-body {
+  background: $gab-background;
+}
+
+body {
+  background-color: #bcbb65;
+  background-image: linear-gradient(to bottom,
+    $glinner-teal 0%, $glinner-sky 70%,
+    $glinner-dirt 70%, $glinner-mustard 100%
+  );
+  background-repeat: repeat-x;
+  background-size: auto $bg-size;
+}
+
+.public-layout {
+  background-color: transparent;
+  background-image: url("../images/glinner-still.gif");
+  background-repeat: repeat-x;
+  background-size: auto $bg-size;
+
+  .brand {
+    filter: brightness(0%) invert(100%) drop-shadow(4px 4px lighten($gab-brand-default, 20%));
+  }
+
+  .header .brand {
+    filter: brightness(0%) invert(100%) drop-shadow(2px 2px lighten($gab-brand-default, 20%));
+  }
+
+  .brand__tagline {
+    color: white;
+  }
+
+  .brand__tagline span {
+    background: lighten($gab-brand-default, 20%);
+  }
+
+  .header .nav-link {
+    color: white;
+    filter: drop-shadow(1px 1px lighten($gab-brand-default, 20%));
+
+    &:hover, &:focus, &:active {
+      color: $gab-background-base-light;
+    }
+  }
+
+  .footer {
+    background-color: #74733c;
+    ul li a {
+      color: darken($primary-text-color, 10%);
+    }
+  }
+}
+
+.tabs-bar__button-compose {
+  background-color: darken($glinner-teal, 15%) !important;
+  &:hover {
+    background-color: darken($glinner-teal, 20%) !important;
+  }
+}
+
+.icon-with-badge__badge {
+  background: $ui-highlight-color;
+}
+
+.floating-action-button {
+  filter: hue-rotate(-100deg);
+}
+
+@media screen and (max-width: 767px) {
+  .public-layout .header {
+    margin-bottom: 70px;
+  }
+}

@@ -1,0 +1,148 @@
+.dropdown-menu {
+	z-index: 9999;
+	position: absolute;
+	background: $gab-background-container;
+	border-radius: 4px;
+	border: 1px solid $gab-placeholder-accent;
+	padding: 4px 0;
+	@include font-size(13);
+	@include line-height(26);
+	@include font-weight(normal);
+	color: $gab-secondary-text;
+	box-shadow: 0 0 6px 0 rgba(0,0,0,0.5);
+	&.left {transform-origin: 100% 50%;}
+	&.top {transform-origin: 50% 100%;}
+	&.bottom {transform-origin: 50% 0;}
+	&.right {transform-origin: 0 50%;}
+	&__arrow {
+		position: absolute;
+		width: 0;
+		height: 0;
+		border: 0 solid transparent;
+		&.left {
+			right: -5px;
+			margin-top: -5px;
+			border-width: 5px 0 5px 5px;
+			border-left-color: $gab-placeholder-accent;
+		}
+		&.top {
+			bottom: -5px;
+			margin-left: -5px;
+			border-width: 5px 5px 0;
+			border-top-color: $gab-placeholder-accent;
+		}
+		&.bottom {
+			top: -5px;
+			margin-left: -5px;
+			border-width: 0 5px 5px;
+			border-bottom-color: $gab-placeholder-accent;
+		}
+		&.right {
+			left: -5px;
+			margin-top: -5px;
+			border-width: 5px 5px 5px 0;
+			border-right-color: $gab-placeholder-accent;
+		}
+	}
+	ul {
+		overflow: hidden;
+		padding: 6px 0;
+	}
+	&__item a {
+		display: block;
+		box-sizing: border-box;
+		overflow: hidden;
+		padding: 3px 10px 1px;
+		text-decoration: none;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		text-transform: capitalize;
+		color: $gab-secondary-text;
+		&:focus,
+		&:hover,
+		&:active {
+			outline: 0;
+			color: white;
+			background: $gab-brand-default !important;
+		}
+	}
+	&__separator {
+		display: block;
+		margin: 10px !important;
+		height: 1px;
+		background: $gab-background-base;
+	}
+}
+// end .dropdown-menu
+
+
+
+
+// NOTE - not sure what this relates to — but it doesn't involve the navbar dropdown
+
+
+.dropdown {
+	display: inline-block;
+}
+
+.dropdown__content {
+	display: none;
+	position: absolute;
+}
+
+
+.dropdown--active .dropdown__content {
+	display: block;
+	line-height: 18px;
+	max-width: 311px;
+	right: 0;
+	text-align: left;
+	z-index: 9999;
+
+	& > ul {
+		list-style: none;
+		background: $ui-secondary-color;
+		padding: 4px 0;
+		border-radius: 4px;
+		box-shadow: 0 0 15px rgba($base-shadow-color, 0.4);
+		min-width: 140px;
+		position: relative;
+	}
+
+	&.dropdown__right {
+		right: 0;
+	}
+
+	&.dropdown__left {
+		& > ul {
+			left: -98px;
+		}
+	}
+
+	& > ul > li > a {
+		font-size: 13px;
+		line-height: 18px;
+		display: block;
+		padding: 4px 14px;
+		box-sizing: border-box;
+		text-decoration: none;
+		background: $ui-secondary-color;
+		color: $inverted-text-color;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+
+		&:focus {
+			outline: 0;
+		}
+
+		&:hover {
+			background: $ui-highlight-color;
+			color: $secondary-text-color;
+		}
+	}
+}
+
+.dropdown__icon {
+	vertical-align: middle;
+}

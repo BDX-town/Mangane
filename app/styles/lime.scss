@@ -1,0 +1,20 @@
+@import 'gabsocial-light/variables';
+
+$gab-brand-default: #1ca82b;
+$gab-background-base-light: #fafff9;
+$gab-background: $gab-background-base-light;
+$ui-base-color: #f5fff0;
+$ui-highlight-color: $gab-brand-default;
+$nav-ui-highlight-color: #69f31f;
+$ui-base-lighter-color: darken(#69f31f, 35%);
+
+@import 'application';
+@import 'gabsocial-light/diff';
+
+.public-layout .footer ul li a {
+  color: lighten($gab-brand-default, 10%);
+}
+
+.floating-action-button {
+  filter: hue-rotate(-175deg);
+}

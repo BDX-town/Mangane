@@ -1,0 +1,16 @@
+@import 'gabsocial-light/variables';
+
+$gab-brand-default: #1e00ff;
+$gab-background-base-light: #f4f7ff;
+$gab-background: $gab-background-base-light;
+$ui-base-color: #f4f7ff;
+$ui-highlight-color: $gab-brand-default;
+$nav-ui-highlight-color: #818dff;
+$ui-base-lighter-color: darken(#818dff, 35%);
+
+@import 'application';
+@import 'gabsocial-light/diff';
+
+.floating-action-button {
+  filter: hue-rotate(-48deg);
+}

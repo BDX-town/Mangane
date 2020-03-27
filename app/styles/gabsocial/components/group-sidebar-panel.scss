@@ -1,0 +1,33 @@
+.group-sidebar-panel {
+    &__items {
+        padding: 0 15px 15px;
+
+        &__show-all {
+            color: $primary-text-color;
+        }
+    }
+
+    &__item {
+        display: block;
+        color: $primary-text-color;
+        text-decoration: none;
+        margin-bottom: 15px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &__title {
+            font-weight: bold;
+        }
+
+        &__meta {
+            font-size: 0.8em;
+            color: $gab-secondary-text;
+
+            &__unread {
+                color: $gab-brand-default;
+            }
+        }
+    }
+}

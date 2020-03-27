@@ -1,0 +1,76 @@
+.dashboard__counters {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -5px;
+  margin-bottom: 20px;
+
+  & > div {
+    box-sizing: border-box;
+    flex: 0 0 33.333%;
+    padding: 0 5px;
+    margin-bottom: 10px;
+
+    & > div,
+    & > a {
+      padding: 20px;
+      background: lighten($ui-base-color, 4%);
+      border-radius: 4px;
+    }
+
+    & > a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+
+      &:hover,
+      &:focus,
+      &:active {
+        background: lighten($ui-base-color, 8%);
+      }
+    }
+  }
+
+  &__num,
+  &__text {
+    text-align: center;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 21px;
+    color: $primary-text-color;
+    font-family: $font-display, sans-serif;
+    margin-bottom: 20px;
+    line-height: 30px;
+  }
+
+  &__text {
+    font-size: 18px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: $gab-secondary-text;
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.dashboard__widgets {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -5px;
+
+  & > div {
+    flex: 0 0 33.333%;
+    margin-bottom: 20px;
+
+    & > div {
+      padding: 0 5px;
+    }
+  }
+
+  a:not(.name-tag) {
+    color: $ui-secondary-color;
+    font-weight: 500;
+    text-decoration: none;
+  }
+}
