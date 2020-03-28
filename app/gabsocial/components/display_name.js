@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import VerificationBadge from './verification_badge';
+import { acctFull } from '../utils/accounts';
 
 export default class DisplayName extends React.PureComponent {
 
@@ -40,7 +41,7 @@ export default class DisplayName extends React.PureComponent {
           {account.get('is_verified') && <VerificationBadge />}
         </>
       );
-      suffix = <span className='display-name__account'>@{account.get('acct_full')}</span>;
+      suffix = <span className='display-name__account'>@{acctFull(account)}</span>;
     }
 
     return (

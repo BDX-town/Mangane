@@ -9,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
+import { acctFull } from 'gabsocial/utils/accounts';
 
 class UserPanel extends ImmutablePureComponent {
   static propTypes = {
@@ -42,7 +43,7 @@ class UserPanel extends ImmutablePureComponent {
               <h1>
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
-                  <small className='user-panel__account__username'>@{account.get('acct_full')}</small>
+                  <small className='user-panel__account__username'>@{acctFull(account)}</small>
                 </Link>
               </h1>
             </div>
