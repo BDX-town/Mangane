@@ -128,7 +128,7 @@ export function fetchAccount(id) {
 
 export function fetchAccountByUsername(username) {
   return (dispatch, getState) => {
-    api(getState).get(`/api/v1/account_by_username/${username}`).then(response => {
+    api(getState).get(`/api/v1/accounts/${username}`).then(response => {
       dispatch(importFetchedAccount(response.data));
     }).then(() => {
       dispatch(fetchAccountSuccess());
