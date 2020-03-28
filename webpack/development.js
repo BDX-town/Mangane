@@ -1,8 +1,10 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
+const { resolve } = require('path');
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const watchOptions = {};
 
@@ -35,7 +37,7 @@ module.exports = merge(sharedConfig, {
     port: settings.dev_server.port,
     https: settings.dev_server.https,
     hot: settings.dev_server.hmr,
-    contentBase: output.path,
+    contentBase: resolve(__dirname, '..', settings.public_root_path),
     inline: settings.dev_server.inline,
     useLocalIp: settings.dev_server.use_local_ip,
     public: settings.dev_server.public,
@@ -56,5 +58,13 @@ module.exports = merge(sharedConfig, {
       settings.dev_server.watch_options,
       watchOptions
     ),
+    serveIndex: true,
   },
+
+  plugins: [
+    // https://github.com/ampedandwired/html-webpack-plugin
+    new HtmlWebpackPlugin({
+      inject: true
+    })
+  ],
 });
