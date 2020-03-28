@@ -34,9 +34,9 @@ module.exports = {
   ),
 
   output: {
-    filename: 'js/[name]-[chunkhash].js',
-    chunkFilename: 'js/[name]-[chunkhash].chunk.js',
-    hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
+    filename: 'js/[name].js',
+    chunkFilename: 'js/[name].chunk.js',
+    hotUpdateChunkFilename: 'js/[id].hot-update.js',
     path: output.path,
     publicPath: output.publicPath,
   },
@@ -75,8 +75,8 @@ module.exports = {
       }
     ),
     new MiniCssExtractPlugin({
-      filename: 'css/[name]-[contenthash:8].css',
-      chunkFilename: 'css/[name]-[contenthash:8].chunk.css',
+      filename: 'css/[name].css',
+      chunkFilename: 'css/[name].chunk.css',
     }),
     new AssetsManifestPlugin({
       integrity: false,

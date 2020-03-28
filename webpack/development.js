@@ -1,6 +1,6 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
@@ -60,11 +60,4 @@ module.exports = merge(sharedConfig, {
     ),
     serveIndex: true,
   },
-
-  plugins: [
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      inject: true
-    })
-  ],
 });
