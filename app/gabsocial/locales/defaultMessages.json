@@ -10,7 +10,7 @@
         "id": "alert.unexpected.message"
       }
     ],
-    "path": "app/javascript/gabsocial/actions/alerts.json"
+    "path": "app/gabsocial/actions/alerts.json"
   },
   {
     "descriptors": [
@@ -23,7 +23,7 @@
         "id": "upload_error.poll"
       }
     ],
-    "path": "app/javascript/gabsocial/actions/compose.json"
+    "path": "app/gabsocial/actions/compose.json"
   },
   {
     "descriptors": [
@@ -36,7 +36,7 @@
         "id": "notifications.group"
       }
     ],
-    "path": "app/javascript/gabsocial/actions/notifications.json"
+    "path": "app/gabsocial/actions/notifications.json"
   },
   {
     "descriptors": [
@@ -73,7 +73,7 @@
         "id": "account.follows_you"
       }
     ],
-    "path": "app/javascript/gabsocial/components/account.json"
+    "path": "app/gabsocial/components/account.json"
   },
   {
     "descriptors": [
@@ -82,7 +82,7 @@
         "id": "column_back_button.label"
       }
     ],
-    "path": "app/javascript/gabsocial/components/column_back_button_slim.json"
+    "path": "app/gabsocial/components/column_back_button_slim.json"
   },
   {
     "descriptors": [
@@ -91,7 +91,7 @@
         "id": "column_back_button.label"
       }
     ],
-    "path": "app/javascript/gabsocial/components/column_back_button.json"
+    "path": "app/gabsocial/components/column_back_button.json"
   },
   {
     "descriptors": [
@@ -104,7 +104,7 @@
         "id": "column_header.hide_settings"
       }
     ],
-    "path": "app/javascript/gabsocial/components/column_header.json"
+    "path": "app/gabsocial/components/column_header.json"
   },
   {
     "descriptors": [
@@ -113,7 +113,7 @@
         "id": "account.unblock_domain"
       }
     ],
-    "path": "app/javascript/gabsocial/components/domain.json"
+    "path": "app/gabsocial/components/domain.json"
   },
   {
     "descriptors": [
@@ -122,7 +122,7 @@
         "id": "alert.unexpected.message"
       }
     ],
-    "path": "app/javascript/gabsocial/components/error_boundary.json"
+    "path": "app/gabsocial/components/error_boundary.json"
   },
   {
     "descriptors": [
@@ -131,7 +131,7 @@
         "id": "trends.count_by_accounts"
       }
     ],
-    "path": "app/javascript/gabsocial/components/hashtag.json"
+    "path": "app/gabsocial/components/hashtag.json"
   },
   {
     "descriptors": [
@@ -156,7 +156,7 @@
         "id": "home_column.lists"
       }
     ],
-    "path": "app/javascript/gabsocial/components/home_column_header.json"
+    "path": "app/gabsocial/components/home_column_header.json"
   },
   {
     "descriptors": [
@@ -165,7 +165,7 @@
         "id": "status.load_more"
       }
     ],
-    "path": "app/javascript/gabsocial/components/load_gap.json"
+    "path": "app/gabsocial/components/load_gap.json"
   },
   {
     "descriptors": [
@@ -174,7 +174,7 @@
         "id": "status.load_more"
       }
     ],
-    "path": "app/javascript/gabsocial/components/load_more.json"
+    "path": "app/gabsocial/components/load_more.json"
   },
   {
     "descriptors": [
@@ -183,7 +183,7 @@
         "id": "loading_indicator.label"
       }
     ],
-    "path": "app/javascript/gabsocial/components/loading_indicator.json"
+    "path": "app/gabsocial/components/loading_indicator.json"
   },
   {
     "descriptors": [
@@ -200,7 +200,7 @@
         "id": "status.media_hidden"
       }
     ],
-    "path": "app/javascript/gabsocial/components/media_gallery.json"
+    "path": "app/gabsocial/components/media_gallery.json"
   },
   {
     "descriptors": [
@@ -213,7 +213,7 @@
         "id": "missing_indicator.sublabel"
       }
     ],
-    "path": "app/javascript/gabsocial/components/missing_indicator.json"
+    "path": "app/gabsocial/components/missing_indicator.json"
   },
   {
     "descriptors": [
@@ -226,7 +226,7 @@
         "id": "confirmations.delete.message"
       }
     ],
-    "path": "app/javascript/gabsocial/components/modal_root.json"
+    "path": "app/gabsocial/components/modal_root.json"
   },
   {
     "descriptors": [
@@ -247,7 +247,7 @@
         "id": "poll.total_votes"
       }
     ],
-    "path": "app/javascript/gabsocial/components/poll.json"
+    "path": "app/gabsocial/components/poll.json"
   },
   {
     "descriptors": [
@@ -292,7 +292,7 @@
         "id": "time_remaining.days"
       }
     ],
-    "path": "app/javascript/gabsocial/components/relative_timestamp.json"
+    "path": "app/gabsocial/components/relative_timestamp.json"
   },
   {
     "descriptors": [
@@ -357,7 +357,7 @@
         "id": "donate"
       }
     ],
-    "path": "app/javascript/gabsocial/components/sidebar_menu.json"
+    "path": "app/gabsocial/components/sidebar_menu.json"
   },
   {
     "descriptors": [
@@ -470,7 +470,7 @@
         "id": "status.remove_post_from_group"
       }
     ],
-    "path": "app/javascript/gabsocial/components/status_action_bar.json"
+    "path": "app/gabsocial/components/status_action_bar.json"
   },
   {
     "descriptors": [
@@ -487,7 +487,7 @@
         "id": "status.show_less"
       }
     ],
-    "path": "app/javascript/gabsocial/components/status_content.json"
+    "path": "app/gabsocial/components/status_content.json"
   },
   {
     "descriptors": [
@@ -500,7 +500,7 @@
         "id": "regeneration_indicator.sublabel"
       }
     ],
-    "path": "app/javascript/gabsocial/components/status_list.json"
+    "path": "app/gabsocial/components/status_list.json"
   },
   {
     "descriptors": [
@@ -521,7 +521,7 @@
         "id": "status.show_thread"
       }
     ],
-    "path": "app/javascript/gabsocial/components/status.json"
+    "path": "app/gabsocial/components/status.json"
   },
   {
     "descriptors": [
@@ -530,7 +530,7 @@
         "id": "timeline_queue.label"
       }
     ],
-    "path": "app/javascript/gabsocial/components/timeline_queue_button_header.json"
+    "path": "app/gabsocial/components/timeline_queue_button_header.json"
   },
   {
     "descriptors": [
@@ -543,7 +543,7 @@
         "id": "confirmations.unfollow.message"
       }
     ],
-    "path": "app/javascript/gabsocial/containers/account_container.json"
+    "path": "app/gabsocial/containers/account_container.json"
   },
   {
     "descriptors": [
@@ -556,7 +556,7 @@
         "id": "confirmations.domain_block.message"
       }
     ],
-    "path": "app/javascript/gabsocial/containers/domain_container.json"
+    "path": "app/gabsocial/containers/domain_container.json"
   },
   {
     "descriptors": [
@@ -597,7 +597,7 @@
         "id": "confirmations.block.message"
       }
     ],
-    "path": "app/javascript/gabsocial/containers/status_container.json"
+    "path": "app/gabsocial/containers/status_container.json"
   },
   {
     "descriptors": [
@@ -622,7 +622,7 @@
         "id": "account_gallery.none"
       }
     ],
-    "path": "app/javascript/gabsocial/features/account_gallery/index.json"
+    "path": "app/gabsocial/features/account_gallery/index.json"
   },
   {
     "descriptors": [
@@ -631,7 +631,7 @@
         "id": "account.moved_to"
       }
     ],
-    "path": "app/javascript/gabsocial/features/account_timeline/components/moved_note.json"
+    "path": "app/gabsocial/features/account_timeline/components/moved_note.json"
   },
   {
     "descriptors": [
@@ -664,7 +664,7 @@
         "id": "confirmations.domain_block.message"
       }
     ],
-    "path": "app/javascript/gabsocial/features/account_timeline/containers/header_container.json"
+    "path": "app/gabsocial/features/account_timeline/containers/header_container.json"
   },
   {
     "descriptors": [
@@ -689,7 +689,7 @@
         "id": "empty_column.account_timeline"
       }
     ],
-    "path": "app/javascript/gabsocial/features/account_timeline/index.json"
+    "path": "app/gabsocial/features/account_timeline/index.json"
   },
   {
     "descriptors": [
@@ -846,7 +846,7 @@
         "id": "account.message"
       }
     ],
-    "path": "app/javascript/gabsocial/features/account/components/header.json"
+    "path": "app/gabsocial/features/account/components/header.json"
   },
   {
     "descriptors": [
@@ -859,7 +859,7 @@
         "id": "empty_column.blocks"
       }
     ],
-    "path": "app/javascript/gabsocial/features/blocks/index.json"
+    "path": "app/gabsocial/features/blocks/index.json"
   },
   {
     "descriptors": [
@@ -868,7 +868,7 @@
         "id": "community.column_settings.media_only"
       }
     ],
-    "path": "app/javascript/gabsocial/features/community_timeline/components/column_settings.json"
+    "path": "app/gabsocial/features/community_timeline/components/column_settings.json"
   },
   {
     "descriptors": [
@@ -881,7 +881,7 @@
         "id": "empty_column.community"
       }
     ],
-    "path": "app/javascript/gabsocial/features/community_timeline/index.json"
+    "path": "app/gabsocial/features/community_timeline/index.json"
   },
   {
     "descriptors": [
@@ -926,7 +926,7 @@
         "id": "navigation_bar.keyboard_shortcuts"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/action_bar.json"
+    "path": "app/gabsocial/features/compose/components/action_bar.json"
   },
   {
     "descriptors": [
@@ -947,7 +947,7 @@
         "id": "compose_form.publish_loud"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/compose_form.json"
+    "path": "app/gabsocial/features/compose/components/compose_form.json"
   },
   {
     "descriptors": [
@@ -1008,7 +1008,7 @@
         "id": "emoji_button.flags"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/emoji_picker_dropdown.json"
+    "path": "app/gabsocial/features/compose/components/emoji_picker_dropdown.json"
   },
   {
     "descriptors": [
@@ -1017,7 +1017,7 @@
         "id": "navigation_bar.edit_profile"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/navigation_bar.json"
+    "path": "app/gabsocial/features/compose/components/navigation_bar.json"
   },
   {
     "descriptors": [
@@ -1030,7 +1030,7 @@
         "id": "poll_button.remove_poll"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/poll_button.json"
+    "path": "app/gabsocial/features/compose/components/poll_button.json"
   },
   {
     "descriptors": [
@@ -1063,7 +1063,7 @@
         "id": "intervals.full.days"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/poll_form.json"
+    "path": "app/gabsocial/features/compose/components/poll_form.json"
   },
   {
     "descriptors": [
@@ -1104,7 +1104,7 @@
         "id": "privacy.change"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/privacy_dropdown.json"
+    "path": "app/gabsocial/features/compose/components/privacy_dropdown.json"
   },
   {
     "descriptors": [
@@ -1113,7 +1113,7 @@
         "id": "reply_indicator.cancel"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/reply_indicator.json"
+    "path": "app/gabsocial/features/compose/components/reply_indicator.json"
   },
   {
     "descriptors": [
@@ -1134,7 +1134,7 @@
         "id": "search_results.total"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/search_results.json"
+    "path": "app/gabsocial/features/compose/components/search_results.json"
   },
   {
     "descriptors": [
@@ -1167,7 +1167,7 @@
         "id": "search_popout.tips.status"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/search.json"
+    "path": "app/gabsocial/features/compose/components/search.json"
   },
   {
     "descriptors": [
@@ -1176,7 +1176,7 @@
         "id": "upload_button.label"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/upload_button.json"
+    "path": "app/gabsocial/features/compose/components/upload_button.json"
   },
   {
     "descriptors": [
@@ -1185,7 +1185,7 @@
         "id": "upload_progress.label"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/upload_progress.json"
+    "path": "app/gabsocial/features/compose/components/upload_progress.json"
   },
   {
     "descriptors": [
@@ -1202,7 +1202,7 @@
         "id": "upload_form.focus"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/components/upload.json"
+    "path": "app/gabsocial/features/compose/components/upload.json"
   },
   {
     "descriptors": [
@@ -1219,7 +1219,7 @@
         "id": "compose_form.sensitive.hide"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/containers/sensitive_button_container.json"
+    "path": "app/gabsocial/features/compose/containers/sensitive_button_container.json"
   },
   {
     "descriptors": [
@@ -1232,7 +1232,7 @@
         "id": "compose_form.spoiler.unmarked"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/containers/spoiler_button_container.json"
+    "path": "app/gabsocial/features/compose/containers/spoiler_button_container.json"
   },
   {
     "descriptors": [
@@ -1257,7 +1257,7 @@
         "id": "compose_form.direct_message_warning_learn_more"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/containers/warning_container.json"
+    "path": "app/gabsocial/features/compose/containers/warning_container.json"
   },
   {
     "descriptors": [
@@ -1294,7 +1294,7 @@
         "id": "navigation_bar.compose"
       }
     ],
-    "path": "app/javascript/gabsocial/features/compose/index.json"
+    "path": "app/gabsocial/features/compose/index.json"
   },
   {
     "descriptors": [
@@ -1307,7 +1307,7 @@
         "id": "empty_column.direct"
       }
     ],
-    "path": "app/javascript/gabsocial/features/direct_timeline/index.json"
+    "path": "app/gabsocial/features/direct_timeline/index.json"
   },
   {
     "descriptors": [
@@ -1324,7 +1324,7 @@
         "id": "empty_column.domain_blocks"
       }
     ],
-    "path": "app/javascript/gabsocial/features/domain_blocks/index.json"
+    "path": "app/gabsocial/features/domain_blocks/index.json"
   },
   {
     "descriptors": [
@@ -1333,7 +1333,7 @@
         "id": "empty_column.favourited_statuses"
       }
     ],
-    "path": "app/javascript/gabsocial/features/favourited_statuses/index.json"
+    "path": "app/gabsocial/features/favourited_statuses/index.json"
   },
   {
     "descriptors": [
@@ -1342,7 +1342,7 @@
         "id": "empty_column.favourites"
       }
     ],
-    "path": "app/javascript/gabsocial/features/favourites/index.json"
+    "path": "app/gabsocial/features/favourites/index.json"
   },
   {
     "descriptors": [
@@ -1355,7 +1355,7 @@
         "id": "follow_request.reject"
       }
     ],
-    "path": "app/javascript/gabsocial/features/follow_requests/components/account_authorize.json"
+    "path": "app/gabsocial/features/follow_requests/components/account_authorize.json"
   },
   {
     "descriptors": [
@@ -1368,7 +1368,7 @@
         "id": "empty_column.follow_requests"
       }
     ],
-    "path": "app/javascript/gabsocial/features/follow_requests/index.json"
+    "path": "app/gabsocial/features/follow_requests/index.json"
   },
   {
     "descriptors": [
@@ -1381,7 +1381,7 @@
         "id": "account.followers.empty"
       }
     ],
-    "path": "app/javascript/gabsocial/features/followers/index.json"
+    "path": "app/gabsocial/features/followers/index.json"
   },
   {
     "descriptors": [
@@ -1394,7 +1394,7 @@
         "id": "account.follows.empty"
       }
     ],
-    "path": "app/javascript/gabsocial/features/following/index.json"
+    "path": "app/gabsocial/features/following/index.json"
   },
   {
     "descriptors": [
@@ -1467,7 +1467,7 @@
         "id": "getting_started.directory"
       }
     ],
-    "path": "app/javascript/gabsocial/features/getting_started/index.json"
+    "path": "app/gabsocial/features/getting_started/index.json"
   },
   {
     "descriptors": [
@@ -1492,7 +1492,7 @@
         "id": "groups.form.create"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/create/index.json"
+    "path": "app/gabsocial/features/groups/create/index.json"
   },
   {
     "descriptors": [
@@ -1517,7 +1517,7 @@
         "id": "groups.form.update"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/edit/index.json"
+    "path": "app/gabsocial/features/groups/edit/index.json"
   },
   {
     "descriptors": [
@@ -1542,7 +1542,7 @@
         "id": "groups.card.roles.admin"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/index/card.json"
+    "path": "app/gabsocial/features/groups/index/card.json"
   },
   {
     "descriptors": [
@@ -1567,7 +1567,7 @@
         "id": "groups.tab_admin"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/index/index.json"
+    "path": "app/gabsocial/features/groups/index/index.json"
   },
   {
     "descriptors": [
@@ -1576,7 +1576,7 @@
         "id": "group.members.empty"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/members/index.json"
+    "path": "app/gabsocial/features/groups/members/index.json"
   },
   {
     "descriptors": [
@@ -1589,7 +1589,7 @@
         "id": "group.removed_accounts.empty"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/removed_accounts/index.json"
+    "path": "app/gabsocial/features/groups/removed_accounts/index.json"
   },
   {
     "descriptors": [
@@ -1602,7 +1602,7 @@
         "id": "groups.sidebar-panel.show_all"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/sidebar_panel/index.json"
+    "path": "app/gabsocial/features/groups/sidebar_panel/index.json"
   },
   {
     "descriptors": [
@@ -1615,7 +1615,7 @@
         "id": "groups.sidebar-panel.item.no_recent_activity"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/sidebar_panel/item.json"
+    "path": "app/gabsocial/features/groups/sidebar_panel/item.json"
   },
   {
     "descriptors": [
@@ -1636,7 +1636,7 @@
         "id": "groups.edit"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/timeline/components/header.json"
+    "path": "app/gabsocial/features/groups/timeline/components/header.json"
   },
   {
     "descriptors": [
@@ -1649,7 +1649,7 @@
         "id": "groups.detail.role_admin"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/timeline/components/panel.json"
+    "path": "app/gabsocial/features/groups/timeline/components/panel.json"
   },
   {
     "descriptors": [
@@ -1658,7 +1658,7 @@
         "id": "empty_column.group"
       }
     ],
-    "path": "app/javascript/gabsocial/features/groups/timeline/index.json"
+    "path": "app/gabsocial/features/groups/timeline/index.json"
   },
   {
     "descriptors": [
@@ -1679,7 +1679,7 @@
         "id": "empty_column.hashtag"
       }
     ],
-    "path": "app/javascript/gabsocial/features/hashtag_timeline/index.json"
+    "path": "app/gabsocial/features/hashtag_timeline/index.json"
   },
   {
     "descriptors": [
@@ -1696,7 +1696,7 @@
         "id": "home.column_settings.show_replies"
       }
     ],
-    "path": "app/javascript/gabsocial/features/home_timeline/components/column_settings.json"
+    "path": "app/gabsocial/features/home_timeline/components/column_settings.json"
   },
   {
     "descriptors": [
@@ -1713,7 +1713,7 @@
         "id": "empty_column.home.local_tab"
       }
     ],
-    "path": "app/javascript/gabsocial/features/home_timeline/index.json"
+    "path": "app/gabsocial/features/home_timeline/index.json"
   },
   {
     "descriptors": [
@@ -1770,7 +1770,7 @@
         "id": "introduction.interactions.action"
       }
     ],
-    "path": "app/javascript/gabsocial/features/introduction/index.json"
+    "path": "app/gabsocial/features/introduction/index.json"
   },
   {
     "descriptors": [
@@ -1783,7 +1783,7 @@
         "id": "lists.account.add"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_adder/components/list.json"
+    "path": "app/gabsocial/features/list_adder/components/list.json"
   },
   {
     "descriptors": [
@@ -1804,7 +1804,7 @@
         "id": "list_adder.header_title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_adder/index.json"
+    "path": "app/gabsocial/features/list_adder/index.json"
   },
   {
     "descriptors": [
@@ -1817,7 +1817,7 @@
         "id": "lists.account.add"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_editor/components/account.json"
+    "path": "app/gabsocial/features/list_editor/components/account.json"
   },
   {
     "descriptors": [
@@ -1830,7 +1830,7 @@
         "id": "lists.new.save_title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_editor/components/edit_list_form.json"
+    "path": "app/gabsocial/features/list_editor/components/edit_list_form.json"
   },
   {
     "descriptors": [
@@ -1843,7 +1843,7 @@
         "id": "tabs_bar.search"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_editor/components/search.json"
+    "path": "app/gabsocial/features/list_editor/components/search.json"
   },
   {
     "descriptors": [
@@ -1868,7 +1868,7 @@
         "id": "lists.edit"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_editor/index.json"
+    "path": "app/gabsocial/features/list_editor/index.json"
   },
   {
     "descriptors": [
@@ -1901,7 +1901,7 @@
         "id": "lists.view_all"
       }
     ],
-    "path": "app/javascript/gabsocial/features/list_timeline/index.json"
+    "path": "app/gabsocial/features/list_timeline/index.json"
   },
   {
     "descriptors": [
@@ -1918,7 +1918,7 @@
         "id": "lists.new.create_title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/lists/components/new_list_form.json"
+    "path": "app/gabsocial/features/lists/components/new_list_form.json"
   },
   {
     "descriptors": [
@@ -1939,7 +1939,7 @@
         "id": "empty_column.lists"
       }
     ],
-    "path": "app/javascript/gabsocial/features/lists/index.json"
+    "path": "app/gabsocial/features/lists/index.json"
   },
   {
     "descriptors": [
@@ -1952,7 +1952,7 @@
         "id": "empty_column.mutes"
       }
     ],
-    "path": "app/javascript/gabsocial/features/mutes/index.json"
+    "path": "app/gabsocial/features/mutes/index.json"
   },
   {
     "descriptors": [
@@ -1961,7 +1961,7 @@
         "id": "notifications.clear"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/components/clear_column_button.json"
+    "path": "app/gabsocial/features/notifications/components/clear_column_button.json"
   },
   {
     "descriptors": [
@@ -2014,7 +2014,7 @@
         "id": "notifications.column_settings.poll"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/components/column_settings.json"
+    "path": "app/gabsocial/features/notifications/components/column_settings.json"
   },
   {
     "descriptors": [
@@ -2043,7 +2043,7 @@
         "id": "notifications.filter.all"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/components/filter_bar.json"
+    "path": "app/gabsocial/features/notifications/components/filter_bar.json"
   },
   {
     "descriptors": [
@@ -2064,7 +2064,7 @@
         "id": "notification.poll"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/components/notification.json"
+    "path": "app/gabsocial/features/notifications/components/notification.json"
   },
   {
     "descriptors": [
@@ -2077,7 +2077,7 @@
         "id": "notifications.clear"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/containers/column_settings_container.json"
+    "path": "app/gabsocial/features/notifications/containers/column_settings_container.json"
   },
   {
     "descriptors": [
@@ -2090,7 +2090,7 @@
         "id": "empty_column.notifications"
       }
     ],
-    "path": "app/javascript/gabsocial/features/notifications/index.json"
+    "path": "app/gabsocial/features/notifications/index.json"
   },
   {
     "descriptors": [
@@ -2099,7 +2099,7 @@
         "id": "pinned_statuses.none"
       }
     ],
-    "path": "app/javascript/gabsocial/features/pinned_statuses/index.json"
+    "path": "app/gabsocial/features/pinned_statuses/index.json"
   },
   {
     "descriptors": [
@@ -2108,7 +2108,7 @@
         "id": "community.column_settings.media_only"
       }
     ],
-    "path": "app/javascript/gabsocial/features/public_timeline/components/column_settings.json"
+    "path": "app/gabsocial/features/public_timeline/components/column_settings.json"
   },
   {
     "descriptors": [
@@ -2133,7 +2133,7 @@
         "id": "empty_column.public"
       }
     ],
-    "path": "app/javascript/gabsocial/features/public_timeline/index.json"
+    "path": "app/gabsocial/features/public_timeline/index.json"
   },
   {
     "descriptors": [
@@ -2142,7 +2142,7 @@
         "id": "status.reblogs.empty"
       }
     ],
-    "path": "app/javascript/gabsocial/features/reblogs/index.json"
+    "path": "app/gabsocial/features/reblogs/index.json"
   },
   {
     "descriptors": [
@@ -2151,7 +2151,7 @@
         "id": "search_results.top"
       }
     ],
-    "path": "app/javascript/gabsocial/features/search/components/header.json"
+    "path": "app/gabsocial/features/search/components/header.json"
   },
   {
     "descriptors": [
@@ -2244,7 +2244,7 @@
         "id": "status.copy"
       }
     ],
-    "path": "app/javascript/gabsocial/features/status/components/action_bar.json"
+    "path": "app/gabsocial/features/status/components/action_bar.json"
   },
   {
     "descriptors": [
@@ -2285,7 +2285,7 @@
         "id": "confirmations.block.message"
       }
     ],
-    "path": "app/javascript/gabsocial/features/status/containers/detailed_status_container.json"
+    "path": "app/gabsocial/features/status/containers/detailed_status_container.json"
   },
   {
     "descriptors": [
@@ -2338,7 +2338,7 @@
         "id": "confirmations.block.message"
       }
     ],
-    "path": "app/javascript/gabsocial/features/status/index.json"
+    "path": "app/gabsocial/features/status/index.json"
   },
   {
     "descriptors": [
@@ -2355,7 +2355,7 @@
         "id": "boost_modal.combo"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/boost_modal.json"
+    "path": "app/gabsocial/features/ui/components/boost_modal.json"
   },
   {
     "descriptors": [
@@ -2372,7 +2372,7 @@
         "id": "bundle_column_error.retry"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/bundle_column_error.json"
+    "path": "app/gabsocial/features/ui/components/bundle_column_error.json"
   },
   {
     "descriptors": [
@@ -2389,7 +2389,7 @@
         "id": "bundle_modal_error.close"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/bundle_modal_error.json"
+    "path": "app/gabsocial/features/ui/components/bundle_modal_error.json"
   },
   {
     "descriptors": [
@@ -2410,7 +2410,7 @@
         "id": "navigation_bar.compose"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/compose_modal.json"
+    "path": "app/gabsocial/features/ui/components/compose_modal.json"
   },
   {
     "descriptors": [
@@ -2419,7 +2419,7 @@
         "id": "confirmation_modal.cancel"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/confirmation_modal.json"
+    "path": "app/gabsocial/features/ui/components/confirmation_modal.json"
   },
   {
     "descriptors": [
@@ -2436,7 +2436,7 @@
         "id": "embed.preview"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/embed_modal.json"
+    "path": "app/gabsocial/features/ui/components/embed_modal.json"
   },
   {
     "descriptors": [
@@ -2561,7 +2561,7 @@
         "id": "keyboard_shortcuts.legend"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/hotkeys_modal.json"
+    "path": "app/gabsocial/features/ui/components/hotkeys_modal.json"
   },
   {
     "descriptors": [
@@ -2606,7 +2606,7 @@
         "id": "getting_started.open_source_notice"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/link_footer.json"
+    "path": "app/gabsocial/features/ui/components/link_footer.json"
   },
   {
     "descriptors": [
@@ -2627,7 +2627,7 @@
         "id": "lightbox.view_context"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/media_modal.json"
+    "path": "app/gabsocial/features/ui/components/media_modal.json"
   },
   {
     "descriptors": [
@@ -2648,7 +2648,7 @@
         "id": "confirmations.mute.confirm"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/mute_modal.json"
+    "path": "app/gabsocial/features/ui/components/mute_modal.json"
   },
   {
     "descriptors": [
@@ -2669,7 +2669,7 @@
         "id": "account.member_since"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/profile_info_panel.json"
+    "path": "app/gabsocial/features/ui/components/profile_info_panel.json"
   },
   {
     "descriptors": [
@@ -2702,7 +2702,7 @@
         "id": "report.forward"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/report_modal.json"
+    "path": "app/gabsocial/features/ui/components/report_modal.json"
   },
   {
     "descriptors": [
@@ -2719,7 +2719,7 @@
         "id": "account.register"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/sign_up_panel.json"
+    "path": "app/gabsocial/features/ui/components/sign_up_panel.json"
   },
   {
     "descriptors": [
@@ -2744,7 +2744,7 @@
         "id": "account.register"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/tabs_bar.json"
+    "path": "app/gabsocial/features/ui/components/tabs_bar.json"
   },
   {
     "descriptors": [
@@ -2753,7 +2753,7 @@
         "id": "trends.title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/trends_panel.json"
+    "path": "app/gabsocial/features/ui/components/trends_panel.json"
   },
   {
     "descriptors": [
@@ -2782,7 +2782,7 @@
         "id": "account.login"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/unauthorized_modal.json"
+    "path": "app/gabsocial/features/ui/components/unauthorized_modal.json"
   },
   {
     "descriptors": [
@@ -2791,7 +2791,7 @@
         "id": "upload_area.title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/upload_area.json"
+    "path": "app/gabsocial/features/ui/components/upload_area.json"
   },
   {
     "descriptors": [
@@ -2808,7 +2808,7 @@
         "id": "account.follows"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/user_panel.json"
+    "path": "app/gabsocial/features/ui/components/user_panel.json"
   },
   {
     "descriptors": [
@@ -2817,7 +2817,7 @@
         "id": "lightbox.view_context"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/video_modal.json"
+    "path": "app/gabsocial/features/ui/components/video_modal.json"
   },
   {
     "descriptors": [
@@ -2830,7 +2830,7 @@
         "id": "who_to_follow.title"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/components/who_to_follow_panel.json"
+    "path": "app/gabsocial/features/ui/components/who_to_follow_panel.json"
   },
   {
     "descriptors": [
@@ -2843,7 +2843,7 @@
         "id": "compose_form.publish"
       }
     ],
-    "path": "app/javascript/gabsocial/features/ui/index.json"
+    "path": "app/gabsocial/features/ui/index.json"
   },
   {
     "descriptors": [
@@ -2892,6 +2892,6 @@
         "id": "status.media_hidden"
       }
     ],
-    "path": "app/javascript/gabsocial/features/video/index.json"
+    "path": "app/gabsocial/features/video/index.json"
   }
 ]

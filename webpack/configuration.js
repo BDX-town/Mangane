@@ -1,14 +1,14 @@
 // Common configuration for webpacker loaded from config/webpacker.yml
 
-const { resolve } = require('path');
+const { join } = require('path');
 const { env } = require('process');
 const { safeLoad } = require('js-yaml');
 const { readFileSync } = require('fs');
 
-const configPath = resolve('config', 'webpacker.yml');
+const configPath = join(__dirname, 'config', 'webpacker.yml');
 const settings = safeLoad(readFileSync(configPath), 'utf8')[env.RAILS_ENV || env.NODE_ENV];
 
-const themePath = resolve('config', 'themes.yml');
+const themePath = join(__dirname, 'config', 'themes.yml');
 const themes = safeLoad(readFileSync(themePath), 'utf8');
 
 function removeOuterSlashes(string) {
@@ -25,7 +25,7 @@ function formatPublicPath(host = '', path = '') {
 }
 
 const output = {
-  path: resolve('public', settings.public_output_path),
+  path: join(__dirname, '..', 'public', settings.public_output_path),
   publicPath: formatPublicPath(env.CDN_HOST, settings.public_output_path),
 };
 
