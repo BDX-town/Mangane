@@ -9,7 +9,7 @@ export const acctFull = account => {
   try {
     if (!domain) domain = getDomain(account);
   } catch(e) {
-    console.error('Could not get domain for acctFull.');
+    console.warning('Could not get domain for acctFull. Falling back to acct.');
     return account.get('acct');
   }
   return [user, domain].join('@');
