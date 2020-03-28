@@ -8,6 +8,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const watchOptions = {};
 
+// TODO: Make this configurable
+const backendUrl = 'http://localhost:4000';
+
 if (process.env.VAGRANT) {
   // If we are in Vagrant, we can't rely on inotify to update us with changed
   // files, so we must poll instead. Here, we poll every second to see if
@@ -59,5 +62,12 @@ module.exports = merge(sharedConfig, {
       watchOptions
     ),
     serveIndex: true,
+    proxy: {
+      '/api': backendUrl,
+      '/nodeinfo': backendUrl,
+      '/socket': backendUrl,
+      '/oauth/revoke': backendUrl,
+      '/.well-known/webfinger': backendUrl,
+    },
   },
 });
