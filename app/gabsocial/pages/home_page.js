@@ -21,6 +21,7 @@ export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
   render () {
     const {children, account} = this.props;
+    const hasFunding = funding && funding.goal && funding.goal.amount && funding.goal.text;
 
     return (
       <div className='page'>
@@ -30,7 +31,7 @@ class HomePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel />
-                {funding.goal.amount && funding.goal.text && <FundingPanel goal={funding.goal.amount} goal_text={funding.goal.text} />}
+                {hasFunding && <FundingPanel goal={funding.goal.amount} goal_text={funding.goal.text} />}
                 <PromoPanel />
                 <LinkFooter />
               </div>
