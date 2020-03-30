@@ -52,9 +52,9 @@ class GabSocialMount extends React.PureComponent {
     // }
 
     return (
-      <BrowserRouter>
+      <BrowserRouter basename='/web'>
         <ScrollContext>
-          <Route path='/' component={UI} />
+          <Route component={UI} />
         </ScrollContext>
       </BrowserRouter>
     );
