@@ -28,5 +28,6 @@ export const forceSingleColumn = !getMeta('advanced_layout');
 export const funding = getMeta('funding');
 export const promoItems = getMeta('promo_items');
 export const unreadCount = getMeta('unread_count');
+export const maxTootChars = getMeta('max_toot_chars');
 
 export default initialState;
