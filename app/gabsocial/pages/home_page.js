@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { me, funding } from 'gabsocial/initial_state';
+import soapbox from 'soapbox/config';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
@@ -21,7 +22,6 @@ export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
   render () {
     const {children, account} = this.props;
-    const hasFunding = funding && funding.goal && funding.goal.amount && funding.goal.text;
 
     return (
       <div className='page'>
@@ -31,7 +31,7 @@ class HomePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel />
-                {hasFunding && <FundingPanel goal={funding.goal.amount} goal_text={funding.goal.text} />}
+                {soapbox.features.patron && <FundingPanel />}
                 <PromoPanel />
                 <LinkFooter />
               </div>

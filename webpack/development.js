@@ -10,6 +10,7 @@ const watchOptions = {};
 
 // TODO: Make this configurable
 const backendUrl = 'http://localhost:4000';
+const patronUrl  = 'http://localhost:5000';
 
 if (process.env.VAGRANT) {
   // If we are in Vagrant, we can't rely on inotify to update us with changed
@@ -68,6 +69,7 @@ module.exports = merge(sharedConfig, {
       '/socket': backendUrl,
       '/oauth/revoke': backendUrl,
       '/.well-known/webfinger': backendUrl,
+      '/patron': patronUrl,
     },
   },
 });
