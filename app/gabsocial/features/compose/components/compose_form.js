@@ -34,7 +34,7 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   return {
-    maxTootChars: state.getIn(['instance', 'max_toot_chars']),
+    maxTootChars: state.getIn(['instance', 'max_toot_chars']) || 500,
   };
 };
 
