@@ -39,6 +39,7 @@ import group_editor from './group_editor';
 import sidebar from './sidebar';
 import patron from './patron';
 import soapbox from './soapbox';
+import instance from './instance';
 
 const reducers = {
   dropdown_menu,
@@ -81,6 +82,7 @@ const reducers = {
   sidebar,
   patron,
   soapbox,
+  instance,
 };
 
 export default combineReducers(reducers);
