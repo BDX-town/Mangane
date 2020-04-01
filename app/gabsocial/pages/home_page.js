@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { me, funding } from 'gabsocial/initial_state';
-import soapbox from 'soapbox/config';
+import { me } from 'gabsocial/initial_state';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
@@ -16,12 +15,13 @@ import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
 const mapStateToProps = state => ({
   account: state.getIn(['accounts', me]),
+  hasPatron: state.getIn(['soapbox', 'features', 'patron']),
 });
 
 export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
   render () {
-    const {children, account} = this.props;
+    const {children, account, hasPatron} = this.props;
 
     return (
       <div className='page'>
@@ -31,7 +31,7 @@ class HomePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel />
-                {soapbox.features.patron && <FundingPanel />}
+                {hasPatron && <FundingPanel />}
                 <PromoPanel />
                 <LinkFooter />
               </div>

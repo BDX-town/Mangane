@@ -69,6 +69,7 @@ module.exports = merge(sharedConfig, {
       '/socket': backendUrl,
       '/oauth/revoke': backendUrl,
       '/.well-known/webfinger': backendUrl,
+      '/static': backendUrl,
       '/patron': patronUrl,
     },
   },

@@ -17,6 +17,7 @@ import { getLocale } from '../locales';
 import initialState from '../initial_state';
 import { me } from '../initial_state';
 import ErrorBoundary from '../components/error_boundary';
+import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -26,6 +27,7 @@ const hydrateAction = hydrateStore(initialState);
 
 store.dispatch(hydrateAction);
 store.dispatch(fetchCustomEmojis());
+store.dispatch(fetchSoapboxConfig());
 
 const mapStateToProps = (state) => {
   const account = state.getIn(['accounts', me]);
