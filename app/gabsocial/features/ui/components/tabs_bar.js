@@ -4,7 +4,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { throttle } from 'lodash';
 import { connect } from 'react-redux';
-import { me, logo } from '../../../initial_state';
+import { me } from '../../../initial_state';
 import classNames from 'classnames';
 import NotificationsCounterIcon from './notifications_counter_icon';
 import SearchContainer from 'gabsocial/features/compose/containers/search_container';
@@ -13,7 +13,7 @@ import ActionBar from 'gabsocial/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 
-export const privateLinks = [
+export const privateLinks = ({ logo }) => { return [
   <NavLink key='pr0' className='tabs-bar__link--logo' to='/home#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
     <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
   </NavLink>,
@@ -34,9 +34,9 @@ export const privateLinks = [
     <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
     <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
   </NavLink>,
-];
+]}
 
-export const publicLinks = [
+export const publicLinks = ({ logo }) => { return [
   <a key='pl0' className='tabs-bar__link--logo' href='/#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
     <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
   </a>,
@@ -48,7 +48,7 @@ export const publicLinks = [
     <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
     <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
   </NavLink>,
-];
+]}
 
 @withRouter
 class TabsBar extends React.PureComponent {
@@ -117,9 +117,9 @@ class TabsBar extends React.PureComponent {
   });
 
   render () {
-    const { intl: { formatMessage }, account, onOpenCompose, onOpenSidebar } = this.props;
+    const { intl: { formatMessage }, account, onOpenCompose, onOpenSidebar, logo } = this.props;
     const { collapsed } = this.state;
-    const links = account ? privateLinks : publicLinks;
+    const links = account ? privateLinks(this.props) : publicLinks(this.props);
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
@@ -181,6 +181,7 @@ class TabsBar extends React.PureComponent {
 const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
+    logo: state.getIn(['soapbox', 'logo']),
   };
 };
 
