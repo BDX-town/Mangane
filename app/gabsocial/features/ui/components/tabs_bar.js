@@ -13,43 +13,6 @@ import ActionBar from 'gabsocial/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 
-export const privateLinks = ({ logo }) => { return [
-  <NavLink key='pr0' className='tabs-bar__link--logo' to='/home#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
-    <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-  </NavLink>,
-  <NavLink key='pr1' className='tabs-bar__link' to='/home' data-preview-title-id='column.home'  >
-    <i className='tabs-bar__link__icon home'/>
-    <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-  </NavLink>,
-  <NavLink key='pr2' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications' >
-    <i className='tabs-bar__link__icon notifications'/>
-    <NotificationsCounterIcon />
-    <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
-  </NavLink>,
-  // <NavLink key='pr3' className='tabs-bar__link' to='/groups' data-preview-title-id='column.groups' >
-  //   <i className='tabs-bar__link__icon groups'/>
-  //   <FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />
-  // </NavLink>,
-  <NavLink key='pr5' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search' >
-    <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
-    <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
-  </NavLink>,
-]}
-
-export const publicLinks = ({ logo }) => { return [
-  <a key='pl0' className='tabs-bar__link--logo' href='/#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
-    <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-  </a>,
-  <a key='pl1' className='tabs-bar__link' href='/home' data-preview-title-id='column.home'  >
-    <i className='tabs-bar__link__icon home'/>
-    <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-  </a>,
-  <NavLink key='pl2' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search' >
-    <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
-    <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
-  </NavLink>,
-]}
-
 @withRouter
 class TabsBar extends React.PureComponent {
 
@@ -95,6 +58,68 @@ class TabsBar extends React.PureComponent {
     this.window.removeEventListener('scroll', this.handleScroll);
   }
 
+  getPrivateLinks() {
+    const { intl: { formatMessage }, logo } = this.props;
+    let links = [];
+    if (logo) {
+      links.push(
+        <NavLink key='pr0' className='tabs-bar__link--logo' to='/home#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
+          <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+        </NavLink>)
+    }
+    links.push(
+      <NavLink key='pr1' className='tabs-bar__link' to='/home' data-preview-title-id='column.home'>
+        <i className='tabs-bar__link__icon home'/>
+        <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+      </NavLink>,
+      <NavLink key='pr2' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
+        <i className='tabs-bar__link__icon notifications'/>
+        <NotificationsCounterIcon />
+        <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
+      </NavLink>,
+      // <NavLink key='pr3' className='tabs-bar__link' to='/groups' data-preview-title-id='column.groups'>
+      //   <i className='tabs-bar__link__icon groups'/>
+      //   <FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />
+      // </NavLink>,
+      <NavLink key='pr5' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
+        <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
+        <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
+      </NavLink>,
+    );
+    return links.map((link) =>
+      React.cloneElement(link, {
+        key: link.props.to,
+        'aria-label': formatMessage({
+        id: link.props['data-preview-title-id']
+      })
+    }));
+  }
+
+  getPublicLinks() {
+    const { intl: { formatMessage }, logo } = this.props;
+    let links = [];
+    if (logo) {
+      links.push(
+        <a key='pl0' className='tabs-bar__link--logo' href='/#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
+          <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+        </a>
+      );
+    }
+    links.push(
+      <a key='pl1' className='tabs-bar__link' href='/home' data-preview-title-id='column.home'  >
+        <i className='tabs-bar__link__icon home'/>
+        <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+      </a>,
+      <NavLink key='pl2' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search' >
+        <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
+        <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
+      </NavLink>
+    );
+    return links.map((link, i) => React.cloneElement(link, {
+      key: i,
+    }))
+  }
+
   handleScroll = throttle(() => {
     if (this.window) {
       const { pageYOffset, innerWidth } = this.window;
@@ -117,9 +142,8 @@ class TabsBar extends React.PureComponent {
   });
 
   render () {
-    const { intl: { formatMessage }, account, onOpenCompose, onOpenSidebar, logo } = this.props;
+    const { intl: { formatMessage }, account, onOpenCompose, onOpenSidebar } = this.props;
     const { collapsed } = this.state;
-    const links = account ? privateLinks(this.props) : publicLinks(this.props);
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
@@ -129,20 +153,7 @@ class TabsBar extends React.PureComponent {
       <nav className={classes} ref={this.setRef}>
         <div className='tabs-bar__container'>
           <div className='tabs-bar__split tabs-bar__split--left'>
-            {
-              account && links.map((link) =>
-                React.cloneElement(link, {
-                  key: link.props.to,
-                  'aria-label': formatMessage({
-                    id: link.props['data-preview-title-id']
-                  })
-                }))
-            }
-            {
-              !account && links.map((link, i) => React.cloneElement(link, {
-                key: i,
-              }))
-            }
+            { account ? this.getPrivateLinks() : this.getPublicLinks() }
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
             <div className='tabs-bar__search-container'>
