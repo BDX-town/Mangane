@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { me, siteTitle } from '../../../initial_state';
+import { me } from '../../../initial_state';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Avatar from '../../../components/avatar';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -15,6 +15,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
+    siteTitle: state.getIn(['instance', 'title']),
   };
 };
 
@@ -30,7 +31,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
   };
 
   render () {
-    const { intl, onClose, account } = this.props;
+    const { intl, onClose, account, siteTitle } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal unauthorized-modal'>

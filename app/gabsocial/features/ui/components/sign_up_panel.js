@@ -1,9 +1,16 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
-import { me, siteTitle } from 'gabsocial/initial_state';
+import { me } from 'gabsocial/initial_state';
 
-const SignUpPanel = () => {
+const mapStateToProps = state => {
+  return {
+    siteTitle: state.getIn(['instance', 'title']),
+  };
+};
+
+const SignUpPanel = ({ siteTitle }) => {
   if (me) return null;
 
   return (
@@ -27,4 +34,4 @@ const SignUpPanel = () => {
   )
 }
 
-export default SignUpPanel;
+export default injectIntl(connect(mapStateToProps)(SignUpPanel));

@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import { invitesEnabled, version, repository, source_url, me } from 'gabsocial/initial_state';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
-import { siteTitle } from 'gabsocial/initial_state';
 
 const mapStateToProps = state => ({
   account: state.getIn(['accounts', me]),
+  siteTitle: state.getIn(['instance', 'title']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account }) => (
+const LinkFooter = ({ onOpenHotkeys, account, siteTitle }) => (
   <div className='getting-started__footer'>
     <ul>
       {(invitesEnabled && account) && <li><a href='/invites'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}

@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 import Icon from 'gabsocial/components/icon';
-import { me, siteTitle } from 'gabsocial/initial_state';
+import { me } from 'gabsocial/initial_state';
 import { fetchLists } from 'gabsocial/actions/lists';
 import { createSelector } from 'reselect';
 
@@ -31,6 +31,7 @@ const getOrderedLists = createSelector([state => state.get('lists')], lists => {
 const mapStateToProps = state => {
   return {
     lists: getOrderedLists(state),
+    siteTitle: state.getIn(['instance', 'title']),
   };
 };
 
@@ -76,7 +77,7 @@ class ColumnHeader extends React.PureComponent {
   }
 
   render () {
-    const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists } = this.props;
+    const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists, siteTitle } = this.props;
     const { collapsed, animating, expandedFor } = this.state;
 
     const wrapperClassName = classNames('column-header__wrapper', {

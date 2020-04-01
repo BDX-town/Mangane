@@ -8,7 +8,6 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
 import { Link } from 'react-router-dom';
-import { siteTitle } from '../../initial_state';
 
 const messages = defineMessages({
   title: { id: 'column.home', defaultMessage: 'Home' },
@@ -17,6 +16,7 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   hasUnread: state.getIn(['timelines', 'home', 'unread']) > 0,
   isPartial: state.getIn(['timelines', 'home', 'isPartial']),
+  siteTitle: state.getIn(['instance', 'title']),
 });
 
 export default @connect(mapStateToProps)
@@ -68,7 +68,7 @@ class HomeTimeline extends React.PureComponent {
   }
 
   render () {
-    const { intl, hasUnread } = this.props;
+    const { intl, hasUnread, siteTitle} = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>

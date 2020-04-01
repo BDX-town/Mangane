@@ -31,7 +31,6 @@ import SearchPage from 'gabsocial/pages/search_page';
 import HomePage from 'gabsocial/pages/home_page';
 import GroupSidebarPanel from '../groups/sidebar_panel';
 import SidebarMenu from '../../components/sidebar_menu';
-import { siteTitle } from 'gabsocial/initial_state';
 
 import {
   Status,
@@ -76,7 +75,7 @@ import '../../components/status';
 import { fetchGroups } from '../../actions/groups';
 
 const messages = defineMessages({
-  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave {site_title}.', values: {site_title: siteTitle} },
+  beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
 });
 

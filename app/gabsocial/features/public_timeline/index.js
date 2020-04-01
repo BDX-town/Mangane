@@ -16,7 +16,6 @@ import {
   connectPublicStream,
 } from '../../actions/streaming';
 import { Link } from 'react-router-dom';
-import { siteTitle } from '../../initial_state';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Federated timeline' },
@@ -31,6 +30,7 @@ const mapStateToProps = state => {
     timelineId,
     onlyMedia,
     hasUnread: state.getIn(['timelines', `${timelineId}${onlyMedia ? ':media' : ''}`, 'unread']) > 0,
+    siteTitle: state.getIn(['instance', 'title']),
   };
 };
 
@@ -79,7 +79,7 @@ class CommunityTimeline extends React.PureComponent {
   }
 
   render () {
-    const { intl, hasUnread, onlyMedia, timelineId } = this.props;
+    const { intl, hasUnread, onlyMedia, timelineId, siteTitle } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
