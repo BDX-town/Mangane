@@ -7,7 +7,7 @@ import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { me, isStaff } from '../initial_state';
+import { isStaff } from '../initial_state';
 import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
 
@@ -75,6 +75,7 @@ class StatusActionBar extends ImmutablePureComponent {
   ]
 
   handleReplyClick = () => {
+    const { me } = this.props;
     if (me) {
       this.props.onReply(this.props.status, this.context.router.history);
     } else {
@@ -92,6 +93,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleFavouriteClick = () => {
+    const { me } = this.props;
     if (me) {
       this.props.onFavourite(this.props.status);
     } else {
@@ -100,6 +102,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleReblogClick = e => {
+    const { me } = this.props;
     if (me) {
       this.props.onReblog(this.props.status, e);
     } else {
@@ -183,7 +186,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin } = this.props;
+    const { status, intl, withDismiss, withGroupAdmin, me } = this.props;
     const mutingConversation = status.get('muted');
 
     let menu = [];
@@ -297,6 +300,12 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    me: state.get('me'),
+  };
+};
+
 const mapDispatchToProps = (dispatch) => ({
   onOpenUnauthorizedModal() {
     dispatch(openModal('UNAUTHORIZED'));
@@ -304,5 +313,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default injectIntl(
-  connect(null, mapDispatchToProps, null, { forwardRef: true }
+  connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }
 )(StatusActionBar))

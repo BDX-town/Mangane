@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
-import { me } from '../../../initial_state';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ComposeFormContainer from '../../compose/containers/compose_form_container';
@@ -16,6 +15,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
     composeText: state.getIn(['compose', 'text']),

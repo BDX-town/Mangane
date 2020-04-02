@@ -3,7 +3,6 @@ import StatusList from '../../../components/status_list';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { createSelector } from 'reselect';
 import { debounce } from 'lodash';
-import { me } from '../../../initial_state';
 import { dequeueTimeline } from 'gabsocial/actions/timelines';
 import { scrollTopTimeline } from '../../../actions/timelines';
 
@@ -11,7 +10,8 @@ const makeGetStatusIds = () => createSelector([
   (state, { type }) => state.getIn(['settings', type], ImmutableMap()),
   (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
   (state)           => state.get('statuses'),
-], (columnSettings, statusIds, statuses) => {
+  (state)           => state.get('me'),
+], (columnSettings, statusIds, statuses, me) => {
   return statusIds.filter(id => {
     if (id === null) return true;
 

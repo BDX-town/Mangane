@@ -13,11 +13,11 @@ import { FormattedMessage } from 'react-intl';
 import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
 import MissingIndicator from 'gabsocial/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
-import { me } from 'gabsocial/initial_state';
 
 const emptyList = ImmutableList();
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+  const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() == username.toLowerCase());
 

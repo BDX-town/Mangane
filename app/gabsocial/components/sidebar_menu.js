@@ -12,7 +12,6 @@ import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
 import { shortNumberFormat } from '../utils/numbers';
-import { me, funding } from '../initial_state';
 import { makeGetAccount } from '../selectors';
 
 const messages = defineMessages({
@@ -34,6 +33,7 @@ const messages = defineMessages({
 })
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const getAccount = makeGetAccount();
 
   return {
@@ -61,6 +61,7 @@ class SidebarMenu extends ImmutablePureComponent {
 
   render () {
     const { sidebarOpen, onClose, intl, account } = this.props;
+    if (!account) return null;
     const acct = account.get('acct');
 
     const classes = classNames('sidebar-menu__root', {

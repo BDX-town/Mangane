@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { me } from 'gabsocial/initial_state';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
@@ -9,9 +8,12 @@ import PromoPanel from '../features/ui/components/promo_panel';
 import UserPanel from '../features/ui/components/user_panel';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const mapStateToProps = state => ({
-  account: state.getIn(['accounts', me]),
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    account: state.getIn(['accounts', me]),
+  }
+};
 
 export default @connect(mapStateToProps)
 class GroupsPage extends ImmutablePureComponent {

@@ -1,8 +1,8 @@
 import { connect }   from 'react-redux';
 import NavigationBar from '../components/navigation_bar';
-import { me } from '../../../initial_state';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
   };

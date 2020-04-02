@@ -15,10 +15,10 @@ import { connectUserStream } from '../actions/streaming';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { getLocale } from '../locales';
 import initialState from '../initial_state';
-import { me } from '../initial_state';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'gabsocial/actions/instance';
 import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
+import { fetchMe } from 'gabsocial/actions/me';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -27,11 +27,13 @@ export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
 
 store.dispatch(hydrateAction);
+store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
 store.dispatch(fetchSoapboxConfig());
 store.dispatch(fetchCustomEmojis());
 
 const mapStateToProps = (state) => {
+  const me = state.get('me');
   const account = state.getIn(['accounts', me]);
   const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
 

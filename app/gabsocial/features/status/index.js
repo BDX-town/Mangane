@@ -39,7 +39,7 @@ import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
-import { boostModal, deleteModal, me } from '../../initial_state';
+import { boostModal, deleteModal } from '../../initial_state';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'gabsocial/components/icon';
@@ -106,6 +106,7 @@ const makeMapStateToProps = () => {
       descendantsIds,
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
+      me: state.get('me'),
     };
   };
 
@@ -419,7 +420,7 @@ class Status extends ImmutablePureComponent {
 
   render () {
     let ancestors, descendants;
-    const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
+    const { status, ancestorsIds, descendantsIds, intl, domain, me } = this.props;
     const { fullscreen } = this.state;
 
     if (status === null) {

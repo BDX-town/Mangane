@@ -5,7 +5,6 @@ import { deleteFromTimelines } from './timelines';
 import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus } from './importer';
 import { ensureComposeIsVisible } from './compose';
 import { openModal, closeModal } from './modal';
-import { me } from 'gabsocial/initial_state';
 
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
@@ -143,7 +142,7 @@ export function redraft(status, raw_text) {
 
 export function deleteStatus(id, routerHistory, withRedraft = false) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     let status = getState().getIn(['statuses', id]);
 
@@ -236,7 +235,7 @@ export function fetchContextFail(id, error) {
 
 export function muteStatus(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(muteStatusRequest(id));
 
@@ -272,7 +271,7 @@ export function muteStatusFail(id, error) {
 
 export function unmuteStatus(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unmuteStatusRequest(id));
 

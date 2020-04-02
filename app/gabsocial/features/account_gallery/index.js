@@ -17,9 +17,9 @@ import MissingIndicator from 'gabsocial/components/missing_indicator';
 import { openModal } from 'gabsocial/actions/modal';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { me } from 'gabsocial/initial_state';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+  const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() == username.toLowerCase());
 

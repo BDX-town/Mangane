@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -8,7 +9,6 @@ import Permalink from './permalink';
 import IconButton from './icon_button';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { me } from '../initial_state';
 
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
@@ -20,7 +20,14 @@ const messages = defineMessages({
   unmute_notifications: { id: 'account.unmute_notifications', defaultMessage: 'Unmute notifications from @{name}' },
 });
 
-export default @injectIntl
+const mapStateToProps = state => {
+  return {
+    me: state.get('me'),
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
 class Account extends ImmutablePureComponent {
 
   static propTypes = {
@@ -61,7 +68,7 @@ class Account extends ImmutablePureComponent {
   }
 
   render () {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me } = this.props;
 
     if (!account) {
       return <div />;

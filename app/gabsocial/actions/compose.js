@@ -11,7 +11,6 @@ import { showAlertForError } from './alerts';
 import { showAlert } from './alerts';
 import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
-import { me } from 'gabsocial/initial_state';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -153,7 +152,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
 
 export function submitCompose(routerHistory, group) {
   return function (dispatch, getState) {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const status = getState().getIn(['compose', 'text'], '');
     const media  = getState().getIn(['compose', 'media_attachments']);
@@ -211,7 +210,7 @@ export function submitComposeFail(error) {
 
 export function uploadCompose(files) {
   return function (dispatch, getState) {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const uploadLimit = 4;
     const media  = getState().getIn(['compose', 'media_attachments']);
@@ -252,7 +251,7 @@ export function uploadCompose(files) {
 
 export function changeUploadCompose(id, params) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(changeUploadComposeRequest());
 
@@ -440,7 +439,7 @@ export function updateTagHistory(tags) {
 
 export function hydrateCompose() {
   return (dispatch, getState) => {
-    const me = getState().getIn(['meta', 'me']);
+    const me = getState().get('me');
     const history = tagHistory.get(me);
 
     if (history !== null) {
@@ -453,7 +452,7 @@ function insertIntoTagHistory(recognizedTags, text) {
   return (dispatch, getState) => {
     const state = getState();
     const oldHistory = state.getIn(['compose', 'tagHistory']);
-    const me = state.getIn(['meta', 'me']);
+    const me = state.get('me');
     const names = recognizedTags.map(tag => text.match(new RegExp(`#${tag.name}`, 'i'))[0].slice(1));
     const intersectedOldHistory = oldHistory.filter(name => names.findIndex(newName => newName.toLowerCase() === name.toLowerCase()) === -1);
 

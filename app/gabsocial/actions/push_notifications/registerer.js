@@ -2,7 +2,6 @@ import api from '../../api';
 import { decode as decodeBase64 } from '../../utils/base64';
 import { pushNotificationsSetting } from '../../settings';
 import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
-import { me } from '../../initial_state';
 
 // Taken from https://www.npmjs.com/package/web-push
 const urlBase64ToUint8Array = (base64String) => {
@@ -31,7 +30,7 @@ const subscribe = (registration) =>
 const unsubscribe = ({ registration, subscription }) =>
   subscription ? subscription.unsubscribe().then(() => registration) : registration;
 
-const sendSubscriptionToBackend = (subscription) => {
+const sendSubscriptionToBackend = (subscription, me) => {
   const params = { subscription };
 
   if (me) {
@@ -49,6 +48,7 @@ const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager'
 
 export function register () {
   return (dispatch, getState) => {
+    const me = getState().get('me');
     dispatch(setBrowserSupport(supportsPushNotifications));
 
     if (supportsPushNotifications) {
@@ -73,13 +73,13 @@ export function register () {
             } else {
               // Something went wrong, try to subscribe again
               return unsubscribe({ registration, subscription }).then(subscribe).then(
-                subscription => sendSubscriptionToBackend(subscription));
+                subscription => sendSubscriptionToBackend(subscription, me));
             }
           }
 
           // No subscription, try to subscribe
           return subscribe(registration).then(
-            subscription => sendSubscriptionToBackend(subscription));
+            subscription => sendSubscriptionToBackend(subscription, me));
         })
         .then(subscription => {
           // If we got a PushSubscription (and not a subscription object from the backend)
@@ -121,6 +121,7 @@ export function saveSettings() {
     const subscription = state.get('subscription');
     const alerts = state.get('alerts');
     const data = { alerts };
+    const me = getState().get('me');
 
     api().put(`/api/web/push_subscriptions/${subscription.get('id')}`, {
       data,

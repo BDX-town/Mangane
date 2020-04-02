@@ -4,7 +4,6 @@ import {
   importFetchedStatuses,
   importFetchedStatus,
 } from './importer';
-import { me } from 'gabsocial/initial_state';
 
 export const CONVERSATIONS_MOUNT   = 'CONVERSATIONS_MOUNT';
 export const CONVERSATIONS_UNMOUNT = 'CONVERSATIONS_UNMOUNT';
@@ -25,7 +24,7 @@ export const unmountConversations = () => ({
 });
 
 export const markConversationRead = conversationId => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch({
     type: CONVERSATIONS_READ,
@@ -36,8 +35,8 @@ export const markConversationRead = conversationId => (dispatch, getState) => {
 };
 
 export const expandConversations = ({ maxId } = {}) => (dispatch, getState) => {
-  if (!me) return;
-  
+  if (!getState().get('me')) return;
+
   dispatch(expandConversationsRequest());
 
   const params = { max_id: maxId };

@@ -41,7 +41,6 @@ import { STORE_HYDRATE } from '../actions/store';
 import { REDRAFT } from '../actions/statuses';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import uuid from '../uuid';
-import { me } from '../initial_state';
 import { unescapeHTML } from '../utils/html';
 
 const initialState = ImmutableMap({
@@ -79,6 +78,7 @@ const initialPoll = ImmutableMap({
 
 function statusToTextMentions(state, status) {
   let set = ImmutableOrderedSet([]);
+  const me = state.get('me');
 
   if (status.getIn(['account', 'id']) !== me) {
     set = set.add(`@${status.getIn(['account', 'acct'])} `);

@@ -1,7 +1,6 @@
 import api from '../api';
 import { importFetchedAccounts } from './importer';
 import { showAlertForError } from './alerts';
-import { me } from 'gabsocial/initial_state'
 
 export const LIST_FETCH_REQUEST = 'LIST_FETCH_REQUEST';
 export const LIST_FETCH_SUCCESS = 'LIST_FETCH_SUCCESS';
@@ -51,7 +50,7 @@ export const LIST_ADDER_LISTS_FETCH_SUCCESS = 'LIST_ADDER_LISTS_FETCH_SUCCESS';
 export const LIST_ADDER_LISTS_FETCH_FAIL    = 'LIST_ADDER_LISTS_FETCH_FAIL';
 
 export const fetchList = id => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   if (getState().getIn(['lists', id])) {
     return;
@@ -81,7 +80,7 @@ export const fetchListFail = (id, error) => ({
 });
 
 export const fetchLists = () => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(fetchListsRequest());
 
@@ -130,7 +129,7 @@ export const changeListEditorTitle = value => ({
 });
 
 export const createList = (title, shouldReset) => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(createListRequest());
 
@@ -158,7 +157,7 @@ export const createListFail = error => ({
 });
 
 export const updateList = (id, title, shouldReset) => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(updateListRequest(id));
 
@@ -192,7 +191,7 @@ export const resetListEditor = () => ({
 });
 
 export const deleteList = id => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(deleteListRequest(id));
 
@@ -218,7 +217,7 @@ export const deleteListFail = (id, error) => ({
 });
 
 export const fetchListAccounts = listId => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(fetchListAccountsRequest(listId));
 
@@ -247,7 +246,7 @@ export const fetchListAccountsFail = (id, error) => ({
 });
 
 export const fetchListSuggestions = q => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   const params = {
     q,
@@ -282,7 +281,7 @@ export const addToListEditor = accountId => (dispatch, getState) => {
 };
 
 export const addToList = (listId, accountId) => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(addToListRequest(listId, accountId));
 
@@ -315,7 +314,7 @@ export const removeFromListEditor = accountId => (dispatch, getState) => {
 };
 
 export const removeFromList = (listId, accountId) => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(removeFromListRequest(listId, accountId));
 
@@ -357,7 +356,7 @@ export const setupListAdder = accountId => (dispatch, getState) => {
 };
 
 export const fetchAccountLists = accountId => (dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   dispatch(fetchAccountListsRequest(accountId));
 

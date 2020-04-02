@@ -2,7 +2,6 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 import { openModal } from './modal';
-import { me } from 'gabsocial/initial_state';
 
 export const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 export const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';
@@ -17,7 +16,7 @@ export const MUTES_TOGGLE_HIDE_NOTIFICATIONS = 'MUTES_TOGGLE_HIDE_NOTIFICATIONS'
 
 export function fetchMutes() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchMutesRequest());
 
@@ -53,8 +52,8 @@ export function fetchMutesFail(error) {
 
 export function expandMutes() {
   return (dispatch, getState) => {
-    if (!me) return;
-    
+    if (!getState().get('me')) return;
+
     const url = getState().getIn(['user_lists', 'mutes', 'next']);
 
     if (url === null) {

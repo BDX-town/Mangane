@@ -1,7 +1,6 @@
 import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
-import { me } from 'gabsocial/initial_state';
 
 export const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 export const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';
@@ -13,7 +12,7 @@ export const BLOCKS_EXPAND_FAIL    = 'BLOCKS_EXPAND_FAIL';
 
 export function fetchBlocks() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchBlocksRequest());
 
@@ -49,8 +48,8 @@ export function fetchBlocksFail(error) {
 
 export function expandBlocks() {
   return (dispatch, getState) => {
-    if (!me) return;
-    
+    if (!getState().get('me')) return;
+
     const url = getState().getIn(['user_lists', 'blocks', 'next']);
 
     if (url === null) {

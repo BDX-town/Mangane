@@ -13,7 +13,6 @@ import { defineMessages } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
-import { me } from 'gabsocial/initial_state';
 
 export const NOTIFICATIONS_INITIALIZE  = 'NOTIFICATIONS_INITIALIZE';
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
@@ -158,7 +157,7 @@ const noOp = () => {};
 
 export function expandNotifications({ maxId } = {}, done = noOp) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const activeFilter = getState().getIn(['settings', 'notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
@@ -224,7 +223,7 @@ export function expandNotificationsFail(error, isLoadingMore) {
 
 export function clearNotifications() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch({
       type: NOTIFICATIONS_CLEAR,
@@ -258,7 +257,7 @@ export function setFilter (filterType) {
 
 export function markReadNotifications() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
     const top_notification = parseInt(getState().getIn(['notifications', 'items', 0, 'id']));
     const last_read = getState().getIn(['notifications', 'lastRead']);
 

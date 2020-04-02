@@ -6,7 +6,7 @@ import IconButton from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { me, isStaff } from '../../../initial_state';
+import { isStaff } from '../../../initial_state';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -32,6 +32,12 @@ const messages = defineMessages({
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
 });
+
+const mapStateToProps = state => {
+  return {
+    me: state.get('me'),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onOpenUnauthorizedModal() {
@@ -64,6 +70,7 @@ class ActionBar extends React.PureComponent {
   };
 
   handleReplyClick = () => {
+    const { me } = this.props;
     if (me) {
       this.props.onReply(this.props.status);
     } else {
@@ -72,6 +79,7 @@ class ActionBar extends React.PureComponent {
   }
 
   handleReblogClick = (e) => {
+    const { me } = this.props;
     if (me) {
       this.props.onReblog(this.props.status, e);
     } else {
@@ -80,6 +88,7 @@ class ActionBar extends React.PureComponent {
   }
 
   handleFavouriteClick = () => {
+    const { me } = this.props;
     if (me) {
       this.props.onFavourite(this.props.status);
     } else {
@@ -154,7 +163,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render () {
-    const { status, intl } = this.props;
+    const { status, intl, me } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -227,4 +236,4 @@ class ActionBar extends React.PureComponent {
   }
 }
 
-export default injectIntl(connect(null, mapDispatchToProps)(ActionBar));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionBar));

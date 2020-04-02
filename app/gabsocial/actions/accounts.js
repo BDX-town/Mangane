@@ -6,7 +6,6 @@ import {
   importFetchedAccounts,
   importErrorWhileFetchingAccountByUsername,
 } from './importer';
-import { me } from 'gabsocial/initial_state';
 
 export const ACCOUNT_FETCH_REQUEST = 'ACCOUNT_FETCH_REQUEST';
 export const ACCOUNT_FETCH_SUCCESS = 'ACCOUNT_FETCH_SUCCESS';
@@ -163,7 +162,7 @@ export function fetchAccountFail(id, error) {
 
 export function followAccount(id, reblogs = true) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const alreadyFollowing = getState().getIn(['relationships', id, 'following']);
     const locked = getState().getIn(['accounts', id, 'locked'], false);
@@ -180,7 +179,7 @@ export function followAccount(id, reblogs = true) {
 
 export function unfollowAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unfollowAccountRequest(id));
 
@@ -246,7 +245,7 @@ export function unfollowAccountFail(error) {
 
 export function blockAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(blockAccountRequest(id));
 
@@ -261,7 +260,7 @@ export function blockAccount(id) {
 
 export function unblockAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unblockAccountRequest(id));
 
@@ -319,7 +318,7 @@ export function unblockAccountFail(error) {
 
 export function muteAccount(id, notifications) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(muteAccountRequest(id));
 
@@ -334,7 +333,7 @@ export function muteAccount(id, notifications) {
 
 export function unmuteAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unmuteAccountRequest(id));
 
@@ -392,7 +391,7 @@ export function unmuteAccountFail(error) {
 
 export function fetchFollowers(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchFollowersRequest(id));
 
@@ -434,7 +433,7 @@ export function fetchFollowersFail(id, error) {
 
 export function expandFollowers(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const url = getState().getIn(['user_lists', 'followers', id, 'next']);
 
@@ -482,7 +481,7 @@ export function expandFollowersFail(id, error) {
 
 export function fetchFollowing(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchFollowingRequest(id));
 
@@ -524,7 +523,7 @@ export function fetchFollowingFail(id, error) {
 
 export function expandFollowing(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const url = getState().getIn(['user_lists', 'following', id, 'next']);
 
@@ -572,7 +571,7 @@ export function expandFollowingFail(id, error) {
 
 export function fetchRelationships(accountIds) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const loadedRelationships = getState().get('relationships');
     const newAccountIds = accountIds.filter(id => loadedRelationships.get(id, null) === null);
@@ -617,7 +616,7 @@ export function fetchRelationshipsFail(error) {
 
 export function fetchFollowRequests() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchFollowRequestsRequest());
 
@@ -652,7 +651,7 @@ export function fetchFollowRequestsFail(error) {
 
 export function expandFollowRequests() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     const url = getState().getIn(['user_lists', 'follow_requests', 'next']);
 
@@ -693,7 +692,7 @@ export function expandFollowRequestsFail(error) {
 
 export function authorizeFollowRequest(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(authorizeFollowRequestRequest(id));
 
@@ -729,7 +728,7 @@ export function authorizeFollowRequestFail(id, error) {
 
 export function rejectFollowRequest(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(rejectFollowRequestRequest(id));
 
@@ -764,7 +763,7 @@ export function rejectFollowRequestFail(id, error) {
 
 export function pinAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(pinAccountRequest(id));
 
@@ -778,7 +777,7 @@ export function pinAccount(id) {
 
 export function unpinAccount(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unpinAccountRequest(id));
 

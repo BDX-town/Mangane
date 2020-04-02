@@ -16,9 +16,9 @@ import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import MissingIndicator from 'gabsocial/components/missing_indicator';
-import { me } from 'gabsocial/initial_state';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+  const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() == username.toLowerCase());
 

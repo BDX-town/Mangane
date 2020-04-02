@@ -1,13 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Route } from 'react-router-dom';
 import ColumnsAreaContainer from '../containers/columns_area_container';
 import ColumnLoading from '../components/column_loading';
 import BundleColumnError from '../components/bundle_column_error';
 import BundleContainer from '../containers/bundle_container';
-import { me } from 'gabsocial/initial_state';
 
-export class WrappedRoute extends React.Component {
+const mapStateToProps = state => {
+  return {
+    me: state.get('me'),
+  };
+};
+
+class WrappedRoute extends React.Component {
   static propTypes = {
     component: PropTypes.func.isRequired,
     page: PropTypes.func,
@@ -64,7 +70,7 @@ export class WrappedRoute extends React.Component {
   }
 
   render () {
-    const { component: Component, content, publicRoute, ...rest } = this.props;
+    const { component: Component, content, publicRoute, me, ...rest } = this.props;
 
     if (!publicRoute && !me) {
       const actualUrl = encodeURIComponent(this.props.computedMatch.url);
@@ -77,3 +83,6 @@ export class WrappedRoute extends React.Component {
     return <Route {...rest} render={this.renderComponent} />;
   }
 }
+
+const wrappedRoute = connect(mapStateToProps)(WrappedRoute);
+export {wrappedRoute as WrappedRoute};

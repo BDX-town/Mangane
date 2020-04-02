@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 import { List as ImmutableList } from 'immutable';
-import { me } from '../initial_state';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -72,9 +71,10 @@ export const makeGetStatus = () => {
       (state, { id }) => state.getIn(['accounts', state.getIn(['statuses', state.getIn(['statuses', id, 'reblog']), 'account'])]),
       (state, { username }) => username,
       getFilters,
+      (state)         => state.get('me'),
     ],
 
-    (statusBase, statusReblog, accountBase, accountReblog, username, filters) => {
+    (statusBase, statusReblog, accountBase, accountReblog, username, filters, me) => {
       if (!statusBase) {
         return null;
       }

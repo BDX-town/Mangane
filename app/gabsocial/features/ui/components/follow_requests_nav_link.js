@@ -4,14 +4,16 @@ import { fetchFollowRequests } from 'gabsocial/actions/accounts';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import IconWithBadge from 'gabsocial/components/icon_with_badge';
-import { me } from 'gabsocial/initial_state';
 import { List as ImmutableList } from 'immutable';
 import { FormattedMessage } from 'react-intl';
 
-const mapStateToProps = state => ({
-  locked: state.getIn(['accounts', me, 'locked']),
-  count: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    locked: state.getIn(['accounts', me, 'locked']),
+    count: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
+  }
+};
 
 export default @withRouter
 @connect(mapStateToProps)

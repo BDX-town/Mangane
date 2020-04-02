@@ -65,7 +65,7 @@ import {
   GroupCreate,
   GroupEdit,
 } from './util/async-components';
-import { me, meUsername } from '../../initial_state';
+import { meUsername } from '../../initial_state';
 import { previewState as previewMediaState } from './components/media_modal';
 import { previewState as previewVideoState } from './components/video_modal';
 
@@ -79,12 +79,15 @@ const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
 });
 
-const mapStateToProps = state => ({
-  isComposing: state.getIn(['compose', 'is_composing']),
-  hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
-  hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
-  dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
-});
+const mapStateToProps = state => {
+  return {
+    isComposing: state.getIn(['compose', 'is_composing']),
+    hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
+    hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
+    dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
+    me: state.get('me'),
+  }
+};
 
 const keyMap = {
   help: '?',
@@ -302,6 +305,7 @@ class UI extends React.PureComponent {
   }
 
   handleDrop = (e) => {
+    const { me } = this.props;
     if (!me) return;
 
     if (this.dataTransferIsText(e.dataTransfer)) return;
@@ -345,6 +349,7 @@ class UI extends React.PureComponent {
   }
 
   componentWillMount () {
+    const { me } = this.props;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -372,6 +377,7 @@ class UI extends React.PureComponent {
   }
 
   componentDidMount () {
+    const { me } = this.props;
     if (!me) return;
     this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
       return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
@@ -492,7 +498,7 @@ class UI extends React.PureComponent {
 
   render () {
     const { draggingOver } = this.state;
-    const { intl, children, isComposing, location, dropdownMenuIsOpen } = this.props;
+    const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,

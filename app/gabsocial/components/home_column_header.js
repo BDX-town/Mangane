@@ -8,7 +8,6 @@ import classNames from 'classnames';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 import Icon from 'gabsocial/components/icon';
-import { me } from 'gabsocial/initial_state';
 import { fetchLists } from 'gabsocial/actions/lists';
 import { createSelector } from 'reselect';
 

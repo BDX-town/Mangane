@@ -1,6 +1,5 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
-import { me } from 'gabsocial/initial_state';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -36,7 +35,7 @@ export const UNPIN_FAIL    = 'UNPIN_FAIL';
 
 export function reblog(status) {
   return function (dispatch, getState) {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(reblogRequest(status));
 
@@ -53,7 +52,7 @@ export function reblog(status) {
 
 export function unreblog(status) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unreblogRequest(status));
 
@@ -118,7 +117,7 @@ export function unreblogFail(status, error) {
 
 export function favourite(status) {
   return function (dispatch, getState) {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(favouriteRequest(status));
 
@@ -133,7 +132,7 @@ export function favourite(status) {
 
 export function unfavourite(status) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(unfavouriteRequest(status));
 
@@ -198,7 +197,7 @@ export function unfavouriteFail(status, error) {
 
 export function fetchReblogs(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchReblogsRequest(id));
 
@@ -235,7 +234,7 @@ export function fetchReblogsFail(id, error) {
 
 export function fetchFavourites(id) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(fetchFavouritesRequest(id));
 
@@ -272,7 +271,7 @@ export function fetchFavouritesFail(id, error) {
 
 export function pin(status) {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     dispatch(pinRequest(status));
 
@@ -312,8 +311,8 @@ export function pinFail(status, error) {
 
 export function unpin (status) {
   return (dispatch, getState) => {
-    if (!me) return;
-    
+    if (!getState().get('me')) return;
+
     dispatch(unpinRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unpin`).then(response => {

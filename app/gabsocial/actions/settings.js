@@ -1,7 +1,6 @@
 import api from '../api';
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
-import { me } from 'gabsocial/initial_state';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -19,7 +18,7 @@ export function changeSetting(path, value) {
 };
 
 const debouncedSave = debounce((dispatch, getState) => {
-  if (!me) return;
+  if (!getState().get('me')) return;
 
   if (getState().getIn(['settings', 'saved'])) {
     return;

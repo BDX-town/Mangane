@@ -1,12 +1,13 @@
 'use strict';
 
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { autoPlayGif, me, isStaff } from 'gabsocial/initial_state';
+import { autoPlayGif, isStaff } from 'gabsocial/initial_state';
 import classNames from 'classnames';
 import Icon from 'gabsocial/components/icon';
 import Avatar from 'gabsocial/components/avatar';
@@ -56,7 +57,14 @@ const dateFormatOptions = {
   minute: '2-digit',
 };
 
-export default @injectIntl
+const mapStateToProps = state => {
+  return {
+    me: state.get('me'),
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
 class Header extends ImmutablePureComponent {
 
   static propTypes = {
@@ -100,7 +108,7 @@ class Header extends ImmutablePureComponent {
   });
 
   makeMenu() {
-    const { account, intl, domain } = this.props;
+    const { account, intl, domain, me } = this.props;
 
     let menu = [];
 
@@ -172,7 +180,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeInfo() {
-    const { account, intl } = this.props;
+    const { account, intl, me } = this.props;
 
     let info = [];
 
@@ -194,7 +202,7 @@ class Header extends ImmutablePureComponent {
   };
 
   getActionBtn() {
-    const { account, intl } = this.props;
+    const { account, intl, me } = this.props;
 
     let actionBtn = null;
 
@@ -216,7 +224,7 @@ class Header extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, domain, username } = this.props;
+    const { account, intl, domain, username, me } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {

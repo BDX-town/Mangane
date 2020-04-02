@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { me, profile_directory } from '../../initial_state';
+import { profile_directory } from '../../initial_state';
 import { fetchFollowRequests } from 'gabsocial/actions/accounts';
 import { List as ImmutableList } from 'immutable';
 import NavigationBar from '../compose/components/navigation_bar';
@@ -34,10 +34,13 @@ const messages = defineMessages({
   profile_directory: { id: 'getting_started.directory', defaultMessage: 'Profile directory' },
 });
 
-const mapStateToProps = state => ({
-  myAccount: state.getIn(['accounts', me]),
-  unreadFollowRequests: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    myAccount: state.getIn(['accounts', me]),
+    unreadFollowRequests: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
+  }
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchFollowRequests: () => dispatch(fetchFollowRequests()),

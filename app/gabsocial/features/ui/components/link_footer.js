@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { invitesEnabled, version, repository, source_url, me } from 'gabsocial/initial_state';
+import { invitesEnabled, version, repository, source_url } from 'gabsocial/initial_state';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 
-const mapStateToProps = state => ({
-  account: state.getIn(['accounts', me]),
-  siteTitle: state.getIn(['instance', 'title']),
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    account: state.getIn(['accounts', me]),
+    siteTitle: state.getIn(['instance', 'title']),
+  }
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onOpenHotkeys() {

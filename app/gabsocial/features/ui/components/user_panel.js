@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { autoPlayGif, me } from '../../../initial_state';
+import { autoPlayGif } from '../../../initial_state';
 import { makeGetAccount } from '../../../selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -20,6 +20,7 @@ class UserPanel extends ImmutablePureComponent {
 
   render() {
     const { account, intl, domain } = this.props;
+    if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
 
@@ -83,6 +84,7 @@ class UserPanel extends ImmutablePureComponent {
 
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const getAccount = makeGetAccount();
 
   return {

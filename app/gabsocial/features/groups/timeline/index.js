@@ -10,15 +10,17 @@ import { expandGroupTimeline } from '../../../actions/timelines';
 import MissingIndicator from '../../../components/missing_indicator';
 import LoadingIndicator from '../../../components/loading_indicator';
 import ComposeFormContainer from '../../../../gabsocial/features/compose/containers/compose_form_container';
-import { me } from 'gabsocial/initial_state';
 import Avatar from '../../../components/avatar';
 
-const mapStateToProps = (state, props) => ({
-	account: state.getIn(['accounts', me]),
-	group: state.getIn(['groups', props.params.id]),
-	relationships: state.getIn(['group_relationships', props.params.id]),
-	hasUnread: state.getIn(['timelines', `group:${props.params.id}`, 'unread']) > 0,
-});
+const mapStateToProps = (state, props) => {
+	const me = state.get('me');
+	return {
+		account: state.getIn(['accounts', me]),
+		group: state.getIn(['groups', props.params.id]),
+		relationships: state.getIn(['group_relationships', props.params.id]),
+		hasUnread: state.getIn(['timelines', `group:${props.params.id}`, 'unread']) > 0,
+	}
+};
 
 export default @connect(mapStateToProps)
 @injectIntl

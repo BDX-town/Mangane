@@ -1,5 +1,4 @@
 import api from '../api';
-import { me } from 'gabsocial/initial_state';
 
 export const GROUP_CREATE_REQUEST      = 'GROUP_CREATE_REQUEST';
 export const GROUP_CREATE_SUCCESS      = 'GROUP_CREATE_SUCCESS';
@@ -28,7 +27,7 @@ export const submit = (routerHistory) => (dispatch, getState) => {
 
 
 export const create = (title, description, coverImage, routerHistory) => (dispatch, getState) => {
-	if (!me) return;
+	if (!getState().get('me')) return;
 
 	dispatch(createRequest());
 
@@ -39,13 +38,13 @@ export const create = (title, description, coverImage, routerHistory) => (dispat
 	if (coverImage !== null) {
 		formData.append('cover_image', coverImage);
 	}
-  
+
 	api(getState).post('/api/v1/groups', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(({ data }) => {
 		dispatch(createSuccess(data));
 		routerHistory.push(`/groups/${data.id}`);
 	}).catch(err => dispatch(createFail(err)));
   };
-  
+
 
 export const createRequest = id => ({
 	type: GROUP_CREATE_REQUEST,
@@ -63,7 +62,7 @@ export const createFail = error => ({
 });
 
 export const update = (groupId, title, description, coverImage, routerHistory) => (dispatch, getState) => {
-	if (!me) return;
+	if (!getState().get('me')) return;
 
 	dispatch(updateRequest());
 
@@ -74,13 +73,13 @@ export const update = (groupId, title, description, coverImage, routerHistory) =
 	if (coverImage !== null) {
 		formData.append('cover_image', coverImage);
 	}
-  
+
 	api(getState).put(`/api/v1/groups/${groupId}`, formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(({ data }) => {
 		dispatch(updateSuccess(data));
 		routerHistory.push(`/groups/${data.id}`);
 	}).catch(err => dispatch(updateFail(err)));
   };
-  
+
 
 export const updateRequest = id => ({
 	type: GROUP_UPDATE_REQUEST,

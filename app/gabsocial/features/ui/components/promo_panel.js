@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import Icon from 'gabsocial/components/icon';
 import ProBadge from 'gabsocial/components/pro_badge';
 import { connect } from 'react-redux';
-import { me, promoItems } from '../../../initial_state';
+import { promoItems } from '../../../initial_state';
 
 export default
 class PromoPanel extends React.PureComponent {

@@ -3,15 +3,17 @@ import { connect } from 'react-redux';
 import Warning from '../components/warning';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import { me } from '../../../initial_state';
 
 const APPROX_HASHTAG_RE = /(?:^|[^\/\)\w])#(\w*[a-zA-Z·]\w*)/i;
 
-const mapStateToProps = state => ({
-  needsLockWarning: state.getIn(['compose', 'privacy']) === 'private' && !state.getIn(['accounts', me, 'locked']),
-  hashtagWarning: state.getIn(['compose', 'privacy']) !== 'public' && APPROX_HASHTAG_RE.test(state.getIn(['compose', 'text'])),
-  directMessageWarning: state.getIn(['compose', 'privacy']) === 'direct',
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    needsLockWarning: state.getIn(['compose', 'privacy']) === 'private' && !state.getIn(['accounts', me, 'locked']),
+    hashtagWarning: state.getIn(['compose', 'privacy']) !== 'public' && APPROX_HASHTAG_RE.test(state.getIn(['compose', 'text'])),
+    directMessageWarning: state.getIn(['compose', 'privacy']) === 'direct',
+  }
+};
 
 const WarningWrapper = ({ needsLockWarning, hashtagWarning, directMessageWarning }) => {
   if (needsLockWarning) {

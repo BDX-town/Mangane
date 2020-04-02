@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { me } from 'gabsocial/initial_state';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
@@ -13,10 +12,13 @@ import ComposeFormContainer from '../features/compose/containers/compose_form_co
 import Avatar from '../components/avatar';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
-const mapStateToProps = state => ({
-  account: state.getIn(['accounts', me]),
-  hasPatron: state.getIn(['soapbox', 'features', 'patron']),
-});
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    account: state.getIn(['accounts', me]),
+    hasPatron: state.getIn(['soapbox', 'features', 'patron']),
+  }
+};
 
 export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {

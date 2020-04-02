@@ -1,6 +1,5 @@
 import api, { getLinks } from '../api';
 import { importFetchedStatuses } from './importer';
-import { me } from 'gabsocial/initial_state';
 
 export const FAVOURITED_STATUSES_FETCH_REQUEST = 'FAVOURITED_STATUSES_FETCH_REQUEST';
 export const FAVOURITED_STATUSES_FETCH_SUCCESS = 'FAVOURITED_STATUSES_FETCH_SUCCESS';
@@ -12,7 +11,7 @@ export const FAVOURITED_STATUSES_EXPAND_FAIL    = 'FAVOURITED_STATUSES_EXPAND_FA
 
 export function fetchFavouritedStatuses() {
   return (dispatch, getState) => {
-    if (!me) return;
+    if (!getState().get('me')) return;
 
     if (getState().getIn(['status_lists', 'favourites', 'isLoading'])) {
       return;
@@ -56,8 +55,8 @@ export function fetchFavouritedStatusesFail(error) {
 
 export function expandFavouritedStatuses() {
   return (dispatch, getState) => {
-    if (!me) return;
-    
+    if (!getState().get('me')) return;
+
     const url = getState().getIn(['status_lists', 'favourites', 'next'], null);
 
     if (url === null || getState().getIn(['status_lists', 'favourites', 'isLoading'])) {

@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
-import { me } from 'gabsocial/initial_state';
 
 const mapStateToProps = state => {
   return {
     siteTitle: state.getIn(['instance', 'title']),
+    me: state.get('me'),
   };
 };
 
-const SignUpPanel = ({ siteTitle }) => {
+const SignUpPanel = ({ siteTitle, me }) => {
   if (me) return null;
 
   return (
