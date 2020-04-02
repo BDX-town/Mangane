@@ -39,6 +39,7 @@ const mapStateToProps = (state) => {
 
   return {
     showIntroduction,
+    me,
   }
 }
 
@@ -50,6 +51,8 @@ class GabSocialMount extends React.PureComponent {
   };
 
   render () {
+    const { me } = this.props;
+    if (me == null) return null;
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
     //
