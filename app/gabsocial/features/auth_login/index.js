@@ -1,21 +1,23 @@
 import React from 'react';
+import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { createApp, logIn } from 'gabsocial/actions/auth';
 
-export default class LoginForm extends ImmutablePureComponent {
-  constructor(props) {
-    super(props);
-    this.handleSubmit = this.handleSubmit.bind(this);
+class LoginForm extends ImmutablePureComponent {
+
+  componentWillMount() {
+    this.props.dispatch(createApp());
   }
 
-  getFormData(form) {
+  getFormData = (form) => {
     return Object.fromEntries(
       Array.from(form).map(i => [i.name, i.value])
     );
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     const {username, password} = this.getFormData(event.target);
-    console.log(username + ' ' + password);
+    this.props.dispatch(logIn(username, password));
     event.preventDefault();
   }
 
@@ -29,3 +31,5 @@ export default class LoginForm extends ImmutablePureComponent {
     )
   }
 }
+
+export default connect()(LoginForm);
