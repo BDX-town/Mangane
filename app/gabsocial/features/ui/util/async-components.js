@@ -157,3 +157,7 @@ export function Search () {
 export function Explore () {
   return import(/* webpackChunkName: "features/explore" */'../../explore');
 }
+
+export function LoginForm () {
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth_login');
+}
