@@ -40,6 +40,9 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
+    // accessToken: state.getIn(['auth', 'user', 'access_token']),
+    accessToken: JSON.parse(localStorage.getItem('user')).access_token,
+    streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
   }
 }
 
@@ -50,9 +53,29 @@ class GabSocialMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
   };
 
+  componentDidMount() {
+    this.componentDidUpdate();
+  }
+
+  componentDidUpdate(prevProps) {
+    const keys = ['accessToken', 'streamingUrl'];
+    const credsSet = keys.every(p => this.props[p]);
+    if (!this.disconnect && credsSet) {
+      this.disconnect = store.dispatch(connectUserStream());
+    }
+  }
+
+  componentWillUnmount () {
+    if (this.disconnect) {
+      this.disconnect();
+      this.disconnect = null;
+    }
+  }
+
   render () {
-    const { me } = this.props;
-    if (me == null) return null;
+    const { me, streamingUrl } = this.props;
+    if (me == null || !streamingUrl) return null;
+
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
     //
@@ -76,17 +99,6 @@ export default class GabSocial extends React.PureComponent {
   static propTypes = {
     locale: PropTypes.string.isRequired,
   };
-
-  componentDidMount() {
-    this.disconnect = store.dispatch(connectUserStream());
-  }
-
-  componentWillUnmount () {
-    if (this.disconnect) {
-      this.disconnect();
-      this.disconnect = null;
-    }
-  }
 
   render () {
     const { locale } = this.props;
