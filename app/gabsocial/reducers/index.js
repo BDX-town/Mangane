@@ -41,6 +41,7 @@ import patron from './patron';
 import soapbox from './soapbox';
 import instance from './instance';
 import me from './me';
+import auth from './auth';
 
 const reducers = {
   dropdown_menu,
@@ -85,6 +86,7 @@ const reducers = {
   soapbox,
   instance,
   me,
+  auth,
 };
 
 export default combineReducers(reducers);

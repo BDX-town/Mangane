@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { createApp, logIn } from 'gabsocial/actions/auth';
+import { createAuthApp, logIn } from 'gabsocial/actions/auth';
 import { Redirect } from 'react-router-dom';
 
 const mapStateToProps = (state, props) => ({
@@ -11,7 +11,7 @@ const mapStateToProps = (state, props) => ({
 class LoginForm extends ImmutablePureComponent {
 
   componentWillMount() {
-    this.props.dispatch(createApp());
+    this.props.dispatch(createAuthApp());
   }
 
   getFormData = (form) => {

@@ -1,20 +1,24 @@
 import api from '../api';
 
-export function createApp() {
+export const AUTH_APP_CREATED = 'AUTH_APP_CREATED';
+export const AUTH_LOGGED_IN   = 'AUTH_LOGGED_IN';
+
+export function createAuthApp() {
   return (dispatch, getState) => {
     api(getState).post('/api/v1/apps', {
+      // TODO: Add commit hash to client_name
       client_name: `SoapboxFE_${(new Date()).toISOString()}`,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes: 'read write follow push admin'
     }).then(response => {
-      localStorage.setItem('app', JSON.stringify(response.data));
+      dispatch(authAppCreated(response.data));
     });
   }
 }
 
 export function logIn(username, password) {
   return (dispatch, getState) => {
-    const app = JSON.parse(localStorage.getItem('app'));
+    const app = getState().getIn(['auth', 'app']);
     api(getState).post('/oauth/token', {
       client_id: app.client_id,
       client_secret: app.client_secret,
@@ -23,7 +27,21 @@ export function logIn(username, password) {
       username: username,
       password: password
     }).then(response => {
-      localStorage.setItem('user', JSON.stringify(response.data));
+      dispatch(authLoggedIn(response.data));
     });
   }
+}
+
+export function authAppCreated(app) {
+  return {
+    type: AUTH_APP_CREATED,
+    app
+  };
+}
+
+export function authLoggedIn(user) {
+  return {
+    type: AUTH_LOGGED_IN,
+    user
+  };
 }
