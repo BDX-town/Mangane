@@ -40,8 +40,7 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
-    // accessToken: state.getIn(['auth', 'user', 'access_token']),
-    accessToken: JSON.parse(localStorage.getItem('user')).access_token,
+    accessToken: state.getIn(['auth', 'user', 'access_token']),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
   }
 }

@@ -7,8 +7,7 @@ const randomIntUpTo = max => Math.floor(Math.random() * Math.floor(max));
 export function connectStream(path, pollingRefresh = null, callbacks = () => ({ onConnect() {}, onDisconnect() {}, onReceive() {} })) {
   return (dispatch, getState) => {
     const streamingAPIBaseURL = getState().getIn(['instance', 'urls', 'streaming_api']);
-    // const accessToken: state.getIn(['auth', 'user', 'access_token']);
-    const accessToken = JSON.parse(localStorage.getItem('user')).access_token;
+    const accessToken = getState().getIn(['auth', 'user', 'access_token']);
     const { onConnect, onDisconnect, onReceive } = callbacks(dispatch, getState);
 
     let polling = null;

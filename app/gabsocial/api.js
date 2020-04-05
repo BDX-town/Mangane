@@ -26,8 +26,9 @@ function setCSRFHeader() {
 ready(setCSRFHeader);
 
 export default getState => {
-  // TODO: getState is no longer needed
-  const { access_token } = JSON.parse(localStorage.getItem('user')) || {};
+  const user_token = getState().getIn(['auth', 'user', 'access_token']);
+  const app_token  = getState().getIn(['auth', 'app', 'access_token']);
+  const access_token = user_token || app_token;
   return axios.create({
     headers: Object.assign(csrfHeader, access_token ? {
       'Authorization': `Bearer ${access_token}`,

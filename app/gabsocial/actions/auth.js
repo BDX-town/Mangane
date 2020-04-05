@@ -1,7 +1,8 @@
 import api from '../api';
 
-export const AUTH_APP_CREATED = 'AUTH_APP_CREATED';
-export const AUTH_LOGGED_IN   = 'AUTH_LOGGED_IN';
+export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
+export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
+export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
 
 export function createAuthApp() {
   return (dispatch, getState) => {
@@ -12,6 +13,16 @@ export function createAuthApp() {
       scopes: 'read write follow push admin'
     }).then(response => {
       dispatch(authAppCreated(response.data));
+    }).then(() => {
+      const app = getState().getIn(['auth', 'app']);
+      return api(getState).post('/oauth/token', {
+        client_id: app.get('client_id'),
+        client_secret: app.get('client_secret'),
+        redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+        grant_type: 'client_credentials'
+      });
+    }).then(response => {
+      dispatch(authAppAuthorized(response.data));
     });
   }
 }
@@ -20,8 +31,8 @@ export function logIn(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
     api(getState).post('/oauth/token', {
-      client_id: app.client_id,
-      client_secret: app.client_secret,
+      client_id: app.get('client_id'),
+      client_secret: app.get('client_secret'),
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
       grant_type: 'password',
       username: username,
@@ -35,6 +46,13 @@ export function logIn(username, password) {
 export function authAppCreated(app) {
   return {
     type: AUTH_APP_CREATED,
+    app
+  };
+}
+
+export function authAppAuthorized(app) {
+  return {
+    type: AUTH_APP_AUTHORIZED,
     app
   };
 }
