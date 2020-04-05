@@ -2,6 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createApp, logIn } from 'gabsocial/actions/auth';
+import { Redirect } from 'react-router-dom';
+
+const mapStateToProps = (state, props) => ({
+  me: state.get('me'),
+});
 
 class LoginForm extends ImmutablePureComponent {
 
@@ -22,6 +27,10 @@ class LoginForm extends ImmutablePureComponent {
   }
 
   render() {
+    const { me } = this.props;
+
+    if (me) return <Redirect to="/home" />;
+
     return (
       <form onSubmit={this.handleSubmit}>
         <input name='username' placeholder='me@example.com' />
@@ -32,4 +41,4 @@ class LoginForm extends ImmutablePureComponent {
   }
 }
 
-export default connect()(LoginForm);
+export default connect(mapStateToProps)(LoginForm);
