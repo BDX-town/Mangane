@@ -19,6 +19,6 @@ export function hydrateStore(rawState) {
     });
 
     dispatch(hydrateCompose());
-    dispatch(importFetchedAccounts(Object.values(rawState.accounts)));
+    // dispatch(importFetchedAccounts(Object.values(rawState.accounts)));
   };
 };
