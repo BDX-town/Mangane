@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createAuthApp, logIn } from 'gabsocial/actions/auth';
 import { Redirect } from 'react-router-dom';
+import { fetchMe } from 'gabsocial/actions/me';
 
 const mapStateToProps = (state, props) => ({
   me: state.get('me'),
@@ -21,8 +22,11 @@ class LoginForm extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const {username, password} = this.getFormData(event.target);
-    this.props.dispatch(logIn(username, password));
+    const { dispatch } = this.props;
+    const { username, password } = this.getFormData(event.target);
+    dispatch(logIn(username, password)).then(() => {
+      dispatch(fetchMe());
+    });
     event.preventDefault();
   }
 

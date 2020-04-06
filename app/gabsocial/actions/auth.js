@@ -6,7 +6,7 @@ export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
 
 export function createAuthApp() {
   return (dispatch, getState) => {
-    api(getState).post('/api/v1/apps', {
+    return api(getState).post('/api/v1/apps', {
       // TODO: Add commit hash to client_name
       client_name: `SoapboxFE_${(new Date()).toISOString()}`,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
@@ -30,7 +30,7 @@ export function createAuthApp() {
 export function logIn(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
-    api(getState).post('/oauth/token', {
+    return api(getState).post('/oauth/token', {
       client_id: app.get('client_id'),
       client_secret: app.get('client_secret'),
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
