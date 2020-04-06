@@ -4,7 +4,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createAuthApp, logIn } from 'gabsocial/actions/auth';
 import { Redirect } from 'react-router-dom';
 import { fetchMe } from 'gabsocial/actions/me';
-import { LoadingBar } from 'react-redux-loading-bar';
 
 const mapStateToProps = (state, props) => ({
   me: state.get('me'),
@@ -46,7 +45,6 @@ class LoginForm extends ImmutablePureComponent {
 
     return (
       <form onSubmit={this.handleSubmit}>
-        <LoadingBar loading={this.state.isLoading ? 1 : 0} className='loading-bar' />
         <fieldset disabled={this.state.isLoading}>
           <input name='username' placeholder='me@example.com' />
           <input name='password' type='password' placeholder='Password' />
