@@ -5,7 +5,7 @@ import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import configureStore from '../store/configureStore';
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 import Introduction from '../features/introduction';
@@ -18,6 +18,7 @@ import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'gabsocial/actions/instance';
 import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
 import { fetchMe } from 'gabsocial/actions/me';
+import LandingPage from 'gabsocial/features/landing_page';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -38,6 +39,7 @@ const mapStateToProps = (state) => {
 
   return {
     showIntroduction,
+    me,
   }
 }
 
@@ -49,6 +51,9 @@ class GabSocialMount extends React.PureComponent {
   };
 
   render () {
+    const { me } = this.props;
+    if (me == null) return null;
+
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
     //
@@ -59,7 +64,10 @@ class GabSocialMount extends React.PureComponent {
     return (
       <BrowserRouter basename='/web'>
         <ScrollContext>
-          <Route path='/' component={UI} />
+          <Switch>
+            {!me && <Route exact path='/' component={LandingPage} />}
+            <Route path='/' component={UI} />
+          </Switch>
         </ScrollContext>
       </BrowserRouter>
     );

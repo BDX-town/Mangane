@@ -189,12 +189,11 @@ class SwitchingColumnsArea extends React.PureComponent {
 
     return (
       <Switch>
-        <Redirect from='/' to='/home' exact />
         {/* <WrappedRoute path='/' component={} publicRoute exact /> */}
         <WrappedRoute path='/auth/sign_in' component={LoginForm} publicRoute exact />
         {/* <WrappedRoute path='/auth/sign_out' component={LogoutForm} publicRoute exact /> */}
 
-        <WrappedRoute path='/home' exact page={HomePage} component={HomeTimeline} content={children} />
+        <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
         <WrappedRoute path='/messages' component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
@@ -404,9 +403,6 @@ class UI extends React.PureComponent {
   componentDidMount () {
     const { me } = this.props;
     if (!me) return;
-    this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
-    };
     this.connectStreaming();
   }
 
@@ -480,7 +476,13 @@ class UI extends React.PureComponent {
   }
 
   setHotkeysRef = c => {
+    const { me } = this.props;
     this.hotkeys = c;
+
+    if (!me) return;
+    this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
+      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
+    };
   }
 
   handleHotkeyToggleHelp = () => {

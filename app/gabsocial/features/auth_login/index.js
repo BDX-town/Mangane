@@ -41,7 +41,7 @@ class LoginForm extends ImmutablePureComponent {
 
   render() {
     const { me } = this.props;
-    if (me) return <Redirect to="/home" />;
+    if (me) return <Redirect to='/' />;
 
     return (
       <form onSubmit={this.handleSubmit}>
