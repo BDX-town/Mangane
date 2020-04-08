@@ -11,7 +11,6 @@ import UI from '../features/ui';
 import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
 import { hydrateStore } from '../actions/store';
-import { connectUserStream } from '../actions/streaming';
 import { IntlProvider, addLocaleData } from 'react-intl';
 import { getLocale } from '../locales';
 import initialState from '../initial_state';
@@ -39,9 +38,6 @@ const mapStateToProps = (state) => {
 
   return {
     showIntroduction,
-    me,
-    accessToken: state.getIn(['auth', 'user', 'access_token']),
-    streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
   }
 }
 
@@ -52,29 +48,7 @@ class GabSocialMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
   };
 
-  componentDidMount() {
-    this.componentDidUpdate();
-  }
-
-  componentDidUpdate(prevProps) {
-    const keys = ['accessToken', 'streamingUrl'];
-    const credsSet = keys.every(p => this.props[p]);
-    if (!this.disconnect && credsSet) {
-      this.disconnect = store.dispatch(connectUserStream());
-    }
-  }
-
-  componentWillUnmount () {
-    if (this.disconnect) {
-      this.disconnect();
-      this.disconnect = null;
-    }
-  }
-
   render () {
-    const { me, streamingUrl } = this.props;
-    if (me == null || !streamingUrl) return null;
-
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
     //
@@ -85,7 +59,7 @@ class GabSocialMount extends React.PureComponent {
     return (
       <BrowserRouter basename='/web'>
         <ScrollContext>
-          <Route component={UI} />
+          <Route path='/' component={UI} />
         </ScrollContext>
       </BrowserRouter>
     );

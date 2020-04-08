@@ -31,6 +31,7 @@ import SearchPage from 'gabsocial/pages/search_page';
 import HomePage from 'gabsocial/pages/home_page';
 import GroupSidebarPanel from '../groups/sidebar_panel';
 import SidebarMenu from '../../components/sidebar_menu';
+import { connectUserStream } from '../../actions/streaming';
 
 import {
   Status,
@@ -87,6 +88,8 @@ const mapStateToProps = state => {
     hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
     me: state.get('me'),
+    accessToken: state.getIn(['auth', 'user', 'access_token']),
+    streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
   }
 };
 
@@ -353,6 +356,23 @@ class UI extends React.PureComponent {
     }
   }
 
+  connectStreaming = (prevProps) => {
+    const { dispatch } = this.props;
+    const keys = ['accessToken', 'streamingUrl'];
+    const credsSet = keys.every(p => this.props[p]);
+    if (!this.disconnect && credsSet) {
+      this.disconnect = dispatch(connectUserStream());
+    }
+  }
+
+  disconnectStreaming = () => {
+    if (this.disconnect) {
+      this.disconnect();
+      this.disconnect = null;
+    }
+  }
+
+
   componentWillMount () {
     const { me } = this.props;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
@@ -387,6 +407,11 @@ class UI extends React.PureComponent {
     this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
       return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
     };
+    this.connectStreaming();
+  }
+
+  componentDidUpdate(prevProps) {
+    this.connectStreaming();
   }
 
   componentWillUnmount () {
@@ -396,6 +421,7 @@ class UI extends React.PureComponent {
     document.removeEventListener('drop', this.handleDrop);
     document.removeEventListener('dragleave', this.handleDragLeave);
     document.removeEventListener('dragend', this.handleDragEnd);
+    this.disconnectStreaming();
   }
 
   setRef = c => {
@@ -502,8 +528,11 @@ class UI extends React.PureComponent {
   }
 
   render () {
+    const { streamingUrl } = this.props;
     const { draggingOver } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
+
+    if (me == null || !streamingUrl) return null;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,
