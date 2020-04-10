@@ -682,6 +682,10 @@ $small-breakpoint: 960px;
   }
 }
 
+.app-holder > .public-layout {
+  align-items: normal;
+}
+
 .landing {
   height: auto;
   min-height: 80vh;
