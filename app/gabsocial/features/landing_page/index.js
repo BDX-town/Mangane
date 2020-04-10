@@ -9,15 +9,23 @@ const mapStateToProps = (state, props) => ({
 });
 
 class LandingPage extends ImmutablePureComponent {
+  shouldComponentUpdate(nextProps, nextState) {
+    const { instance, soapbox } = nextProps;
+    return !instance.isEmpty() && !soapbox.isEmpty();
+  }
 
   render() {
+    const { instance, soapbox } = this.props;
+
+    if (instance.isEmpty() || soapbox.isEmpty()) return null;
+
     return (
       <div className='public-layout'>
         <nav className='header'>
           <div className='header-container'>
             <div className='nav-left'>
               <Link className='brand' to='/'>
-                <img alt='Gleasonator' src='https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg' />
+                <img alt={instance.get('title')} src={soapbox.get('logo')} />
               </Link>
               <Link className='nav-link optional' to='/'>Home</Link>
               <Link className='nav-link' to='/about'>About</Link>
@@ -53,11 +61,11 @@ class LandingPage extends ImmutablePureComponent {
             <div className='landing-columns'>
               <div className='landing-columns--left'>
                 <div className='landing__brand'>
-                  <Link className='brand' to='https://gleasonator.com/'>
-                    <img alt='Gleasonator' src='https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg' />
+                  <Link className='brand' to='/'>
+                    <img alt={instance.get('title')} src={soapbox.get('logo')} />
                   </Link>
                   <div className='brand__tagline'>
-                    <span>Find friends, share ideas, and reclaim your social networking experience.</span>
+                    <span>{instance.get('description')}</span>
                   </div>
                 </div>
               </div>
@@ -65,7 +73,7 @@ class LandingPage extends ImmutablePureComponent {
                 <div className='box-widget'>
                   <form className='simple_form new_user' id='new_user' noValidate='novalidate' action='/auth' acceptCharset='UTF-8' method='post'>
                     <div className='simple_form__overlay-area'>
-                      <p className='lead'>With an account on <strong>gleasonator.com</strong> you'll be able to follow people on any server in the fediverse.</p>
+                      <p className='lead'>With an account on <strong>{instance.get('title')}</strong> you'll be able to follow people on any server in the fediverse.</p>
                       <div className='fields-group'>
                         <div className='input with_label string required user_account_username'>
                           <div className='label_input'>
