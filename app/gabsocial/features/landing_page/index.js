@@ -9,21 +9,19 @@ const mapStateToProps = (state, props) => ({
 });
 
 class LandingPage extends ImmutablePureComponent {
-  shouldComponentUpdate(nextProps, nextState) {
-    const { instance, soapbox } = nextProps;
-    return !instance.isEmpty() && !soapbox.isEmpty();
+  getSiteLogo = () => {
+    const { instance, soapbox } = this.props;
+    const logos = {
+      imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
+      textLogo: (<h1>{instance.get('title')}</h1>),
+    }
+    return soapbox.get('logo') ? logos['imgLogo'] : logos['textLogo'];
   }
 
   render() {
     const { instance, soapbox } = this.props;
-
-    if (instance.isEmpty() || soapbox.isEmpty()) return null;
-
-    const siteLogo = soapbox.get('logo') ? (
-      <img alt={instance.get('title')} src={soapbox.get('logo')} />
-    ) : (
-      <h1>{instance.get('title')}</h1>
-    );
+    if (instance.isEmpty()) return null;
+    const siteLogo = this.getSiteLogo();
 
     return (
       <div className='public-layout'>
