@@ -19,13 +19,19 @@ class LandingPage extends ImmutablePureComponent {
 
     if (instance.isEmpty() || soapbox.isEmpty()) return null;
 
+    const siteLogo = soapbox.get('logo') ? (
+      <img alt={instance.get('title')} src={soapbox.get('logo')} />
+    ) : (
+      <h1>{instance.get('title')}</h1>
+    );
+
     return (
       <div className='public-layout'>
         <nav className='header'>
           <div className='header-container'>
             <div className='nav-left'>
               <Link className='brand' to='/'>
-                <img alt={instance.get('title')} src={soapbox.get('logo')} />
+                {siteLogo}
               </Link>
               <Link className='nav-link optional' to='/'>Home</Link>
               <Link className='nav-link' to='/about'>About</Link>
@@ -62,7 +68,7 @@ class LandingPage extends ImmutablePureComponent {
               <div className='landing-columns--left'>
                 <div className='landing__brand'>
                   <Link className='brand' to='/'>
-                    <img alt={instance.get('title')} src={soapbox.get('logo')} />
+                    {siteLogo}
                   </Link>
                   <div className='brand__tagline'>
                     <span>{instance.get('description')}</span>
