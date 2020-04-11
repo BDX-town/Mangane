@@ -62,12 +62,12 @@ class TabsBar extends React.PureComponent {
     let links = [];
     if (logo) {
       links.push(
-        <NavLink key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
+        <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
           <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-        </NavLink>)
+        </Link>)
     }
     links.push(
-      <NavLink key='home' className='tabs-bar__link' to='/' data-preview-title-id='column.home'>
+      <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
         <i className='tabs-bar__link__icon home'/>
         <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
       </NavLink>)
