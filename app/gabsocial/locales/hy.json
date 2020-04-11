@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Ինչպես սկսել",
   "getting_started.invite": "Invite people",
-  "getting_started.open_source_notice": "Մաստոդոնը բաց ելատեքստով ծրագրակազմ է։ Կարող ես ներդրում անել կամ վրեպներ զեկուցել ԳիթՀաբում՝ {gitlab}։",
+  "getting_started.open_source_notice": "Մաստոդոնը բաց ելատեքստով ծրագրակազմ է։ Կարող ես ներդրում անել կամ վրեպներ զեկուցել ԳիթՀաբում՝ {code_link} (v{code_version})։",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Security",
   "getting_started.terms": "Terms of Service",

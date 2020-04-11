@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Alustamine",
   "getting_started.invite": "Kutsu inimesi",
-  "getting_started.open_source_notice": "{site_title} on avatud lähtekoodiga tarkvara. Saad panustada või teatada probleemidest GitLabis {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} on avatud lähtekoodiga tarkvara. Saad panustada või teatada probleemidest GitLabis {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Turvalisus",
   "getting_started.terms": "Kasutustingimused",

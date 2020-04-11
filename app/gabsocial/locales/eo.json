@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Por komenci",
   "getting_started.invite": "Inviti homojn",
-  "getting_started.open_source_notice": "{site_title} estas malfermitkoda programo. Vi povas kontribui aŭ raporti problemojn en GitLab je {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} estas malfermitkoda programo. Vi povas kontribui aŭ raporti problemojn en GitLab je {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sekureco",
   "getting_started.terms": "Uzkondiĉoj",

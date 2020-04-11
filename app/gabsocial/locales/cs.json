@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Začínáme",
   "getting_started.invite": "Pozvat lidi",
-  "getting_started.open_source_notice": "{site_title} je otevřený software. Na GitLabu k němu můžete přispět nebo nahlásit chyby: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} je otevřený software. Na GitLabu k němu můžete přispět nebo nahlásit chyby: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Nastavení účtu",
   "getting_started.terms": "Podmínky používání",

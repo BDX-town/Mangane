@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Dechrau",
   "getting_started.invite": "Gwahodd pobl",
-  "getting_started.open_source_notice": "Mae {site_title} yn feddalwedd côd agored. Mae modd cyfrannu neu adrodd materion ar GitLab ar {gitlab}.",
+  "getting_started.open_source_notice": "Mae {site_title} yn feddalwedd côd agored. Mae modd cyfrannu neu adrodd materion ar GitLab ar {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Diogelwch",
   "getting_started.terms": "Telerau Gwasanaeth",

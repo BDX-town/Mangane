@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "დაწყება",
   "getting_started.invite": "ხალხის მოწვევა",
-  "getting_started.open_source_notice": "მასტოდონი ღია პროგრამაა. შეგიძლიათ შეუწყოთ ხელი ან შექმნათ პრობემის რეპორტი {gitlab}-ზე.",
+  "getting_started.open_source_notice": "მასტოდონი ღია პროგრამაა. შეგიძლიათ შეუწყოთ ხელი ან შექმნათ პრობემის რეპორტი {code_link} (v{code_version})-ზე.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "უსაფრთხოება",
   "getting_started.terms": "მომსახურების პირობები",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Добро пожаловать",
   "getting_started.invite": "Пригласить людей",
-  "getting_started.open_source_notice": "{site_title} — сервис с открытым исходным кодом. Вы можете внести вклад или сообщить о проблемах на GitLab: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} — сервис с открытым исходным кодом. Вы можете внести вклад или сообщить о проблемах на GitLab: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Безопасность",
   "getting_started.terms": "Условия использования",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Aloitus",
   "getting_started.invite": "Kutsu ihmisiä",
-  "getting_started.open_source_notice": "{site_title} on avoimen lähdekoodin ohjelma. Voit avustaa tai raportoida ongelmia GitLabissa: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} on avoimen lähdekoodin ohjelma. Voit avustaa tai raportoida ongelmia GitLabissa: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Tunnukset",
   "getting_started.terms": "Käyttöehdot",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "మొదలుపెడదాం",
   "getting_started.invite": "వ్యక్తులను ఆహ్వానించండి",
-  "getting_started.open_source_notice": "మాస్టొడొన్ ఓపెన్ సోర్స్ సాఫ్ట్వేర్. మీరు {gitlab} వద్ద GitLab పై సమస్యలను నివేదించవచ్చు లేదా తోడ్పడచ్చు.",
+  "getting_started.open_source_notice": "మాస్టొడొన్ ఓపెన్ సోర్స్ సాఫ్ట్వేర్. మీరు {code_link} (v{code_version}) వద్ద GitLab పై సమస్యలను నివేదించవచ్చు లేదా తోడ్పడచ్చు.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "భద్రత",
   "getting_started.terms": "సేవా నిబంధనలు",

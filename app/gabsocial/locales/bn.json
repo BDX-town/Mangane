@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "শুরু করা",
   "getting_started.invite": "অন্যদের আমন্ত্রণ করুন",
-  "getting_started.open_source_notice": "{site_title} একটি মুক্ত সফটওয়্যার। তৈরিতে সাহায্য করতে বা কোনো সমস্যা সম্পর্কে জানাতে আমাদের গিটহাবে যেতে পারেন {gitlab}।",
+  "getting_started.open_source_notice": "{code_name} একটি মুক্ত সফটওয়্যার। তৈরিতে সাহায্য করতে বা কোনো সমস্যা সম্পর্কে জানাতে আমাদের গিটহাবে যেতে পারেন {code_link} (v{code_version})।",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "নিরাপত্তা",
   "getting_started.terms": "ব্যবহারের নিয়মাবলী",

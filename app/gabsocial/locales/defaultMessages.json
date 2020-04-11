@@ -2602,7 +2602,7 @@
         "id": "navigation_bar.logout"
       },
       {
-        "defaultMessage": "{site_title} is open source software. You can contribute or report issues on GitLab at {gitlab}.",
+        "defaultMessage": "{site_title} is open source software. You can contribute or report issues at {code_link} (v{code_version}).",
         "id": "getting_started.open_source_notice"
       }
     ],

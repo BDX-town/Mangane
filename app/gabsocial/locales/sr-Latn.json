@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Da počnete",
   "getting_started.invite": "Invite people",
-  "getting_started.open_source_notice": "{site_title} je softver otvorenog koda. Možete mu doprineti ili prijaviti probleme preko GitLab-a na {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} je softver otvorenog koda. Možete mu doprineti ili prijaviti probleme preko GitLab-a na {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Security",
   "getting_started.terms": "Terms of Service",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Primeiros passos",
   "getting_started.invite": "Convide pessoas",
-  "getting_started.open_source_notice": "{site_title} é um software de código aberto. Você pode contribuir ou reportar problemas na página do GitLab do projeto: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} é um software de código aberto. Você pode contribuir ou reportar problemas na página do GitLab do projeto: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Segurança",
   "getting_started.terms": "Termos de serviço",

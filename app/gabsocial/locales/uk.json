@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Ласкаво просимо",
   "getting_started.invite": "Запросіть людей",
-  "getting_started.open_source_notice": "{site_title} — програма з відкритим сирцевим кодом. Ви можете допомогти проекту, або повідомити про проблеми на GitLab за адресою {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} — програма з відкритим сирцевим кодом. Ви можете допомогти проекту, або повідомити про проблеми на GitLab за адресою {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Безпека",
   "getting_started.terms": "Умови використання",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Pour commencer",
   "getting_started.invite": "Inviter des gens",
-  "getting_started.open_source_notice": "{site_title} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {gitlab} sur GitLab.",
+  "getting_started.open_source_notice": "{code_name} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {code_link} (v{code_version}) sur GitLab.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sécurité",
   "getting_started.terms": "Conditions d’utilisation",

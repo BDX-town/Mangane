@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Rozpocznij",
   "getting_started.invite": "Zaproś znajomych",
-  "getting_started.open_source_notice": "{site_title} jest oprogramowaniem o otwartym źródle. Możesz pomóc w rozwoju lub zgłaszać błędy na GitLabie tutaj: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} jest oprogramowaniem o otwartym źródle. Możesz pomóc w rozwoju lub zgłaszać błędy na GitLabie tutaj: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Bezpieczeństwo",
   "getting_started.terms": "Zasady użytkowania",

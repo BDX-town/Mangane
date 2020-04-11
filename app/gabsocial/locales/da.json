@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Kom igang",
   "getting_started.invite": "Inviter folk",
-  "getting_started.open_source_notice": "{site_title} er et open source software. Du kan bidrage eller rapporterer fejl på GitLab {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} er et open source software. Du kan bidrage eller rapporterer fejl på GitLab {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sikkerhed",
   "getting_started.terms": "Vilkår",

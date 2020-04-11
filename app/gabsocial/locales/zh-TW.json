@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "開始使用",
   "getting_started.invite": "邀請使用者",
-  "getting_started.open_source_notice": "{site_title} 是開源軟體。你可以在 GitLab {gitlab} 上貢獻或是回報問題。",
+  "getting_started.open_source_notice": "{code_name} 是開源軟體。你可以在 GitLab {code_link} (v{code_version}) 上貢獻或是回報問題。",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "安全性",
   "getting_started.terms": "服務條款",

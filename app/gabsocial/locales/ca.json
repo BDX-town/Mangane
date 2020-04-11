@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Començant",
   "getting_started.invite": "Convida gent",
-  "getting_started.open_source_notice": "{site_title} és un programari de codi obert. Pots contribuir o informar de problemes a GitLab a {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} és un programari de codi obert. Pots contribuir o informar de problemes a {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Seguretat",
   "getting_started.terms": "Termes del servei",

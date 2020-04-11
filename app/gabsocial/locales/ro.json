@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Începe",
   "getting_started.invite": "Invită prieteni",
-  "getting_started.open_source_notice": "{site_title} este o rețea de socializare de tip open source. Puteți contribuii la dezvoltarea ei sau să semnalați erorile pe GitLab la {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} este o rețea de socializare de tip open source. Puteți contribuii la dezvoltarea ei sau să semnalați erorile pe GitLab la {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Securitate",
   "getting_started.terms": "Termeni de Utilizare",

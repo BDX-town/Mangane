@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Si t’ia fillohet",
   "getting_started.invite": "Ftoni njerëz",
-  "getting_started.open_source_notice": "{site_title}-i është software me burim të hapur. Mund të jepni ndihmesë ose të njoftoni probleme në GitLab, te {gitlab}.",
+  "getting_started.open_source_notice": "{site_title}-i është software me burim të hapur. Mund të jepni ndihmesë ose të njoftoni probleme në GitLab, te {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Siguri",
   "getting_started.terms": "Kushte shërbimi",

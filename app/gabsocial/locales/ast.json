@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Entamu",
   "getting_started.invite": "Convidar xente",
-  "getting_started.open_source_notice": "{site_title} ye software de códigu abiertu. Pues collaborar o informar de fallos en {gitlab} (GitLab).",
+  "getting_started.open_source_notice": "{code_name} ye software de códigu abiertu. Pues collaborar o informar de fallos en {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Seguranza",
   "getting_started.terms": "Términos del serviciu",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Желіде",
   "getting_started.invite": "Адам шақыру",
-  "getting_started.open_source_notice": "{site_title} - ашық кодты құрылым. Түзету енгізу немесе ұсыныстарды GitLab арқылы жасаңыз {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} - ашық кодты құрылым. Түзету енгізу немесе ұсыныстарды GitLab арқылы жасаңыз {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Қауіпсіздік",
   "getting_started.terms": "Қызмет көрсету шарттары",

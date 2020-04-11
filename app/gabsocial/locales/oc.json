@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Per començar",
   "getting_started.invite": "Convidar de monde",
-  "getting_started.open_source_notice": "{site_title} es un logicial liure. Podètz contribuir e mandar vòstres comentaris e rapòrt de bug via {gitlab} sus GitLab.",
+  "getting_started.open_source_notice": "{code_name} es un logicial liure. Podètz contribuir e mandar vòstres comentaris e rapòrt de bug via {code_link} (v{code_version}) sus GitLab.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Seguretat",
   "getting_started.terms": "Condicions d’utilizacion",

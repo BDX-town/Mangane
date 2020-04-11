@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Първи стъпки",
   "getting_started.invite": "Invite people",
-  "getting_started.open_source_notice": "{site_title} е софтуер с отворен код. Можеш да помогнеш или да докладваш за проблеми в GitLab: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} е софтуер с отворен код. Можеш да помогнеш или да докладваш за проблеми в GitLab: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Security",
   "getting_started.terms": "Terms of Service",

@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Erste Schritte",
   "getting_started.invite": "Leute einladen",
-  "getting_started.open_source_notice": "{site_title} ist quelloffene Software. Du kannst auf GitLab unter {gitlab} dazu beitragen oder Probleme melden.",
+  "getting_started.open_source_notice": "{code_name} ist quelloffene Software. Du kannst auf GitLab unter {code_link} (v{code_version}) dazu beitragen oder Probleme melden.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sicherheit",
   "getting_started.terms": "Nutzungsbedingungen",

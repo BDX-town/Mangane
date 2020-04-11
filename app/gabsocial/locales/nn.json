@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Komme i gong",
   "getting_started.invite": "Inviter folk",
-  "getting_started.open_source_notice": "{site_title} har åpen kilde kode. Du kan hjelpe til med problemar på GitLab gjennom {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} har åpen kilde kode. Du kan hjelpe til med problemar på GitLab gjennom {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Brukar instillingar",
   "getting_started.terms": "Brukarvillkår",

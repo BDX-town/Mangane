@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Aan de slag",
   "getting_started.invite": "Mensen uitnodigen",
-  "getting_started.open_source_notice": "{site_title} is vrije software. Je kunt bijdragen of problemen melden op GitLab via {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} is vrije software. Je kunt bijdragen of problemen melden op GitLab via {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Beveiliging",
   "getting_started.terms": "Voorwaarden",

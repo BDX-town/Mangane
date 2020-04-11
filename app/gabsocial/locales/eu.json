@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Menua",
   "getting_started.invite": "Gonbidatu jendea",
-  "getting_started.open_source_notice": "{site_title} software librea da. Ekarpenak egin ditzakezu edo akatsen berri eman GitLab bidez: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} software librea da. Ekarpenak egin ditzakezu edo akatsen berri eman GitLab bidez: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Segurtasuna",
   "getting_started.terms": "Erabilera baldintzak",

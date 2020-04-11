@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "スタート",
   "getting_started.invite": "招待",
-  "getting_started.open_source_notice": "{site_title}はオープンソースソフトウェアです。誰でもGitLab ( {gitlab} ) から開発に参加したり、問題を報告したりできます。",
+  "getting_started.open_source_notice": "{site_title}はオープンソースソフトウェアです。誰でもGitLab ( {code_link} (v{code_version}) ) から開発に参加したり、問題を報告したりできます。",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "アカウント設定",
   "getting_started.terms": "プライバシーポリシー",

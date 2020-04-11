@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "בואו נתחיל",
   "getting_started.invite": "Invite people",
-  "getting_started.open_source_notice": "מסטודון היא תוכנה חופשית (בקוד פתוח). ניתן לתרום או לדווח על בעיות בגיטהאב: {gitlab}.",
+  "getting_started.open_source_notice": "מסטודון היא תוכנה חופשית (בקוד פתוח). ניתן לתרום או לדווח על בעיות בגיטהאב: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Security",
   "getting_started.terms": "Terms of Service",

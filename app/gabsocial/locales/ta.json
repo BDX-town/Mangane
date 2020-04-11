@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "தொடங்குதல்",
   "getting_started.invite": "நபர்களை அழைக்கவும்",
-  "getting_started.open_source_notice": "{site_title} திறந்த மூல மென்பொருள். GitLab இல் நீங்கள் பங்களிக்கவோ அல்லது புகார் அளிக்கவோ முடியும் {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} திறந்த மூல மென்பொருள். GitLab இல் நீங்கள் பங்களிக்கவோ அல்லது புகார் அளிக்கவோ முடியும் {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "பத்திரம்",
   "getting_started.terms": "சேவை விதிமுறைகள்",

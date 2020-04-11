@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Első lépések",
   "getting_started.invite": "Mások meghívása",
-  "getting_started.open_source_notice": "A {site_title} nyílt forráskódú szoftver. Csatlakozhatsz a fejlesztéshez vagy jelenthetsz problémákat GitLab-on {gitlab}.",
+  "getting_started.open_source_notice": "A {site_title} nyílt forráskódú szoftver. Csatlakozhatsz a fejlesztéshez vagy jelenthetsz problémákat GitLab-on {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Biztonság",
   "getting_started.terms": "Felhasználási feltételek",

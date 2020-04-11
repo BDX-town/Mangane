@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Mulai",
   "getting_started.invite": "Undang orang",
-  "getting_started.open_source_notice": "{site_title} adalah perangkat lunak yang bersifat terbuka. Anda dapat berkontribusi atau melaporkan permasalahan/bug di Gitlab {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} adalah perangkat lunak yang bersifat terbuka. Anda dapat berkontribusi atau melaporkan permasalahan/bug di Gitlab {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Keamanan",
   "getting_started.terms": "Ketentuan layanan",

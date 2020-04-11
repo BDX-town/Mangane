@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Introducción",
   "getting_started.invite": "Invitar usuarios",
-  "getting_started.open_source_notice": "{site_title} es software libre. Podés contribuir o informar errores en {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} es software libre. Podés contribuir o informar errores en {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Seguridad",
   "getting_started.terms": "Términos del servicio",

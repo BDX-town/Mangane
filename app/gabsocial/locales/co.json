@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Per principià",
   "getting_started.invite": "Invità ghjente",
-  "getting_started.open_source_notice": "{site_title} ghjè un lugiziale liberu. Pudete cuntribuisce à u codice o a traduzione, o palisà un bug, nant'à GitLab: {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} ghjè un lugiziale liberu. Pudete cuntribuisce à u codice o a traduzione, o palisà un bug, nant'à GitLab: {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sicurità",
   "getting_started.terms": "Cundizione di u serviziu",

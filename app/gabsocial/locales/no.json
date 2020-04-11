@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Kom i gang",
   "getting_started.invite": "Invite people",
-  "getting_started.open_source_notice": "{site_title} er fri programvare. Du kan bidra eller rapportere problemer på GitLab på {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} er fri programvare. Du kan bidra eller rapportere problemer på GitLab på {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Security",
   "getting_started.terms": "Terms of Service",

@@ -2,16 +2,23 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { invitesEnabled, version, repository, source_url } from 'gabsocial/initial_state';
+import { invitesEnabled } from 'gabsocial/initial_state';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'gabsocial/actions/auth';
+
+// FIXME: Let this be configured
+const sourceCode = {
+  name: 'soapbox-fe',
+  url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
+  repository: 'soapox-pub/soapbox-fe',
+  version: '0.0.0',
+}
 
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    siteTitle: state.getIn(['instance', 'title']),
   }
 };
 
@@ -25,7 +32,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, siteTitle, onClickLogOut }) => (
+const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
   <div className='getting-started__footer'>
     <ul>
       {(invitesEnabled && account) && <li><a href='/invites'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
@@ -42,8 +49,12 @@ const LinkFooter = ({ onOpenHotkeys, account, siteTitle, onClickLogOut }) => (
     <p>
       <FormattedMessage
         id='getting_started.open_source_notice'
-        defaultMessage='{site_title} is open source software. You can contribute or report issues on GitLab at {gitlab}.'
-        values={{site_title: siteTitle, gitlab: <span><a href={source_url} rel='noopener' target='_blank'>{repository}</a> (v{version})</span> }}
+        defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
+        values={{
+          code_name: sourceCode.name,
+          code_link: <a href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a>,
+          code_version: sourceCode.version,
+        }}
       />
     </p>
   </div>

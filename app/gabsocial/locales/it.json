@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Come iniziare",
   "getting_started.invite": "Invita qualcuno",
-  "getting_started.open_source_notice": "{site_title} è un software open source. Puoi contribuire o segnalare errori su GitLab all'indirizzo {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} è un software open source. Puoi contribuire o segnalare errori su GitLab all'indirizzo {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Sicurezza",
   "getting_started.terms": "Condizioni del servizio",

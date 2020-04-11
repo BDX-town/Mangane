@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "เริ่มต้นใช้งาน",
   "getting_started.invite": "เชิญผู้คน",
-  "getting_started.open_source_notice": "{site_title} เป็นซอฟต์แวร์เปิดต้นฉบับ คุณสามารถมีส่วนร่วมหรือรายงานปัญหาที่ GitLab ที่ {gitlab}",
+  "getting_started.open_source_notice": "{code_name} เป็นซอฟต์แวร์เปิดต้นฉบับ คุณสามารถมีส่วนร่วมหรือรายงานปัญหาที่ GitLab ที่ {code_link} (v{code_version})",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "ความปลอดภัย",
   "getting_started.terms": "เงื่อนไขการให้บริการ",

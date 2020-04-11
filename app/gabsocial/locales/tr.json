@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Başlangıç",
   "getting_started.invite": "İnsanları davet edin",
-  "getting_started.open_source_notice": "{site_title} açık kaynaklı bir yazılımdır. Gitlab {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} açık kaynaklı bir yazılımdır. Gitlab {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Güvenlik",
   "getting_started.terms": "Hizmet koşulları",

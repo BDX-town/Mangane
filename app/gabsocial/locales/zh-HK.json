@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "開始使用",
   "getting_started.invite": "邀請使用者",
-  "getting_started.open_source_notice": "{site_title}（萬象）是一個開放源碼的軟件。你可以在官方 GitLab ({gitlab}) 貢獻或者回報問題。",
+  "getting_started.open_source_notice": "{site_title}（萬象）是一個開放源碼的軟件。你可以在官方 GitLab ({code_link} (v{code_version})) 貢獻或者回報問題。",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "帳戶安全",
   "getting_started.terms": "服務條款",

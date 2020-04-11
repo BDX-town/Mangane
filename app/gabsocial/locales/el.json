@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Αφετηρία",
   "getting_started.invite": "Προσκάλεσε κόσμο",
-  "getting_started.open_source_notice": "Το {site_title} είναι ελεύθερο λογισμικό. Μπορείς να συνεισφέρεις ή να αναφέρεις ζητήματα στο GitLab στο {gitlab}.",
+  "getting_started.open_source_notice": "Το {site_title} είναι ελεύθερο λογισμικό. Μπορείς να συνεισφέρεις ή να αναφέρεις ζητήματα στο GitLab στο {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Ασφάλεια",
   "getting_started.terms": "Όροι χρήσης",

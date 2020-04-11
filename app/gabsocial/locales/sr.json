@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "Да почнете",
   "getting_started.invite": "Позовите људе",
-  "getting_started.open_source_notice": "{site_title} је софтвер отвореног кода. Можете му допринети или пријавити проблеме преко ГитХаба на {gitlab}.",
+  "getting_started.open_source_notice": "{code_name} је софтвер отвореног кода. Можете му допринети или пријавити проблеме преко ГитХаба на {code_link} (v{code_version}).",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "Безбедност",
   "getting_started.terms": "Услови коришћења",
