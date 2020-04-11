@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink, withRouter } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { throttle } from 'lodash';
 import { connect } from 'react-redux';
@@ -57,66 +57,40 @@ class TabsBar extends React.PureComponent {
     this.window.removeEventListener('scroll', this.handleScroll);
   }
 
-  getPrivateLinks() {
-    const { intl: { formatMessage }, logo } = this.props;
+  getNavLinks() {
+    const { intl: { formatMessage }, logo, account } = this.props;
     let links = [];
     if (logo) {
       links.push(
-        <NavLink key='pr0' className='tabs-bar__link--logo' to='/home#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
+        <NavLink key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
           <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
         </NavLink>)
     }
     links.push(
-      <NavLink key='pr1' className='tabs-bar__link' to='/home' data-preview-title-id='column.home'>
+      <NavLink key='home' className='tabs-bar__link' to='/' data-preview-title-id='column.home'>
         <i className='tabs-bar__link__icon home'/>
         <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-      </NavLink>,
-      <NavLink key='pr2' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-        <i className='tabs-bar__link__icon notifications'/>
-        <NotificationsCounterIcon />
-        <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
-      </NavLink>,
-      // <NavLink key='pr3' className='tabs-bar__link' to='/groups' data-preview-title-id='column.groups'>
-      //   <i className='tabs-bar__link__icon groups'/>
-      //   <FormattedMessage id='tabs_bar.groups' defaultMessage='Groups' />
-      // </NavLink>,
-      <NavLink key='pr5' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
-        <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
-        <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
-      </NavLink>,
-    );
-    return links.map((link) =>
-      React.cloneElement(link, {
-        key: link.props.to,
-        'aria-label': formatMessage({
-        id: link.props['data-preview-title-id']
-      })
-    }));
-  }
-
-  getPublicLinks() {
-    const { intl: { formatMessage }, logo } = this.props;
-    let links = [];
-    if (logo) {
+      </NavLink>)
+    if (account) {
       links.push(
-        <a key='pl0' className='tabs-bar__link--logo' href='/#' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
-          <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-        </a>
-      );
+        <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
+          <i className='tabs-bar__link__icon notifications'/>
+          <NotificationsCounterIcon />
+          <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
+        </NavLink>)
     }
     links.push(
-      <a key='pl1' className='tabs-bar__link' href='/home' data-preview-title-id='column.home'  >
-        <i className='tabs-bar__link__icon home'/>
-        <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-      </a>,
-      <NavLink key='pl2' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search' >
+      <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
         <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
         <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
       </NavLink>
     );
-    return links.map((link, i) => React.cloneElement(link, {
-      key: i,
-    }))
+    return links.map((link) =>
+      React.cloneElement(link, {
+        'aria-label': formatMessage({
+        id: link.props['data-preview-title-id']
+      })
+    }));
   }
 
   handleScroll = throttle(() => {
@@ -152,7 +126,7 @@ class TabsBar extends React.PureComponent {
       <nav className={classes} ref={this.setRef}>
         <div className='tabs-bar__container'>
           <div className='tabs-bar__split tabs-bar__split--left'>
-            { account ? this.getPrivateLinks() : this.getPublicLinks() }
+            {this.getNavLinks()}
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
             <div className='tabs-bar__search-container'>
@@ -173,12 +147,12 @@ class TabsBar extends React.PureComponent {
             {
               !account &&
               <div className='flex'>
-                <a className='tabs-bar__button button' href='/auth/sign_in'>
+                <Link className='tabs-bar__button button' to='/auth/sign_in'>
                   <FormattedMessage id='account.login' defaultMessage='Log In' />
-                </a>
-                <a className='tabs-bar__button button button-alternative-2' href='/auth/sign_up'>
+                </Link>
+                <Link className='tabs-bar__button button button-alternative-2' to='/auth/sign_up'>
                   <FormattedMessage id='account.register' defaultMessage='Sign up' />
-                </a>
+                </Link>
               </div>
             }
           </div>
