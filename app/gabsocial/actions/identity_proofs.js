@@ -23,8 +23,8 @@ export const fetchAccountIdentityProofsSuccess = (accountId, identity_proofs) =>
   identity_proofs,
 });
 
-export const fetchAccountIdentityProofsFail = (accountId, err) => ({
+export const fetchAccountIdentityProofsFail = (accountId, error) => ({
   type: IDENTITY_PROOFS_ACCOUNT_FETCH_FAIL,
   accountId,
-  err,
+  error,
 });

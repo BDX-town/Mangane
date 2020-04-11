@@ -48,6 +48,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
     featuredStatusIds: withReplies ? ImmutableList() : state.getIn(['timelines', `account:${accountId}:pinned`, 'items'], emptyList),
     isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
     hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
+    me,
   };
 };
 
@@ -67,11 +68,11 @@ class AccountTimeline extends ImmutablePureComponent {
   };
 
   componentWillMount () {
-    const { params: { username }, accountId, withReplies } = this.props;
+    const { params: { username }, accountId, withReplies, me } = this.props;
 
     if (accountId && accountId !== -1) {
       this.props.dispatch(fetchAccount(accountId));
-      this.props.dispatch(fetchAccountIdentityProofs(accountId));
+      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
 
       if (!withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(accountId));
@@ -85,9 +86,10 @@ class AccountTimeline extends ImmutablePureComponent {
   }
 
   componentWillReceiveProps (nextProps) {
+    const { me } = nextProps;
     if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId) || nextProps.withReplies !== this.props.withReplies) {
       this.props.dispatch(fetchAccount(nextProps.accountId));
-      this.props.dispatch(fetchAccountIdentityProofs(nextProps.accountId));
+      if (me) this.props.dispatch(fetchAccountIdentityProofs(nextProps.accountId));
 
       if (!nextProps.withReplies) {
         this.props.dispatch(expandAccountFeaturedTimeline(nextProps.accountId));
