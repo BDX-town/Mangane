@@ -1,6 +1,6 @@
 {
-  "features": {
+  "logo": "https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg",
+  "extensions": {
     "patron": false
-  },
-  "logo": "https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg"
+  }
 }
