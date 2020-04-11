@@ -80,7 +80,7 @@ class GettingStarted extends ImmutablePureComponent {
     const { myAccount, fetchFollowRequests, multiColumn } = this.props;
 
     if (!multiColumn && window.innerWidth >= NAVIGATION_PANEL_BREAKPOINT) {
-      this.context.router.history.replace('/home');
+      this.context.router.history.replace('/');
       return;
     }
 

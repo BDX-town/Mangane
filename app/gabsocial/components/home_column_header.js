@@ -136,7 +136,7 @@ class ColumnHeader extends React.PureComponent {
     return (
       <div className={wrapperClassName}>
         <h1 className={buttonClassName}>
-          <Link to='/home' className={classNames('btn grouped', {'active': 'home' === activeItem})}>
+          <Link to='/' className={classNames('btn grouped', {'active': 'home' === activeItem})}>
             <Icon id='home' fixedWidth className='column-header__icon' />
             {formatMessage(messages.homeTitle)}
           </Link>

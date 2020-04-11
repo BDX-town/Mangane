@@ -33,7 +33,7 @@ export default class ErrorBoundary extends React.PureComponent {
       <div className='error-boundary'>
         <div>
           <FormattedMessage id='alert.unexpected.message' defaultMessage='An unexpected error occurred.' />
-          <a href='/home'>Return Home</a>
+          <a href='/'>Return Home</a>
         </div>
       </div>
     );

@@ -469,7 +469,7 @@ class UI extends React.PureComponent {
 
   handleHotkeyBack = () => {
     if (window.history && window.history.length === 1) {
-      this.context.router.history.push('/home'); // homehack
+      this.context.router.history.push('/');
     } else {
       this.context.router.history.goBack();
     }
@@ -490,7 +490,7 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyGoToHome = () => {
-    this.context.router.history.push('/home');
+    this.context.router.history.push('/');
   }
 
   handleHotkeyGoToNotifications = () => {
