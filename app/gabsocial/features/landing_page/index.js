@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
+import LoginForm from 'gabsocial/features/auth_login';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
@@ -37,22 +38,7 @@ class LandingPage extends ImmutablePureComponent {
             <div className='nav-center'></div>
             <div className='nav-right'>
               <div className='hidden-sm'>
-                <form className='simple_form new_user' id='new_user' noValidate='novalidate' action='/auth/sign_in' acceptCharset='UTF-8' method='post'>
-                  <div className='fields-group'>
-                    <div className='input email optional user_email'>
-                      <input aria-label='E-mail address' className='string email optional' placeholder='E-mail address' type='email' name='user[email]' id='user_email' />
-                    </div>
-                    <div className='input password optional user_password'>
-                      <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='user[password]' id='user_password' />
-                    </div>
-                    <p className='hint subtle-hint'>
-                      <Link to='/auth/password/new'>Trouble logging in?</Link>
-                    </p>
-                  </div>
-                  <div className='actions'>
-                    <button name='button' type='submit' className='btn button button-primary'>Log in</button>
-                  </div>
-                </form>
+                <LoginForm />
               </div>
               <div className='visible-sm'>
                 <Link className='webapp-btn nav-link nav-button' to='/auth/sign_in'>Log in</Link>

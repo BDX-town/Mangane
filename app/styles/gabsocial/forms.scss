@@ -294,6 +294,17 @@ code {
     }
   }
 
+  fieldset[disabled] {
+    input[type=text],
+    input[type=number],
+    input[type=email],
+    input[type=password],
+    textarea {
+      color: rgba($primary-text-color, 0.5);
+      border-color: rgba($primary-text-color, 0.5);
+    }
+  }
+
   input[type=text],
   input[type=number],
   input[type=email],

@@ -2,15 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createAuthApp, logIn } from 'gabsocial/actions/auth';
-import { Redirect } from 'react-router-dom';
 import { fetchMe } from 'gabsocial/actions/me';
+import { Link } from 'react-router-dom';
 
-const mapStateToProps = (state, props) => ({
-  me: state.get('me'),
-});
-
+export default @connect()
 class LoginForm extends ImmutablePureComponent {
-
   constructor(props) {
     super(props);
     this.state = {isLoading: false};
@@ -40,19 +36,23 @@ class LoginForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { me } = this.props;
-    if (me) return <Redirect to='/' />;
-
     return (
-      <form onSubmit={this.handleSubmit}>
-        <fieldset disabled={this.state.isLoading}>
-          <input name='username' placeholder='me@example.com' />
-          <input name='password' type='password' placeholder='Password' />
-          <input type='submit' value='Login' />
+      <form className='simple_form new_user' onSubmit={this.handleSubmit}>
+        <fieldset className='fields-group' disabled={this.state.isLoading}>
+          <div className='input email optional user_email'>
+            <input aria-label='Username' className='string email optional' placeholder='Username' type='text' name='username' />
+          </div>
+          <div className='input password optional user_password'>
+            <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='password' />
+          </div>
+          <p className='hint subtle-hint'>
+            <Link to='/auth/password/new'>Trouble logging in?</Link>
+          </p>
         </fieldset>
+        <div className='actions'>
+          <button name='button' type='submit' className='btn button button-primary'>Log in</button>
+        </div>
       </form>
     )
   }
 }
-
-export default connect(mapStateToProps)(LoginForm);
