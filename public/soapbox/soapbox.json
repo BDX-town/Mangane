@@ -1,5 +1,16 @@
 {
   "logo": "https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg",
+  "promoPanel": {
+    "items": [{
+      "icon": "area-chart",
+      "text": "Our Site stats",
+      "url": "https://fediverse.network/example.com"
+    }, {
+      "icon": "comment-o",
+      "text": "Our Site blog",
+      "url": "https://blog.example.com"
+    }]
+  },
   "extensions": {
     "patron": false
   }
