@@ -13,6 +13,7 @@ import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
 import { shortNumberFormat } from '../utils/numbers';
 import { makeGetAccount } from '../selectors';
+import { logOut } from 'gabsocial/actions/auth';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -46,6 +47,10 @@ const mapDispatchToProps = (dispatch) => ({
   onClose () {
     dispatch(closeSidebar());
   },
+  onClickLogOut(e) {
+    dispatch(logOut());
+    e.preventDefault();
+  },
 });
 
 export default @connect(mapStateToProps, mapDispatchToProps)
@@ -60,7 +65,7 @@ class SidebarMenu extends ImmutablePureComponent {
   };
 
   render () {
-    const { sidebarOpen, onClose, intl, account } = this.props;
+    const { sidebarOpen, onClose, intl, account, onClickLogOut } = this.props;
     if (!account) return null;
     const acct = account.get('acct');
 
@@ -150,9 +155,9 @@ class SidebarMenu extends ImmutablePureComponent {
             </div>
 
             <div className='sidebar-menu__section'>
-              <a className='sidebar-menu-item' href='/auth/sign_out' data-method='delete'>
+              <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.logout)}</span>
-              </a>
+              </Link>
             </div>
 
           </div>

@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { meUsername } from 'gabsocial/initial_state';
+import { logOut } from 'gabsocial/actions/auth';
 
 const messages = defineMessages({
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
@@ -24,6 +25,10 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenHotkeys() {
     dispatch(openModal('HOTKEYS'));
   },
+  onClickLogOut(e) {
+    dispatch(logOut());
+    e.preventDefault();
+  },
 });
 
 class ActionBar extends React.PureComponent {
@@ -38,7 +43,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render () {
-    const { intl, onOpenHotkeys } = this.props;
+    const { intl, onOpenHotkeys, onClickLogOut } = this.props;
     const size = this.props.size || 16;
 
     let menu = [];
@@ -50,11 +55,11 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
     menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
     menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
-    menu.push({ text: intl.formatMessage(messages.filters), href: '/filters' });
+    menu.push({ text: intl.formatMessage(messages.filters), to: '/filters' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.keyboard_shortcuts), action: this.handleHotkeyClick });
-    menu.push({ text: intl.formatMessage(messages.preferences), href: '/settings/preferences' });
-    menu.push({ text: intl.formatMessage(messages.logout), href: '/auth/sign_out', isLogout: true });
+    menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
+    menu.push({ text: intl.formatMessage(messages.logout), to: '/auth/sign_out', action: onClickLogOut });
 
     return (
       <div className='compose__action-bar' style={{'marginTop':'-6px'}}>

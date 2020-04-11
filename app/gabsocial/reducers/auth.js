@@ -2,6 +2,7 @@ import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
   AUTH_APP_AUTHORIZED,
+  AUTH_LOGGED_OUT,
 } from '../actions/auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
@@ -22,6 +23,9 @@ export default function auth(state = initialState, action) {
   case AUTH_LOGGED_IN:
     localStorage.setItem('soapbox:auth:user', JSON.stringify(action.user)); // TODO: Better persistence
     return state.set('user', ImmutableMap(action.user));
+  case AUTH_LOGGED_OUT:
+    localStorage.removeItem('soapbox:auth:user');
+    return state.setIn(['user'], ImmutableMap());
   default:
     return state;
   }

@@ -4,7 +4,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createAuthApp, logIn } from 'gabsocial/actions/auth';
 import { fetchMe } from 'gabsocial/actions/me';
 import { Link } from 'react-router-dom';
-import { showAlert } from 'gabsocial/actions/alerts';
 
 export default @connect()
 class LoginForm extends ImmutablePureComponent {
@@ -29,7 +28,6 @@ class LoginForm extends ImmutablePureComponent {
     dispatch(logIn(username, password)).then(() => {
       return dispatch(fetchMe());
     }).catch((error) => {
-      dispatch(showAlert('Login failed', 'Invalid username or password.'));
       this.setState({isLoading: false});
     });
     this.setState({isLoading: true});

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { invitesEnabled, version, repository, source_url } from 'gabsocial/initial_state';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
+import { logOut } from 'gabsocial/actions/auth';
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -18,9 +19,13 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenHotkeys() {
     dispatch(openModal('HOTKEYS'));
   },
+  onClickLogOut(e) {
+    dispatch(logOut());
+    e.preventDefault();
+  },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, siteTitle }) => (
+const LinkFooter = ({ onOpenHotkeys, account, siteTitle, onClickLogOut }) => (
   <div className='getting-started__footer'>
     <ul>
       {(invitesEnabled && account) && <li><a href='/invites'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
@@ -31,7 +36,7 @@ const LinkFooter = ({ onOpenHotkeys, account, siteTitle }) => (
       <li><a href='/about/tos'><FormattedMessage id='getting_started.terms' defaultMessage='Terms of Service' /></a> · </li>
       <li><a href='/about/dmca'><FormattedMessage id='getting_started.dmca' defaultMessage='DMCA' /></a> · </li>
       <li><a href='/about/privacy'><FormattedMessage id='getting_started.privacy' defaultMessage='Privacy Policy' /></a></li>
-      {account && <li> · <a href='/auth/sign_out' data-method='delete'><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></a></li>}
+      {account && <li> · <Link to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
     </ul>
 
     <p>

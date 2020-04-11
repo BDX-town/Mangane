@@ -1,8 +1,10 @@
 import api from '../api';
+import { showAlert } from 'gabsocial/actions/alerts';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
 export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
+export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 
 export function createAuthApp() {
   return (dispatch, getState) => {
@@ -39,8 +41,18 @@ export function logIn(username, password) {
       password: password
     }).then(response => {
       dispatch(authLoggedIn(response.data));
+    }).catch((error) => {
+      dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      throw error;
     });
   }
+}
+
+export function logOut() {
+  return (dispatch, getState) => {
+    dispatch({ type: AUTH_LOGGED_OUT });
+    dispatch(showAlert('Successfully logged out.', ''));
+  };
 }
 
 export function authAppCreated(app) {
