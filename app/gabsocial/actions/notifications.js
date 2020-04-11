@@ -104,7 +104,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
     if (playSound && !filtered) {
       dispatch({
         type: NOTIFICATIONS_UPDATE_NOOP,
-        meta: { sound: 'ribbit' },
+        meta: { sound: 'boop' },
       });
     }
 

@@ -21,7 +21,7 @@ const play = audio => {
     }
   }
 
-  // audio.play();
+  audio.play();
 };
 
 export default function soundsMiddleware() {
@@ -33,16 +33,6 @@ export default function soundsMiddleware() {
       },
       {
         src: '/sounds/boop.mp3',
-        type: 'audio/mpeg',
-      },
-    ]),
-    ribbit: createAudio([
-      {
-        src: '/sounds/ribbit.ogg',
-        type: 'audio/ogg',
-      },
-      {
-        src: '/sounds/ribbit.mp3',
         type: 'audio/mpeg',
       },
     ]),
