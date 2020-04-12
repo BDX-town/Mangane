@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
-import LoginForm from 'gabsocial/features/auth_login';
+import LoginForm from 'gabsocial/features/auth_login/components/login_form';
 import NotificationsContainer from 'gabsocial/features/ui/containers/notifications_container';
 
 const mapStateToProps = (state, props) => ({

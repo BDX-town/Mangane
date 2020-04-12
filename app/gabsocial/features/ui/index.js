@@ -65,7 +65,7 @@ import {
   GroupRemovedAccounts,
   GroupCreate,
   GroupEdit,
-  LoginForm,
+  LoginPage,
 } from './util/async-components';
 import { meUsername } from '../../initial_state';
 import { previewState as previewMediaState } from './components/media_modal';
@@ -190,7 +190,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     return (
       <Switch>
         {/* <WrappedRoute path='/' component={} publicRoute exact /> */}
-        <WrappedRoute path='/auth/sign_in' component={LoginForm} publicRoute exact />
+        <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         {/* <WrappedRoute path='/auth/sign_out' component={LogoutForm} publicRoute exact /> */}
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
