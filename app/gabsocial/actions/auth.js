@@ -8,6 +8,8 @@ export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 
 export function createAuthApp() {
   return (dispatch, getState) => {
+    const appToken = getState().getIn(['auth', 'app', 'access_token']);
+    if (appToken) return; // Skip for now, FIXME: call verify_credentials
     return api(getState).post('/api/v1/apps', {
       // TODO: Add commit hash to client_name
       client_name: `SoapboxFE_${(new Date()).toISOString()}`,
