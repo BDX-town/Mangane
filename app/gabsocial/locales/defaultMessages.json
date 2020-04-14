@@ -2602,7 +2602,7 @@
         "id": "navigation_bar.logout"
       },
       {
-        "defaultMessage": "{site_title} is open source software. You can contribute or report issues at {code_link} (v{code_version}).",
+        "defaultMessage": "{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).",
         "id": "getting_started.open_source_notice"
       }
     ],
@@ -2835,7 +2835,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Your draft will be lost if you leave {site_title}.",
+        "defaultMessage": "Your draft will be lost if you leave.",
         "id": "ui.beforeunload"
       },
       {
