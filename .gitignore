@@ -2,3 +2,5 @@
 /public/packs/
 /tmp/
 /build/
+/coverage/
+/.eslintcache

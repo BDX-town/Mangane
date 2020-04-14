@@ -2,9 +2,15 @@
   "name": "soapbox-fe",
   "version": "0.0.0",
   "scripts": {
-    "dev": "npx webpack-dev-server --config webpack/development.js",
-    "build": "npx webpack --config webpack/development.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx webpack-dev-server --config webpack/development.js",
+    "build:development": "NODE_ENV=development npx webpack --config webpack/development.js",
+    "build:production": "NODE_ENV=production npx webpack --config webpack/production.js",
+    "manage:translations": "node ./webpack/translationRunner.js",
+    "test": "${npm_execpath} run test:lint:js && ${npm_execpath} run test:jest",
+    "test:lint": "${npm_execpath} run test:lint:js && ${npm_execpath} run test:lint:sass",
+    "test:lint:js": "npx eslint --ext=js . --cache",
+    "test:lint:sass": "npx sass-lint -v",
+    "test:jest": "NODE_ENV=test npx jest --coverage"
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
@@ -136,6 +142,7 @@
     "raf": "^3.4.1",
     "react-intl-translations-manager": "^5.0.3",
     "react-test-renderer": "^16.7.0",
+    "sass-lint": "^1.13.1",
     "webpack-dev-server": "^3.5.1",
     "yargs": "^15.0.0"
   }

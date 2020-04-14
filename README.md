@@ -21,7 +21,7 @@ yarn
 Finally, run the dev server:
 
 ```
-yarn dev
+yarn start
 ```
 
 It will serve at `http://localhost:3036` by default.
@@ -45,6 +45,32 @@ window.localStorage.setItem('soapbox:auth:user', JSON.stringify({access_token: "
 
 Replace `XXX` with your access token.
 Finally, refresh the page, and you should be logged in.
+
+# Yarn Commands
+
+The following commands are supported.
+
+#### Local dev server
+- `yarn start` - Run the local dev server. It will proxy requests to the backend for you.
+
+#### Building
+- `yarn build:development` - Build for development.
+
+- `yarn build:production` - Build for production.
+
+#### Translations
+- `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
+
+#### Tests
+- `yarn test` - Runs all tests (recommended for CI).
+
+- `yarn test:lint` - Runs all linter tests.
+
+- `yarn test:lint:js` - Runs only JavaScript linter.
+
+- `yarn test:lint:sass` - Runs only SASS linter.
+
+- `yarn test:jest` - Frontend unit tests.
 
 # License
 
