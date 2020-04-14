@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { invitesEnabled } from 'gabsocial/initial_state';
@@ -61,7 +62,9 @@ const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
 );
 
 LinkFooter.propTypes = {
-  withHotkeys: PropTypes.bool,
+  account: ImmutablePropTypes.map,
+  onOpenHotkeys: PropTypes.func.isRequired,
+  onClickLogOut: PropTypes.func.isRequired,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(LinkFooter));

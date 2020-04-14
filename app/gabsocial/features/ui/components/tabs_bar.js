@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { throttle } from 'lodash';
@@ -20,6 +21,8 @@ class TabsBar extends React.PureComponent {
     history: PropTypes.object.isRequired,
     onOpenCompose: PropTypes.func,
     onOpenSidebar: PropTypes.func.isRequired,
+    logo: PropTypes.string,
+    account: ImmutablePropTypes.map,
   }
 
   state = {

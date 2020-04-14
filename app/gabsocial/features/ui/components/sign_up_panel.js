@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -31,6 +32,11 @@ const SignUpPanel = ({ siteTitle, me }) => {
       </div>
     </div>
   );
+};
+
+SignUpPanel.propTypes = {
+  siteTitle: PropTypes.string,
+  me: PropTypes.string,
 };
 
 export default injectIntl(connect(mapStateToProps)(SignUpPanel));

@@ -28,6 +28,7 @@ class HomeTimeline extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     hasUnread: PropTypes.bool,
     isPartial: PropTypes.bool,
+    siteTitle: PropTypes.string,
   };
 
   handleLoadMore = maxId => {

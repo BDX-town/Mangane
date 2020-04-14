@@ -50,6 +50,9 @@ class Edit extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     onTitleChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onDescriptionChange: PropTypes.func.isRequired,
+    onCoverImageChange: PropTypes.func.isRequired,
+    setUp: PropTypes.func.isRequired,
   };
 
   componentWillMount(nextProps) {

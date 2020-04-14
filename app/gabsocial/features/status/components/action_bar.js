@@ -67,6 +67,7 @@ class ActionBar extends React.PureComponent {
     onEmbed: PropTypes.func,
     intl: PropTypes.object.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
+    me: PropTypes.string,
   };
 
   handleReplyClick = () => {

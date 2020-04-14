@@ -27,16 +27,20 @@ class Header extends ImmutablePureComponent {
     router: PropTypes.object,
   };
 
+  toggle = () => {
+    const { group, relationships, toggleMembership } = this.props;
+    toggleMembership(group, relationships);
+  }
+
   getActionButton() {
-    const { group, relationships, toggleMembership, intl } = this.props;
-    const toggle = () => toggleMembership(group, relationships);
+    const { group, relationships, intl } = this.props;
 
     if (!relationships) {
       return '';
     } else if (!relationships.get('member')) {
-      return <Button className='logo-button' text={intl.formatMessage(messages.join)} onClick={toggle} />;
+      return <Button className='logo-button' text={intl.formatMessage(messages.join)} onClick={this.toggle} />;
     } else if (relationships.get('member')) {
-      return <Button className='logo-button' text={intl.formatMessage(messages.leave, { name: group.get('title') })} onClick={toggle} />;
+      return <Button className='logo-button' text={intl.formatMessage(messages.leave, { name: group.get('title') })} onClick={this.toggle} />;
     }
 
     return '';

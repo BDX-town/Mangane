@@ -35,6 +35,8 @@ class ActionBar extends React.PureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     size: PropTypes.number,
+    onOpenHotkeys: PropTypes.func.isRequired,
+    onClickLogOut: PropTypes.func.isRequired,
   };
 
   handleHotkeyClick = () => {

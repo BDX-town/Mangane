@@ -53,6 +53,12 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     this.props.dispatch(expandRemovedAccounts(this.props.params.id));
   }, 300, { leading: true });
 
+  handleOnActionClick = (group, id) => {
+    return () => {
+      this.props.dispatch(removeRemovedAccount(group.get('id'), id));
+    };
+  }
+
   render () {
     const { accountIds, hasMore, group, intl } = this.props;
 
@@ -76,7 +82,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
             key={id}
             id={id}
             actionIcon='remove'
-            onActionClick={() => this.props.dispatch(removeRemovedAccount(group.get('id'), id))}
+            onActionClick={this.handleOnActionClick(group, id)}
             actionTitle={intl.formatMessage(messages.remove)}
           />))}
         </ScrollableList>

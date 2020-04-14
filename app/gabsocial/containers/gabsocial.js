@@ -48,6 +48,7 @@ class GabSocialMount extends React.PureComponent {
 
   static propTypes = {
     showIntroduction: PropTypes.bool,
+    me: PropTypes.string,
   };
 
   render () {

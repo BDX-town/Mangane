@@ -256,6 +256,8 @@ class UI extends React.PureComponent {
     location: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
+    me: PropTypes.string,
+    streamingUrl: PropTypes.string,
   };
 
   state = {

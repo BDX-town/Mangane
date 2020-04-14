@@ -42,6 +42,7 @@ class CommunityTimeline extends React.PureComponent {
     hasUnread: PropTypes.bool,
     onlyMedia: PropTypes.bool,
     timelineId: PropTypes.string,
+    siteTitle: PropTypes.string,
   };
 
   componentDidMount () {

@@ -1,4 +1,5 @@
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'gabsocial/components/icon';
 import { connect } from 'react-redux';
 
@@ -8,6 +9,10 @@ const mapStateToProps = state => ({
 
 export default @connect(mapStateToProps)
 class PromoPanel extends React.PureComponent {
+
+  static propTypes = {
+    promoItems: ImmutablePropTypes.list,
+  }
 
   render() {
     const { promoItems } = this.props;

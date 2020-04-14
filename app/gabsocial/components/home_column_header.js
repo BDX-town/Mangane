@@ -48,6 +48,7 @@ class ColumnHeader extends React.PureComponent {
     activeItem: PropTypes.string,
     activeSubItem: PropTypes.string,
     lists: ImmutablePropTypes.list,
+    siteTitle: PropTypes.string,
   };
 
   state = {

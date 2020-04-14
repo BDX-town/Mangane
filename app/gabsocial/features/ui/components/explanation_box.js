@@ -1,7 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default
 class ExplanationBox extends React.PureComponent {
+
+  static propTypes = {
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    explanation: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    dismissable: PropTypes.bool,
+  };
 
   render() {
     const { title, explanation, dismissable } = this.props;
