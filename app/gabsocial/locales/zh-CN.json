@@ -400,7 +400,7 @@
   "timeline_queue.label": "Click to see {count} new {type}",
   "trends.count_by_accounts": "{count} 人正在讨论",
   "trends.title": "Trends",
-  "ui.beforeunload": "如果你现在离开 {site_title}，你的草稿内容将会丢失。",
+  "ui.beforeunload": "如果你现在离开 Soapbox FE，你的草稿内容将会丢失。",
   "unauthorized_modal.footer": "Already have an account? {login}.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",

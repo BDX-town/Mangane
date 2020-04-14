@@ -146,7 +146,7 @@
   "getting_started.dmca": "DMCA",
   "getting_started.heading": "시작",
   "getting_started.invite": "초대",
-  "getting_started.open_source_notice": "{site_title}은 오픈 소스 소프트웨어입니다. 누구나 GitLab({code_link} (v{code_version}))에서 개발에 참여하거나, 문제를 보고할 수 있습니다.",
+  "getting_started.open_source_notice": "{code_name}은 오픈 소스 소프트웨어입니다. 누구나 GitLab({code_link} (v{code_version}))에서 개발에 참여하거나, 문제를 보고할 수 있습니다.",
   "getting_started.privacy": "Privacy Policy",
   "getting_started.security": "보안",
   "getting_started.terms": "이용 약관",

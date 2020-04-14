@@ -400,7 +400,7 @@
   "timeline_queue.label": "Click to see {count} new {type}",
   "trends.count_by_accounts": "{count} {rawCount, plural, eine {Person} other {Personen}} reden darüber",
   "trends.title": "Trends",
-  "ui.beforeunload": "Dein Entwurf geht verloren, wenn du {site_title} verlässt.",
+  "ui.beforeunload": "Dein Entwurf geht verloren, wenn du Soapbox FE verlässt.",
   "unauthorized_modal.footer": "Already have an account? {login}.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",

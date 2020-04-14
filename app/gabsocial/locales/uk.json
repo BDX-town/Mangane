@@ -400,7 +400,7 @@
   "timeline_queue.label": "Click to see {count} new {type}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {людина} few {людини} many {людей} other {людей}} обговорюють це",
   "trends.title": "Trends",
-  "ui.beforeunload": "Вашу чернетку буде втрачено, якщо ви покинете {site_title}.",
+  "ui.beforeunload": "Вашу чернетку буде втрачено, якщо ви покинете Soapbox FE.",
   "unauthorized_modal.footer": "Already have an account? {login}.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",

@@ -400,7 +400,7 @@
   "timeline_queue.label": "Click to see {count} new {type}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {kişi} other {kişi}} konuşuyor",
   "trends.title": "Trends",
-  "ui.beforeunload": "{site_title}'dan ayrılırsanız taslağınız kaybolacak.",
+  "ui.beforeunload": "Soapbox FE'dan ayrılırsanız taslağınız kaybolacak.",
   "unauthorized_modal.footer": "Already have an account? {login}.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",

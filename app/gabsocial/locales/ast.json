@@ -400,7 +400,7 @@
   "timeline_queue.label": "Click to see {count} new {type}",
   "trends.count_by_accounts": "{count} {rawCount, plural, one {person} other {people}} talking",
   "trends.title": "Trends",
-  "ui.beforeunload": "El borrador va perdese si coles de {site_title}.",
+  "ui.beforeunload": "El borrador va perdese si coles de Soapbox FE.",
   "unauthorized_modal.footer": "Already have an account? {login}.",
   "unauthorized_modal.text": "You need to be logged in to do that.",
   "unauthorized_modal.title": "Sign up for {site_title}",
