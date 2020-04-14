@@ -53,6 +53,8 @@ The following commands are supported.
 #### Local dev server
 - `yarn start` - Run the local dev server. It will proxy requests to the backend for you.
 
+- `yarn dev` - Exact same as above, aliased to `yarn start` for convenience.
+
 #### Building
 - `yarn build:development` - Build for development.
 
