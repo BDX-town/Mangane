@@ -6,14 +6,8 @@ import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
-import {
-  expandCommunityTimeline,
-  expandPublicTimeline,
-} from '../../actions/timelines';
-import {
-  connectCommunityStream,
-  connectPublicStream,
-} from '../../actions/streaming';
+import { expandCommunityTimeline } from '../../actions/timelines';
+import { connectCommunityStream } from '../../actions/streaming';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },

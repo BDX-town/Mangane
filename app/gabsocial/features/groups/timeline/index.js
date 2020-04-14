@@ -26,84 +26,84 @@ export default @connect(mapStateToProps)
 @injectIntl
 class GroupTimeline extends React.PureComponent {
 
-	static contextTypes = {
-	  router: PropTypes.object,
-	};
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
-	static propTypes = {
-	  params: PropTypes.object.isRequired,
-	  dispatch: PropTypes.func.isRequired,
-	  columnId: PropTypes.string,
-	  hasUnread: PropTypes.bool,
-	  group: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
-	  relationships: ImmutablePropTypes.map,
-	  account: ImmutablePropTypes.map,
-	  intl: PropTypes.object.isRequired,
-	};
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    columnId: PropTypes.string,
+    hasUnread: PropTypes.bool,
+    group: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
+    relationships: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.map,
+    intl: PropTypes.object.isRequired,
+  };
 
-	componentDidMount () {
-	  const { dispatch } = this.props;
-	  const { id } = this.props.params;
+  componentDidMount () {
+    const { dispatch } = this.props;
+    const { id } = this.props.params;
 
-	  dispatch(expandGroupTimeline(id));
+    dispatch(expandGroupTimeline(id));
 
-	  this.disconnect = dispatch(connectGroupStream(id));
-	}
+    this.disconnect = dispatch(connectGroupStream(id));
+  }
 
-	componentWillUnmount () {
-	  if (this.disconnect) {
-	    this.disconnect();
-	    this.disconnect = null;
-	  }
-	}
+  componentWillUnmount () {
+    if (this.disconnect) {
+      this.disconnect();
+      this.disconnect = null;
+    }
+  }
 
-	handleLoadMore = maxId => {
-	  const { id } = this.props.params;
-	  this.props.dispatch(expandGroupTimeline(id, { maxId }));
-	}
+  handleLoadMore = maxId => {
+    const { id } = this.props.params;
+    this.props.dispatch(expandGroupTimeline(id, { maxId }));
+  }
 
-	render () {
-	  const { columnId, group, relationships, account } = this.props;
-	  const { id } = this.props.params;
+  render () {
+    const { columnId, group, relationships, account } = this.props;
+    const { id } = this.props.params;
 
-	  if (typeof group === 'undefined' || !relationships) {
-	    return (
-  <Column>
-  <LoadingIndicator />
-	      </Column>
-	    );
-	  } else if (group === false) {
-	    return (
-  <Column>
-  <MissingIndicator />
-	      </Column>
-	    );
-	  }
+    if (typeof group === 'undefined' || !relationships) {
+      return (
+        <Column>
+          <LoadingIndicator />
+        </Column>
+      );
+    } else if (group === false) {
+      return (
+        <Column>
+          <MissingIndicator />
+        </Column>
+      );
+    }
 
-	  return (
-  <div>
-  {relationships.get('member') && (
-	        <div className='timeline-compose-block'>
-    <div className='timeline-compose-block__avatar'>
-  <Avatar account={account} size={46} />
-	          </div>
-    <ComposeFormContainer group={group} shouldCondense autoFocus={false} />
-  </div>
-	      )}
+    return (
+      <div>
+        {relationships.get('member') && (
+          <div className='timeline-compose-block'>
+            <div className='timeline-compose-block__avatar'>
+              <Avatar account={account} size={46} />
+            </div>
+            <ComposeFormContainer group={group} shouldCondense autoFocus={false} />
+          </div>
+        )}
 
-  <div className='group__feed'>
-  <StatusListContainer
-	          alwaysPrepend
-	          scrollKey={`group_timeline-${columnId}`}
-	          timelineId={`group:${id}`}
-	          onLoadMore={this.handleLoadMore}
-	          group={group}
-	          withGroupAdmin={relationships && relationships.get('admin')}
-	          emptyMessage={<FormattedMessage id='empty_column.group' defaultMessage='There is nothing in this group yet. When members of this group make new posts, they will appear here.' />}
-	        />
-	      </div>
-	    </div>
-	  );
-	}
+        <div className='group__feed'>
+          <StatusListContainer
+            alwaysPrepend
+            scrollKey={`group_timeline-${columnId}`}
+            timelineId={`group:${id}`}
+            onLoadMore={this.handleLoadMore}
+            group={group}
+            withGroupAdmin={relationships && relationships.get('admin')}
+            emptyMessage={<FormattedMessage id='empty_column.group' defaultMessage='There is nothing in this group yet. When members of this group make new posts, they will appear here.' />}
+          />
+        </div>
+      </div>
+    );
+  }
 
 }

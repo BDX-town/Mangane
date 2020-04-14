@@ -1,6 +1,6 @@
 import { ME_FETCH_SUCCESS, ME_FETCH_FAIL, ME_FETCH_SKIP } from '../actions/me';
 import { AUTH_LOGGED_OUT } from '../actions/auth';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { fromJS } from 'immutable';
 
 const initialState = null;
 

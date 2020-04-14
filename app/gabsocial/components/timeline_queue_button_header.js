@@ -32,7 +32,7 @@ export default class TimelineQueueButtonHeader extends React.PureComponent {
             defaultMessage='Click to see {count} new {type}'
             values={{
               count: shortNumberFormat(count),
-              type: count == 1 ? itemType : `${itemType}s`,
+              type: count === 1 ? itemType : `${itemType}s`,
             }}
           />}
         </a>

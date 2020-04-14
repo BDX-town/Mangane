@@ -183,7 +183,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
           <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
             <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-            <DisplayName account={status.get('account')} localDomain={this.props.domain} />
+            <DisplayName account={status.get('account')} />
           </NavLink>
 
           {status.get('group') && (

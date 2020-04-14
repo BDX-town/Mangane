@@ -8,7 +8,7 @@ import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
-import Introduction from '../features/introduction';
+// import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
 import { hydrateStore } from '../actions/store';
 import { IntlProvider, addLocaleData } from 'react-intl';
@@ -52,7 +52,7 @@ class GabSocialMount extends React.PureComponent {
 
   render () {
     const { me } = this.props;
-    if (me == null) return null;
+    if (me === null) return null;
 
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;

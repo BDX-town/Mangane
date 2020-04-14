@@ -9,7 +9,6 @@ import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { autoPlayGif, isStaff } from 'gabsocial/initial_state';
 import classNames from 'classnames';
-import Icon from 'gabsocial/components/icon';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
 import { NavLink } from 'react-router-dom';
@@ -47,15 +46,6 @@ const messages = defineMessages({
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
 });
-
-const dateFormatOptions = {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour12: false,
-  hour: '2-digit',
-  minute: '2-digit',
-};
 
 const mapStateToProps = state => {
   return {
@@ -108,7 +98,7 @@ class Header extends ImmutablePureComponent {
   });
 
   makeMenu() {
-    const { account, intl, domain, me } = this.props;
+    const { account, intl, me } = this.props;
 
     let menu = [];
 
@@ -180,7 +170,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeInfo() {
-    const { account, intl, me } = this.props;
+    const { account, me } = this.props;
 
     let info = [];
 
@@ -224,7 +214,7 @@ class Header extends ImmutablePureComponent {
   };
 
   render () {
-    const { account, intl, domain, username, me } = this.props;
+    const { account, intl, username, me } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -249,10 +239,6 @@ class Header extends ImmutablePureComponent {
     const info = this.makeInfo();
     const actionBtn = this.getActionBtn();
     const menu = this.makeMenu();
-
-    const content = { __html: account.get('note_emojified') };
-    const fields = account.get('fields');
-    const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
 
     const headerImgSrc = autoPlayGif ? account.get('header') : account.get('header_static');
     const headerMissing = (headerImgSrc.indexOf('/headers/original/missing.png') > -1);

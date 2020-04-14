@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
@@ -43,7 +42,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render () {
-    const { intl, onOpenHotkeys, onClickLogOut } = this.props;
+    const { intl, onClickLogOut } = this.props;
     const size = this.props.size || 16;
 
     let menu = [];

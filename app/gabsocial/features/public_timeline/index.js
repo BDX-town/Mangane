@@ -7,14 +7,8 @@ import Column from '../../components/column';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
 import ExplanationBox from '../ui/components/explanation_box';
-import {
-  expandCommunityTimeline,
-  expandPublicTimeline,
-} from '../../actions/timelines';
-import {
-  connectCommunityStream,
-  connectPublicStream,
-} from '../../actions/streaming';
+import { expandPublicTimeline } from '../../actions/timelines';
+import { connectPublicStream } from '../../actions/streaming';
 import { Link } from 'react-router-dom';
 
 const messages = defineMessages({

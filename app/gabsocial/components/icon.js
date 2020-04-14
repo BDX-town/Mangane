@@ -16,7 +16,7 @@ export default class Icon extends React.PureComponent {
     // tag. There is a common adblocker rule which hides elements with
     // alt='retweet' unless the domain is twitter.com. This should
     // change what screenreaders call it as well.
-    var alt_id = (id == 'retweet') ? 'repost' : id;
+    var alt_id = (id === 'retweet') ? 'repost' : id;
     return (
       <i role='img' alt={alt_id} className={classNames('fa', `fa-${id}`, className, { 'fa-fw': fixedWidth })} {...other} />
     );

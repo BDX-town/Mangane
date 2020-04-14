@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages } from 'react-intl';
+import Icon from 'gabsocial/components/icon';
 
 const messages = defineMessages({
   group_archived: { id: 'group.detail.archived_group', defaultMessage: 'Archived group' },

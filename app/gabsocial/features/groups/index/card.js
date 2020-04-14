@@ -31,9 +31,9 @@ class GroupCard extends ImmutablePureComponent {
     getRole() {
       const { intl, relationships } = this.props;
 
-      if (!relationships) return null;
       if (relationships.get('admin')) return intl.formatMessage(messages.role_admin);
       if (relationships.get('member')) return intl.formatMessage(messages.role_member);
+      return null;
     }
 
     render() {

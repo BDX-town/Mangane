@@ -48,9 +48,9 @@ class ModalRoot extends React.PureComponent {
   }
 
   handleOnClose = () => {
-    const { onOpenModal, composeText, onClose, intl, type, onCancelReplyCompose } = this.props;
+    const { onOpenModal, composeText, intl, type, onCancelReplyCompose } = this.props;
 
-    if (composeText && type == 'COMPOSE') {
+    if (composeText && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
@@ -117,7 +117,7 @@ class ModalRoot extends React.PureComponent {
     return (
       <div className='modal-root' ref={this.setRef} style={{ opacity: revealed ? 1 : 0 }}>
         <div style={{ pointerEvents: visible ? 'auto' : 'none' }}>
-          <div role='presentation' className='modal-root__overlay' onClick={() => this.handleOnClose()} />
+          <div role='presentation' className='modal-root__overlay' onClick={this.handleOnClose} />
           <div role='dialog' className='modal-root__container'>{children}</div>
         </div>
       </div>

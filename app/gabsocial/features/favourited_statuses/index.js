@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { fetchFavouritedStatuses, expandFavouritedStatuses } from '../../actions/favourites';
 import Column from '../ui/components/column';
-import ColumnHeader from '../../components/column_header';
 import StatusList from '../../components/status_list';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -43,7 +42,7 @@ class Favourites extends ImmutablePureComponent {
   }, 300, { leading: true })
 
   render () {
-    const { intl, statusIds, hasMore, isLoading, isMyAccount } = this.props;
+    const { statusIds, hasMore, isLoading, isMyAccount } = this.props;
 
     if (!isMyAccount) {
       return (

@@ -1,8 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
 import Icon from 'gabsocial/components/icon';
-import ProBadge from 'gabsocial/components/pro_badge';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({

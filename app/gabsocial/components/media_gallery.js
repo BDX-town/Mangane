@@ -108,9 +108,7 @@ class Item extends React.PureComponent {
   }
 
   render () {
-    const { attachment, index, size, standalone, displayWidth, visible, dimensions } = this.props;
-
-    const ar = attachment.getIn(['meta', 'small', 'aspect']);
+    const { attachment, standalone, displayWidth, visible, dimensions } = this.props;
 
     let width  = 100;
     let height = '100%';
@@ -285,14 +283,11 @@ class MediaGallery extends React.PureComponent {
     const style = {};
     const size = media.take(4).size;
 
-    const standard169 = width / (16 / 9);
-    const standard169_percent = 100 / (16 / 9);
-    const standard169_px = `${standard169}px`;
     const panoSize = Math.floor(width / maximumAspectRatio);
     const panoSize_px = `${Math.floor(width / maximumAspectRatio)}px`;
     let itemsDimensions = [];
 
-    if (size == 1 && width) {
+    if (size === 1 && width) {
       const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
 
       if (isPanoramic(aspectRatio)) {
@@ -308,7 +303,7 @@ class MediaGallery extends React.PureComponent {
       const ar3 = media.getIn([2, 'meta', 'small', 'aspect']);
       const ar4 = media.getIn([3, 'meta', 'small', 'aspect']);
 
-      if (size == 2) {
+      if (size === 2) {
         if (isPortrait(ar1) && isPortrait(ar2)) {
           style.height = width - (width / maximumAspectRatio);
         } else if (isPanoramic(ar1) && isPanoramic(ar2)) {
@@ -358,7 +353,7 @@ class MediaGallery extends React.PureComponent {
             { w: 50, h: '100%', l: '2px' },
           ];
         }
-      } else if (size == 3) {
+      } else if (size === 3) {
         if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) {
           style.height = panoSize * 3;
         } else if (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3)) {
@@ -427,7 +422,7 @@ class MediaGallery extends React.PureComponent {
             { w: 100, h: '50%', t: '2px' },
           ];
         }
-      } else if (size == 4) {
+      } else if (size === 4) {
         if (
           (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
           (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isNonConformingRatio(ar4)) ||

@@ -7,8 +7,6 @@ export function fetchFunding() {
   return (dispatch, getState) => {
     api(getState).get('/patron/v1/funding').then(response => {
       dispatch(importFetchedFunding(response.data));
-    }).then(() => {
-      dispatch(fetchFundingSuccess());
     }).catch(error => {
       dispatch(fetchFundingFail(error));
     });

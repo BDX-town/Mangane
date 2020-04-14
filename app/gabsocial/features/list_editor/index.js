@@ -60,8 +60,7 @@ class ListEditor extends ImmutablePureComponent {
   };
 
   render () {
-    const { accountIds, searchAccountIds, onClear, intl } = this.props;
-    const showSearch = searchAccountIds.size > 0;
+    const { accountIds, searchAccountIds, intl } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal'>

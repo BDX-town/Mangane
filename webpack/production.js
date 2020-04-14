@@ -1,6 +1,5 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const path = require('path');
 const { URL } = require('url');
 const merge = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -10,6 +9,7 @@ const CompressionPlugin = require('compression-webpack-plugin');
 const { output } = require('./configuration');
 const sharedConfig = require('./shared');
 
+// eslint-disable-next-line no-unused-vars
 let attachmentHost;
 
 if (process.env.S3_ENABLED === 'true') {

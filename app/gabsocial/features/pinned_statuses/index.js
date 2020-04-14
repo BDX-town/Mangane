@@ -35,7 +35,7 @@ class PinnedStatuses extends ImmutablePureComponent {
   }
 
   render () {
-    const { intl, statusIds, hasMore, isMyAccount } = this.props;
+    const { statusIds, hasMore, isMyAccount } = this.props;
 
     if (!isMyAccount) {
       return (

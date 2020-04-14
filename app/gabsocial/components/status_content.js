@@ -136,7 +136,7 @@ export default class StatusContent extends React.PureComponent {
   }
 
   getHtmlContent = () => {
-    const { status, reblogContent } = this.props;
+    const { status } = this.props;
 
     const properContent = status.get('contentHtml');
 
@@ -144,7 +144,7 @@ export default class StatusContent extends React.PureComponent {
   }
 
   render () {
-    const { status, reblogContent } = this.props;
+    const { status } = this.props;
 
     if (status.get('content').length === 0) {
       return null;

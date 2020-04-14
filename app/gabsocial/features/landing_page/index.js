@@ -22,7 +22,7 @@ class LandingPage extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance, soapbox } = this.props;
+    const { instance } = this.props;
     if (instance.isEmpty()) return null;
     const siteLogo = this.getSiteLogo();
 

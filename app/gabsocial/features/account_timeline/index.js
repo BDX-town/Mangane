@@ -19,14 +19,14 @@ const emptyList = ImmutableList();
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const me = state.get('me');
   const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() == username.toLowerCase());
+  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   let accountUsername = username;
   if (accountFetchError) {
     accountId = null;
   } else {
-    let account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
+    let account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }
@@ -36,7 +36,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
   const isLocked = state.getIn(['accounts', accountId, 'locked'], false);
   const isFollowing = state.getIn(['relationships', accountId, 'following'], false);
-  const unavailable = (me == accountId) ? false : (isBlocked || (isLocked && !isFollowing));
+  const unavailable = (me === accountId) ? false : (isBlocked || (isLocked && !isFollowing));
 
   return {
     accountId,
@@ -114,7 +114,7 @@ class AccountTimeline extends ImmutablePureComponent {
       );
     }
 
-    if (accountId == -1 || (!statusIds && isLoading)) {
+    if (accountId === -1 || (!statusIds && isLoading)) {
       return (
         <Column>
           <LoadingIndicator />

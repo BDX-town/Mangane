@@ -26,66 +26,66 @@ export default @connect(mapStateToProps)
 @injectIntl
 class Groups extends ImmutablePureComponent {
 
-	static propTypes = {
-	  params: PropTypes.object.isRequired,
-	  activeTab: PropTypes.string.isRequired,
-	  showCreateForm: PropTypes.bool,
-	  dispatch: PropTypes.func.isRequired,
-	  groups: ImmutablePropTypes.map,
-	  groupIds: ImmutablePropTypes.list,
-	  intl: PropTypes.object.isRequired,
-	};
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    activeTab: PropTypes.string.isRequired,
+    showCreateForm: PropTypes.bool,
+    dispatch: PropTypes.func.isRequired,
+    groups: ImmutablePropTypes.map,
+    groupIds: ImmutablePropTypes.list,
+    intl: PropTypes.object.isRequired,
+  };
 
-	componentWillMount () {
-	  this.props.dispatch(fetchGroups(this.props.activeTab));
-	}
+  componentWillMount () {
+    this.props.dispatch(fetchGroups(this.props.activeTab));
+  }
 
-	componentDidUpdate(oldProps) {
-	  if (this.props.activeTab && this.props.activeTab !== oldProps.activeTab) {
-	    this.props.dispatch(fetchGroups(this.props.activeTab));
-	  }
-	}
+  componentDidUpdate(oldProps) {
+    if (this.props.activeTab && this.props.activeTab !== oldProps.activeTab) {
+      this.props.dispatch(fetchGroups(this.props.activeTab));
+    }
+  }
 
-	renderHeader() {
-	  const { intl, activeTab } = this.props;
+  renderHeader() {
+    const { intl, activeTab } = this.props;
 
-	  return (
-  <div className='group-column-header'>
-  <div className='group-column-header__cta'><Link to='/groups/create' className='button standard-small'>{intl.formatMessage(messages.create)}</Link></div>
-  <div className='group-column-header__title'>{intl.formatMessage(messages.heading)}</div>
+    return (
+      <div className='group-column-header'>
+        <div className='group-column-header__cta'><Link to='/groups/create' className='button standard-small'>{intl.formatMessage(messages.create)}</Link></div>
+        <div className='group-column-header__title'>{intl.formatMessage(messages.heading)}</div>
 
-  <div className='column-header__wrapper'>
-  <h1 className='column-header'>
-  <Link to='/groups' className={classNames('btn grouped', { 'active': 'featured' === activeTab })}>
-  {intl.formatMessage(messages.tab_featured)}
-	          </Link>
+        <div className='column-header__wrapper'>
+          <h1 className='column-header'>
+            <Link to='/groups' className={classNames('btn grouped', { 'active': 'featured' === activeTab })}>
+              {intl.formatMessage(messages.tab_featured)}
+            </Link>
 
-  <Link to='/groups/browse/member' className={classNames('btn grouped', { 'active': 'member' === activeTab })}>
-  {intl.formatMessage(messages.tab_member)}
-	          </Link>
+            <Link to='/groups/browse/member' className={classNames('btn grouped', { 'active': 'member' === activeTab })}>
+              {intl.formatMessage(messages.tab_member)}
+            </Link>
 
-  <Link to='/groups/browse/admin' className={classNames('btn grouped', { 'active': 'admin' === activeTab })}>
-  {intl.formatMessage(messages.tab_admin)}
-	          </Link>
-	        </h1>
-	      </div>
-	    </div>
-	  );
-	}
+            <Link to='/groups/browse/admin' className={classNames('btn grouped', { 'active': 'admin' === activeTab })}>
+              {intl.formatMessage(messages.tab_admin)}
+            </Link>
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
-	render () {
-	  const { groupIds, showCreateForm } = this.props;
+  render () {
+    const { groupIds, showCreateForm } = this.props;
 
-	  return (
-  <div>
-  {!showCreateForm && this.renderHeader()}
-  {showCreateForm && <GroupCreate /> }
+    return (
+      <div>
+        {!showCreateForm && this.renderHeader()}
+        {showCreateForm && <GroupCreate /> }
 
-  <div className='group-card-list'>
-  {groupIds.map(id => <GroupCard key={id} id={id} />)}
-	      </div>
-	    </div>
-	  );
-	}
+        <div className='group-card-list'>
+          {groupIds.map(id => <GroupCard key={id} id={id} />)}
+        </div>
+      </div>
+    );
+  }
 
 }

@@ -126,7 +126,7 @@ export function dequeueNotifications() {
     const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableList());
     const totalQueuedNotificationsCount = getState().getIn(['notifications', 'totalQueuedNotificationsCount'], 0);
 
-    if (totalQueuedNotificationsCount == 0) {
+    if (totalQueuedNotificationsCount === 0) {
       return;
     } else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
       queuedNotifications.forEach(block => {
@@ -264,6 +264,9 @@ export function markReadNotifications() {
           type: NOTIFICATIONS_MARK_READ,
           notification: top_notification,
         });
+      }).catch(e => {
+        console.error(e);
+        console.error('Could not mark notifications read.');
       });
     }
   };

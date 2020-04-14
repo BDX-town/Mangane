@@ -115,7 +115,7 @@ class TabsBar extends React.PureComponent {
   });
 
   render () {
-    const { intl: { formatMessage }, account, onOpenCompose, onOpenSidebar } = this.props;
+    const { account, onOpenCompose, onOpenSidebar } = this.props;
     const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {

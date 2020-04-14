@@ -245,7 +245,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render () {
-    const { status, intl, withDismiss } = this.props;
+    const { status, intl } = this.props;
 
     const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
 

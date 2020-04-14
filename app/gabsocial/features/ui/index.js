@@ -5,7 +5,7 @@ import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Switch, Redirect, withRouter } from 'react-router-dom';
+import { Switch, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NotificationsContainer from './containers/notifications_container';
 import LoadingBarContainer from './containers/loading_bar_container';
@@ -18,24 +18,24 @@ import { initializeNotifications, expandNotifications } from '../../actions/noti
 import { fetchFilters } from '../../actions/filters';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
-import { WrappedSwitch, WrappedRoute } from './util/react_router_helpers';
+import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
 // import TrendsPanel from './components/trends_panel';
 import WhoToFollowPanel from './components/who_to_follow_panel';
 import LinkFooter from './components/link_footer';
 import ProfilePage from 'gabsocial/pages/profile_page';
-import GroupsPage from 'gabsocial/pages/groups_page';
-import GroupPage from 'gabsocial/pages/group_page';
+// import GroupsPage from 'gabsocial/pages/groups_page';
+// import GroupPage from 'gabsocial/pages/group_page';
+// import GroupSidebarPanel from '../groups/sidebar_panel';
 import SearchPage from 'gabsocial/pages/search_page';
 import HomePage from 'gabsocial/pages/home_page';
-import GroupSidebarPanel from '../groups/sidebar_panel';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 
 import {
   Status,
-  GettingStarted,
+  // GettingStarted,
   CommunityTimeline,
   PublicTimeline,
   AccountTimeline,
@@ -44,7 +44,7 @@ import {
   Followers,
   Following,
   Reblogs,
-  Favourites,
+  // Favourites,
   DirectTimeline,
   HashtagTimeline,
   Notifications,
@@ -56,25 +56,22 @@ import {
   Mutes,
   PinnedStatuses,
   Search,
-  Explore,
-  Groups,
-  GroupTimeline,
+  // Explore,
+  // Groups,
+  // GroupTimeline,
   ListTimeline,
   Lists,
-  GroupMembers,
-  GroupRemovedAccounts,
-  GroupCreate,
-  GroupEdit,
+  // GroupMembers,
+  // GroupRemovedAccounts,
+  // GroupCreate,
+  // GroupEdit,
   LoginPage,
 } from './util/async-components';
 import { meUsername } from '../../initial_state';
-import { previewState as previewMediaState } from './components/media_modal';
-import { previewState as previewVideoState } from './components/video_modal';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import '../../components/status';
-import { fetchGroups } from '../../actions/groups';
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
@@ -184,8 +181,7 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render () {
-    const { children, account } = this.props;
-    const { mobile } = this.state;
+    const { children } = this.props;
 
     return (
       <Switch>
@@ -535,7 +531,7 @@ class UI extends React.PureComponent {
     const { draggingOver } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
-    if (me == null || !streamingUrl) return null;
+    if (me === null || !streamingUrl) return null;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,

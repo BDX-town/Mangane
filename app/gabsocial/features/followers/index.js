@@ -20,21 +20,20 @@ import MissingIndicator from 'gabsocial/components/missing_indicator';
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const me = state.get('me');
   const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() == username.toLowerCase());
+  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
-  let accountUsername = username;
   if (accountFetchError) {
     accountId = null;
   } else {
-    let account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
+    let account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
   }
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
   const isLocked = state.getIn(['accounts', accountId, 'locked'], false);
   const isFollowing = state.getIn(['relationships', accountId, 'following'], false);
-  const unavailable = (me == accountId) ? false : (isBlocked || (isLocked && !isFollowing));
+  const unavailable = (me === accountId) ? false : (isBlocked || (isLocked && !isFollowing));
 
   return {
     accountId,
@@ -58,7 +57,7 @@ class Followers extends ImmutablePureComponent {
   };
 
   componentWillMount () {
-    const { params: { username }, accountId, withReplies } = this.props;
+    const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
       this.props.dispatch(fetchAccount(accountId));
@@ -92,7 +91,7 @@ class Followers extends ImmutablePureComponent {
       );
     }
 
-    if (accountId == -1 || (!accountIds)) {
+    if (accountId === -1 || (!accountIds)) {
       return (
         <Column>
           <LoadingIndicator />

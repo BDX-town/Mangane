@@ -50,7 +50,6 @@ class NewListForm extends React.PureComponent {
     const { value, disabled, intl } = this.props;
 
     const label = intl.formatMessage(messages.label);
-    const title = intl.formatMessage(messages.title);
     const create = intl.formatMessage(messages.create);
 
     return (

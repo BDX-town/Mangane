@@ -1,9 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Avatar from '../../../components/avatar';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import IconButton from 'gabsocial/components/icon_button';
 
@@ -31,7 +29,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
   };
 
   render () {
-    const { intl, onClose, account, siteTitle } = this.props;
+    const { intl, siteTitle } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal unauthorized-modal'>

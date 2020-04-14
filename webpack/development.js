@@ -1,10 +1,9 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
-const { resolve, join } = require('path');
+const { resolve } = require('path');
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const watchOptions = {};
 

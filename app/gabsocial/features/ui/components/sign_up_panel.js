@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { NavLink } from 'react-router-dom';
 
 const mapStateToProps = state => {
   return {

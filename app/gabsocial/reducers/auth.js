@@ -4,7 +4,7 @@ import {
   AUTH_APP_AUTHORIZED,
   AUTH_LOGGED_OUT,
 } from '../actions/auth';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 
 const initialState = ImmutableMap({
   app: ImmutableMap(JSON.parse(localStorage.getItem('soapbox:auth:app'))),

@@ -84,7 +84,6 @@ class Account extends ImmutablePureComponent {
     }
 
     let buttons;
-    let reciprocal_follow_message;
     let followed_by;
 
     if (onActionClick && actionIcon) {

@@ -3,8 +3,7 @@ import openDB from '../storage/db';
 import { evictStatus } from '../storage/modifier';
 import { deleteFromTimelines } from './timelines';
 import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus } from './importer';
-import { ensureComposeIsVisible } from './compose';
-import { openModal, closeModal } from './modal';
+import { openModal } from './modal';
 
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';

@@ -47,8 +47,6 @@ class ListForm extends React.PureComponent {
 
   render () {
     const { value, disabled, intl } = this.props;
-
-    const title = intl.formatMessage(messages.title);
     const save = intl.formatMessage(messages.save);
 
     return (

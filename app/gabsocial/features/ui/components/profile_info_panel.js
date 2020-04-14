@@ -5,7 +5,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'gabsocial/components/icon';
 import VerificationBadge from 'gabsocial/components/verification_badge';
@@ -61,7 +60,6 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const badge = account.get('bot') ? (<div className='account-role bot'><FormattedMessage id='account.badges.bot' defaultMessage='Bot' /></div>) : null;
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
-    const acct = account.get('acct');
     const displayNameHtml = { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
 

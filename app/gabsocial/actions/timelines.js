@@ -1,6 +1,6 @@
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import api, { getLinks } from '../api';
-import { Map as ImmutableMap, List as ImmutableList, toJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 export const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
 export const TIMELINE_DELETE  = 'TIMELINE_DELETE';
@@ -55,7 +55,7 @@ export function dequeueTimeline(timeline, expandFunc, optionalExpandArgs) {
 
     let shouldDispatchDequeue = true;
 
-    if (totalQueuedItemsCount == 0) {
+    if (totalQueuedItemsCount === 0) {
       return;
     } else if (totalQueuedItemsCount > 0 && totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
       queuedItems.forEach(status => {

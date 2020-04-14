@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
-// import Column from '../column';
-// import ColumnHeader from '../column_header';
+import Column from '../column';
+import ColumnHeader from '../column_header';
 
 describe('<Column />', () => {
   describe('<ColumnHeader /> click handler', () => {

@@ -87,7 +87,7 @@ module.exports = {
       'error',
       {
         vars: 'all',
-        args: 'after-used',
+        args: 'none',
         ignoreRestSiblings: true,
       },
     ],
@@ -183,6 +183,7 @@ module.exports = {
       'always',
       {
         js: 'never',
+        mjs: 'ignorePackages',
       },
     ],
     'import/newline-after-import': 'error',

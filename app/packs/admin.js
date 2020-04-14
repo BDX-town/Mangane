@@ -102,14 +102,16 @@ delegate(document, '.payform', 'submit', (e) => {
   const csrf_token = document.querySelector('meta[name=\'csrf-token\']').content;
   const price = Math.floor(document.getElementById('price').value.replace(/[^0-9.]/, '') * 100);
 
+  // eslint-disable-next-line no-undef
   const stripe = Stripe(stripe_pk);
   const req = new XMLHttpRequest();
 
-  function checkout () {
+  function checkout() {
     stripe.redirectToCheckout({
       sessionId: this.responseText,
-    }).then(function (result) {
-      console.log(result.error.message);
+    }).catch(e => {
+      console.error(e);
+      console.error('Could not connect to Stripe checkout');
     });
   }
 

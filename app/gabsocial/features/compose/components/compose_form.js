@@ -100,7 +100,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleClick = (e) => {
-    if (!this.form) return false;
+    if (!this.form) return;
     if (!this.form.contains(e.target)) {
       this.handleClickOutside();
     }

@@ -66,9 +66,7 @@ class ListAdder extends ImmutablePureComponent {
   };
 
   render () {
-    const { accountId, listIds, intl, onClose, account } = this.props;
-
-    const displayNameHtml = account ? { __html: account.get('display_name_html') } : '';
+    const { accountId, listIds, intl } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal'>

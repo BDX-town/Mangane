@@ -17,63 +17,65 @@ const messages = defineMessages({
 export default @injectIntl
 class Header extends ImmutablePureComponent {
 
-	static propTypes = {
-	  group: ImmutablePropTypes.map,
-	  relationships: ImmutablePropTypes.map,
-	  toggleMembership: PropTypes.func.isRequired,
-	};
+  static propTypes = {
+    group: ImmutablePropTypes.map,
+    relationships: ImmutablePropTypes.map,
+    toggleMembership: PropTypes.func.isRequired,
+  };
 
-	static contextTypes = {
-	  router: PropTypes.object,
-	};
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
-	getActionButton() {
-	  const { group, relationships, toggleMembership, intl } = this.props;
-	  const toggle = () => toggleMembership(group, relationships);
+  getActionButton() {
+    const { group, relationships, toggleMembership, intl } = this.props;
+    const toggle = () => toggleMembership(group, relationships);
 
-	  if (!relationships) {
-	    return '';
-	  } else if (!relationships.get('member')) {
-	    return <Button className='logo-button' text={intl.formatMessage(messages.join)} onClick={toggle} />;
-	  } else if (relationships.get('member')) {
-	    return <Button className='logo-button' text={intl.formatMessage(messages.leave, { name: group.get('title') })} onClick={toggle} />;
-	  }
-	}
+    if (!relationships) {
+      return '';
+    } else if (!relationships.get('member')) {
+      return <Button className='logo-button' text={intl.formatMessage(messages.join)} onClick={toggle} />;
+    } else if (relationships.get('member')) {
+      return <Button className='logo-button' text={intl.formatMessage(messages.leave, { name: group.get('title') })} onClick={toggle} />;
+    }
 
-	getAdminMenu() {
-	  const { group, intl } = this.props;
+    return '';
+  }
 
-	  const menu = [
-	    { text: intl.formatMessage(messages.edit), to: `/groups/${group.get('id')}/edit` },
-	    { text: intl.formatMessage(messages.removed_accounts), to: `/groups/${group.get('id')}/removed_accounts` },
-	  ];
+  getAdminMenu() {
+    const { group, intl } = this.props;
 
-	  return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
-	}
+    const menu = [
+      { text: intl.formatMessage(messages.edit), to: `/groups/${group.get('id')}/edit` },
+      { text: intl.formatMessage(messages.removed_accounts), to: `/groups/${group.get('id')}/removed_accounts` },
+    ];
 
-	render () {
-	  const { group, relationships } = this.props;
+    return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
+  }
 
-	  if (!group || !relationships) {
-	    return null;
-	  }
+  render () {
+    const { group, relationships } = this.props;
 
-	  return (
-  <div className='group__header-container'>
-  <div className='group__header'>
-  <div className='group__cover'>
-  <img src={group.get('cover_image_url')} alt='' className='parallax' />
-	        </div>
+    if (!group || !relationships) {
+      return null;
+    }
 
-  <div className='group__tabs'>
-  <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}`}>Posts</NavLink>
-  <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}/members`}>Members</NavLink>
-  {this.getActionButton()}
-  {relationships.get('admin') && this.getAdminMenu()}
-	        </div>
-	      </div>
-	    </div>
-	  );
-	}
+    return (
+      <div className='group__header-container'>
+        <div className='group__header'>
+          <div className='group__cover'>
+            <img src={group.get('cover_image_url')} alt='' className='parallax' />
+          </div>
+
+          <div className='group__tabs'>
+            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}`}>Posts</NavLink>
+            <NavLink exact className='group__tabs__tab' activeClassName='group__tabs__tab--active' to={`/groups/${group.get('id')}/members`}>Members</NavLink>
+            {this.getActionButton()}
+            {relationships.get('admin') && this.getAdminMenu()}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
 }

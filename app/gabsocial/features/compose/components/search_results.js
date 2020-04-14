@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -23,7 +23,7 @@ class SearchResults extends ImmutablePureComponent {
   }
 
   render () {
-    const { intl, results, dismissSuggestion } = this.props;
+    const { results } = this.props;
     const { isSmallScreen } = this.state;
 
     if (results.isEmpty() && isSmallScreen) {

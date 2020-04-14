@@ -30,58 +30,58 @@ export default @connect(mapStateToProps)
 @injectIntl
 class GroupRemovedAccounts extends ImmutablePureComponent {
 
-	static propTypes = {
-	  params: PropTypes.object.isRequired,
-	  dispatch: PropTypes.func.isRequired,
-	  accountIds: ImmutablePropTypes.list,
-	  hasMore: PropTypes.bool,
-	};
+  static propTypes = {
+    params: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    accountIds: ImmutablePropTypes.list,
+    hasMore: PropTypes.bool,
+  };
 
-	componentWillMount () {
-	  const { params: { id } } = this.props;
+  componentWillMount () {
+    const { params: { id } } = this.props;
 
-	  this.props.dispatch(fetchRemovedAccounts(id));
-	}
+    this.props.dispatch(fetchRemovedAccounts(id));
+  }
 
-	componentWillReceiveProps (nextProps) {
-	  if (nextProps.params.id !== this.props.params.id) {
-	    this.props.dispatch(fetchRemovedAccounts(nextProps.params.id));
-	  }
-	}
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.params.id !== this.props.params.id) {
+      this.props.dispatch(fetchRemovedAccounts(nextProps.params.id));
+    }
+  }
 
-	handleLoadMore = debounce(() => {
-	  this.props.dispatch(expandRemovedAccounts(this.props.params.id));
-	}, 300, { leading: true });
+  handleLoadMore = debounce(() => {
+    this.props.dispatch(expandRemovedAccounts(this.props.params.id));
+  }, 300, { leading: true });
 
-	render () {
-	  const { accountIds, hasMore, group, intl } = this.props;
+  render () {
+    const { accountIds, hasMore, group, intl } = this.props;
 
-	  if (!group || !accountIds) {
-	    return (
-  <Column>
-  <LoadingIndicator />
-	      </Column>
-	    );
-	  }
+    if (!group || !accountIds) {
+      return (
+        <Column>
+          <LoadingIndicator />
+        </Column>
+      );
+    }
 
-	  return (
-  <Column>
-  <ScrollableList
-	        scrollKey='removed_accounts'
-	        hasMore={hasMore}
-	        onLoadMore={this.handleLoadMore}
-	        emptyMessage={<FormattedMessage id='group.removed_accounts.empty' defaultMessage='This group does not has any removed accounts.' />}
-	      >
-  {accountIds.map(id => (<AccountContainer
-	          key={id}
-	          id={id}
-	          actionIcon='remove'
-	          onActionClick={() => this.props.dispatch(removeRemovedAccount(group.get('id'), id))}
-	          actionTitle={intl.formatMessage(messages.remove)}
-	        />))}
-	      </ScrollableList>
-	    </Column>
-	  );
-	}
+    return (
+      <Column>
+        <ScrollableList
+          scrollKey='removed_accounts'
+          hasMore={hasMore}
+          onLoadMore={this.handleLoadMore}
+          emptyMessage={<FormattedMessage id='group.removed_accounts.empty' defaultMessage='This group does not has any removed accounts.' />}
+        >
+          {accountIds.map(id => (<AccountContainer
+            key={id}
+            id={id}
+            actionIcon='remove'
+            onActionClick={() => this.props.dispatch(removeRemovedAccount(group.get('id'), id))}
+            actionTitle={intl.formatMessage(messages.remove)}
+          />))}
+        </ScrollableList>
+      </Column>
+    );
+  }
 
 }

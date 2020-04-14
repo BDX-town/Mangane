@@ -5,7 +5,6 @@ import LoadMore from './load_more';
 import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
 import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
-import classNames from 'classnames';
 import LoadingIndicator from './loading_indicator';
 
 const MOUSE_IDLE_DELAY = 300;
