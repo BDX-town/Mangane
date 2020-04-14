@@ -19,6 +19,10 @@ lint-sass:
   stage: lint
   script: yarn test:lint:sass
 
+i18n:
+  stage: lint
+  script: yarn manage:translations
+
 build-development:
   stage: build
   script: yarn build:development
