@@ -18,6 +18,7 @@ exports[`<DisplayName /> renders display name + account name 1`] = `
     className="display-name__account"
   >
     @
+    bar@baz
   </span>
 </span>
 `;
