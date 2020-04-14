@@ -3,10 +3,14 @@ image: node:12
 variables:
   NODE_ENV: test
 
+cache:
+  paths:
+    - node_modules
+
 stages:
   - lint
-  - build
   - test
+  - build
 
 before_script:
   - yarn
@@ -19,9 +23,9 @@ lint-sass:
   stage: lint
   script: yarn test:lint:sass
 
-i18n:
-  stage: lint
-  script: yarn manage:translations
+jest:
+  stage: test
+  script: yarn test:jest
 
 build-development:
   stage: build
@@ -30,7 +34,7 @@ build-development:
     NODE_ENV: development
   artifacts:
     paths:
-    - public/packs
+    - public
 
 build-production:
   stage: build
@@ -39,8 +43,11 @@ build-production:
     NODE_ENV: production
   artifacts:
     paths:
-    - public/packs
+    - public
 
-jest:
-  stage: test
-  script: yarn test:jest
+i18n:
+  stage: build
+  script: yarn manage:translations
+  before_script:
+    - yarn
+    - yarn build:development
