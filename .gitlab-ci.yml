@@ -26,6 +26,17 @@ i18n:
 build-development:
   stage: build
   script: yarn build:development
+  variables:
+    NODE_ENV: development
+  artifacts:
+    paths:
+    - public/packs
+
+build-production:
+  stage: build
+  script: yarn build:production
+  variables:
+    NODE_ENV: production
   artifacts:
     paths:
     - public/packs
