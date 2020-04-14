@@ -60,7 +60,7 @@ class LoadMoreMedia extends ImmutablePureComponent {
     this.props.onLoadMore(this.props.maxId);
   }
 
-  render () {
+  render() {
     return (
       <LoadMore
         disabled={this.props.disabled}
@@ -88,7 +88,7 @@ class AccountGallery extends ImmutablePureComponent {
     width: 323,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
@@ -99,7 +99,7 @@ class AccountGallery extends ImmutablePureComponent {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
       this.props.dispatch(fetchAccount(nextProps.params.accountId));
       this.props.dispatch(expandAccountMediaTimeline(nextProps.accountId));
@@ -149,7 +149,7 @@ class AccountGallery extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { attachments, isLoading, hasMore, isAccount, accountId, unavailable, accountUsername } = this.props;
     const { width } = this.state;
 

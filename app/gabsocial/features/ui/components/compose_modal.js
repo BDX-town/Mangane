@@ -47,7 +47,7 @@ class ComposeModal extends ImmutablePureComponent {
     }
   };
 
-  render () {
+  render() {
     const { intl } = this.props;
 
     return (

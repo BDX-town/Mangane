@@ -23,17 +23,17 @@ class Favourites extends ImmutablePureComponent {
     accountIds: ImmutablePropTypes.list,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchFavourites(this.props.params.statusId));
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
       this.props.dispatch(fetchFavourites(nextProps.params.statusId));
     }
   }
 
-  render () {
+  render() {
     const { accountIds } = this.props;
 
     if (!accountIds) {

@@ -10,7 +10,7 @@ export default class AutosuggestAccount extends ImmutablePureComponent {
     account: ImmutablePropTypes.map.isRequired,
   };
 
-  render () {
+  render() {
     const { account } = this.props;
 
     return (

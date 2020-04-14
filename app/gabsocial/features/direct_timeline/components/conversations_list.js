@@ -27,7 +27,7 @@ export default class ConversationsList extends ImmutablePureComponent {
     this._selectChild(elementIndex, false);
   }
 
-  _selectChild (index, align_top) {
+  _selectChild(index, align_top) {
     const container = this.node.node;
     const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
@@ -53,7 +53,7 @@ export default class ConversationsList extends ImmutablePureComponent {
     }
   }, 300, { leading: true })
 
-  render () {
+  render() {
     const { conversations, onLoadMore, ...other } = this.props;
 
     return (

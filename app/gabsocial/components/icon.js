@@ -10,7 +10,7 @@ export default class Icon extends React.PureComponent {
     fixedWidth: PropTypes.bool,
   };
 
-  render () {
+  render() {
     const { id, className, fixedWidth, ...other } = this.props;
     // Use the font awesome retweet icon, but change its alt
     // tag. There is a common adblocker rule which hides elements with

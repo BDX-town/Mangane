@@ -33,7 +33,7 @@ class Favourites extends ImmutablePureComponent {
     isMyAccount: PropTypes.bool.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchFavouritedStatuses());
   }
 
@@ -41,7 +41,7 @@ class Favourites extends ImmutablePureComponent {
     this.props.dispatch(expandFavouritedStatuses());
   }, 300, { leading: true })
 
-  render () {
+  render() {
     const { statusIds, hasMore, isLoading, isMyAccount } = this.props;
 
     if (!isMyAccount) {

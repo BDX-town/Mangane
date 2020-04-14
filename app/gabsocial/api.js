@@ -34,7 +34,7 @@ export default getState => {
       'Authorization': `Bearer ${access_token}`,
     } : {}),
 
-    transformResponse: [function (data) {
+    transformResponse: [function(data) {
       try {
         return JSON.parse(data);
       } catch(Exception) {

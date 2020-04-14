@@ -32,7 +32,7 @@ export default class Avatar extends React.PureComponent {
     this.setState({ hovering: false });
   }
 
-  render () {
+  render() {
     const { account, size, animate, inline } = this.props;
     if (!account) return null;
     const { hovering } = this.state;

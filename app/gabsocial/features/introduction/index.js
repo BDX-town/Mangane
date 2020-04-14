@@ -84,7 +84,7 @@ class Introduction extends React.PureComponent {
     currentIndex: 0,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.pages = [
       <FrameWelcome domain={this.props.domain} onNext={this.handleNext} />,
       <FrameFederation onNext={this.handleNext} />,
@@ -139,7 +139,7 @@ class Introduction extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { currentIndex } = this.state;
     const { pages } = this;
 

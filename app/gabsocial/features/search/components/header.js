@@ -21,14 +21,14 @@ class Header extends ImmutablePureComponent {
     submittedValue: '',
   };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.submitted) {
       const submittedValue = nextProps.value;
       this.setState({ submittedValue });
     }
   }
 
-  render () {
+  render() {
     const { submittedValue } = this.state;
 
     if (!submittedValue) {

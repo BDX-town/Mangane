@@ -35,7 +35,7 @@ class TabsBar extends React.PureComponent {
 
   lastScrollTop = 0;
 
-  componentDidMount () {
+  componentDidMount() {
     this.window = window;
     this.documentElement = document.scrollingElement || document.documentElement;
 
@@ -44,7 +44,7 @@ class TabsBar extends React.PureComponent {
     this.handleScroll();
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.detachScrollListener();
   }
 
@@ -52,11 +52,11 @@ class TabsBar extends React.PureComponent {
     this.node = ref;
   }
 
-  attachScrollListener () {
+  attachScrollListener() {
     this.window.addEventListener('scroll', this.handleScroll);
   }
 
-  detachScrollListener () {
+  detachScrollListener() {
     this.window.removeEventListener('scroll', this.handleScroll);
   }
 
@@ -117,7 +117,7 @@ class TabsBar extends React.PureComponent {
     trailing: true,
   });
 
-  render () {
+  render() {
     const { account, onOpenCompose, onOpenSidebar } = this.props;
     const { collapsed } = this.state;
 

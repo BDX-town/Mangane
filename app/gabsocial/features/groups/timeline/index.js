@@ -41,7 +41,7 @@ class GroupTimeline extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
     const { id } = this.props.params;
 
@@ -50,7 +50,7 @@ class GroupTimeline extends React.PureComponent {
     this.disconnect = dispatch(connectGroupStream(id));
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.disconnect) {
       this.disconnect();
       this.disconnect = null;
@@ -62,7 +62,7 @@ class GroupTimeline extends React.PureComponent {
     this.props.dispatch(expandGroupTimeline(id, { maxId }));
   }
 
-  render () {
+  render() {
     const { columnId, group, relationships, account } = this.props;
     const { id } = this.props.params;
 

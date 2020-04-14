@@ -17,7 +17,7 @@ class SearchPopout extends React.PureComponent {
     style: PropTypes.object,
   };
 
-  render () {
+  render() {
     const { style } = this.props;
     const extraInformation = searchEnabled ? <FormattedMessage id='search_popout.tips.full_text' defaultMessage='Simple text returns posts you have written, favorited, reposted, or have been mentioned in, as well as matching usernames, display names, and hashtags.' /> : <FormattedMessage id='search_popout.tips.text' defaultMessage='Simple text returns matching display names, usernames and hashtags' />;
     return (
@@ -99,7 +99,7 @@ class Search extends React.PureComponent {
     this.setState({ expanded: false });
   }
 
-  render () {
+  render() {
     const { intl, value, submitted } = this.props;
     const { expanded } = this.state;
     const hasValue = value.length > 0 || submitted;

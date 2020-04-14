@@ -12,7 +12,7 @@ export default class UploadForm extends ImmutablePureComponent {
     mediaIds: ImmutablePropTypes.list.isRequired,
   };
 
-  render () {
+  render() {
     const { mediaIds } = this.props;
     const classes = classNames('compose-form__uploads-wrapper', {
       'contains-media': mediaIds.size !== 0,

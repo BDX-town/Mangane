@@ -43,7 +43,7 @@ class Bundle extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.timeout) {
       clearTimeout(this.timeout);
     }

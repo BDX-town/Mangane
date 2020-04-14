@@ -30,17 +30,17 @@ class PublicTimeline extends React.PureComponent {
     local: PropTypes.bool,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this._connect();
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.local !== this.props.local) {
       this._connect();
     }
   }
 
-  _connect () {
+  _connect() {
     const { dispatch, local } = this.props;
 
     dispatch(local ? expandCommunityTimeline() : expandPublicTimeline());
@@ -67,7 +67,7 @@ class PublicTimeline extends React.PureComponent {
     this.masonry.forcePack();
   }, 50)
 
-  render () {
+  render() {
     const { statusIds, hasMore, isLoading } = this.props;
 
     const sizes = [

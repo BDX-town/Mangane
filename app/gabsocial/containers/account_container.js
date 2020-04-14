@@ -31,7 +31,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
-  onFollow (account) {
+  onFollow(account) {
     if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
       if (unfollowModal) {
         dispatch(openModal('CONFIRM', {
@@ -47,7 +47,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onBlock (account) {
+  onBlock(account) {
     if (account.getIn(['relationship', 'blocking'])) {
       dispatch(unblockAccount(account.get('id')));
     } else {
@@ -55,7 +55,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onMute (account) {
+  onMute(account) {
     if (account.getIn(['relationship', 'muting'])) {
       dispatch(unmuteAccount(account.get('id')));
     } else {
@@ -64,7 +64,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
 
-  onMuteNotifications (account, notifications) {
+  onMuteNotifications(account, notifications) {
     dispatch(muteAccount(account.get('id'), notifications));
   },
 });

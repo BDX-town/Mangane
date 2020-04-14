@@ -37,13 +37,13 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     hasMore: PropTypes.bool,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     const { params: { id } } = this.props;
 
     this.props.dispatch(fetchRemovedAccounts(id));
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.props.dispatch(fetchRemovedAccounts(nextProps.params.id));
     }
@@ -59,7 +59,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     };
   }
 
-  render () {
+  render() {
     const { accountIds, hasMore, group, intl } = this.props;
 
     if (!group || !accountIds) {

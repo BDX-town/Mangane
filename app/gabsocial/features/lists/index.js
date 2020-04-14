@@ -42,11 +42,11 @@ class Lists extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchLists());
   }
 
-  render () {
+  render() {
     const { intl, lists } = this.props;
 
     if (!lists) {

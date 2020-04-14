@@ -19,7 +19,7 @@ class EmbedModal extends ImmutablePureComponent {
     oembed: null,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { url } = this.props;
 
     this.setState({ loading: true });
@@ -49,7 +49,7 @@ class EmbedModal extends ImmutablePureComponent {
     e.target.select();
   }
 
-  render () {
+  render() {
     const { oembed } = this.state;
 
     return (

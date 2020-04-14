@@ -41,7 +41,7 @@ class DropdownMenu extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('click', this.handleDocumentClick, false);
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
@@ -49,7 +49,7 @@ class DropdownMenu extends React.PureComponent {
     this.setState({ mounted: true });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('click', this.handleDocumentClick, false);
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
@@ -117,7 +117,7 @@ class DropdownMenu extends React.PureComponent {
     }
   }
 
-  renderItem (option, i) {
+  renderItem(option, i) {
     if (option === null) {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
@@ -143,7 +143,7 @@ class DropdownMenu extends React.PureComponent {
     );
   }
 
-  render () {
+  render() {
     const { items, style, placement, arrowOffsetLeft, arrowOffsetTop } = this.props;
     const { mounted } = this.state;
     return (
@@ -252,7 +252,7 @@ export default class Dropdown extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { icon, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard } = this.props;
     const open = this.state.id === openDropdownId;
 

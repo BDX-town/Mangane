@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onClick () {
+  onClick() {
     dispatch((_, getState) => {
       if (getState().getIn(['compose', 'poll'])) {
         dispatch(removePoll());

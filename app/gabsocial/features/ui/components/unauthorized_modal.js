@@ -28,7 +28,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
     this.props.onClose('UNAUTHORIZED');
   };
 
-  render () {
+  render() {
     const { intl, siteTitle } = this.props;
 
     return (

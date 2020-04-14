@@ -46,7 +46,7 @@ export default class MediaContainer extends PureComponent {
     this.setState({ media: null, index: null, time: null });
   }
 
-  render () {
+  render() {
     const { locale, components } = this.props;
 
     return (

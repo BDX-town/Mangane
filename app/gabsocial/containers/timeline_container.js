@@ -32,7 +32,7 @@ export default class TimelineContainer extends React.PureComponent {
     local: !initialState.settings.known_fediverse,
   };
 
-  render () {
+  render() {
     const { locale, hashtag, local } = this.props;
 
     let timeline;

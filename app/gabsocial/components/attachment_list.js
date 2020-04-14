@@ -13,7 +13,7 @@ export default class AttachmentList extends ImmutablePureComponent {
     compact: PropTypes.bool,
   };
 
-  render () {
+  render() {
     const { media, compact } = this.props;
 
     if (compact) {

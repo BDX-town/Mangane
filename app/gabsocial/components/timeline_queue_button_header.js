@@ -17,7 +17,7 @@ export default class TimelineQueueButtonHeader extends React.PureComponent {
     itemType: 'item',
   };
 
-  render () {
+  render() {
     const { count, itemType, onClick } = this.props;
 
     const classes = classNames('timeline-queue-header', {

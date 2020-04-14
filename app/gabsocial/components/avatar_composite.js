@@ -15,7 +15,7 @@ export default class AvatarComposite extends React.PureComponent {
     animate: autoPlayGif,
   };
 
-  renderItem (account, size, index) {
+  renderItem(account, size, index) {
     const { animate } = this.props;
 
     let width  = 50;

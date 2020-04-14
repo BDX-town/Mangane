@@ -35,19 +35,19 @@ class HomeTimeline extends React.PureComponent {
     this.props.dispatch(expandHomeTimeline({ maxId }));
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this._checkIfReloadNeeded(false, this.props.isPartial);
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     this._checkIfReloadNeeded(prevProps.isPartial, this.props.isPartial);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this._stopPolling();
   }
 
-  _checkIfReloadNeeded (wasPartial, isPartial) {
+  _checkIfReloadNeeded(wasPartial, isPartial) {
     const { dispatch } = this.props;
 
     if (wasPartial === isPartial) {
@@ -61,14 +61,14 @@ class HomeTimeline extends React.PureComponent {
     }
   }
 
-  _stopPolling () {
+  _stopPolling() {
     if (this.polling) {
       clearInterval(this.polling);
       this.polling = null;
     }
   }
 
-  render () {
+  render() {
     const { intl, hasUnread, siteTitle } = this.props;
 
     return (

@@ -64,7 +64,7 @@ class Option extends React.PureComponent {
     this.props.onSuggestionSelected(tokenStart, token, value, ['poll', 'options', this.props.index]);
   }
 
-  render () {
+  render() {
     const { isPollMultiple, title, index, intl } = this.props;
 
     return (
@@ -130,7 +130,7 @@ class PollForm extends ImmutablePureComponent {
     this.props.onChangeSettings(this.props.expiresIn, !this.props.isMultiple);
   };
 
-  render () {
+  render() {
     const { options, expiresIn, isMultiple, onChangeOption, onRemoveOption, intl, ...other } = this.props;
 
     if (!options) {

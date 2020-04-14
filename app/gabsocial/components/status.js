@@ -106,11 +106,11 @@ class Status extends ImmutablePureComponent {
   };
 
   // Track height changes we know about to compensate scrolling
-  componentDidMount () {
+  componentDidMount() {
     this.didShowCard = !this.props.muted && !this.props.hidden && this.props.status && this.props.status.get('card');
   }
 
-  getSnapshotBeforeUpdate () {
+  getSnapshotBeforeUpdate() {
     if (this.props.getScrollPosition) {
       return this.props.getScrollPosition();
     } else {
@@ -130,7 +130,7 @@ class Status extends ImmutablePureComponent {
   }
 
   // Compensate height changes
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     const doShowCard  = !this.props.muted && !this.props.hidden && this.props.status && this.props.status.get('card');
 
     if (doShowCard && !this.didShowCard) {
@@ -186,11 +186,11 @@ class Status extends ImmutablePureComponent {
     this.props.onToggleHidden(this._properStatus());
   };
 
-  renderLoadingMediaGallery () {
+  renderLoadingMediaGallery() {
     return <div className='media_gallery' style={{ height: '110px' }} />;
   }
 
-  renderLoadingVideoPlayer () {
+  renderLoadingVideoPlayer() {
     return <div className='media-spoiler-video' style={{ height: '110px' }} />;
   }
 
@@ -240,7 +240,7 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
-  _properStatus () {
+  _properStatus() {
     const { status } = this.props;
 
     if (status.get('reblog', null) !== null && typeof status.get('reblog') === 'object') {
@@ -254,7 +254,7 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
-  render () {
+  render() {
     let media = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 

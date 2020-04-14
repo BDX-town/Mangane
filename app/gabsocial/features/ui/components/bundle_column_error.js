@@ -23,7 +23,7 @@ class BundleColumnError extends React.PureComponent {
     this.props.onRetry();
   }
 
-  render () {
+  render() {
     const { intl: { formatMessage } } = this.props;
 
     return (

@@ -35,11 +35,11 @@ const mapDispatchToProps = dispatch => ({
     dispatch(mentionCompose(account, router));
   },
 
-  onModalReblog (status) {
+  onModalReblog(status) {
     dispatch(reblog(status));
   },
 
-  onReblog (status, e) {
+  onReblog(status, e) {
     if (status.get('reblogged')) {
       dispatch(unreblog(status));
     } else {
@@ -51,7 +51,7 @@ const mapDispatchToProps = dispatch => ({
     }
   },
 
-  onFavourite (status) {
+  onFavourite(status) {
     if (status.get('favourited')) {
       dispatch(unfavourite(status));
     } else {
@@ -59,7 +59,7 @@ const mapDispatchToProps = dispatch => ({
     }
   },
 
-  onToggleHidden (status) {
+  onToggleHidden(status) {
     if (status.get('hidden')) {
       dispatch(revealStatus(status.get('id')));
     } else {

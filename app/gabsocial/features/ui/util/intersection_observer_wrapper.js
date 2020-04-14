@@ -11,7 +11,7 @@ class IntersectionObserverWrapper {
   observerBacklog = [];
   observer = null;
 
-  connect (options) {
+  connect(options) {
     const onIntersection = (entries) => {
       entries.forEach(entry => {
         const id = entry.target.getAttribute('data-id');
@@ -28,7 +28,7 @@ class IntersectionObserverWrapper {
     this.observerBacklog = null;
   }
 
-  observe (id, node, callback) {
+  observe(id, node, callback) {
     if (!this.observer) {
       this.observerBacklog.push([ id, node, callback ]);
     } else {
@@ -37,14 +37,14 @@ class IntersectionObserverWrapper {
     }
   }
 
-  unobserve (id, node) {
+  unobserve(id, node) {
     if (this.observer) {
       delete this.callbacks[id];
       this.observer.unobserve(node);
     }
   }
 
-  disconnect () {
+  disconnect() {
     if (this.observer) {
       this.callbacks = {};
       this.observer.disconnect();

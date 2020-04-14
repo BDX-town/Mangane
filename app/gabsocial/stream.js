@@ -26,7 +26,7 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
     };
 
     const subscription = getStream(streamingAPIBaseURL, accessToken, path, {
-      connected () {
+      connected() {
         if (pollingRefresh) {
           clearPolling();
         }
@@ -34,7 +34,7 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
         onConnect();
       },
 
-      disconnected () {
+      disconnected() {
         if (pollingRefresh) {
           polling = setTimeout(() => setupPolling(), randomIntUpTo(40000));
         }
@@ -42,11 +42,11 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
         onDisconnect();
       },
 
-      received (data) {
+      received(data) {
         onReceive(data);
       },
 
-      reconnected () {
+      reconnected() {
         if (pollingRefresh) {
           clearPolling();
           pollingRefresh(dispatch);

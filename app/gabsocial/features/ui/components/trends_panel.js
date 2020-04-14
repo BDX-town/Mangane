@@ -16,7 +16,7 @@ class TrendsPanel extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.fetchTrends();
   }
 

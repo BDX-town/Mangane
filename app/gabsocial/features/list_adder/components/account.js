@@ -26,7 +26,7 @@ class Account extends ImmutablePureComponent {
     account: ImmutablePropTypes.map.isRequired,
   };
 
-  render () {
+  render() {
     const { account } = this.props;
     return (
       <div className='account'>

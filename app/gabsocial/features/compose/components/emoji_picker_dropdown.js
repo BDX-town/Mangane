@@ -56,7 +56,7 @@ class ModifierPickerMenu extends React.PureComponent {
     this.props.onSelect(e.currentTarget.getAttribute('data-index') * 1);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.active) {
       this.attachListeners();
     } else {
@@ -64,7 +64,7 @@ class ModifierPickerMenu extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.removeListeners();
   }
 
@@ -74,12 +74,12 @@ class ModifierPickerMenu extends React.PureComponent {
     }
   }
 
-  attachListeners () {
+  attachListeners() {
     document.addEventListener('click', this.handleDocumentClick, false);
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
-  removeListeners () {
+  removeListeners() {
     document.removeEventListener('click', this.handleDocumentClick, false);
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
@@ -88,7 +88,7 @@ class ModifierPickerMenu extends React.PureComponent {
     this.node = c;
   }
 
-  render () {
+  render() {
     const { active } = this.props;
 
     return (
@@ -128,7 +128,7 @@ class ModifierPicker extends React.PureComponent {
     this.props.onClose();
   }
 
-  render () {
+  render() {
     const { active, modifier } = this.props;
 
     return (
@@ -176,12 +176,12 @@ class EmojiPickerMenu extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('click', this.handleDocumentClick, false);
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('click', this.handleDocumentClick, false);
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
@@ -233,7 +233,7 @@ class EmojiPickerMenu extends React.PureComponent {
     this.props.onSkinTone(modifier);
   }
 
-  render () {
+  render() {
     const { loading, style, intl, custom_emojis, skinTone, frequentlyUsedEmojis } = this.props;
 
     if (loading) {
@@ -347,7 +347,7 @@ class EmojiPickerDropdown extends React.PureComponent {
     return this.target;
   }
 
-  render () {
+  render() {
     const { intl, onPickEmoji, onSkinTone, skinTone, frequentlyUsedEmojis } = this.props;
     const title = intl.formatMessage(messages.emoji);
     const { active, loading, placement } = this.state;

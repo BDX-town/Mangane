@@ -58,7 +58,7 @@ class BoostModal extends ImmutablePureComponent {
     this.button = c;
   }
 
-  render () {
+  render() {
     const { status, intl } = this.props;
     const buttonText = status.get('reblogged') ? messages.cancel_reblog : messages.reblog;
 

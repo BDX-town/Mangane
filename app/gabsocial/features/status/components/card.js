@@ -75,7 +75,7 @@ export default class Card extends React.PureComponent {
     embedded: false,
   };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!Immutable.is(this.props.card, nextProps.card)) {
       this.setState({ embedded: false });
     }
@@ -119,7 +119,7 @@ export default class Card extends React.PureComponent {
     }
   }
 
-  renderVideo () {
+  renderVideo() {
     const { card }  = this.props;
     const content   = { __html: addAutoPlay(card.get('html')) };
     const { width } = this.state;
@@ -136,7 +136,7 @@ export default class Card extends React.PureComponent {
     );
   }
 
-  render () {
+  render() {
     const { card, maxDescription, compact } = this.props;
     const { width, embedded } = this.state;
 

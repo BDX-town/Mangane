@@ -39,7 +39,7 @@ class List extends ImmutablePureComponent {
     added: false,
   };
 
-  render () {
+  render() {
     const { list, intl, onRemove, onAdd, added } = this.props;
 
     let button;

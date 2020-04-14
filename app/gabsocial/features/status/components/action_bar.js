@@ -163,7 +163,7 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { status, intl, me } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));

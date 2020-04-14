@@ -53,7 +53,7 @@ class HashtagTimeline extends React.PureComponent {
     }
   }
 
-  _subscribe (dispatch, id, tags = {}) {
+  _subscribe(dispatch, id, tags = {}) {
     let any  = (tags.any || []).map(tag => tag.value);
     let all  = (tags.all || []).map(tag => tag.value);
     let none = (tags.none || []).map(tag => tag.value);
@@ -68,12 +68,12 @@ class HashtagTimeline extends React.PureComponent {
     });
   }
 
-  _unsubscribe () {
+  _unsubscribe() {
     this.disconnects.map(disconnect => disconnect());
     this.disconnects = [];
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
     const { id, tags } = this.props.params;
 
@@ -81,7 +81,7 @@ class HashtagTimeline extends React.PureComponent {
     dispatch(expandHashtagTimeline(id, { tags }));
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { dispatch, params } = this.props;
     const { id, tags } = nextProps.params;
 
@@ -93,7 +93,7 @@ class HashtagTimeline extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this._unsubscribe();
   }
 
@@ -102,7 +102,7 @@ class HashtagTimeline extends React.PureComponent {
     this.props.dispatch(expandHashtagTimeline(id, { maxId, tags }));
   }
 
-  render () {
+  render() {
     const { hasUnread } = this.props;
     const { id } = this.props.params;
 

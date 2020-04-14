@@ -26,7 +26,7 @@ export default class IntersectionObserverArticle extends React.Component {
     isHidden: false, // set to true in requestIdleCallback to trigger un-render
   }
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     const isUnrendered = !this.state.isIntersecting && (this.state.isHidden || this.props.cachedHeight);
     const willBeUnrendered = !nextState.isIntersecting && (nextState.isHidden || nextProps.cachedHeight);
     if (!!isUnrendered !== !!willBeUnrendered) {
@@ -38,7 +38,7 @@ export default class IntersectionObserverArticle extends React.Component {
     return !propsToDiff.every(prop => is(nextProps[prop], this.props[prop]));
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { intersectionObserverWrapper, id } = this.props;
 
     intersectionObserverWrapper.observe(
@@ -50,7 +50,7 @@ export default class IntersectionObserverArticle extends React.Component {
     this.componentMounted = true;
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { intersectionObserverWrapper, id } = this.props;
     intersectionObserverWrapper.unobserve(id, this.node);
 
@@ -100,7 +100,7 @@ export default class IntersectionObserverArticle extends React.Component {
     this.node = node;
   }
 
-  render () {
+  render() {
     const { children, id, index, listLength, cachedHeight } = this.props;
     const { isIntersecting, isHidden } = this.state;
 

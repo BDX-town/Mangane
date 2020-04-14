@@ -21,11 +21,11 @@ class FilterBar extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  onClick (notificationType) {
+  onClick(notificationType) {
     return () => this.props.selectFilter(notificationType);
   }
 
-  render () {
+  render() {
     const { selectedFilter, advancedMode, intl } = this.props;
     const renderedElement = !advancedMode ? (
       <div className='notification__filter-bar'>

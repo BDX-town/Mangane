@@ -44,7 +44,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onClose () {
+  onClose() {
     dispatch(closeSidebar());
   },
   onClickLogOut(e) {
@@ -64,7 +64,7 @@ class SidebarMenu extends ImmutablePureComponent {
     onClose: PropTypes.func.isRequired,
   };
 
-  render () {
+  render() {
     const { sidebarOpen, onClose, intl, account, onClickLogOut } = this.props;
     if (!account) return null;
     const acct = account.get('acct');

@@ -51,7 +51,7 @@ class UploadButton extends ImmutablePureComponent {
     this.fileElement = c;
   }
 
-  render () {
+  render() {
     const { intl, resetFileKey, unavailable, disabled, acceptContentTypes } = this.props;
 
     if (unavailable) {

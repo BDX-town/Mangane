@@ -16,7 +16,7 @@ export default class Column extends React.PureComponent {
     backBtnSlim: PropTypes.bool,
   };
 
-  render () {
+  render() {
     const { heading, icon, children, active, hideHeadingOnMobile, backBtnSlim } = this.props;
 
     const showHeading = heading && (!hideHeadingOnMobile || (hideHeadingOnMobile && !isMobile(window.innerWidth)));

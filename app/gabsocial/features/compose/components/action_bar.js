@@ -43,7 +43,7 @@ class ActionBar extends React.PureComponent {
     this.props.onOpenHotkeys();
   }
 
-  render () {
+  render() {
     const { intl, onClickLogOut } = this.props;
     const size = this.props.size || 16;
 

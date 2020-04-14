@@ -50,7 +50,7 @@ class Item extends React.PureComponent {
     }
   }
 
-  hoverToPlay () {
+  hoverToPlay() {
     const { attachment } = this.props;
     return !autoPlayGif && attachment.get('type') === 'gifv';
   }
@@ -75,19 +75,19 @@ class Item extends React.PureComponent {
     e.stopPropagation();
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.attachment.get('blurhash')) {
       this._decode();
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.attachment.get('blurhash') !== this.props.attachment.get('blurhash') && this.props.attachment.get('blurhash')) {
       this._decode();
     }
   }
 
-  _decode () {
+  _decode() {
     const hash   = this.props.attachment.get('blurhash');
     const pixels = decode(hash, 32, 32);
 
@@ -107,7 +107,7 @@ class Item extends React.PureComponent {
     this.setState({ loaded: true });
   }
 
-  render () {
+  render() {
     const { attachment, standalone, displayWidth, visible, dimensions } = this.props;
 
     let width  = 100;
@@ -241,7 +241,7 @@ class MediaGallery extends React.PureComponent {
     width: this.props.defaultWidth,
   };
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
       this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
     } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
@@ -272,7 +272,7 @@ class MediaGallery extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { media, intl, sensitive, height, defaultWidth } = this.props;
     const { visible } = this.state;
 

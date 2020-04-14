@@ -21,7 +21,7 @@ class Account extends ImmutablePureComponent {
     this.props.onUnblockDomain(this.props.domain);
   }
 
-  render () {
+  render() {
     const { domain, intl } = this.props;
 
     return (

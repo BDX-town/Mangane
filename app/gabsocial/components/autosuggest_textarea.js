@@ -159,7 +159,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.textarea.focus();
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.suggestions !== this.props.suggestions && nextProps.suggestions.size > 0 && this.state.suggestionsHidden && this.state.focused) {
       this.setState({ suggestionsHidden: false });
     }
@@ -198,7 +198,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     );
   }
 
-  render () {
+  render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children } = this.props;
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };

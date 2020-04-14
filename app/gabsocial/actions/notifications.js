@@ -240,7 +240,7 @@ export function scrollTopNotifications(top) {
   };
 }
 
-export function setFilter (filterType) {
+export function setFilter(filterType) {
   return dispatch => {
     dispatch({
       type: NOTIFICATIONS_FILTER_SET,

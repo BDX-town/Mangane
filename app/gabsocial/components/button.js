@@ -34,7 +34,7 @@ export default class Button extends React.PureComponent {
     this.node.focus();
   }
 
-  render () {
+  render() {
     const style = {
       padding: `0 ${this.props.size / 2.25}px`,
       height: `${this.props.size}px`,

@@ -57,7 +57,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
-  onReply (status, router) {
+  onReply(status, router) {
     dispatch((_, getState) => {
       let state = getState();
       if (state.getIn(['compose', 'text']).trim().length !== 0) {
@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     });
   },
 
-  onModalReblog (status) {
+  onModalReblog(status) {
     if (status.get('reblogged')) {
       dispatch(unreblog(status));
     } else {
@@ -80,7 +80,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onReblog (status, e) {
+  onReblog(status, e) {
     if (e.shiftKey || !boostModal) {
       this.onModalReblog(status);
     } else {
@@ -88,7 +88,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onFavourite (status) {
+  onFavourite(status) {
     if (status.get('favourited')) {
       dispatch(unfavourite(status));
     } else {
@@ -96,7 +96,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onPin (status) {
+  onPin(status) {
     if (status.get('pinned')) {
       dispatch(unpin(status));
     } else {
@@ -104,14 +104,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onEmbed (status) {
+  onEmbed(status) {
     dispatch(openModal('EMBED', {
       url: status.get('url'),
       onError: error => dispatch(showAlertForError(error)),
     }));
   },
 
-  onDelete (status, history, withRedraft = false) {
+  onDelete(status, history, withRedraft = false) {
     if (!deleteModal) {
       dispatch(deleteStatus(status.get('id'), history, withRedraft));
     } else {
@@ -123,23 +123,23 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onDirect (account, router) {
+  onDirect(account, router) {
     dispatch(directCompose(account, router));
   },
 
-  onMention (account, router) {
+  onMention(account, router) {
     dispatch(mentionCompose(account, router));
   },
 
-  onOpenMedia (media, index) {
+  onOpenMedia(media, index) {
     dispatch(openModal('MEDIA', { media, index }));
   },
 
-  onOpenVideo (media, time) {
+  onOpenVideo(media, time) {
     dispatch(openModal('VIDEO', { media, time }));
   },
 
-  onBlock (status) {
+  onBlock(status) {
     const account = status.get('account');
     dispatch(openModal('CONFIRM', {
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
@@ -153,15 +153,15 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onReport (status) {
+  onReport(status) {
     dispatch(initReport(status.get('account'), status));
   },
 
-  onMute (account) {
+  onMute(account) {
     dispatch(initMuteModal(account));
   },
 
-  onMuteConversation (status) {
+  onMuteConversation(status) {
     if (status.get('muted')) {
       dispatch(unmuteStatus(status.get('id')));
     } else {
@@ -169,7 +169,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onToggleHidden (status) {
+  onToggleHidden(status) {
     if (status.get('hidden')) {
       dispatch(revealStatus(status.get('id')));
     } else {

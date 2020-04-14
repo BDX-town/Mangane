@@ -6,7 +6,7 @@ import ModalContainer from '../../ui/containers/modal_container';
 
 export default class Compose extends React.PureComponent {
 
-  render () {
+  render() {
     return (
       <div>
         <ComposeFormContainer />

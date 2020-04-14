@@ -31,7 +31,7 @@ class GroupPage extends ImmutablePureComponent {
       dispatch(fetchGroup(id));
     }
 
-    render () {
+    render() {
       const { children, group, relationships } = this.props;
 
       return (

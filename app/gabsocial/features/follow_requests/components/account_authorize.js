@@ -23,7 +23,7 @@ class AccountAuthorize extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  render () {
+  render() {
     const { intl, account, onAuthorize, onReject } = this.props;
     const content = { __html: account.get('note_emojified') };
 

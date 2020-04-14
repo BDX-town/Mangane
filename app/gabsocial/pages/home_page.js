@@ -22,7 +22,7 @@ const mapStateToProps = state => {
 export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
 
-  render () {
+  render() {
     const { children, account, hasPatron } = this.props;
 
     return (

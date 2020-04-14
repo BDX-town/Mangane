@@ -22,7 +22,7 @@ class BundleModalError extends React.PureComponent {
     this.props.onRetry();
   }
 
-  render () {
+  render() {
     const { onClose, intl: { formatMessage } } = this.props;
 
     // Keep the markup in sync with <ModalLoading />

@@ -26,7 +26,7 @@ export default class TimelineContainer extends React.PureComponent {
     locale: PropTypes.string.isRequired,
   };
 
-  render () {
+  render() {
     const { locale } = this.props;
 
     return (

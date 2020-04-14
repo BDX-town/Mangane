@@ -83,11 +83,11 @@ class Header extends ImmutablePureComponent {
     return !location.pathname.match(/\/(followers|following|favorites|pins)\/?$/);
   }
 
-  componentWillMount () {
+  componentWillMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
 
@@ -213,7 +213,7 @@ class Header extends ImmutablePureComponent {
     return actionBtn;
   };
 
-  render () {
+  render() {
     const { account, intl, username, me } = this.props;
     const { isSmallScreen } = this.state;
 

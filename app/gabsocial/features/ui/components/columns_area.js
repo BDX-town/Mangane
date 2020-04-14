@@ -14,7 +14,7 @@ class ColumnsArea extends ImmutablePureComponent {
     layout: PropTypes.object,
   };
 
-  render () {
+  render() {
     const { children } = this.props;
     const layout = this.props.layout || { LEFT:null, RIGHT:null };
 

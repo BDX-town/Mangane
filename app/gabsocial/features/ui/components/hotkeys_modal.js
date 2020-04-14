@@ -16,7 +16,7 @@ class HotkeysModal extends ImmutablePureComponent {
     onClose: PropTypes.func.isRequired,
   };
 
-  render () {
+  render() {
     const { intl, onClose } = this.props;
 
     return (

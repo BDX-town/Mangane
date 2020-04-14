@@ -22,7 +22,7 @@ class SearchResults extends ImmutablePureComponent {
     isSmallScreen: (window.innerWidth <= 895),
   }
 
-  render () {
+  render() {
     const { results } = this.props;
     const { isSmallScreen } = this.state;
 

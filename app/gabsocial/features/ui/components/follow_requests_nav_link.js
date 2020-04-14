@@ -25,7 +25,7 @@ class FollowRequestsNavLink extends React.Component {
     count: PropTypes.number.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch, locked } = this.props;
 
     if (locked) {
@@ -33,7 +33,7 @@ class FollowRequestsNavLink extends React.Component {
     }
   }
 
-  render () {
+  render() {
     const { locked, count } = this.props;
 
     if (!locked || count === 0) {

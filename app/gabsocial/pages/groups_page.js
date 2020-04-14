@@ -22,7 +22,7 @@ class GroupsPage extends ImmutablePureComponent {
       account: ImmutablePropTypes.map,
     };
 
-    render () {
+    render() {
       const { children } = this.props;
 
       return (

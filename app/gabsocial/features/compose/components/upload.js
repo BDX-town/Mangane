@@ -86,7 +86,7 @@ class Upload extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { intl, media } = this.props;
     const active          = this.state.hovered || this.state.focused;
     const description     = this.state.dirtyDescription || (this.state.dirtyDescription !== '' && media.get('description')) || '';

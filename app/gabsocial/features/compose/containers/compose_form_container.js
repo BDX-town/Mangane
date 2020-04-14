@@ -30,35 +30,35 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
 
-  onChange (text) {
+  onChange(text) {
     dispatch(changeCompose(text));
   },
 
-  onSubmit (router, group) {
+  onSubmit(router, group) {
     dispatch(submitCompose(router, group));
   },
 
-  onClearSuggestions () {
+  onClearSuggestions() {
     dispatch(clearComposeSuggestions());
   },
 
-  onFetchSuggestions (token) {
+  onFetchSuggestions(token) {
     dispatch(fetchComposeSuggestions(token));
   },
 
-  onSuggestionSelected (position, token, suggestion, path) {
+  onSuggestionSelected(position, token, suggestion, path) {
     dispatch(selectComposeSuggestion(position, token, suggestion, path));
   },
 
-  onChangeSpoilerText (checked) {
+  onChangeSpoilerText(checked) {
     dispatch(changeComposeSpoilerText(checked));
   },
 
-  onPaste (files) {
+  onPaste(files) {
     dispatch(uploadCompose(files));
   },
 
-  onPickEmoji (position, data, needsSpace) {
+  onPickEmoji(position, data, needsSpace) {
     dispatch(insertEmojiCompose(position, data, needsSpace));
   },
 

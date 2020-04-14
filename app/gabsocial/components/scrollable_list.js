@@ -79,7 +79,7 @@ export default class ScrollableList extends PureComponent {
     this.scrollToTopOnMouseIdle = false;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.window = window;
     this.documentElement = document.scrollingElement || document.documentElement;
 
@@ -103,7 +103,7 @@ export default class ScrollableList extends PureComponent {
     this.setScrollTop(newScrollTop);
   }
 
-  componentDidUpdate (prevProps, prevState, snapshot) {
+  componentDidUpdate(prevProps, prevState, snapshot) {
     // Reset the scroll position when a new child comes in in order not to
     // jerk the scrollbar around if you're already scrolled down the page.
     if (snapshot !== null) {
@@ -111,12 +111,12 @@ export default class ScrollableList extends PureComponent {
     }
   }
 
-  attachScrollListener () {
+  attachScrollListener() {
     this.window.addEventListener('scroll', this.handleScroll);
     this.window.addEventListener('wheel', this.handleWheel);
   }
 
-  detachScrollListener () {
+  detachScrollListener() {
     this.window.removeEventListener('scroll', this.handleScroll);
     this.window.removeEventListener('wheel', this.handleWheel);
   }
@@ -154,7 +154,7 @@ export default class ScrollableList extends PureComponent {
     trailing: true,
   });
 
-  getSnapshotBeforeUpdate (prevProps) {
+  getSnapshotBeforeUpdate(prevProps) {
     const someItemInserted = React.Children.count(prevProps.children) > 0 &&
       React.Children.count(prevProps.children) < React.Children.count(this.props.children) &&
       this.getFirstChildKey(prevProps) !== this.getFirstChildKey(this.props);
@@ -172,21 +172,21 @@ export default class ScrollableList extends PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.clearMouseIdleTimer();
     this.detachScrollListener();
     this.detachIntersectionObserver();
   }
 
-  attachIntersectionObserver () {
+  attachIntersectionObserver() {
     this.intersectionObserverWrapper.connect();
   }
 
-  detachIntersectionObserver () {
+  detachIntersectionObserver() {
     this.intersectionObserverWrapper.disconnect();
   }
 
-  getFirstChildKey (props) {
+  getFirstChildKey(props) {
     const { children } = props;
     let firstChild     = children;
 
@@ -204,7 +204,7 @@ export default class ScrollableList extends PureComponent {
     this.props.onLoadMore();
   }
 
-  render () {
+  render() {
     const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
     const childrenCount = React.Children.count(children);
 

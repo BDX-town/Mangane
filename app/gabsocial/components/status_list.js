@@ -61,7 +61,7 @@ export default class StatusList extends ImmutablePureComponent {
     this.props.onLoadMore(this.props.statusIds.size > 0 ? this.props.statusIds.last() : undefined);
   }, 300, { leading: true })
 
-  _selectChild (index, align_top) {
+  _selectChild(index, align_top) {
     const container = this.node.node;
     const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
@@ -85,7 +85,7 @@ export default class StatusList extends ImmutablePureComponent {
     this.node = c;
   }
 
-  render () {
+  render() {
     const { statusIds, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other }  = this.props;
 
     if (isPartial) {

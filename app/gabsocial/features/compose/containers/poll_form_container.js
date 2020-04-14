@@ -31,15 +31,15 @@ const mapDispatchToProps = dispatch => ({
     dispatch(changePollSettings(expiresIn, isMultiple));
   },
 
-  onClearSuggestions () {
+  onClearSuggestions() {
     dispatch(clearComposeSuggestions());
   },
 
-  onFetchSuggestions (token) {
+  onFetchSuggestions(token) {
     dispatch(fetchComposeSuggestions(token));
   },
 
-  onSuggestionSelected (position, token, accountId, path) {
+  onSuggestionSelected(position, token, accountId, path) {
     dispatch(selectComposeSuggestion(position, token, accountId, path));
   },
 

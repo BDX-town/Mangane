@@ -19,7 +19,7 @@ export default class MovedNote extends ImmutablePureComponent {
     to: ImmutablePropTypes.map.isRequired,
   };
 
-  render () {
+  render() {
     const { from, to } = this.props;
     const displayNameHtml = { __html: from.get('display_name_html') };
 

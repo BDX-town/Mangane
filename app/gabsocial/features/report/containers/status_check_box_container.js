@@ -10,7 +10,7 @@ const mapStateToProps = (state, { id }) => ({
 
 const mapDispatchToProps = (dispatch, { id }) => ({
 
-  onToggle (e) {
+  onToggle(e) {
     dispatch(toggleStatusReport(id, e.target.checked));
   },
 

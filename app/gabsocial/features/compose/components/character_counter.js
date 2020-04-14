@@ -9,7 +9,7 @@ export default class CharacterCounter extends React.PureComponent {
     max: PropTypes.number.isRequired,
   };
 
-  checkRemainingText (diff) {
+  checkRemainingText(diff) {
     if (diff < 0) {
       return <span className='character-counter character-counter--over'>{diff}</span>;
     }
@@ -17,7 +17,7 @@ export default class CharacterCounter extends React.PureComponent {
     return <span className='character-counter'>{diff}</span>;
   }
 
-  render () {
+  render() {
     const diff = this.props.max - length(this.props.text);
     return this.checkRemainingText(diff);
   }

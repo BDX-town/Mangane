@@ -44,7 +44,7 @@ export default class ActionsModal extends ImmutablePureComponent {
     );
   }
 
-  render () {
+  render() {
     const status = this.props.status && (
       <div className='status light'>
         <div className='boost-modal__status-header'>

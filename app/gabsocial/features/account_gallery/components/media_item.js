@@ -21,19 +21,19 @@ export default class MediaItem extends ImmutablePureComponent {
     loaded: false,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.props.attachment.get('blurhash')) {
       this._decode();
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.attachment.get('blurhash') !== this.props.attachment.get('blurhash') && this.props.attachment.get('blurhash')) {
       this._decode();
     }
   }
 
-  _decode () {
+  _decode() {
     const hash   = this.props.attachment.get('blurhash');
     const pixels = decode(hash, 32, 32);
 
@@ -66,7 +66,7 @@ export default class MediaItem extends ImmutablePureComponent {
     }
   }
 
-  hoverToPlay () {
+  hoverToPlay() {
     return !autoPlayGif && ['gifv', 'video'].indexOf(this.props.attachment.get('type')) !== -1;
   }
 
@@ -82,7 +82,7 @@ export default class MediaItem extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { attachment, displayWidth } = this.props;
     const { visible, loaded } = this.state;
 

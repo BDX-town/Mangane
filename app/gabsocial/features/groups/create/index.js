@@ -70,7 +70,7 @@ class Create extends React.PureComponent {
     this.props.onSubmit(this.context.router.history);
   }
 
-  render () {
+  render() {
     const { title, description, coverImage, disabled, intl } = this.props;
 
     return (

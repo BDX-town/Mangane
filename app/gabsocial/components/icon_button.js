@@ -42,7 +42,7 @@ export default class IconButton extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const style = {
       fontSize: `${this.props.size}px`,
       width: `${this.props.size * 1.28571429}px`,

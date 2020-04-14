@@ -71,7 +71,7 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown, false);
 
     if (this.context.router) {
@@ -85,7 +85,7 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
 
     if (this.context.router) {
@@ -97,7 +97,7 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
-  getIndex () {
+  getIndex() {
     return this.state.index !== null ? this.state.index : this.props.index;
   }
 
@@ -114,7 +114,7 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { media, status, intl, onClose } = this.props;
     const { navigationHidden } = this.state;
 

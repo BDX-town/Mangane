@@ -158,7 +158,7 @@ class ComposeForm extends ImmutablePureComponent {
     document.removeEventListener('click', this.handleClick, false);
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (!this.autosuggestTextarea) return;
 
     // This statement does several things:
@@ -205,7 +205,7 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onPickEmoji(position, data, needsSpace);
   }
 
-  render () {
+  render() {
     const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
     const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
     const disabled = this.props.isSubmitting;

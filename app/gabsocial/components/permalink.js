@@ -27,7 +27,7 @@ export default class Permalink extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     const { href, children, className, onInterceptClick, ...other } = this.props;
 
     return (

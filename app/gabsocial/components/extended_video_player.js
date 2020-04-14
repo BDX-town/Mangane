@@ -21,11 +21,11 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.video.addEventListener('loadeddata', this.handleLoadedData);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.video.removeEventListener('loadeddata', this.handleLoadedData);
   }
 
@@ -39,7 +39,7 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
     if (handler) handler();
   }
 
-  render () {
+  render() {
     const { src, muted, controls, alt } = this.props;
     let conditionalAttributes = {};
     if (isIOS()) {

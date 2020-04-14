@@ -52,7 +52,7 @@ class Search extends React.PureComponent {
     this.props.onClear();
   }
 
-  render () {
+  render() {
     const { value, intl } = this.props;
     const hasValue = value.length > 0;
 

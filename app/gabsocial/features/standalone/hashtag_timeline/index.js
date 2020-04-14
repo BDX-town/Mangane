@@ -26,7 +26,7 @@ class HashtagTimeline extends React.PureComponent {
     hashtag: PropTypes.string.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch, hashtag } = this.props;
 
     dispatch(expandHashtagTimeline(hashtag));
@@ -52,7 +52,7 @@ class HashtagTimeline extends React.PureComponent {
     this.masonry.forcePack();
   }, 50)
 
-  render () {
+  render() {
     const { statusIds, hasMore, isLoading } = this.props;
 
     const sizes = [

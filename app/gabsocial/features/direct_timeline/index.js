@@ -22,7 +22,7 @@ class DirectTimeline extends React.PureComponent {
     hasUnread: PropTypes.bool,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
 
     dispatch(mountConversations());
@@ -30,7 +30,7 @@ class DirectTimeline extends React.PureComponent {
     this.disconnect = dispatch(connectDirectStream());
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.props.dispatch(unmountConversations());
 
     if (this.disconnect) {
@@ -43,7 +43,7 @@ class DirectTimeline extends React.PureComponent {
     this.props.dispatch(expandConversations({ maxId }));
   }
 
-  render () {
+  render() {
     const { intl, hasUnread } = this.props;
 
     return (

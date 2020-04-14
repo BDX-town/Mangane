@@ -138,15 +138,15 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchStatus(this.props.params.statusId));
   }
 
-  componentDidMount () {
+  componentDidMount() {
     attachFullscreenListener(this.onFullScreenChange);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
       this._scrolledIntoView = false;
       this.props.dispatch(fetchStatus(nextProps.params.statusId));
@@ -363,7 +363,7 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  _selectChild (index, align_top) {
+  _selectChild(index, align_top) {
     const container = this.node;
     const element = container.querySelectorAll('.focusable')[index];
 
@@ -377,7 +377,7 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  renderChildren (list) {
+  renderChildren(list) {
     return list.map(id => (
       <StatusContainer
         key={id}
@@ -393,7 +393,7 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (this._scrolledIntoView) {
       return;
     }
@@ -410,7 +410,7 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     detachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -418,7 +418,7 @@ class Status extends ImmutablePureComponent {
     this.setState({ fullscreen: isFullscreen() });
   }
 
-  render () {
+  render() {
     let ancestors, descendants;
     const { status, ancestorsIds, descendantsIds, intl, domain, me } = this.props;
 

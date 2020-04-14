@@ -51,7 +51,7 @@ class GabSocialMount extends React.PureComponent {
     me: PropTypes.string,
   };
 
-  render () {
+  render() {
     const { me } = this.props;
     if (me === null) return null;
 
@@ -82,7 +82,7 @@ export default class GabSocial extends React.PureComponent {
     locale: PropTypes.string.isRequired,
   };
 
-  render () {
+  render() {
     const { locale } = this.props;
 
     return (

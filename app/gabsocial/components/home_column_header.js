@@ -76,7 +76,7 @@ class ColumnHeader extends React.PureComponent {
     });
   }
 
-  render () {
+  render() {
     const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists, siteTitle } = this.props;
     const { collapsed, animating, expandedFor } = this.state;
 

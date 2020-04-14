@@ -16,7 +16,7 @@ const makeMapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
-  onBlockDomain (domain) {
+  onBlockDomain(domain) {
     dispatch(openModal('CONFIRM', {
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onUnblockDomain (domain) {
+  onUnblockDomain(domain) {
     dispatch(unblockDomain(domain));
   },
 });

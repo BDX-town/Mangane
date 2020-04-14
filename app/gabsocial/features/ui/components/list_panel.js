@@ -29,12 +29,12 @@ class ListPanel extends ImmutablePureComponent {
     lists: ImmutablePropTypes.list,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchLists());
   }
 
-  render () {
+  render() {
     const { lists } = this.props;
 
     if (!lists || lists.isEmpty()) {

@@ -32,7 +32,7 @@ class FollowRequests extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchFollowRequests());
   }
 
@@ -40,7 +40,7 @@ class FollowRequests extends ImmutablePureComponent {
     this.props.dispatch(expandFollowRequests());
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { intl, accountIds, hasMore } = this.props;
 
     if (!accountIds) {

@@ -64,7 +64,7 @@ class Notifications extends React.PureComponent {
     totalQueuedNotificationsCount: PropTypes.number,
   };
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.handleLoadOlder.cancel();
     this.handleScrollToTop.cancel();
     this.handleScroll.cancel();
@@ -107,7 +107,7 @@ class Notifications extends React.PureComponent {
     this._selectChild(elementIndex, false);
   }
 
-  _selectChild (index, align_top) {
+  _selectChild(index, align_top) {
     const container = this.column.node;
     const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
@@ -125,7 +125,7 @@ class Notifications extends React.PureComponent {
     this.props.dispatch(dequeueNotifications());
   };
 
-  render () {
+  render() {
     const { intl, notifications, isLoading, isUnread, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 

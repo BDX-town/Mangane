@@ -41,7 +41,7 @@ class ConfirmationModal extends React.PureComponent {
     this.button = c;
   }
 
-  render () {
+  render() {
     const { message, confirm, secondary } = this.props;
 
     return (

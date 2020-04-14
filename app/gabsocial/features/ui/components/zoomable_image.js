@@ -40,7 +40,7 @@ export default class ZoomableImage extends React.PureComponent {
   lastTouchEndTime = 0;
   lastDistance = 0;
 
-  componentDidMount () {
+  componentDidMount() {
     let handler = this.handleTouchStart;
     this.container.addEventListener('touchstart', handler);
     this.removers.push(() => this.container.removeEventListener('touchstart', handler));
@@ -51,11 +51,11 @@ export default class ZoomableImage extends React.PureComponent {
     this.removers.push(() => this.container.removeEventListener('touchend', handler));
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.removeEventListeners();
   }
 
-  removeEventListeners () {
+  removeEventListeners() {
     this.removers.forEach(listeners => listeners());
     this.removers = [];
   }
@@ -122,7 +122,7 @@ export default class ZoomableImage extends React.PureComponent {
     this.image = c;
   }
 
-  render () {
+  render() {
     const { alt, src } = this.props;
     const { scale } = this.state;
     const overflow = scale === 1 ? 'hidden' : 'scroll';

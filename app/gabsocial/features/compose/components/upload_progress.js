@@ -12,7 +12,7 @@ export default class UploadProgress extends React.PureComponent {
     progress: PropTypes.number,
   };
 
-  render () {
+  render() {
     const { active, progress } = this.props;
 
     if (!active) {

@@ -20,7 +20,7 @@ export default class VideoModal extends ImmutablePureComponent {
     router: PropTypes.object,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     if (this.context.router) {
       const history = this.context.router.history;
 
@@ -32,7 +32,7 @@ export default class VideoModal extends ImmutablePureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.context.router) {
       this.unlistenHistory();
 
@@ -49,7 +49,7 @@ export default class VideoModal extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { media, status, time, onClose } = this.props;
 
     const link = status && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>;

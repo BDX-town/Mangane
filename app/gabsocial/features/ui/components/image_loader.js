@@ -38,21 +38,21 @@ export default class ImageLoader extends React.PureComponent {
     return this._canvasContext;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.loadImage(this.props);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
       this.loadImage(nextProps);
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.removeEventListeners();
   }
 
-  loadImage (props) {
+  loadImage(props) {
     this.removeEventListeners();
     this.setState({ loading: true, error: false });
     Promise.all([
@@ -87,7 +87,7 @@ export default class ImageLoader extends React.PureComponent {
     this.removers.push(removeEventListeners);
   })
 
-  clearPreviewCanvas () {
+  clearPreviewCanvas() {
     const { width, height } = this.canvas;
     this.canvasContext.clearRect(0, 0, width, height);
   }
@@ -112,12 +112,12 @@ export default class ImageLoader extends React.PureComponent {
     this.removers.push(removeEventListeners);
   });
 
-  removeEventListeners () {
+  removeEventListeners() {
     this.removers.forEach(listeners => listeners());
     this.removers = [];
   }
 
-  hasSize () {
+  hasSize() {
     const { width, height } = this.props;
     return typeof width === 'number' && typeof height === 'number';
   }
@@ -127,7 +127,7 @@ export default class ImageLoader extends React.PureComponent {
     if (c) this.setState({ width: c.offsetWidth });
   }
 
-  render () {
+  render() {
     const { alt, src, width, height, onClick } = this.props;
     const { loading } = this.state;
 

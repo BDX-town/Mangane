@@ -47,11 +47,11 @@ export default class ModalRoot extends React.PureComponent {
     onClose: PropTypes.func.isRequired,
   };
 
-  getSnapshotBeforeUpdate () {
+  getSnapshotBeforeUpdate() {
     return { visible: !!this.props.type };
   }
 
-  componentDidUpdate (prevProps, prevState, { visible }) {
+  componentDidUpdate(prevProps, prevState, { visible }) {
     if (visible) {
       document.body.classList.add('with-modals--active');
     } else {
@@ -72,7 +72,7 @@ export default class ModalRoot extends React.PureComponent {
     onClose(type);
   }
 
-  render () {
+  render() {
     const { type, props } = this.props;
     const visible = !!type;
 

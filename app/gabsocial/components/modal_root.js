@@ -62,11 +62,11 @@ class ModalRoot extends React.PureComponent {
     }
   };
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!!nextProps.children && !this.props.children) {
       this.activeElement = document.activeElement;
 
@@ -80,7 +80,7 @@ class ModalRoot extends React.PureComponent {
     }
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (!this.props.children && !!prevProps.children) {
       this.getSiblings().forEach(sibling => sibling.removeAttribute('inert'));
     }
@@ -91,7 +91,7 @@ class ModalRoot extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeyUp);
   }
 
@@ -103,7 +103,7 @@ class ModalRoot extends React.PureComponent {
     this.node = ref;
   }
 
-  render () {
+  render() {
     const { children } = this.props;
     const { revealed } = this.state;
     const visible = !!children;

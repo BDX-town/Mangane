@@ -45,12 +45,12 @@ class ListEditor extends ImmutablePureComponent {
     searchAccountIds: ImmutablePropTypes.list.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { onInitialize, listId } = this.props;
     onInitialize(listId);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { onReset } = this.props;
     onReset();
   }
@@ -59,7 +59,7 @@ class ListEditor extends ImmutablePureComponent {
     this.props.onClose('LIST_ADDER');
   };
 
-  render () {
+  render() {
     const { accountIds, searchAccountIds, intl } = this.props;
 
     return (

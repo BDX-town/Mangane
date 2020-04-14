@@ -151,7 +151,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
 }
 
 export function submitCompose(routerHistory, group) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     if (!getState().get('me')) return;
 
     const status = getState().getIn(['compose', 'text'], '');
@@ -177,12 +177,12 @@ export function submitCompose(routerHistory, group) {
       headers: {
         'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
       },
-    }).then(function (response) {
+    }).then(function(response) {
       if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
       handleComposeSubmit(dispatch, getState, response, status);
-    }).catch(function (error) {
+    }).catch(function(error) {
       dispatch(submitComposeFail(error));
     });
   };
@@ -209,7 +209,7 @@ export function submitComposeFail(error) {
 };
 
 export function uploadCompose(files) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     if (!getState().get('me')) return;
 
     const uploadLimit = 4;

@@ -33,7 +33,7 @@ class Blocks extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchDomainBlocks());
   }
 
@@ -41,7 +41,7 @@ class Blocks extends ImmutablePureComponent {
     this.props.dispatch(expandDomainBlocks());
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { intl, domains, hasMore } = this.props;
 
     if (!domains) {

@@ -15,7 +15,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
 
-  onCancel () {
+  onCancel() {
     dispatch(cancelReplyCompose());
   },
 

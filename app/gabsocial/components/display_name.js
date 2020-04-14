@@ -10,7 +10,7 @@ export default class DisplayName extends React.PureComponent {
     others: ImmutablePropTypes.list,
   };
 
-  render () {
+  render() {
     const { others } = this.props;
 
     let displayName, suffix, account;

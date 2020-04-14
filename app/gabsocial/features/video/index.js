@@ -266,7 +266,7 @@ class Video extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('fullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
@@ -277,20 +277,20 @@ class Video extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
       this.setState({ revealed: nextProps.visible });
     }
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (prevState.revealed && !this.state.revealed && this.video) {
       this.video.pause();
     }
@@ -299,7 +299,7 @@ class Video extends React.PureComponent {
     }
   }
 
-  _decode () {
+  _decode() {
     const hash   = this.props.blurhash;
     const pixels = decode(hash, 32, 32);
 
@@ -374,7 +374,7 @@ class Video extends React.PureComponent {
     this.props.onCloseVideo();
   }
 
-  render () {
+  render() {
     const { preview, src, inline, startTime, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;

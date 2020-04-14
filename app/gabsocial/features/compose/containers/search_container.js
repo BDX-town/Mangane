@@ -14,19 +14,19 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onChange (value) {
+  onChange(value) {
     dispatch(changeSearch(value));
   },
 
-  onClear () {
+  onClear() {
     dispatch(clearSearch());
   },
 
-  onSubmit () {
+  onSubmit() {
     dispatch(submitSearch());
   },
 
-  onShow () {
+  onShow() {
     dispatch(showSearch());
   },
 

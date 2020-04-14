@@ -24,15 +24,15 @@ export default class UploadArea extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeyUp);
   }
 
-  render () {
+  render() {
     const { active } = this.props;
 
     return (

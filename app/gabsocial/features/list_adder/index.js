@@ -51,12 +51,12 @@ class ListAdder extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { onInitialize, accountId } = this.props;
     onInitialize(accountId);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { onReset } = this.props;
     onReset();
   }
@@ -65,7 +65,7 @@ class ListAdder extends ImmutablePureComponent {
     this.props.onClose('LIST_ADDER');
   };
 
-  render () {
+  render() {
     const { accountId, listIds, intl } = this.props;
 
     return (

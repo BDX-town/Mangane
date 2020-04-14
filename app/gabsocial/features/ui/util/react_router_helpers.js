@@ -71,7 +71,7 @@ class WrappedRoute extends React.Component {
     return <BundleColumnError {...props} />;
   }
 
-  render () {
+  render() {
     const { component: Component, content, publicRoute, me, ...rest } = this.props;
 
     if (!publicRoute && me === false) {

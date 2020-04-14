@@ -34,17 +34,17 @@ class FocalPointModal extends ImmutablePureComponent {
     dragging: false,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.updatePositionFromMedia(this.props.media);
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.media.get('id') !== nextProps.media.get('id')) {
       this.updatePositionFromMedia(nextProps.media);
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('mouseup', this.handleMouseUp);
   }
@@ -95,7 +95,7 @@ class FocalPointModal extends ImmutablePureComponent {
     this.node = c;
   }
 
-  render () {
+  render() {
     const { media } = this.props;
     const { x, y, dragging } = this.state;
 

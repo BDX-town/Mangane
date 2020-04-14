@@ -9,7 +9,7 @@ export default class Warning extends React.PureComponent {
     message: PropTypes.node.isRequired,
   };
 
-  render () {
+  render() {
     const { message } = this.props;
 
     return (

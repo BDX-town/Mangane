@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onClick () {
+  onClick() {
     dispatch(changeComposeSensitivity());
   },
 
@@ -32,7 +32,7 @@ class SensitiveButton extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  render () {
+  render() {
     const { active, disabled, onClick, intl } = this.props;
 
     return (

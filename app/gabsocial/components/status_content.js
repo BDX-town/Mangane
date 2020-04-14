@@ -29,7 +29,7 @@ export default class StatusContent extends React.PureComponent {
     collapsed: null, //  `collapsed: null` indicates that an element doesn't need collapsing, while `true` or `false` indicates that it does (and is/isn't).
   };
 
-  _updateStatusLinks () {
+  _updateStatusLinks() {
     const node = this.node;
 
     if (!node) {
@@ -68,11 +68,11 @@ export default class StatusContent extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this._updateStatusLinks();
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     this._updateStatusLinks();
   }
 
@@ -143,7 +143,7 @@ export default class StatusContent extends React.PureComponent {
     return properContent;
   }
 
-  render () {
+  render() {
     const { status } = this.props;
 
     if (status.get('content').length === 0) {

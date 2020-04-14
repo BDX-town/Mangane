@@ -9,7 +9,7 @@ export default class ClearColumnButton extends React.PureComponent {
     onClick: PropTypes.func.isRequired,
   };
 
-  render () {
+  render() {
     return (
       <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={this.props.onClick}><Icon id='eraser' /> <FormattedMessage id='notifications.clear' defaultMessage='Clear notifications' /></button>
     );

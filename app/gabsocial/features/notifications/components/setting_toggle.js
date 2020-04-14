@@ -17,7 +17,7 @@ export default class SettingToggle extends React.PureComponent {
     this.props.onChange(this.props.settingPath, target.checked);
   }
 
-  render () {
+  render() {
     const { prefix, settings, settingPath, label } = this.props;
     const id = ['setting-toggle', prefix, ...settingPath].filter(Boolean).join('-');
 

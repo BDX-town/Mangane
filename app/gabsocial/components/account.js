@@ -67,7 +67,7 @@ class Account extends ImmutablePureComponent {
     this.props.onActionClick(this.props.account);
   }
 
-  render () {
+  render() {
     const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me } = this.props;
 
     if (!account) {

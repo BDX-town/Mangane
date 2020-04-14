@@ -8,7 +8,7 @@ const makeMapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  selectFilter (newActiveFilter) {
+  selectFilter(newActiveFilter) {
     dispatch(setFilter(newActiveFilter));
   },
 });

@@ -43,7 +43,7 @@ export default class Conversation extends ImmutablePureComponent {
     this.props.onMoveDown(this.props.conversationId);
   }
 
-  render () {
+  render() {
     const { accounts, lastStatusId, unread } = this.props;
 
     if (lastStatusId === null) {

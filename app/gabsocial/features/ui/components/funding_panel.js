@@ -7,7 +7,7 @@ import { fetchFunding } from 'gabsocial/actions/patron';
 
 class FundingPanel extends ImmutablePureComponent {
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.dispatch(fetchFunding());
   }
 

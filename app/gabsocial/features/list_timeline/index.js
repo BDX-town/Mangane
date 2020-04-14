@@ -42,11 +42,11 @@ class ListTimeline extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     this.handleConnect(this.props.params.id);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.handleDisconnect();
   }
 
@@ -96,7 +96,7 @@ class ListTimeline extends React.PureComponent {
     }));
   }
 
-  render () {
+  render() {
     const { hasUnread, list } = this.props;
     const { id } = this.props.params;
     const title  = list ? list.get('title') : id;

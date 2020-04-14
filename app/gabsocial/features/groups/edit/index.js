@@ -88,7 +88,7 @@ class Edit extends React.PureComponent {
     this.props.onSubmit(this.context.router.history);
   }
 
-  render () {
+  render() {
     const { group, title, description, coverImage, disabled, intl } = this.props;
 
     if (typeof group === 'undefined') {

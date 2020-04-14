@@ -15,7 +15,7 @@ export default class NavigationBar extends ImmutablePureComponent {
     onClose: PropTypes.func,
   };
 
-  render () {
+  render() {
     return (
       <div className='navigation-bar'>
         <Permalink href={this.props.account.get('url')} to={`/@${this.props.account.get('acct')}`}>

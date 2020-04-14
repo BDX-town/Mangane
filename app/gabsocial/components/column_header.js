@@ -53,7 +53,7 @@ class ColumnHeader extends React.PureComponent {
     this.setState({ animating: false });
   }
 
-  render () {
+  render() {
     const { title, icon, active, children, extraButton, intl: { formatMessage } } = this.props;
     const { collapsed, animating } = this.state;
 

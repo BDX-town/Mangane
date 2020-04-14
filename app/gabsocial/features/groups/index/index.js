@@ -36,7 +36,7 @@ class Groups extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchGroups(this.props.activeTab));
   }
 
@@ -73,7 +73,7 @@ class Groups extends ImmutablePureComponent {
     );
   }
 
-  render () {
+  render() {
     const { groupIds, showCreateForm } = this.props;
 
     return (

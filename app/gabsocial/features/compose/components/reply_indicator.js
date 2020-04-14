@@ -30,7 +30,7 @@ class ReplyIndicator extends ImmutablePureComponent {
     this.props.onCancel();
   }
 
-  render () {
+  render() {
     const { status, intl } = this.props;
 
     if (!status) {

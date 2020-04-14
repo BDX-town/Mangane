@@ -69,17 +69,17 @@ class ReportModal extends ImmutablePureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.props.dispatch(expandAccountTimeline(this.props.account.get('id'), { withReplies: true }));
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.account !== nextProps.account && nextProps.account) {
       this.props.dispatch(expandAccountTimeline(nextProps.account.get('id'), { withReplies: true }));
     }
   }
 
-  render () {
+  render() {
     const { account, comment, intl, statusIds, isSubmitting, forward, onClose } = this.props;
 
     if (!account) {

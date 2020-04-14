@@ -68,7 +68,7 @@ class Poll extends ImmutablePureComponent {
     this.props.dispatch(fetchPoll(this.props.poll.get('id')));
   };
 
-  renderOption (option, optionIndex) {
+  renderOption(option, optionIndex) {
     const { poll, disabled } = this.props;
     const percent            = poll.get('votes_count') === 0 ? 0 : (option.get('votes_count') / poll.get('votes_count')) * 100;
     const leading            = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') > other.get('votes_count'));
@@ -110,7 +110,7 @@ class Poll extends ImmutablePureComponent {
     );
   }
 
-  render () {
+  render() {
     const { poll, intl } = this.props;
 
     if (!poll) {

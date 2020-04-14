@@ -10,7 +10,7 @@ export default class AutosuggestEmoji extends React.PureComponent {
     emoji: PropTypes.object.isRequired,
   };
 
-  render () {
+  render() {
     const { emoji } = this.props;
     let url;
 

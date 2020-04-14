@@ -8,7 +8,7 @@ export default class Column extends React.PureComponent {
     label: PropTypes.string,
   };
 
-  render () {
+  render() {
     const { label, children } = this.props;
 
     return (

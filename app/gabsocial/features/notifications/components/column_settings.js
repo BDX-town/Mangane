@@ -18,7 +18,7 @@ export default class ColumnSettings extends React.PureComponent {
     this.props.onChange(['push', ...path], checked);
   }
 
-  render () {
+  render() {
     const { settings, pushSettings, onChange, onClear } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;

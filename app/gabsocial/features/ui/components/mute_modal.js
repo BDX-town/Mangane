@@ -68,7 +68,7 @@ class MuteModal extends React.PureComponent {
     this.props.onToggleNotifications();
   }
 
-  render () {
+  render() {
     const { account, notifications } = this.props;
 
     return (

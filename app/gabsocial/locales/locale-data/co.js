@@ -4,7 +4,7 @@
 
 export default [{
   locale: "co",
-  pluralRuleFunction: function (e, a) {
+  pluralRuleFunction: function(e, a) {
     return a ? 1 == e ? "one" : "other" : e >= 0 && e < 2 ? "one" : "other";
   },
   fields: {

@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onChange (value) {
+  onChange(value) {
     dispatch(changeComposeVisibility(value));
   },
 

@@ -56,7 +56,7 @@ class Following extends ImmutablePureComponent {
     unavailable: PropTypes.bool,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
@@ -67,7 +67,7 @@ class Following extends ImmutablePureComponent {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
       this.props.dispatch(fetchAccount(nextProps.accountId));
       this.props.dispatch(fetchFollowing(nextProps.accountId));
@@ -80,7 +80,7 @@ class Following extends ImmutablePureComponent {
     }
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { accountIds, hasMore, isAccount, accountId, unavailable } = this.props;
 
     if (!isAccount && accountId !== -1) {

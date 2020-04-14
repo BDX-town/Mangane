@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onClose (optionalType) {
+  onClose(optionalType) {
     if (optionalType === 'COMPOSE') {
       dispatch(cancelReplyCompose());
     }

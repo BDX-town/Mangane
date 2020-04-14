@@ -36,7 +36,7 @@ class Reblogs extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchReblogs(this.props.params.statusId));
     this.props.dispatch(fetchStatus(this.props.params.statusId));
   }
@@ -48,7 +48,7 @@ class Reblogs extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { accountIds, status } = this.props;
 
     if (!accountIds) {

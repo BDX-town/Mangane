@@ -14,11 +14,11 @@ const makeMapStateToProps = () => {
 };
 
 const mapDispatchToProps = (dispatch, { id }) => ({
-  onAuthorize () {
+  onAuthorize() {
     dispatch(authorizeFollowRequest(id));
   },
 
-  onReject () {
+  onReject() {
     dispatch(rejectFollowRequest(id));
   },
 });

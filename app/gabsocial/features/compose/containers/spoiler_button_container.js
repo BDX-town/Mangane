@@ -17,7 +17,7 @@ const mapStateToProps = (state, { intl }) => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onClick () {
+  onClick() {
     dispatch(changeComposeSpoilerness());
   },
 

@@ -5,7 +5,7 @@ import Icon from 'gabsocial/components/icon';
 
 export default class ColumnBackButtonSlim extends ColumnBackButton {
 
-  render () {
+  render() {
     return (
       <div className='column-back-button--slim'>
         <div role='button' tabIndex='0' onClick={this.handleClick} className='column-back-button column-back-button--slim-button'>

@@ -16,7 +16,7 @@ export default class StatusCheckBox extends React.PureComponent {
     disabled: PropTypes.bool,
   };
 
-  render () {
+  render() {
     const { status, checked, onToggle, disabled } = this.props;
     let media = null;
 

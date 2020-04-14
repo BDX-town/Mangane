@@ -43,7 +43,7 @@ class Compose extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { isSearchPage } = this.props;
 
     if (!isSearchPage) {
@@ -51,7 +51,7 @@ class Compose extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     const { isSearchPage } = this.props;
 
     if (!isSearchPage) {
@@ -67,7 +67,7 @@ class Compose extends React.PureComponent {
     this.props.dispatch(changeComposing(false));
   }
 
-  render () {
+  render() {
     const { multiColumn, showSearch, isSearchPage, intl } = this.props;
 
     let header = '';

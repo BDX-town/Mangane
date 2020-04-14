@@ -17,7 +17,7 @@ export default class ColumnHeader extends React.PureComponent {
     this.props.onClick();
   }
 
-  render () {
+  render() {
     const { icon, type, active, columnHeaderId } = this.props;
     let iconElement = '';
 

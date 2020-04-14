@@ -45,13 +45,13 @@ class CommunityTimeline extends React.PureComponent {
     siteTitle: PropTypes.string,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch, onlyMedia } = this.props;
     dispatch(expandPublicTimeline({ onlyMedia }));
     this.disconnect = dispatch(connectPublicStream({ onlyMedia }));
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     if (prevProps.onlyMedia !== this.props.onlyMedia) {
       const { dispatch, onlyMedia } = this.props;
       this.disconnect();
@@ -61,7 +61,7 @@ class CommunityTimeline extends React.PureComponent {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     if (this.disconnect) {
       this.disconnect();
       this.disconnect = null;
@@ -73,7 +73,7 @@ class CommunityTimeline extends React.PureComponent {
     dispatch(expandPublicTimeline({ maxId, onlyMedia }));
   }
 
-  render () {
+  render() {
     const { intl, hasUnread, onlyMedia, timelineId, siteTitle } = this.props;
 
     return (

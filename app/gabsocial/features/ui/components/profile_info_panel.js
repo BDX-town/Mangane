@@ -38,7 +38,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     username: PropTypes.string,
   };
 
-  render () {
+  render() {
     const { account, intl, identity_proofs, username } = this.props;
 
     if (!account) {

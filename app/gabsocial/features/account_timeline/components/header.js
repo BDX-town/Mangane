@@ -81,7 +81,7 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToList(this.props.account);
   }
 
-  render () {
+  render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
 

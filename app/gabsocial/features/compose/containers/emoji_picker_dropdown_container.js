@@ -53,7 +53,7 @@ const getCustomEmojis = createSelector([
 
   if (aShort < bShort) {
     return -1;
-  } else if (aShort > bShort ) {
+  } else if (aShort > bShort) {
     return 1;
   } else {
     return 0;

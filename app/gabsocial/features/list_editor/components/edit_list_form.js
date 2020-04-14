@@ -45,7 +45,7 @@ class ListForm extends React.PureComponent {
     this.props.onSubmit();
   }
 
-  render () {
+  render() {
     const { value, disabled, intl } = this.props;
     const save = intl.formatMessage(messages.save);
 

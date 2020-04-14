@@ -14,7 +14,7 @@ window.addEventListener('message', e => {
     return;
   }
 
-  ready(( ) => {
+  ready(() => {
     window.parent.postMessage({
       type: 'setHeight',
       id: data.id,
@@ -23,7 +23,7 @@ window.addEventListener('message', e => {
   });
 });
 
-function main ( ) {
+function main() {
   const IntlMessageFormat = require('intl-messageformat').default;
   import('intl-pluralrules'); // eslint-disable-line
   const { timeAgoString } = require('../gabsocial/components/relative_timestamp');
@@ -109,7 +109,7 @@ function main ( ) {
 
     const parallaxComponents = document.querySelectorAll('.parallax');
 
-    if (parallaxComponents.length > 0 ) {
+    if (parallaxComponents.length > 0) {
       new Rellax('.parallax', { speed: -1 });
     }
 

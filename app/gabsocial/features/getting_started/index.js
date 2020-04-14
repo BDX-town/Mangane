@@ -76,7 +76,7 @@ class GettingStarted extends ImmutablePureComponent {
     unreadNotifications: PropTypes.number,
   };
 
-  componentDidMount () {
+  componentDidMount() {
     const { myAccount, fetchFollowRequests, multiColumn } = this.props;
 
     if (!multiColumn && window.innerWidth >= NAVIGATION_PANEL_BREAKPOINT) {
@@ -89,7 +89,7 @@ class GettingStarted extends ImmutablePureComponent {
     }
   }
 
-  render () {
+  render() {
     const { intl, myAccount, multiColumn, unreadFollowRequests } = this.props;
 
     const navItems = [];

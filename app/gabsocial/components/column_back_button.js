@@ -17,7 +17,7 @@ export default class ColumnBackButton extends React.PureComponent {
     }
   }
 
-  render () {
+  render() {
     return (
       <button onClick={this.handleClick} className='column-back-button'>
         <Icon id='chevron-left' className='column-back-button__icon' fixedWidth />

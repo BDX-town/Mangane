@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 
-  onSelectFile (files) {
+  onSelectFile(files) {
     dispatch(uploadCompose(files));
   },
 

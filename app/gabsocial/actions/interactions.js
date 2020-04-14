@@ -34,17 +34,17 @@ export const UNPIN_SUCCESS = 'UNPIN_SUCCESS';
 export const UNPIN_FAIL    = 'UNPIN_FAIL';
 
 export function reblog(status) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     if (!getState().get('me')) return;
 
     dispatch(reblogRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/reblog`).then(function (response) {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/reblog`).then(function(response) {
       // The reblog API method returns a new status wrapped around the original. In this case we are only
       // interested in how the original is modified, hence passing it skipping the wrapper
       dispatch(importFetchedStatus(response.data.reblog));
       dispatch(reblogSuccess(status));
-    }).catch(function (error) {
+    }).catch(function(error) {
       dispatch(reblogFail(status, error));
     });
   };
@@ -116,15 +116,15 @@ export function unreblogFail(status, error) {
 };
 
 export function favourite(status) {
-  return function (dispatch, getState) {
+  return function(dispatch, getState) {
     if (!getState().get('me')) return;
 
     dispatch(favouriteRequest(status));
 
-    api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function (response) {
+    api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(favouriteSuccess(status));
-    }).catch(function (error) {
+    }).catch(function(error) {
       dispatch(favouriteFail(status, error));
     });
   };
@@ -309,7 +309,7 @@ export function pinFail(status, error) {
   };
 };
 
-export function unpin (status) {
+export function unpin(status) {
   return (dispatch, getState) => {
     if (!getState().get('me')) return;
 

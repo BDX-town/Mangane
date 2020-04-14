@@ -32,7 +32,7 @@ class Mutes extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount () {
+  componentWillMount() {
     this.props.dispatch(fetchMutes());
   }
 
@@ -40,7 +40,7 @@ class Mutes extends ImmutablePureComponent {
     this.props.dispatch(expandMutes());
   }, 300, { leading: true });
 
-  render () {
+  render() {
     const { intl, hasMore, accountIds } = this.props;
 
     if (!accountIds) {

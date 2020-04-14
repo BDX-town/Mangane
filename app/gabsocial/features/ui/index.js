@@ -159,11 +159,11 @@ class SwitchingColumnsArea extends React.PureComponent {
     mobile: isMobile(window.innerWidth),
   };
 
-  componentWillMount () {
+  componentWillMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize);
   }
 
@@ -180,7 +180,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     this.node = c.getWrappedInstance();
   }
 
-  render () {
+  render() {
     const { children } = this.props;
 
     return (
@@ -371,7 +371,7 @@ class UI extends React.PureComponent {
   }
 
 
-  componentWillMount () {
+  componentWillMount() {
     const { me } = this.props;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
 
@@ -399,7 +399,7 @@ class UI extends React.PureComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { me } = this.props;
     if (!me) return;
     this.connectStreaming();
@@ -409,7 +409,7 @@ class UI extends React.PureComponent {
     this.connectStreaming();
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
@@ -528,7 +528,7 @@ class UI extends React.PureComponent {
     this.props.dispatch(openModal('COMPOSE'));
   }
 
-  render () {
+  render() {
     const { streamingUrl } = this.props;
     const { draggingOver } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;

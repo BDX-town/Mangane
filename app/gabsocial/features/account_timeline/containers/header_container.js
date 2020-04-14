@@ -44,7 +44,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
-  onFollow (account) {
+  onFollow(account) {
     if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
       if (unfollowModal) {
         dispatch(openModal('CONFIRM', {
@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onBlock (account) {
+  onBlock(account) {
     if (account.getIn(['relationship', 'blocking'])) {
       dispatch(unblockAccount(account.get('id')));
     } else {
@@ -77,15 +77,15 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onMention (account, router) {
+  onMention(account, router) {
     dispatch(mentionCompose(account, router));
   },
 
-  onDirect (account, router) {
+  onDirect(account, router) {
     dispatch(directCompose(account, router));
   },
 
-  onReblogToggle (account) {
+  onReblogToggle(account) {
     if (account.getIn(['relationship', 'showing_reblogs'])) {
       dispatch(followAccount(account.get('id'), false));
     } else {
@@ -93,7 +93,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onEndorseToggle (account) {
+  onEndorseToggle(account) {
     if (account.getIn(['relationship', 'endorsed'])) {
       dispatch(unpinAccount(account.get('id')));
     } else {
@@ -101,11 +101,11 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onReport (account) {
+  onReport(account) {
     dispatch(initReport(account));
   },
 
-  onMute (account) {
+  onMute(account) {
     if (account.getIn(['relationship', 'muting'])) {
       dispatch(unmuteAccount(account.get('id')));
     } else {
@@ -113,7 +113,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onBlockDomain (domain) {
+  onBlockDomain(domain) {
     dispatch(openModal('CONFIRM', {
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications. Your followers from that domain will be removed.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),
@@ -121,7 +121,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onUnblockDomain (domain) {
+  onUnblockDomain(domain) {
     dispatch(unblockDomain(domain));
   },
 

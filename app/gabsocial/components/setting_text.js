@@ -15,7 +15,7 @@ export default class SettingText extends React.PureComponent {
     this.props.onChange(this.props.settingKey, e.target.value);
   }
 
-  render () {
+  render() {
     const { settings, settingKey, label } = this.props;
 
     return (

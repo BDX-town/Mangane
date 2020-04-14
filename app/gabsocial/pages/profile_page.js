@@ -42,7 +42,7 @@ class ProfilePage extends ImmutablePureComponent {
     accountUsername: PropTypes.string.isRequired,
   };
 
-  render () {
+  render() {
     const { children, accountId, account, accountUsername } = this.props;
     const bg = account ? account.getIn(['customizations', 'background']) : undefined;
 

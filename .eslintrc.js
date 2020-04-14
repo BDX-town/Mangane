@@ -59,6 +59,8 @@ module.exports = {
       },
     ],
     'comma-style': ['warn', 'last'],
+    'space-before-function-paren': ['error', 'never'],
+    'space-in-parens': ['error', 'never'],
     'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',

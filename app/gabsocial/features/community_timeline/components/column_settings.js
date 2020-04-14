@@ -13,7 +13,7 @@ class ColumnSettings extends React.PureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  render () {
+  render() {
     const { settings, onChange } = this.props;
 
     return (

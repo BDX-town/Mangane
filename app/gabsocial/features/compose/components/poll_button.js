@@ -29,7 +29,7 @@ class PollButton extends React.PureComponent {
     this.props.onClick();
   }
 
-  render () {
+  render() {
     const { intl, active, unavailable, disabled } = this.props;
 
     if (unavailable) {

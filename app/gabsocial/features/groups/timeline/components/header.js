@@ -57,7 +57,7 @@ class Header extends ImmutablePureComponent {
     return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
   }
 
-  render () {
+  render() {
     const { group, relationships } = this.props;
 
     if (!group || !relationships) {

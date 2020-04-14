@@ -129,7 +129,7 @@ class RelativeTimestamp extends React.Component {
     year: (new Date()).getFullYear(),
   };
 
-  shouldComponentUpdate (nextProps, nextState) {
+  shouldComponentUpdate(nextProps, nextState) {
     // As of right now the locale doesn't change without a new page load,
     // but we might as well check in case that ever changes.
     return this.props.timestamp !== nextProps.timestamp ||
@@ -137,25 +137,25 @@ class RelativeTimestamp extends React.Component {
       this.state.now !== nextState.now;
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.timestamp !== nextProps.timestamp) {
       this.setState({ now: this.props.intl.now() });
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this._scheduleNextUpdate(this.props, this.state);
   }
 
-  componentWillUpdate (nextProps, nextState) {
+  componentWillUpdate(nextProps, nextState) {
     this._scheduleNextUpdate(nextProps, nextState);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearTimeout(this._timer);
   }
 
-  _scheduleNextUpdate (props, state) {
+  _scheduleNextUpdate(props, state) {
     clearTimeout(this._timer);
 
     const { timestamp }  = props;
@@ -170,7 +170,7 @@ class RelativeTimestamp extends React.Component {
     }, delay);
   }
 
-  render () {
+  render() {
     const { timestamp, intl, year, futureDate } = this.props;
 
     const date         = new Date(timestamp);

@@ -32,7 +32,7 @@ const buildSearch = (data) => {
 
 const _String = String;
 
-const stringFromCodePoint = _String.fromCodePoint || function () {
+const stringFromCodePoint = _String.fromCodePoint || function() {
   let MAX_SIZE = 0x4000;
   let codeUnits = [];
   let highSurrogate;
