@@ -6,7 +6,7 @@ import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 
-const SearchPage = ({children}) => (
+const SearchPage = ({ children }) => (
   <div className='page'>
     <div className='page__top'>
       <Header />

@@ -64,7 +64,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => {
     const status = getStatus(state, {
       id: props.params.statusId,
-      username: props.params.username
+      username: props.params.username,
     });
 
     let ancestorsIds = Immutable.List();
@@ -462,10 +462,11 @@ class Status extends ImmutablePureComponent {
                 aria-label={intl.formatMessage(status.get('hidden') ? messages.revealAll : messages.hideAll)}
                 onClick={this.handleToggleAll}
                 aria-pressed={
-                  status.get('hidden') ? 'false' : 'true'}>
-                  <Icon id={status.get('hidden') ? 'eye-slash' : 'eye'
+                  status.get('hidden') ? 'false' : 'true'}
+              >
+                <Icon id={status.get('hidden') ? 'eye-slash' : 'eye'
                 }
-              />
+                />
               </button>
             )}
           />

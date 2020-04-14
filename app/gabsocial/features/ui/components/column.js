@@ -26,7 +26,7 @@ export default class Column extends React.PureComponent {
       <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />
     );
 
-    const backBtn = backBtnSlim ? (<ColumnBackButtonSlim/>) : (<ColumnBackButton/>);
+    const backBtn = backBtnSlim ? (<ColumnBackButtonSlim />) : (<ColumnBackButton />);
 
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column'>

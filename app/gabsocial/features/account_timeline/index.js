@@ -25,8 +25,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   let accountUsername = username;
   if (accountFetchError) {
     accountId = null;
-  }
-  else {
+  } else {
     let account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
@@ -79,8 +78,7 @@ class AccountTimeline extends ImmutablePureComponent {
       }
 
       this.props.dispatch(expandAccountTimeline(accountId, { withReplies }));
-    }
-    else {
+    } else {
       this.props.dispatch(fetchAccountByUsername(username));
     }
   }
@@ -137,7 +135,7 @@ class AccountTimeline extends ImmutablePureComponent {
     return (
       <Column>
         <div className='account__section-headline'>
-          <div style={{width: '100%', display: 'flex'}}>
+          <div style={{ width: '100%', display: 'flex' }}>
             <NavLink exact to={`/@${accountUsername}`}>
               <FormattedMessage id='account.posts' defaultMessage='Posts' />
             </NavLink>

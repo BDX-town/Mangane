@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = (dispatch) => ({
   onClose (optionalType) {
     if (optionalType === 'COMPOSE') {
-        dispatch(cancelReplyCompose());
+      dispatch(cancelReplyCompose());
     }
 
     dispatch(closeModal());

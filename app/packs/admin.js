@@ -64,7 +64,7 @@ delegate(document, '.btngroup__btn', 'click', ({ target: btn }) => {
     if (other_btn_hides) {
       other_btn_hides.style.display = '';
     }
-    other_btn.classList.remove('btngroup__btn--active')
+    other_btn.classList.remove('btngroup__btn--active');
   });
 
   // Set given input
@@ -73,7 +73,7 @@ delegate(document, '.btngroup__btn', 'click', ({ target: btn }) => {
   }
 
   // Highlight current button
-  btn.classList.add('btngroup__btn--active')
+  btn.classList.add('btngroup__btn--active');
 
   // Set visibility of given elements
   if (btn_shows) {
@@ -96,26 +96,26 @@ delegate(document, '.btngroup__btn', 'click', ({ target: btn }) => {
 
 delegate(document, '.payform', 'submit', (e) => {
   e.preventDefault();
-  document.getElementById("paybtn").disabled = true;
+  document.getElementById('paybtn').disabled = true;
 
-  const stripe_pk = document.querySelector("meta[name='stripe-pk']").content;
-  const csrf_token = document.querySelector("meta[name='csrf-token']").content;
-  const price = Math.floor(document.getElementById("price").value.replace(/[^0-9.]/, "") * 100);
+  const stripe_pk = document.querySelector('meta[name=\'stripe-pk\']').content;
+  const csrf_token = document.querySelector('meta[name=\'csrf-token\']').content;
+  const price = Math.floor(document.getElementById('price').value.replace(/[^0-9.]/, '') * 100);
 
   const stripe = Stripe(stripe_pk);
   const req = new XMLHttpRequest();
 
   function checkout () {
     stripe.redirectToCheckout({
-      sessionId: this.responseText
+      sessionId: this.responseText,
     }).then(function (result) {
       console.log(result.error.message);
     });
   }
 
-  req.addEventListener("load", checkout);
-  req.open("POST", "/donate/stripe");
-  req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-  req.setRequestHeader("X-CSRF-Token", csrf_token);
-  req.send("amount=" + price);
+  req.addEventListener('load', checkout);
+  req.open('POST', '/donate/stripe');
+  req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  req.setRequestHeader('X-CSRF-Token', csrf_token);
+  req.send('amount=' + price);
 });

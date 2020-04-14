@@ -32,7 +32,7 @@ class ConfirmationModal extends React.PureComponent {
   }
 
   handleCancel = () => {
-    const {onClose, onCancel} = this.props;
+    const { onClose, onCancel } = this.props;
     onClose();
     if (onCancel) onCancel();
   }

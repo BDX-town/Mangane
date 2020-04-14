@@ -27,8 +27,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   let accountUsername = username;
   if (accountFetchError) {
     accountId = null;
-  }
-  else {
+  } else {
     let account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
@@ -69,6 +68,7 @@ class LoadMoreMedia extends ImmutablePureComponent {
       />
     );
   }
+
 }
 
 export default @connect(mapStateToProps)
@@ -94,8 +94,7 @@ class AccountGallery extends ImmutablePureComponent {
     if (accountId && accountId !== -1) {
       this.props.dispatch(fetchAccount(accountId));
       this.props.dispatch(expandAccountMediaTimeline(accountId));
-    }
-    else {
+    } else {
       this.props.dispatch(fetchAccountByUsername(username));
     }
   }
@@ -190,7 +189,7 @@ class AccountGallery extends ImmutablePureComponent {
       <Column>
         <div className='slist slist--flex' onScroll={this.handleScroll}>
           <div className='account__section-headline'>
-            <div style={{width: '100%', display: 'flex'}}>
+            <div style={{ width: '100%', display: 'flex' }}>
               <NavLink exact to={`/@${accountUsername}`}>
                 <FormattedMessage id='account.posts' defaultMessage='Posts' />
               </NavLink>
@@ -213,7 +212,7 @@ class AccountGallery extends ImmutablePureComponent {
             {
               attachments.size == 0 &&
               <div className='empty-column-indicator'>
-                <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.'/>
+                <FormattedMessage id='account_gallery.none' defaultMessage='No media to show.' />
               </div>
             }
 

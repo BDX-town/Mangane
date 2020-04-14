@@ -40,8 +40,8 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
-  }
-}
+  };
+};
 
 @connect(mapStateToProps)
 class GabSocialMount extends React.PureComponent {

@@ -41,9 +41,9 @@ export default class ExtendedVideoPlayer extends React.PureComponent {
 
   render () {
     const { src, muted, controls, alt } = this.props;
-    let conditionalAttributes = {}
+    let conditionalAttributes = {};
     if (isIOS()) {
-      conditionalAttributes.playsInline = '1'
+      conditionalAttributes.playsInline = '1';
     }
 
     return (

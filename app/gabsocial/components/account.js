@@ -131,7 +131,7 @@ class Account extends ImmutablePureComponent {
             <span className='relationship-tag'>
               <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
             </span>
-          : '' }
+            : '' }
 
           <div className='account__relationship'>
             {buttons}

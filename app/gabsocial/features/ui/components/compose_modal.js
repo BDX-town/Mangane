@@ -33,7 +33,7 @@ class ComposeModal extends ImmutablePureComponent {
   };
 
   onClickClose = () => {
-    const {composeText, dispatch, onClose, intl} = this.props;
+    const { composeText, dispatch, onClose, intl } = this.props;
 
     if (composeText) {
       dispatch(openModal('CONFIRM', {
@@ -42,8 +42,7 @@ class ComposeModal extends ImmutablePureComponent {
         onConfirm: () => dispatch(cancelReplyCompose()),
         onCancel: () => dispatch(openModal('COMPOSE')),
       }));
-    }
-    else {
+    } else {
       onClose('COMPOSE');
     }
   };
@@ -67,6 +66,7 @@ class ComposeModal extends ImmutablePureComponent {
       </div>
     );
   }
+
 }
 
 export default injectIntl(connect(mapStateToProps)(ComposeModal));

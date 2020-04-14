@@ -234,6 +234,7 @@ class ActionBar extends React.PureComponent {
       </div>
     );
   }
+
 }
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionBar));

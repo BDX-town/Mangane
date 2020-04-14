@@ -39,7 +39,7 @@ const mapStateToProps = state => {
   return {
     myAccount: state.getIn(['accounts', me]),
     unreadFollowRequests: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
-  }
+  };
 };
 
 const mapDispatchToProps = dispatch => ({

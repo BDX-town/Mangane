@@ -22,7 +22,7 @@ export default class DisplayName extends React.PureComponent {
         <bdi key={a.get('id')}>
           <strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} />
         </bdi>,
-        a.get('is_verified') && <VerificationBadge />
+        a.get('is_verified') && <VerificationBadge />,
       ]).reduce((prev, cur) => [prev, ', ', cur]);
 
       if (others.size - 2 > 0) {

@@ -14,7 +14,7 @@ export function createAuthApp() {
       // TODO: Add commit hash to client_name
       client_name: `SoapboxFE_${(new Date()).toISOString()}`,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
-      scopes: 'read write follow push admin'
+      scopes: 'read write follow push admin',
     }).then(response => {
       dispatch(authAppCreated(response.data));
     }).then(() => {
@@ -23,12 +23,12 @@ export function createAuthApp() {
         client_id: app.get('client_id'),
         client_secret: app.get('client_secret'),
         redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-        grant_type: 'client_credentials'
+        grant_type: 'client_credentials',
       });
     }).then(response => {
       dispatch(authAppAuthorized(response.data));
     });
-  }
+  };
 }
 
 export function logIn(username, password) {
@@ -40,14 +40,14 @@ export function logIn(username, password) {
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
       grant_type: 'password',
       username: username,
-      password: password
+      password: password,
     }).then(response => {
       dispatch(authLoggedIn(response.data));
     }).catch((error) => {
       dispatch(showAlert('Login failed.', 'Invalid username or password.'));
       throw error;
     });
-  }
+  };
 }
 
 export function logOut() {
@@ -60,20 +60,20 @@ export function logOut() {
 export function authAppCreated(app) {
   return {
     type: AUTH_APP_CREATED,
-    app
+    app,
   };
 }
 
 export function authAppAuthorized(app) {
   return {
     type: AUTH_APP_AUTHORIZED,
-    app
+    app,
   };
 }
 
 export function authLoggedIn(user) {
   return {
     type: AUTH_LOGGED_IN,
-    user
+    user,
   };
 }

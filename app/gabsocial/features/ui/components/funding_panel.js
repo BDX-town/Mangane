@@ -34,7 +34,7 @@ class FundingPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel funding-panel'>
         <div className='wtf-panel-header'>
-          <i role='img' alt='users' className='fa fa-line-chart wtf-panel-header__icon'></i>
+          <i role='img' alt='users' className='fa fa-line-chart wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <span>Funding Goal</span>
           </span>
@@ -50,13 +50,14 @@ class FundingPanel extends ImmutablePureComponent {
           <a className='button' href='/donate'>Donate</a>
         </div>
       </div>
-    )
+    );
   }
+
 };
 
 const mapStateToProps = state => {
   return {
-    funding: state.getIn(['patron', 'funding'])
+    funding: state.getIn(['patron', 'funding']),
   };
 };
 
@@ -64,4 +65,4 @@ export default injectIntl(
   connect(mapStateToProps, null, null, {
     forwardRef: true,
   }
-)(FundingPanel))
+  )(FundingPanel));

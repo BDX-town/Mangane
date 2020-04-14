@@ -7,26 +7,26 @@ import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
 const messages = defineMessages({
-	title: { id: 'groups.form.title', defaultMessage: 'Enter a new group title' },
-	description: { id: 'groups.form.description', defaultMessage: 'Enter the group description' },
-	coverImage: { id: 'groups.form.coverImage', defaultMessage: 'Upload a banner image' },
-	coverImageChange: { id: 'groups.form.coverImageChange', defaultMessage: 'Banner image selected' },
-	create: { id: 'groups.form.create', defaultMessage: 'Create group' },
+  title: { id: 'groups.form.title', defaultMessage: 'Enter a new group title' },
+  description: { id: 'groups.form.description', defaultMessage: 'Enter the group description' },
+  coverImage: { id: 'groups.form.coverImage', defaultMessage: 'Upload a banner image' },
+  coverImageChange: { id: 'groups.form.coverImageChange', defaultMessage: 'Banner image selected' },
+  create: { id: 'groups.form.create', defaultMessage: 'Create group' },
 });
 
 const mapStateToProps = state => ({
-	title: state.getIn(['group_editor', 'title']),
-	description: state.getIn(['group_editor', 'description']),
-	coverImage: state.getIn(['group_editor', 'coverImage']),
-	disabled: state.getIn(['group_editor', 'isSubmitting']),
+  title: state.getIn(['group_editor', 'title']),
+  description: state.getIn(['group_editor', 'description']),
+  coverImage: state.getIn(['group_editor', 'coverImage']),
+  disabled: state.getIn(['group_editor', 'isSubmitting']),
 });
 
 const mapDispatchToProps = dispatch => ({
-	onTitleChange: value => dispatch(changeValue('title', value)),
-	onDescriptionChange: value => dispatch(changeValue('description', value)),
-	onCoverImageChange: value => dispatch(changeValue('coverImage', value)),
-	onSubmit: routerHistory => dispatch(submit(routerHistory)),
-	reset: () => dispatch(reset()),
+  onTitleChange: value => dispatch(changeValue('title', value)),
+  onDescriptionChange: value => dispatch(changeValue('description', value)),
+  onCoverImageChange: value => dispatch(changeValue('coverImage', value)),
+  onSubmit: routerHistory => dispatch(submit(routerHistory)),
+  reset: () => dispatch(reset()),
 });
 
 export default @connect(mapStateToProps, mapDispatchToProps)
@@ -34,80 +34,80 @@ export default @connect(mapStateToProps, mapDispatchToProps)
 class Create extends React.PureComponent {
 
 	static contextTypes = {
-		router: PropTypes.object
+	  router: PropTypes.object,
 	}
 
 	static propTypes = {
-		title: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
-		coverImage: PropTypes.object,
-		disabled: PropTypes.bool,
-		intl: PropTypes.object.isRequired,
-		onTitleChange: PropTypes.func.isRequired,
-		onSubmit: PropTypes.func.isRequired,
+	  title: PropTypes.string.isRequired,
+	  description: PropTypes.string.isRequired,
+	  coverImage: PropTypes.object,
+	  disabled: PropTypes.bool,
+	  intl: PropTypes.object.isRequired,
+	  onTitleChange: PropTypes.func.isRequired,
+	  onSubmit: PropTypes.func.isRequired,
 	};
 
 	componentWillMount() {
-		this.props.reset();
+	  this.props.reset();
 	}
 
 	handleTitleChange = e => {
-		this.props.onTitleChange(e.target.value);
+	  this.props.onTitleChange(e.target.value);
 	}
 
 	handleDescriptionChange = e => {
-		this.props.onDescriptionChange(e.target.value);
+	  this.props.onDescriptionChange(e.target.value);
 	}
 
 	handleCoverImageChange = e => {
-		this.props.onCoverImageChange(e.target.files[0]);
+	  this.props.onCoverImageChange(e.target.files[0]);
 	}
 
 	handleSubmit = e => {
-		e.preventDefault();
-		this.props.onSubmit(this.context.router.history);
+	  e.preventDefault();
+	  this.props.onSubmit(this.context.router.history);
 	}
 
 	render () {
-		const { title, description, coverImage, disabled, intl } = this.props;
+	  const { title, description, coverImage, disabled, intl } = this.props;
 
-		return (
-			<form className='group-form' onSubmit={this.handleSubmit}>
-				<div>
-					<input
-						className='standard'
-						type='text'
-						value={title}
-						disabled={disabled}
-						onChange={this.handleTitleChange}
-						placeholder={intl.formatMessage(messages.title)}
-					/>
-				</div>
-				<div>
-					<textarea
-						className='standard'
-						type='text'
-						value={description}
-						disabled={disabled}
-						onChange={this.handleDescriptionChange}
-						placeholder={intl.formatMessage(messages.description)}
-					/>
-				</div>
-				<div>
-					<label htmlFor='group_cover_image' className={classNames('group-form__file-label', { 'group-form__file-label--selected': coverImage !== null })}>
-						{intl.formatMessage(coverImage === null ? messages.coverImage : messages.coverImageChange)}
-					</label>
-					<input
-						type='file'
-						className='group-form__file'
-						id='group_cover_image'
-						disabled={disabled}
-						onChange={this.handleCoverImageChange}
-					/>
-					<button className='standard-small'>{intl.formatMessage(messages.create)}</button>
-				</div>
-			</form>
-		);
+	  return (
+  <form className='group-form' onSubmit={this.handleSubmit}>
+  <div>
+  <input
+	          className='standard'
+	          type='text'
+	          value={title}
+	          disabled={disabled}
+	          onChange={this.handleTitleChange}
+	          placeholder={intl.formatMessage(messages.title)}
+	        />
+	      </div>
+  <div>
+  <textarea
+	          className='standard'
+	          type='text'
+	          value={description}
+	          disabled={disabled}
+	          onChange={this.handleDescriptionChange}
+	          placeholder={intl.formatMessage(messages.description)}
+	        />
+	      </div>
+  <div>
+  <label htmlFor='group_cover_image' className={classNames('group-form__file-label', { 'group-form__file-label--selected': coverImage !== null })}>
+  {intl.formatMessage(coverImage === null ? messages.coverImage : messages.coverImageChange)}
+	        </label>
+  <input
+	          type='file'
+	          className='group-form__file'
+	          id='group_cover_image'
+	          disabled={disabled}
+	          onChange={this.handleCoverImageChange}
+	        />
+  <button className='standard-small'>{intl.formatMessage(messages.create)}</button>
+	      </div>
+	    </form>
+	  );
 	}
 
 }

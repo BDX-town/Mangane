@@ -85,9 +85,9 @@ export default function getStream(streamingAPIBaseURL, accessToken, stream, { co
       received(JSON.parse(e.data));
     } catch(error) {
       console.error(e);
-      console.error(`Could not parse the above streaming event.\n${error}`)
+      console.error(`Could not parse the above streaming event.\n${error}`);
     }
-  }
+  };
 
   return ws;
 };

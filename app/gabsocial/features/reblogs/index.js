@@ -17,13 +17,13 @@ const mapStateToProps = (state, props) => {
   const getStatus = makeGetStatus();
   const status = getStatus(state, {
     id: props.params.statusId,
-    username: props.params.username
+    username: props.params.username,
   });
 
   return {
     status,
     accountIds: state.getIn(['user_lists', 'reblogged_by', props.params.statusId]),
-  }
+  };
 };
 
 export default @connect(mapStateToProps)

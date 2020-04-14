@@ -33,7 +33,7 @@ export default function accounts(state = initialState, action) {
     return normalizeAccounts(state, action.accounts);
   case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
     return state.set(-1, ImmutableMap({
-      username: action.username
+      username: action.username,
     }));
   default:
     return state;

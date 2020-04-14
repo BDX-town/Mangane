@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onCancelReplyCompose() {
     dispatch(cancelReplyCompose());
-  }
+  },
 });
 
 class ModalRoot extends React.PureComponent {
@@ -57,8 +57,7 @@ class ModalRoot extends React.PureComponent {
         onConfirm: () => onCancelReplyCompose(),
         onCancel: () => onOpenModal('COMPOSE'),
       });
-    }
-    else {
+    } else {
       this.props.onClose();
     }
   };
@@ -124,6 +123,7 @@ class ModalRoot extends React.PureComponent {
       </div>
     );
   }
+
 }
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ModalRoot));

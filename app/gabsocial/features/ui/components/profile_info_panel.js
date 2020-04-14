@@ -48,7 +48,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           <div className='profile-info-panel__content'>
             <div className='profile-info-panel-content__name'>
               <h1>
-                <span/>
+                <span />
                 <small>@{username}</small>
               </h1>
             </div>
@@ -72,23 +72,25 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           <div className='profile-info-panel-content__name'>
             <h1>
               <span dangerouslySetInnerHTML={displayNameHtml} />
-                {account.get('is_verified') && <VerificationBadge />}
-                {badge}
+              {account.get('is_verified') && <VerificationBadge />}
+              {badge}
               <small>@{acctFull(account)} {lockedIcon}</small>
             </h1>
           </div>
 
           <div className='profile-info-panel-content__badges'>
-            {account.get('is_admin') && <Badge slug="admin" title="Admin" />}
-            {account.get('is_moderator') && <Badge slug="moderator" title="Moderator" />}
+            {account.get('is_admin') && <Badge slug='admin' title='Admin' />}
+            {account.get('is_moderator') && <Badge slug='moderator' title='Moderator' />}
             {account.get('is_pro') && <ProBadge />}
             {account.get('is_donor') && <DonorBadge />}
             {account.get('is_investor') && <InvestorBadge />}
             {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-              <Icon id="calendar"/>
-              <FormattedMessage id='account.member_since' defaultMessage='Member since {date}' values={{
-                date: memberSinceDate
-              }} />
+              <Icon id='calendar' />
+              <FormattedMessage
+                id='account.member_since' defaultMessage='Member since {date}' values={{
+                  date: memberSinceDate,
+                }}
+              />
             </div>}
           </div>
 
@@ -131,6 +133,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       </div>
     );
   }
+
 }
 
 const mapStateToProps = (state, { account }) => {
@@ -145,4 +148,4 @@ export default injectIntl(
   connect(mapStateToProps, null, null, {
     forwardRef: true,
   }
-)(ProfileInfoPanel))
+  )(ProfileInfoPanel));

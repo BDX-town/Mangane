@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import LoginForm from 'gabsocial/features/auth_login/components/login_form';
@@ -11,13 +11,14 @@ const mapStateToProps = (state, props) => ({
 });
 
 class LandingPage extends ImmutablePureComponent {
+
   getSiteLogo = () => {
     const { instance, soapbox } = this.props;
     const logos = {
       imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
       textLogo: (<h1>{instance.get('title')}</h1>),
-    }
-    return soapbox.get('logo') ? logos['imgLogo'] : logos['textLogo'];
+    };
+    return soapbox.get('logo') ? logos.imgLogo : logos.textLogo;
   }
 
   render() {
@@ -36,7 +37,7 @@ class LandingPage extends ImmutablePureComponent {
               <Link className='nav-link optional' to='/'>Home</Link>
               <Link className='nav-link' to='/about'>About</Link>
             </div>
-            <div className='nav-center'></div>
+            <div className='nav-center' />
             <div className='nav-right'>
               <div className='hidden-sm'>
                 <LoginForm />
@@ -121,8 +122,9 @@ class LandingPage extends ImmutablePureComponent {
         </div>
         <NotificationsContainer />
       </div>
-    )
+    );
   }
+
 }
 
 export default connect(mapStateToProps)(LandingPage);

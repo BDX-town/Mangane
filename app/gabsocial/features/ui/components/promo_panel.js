@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => ({
   promoItems: state.getIn(['soapbox', 'promoPanel', 'items']),
-})
+});
 
 export default @connect(mapStateToProps)
 class PromoPanel extends React.PureComponent {
@@ -20,15 +20,16 @@ class PromoPanel extends React.PureComponent {
       <div className='wtf-panel promo-panel'>
         <div className='promo-panel__container'>
           {promoItems.map((item, i) =>
-            <div className='promo-panel-item' key={i}>
+            (<div className='promo-panel-item' key={i}>
               <a className='promo-panel-item__btn' href={item.get('url')} target='_blank'>
                 <Icon id={item.get('icon')} className='promo-panel-item__icon' fixedWidth />
                 {item.get('text')}
               </a>
-            </div>
+            </div>)
           )}
         </div>
       </div>
-    )
+    );
   }
+
 }

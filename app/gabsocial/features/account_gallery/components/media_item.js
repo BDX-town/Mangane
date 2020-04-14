@@ -112,12 +112,12 @@ export default class MediaItem extends ImmutablePureComponent {
         />
       );
     } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {
-      let conditionalAttributes = {}
+      let conditionalAttributes = {};
       if (isIOS()) {
-        conditionalAttributes.playsInline = '1'
+        conditionalAttributes.playsInline = '1';
       }
       if (autoPlayGif) {
-        conditionalAttributes.autoPlay = '1'
+        conditionalAttributes.autoPlay = '1';
       }
       thumbnail = (
         <div className={classNames('media-gallery__gifv', { autoplay: autoPlayGif })}>

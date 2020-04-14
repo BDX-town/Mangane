@@ -26,7 +26,7 @@ import Icon from 'gabsocial/components/icon';
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
 const messages = defineMessages({
-  placeholder: { id: 'compose_form.placeholder', defaultMessage: "What's on your mind?" },
+  placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
@@ -151,11 +151,11 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   componentDidMount() {
-    document.addEventListener("click", this.handleClick, false);
+    document.addEventListener('click', this.handleClick, false);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this.handleClick, false);
+    document.removeEventListener('click', this.handleClick, false);
   }
 
   componentDidUpdate (prevProps) {
@@ -211,7 +211,7 @@ class ComposeForm extends ImmutablePureComponent {
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
-    const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth)
+    const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
 
     let publishText = '';
 
@@ -224,7 +224,7 @@ class ComposeForm extends ImmutablePureComponent {
     const composeClassNames = classNames({
       'compose-form': true,
       'condensed': condensed,
-    })
+    });
 
     return (
       <div className={composeClassNames} ref={this.setForm} onClick={this.handleClick}>

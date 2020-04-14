@@ -47,7 +47,7 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
 
 export function initializeNotifications() {
   return {
-    type: NOTIFICATIONS_INITIALIZE
+    type: NOTIFICATIONS_INITIALIZE,
   };
 }
 
@@ -115,11 +115,10 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
         intlMessages,
         intlLocale,
       });
-    }
-    else {
+    } else {
       dispatch(updateNotifications(notification, intlMessages, intlLocale));
     }
-  }
+  };
 };
 
 export function dequeueNotifications() {
@@ -129,13 +128,11 @@ export function dequeueNotifications() {
 
     if (totalQueuedNotificationsCount == 0) {
       return;
-    }
-    else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
+    } else if (totalQueuedNotificationsCount > 0 && totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
       queuedNotifications.forEach(block => {
         dispatch(updateNotifications(block.notification, block.intlMessages, block.intlLocale));
       });
-    }
-    else {
+    } else {
       dispatch(expandNotifications());
     }
 
@@ -143,7 +140,7 @@ export function dequeueNotifications() {
       type: NOTIFICATIONS_DEQUEUE,
     });
     dispatch(markReadNotifications());
-  }
+  };
 };
 
 const excludeTypesFromSettings = state => state.getIn(['settings', 'notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
@@ -240,7 +237,7 @@ export function scrollTopNotifications(top) {
       top,
     });
     dispatch(markReadNotifications());
-  }
+  };
 }
 
 export function setFilter (filterType) {
@@ -262,12 +259,12 @@ export function markReadNotifications() {
     const last_read = getState().getIn(['notifications', 'lastRead']);
 
     if (top_notification && top_notification > last_read) {
-      api(getState).post('/api/v1/notifications/mark_read', {id: top_notification}).then(response => {
+      api(getState).post('/api/v1/notifications/mark_read', { id: top_notification }).then(response => {
         dispatch({
           type: NOTIFICATIONS_MARK_READ,
           notification: top_notification,
         });
       });
     }
-  }
+  };
 }

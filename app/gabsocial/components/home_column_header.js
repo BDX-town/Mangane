@@ -119,34 +119,34 @@ class ColumnHeader extends React.PureComponent {
     let expandedContent = null;
     if ((expandedFor === 'lists' || activeItem === 'lists') && lists) {
       expandedContent = lists.map(list =>
-        <Link
+        (<Link
           key={list.get('id')}
           to={`/list/${list.get('id')}`}
           className={
             classNames('btn btn--sub grouped', {
-              'active': list.get('id') === activeSubItem
+              'active': list.get('id') === activeSubItem,
             })
           }
         >
           {list.get('title')}
-        </Link>
-      )
+        </Link>)
+      );
     }
 
     return (
       <div className={wrapperClassName}>
         <h1 className={buttonClassName}>
-          <Link to='/' className={classNames('btn grouped', {'active': 'home' === activeItem})}>
+          <Link to='/' className={classNames('btn grouped', { 'active': 'home' === activeItem })}>
             <Icon id='home' fixedWidth className='column-header__icon' />
             {formatMessage(messages.homeTitle)}
           </Link>
 
-          <Link to='/timeline/local' className={classNames('btn grouped', {'active': 'local' === activeItem})}>
+          <Link to='/timeline/local' className={classNames('btn grouped', { 'active': 'local' === activeItem })}>
             <Icon id='site-icon' fixedWidth className='column-header__icon' />
             {siteTitle}
           </Link>
 
-          <Link to='/timeline/fediverse' className={classNames('btn grouped', {'active': 'fediverse' === activeItem})}>
+          <Link to='/timeline/fediverse' className={classNames('btn grouped', { 'active': 'fediverse' === activeItem })}>
             <Icon id='fediverse' fixedWidth className='column-header__icon' />
             {formatMessage(messages.fediverseTitle)}
           </Link>
@@ -171,6 +171,7 @@ class ColumnHeader extends React.PureComponent {
       </div>
     );
   }
+
 }
 
 export default injectIntl(connect(mapStateToProps)(ColumnHeader));

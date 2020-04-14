@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { createAuthApp, logIn } from 'gabsocial/actions/auth';
 import { fetchMe } from 'gabsocial/actions/me';
@@ -7,9 +7,10 @@ import { Link } from 'react-router-dom';
 
 export default @connect()
 class LoginForm extends ImmutablePureComponent {
+
   constructor(props) {
     super(props);
-    this.state = {isLoading: false};
+    this.state = { isLoading: false };
   }
 
   componentWillMount() {
@@ -28,9 +29,9 @@ class LoginForm extends ImmutablePureComponent {
     dispatch(logIn(username, password)).then(() => {
       return dispatch(fetchMe());
     }).catch((error) => {
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     });
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
     event.preventDefault();
   }
 
@@ -52,6 +53,7 @@ class LoginForm extends ImmutablePureComponent {
           <button name='button' type='submit' className='btn button button-primary'>Log in</button>
         </div>
       </form>
-    )
+    );
   }
+
 }

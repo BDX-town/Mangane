@@ -17,13 +17,14 @@ const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
     hasPatron: state.getIn(['soapbox', 'extensions', 'patron']),
-  }
+  };
 };
 
 export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
+
   render () {
-    const {children, account, hasPatron} = this.props;
+    const { children, account, hasPatron } = this.props;
 
     return (
       <div className='page'>
@@ -45,7 +46,7 @@ class HomePage extends ImmutablePureComponent {
                   <div className='timeline-compose-block__avatar'>
                     <Avatar account={account} size={46} />
                   </div>
-                  <ComposeFormContainer shouldCondense={true} autoFocus={false}/>
+                  <ComposeFormContainer shouldCondense autoFocus={false} />
                 </div>
 
                 {children}
@@ -62,6 +63,7 @@ class HomePage extends ImmutablePureComponent {
           </div>
         </div>
       </div>
-    )
+    );
   }
+
 }

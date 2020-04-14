@@ -24,8 +24,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   let accountUsername = username;
   if (accountFetchError) {
     accountId = null;
-  }
-  else {
+  } else {
     account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
@@ -42,19 +41,20 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
 
 export default @connect(mapStateToProps)
 class ProfilePage extends ImmutablePureComponent {
+
   static propTypes = {
     account: ImmutablePropTypes.map,
     accountUsername: PropTypes.string.isRequired,
   };
 
   render () {
-    const {children, accountId, account, accountUsername} = this.props;
+    const { children, accountId, account, accountUsername } = this.props;
     const bg = account ? account.getIn(['customizations', 'background']) : undefined;
 
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
         <div className='page__top'>
-          <HeaderContainer accountId={accountId} username={accountUsername}/>
+          <HeaderContainer accountId={accountId} username={accountUsername} />
         </div>
 
         <div className='page__columns'>
@@ -85,6 +85,7 @@ class ProfilePage extends ImmutablePureComponent {
         </div>
 
       </div>
-    )
+    );
   }
+
 }

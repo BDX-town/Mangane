@@ -5,6 +5,7 @@ import { shortNumberFormat } from '../utils/numbers';
 import classNames from 'classnames';
 
 export default class TimelineQueueButtonHeader extends React.PureComponent {
+
   static propTypes = {
     onClick: PropTypes.func.isRequired,
     count: PropTypes.number,
@@ -20,7 +21,7 @@ export default class TimelineQueueButtonHeader extends React.PureComponent {
     const { count, itemType, onClick } = this.props;
 
     const classes = classNames('timeline-queue-header', {
-      'hidden': (count <= 0)
+      'hidden': (count <= 0),
     });
 
     return (
@@ -38,4 +39,5 @@ export default class TimelineQueueButtonHeader extends React.PureComponent {
       </div>
     );
   }
+
 }

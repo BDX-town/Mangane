@@ -90,7 +90,7 @@ const mapStateToProps = state => {
     me: state.get('me'),
     accessToken: state.getIn(['auth', 'user', 'access_token']),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
-  }
+  };
 };
 
 const keyMap = {
@@ -239,6 +239,7 @@ class SwitchingColumnsArea extends React.PureComponent {
       </Switch>
     );
   }
+
 }
 
 export default @connect(mapStateToProps)
@@ -486,7 +487,7 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyToggleHelp = () => {
-    this.props.dispatch(openModal("HOTKEYS"));
+    this.props.dispatch(openModal('HOTKEYS'));
   }
 
   handleHotkeyGoToHome = () => {
@@ -526,7 +527,7 @@ class UI extends React.PureComponent {
   }
 
   handleOpenComposeModal = () => {
-    this.props.dispatch(openModal("COMPOSE"));
+    this.props.dispatch(openModal('COMPOSE'));
   }
 
   render () {
@@ -554,7 +555,7 @@ class UI extends React.PureComponent {
       goToRequests: this.handleHotkeyGoToRequests,
     } : {};
 
-    const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <button key='floating-action-button' onClick={this.handleOpenComposeModal} className='floating-action-button' aria-label={intl.formatMessage(messages.publish)}></button>;
+    const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <button key='floating-action-button' onClick={this.handleOpenComposeModal} className='floating-action-button' aria-label={intl.formatMessage(messages.publish)} />;
 
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>

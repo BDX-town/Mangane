@@ -26,8 +26,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   let accountId = -1;
   if (accountFetchError) {
     accountId = null;
-  }
-  else {
+  } else {
     let account = accounts.find(acct => username.toLowerCase() == acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
   }
@@ -64,8 +63,7 @@ class Following extends ImmutablePureComponent {
     if (accountId && accountId !== -1) {
       this.props.dispatch(fetchAccount(accountId));
       this.props.dispatch(fetchFollowing(accountId));
-    }
-    else {
+    } else {
       this.props.dispatch(fetchAccountByUsername(username));
     }
   }

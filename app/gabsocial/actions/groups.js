@@ -193,7 +193,7 @@ export function joinGroupRequest(id) {
 export function joinGroupSuccess(relationship) {
   return {
     type: GROUP_JOIN_SUCCESS,
-    relationship
+    relationship,
   };
 };
 

@@ -128,7 +128,7 @@ function main ( ) {
       var image = new Image();
       image.src = path;
       image.addEventListener('load', function() {
-        document.querySelector('.theme-glinner .public-layout').style.backgroundImage = "url('"+image.src+"')";
+        document.querySelector('.theme-glinner .public-layout').style.backgroundImage = 'url(\''+image.src+'\')';
       });
     })();
   });

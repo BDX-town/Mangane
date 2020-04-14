@@ -27,11 +27,11 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
-  lists: { id: 'column.lists', defaultMessage: 'Lists', },
+  lists: { id: 'column.lists', defaultMessage: 'Lists' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
-})
+});
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -92,7 +92,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 </Link>
               </div>
               <div className='sidebar-menu-profile__name'>
-                <DisplayName account={account}/>
+                <DisplayName account={account} />
               </div>
 
               <div className='sidebar-menu-profile__stats'>
@@ -113,7 +113,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to={`/messages`} onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to={'/messages'} onClick={onClose}>
                 <Icon id='envelope' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.messages)}</span>
               </NavLink>

@@ -17,6 +17,7 @@ class ExplanationBox extends React.PureComponent {
           {dismissable && <span className='explanation-box__dismiss'>Dismiss</span>}
         </div>
       </div>
-    )
+    );
   }
+
 }

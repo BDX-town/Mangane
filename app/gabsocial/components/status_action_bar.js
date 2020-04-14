@@ -298,6 +298,7 @@ class StatusActionBar extends ImmutablePureComponent {
       </div>
     );
   }
+
 }
 
 const mapStateToProps = state => {
@@ -314,4 +315,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }
-)(StatusActionBar))
+  )(StatusActionBar));

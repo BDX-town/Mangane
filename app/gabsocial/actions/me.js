@@ -9,9 +9,9 @@ export const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
 export function fetchMe() {
   return (dispatch, getState) => {
     const accessToken = getState().getIn(['auth', 'user', 'access_token']);
-    if (!accessToken) return dispatch({type: ME_FETCH_SKIP});
+    if (!accessToken) return dispatch({ type: ME_FETCH_SKIP });
     dispatch(fetchMeRequest());
-    api(getState).get(`/api/v1/accounts/verify_credentials`).then(response => {
+    api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
       dispatch(fetchMeSuccess(response.data));
       dispatch(importFetchedAccount(response.data));
     }).catch(error => {
@@ -29,7 +29,7 @@ export function fetchMeRequest() {
 export function fetchMeSuccess(me) {
   return {
     type: ME_FETCH_SUCCESS,
-    me
+    me,
   };
 }
 

@@ -51,7 +51,7 @@ class PinnedStatuses extends ImmutablePureComponent {
           statusIds={statusIds}
           scrollKey='pinned_statuses'
           hasMore={hasMore}
-          emptyMessage={<FormattedMessage id='pinned_statuses.none' defaultMessage='No pins to show.'/>}
+          emptyMessage={<FormattedMessage id='pinned_statuses.none' defaultMessage='No pins to show.' />}
         />
       </Column>
     );

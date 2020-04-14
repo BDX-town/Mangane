@@ -68,7 +68,7 @@ class HomeTimeline extends React.PureComponent {
   }
 
   render () {
-    const { intl, hasUnread, siteTitle} = this.props;
+    const { intl, hasUnread, siteTitle } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
@@ -79,7 +79,7 @@ class HomeTimeline extends React.PureComponent {
           scrollKey='home_timeline'
           onLoadMore={this.handleLoadMore}
           timelineId='home'
-          emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{site_title: siteTitle}} /></Link> }} />}
+          emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
         />
       </Column>
     );

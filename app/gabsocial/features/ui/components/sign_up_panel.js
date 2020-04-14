@@ -17,7 +17,7 @@ const SignUpPanel = ({ siteTitle, me }) => {
     <div className='wtf-panel'>
       <div className='wtf-panel-header'>
         <span className='wtf-panel-header__label'>
-          <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{site_title: siteTitle}} />
+          <FormattedMessage id='signup_panel.title' defaultMessage='New to {site_title}?' values={{ site_title: siteTitle }} />
         </span>
       </div>
       <div className='wtf-panel__content'>
@@ -25,13 +25,13 @@ const SignUpPanel = ({ siteTitle, me }) => {
           <FormattedMessage id='signup_panel.subtitle' defaultMessage='Sign up now to discuss.' />
         </span>
         <div className='wtf-panel__form'>
-          <a className='button' href="/auth/sign_up">
+          <a className='button' href='/auth/sign_up'>
             <FormattedMessage id='account.register' defaultMessage='Sign up' />
           </a>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default injectIntl(connect(mapStateToProps)(SignUpPanel));

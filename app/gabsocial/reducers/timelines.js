@@ -170,8 +170,8 @@ export default function timelines(state = initialState, action) {
     return updateTimelineQueue(state, action.timeline, fromJS(action.status));
   case TIMELINE_DEQUEUE:
     return state.update(action.timeline, initialTimeline, map => map.withMutations(mMap => {
-      mMap.set('queuedItems', ImmutableList())
-      mMap.set('totalQueuedItemsCount', 0)
+      mMap.set('queuedItems', ImmutableList());
+      mMap.set('totalQueuedItemsCount', 0);
     }));
   case TIMELINE_DELETE:
     return deleteStatus(state, action.id, action.accountId, action.references, action.reblogOf);
@@ -193,7 +193,7 @@ export default function timelines(state = initialState, action) {
       map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items)
     );
   case GROUP_REMOVE_STATUS_SUCCESS:
-    return removeStatusFromGroup(state, action.groupId, action.id)
+    return removeStatusFromGroup(state, action.groupId, action.id);
   default:
     return state;
   }

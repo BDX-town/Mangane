@@ -64,33 +64,33 @@ class TabsBar extends React.PureComponent {
       links.push(
         <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
           <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-        </Link>)
+        </Link>);
     }
     links.push(
       <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
-        <i className='tabs-bar__link__icon home'/>
+        <i className='tabs-bar__link__icon home' />
         <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
-      </NavLink>)
+      </NavLink>);
     if (account) {
       links.push(
         <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-          <i className='tabs-bar__link__icon notifications'/>
+          <i className='tabs-bar__link__icon notifications' />
           <NotificationsCounterIcon />
           <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
-        </NavLink>)
+        </NavLink>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
-        <i className='tabs-bar__link__icon tabs-bar__link__icon--search'/>
+        <i className='tabs-bar__link__icon tabs-bar__link__icon--search' />
         <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
       </NavLink>
     );
     return links.map((link) =>
       React.cloneElement(link, {
         'aria-label': formatMessage({
-        id: link.props['data-preview-title-id']
-      })
-    }));
+          id: link.props['data-preview-title-id'],
+        }),
+      }));
   }
 
   handleScroll = throttle(() => {
@@ -102,10 +102,10 @@ class TabsBar extends React.PureComponent {
       let st = pageYOffset || scrollTop;
       if (st > this.lastScrollTop){
         let offset = st - this.lastScrollTop;
-        if (offset > 50) this.setState({collapsed: true});
+        if (offset > 50) this.setState({ collapsed: true });
       } else {
         let offset = this.lastScrollTop - st;
-        if (offset > 50) this.setState({collapsed: false});
+        if (offset > 50) this.setState({ collapsed: false });
       }
 
       this.lastScrollTop = st <= 0 ? 0 : st;
@@ -120,7 +120,7 @@ class TabsBar extends React.PureComponent {
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
-    })
+    });
 
     return (
       <nav className={classes} ref={this.setRef}>
@@ -136,7 +136,7 @@ class TabsBar extends React.PureComponent {
               <div className='flex'>
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
-                  <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar}></button>
+                  <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
                   <ActionBar account={account} size={34} />
                 </div>
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label='Gab'>
@@ -160,6 +160,7 @@ class TabsBar extends React.PureComponent {
       </nav>
     );
   }
+
 }
 
 const mapStateToProps = state => {
@@ -181,4 +182,4 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }
-)(TabsBar))
+  )(TabsBar));

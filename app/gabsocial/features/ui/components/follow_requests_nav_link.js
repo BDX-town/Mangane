@@ -12,7 +12,7 @@ const mapStateToProps = state => {
   return {
     locked: state.getIn(['accounts', me, 'locked']),
     count: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableList()).size,
-  }
+  };
 };
 
 export default @withRouter

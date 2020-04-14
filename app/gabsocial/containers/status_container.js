@@ -31,7 +31,7 @@ import { boostModal, deleteModal } from '../initial_state';
 import { showAlertForError } from '../actions/alerts';
 import {
   createRemovedAccount,
-  groupRemoveStatus
+  groupRemoveStatus,
 } from '../actions/groups';
 
 const messages = defineMessages({

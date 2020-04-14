@@ -67,8 +67,8 @@ const mapDispatchToProps = (dispatch) => ({
 function mergeProps(stateProps, dispatchProps, ownProps) {
   return Object.assign({}, ownProps, {
     ...stateProps,
-    ...dispatchProps
-  })
+    ...dispatchProps,
+  });
 }
 
 export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm);

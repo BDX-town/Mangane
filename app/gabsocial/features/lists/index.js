@@ -61,10 +61,10 @@ class Lists extends ImmutablePureComponent {
 
     return (
       <Column icon='list-ul' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <br/>
+        <br />
         <ColumnSubheading text={intl.formatMessage(messages.add)} />
         <NewListForm />
-        <br/>
+        <br />
         <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
         <ScrollableList
           scrollKey='lists'

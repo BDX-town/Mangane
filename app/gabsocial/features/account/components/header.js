@@ -230,10 +230,10 @@ class Header extends ImmutablePureComponent {
     if (!account) {
       return (
         <div className='account__header'>
-          <div className='account__header__image account__header__image--none'></div>
+          <div className='account__header__image account__header__image--none' />
           <div className='account__header__bar'>
             <div className='account__header__extra'>
-              <div className='account__header__avatar'></div>
+              <div className='account__header__avatar' />
             </div>
             {
               isSmallScreen &&
@@ -296,15 +296,15 @@ class Header extends ImmutablePureComponent {
               {
                 account.get('id') === me &&
                 <div>
-                  <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
-                    /* : TODO : title={intl.formatNumber(account.get('favourite_count'))} */
+                  <NavLink
+                    exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
                   >
                     { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
                     <span>•</span>
                     <FormattedMessage id='navigation_bar.favourites' defaultMessage='Favorites' />
                   </NavLink>
-                  <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
-                    /* : TODO : title={intl.formatNumber(account.get('pinned_count'))} */
+                  <NavLink
+                    exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
                   >
                     { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
                     <span>•</span>
@@ -327,9 +327,11 @@ class Header extends ImmutablePureComponent {
                 {actionBtn}
                 {account.get('id') !== me &&
                   <Button className='button button-alternative-2' onClick={this.props.onDirect}>
-                    <FormattedMessage id='account.message' defaultMessage='Message' values={{
-                      name: account.get('acct')
-                    }} />
+                    <FormattedMessage
+                      id='account.message' defaultMessage='Message' values={{
+                        name: account.get('acct'),
+                      }}
+                    />
                   </Button>
                 }
                 <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />

@@ -75,7 +75,7 @@ class ListEditor extends ImmutablePureComponent {
           <div className='list-editor'>
             <ColumnSubheading text={intl.formatMessage(messages.changeTitle)} />
             <EditListForm />
-            <br/>
+            <br />
 
             {
               accountIds.size > 0 &&
@@ -87,7 +87,7 @@ class ListEditor extends ImmutablePureComponent {
               </div>
             }
 
-            <br/>
+            <br />
             <ColumnSubheading text={intl.formatMessage(messages.addToList)} />
             <Search />
             <div className='list-editor__accounts'>

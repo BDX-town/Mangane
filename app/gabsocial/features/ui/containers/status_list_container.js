@@ -30,7 +30,7 @@ const makeGetStatusIds = () => createSelector([
   });
 });
 
-const mapStateToProps = (state, {timelineId}) => {
+const mapStateToProps = (state, { timelineId }) => {
   const getStatusIds = makeGetStatusIds();
 
   return {

@@ -25,7 +25,7 @@ class Header extends ImmutablePureComponent {
   componentWillReceiveProps (nextProps) {
     if (nextProps.submitted) {
       const submittedValue = nextProps.value;
-      this.setState({submittedValue})
+      this.setState({ submittedValue });
     }
   }
 
@@ -67,6 +67,7 @@ class Header extends ImmutablePureComponent {
       </div>
     );
   }
+
 }
 
 export default connect(mapStateToProps)(Header);

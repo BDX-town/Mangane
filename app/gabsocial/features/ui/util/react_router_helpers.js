@@ -14,6 +14,7 @@ const mapStateToProps = state => {
 };
 
 class WrappedRoute extends React.Component {
+
   static propTypes = {
     component: PropTypes.func.isRequired,
     page: PropTypes.func,
@@ -35,11 +36,11 @@ class WrappedRoute extends React.Component {
         <BundleContainer fetchComponent={component} loading={this.renderLoading} error={this.renderError}>
           {Component =>
             (
-                <Page params={match.params} {...componentParams}>
-                  <Component params={match.params} {...componentParams}>
-                    {content}
-                  </Component>
-                </Page>
+              <Page params={match.params} {...componentParams}>
+                <Component params={match.params} {...componentParams}>
+                  {content}
+                </Component>
+              </Page>
             )
           }
         </BundleContainer>
@@ -83,7 +84,8 @@ class WrappedRoute extends React.Component {
 
     return <Route {...rest} render={this.renderComponent} />;
   }
+
 }
 
 const wrappedRoute = connect(mapStateToProps)(WrappedRoute);
-export {wrappedRoute as WrappedRoute};
+export { wrappedRoute as WrappedRoute };

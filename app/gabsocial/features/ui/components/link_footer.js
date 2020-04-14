@@ -13,13 +13,13 @@ const sourceCode = {
   url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
   repository: 'soapox-pub/soapbox-fe',
   version: '0.0.0',
-}
+};
 
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-  }
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({

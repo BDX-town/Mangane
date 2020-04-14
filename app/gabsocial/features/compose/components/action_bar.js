@@ -49,7 +49,7 @@ class ActionBar extends React.PureComponent {
     let menu = [];
 
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
-    menu.push({ text: intl.formatMessage(messages.messages), to: `/messages` });
+    menu.push({ text: intl.formatMessage(messages.messages), to: '/messages' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
     menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
@@ -62,13 +62,14 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.logout), to: '/auth/sign_out', action: onClickLogOut });
 
     return (
-      <div className='compose__action-bar' style={{'marginTop':'-6px'}}>
+      <div className='compose__action-bar' style={{ 'marginTop':'-6px' }}>
         <div className='compose__action-bar-dropdown'>
           <DropdownMenuContainer items={menu} icon='chevron-down' size={size} direction='right' />
         </div>
       </div>
     );
   }
+
 }
 
 export default injectIntl(connect(null, mapDispatchToProps)(ActionBar));

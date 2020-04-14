@@ -135,7 +135,8 @@ class DropdownMenu extends React.PureComponent {
           onKeyDown={this.handleItemKeyDown}
           data-index={i}
           target={newTab ? '_blank' : null}
-          data-method={isLogout ? 'delete' : null}>
+          data-method={isLogout ? 'delete' : null}
+        >
           {text}
         </a>
       </li>

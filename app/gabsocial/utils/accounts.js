@@ -1,7 +1,7 @@
 const getDomain = account => {
   let re = /https?:\/\/(.*?)\//i;
   return re.exec(account.get('url'))[1];
-}
+};
 
 // user@domain even for local users
 export const acctFull = account => {
@@ -13,4 +13,4 @@ export const acctFull = account => {
     return account.get('acct');
   }
   return [user, domain].join('@');
-}
+};

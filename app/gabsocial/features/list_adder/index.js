@@ -21,7 +21,7 @@ const getOrderedLists = createSelector([state => state.get('lists')], lists => {
   return lists.toList().filter(item => !!item).sort((a, b) => a.get('title').localeCompare(b.get('title')));
 });
 
-const mapStateToProps = (state, {accountId}) => ({
+const mapStateToProps = (state, { accountId }) => ({
   listIds: getOrderedLists(state).map(list=>list.get('id')),
   account: state.getIn(['accounts', accountId]),
 });
@@ -84,12 +84,12 @@ class ListAdder extends ImmutablePureComponent {
               <Account accountId={accountId} />
             </div>
 
-            <br/>
+            <br />
 
             <ColumnSubheading text={intl.formatMessage(messages.add)} />
             <NewListForm />
 
-            <br/>
+            <br />
 
             <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
             <div className='list-adder__lists'>

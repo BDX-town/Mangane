@@ -12,6 +12,7 @@ import { shortNumberFormat } from 'gabsocial/utils/numbers';
 import { acctFull } from 'gabsocial/utils/accounts';
 
 class UserPanel extends ImmutablePureComponent {
+
   static propTypes = {
     account: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
@@ -78,8 +79,9 @@ class UserPanel extends ImmutablePureComponent {
 
         </div>
       </div>
-    )
+    );
   }
+
 };
 
 
@@ -96,4 +98,4 @@ export default injectIntl(
   connect(mapStateToProps, null, null, {
     forwardRef: true,
   }
-)(UserPanel))
+  )(UserPanel));

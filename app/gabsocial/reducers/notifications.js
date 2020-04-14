@@ -146,8 +146,8 @@ export default function notifications(state = initialState, action) {
     return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
   case NOTIFICATIONS_DEQUEUE:
     return state.withMutations(mutable => {
-      mutable.set('queuedNotifications', ImmutableList())
-      mutable.set('totalQueuedNotificationsCount', 0)
+      mutable.set('queuedNotifications', ImmutableList());
+      mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
     return expandNormalizedNotifications(state, action.notifications, action.next);

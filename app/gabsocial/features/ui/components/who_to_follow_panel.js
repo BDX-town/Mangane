@@ -58,6 +58,7 @@ class WhoToFollowPanel extends ImmutablePureComponent {
       </div>
     );
   };
+
 };
 
 const mapStateToProps = state => ({
@@ -68,11 +69,11 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchSuggestions: () => dispatch(fetchSuggestions()),
     dismissSuggestion: account => dispatch(dismissSuggestion(account.get('id'))),
-  }
+  };
 };
 
 export default injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, {
     forwardRef: true,
   }
-)(WhoToFollowPanel))
+  )(WhoToFollowPanel));

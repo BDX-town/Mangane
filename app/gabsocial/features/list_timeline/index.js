@@ -120,8 +120,8 @@ class ListTimeline extends React.PureComponent {
     const emptyMessage = (
       <div>
         <FormattedMessage id='empty_column.list' defaultMessage='There is nothing in this list yet. When members of this list create new posts, they will appear here.' />
-        <br/><br/>
-        <Button onClick={this.handleEditClick}><FormattedMessage id='list.click_to_add' defaultMessage='Click here to add people'/></Button>
+        <br /><br />
+        <Button onClick={this.handleEditClick}><FormattedMessage id='list.click_to_add' defaultMessage='Click here to add people' /></Button>
       </div>
     );
 
@@ -137,7 +137,7 @@ class ListTimeline extends React.PureComponent {
               <Icon id='trash' /> <FormattedMessage id='lists.delete' defaultMessage='Delete list' />
             </button>
 
-            <hr/>
+            <hr />
 
             <Link to='/lists' className='text-btn column-header__setting-btn column-header__setting-btn--link'>
               <FormattedMessage id='lists.view_all' defaultMessage='View all lists' />

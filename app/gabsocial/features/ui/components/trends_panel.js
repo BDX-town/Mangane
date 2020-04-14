@@ -47,9 +47,10 @@ class TrendsPanel extends ImmutablePureComponent {
             ))}
           </div>
         </div>
-        </div>
-      )
-    };
+      </div>
+    );
+  };
+
 };
 
 
@@ -60,11 +61,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => {
   return {
     fetchTrends: () => dispatch(fetchTrends()),
-  }
+  };
 };
 
 export default injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, {
     forwardRef: true,
   }
-)(TrendsPanel))
+  )(TrendsPanel));

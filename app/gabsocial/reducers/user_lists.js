@@ -21,7 +21,7 @@ import {
   MUTES_EXPAND_SUCCESS,
 } from '../actions/mutes';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { 
+import {
   GROUP_MEMBERS_FETCH_SUCCESS,
   GROUP_MEMBERS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_FETCH_SUCCESS,
