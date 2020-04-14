@@ -62,7 +62,7 @@ The following commands are supported.
 - `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
 
 #### Tests
-- `yarn test` - Runs all tests (recommended for CI).
+- `yarn test` - Runs all tests.
 
 - `yarn test:lint` - Runs all linter tests.
 
