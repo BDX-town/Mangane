@@ -3,6 +3,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Helmet } from'react-helmet';
 import configureStore from '../store/configureStore';
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
@@ -40,6 +41,7 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
+    theme: state.getIn(['settings', 'theme']),
   };
 };
 
@@ -49,10 +51,11 @@ class GabSocialMount extends React.PureComponent {
   static propTypes = {
     showIntroduction: PropTypes.bool,
     me: PropTypes.string,
+    theme: PropTypes.string,
   };
 
   render() {
-    const { me } = this.props;
+    const { me, theme } = this.props;
     if (me === null) return null;
 
     // Disabling introduction for launch
@@ -63,14 +66,19 @@ class GabSocialMount extends React.PureComponent {
     // }
 
     return (
-      <BrowserRouter basename='/web'>
-        <ScrollContext>
-          <Switch>
-            {!me && <Route exact path='/' component={LandingPage} />}
-            <Route path='/' component={UI} />
-          </Switch>
-        </ScrollContext>
-      </BrowserRouter>
+      <>
+        <Helmet>
+          {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
+        </Helmet>
+        <BrowserRouter basename='/web'>
+          <ScrollContext>
+            <Switch>
+              {!me && <Route exact path='/' component={LandingPage} />}
+              <Route path='/' component={UI} />
+            </Switch>
+          </ScrollContext>
+        </BrowserRouter>
+      </>
     );
   }
 
