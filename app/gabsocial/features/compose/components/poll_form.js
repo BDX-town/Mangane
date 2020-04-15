@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import IconButton from 'gabsocial/components/icon_button';
 import Icon from 'gabsocial/components/icon';
@@ -35,6 +36,7 @@ class Option extends React.PureComponent {
     onFetchSuggestions: PropTypes.func.isRequired,
     onSuggestionSelected: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    maxChars: PropTypes.number.isRequired,
   };
 
   handleOptionTitleChange = e => {
@@ -65,7 +67,7 @@ class Option extends React.PureComponent {
   }
 
   render() {
-    const { isPollMultiple, title, index, intl } = this.props;
+    const { isPollMultiple, title, index, maxChars, intl } = this.props;
 
     return (
       <li>
@@ -79,7 +81,7 @@ class Option extends React.PureComponent {
 
           <AutosuggestInput
             placeholder={intl.formatMessage(messages.option_placeholder, { number: index + 1 })}
-            maxLength={120}
+            maxLength={maxChars}
             value={title}
             onChange={this.handleOptionTitleChange}
             suggestions={this.props.suggestions}
@@ -99,8 +101,6 @@ class Option extends React.PureComponent {
 
 }
 
-export default
-@injectIntl
 class PollForm extends ImmutablePureComponent {
 
   static propTypes = {
@@ -116,6 +116,10 @@ class PollForm extends ImmutablePureComponent {
     onFetchSuggestions: PropTypes.func.isRequired,
     onSuggestionSelected: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    maxOptions: PropTypes.number.isRequired,
+    maxOptionChars: PropTypes.number.isRequired,
+    maxExpiration: PropTypes.number,
+    minExpiration: PropTypes.number,
   };
 
   handleAddOption = () => {
@@ -131,7 +135,7 @@ class PollForm extends ImmutablePureComponent {
   };
 
   render() {
-    const { options, expiresIn, isMultiple, onChangeOption, onRemoveOption, intl, ...other } = this.props;
+    const { options, expiresIn, isMultiple, onChangeOption, onRemoveOption, maxOptions, maxOptionChars, intl, ...other } = this.props;
 
     if (!options) {
       return null;
@@ -140,11 +144,23 @@ class PollForm extends ImmutablePureComponent {
     return (
       <div className='compose-form__poll-wrapper'>
         <ul>
-          {options.map((title, i) => <Option title={title} key={i} index={i} onChange={onChangeOption} onRemove={onRemoveOption} isPollMultiple={isMultiple} onToggleMultiple={this.handleToggleMultiple} {...other} />)}
+          {options.map((title, i) => (
+            <Option
+              title={title}
+              key={i}
+              index={i}
+              onChange={onChangeOption}
+              onRemove={onRemoveOption}
+              isPollMultiple={isMultiple}
+              onToggleMultiple={this.handleToggleMultiple}
+              maxChars={maxOptionChars}
+              {...other}
+            />
+          ))}
         </ul>
 
         <div className='poll__footer'>
-          {options.size < 8 && (
+          {options.size < maxOptions && (
             <button className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
           )}
 
@@ -163,3 +179,16 @@ class PollForm extends ImmutablePureComponent {
   }
 
 }
+
+const mapStateToProps = state => {
+  const pollLimits = state.getIn(['instance', 'poll_limits']);
+
+  return {
+    maxOptions: pollLimits.get('max_options'),
+    maxOptionChars: pollLimits.get('max_option_chars'),
+    maxExpiration: pollLimits.get('max_expiration'),
+    minExpiration: pollLimits.get('min_expiration'),
+  };
+};
+
+export default injectIntl(connect(mapStateToProps)(PollForm));
