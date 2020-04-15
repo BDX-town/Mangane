@@ -38,16 +38,18 @@ class LoginForm extends ImmutablePureComponent {
   render() {
     return (
       <form className='simple_form new_user' onSubmit={this.handleSubmit}>
-        <fieldset className='fields-group' disabled={this.state.isLoading}>
-          <div className='input email optional user_email'>
-            <input aria-label='Username' className='string email optional' placeholder='Username' type='text' name='username' />
+        <fieldset disabled={this.state.isLoading}>
+          <div className='fields-group'>
+            <div className='input email optional user_email'>
+              <input aria-label='Username' className='string email optional' placeholder='Username' type='text' name='username' />
+            </div>
+            <div className='input password optional user_password'>
+              <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='password' />
+            </div>
+            <p className='hint subtle-hint'>
+              <Link to='/auth/password/new'>Trouble logging in?</Link>
+            </p>
           </div>
-          <div className='input password optional user_password'>
-            <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='password' />
-          </div>
-          <p className='hint subtle-hint'>
-            <Link to='/auth/password/new'>Trouble logging in?</Link>
-          </p>
         </fieldset>
         <div className='actions'>
           <button name='button' type='submit' className='btn button button-primary'>Log in</button>
