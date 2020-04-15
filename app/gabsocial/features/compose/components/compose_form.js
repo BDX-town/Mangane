@@ -158,11 +158,11 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   componentDidMount() {
-    document.addEventListener('click', this.handleClick, false);
+    document.addEventListener('click', this.handleClick, true);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClick, false);
+    document.removeEventListener('click', this.handleClick, true);
   }
 
   componentDidUpdate(prevProps) {
