@@ -3,7 +3,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Helmet } from'react-helmet';
+import Helmet from 'gabsocial/components/helmet';
 import configureStore from '../store/configureStore';
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';

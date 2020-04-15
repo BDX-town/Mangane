@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import Helmet from 'gabsocial/components/helmet';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 // import TrendsPanel from '../features/ui/components/trends_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
+import { acctFull } from 'gabsocial/utils/accounts';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const accounts = state.getIn(['accounts']);
@@ -44,10 +46,14 @@ class ProfilePage extends ImmutablePureComponent {
 
   render() {
     const { children, accountId, account, accountUsername } = this.props;
-    const bg = account ? account.getIn(['customizations', 'background']) : undefined;
+    const bg = account.getIn(['customizations', 'background']);
 
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
+        <Helmet>
+          <title>@{acctFull(account)}</title>
+        </Helmet>
+
         <div className='page__top'>
           <HeaderContainer accountId={accountId} username={accountUsername} />
         </div>
