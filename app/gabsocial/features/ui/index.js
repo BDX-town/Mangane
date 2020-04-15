@@ -66,6 +66,7 @@ import {
   // GroupCreate,
   // GroupEdit,
   LoginPage,
+  Preferences,
 } from './util/async-components';
 import { meUsername } from '../../initial_state';
 
@@ -230,6 +231,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' layout={LAYOUT.STATUS} component={Reblogs} content={children} />
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+
+        <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
       </Switch>

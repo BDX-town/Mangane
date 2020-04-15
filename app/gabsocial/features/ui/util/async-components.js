@@ -161,3 +161,7 @@ export function Explore() {
 export function LoginPage() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/login_page');
 }
+
+export function Preferences() {
+  return import(/* webpackChunkName: "features/preferences" */'../../preferences');
+}
