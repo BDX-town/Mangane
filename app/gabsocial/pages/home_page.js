@@ -22,6 +22,11 @@ const mapStateToProps = state => {
 export default @connect(mapStateToProps)
 class HomePage extends ImmutablePureComponent {
 
+  constructor(props) {
+    super(props);
+    this.composeBlock = React.createRef();
+  }
+
   render() {
     const { children, account, hasPatron } = this.props;
 
@@ -41,11 +46,15 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__main'>
               <div className='columns-area columns-area--mobile'>
-                <div className='timeline-compose-block'>
+                <div className='timeline-compose-block' ref={this.composeBlock}>
                   <div className='timeline-compose-block__avatar'>
                     <Avatar account={account} size={46} />
                   </div>
-                  <ComposeFormContainer shouldCondense autoFocus={false} />
+                  <ComposeFormContainer
+                    shouldCondense
+                    autoFocus={false}
+                    clickableAreaRef={this.composeBlock}
+                  />
                 </div>
 
                 {children}

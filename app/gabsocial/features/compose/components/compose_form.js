@@ -77,6 +77,7 @@ class ComposeForm extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     group: ImmutablePropTypes.map,
     isModalOpen: PropTypes.bool,
+    clickableAreaRef: PropTypes.object,
   };
 
   static defaultProps = {
@@ -99,9 +100,15 @@ class ComposeForm extends ImmutablePureComponent {
     }
   }
 
+  getClickableArea = () => {
+    const { clickableAreaRef } = this.props;
+    return clickableAreaRef ? clickableAreaRef.current : this.form;
+  }
+
   handleClick = (e) => {
-    if (!this.form) return;
-    if (!this.form.contains(e.target)) {
+    const clickableArea = this.getClickableArea();
+    if (!clickableArea) return;
+    if (!clickableArea.contains(e.target)) {
       this.handleClickOutside();
     }
   }
