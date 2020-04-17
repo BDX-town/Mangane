@@ -68,7 +68,6 @@ import {
   LoginPage,
   Preferences,
 } from './util/async-components';
-import { meUsername } from '../../initial_state';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
@@ -80,14 +79,18 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => {
+  const me = state.get('me');
+  const meUsername = state.getIn(['accounts', me, 'username']);
+
   return {
     isComposing: state.getIn(['compose', 'is_composing']),
     hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
     hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
-    me: state.get('me'),
     accessToken: state.getIn(['auth', 'user', 'access_token']),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
+    me,
+    meUsername,
   };
 };
 
@@ -261,6 +264,7 @@ class UI extends React.PureComponent {
     dropdownMenuIsOpen: PropTypes.bool,
     me: PropTypes.string,
     streamingUrl: PropTypes.string,
+    meUsername: PropTypes.string,
   };
 
   state = {
@@ -504,14 +508,17 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyGoToFavourites = () => {
+    const { meUsername } = this.props;
     this.context.router.history.push(`/${meUsername}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
+    const { meUsername } = this.props;
     this.context.router.history.push(`/${meUsername}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
+    const { meUsername } = this.props;
     this.context.router.history.push(`/${meUsername}`);
   }
 

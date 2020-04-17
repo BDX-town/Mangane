@@ -8,10 +8,11 @@ import StatusList from '../../components/status_list';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { debounce } from 'lodash';
-import { meUsername } from 'gabsocial/initial_state';
 import MissingIndicator from 'gabsocial/components/missing_indicator';
 
 const mapStateToProps = (state, { params: { username } }) => {
+  const me = state.get('me');
+  const meUsername = state.getIn(['accounts', me, 'username']);
   return {
     isMyAccount: (username.toLowerCase() === meUsername.toLowerCase()),
     statusIds: state.getIn(['status_lists', 'favourites', 'items']),

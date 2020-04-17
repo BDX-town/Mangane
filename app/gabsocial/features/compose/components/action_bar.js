@@ -4,7 +4,6 @@ import { openModal } from '../../../actions/modal';
 import PropTypes from 'prop-types';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { meUsername } from 'gabsocial/initial_state';
 import { logOut } from 'gabsocial/actions/auth';
 
 const messages = defineMessages({
@@ -19,6 +18,13 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Hotkeys' },
 });
+
+const mapStateToProps = state => {
+  const me = state.get('me');
+  return {
+    meUsername: state.getIn(['accounts', me, 'username']),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   onOpenHotkeys() {
@@ -37,6 +43,7 @@ class ActionBar extends React.PureComponent {
     size: PropTypes.number,
     onOpenHotkeys: PropTypes.func.isRequired,
     onClickLogOut: PropTypes.func.isRequired,
+    meUsername: PropTypes.string,
   };
 
   handleHotkeyClick = () => {
@@ -44,7 +51,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { intl, onClickLogOut } = this.props;
+    const { intl, onClickLogOut, meUsername } = this.props;
     const size = this.props.size || 16;
 
     let menu = [];
@@ -73,4 +80,4 @@ class ActionBar extends React.PureComponent {
 
 }
 
-export default injectIntl(connect(null, mapDispatchToProps)(ActionBar));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionBar));
