@@ -1,13 +1,12 @@
 import { ME_FETCH_SUCCESS, ME_FETCH_FAIL, ME_FETCH_SKIP } from '../actions/me';
 import { AUTH_LOGGED_OUT } from '../actions/auth';
-import { fromJS } from 'immutable';
 
 const initialState = null;
 
 export default function me(state = initialState, action) {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
-    return fromJS(action.me.id);
+    return action.me.id;
   case ME_FETCH_FAIL:
     return false;
   case ME_FETCH_SKIP:
