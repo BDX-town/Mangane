@@ -4,6 +4,9 @@ variables:
   NODE_ENV: test
 
 cache:
+  key:
+    files:
+      - package.json
   paths:
     - node_modules
 
