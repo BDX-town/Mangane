@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { autoPlayGif, isStaff } from 'gabsocial/initial_state';
+import { isStaff } from 'gabsocial/initial_state';
 import classNames from 'classnames';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
@@ -50,6 +50,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   return {
     me: state.get('me'),
+    autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
   };
 };
 
@@ -65,6 +66,7 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string.isRequired,
     username: PropTypes.string,
+    autoPlayGif: PropTypes.bool,
   };
 
   state = {
@@ -214,7 +216,7 @@ class Header extends ImmutablePureComponent {
   };
 
   render() {
-    const { account, intl, username, me } = this.props;
+    const { account, intl, username, me, autoPlayGif } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {

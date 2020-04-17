@@ -1,18 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { autoPlayGif } from '../initial_state';
 
-export default class AvatarComposite extends React.PureComponent {
+const mapStateToProps = state => ({
+  animate: state.getIn(['preferences', 'auto_play_gif']),
+});
+
+export default @connect(mapStateToProps)
+class AvatarComposite extends React.PureComponent {
 
   static propTypes = {
     accounts: ImmutablePropTypes.list.isRequired,
     animate: PropTypes.bool,
     size: PropTypes.number.isRequired,
-  };
-
-  static defaultProps = {
-    animate: autoPlayGif,
   };
 
   renderItem(account, size, index) {

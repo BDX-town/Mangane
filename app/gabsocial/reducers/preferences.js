@@ -17,6 +17,7 @@ const initialState = ImmutableMap({
       spoilers: false,
     }),
   }),
+  auto_play_gif: false,
 });
 
 export function mastoPrefsToMap(prefs) {

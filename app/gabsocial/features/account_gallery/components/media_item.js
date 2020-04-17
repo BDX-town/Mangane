@@ -1,19 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'gabsocial/components/icon';
-import { autoPlayGif, displayMedia } from 'gabsocial/initial_state';
+import { displayMedia } from 'gabsocial/initial_state';
 import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isIOS } from 'gabsocial/is_mobile';
 
-export default class MediaItem extends ImmutablePureComponent {
+const mapStateToProps = state => ({
+  autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+});
+
+export default @connect(mapStateToProps)
+class MediaItem extends ImmutablePureComponent {
 
   static propTypes = {
     attachment: ImmutablePropTypes.map.isRequired,
     displayWidth: PropTypes.number.isRequired,
     onOpenMedia: PropTypes.func.isRequired,
+    autoPlayGif: PropTypes.bool,
   };
 
   state = {
@@ -66,7 +73,8 @@ export default class MediaItem extends ImmutablePureComponent {
     }
   }
 
-  hoverToPlay() {
+  hoverToPlay = () => {
+    const { autoPlayGif } = this.props;
     return !autoPlayGif && ['gifv', 'video'].indexOf(this.props.attachment.get('type')) !== -1;
   }
 
@@ -83,7 +91,7 @@ export default class MediaItem extends ImmutablePureComponent {
   }
 
   render() {
-    const { attachment, displayWidth } = this.props;
+    const { attachment, displayWidth, autoPlayGif } = this.props;
     const { visible, loaded } = this.state;
 
     const width  = `${Math.floor((displayWidth - 4) / 3) - 4}px`;

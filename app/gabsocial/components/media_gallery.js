@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { is } from 'immutable';
@@ -6,7 +7,7 @@ import IconButton from './icon_button';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
 import classNames from 'classnames';
-import { autoPlayGif, displayMedia } from '../initial_state';
+import { displayMedia } from '../initial_state';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 
@@ -14,6 +15,11 @@ const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
 });
 
+const mapStateToProps = state => ({
+  autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+});
+
+@connect(mapStateToProps)
 class Item extends React.PureComponent {
 
   static propTypes = {
@@ -25,6 +31,7 @@ class Item extends React.PureComponent {
     displayWidth: PropTypes.number,
     visible: PropTypes.bool.isRequired,
     dimensions: PropTypes.object,
+    autoPlayGif: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -51,7 +58,7 @@ class Item extends React.PureComponent {
   }
 
   hoverToPlay() {
-    const { attachment } = this.props;
+    const { attachment, autoPlayGif } = this.props;
     return !autoPlayGif && attachment.get('type') === 'gifv';
   }
 
@@ -108,7 +115,7 @@ class Item extends React.PureComponent {
   }
 
   render() {
-    const { attachment, standalone, displayWidth, visible, dimensions } = this.props;
+    const { attachment, standalone, displayWidth, visible, dimensions, autoPlayGif } = this.props;
 
     let width  = 100;
     let height = '100%';
