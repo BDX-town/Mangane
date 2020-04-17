@@ -64,7 +64,10 @@ export function importFetchedStatuses(statuses) {
     const polls = [];
 
     function processStatus(status) {
-      pushUnique(normalStatuses, normalizeStatus(status, getState().getIn(['statuses', status.id])));
+      const normalOldStatus = getState().getIn(['statuses', status.id]);
+      const readingPrefs = getState().getIn(['preferences', 'reading']);
+
+      pushUnique(normalStatuses, normalizeStatus(status, normalOldStatus, readingPrefs));
       pushUnique(accounts, status.account);
 
       if (status.reblog && status.reblog.id) {

@@ -1,7 +1,6 @@
 import escapeTextContentForBrowser from 'escape-html';
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
-import { expandSpoilers } from '../../initial_state';
 
 const domParser = new DOMParser();
 
@@ -35,8 +34,10 @@ export function normalizeAccount(account) {
   return account;
 }
 
-export function normalizeStatus(status, normalOldStatus) {
+export function normalizeStatus(status, normalOldStatus, readingPrefs) {
   const normalStatus   = { ...status };
+  const expandSpoilers = readingPrefs.getIn(['expand', 'spoilers']);
+
   normalStatus.account = status.account.id;
 
   if (status.reblog && status.reblog.id) {
