@@ -6,14 +6,20 @@ export const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';
 export const ME_FETCH_FAIL    = 'ME_FETCH_FAIL';
 export const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
 
+function hasToken(getState) {
+  const accessToken = getState().getIn(['auth', 'user', 'access_token']);
+  return Boolean(accessToken);
+}
+
 export function fetchMe() {
   return (dispatch, getState) => {
-    const accessToken = getState().getIn(['auth', 'user', 'access_token']);
-    if (!accessToken) {
-      dispatch({ type: ME_FETCH_SKIP });
-      return;
+
+    if (!hasToken(getState)) {
+      dispatch({ type: ME_FETCH_SKIP }); return;
     };
+
     dispatch(fetchMeRequest());
+
     api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
       dispatch(fetchMeSuccess(response.data));
       dispatch(importFetchedAccount(response.data));
