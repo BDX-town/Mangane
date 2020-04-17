@@ -6,7 +6,7 @@ variables:
 cache:
   key:
     files:
-      - package.json
+      - yarn.lock
   paths:
     - node_modules
 
