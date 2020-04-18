@@ -1,9 +1,15 @@
-import { MASTO_PREFS_FETCH_SUCCESS, FE_NAME } from 'gabsocial/actions/preferences';
+import {
+  MASTO_PREFS_FETCH_SUCCESS,
+  PREFERENCE_CHANGE,
+  PREFERENCE_SAVE,
+  FE_NAME,
+} from 'gabsocial/actions/preferences';
 import { ME_FETCH_SUCCESS } from 'gabsocial/actions/me';
 
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
+  saved: true,
   posting: ImmutableMap({
     default: ImmutableMap({
       visibility: 'public',
@@ -18,6 +24,7 @@ const initialState = ImmutableMap({
     }),
   }),
   auto_play_gif: false,
+  theme: 'lime',
 });
 
 export function mastoPrefsToMap(prefs) {
@@ -36,6 +43,12 @@ export default function preferences(state = initialState, action) {
     const me = fromJS(action.me);
     const fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME]);
     return state.merge(fePrefs);
+  case PREFERENCE_CHANGE:
+    return state
+      .setIn(action.path, action.value)
+      .set('saved', false);
+  case PREFERENCE_SAVE:
+    return state.set('saved', true);
   default:
     return state;
   }

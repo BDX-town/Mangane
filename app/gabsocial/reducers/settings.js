@@ -3,7 +3,6 @@ import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { STORE_HYDRATE } from '../actions/store';
 import { EMOJI_USE } from '../actions/emojis';
 import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
-import { SET_THEME } from '../actions/theme';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import uuid from '../uuid';
 
@@ -84,8 +83,6 @@ const initialState = ImmutableMap({
   trends: ImmutableMap({
     show: true,
   }),
-
-  theme: 'lime',
 });
 
 const defaultColumns = fromJS([
@@ -117,8 +114,6 @@ export default function settings(state = initialState, action) {
     return action.error.response.status === 404 ? filterDeadListColumns(state, action.id) : state;
   case LIST_DELETE_SUCCESS:
     return filterDeadListColumns(state, action.id);
-  case SET_THEME:
-    return state.set('theme', action.theme);
   default:
     return state;
   }
