@@ -34,9 +34,8 @@ export function normalizeAccount(account) {
   return account;
 }
 
-export function normalizeStatus(status, normalOldStatus, readingPrefs) {
+export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
   const normalStatus   = { ...status };
-  const expandSpoilers = readingPrefs.getIn(['expand', 'spoilers']);
 
   normalStatus.account = status.account.id;
 

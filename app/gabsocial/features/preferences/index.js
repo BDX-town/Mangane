@@ -4,7 +4,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { changePreference } from 'gabsocial/actions/preferences';
+import { changeSetting } from 'gabsocial/actions/settings';
 import Column from '../ui/components/column';
 
 const messages = defineMessages({
@@ -50,7 +50,7 @@ class Preferences extends ImmutablePureComponent {
 
   onThemeChange = e => {
     const { dispatch } = this.props;
-    dispatch(changePreference(['theme'], e.target.value));
+    dispatch(changeSetting(['theme'], e.target.value));
   }
 
   render() {

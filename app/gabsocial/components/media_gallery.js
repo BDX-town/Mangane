@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
-  autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+  autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
 });
 
 @connect(mapStateToProps)

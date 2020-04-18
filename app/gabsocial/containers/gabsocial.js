@@ -41,7 +41,7 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
-    theme: state.getIn(['preferences', 'theme']),
+    theme: state.getIn(['settings', 'theme']),
   };
 };
 

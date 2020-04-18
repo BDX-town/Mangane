@@ -50,7 +50,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   return {
     me: state.get('me'),
-    autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+    autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
   };
 };
 

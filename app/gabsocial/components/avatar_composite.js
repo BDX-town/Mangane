@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const mapStateToProps = state => ({
-  animate: state.getIn(['preferences', 'auto_play_gif']),
+  animate: state.getIn(['settings', 'autoPlayGif']),
 });
 
 export default @connect(mapStateToProps)

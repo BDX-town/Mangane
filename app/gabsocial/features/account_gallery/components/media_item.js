@@ -10,7 +10,7 @@ import { decode } from 'blurhash';
 import { isIOS } from 'gabsocial/is_mobile';
 
 const mapStateToProps = state => ({
-  autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+  autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
 });
 
 export default @connect(mapStateToProps)

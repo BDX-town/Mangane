@@ -1,17 +1,25 @@
-import { SETTING_CHANGE, SETTING_SAVE } from '../actions/settings';
+import { SETTING_CHANGE, SETTING_SAVE, FE_NAME } from '../actions/settings';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { STORE_HYDRATE } from '../actions/store';
 import { EMOJI_USE } from '../actions/emojis';
 import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
+import { ME_FETCH_SUCCESS } from 'gabsocial/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import uuid from '../uuid';
 
 const initialState = ImmutableMap({
   saved: true,
-
   onboarded: false,
 
   skinTone: 1,
+  reduceMotion: false,
+  autoPlayGif: false,
+  displayMedia: true,
+  expandSpoilers: false,
+  unfollowModal: false,
+  boostModal: false,
+  deleteModal: true,
+  theme: 'lime',
 
   home: ImmutableMap({
     shows: ImmutableMap({
@@ -101,6 +109,10 @@ export default function settings(state = initialState, action) {
   switch(action.type) {
   case STORE_HYDRATE:
     return hydrate(state, action.state.get('settings'));
+  case ME_FETCH_SUCCESS:
+    const me = fromJS(action.me);
+    const fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME]);
+    return state.merge(fePrefs);
   case NOTIFICATIONS_FILTER_SET:
   case SETTING_CHANGE:
     return state

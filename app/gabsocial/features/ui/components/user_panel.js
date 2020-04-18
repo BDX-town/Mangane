@@ -90,7 +90,7 @@ const mapStateToProps = state => {
 
   return {
     account: getAccount(state, me),
-    autoPlayGif: state.getIn(['preferences', 'auto_play_gif']),
+    autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
   };
 };
 
