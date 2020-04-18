@@ -6,7 +6,7 @@ import IconButton from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { isStaff } from '../../../initial_state';
+import { isStaff } from 'gabsocial/utils/accounts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -34,8 +34,10 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   return {
-    me: state.get('me'),
+    me,
+    account: state.getIn(['accounts', me]),
   };
 };
 
@@ -164,7 +166,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me } = this.props;
+    const { status, intl, me, account } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -198,7 +200,7 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
-      if (isStaff) {
+      if (isStaff(account)) {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/admin/accounts/${status.getIn(['account', 'id'])}` });
         menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });

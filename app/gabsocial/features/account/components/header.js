@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff } from 'gabsocial/initial_state';
+import { isStaff } from 'gabsocial/utils/accounts';
 import classNames from 'classnames';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
@@ -48,8 +48,10 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   return {
-    me: state.get('me'),
+    me,
+    account: state.getIn(['accounts', me]),
     autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
   };
 };
@@ -163,7 +165,7 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (account.get('id') !== me && isStaff) {
+    if (account.get('id') !== me && isStaff(account)) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/admin/accounts/${account.get('id')}` });
     }

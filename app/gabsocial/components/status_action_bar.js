@@ -7,7 +7,7 @@ import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff } from '../initial_state';
+import { isStaff } from 'gabsocial/utils/accounts';
 import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
 
@@ -65,6 +65,8 @@ class StatusActionBar extends ImmutablePureComponent {
     withDismiss: PropTypes.bool,
     withGroupAdmin: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    me: PropTypes.string,
+    account: ImmutablePropTypes.map,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -186,7 +188,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin, me } = this.props;
+    const { status, intl, withDismiss, withGroupAdmin, me, account } = this.props;
     const mutingConversation = status.get('muted');
 
     let menu = [];
@@ -228,7 +230,7 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
 
-      if (isStaff) {
+      if (isStaff(account)) {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/admin/accounts/${status.getIn(['account', 'id'])}` });
         menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
@@ -302,8 +304,10 @@ class StatusActionBar extends ImmutablePureComponent {
 }
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   return {
-    me: state.get('me'),
+    me,
+    account: state.getIn(['accounts', me]),
   };
 };
 
