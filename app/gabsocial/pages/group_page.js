@@ -44,8 +44,8 @@ class GroupPage extends ImmutablePureComponent {
                 <div className='columns-area__panels__pane__inner'>
                   {group && relationships &&
                   <GroupPanel
-									  group={group}
-									  relationships={relationships}
+                    group={group}
+                    relationships={relationships}
                   />}
 
                   <PromoPanel />

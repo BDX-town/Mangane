@@ -79,7 +79,7 @@ module.exports = {
     ],
     'no-fallthrough': 'error',
     'no-irregular-whitespace': 'error',
-    'no-mixed-spaces-and-tabs': 'warn',
+    'no-mixed-spaces-and-tabs': 'error',
     'no-nested-ternary': 'warn',
     'no-trailing-spaces': 'warn',
     'no-undef': 'error',
