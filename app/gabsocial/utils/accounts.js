@@ -14,3 +14,9 @@ export const acctFull = account => {
   }
   return [user, domain].join('@');
 };
+
+export const isStaff = account => {
+  return ['is_admin', 'is_moderator'].some(key => (
+    account.getIn(['pleroma', key]) === true
+  ));
+};

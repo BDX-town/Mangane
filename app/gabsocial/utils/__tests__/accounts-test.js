@@ -1,4 +1,4 @@
-import { getDomain, acctFull } from '../accounts';
+import { getDomain, acctFull, isStaff } from '../accounts';
 import { fromJS } from 'immutable';
 
 describe('getDomain', () => {
@@ -29,6 +29,29 @@ describe('acctFull', () => {
     });
     it('returns the full acct', () => {
       expect(acctFull(account)).toEqual('bob@pool.com');
+    });
+  });
+});
+
+describe('isStaff', () => {
+  describe('with empty user', () => {
+    const account = fromJS({});
+    it('returns false', () => {
+      expect(isStaff(account)).toBe(false);
+    });
+  });
+
+  describe('with Pleroma admin', () => {
+    const admin = fromJS({ pleroma: { is_admin: true } });
+    it('returns true', () => {
+      expect(isStaff(admin)).toBe(true);
+    });
+  });
+
+  describe('with Pleroma moderator', () => {
+    const mod = fromJS({ pleroma: { is_moderator: true } });
+    it('returns true', () => {
+      expect(isStaff(mod)).toBe(true);
     });
   });
 });
