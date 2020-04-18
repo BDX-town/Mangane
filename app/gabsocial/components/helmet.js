@@ -14,6 +14,10 @@ class SoapboxHelmet extends React.Component {
     children: PropTypes.node,
   };
 
+  static defaultProps = {
+    siteTitle: 'Soapbox',
+  };
+
   render() {
     const { siteTitle, children } = this.props;
 
