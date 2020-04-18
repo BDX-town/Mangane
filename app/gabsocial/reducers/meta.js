@@ -13,7 +13,7 @@ export default function meta(state = initialState, action) {
   case ME_FETCH_SUCCESS:
     const me = fromJS(action.me);
     const pleroPrefs = me.get('pleroma').delete('settings_store');
-    return state.set('pleroma', pleroPrefs);
+    return state.mergeIn(['pleroma'], pleroPrefs);
   default:
     return state;
   }
