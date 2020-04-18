@@ -70,6 +70,7 @@ class ActionBar extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: PropTypes.string,
+    account: ImmutablePropTypes.map,
   };
 
   handleReplyClick = () => {
