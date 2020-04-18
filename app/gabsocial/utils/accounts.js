@@ -1,4 +1,4 @@
-const getDomain = account => {
+export const getDomain = account => {
   let re = /https?:\/\/(.*?)\//i;
   return re.exec(account.get('url'))[1];
 };
