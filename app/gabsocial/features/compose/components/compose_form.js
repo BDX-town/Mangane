@@ -105,10 +105,16 @@ class ComposeForm extends ImmutablePureComponent {
     return clickableAreaRef ? clickableAreaRef.current : this.form;
   }
 
+  shouldCollapse = (e) => {
+    return ![
+      this.getClickableArea(),
+      document.querySelector('.privacy-dropdown__dropdown'),
+      document.querySelector('.emoji-picker-dropdown__menu'),
+    ].some(element => element && element.contains(e.target));
+  }
+
   handleClick = (e) => {
-    const clickableArea = this.getClickableArea();
-    if (!clickableArea) return;
-    if (!clickableArea.contains(e.target)) {
+    if (this.shouldCollapse(e)) {
       this.handleClickOutside();
     }
   }
