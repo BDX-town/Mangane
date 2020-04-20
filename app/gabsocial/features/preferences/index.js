@@ -53,36 +53,66 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['theme'], e.target.value));
   }
 
+  onDefaultPrivacyChange = e => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(['defaultPrivacy'], e.target.value));
+  }
+
   render() {
     const { settings, intl } = this.props;
 
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <form className='simple_form' onSubmit={this.handleSubmit}>
-          <fieldset disabled={this.state.isLoading}>
-            <div className='fields-group'>
-              <div className='input with_label select optional user_setting_theme'>
-                <div className='label_input'>
-                  <label className='select optional' htmlFor='user_setting_theme'>Site theme</label>
-                  <div className='label_input__wrapper'>
-                    <select
-                      className='select optional'
-                      name='user[setting_theme]'
-                      id='user_setting_theme'
-                      onChange={this.onThemeChange}
-                      defaultValue={settings.get('theme')}
-                    >
-                      {Object.keys(themes).map(theme => (
-                        <option key={theme} value={theme}>
-                          {themes[theme]}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+          <div className='fields-group'>
+            <div className='input with_label select optional user_setting_theme'>
+              <div className='label_input'>
+                <label className='select optional' htmlFor='user_setting_theme'>Site theme</label>
+                <div className='label_input__wrapper'>
+                  <select
+                    className='select optional'
+                    name='user[setting_theme]'
+                    id='user_setting_theme'
+                    onChange={this.onThemeChange}
+                    defaultValue={settings.get('theme')}
+                  >
+                    {Object.keys(themes).map(theme => (
+                      <option key={theme} value={theme}>
+                        {themes[theme]}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
-          </fieldset>
+          </div>
+          <div className='fields-group'>
+            <div className='input with_floating_label radio_buttons optional user_setting_default_privacy'>
+              <div className='label_input'>
+                <label className='radio_buttons optional'>Post privacy</label>
+                <ul>
+                  <li className='radio'>
+                    <label htmlFor='user_setting_default_privacy_public'>
+                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'public'} onChange={this.onDefaultPrivacyChange} value='public' id='user_setting_default_privacy_public' />Public
+                      <span className='hint'>Everyone can see</span>
+                    </label>
+                  </li>
+                  <li className='radio'>
+                    <label htmlFor='user_setting_default_privacy_unlisted'>
+                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'unlisted'} onChange={this.onDefaultPrivacyChange} value='unlisted' id='user_setting_default_privacy_unlisted' />Unlisted
+                      <span className='hint'>Everyone can see, but not listed on public timelines</span>
+                    </label>
+                  </li>
+                  <li className='radio'>
+                    <label htmlFor='user_setting_default_privacy_private'>
+                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'private'} onChange={this.onDefaultPrivacyChange} value='private' id='user_setting_default_privacy_private' />Followers-only
+                      <span className='hint'>Only show to followers</span>
+                    </label>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </form>
       </Column>
     );

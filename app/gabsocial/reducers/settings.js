@@ -19,6 +19,7 @@ const initialState = ImmutableMap({
   unfollowModal: false,
   boostModal: false,
   deleteModal: true,
+  defaultPrivacy: 'public',
   theme: 'lime',
 
   home: ImmutableMap({
