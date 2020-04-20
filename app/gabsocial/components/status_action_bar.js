@@ -66,8 +66,12 @@ class StatusActionBar extends ImmutablePureComponent {
     withGroupAdmin: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     me: PropTypes.string,
-    account: ImmutablePropTypes.map,
+    isStaff: PropTypes.bool.isRequired,
   };
+
+  static defaultProps = {
+    isStaff: false,
+  }
 
   // Avoid checking props that are functions (and whose equality will always
   // evaluate to false. See react-immutable-pure-component for usage.
@@ -188,7 +192,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin, me, account } = this.props;
+    const { status, intl, withDismiss, withGroupAdmin, me, isStaff } = this.props;
     const mutingConversation = status.get('muted');
 
     let menu = [];
@@ -230,7 +234,7 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
 
-      if (isStaff(account)) {
+      if (isStaff) {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/admin/accounts/${status.getIn(['account', 'id'])}` });
         menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
@@ -307,7 +311,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     me,
-    account: state.getIn(['accounts', me]),
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
 

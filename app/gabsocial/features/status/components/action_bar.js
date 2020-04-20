@@ -37,7 +37,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     me,
-    account: state.getIn(['accounts', me]),
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
 
@@ -70,8 +70,12 @@ class ActionBar extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: PropTypes.string,
-    account: ImmutablePropTypes.map,
+    isStaff: PropTypes.bool.isRequired,
   };
+
+  static defaultProps = {
+    isStaff: false,
+  }
 
   handleReplyClick = () => {
     const { me } = this.props;
@@ -167,7 +171,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me, account } = this.props;
+    const { status, intl, me, isStaff } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -201,7 +205,7 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
-      if (isStaff(account)) {
+      if (isStaff) {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/admin/accounts/${status.getIn(['account', 'id'])}` });
         menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });

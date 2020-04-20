@@ -51,7 +51,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     me,
-    account: state.getIn(['accounts', me]),
+    isStaff: isStaff(state.getIn(['accounts', me])),
     autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
   };
 };
@@ -69,7 +69,12 @@ class Header extends ImmutablePureComponent {
     domain: PropTypes.string.isRequired,
     username: PropTypes.string,
     autoPlayGif: PropTypes.bool,
+    isStaff: PropTypes.bool.isRequired,
   };
+
+  static defaultProps = {
+    isStaff: false,
+  }
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
@@ -102,7 +107,7 @@ class Header extends ImmutablePureComponent {
   });
 
   makeMenu() {
-    const { account, intl, me } = this.props;
+    const { account, intl, me, isStaff } = this.props;
 
     let menu = [];
 
@@ -165,7 +170,7 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (account.get('id') !== me && isStaff(account)) {
+    if (account.get('id') !== me && isStaff) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/admin/accounts/${account.get('id')}` });
     }
