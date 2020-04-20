@@ -110,6 +110,7 @@ class ComposeForm extends ImmutablePureComponent {
       this.getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
+      document.querySelector('.modal-root__overlay'),
     ].some(element => element && element.contains(e.target));
   }
 
