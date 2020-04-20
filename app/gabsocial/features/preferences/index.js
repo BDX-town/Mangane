@@ -58,12 +58,20 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultPrivacy'], e.target.value));
   }
 
+  handleCheckboxSetting = path => {
+    const { dispatch } = this.props;
+    return (e) => {
+      dispatch(changeSetting(path, e.target.checked));
+    };
+  }
+
   render() {
     const { settings, intl } = this.props;
 
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <form className='simple_form' onSubmit={this.handleSubmit}>
+
           <div className='fields-group'>
             <div className='input with_label select optional user_setting_theme'>
               <div className='label_input'>
@@ -86,6 +94,7 @@ class Preferences extends ImmutablePureComponent {
               </div>
             </div>
           </div>
+
           <div className='fields-group'>
             <div className='input with_floating_label radio_buttons optional user_setting_default_privacy'>
               <div className='label_input'>
@@ -113,6 +122,50 @@ class Preferences extends ImmutablePureComponent {
               </div>
             </div>
           </div>
+
+          <div className='fields-group'>
+
+            <div className='input with_label boolean optional user_setting_unfollow_modal'>
+              <div className='label_input'>
+                <label className='boolean optional' htmlFor='user_setting_unfollow_modal'>
+                  Show confirmation dialog before unfollowing someone
+                </label>
+                <div className='label_input__wrapper'>
+                  <label className='checkbox'>
+                    <input className='boolean optional' type='checkbox' checked={settings.get('unfollowModal')} onChange={this.handleCheckboxSetting(['unfollowModal'])} id='user_setting_unfollow_modal' />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className='input with_label boolean optional user_setting_boost_modal'>
+              <div className='label_input'>
+                <label className='boolean optional' htmlFor='user_setting_boost_modal'>
+                  Show confirmation dialog before reposting
+                </label>
+                <div className='label_input__wrapper'>
+                  <label className='checkbox'>
+                    <input className='boolean optional' type='checkbox' checked={settings.get('boostModal')} onChange={this.handleCheckboxSetting(['boostModal'])} id='user_setting_boost_modal' />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className='input with_label boolean optional user_setting_delete_modal'>
+              <div className='label_input'>
+                <label className='boolean optional' htmlFor='user_setting_delete_modal'>
+                  Show confirmation dialog before deleting a post
+                </label>
+                <div className='label_input__wrapper'>
+                  <label className='checkbox'>
+                    <input className='boolean optional' type='checkbox' checked={settings.get('deleteModal')} onChange={this.handleCheckboxSetting(['deleteModal'])} id='user_setting_delete_modal' />
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
         </form>
       </Column>
     );
