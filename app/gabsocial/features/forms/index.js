@@ -7,7 +7,11 @@ export class SimpleForm extends ImmutablePureComponent {
 
   static propTypes = {
     children: PropTypes.node,
-    onSubmit: PropTypes.function,
+    onSubmit: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onSubmit: e => e.preventDefault(),
   }
 
   render() {
@@ -75,6 +79,69 @@ export class Checkbox extends ImmutablePureComponent {
           </div>
         </div>
       </div>
+    );
+  }
+
+}
+
+export class RadioGroup extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  render() {
+    const { label, children, onChange } = this.props;
+
+    const childrenWithProps = React.Children.map(children, child =>
+      React.cloneElement(child, { onChange })
+    );
+
+    return (
+      <div className='input with_floating_label radio_buttons optional user_setting_default_privacy'>
+        <div className='label_input'>
+          <label className='radio_buttons optional'>{label}</label>
+          <ul>{childrenWithProps}</ul>
+        </div>
+      </div>
+    );
+  }
+
+}
+
+export class RadioItem extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    hint: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    checked: PropTypes.bool.isRequired,
+    onChange: PropTypes.func,
+  }
+
+  static defaultProps = {
+    checked: false,
+  }
+
+  render() {
+    const { label, hint, value, checked, onChange } = this.props;
+    const id = uuidv4();
+
+    return (
+      <li className='radio'>
+        <label htmlFor={id}>
+          <input
+            id={id}
+            className='radio_buttons optional'
+            type='radio'
+            checked={checked}
+            onChange={onChange}
+            value={value}
+          /> {label}
+          {hint && <span className='hint'>{hint}</span>}
+        </label>
+      </li>
     );
   }
 

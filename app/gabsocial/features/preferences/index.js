@@ -6,7 +6,12 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { changeSetting } from 'gabsocial/actions/settings';
 import Column from '../ui/components/column';
-import { SimpleForm, FieldsGroup } from 'gabsocial/features/forms';
+import {
+  SimpleForm,
+  FieldsGroup,
+  RadioGroup,
+  RadioItem,
+} from 'gabsocial/features/forms';
 import SettingsCheckbox from './components/settings_checkbox';
 
 const messages = defineMessages({
@@ -60,19 +65,12 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultPrivacy'], e.target.value));
   }
 
-  handleCheckboxSetting = path => {
-    const { dispatch } = this.props;
-    return (e) => {
-      dispatch(changeSetting(path, e.target.checked));
-    };
-  }
-
   render() {
     const { settings, intl } = this.props;
 
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <SimpleForm onSubmit={this.handleSubmit}>
+        <SimpleForm>
 
           <FieldsGroup>
             <div className='input with_label select optional user_setting_theme'>
@@ -98,31 +96,26 @@ class Preferences extends ImmutablePureComponent {
           </FieldsGroup>
 
           <FieldsGroup>
-            <div className='input with_floating_label radio_buttons optional user_setting_default_privacy'>
-              <div className='label_input'>
-                <label className='radio_buttons optional'>Post privacy</label>
-                <ul>
-                  <li className='radio'>
-                    <label htmlFor='user_setting_default_privacy_public'>
-                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'public'} onChange={this.onDefaultPrivacyChange} value='public' id='user_setting_default_privacy_public' />Public
-                      <span className='hint'>Everyone can see</span>
-                    </label>
-                  </li>
-                  <li className='radio'>
-                    <label htmlFor='user_setting_default_privacy_unlisted'>
-                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'unlisted'} onChange={this.onDefaultPrivacyChange} value='unlisted' id='user_setting_default_privacy_unlisted' />Unlisted
-                      <span className='hint'>Everyone can see, but not listed on public timelines</span>
-                    </label>
-                  </li>
-                  <li className='radio'>
-                    <label htmlFor='user_setting_default_privacy_private'>
-                      <input className='radio_buttons optional' type='radio' checked={settings.get('defaultPrivacy') === 'private'} onChange={this.onDefaultPrivacyChange} value='private' id='user_setting_default_privacy_private' />Followers-only
-                      <span className='hint'>Only show to followers</span>
-                    </label>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            <RadioGroup label='Post privacy' onChange={this.onDefaultPrivacyChange}>
+              <RadioItem
+                label='Public'
+                hint='Everyone can see'
+                checked={settings.get('defaultPrivacy') === 'public'}
+                value='public'
+              />
+              <RadioItem
+                label='Unlisted'
+                hint='Everyone can see, but not listed on public timelines'
+                checked={settings.get('defaultPrivacy') === 'unlisted'}
+                value='unlisted'
+              />
+              <RadioItem
+                label='Followers-only'
+                hint='Only show to followers'
+                checked={settings.get('defaultPrivacy') === 'private'}
+                value='private'
+              />
+            </RadioGroup>
           </FieldsGroup>
 
           <FieldsGroup>
