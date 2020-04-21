@@ -11,6 +11,7 @@ import {
   FieldsGroup,
   RadioGroup,
   RadioItem,
+  SelectDropdown,
 } from 'gabsocial/features/forms';
 import SettingsCheckbox from './components/settings_checkbox';
 
@@ -20,14 +21,14 @@ const messages = defineMessages({
 
 // TODO: Pull dynamically
 const themes = {
-  cobalt: 'cobalt',
-  'gabsocial-light': 'Light',
-  default: 'Dark',
-  contrast: 'High contrast',
+  cobalt: 'Cobalt',
+  'gabsocial-light': 'Purple Light',
+  default: 'Purple Dark',
+  contrast: 'Purple Contrast',
   halloween: 'Halloween',
-  neenster: 'neenster',
-  glinner: 'glinner',
-  lime: 'lime',
+  neenster: 'Aquatic',
+  glinner: 'Pale Blue',
+  lime: 'Lime Green',
 };
 
 const mapStateToProps = state => ({
@@ -71,28 +72,13 @@ class Preferences extends ImmutablePureComponent {
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm>
-
           <FieldsGroup>
-            <div className='input with_label select optional user_setting_theme'>
-              <div className='label_input'>
-                <label className='select optional' htmlFor='user_setting_theme'>Site theme</label>
-                <div className='label_input__wrapper'>
-                  <select
-                    className='select optional'
-                    name='user[setting_theme]'
-                    id='user_setting_theme'
-                    onChange={this.onThemeChange}
-                    defaultValue={settings.get('theme')}
-                  >
-                    {Object.keys(themes).map(theme => (
-                      <option key={theme} value={theme}>
-                        {themes[theme]}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
+            <SelectDropdown
+              label='Site theme'
+              items={themes}
+              defaultValue={settings.get('theme')}
+              onChange={this.onThemeChange}
+            />
           </FieldsGroup>
 
           <FieldsGroup>
@@ -132,7 +118,6 @@ class Preferences extends ImmutablePureComponent {
               path={['deleteModal']}
             />
           </FieldsGroup>
-
         </SimpleForm>
       </Column>
     );

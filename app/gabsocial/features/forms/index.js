@@ -146,3 +146,41 @@ export class RadioItem extends ImmutablePureComponent {
   }
 
 }
+
+export class SelectDropdown extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    items: PropTypes.object.isRequired,
+    defaultValue: PropTypes.string,
+    onChange: PropTypes.func,
+  }
+
+  render() {
+    const { label, items, defaultValue, onChange } = this.props;
+    const id = uuidv4();
+
+    return (
+      <div className='input with_label select optional'>
+        <div className='label_input'>
+          <label className='select optional' htmlFor={id}>{label}</label>
+          <div className='label_input__wrapper'>
+            <select
+              id={id}
+              className='select optional'
+              onChange={onChange}
+              defaultValue={defaultValue}
+            >
+              {Object.keys(items).map(item => (
+                <option key={item} value={item}>
+                  {items[item]}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+}
