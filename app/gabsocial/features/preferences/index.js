@@ -132,6 +132,10 @@ class Preferences extends ImmutablePureComponent {
               label='Reduce motion in animations'
               path={['reduceMotion']}
             />
+            <SettingsCheckbox
+              label="Use system's default font"
+              path={['systemFont']}
+            />
           </FieldsGroup>
         </SimpleForm>
       </Column>

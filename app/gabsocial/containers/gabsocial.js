@@ -4,6 +4,7 @@ import React from 'react';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Helmet from 'gabsocial/components/helmet';
+import classNames from 'classnames';
 import configureStore from '../store/configureStore';
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
@@ -42,6 +43,7 @@ const mapStateToProps = (state) => {
     showIntroduction,
     me,
     theme: state.getIn(['settings', 'theme']),
+    systemFont: state.getIn(['settings', 'systemFont']),
   };
 };
 
@@ -52,10 +54,11 @@ class GabSocialMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
     me: PropTypes.string,
     theme: PropTypes.string,
+    systemFont: PropTypes.bool,
   };
 
   render() {
-    const { me, theme } = this.props;
+    const { me, theme, systemFont } = this.props;
     if (me === null) return null;
 
     // Disabling introduction for launch
@@ -65,9 +68,15 @@ class GabSocialMount extends React.PureComponent {
     //   return <Introduction />;
     // }
 
+    const bodyClass = classNames('app-body', {
+      [`theme-${theme}`]: theme,
+      'system-font': systemFont,
+    });
+
     return (
       <>
         <Helmet>
+          <body className={bodyClass} />
           {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
         </Helmet>
         <BrowserRouter basename='/web'>

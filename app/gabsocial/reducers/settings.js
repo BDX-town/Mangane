@@ -22,6 +22,8 @@ const initialState = ImmutableMap({
   defaultPrivacy: 'public',
   theme: 'lime',
 
+  systemFont: false,
+
   home: ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
