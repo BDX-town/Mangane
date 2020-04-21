@@ -25,7 +25,6 @@ export function fetchMe() {
 
     api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
       dispatch(fetchMeSuccess(response.data));
-      dispatch(importFetchedAccount(response.data));
     }).catch(error => {
       dispatch(fetchMeFail(error));
     });
@@ -34,6 +33,7 @@ export function fetchMe() {
 
 export function patchMe(params) {
   return (dispatch, getState) => {
+    dispatch(patchMeRequest());
     return api(getState)
       .patch('/api/v1/accounts/update_credentials', params)
       .then(response => {
@@ -51,9 +51,12 @@ export function fetchMeRequest() {
 }
 
 export function fetchMeSuccess(me) {
-  return {
-    type: ME_FETCH_SUCCESS,
-    me,
+  return (dispatch, getState) => {
+    dispatch(importFetchedAccount(me));
+    dispatch({
+      type: ME_FETCH_SUCCESS,
+      me,
+    });
   };
 }
 

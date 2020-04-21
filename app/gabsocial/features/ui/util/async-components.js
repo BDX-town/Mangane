@@ -165,3 +165,7 @@ export function LoginPage() {
 export function Preferences() {
   return import(/* webpackChunkName: "features/preferences" */'../../preferences');
 }
+
+export function EditProfile() {
+  return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
+}

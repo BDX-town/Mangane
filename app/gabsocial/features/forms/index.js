@@ -184,3 +184,36 @@ export class SelectDropdown extends ImmutablePureComponent {
   }
 
 }
+
+export class TextInput extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    name: PropTypes.string,
+    defaultValue: PropTypes.string,
+    maxLength: PropTypes.number,
+  }
+
+  render() {
+    const { label, name, defaultValue, maxLength } = this.props;
+
+    return (
+      <div className='input with_label string optional'>
+        <div className='label_input'>
+          <label className='string optional' htmlFor={name}>{label}</label>
+          <div className='label_input__wrapper'>
+            <input
+              maxlength={maxLength}
+              className='string optional'
+              size={maxLength}
+              type='text'
+              defaultValue={defaultValue}
+              name={name}
+              id={name}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
