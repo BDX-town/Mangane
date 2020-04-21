@@ -118,6 +118,21 @@ class Preferences extends ImmutablePureComponent {
               path={['deleteModal']}
             />
           </FieldsGroup>
+
+          <FieldsGroup>
+            <SettingsCheckbox
+              label='Auto-play animated GIFs'
+              path={['autoPlayGif']}
+            />
+            <SettingsCheckbox
+              label='Always expand posts marked with content warnings'
+              path={['expandSpoilers']}
+            />
+            <SettingsCheckbox
+              label='Reduce motion in animations'
+              path={['reduceMotion']}
+            />
+          </FieldsGroup>
         </SimpleForm>
       </Column>
     );
