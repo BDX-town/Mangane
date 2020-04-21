@@ -63,13 +63,34 @@ module.exports = merge(sharedConfig, {
     ),
     serveIndex: true,
     proxy: {
-      '/api': backendUrl,
-      '/nodeinfo': backendUrl,
-      '/socket': backendUrl,
-      '/oauth': backendUrl,
-      '/.well-known/webfinger': backendUrl,
-      '/static': backendUrl,
-      '/patron': patronUrl,
+      '/api': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/nodeinfo': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/socket': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/oauth': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/.well-known/webfinger': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/static': {
+        target: backendUrl,
+        secure: false,
+      },
+      '/patron': {
+        target: patronUrl,
+        secure: false,
+      },
     },
   },
 });
