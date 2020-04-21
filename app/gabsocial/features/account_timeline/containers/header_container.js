@@ -20,7 +20,6 @@ import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
 import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { unfollowModal } from '../../../initial_state';
 import { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
@@ -45,19 +44,22 @@ const makeMapStateToProps = () => {
 const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onFollow(account) {
-    if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
-      if (unfollowModal) {
-        dispatch(openModal('CONFIRM', {
-          message: <FormattedMessage id='confirmations.unfollow.message' defaultMessage='Are you sure you want to unfollow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
-          confirm: intl.formatMessage(messages.unfollowConfirm),
-          onConfirm: () => dispatch(unfollowAccount(account.get('id'))),
-        }));
+    dispatch((_, getState) => {
+      const unfollowModal = getState().getIn(['settings', 'unfollowModal']);
+      if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
+        if (unfollowModal) {
+          dispatch(openModal('CONFIRM', {
+            message: <FormattedMessage id='confirmations.unfollow.message' defaultMessage='Are you sure you want to unfollow {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+            confirm: intl.formatMessage(messages.unfollowConfirm),
+            onConfirm: () => dispatch(unfollowAccount(account.get('id'))),
+          }));
+        } else {
+          dispatch(unfollowAccount(account.get('id')));
+        }
       } else {
-        dispatch(unfollowAccount(account.get('id')));
+        dispatch(followAccount(account.get('id')));
       }
-    } else {
-      dispatch(followAccount(account.get('id')));
-    }
+    });
   },
 
   onBlock(account) {

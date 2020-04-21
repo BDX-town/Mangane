@@ -13,7 +13,6 @@ import {
   hideStatus,
   revealStatus,
 } from '../../../actions/statuses';
-import { boostModal } from '../../../initial_state';
 
 const makeMapStateToProps = () => {
   const getNotification = makeGetNotification();
@@ -40,15 +39,18 @@ const mapDispatchToProps = dispatch => ({
   },
 
   onReblog(status, e) {
-    if (status.get('reblogged')) {
-      dispatch(unreblog(status));
-    } else {
-      if (e.shiftKey || !boostModal) {
-        this.onModalReblog(status);
+    dispatch((_, getState) => {
+      const boostModal = getState().getIn(['settings', 'boostModal']);
+      if (status.get('reblogged')) {
+        dispatch(unreblog(status));
       } else {
-        dispatch(openModal('BOOST', { status, onReblog: this.onModalReblog }));
+        if (e.shiftKey || !boostModal) {
+          this.onModalReblog(status);
+        } else {
+          dispatch(openModal('BOOST', { status, onReblog: this.onModalReblog }));
+        }
       }
-    }
+    });
   },
 
   onFavourite(status) {

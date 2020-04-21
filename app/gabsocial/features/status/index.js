@@ -39,7 +39,6 @@ import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
-import { boostModal, deleteModal } from '../../initial_state';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'gabsocial/components/icon';
@@ -195,29 +194,35 @@ class Status extends ImmutablePureComponent {
   }
 
   handleReblogClick = (status, e) => {
-    if (status.get('reblogged')) {
-      this.props.dispatch(unreblog(status));
-    } else {
-      if ((e && e.shiftKey) || !boostModal) {
-        this.handleModalReblog(status);
+    this.props.dispatch((_, getState) => {
+      const boostModal = getState().getIn(['settings', 'boostModal']);
+      if (status.get('reblogged')) {
+        this.props.dispatch(unreblog(status));
       } else {
-        this.props.dispatch(openModal('BOOST', { status, onReblog: this.handleModalReblog }));
+        if ((e && e.shiftKey) || !boostModal) {
+          this.handleModalReblog(status);
+        } else {
+          this.props.dispatch(openModal('BOOST', { status, onReblog: this.handleModalReblog }));
+        }
       }
-    }
+    });
   }
 
   handleDeleteClick = (status, history, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
-    if (!deleteModal) {
-      dispatch(deleteStatus(status.get('id'), history, withRedraft));
-    } else {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
-        confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-        onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
-      }));
-    }
+    this.props.dispatch((_, getState) => {
+      const deleteModal = getState().getIn(['settings', 'deleteModal']);
+      if (!deleteModal) {
+        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+      } else {
+        dispatch(openModal('CONFIRM', {
+          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
+          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+        }));
+      }
+    });
   }
 
   handleDirectClick = (account, router) => {

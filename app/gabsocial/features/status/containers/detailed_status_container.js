@@ -27,7 +27,6 @@ import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { boostModal, deleteModal } from '../../../initial_state';
 import { showAlertForError } from '../../../actions/alerts';
 
 const messages = defineMessages({
@@ -74,15 +73,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onReblog(status, e) {
-    if (status.get('reblogged')) {
-      dispatch(unreblog(status));
-    } else {
-      if (e.shiftKey || !boostModal) {
-        this.onModalReblog(status);
+    dispatch((_, getState) => {
+      const boostModal = getState().getIn(['settings', 'boostModal']);
+      if (status.get('reblogged')) {
+        dispatch(unreblog(status));
       } else {
-        dispatch(openModal('BOOST', { status, onReblog: this.onModalReblog }));
+        if (e.shiftKey || !boostModal) {
+          this.onModalReblog(status);
+        } else {
+          dispatch(openModal('BOOST', { status, onReblog: this.onModalReblog }));
+        }
       }
-    }
+    });
   },
 
   onFavourite(status) {
@@ -109,15 +111,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onDelete(status, history, withRedraft = false) {
-    if (!deleteModal) {
-      dispatch(deleteStatus(status.get('id'), history, withRedraft));
-    } else {
-      dispatch(openModal('CONFIRM', {
-        message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
-        confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-        onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
-      }));
-    }
+    dispatch((_, getState) => {
+      const deleteModal = getState().getIn(['settings', 'deleteModal']);
+      if (!deleteModal) {
+        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+      } else {
+        dispatch(openModal('CONFIRM', {
+          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
+          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
+          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+        }));
+      }
+    });
   },
 
   onDirect(account, router) {
