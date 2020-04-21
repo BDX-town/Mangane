@@ -1,4 +1,5 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
+require('dotenv').config();
 
 const { resolve } = require('path');
 const merge = require('webpack-merge');
@@ -7,9 +8,34 @@ const { settings, output } = require('./configuration');
 
 const watchOptions = {};
 
-// TODO: Make this configurable
-const backendUrl = 'http://localhost:4000';
-const patronUrl  = 'http://localhost:5000';
+const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
+const patronUrl   = process.env.PATRON_URL  || 'http://localhost:5000';
+const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
+
+const backendEndpoints = [
+  '/api',
+  '/nodeinfo',
+  '/socket',
+  '/oauth',
+  '/.well-known/webfinger',
+  '/static',
+  '/patron',
+];
+
+const makeProxyConfig = () => {
+  let proxyConfig = {};
+  backendEndpoints.map(endpoint => {
+    proxyConfig[endpoint] = {
+      target: backendUrl,
+      secure: secureProxy,
+    };
+  });
+  proxyConfig['/patron'] = {
+    target: patronUrl,
+    secure: secureProxy,
+  };
+  return proxyConfig;
+};
 
 if (process.env.VAGRANT) {
   // If we are in Vagrant, we can't rely on inotify to update us with changed
@@ -62,35 +88,6 @@ module.exports = merge(sharedConfig, {
       watchOptions
     ),
     serveIndex: true,
-    proxy: {
-      '/api': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/nodeinfo': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/socket': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/oauth': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/.well-known/webfinger': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/static': {
-        target: backendUrl,
-        secure: false,
-      },
-      '/patron': {
-        target: patronUrl,
-        secure: false,
-      },
-    },
+    proxy: makeProxyConfig(),
   },
 });

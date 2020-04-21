@@ -3,6 +3,8 @@
 This is the frontend for [Soapbox](https://soapbox.pub).
 It is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
 
+> :warning: Not yet ready for production use.
+
 # Running locally
 
 To get it running, just clone the repo:
@@ -24,20 +26,45 @@ Finally, run the dev server:
 yarn start
 ```
 
+**That's it!** :tada:
+
 It will serve at `http://localhost:3036` by default.
 
 It will proxy requests to the backend for you.
-For Pleroma no other changes are required, just start Pleroma and it should begin working.
+For Pleroma running on `localhost:4000` (the default) no other changes are required, just start a local Pleroma server and it should begin working.
+
+## Developing against a live backend
+
+You can also run soapbox-fe locally with a live production server as the backend.
+
+To do so, just copy the env file:
+
+```sh
+cp .env.example .env
+```
+
+And edit `.env`, setting the configuration like this:
+
+```sh
+BACKEND_URL="https://pleroma.example.com"
+PROXY_HTTPS_INSECURE=true
+```
+
+You will need to restart the local development server for the changes to take effect.
 
 ## Using with Mastodon
 
-For Mastodon you will need to edit `webpack/development.js` and change the proxy port to 3000: `const backendUrl = 'http://localhost:3000';` then restart the soapbox-fe dev server.
+Local Mastodon runs on port 3000 by default, so you will need to edit the `.env` as described above and set it like this:
+
+```
+BACKEND_URL="http://localhost:3000"
+```
 
 Streaming will not work properly without extra effort.
 
 Due to Mastodon not supporting authentication through the API, you will also need to authenticate manually.
 First log in through the Mastodon interface, view the source of the page, and extract your access_token from the markup.
-Then open soapbox-fe, open the console, and insert the following code:
+Then open your browser to soapbox-fe (`http://localhost:3036`), open the console, and insert the following code:
 
 ```js
 window.localStorage.setItem('soapbox:auth:user', JSON.stringify({access_token: "XXX"}));
@@ -45,6 +72,38 @@ window.localStorage.setItem('soapbox:auth:user', JSON.stringify({access_token: "
 
 Replace `XXX` with your access token.
 Finally, refresh the page, and you should be logged in.
+
+## Local Dev Configuration
+
+The following configuration variables are supported supported in local development.
+Edit `.env` to set them.
+
+All configuration is optional.
+
+#### `BACKEND_URL`
+
+URL to the backend server.
+Can be http or https, and can include a port.
+For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
+
+**Default:** `http://localhost:4000`
+
+#### `PATRON_URL`
+
+URL to the [Soapbox Patron](https://gitlab.com/soapbox-pub/soapbox-patron) server, if you have one.
+
+This setting is not useful unless `"extensions": { "patron": true }` is also set in `public/soapbox/soapbox.json`.
+
+**Default:** `http://localhost:5000`
+
+#### `PROXY_HTTPS_INSECURE`
+
+Allows using an HTTPS backend if set to `true`.
+
+This is needed if `BACKEND_URL` or `PATRON_URL` are set to an `https://` value.
+[More info](https://stackoverflow.com/a/48624590/8811886).
+
+**Default:** `false`
 
 # Yarn Commands
 
