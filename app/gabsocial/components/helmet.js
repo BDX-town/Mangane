@@ -10,12 +10,8 @@ const mapStateToProps = state => ({
 class SoapboxHelmet extends React.Component {
 
   static propTypes = {
-    siteTitle: PropTypes.string.isRequired,
+    siteTitle: PropTypes.string,
     children: PropTypes.node,
-  };
-
-  static defaultProps = {
-    siteTitle: 'Soapbox',
   };
 
   render() {
