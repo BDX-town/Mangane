@@ -136,6 +136,12 @@ class Preferences extends ImmutablePureComponent {
               label="Use system's default font"
               path={['systemFont']}
             />
+            <div className='dyslexic'>
+              <SettingsCheckbox
+                label='Dyslexic mode'
+                path={['dyslexicFont']}
+              />
+            </div>
           </FieldsGroup>
         </SimpleForm>
       </Column>

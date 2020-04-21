@@ -23,6 +23,7 @@ const initialState = ImmutableMap({
   theme: 'lime',
 
   systemFont: false,
+  dyslexicFont: false,
 
   home: ImmutableMap({
     shows: ImmutableMap({

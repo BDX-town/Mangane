@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
     me,
     theme: state.getIn(['settings', 'theme']),
     systemFont: state.getIn(['settings', 'systemFont']),
+    dyslexicFont: state.getIn(['settings', 'dyslexicFont']),
   };
 };
 
@@ -55,10 +56,11 @@ class GabSocialMount extends React.PureComponent {
     me: PropTypes.string,
     theme: PropTypes.string,
     systemFont: PropTypes.bool,
+    dyslexicFont: PropTypes.bool,
   };
 
   render() {
-    const { me, theme, systemFont } = this.props;
+    const { me, theme, systemFont, dyslexicFont } = this.props;
     if (me === null) return null;
 
     // Disabling introduction for launch
@@ -71,6 +73,7 @@ class GabSocialMount extends React.PureComponent {
     const bodyClass = classNames('app-body', {
       [`theme-${theme}`]: theme,
       'system-font': systemFont,
+      'dyslexic': dyslexicFont,
     });
 
     return (
