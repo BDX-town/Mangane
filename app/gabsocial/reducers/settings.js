@@ -24,6 +24,7 @@ const initialState = ImmutableMap({
 
   systemFont: false,
   dyslexicFont: false,
+  demetricator: false,
 
   home: ImmutableMap({
     shows: ImmutableMap({

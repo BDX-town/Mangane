@@ -142,6 +142,11 @@ class Preferences extends ImmutablePureComponent {
                 path={['dyslexicFont']}
               />
             </div>
+            <SettingsCheckbox
+              label='Use Demetricator'
+              hint='Decrease social media anxiety by hiding all numbers from the site.'
+              path={['demetricator']}
+            />
           </FieldsGroup>
         </SimpleForm>
       </Column>
