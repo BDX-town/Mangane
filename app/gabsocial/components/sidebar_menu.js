@@ -117,10 +117,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='envelope' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.messages)}</span>
               </NavLink>
-              <a className='sidebar-menu-item' href='/donate' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/donate' onClick={onClose}>
                 <Icon id='dollar' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
-              </a>
+              </NavLink>
               <NavLink className='sidebar-menu-item' to='/lists' onClick={onClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
@@ -144,14 +144,14 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='times-circle' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
-              <a className='sidebar-menu-item' href='/filters'>
+              <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
-              </a>
-              <a className='sidebar-menu-item' href='/settings/preferences'>
+              </NavLink>
+              <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
-              </a>
+              </NavLink>
             </div>
 
             <div className='sidebar-menu__section'>

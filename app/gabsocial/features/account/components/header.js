@@ -80,10 +80,6 @@ class Header extends ImmutablePureComponent {
     isSmallScreen: (window.innerWidth <= 895),
   }
 
-  openEditProfile = () => {
-    window.open('/settings/profile', '_blank');
-  }
-
   isStatusesPageActive = (match, location) => {
     if (!match) {
       return false;
@@ -121,8 +117,8 @@ class Header extends ImmutablePureComponent {
     }
 
     if (account.get('id') === me) {
-      menu.push({ text: intl.formatMessage(messages.edit_profile), href: '/settings/profile' });
-      menu.push({ text: intl.formatMessage(messages.preferences), href: '/settings/preferences' });
+      menu.push({ text: intl.formatMessage(messages.edit_profile), to: '/settings/profile' });
+      menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
       menu.push(null);
