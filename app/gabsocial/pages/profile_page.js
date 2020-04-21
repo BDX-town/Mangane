@@ -11,6 +11,8 @@ import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
 import { acctFull } from 'gabsocial/utils/accounts';
+import { fetchAccount, fetchAccountByUsername } from '../actions/accounts';
+import { fetchAccountIdentityProofs } from '../actions/identity_proofs';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const accounts = state.getIn(['accounts']);
@@ -44,8 +46,20 @@ class ProfilePage extends ImmutablePureComponent {
     accountUsername: PropTypes.string.isRequired,
   };
 
+  componentWillMount() {
+    const { params: { username }, accountId, me } = this.props;
+
+    if (accountId && accountId !== -1) {
+      this.props.dispatch(fetchAccount(accountId));
+      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
+    } else {
+      this.props.dispatch(fetchAccountByUsername(username));
+    }
+  }
+
   render() {
     const { children, accountId, account, accountUsername } = this.props;
+    if (!account) return null;
     const bg = account.getIn(['customizations', 'background']);
 
     return (
