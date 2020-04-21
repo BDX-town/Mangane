@@ -54,4 +54,11 @@ describe('isStaff', () => {
       expect(isStaff(mod)).toBe(true);
     });
   });
+
+  describe('with undefined', () => {
+    const account = undefined;
+    it('returns false', () => {
+      expect(isStaff(account)).toBe(false);
+    });
+  });
 });

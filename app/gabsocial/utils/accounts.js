@@ -1,3 +1,5 @@
+import { Map as ImmutableMap } from 'immutable';
+
 export const getDomain = account => {
   let re = /https?:\/\/(.*?)\//i;
   return re.exec(account.get('url'))[1];
@@ -15,7 +17,7 @@ export const acctFull = account => {
   return [user, domain].join('@');
 };
 
-export const isStaff = account => {
+export const isStaff = (account = ImmutableMap()) => {
   return ['is_admin', 'is_moderator'].some(key => (
     account.getIn(['pleroma', key]) === true
   ));
