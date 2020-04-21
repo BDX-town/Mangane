@@ -37,6 +37,8 @@ For Pleroma running on `localhost:4000` (the default) no other changes are requi
 
 You can also run soapbox-fe locally with a live production server as the backend.
 
+> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare.
+
 To do so, just copy the env file:
 
 ```sh
