@@ -45,17 +45,6 @@ class Preferences extends ImmutablePureComponent {
     settings: ImmutablePropTypes.map,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = { isLoading: false };
-  }
-
-  getFormData = (form) => {
-    return Object.fromEntries(
-      Array.from(form).map(i => [i.name, i.value])
-    );
-  }
-
   onThemeChange = e => {
     const { dispatch } = this.props;
     dispatch(changeSetting(['theme'], e.target.value));
