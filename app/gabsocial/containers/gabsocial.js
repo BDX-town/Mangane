@@ -43,6 +43,7 @@ const mapStateToProps = (state) => {
     showIntroduction,
     me,
     theme: state.getIn(['settings', 'theme']),
+    reduceMotion: state.getIn(['settings', 'reduceMotion']),
     systemFont: state.getIn(['settings', 'systemFont']),
     dyslexicFont: state.getIn(['settings', 'dyslexicFont']),
     demetricator: state.getIn(['settings', 'demetricator']),
@@ -56,13 +57,14 @@ class GabSocialMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
     me: PropTypes.string,
     theme: PropTypes.string,
+    reduceMotion: PropTypes.bool,
     systemFont: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
   };
 
   render() {
-    const { me, theme, systemFont, dyslexicFont, demetricator } = this.props;
+    const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator } = this.props;
     if (me === null) return null;
 
     // Disabling introduction for launch
@@ -75,6 +77,7 @@ class GabSocialMount extends React.PureComponent {
     const bodyClass = classNames('app-body', {
       [`theme-${theme}`]: theme,
       'system-font': systemFont,
+      'no-reduce-motion': !reduceMotion,
       'dyslexic': dyslexicFont,
       'demetricator': demetricator,
     });
