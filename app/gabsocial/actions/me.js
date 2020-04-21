@@ -6,6 +6,9 @@ export const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';
 export const ME_FETCH_FAIL    = 'ME_FETCH_FAIL';
 export const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
 
+export const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST';
+export const ME_PATCH_FAIL    = 'ME_PATCH_FAIL';
+
 function hasToken(getState) {
   const accessToken = getState().getIn(['auth', 'user', 'access_token']);
   return Boolean(accessToken);
@@ -29,6 +32,18 @@ export function fetchMe() {
   };
 }
 
+export function patchMe(params) {
+  return (dispatch, getState) => {
+    return api(getState)
+      .patch('/api/v1/accounts/update_credentials', params)
+      .then(response => {
+        dispatch(fetchMeSuccess(response.data));
+      }).catch(error => {
+        dispatch(patchMeFail(error));
+      });
+  };
+}
+
 export function fetchMeRequest() {
   return {
     type: ME_FETCH_REQUEST,
@@ -47,5 +62,18 @@ export function fetchMeFail(error) {
     type: ME_FETCH_FAIL,
     error,
     skipAlert: true,
+  };
+};
+
+export function patchMeRequest() {
+  return {
+    type: ME_PATCH_REQUEST,
+  };
+}
+
+export function patchMeFail(error) {
+  return {
+    type: ME_PATCH_FAIL,
+    error,
   };
 };

@@ -1,7 +1,6 @@
-import api from '../api';
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
-import { fetchMeSuccess } from 'gabsocial/actions/me';
+import { patchMe } from 'gabsocial/actions/me';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -21,18 +20,18 @@ export function changeSetting(path, value) {
 };
 
 const debouncedSave = debounce((dispatch, getState) => {
-  if (!getState().get('me')) return;
-  if (getState().getIn(['settings', 'saved'])) return;
+  const state = getState();
+  if (!state.get('me')) return;
+  if (state.getIn(['settings', 'saved'])) return;
 
-  const data = getState().get('settings').delete('saved').toJS();
+  const data = state.get('settings').delete('saved').toJS();
 
-  api(getState).patch('/api/v1/accounts/update_credentials', {
+  dispatch(patchMe({
     pleroma_settings_store: {
       [FE_NAME]: data,
     },
-  }).then(response => {
+  })).then(response => {
     dispatch({ type: SETTING_SAVE });
-    dispatch(fetchMeSuccess(response.data));
   }).catch(error => {
     dispatch(showAlertForError(error));
   });
