@@ -9,6 +9,7 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
+  Checkbox,
 } from 'gabsocial/features/forms';
 import { patchMe } from 'gabsocial/actions/me';
 
@@ -33,21 +34,27 @@ class EditProfile extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = { isLoading: false };
+  state = {
+    isLoading: false,
   }
 
-  getFormData = (form) => {
-    return Object.fromEntries(
-      new FormData(form).entries()
-    );
+  getParams = () => {
+    const { state } = this;
+    return {
+      discoverable: state.discoverable,
+      bot: state.bot,
+      display_name: state.display_name,
+      note: state.note,
+      // avatar: state.avatar,
+      // header: state.header,
+      locked: state.locked,
+      fields_attributes: state.fields_attributes,
+    };
   }
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    const formData = this.getFormData(event.target);
-    dispatch(patchMe(formData)).then(() => {
+    dispatch(patchMe(this.getParams())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
@@ -56,8 +63,21 @@ class EditProfile extends ImmutablePureComponent {
     event.preventDefault();
   }
 
+  componentWillMount() {
+    const { account } = this.props;
+    this.setState(account.toJS());
+  }
+
+  handleCheckboxChange = e => {
+    this.setState({ [e.target.name]: e.target.checked });
+  }
+
+  handleTextChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
   render() {
-    const { account, intl } = this.props;
+    const { intl } = this.props;
 
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -67,12 +87,29 @@ class EditProfile extends ImmutablePureComponent {
               <TextInput
                 label='Display name'
                 name='display_name'
-                defaultValue={account.get('display_name')}
+                value={this.state.display_name}
+                maxLength={30}
+                onChange={this.handleTextChange}
               />
               <TextInput
                 label='Bio'
                 name='note'
-                defaultValue={account.get('bio')}
+                value={this.state.note}
+                onChange={this.handleTextChange}
+              />
+              <Checkbox
+                label='Lock account'
+                hint='Requires you to manually approve followers'
+                name='locked'
+                checked={this.state.locked}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
+                label='This is a bot account'
+                hint='This account mainly performs automated actions and might not be monitored'
+                name='bot'
+                checked={this.state.bot}
+                onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
           </fieldset>
