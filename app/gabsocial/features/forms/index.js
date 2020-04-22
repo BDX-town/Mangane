@@ -191,11 +191,10 @@ export class TextInput extends ImmutablePureComponent {
 
   static propTypes = {
     label: PropTypes.string,
-    maxLength: PropTypes.number,
   }
 
   render() {
-    const { label, maxLength, ...props } = this.props;
+    const { label, ...props } = this.props;
     const id = uuidv4();
 
     return (
@@ -204,9 +203,7 @@ export class TextInput extends ImmutablePureComponent {
           <label className='string optional' htmlFor={id}>{label}</label>
           <div className='label_input__wrapper'>
             <input
-              maxlength={maxLength}
               className='string optional'
-              size={maxLength}
               type='text'
               id={id}
               {...props}

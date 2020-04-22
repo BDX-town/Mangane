@@ -92,6 +92,7 @@ class EditProfile extends ImmutablePureComponent {
                 name='display_name'
                 value={this.state.display_name}
                 maxLength={30}
+                size={30}
                 onChange={this.handleTextChange}
               />
               <TextInput
