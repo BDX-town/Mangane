@@ -14,6 +14,7 @@ const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
 
 const backendEndpoints = [
   '/api',
+  '/pleroma',
   '/nodeinfo',
   '/socket',
   '/oauth',

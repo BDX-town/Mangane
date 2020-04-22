@@ -168,7 +168,7 @@ class Header extends ImmutablePureComponent {
 
     if (account.get('id') !== me && isStaff) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/admin/accounts/${account.get('id')}` });
+      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/` });
     }
 
     return menu;
