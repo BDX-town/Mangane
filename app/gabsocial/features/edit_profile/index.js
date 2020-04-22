@@ -41,6 +41,15 @@ class EditProfile extends ImmutablePureComponent {
     isLoading: false,
   }
 
+  makePreviewAccount = () => {
+    const { account } = this.props;
+    return account.merge(ImmutableMap({
+      header: this.state.header,
+      avatar: this.state.avatar,
+      display_name: this.state.display_name,
+    }));
+  }
+
   getParams = () => {
     const { state } = this;
     return {
@@ -48,16 +57,25 @@ class EditProfile extends ImmutablePureComponent {
       bot: state.bot,
       display_name: state.display_name,
       note: state.note,
-      // avatar: state.avatar,
-      // header: state.header,
+      avatar: state.avatar_file,
+      header: state.header_file,
       locked: state.locked,
       fields_attributes: state.fields_attributes,
     };
   }
 
+  getFormdata = () => {
+    const data = this.getParams();
+    let formData = new FormData();
+    for (let key in data) {
+      if (data[key]) formData.append(key, data[key]);
+    }
+    return formData;
+  }
+
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(patchMe(this.getParams())).then(() => {
+    dispatch(patchMe(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
@@ -77,6 +95,17 @@ class EditProfile extends ImmutablePureComponent {
 
   handleTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleFileChange = e => {
+    const { name } = e.target;
+    const [file] = e.target.files || [];
+    const url = file ? URL.createObjectURL(file) : this.state[name];
+
+    this.setState({
+      [name]: url,
+      [`${name}_file`]: file,
+    });
   }
 
   render() {
@@ -103,27 +132,20 @@ class EditProfile extends ImmutablePureComponent {
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <ProfilePreview
-                    account={ImmutableMap({
-                      url: this.state.url,
-                      header: this.state.header,
-                      avatar: this.state.avatar,
-                      username: this.state.username,
-                      display_name: this.state.display_name,
-                      acct: this.state.acct,
-                    })}
-                  />
+                  <ProfilePreview account={this.makePreviewAccount()} />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
                     label='Header'
                     name='header'
                     hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px'
+                    onChange={this.handleFileChange}
                   />
                   <FileChooser
                     label='Avatar'
                     name='avatar'
                     hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px'
+                    onChange={this.handleFileChange}
                   />
                 </div>
               </div>
