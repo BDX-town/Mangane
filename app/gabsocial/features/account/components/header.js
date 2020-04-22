@@ -213,6 +213,8 @@ class Header extends ImmutablePureComponent {
       } else if (account.getIn(['relationship', 'blocking'])) {
         actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.props.onBlock} />;
       }
+    } else {
+      actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
     }
 
     return actionBtn;
