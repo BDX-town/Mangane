@@ -1,6 +1,7 @@
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 
 export class SimpleForm extends ImmutablePureComponent {
@@ -197,19 +198,27 @@ export class TextInput extends ImmutablePureComponent {
     const { label, ...props } = this.props;
     const id = uuidv4();
 
-    return (
-      <div className='input with_label string optional'>
-        <div className='label_input'>
-          <label className='string optional' htmlFor={id}>{label}</label>
-          <div className='label_input__wrapper'>
-            <input
-              className='string optional'
-              type='text'
-              id={id}
-              {...props}
-            />
-          </div>
+    const containerClassNames = classNames('input', {
+      'with_label': label,
+      'required': this.props.required,
+    });
+
+    const InputWithLabel = () => (
+      <div className='label_input'>
+        <label htmlFor={id}>{label}</label>
+        <div className='label_input__wrapper'>
+          <Input />
         </div>
+      </div>
+    );
+
+    const Input = () => (
+      <input id={id} type='text' {...props} />
+    );
+
+    return (
+      <div className={containerClassNames}>
+        {label ? <InputWithLabel /> : <Input />}
       </div>
     );
   }
