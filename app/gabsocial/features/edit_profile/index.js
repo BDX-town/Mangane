@@ -10,7 +10,10 @@ import {
   FieldsGroup,
   TextInput,
   Checkbox,
+  FileChooser,
 } from 'gabsocial/features/forms';
+import ProfilePreview from './components/profile_preview';
+import { Map as ImmutableMap } from 'immutable';
 import { patchMe } from 'gabsocial/actions/me';
 
 const messages = defineMessages({
@@ -97,6 +100,32 @@ class EditProfile extends ImmutablePureComponent {
                 value={this.state.note}
                 onChange={this.handleTextChange}
               />
+              <div className='fields-row'>
+                <div className='fields-row__column fields-row__column-6'>
+                  <ProfilePreview
+                    account={ImmutableMap({
+                      url: this.state.url,
+                      header: this.state.header,
+                      avatar: this.state.avatar,
+                      username: this.state.username,
+                      display_name: this.state.display_name,
+                      acct: this.state.acct,
+                    })}
+                  />
+                </div>
+                <div className='fields-row__column fields-group fields-row__column-6'>
+                  <FileChooser
+                    label='Header'
+                    name='header'
+                    hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px'
+                  />
+                  <FileChooser
+                    label='Avatar'
+                    name='avatar'
+                    hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px'
+                  />
+                </div>
+              </div>
               <Checkbox
                 label='Lock account'
                 hint='Requires you to manually approve followers'

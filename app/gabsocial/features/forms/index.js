@@ -218,3 +218,40 @@ export class TextInput extends ImmutablePureComponent {
   }
 
 }
+
+export class FileChooser extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    hint: PropTypes.string,
+    fileTypes: PropTypes.array,
+  }
+
+  static defaultProps = {
+    fileTypes: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+  }
+
+  render() {
+    const { label, hint, fileTypes, ...props } = this.props;
+    const id = uuidv4();
+
+    return (
+      <div className='input with_label file optional field_with_hint'>
+        <div className='label_input'>
+          <label className='file optional' htmlFor={id}>{label}</label>
+          <div className='label_input__wrapper'>
+            <input
+              id={id}
+              accept={fileTypes.join(',')}
+              className='file optional'
+              type='file'
+              {...props}
+            />
+          </div>
+        </div>
+        <span className='hint'>{hint}</span>
+      </div>
+    );
+  }
+
+}
