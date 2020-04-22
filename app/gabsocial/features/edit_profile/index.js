@@ -80,7 +80,7 @@ class EditProfile extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>

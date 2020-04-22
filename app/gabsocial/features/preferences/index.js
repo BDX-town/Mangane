@@ -59,7 +59,7 @@ class Preferences extends ImmutablePureComponent {
     const { settings, intl } = this.props;
 
     return (
-      <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown
