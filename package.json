@@ -7,7 +7,7 @@
     "build:development": "NODE_ENV=development npx webpack --config webpack/development.js",
     "build:production": "NODE_ENV=production npx webpack --config webpack/production.js",
     "manage:translations": "node ./webpack/translationRunner.js",
-    "test": "${npm_execpath} run test:lint:js && ${npm_execpath} run test:jest",
+    "test": "${npm_execpath} run test:lint && ${npm_execpath} run test:jest",
     "test:lint": "${npm_execpath} run test:lint:js && ${npm_execpath} run test:lint:sass",
     "test:lint:js": "npx eslint --ext=js . --cache",
     "test:lint:sass": "npx sass-lint -v",

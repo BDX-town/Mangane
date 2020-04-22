@@ -216,4 +216,5 @@ export class TextInput extends ImmutablePureComponent {
       </div>
     );
   }
+
 }
