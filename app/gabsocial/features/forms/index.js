@@ -4,6 +4,28 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 
+export const InputContainer = (props) => {
+  const containerClass = classNames('input', {
+    'with_label': props.label,
+    'required': props.required,
+  }, props.extraClass);
+
+  return (
+    <div className={containerClass}>
+      {props.children}
+      {props.hint && <span className='hint'>{props.hint}</span>}
+    </div>
+  );
+};
+
+InputContainer.propTypes = {
+  label: PropTypes.string,
+  hint: PropTypes.string,
+  required: PropTypes.bool,
+  children: PropTypes.node,
+  extraClass: PropTypes.string,
+};
+
 export const LabelInput = ({ label, ...props }) => {
   const id = uuidv4();
   return (
@@ -68,19 +90,12 @@ export class Checkbox extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, required } = this.props;
-
-    const containerClassNames = classNames('input', 'boolean', {
-      'with_label': label,
-      'required': required,
-    });
-
-    const Input = label ? LabelInput : 'input';
+    const Input = this.props.label ? LabelInput : 'input';
 
     return (
-      <div className={containerClassNames}>
+      <InputContainer {...this.props} extraClass='boolean'>
         <Input type='checkbox' {...this.props} />
-      </div>
+      </InputContainer>
     );
   }
 
@@ -194,19 +209,12 @@ export class TextInput extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, required } = this.props;
-
-    const containerClassNames = classNames('input', {
-      'with_label': label,
-      'required': required,
-    });
-
-    const Input = label ? LabelInput : 'input';
+    const Input = this.props.label ? LabelInput : 'input';
 
     return (
-      <div className={containerClassNames}>
+      <InputContainer {...this.props}>
         <Input type='text' {...this.props} />
-      </div>
+      </InputContainer>
     );
   }
 
@@ -224,20 +232,13 @@ export class FileChooser extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, hint, ...props } = this.props;
-
-    const containerClassNames = classNames('input', {
-      'with_label': label,
-      'required': this.props.required,
-    });
-
-    const Input = label ? LabelInput : 'input';
+    const { hint, ...props } = this.props;
+    const Input = this.props.label ? LabelInput : 'input';
 
     return (
-      <div className={containerClassNames}>
+      <InputContainer {...this.props}>
         <Input type='file' {...props} />
-        {hint && <span className='hint'>{hint}</span>}
-      </div>
+      </InputContainer>
     );
   }
 

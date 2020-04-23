@@ -27,13 +27,14 @@ class SettingsCheckbox extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, path, settings } = this.props;
+    const { label, path, settings, ...props } = this.props;
 
     return (
       <Checkbox
         label={label}
         checked={settings.getIn(path)}
         onChange={this.handleCheckboxSetting(path)}
+        {...props}
       />
     );
   }
