@@ -23,7 +23,6 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onSubmit = e => {
     // TODO: Dispatch action
-    e.preventDefault();
   }
 
   render() {
