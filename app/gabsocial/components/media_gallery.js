@@ -285,18 +285,15 @@ class MediaGallery extends React.PureComponent {
     const width = this.state.width || defaultWidth;
     const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
 
-    const style = {};
-
-    if (isPanoramic(aspectRatio)) {
-      style.height = Math.floor(width / maximumAspectRatio);
-    } else if (isPortrait(aspectRatio)) {
-      style.height = Math.floor(width / minimumAspectRatio);
-    } else {
-      style.height = Math.floor(width / aspectRatio);
-    }
+    const getHeight = () => {
+      if (!aspectRatio) return width*9/16;
+      if (isPanoramic(aspectRatio)) return Math.floor(width / maximumAspectRatio);
+      if (isPortrait(aspectRatio))  return Math.floor(width / minimumAspectRatio);
+      return Math.floor(width / aspectRatio);
+    };
 
     return ImmutableMap({
-      style,
+      style: { height: getHeight() },
       itemsDimensions: [],
       size: 1,
       width,
