@@ -10,6 +10,7 @@ import classNames from 'classnames';
 import { displayMedia } from '../initial_state';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+import { Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
@@ -279,16 +280,12 @@ class MediaGallery extends React.PureComponent {
     }
   }
 
-  render() {
-    const { media, intl, sensitive, height, defaultWidth } = this.props;
-    const { visible } = this.state;
-
+  getSizeData = () => {
+    const { media, height, defaultWidth } = this.props;
     const width = this.state.width || defaultWidth;
-
-    let children, spoilerButton;
+    const size = media.take(4).size;
 
     const style = {};
-    const size = media.take(4).size;
 
     const panoSize = Math.floor(width / maximumAspectRatio);
     const panoSize_px = `${Math.floor(width / maximumAspectRatio)}px`;
@@ -488,16 +485,30 @@ class MediaGallery extends React.PureComponent {
       style.height = height;
     }
 
+    return ImmutableMap({
+      style,
+      itemsDimensions,
+      size,
+      width,
+    });
+  }
+
+  render() {
+    const { media, intl, sensitive } = this.props;
+    const { visible } = this.state;
+    const sizeData = this.getSizeData();
+    let children, spoilerButton;
+
     children = media.take(4).map((attachment, i) => (
       <Item
         key={attachment.get('id')}
         onClick={this.handleClick}
         attachment={attachment}
         index={i}
-        size={size}
-        displayWidth={width}
+        size={sizeData.get('size')}
+        displayWidth={sizeData.get('width')}
         visible={visible}
-        dimensions={itemsDimensions[i]}
+        dimensions={sizeData.get('itemsDimensions')[i]}
       />
     ));
 
@@ -512,7 +523,7 @@ class MediaGallery extends React.PureComponent {
     }
 
     return (
-      <div className='media-gallery' style={style} ref={this.handleRef}>
+      <div className='media-gallery' style={sizeData.get('style')} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
           {spoilerButton}
         </div>
