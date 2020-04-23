@@ -28,17 +28,32 @@ InputContainer.propTypes = {
   extraClass: PropTypes.string,
 };
 
-export const LabelInput = ({ label, ...props }) => {
+export const LabelInputContainer = ({ label, children, ...props }) => {
   const id = uuidv4();
+  const childrenWithProps = React.Children.map(children, child => (
+    React.cloneElement(child, { id: id })
+  ));
+
   return (
     <div className='label_input'>
       <label htmlFor={id}>{label}</label>
       <div className='label_input__wrapper'>
-        <input id={id} {...props} />
+        {childrenWithProps}
       </div>
     </div>
   );
 };
+
+LabelInputContainer.propTypes = {
+  label: PropTypes.string.isRequired,
+  children: PropTypes.node,
+};
+
+export const LabelInput = ({ label, ...props }) => (
+  <LabelInputContainer label={label}>
+    <input {...props} />
+  </LabelInputContainer>
+);
 
 LabelInput.propTypes = {
   label: PropTypes.string.isRequired,
@@ -64,46 +79,26 @@ export class SimpleInput extends ImmutablePureComponent {
 
 }
 
-export class SimpleForm extends ImmutablePureComponent {
+export const SimpleForm = ({ children, onSubmit }) => (
+  <form className='simple_form' onSubmit={onSubmit}>{children}</form>
+);
 
-  static propTypes = {
-    children: PropTypes.node,
-    onSubmit: PropTypes.func,
-  }
+SimpleForm.propTypes = {
+  children: PropTypes.node,
+  onSubmit: PropTypes.func,
+};
 
-  static defaultProps = {
-    onSubmit: e => e.preventDefault(),
-  }
+SimpleForm.defaultProps = {
+  onSubmit: e => e.preventDefault(),
+};
 
-  render() {
-    const { children, onSubmit } = this.props;
+export const FieldsGroup = ({ children }) => (
+  <div className='fields-group'>{children}</div>
+);
 
-    return (
-      <form className='simple_form' onSubmit={onSubmit}>
-        {children}
-      </form>
-    );
-  }
-
-}
-
-export class FieldsGroup extends ImmutablePureComponent {
-
-  static propTypes = {
-    children: PropTypes.node,
-  }
-
-  render() {
-    const { children } = this.props;
-
-    return (
-      <div className='fields-group'>
-        {children}
-      </div>
-    );
-  }
-
-}
+FieldsGroup.propTypes = {
+  children: PropTypes.node,
+};
 
 export const Checkbox = props => (
   <SimpleInput type='checkbox' {...props} />
@@ -126,7 +121,7 @@ export class RadioGroup extends ImmutablePureComponent {
     return (
       <div className='input with_floating_label radio_buttons'>
         <div className='label_input'>
-          <label className='radio_buttons optional'>{label}</label>
+          <label>{label}</label>
           <ul>{childrenWithProps}</ul>
         </div>
       </div>
@@ -150,20 +145,13 @@ export class RadioItem extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, hint, value, checked, onChange } = this.props;
+    const { label, hint, ...props } = this.props;
     const id = uuidv4();
 
     return (
       <li className='radio'>
         <label htmlFor={id}>
-          <input
-            id={id}
-            className='radio_buttons optional'
-            type='radio'
-            checked={checked}
-            onChange={onChange}
-            value={value}
-          /> {label}
+          <input id={id} type='radio' {...props} /> {label}
           {hint && <span className='hint'>{hint}</span>}
         </label>
       </li>
@@ -177,35 +165,20 @@ export class SelectDropdown extends ImmutablePureComponent {
   static propTypes = {
     label: PropTypes.string,
     items: PropTypes.object.isRequired,
-    defaultValue: PropTypes.string,
-    onChange: PropTypes.func,
   }
 
   render() {
-    const { label, items, defaultValue, onChange } = this.props;
-    const id = uuidv4();
+    const { label, items, ...props } = this.props;
 
-    return (
-      <div className='input with_label select optional'>
-        <div className='label_input'>
-          <label className='select optional' htmlFor={id}>{label}</label>
-          <div className='label_input__wrapper'>
-            <select
-              id={id}
-              className='select optional'
-              onChange={onChange}
-              defaultValue={defaultValue}
-            >
-              {Object.keys(items).map(item => (
-                <option key={item} value={item}>
-                  {items[item]}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      </div>
-    );
+    const optionElems = Object.keys(items).map(item => (
+      <option key={item} value={item}>{items[item]}</option>
+    ));
+
+    const selectElem = <select {...props}>{optionElems}</select>;
+
+    return label ? (
+      <LabelInputContainer label={label}>{selectElem}</LabelInputContainer>
+    ) : selectElem;
   }
 
 }
