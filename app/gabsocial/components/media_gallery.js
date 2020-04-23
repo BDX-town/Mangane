@@ -280,214 +280,241 @@ class MediaGallery extends React.PureComponent {
     }
   }
 
-  getSizeData = () => {
-    const { media, height, defaultWidth } = this.props;
+  getSizeDataSingle = () => {
+    const { media, defaultWidth } = this.props;
     const width = this.state.width || defaultWidth;
-    const size = media.take(4).size;
+    const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
 
     const style = {};
 
+    if (isPanoramic(aspectRatio)) {
+      style.height = Math.floor(width / maximumAspectRatio);
+    } else if (isPortrait(aspectRatio)) {
+      style.height = Math.floor(width / minimumAspectRatio);
+    } else {
+      style.height = Math.floor(width / aspectRatio);
+    }
+
+    return ImmutableMap({
+      style,
+      itemsDimensions: [],
+      size: 1,
+      width,
+    });
+  }
+
+  getSizeDataMultiple = size => {
+    const { media, defaultWidth } = this.props;
+    const width = this.state.width || defaultWidth;
     const panoSize = Math.floor(width / maximumAspectRatio);
     const panoSize_px = `${Math.floor(width / maximumAspectRatio)}px`;
+
+    const style = {};
     let itemsDimensions = [];
 
-    if (size === 1 && width) {
-      const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
+    const ratios = Array(size).fill().map((_, i) =>
+      media.getIn([i, 'meta', 'small', 'aspect'])
+    );
 
-      if (isPanoramic(aspectRatio)) {
-        style.height = Math.floor(width / maximumAspectRatio);
-      } else if (isPortrait(aspectRatio)) {
+    const [ar1, ar2, ar3, ar4] = ratios;
+
+    if (size === 2) {
+      if (isPortrait(ar1) && isPortrait(ar2)) {
+        style.height = width - (width / maximumAspectRatio);
+      } else if (isPanoramic(ar1) && isPanoramic(ar2)) {
+        style.height = panoSize * 2;
+      } else if (
+        (isPanoramic(ar1) && isPortrait(ar2)) ||
+        (isPortrait(ar1) && isPanoramic(ar2)) ||
+        (isPanoramic(ar1) && isNonConformingRatio(ar2)) ||
+        (isNonConformingRatio(ar1) && isPanoramic(ar2))
+      ) {
+        style.height = (width * 0.6) + (width / maximumAspectRatio);
+      } else {
+        style.height = width / 2;
+      }
+
+      //
+
+      if (isPortrait(ar1) && isPortrait(ar2)) {
+        itemsDimensions = [
+          { w: 50, h: '100%', r: '2px' },
+          { w: 50, h: '100%', l: '2px' },
+        ];
+      } else if (isPanoramic(ar1) && isPanoramic(ar2)) {
+        itemsDimensions = [
+          { w: 100, h: panoSize_px, b: '2px' },
+          { w: 100, h: panoSize_px, t: '2px' },
+        ];
+      } else if (
+        (isPanoramic(ar1) && isPortrait(ar2)) ||
+        (isPanoramic(ar1) && isNonConformingRatio(ar2))
+      ) {
+        itemsDimensions = [
+          { w: 100, h: `${(width / maximumAspectRatio)}px`, b: '2px' },
+          { w: 100, h: `${(width * 0.6)}px`, t: '2px' },
+        ];
+      } else if (
+        (isPortrait(ar1) && isPanoramic(ar2)) ||
+        (isNonConformingRatio(ar1) && isPanoramic(ar2))
+      ) {
+        itemsDimensions = [
+          { w: 100, h: `${(width * 0.6)}px`, b: '2px' },
+          { w: 100, h: `${(width / maximumAspectRatio)}px`, t: '2px' },
+        ];
+      } else {
+        itemsDimensions = [
+          { w: 50, h: '100%', r: '2px' },
+          { w: 50, h: '100%', l: '2px' },
+        ];
+      }
+    } else if (size === 3) {
+      if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) {
+        style.height = panoSize * 3;
+      } else if (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3)) {
         style.height = Math.floor(width / minimumAspectRatio);
       } else {
-        style.height = Math.floor(width / aspectRatio);
+        style.height = width;
       }
-    } else if (size > 1 && width) {
-      const ar1 = media.getIn([0, 'meta', 'small', 'aspect']);
-      const ar2 = media.getIn([1, 'meta', 'small', 'aspect']);
-      const ar3 = media.getIn([2, 'meta', 'small', 'aspect']);
-      const ar4 = media.getIn([3, 'meta', 'small', 'aspect']);
 
-      if (size === 2) {
-        if (isPortrait(ar1) && isPortrait(ar2)) {
-          style.height = width - (width / maximumAspectRatio);
-        } else if (isPanoramic(ar1) && isPanoramic(ar2)) {
-          style.height = panoSize * 2;
-        } else if (
-          (isPanoramic(ar1) && isPortrait(ar2)) ||
-          (isPortrait(ar1) && isPanoramic(ar2)) ||
-          (isPanoramic(ar1) && isNonConformingRatio(ar2)) ||
-          (isNonConformingRatio(ar1) && isPanoramic(ar2))
-        ) {
-          style.height = (width * 0.6) + (width / maximumAspectRatio);
-        } else {
-          style.height = width / 2;
-        }
+      //
 
-        //
-
-        if (isPortrait(ar1) && isPortrait(ar2)) {
-          itemsDimensions = [
-            { w: 50, h: '100%', r: '2px' },
-            { w: 50, h: '100%', l: '2px' },
-          ];
-        } else if (isPanoramic(ar1) && isPanoramic(ar2)) {
-          itemsDimensions = [
-            { w: 100, h: panoSize_px, b: '2px' },
-            { w: 100, h: panoSize_px, t: '2px' },
-          ];
-        } else if (
-          (isPanoramic(ar1) && isPortrait(ar2)) ||
-          (isPanoramic(ar1) && isNonConformingRatio(ar2))
-        ) {
-          itemsDimensions = [
-            { w: 100, h: `${(width / maximumAspectRatio)}px`, b: '2px' },
-            { w: 100, h: `${(width * 0.6)}px`, t: '2px' },
-          ];
-        } else if (
-          (isPortrait(ar1) && isPanoramic(ar2)) ||
-          (isNonConformingRatio(ar1) && isPanoramic(ar2))
-        ) {
-          itemsDimensions = [
-            { w: 100, h: `${(width * 0.6)}px`, b: '2px' },
-            { w: 100, h: `${(width / maximumAspectRatio)}px`, t: '2px' },
-          ];
-        } else {
-          itemsDimensions = [
-            { w: 50, h: '100%', r: '2px' },
-            { w: 50, h: '100%', l: '2px' },
-          ];
-        }
-      } else if (size === 3) {
-        if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) {
-          style.height = panoSize * 3;
-        } else if (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3)) {
-          style.height = Math.floor(width / minimumAspectRatio);
-        } else {
-          style.height = width;
-        }
-
-        //
-
-        if (isPanoramic(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3)) {
-          itemsDimensions = [
-            { w: 100, h: '50%', b: '2px' },
-            { w: 50, h: '50%', t: '2px', r: '2px' },
-            { w: 50, h: '50%', t: '2px', l: '2px' },
-          ];
-        } else if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) {
-          itemsDimensions = [
-            { w: 100, h: panoSize_px, b: '4px' },
-            { w: 100, h: panoSize_px },
-            { w: 100, h: panoSize_px, t: '4px' },
-          ];
-        } else if (isPortrait(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3)) {
-          itemsDimensions = [
-            { w: 50, h: '100%', r: '2px' },
-            { w: 50, h: '50%', b: '2px', l: '2px' },
-            { w: 50, h: '50%', t: '2px', l: '2px' },
-          ];
-        } else if (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPortrait(ar3)) {
-          itemsDimensions = [
-            { w: 50, h: '50%', b: '2px', r: '2px' },
-            { w: 50, h: '50%', l: '-2px', b: '-2px', pos: 'absolute', float: 'none' },
-            { w: 50, h: '100%', r: '-2px', t: '0px', b: '0px', pos: 'absolute', float: 'none' },
-          ];
-        } else if (
-          (isNonConformingRatio(ar1) && isPortrait(ar2) && isNonConformingRatio(ar3)) ||
-          (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3))
-        ) {
-          itemsDimensions = [
-            { w: 50, h: '50%', b: '2px', r: '2px' },
-            { w: 50, h: '100%', l: '2px', float: 'right' },
-            { w: 50, h: '50%', t: '2px', r: '2px' },
-          ];
-        } else if (
-          (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3)) ||
-          (isPanoramic(ar1) && isPanoramic(ar2) && isPortrait(ar3))
-        ) {
-          itemsDimensions = [
-            { w: 50, h: panoSize_px, b: '2px', r: '2px' },
-            { w: 50, h: panoSize_px, b: '2px', l: '2px' },
-            { w: 100, h: `${width - panoSize}px`, t: '2px' },
-          ];
-        } else if (
-          (isNonConformingRatio(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) ||
-          (isPortrait(ar1) && isPanoramic(ar2) && isPanoramic(ar3))
-        ) {
-          itemsDimensions = [
-            { w: 100, h: `${width - panoSize}px`, b: '2px' },
-            { w: 50, h: panoSize_px, t: '2px', r: '2px' },
-            { w: 50, h: panoSize_px, t: '2px', l: '2px' },
-          ];
-        } else {
-          itemsDimensions = [
-            { w: 50, h: '50%', b: '2px', r: '2px' },
-            { w: 50, h: '50%', b: '2px', l: '2px' },
-            { w: 100, h: '50%', t: '2px' },
-          ];
-        }
-      } else if (size === 4) {
-        if (
-          (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
-          (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isNonConformingRatio(ar4)) ||
-          (isPortrait(ar1) && isPortrait(ar2) && isNonConformingRatio(ar3) && isPortrait(ar4)) ||
-          (isPortrait(ar1) && isNonConformingRatio(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
-          (isNonConformingRatio(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4))
-        ) {
-          style.height = Math.floor(width / minimumAspectRatio);
-        } else if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3) && isPanoramic(ar4)) {
-          style.height = panoSize * 2;
-        } else if (
-          (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) ||
-          (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPanoramic(ar3) && isPanoramic(ar4))
-        ) {
-          style.height = panoSize + (width / 2);
-        } else {
-          style.height = width;
-        }
-
-        //
-
-        if (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) {
-          itemsDimensions = [
-            { w: 50, h: panoSize_px, b: '2px', r: '2px' },
-            { w: 50, h: panoSize_px, b: '2px', l: '2px' },
-            { w: 50, h: `${(width / 2)}px`, t: '2px', r: '2px' },
-            { w: 50, h: `${(width / 2)}px`, t: '2px', l: '2px' },
-          ];
-        } else if (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPanoramic(ar3) && isPanoramic(ar4)) {
-          itemsDimensions = [
-            { w: 50, h: `${(width / 2)}px`, b: '2px', r: '2px' },
-            { w: 50, h: `${(width / 2)}px`, b: '2px', l: '2px' },
-            { w: 50, h: panoSize_px, t: '2px', r: '2px' },
-            { w: 50, h: panoSize_px, t: '2px', l: '2px' },
-          ];
-        } else if (
-          (isPortrait(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) ||
-          (isPortrait(ar1) && isPanoramic(ar2) && isPanoramic(ar3) && isPanoramic(ar4))
-        ) {
-          itemsDimensions = [
-            { w: 67, h: '100%', r: '2px' },
-            { w: 33, h: '33%', b: '4px', l: '2px' },
-            { w: 33, h: '33%', l: '2px' },
-            { w: 33, h: '33%', t: '4px', l: '2px' },
-          ];
-        } else {
-          itemsDimensions = [
-            { w: 50, h: '50%', b: '2px', r: '2px' },
-            { w: 50, h: '50%', b: '2px', l: '2px' },
-            { w: 50, h: '50%', t: '2px', r: '2px' },
-            { w: 50, h: '50%', t: '2px', l: '2px' },
-          ];
-        }
+      if (isPanoramic(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3)) {
+        itemsDimensions = [
+          { w: 100, h: '50%', b: '2px' },
+          { w: 50, h: '50%', t: '2px', r: '2px' },
+          { w: 50, h: '50%', t: '2px', l: '2px' },
+        ];
+      } else if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) {
+        itemsDimensions = [
+          { w: 100, h: panoSize_px, b: '4px' },
+          { w: 100, h: panoSize_px },
+          { w: 100, h: panoSize_px, t: '4px' },
+        ];
+      } else if (isPortrait(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3)) {
+        itemsDimensions = [
+          { w: 50, h: '100%', r: '2px' },
+          { w: 50, h: '50%', b: '2px', l: '2px' },
+          { w: 50, h: '50%', t: '2px', l: '2px' },
+        ];
+      } else if (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPortrait(ar3)) {
+        itemsDimensions = [
+          { w: 50, h: '50%', b: '2px', r: '2px' },
+          { w: 50, h: '50%', l: '-2px', b: '-2px', pos: 'absolute', float: 'none' },
+          { w: 50, h: '100%', r: '-2px', t: '0px', b: '0px', pos: 'absolute', float: 'none' },
+        ];
+      } else if (
+        (isNonConformingRatio(ar1) && isPortrait(ar2) && isNonConformingRatio(ar3)) ||
+        (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3))
+      ) {
+        itemsDimensions = [
+          { w: 50, h: '50%', b: '2px', r: '2px' },
+          { w: 50, h: '100%', l: '2px', float: 'right' },
+          { w: 50, h: '50%', t: '2px', r: '2px' },
+        ];
+      } else if (
+        (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3)) ||
+        (isPanoramic(ar1) && isPanoramic(ar2) && isPortrait(ar3))
+      ) {
+        itemsDimensions = [
+          { w: 50, h: panoSize_px, b: '2px', r: '2px' },
+          { w: 50, h: panoSize_px, b: '2px', l: '2px' },
+          { w: 100, h: `${width - panoSize}px`, t: '2px' },
+        ];
+      } else if (
+        (isNonConformingRatio(ar1) && isPanoramic(ar2) && isPanoramic(ar3)) ||
+        (isPortrait(ar1) && isPanoramic(ar2) && isPanoramic(ar3))
+      ) {
+        itemsDimensions = [
+          { w: 100, h: `${width - panoSize}px`, b: '2px' },
+          { w: 50, h: panoSize_px, t: '2px', r: '2px' },
+          { w: 50, h: panoSize_px, t: '2px', l: '2px' },
+        ];
+      } else {
+        itemsDimensions = [
+          { w: 50, h: '50%', b: '2px', r: '2px' },
+          { w: 50, h: '50%', b: '2px', l: '2px' },
+          { w: 100, h: '50%', t: '2px' },
+        ];
       }
-    } else {
-      style.height = height;
+    } else if (size === 4) {
+      if (
+        (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
+        (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isNonConformingRatio(ar4)) ||
+        (isPortrait(ar1) && isPortrait(ar2) && isNonConformingRatio(ar3) && isPortrait(ar4)) ||
+        (isPortrait(ar1) && isNonConformingRatio(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
+        (isNonConformingRatio(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4))
+      ) {
+        style.height = Math.floor(width / minimumAspectRatio);
+      } else if (isPanoramic(ar1) && isPanoramic(ar2) && isPanoramic(ar3) && isPanoramic(ar4)) {
+        style.height = panoSize * 2;
+      } else if (
+        (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) ||
+        (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPanoramic(ar3) && isPanoramic(ar4))
+      ) {
+        style.height = panoSize + (width / 2);
+      } else {
+        style.height = width;
+      }
+
+      //
+
+      if (isPanoramic(ar1) && isPanoramic(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) {
+        itemsDimensions = [
+          { w: 50, h: panoSize_px, b: '2px', r: '2px' },
+          { w: 50, h: panoSize_px, b: '2px', l: '2px' },
+          { w: 50, h: `${(width / 2)}px`, t: '2px', r: '2px' },
+          { w: 50, h: `${(width / 2)}px`, t: '2px', l: '2px' },
+        ];
+      } else if (isNonConformingRatio(ar1) && isNonConformingRatio(ar2) && isPanoramic(ar3) && isPanoramic(ar4)) {
+        itemsDimensions = [
+          { w: 50, h: `${(width / 2)}px`, b: '2px', r: '2px' },
+          { w: 50, h: `${(width / 2)}px`, b: '2px', l: '2px' },
+          { w: 50, h: panoSize_px, t: '2px', r: '2px' },
+          { w: 50, h: panoSize_px, t: '2px', l: '2px' },
+        ];
+      } else if (
+        (isPortrait(ar1) && isNonConformingRatio(ar2) && isNonConformingRatio(ar3) && isNonConformingRatio(ar4)) ||
+        (isPortrait(ar1) && isPanoramic(ar2) && isPanoramic(ar3) && isPanoramic(ar4))
+      ) {
+        itemsDimensions = [
+          { w: 67, h: '100%', r: '2px' },
+          { w: 33, h: '33%', b: '4px', l: '2px' },
+          { w: 33, h: '33%', l: '2px' },
+          { w: 33, h: '33%', t: '4px', l: '2px' },
+        ];
+      } else {
+        itemsDimensions = [
+          { w: 50, h: '50%', b: '2px', r: '2px' },
+          { w: 50, h: '50%', b: '2px', l: '2px' },
+          { w: 50, h: '50%', t: '2px', r: '2px' },
+          { w: 50, h: '50%', t: '2px', l: '2px' },
+        ];
+      }
     }
 
     return ImmutableMap({
       style,
       itemsDimensions,
+      size: size,
+      width,
+    });
+
+  }
+
+  getSizeData = size => {
+    const { height, defaultWidth } = this.props;
+    const width = this.state.width || defaultWidth;
+
+    if (width) {
+      if (size === 1) return this.getSizeDataSingle();
+      if (size > 1)   return this.getSizeDataMultiple(size);
+    }
+
+    // Default
+    return ImmutableMap({
+      style: { height },
+      itemsDimensions: [],
       size,
       width,
     });
@@ -496,7 +523,7 @@ class MediaGallery extends React.PureComponent {
   render() {
     const { media, intl, sensitive } = this.props;
     const { visible } = this.state;
-    const sizeData = this.getSizeData();
+    const sizeData = this.getSizeData(media.size);
     let children, spoilerButton;
 
     children = media.take(4).map((attachment, i) => (
