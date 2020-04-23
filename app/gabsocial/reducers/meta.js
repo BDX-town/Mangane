@@ -12,8 +12,11 @@ export default function meta(state = initialState, action) {
     return state.merge(action.state.get('meta'));
   case ME_FETCH_SUCCESS:
     const me = fromJS(action.me);
-    const pleroPrefs = me.get('pleroma').delete('settings_store');
-    return state.mergeIn(['pleroma'], pleroPrefs);
+    if (me.has('pleroma')) {
+      const pleroPrefs = me.get('pleroma').delete('settings_store');
+      return state.mergeIn(['pleroma'], pleroPrefs);
+    }
+    return state;
   default:
     return state;
   }

@@ -15,7 +15,7 @@ const initialState = ImmutableMap({
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case INSTANCE_IMPORT:
-    return ImmutableMap(fromJS(action.instance));
+    return initialState.merge(fromJS(action.instance));
   default:
     return state;
   }
