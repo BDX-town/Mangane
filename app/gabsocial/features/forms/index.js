@@ -8,6 +8,7 @@ export const InputContainer = (props) => {
   const containerClass = classNames('input', {
     'with_label': props.label,
     'required': props.required,
+    'boolean': props.type === 'checkbox',
   }, props.extraClass);
 
   return (
@@ -22,6 +23,7 @@ InputContainer.propTypes = {
   label: PropTypes.string,
   hint: PropTypes.string,
   required: PropTypes.bool,
+  type: PropTypes.string,
   children: PropTypes.node,
   extraClass: PropTypes.string,
 };
@@ -41,6 +43,26 @@ export const LabelInput = ({ label, ...props }) => {
 LabelInput.propTypes = {
   label: PropTypes.string.isRequired,
 };
+
+export class SimpleInput extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: PropTypes.string,
+    hint: PropTypes.string,
+  }
+
+  render() {
+    const { hint, ...props } = this.props;
+    const Input = this.props.label ? LabelInput : 'input';
+
+    return (
+      <InputContainer {...this.props}>
+        <Input {...props} />
+      </InputContainer>
+    );
+  }
+
+}
 
 export class SimpleForm extends ImmutablePureComponent {
 
@@ -83,23 +105,9 @@ export class FieldsGroup extends ImmutablePureComponent {
 
 }
 
-export class Checkbox extends ImmutablePureComponent {
-
-  static propTypes = {
-    label: PropTypes.string,
-  }
-
-  render() {
-    const Input = this.props.label ? LabelInput : 'input';
-
-    return (
-      <InputContainer {...this.props} extraClass='boolean'>
-        <Input type='checkbox' {...this.props} />
-      </InputContainer>
-    );
-  }
-
-}
+export const Checkbox = props => (
+  <SimpleInput type='checkbox' {...props} />
+);
 
 export class RadioGroup extends ImmutablePureComponent {
 
@@ -202,44 +210,14 @@ export class SelectDropdown extends ImmutablePureComponent {
 
 }
 
-export class TextInput extends ImmutablePureComponent {
+export const TextInput = props => (
+  <SimpleInput type='text' {...props} />
+);
 
-  static propTypes = {
-    label: PropTypes.string,
-  }
+export const FileChooser = props => (
+  <SimpleInput type='file' {...props} />
+);
 
-  render() {
-    const Input = this.props.label ? LabelInput : 'input';
-
-    return (
-      <InputContainer {...this.props}>
-        <Input type='text' {...this.props} />
-      </InputContainer>
-    );
-  }
-
-}
-
-export class FileChooser extends ImmutablePureComponent {
-
-  static propTypes = {
-    label: PropTypes.string,
-    hint: PropTypes.string,
-  }
-
-  static defaultProps = {
-    accept: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
-  }
-
-  render() {
-    const { hint, ...props } = this.props;
-    const Input = this.props.label ? LabelInput : 'input';
-
-    return (
-      <InputContainer {...this.props}>
-        <Input type='file' {...props} />
-      </InputContainer>
-    );
-  }
-
-}
+FileChooser.defaultProps = {
+  accept: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
+};
