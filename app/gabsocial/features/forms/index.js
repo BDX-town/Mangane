@@ -79,16 +79,16 @@ export class SimpleInput extends ImmutablePureComponent {
 
 }
 
-export const SimpleForm = ({ children, onSubmit }) => (
-  <form className='simple_form' onSubmit={onSubmit}>{children}</form>
+export const SimpleForm = ({ children, ...props }) => (
+  <form className='simple_form' {...props}>{children}</form>
 );
 
 SimpleForm.propTypes = {
   children: PropTypes.node,
-  onSubmit: PropTypes.func,
 };
 
 SimpleForm.defaultProps = {
+  acceptCharset: 'UTF-8',
   onSubmit: e => e.preventDefault(),
 };
 
