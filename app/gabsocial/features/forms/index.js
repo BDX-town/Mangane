@@ -4,6 +4,22 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 
+export const LabelInput = ({ label, ...props }) => {
+  const id = uuidv4();
+  return (
+    <div className='label_input'>
+      <label htmlFor={id}>{label}</label>
+      <div className='label_input__wrapper'>
+        <input id={id} {...props} />
+      </div>
+    </div>
+  );
+};
+
+LabelInput.propTypes = {
+  label: PropTypes.string.isRequired,
+};
+
 export class SimpleForm extends ImmutablePureComponent {
 
   static propTypes = {
@@ -49,38 +65,21 @@ export class Checkbox extends ImmutablePureComponent {
 
   static propTypes = {
     label: PropTypes.string,
-    name: PropTypes.string,
-    checked: PropTypes.bool,
-    onChange: PropTypes.func,
-  }
-
-  static defaultProps = {
-    checked: false,
   }
 
   render() {
-    const { label, name, checked, onChange } = this.props;
-    const id = uuidv4();
+    const { label, required } = this.props;
+
+    const containerClassNames = classNames('input', 'boolean', {
+      'with_label': label,
+      'required': required,
+    });
+
+    const Input = label ? LabelInput : 'input';
 
     return (
-      <div className='input with_label boolean optional'>
-        <div className='label_input'>
-          <label className='boolean optional' htmlFor={id}>
-            {label}
-          </label>
-          <div className='label_input__wrapper'>
-            <label className='checkbox'>
-              <input
-                id={id}
-                name={name}
-                className='boolean optional'
-                type='checkbox'
-                checked={checked}
-                onChange={onChange}
-              />
-            </label>
-          </div>
-        </div>
+      <div className={containerClassNames}>
+        <Input type='checkbox' {...this.props} />
       </div>
     );
   }
@@ -102,7 +101,7 @@ export class RadioGroup extends ImmutablePureComponent {
     );
 
     return (
-      <div className='input with_floating_label radio_buttons optional user_setting_default_privacy'>
+      <div className='input with_floating_label radio_buttons'>
         <div className='label_input'>
           <label className='radio_buttons optional'>{label}</label>
           <ul>{childrenWithProps}</ul>
@@ -195,30 +194,18 @@ export class TextInput extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, ...props } = this.props;
-    const id = uuidv4();
+    const { label, required } = this.props;
 
     const containerClassNames = classNames('input', {
       'with_label': label,
-      'required': this.props.required,
+      'required': required,
     });
 
-    const InputWithLabel = () => (
-      <div className='label_input'>
-        <label htmlFor={id}>{label}</label>
-        <div className='label_input__wrapper'>
-          <Input />
-        </div>
-      </div>
-    );
-
-    const Input = () => (
-      <input id={id} type='text' {...props} />
-    );
+    const Input = label ? LabelInput : 'input';
 
     return (
       <div className={containerClassNames}>
-        {label ? <InputWithLabel /> : <Input />}
+        <Input type='text' {...this.props} />
       </div>
     );
   }
@@ -238,22 +225,18 @@ export class FileChooser extends ImmutablePureComponent {
 
   render() {
     const { label, hint, ...props } = this.props;
-    const id = uuidv4();
+
+    const containerClassNames = classNames('input', {
+      'with_label': label,
+      'required': this.props.required,
+    });
+
+    const Input = label ? LabelInput : 'input';
 
     return (
-      <div className='input with_label file optional field_with_hint'>
-        <div className='label_input'>
-          <label className='file optional' htmlFor={id}>{label}</label>
-          <div className='label_input__wrapper'>
-            <input
-              id={id}
-              className='file optional'
-              type='file'
-              {...props}
-            />
-          </div>
-        </div>
-        <span className='hint'>{hint}</span>
+      <div className={containerClassNames}>
+        <Input type='file' {...props} />
+        {hint && <span className='hint'>{hint}</span>}
       </div>
     );
   }
