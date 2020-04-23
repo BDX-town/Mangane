@@ -6,6 +6,10 @@ export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
 export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
 export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 
+export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
+export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
+export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
+
 export function createAuthApp() {
   return (dispatch, getState) => {
     const appToken = getState().getIn(['auth', 'app', 'access_token']);
@@ -54,6 +58,17 @@ export function logOut() {
   return (dispatch, getState) => {
     dispatch({ type: AUTH_LOGGED_OUT });
     dispatch(showAlert('Successfully logged out.', ''));
+  };
+}
+
+export function register(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: AUTH_REGISTER_REQUEST });
+    return api(getState).post('/api/v1/accounts', params).then(response => {
+      dispatch({ type: AUTH_REGISTER_SUCCESS, response });
+    }).catch(error => {
+      dispatch({ type: AUTH_REGISTER_FAIL, error });
+    });
   };
 }
 

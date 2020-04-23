@@ -115,7 +115,7 @@ FieldsGroup.propTypes = {
 };
 
 export const Checkbox = props => (
-  <SimpleInput type='checkbox' {...props} />
+  <SimpleInput type='checkbox' value {...props} />
 );
 
 export class RadioGroup extends ImmutablePureComponent {

@@ -9,6 +9,7 @@ import {
   TextInput,
   Checkbox,
 } from 'gabsocial/features/forms';
+import { register } from 'gabsocial/actions/auth';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
@@ -21,8 +22,16 @@ class RegistrationForm extends ImmutablePureComponent {
     instance: ImmutablePropTypes.map,
   }
 
+  onInputChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  }
+
+  onCheckboxChange = e => {
+    this.setState({ [e.target.name]: e.target.checked });
+  }
+
   onSubmit = e => {
-    // TODO: Dispatch action
+    this.props.dispatch(register(this.state));
   }
 
   render() {
@@ -38,6 +47,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 placeholder='Username'
                 name='username'
                 autoComplete='off'
+                onChange={this.onInputChange}
                 required
               />
               <SimpleInput
@@ -45,6 +55,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='email'
                 type='email'
                 autoComplete='off'
+                onChange={this.onInputChange}
                 required
               />
               <SimpleInput
@@ -52,13 +63,15 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='password'
                 type='password'
                 autoComplete='off'
+                onChange={this.onInputChange}
                 required
               />
               <SimpleInput
                 placeholder='Confirm password'
-                name='password_confirmation'
+                name='confirm'
                 type='password'
                 autoComplete='off'
+                onChange={this.onInputChange}
                 required
               />
             </div>
@@ -66,9 +79,11 @@ class RegistrationForm extends ImmutablePureComponent {
               <Checkbox
                 label={<>I agree to the <Link to='/about/tos' target='_blank'>Terms of Service</Link>.</>}
                 name='agreement'
+                onChange={this.onCheckboxChange}
                 required
               />
             </div>
+            <input type='hidden' name='locale' value='en_US' />
             <div className='actions'>
               <button name='button' type='submit' className='btn button button-primary'>Sign up</button>
             </div>
