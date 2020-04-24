@@ -88,7 +88,7 @@ class GabSocialMount extends React.PureComponent {
           <body className={bodyClass} />
           {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
         </Helmet>
-        <BrowserRouter basename='/web'>
+        <BrowserRouter>
           <ScrollContext>
             <Switch>
               {!me && <Route exact path='/' component={LandingPage} />}
