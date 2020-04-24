@@ -927,3 +927,13 @@ code {
     padding: 15px;
   }
 }
+
+.captcha {
+  background-color: #ffffff;
+  border-radius: 10px;
+
+  img {
+    display: table;
+    margin: 0 auto;
+  }
+}

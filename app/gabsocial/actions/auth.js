@@ -75,6 +75,12 @@ export function register(params) {
   };
 }
 
+export function fetchCaptcha() {
+  return (dispatch, getState) => {
+    return api(getState).get('/api/pleroma/captcha');
+  };
+}
+
 export function authAppCreated(app) {
   return {
     type: AUTH_APP_CREATED,
