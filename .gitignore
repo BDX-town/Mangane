@@ -6,3 +6,4 @@
 /.eslintcache
 /.env
 /public/soapbox/soapbox.json
+/deploy.sh
