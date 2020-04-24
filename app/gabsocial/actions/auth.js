@@ -1,5 +1,6 @@
 import api from '../api';
 import { showAlert } from 'gabsocial/actions/alerts';
+import { fetchMe } from 'gabsocial/actions/me';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
@@ -65,7 +66,9 @@ export function register(params) {
   return (dispatch, getState) => {
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return api(getState).post('/api/v1/accounts', params).then(response => {
-      dispatch({ type: AUTH_REGISTER_SUCCESS, response });
+      dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
+      dispatch(authLoggedIn(response.data));
+      dispatch(fetchMe());
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
     });
