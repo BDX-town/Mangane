@@ -21,6 +21,7 @@ import { fetchInstance } from 'gabsocial/actions/instance';
 import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
 import { fetchMe } from 'gabsocial/actions/me';
 import LandingPage from 'gabsocial/features/landing_page';
+import AboutPage from 'gabsocial/features/about';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -92,6 +93,7 @@ class GabSocialMount extends React.PureComponent {
           <ScrollContext>
             <Switch>
               {!me && <Route exact path='/' component={LandingPage} />}
+              <Route exact path='/about/:slug?' component={AboutPage} />
               <Route path='/' component={UI} />
             </Switch>
           </ScrollContext>

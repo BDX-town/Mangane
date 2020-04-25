@@ -5,5 +5,5 @@
 /coverage/
 /.eslintcache
 /.env
-/public/soapbox/soapbox.json
+/public/soapbox
 /deploy.sh

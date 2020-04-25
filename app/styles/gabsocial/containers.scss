@@ -192,6 +192,7 @@
 
 .public-layout {
   .container {
+    width: 100%;
     max-width: 960px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
