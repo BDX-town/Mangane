@@ -46,9 +46,9 @@ class LoginForm extends ImmutablePureComponent {
             <div className='input password optional user_password'>
               <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='password' />
             </div>
-            <p className='hint subtle-hint'>
+            {/* <p className='hint subtle-hint'>
               <Link to='/auth/password/new'>Trouble logging in?</Link>
-            </p>
+            </p> */}
           </div>
         </fieldset>
         <div className='actions'>
