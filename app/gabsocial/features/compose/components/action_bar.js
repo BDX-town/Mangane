@@ -9,6 +9,7 @@ import { logOut } from 'gabsocial/actions/auth';
 const messages = defineMessages({
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
+  lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -58,6 +59,7 @@ class ActionBar extends React.PureComponent {
 
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
     menu.push({ text: intl.formatMessage(messages.messages), to: '/messages' });
+    menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
     menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
