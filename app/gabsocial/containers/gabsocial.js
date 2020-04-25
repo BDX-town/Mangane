@@ -20,8 +20,7 @@ import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'gabsocial/actions/instance';
 import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
 import { fetchMe } from 'gabsocial/actions/me';
-import LandingPage from 'gabsocial/features/landing_page';
-import AboutPage from 'gabsocial/features/about';
+import PublicLayout from 'gabsocial/features/public_layout';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -92,8 +91,8 @@ class GabSocialMount extends React.PureComponent {
         <BrowserRouter>
           <ScrollContext>
             <Switch>
-              {!me && <Route exact path='/' component={LandingPage} />}
-              <Route exact path='/about/:slug?' component={AboutPage} />
+              {!me && <Route exact path='/' component={PublicLayout} />}
+              <Route exact path='/about/:slug?' component={PublicLayout} />
               <Route path='/' component={UI} />
             </Switch>
           </ScrollContext>
