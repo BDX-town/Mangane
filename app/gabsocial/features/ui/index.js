@@ -54,6 +54,7 @@ import {
   Blocks,
   DomainBlocks,
   Mutes,
+  Filters,
   PinnedStatuses,
   Search,
   // Explore,
@@ -223,6 +224,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
         <WrappedRoute path='/domain_blocks' layout={LAYOUT.DEFAULT} component={DomainBlocks} content={children} />
         <WrappedRoute path='/mutes' layout={LAYOUT.DEFAULT} component={Mutes} content={children} />
+        <WrappedRoute path='/filters' layout={LAYOUT.DEFAULT} component={Filters} content={children} />
         <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/with_replies' component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
         <WrappedRoute path='/@:username/followers' component={Followers} page={ProfilePage} content={children} />
