@@ -105,7 +105,7 @@ For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
 
 URL to the [Soapbox Patron](https://gitlab.com/soapbox-pub/soapbox-patron) server, if you have one.
 
-This setting is not useful unless `"extensions": { "patron": true }` is also set in `public/soapbox/soapbox.json`.
+This setting is not useful unless `"extensions": { "patron": true }` is also set in `public/instance/soapbox.json`.
 
 **Default:** `http://localhost:5000`
 

@@ -90,7 +90,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
 
 - `patron` - Data related to [soapbox-patron](https://gitlab.com/soapbox-pub/soapbox-patron)
 
-- `soapbox` - Soapbox specific configuration pulled from `/soapbox/soapbox.json`. The configuration file isn't required and this map can be empty.
+- `soapbox` - Soapbox specific configuration pulled from `/instance/soapbox.json`. The configuration file isn't required and this map can be empty.
 
 - `instance` - Instance data pulled from `/api/v1/instance`
 
