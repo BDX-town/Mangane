@@ -1,5 +1,5 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
-require('dotenv').config();
+console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { resolve } = require('path');
 const merge = require('webpack-merge');

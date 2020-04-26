@@ -1,4 +1,5 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
+console.log('Running in production mode'); // eslint-disable-line no-console
 
 const { URL } = require('url');
 const merge = require('webpack-merge');

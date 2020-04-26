@@ -20,20 +20,20 @@ It incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods
 
 To get it running, just clone the repo:
 
-```
+```sh
 git clone https://gitlab.com/soapbox-pub/soapbox-fe.git
 cd soapbox-fe
 ```
 
 Ensure that Node.js and Yarn are installed, then install dependencies:
 
-```
+```sh
 yarn
 ```
 
 Finally, run the dev server:
 
-```
+```sh
 yarn start
 ```
 
@@ -43,6 +43,17 @@ It will serve at `http://localhost:3036` by default.
 
 It will proxy requests to the backend for you.
 For Pleroma running on `localhost:4000` (the default) no other changes are required, just start a local Pleroma server and it should begin working.
+
+### Troubleshooting: `ERROR: NODE_ENV must be set`
+
+Create a `.env` file if you haven't already.
+
+```sh
+cp .env.example .env
+```
+
+And ensure that it contains `NODE_ENV=development`.
+Try again.
 
 ## Developing against a live backend
 
@@ -69,7 +80,7 @@ You will need to restart the local development server for the changes to take ef
 
 Local Mastodon runs on port 3000 by default, so you will need to edit the `.env` as described above and set it like this:
 
-```
+```sh
 BACKEND_URL="http://localhost:3000"
 ```
 
@@ -91,7 +102,16 @@ Finally, refresh the page, and you should be logged in.
 The following configuration variables are supported supported in local development.
 Edit `.env` to set them.
 
-All configuration is optional.
+All configuration is optional, except `NODE_ENV`.
+
+#### `NODE_ENV`
+
+The Node environment.
+soapbox-fe checks for the following options:
+
+- `development` - What you should use while developing soapbox-fe.
+- `production` - Use when compiling to deploy to a live server.
+- `test` - Use when running automated tests.
 
 #### `BACKEND_URL`
 
@@ -121,6 +141,12 @@ This is needed if `BACKEND_URL` or `PATRON_URL` are set to an `https://` value.
 # Yarn Commands
 
 The following commands are supported.
+You must set `NODE_ENV` to use these commands.
+To do so, you can add the following line to your `.env` file:
+
+```sh
+NODE_ENV=development
+```
 
 #### Local dev server
 - `yarn start` - Run the local dev server. It will proxy requests to the backend for you.
@@ -128,9 +154,7 @@ The following commands are supported.
 - `yarn dev` - Exact same as above, aliased to `yarn start` for convenience.
 
 #### Building
-- `yarn build:development` - Build for development.
-
-- `yarn build:production` - Build for production.
+- `yarn build` - Compile without a dev server, into `/public` directory.
 
 #### Translations
 - `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
