@@ -16,6 +16,28 @@ It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.m
 
 It incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/) used by Pleroma and Mastodon, but requires many [Pleroma-specific features](https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/) in order to function.
 
+# Deploy on Pleroma
+
+Installing soapbox-fe on an existing Pleroma server is extremely easy.
+Just ssh into the server and download a .zip of the latest build:
+
+```sh
+curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/master/download?job=build-production -o soapbox-fe.zip
+```
+
+Then unpack it into Pleroma's `instance` directory:
+
+```sh
+busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
+```
+
+**That's it!** :tada:
+**soapbox-fe is installed.**
+The change will take effect immediately, just refresh your browser tab.
+It's not necessary to restart the Pleroma service.
+
+To remove soapbox-fe and revert to the default pleroma-fe, simply `rm -r /opt/pleroma/instance`.
+
 # Running locally
 
 To get it running, just clone the repo:
