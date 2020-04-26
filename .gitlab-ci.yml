@@ -37,7 +37,7 @@ build-development:
     NODE_ENV: development
   artifacts:
     paths:
-    - public
+    - static
 
 build-production:
   stage: build
@@ -46,7 +46,7 @@ build-production:
     NODE_ENV: production
   artifacts:
     paths:
-    - public
+    - static
 
 i18n:
   stage: build

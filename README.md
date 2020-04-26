@@ -125,7 +125,7 @@ For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
 
 URL to the [Soapbox Patron](https://gitlab.com/soapbox-pub/soapbox-patron) server, if you have one.
 
-This setting is not useful unless `"extensions": { "patron": true }` is also set in `public/instance/soapbox.json`.
+This setting is not useful unless `"extensions": { "patron": true }` is also set in `static/instance/soapbox.json`.
 
 **Default:** `http://localhost:5000`
 
@@ -154,7 +154,7 @@ NODE_ENV=development
 - `yarn dev` - Exact same as above, aliased to `yarn start` for convenience.
 
 #### Building
-- `yarn build` - Compile without a dev server, into `/public` directory.
+- `yarn build` - Compile without a dev server, into `/static` directory.
 
 #### Translations
 - `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.

@@ -3,7 +3,7 @@
 default: &default
   source_path: app
   source_entry_path: packs
-  public_root_path: public
+  public_root_path: static
   public_output_path: packs
   cache_path: tmp/cache/webpacker
   check_yarn_integrity: false

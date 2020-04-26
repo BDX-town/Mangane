@@ -7,7 +7,7 @@ module.exports = {
     '<rootDir>/vendor/',
     '<rootDir>/config/',
     '<rootDir>/log/',
-    '<rootDir>/public/',
+    '<rootDir>/static/',
     '<rootDir>/tmp/',
     '<rootDir>/webpack/',
 

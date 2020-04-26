@@ -25,7 +25,7 @@ function formatPublicPath(host = '', path = '') {
 }
 
 const output = {
-  path: join(__dirname, '..', 'public', settings.public_output_path),
+  path: join(__dirname, '..', 'static', settings.public_output_path),
   publicPath: formatPublicPath(env.CDN_HOST, settings.public_output_path),
 };
 

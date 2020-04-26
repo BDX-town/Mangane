@@ -1,9 +1,8 @@
 /node_modules/
-/public/packs/
+/static/
 /tmp/
 /build/
 /coverage/
 /.eslintcache
 /.env
-/public/instance
 /deploy.sh
