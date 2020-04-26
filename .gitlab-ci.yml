@@ -52,7 +52,7 @@ i18n:
   stage: build
   script: yarn manage:translations
   variables:
-    NODE_ENV: production
+    NODE_ENV: development
   before_script:
     - yarn
     - yarn build
