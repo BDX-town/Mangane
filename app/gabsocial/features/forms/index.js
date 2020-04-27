@@ -56,7 +56,7 @@ LabelInputContainer.propTypes = {
   children: PropTypes.node,
 };
 
-export const LabelInput = ({ label, ...props }) => (
+export const LabelInput = ({ label, dispatch, ...props }) => (
   <LabelInputContainer label={label}>
     <input {...props} />
   </LabelInputContainer>
@@ -64,6 +64,7 @@ export const LabelInput = ({ label, ...props }) => (
 
 LabelInput.propTypes = {
   label: FormPropTypes.label.isRequired,
+  dispatch: PropTypes.func,
 };
 
 export class SimpleInput extends ImmutablePureComponent {
@@ -159,6 +160,7 @@ export class RadioItem extends ImmutablePureComponent {
     value: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     onChange: PropTypes.func,
+    dispatch: PropTypes.func,
   }
 
   static defaultProps = {
@@ -166,7 +168,7 @@ export class RadioItem extends ImmutablePureComponent {
   }
 
   render() {
-    const { label, hint, ...props } = this.props;
+    const { label, hint, dispatch, ...props } = this.props;
     const id = uuidv4();
 
     return (
