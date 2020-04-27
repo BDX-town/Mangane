@@ -13,7 +13,7 @@ const urlBase64ToUint8Array = (base64String) => {
   return decodeBase64(base64);
 };
 
-const getApplicationServerKey = () => document.querySelector('[name="applicationServerKey"]').getAttribute('content');
+const getApplicationServerKey = getState => getState().getIn(['auth', 'app', 'vapid_key']);
 
 const getRegistration = () => navigator.serviceWorker.ready;
 
@@ -21,10 +21,10 @@ const getPushSubscription = (registration) =>
   registration.pushManager.getSubscription()
     .then(subscription => ({ registration, subscription }));
 
-const subscribe = (registration) =>
+const subscribe = (registration, getState) =>
   registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(getApplicationServerKey()),
+    applicationServerKey: urlBase64ToUint8Array(getApplicationServerKey(getState)),
   });
 
 const unsubscribe = ({ registration, subscription }) =>
@@ -52,7 +52,7 @@ export function register() {
     dispatch(setBrowserSupport(supportsPushNotifications));
 
     if (supportsPushNotifications) {
-      if (!getApplicationServerKey()) {
+      if (!getApplicationServerKey(getState)) {
         console.error('The VAPID public key is not set. You will not be able to receive Web Push Notifications.');
         return;
       }
@@ -63,7 +63,7 @@ export function register() {
           if (subscription !== null) {
             // We have a subscription, check if it is still valid
             const currentServerKey = (new Uint8Array(subscription.options.applicationServerKey)).toString();
-            const subscriptionServerKey = urlBase64ToUint8Array(getApplicationServerKey()).toString();
+            const subscriptionServerKey = urlBase64ToUint8Array(getApplicationServerKey(getState)).toString();
             const serverEndpoint = getState().getIn(['push_notifications', 'subscription', 'endpoint']);
 
             // If the VAPID public key did not change and the endpoint corresponds
@@ -72,13 +72,15 @@ export function register() {
               return subscription;
             } else {
               // Something went wrong, try to subscribe again
-              return unsubscribe({ registration, subscription }).then(subscribe).then(
+              return unsubscribe({ registration, subscription }).then(registration => {
+                return subscribe(registration, getState);
+              }).then(
                 subscription => sendSubscriptionToBackend(subscription, me));
             }
           }
 
           // No subscription, try to subscribe
-          return subscribe(registration).then(
+          return subscribe(registration, getState).then(
             subscription => sendSubscriptionToBackend(subscription, me));
         })
         .then(subscription => {
@@ -95,7 +97,7 @@ export function register() {
           if (error.code === 20 && error.name === 'AbortError') {
             console.warn('Your browser supports Web Push Notifications, but does not seem to implement the VAPID protocol.');
           } else if (error.code === 5 && error.name === 'InvalidCharacterError') {
-            console.error('The VAPID public key seems to be invalid:', getApplicationServerKey());
+            console.error('The VAPID public key seems to be invalid:', getApplicationServerKey(getState));
           }
 
           // Clear alerts and hide UI settings
