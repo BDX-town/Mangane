@@ -17,8 +17,14 @@ export const acctFull = account => {
   return [user, domain].join('@');
 };
 
-export const isStaff = (account = ImmutableMap()) => {
-  return ['is_admin', 'is_moderator'].some(key => (
-    account.getIn(['pleroma', key]) === true
-  ));
-};
+export const isStaff = (account = ImmutableMap()) => (
+  [isAdmin, isModerator].some(f => f(account) === true)
+);
+
+export const isAdmin = account => (
+  account.getIn(['pleroma', 'is_admin']) === true
+);
+
+export const isModerator = account => (
+  account.getIn(['pleroma', 'is_moderator']) === true
+);

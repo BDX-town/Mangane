@@ -1,4 +1,10 @@
-import { getDomain, acctFull, isStaff } from '../accounts';
+import {
+  getDomain,
+  acctFull,
+  isStaff,
+  isAdmin,
+  isModerator,
+} from '../accounts';
 import { fromJS } from 'immutable';
 
 describe('getDomain', () => {
@@ -59,6 +65,52 @@ describe('isStaff', () => {
     const account = undefined;
     it('returns false', () => {
       expect(isStaff(account)).toBe(false);
+    });
+  });
+});
+
+describe('isAdmin', () => {
+  describe('with empty user', () => {
+    const account = fromJS({});
+    it('returns false', () => {
+      expect(isAdmin(account)).toBe(false);
+    });
+  });
+
+  describe('with Pleroma admin', () => {
+    const admin = fromJS({ pleroma: { is_admin: true } });
+    it('returns true', () => {
+      expect(isAdmin(admin)).toBe(true);
+    });
+  });
+
+  describe('with Pleroma moderator', () => {
+    const mod = fromJS({ pleroma: { is_moderator: true } });
+    it('returns false', () => {
+      expect(isAdmin(mod)).toBe(false);
+    });
+  });
+});
+
+describe('isModerator', () => {
+  describe('with empty user', () => {
+    const account = fromJS({});
+    it('returns false', () => {
+      expect(isModerator(account)).toBe(false);
+    });
+  });
+
+  describe('with Pleroma admin', () => {
+    const admin = fromJS({ pleroma: { is_admin: true } });
+    it('returns false', () => {
+      expect(isModerator(admin)).toBe(false);
+    });
+  });
+
+  describe('with Pleroma moderator', () => {
+    const mod = fromJS({ pleroma: { is_moderator: true } });
+    it('returns true', () => {
+      expect(isModerator(mod)).toBe(true);
     });
   });
 });
