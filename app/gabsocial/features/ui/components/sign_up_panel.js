@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 
@@ -36,7 +37,7 @@ const SignUpPanel = ({ siteTitle, me }) => {
 
 SignUpPanel.propTypes = {
   siteTitle: PropTypes.string,
-  me: PropTypes.string,
+  me: SoapboxPropTypes.me,
 };
 
 export default injectIntl(connect(mapStateToProps)(SignUpPanel));

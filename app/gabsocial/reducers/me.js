@@ -8,9 +8,7 @@ export default function me(state = initialState, action) {
   case ME_FETCH_SUCCESS:
     return action.me.id;
   case ME_FETCH_FAIL:
-    return false;
   case ME_FETCH_SKIP:
-    return false;
   case AUTH_LOGGED_OUT:
     return false;
   default:

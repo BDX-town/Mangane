@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
@@ -65,7 +66,7 @@ class StatusActionBar extends ImmutablePureComponent {
     withDismiss: PropTypes.bool,
     withGroupAdmin: PropTypes.bool,
     intl: PropTypes.object.isRequired,
-    me: PropTypes.string,
+    me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
   };
 

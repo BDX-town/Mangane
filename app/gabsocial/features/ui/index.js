@@ -7,6 +7,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 import NotificationsContainer from './containers/notifications_container';
 import LoadingBarContainer from './containers/loading_bar_container';
 import ModalContainer from './containers/modal_container';
@@ -266,7 +267,7 @@ class UI extends React.PureComponent {
     location: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
-    me: PropTypes.string,
+    me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
     meUsername: PropTypes.string,
   };

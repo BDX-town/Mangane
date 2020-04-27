@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 import { Redirect, Route } from 'react-router-dom';
 import ColumnsAreaContainer from '../containers/columns_area_container';
 import ColumnLoading from '../components/column_loading';
@@ -22,7 +23,7 @@ class WrappedRoute extends React.Component {
     componentParams: PropTypes.object,
     layout: PropTypes.object,
     publicRoute: PropTypes.bool,
-    me: PropTypes.string,
+    me: SoapboxPropTypes.me,
   };
 
   static defaultProps = {

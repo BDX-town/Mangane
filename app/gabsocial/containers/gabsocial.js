@@ -3,6 +3,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 import Helmet from 'gabsocial/components/helmet';
 import classNames from 'classnames';
 import configureStore from '../store/configureStore';
@@ -55,7 +56,7 @@ class GabSocialMount extends React.PureComponent {
 
   static propTypes = {
     showIntroduction: PropTypes.bool,
-    me: PropTypes.string,
+    me: SoapboxPropTypes.me,
     theme: PropTypes.string,
     reduceMotion: PropTypes.bool,
     systemFont: PropTypes.bool,
