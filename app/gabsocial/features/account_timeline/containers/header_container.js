@@ -34,7 +34,6 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, { accountId }) => ({
     account: getAccount(state, accountId),
-    domain: state.getIn(['meta', 'domain']),
     identity_proofs: state.getIn(['identity_proofs', accountId], ImmutableList()),
   });
 

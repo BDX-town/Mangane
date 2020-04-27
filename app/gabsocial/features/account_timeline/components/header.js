@@ -21,7 +21,6 @@ export default class Header extends ImmutablePureComponent {
     onUnblockDomain: PropTypes.func.isRequired,
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
-    domain: PropTypes.string.isRequired,
     username: PropTypes.string,
   };
 
@@ -103,7 +102,6 @@ export default class Header extends ImmutablePureComponent {
           onUnblockDomain={this.handleUnblockDomain}
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
-          domain={this.props.domain}
           username={this.props.username}
         />
       </div>

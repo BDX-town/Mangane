@@ -66,7 +66,6 @@ class Header extends ImmutablePureComponent {
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    domain: PropTypes.string.isRequired,
     username: PropTypes.string,
     autoPlayGif: PropTypes.bool,
     isStaff: PropTypes.bool.isRequired,
