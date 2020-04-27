@@ -4,6 +4,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 
+const FormPropTypes = {
+  label: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.object,
+  ]),
+};
+
 export const InputContainer = (props) => {
   const containerClass = classNames('input', {
     'with_label': props.label,
@@ -20,7 +27,7 @@ export const InputContainer = (props) => {
 };
 
 InputContainer.propTypes = {
-  label: PropTypes.string,
+  label: FormPropTypes.label,
   hint: PropTypes.string,
   required: PropTypes.bool,
   type: PropTypes.string,
@@ -45,7 +52,7 @@ export const LabelInputContainer = ({ label, children, ...props }) => {
 };
 
 LabelInputContainer.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: FormPropTypes.label.isRequired,
   children: PropTypes.node,
 };
 
@@ -56,13 +63,13 @@ export const LabelInput = ({ label, ...props }) => (
 );
 
 LabelInput.propTypes = {
-  label: PropTypes.string.isRequired,
+  label: FormPropTypes.label.isRequired,
 };
 
 export class SimpleInput extends ImmutablePureComponent {
 
   static propTypes = {
-    label: PropTypes.string,
+    label: FormPropTypes.label,
     hint: PropTypes.string,
   }
 
@@ -121,7 +128,7 @@ export const Checkbox = props => (
 export class RadioGroup extends ImmutablePureComponent {
 
   static propTypes = {
-    label: PropTypes.string,
+    label: FormPropTypes.label,
     children: PropTypes.node,
   }
 
@@ -147,7 +154,7 @@ export class RadioGroup extends ImmutablePureComponent {
 export class RadioItem extends ImmutablePureComponent {
 
   static propTypes = {
-    label: PropTypes.string,
+    label: FormPropTypes.label,
     hint: PropTypes.string,
     value: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
@@ -177,7 +184,7 @@ export class RadioItem extends ImmutablePureComponent {
 export class SelectDropdown extends ImmutablePureComponent {
 
   static propTypes = {
-    label: PropTypes.string,
+    label: FormPropTypes.label,
     items: PropTypes.object.isRequired,
   }
 
