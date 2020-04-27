@@ -13,7 +13,7 @@ import ProBadge from 'gabsocial/components/pro_badge';
 import DonorBadge from 'gabsocial/components/donor_badge';
 import InvestorBadge from 'gabsocial/components/investor_badge';
 import { List as ImmutableList } from 'immutable';
-import { acctFull } from 'gabsocial/utils/accounts';
+import { acctFull, isAdmin, isModerator } from 'gabsocial/utils/accounts';
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
@@ -77,8 +77,8 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           </div>
 
           <div className='profile-info-panel-content__badges'>
-            {account.get('is_admin') && <Badge slug='admin' title='Admin' />}
-            {account.get('is_moderator') && <Badge slug='moderator' title='Moderator' />}
+            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
+            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
             {account.get('is_pro') && <ProBadge />}
             {account.get('is_donor') && <DonorBadge />}
             {account.get('is_investor') && <InvestorBadge />}
