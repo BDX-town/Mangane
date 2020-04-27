@@ -13,7 +13,11 @@ const urlBase64ToUint8Array = (base64String) => {
   return decodeBase64(base64);
 };
 
-const getApplicationServerKey = getState => getState().getIn(['auth', 'app', 'vapid_key']);
+const getApplicationServerKey = getState => {
+  const key = getState().getIn(['auth', 'app', 'vapid_key']);
+  if (!key) console.error('Could not get vapid key. Push notifications will not work.');
+  return key;
+};
 
 const getRegistration = () => navigator.serviceWorker.ready;
 
