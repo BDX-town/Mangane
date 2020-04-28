@@ -28,6 +28,7 @@ import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../../../actions/alerts';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -74,7 +75,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onReblog(status, e) {
     dispatch((_, getState) => {
-      const boostModal = getState().getIn(['settings', 'boostModal']);
+      const boostModal = getSettings(getState()).get('boostModal');
       if (status.get('reblogged')) {
         dispatch(unreblog(status));
       } else {
@@ -112,7 +113,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDelete(status, history, withRedraft = false) {
     dispatch((_, getState) => {
-      const deleteModal = getState().getIn(['settings', 'deleteModal']);
+      const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
         dispatch(deleteStatus(status.get('id'), history, withRedraft));
       } else {

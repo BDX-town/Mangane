@@ -8,7 +8,7 @@ import {
   importFetchedStatus,
   importFetchedStatuses,
 } from './importer';
-import { saveSettings } from './settings';
+import { getSettings, saveSettings } from './settings';
 import { defineMessages } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { unescapeHTML } from '../utils/html';
@@ -50,7 +50,7 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
 
 export function updateNotifications(notification, intlMessages, intlLocale) {
   return (dispatch, getState) => {
-    const showInColumn = getState().getIn(['settings', 'notifications', 'shows', notification.type], true);
+    const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
 
     if (showInColumn) {
       dispatch(importFetchedAccount(notification.account));
@@ -71,9 +71,9 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
 
 export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
   return (dispatch, getState) => {
-    const showAlert = getState().getIn(['settings', 'notifications', 'alerts', notification.type], true);
+    const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type], true);
     const filters = getFilters(getState(), { contextType: 'notifications' });
-    const playSound = getState().getIn(['settings', 'notifications', 'sounds', notification.type], true);
+    const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type], true);
 
     let filtered = false;
 
@@ -140,7 +140,7 @@ export function dequeueNotifications() {
   };
 };
 
-const excludeTypesFromSettings = state => state.getIn(['settings', 'notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
+const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
 
 const excludeTypesFromFilter = filter => {
   const allTypes = ImmutableList(['follow', 'favourite', 'reblog', 'mention', 'poll']);
@@ -153,7 +153,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
   return (dispatch, getState) => {
     if (!getState().get('me')) return;
 
-    const activeFilter = getState().getIn(['settings', 'notifications', 'quickFilter', 'active']);
+    const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
     const isLoadingMore = !!maxId;
 
@@ -165,7 +165,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
     const params = {
       max_id: maxId,
       exclude_types: activeFilter === 'all'
-        ? excludeTypesFromSettings(getState())
+        ? excludeTypesFromSettings(getState)
         : excludeTypesFromFilter(activeFilter),
     };
 

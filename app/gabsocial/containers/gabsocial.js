@@ -22,6 +22,7 @@ import { fetchInstance } from 'gabsocial/actions/instance';
 import { fetchSoapboxConfig } from 'gabsocial/actions/soapbox';
 import { fetchMe } from 'gabsocial/actions/me';
 import PublicLayout from 'gabsocial/features/public_layout';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const { localeData, messages } = getLocale();
 addLocaleData(localeData);
@@ -39,15 +40,16 @@ const mapStateToProps = (state) => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
   const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
+  const settings = getSettings(state);
 
   return {
     showIntroduction,
     me,
-    theme: state.getIn(['settings', 'theme']),
-    reduceMotion: state.getIn(['settings', 'reduceMotion']),
-    systemFont: state.getIn(['settings', 'systemFont']),
-    dyslexicFont: state.getIn(['settings', 'dyslexicFont']),
-    demetricator: state.getIn(['settings', 'demetricator']),
+    theme: settings.get('theme'),
+    reduceMotion: settings.get('reduceMotion'),
+    systemFont: settings.get('systemFont'),
+    dyslexicFont: settings.get('dyslexicFont'),
+    demetricator: settings.get('demetricator'),
   };
 };
 

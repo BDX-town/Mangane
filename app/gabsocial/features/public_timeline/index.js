@@ -10,13 +10,14 @@ import ExplanationBox from '../ui/components/explanation_box';
 import { expandPublicTimeline } from '../../actions/timelines';
 import { connectPublicStream } from '../../actions/streaming';
 import { Link } from 'react-router-dom';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Federated timeline' },
 });
 
 const mapStateToProps = state => {
-  const onlyMedia = state.getIn(['settings', 'public', 'other', 'onlyMedia']);
+  const onlyMedia = getSettings(state).getIn(['public', 'other', 'onlyMedia']);
 
   const timelineId = 'public';
 

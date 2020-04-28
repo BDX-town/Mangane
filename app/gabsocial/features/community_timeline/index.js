@@ -8,13 +8,14 @@ import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
 import { expandCommunityTimeline } from '../../actions/timelines';
 import { connectCommunityStream } from '../../actions/streaming';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
 });
 
 const mapStateToProps = state => {
-  const onlyMedia = state.getIn(['settings', 'community', 'other', 'onlyMedia']);
+  const onlyMedia = getSettings(state).getIn(['community', 'other', 'onlyMedia']);
 
   const timelineId = 'community';
 

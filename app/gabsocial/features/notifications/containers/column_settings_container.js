@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import ColumnSettings from '../components/column_settings';
-import { changeSetting } from '../../../actions/settings';
+import { getSettings, changeSetting } from '../../../actions/settings';
 import { setFilter } from '../../../actions/notifications';
 import { clearNotifications } from '../../../actions/notifications';
 import { changeAlerts as changePushNotifications } from '../../../actions/push_notifications';
@@ -13,7 +13,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
-  settings: state.getIn(['settings', 'notifications']),
+  settings: getSettings(state).get('notifications'),
   pushSettings: state.get('push_notifications'),
 });
 

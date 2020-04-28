@@ -98,9 +98,7 @@ const defaultSettings = ImmutableMap({
   }),
 });
 
-
-export function getSettings(getState) {
-  const state = getState();
+export function getSettings(state) {
   const soapboxSettings = state.getIn(['soapbox', 'defaultSettings']);
   return defaultSettings
     .mergeDeep(soapboxSettings)
@@ -122,7 +120,7 @@ export function changeSetting(path, value) {
 const debouncedSave = debounce((dispatch, getState) => {
   const state = getState();
   if (!state.get('me')) return;
-  if (state.getIn(['settings', 'saved'])) return;
+  if (getSettings(state).getIn(['saved'])) return;
 
   const data = state.get('settings').delete('saved').toJS();
 

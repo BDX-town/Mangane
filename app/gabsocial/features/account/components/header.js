@@ -15,6 +15,7 @@ import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'gabsocial/containers/dropdown_menu_container';
 import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
@@ -52,7 +53,7 @@ const mapStateToProps = state => {
   return {
     me,
     isStaff: isStaff(state.getIn(['accounts', me])),
-    autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
+    autoPlayGif: getSettings(state).get('autoPlayGif'),
   };
 };
 

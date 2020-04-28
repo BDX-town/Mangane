@@ -19,15 +19,16 @@ import { debounce } from 'lodash';
 import ScrollableList from '../../components/scrollable_list';
 import LoadGap from '../../components/load_gap';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
 });
 
 const getNotifications = createSelector([
-  state => state.getIn(['settings', 'notifications', 'quickFilter', 'show']),
-  state => state.getIn(['settings', 'notifications', 'quickFilter', 'active']),
-  state => ImmutableList(state.getIn(['settings', 'notifications', 'shows']).filter(item => !item).keys()),
+  state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
+  state => getSettings(state).getIn(['notifications', 'quickFilter', 'active']),
+  state => ImmutableList(getSettings(state).getIn(['notifications', 'shows']).filter(item => !item).keys()),
   state => state.getIn(['notifications', 'items']),
 ], (showFilterBar, allowedType, excludedTypes, notifications) => {
   if (!showFilterBar || allowedType === 'all') {
@@ -40,7 +41,7 @@ const getNotifications = createSelector([
 });
 
 const mapStateToProps = state => ({
-  showFilterBar: state.getIn(['settings', 'notifications', 'quickFilter', 'show']),
+  showFilterBar: getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
   notifications: getNotifications(state),
   isLoading: state.getIn(['notifications', 'isLoading'], true),
   isUnread: state.getIn(['notifications', 'unread']) > 0,

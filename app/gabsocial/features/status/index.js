@@ -42,6 +42,7 @@ import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'gabsocial/components/icon';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -195,7 +196,7 @@ class Status extends ImmutablePureComponent {
 
   handleReblogClick = (status, e) => {
     this.props.dispatch((_, getState) => {
-      const boostModal = getState().getIn(['settings', 'boostModal']);
+      const boostModal = getSettings(getState()).get('boostModal');
       if (status.get('reblogged')) {
         this.props.dispatch(unreblog(status));
       } else {
@@ -212,7 +213,7 @@ class Status extends ImmutablePureComponent {
     const { dispatch, intl } = this.props;
 
     this.props.dispatch((_, getState) => {
-      const deleteModal = getState().getIn(['settings', 'deleteModal']);
+      const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
         dispatch(deleteStatus(status.get('id'), history, withRedraft));
       } else {

@@ -9,6 +9,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
 import { acctFull } from 'gabsocial/utils/accounts';
+import { getSettings } from 'gabsocial/actions/settings';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -90,7 +91,7 @@ const mapStateToProps = state => {
 
   return {
     account: getAccount(state, me),
-    autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
+    autoPlayGif: getSettings(state).get('autoPlayGif'),
   };
 };
 

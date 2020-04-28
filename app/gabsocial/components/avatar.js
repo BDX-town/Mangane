@@ -2,9 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const mapStateToProps = state => ({
-  animate: state.getIn(['settings', 'autoPlayGif']),
+  animate: getSettings(state).get('autoPlayGif'),
 });
 
 export default @connect(mapStateToProps)

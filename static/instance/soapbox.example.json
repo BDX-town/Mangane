@@ -16,5 +16,6 @@
   },
   "defaultSettings": {
     "autoPlayGif": false,
+    "theme": "lime"
   },
 }

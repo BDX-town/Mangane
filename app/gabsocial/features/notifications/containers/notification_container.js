@@ -13,6 +13,7 @@ import {
   hideStatus,
   revealStatus,
 } from '../../../actions/statuses';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const makeMapStateToProps = () => {
   const getNotification = makeGetNotification();
@@ -40,7 +41,7 @@ const mapDispatchToProps = dispatch => ({
 
   onReblog(status, e) {
     dispatch((_, getState) => {
-      const boostModal = getState().getIn(['settings', 'boostModal']);
+      const boostModal = getSettings(getState()).get('boostModal');
       if (status.get('reblogged')) {
         dispatch(unreblog(status));
       } else {

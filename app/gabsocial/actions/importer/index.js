@@ -1,3 +1,4 @@
+import { getSettings } from '../settings';
 import { normalizeAccount, normalizeStatus, normalizePoll } from './normalizer';
 
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
@@ -65,7 +66,7 @@ export function importFetchedStatuses(statuses) {
 
     function processStatus(status) {
       const normalOldStatus = getState().getIn(['statuses', status.id]);
-      const expandSpoilers = getState().getIn(['settings', 'expandSpoilers']);
+      const expandSpoilers = getSettings(getState()).get('expandSpoilers');
 
       pushUnique(normalStatuses, normalizeStatus(status, normalOldStatus, expandSpoilers));
       pushUnique(accounts, status.account);

@@ -11,13 +11,14 @@ import { displayMedia } from '../initial_state';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
 });
 
 const mapStateToProps = state => ({
-  autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
+  autoPlayGif: getSettings(state).get('autoPlayGif'),
 });
 
 @connect(mapStateToProps)

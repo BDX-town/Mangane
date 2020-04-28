@@ -13,6 +13,7 @@ import {
 } from '../actions/accounts';
 import { openModal } from '../actions/modal';
 import { initMuteModal } from '../actions/mutes';
+import { getSettings } from '../actions/settings';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -32,7 +33,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onFollow(account) {
     dispatch((_, getState) => {
-      const unfollowModal = getState().getIn(['settings', 'unfollowModal']);
+      const unfollowModal = getSettings(getState()).get('unfollowModal');
       if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
         if (unfollowModal) {
           dispatch(openModal('CONFIRM', {

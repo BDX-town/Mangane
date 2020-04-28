@@ -13,6 +13,7 @@ import spring from 'react-motion/lib/spring';
 import SearchResultsContainer from './containers/search_results_container';
 import { changeComposing } from '../../actions/compose';
 import Icon from 'gabsocial/components/icon';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   start: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
@@ -26,7 +27,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = (state, ownProps) => ({
-  columns: state.getIn(['settings', 'columns']),
+  columns: getSettings(state).get('columns'),
   showSearch: ownProps.multiColumn ? state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']) : ownProps.isSearchPage,
 });
 

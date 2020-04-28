@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import ColumnSettings from '../components/column_settings';
-import { changeSetting } from '../../../actions/settings';
+import { getSettings, changeSetting } from '../../../actions/settings';
 
 const mapStateToProps = state => ({
-  settings: state.getIn(['settings', 'public']),
+  settings: getSettings(state).get('public'),
 });
 
 const mapDispatchToProps = (dispatch) => {

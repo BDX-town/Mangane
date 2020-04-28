@@ -1,11 +1,15 @@
 import { connect } from 'react-redux';
 import FilterBar from '../components/filter_bar';
 import { setFilter } from '../../../actions/notifications';
+import { getSettings } from 'gabsocial/actions/settings';
 
-const makeMapStateToProps = state => ({
-  selectedFilter: state.getIn(['settings', 'notifications', 'quickFilter', 'active']),
-  advancedMode: state.getIn(['settings', 'notifications', 'quickFilter', 'advanced']),
-});
+const makeMapStateToProps = state => {
+  const settings = getSettings(state);
+  return {
+    selectedFilter: settings.getIn(['notifications', 'quickFilter', 'active']),
+    advancedMode:   settings.getIn(['notifications', 'quickFilter', 'advanced']),
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
   selectFilter(newActiveFilter) {

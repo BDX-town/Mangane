@@ -21,6 +21,7 @@ import { openModal } from '../../../actions/modal';
 import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -44,7 +45,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onFollow(account) {
     dispatch((_, getState) => {
-      const unfollowModal = getState().getIn(['settings', 'unfollowModal']);
+      const unfollowModal = getSettings(getState()).get('unfollowModal');
       if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
         if (unfollowModal) {
           dispatch(openModal('CONFIRM', {

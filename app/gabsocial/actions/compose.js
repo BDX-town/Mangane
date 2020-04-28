@@ -11,6 +11,7 @@ import { showAlertForError } from './alerts';
 import { showAlert } from './alerts';
 import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
+import { getSettings } from './settings';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -136,7 +137,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
 
     if (timeline && timeline.get('items').size > 0 && timeline.getIn(['items', 0]) !== null && timeline.get('online')) {
       let dequeueArgs = {};
-      if (timelineId === 'community') dequeueArgs.onlyMedia = getState().getIn(['settings', 'community', 'other', 'onlyMedia']);
+      if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
       dispatch(updateTimeline(timelineId, { ...response.data }));
     }

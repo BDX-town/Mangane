@@ -8,9 +8,10 @@ import { displayMedia } from 'gabsocial/initial_state';
 import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isIOS } from 'gabsocial/is_mobile';
+import { getSettings } from 'gabsocial/actions/settings';
 
 const mapStateToProps = state => ({
-  autoPlayGif: state.getIn(['settings', 'autoPlayGif']),
+  autoPlayGif: getSettings(state).get('autoPlayGif'),
 });
 
 export default @connect(mapStateToProps)

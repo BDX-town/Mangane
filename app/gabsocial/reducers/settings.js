@@ -9,7 +9,7 @@ import uuid from '../uuid';
 
 // Default settings are in action/settings.js
 //
-// Settings should be accessed with `getSettings(getState).getIn(...)`
+// Settings should be accessed with `getSettings(getState()).getIn(...)`
 // instead of directly from the state.
 const initialState = ImmutableMap({
   saved: true,

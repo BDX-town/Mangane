@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import EmojiPickerDropdown from '../components/emoji_picker_dropdown';
-import { changeSetting } from '../../../actions/settings';
+import { getSettings, changeSetting } from '../../../actions/settings';
 import { createSelector } from 'reselect';
 import { Map as ImmutableMap } from 'immutable';
 import { useEmoji } from '../../../actions/emojis';
@@ -62,7 +62,7 @@ const getCustomEmojis = createSelector([
 
 const mapStateToProps = state => ({
   custom_emojis: getCustomEmojis(state),
-  skinTone: state.getIn(['settings', 'skinTone']),
+  skinTone: getSettings(state).get('skinTone'),
   frequentlyUsedEmojis: getFrequentlyUsedEmojis(state),
 });
 
