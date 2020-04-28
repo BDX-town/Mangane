@@ -9,7 +9,8 @@ import {
   TextInput,
   Checkbox,
 } from 'gabsocial/features/forms';
-import { register, fetchCaptcha } from 'gabsocial/actions/auth';
+import { register } from 'gabsocial/actions/auth';
+import CaptchaField from 'gabsocial/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
 
 const mapStateToProps = (state, props) => ({
@@ -24,14 +25,9 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   state = {
-    captcha: ImmutableMap(),
     captchaLoading: true,
     submissionLoading: false,
     params: ImmutableMap(),
-  }
-
-  componentWillMount() {
-    this.fetchCaptcha();
   }
 
   setParams = map => {
@@ -50,34 +46,16 @@ class RegistrationForm extends ImmutablePureComponent {
     this.props.dispatch(register(this.state.params.toJS()));
   }
 
-  fetchCaptcha = () => {
-    this.props.dispatch(fetchCaptcha()).then(response => {
-      const captcha = ImmutableMap(response.data);
-      this.setState({ captcha: captcha, captchaLoading: false });
-      this.setParams({
-        captcha_token: captcha.get('token'),
-        captcha_answer_data: captcha.get('answer_data'),
-      });
-    }).catch(error => console.error(error));
-    setTimeout(this.fetchCaptcha, 5*60*100); // Captcha invalidates after 5 minutes
+  onFetchCaptcha = captcha => {
+    this.setState({ captchaLoading: false });
+    this.setParams({
+      captcha_token: captcha.get('token'),
+      captcha_answer_data: captcha.get('answer_data'),
+    });
   }
 
-  getCaptchaElem = () => {
-    const { captcha } = this.state;
-    if (captcha.get('type') !== 'native') return null;
-
-    return (
-      <div className='captcha'>
-        <img alt='captcha' src={captcha.get('url')} />
-        <TextInput
-          placeholder='Enter the pictured text'
-          name='captcha_solution'
-          autoComplete='off'
-          onChange={this.onInputChange}
-          required
-        />
-      </div>
-    );
+  onFetchCaptchaFail = error => {
+    this.setState({ captchaLoading: false });
   }
 
   render() {
@@ -123,7 +101,11 @@ class RegistrationForm extends ImmutablePureComponent {
                   required
                 />
               </div>
-              {this.getCaptchaElem()}
+              <CaptchaField
+                onFetch={this.onFetchCaptcha}
+                onFetchFail={this.onFetchCaptchaFail}
+                onChange={this.onInputChange}
+              />
               <div className='fields-group'>
                 <Checkbox
                   label={<>I agree to the <Link to='/about/tos' target='_blank'>Terms of Service</Link>.</>}
