@@ -59,6 +59,7 @@ class RegistrationForm extends ImmutablePureComponent {
         captcha_answer_data: captcha.get('answer_data'),
       });
     }).catch(error => console.error(error));
+    setTimeout(this.fetchCaptcha, 5*60*100); // Captcha invalidates after 5 minutes
   }
 
   getCaptchaElem = () => {
