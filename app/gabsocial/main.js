@@ -22,9 +22,8 @@ function main() {
 
   ready(() => {
     const mountNode = document.getElementById('gabsocial');
-    const props = JSON.parse(mountNode.getAttribute('data-props'));
 
-    ReactDOM.render(<GabSocial {...props} />, mountNode);
+    ReactDOM.render(<GabSocial />, mountNode);
     if (process.env.NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
       require('offline-plugin/runtime').install();

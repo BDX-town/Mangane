@@ -24,9 +24,6 @@ import { fetchMe } from 'gabsocial/actions/me';
 import PublicLayout from 'gabsocial/features/public_layout';
 import { getSettings } from 'gabsocial/actions/settings';
 
-const { localeData, messages } = getLocale();
-addLocaleData(localeData);
-
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
 
@@ -50,6 +47,7 @@ const mapStateToProps = (state) => {
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
+    locale: settings.get('locale'),
   };
 };
 
@@ -64,11 +62,15 @@ class GabSocialMount extends React.PureComponent {
     systemFont: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
+    locale: PropTypes.string.isRequired,
   };
 
   render() {
-    const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator } = this.props;
+    const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
     if (me === null) return null;
+
+    const { localeData, messages } = getLocale();
+    addLocaleData(localeData);
 
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
@@ -86,21 +88,24 @@ class GabSocialMount extends React.PureComponent {
     });
 
     return (
-      <>
-        <Helmet>
-          <body className={bodyClass} />
-          {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
-        </Helmet>
-        <BrowserRouter>
-          <ScrollContext>
-            <Switch>
-              {!me && <Route exact path='/' component={PublicLayout} />}
-              <Route exact path='/about/:slug?' component={PublicLayout} />
-              <Route path='/' component={UI} />
-            </Switch>
-          </ScrollContext>
-        </BrowserRouter>
-      </>
+      <IntlProvider locale={locale} messages={messages}>
+        <>
+          <Helmet>
+            <body className={bodyClass} />
+            <script src={`/packs/js/locale_${locale}.chunk.js`} />
+            {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
+          </Helmet>
+          <BrowserRouter>
+            <ScrollContext>
+              <Switch>
+                {!me && <Route exact path='/' component={PublicLayout} />}
+                <Route exact path='/about/:slug?' component={PublicLayout} />
+                <Route path='/' component={UI} />
+              </Switch>
+            </ScrollContext>
+          </BrowserRouter>
+        </>
+      </IntlProvider>
     );
   }
 
@@ -108,21 +113,13 @@ class GabSocialMount extends React.PureComponent {
 
 export default class GabSocial extends React.PureComponent {
 
-  static propTypes = {
-    locale: PropTypes.string.isRequired,
-  };
-
   render() {
-    const { locale } = this.props;
-
     return (
-      <IntlProvider locale={locale} messages={messages}>
-        <Provider store={store}>
-          <ErrorBoundary>
-            <GabSocialMount />
-          </ErrorBoundary>
-        </Provider>
-      </IntlProvider>
+      <Provider store={store}>
+        <ErrorBoundary>
+          <GabSocialMount />
+        </ErrorBoundary>
+      </Provider>
     );
   }
 
