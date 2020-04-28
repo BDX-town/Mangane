@@ -28,18 +28,19 @@ class CaptchaField extends React.Component {
 
   state = {
     captcha: ImmutableMap(),
+    refresh: undefined,
   }
 
-  setRefreshTimeout = () => {
+  startRefresh = () => {
     const { refreshInterval } = this.props;
     if (refreshInterval) {
-      const refreshTimeout = setTimeout(this.fetchCaptcha, refreshInterval);
-      this.setState({ refreshTimeout });
-    }
+      const refresh = setInterval(this.fetchCaptcha, refreshInterval);
+      this.setState({ refresh });
+    };
   }
 
-  clearRefreshTimeout = () => {
-    clearTimeout(this.state.refreshTimeout);
+  endRefresh = () => {
+    clearInterval(this.state.refresh);
   }
 
   fetchCaptcha = () => {
@@ -51,15 +52,15 @@ class CaptchaField extends React.Component {
     }).catch(error => {
       onFetchFail(error);
     });
-    this.setRefreshTimeout(); // Refresh periodically
   }
 
   componentWillMount() {
     this.fetchCaptcha();
+    this.startRefresh(); // Refresh periodically
   }
 
   componentWillUnmount() {
-    this.clearRefreshTimeout();
+    this.endRefresh();
   }
 
   render() {
