@@ -13,8 +13,8 @@ import { defineMessages } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
+import { fetchMarkers, saveMarkers } from './markers';
 
-export const NOTIFICATIONS_INITIALIZE  = 'NOTIFICATIONS_INITIALIZE';
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
 export const NOTIFICATIONS_UPDATE_QUEUE = 'NOTIFICATIONS_UPDATE_QUEUE';
@@ -27,8 +27,11 @@ export const NOTIFICATIONS_EXPAND_FAIL    = 'NOTIFICATIONS_EXPAND_FAIL';
 export const NOTIFICATIONS_FILTER_SET = 'NOTIFICATIONS_FILTER_SET';
 
 export const NOTIFICATIONS_CLEAR      = 'NOTIFICATIONS_CLEAR';
-export const NOTIFICATIONS_MARK_READ  = 'NOTIFICATIONS_MARK_READ';
 export const NOTIFICATIONS_SCROLL_TOP = 'NOTIFICATIONS_SCROLL_TOP';
+
+export const NOTIFICATIONS_MARK_READ_REQUEST = 'NOTIFICATIONS_MARK_READ_REQUEST';
+export const NOTIFICATIONS_MARK_READ_SUCCESS = 'NOTIFICATIONS_MARK_READ_SUCCESS';
+export const NOTIFICATIONS_MARK_READ_FAIL    = 'NOTIFICATIONS_MARK_READ_FAIL';
 
 export const MAX_QUEUED_NOTIFICATIONS = 40;
 
@@ -44,12 +47,6 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
     dispatch(fetchRelationships(accountIds));
   }
 };
-
-export function initializeNotifications() {
-  return {
-    type: NOTIFICATIONS_INITIALIZE,
-  };
-}
 
 export function updateNotifications(notification, intlMessages, intlLocale) {
   return (dispatch, getState) => {
@@ -176,6 +173,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       params.since_id = notifications.getIn(['items', 0, 'id']);
     }
 
+    dispatch(fetchMarkers(['notifications']));
     dispatch(expandNotificationsRequest(isLoadingMore));
 
     api(getState).get('/api/v1/notifications', { params }).then(response => {
@@ -255,19 +253,24 @@ export function setFilter(filterType) {
 export function markReadNotifications() {
   return (dispatch, getState) => {
     if (!getState().get('me')) return;
-    const top_notification = parseInt(getState().getIn(['notifications', 'items', 0, 'id']));
-    const last_read = getState().getIn(['notifications', 'lastRead']);
+    const topNotification = parseInt(getState().getIn(['notifications', 'items', 0, 'id']));
+    const lastRead = getState().getIn(['notifications', 'lastRead']);
+    if (!(topNotification && topNotification > lastRead)) return;
 
-    if (top_notification && top_notification > last_read) {
-      api(getState).post('/api/v1/notifications/mark_read', { id: top_notification }).then(response => {
-        dispatch({
-          type: NOTIFICATIONS_MARK_READ,
-          notification: top_notification,
-        });
-      }).catch(e => {
-        console.error(e);
-        console.error('Could not mark notifications read.');
+    dispatch({
+      type: NOTIFICATIONS_MARK_READ_REQUEST,
+      lastRead: topNotification,
+    });
+
+    api(getState).post('/api/v1/pleroma/notifications/read', {
+      max_id: topNotification,
+    }).then(response => {
+      dispatch({
+        type: NOTIFICATIONS_MARK_READ_SUCCESS,
+        notifications: response.data,
       });
-    }
+    }).catch(e => {
+      dispatch({ type: NOTIFICATIONS_MARK_READ_FAIL });
+    });
   };
 }

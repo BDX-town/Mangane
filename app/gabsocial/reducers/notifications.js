@@ -1,25 +1,28 @@
 import {
-  NOTIFICATIONS_INITIALIZE,
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
   NOTIFICATIONS_EXPAND_REQUEST,
   NOTIFICATIONS_EXPAND_FAIL,
   NOTIFICATIONS_FILTER_SET,
   NOTIFICATIONS_CLEAR,
-  NOTIFICATIONS_MARK_READ,
   NOTIFICATIONS_SCROLL_TOP,
   NOTIFICATIONS_UPDATE_QUEUE,
   NOTIFICATIONS_DEQUEUE,
+  NOTIFICATIONS_MARK_READ_REQUEST,
   MAX_QUEUED_NOTIFICATIONS,
 } from '../actions/notifications';
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
+import {
+  FETCH_MARKERS_SUCCESS,
+  SAVE_MARKERS_SUCCESS,
+} from '../actions/markers';
 import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import compareId from '../compare_id';
-import { unreadCount } from 'gabsocial/initial_state';
+import { fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   items: ImmutableList(),
@@ -130,8 +133,13 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
 
 export default function notifications(state = initialState, action) {
   switch(action.type) {
-  case NOTIFICATIONS_INITIALIZE:
-    return state.set('unread', unreadCount);
+  case FETCH_MARKERS_SUCCESS:
+  case SAVE_MARKERS_SUCCESS:
+    const prevRead = state.get('lastRead');
+    const marker   = fromJS(action.markers);
+    const unread   = marker.getIn(['notifications', 'pleroma', 'unread_count'], 0);
+    const lastRead = marker.getIn(['notifications', 'last_read_id'], prevRead);
+    return state.merge({ unread, lastRead });
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);
   case NOTIFICATIONS_EXPAND_FAIL:
@@ -157,8 +165,8 @@ export default function notifications(state = initialState, action) {
     return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
   case NOTIFICATIONS_CLEAR:
     return state.set('items', ImmutableList()).set('hasMore', false);
-  case NOTIFICATIONS_MARK_READ:
-    return state.set('lastRead', action.notification);
+  case NOTIFICATIONS_MARK_READ_REQUEST:
+    return state.set('lastRead', action.lastRead);
   case TIMELINE_DELETE:
     return deleteByStatus(state, action.id);
   case TIMELINE_DISCONNECT:
