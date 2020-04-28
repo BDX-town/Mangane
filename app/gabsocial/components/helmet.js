@@ -5,6 +5,7 @@ import { Helmet } from'react-helmet';
 
 const mapStateToProps = state => ({
   siteTitle: state.getIn(['instance', 'title']),
+  unreadCount: state.getIn(['notifications', 'unread']),
 });
 
 class SoapboxHelmet extends React.Component {
@@ -12,15 +13,22 @@ class SoapboxHelmet extends React.Component {
   static propTypes = {
     siteTitle: PropTypes.string,
     children: PropTypes.node,
+    unreadCount: PropTypes.number,
   };
+
+  addCounter = title => {
+    const { unreadCount } = this.props;
+    if (unreadCount < 1) return title;
+    return `(${unreadCount}) ${title}`;
+  }
 
   render() {
     const { siteTitle, children } = this.props;
 
     return (
       <Helmet
-        titleTemplate={`%s | ${siteTitle}`}
-        defaultTitle={siteTitle}
+        titleTemplate={this.addCounter(`%s | ${siteTitle}`)}
+        defaultTitle={this.addCounter(siteTitle)}
       >
         {children}
       </Helmet>
