@@ -120,17 +120,6 @@ function main() {
       document.head.appendChild(scrollbarWidthStyle);
       scrollbarWidthStyle.sheet.insertRule(`body.with-modals--active { margin-right: ${scrollbarWidth}px; }`, 0);
     }
-
-    (function() {
-      var meta_bg_img = document.querySelector('meta[name="bg-img"]');
-      if (!meta_bg_img) return;
-      var path = meta_bg_img.content;
-      var image = new Image();
-      image.src = path;
-      image.addEventListener('load', function() {
-        document.querySelector('.theme-glinner .public-layout').style.backgroundImage = 'url(\''+image.src+'\')';
-      });
-    })();
   });
 
   delegate(document, '.webapp-btn', 'click', ({ target, button }) => {

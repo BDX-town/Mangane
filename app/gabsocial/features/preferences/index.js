@@ -21,14 +21,14 @@ const messages = defineMessages({
 
 // TODO: Pull dynamically
 const themes = {
-  cobalt: 'Cobalt',
-  'gabsocial-light': 'Purple Light',
-  default: 'Purple Dark',
-  contrast: 'Purple Contrast',
-  halloween: 'Halloween',
-  neenster: 'Aquatic',
-  glinner: 'Pale Blue',
-  lime: 'Lime Green',
+  'cobalt':          'Cobalt',
+  'purple':          'Purple Light',
+  'purple-dark':     'Purple Dark',
+  'purple-contrast': 'Purple Contrast',
+  'halloween':       'Halloween',
+  'aquatic':         'Aquatic',
+  'paleblue':        'Pale Blue',
+  'lime':            'Lime Green',
 };
 
 const mapStateToProps = state => ({

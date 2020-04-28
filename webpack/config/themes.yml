@@ -1,8 +1,8 @@
 cobalt: styles/cobalt.scss
-gabsocial-light: styles/gabsocial-light.scss
-default: styles/application.scss
-contrast: styles/contrast.scss
+purple: styles/gabsocial-light.scss
+purple-dark: styles/application.scss
+purple-contrast: styles/contrast.scss
 halloween: styles/halloween.scss
-neenster: styles/neenster.scss
-glinner: styles/glinner.scss
+aquatic: styles/neenster.scss
+paleblue: styles/glinner.scss
 lime: styles/lime.scss

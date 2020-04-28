@@ -25,10 +25,6 @@ $bg-size: 720px;
 @import 'application';
 @import 'gabsocial-light/diff';
 
-body.app-body {
-  background: $gab-background;
-}
-
 body {
   background-color: #bcbb65;
   background-image: linear-gradient(to bottom,
@@ -40,8 +36,8 @@ body {
 }
 
 .public-layout {
+  background-image: none;
   background-color: transparent;
-  background-image: url("../images/glinner-still.gif");
   background-repeat: repeat-x;
   background-size: auto $bg-size;
 
@@ -54,7 +50,7 @@ body {
   }
 
   .brand__tagline {
-    color: white;
+    color: #fff;
   }
 
   .brand__tagline span {
@@ -62,24 +58,32 @@ body {
   }
 
   .header .nav-link {
-    color: white;
+    color: #fff;
     filter: drop-shadow(1px 1px lighten($gab-brand-default, 20%));
 
-    &:hover, &:focus, &:active {
+    &:hover,
+    &:focus,
+    &:active {
       color: $gab-background-base-light;
     }
   }
 
   .footer {
     background-color: #74733c;
+
     ul li a {
       color: darken($primary-text-color, 10%);
     }
   }
 }
 
+.ui {
+  background: $gab-background;
+}
+
 .tabs-bar__button-compose {
   background-color: darken($glinner-teal, 15%) !important;
+
   &:hover {
     background-color: darken($glinner-teal, 20%) !important;
   }
