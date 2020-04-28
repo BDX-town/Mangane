@@ -1,11 +1,111 @@
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'gabsocial/actions/me';
+import { Map as ImmutableMap } from 'immutable';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
 
 export const FE_NAME = 'soapbox_fe';
+
+const defaultSettings = ImmutableMap({
+  onboarded: false,
+
+  skinTone: 1,
+  reduceMotion: false,
+  autoPlayGif: false,
+  displayMedia: true,
+  expandSpoilers: false,
+  unfollowModal: false,
+  boostModal: false,
+  deleteModal: true,
+  defaultPrivacy: 'public',
+  theme: 'lime',
+
+  systemFont: false,
+  dyslexicFont: false,
+  demetricator: false,
+
+  home: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
+
+    regex: ImmutableMap({
+      body: '',
+    }),
+  }),
+
+  notifications: ImmutableMap({
+    alerts: ImmutableMap({
+      follow: true,
+      favourite: true,
+      reblog: true,
+      mention: true,
+      poll: true,
+    }),
+
+    quickFilter: ImmutableMap({
+      active: 'all',
+      show: true,
+      advanced: false,
+    }),
+
+    shows: ImmutableMap({
+      follow: true,
+      favourite: true,
+      reblog: true,
+      mention: true,
+      poll: true,
+    }),
+
+    sounds: ImmutableMap({
+      follow: true,
+      favourite: true,
+      reblog: true,
+      mention: true,
+      poll: true,
+    }),
+  }),
+
+  community: ImmutableMap({
+    other: ImmutableMap({
+      onlyMedia: false,
+    }),
+    regex: ImmutableMap({
+      body: '',
+    }),
+  }),
+
+  public: ImmutableMap({
+    other: ImmutableMap({
+      onlyMedia: false,
+    }),
+    regex: ImmutableMap({
+      body: '',
+    }),
+  }),
+
+  direct: ImmutableMap({
+    regex: ImmutableMap({
+      body: '',
+    }),
+  }),
+
+  trends: ImmutableMap({
+    show: true,
+  }),
+});
+
+
+export function getSettings(getState) {
+  const state = getState();
+  const soapboxSettings = state.getIn(['soapbox', 'defaultSettings']);
+  return defaultSettings
+    .mergeDeep(soapboxSettings)
+    .mergeDeep(state.get('settings'));
+}
 
 export function changeSetting(path, value) {
   return dispatch => {

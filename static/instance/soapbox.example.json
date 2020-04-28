@@ -13,5 +13,8 @@
   },
   "extensions": {
     "patron": false
-  }
+  },
+  "defaultSettings": {
+    "autoPlayGif": false,
+  },
 }

@@ -7,95 +7,12 @@ import { ME_FETCH_SUCCESS } from 'gabsocial/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import uuid from '../uuid';
 
+// Default settings are in action/settings.js
+//
+// Settings should be accessed with `getSettings(getState).getIn(...)`
+// instead of directly from the state.
 const initialState = ImmutableMap({
   saved: true,
-  onboarded: false,
-
-  skinTone: 1,
-  reduceMotion: false,
-  autoPlayGif: false,
-  displayMedia: true,
-  expandSpoilers: false,
-  unfollowModal: false,
-  boostModal: false,
-  deleteModal: true,
-  defaultPrivacy: 'public',
-  theme: 'lime',
-
-  systemFont: false,
-  dyslexicFont: false,
-  demetricator: false,
-
-  home: ImmutableMap({
-    shows: ImmutableMap({
-      reblog: true,
-      reply: true,
-    }),
-
-    regex: ImmutableMap({
-      body: '',
-    }),
-  }),
-
-  notifications: ImmutableMap({
-    alerts: ImmutableMap({
-      follow: true,
-      favourite: true,
-      reblog: true,
-      mention: true,
-      poll: true,
-    }),
-
-    quickFilter: ImmutableMap({
-      active: 'all',
-      show: true,
-      advanced: false,
-    }),
-
-    shows: ImmutableMap({
-      follow: true,
-      favourite: true,
-      reblog: true,
-      mention: true,
-      poll: true,
-    }),
-
-    sounds: ImmutableMap({
-      follow: true,
-      favourite: true,
-      reblog: true,
-      mention: true,
-      poll: true,
-    }),
-  }),
-
-  community: ImmutableMap({
-    other: ImmutableMap({
-      onlyMedia: false,
-    }),
-    regex: ImmutableMap({
-      body: '',
-    }),
-  }),
-
-  public: ImmutableMap({
-    other: ImmutableMap({
-      onlyMedia: false,
-    }),
-    regex: ImmutableMap({
-      body: '',
-    }),
-  }),
-
-  direct: ImmutableMap({
-    regex: ImmutableMap({
-      body: '',
-    }),
-  }),
-
-  trends: ImmutableMap({
-    show: true,
-  }),
 });
 
 const defaultColumns = fromJS([
