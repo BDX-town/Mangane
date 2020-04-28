@@ -31,11 +31,7 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchCaptcha()).then(response => {
-      const captcha = ImmutableMap(response.data);
-      this.setState({ captcha: captcha, captchaLoading: false });
-      this.setParams({ captcha_token: captcha.get('token') });
-    }).catch(error => console.error(error));
+    this.fetchCaptcha();
   }
 
   setParams = map => {
@@ -52,6 +48,17 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onSubmit = e => {
     this.props.dispatch(register(this.state.params.toJS()));
+  }
+
+  fetchCaptcha = () => {
+    this.props.dispatch(fetchCaptcha()).then(response => {
+      const captcha = ImmutableMap(response.data);
+      this.setState({ captcha: captcha, captchaLoading: false });
+      this.setParams({
+        captcha_token: captcha.get('token'),
+        captcha_answer_data: captcha.get('answer_data'),
+      });
+    }).catch(error => console.error(error));
   }
 
   getCaptchaElem = () => {
