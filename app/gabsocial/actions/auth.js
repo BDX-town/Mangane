@@ -1,5 +1,5 @@
 import api from '../api';
-import { showAlert } from 'gabsocial/actions/alerts';
+import { showAlert, showAlertForError } from 'gabsocial/actions/alerts';
 import { fetchMe } from 'gabsocial/actions/me';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
@@ -11,25 +11,39 @@ export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
 export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
 export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 
+const hasAuthApp = getState => getState().hasIn(['auth', 'app', 'access_token']);
+
+export function initAuthApp() {
+  return (dispatch, getState) => {
+    if (!hasAuthApp(getState)) dispatch(createAuthApp()).then(() => {
+      dispatch(createAuthAppToken());
+    }).catch(error => {
+      dispatch(showAlertForError(error));
+    });
+  };
+}
+
 export function createAuthApp() {
   return (dispatch, getState) => {
-    const appToken = getState().getIn(['auth', 'app', 'access_token']);
-    if (appToken) return new Promise(_ => _()); // Skip for now, FIXME: call verify_credentials
-    return api(getState).post('/api/v1/apps', {
-      // TODO: Add commit hash to client_name
-      client_name: `SoapboxFE_${(new Date()).toISOString()}`,
+    return api(getState, 'app').post('/api/v1/apps', {
+      client_name:   `SoapboxFE_${(new Date()).toISOString()}`, // TODO: Add commit hash to client_name
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
-      scopes: 'read write follow push admin',
+      scopes:        'read write follow push admin',
     }).then(response => {
       dispatch(authAppCreated(response.data));
-    }).then(() => {
-      const app = getState().getIn(['auth', 'app']);
-      return api(getState).post('/oauth/token', {
-        client_id: app.get('client_id'),
-        client_secret: app.get('client_secret'),
-        redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-        grant_type: 'client_credentials',
-      });
+    });
+  };
+}
+
+export function createAuthAppToken() {
+  return (dispatch, getState) => {
+    const app = getState().getIn(['auth', 'app']);
+
+    return api(getState).post('/oauth/token', {
+      client_id:     app.get('client_id'),
+      client_secret: app.get('client_secret'),
+      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+      grant_type:   'client_credentials',
     }).then(response => {
       dispatch(authAppAuthorized(response.data));
     });

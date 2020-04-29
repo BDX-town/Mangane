@@ -1,9 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { createAuthApp, logIn } from 'gabsocial/actions/auth';
+import { initAuthApp, logIn } from 'gabsocial/actions/auth';
 import { fetchMe } from 'gabsocial/actions/me';
-// import { Link } from 'react-router-dom';
 
 export default @connect()
 class LoginForm extends ImmutablePureComponent {
@@ -14,7 +13,7 @@ class LoginForm extends ImmutablePureComponent {
   }
 
   componentWillMount() {
-    this.props.dispatch(createAuthApp());
+    this.props.dispatch(initAuthApp());
   }
 
   getFormData = (form) => {
