@@ -12,6 +12,7 @@ import Avatar from '../../../components/avatar';
 import ActionBar from 'gabsocial/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
+import Icon from '../../../components/icon';
 
 @withRouter
 class TabsBar extends React.PureComponent {
@@ -71,20 +72,20 @@ class TabsBar extends React.PureComponent {
     }
     links.push(
       <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
-        <i className='tabs-bar__link__icon home' />
+        <Icon id='home' />
         <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
       </NavLink>);
     if (account) {
       links.push(
         <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-          <i className='tabs-bar__link__icon notifications' />
+          <Icon id='bell' />
           <NotificationsCounterIcon />
           <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
         </NavLink>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
-        <i className='tabs-bar__link__icon tabs-bar__link__icon--search' />
+        <Icon id='search' />
         <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
       </NavLink>
     );

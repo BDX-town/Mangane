@@ -20,7 +20,7 @@ const defaultSettings = ImmutableMap({
   boostModal: false,
   deleteModal: true,
   defaultPrivacy: 'public',
-  theme: 'lime',
+  theme: 'cobalt',
   // locale: navigator.language.slice(0, 2) || 'en', // FIXME: Dynamic locales
   locale: 'en',
 

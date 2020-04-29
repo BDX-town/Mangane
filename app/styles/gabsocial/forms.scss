@@ -930,10 +930,14 @@ code {
 
 .captcha {
   background-color: #ffffff;
-  border-radius: 10px;
+  border-radius: 4px;
 
   img {
     display: table;
     margin: 0 auto;
+  }
+
+  input[type="text"] {
+    border-radius: 0 0 4px 4px;
   }
 }
