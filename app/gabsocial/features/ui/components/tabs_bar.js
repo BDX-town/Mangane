@@ -66,7 +66,8 @@ class TabsBar extends React.PureComponent {
     let links = [];
     if (logo) {
       links.push(
-        <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home' style={{ padding: '0', backgroundImage: `url(${logo})` }}>
+        <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
+          <img alt='Logo' src={logo} />
           <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
         </Link>);
     }
