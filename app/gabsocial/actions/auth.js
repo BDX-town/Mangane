@@ -11,22 +11,36 @@ export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
 export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
 export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 
-const hasAuthApp = getState => getState().hasIn(['auth', 'app', 'access_token']);
+const hasAppToken = getState => getState().hasIn(['auth', 'app', 'access_token']);
 
 export function initAuthApp() {
   return (dispatch, getState) => {
-    if (!hasAuthApp(getState)) dispatch(createAuthApp()).then(() => {
-      dispatch(createAuthAppToken());
-    }).catch(error => {
-      dispatch(showAlertForError(error));
+    const hasToken = hasAppToken(getState);
+    const action   = hasToken ? refreshAppToken : createAppAndToken;
+    return dispatch(action())
+      .catch(error => {
+        dispatch(showAlertForError(error));
+      });
+  };
+}
+
+function createAppAndToken() {
+  return (dispatch, getState) => {
+    return dispatch(createApp()).then(() => {
+      dispatch(createAppToken());
     });
   };
 }
 
-export function createAuthApp() {
+const appName = () => {
+  const timestamp = (new Date()).toISOString();
+  return `SoapboxFE_${timestamp}`; // TODO: Add commit hash
+};
+
+function createApp() {
   return (dispatch, getState) => {
     return api(getState, 'app').post('/api/v1/apps', {
-      client_name:   `SoapboxFE_${(new Date()).toISOString()}`, // TODO: Add commit hash to client_name
+      client_name:   appName(),
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
     }).then(response => {
@@ -35,31 +49,48 @@ export function createAuthApp() {
   };
 }
 
-export function createAuthAppToken() {
+function createAppToken() {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
 
-    return api(getState).post('/oauth/token', {
+    return api(getState, 'app').post('/oauth/token', {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
-      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-      grant_type:   'client_credentials',
+      redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
+      grant_type:    'client_credentials',
     }).then(response => {
       dispatch(authAppAuthorized(response.data));
     });
   };
 }
 
+function refreshAppToken() {
+  return (dispatch, getState) => {
+    // FIXME: Pleroma doesn't support this yet:
+    //   https://git.pleroma.social/pleroma/pleroma/-/issues/1721
+    return dispatch(createAppToken());
+
+    // const app = getState().getIn(['auth', 'app']);
+    //
+    // return api(getState, 'app').post('/oauth/token', {
+    //   grant_type:    'refresh_token',
+    //   refresh_token: app.get('refresh_token'),
+    // }).then(response => {
+    //   dispatch(authAppAuthorized(response.data));
+    // });
+  };
+}
+
 export function logIn(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
-    return api(getState).post('/oauth/token', {
-      client_id: app.get('client_id'),
+    return api(getState, 'app').post('/oauth/token', {
+      client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
-      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-      grant_type: 'password',
-      username: username,
-      password: password,
+      redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
+      grant_type:    'password',
+      username:      username,
+      password:      password,
     }).then(response => {
       dispatch(authLoggedIn(response.data));
     }).catch((error) => {
@@ -79,7 +110,7 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     dispatch({ type: AUTH_REGISTER_REQUEST });
-    return api(getState).post('/api/v1/accounts', params).then(response => {
+    return api(getState, 'app').post('/api/v1/accounts', params).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
       dispatch(fetchMe());
