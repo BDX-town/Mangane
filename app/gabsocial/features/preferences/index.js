@@ -21,7 +21,7 @@ const messages = defineMessages({
 
 // TODO: Pull dynamically
 const themes = {
-  'cobalt':          'Cobalt',
+  'azure':          'Azure',
   'purple':          'Purple Light',
   'purple-dark':     'Purple Dark',
   'purple-contrast': 'Purple Contrast',

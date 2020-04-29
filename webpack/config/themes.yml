@@ -1,4 +1,4 @@
-cobalt: styles/cobalt.scss
+azure: styles/azure.scss
 purple: styles/gabsocial-light.scss
 purple-dark: styles/application.scss
 purple-contrast: styles/contrast.scss
