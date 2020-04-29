@@ -12,11 +12,12 @@ export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
 export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 
 const hasAppToken = getState => getState().hasIn(['auth', 'app', 'access_token']);
+const noOp = () => () => new Promise(f => f());
 
 export function initAuthApp() {
   return (dispatch, getState) => {
     const hasToken = hasAppToken(getState);
-    const action   = hasToken ? refreshAppToken : createAppAndToken;
+    const action   = hasToken ? noOp : createAppAndToken;
     return dispatch(action())
       .catch(error => {
         dispatch(showAlertForError(error));
@@ -61,23 +62,6 @@ function createAppToken() {
     }).then(response => {
       dispatch(authAppAuthorized(response.data));
     });
-  };
-}
-
-function refreshAppToken() {
-  return (dispatch, getState) => {
-    // FIXME: Pleroma doesn't support this yet:
-    //   https://git.pleroma.social/pleroma/pleroma/-/issues/1721
-    return dispatch(createAppToken());
-
-    // const app = getState().getIn(['auth', 'app']);
-    //
-    // return api(getState, 'app').post('/oauth/token', {
-    //   grant_type:    'refresh_token',
-    //   refresh_token: app.get('refresh_token'),
-    // }).then(response => {
-    //   dispatch(authAppAuthorized(response.data));
-    // });
   };
 }
 
