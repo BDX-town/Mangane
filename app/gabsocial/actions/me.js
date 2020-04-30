@@ -1,5 +1,6 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
+import { refreshUserToken } from './auth';
 
 export const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';
 export const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';
@@ -18,10 +19,11 @@ export function fetchMe() {
       dispatch({ type: ME_FETCH_SKIP }); return;
     };
 
-    dispatch(fetchMeRequest());
-
-    api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
-      dispatch(fetchMeSuccess(response.data));
+    dispatch(refreshUserToken()).then(() => {
+      dispatch(fetchMeRequest());
+      return api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
+        dispatch(fetchMeSuccess(response.data));
+      });
     }).catch(error => {
       dispatch(fetchMeFail(error));
     });

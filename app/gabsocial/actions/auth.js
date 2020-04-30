@@ -75,6 +75,27 @@ function createUserToken(username, password) {
       grant_type:    'password',
       username:      username,
       password:      password,
+    }).then(response => {
+      dispatch(authLoggedIn(response.data));
+    });
+  };
+}
+
+export function refreshUserToken() {
+  return (dispatch, getState) => {
+    const refreshToken = getState().getIn(['auth', 'user', 'refresh_token']);
+    const app = getState().getIn(['auth', 'app']);
+
+    if (!refreshToken) return dispatch(noOp());
+
+    return api(getState, 'app').post('/oauth/token', {
+      client_id:     app.get('client_id'),
+      client_secret: app.get('client_secret'),
+      refresh_token: refreshToken,
+      redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
+      grant_type:    'refresh_token',
+    }).then(response => {
+      dispatch(authLoggedIn(response.data));
     });
   };
 }
@@ -83,8 +104,6 @@ export function logIn(username, password) {
   return (dispatch, getState) => {
     return dispatch(initAuthApp()).then(() => {
       return dispatch(createUserToken(username, password));
-    }).then(response => {
-      return dispatch(authLoggedIn(response.data));
     }).catch(error => {
       dispatch(showAlert('Login failed.', 'Invalid username or password.'));
       throw error;
