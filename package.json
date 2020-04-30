@@ -1,6 +1,16 @@
 {
   "name": "soapbox-fe",
   "version": "0.0.0",
+  "description": "Soapbox frontend for Pleroma.",
+  "homepage": "https://soapbox.pub/",
+  "repository": {
+    "type" : "git",
+    "url" : "https://gitlab.com/soapbox-pub/soapbox-fe.git"
+  },
+  "keywords": ["fediverse", "pleroma"],
+  "bugs": {
+    "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues"
+  },
   "scripts": {
     "start": "npx webpack-dev-server --config webpack",
     "dev": "${npm_execpath} run start",

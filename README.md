@@ -23,7 +23,7 @@ Installing soapbox-fe on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/master/download?job=build-production -o soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v0.9/download?job=build-production -o soapbox-fe.zip
 ```
 
 Then unpack it into Pleroma's `instance` directory:
