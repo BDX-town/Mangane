@@ -17,7 +17,7 @@ const noOp = () => () => new Promise(f => f());
 function initAuthApp() {
   return (dispatch, getState) => {
     const hasToken = hasAppToken(getState);
-    const action   = hasToken ? noOp : createAppAndToken;
+    const action   = hasToken ? verifyApp : createAppAndToken;
     return dispatch(action())
       .catch(error => {
         dispatch(showAlertForError(error));
@@ -62,6 +62,14 @@ function createAppToken() {
     }).then(response => {
       return dispatch(authAppAuthorized(response.data));
     });
+  };
+}
+
+function verifyApp() {
+  return (dispatch, getState) => {
+    return api(getState, 'app').get('/api/v1/apps/verify_credentials')
+      .then (response => dispatch(authAppCreated(response.data)))
+      .catch(error    => dispatch(createAppAndToken()));
   };
 }
 
