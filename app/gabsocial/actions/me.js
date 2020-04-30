@@ -9,10 +9,7 @@ export const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
 export const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST';
 export const ME_PATCH_FAIL    = 'ME_PATCH_FAIL';
 
-function hasToken(getState) {
-  const accessToken = getState().getIn(['auth', 'user', 'access_token']);
-  return Boolean(accessToken);
-}
+const hasToken = getState => getState().hasIn(['auth', 'user', 'access_token']);
 
 export function fetchMe() {
   return (dispatch, getState) => {
