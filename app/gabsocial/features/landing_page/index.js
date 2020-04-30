@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import RegistrationForm from './components/registration_form';
-import SiteLogo from '../public_layout/components/site_logo';
+import SiteBanner from '../public_layout/components/site_banner';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
@@ -20,7 +20,7 @@ class LandingPage extends ImmutablePureComponent {
           <div className='landing-columns--left'>
             <div className='landing__brand'>
               <Link className='brand' to='/'>
-                <SiteLogo />
+                <SiteBanner />
               </Link>
               <div className='brand__tagline'>
                 <span>{instance.get('description')}</span>

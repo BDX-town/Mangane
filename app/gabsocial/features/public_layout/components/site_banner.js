@@ -7,17 +7,17 @@ const mapStateToProps = (state, props) => ({
   soapbox: state.get('soapbox'),
 });
 
-class SiteLogo extends ImmutablePureComponent {
+class SiteBanner extends ImmutablePureComponent {
 
   render() {
     const { instance, soapbox } = this.props;
     const logos = {
-      imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
+      imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('banner')} />),
       textLogo: (<h1>{instance.get('title')}</h1>),
     };
-    return soapbox.has('logo') ? logos.imgLogo : logos.textLogo;
+    return soapbox.has('banner') ? logos.imgLogo : logos.textLogo;
   }
 
 }
 
-export default connect(mapStateToProps)(SiteLogo);
+export default connect(mapStateToProps)(SiteBanner);
