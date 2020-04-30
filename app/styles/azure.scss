@@ -4,7 +4,7 @@
 $gab-brand-default: #0482d8;
 $gab-background-base-light: #f2f3f6;
 $gab-background: $gab-background-base-light;
-$ui-base-color: #d9eaf9;
+$ui-base-color: #d9f2f9;
 $ui-highlight-color: $gab-brand-default;
 // $nav-ui-background-color: #000;
 $nav-ui-highlight-color: #149dfb;
@@ -84,4 +84,9 @@ $ui-base-lighter-color: #b0c0cf;
 .search__input {
   border-radius: 999px;
   border: 0;
+  padding-left: 15px;
+}
+
+.search__icon .fa {
+  right: 8px;
 }
