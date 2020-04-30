@@ -1,19 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { initAuthApp, logIn } from 'gabsocial/actions/auth';
+import { logIn } from 'gabsocial/actions/auth';
 import { fetchMe } from 'gabsocial/actions/me';
 
 export default @connect()
 class LoginForm extends ImmutablePureComponent {
 
-  constructor(props) {
-    super(props);
-    this.state = { isLoading: false };
-  }
-
-  componentWillMount() {
-    this.props.dispatch(initAuthApp());
+  state = {
+    isLoading: false,
   }
 
   getFormData = (form) => {
@@ -27,7 +22,7 @@ class LoginForm extends ImmutablePureComponent {
     const { username, password } = this.getFormData(event.target);
     dispatch(logIn(username, password)).then(() => {
       return dispatch(fetchMe());
-    }).catch((error) => {
+    }).catch(error => {
       this.setState({ isLoading: false });
     });
     this.setState({ isLoading: true });

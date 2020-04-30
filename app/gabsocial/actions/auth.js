@@ -14,7 +14,7 @@ export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 const hasAppToken = getState => getState().hasIn(['auth', 'app', 'access_token']);
 const noOp = () => () => new Promise(f => f());
 
-export function initAuthApp() {
+function initAuthApp() {
   return (dispatch, getState) => {
     const hasToken = hasAppToken(getState);
     const action   = hasToken ? noOp : createAppAndToken;
@@ -28,7 +28,7 @@ export function initAuthApp() {
 function createAppAndToken() {
   return (dispatch, getState) => {
     return dispatch(createApp()).then(() => {
-      dispatch(createAppToken());
+      return dispatch(createAppToken());
     });
   };
 }
@@ -45,7 +45,7 @@ function createApp() {
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
     }).then(response => {
-      dispatch(authAppCreated(response.data));
+      return dispatch(authAppCreated(response.data));
     });
   };
 }
@@ -60,12 +60,12 @@ function createAppToken() {
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
     }).then(response => {
-      dispatch(authAppAuthorized(response.data));
+      return dispatch(authAppAuthorized(response.data));
     });
   };
 }
 
-export function logIn(username, password) {
+function createUserToken(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
     return api(getState, 'app').post('/oauth/token', {
@@ -75,9 +75,17 @@ export function logIn(username, password) {
       grant_type:    'password',
       username:      username,
       password:      password,
+    });
+  };
+}
+
+export function logIn(username, password) {
+  return (dispatch, getState) => {
+    return dispatch(initAuthApp()).then(() => {
+      return dispatch(createUserToken(username, password));
     }).then(response => {
-      dispatch(authLoggedIn(response.data));
-    }).catch((error) => {
+      return dispatch(authLoggedIn(response.data));
+    }).catch(error => {
       dispatch(showAlert('Login failed.', 'Invalid username or password.'));
       throw error;
     });
@@ -94,10 +102,12 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     dispatch({ type: AUTH_REGISTER_REQUEST });
-    return api(getState, 'app').post('/api/v1/accounts', params).then(response => {
+    return dispatch(initAuthApp()).then(() => {
+      return api(getState, 'app').post('/api/v1/accounts', params);
+    }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      dispatch(fetchMe());
+      return dispatch(fetchMe());
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
     });
