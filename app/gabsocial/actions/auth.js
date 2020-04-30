@@ -129,6 +129,7 @@ export function register(params) {
       return dispatch(fetchMe());
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
+      throw error;
     });
   };
 }

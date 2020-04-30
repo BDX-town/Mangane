@@ -44,7 +44,9 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onSubmit = e => {
     this.setState({ submissionLoading: true });
-    this.props.dispatch(register(this.state.params.toJS()));
+    this.props.dispatch(register(this.state.params.toJS())).catch(error => {
+      this.setState({ submissionLoading: false });
+    });
   }
 
   onFetchCaptcha = captcha => {
