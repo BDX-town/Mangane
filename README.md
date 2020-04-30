@@ -1,13 +1,14 @@
 # soapbox-fe
 
-> :warning: Not yet ready for production use.
+> :warning: soapbox-fe is BETA software.
+> Please take a look at the [list of open issues](https://gitlab.com/soapbox-pub/soapbox-fe/-/issues).
 
 **soapbox-fe** is an alternative frontend for Pleroma.
 It's part of the [Soapbox](https://soapbox.pub) project.
 
 It is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
 
-## How does it work?
+## :bulb: How does it work?
 
 soapbox-fe is a [single-page application (SPA)](https://en.wikipedia.org/wiki/Single-page_application) that runs entirely in the browser with JavaScript.
 
@@ -16,7 +17,7 @@ It interacts with the backend through [XMLHttpRequest (XHR)](https://developer.m
 
 It incorporates much of the [Mastodon API](https://docs.joinmastodon.org/methods/) used by Pleroma and Mastodon, but requires many [Pleroma-specific features](https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/) in order to function.
 
-# Deploy on Pleroma
+# :rocket: Deploy on Pleroma
 
 Installing soapbox-fe on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
@@ -38,7 +39,7 @@ It's not necessary to restart the Pleroma service.
 
 To remove soapbox-fe and revert to the default pleroma-fe, simply `rm -r /opt/pleroma/instance`.
 
-# Running locally
+# :computer: Running locally
 
 To get it running, just clone the repo:
 
@@ -98,7 +99,7 @@ PROXY_HTTPS_INSECURE=true
 
 You will need to restart the local development server for the changes to take effect.
 
-## Using with Mastodon
+## :elephant: Using with Mastodon
 
 Local Mastodon runs on port 3000 by default, so you will need to edit the `.env` as described above and set it like this:
 
@@ -119,7 +120,7 @@ window.localStorage.setItem('soapbox:auth:user', JSON.stringify({access_token: "
 Replace `XXX` with your access token.
 Finally, refresh the page, and you should be logged in.
 
-## Local Dev Configuration
+## :wrench: Local Dev Configuration
 
 The following configuration variables are supported supported in local development.
 Edit `.env` to set them.
