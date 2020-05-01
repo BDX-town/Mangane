@@ -193,6 +193,26 @@ NODE_ENV=development
 
 - `yarn test:jest` - Frontend unit tests.
 
+# Contributing
+
+We welcome contributions to this project.  To contribute, first review the [Contributing doc](docs/contributing.md)
+
+Additional supporting documents include:
+* [Soapbox History](docs/history.md)
+* [Redux Store Map](docs/history.md)
+
+# Customization
+
+Soapbox supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
+* Instance name
+* Site logo
+* Favicon
+* About page
+* Terms of Service page
+* Promo panel list items, e.g. blog site link
+
+Customization details can be found in the [Customization doc](docs/customization.md)
+
 # License
 
 soapbox-fe is free software: you can redistribute it and/or modify
