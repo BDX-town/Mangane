@@ -180,7 +180,7 @@ class ComposeForm extends ImmutablePureComponent {
     //     - Replying to zero or one users, places the cursor at the end of the textbox.
     //     - Replying to more than one user, selects any usernames past the first;
     //       this provides a convenient shortcut to drop everyone else from the conversation.
-    if (this.props.focusDate !== prevProps.focusDate) {
+    //if (this.props.focusDate !== prevProps.focusDate) {
       let selectionEnd, selectionStart;
 
       if (this.props.preselectDate !== prevProps.preselectDate) {
@@ -196,7 +196,7 @@ class ComposeForm extends ImmutablePureComponent {
 
       this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
       this.autosuggestTextarea.textarea.focus();
-    }
+    //}
   }
 
   setAutosuggestTextarea = (c) => {

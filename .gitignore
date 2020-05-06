@@ -6,3 +6,5 @@
 /.eslintcache
 /.env
 /deploy.sh
+/.vs/slnx.sqlite
+/.vs/slnx.sqlite-journal
