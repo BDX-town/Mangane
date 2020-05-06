@@ -37,7 +37,7 @@ busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-To remove soapbox-fe and revert to the default pleroma-fe, simply `rm -r /opt/pleroma/instance`.
+To remove soapbox-fe and revert to the default pleroma-fe, simply `rm -r /opt/pleroma/instance/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
 # Running locally
 
