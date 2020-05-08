@@ -44,6 +44,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
+    caretPosition: 0,
   }
 
   static contextTypes = {
@@ -86,6 +87,9 @@ class ComposeForm extends ImmutablePureComponent {
 
   handleChange = (e) => {
     this.props.onChange(e.target.value);
+    this.setState({
+      caretPosition: e.target.selectionStart,
+    });
   }
 
   handleComposeFocus = () => {
@@ -180,23 +184,25 @@ class ComposeForm extends ImmutablePureComponent {
     //     - Replying to zero or one users, places the cursor at the end of the textbox.
     //     - Replying to more than one user, selects any usernames past the first;
     //       this provides a convenient shortcut to drop everyone else from the conversation.
-    //if (this.props.focusDate !== prevProps.focusDate) {
-      let selectionEnd, selectionStart;
+    let selectionEnd, selectionStart;
+    if (this.props.focusDate !== prevProps.focusDate) {
 
       if (this.props.preselectDate !== prevProps.preselectDate) {
-        selectionEnd   = this.props.text.length;
+        selectionEnd = this.props.text.length;
         selectionStart = this.props.text.search(/\s/) + 1;
-      } else if (typeof this.props.caretPosition === 'number') {
-        selectionStart = this.props.caretPosition;
-        selectionEnd   = this.props.caretPosition;
-      } else {
-        selectionEnd   = this.props.text.length;
-        selectionStart = selectionEnd;
+      } else if (typeof this.state.caretPosition === 'number') {
+        selectionStart = this.state.caretPosition;
+        selectionEnd = this.state.caretPosition;
       }
-
       this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
       this.autosuggestTextarea.textarea.focus();
-    //}
+    } else {
+      if (this.props.preselectDate !== this.props.focusDate) {
+        selectionStart = selectionEnd = this.props.text.length + 1;
+        this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
+        this.autosuggestTextarea.textarea.focus();
+      }
+    }
   }
 
   setAutosuggestTextarea = (c) => {

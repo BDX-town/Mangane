@@ -74,7 +74,6 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       this.setState({ lastToken: null });
       this.props.onSuggestionsClearRequested();
     }
-
     this.props.onChange(e);
   }
 

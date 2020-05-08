@@ -73,7 +73,7 @@ export const ensureComposeIsVisible = (getState, routerHistory) => {
   }
 };
 
-export function changeCompose(text) {
+export function changeCompose(text, caretPosition) {
   return {
     type: COMPOSE_CHANGE,
     text: text,

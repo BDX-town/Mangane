@@ -237,7 +237,8 @@ export default function compose(state = initialState, action) {
   case COMPOSE_CHANGE:
     return state
       .set('text', action.text)
-      .set('idempotencyKey', uuid());
+      .set('idempotencyKey', uuid())
+      .set('focusDate', new Date());
   case COMPOSE_COMPOSING_CHANGE:
     return state.set('is_composing', action.value);
   case COMPOSE_REPLY:
