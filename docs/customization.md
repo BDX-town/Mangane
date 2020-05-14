@@ -11,10 +11,18 @@ Soapbox supports customization of the user interface, to allow per instance bran
 * Terms of Service page
 
 ## Instance Name
-Instance name is edited during the Pleroma installation step
+Instance name is edited during the Pleroma installation step or via admin configuration
+
+## Instance Description
+Instance description is edited during the Pleroma installation step or via admin configuration
+
+## Captcha on Registration Page
+Use of Captcha on registration page is edited during the Pleroma installation step or via admin configuration
 
 ## Site Logo and Promo Panel List Items
-The site logo and promo panel list items are customized by copying `soapbox.example.json` in `static/instance` folder to `soapbox.json`
+The site logo and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json`.
+The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
+The logo colors are rendered in a color that provides contrast for the site theme.
 Re-create the webpack and restart the soapbox-fe service to effect the changes.
 
 An example of the contents of `soapbox.example.json`:
