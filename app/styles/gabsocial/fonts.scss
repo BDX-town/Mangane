@@ -158,22 +158,6 @@
   font-weight: normal;
   font-style: normal;
 }
-.fa-site-icon {
-  position: relative;
-  &:before {
-    content: "";
-    display: block;
-    width: 16px;
-    height: 16px;
-    background-position: center;
-    background-size: contain;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: -14px;
-    filter: grayscale(100%) invert(100%);
-    opacity: 0.5;
-  }
-}
 .fa-site-icon:before {
   font-family: 'FontAwesome';
   content: '\f0c0';
@@ -181,8 +165,4 @@
 .fa-fediverse:before {
   font-family: 'spinster' !important;
   content: "\e901";
-}
-
-.btn.grouped.active .fa-site-icon:before {
-  opacity: 1;
 }
