@@ -129,7 +129,7 @@ class Status extends ImmutablePureComponent {
     descendantsIds: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
-    domain: PropTypes.string.isRequired,
+    domain: PropTypes.string,
   };
 
   state = {
