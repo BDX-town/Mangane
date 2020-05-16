@@ -4,33 +4,33 @@
 
 html {scrollbar-color: lighten($gab-background-container, 4%) $gab-background-container;}
 ::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-thumb {
-	border: none;
-	background: rgba($gab-placeholder-accent, .5);
-	@if $light-theme {background: rgba($gab-background-container-light, .3);}
+  border: none;
+  background: rgba($gab-placeholder-accent, .5);
+  @if $light-theme {background: rgba($gab-background-container-light, .3);}
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: rgba($gab-placeholder-accent, .75);
-	@if $light-theme {background: rgba($gab-background-container-light, .4);}
+  background: rgba($gab-placeholder-accent, .75);
+  @if $light-theme {background: rgba($gab-background-container-light, .4);}
 }
 ::-webkit-scrollbar-thumb:active {
-	background: $gab-placeholder-accent;
-	@if $light-theme {background: rgba($gab-background-container-light, .5);}
+  background: $gab-placeholder-accent;
+  @if $light-theme {background: rgba($gab-background-container-light, .5);}
 }
 ::-webkit-scrollbar-track {
-	border: none;
-	background: rgba($gab-background-container, .5);
-	@if $light-theme {background: rgba($gab-background-base, .3);}
+  border: none;
+  background: rgba($gab-background-container, .5);
+  @if $light-theme {background: rgba($gab-background-base, .3);}
 }
 ::-webkit-scrollbar-track:hover {
-	background: rgba($gab-background-container, .75);
-	@if $light-theme {background: rgba($gab-background-base, .4);}
+  background: rgba($gab-background-container, .75);
+  @if $light-theme {background: rgba($gab-background-base, .4);}
 }
 ::-webkit-scrollbar-track:active {
-	background: $gab-background-container;
-	@if $light-theme {background: rgba($gab-background-base, .5);}
+  background: $gab-background-container;
+  @if $light-theme {background: rgba($gab-background-base, .5);}
 }
 ::-webkit-scrollbar-corner {background: transparent;}

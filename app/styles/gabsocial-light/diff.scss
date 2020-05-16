@@ -423,12 +423,12 @@ body {
 
 input[type='text'],
 textarea {
-	&.standard {
-		color: $gab-placeholder-accent;
-		border-color: $gab-secondary-text;
-		background: $gab-background-base-light;
-		@include input-placeholder($gab-secondary-text);
-	}
+  &.standard {
+    color: $gab-placeholder-accent;
+    border-color: $gab-secondary-text;
+    background: $gab-background-base-light;
+    @include input-placeholder($gab-secondary-text);
+  }
 }
 
 
@@ -437,14 +437,14 @@ textarea {
 .report-modal,
 .actions-modal,
 .mute-modal {
-	color: $gab-default-text-light;
+  color: $gab-default-text-light;
 }
 
 .report-modal__statuses {
-	.status__content,
-	.status__content p {
-		color: $gab-default-text-light;
-	}
+  .status__content,
+  .status__content p {
+    color: $gab-default-text-light;
+  }
 }
 
 .user-panel__header {

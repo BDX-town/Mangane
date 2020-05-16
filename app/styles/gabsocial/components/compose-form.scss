@@ -1,289 +1,289 @@
 .compose-form {
-	padding: 10px;
-	&__sensitive-button {
-		padding: 10px;
-		padding-top: 0;
-		font-size: 14px;
-		font-weight: 500;
-		&.active {color: $highlight-text-color;}
-		input[type=checkbox] {display: none;}
-		.checkbox {
-			display: inline-block;
-			position: relative;
-			border: 1px solid $ui-primary-color;
-			box-sizing: border-box;
-			width: 18px;
-			height: 18px;
-			flex: 0 0 auto;
-			margin-right: 10px;
-			top: -1px;
-			border-radius: 4px;
-			vertical-align: middle;
-			&.active {
-				border-color: $highlight-text-color;
-				background: $highlight-text-color;
-			}
-		}
-	}
-	.compose-form__warning {
-	        color: $primary-text-color;
-		margin-bottom: 10px;
-		background: $ui-primary-color;
-		box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
-		padding: 8px 10px;
-		border-radius: 4px;
-		font-size: 13px;
-		font-weight: 400;
-		strong {
-			color: $inverted-text-color;
-			font-weight: 500;
-			@each $lang in $cjk-langs {
-				&:lang(#{$lang}) {
-					font-weight: 700;
-				}
-			}
-		}
-		a {
-			color: $lighter-text-color;
-			font-weight: 500;
-			text-decoration: underline;
-			&:hover,
-			&:active,
-			&:focus {
-				text-decoration: none;
-			}
-		}
-	}
-	.emoji-picker-dropdown {
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		z-index: 1;
-	}
-	.compose-form__autosuggest-wrapper {
-		position: relative;
-	}
-	.autosuggest-textarea,
-	.autosuggest-input,
-	.spoiler-input {
-		position: relative;
-	}
-	.spoiler-input {
-		height: 0;
-		transform-origin: bottom;
-		opacity: 0.0;
-		&.spoiler-input--visible {
-			height: 36px;
-			margin-bottom: 11px;
-			opacity: 1.0;
-		}
-	}
-	.autosuggest-textarea__textarea,
-	.spoiler-input__input {
-		display: block;
-		box-sizing: border-box;
-		width: 100%;
-		margin: 0;
-		color: $inverted-text-color;
-		background: $simple-background-color;
-		padding: 10px;
-		font-family: inherit;
-		font-size: 14px;
-		resize: vertical;
-		border: 0;
-		outline: 0;
-		&:focus {outline: 0;}
-		@media screen and (max-width: 600px) {font-size: 16px;}
-	}
-	.spoiler-input__input {border-radius: 4px;}
-	.autosuggest-textarea__textarea {
-		min-height: 100px;
-		border-radius: 5px 5px 0 0;
-		padding-bottom: 0;
-		padding-right: 10px + 22px;
-		resize: none;
-		scrollbar-color: initial;
-		&::-webkit-scrollbar {all: unset;}
-		@media screen and (max-width: 600px) {
-			max-height: 100px !important; // prevent auto-resize textarea
-			resize: vertical;
-		}
-	}
-	&.condensed {
-		.autosuggest-textarea__textarea {
-			min-height: 46px;
-			border-radius: 5px;
-		}
-	}
-	.emoji-picker-wrapper,
-	.autosuggest-textarea__suggestions-wrapper {
-		position: relative;
-		height: 0;
-	}
-	.autosuggest-textarea__suggestions {
-		box-sizing: border-box;
-		display: none;
-		position: absolute;
-		top: 100%;
-		width: 100%;
-		z-index: 99;
-		box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
-		background: $ui-secondary-color;
-		border-radius: 0 0 4px 4px;
-		color: $inverted-text-color;
-		font-size: 14px;
-		padding: 6px;
-		&.autosuggest-textarea__suggestions--visible {display: block;}
-	}
-	.autosuggest-textarea__suggestions__item {
-		padding: 10px;
-		cursor: pointer;
-		border-radius: 4px;
-		&:hover,
-		&:focus,
-		&:active,
-		&.selected {background: darken($ui-secondary-color, 10%);}
-	}
-	.autosuggest-account,
-	.autosuggest-emoji {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		justify-content: flex-start;
-		line-height: 18px;
-		font-size: 14px;
-	}
-	.autosuggest-account-icon,
-	.autosuggest-emoji img {
-		display: block;
-		margin-right: 8px;
-		width: 16px;
-		height: 16px;
-	}
-	.autosuggest-account .display-name__account {color: $lighter-text-color;}
-	.compose-form__modifiers {
-		color: $inverted-text-color;
-		font-family: inherit;
-		font-size: 14px;
-		background: $simple-background-color;
-		.compose-form__upload-wrapper {overflow: hidden;}
-		.compose-form__uploads-wrapper {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			&.contains-media {
-				padding: 5px;
-				border-top: 1px solid darken($simple-background-color, 8%);
-			}
-		}
-		.compose-form__upload {
-			flex: 1 1 0;
-			min-width: 40%;
-			margin: 5px;
+  padding: 10px;
+  &__sensitive-button {
+    padding: 10px;
+    padding-top: 0;
+    font-size: 14px;
+    font-weight: 500;
+    &.active {color: $highlight-text-color;}
+    input[type=checkbox] {display: none;}
+    .checkbox {
+      display: inline-block;
+      position: relative;
+      border: 1px solid $ui-primary-color;
+      box-sizing: border-box;
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      margin-right: 10px;
+      top: -1px;
+      border-radius: 4px;
+      vertical-align: middle;
+      &.active {
+        border-color: $highlight-text-color;
+        background: $highlight-text-color;
+      }
+    }
+  }
+  .compose-form__warning {
+          color: $primary-text-color;
+    margin-bottom: 10px;
+    background: $ui-primary-color;
+    box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    strong {
+      color: $inverted-text-color;
+      font-weight: 500;
+      @each $lang in $cjk-langs {
+        &:lang(#{$lang}) {
+          font-weight: 700;
+        }
+      }
+    }
+    a {
+      color: $lighter-text-color;
+      font-weight: 500;
+      text-decoration: underline;
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: none;
+      }
+    }
+  }
+  .emoji-picker-dropdown {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 1;
+  }
+  .compose-form__autosuggest-wrapper {
+    position: relative;
+  }
+  .autosuggest-textarea,
+  .autosuggest-input,
+  .spoiler-input {
+    position: relative;
+  }
+  .spoiler-input {
+    height: 0;
+    transform-origin: bottom;
+    opacity: 0.0;
+    &.spoiler-input--visible {
+      height: 36px;
+      margin-bottom: 11px;
+      opacity: 1.0;
+    }
+  }
+  .autosuggest-textarea__textarea,
+  .spoiler-input__input {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    color: $inverted-text-color;
+    background: $simple-background-color;
+    padding: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    border: 0;
+    outline: 0;
+    &:focus {outline: 0;}
+    @media screen and (max-width: 600px) {font-size: 16px;}
+  }
+  .spoiler-input__input {border-radius: 4px;}
+  .autosuggest-textarea__textarea {
+    min-height: 100px;
+    border-radius: 5px 5px 0 0;
+    padding-bottom: 0;
+    padding-right: 10px + 22px;
+    resize: none;
+    scrollbar-color: initial;
+    &::-webkit-scrollbar {all: unset;}
+    @media screen and (max-width: 600px) {
+      max-height: 100px !important; // prevent auto-resize textarea
+      resize: vertical;
+    }
+  }
+  &.condensed {
+    .autosuggest-textarea__textarea {
+      min-height: 46px;
+      border-radius: 5px;
+    }
+  }
+  .emoji-picker-wrapper,
+  .autosuggest-textarea__suggestions-wrapper {
+    position: relative;
+    height: 0;
+  }
+  .autosuggest-textarea__suggestions {
+    box-sizing: border-box;
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    z-index: 99;
+    box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
+    background: $ui-secondary-color;
+    border-radius: 0 0 4px 4px;
+    color: $inverted-text-color;
+    font-size: 14px;
+    padding: 6px;
+    &.autosuggest-textarea__suggestions--visible {display: block;}
+  }
+  .autosuggest-textarea__suggestions__item {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    &:hover,
+    &:focus,
+    &:active,
+    &.selected {background: darken($ui-secondary-color, 10%);}
+  }
+  .autosuggest-account,
+  .autosuggest-emoji {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    line-height: 18px;
+    font-size: 14px;
+  }
+  .autosuggest-account-icon,
+  .autosuggest-emoji img {
+    display: block;
+    margin-right: 8px;
+    width: 16px;
+    height: 16px;
+  }
+  .autosuggest-account .display-name__account {color: $lighter-text-color;}
+  .compose-form__modifiers {
+    color: $inverted-text-color;
+    font-family: inherit;
+    font-size: 14px;
+    background: $simple-background-color;
+    .compose-form__upload-wrapper {overflow: hidden;}
+    .compose-form__uploads-wrapper {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      &.contains-media {
+        padding: 5px;
+        border-top: 1px solid darken($simple-background-color, 8%);
+      }
+    }
+    .compose-form__upload {
+      flex: 1 1 0;
+      min-width: 40%;
+      margin: 5px;
 
-			&__actions {
-				background: linear-gradient(180deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
-				display: flex;
-				align-items: flex-start;
-				justify-content: space-between;
-				opacity: 0;
-				transition: opacity .1s ease;
-				.icon-button {
-					flex: 0 1 auto;
-					color: $gab-secondary-text;
-					font-size: 14px;
-					font-weight: 500;
-					padding: 10px;
-					font-family: inherit;
-					&:hover,
-					&:focus,
-					&:active {color: $gab-text-highlight;}
-				}
-				&.active {opacity: 1;}
-			}
-			&-description {
-				position: absolute;
-				z-index: 2;
-				bottom: 0;
-				left: 0;
-				right: 0;
-				box-sizing: border-box;
-				background: linear-gradient(0deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
-				padding: 10px;
-				opacity: 0;
-				transition: opacity .1s ease;
-				textarea {
-					background: rgba(0,0,0,0.3);
-					box-sizing: border-box;
-					background: transparent;
-					color: $gab-secondary-text;
-					border: 1px solid $gab-secondary-text;
-					outline: none;
-					padding: 10px;
-					margin: 0;
-					width: 100%;
-					font-family: inherit;
-					font-size: 14px;
-					font-weight: 500;
-					&:focus {color: #fff;}
-					&::placeholder {
-						color: $gab-secondary-text;
-					}
-				}
-				&.active {opacity: 1;}
-			}
-		}
-		.compose-form__upload-thumbnail {
-			border-radius: 4px;
-			background-position: center;
-			background-size: cover;
-			background-repeat: no-repeat;
-			height: 140px;
-			width: 100%;
-			overflow: hidden;
-		}
-	} // end .compose-form .compose-form__modifiers
-	.compose-form__buttons-wrapper {
-		padding: 10px;
-		background: darken($simple-background-color, 8%);
-		border-radius: 0 0 4px 4px;
-		display: flex;
-		justify-content: space-between;
-		flex: 0 0 auto;
-		.compose-form__buttons {
-			display: flex;
-			.compose-form__upload-button-icon {line-height: 27px;}
-			.compose-form__sensitive-button {
-				display: none;
-				&.compose-form__sensitive-button--visible {display: block;}
-				.compose-form__sensitive-button__icon {line-height: 27px;}
-			}
-		}
-		.icon-button {
-			box-sizing: content-box;
-			padding: 0 3px;
-		}
-		.character-counter__wrapper {
-			align-self: center;
-			margin-right: 4px;
-			.character-counter {
-				cursor: default;
-				font-family: $font-sans-serif, sans-serif;
-				font-size: 14px;
-				font-weight: 600;
-				color: $gab-secondary-text;
-				&.character-counter--over {color: $warning-red;}
-			}
-		}
-	}
-	.compose-form__publish {
-		display: flex;
-		justify-content: flex-end;
-		min-width: 0;
-		flex: 0 0 auto;
-		.compose-form__publish-button-wrapper {
-			overflow: hidden;
-			padding-top: 10px;
-		}
-	}
+      &__actions {
+        background: linear-gradient(180deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        opacity: 0;
+        transition: opacity .1s ease;
+        .icon-button {
+          flex: 0 1 auto;
+          color: $gab-secondary-text;
+          font-size: 14px;
+          font-weight: 500;
+          padding: 10px;
+          font-family: inherit;
+          &:hover,
+          &:focus,
+          &:active {color: $gab-text-highlight;}
+        }
+        &.active {opacity: 1;}
+      }
+      &-description {
+        position: absolute;
+        z-index: 2;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-sizing: border-box;
+        background: linear-gradient(0deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
+        padding: 10px;
+        opacity: 0;
+        transition: opacity .1s ease;
+        textarea {
+          background: rgba(0,0,0,0.3);
+          box-sizing: border-box;
+          background: transparent;
+          color: $gab-secondary-text;
+          border: 1px solid $gab-secondary-text;
+          outline: none;
+          padding: 10px;
+          margin: 0;
+          width: 100%;
+          font-family: inherit;
+          font-size: 14px;
+          font-weight: 500;
+          &:focus {color: #fff;}
+          &::placeholder {
+            color: $gab-secondary-text;
+          }
+        }
+        &.active {opacity: 1;}
+      }
+    }
+    .compose-form__upload-thumbnail {
+      border-radius: 4px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      height: 140px;
+      width: 100%;
+      overflow: hidden;
+    }
+  } // end .compose-form .compose-form__modifiers
+  .compose-form__buttons-wrapper {
+    padding: 10px;
+    background: darken($simple-background-color, 8%);
+    border-radius: 0 0 4px 4px;
+    display: flex;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    .compose-form__buttons {
+      display: flex;
+      .compose-form__upload-button-icon {line-height: 27px;}
+      .compose-form__sensitive-button {
+        display: none;
+        &.compose-form__sensitive-button--visible {display: block;}
+        .compose-form__sensitive-button__icon {line-height: 27px;}
+      }
+    }
+    .icon-button {
+      box-sizing: content-box;
+      padding: 0 3px;
+    }
+    .character-counter__wrapper {
+      align-self: center;
+      margin-right: 4px;
+      .character-counter {
+        cursor: default;
+        font-family: $font-sans-serif, sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: $gab-secondary-text;
+        &.character-counter--over {color: $warning-red;}
+      }
+    }
+  }
+  .compose-form__publish {
+    display: flex;
+    justify-content: flex-end;
+    min-width: 0;
+    flex: 0 0 auto;
+    .compose-form__publish-button-wrapper {
+      overflow: hidden;
+      padding-top: 10px;
+    }
+  }
 } // end .compose-form
