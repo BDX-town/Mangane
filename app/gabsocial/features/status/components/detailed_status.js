@@ -28,7 +28,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     onToggleHidden: PropTypes.func.isRequired,
     measureHeight: PropTypes.bool,
     onHeightChange: PropTypes.func,
-    domain: PropTypes.string.isRequired,
+    domain: PropTypes.string,
     compact: PropTypes.bool,
     showMedia: PropTypes.bool,
     onToggleMediaVisibility: PropTypes.func,
