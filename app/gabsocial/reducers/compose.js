@@ -79,14 +79,15 @@ const initialPoll = ImmutableMap({
 });
 
 function statusToTextMentions(state, status) {
-  let set = ImmutableOrderedSet([]);
-  const me = state.get('me');
+  const me = state.getIn(['accounts', state.get('me'), 'acct']);
+  const author = state.getIn(['accounts', status.get('account'), 'acct']);
+  const mentions = status.get('mentions', []).map(m => m.get('acct'));
 
-  if (status.getIn(['account', 'id']) !== me) {
-    set = set.add(`@${status.getIn(['account', 'acct'])} `);
-  }
-
-  return set.union(status.get('mentions').filterNot(mention => mention.get('id') === me).map(mention => `@${mention.get('acct')} `)).join('');
+  return ImmutableOrderedSet([author])
+    .concat(mentions)
+    .delete(me)
+    .map(m => `@${m} `)
+    .join('');
 };
 
 function clearAll(state) {
