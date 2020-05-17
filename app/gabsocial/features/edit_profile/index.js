@@ -86,7 +86,9 @@ class EditProfile extends ImmutablePureComponent {
 
   componentWillMount() {
     const { account } = this.props;
-    this.setState(account.toJS());
+    const sourceData = account.get('source');
+    const initialState = account.merge(sourceData).delete('source');
+    this.setState(initialState.toJS());
   }
 
   handleCheckboxChange = e => {
