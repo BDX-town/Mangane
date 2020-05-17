@@ -20,6 +20,7 @@ module.exports = (api) => {
       ['react-intl', { messagesDir: './build/messages/' }],
       'preval',
     ],
+    'sourceType': 'unambiguous',
   };
 
   switch (env) {
@@ -62,4 +63,3 @@ module.exports = (api) => {
 
   return config;
 };
-
