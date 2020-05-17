@@ -4,10 +4,13 @@
   "description": "Soapbox frontend for Pleroma.",
   "homepage": "https://soapbox.pub/",
   "repository": {
-    "type" : "git",
-    "url" : "https://gitlab.com/soapbox-pub/soapbox-fe.git"
+    "type": "git",
+    "url": "https://gitlab.com/soapbox-pub/soapbox-fe.git"
   },
-  "keywords": ["fediverse", "pleroma"],
+  "keywords": [
+    "fediverse",
+    "pleroma"
+  ],
   "bugs": {
     "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues"
   },
@@ -125,6 +128,7 @@
     "rimraf": "^3.0.0",
     "sass": "^1.20.3",
     "sass-loader": "^8.0.0",
+    "semver": "^7.3.2",
     "stringz": "^2.0.0",
     "substring-trie": "^1.0.2",
     "throng": "^4.0.0",
