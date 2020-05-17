@@ -1,6 +1,5 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
-import { refreshUserToken } from './auth';
 
 export const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';
 export const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';
@@ -11,19 +10,19 @@ export const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST';
 export const ME_PATCH_FAIL    = 'ME_PATCH_FAIL';
 
 const hasToken = getState => getState().hasIn(['auth', 'user', 'access_token']);
+const noOp = () => new Promise(f => f());
 
 export function fetchMe() {
   return (dispatch, getState) => {
 
     if (!hasToken(getState)) {
-      dispatch({ type: ME_FETCH_SKIP }); return;
+      dispatch({ type: ME_FETCH_SKIP }); return noOp();
     };
 
-    dispatch(refreshUserToken()).then(() => {
-      dispatch(fetchMeRequest());
-      return api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
-        dispatch(fetchMeSuccess(response.data));
-      });
+    dispatch(fetchMeRequest());
+
+    return api(getState).get('/api/v1/accounts/verify_credentials').then(response => {
+      dispatch(fetchMeSuccess(response.data));
     }).catch(error => {
       dispatch(fetchMeFail(error));
     });
