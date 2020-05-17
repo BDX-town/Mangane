@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import Header from '../features/search/components/header';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
-// import TrendsPanel from '../features/ui/components/trends_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
+import { getFeatures } from 'gabsocial/utils/features';
 
-const SearchPage = ({ children }) => (
+const mapStateToProps = state => ({
+  features: getFeatures(state.get('instance')),
+});
+
+const SearchPage = ({ children, features }) => (
   <div className='page'>
     <div className='page__top'>
       <Header />
@@ -16,7 +21,6 @@ const SearchPage = ({ children }) => (
 
         <div className='columns-area__panels__pane columns-area__panels__pane--left'>
           <div className='columns-area__panels__pane__inner'>
-            {/* <TrendsPanel /> */}
             <LinkFooter />
           </div>
         </div>
@@ -30,7 +34,7 @@ const SearchPage = ({ children }) => (
         <div className='columns-area__panels__pane columns-area__panels__pane--right'>
           <div className='columns-area__panels__pane__inner'>
             <SignUpPanel />
-            <WhoToFollowPanel />
+            {features.suggestions && <WhoToFollowPanel />}
           </div>
         </div>
       </div>
@@ -40,6 +44,7 @@ const SearchPage = ({ children }) => (
 
 SearchPage.propTypes = {
   children: PropTypes.node,
+  features: PropTypes.node,
 };
 
-export default SearchPage;
+export default connect(mapStateToProps)(SearchPage);

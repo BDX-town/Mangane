@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
@@ -8,13 +9,19 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Hashtag from '../../../components/hashtag';
 import Icon from 'gabsocial/components/icon';
 import WhoToFollowPanel from '../../ui/components/who_to_follow_panel';
-// import TrendsPanel from '../../ui/components/trends_panel';
+import { getFeatures } from 'gabsocial/utils/features';
 
-export default @injectIntl
+const mapStateToProps = state => ({
+  features: getFeatures(state.get('instance')),
+});
+
+export default @connect(mapStateToProps)
+@injectIntl
 class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
     results: ImmutablePropTypes.map.isRequired,
+    features: PropTypes.node,
     intl: PropTypes.object.isRequired,
   };
 
@@ -23,14 +30,13 @@ class SearchResults extends ImmutablePureComponent {
   }
 
   render() {
-    const { results } = this.props;
+    const { results, features } = this.props;
     const { isSmallScreen } = this.state;
 
     if (results.isEmpty() && isSmallScreen) {
       return (
         <div className='search-results'>
-          <WhoToFollowPanel />
-          {/* <TrendsPanel /> */}
+          {features.suggestions && <WhoToFollowPanel />}
         </div>
       );
     }

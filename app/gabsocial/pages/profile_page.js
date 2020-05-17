@@ -6,13 +6,13 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Helmet from 'gabsocial/components/helmet';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
-// import TrendsPanel from '../features/ui/components/trends_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
 import { acctFull } from 'gabsocial/utils/accounts';
 import { fetchAccount, fetchAccountByUsername } from '../actions/accounts';
 import { fetchAccountIdentityProofs } from '../actions/identity_proofs';
+import { getFeatures } from 'gabsocial/utils/features';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const accounts = state.getIn(['accounts']);
@@ -35,6 +35,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
     account,
     accountId,
     accountUsername,
+    features: getFeatures(state.get('instance')),
   };
 };
 
@@ -44,6 +45,7 @@ class ProfilePage extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map,
     accountUsername: PropTypes.string.isRequired,
+    features: PropTypes.node,
   };
 
   componentWillMount() {
@@ -58,7 +60,7 @@ class ProfilePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, accountId, account, accountUsername } = this.props;
+    const { children, accountId, account, accountUsername, features } = this.props;
     if (!account) return null;
     const bg = account.getIn(['customizations', 'background']);
 
@@ -90,8 +92,7 @@ class ProfilePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
                 <SignUpPanel />
-                <WhoToFollowPanel />
-                {/* <TrendsPanel /> */}
+                {features.suggestions && <WhoToFollowPanel />}
                 <LinkFooter />
               </div>
             </div>

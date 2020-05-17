@@ -22,7 +22,6 @@ import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
-// import TrendsPanel from './components/trends_panel';
 import WhoToFollowPanel from './components/who_to_follow_panel';
 import LinkFooter from './components/link_footer';
 import ProfilePage from 'gabsocial/pages/profile_page';
@@ -136,7 +135,6 @@ const LAYOUT = {
       <LinkFooter key='1' />,
     ],
     RIGHT: [
-      // <TrendsPanel />,
       // <GroupSidebarPanel key='0' />
     ],
   },
@@ -146,7 +144,6 @@ const LAYOUT = {
     RIGHT: [
       // <GroupSidebarPanel key='0' />,
       <WhoToFollowPanel key='1' />,
-      // <TrendsPanel />,
       <LinkFooter key='2' />,
     ],
   },

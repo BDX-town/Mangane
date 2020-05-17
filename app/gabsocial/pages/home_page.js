@@ -9,6 +9,7 @@ import UserPanel from '../features/ui/components/user_panel';
 import FundingPanel from '../features/ui/components/funding_panel';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
+import { getFeatures } from 'gabsocial/utils/features';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 
 const mapStateToProps = state => {
@@ -16,6 +17,7 @@ const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
     hasPatron: state.getIn(['soapbox', 'extensions', 'patron']),
+    features: getFeatures(state.get('instance')),
   };
 };
 
@@ -28,7 +30,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, account, hasPatron } = this.props;
+    const { children, account, hasPatron, features } = this.props;
 
     return (
       <div className='page'>
@@ -64,8 +66,8 @@ class HomePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
                 {/* <GroupSidebarPanel /> */}
-                <TrendsPanel limit={3} />
-                <WhoToFollowPanel limit={5} />
+                {features.trends && <TrendsPanel limit={3} />}
+                {features.suggestions && <WhoToFollowPanel limit={5} />}
               </div>
             </div>
           </div>
