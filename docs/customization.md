@@ -9,6 +9,8 @@ Soapbox supports customization of the user interface, to allow per instance bran
 * Favicon
 * About page
 * Terms of Service page
+* Privacy Policy page
+* Copyright Policy page
 
 ## Instance Name
 Instance name is edited during the Pleroma installation step or via admin configuration
@@ -54,7 +56,11 @@ An example of the contents of `soapbox.example.json`:
 The favicon is customized by dropping a favicon.png file into the `/static` folder. 
 Re-create the webpack and restart the soapbox-fe service to effect the changes.
 
-## About Page and Terms of Service Page
-The About page is customized by ensuring that the `static/instance/about` folder exists and dropping an `index.html` file into it.
-The Terms of Service page is customized by dropping a `tos.html` file into the `static/instance/about` folder.
-Re-create the webpack and restart the soapbox-fe service to effect the changes.
+## About Page, Terms of Service Page, Privacy Policy Page and Copyright Policy Page
+These pages are all available for editing in the `static/instance/about.example` folder, as template files, named as:
+* index.html
+* tos.html
+* privacy.html
+* dmca.html
+These four template files have placeholders in them, e.g. "Your_Instance", that should be edited to match your Soapbox instance configuration, and will be meaningless to your users until you edit them.
+The pages will not become available resources on your instance until you rename the `static/instance/about.example` folder to `static/instance/about`
