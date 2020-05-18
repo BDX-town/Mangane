@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>Soapbox</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <%= htmlWebpackPlugin.tags.headTags.map(t => {
+      if (t.attributes['href'].startsWith('/packs/css/azure')) t.attributes['data-react-helmet'] = "true";
+      return t;
+    }).join("\n    ") %>
+    <%= htmlWebpackPlugin.tags.bodyTags.join("\n    ") %>
+    <script id="css-chunks" type="application/json">[<%=
+      compilation.getAssets()
+      .filter(a => a.name.match(/^css\/(.*).css$/))
+      .filter(a => !a.name.startsWith('css/common'))
+      .filter(a => !a.name.startsWith('css/mailer'))
+      .map(a => a.name.substr(4, a.name.length-14))
+      .map(a => `"${a}"`)
+      .join(',')
+    %>]</script>
+  </head>
+  <body class="app-body">
+    <noscript>To use Soapbox, please enable JavaScript.</noscript>
+    <div class="app-holder" id="gabsocial"></div>
+  </body>
+</html>

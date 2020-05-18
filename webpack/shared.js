@@ -5,6 +5,8 @@ const { basename, dirname, join, relative, resolve } = require('path');
 const { sync } = require('glob');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const extname = require('path-complete-extname');
 const { env, settings, themes, output } = require('./configuration');
 const rules = require('./rules');
@@ -34,9 +36,9 @@ module.exports = {
   ),
 
   output: {
-    filename: 'js/[name].js',
-    chunkFilename: 'js/[name].chunk.js',
-    hotUpdateChunkFilename: 'js/[id].hot-update.js',
+    filename: 'js/[name]-[chunkhash].js',
+    chunkFilename: 'js/[name]-[chunkhash].chunk.js',
+    hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
     path: output.path,
     publicPath: output.publicPath,
   },
@@ -75,14 +77,25 @@ module.exports = {
       }
     ),
     new MiniCssExtractPlugin({
-      filename: 'css/[name].css',
-      chunkFilename: 'css/[name].chunk.css',
+      filename: 'css/[name]-[contenthash:8].css',
+      chunkFilename: 'css/[name]-[contenthash:8].chunk.css',
     }),
     new AssetsManifestPlugin({
       integrity: false,
       entrypoints: true,
       writeToDisk: true,
       publicPath: true,
+    }),
+    // https://github.com/ampedandwired/html-webpack-plugin
+    new HtmlWebpackPlugin({
+      inject: false,
+      template: 'app/index.ejs',
+      chunksSortMode: 'manual',
+      chunks: ['common', 'locale_en', 'application', 'azure'],
+      alwaysWriteToDisk: true,
+    }),
+    new HtmlWebpackHarddiskPlugin({
+      outputPath: join(__dirname, '..', 'static'),
     }),
   ],
 

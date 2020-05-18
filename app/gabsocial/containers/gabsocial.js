@@ -65,6 +65,11 @@ class GabSocialMount extends React.PureComponent {
     locale: PropTypes.string.isRequired,
   };
 
+  getThemeChunk = theme => {
+    const cssChunks = JSON.parse(document.getElementById('css-chunks').innerHTML);
+    return cssChunks.filter(chunk => chunk.startsWith(theme))[0];
+  };
+
   render() {
     const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
     if (me === null) return null;
@@ -92,8 +97,7 @@ class GabSocialMount extends React.PureComponent {
         <>
           <Helmet>
             <body className={bodyClass} />
-            <script src={`/packs/js/locale_${locale}.chunk.js`} />
-            {theme && <link rel='stylesheet' href={`/packs/css/${theme}.chunk.css`} />}
+            {theme && <link rel='stylesheet' href={`/packs/css/${this.getThemeChunk(theme)}.chunk.css`} />}
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
