@@ -12,6 +12,7 @@ import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
 import { shortNumberFormat } from '../utils/numbers';
+import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
 import { logOut } from 'gabsocial/actions/auth';
 
@@ -26,6 +27,7 @@ const messages = defineMessages({
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
@@ -41,6 +43,7 @@ const mapStateToProps = state => {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
     hasPatron: state.getIn(['soapbox', 'extensions', 'patron']),
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
 
@@ -63,10 +66,15 @@ class SidebarMenu extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
+    isStaff: PropTypes.bool.isRequired,
   };
 
+  static defaultProps = {
+    isStaff: false,
+  }
+
   render() {
-    const { sidebarOpen, onClose, intl, account, onClickLogOut, hasPatron } = this.props;
+    const { sidebarOpen, onClose, intl, account, onClickLogOut, hasPatron, isStaff } = this.props;
     if (!account) return null;
     const acct = account.get('acct');
 
@@ -151,6 +159,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink> */}
+              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} onClick={onClose}>
+                <Icon id='shield' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
+              </a> }
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
