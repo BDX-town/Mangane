@@ -12,7 +12,7 @@ import { logOut } from 'gabsocial/actions/auth';
 const sourceCode = {
   name: 'soapbox-fe',
   url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
-  repository: 'soapox-pub/soapbox-fe',
+  repository: 'soapbox-pub/soapbox-fe',
   version: '0.9-beta',
 };
 
