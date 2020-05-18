@@ -82,9 +82,11 @@ export function changeCompose(text) {
 
 export function replyCompose(status, routerHistory) {
   return (dispatch, getState) => {
+    const state = getState();
     dispatch({
       type: COMPOSE_REPLY,
       status: status,
+      account: state.getIn(['accounts', state.get('me')]),
     });
 
     dispatch(openModal('COMPOSE'));

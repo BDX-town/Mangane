@@ -78,14 +78,13 @@ const initialPoll = ImmutableMap({
   multiple: false,
 });
 
-function statusToTextMentions(state, status) {
-  const me = state.getIn(['accounts', state.get('me'), 'acct']);
-  const author = state.getIn(['accounts', status.get('account'), 'acct']);
+function statusToTextMentions(state, status, account) {
+  const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
 
   return ImmutableOrderedSet([author])
     .concat(mentions)
-    .delete(me)
+    .delete(account.get('acct'))
     .map(m => `@${m} `)
     .join('');
 };
@@ -245,7 +244,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_REPLY:
     return state.withMutations(map => {
       map.set('in_reply_to', action.status.get('id'));
-      map.set('text', statusToTextMentions(state, action.status));
+      map.set('text', statusToTextMentions(state, action.status, action.account));
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
