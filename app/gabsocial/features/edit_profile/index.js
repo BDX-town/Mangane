@@ -13,8 +13,13 @@ import {
   FileChooser,
 } from 'gabsocial/features/forms';
 import ProfilePreview from './components/profile_preview';
-import { Map as ImmutableMap } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+} from 'immutable';
 import { patchMe } from 'gabsocial/actions/me';
+
+const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -26,6 +31,13 @@ const mapStateToProps = state => {
     account: state.getIn(['accounts', me]),
   };
 };
+
+// Forces fields to be MAX_SIZE, filling empty values
+const normalizeFields = fields => (
+  ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
+    field ? field : ImmutableMap({ name: undefined, value: undefined })
+  )
+);
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -39,6 +51,7 @@ class EditProfile extends ImmutablePureComponent {
 
   state = {
     isLoading: false,
+    fields: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
   makePreviewAccount = () => {
@@ -50,9 +63,19 @@ class EditProfile extends ImmutablePureComponent {
     }));
   }
 
+  getFieldParams = () => {
+    let params = ImmutableMap();
+    this.state.fields.forEach((f, i) =>
+      params = params
+        .set(`fields_attributes[${i}][name]`,  f.get('name'))
+        .set(`fields_attributes[${i}][value]`, f.get('value'))
+    );
+    return params;
+  }
+
   getParams = () => {
     const { state } = this;
-    return {
+    return Object.assign({
       discoverable: state.discoverable,
       bot: state.bot,
       display_name: state.display_name,
@@ -60,15 +83,15 @@ class EditProfile extends ImmutablePureComponent {
       avatar: state.avatar_file,
       header: state.header_file,
       locked: state.locked,
-      fields_attributes: state.fields_attributes,
-    };
+    }, this.getFieldParams().toJS());
   }
 
   getFormdata = () => {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      if (data[key]) formData.append(key, data[key]);
+      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
+      if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
   }
@@ -87,8 +110,10 @@ class EditProfile extends ImmutablePureComponent {
   componentWillMount() {
     const { account } = this.props;
     const sourceData = account.get('source');
-    const initialState = account.merge(sourceData).delete('source');
-    this.setState(initialState.toJS());
+    const accountData = account.merge(sourceData).delete('source');
+    const fields = normalizeFields(accountData.get('fields'));
+    const initialState = accountData.set('fields', fields);
+    this.setState(initialState.toObject());
   }
 
   handleCheckboxChange = e => {
@@ -97,6 +122,14 @@ class EditProfile extends ImmutablePureComponent {
 
   handleTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleFieldChange = (i, key) => {
+    return (e) => {
+      this.setState({
+        fields: this.state.fields.setIn([i, key], e.target.value),
+      });
+    };
   }
 
   handleFileChange = e => {
@@ -165,6 +198,30 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.bot}
                 onChange={this.handleCheckboxChange}
               />
+            </FieldsGroup>
+            <FieldsGroup>
+              <div className='fields-row__column fields-group'>
+                <div className='input with_block_label'>
+                  <label>Profile metadata</label>
+                  <span className='hint'>You can have up to {MAX_FIELDS} items displayed as a table on your profile</span>
+                  {
+                    this.state.fields.map((field, i) => (
+                      <div className='row' key={i}>
+                        <TextInput
+                          placeholder='Label'
+                          value={field.get('name')}
+                          onChange={this.handleFieldChange(i, 'name')}
+                        />
+                        <TextInput
+                          placeholder='Content'
+                          value={field.get('value')}
+                          onChange={this.handleFieldChange(i, 'value')}
+                        />
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
             </FieldsGroup>
           </fieldset>
           <div className='actions'>
