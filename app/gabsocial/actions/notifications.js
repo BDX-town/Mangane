@@ -71,9 +71,9 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
 
 export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
   return (dispatch, getState) => {
-    const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type], true);
+    const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });
-    const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type], true);
+    const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type]);
 
     let filtered = false;
 

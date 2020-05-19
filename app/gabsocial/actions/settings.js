@@ -63,11 +63,11 @@ const defaultSettings = ImmutableMap({
     }),
 
     sounds: ImmutableMap({
-      follow: true,
-      favourite: true,
-      reblog: true,
-      mention: true,
-      poll: true,
+      follow: false,
+      favourite: false,
+      reblog: false,
+      mention: false,
+      poll: false,
     }),
   }),
 
