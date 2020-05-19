@@ -32,6 +32,7 @@ import SearchPage from 'gabsocial/pages/search_page';
 import HomePage from 'gabsocial/pages/home_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
+import { Redirect } from 'react-router-dom';
 
 import {
   Status,
@@ -208,6 +209,15 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
         <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
         */}
+
+        {/* Redirects for non-static Pleroma FE config*/}
+        <Redirect from='/main/all' to='/timeline/fediverse' />
+        <Redirect from='/main/public' to='/timeline/local' />
+        <Redirect from='/main/friends' to='/' />
+        <Redirect from='/tag/:id' to='/tags/:id' />
+        <WrappedRoute path='/notice/:statusId' publicRoute exact layout={LAYOUT.STATUS} component={Status} content={children} />
+        <Redirect from='/users/:username' to='/@:username' />
+        <Redirect from='/home' to='/' />
 
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
