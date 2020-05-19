@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import PropTypes from 'prop-types';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
+import { isStaff } from 'gabsocial/utils/accounts';
 import { defineMessages, injectIntl } from 'react-intl';
 import { logOut } from 'gabsocial/actions/auth';
 
@@ -16,6 +17,7 @@ const messages = defineMessages({
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
+  admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Hotkeys' },
 });
@@ -24,6 +26,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     meUsername: state.getIn(['accounts', me, 'username']),
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
 
@@ -45,14 +48,19 @@ class ActionBar extends React.PureComponent {
     onOpenHotkeys: PropTypes.func.isRequired,
     onClickLogOut: PropTypes.func.isRequired,
     meUsername: PropTypes.string,
+    isStaff: PropTypes.bool.isRequired,
   };
+
+  static defaultProps = {
+    isStaff: false,
+  }
 
   handleHotkeyClick = () => {
     this.props.onOpenHotkeys();
   }
 
   render() {
-    const { intl, onClickLogOut, meUsername } = this.props;
+    const { intl, onClickLogOut, meUsername, isStaff } = this.props;
     const size = this.props.size || 16;
 
     let menu = [];
@@ -68,6 +76,9 @@ class ActionBar extends React.PureComponent {
     // menu.push({ text: intl.formatMessage(messages.filters), to: '/filters' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.keyboard_shortcuts), action: this.handleHotkeyClick });
+    if (isStaff) {
+      menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin/' });
+    }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
     menu.push({ text: intl.formatMessage(messages.logout), to: '/auth/sign_out', action: onClickLogOut });
 
