@@ -43,6 +43,7 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'gabsocial/components/icon';
 import { getSettings } from 'gabsocial/actions/settings';
+import { StatusInteractionBar } from './components/status_interaction_bar';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -491,6 +492,8 @@ class Status extends ImmutablePureComponent {
                 showMedia={this.state.showMedia}
                 onToggleMediaVisibility={this.handleToggleMediaVisibility}
               />
+
+              <StatusInteractionBar status={status} />
 
               <ActionBar
                 status={status}
