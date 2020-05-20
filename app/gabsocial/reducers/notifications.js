@@ -41,6 +41,7 @@ const notificationToMap = notification => ImmutableMap({
   account: notification.account.id,
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
+  emoji: notification.emoji,
 });
 
 const normalizeNotification = (state, notification) => {
