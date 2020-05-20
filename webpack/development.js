@@ -20,6 +20,7 @@ const backendEndpoints = [
   '/oauth',
   '/.well-known/webfinger',
   '/static',
+  '/emoji',
   '/patron',
 ];
 
