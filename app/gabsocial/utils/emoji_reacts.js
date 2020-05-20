@@ -3,7 +3,7 @@ import { Map as ImmutableMap } from 'immutable';
 // https://emojipedia.org/facebook/
 export const ALLOWED_EMOJI = [
   '👍',
-  '❤️',
+  '❤',
   '😂',
   '😯',
   '😢',
