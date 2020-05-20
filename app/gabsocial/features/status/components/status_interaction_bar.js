@@ -37,9 +37,12 @@ export class StatusInteractionBar extends React.Component {
 
     return (
       <>
-        {this.filterEmoji(emojiReacts).map(e =>
-          <span dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }} />
-        )}
+        {this.filterEmoji(emojiReacts).map(e => (
+          <span className='emoji-react'>
+            <span dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }} />
+            <span>{e.get('count')}</span>
+          </span>
+        ))}
       </>
     );
   }
