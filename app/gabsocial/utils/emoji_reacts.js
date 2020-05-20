@@ -19,6 +19,7 @@ export const mergeEmoji = emojiReacts => (
 );
 
 export const mergeEmojiFavourites = (emojiReacts, favouritesCount) => {
+  if (!favouritesCount) return emojiReacts;
   const likeIndex = emojiReacts.findIndex(emojiReact =>
     emojiReact.get('name') === '👍');
   if (likeIndex > -1) {

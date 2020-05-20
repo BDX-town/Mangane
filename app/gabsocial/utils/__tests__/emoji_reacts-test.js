@@ -79,6 +79,12 @@ describe('mergeEmojiFavourites', () => {
         { 'count': 12, 'me': false, 'name': '👍' },
       ]));
     });
+    it('does not add 👍 reacts when there are no favourites', () => {
+      expect(mergeEmojiFavourites(emojiReacts, 0)).toEqual(fromJS([
+        { 'count': 15, 'me': true,  'name': '❤️' },
+        { 'count': 7,  'me': true,  'name': '😯' },
+      ]));
+    });
   });
 });
 
