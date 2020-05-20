@@ -59,7 +59,7 @@
   bottom: 100%;
   display: flex;
   background-color: #fff;
-  padding: 8px;
+  padding: 5px 8px;
   border-radius: 9999px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
   opacity: 0;
@@ -68,13 +68,24 @@
 
   &__emoji {
     display: block;
-    padding: 0 2px;
+    padding: 0;
+    margin: 0;
     border: 0;
     background: transparent;
 
     img {
       width: 30px;
       height: 30px;
+      padding: 3px;
+      transition: 0.1s;
+    }
+
+    &:hover {
+      img {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
     }
   }
 }
