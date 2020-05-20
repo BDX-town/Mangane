@@ -24,8 +24,14 @@
   flex-direction: row-reverse;
 }
 
+.status-interaction-bar {
+  margin-right: auto;
+  min-height: 20px;
+}
+
 .emoji-reacts-container {
   display: inline-flex;
+  margin-right: auto;
 
   &:hover {
     .emoji-react {

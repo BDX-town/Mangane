@@ -14,6 +14,7 @@ import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import classNames from 'classnames';
 import Icon from 'gabsocial/components/icon';
 import PollContainer from 'gabsocial/containers/poll_container';
+import { StatusInteractionBar } from './status_interaction_bar';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -92,7 +93,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
     let applicationLink = '';
     let reblogLink = '';
     let reblogIcon = 'retweet';
-    let favouriteLink = '';
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
@@ -169,15 +169,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
       );
     }
 
-    favouriteLink = (
-      <span className='detailed-status__link'>
-        <Icon id='star' />
-        <span className='detailed-status__favorites'>
-          <FormattedNumber value={status.get('favourites_count')} />
-        </span>
-      </span>
-    );
-
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
@@ -197,9 +188,12 @@ export default class DetailedStatus extends ImmutablePureComponent {
           {media}
 
           <div className='detailed-status__meta'>
-            <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
-              <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
-            </a>{applicationLink} · {reblogLink} · {favouriteLink}
+            <StatusInteractionBar status={status} />
+            <div>
+              {reblogLink} {applicationLink} · <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
+                <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+              </a>
+            </div>
           </div>
         </div>
       </div>

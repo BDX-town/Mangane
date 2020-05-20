@@ -22,9 +22,7 @@ export class StatusInteractionBar extends React.Component {
       acc + cur.get('count')
     ), 0);
 
-    if (count < 1) return null;
-
-    return (
+    const EmojiReactsContainer = () => (
       <div className='emoji-reacts-container'>
         <div className='emoji-reacts'>
           {emojiReacts.map((e, i) => (
@@ -40,6 +38,12 @@ export class StatusInteractionBar extends React.Component {
         <div className='emoji-reacts__count'>
           {count}
         </div>
+      </div>
+    );
+
+    return (
+      <div className='status-interaction-bar'>
+        {count > 0 && <EmojiReactsContainer />}
       </div>
     );
   }
