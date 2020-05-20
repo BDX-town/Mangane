@@ -34,12 +34,12 @@ describe('sortEmoji', () => {
       { 'count': 1,  'me': true, 'name': '😡' },
       { 'count': 20, 'me': true, 'name': '👍' },
       { 'count': 7,  'me': true, 'name': '😂' },
-      { 'count': 15, 'me': true, 'name': '❤️' },
+      { 'count': 15, 'me': true, 'name': '❤' },
     ]);
     it('sorts the emoji by count', () => {
       expect(sortEmoji(emojiReacts)).toEqual(fromJS([
         { 'count': 20, 'me': true, 'name': '👍' },
-        { 'count': 15, 'me': true, 'name': '❤️' },
+        { 'count': 15, 'me': true, 'name': '❤' },
         { 'count': 7,  'me': true, 'name': '😯' },
         { 'count': 7,  'me': true, 'name': '😂' },
         { 'count': 3,  'me': true, 'name': '😢' },
@@ -55,13 +55,13 @@ describe('mergeEmojiFavourites', () => {
   describe('with existing 👍 reacts', () => {
     const emojiReacts = fromJS([
       { 'count': 20, 'me': true, 'name': '👍' },
-      { 'count': 15, 'me': true, 'name': '❤️' },
+      { 'count': 15, 'me': true, 'name': '❤' },
       { 'count': 7,  'me': true, 'name': '😯' },
     ]);
     it('combines 👍 reacts with favourites', () => {
       expect(mergeEmojiFavourites(emojiReacts, favouritesCount)).toEqual(fromJS([
         { 'count': 32, 'me': true, 'name': '👍' },
-        { 'count': 15, 'me': true, 'name': '❤️' },
+        { 'count': 15, 'me': true, 'name': '❤' },
         { 'count': 7,  'me': true, 'name': '😯' },
       ]));
     });
@@ -69,19 +69,19 @@ describe('mergeEmojiFavourites', () => {
 
   describe('without existing 👍 reacts', () => {
     const emojiReacts = fromJS([
-      { 'count': 15, 'me': true, 'name': '❤️' },
+      { 'count': 15, 'me': true, 'name': '❤' },
       { 'count': 7,  'me': true, 'name': '😯' },
     ]);
     it('adds 👍 reacts to the map equaling favourite count', () => {
       expect(mergeEmojiFavourites(emojiReacts, favouritesCount)).toEqual(fromJS([
-        { 'count': 15, 'me': true,  'name': '❤️' },
+        { 'count': 15, 'me': true,  'name': '❤' },
         { 'count': 7,  'me': true,  'name': '😯' },
         { 'count': 12, 'me': false, 'name': '👍' },
       ]));
     });
     it('does not add 👍 reacts when there are no favourites', () => {
       expect(mergeEmojiFavourites(emojiReacts, 0)).toEqual(fromJS([
-        { 'count': 15, 'me': true,  'name': '❤️' },
+        { 'count': 15, 'me': true,  'name': '❤' },
         { 'count': 7,  'me': true,  'name': '😯' },
       ]));
     });
@@ -98,14 +98,14 @@ describe('reduceEmoji', () => {
       { 'count': 1,  'me': true,  'name': '🌵' },
       { 'count': 20, 'me': true,  'name': '👍' },
       { 'count': 7,  'me': false, 'name': '😂' },
-      { 'count': 15, 'me': true,  'name': '❤️' },
+      { 'count': 15, 'me': true,  'name': '❤' },
       { 'count': 1,  'me': false, 'name': '👀' },
       { 'count': 1,  'me': false, 'name': '🍩' },
     ]);
     it('sorts, filters, and combines emoji and favourites', () => {
       expect(reduceEmoji(emojiReacts, 7)).toEqual(fromJS([
         { 'count': 27, 'me': true,  'name': '👍' },
-        { 'count': 15, 'me': true,  'name': '❤️' },
+        { 'count': 15, 'me': true,  'name': '❤' },
         { 'count': 7,  'me': true,  'name': '😯' },
         { 'count': 7,  'me': false, 'name': '😂' },
         { 'count': 3,  'me': false, 'name': '😢' },
