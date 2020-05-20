@@ -8,6 +8,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { isStaff } from 'gabsocial/utils/accounts';
+import { ALLOWED_EMOJI } from 'gabsocial/utils/emoji_reacts';
+import emojify from 'gabsocial/features/emoji/emoji';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -59,6 +61,7 @@ class ActionBar extends React.PureComponent {
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
+    onEmojiReact: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onDirect: PropTypes.func.isRequired,
     onMention: PropTypes.func.isRequired,
@@ -103,6 +106,17 @@ class ActionBar extends React.PureComponent {
     } else {
       this.props.onOpenUnauthorizedModal();
     }
+  }
+
+  handleReactClick = emoji => {
+    return e => {
+      const { me } = this.props;
+      if (me) {
+        this.props.onEmojiReact(this.props.status, emoji);
+      } else {
+        this.props.onOpenUnauthorizedModal();
+      }
+    };
   }
 
   handleDeleteClick = () => {
@@ -240,7 +254,16 @@ class ActionBar extends React.PureComponent {
           <IconButton disabled={reblog_disabled} active={status.get('reblogged')} title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
           Boost
         </div>
-        <div className='detailed-status__button'>
+        <div className='detailed-status__button detailed-status__button--favourite'>
+          <div className='emoji-react-selector'>
+            {ALLOWED_EMOJI.map(emoji => (
+              <button
+                className='emoji-react-selector__emoji'
+                dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
+                onClick={this.handleReactClick(emoji)}
+              />
+            ))}
+          </div>
           <IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='thumbs-up' onClick={this.handleFavouriteClick} />
           Like
         </div>

@@ -17,6 +17,7 @@ import {
   pin,
   unpin,
 } from '../../actions/interactions';
+import { emojiReact, unEmojiReact } from '../../actions/emoji_reacts';
 import {
   replyCompose,
   mentionCompose,
@@ -159,6 +160,20 @@ class Status extends ImmutablePureComponent {
 
   handleToggleMediaVisibility = () => {
     this.setState({ showMedia: !this.state.showMedia });
+  }
+
+  handleEmojiReactClick = (status, emoji) => {
+    if (emoji === '👍') {
+      this.handleFavouriteClick(status); return;
+    }
+    const hasReaction = status.getIn(['pleroma', 'emoji_reactions'])
+      .findIndex(e => e.get('name') === emoji && e.get('me') === true) > -1;
+
+    if (hasReaction) {
+      this.props.dispatch(unEmojiReact(status, emoji));
+    } else {
+      this.props.dispatch(emojiReact(status, emoji));
+    }
   }
 
   handleFavouriteClick = (status) => {
@@ -496,6 +511,7 @@ class Status extends ImmutablePureComponent {
                 status={status}
                 onReply={this.handleReplyClick}
                 onFavourite={this.handleFavouriteClick}
+                onEmojiReact={this.handleEmojiReactClick}
                 onReblog={this.handleReblogClick}
                 onDelete={this.handleDeleteClick}
                 onDirect={this.handleDirectClick}
