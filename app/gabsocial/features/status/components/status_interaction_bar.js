@@ -19,7 +19,7 @@ export class StatusInteractionBar extends React.Component {
   }
 
   sortEmoji = emojiReacts => (
-    emojiReacts // TODO: Sort
+    emojiReacts // TODO: Sort by count
   );
 
   mergeEmoji = emojiReacts => (
@@ -34,13 +34,24 @@ export class StatusInteractionBar extends React.Component {
   render() {
     const { status } = this.props;
     const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
+    const likeCount = status.get('favourites_count');
 
     return (
       <>
+        {likeCount > 0 && <span className='emoji-react'>
+          <span
+            className='emoji-react--emoji'
+            dangerouslySetInnerHTML={{ __html: emojify('👍') }}
+          />
+          <span className='emoji-react--count'>{likeCount}</span>
+        </span>}
         {this.filterEmoji(emojiReacts).map(e => (
           <span className='emoji-react'>
-            <span dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }} />
-            <span>{e.get('count')}</span>
+            <span
+              className='emoji-react--emoji'
+              dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
+            />
+            <span className='emoji-react--count'>{e.get('count')}</span>
           </span>
         ))}
       </>
