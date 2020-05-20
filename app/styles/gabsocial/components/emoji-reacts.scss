@@ -1,0 +1,49 @@
+.emoji-react {
+  display: inline-block;
+  transition: 0.1s;
+
+  &__emoji {
+    img {
+      width: 20px;
+      height: 20px;
+      filter: drop-shadow(2px 0 0 #fff); // FIXME: Use theme color
+    }
+  }
+
+  &__count {
+    display: none;
+  }
+
+  + .emoji-react {
+    margin-right: -8px;
+  }
+}
+
+.emoji-reacts {
+  display: inline-flex;
+  flex-direction: row-reverse;
+}
+
+.emoji-reacts-container {
+  display: inline-flex;
+
+  &:hover {
+    .emoji-react {
+      margin: 0;
+
+      &__count {
+        display: inline;
+      }
+    }
+
+    .emoji-reacts__count {
+      display: none;
+    }
+  }
+}
+
+.emoji-reacts__count,
+.emoji-react__count {
+  font-size: 12px;
+  font-weight: bold;
+}
