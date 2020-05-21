@@ -374,8 +374,21 @@ class Video extends React.PureComponent {
     this.props.onCloseVideo();
   }
 
+  getPreload = () => {
+    const { startTime, detailed } = this.props;
+    const { dragging, fullscreen } = this.state;
+
+    if (startTime || fullscreen || dragging) {
+      return 'auto';
+    } else if (detailed) {
+      return 'metadata';
+    } else {
+      return 'none';
+    }
+  }
+
   render() {
-    const { preview, src, inline, startTime, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
+    const { preview, src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
 
@@ -398,16 +411,6 @@ class Video extends React.PureComponent {
       }
 
       playerStyle.height = height;
-    }
-
-    let preload;
-
-    if (startTime || fullscreen || dragging) {
-      preload = 'auto';
-    } else if (detailed) {
-      preload = 'metadata';
-    } else {
-      preload = 'none';
     }
 
     let warning;
@@ -435,7 +438,7 @@ class Video extends React.PureComponent {
           ref={this.setVideoRef}
           src={src}
           poster={preview}
-          preload={preload}
+          // preload={this.getPreload()}
           loop
           role='button'
           tabIndex='0'
