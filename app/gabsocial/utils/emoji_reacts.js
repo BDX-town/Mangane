@@ -1,4 +1,7 @@
-import { Map as ImmutableMap } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+} from 'immutable';
 
 // https://emojipedia.org/facebook/
 export const ALLOWED_EMOJI = [
@@ -31,7 +34,13 @@ export const mergeEmojiFavourites = (emojiReacts, favouritesCount) => {
 };
 
 export const oneEmojiPerAccount = emojiReacts => {
-  return; // TODO
+  emojiReacts = emojiReacts.reverse();
+  return emojiReacts.reduce((acc, cur) => {
+    if (acc.filter(
+      e => e.get('me') && e.get('name') !== cur.get('name')
+    ).length > 0) return acc.delete(cur); // FIXME: Incomplete
+    return acc;
+  }, emojiReacts).reverse();
 };
 
 export const filterEmoji = emojiReacts => (
@@ -45,5 +54,11 @@ export const reduceEmoji = (emojiReacts, favouritesCount) => (
   )))));
 
 export const getReactForStatus = status => {
-  return; // TODO
+  const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
+  const emojiReact = emojiReacts.reduce((acc, cur) => {
+    if (acc) return acc;
+    if (cur.get('me') === true) return cur.get('name');
+    return acc;
+  }, false);
+  return emojiReact ? emojiReact : status.get('favourited') && '👍';
 };

@@ -121,14 +121,14 @@ describe('oneEmojiPerAccount', () => {
   it('reduces to one react per account', () => {
     const emojiReacts = fromJS([
       // Sorted
-      { 'count': 20, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
-      { 'count': 15, 'me': true,  'name': '❤', accounts: [{ id: '1' }, { id: '2' }] },
-      { 'count': 7,  'me': true,  'name': '😯', accounts: [{ id: '1' }] },
-      { 'count': 7,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+      { 'count': 2, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 2, 'me': true,  'name': '❤', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 1,  'me': true,  'name': '😯', accounts: [{ id: '1' }] },
+      { 'count': 1,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
     ]);
     expect(oneEmojiPerAccount(emojiReacts)).toEqual(fromJS([
-      { 'count': 20, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
-      { 'count': 7,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+      { 'count': 2, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 1,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
     ]));
   });
 });
