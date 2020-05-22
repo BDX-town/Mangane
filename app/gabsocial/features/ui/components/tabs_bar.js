@@ -144,8 +144,8 @@ class TabsBar extends React.PureComponent {
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
                   <ActionBar account={account} size={34} />
                 </div>
-                <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label='Gab'>
-                  <span>Gab</span>
+                <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label='Post'>
+                  <span>Post</span>
                 </button>
               </div>
             }
