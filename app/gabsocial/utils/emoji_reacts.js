@@ -55,7 +55,7 @@ export const oneEmojiPerAccount = (emojiReacts, me) => {
     return acc.set(idx, cur.merge({
       accounts: accounts,
       count: accounts.count(),
-      me: inAccounts(accounts, me),
+      me: me ? inAccounts(accounts, me) : false,
     }));
   }, emojiReacts)
     .filter(e => e.get('count') > 0)
@@ -67,10 +67,10 @@ export const filterEmoji = emojiReacts => (
     ALLOWED_EMOJI.includes(emojiReact.get('name'))
   )));
 
-export const reduceEmoji = (emojiReacts, favouritesCount) => (
-  sortEmoji(filterEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount
-  )))));
+export const reduceEmoji = (emojiReacts, favouritesCount, me) => (
+  sortEmoji(mergeEmojiFavourites(oneEmojiPerAccount(filterEmoji(sortEmoji(mergeEmoji(
+    emojiReacts
+  ))), me), favouritesCount)));
 
 export const getReactForStatus = status => {
   const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
@@ -78,6 +78,6 @@ export const getReactForStatus = status => {
     if (acc) return acc;
     if (cur.get('me') === true) return cur.get('name');
     return acc;
-  }, false);
+  }, undefined);
   return emojiReact ? emojiReact : status.get('favourited') && '👍';
 };
