@@ -30,6 +30,10 @@ export const mergeEmojiFavourites = (emojiReacts, favouritesCount) => {
   }
 };
 
+export const oneEmojiPerAccount = emojiReacts => {
+  return; // TODO
+};
+
 export const filterEmoji = emojiReacts => (
   emojiReacts.filter(emojiReact => (
     ALLOWED_EMOJI.includes(emojiReact.get('name'))
@@ -39,3 +43,7 @@ export const reduceEmoji = (emojiReacts, favouritesCount) => (
   sortEmoji(filterEmoji(mergeEmoji(mergeEmojiFavourites(
     emojiReacts, favouritesCount
   )))));
+
+export const getReactForStatus = status => {
+  return; // TODO
+};

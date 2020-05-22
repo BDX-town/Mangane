@@ -2,7 +2,9 @@ import {
   sortEmoji,
   mergeEmojiFavourites,
   filterEmoji,
+  oneEmojiPerAccount,
   reduceEmoji,
+  getReactForStatus,
 } from '../emoji_reacts';
 import { fromJS } from 'immutable';
 
@@ -112,5 +114,43 @@ describe('reduceEmoji', () => {
         { 'count': 1,  'me': false, 'name': '😡' },
       ]));
     });
+  });
+});
+
+describe('oneEmojiPerAccount', () => {
+  it('reduces to one react per account', () => {
+    const emojiReacts = fromJS([
+      // Sorted
+      { 'count': 20, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 15, 'me': true,  'name': '❤', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 7,  'me': true,  'name': '😯', accounts: [{ id: '1' }] },
+      { 'count': 7,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+    ]);
+    expect(oneEmojiPerAccount(emojiReacts)).toEqual(fromJS([
+      { 'count': 20, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
+      { 'count': 7,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+    ]));
+  });
+});
+
+describe('getReactForStatus', () => {
+  it('returns a single owned react (including favourite) for the status', () => {
+    const status = fromJS({
+      favourited: false,
+      pleroma: {
+        emoji_reactions: [
+          { 'count': 20, 'me': false, 'name': '👍' },
+          { 'count': 15, 'me': true,  'name': '❤' },
+          { 'count': 7,  'me': true,  'name': '😯' },
+          { 'count': 7,  'me': false, 'name': '😂' },
+        ],
+      },
+    });
+    expect(getReactForStatus(status)).toEqual('❤');
+  });
+
+  it('returns a thumbs-up for a favourite', () => {
+    const status = fromJS({ favourited: true });
+    expect(getReactForStatus(status)).toEqual('👍');
   });
 });
