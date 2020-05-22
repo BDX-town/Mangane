@@ -247,12 +247,22 @@ class ActionBar extends React.PureComponent {
     return (
       <div className='detailed-status__action-bar'>
         <div className='detailed-status__button'>
-          <IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} />
-          Reply
+          <IconButton
+            title={intl.formatMessage(messages.reply)}
+            icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
+            onClick={this.handleReplyClick}
+            text={intl.formatMessage(messages.reply)}
+          />
         </div>
         <div className='detailed-status__button'>
-          <IconButton disabled={reblog_disabled} active={status.get('reblogged')} title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
-          Boost
+          <IconButton
+            disabled={reblog_disabled}
+            active={status.get('reblogged')}
+            title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+            icon={reblogIcon}
+            onClick={this.handleReblogClick}
+            text='Boost'
+          />
         </div>
         <div className='detailed-status__button detailed-status__button--favourite'>
           <div className='emoji-react-selector'>
@@ -264,8 +274,14 @@ class ActionBar extends React.PureComponent {
               />
             ))}
           </div>
-          <IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='thumbs-up' onClick={this.handleFavouriteClick} />
-          Like
+          <IconButton
+            className='star-icon'
+            animate active={status.get('favourited')}
+            title={intl.formatMessage(messages.favourite)}
+            icon='thumbs-up'
+            onClick={this.handleFavouriteClick}
+            text='Like'
+          />
         </div>
         {shareButton}
 

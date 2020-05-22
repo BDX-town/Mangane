@@ -64,6 +64,7 @@ export default class IconButton extends React.PureComponent {
       pressed,
       tabIndex,
       title,
+      text,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -84,11 +85,13 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
-          style={style}
           tabIndex={tabIndex}
           disabled={disabled}
         >
-          <Icon id={icon} fixedWidth aria-hidden='true' />
+          <div style={style}>
+            <Icon id={icon} fixedWidth aria-hidden='true' />
+          </div>
+          {text && <span className='icon_button__text'>{text}</span>}
         </button>
       );
     }
@@ -103,11 +106,13 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
-            style={style}
             tabIndex={tabIndex}
             disabled={disabled}
           >
-            <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />
+            <div style={style}>
+              <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />
+            </div>
+            {text && <span className='icon_button__text'>{text}</span>}
           </button>
         )}
       </Motion>
