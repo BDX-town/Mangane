@@ -33,14 +33,33 @@ export const mergeEmojiFavourites = (emojiReacts, favouritesCount) => {
   }
 };
 
-export const oneEmojiPerAccount = emojiReacts => {
+const hasMultiReactions = (emojiReacts, account) => (
+  emojiReacts.filter(
+    e => e.get('accounts').filter(
+      a => a.get('id') === account.get('id')
+    ).count() > 0
+  ).count() > 1
+);
+
+const inAccounts = (accounts, id) => (
+  accounts.filter(a => a.get('id') === id).count() > 0
+);
+
+export const oneEmojiPerAccount = (emojiReacts, me) => {
   emojiReacts = emojiReacts.reverse();
-  return emojiReacts.reduce((acc, cur) => {
-    if (acc.filter(
-      e => e.get('me') && e.get('name') !== cur.get('name')
-    ).length > 0) return acc.delete(cur); // FIXME: Incomplete
-    return acc;
-  }, emojiReacts).reverse();
+
+  return emojiReacts.reduce((acc, cur, idx) => {
+    const accounts = cur.get('accounts', ImmutableList())
+      .filter(a => !hasMultiReactions(acc, a));
+
+    return acc.set(idx, cur.merge({
+      accounts: accounts,
+      count: accounts.count(),
+      me: inAccounts(accounts, me),
+    }));
+  }, emojiReacts)
+    .filter(e => e.get('count') > 0)
+    .reverse();
 };
 
 export const filterEmoji = emojiReacts => (

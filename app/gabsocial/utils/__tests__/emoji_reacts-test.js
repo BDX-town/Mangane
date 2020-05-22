@@ -123,12 +123,12 @@ describe('oneEmojiPerAccount', () => {
       // Sorted
       { 'count': 2, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
       { 'count': 2, 'me': true,  'name': '❤', accounts: [{ id: '1' }, { id: '2' }] },
-      { 'count': 1,  'me': true,  'name': '😯', accounts: [{ id: '1' }] },
-      { 'count': 1,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+      { 'count': 1, 'me': true,  'name': '😯', accounts: [{ id: '1' }] },
+      { 'count': 1, 'me': false, 'name': '😂', accounts: [{ id: '3' }] },
     ]);
-    expect(oneEmojiPerAccount(emojiReacts)).toEqual(fromJS([
+    expect(oneEmojiPerAccount(emojiReacts, '1')).toEqual(fromJS([
       { 'count': 2, 'me': true,  'name': '👍', accounts: [{ id: '1' }, { id: '2' }] },
-      { 'count': 1,  'me': false, 'name': '😂', accounts: [{ id: '3' }] },
+      { 'count': 1, 'me': false, 'name': '😂', accounts: [{ id: '3' }] },
     ]));
   });
 });
