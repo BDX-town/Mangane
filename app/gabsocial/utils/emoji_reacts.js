@@ -68,9 +68,9 @@ export const filterEmoji = emojiReacts => (
   )));
 
 export const reduceEmoji = (emojiReacts, favouritesCount, me) => (
-  sortEmoji(mergeEmojiFavourites(oneEmojiPerAccount(filterEmoji(sortEmoji(mergeEmoji(
-    emojiReacts
-  ))), me), favouritesCount)));
+  filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
+    emojiReacts, favouritesCount
+  )))));
 
 export const getReactForStatus = status => {
   const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
