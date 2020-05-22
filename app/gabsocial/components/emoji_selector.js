@@ -5,8 +5,12 @@ import emojify from 'gabsocial/features/emoji/emoji';
 
 export default class EmojiSelector extends React.Component {
 
-  propTypes = {
+  static propTypes = {
     onReact: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    onReact: () => {},
   }
 
   render() {
@@ -14,8 +18,9 @@ export default class EmojiSelector extends React.Component {
 
     return (
       <div className='emoji-react-selector'>
-        {ALLOWED_EMOJI.map(emoji => (
+        {ALLOWED_EMOJI.map((emoji, i) => (
           <button
+            key={i}
             className='emoji-react-selector__emoji'
             dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
             onClick={onReact(emoji)}

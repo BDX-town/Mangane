@@ -5,7 +5,7 @@ import { reduceEmoji } from 'gabsocial/utils/emoji_reacts';
 
 export class StatusInteractionBar extends React.Component {
 
-  propTypes = {
+  static propTypes = {
     status: ImmutablePropTypes.map,
   }
 
