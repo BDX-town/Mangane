@@ -21,15 +21,17 @@ export const mergeEmoji = emojiReacts => (
   emojiReacts // TODO: Merge similar emoji
 );
 
-export const mergeEmojiFavourites = (emojiReacts, favouritesCount) => {
+export const mergeEmojiFavourites = (emojiReacts, favouritesCount, favourited) => {
   if (!favouritesCount) return emojiReacts;
-  const likeIndex = emojiReacts.findIndex(emojiReact =>
-    emojiReact.get('name') === '👍');
+  const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '👍');
   if (likeIndex > -1) {
     const likeCount = emojiReacts.getIn([likeIndex, 'count']);
-    return emojiReacts.setIn([likeIndex, 'count'], likeCount + favouritesCount);
+    favourited = favourited || emojiReacts.getIn([likeIndex, 'me'], false);
+    return emojiReacts
+      .setIn([likeIndex, 'count'], likeCount + favouritesCount)
+      .setIn([likeIndex, 'me'], favourited);
   } else {
-    return emojiReacts.push(ImmutableMap({ count: favouritesCount, me: false, name: '👍' }));
+    return emojiReacts.push(ImmutableMap({ count: favouritesCount, me: favourited, name: '👍' }));
   }
 };
 
@@ -67,17 +69,17 @@ export const filterEmoji = emojiReacts => (
     ALLOWED_EMOJI.includes(emojiReact.get('name'))
   )));
 
-export const reduceEmoji = (emojiReacts, favouritesCount, me) => (
+export const reduceEmoji = (emojiReacts, favouritesCount, favourited) => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount
+    emojiReacts, favouritesCount, favourited
   )))));
 
 export const getReactForStatus = status => {
-  const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
-  const emojiReact = emojiReacts.reduce((acc, cur) => {
-    if (acc) return acc;
-    if (cur.get('me') === true) return cur.get('name');
-    return acc;
-  }, undefined);
-  return emojiReact ? emojiReact : status.get('favourited') && '👍';
+  return reduceEmoji(
+    status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
+    status.get('favourites_count'),
+    status.get('favourited')
+  ).filter(e => e.get('me'))
+    .first(ImmutableMap())
+    .get('name');
 };
