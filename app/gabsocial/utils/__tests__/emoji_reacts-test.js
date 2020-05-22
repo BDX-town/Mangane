@@ -154,4 +154,19 @@ describe('getReactForStatus', () => {
     const status = fromJS({ favourites_count: 1, favourited: true });
     expect(getReactForStatus(status)).toEqual('👍');
   });
+
+  it('returns undefined when a status has no reacts (or favourites)', () => {
+    const status = fromJS([]);
+    expect(getReactForStatus(status)).toEqual(undefined);
+  });
+
+  it('returns undefined when a status has no valid reacts (or favourites)', () => {
+    const status = fromJS([
+      { 'count': 1,  'me': true,  'name': '🔪' },
+      { 'count': 1,  'me': true,  'name': '🌵' },
+      { 'count': 1,  'me': false, 'name': '👀' },
+      { 'count': 1,  'me': false, 'name': '🍩' },
+    ]);
+    expect(getReactForStatus(status)).toEqual(undefined);
+  });
 });

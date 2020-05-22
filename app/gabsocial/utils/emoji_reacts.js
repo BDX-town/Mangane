@@ -79,7 +79,6 @@ export const getReactForStatus = status => {
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
     status.get('favourites_count'),
     status.get('favourited')
-  ).filter(e => e.get('me'))
-    .first(ImmutableMap())
-    .get('name');
+  ).filter(e => e.get('me') === true)
+    .getIn([0, 'name']);
 };

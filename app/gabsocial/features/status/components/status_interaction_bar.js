@@ -2,18 +2,20 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import emojify from 'gabsocial/features/emoji/emoji';
 import { reduceEmoji } from 'gabsocial/utils/emoji_reacts';
+import SoapboxPropTypes from 'gabsocial/utils/soapbox_prop_types';
 
 export class StatusInteractionBar extends React.Component {
 
   static propTypes = {
     status: ImmutablePropTypes.map,
+    me: SoapboxPropTypes.me,
   }
 
   getNormalizedReacts = () => {
-    const { status } = this.props;
+    const { status, me } = this.props;
     const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
     const favouritesCount = status.get('favourites_count');
-    return reduceEmoji(emojiReacts, favouritesCount).reverse();
+    return reduceEmoji(emojiReacts, favouritesCount, me).reverse();
   }
 
   render() {

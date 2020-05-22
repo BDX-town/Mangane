@@ -163,17 +163,20 @@ class Status extends ImmutablePureComponent {
   }
 
   handleEmojiReactClick = (status, emoji) => {
-    if (emoji === '👍') {
-      this.handleFavouriteClick(status); return;
-    }
-    const hasReaction = status.getIn(['pleroma', 'emoji_reactions'])
-      .findIndex(e => e.get('name') === emoji && e.get('me') === true) > -1;
-
-    if (hasReaction) {
-      this.props.dispatch(unEmojiReact(status, emoji));
-    } else {
-      this.props.dispatch(emojiReact(status, emoji));
-    }
+    Promise.all(status.getIn(['pleroma', 'emoji_reactions'])
+      .filter(emojiReact => emojiReact.get('me') === true)
+      .map(emojiReact =>
+        this.props.dispatch(unEmojiReact(status, emojiReact.get('name')))))
+      .then(() => {
+        if (emoji === '👍') {
+          this.handleFavouriteClick(status); return;
+        } else {
+          this.props.dispatch(emojiReact(status, emoji));
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   }
 
   handleFavouriteClick = (status) => {

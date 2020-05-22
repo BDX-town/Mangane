@@ -9,6 +9,7 @@ import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { isStaff } from 'gabsocial/utils/accounts';
 import EmojiSelector from 'gabsocial/components/emoji_selector';
+import { getReactForStatus } from 'gabsocial/utils/emoji_reacts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -189,6 +190,7 @@ class ActionBar extends React.PureComponent {
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
+    const meEmojiReact = getReactForStatus(status);
 
     let menu = [];
 
@@ -267,10 +269,12 @@ class ActionBar extends React.PureComponent {
           <EmojiSelector onReact={this.handleReactClick} />
           <IconButton
             className='star-icon'
-            animate active={status.get('favourited')}
+            animate
+            active={meEmojiReact}
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
-            onClick={this.handleFavouriteClick}
+            emoji={meEmojiReact}
+            onClick={this.handleReactClick('👍')}
             text='Like'
           />
         </div>
