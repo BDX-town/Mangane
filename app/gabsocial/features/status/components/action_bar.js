@@ -8,8 +8,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { isStaff } from 'gabsocial/utils/accounts';
-import { ALLOWED_EMOJI } from 'gabsocial/utils/emoji_reacts';
-import emojify from 'gabsocial/features/emoji/emoji';
+import EmojiSelector from 'gabsocial/components/emoji_selector';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -265,15 +264,7 @@ class ActionBar extends React.PureComponent {
           />
         </div>
         <div className='detailed-status__button detailed-status__button--favourite'>
-          <div className='emoji-react-selector'>
-            {ALLOWED_EMOJI.map(emoji => (
-              <button
-                className='emoji-react-selector__emoji'
-                dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
-                onClick={this.handleReactClick(emoji)}
-              />
-            ))}
-          </div>
+          <EmojiSelector onReact={this.handleReactClick} />
           <IconButton
             className='star-icon'
             animate active={status.get('favourited')}
