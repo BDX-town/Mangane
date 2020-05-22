@@ -11,6 +11,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isStaff } from 'gabsocial/utils/accounts';
 import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
+import EmojiSelector from 'gabsocial/components/emoji_selector';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -293,7 +294,8 @@ class StatusActionBar extends ImmutablePureComponent {
           <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
         </div>
-        <div className='status__action-bar__counter'>
+        <div className='status__action-bar__counter status__action-bar__counter--favourite'>
+          <EmojiSelector onReact={this.handleReactClick} />
           <IconButton className='status__action-bar-button star-icon' animate active={status.get('favourited')} pressed={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='thumbs-up' onClick={this.handleFavouriteClick} />
           {favoriteCount !== 0 && <span className='detailed-status__link'>{favoriteCount}</span>}
         </div>

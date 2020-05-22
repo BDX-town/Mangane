@@ -96,3 +96,12 @@
     pointer-events: all;
   }
 }
+
+.status__action-bar__counter--favourite {
+  position: relative;
+
+  &:hover .emoji-react-selector {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
