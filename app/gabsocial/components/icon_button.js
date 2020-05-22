@@ -23,6 +23,7 @@ export default class IconButton extends React.PureComponent {
     animate: PropTypes.bool,
     overlay: PropTypes.bool,
     tabIndex: PropTypes.string,
+    text: PropTypes.string,
   };
 
   static defaultProps = {
