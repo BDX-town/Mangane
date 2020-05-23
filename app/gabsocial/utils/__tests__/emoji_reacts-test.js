@@ -8,6 +8,15 @@ import {
 } from '../emoji_reacts';
 import { fromJS } from 'immutable';
 
+const ALLOWED_EMOJI = [
+  '👍',
+  '❤',
+  '😂',
+  '😯',
+  '😢',
+  '😡',
+];
+
 describe('filterEmoji', () => {
   describe('with a mix of allowed and disallowed emoji', () => {
     const emojiReacts = fromJS([
@@ -20,7 +29,7 @@ describe('filterEmoji', () => {
       { 'count': 1, 'me': true, 'name': '😠' },
     ]);
     it('filters only allowed emoji', () => {
-      expect(filterEmoji(emojiReacts)).toEqual(fromJS([
+      expect(filterEmoji(emojiReacts, ALLOWED_EMOJI)).toEqual(fromJS([
         { 'count': 1, 'me': true, 'name': '😂' },
         { 'count': 1, 'me': true, 'name': '😡' },
       ]));
@@ -106,7 +115,7 @@ describe('reduceEmoji', () => {
       { 'count': 1,  'me': false, 'name': '🍩' },
     ]);
     it('sorts, filters, and combines emoji and favourites', () => {
-      expect(reduceEmoji(emojiReacts, 7, true)).toEqual(fromJS([
+      expect(reduceEmoji(emojiReacts, 7, true, ALLOWED_EMOJI)).toEqual(fromJS([
         { 'count': 27, 'me': true,  'name': '👍' },
         { 'count': 15, 'me': true,  'name': '❤' },
         { 'count': 7,  'me': true,  'name': '😯' },

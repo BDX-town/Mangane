@@ -65,15 +65,15 @@ export const oneEmojiPerAccount = (emojiReacts, me) => {
     .reverse();
 };
 
-export const filterEmoji = emojiReacts => (
+export const filterEmoji = (emojiReacts, allowedEmoji=ALLOWED_EMOJI) => (
   emojiReacts.filter(emojiReact => (
-    ALLOWED_EMOJI.includes(emojiReact.get('name'))
+    allowedEmoji.includes(emojiReact.get('name'))
   )));
 
-export const reduceEmoji = (emojiReacts, favouritesCount, favourited) => (
+export const reduceEmoji = (emojiReacts, favouritesCount, favourited, allowedEmoji=ALLOWED_EMOJI) => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
     emojiReacts, favouritesCount, favourited
-  )))));
+  ))), allowedEmoji));
 
 export const getReactForStatus = status => {
   return reduceEmoji(
