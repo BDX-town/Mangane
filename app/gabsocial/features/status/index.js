@@ -163,20 +163,28 @@ class Status extends ImmutablePureComponent {
   }
 
   handleEmojiReactClick = (status, emoji) => {
-    Promise.all(status.getIn(['pleroma', 'emoji_reactions'])
-      .filter(emojiReact => emojiReact.get('me') === true)
-      .map(emojiReact =>
-        this.props.dispatch(unEmojiReact(status, emojiReact.get('name')))))
-      .then(() => {
-        if (emoji === '👍') {
-          this.handleFavouriteClick(status); return;
-        } else {
-          this.props.dispatch(emojiReact(status, emoji));
-        }
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    const { dispatch } = this.props;
+    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
+
+    if (emoji === '👍' && status.get('favourited')) return dispatch(unfavourite(status));
+
+    const undo = emojiReacts.filter(e => e.get('me') === true && e.get('name') === emoji).count() > 0;
+    if (undo) return dispatch(unEmojiReact(status, emoji));
+
+    return Promise.all(
+      emojiReacts
+        .filter(emojiReact => emojiReact.get('me') === true)
+        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))),
+      status.get('favourited') && dispatch(unfavourite(status))
+    ).then(() => {
+      if (emoji === '👍') {
+        dispatch(favourite(status));
+      } else {
+        dispatch(emojiReact(status, emoji));
+      }
+    }).catch(err => {
+      console.error(err);
+    });
   }
 
   handleFavouriteClick = (status) => {
