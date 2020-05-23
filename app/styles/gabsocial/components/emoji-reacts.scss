@@ -66,6 +66,11 @@
   transition: 0.1s;
   z-index: 999;
 
+  &--visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+
   &__emoji {
     display: block;
     padding: 0;
@@ -90,20 +95,8 @@
   }
 }
 
-.detailed-status__button--favourite:hover {
-  .emoji-react-selector {
-    opacity: 1;
-    pointer-events: all;
-  }
-}
-
 .status__action-bar__counter--favourite {
   position: relative;
-
-  &:hover .emoji-react-selector {
-    opacity: 1;
-    pointer-events: all;
-  }
 
   @media(max-width: 455px) {
     position: static;

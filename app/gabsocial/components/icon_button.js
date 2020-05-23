@@ -35,6 +35,7 @@ export default class IconButton extends React.PureComponent {
     animate: false,
     overlay: false,
     tabIndex: '0',
+    onClick: () => {},
   };
 
   handleClick = (e) =>  {

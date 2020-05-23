@@ -77,6 +77,10 @@ class StatusActionBar extends ImmutablePureComponent {
     isStaff: false,
   }
 
+  state = {
+    emojiSelectorVisible: false,
+  }
+
   // Avoid checking props that are functions (and whose equality will always
   // evaluate to false. See react-immutable-pure-component for usage.
   updateOnProps = [
@@ -100,6 +104,14 @@ class StatusActionBar extends ImmutablePureComponent {
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
+  }
+
+  handleLikeButtonHover = e => {
+    this.setState({ emojiSelectorVisible: true });
+  }
+
+  handleLikeButtonLeave = e => {
+    this.setState({ emojiSelectorVisible: false });
   }
 
   handleReactClick = emoji => {
@@ -267,6 +279,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
   render() {
     const { status, intl } = this.props;
+    const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
 
@@ -313,8 +326,12 @@ class StatusActionBar extends ImmutablePureComponent {
           <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
         </div>
-        <div className='status__action-bar__counter status__action-bar__counter--favourite'>
-          <EmojiSelector onReact={this.handleReactClick} />
+        <div
+          className='status__action-bar__counter status__action-bar__counter--favourite'
+          onMouseEnter={this.handleLikeButtonHover}
+          onMouseLeave={this.handleLikeButtonLeave}
+        >
+          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
           <IconButton
             className='status__action-bar-button star-icon'
             animate

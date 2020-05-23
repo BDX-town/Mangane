@@ -81,6 +81,10 @@ class ActionBar extends React.PureComponent {
     isStaff: false,
   }
 
+  state = {
+    emojiSelectorVisible: false,
+  }
+
   handleReplyClick = () => {
     const { me } = this.props;
     if (me) {
@@ -106,6 +110,20 @@ class ActionBar extends React.PureComponent {
     } else {
       this.props.onOpenUnauthorizedModal();
     }
+  }
+
+  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
+
+  handleLikeButtonHover = e => {
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: true });
+  }
+
+  handleLikeButtonLeave = e => {
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: false });
+  }
+
+  handleLikeButtonClick = e => {
+    if (this.isMobile()) this.setState({ emojiSelectorVisible: true });
   }
 
   handleReactClick = emoji => {
@@ -185,8 +203,16 @@ class ActionBar extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    document.addEventListener('click', e => {
+      if (!document.querySelector('.detailed-status__button--favourite').contains(e.target))
+        this.setState({ emojiSelectorVisible: false });
+    });
+  }
+
   render() {
     const { status, intl, me, isStaff } = this.props;
+    const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -265,8 +291,13 @@ class ActionBar extends React.PureComponent {
             text='Boost'
           />
         </div>
-        <div className='detailed-status__button detailed-status__button--favourite'>
-          <EmojiSelector onReact={this.handleReactClick} />
+        <div
+          className='detailed-status__button detailed-status__button--favourite'
+          onMouseEnter={this.handleLikeButtonHover}
+          onMouseLeave={this.handleLikeButtonLeave}
+          onClick={this.handleLikeButtonClick}
+        >
+          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
           <IconButton
             className='star-icon'
             animate
@@ -274,7 +305,7 @@ class ActionBar extends React.PureComponent {
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            onClick={this.handleReactClick(meEmojiReact || '👍')}
+            // onClick={this.handleReactClick(meEmojiReact || '👍')}
             text='Like'
           />
         </div>
