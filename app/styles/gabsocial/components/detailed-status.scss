@@ -57,7 +57,6 @@
   border-bottom: 1px solid lighten($ui-base-color, 8%);
   display: flex;
   flex-direction: row;
-  padding: 10px 0;
 }
 
 .detailed-status__link {
@@ -76,6 +75,8 @@
 }
 
 .detailed-status__button {
+  padding: 10px 0;
+
   .icon-button {
     display: inline-flex;
     align-items: center;
@@ -86,4 +87,8 @@
       transform: translateY(-1px);
     }
   }
+}
+
+.detailed-status__wrapper {
+  position: relative;
 }

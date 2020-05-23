@@ -56,7 +56,6 @@
 
 .emoji-react-selector {
   position: absolute;
-  bottom: 100%;
   display: flex;
   background-color: #fff;
   padding: 5px 8px;
@@ -105,8 +104,24 @@
     opacity: 1;
     pointer-events: all;
   }
+
+  @media(max-width: 455px) {
+    position: static;
+  }
+}
+
+.detailed-status__wrapper .emoji-react-selector {
+  bottom: 40px;
+  right: 10px;
 }
 
 .status .emoji-react-selector {
+  bottom: 100%;
   left: -20px;
+
+  @media(max-width: 455px) {
+    bottom: 31px;
+    right: 10px;
+    left: auto;
+  }
 }
