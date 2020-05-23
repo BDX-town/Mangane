@@ -12,10 +12,12 @@ export class StatusInteractionBar extends React.Component {
   }
 
   getNormalizedReacts = () => {
-    const { status, me } = this.props;
-    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
-    const favouritesCount = status.get('favourites_count');
-    return reduceEmoji(emojiReacts, favouritesCount, me).reverse();
+    const { status } = this.props;
+    return reduceEmoji(
+      status.getIn(['pleroma', 'emoji_reactions']),
+      status.get('favourites_count'),
+      status.get('favourited'),
+    ).reverse();
   }
 
   render() {

@@ -1,5 +1,6 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { favourite, unfavourite } from './interactions';
 
 export const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 export const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';
@@ -14,6 +15,32 @@ export const EMOJI_REACTS_FETCH_SUCCESS = 'EMOJI_REACTS_FETCH_SUCCESS';
 export const EMOJI_REACTS_FETCH_FAIL    = 'EMOJI_REACTS_FETCH_FAIL';
 
 const noOp = () => () => new Promise(f => f());
+
+export const simpleEmojiReact = (status, emoji) => {
+  return (dispatch, getState) => {
+    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
+
+    if (emoji === '👍' && status.get('favourited')) return dispatch(unfavourite(status));
+
+    const undo = emojiReacts.filter(e => e.get('me') === true && e.get('name') === emoji).count() > 0;
+    if (undo) return dispatch(unEmojiReact(status, emoji));
+
+    return Promise.all(
+      emojiReacts
+        .filter(emojiReact => emojiReact.get('me') === true)
+        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))),
+      status.get('favourited') && dispatch(unfavourite(status))
+    ).then(() => {
+      if (emoji === '👍') {
+        dispatch(favourite(status));
+      } else {
+        dispatch(emojiReact(status, emoji));
+      }
+    }).catch(err => {
+      console.error(err);
+    });
+  };
+};
 
 export function fetchEmojiReacts(id, emoji) {
   return (dispatch, getState) => {

@@ -12,6 +12,8 @@ import { isStaff } from 'gabsocial/utils/accounts';
 import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
 import EmojiSelector from 'gabsocial/components/emoji_selector';
+import { getReactForStatus, reduceEmoji } from 'gabsocial/utils/emoji_reacts';
+import { simpleEmojiReact } from 'gabsocial/actions/emoji_reacts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -98,6 +100,17 @@ class StatusActionBar extends ImmutablePureComponent {
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
+  }
+
+  handleReactClick = emoji => {
+    return e => {
+      const { me, status } = this.props;
+      if (me) {
+        this.props.dispatch(simpleEmojiReact(status, emoji));
+      } else {
+        this.props.onOpenUnauthorizedModal();
+      }
+    };
   }
 
   handleFavouriteClick = () => {
@@ -255,11 +268,17 @@ class StatusActionBar extends ImmutablePureComponent {
   render() {
     const { status, intl } = this.props;
 
-    const publicStatus       = ['public', 'unlisted'].includes(status.get('visibility'));
+    const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
 
     const replyCount = status.get('replies_count');
     const reblogCount = status.get('reblogs_count');
-    const favoriteCount = status.get('favourites_count');
+    const favouriteCount = status.get('favourites_count');
+    const emojiReactCount = reduceEmoji(
+      status.getIn(['pleroma', 'emoji_reactions'], []),
+      favouriteCount,
+      status.get('favourited'),
+    ).reduce((acc, cur) => acc + cur.get('count'), 0);
+    const meEmojiReact = getReactForStatus(status);
 
     let menu = this._makeMenu(publicStatus);
     let reblogIcon = 'retweet';
@@ -296,8 +315,16 @@ class StatusActionBar extends ImmutablePureComponent {
         </div>
         <div className='status__action-bar__counter status__action-bar__counter--favourite'>
           <EmojiSelector onReact={this.handleReactClick} />
-          <IconButton className='status__action-bar-button star-icon' animate active={status.get('favourited')} pressed={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='thumbs-up' onClick={this.handleFavouriteClick} />
-          {favoriteCount !== 0 && <span className='detailed-status__link'>{favoriteCount}</span>}
+          <IconButton
+            className='status__action-bar-button star-icon'
+            animate
+            active={Boolean(meEmojiReact)}
+            title={intl.formatMessage(messages.favourite)}
+            icon='thumbs-up'
+            emoji={meEmojiReact}
+            onClick={this.handleReactClick(meEmojiReact || '👍')}
+          />
+          {emojiReactCount !== 0 && <span className='detailed-status__link'>{emojiReactCount}</span>}
         </div>
         {shareButton}
 
@@ -319,6 +346,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  dispatch,
   onOpenUnauthorizedModal() {
     dispatch(openModal('UNAUTHORIZED'));
   },

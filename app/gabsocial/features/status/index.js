@@ -17,7 +17,7 @@ import {
   pin,
   unpin,
 } from '../../actions/interactions';
-import { emojiReact, unEmojiReact } from '../../actions/emoji_reacts';
+import { simpleEmojiReact } from '../../actions/emoji_reacts';
 import {
   replyCompose,
   mentionCompose,
@@ -163,28 +163,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleEmojiReactClick = (status, emoji) => {
-    const { dispatch } = this.props;
-    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
-
-    if (emoji === '👍' && status.get('favourited')) return dispatch(unfavourite(status));
-
-    const undo = emojiReacts.filter(e => e.get('me') === true && e.get('name') === emoji).count() > 0;
-    if (undo) return dispatch(unEmojiReact(status, emoji));
-
-    return Promise.all(
-      emojiReacts
-        .filter(emojiReact => emojiReact.get('me') === true)
-        .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))),
-      status.get('favourited') && dispatch(unfavourite(status))
-    ).then(() => {
-      if (emoji === '👍') {
-        dispatch(favourite(status));
-      } else {
-        dispatch(emojiReact(status, emoji));
-      }
-    }).catch(err => {
-      console.error(err);
-    });
+    this.props.dispatch(simpleEmojiReact(status, emoji));
   }
 
   handleFavouriteClick = (status) => {

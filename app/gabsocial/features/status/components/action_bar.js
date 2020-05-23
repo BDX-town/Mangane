@@ -270,11 +270,11 @@ class ActionBar extends React.PureComponent {
           <IconButton
             className='star-icon'
             animate
-            active={meEmojiReact}
+            active={Boolean(meEmojiReact)}
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            onClick={this.handleReactClick('👍')}
+            onClick={this.handleReactClick(meEmojiReact || '👍')}
             text='Like'
           />
         </div>
