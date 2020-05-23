@@ -8,7 +8,7 @@ import {
 export const ALLOWED_EMOJI = [
   '👍',
   '❤',
-  '😂',
+  '😆',
   '😮',
   '😢',
   '😩',
