@@ -3,14 +3,15 @@ import {
   List as ImmutableList,
 } from 'immutable';
 
-// https://emojipedia.org/facebook/
+// https://emojipedia.org/facebook
+// I've customized them.
 export const ALLOWED_EMOJI = [
   '👍',
   '❤',
   '😂',
-  '😯',
+  '😮',
   '😢',
-  '😡',
+  '😩',
 ];
 
 export const sortEmoji = emojiReacts => (
