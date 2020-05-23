@@ -65,6 +65,7 @@
   opacity: 0;
   pointer-events: none;
   transition: 0.1s;
+  z-index: 999;
 
   &__emoji {
     display: block;
@@ -104,4 +105,8 @@
     opacity: 1;
     pointer-events: all;
   }
+}
+
+.status .emoji-react-selector {
+  left: -20px;
 }
