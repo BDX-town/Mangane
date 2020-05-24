@@ -34,7 +34,6 @@
     flex: 1 1;
     flex-direction: column;
     padding-bottom: 40px;
-    overflow: hidden;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }
@@ -93,6 +92,7 @@
   flex-direction: column;
   width: 100%;
   padding: 14px 18px;
+  box-sizing: border-box;
 
   &__avatar {
     display: block;
