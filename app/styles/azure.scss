@@ -13,10 +13,6 @@ $ui-base-lighter-color: #b0c0cf;
 @import 'application';
 @import 'gabsocial-light/diff';
 
-.floating-action-button {
-  filter: hue-rotate(-48deg);
-}
-
 .tabs-bar__link {
   font-weight: bold;
   transition: 0.1s;

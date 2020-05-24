@@ -113,10 +113,6 @@ body.app-body::after {
   background-color: $nav-ui-highlight-color !important;
 }
 
-.floating-action-button {
-  filter: hue-rotate(120deg);
-}
-
 .button {
   background-color: $halloween-orange;
   &:focus, &:hover { background-color: darken($halloween-orange, 10%);}

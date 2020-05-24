@@ -1531,16 +1531,20 @@ a.account__display-name {
   bottom: 14px;
   right: 14px;
   width: 61px;
-  height: 52px;
-  background-image: url('../images/sprite-main-navigation.png');
-  background-repeat: no-repeat;
-  background-size: 161px 152px;
-  background-position: -100px 0;
-  background-color: transparent;
+  height: 61px;
+  background-color: $nav-ui-highlight-color;
   border: none;
+  border-radius: 999px;
+  box-shadow: 2px 5px 5px #999;
+  font-size: 30px;
   &:hover,
   &:focus,
-  &:active {background-position: -100px -100px;}
+  &:active {background-color: darken($nav-ui-highlight-color, 10%) !important;}
+  
+  .fa-pencil {
+      margin-right: 0;
+      transform: translate(1px, 2px);
+  }
 }
 
 @media screen and (min-width: 360px) {

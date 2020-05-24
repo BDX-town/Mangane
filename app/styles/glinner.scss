@@ -93,10 +93,6 @@ body {
   background: $ui-highlight-color;
 }
 
-.floating-action-button {
-  filter: hue-rotate(-100deg);
-}
-
 @media screen and (max-width: 767px) {
   .public-layout .header {
     margin-bottom: 70px;
