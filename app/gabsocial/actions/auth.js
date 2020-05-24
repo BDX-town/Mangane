@@ -11,6 +11,10 @@ export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
 export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
 export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 
+export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+export const RESET_PASSWORD_FAIL    = 'RESET_PASSWORD_FAIL';
+
 const hasAppToken = getState => getState().hasIn(['auth', 'app', 'access_token']);
 const noOp = () => () => new Promise(f => f());
 
@@ -145,6 +149,21 @@ export function register(params) {
 export function fetchCaptcha() {
   return (dispatch, getState) => {
     return api(getState).get('/api/pleroma/captcha');
+  };
+}
+
+export function resetPassword(nickNameOrEmail) {
+  return (dispatch, getState) => {
+    dispatch({ type: RESET_PASSWORD_REQUEST });
+    const params =
+      nickNameOrEmail.includes('@')
+        ? { email: nickNameOrEmail }
+        : { nickname: nickNameOrEmail };
+    return api(getState).post('/auth/password', params).then(() => {
+      dispatch({ type: RESET_PASSWORD_SUCCESS });
+    }).catch(error => {
+      dispatch({ type: RESET_PASSWORD_FAIL });
+    });
   };
 }
 
