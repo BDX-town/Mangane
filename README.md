@@ -3,6 +3,8 @@
 > :warning: soapbox-fe is BETA software.
 > Please take a look at the [list of open issues](https://gitlab.com/soapbox-pub/soapbox-fe/-/issues).
 
+![Soapbox FE Screenshot](soapbox-screenshot.png)
+
 **soapbox-fe** is an alternative frontend for Pleroma.
 It's part of the [Soapbox](https://soapbox.pub) project.
 
