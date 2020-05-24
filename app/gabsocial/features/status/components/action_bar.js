@@ -213,9 +213,13 @@ class ActionBar extends React.PureComponent {
     }
   }
 
+  setRef = c => {
+    this.node = c;
+  }
+
   componentDidMount() {
     document.addEventListener('click', e => {
-      if (!document.querySelector('.detailed-status__button--favourite').contains(e.target))
+      if (this.node && !this.node.contains(e.target))
         this.setState({ emojiSelectorVisible: false });
     });
   }
@@ -306,6 +310,7 @@ class ActionBar extends React.PureComponent {
           onMouseEnter={this.handleLikeButtonHover}
           onMouseLeave={this.handleLikeButtonLeave}
           onClick={this.handleLikeButtonClick}
+          ref={this.setRef}
         >
           <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
           <IconButton

@@ -106,12 +106,27 @@ class StatusActionBar extends ImmutablePureComponent {
     });
   }
 
+  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
+
   handleLikeButtonHover = e => {
-    this.setState({ emojiSelectorVisible: true });
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: true });
   }
 
   handleLikeButtonLeave = e => {
-    this.setState({ emojiSelectorVisible: false });
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: false });
+  }
+
+  handleLikeButtonClick = e => {
+    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
+    if (this.isMobile()) {
+      if (this.state.emojiSelectorVisible) {
+        this.handleReactClick(meEmojiReact)();
+      } else {
+        this.setState({ emojiSelectorVisible: true });
+      }
+    } else {
+      this.handleReactClick(meEmojiReact)();
+    }
   }
 
   handleReactClick = emoji => {
@@ -277,6 +292,17 @@ class StatusActionBar extends ImmutablePureComponent {
     return menu;
   }
 
+  setRef = c => {
+    this.node = c;
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', e => {
+      if (this.node && !this.node.contains(e.target))
+        this.setState({ emojiSelectorVisible: false });
+    });
+  }
+
   render() {
     const { status, intl } = this.props;
     const { emojiSelectorVisible } = this.state;
@@ -330,6 +356,8 @@ class StatusActionBar extends ImmutablePureComponent {
           className='status__action-bar__counter status__action-bar__counter--favourite'
           onMouseEnter={this.handleLikeButtonHover}
           onMouseLeave={this.handleLikeButtonLeave}
+          onClick={this.handleLikeButtonClick}
+          ref={this.setRef}
         >
           <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
           <IconButton
@@ -339,7 +367,6 @@ class StatusActionBar extends ImmutablePureComponent {
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            onClick={this.handleReactClick(meEmojiReact || '👍')}
           />
           {emojiReactCount !== 0 && <span className='detailed-status__link'>{emojiReactCount}</span>}
         </div>
