@@ -123,7 +123,16 @@ class ActionBar extends React.PureComponent {
   }
 
   handleLikeButtonClick = e => {
-    if (this.isMobile()) this.setState({ emojiSelectorVisible: true });
+    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
+    if (this.isMobile()) {
+      if (this.state.emojiSelectorVisible) {
+        this.handleReactClick(meEmojiReact)();
+      } else {
+        this.setState({ emojiSelectorVisible: true });
+      }
+    } else {
+      this.handleReactClick(meEmojiReact)();
+    }
   }
 
   handleReactClick = emoji => {
@@ -134,6 +143,7 @@ class ActionBar extends React.PureComponent {
       } else {
         this.props.onOpenUnauthorizedModal();
       }
+      this.setState({ emojiSelectorVisible: false });
     };
   }
 
@@ -305,7 +315,6 @@ class ActionBar extends React.PureComponent {
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            // onClick={this.handleReactClick(meEmojiReact || '👍')}
             text='Like'
           />
         </div>
