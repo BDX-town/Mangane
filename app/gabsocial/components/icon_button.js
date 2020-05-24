@@ -13,6 +13,8 @@ export default class IconButton extends React.PureComponent {
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     size: PropTypes.number,
     active: PropTypes.bool,
     pressed: PropTypes.bool,
@@ -36,6 +38,8 @@ export default class IconButton extends React.PureComponent {
     overlay: false,
     tabIndex: '0',
     onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
   };
 
   handleClick = (e) =>  {
@@ -90,6 +94,8 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
+          onMouseEnter={this.props.onMouseEnter}
+          onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
           disabled={disabled}
         >
@@ -113,6 +119,8 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}
             disabled={disabled}
           >

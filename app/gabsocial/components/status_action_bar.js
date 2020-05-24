@@ -137,6 +137,7 @@ class StatusActionBar extends ImmutablePureComponent {
       } else {
         this.props.onOpenUnauthorizedModal();
       }
+      this.setState({ emojiSelectorVisible: false });
     };
   }
 
@@ -356,7 +357,6 @@ class StatusActionBar extends ImmutablePureComponent {
           className='status__action-bar__counter status__action-bar__counter--favourite'
           onMouseEnter={this.handleLikeButtonHover}
           onMouseLeave={this.handleLikeButtonLeave}
-          onClick={this.handleLikeButtonClick}
           ref={this.setRef}
         >
           <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
@@ -367,6 +367,7 @@ class StatusActionBar extends ImmutablePureComponent {
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
+            onClick={this.handleLikeButtonClick}
           />
           {emojiReactCount !== 0 && <span className='detailed-status__link'>{emojiReactCount}</span>}
         </div>

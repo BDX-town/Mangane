@@ -309,7 +309,6 @@ class ActionBar extends React.PureComponent {
           className='detailed-status__button detailed-status__button--favourite'
           onMouseEnter={this.handleLikeButtonHover}
           onMouseLeave={this.handleLikeButtonLeave}
-          onClick={this.handleLikeButtonClick}
           ref={this.setRef}
         >
           <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
@@ -321,6 +320,7 @@ class ActionBar extends React.PureComponent {
             icon='thumbs-up'
             emoji={meEmojiReact}
             text='Like'
+            onClick={this.handleLikeButtonClick}
           />
         </div>
         {shareButton}
