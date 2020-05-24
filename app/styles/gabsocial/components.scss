@@ -1526,24 +1526,35 @@ a.account__display-name {
 .floating-action-button {
   z-index: 1000;
   display: none;
-  @media screen and (max-width: 895px) {display: flex;}
   position: fixed;
   bottom: 14px;
   right: 14px;
   width: 61px;
   height: 61px;
   background-color: $nav-ui-highlight-color;
-  border: none;
+  border: 0;
   border-radius: 999px;
   box-shadow: 2px 5px 5px #999;
   font-size: 30px;
+  align-items: center;
+  justify-content: center;
+
+  @media screen and (max-width: 895px) {
+    display: flex;
+  }
+
   &:hover,
   &:focus,
-  &:active {background-color: darken($nav-ui-highlight-color, 10%) !important;}
-  
-  .fa-pencil {
-      margin-right: 0;
-      transform: translate(1px, 2px);
+  &:active {
+    background-color: darken($nav-ui-highlight-color, 10%) !important;
+  }
+
+  i.fa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin: 0;
   }
 }
 
