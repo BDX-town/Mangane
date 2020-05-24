@@ -4,6 +4,7 @@ import spring from 'react-motion/lib/spring';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from 'gabsocial/components/icon';
+import emojify from 'gabsocial/features/emoji/emoji';
 
 export default class IconButton extends React.PureComponent {
 
@@ -12,6 +13,8 @@ export default class IconButton extends React.PureComponent {
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    onMouseEnter: PropTypes.func,
+    onMouseLeave: PropTypes.func,
     size: PropTypes.number,
     active: PropTypes.bool,
     pressed: PropTypes.bool,
@@ -23,6 +26,8 @@ export default class IconButton extends React.PureComponent {
     animate: PropTypes.bool,
     overlay: PropTypes.bool,
     tabIndex: PropTypes.string,
+    text: PropTypes.string,
+    emoji: PropTypes.string,
   };
 
   static defaultProps = {
@@ -32,6 +37,9 @@ export default class IconButton extends React.PureComponent {
     animate: false,
     overlay: false,
     tabIndex: '0',
+    onClick: () => {},
+    onMouseEnter: () => {},
+    onMouseLeave: () => {},
   };
 
   handleClick = (e) =>  {
@@ -64,6 +72,8 @@ export default class IconButton extends React.PureComponent {
       pressed,
       tabIndex,
       title,
+      text,
+      emoji,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -84,11 +94,17 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
-          style={style}
+          onMouseEnter={this.props.onMouseEnter}
+          onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
           disabled={disabled}
         >
-          <Icon id={icon} fixedWidth aria-hidden='true' />
+          <div style={style}>
+            {emoji
+              ? <div className='icon-button__emoji' dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
+              : <Icon id={icon} fixedWidth aria-hidden='true' />}
+          </div>
+          {text && <span className='icon_button__text'>{text}</span>}
         </button>
       );
     }
@@ -103,11 +119,17 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
-            style={style}
+            onMouseEnter={this.props.onMouseEnter}
+            onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}
             disabled={disabled}
           >
-            <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />
+            <div style={style}>
+              {emoji
+                ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
+                : <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
+            </div>
+            {text && <span className='icon_button__text'>{text}</span>}
           </button>
         )}
       </Motion>

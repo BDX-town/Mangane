@@ -8,6 +8,7 @@ import Permalink from '../../../components/permalink';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
 import Icon from 'gabsocial/components/icon';
+import emojify from 'gabsocial/features/emoji/emoji';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -141,19 +142,51 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderEmojiReact(notification, link) {
+    const { intl } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-emoji-react focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.emoji_react', defaultMessage: '{name} reacted to your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <span dangerouslySetInnerHTML={{ __html: emojify(emojify(notification.get('emoji'))) }} />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.emoji_react' defaultMessage='{name} reacted to your post' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.get('status')}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={!!this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderFavourite(notification, link) {
     const { intl } = this.props;
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-favourite focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.favourite', defaultMessage: '{name} favorited your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+        <div className='notification notification-favourite focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.favourite', defaultMessage: '{name} liked your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <Icon id='star' className='star-icon' fixedWidth />
+              <Icon id='thumbs-up' className='star-icon' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>
-              <FormattedMessage id='notification.favourite' defaultMessage='{name} favorited your post' values={{ name: link }} />
+              <FormattedMessage id='notification.favourite' defaultMessage='{name} liked your post' values={{ name: link }} />
             </span>
           </div>
 
@@ -254,6 +287,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderReblog(notification, link);
     case 'poll':
       return this.renderPoll(notification);
+    case 'pleroma:emoji_reaction':
+      return this.renderEmojiReact(notification, link);
     }
 
     return null;

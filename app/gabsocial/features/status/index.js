@@ -17,6 +17,7 @@ import {
   pin,
   unpin,
 } from '../../actions/interactions';
+import { simpleEmojiReact } from '../../actions/emoji_reacts';
 import {
   replyCompose,
   mentionCompose,
@@ -159,6 +160,10 @@ class Status extends ImmutablePureComponent {
 
   handleToggleMediaVisibility = () => {
     this.setState({ showMedia: !this.state.showMedia });
+  }
+
+  handleEmojiReactClick = (status, emoji) => {
+    this.props.dispatch(simpleEmojiReact(status, emoji));
   }
 
   handleFavouriteClick = (status) => {
@@ -496,6 +501,7 @@ class Status extends ImmutablePureComponent {
                 status={status}
                 onReply={this.handleReplyClick}
                 onFavourite={this.handleFavouriteClick}
+                onEmojiReact={this.handleEmojiReactClick}
                 onReblog={this.handleReblogClick}
                 onDelete={this.handleDeleteClick}
                 onDirect={this.handleDirectClick}

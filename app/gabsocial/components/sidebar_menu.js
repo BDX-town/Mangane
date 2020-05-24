@@ -131,7 +131,7 @@ class SidebarMenu extends ImmutablePureComponent {
                   <Icon id='dollar' />
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
                 </NavLink>
-              : ''}
+                : ''}
               <NavLink className='sidebar-menu-item' to='/lists' onClick={onClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>

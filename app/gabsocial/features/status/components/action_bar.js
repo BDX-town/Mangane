@@ -8,6 +8,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { isStaff } from 'gabsocial/utils/accounts';
+import EmojiSelector from 'gabsocial/components/emoji_selector';
+import { getReactForStatus } from 'gabsocial/utils/emoji_reacts';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -59,6 +61,7 @@ class ActionBar extends React.PureComponent {
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
+    onEmojiReact: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
     onDirect: PropTypes.func.isRequired,
     onMention: PropTypes.func.isRequired,
@@ -76,6 +79,10 @@ class ActionBar extends React.PureComponent {
 
   static defaultProps = {
     isStaff: false,
+  }
+
+  state = {
+    emojiSelectorVisible: false,
   }
 
   handleReplyClick = () => {
@@ -103,6 +110,41 @@ class ActionBar extends React.PureComponent {
     } else {
       this.props.onOpenUnauthorizedModal();
     }
+  }
+
+  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
+
+  handleLikeButtonHover = e => {
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: true });
+  }
+
+  handleLikeButtonLeave = e => {
+    if (!this.isMobile()) this.setState({ emojiSelectorVisible: false });
+  }
+
+  handleLikeButtonClick = e => {
+    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
+    if (this.isMobile()) {
+      if (this.state.emojiSelectorVisible) {
+        this.handleReactClick(meEmojiReact)();
+      } else {
+        this.setState({ emojiSelectorVisible: true });
+      }
+    } else {
+      this.handleReactClick(meEmojiReact)();
+    }
+  }
+
+  handleReactClick = emoji => {
+    return e => {
+      const { me } = this.props;
+      if (me) {
+        this.props.onEmojiReact(this.props.status, emoji);
+      } else {
+        this.props.onOpenUnauthorizedModal();
+      }
+      this.setState({ emojiSelectorVisible: false });
+    };
   }
 
   handleDeleteClick = () => {
@@ -171,11 +213,24 @@ class ActionBar extends React.PureComponent {
     }
   }
 
+  setRef = c => {
+    this.node = c;
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', e => {
+      if (this.node && !this.node.contains(e.target))
+        this.setState({ emojiSelectorVisible: false });
+    });
+  }
+
   render() {
     const { status, intl, me, isStaff } = this.props;
+    const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
+    const meEmojiReact = getReactForStatus(status);
 
     let menu = [];
 
@@ -232,9 +287,42 @@ class ActionBar extends React.PureComponent {
 
     return (
       <div className='detailed-status__action-bar'>
-        <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.reply)} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} /></div>
-        <div className='detailed-status__button'><IconButton disabled={reblog_disabled} active={status.get('reblogged')} title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} /></div>
-        <div className='detailed-status__button'><IconButton className='star-icon' animate active={status.get('favourited')} title={intl.formatMessage(messages.favourite)} icon='star' onClick={this.handleFavouriteClick} /></div>
+        <div className='detailed-status__button'>
+          <IconButton
+            title={intl.formatMessage(messages.reply)}
+            icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
+            onClick={this.handleReplyClick}
+            text={intl.formatMessage(messages.reply)}
+          />
+        </div>
+        <div className='detailed-status__button'>
+          <IconButton
+            disabled={reblog_disabled}
+            active={status.get('reblogged')}
+            title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+            icon={reblogIcon}
+            onClick={this.handleReblogClick}
+            text='Boost'
+          />
+        </div>
+        <div
+          className='detailed-status__button detailed-status__button--favourite'
+          onMouseEnter={this.handleLikeButtonHover}
+          onMouseLeave={this.handleLikeButtonLeave}
+          ref={this.setRef}
+        >
+          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          <IconButton
+            className='star-icon'
+            animate
+            active={Boolean(meEmojiReact)}
+            title={intl.formatMessage(messages.favourite)}
+            icon='thumbs-up'
+            emoji={meEmojiReact}
+            text='Like'
+            onClick={this.handleLikeButtonClick}
+          />
+        </div>
         {shareButton}
 
         <div className='detailed-status__action-bar-dropdown'>
