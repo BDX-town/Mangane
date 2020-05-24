@@ -1,10 +1,11 @@
 .sidebar-menu {
   display: flex;
-  position: absolute;
+  position: fixed;
   flex-direction: column;
   width: 275px;
-  height: auto;
+  height: 100vh;
   top: 0;
+  bottom: 0;
   left: 0;
   background-color: #fff;
   transform: translateX(-275px);
