@@ -192,7 +192,7 @@ const expandMentions = status => {
   const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;
 
   status.get('mentions').forEach(mention => {
-    fragment.querySelector(`a[href="/${mention.get('acct')}"]`).textContent = `@${mention.get('acct')}`;
+    fragment.querySelector(`a[href="${mention.get('url')}"]`).textContent = `@${mention.get('acct')}`;
   });
 
   return fragment.innerHTML;
