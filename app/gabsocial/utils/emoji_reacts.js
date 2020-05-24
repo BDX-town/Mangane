@@ -83,3 +83,20 @@ export const getReactForStatus = status => {
   ).filter(e => e.get('me') === true)
     .getIn([0, 'name']);
 };
+
+export const simulateEmojiReact = (emojiReacts, emoji) => {
+  const idx = emojiReacts.findIndex(e => e.get('name') === emoji);
+  if (idx > -1) {
+    const emojiReact = emojiReacts.get(idx);
+    return emojiReacts.set(idx, emojiReact.merge({
+      count: emojiReact.get('count') + 1,
+      me: true,
+    }));
+  } else {
+    return emojiReacts.push(ImmutableMap({
+      count: 1,
+      me: true,
+      name: emoji,
+    }));
+  }
+};

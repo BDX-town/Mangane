@@ -5,6 +5,7 @@ import {
   oneEmojiPerAccount,
   reduceEmoji,
   getReactForStatus,
+  simulateEmojiReact,
 } from '../emoji_reacts';
 import { fromJS } from 'immutable';
 
@@ -177,5 +178,30 @@ describe('getReactForStatus', () => {
       { 'count': 1,  'me': false, 'name': '🍩' },
     ]);
     expect(getReactForStatus(status)).toEqual(undefined);
+  });
+});
+
+describe('simulateEmojiReact', () => {
+  it('adds the emoji to the list', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+    ]);
+    expect(simulateEmojiReact(emojiReacts, '❤')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 3, 'me': true,  'name': '❤' },
+    ]));
+  });
+
+  it('creates the emoji if it didn\'t already exist', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+    ]);
+    expect(simulateEmojiReact(emojiReacts, '😯')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+      { 'count': 1, 'me': true,  'name': '😯' },
+    ]));
   });
 });
