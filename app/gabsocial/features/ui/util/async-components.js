@@ -173,3 +173,7 @@ export function Preferences() {
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
 }
+
+export function PasswordReset() {
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
+}

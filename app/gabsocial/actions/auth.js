@@ -162,7 +162,8 @@ export function resetPassword(nickNameOrEmail) {
     return api(getState).post('/auth/password', params).then(() => {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
     }).catch(error => {
-      dispatch({ type: RESET_PASSWORD_FAIL });
+      dispatch({ type: RESET_PASSWORD_FAIL, error });
+      throw error;
     });
   };
 }

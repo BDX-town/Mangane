@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { logIn } from 'gabsocial/actions/auth';
 import { fetchMe } from 'gabsocial/actions/me';
@@ -40,9 +41,9 @@ class LoginForm extends ImmutablePureComponent {
             <div className='input password optional user_password'>
               <input aria-label='Password' className='password optional' placeholder='Password' type='password' name='password' />
             </div>
-            {/* <p className='hint subtle-hint'>
-              <Link to='/auth/password/new'>Trouble logging in?</Link>
-            </p> */}
+            <p className='hint subtle-hint'>
+              <Link to='/auth/reset_password'>Trouble logging in?</Link>
+            </p>
           </div>
         </fieldset>
         <div className='actions'>

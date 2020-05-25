@@ -71,6 +71,7 @@ import {
   LoginPage,
   Preferences,
   EditProfile,
+  PasswordReset,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -191,9 +192,8 @@ class SwitchingColumnsArea extends React.PureComponent {
 
     return (
       <Switch>
-        {/* <WrappedRoute path='/' component={} publicRoute exact /> */}
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
-        {/* <WrappedRoute path='/auth/sign_out' component={LogoutForm} publicRoute exact /> */}
+        <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
