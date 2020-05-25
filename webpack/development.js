@@ -18,6 +18,7 @@ const backendEndpoints = [
   '/nodeinfo',
   '/socket',
   '/oauth',
+  '/auth/password',
   '/.well-known/webfinger',
   '/static',
   '/emoji',
