@@ -97,8 +97,10 @@ class ComposeForm extends ImmutablePureComponent {
     return clickableAreaRef ? clickableAreaRef.current : this.form;
   }
 
-  shouldCollapse = (e) => {
+  isClickOutside = (e) => {
     return ![
+      // List of elements that shouldn't collapse the composer when clicked
+      // FIXME: Make this less brittle
       this.getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
@@ -107,7 +109,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleClick = (e) => {
-    if (this.shouldCollapse(e)) {
+    if (this.isClickOutside(e)) {
       this.handleClickOutside();
     }
   }
