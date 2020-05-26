@@ -54,7 +54,6 @@ const initialState = ImmutableMap({
   text: '',
   focusDate: null,
   caretPosition: null,
-  preselectDate: null,
   in_reply_to: null,
   is_composing: false,
   is_submitting: false,
@@ -237,8 +236,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_CHANGE:
     return state
       .set('text', action.text)
-      .set('idempotencyKey', uuid())
-      .set('focusDate', new Date());
+      .set('idempotencyKey', uuid());
   case COMPOSE_COMPOSING_CHANGE:
     return state.set('is_composing', action.value);
   case COMPOSE_REPLY:
@@ -248,7 +246,6 @@ export default function compose(state = initialState, action) {
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
-      map.set('preselectDate', new Date());
       map.set('idempotencyKey', uuid());
 
       if (action.status.get('spoiler_text').length > 0) {

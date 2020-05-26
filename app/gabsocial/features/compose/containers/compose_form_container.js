@@ -19,13 +19,13 @@ const mapStateToProps = state => ({
   privacy: state.getIn(['compose', 'privacy']),
   focusDate: state.getIn(['compose', 'focusDate']),
   caretPosition: state.getIn(['compose', 'caretPosition']),
-  preselectDate: state.getIn(['compose', 'preselectDate']),
   isSubmitting: state.getIn(['compose', 'is_submitting']),
   isChangingUpload: state.getIn(['compose', 'is_changing_upload']),
   isUploading: state.getIn(['compose', 'is_uploading']),
   showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
   isModalOpen: state.get('modal').modalType === 'COMPOSE',
+  maxTootChars: state.getIn(['instance', 'max_toot_chars']),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import CharacterCounter from './character_counter';
 import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -32,19 +31,11 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
-const mapStateToProps = state => {
-  return {
-    maxTootChars: state.getIn(['instance', 'max_toot_chars']),
-  };
-};
-
-export default @connect(mapStateToProps)
-@injectIntl
+export default @injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
-    caretPosition: 0,
   }
 
   static contextTypes = {
@@ -60,7 +51,6 @@ class ComposeForm extends ImmutablePureComponent {
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
     caretPosition: PropTypes.number,
-    preselectDate: PropTypes.instanceOf(Date),
     isSubmitting: PropTypes.bool,
     isChangingUpload: PropTypes.bool,
     isUploading: PropTypes.bool,
@@ -87,9 +77,6 @@ class ComposeForm extends ImmutablePureComponent {
 
   handleChange = (e) => {
     this.props.onChange(e.target.value);
-    this.setState({
-      caretPosition: e.target.selectionStart,
-    });
   }
 
   handleComposeFocus = () => {
@@ -109,8 +96,10 @@ class ComposeForm extends ImmutablePureComponent {
     return clickableAreaRef ? clickableAreaRef.current : this.form;
   }
 
-  shouldCollapse = (e) => {
+  isClickOutside = (e) => {
     return ![
+      // List of elements that shouldn't collapse the composer when clicked
+      // FIXME: Make this less brittle
       this.getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
@@ -119,7 +108,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleClick = (e) => {
-    if (this.shouldCollapse(e)) {
+    if (this.isClickOutside(e)) {
       this.handleClickOutside();
     }
   }
@@ -168,41 +157,23 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onChangeSpoilerText(e.target.value);
   }
 
+  doFocus = () => {
+    if (!this.autosuggestTextarea) return;
+    this.autosuggestTextarea.textarea.focus();
+  }
+
+  setCursor = (start, end = start) => {
+    if (!this.autosuggestTextarea) return;
+    this.autosuggestTextarea.textarea.setSelectionRange(start, end);
+  }
+
   componentDidMount() {
     document.addEventListener('click', this.handleClick, true);
+    this.setCursor(this.props.text.length); // Set cursor at end
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick, true);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (!this.autosuggestTextarea) return;
-
-    // This statement does several things:
-    // - If we're beginning a reply, and,
-    //     - Replying to zero or one users, places the cursor at the end of the textbox.
-    //     - Replying to more than one user, selects any usernames past the first;
-    //       this provides a convenient shortcut to drop everyone else from the conversation.
-    let selectionEnd, selectionStart;
-    if (this.props.focusDate !== prevProps.focusDate) {
-
-      if (this.props.preselectDate !== prevProps.preselectDate) {
-        selectionEnd = this.props.text.length;
-        selectionStart = this.props.text.search(/\s/) + 1;
-      } else if (typeof this.state.caretPosition === 'number') {
-        selectionStart = this.state.caretPosition;
-        selectionEnd = this.state.caretPosition;
-      }
-      this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
-      this.autosuggestTextarea.textarea.focus();
-    } else {
-      if (this.props.preselectDate !== this.props.focusDate) {
-        selectionStart = selectionEnd = this.props.text.length + 1;
-        this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
-        this.autosuggestTextarea.textarea.focus();
-      }
-    }
   }
 
   setAutosuggestTextarea = (c) => {
