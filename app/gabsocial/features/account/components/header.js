@@ -8,6 +8,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Button from 'gabsocial/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isStaff } from 'gabsocial/utils/accounts';
+import { parseVersion } from 'gabsocial/utils/features';
 import classNames from 'classnames';
 import Avatar from 'gabsocial/components/avatar';
 import { shortNumberFormat } from 'gabsocial/utils/numbers';
@@ -54,6 +55,7 @@ const mapStateToProps = state => {
     me,
     isStaff: isStaff(state.getIn(['accounts', me])),
     autoPlayGif: getSettings(state).get('autoPlayGif'),
+    version: parseVersion(state.getIn(['instance','version'])),
   };
 };
 
@@ -70,6 +72,7 @@ class Header extends ImmutablePureComponent {
     username: PropTypes.string,
     autoPlayGif: PropTypes.bool,
     isStaff: PropTypes.bool.isRequired,
+    version: PropTypes.node,
   };
 
   static defaultProps = {
@@ -103,7 +106,7 @@ class Header extends ImmutablePureComponent {
   });
 
   makeMenu() {
-    const { account, intl, me, isStaff } = this.props;
+    const { account, intl, me, isStaff, version } = this.props;
 
     let menu = [];
 
@@ -137,6 +140,9 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
         menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
+      }
+      else if (version.software === 'Pleroma') {
+        menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
       }
 
       if (account.getIn(['relationship', 'muting'])) {
