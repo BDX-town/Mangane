@@ -158,54 +158,23 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onChangeSpoilerText(e.target.value);
   }
 
-  makeCursorData = opts => {
-    const { didFocus, isReply, didSuggestion } = opts;
-
-    // Mentions
-    if (didFocus && isReply) return [
-      this.props.text.search(/\s/) + 1,
-      this.props.text.length,
-    ];
-
-    // Autosuggestions
-    if (didFocus && didSuggestion) return [
-      this.props.caretPosition,
-    ];
-
-    // Delete & redraft
-    if (didFocus) return [
-      this.props.text.length,
-    ];
-
-    return false;
+  doFocus = () => {
+    if (!this.autosuggestTextarea) return;
+    this.autosuggestTextarea.textarea.focus();
   }
 
   setCursor = (start, end = start) => {
     if (!this.autosuggestTextarea) return;
     this.autosuggestTextarea.textarea.setSelectionRange(start, end);
-    this.autosuggestTextarea.textarea.focus();
-  }
-
-  updateCursor = prevProps => {
-    const cursorData = this.makeCursorData({
-      didFocus: this.props.focusDate !== prevProps.focusDate,
-      isReply: this.props.preselectDate !== prevProps.preselectDate,
-      didSuggestion: typeof this.props.caretPosition === 'number',
-    });
-
-    if (cursorData) this.setCursor(...cursorData);
   }
 
   componentDidMount() {
     document.addEventListener('click', this.handleClick, true);
+    this.setCursor(this.props.text.length); // Set cursor at end
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick, true);
-  }
-
-  componentDidUpdate(prevProps) {
-    this.updateCursor(prevProps);
   }
 
   setAutosuggestTextarea = (c) => {
