@@ -158,6 +158,44 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onChangeSpoilerText(e.target.value);
   }
 
+  makeCursorData = opts => {
+    const { didFocus, isReply, didSuggestion } = opts;
+
+    // Mentions
+    if (didFocus && isReply) return [
+      this.props.text.search(/\s/) + 1,
+      this.props.text.length,
+    ];
+
+    // Autosuggestions
+    if (didFocus && didSuggestion) return [
+      this.props.caretPosition,
+    ];
+
+    // Delete & redraft
+    if (didFocus) return [
+      this.props.text.length,
+    ];
+
+    return false;
+  }
+
+  setCursor = (start, end = start) => {
+    if (!this.autosuggestTextarea) return;
+    this.autosuggestTextarea.textarea.setSelectionRange(start, end);
+    this.autosuggestTextarea.textarea.focus();
+  }
+
+  updateCursor = prevProps => {
+    const cursorData = this.makeCursorData({
+      didFocus: this.props.focusDate !== prevProps.focusDate,
+      isReply: this.props.preselectDate !== prevProps.preselectDate,
+      didSuggestion: typeof this.props.caretPosition === 'number',
+    });
+
+    if (cursorData) this.setCursor(...cursorData);
+  }
+
   componentDidMount() {
     document.addEventListener('click', this.handleClick, true);
   }
@@ -167,30 +205,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (!this.autosuggestTextarea) return;
-
-    // This statement does several things:
-    // - If we're beginning a reply, and,
-    //     - Replying to zero or one users, places the cursor at the end of the textbox.
-    //     - Replying to more than one user, selects any usernames past the first;
-    //       this provides a convenient shortcut to drop everyone else from the conversation.
-    if (this.props.focusDate !== prevProps.focusDate) {
-      let selectionEnd, selectionStart;
-
-      if (this.props.preselectDate !== prevProps.preselectDate) {
-        selectionEnd   = this.props.text.length;
-        selectionStart = this.props.text.search(/\s/) + 1;
-      } else if (typeof this.props.caretPosition === 'number') {
-        selectionStart = this.props.caretPosition;
-        selectionEnd   = this.props.caretPosition;
-      } else {
-        selectionEnd   = this.props.text.length;
-        selectionStart = selectionEnd;
-      }
-
-      this.autosuggestTextarea.textarea.setSelectionRange(selectionStart, selectionEnd);
-      this.autosuggestTextarea.textarea.focus();
-    }
+    this.updateCursor(prevProps);
   }
 
   setAutosuggestTextarea = (c) => {
