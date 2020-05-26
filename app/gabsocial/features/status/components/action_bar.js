@@ -302,7 +302,7 @@ class ActionBar extends React.PureComponent {
             title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
             icon={reblogIcon}
             onClick={this.handleReblogClick}
-            text='Boost'
+            text='Repost'
           />
         </div>
         <div
