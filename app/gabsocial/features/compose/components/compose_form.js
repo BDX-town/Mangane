@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import CharacterCounter from './character_counter';
 import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -32,14 +31,7 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
-const mapStateToProps = state => {
-  return {
-    maxTootChars: state.getIn(['instance', 'max_toot_chars']),
-  };
-};
-
-export default @connect(mapStateToProps)
-@injectIntl
+export default @injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   state = {

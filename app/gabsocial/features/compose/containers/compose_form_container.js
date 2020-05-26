@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
   showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
   isModalOpen: state.get('modal').modalType === 'COMPOSE',
+  maxTootChars: state.getIn(['instance', 'max_toot_chars']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
