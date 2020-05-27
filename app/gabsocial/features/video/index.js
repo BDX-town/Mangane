@@ -410,7 +410,7 @@ class Video extends React.PureComponent {
         height = Math.floor(containerWidth / aspectRatio);
       }
 
-      playerStyle.height = height;
+      if (height) playerStyle.height = height;
     }
 
     let warning;
@@ -445,7 +445,7 @@ class Video extends React.PureComponent {
           aria-label={alt}
           title={alt}
           width={width}
-          height={height}
+          height={height || null}
           volume={volume}
           onClick={this.togglePlay}
           onPlay={this.handlePlay}

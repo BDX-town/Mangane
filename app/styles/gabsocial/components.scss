@@ -3628,6 +3628,8 @@ a.status-card.compact:hover {
   video {
     max-width: 100vw;
     max-height: 80vh;
+    min-height: 120px;
+    object-fit: contain;
     z-index: 1;
   }
 
