@@ -10,8 +10,6 @@ import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
 import { acctFull } from 'gabsocial/utils/accounts';
-import { fetchAccount, fetchAccountByUsername } from '../actions/accounts';
-import { fetchAccountIdentityProofs } from '../actions/identity_proofs';
 import { getFeatures } from 'gabsocial/utils/features';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
@@ -45,30 +43,18 @@ class ProfilePage extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map,
     accountUsername: PropTypes.string.isRequired,
-    features: PropTypes.node,
+    features: PropTypes.object,
   };
-
-  componentWillMount() {
-    const { params: { username }, accountId, me } = this.props;
-
-    if (accountId && accountId !== -1) {
-      this.props.dispatch(fetchAccount(accountId));
-      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
-    } else {
-      this.props.dispatch(fetchAccountByUsername(username));
-    }
-  }
 
   render() {
     const { children, accountId, account, accountUsername, features } = this.props;
-    if (!account) return null;
-    const bg = account.getIn(['customizations', 'background']);
+    const bg = account ? account.getIn(['customizations', 'background']) : undefined;
 
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
-        <Helmet>
+        {account && <Helmet>
           <title>@{acctFull(account)}</title>
-        </Helmet>
+        </Helmet>}
 
         <div className='page__top'>
           <HeaderContainer accountId={accountId} username={accountUsername} />

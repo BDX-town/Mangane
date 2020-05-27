@@ -72,7 +72,7 @@ class Header extends ImmutablePureComponent {
     username: PropTypes.string,
     autoPlayGif: PropTypes.bool,
     isStaff: PropTypes.bool.isRequired,
-    version: PropTypes.node,
+    version: PropTypes.object,
   };
 
   static defaultProps = {
