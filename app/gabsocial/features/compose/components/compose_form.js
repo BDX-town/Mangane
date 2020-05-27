@@ -32,6 +32,7 @@ const messages = defineMessages({
 });
 
 export default @injectIntl
+
 class ComposeForm extends ImmutablePureComponent {
 
   state = {
@@ -197,12 +198,13 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, spoiler, isModalOpen, maxTootChars } = this.props;
     const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
     const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
+    const shouldSpoilerAutoFocus = spoiler && !showSearch && !isMobile(window.innerWidth);
 
     let publishText = '';
 
@@ -235,6 +237,7 @@ class ComposeForm extends ImmutablePureComponent {
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
+            autoFocus={shouldSpoilerAutoFocus}
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='spoiler-input__input'

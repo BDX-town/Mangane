@@ -153,6 +153,12 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     this.input.focus();
   }
 
+  componentDidUpdate() {
+    if (this.props.autoFocus) {
+      this.input.focus();
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.suggestions !== this.props.suggestions && nextProps.suggestions.size > 0 && this.state.suggestionsHidden && this.state.focused) {
       this.setState({ suggestionsHidden: false });
