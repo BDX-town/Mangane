@@ -120,14 +120,7 @@ export default class IntersectionObserverArticle extends React.Component {
     }
 
     return (
-      <article
-        ref={this.handleRef}
-        aria-posinset={index + 1}
-        aria-setsize={listLength}
-        style={{ height: cachedHeight ? `${cachedHeight}px` : null }}
-        data-id={id}
-        tabIndex='0'
-      >
+      <article ref={this.handleRef} aria-posinset={index + 1} aria-setsize={listLength} data-id={id} tabIndex='0'>
         {children && React.cloneElement(children, { hidden: false })}
       </article>
     );
