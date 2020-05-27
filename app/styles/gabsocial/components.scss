@@ -1534,7 +1534,7 @@ a.account__display-name {
   background-color: $nav-ui-highlight-color;
   border: 0;
   border-radius: 999px;
-  box-shadow: 2px 5px 5px #999;
+  box-shadow: 2px 5px 5px rgba(0,0,0,0.5);
   font-size: 30px;
   align-items: center;
   justify-content: center;
