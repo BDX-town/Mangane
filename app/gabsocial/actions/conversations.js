@@ -42,7 +42,7 @@ export const expandConversations = ({ maxId } = {}) => (dispatch, getState) => {
   const params = { max_id: maxId };
 
   if (!maxId) {
-    params.since_id = getState().getIn(['conversations', 'items', 0, 'last_status']);
+    params.since_id = getState().getIn(['conversations', 'items', 0, 'id']);
   }
 
   const isLoadingRecent = !!params.since_id;

@@ -46,11 +46,8 @@ export default class ConversationsList extends ImmutablePureComponent {
   }
 
   handleLoadOlder = debounce(() => {
-    const last = this.props.conversations.last();
-
-    if (last && last.get('last_status')) {
-      this.props.onLoadMore(last.get('last_status'));
-    }
+    const maxId = this.props.conversations.getIn([-1, 'id']);
+    if (maxId) this.props.onLoadMore(maxId);
   }, 300, { leading: true })
 
   render() {
