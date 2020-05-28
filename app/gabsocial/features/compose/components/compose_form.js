@@ -21,6 +21,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
 import Icon from 'gabsocial/components/icon';
+import { get } from 'lodash';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -32,7 +33,6 @@ const messages = defineMessages({
 });
 
 export default @injectIntl
-
 class ComposeForm extends ImmutablePureComponent {
 
   state = {
@@ -197,14 +197,37 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onPickEmoji(position, data, needsSpace);
   }
 
+  focusSpoilerInput = () => {
+    const spoilerInput = get(this, ['spoilerText', 'input']);
+    if (spoilerInput) spoilerInput.focus();
+  }
+
+  focusTextarea = () => {
+    const textarea = get(this, ['autosuggestTextarea', 'textarea']);
+    if (textarea) textarea.focus();
+  }
+
+  maybeUpdateFocus = prevProps => {
+    const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
+    if (spoilerUpdated) {
+      switch (this.props.spoiler) {
+      case true: this.focusSpoilerInput(); break;
+      case false: this.focusTextarea(); break;
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    this.maybeUpdateFocus(prevProps);
+  }
+
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, spoiler, isModalOpen, maxTootChars } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
     const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
     const shouldAutoFocus = autoFocus && !showSearch && !isMobile(window.innerWidth);
-    const shouldSpoilerAutoFocus = spoiler && !showSearch && !isMobile(window.innerWidth);
 
     let publishText = '';
 
@@ -237,7 +260,6 @@ class ComposeForm extends ImmutablePureComponent {
             onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
-            autoFocus={shouldSpoilerAutoFocus}
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='spoiler-input__input'
