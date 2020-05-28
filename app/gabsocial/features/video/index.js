@@ -445,7 +445,7 @@ class Video extends React.PureComponent {
           aria-label={alt}
           title={alt}
           width={width}
-          height={height || null}
+          height={height || 300}
           volume={volume}
           onClick={this.togglePlay}
           onPlay={this.handlePlay}
