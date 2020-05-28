@@ -13,8 +13,6 @@
     <script id="css-chunks" type="application/json">[<%=
       compilation.getAssets()
       .filter(a => a.name.match(/^css\/(.*).css$/))
-      .filter(a => !a.name.startsWith('css/common'))
-      .filter(a => !a.name.startsWith('css/mailer'))
       .map(a => a.name.substr(4, a.name.length-14))
       .map(a => `"${a}"`)
       .join(',')
