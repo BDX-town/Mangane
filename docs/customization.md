@@ -28,7 +28,7 @@ The site logo and promo panel list items are customized by copying `soapbox.exam
 The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
 The logo colors are rendered in a color that provides contrast for the site theme.
 
-The `navlinks` section of the `soapbox.json` file references the links that are displayed at the bottom of the About, Terms of Service, Privacy Policy and Copyright Policy (DMCA) pages.
+The `navlinks` section of the `soapbox.json` file references the links that are displayed at the bottom of the Registration/Login, About, Terms of Service, Privacy Policy and Copyright Policy (DMCA) pages.
 
 After editing your HTML files and folder names, re-create the webpack and restart the soapbox-fe service to effect the changes.
 
