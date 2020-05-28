@@ -1,22 +1,39 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
+import { List as ImmutableList } from 'immutable';
 
-export default class Footer extends ImmutablePureComponent {
+const mapStateToProps = (state, props) => ({
+  copyright: state.getIn(['soapbox', 'copyright']),
+  navlinks: state.getIn(['soapbox', 'navlinks', 'homeFooter'], ImmutableList()),
+});
+
+export default @connect(mapStateToProps)
+class Footer extends ImmutablePureComponent {
+
+  static propTypes = {
+    copyright: PropTypes.string,
+    navlinks: ImmutablePropTypes.list,
+  }
 
   render() {
+    const { copyright, navlinks } = this.props;
+
     return (
       <div className='footer'>
         <div className='footer-container'>
           <div className='copyright'>
-            <span>♡{new Date().getFullYear()}. Copying is an act of love. Please copy and share.</span>
+            <span>{copyright}</span>
           </div>
           <ul>
-            <li><Link to='/about'>About</Link></li>
-            <li><Link to='/about/tos'>Terms of Service</Link></li>
-            <li><Link to='/about/privacy'>Privacy Policy</Link></li>
-            <li><Link to='/about/dmca'>DMCA</Link></li>
-            <li><Link to='/about#opensource'>Source Code</Link></li>
+            {navlinks.map((link, i) => (
+              <li key={i}>
+                <Link to={link.get('url')}>{link.get('title')}</Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

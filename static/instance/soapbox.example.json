@@ -16,6 +16,16 @@
   },
   "defaultSettings": {
     "autoPlayGif": false,
-    "theme": "lime"
+    "theme": "azure"
+  },
+  "copyright": "♡2020. Copying is an act of love. Please copy and share.",
+  "navlinks": {
+    "homeFooter": [
+      { "title": "About", "url": "/about" },
+      { "title": "Terms of Service", "url": "/about/tos" },
+      { "title": "Privacy Policy", "url": "/about/privacy" },
+      { "title": "DMCA", "url": "/about/dmca" },
+      { "title": "Source Code", "url": "/about#opensource" }
+    ]
   }
 }
