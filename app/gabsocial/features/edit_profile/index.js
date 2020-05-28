@@ -18,6 +18,7 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'gabsocial/actions/me';
+import { unescape } from 'lodash';
 
 const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
 
@@ -35,8 +36,15 @@ const mapStateToProps = state => {
 // Forces fields to be MAX_SIZE, filling empty values
 const normalizeFields = fields => (
   ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
-    field ? field : ImmutableMap({ name: undefined, value: undefined })
+    field ? field : ImmutableMap({ name: '', value: '' })
   )
+);
+
+// HTML unescape for special chars, eg <br>
+const unescapeParams = (map, params) => (
+  params.reduce((map, param) => (
+    map.set(param, unescape(map.get(param)))
+  ), map)
 );
 
 export default @connect(mapStateToProps)
@@ -107,13 +115,18 @@ class EditProfile extends ImmutablePureComponent {
     event.preventDefault();
   }
 
-  componentWillMount() {
-    const { account } = this.props;
-    const sourceData = account.get('source');
-    const accountData = account.merge(sourceData).delete('source');
-    const fields = normalizeFields(accountData.get('fields'));
-    const initialState = accountData.set('fields', fields);
+  setInitialState = () => {
+    const initialState = this.props.account.withMutations(map => {
+      map.merge(map.get('source'));
+      map.delete('source');
+      map.set('fields', normalizeFields(map.get('fields')));
+      unescapeParams(map, ['display_name', 'note']);
+    });
     this.setState(initialState.toObject());
+  }
+
+  componentWillMount() {
+    this.setInitialState();
   }
 
   handleCheckboxChange = e => {
