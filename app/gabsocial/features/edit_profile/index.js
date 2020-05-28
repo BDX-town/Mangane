@@ -40,6 +40,13 @@ const normalizeFields = fields => (
   )
 );
 
+// HTML unescape for special chars, eg <br>
+const unescapeParams = (map, params) => (
+  params.reduce((map, param) => (
+    map.set(param, unescape(map.get(param)))
+  ), map)
+);
+
 export default @connect(mapStateToProps)
 @injectIntl
 class EditProfile extends ImmutablePureComponent {
@@ -113,15 +120,11 @@ class EditProfile extends ImmutablePureComponent {
     const sourceData = account.get('source');
     const accountData = account.merge(sourceData).delete('source');
     const fields = normalizeFields(accountData.get('fields'));
-    const initialState = accountData.set('fields', fields);
+    const initialState = unescapeParams(
+      accountData.set('fields', fields),
+      ['display_name', 'note']
+    );
     this.setState(initialState.toObject());
-  }
-
-  componentDidMount() {
-    const display_name = unescape(this.state.display_name);
-    this.setState({ display_name: display_name });
-    const note = unescape(this.state.note);
-    this.setState({ note: note });
   }
 
   handleCheckboxChange = e => {
