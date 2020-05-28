@@ -61,7 +61,8 @@ class Item extends React.PureComponent {
 
   hoverToPlay() {
     const { attachment, autoPlayGif } = this.props;
-    return !autoPlayGif && attachment.get('type') === 'gifv';
+    return !autoPlayGif &&
+      (attachment.get('type') === 'gifv' || attachment.getIn(['pleroma', 'mime_type']) === 'image/gif');
   }
 
   handleClick = (e) => {
@@ -72,7 +73,7 @@ class Item extends React.PureComponent {
       e.preventDefault();
     } else {
       if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-        if (this.hoverToPlay()) {
+        if (!this.canvas && this.hoverToPlay()) {
           e.target.pause();
           e.target.currentTime = 0;
         }
@@ -112,8 +113,19 @@ class Item extends React.PureComponent {
     this.canvas = c;
   }
 
+  setImageRef = i => {
+    this.image = i;
+  }
+
   handleImageLoad = () => {
     this.setState({ loaded: true });
+    if (this.hoverToPlay()) {
+      const image = this.image;
+      const canvas = this.canvas;
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      canvas.getContext('2d').drawImage(image, 0, 0);
+    }
   }
 
   render() {
@@ -168,7 +180,7 @@ class Item extends React.PureComponent {
 
       thumbnail = (
         <a
-          className='media-gallery__item-thumbnail'
+          className={classNames('media-gallery__item-thumbnail', { 'media-gallery__item-thumbnail--play-on-hover': this.hoverToPlay() })}
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
@@ -181,7 +193,9 @@ class Item extends React.PureComponent {
             title={attachment.get('description')}
             style={{ objectPosition: `${x}% ${y}%` }}
             onLoad={this.handleImageLoad}
+            ref={this.setImageRef}
           />
+          {this.hoverToPlay() && <canvas ref={this.setCanvasRef} style={{ objectPosition: `${x}% ${y}%` }} />}
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
