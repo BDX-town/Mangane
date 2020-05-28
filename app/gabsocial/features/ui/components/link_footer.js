@@ -41,10 +41,7 @@ const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
       {account && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>}
       <li><a href='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></a> · </li>
       <li><a href='/settings/applications'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li>
-      <li><a href='/about/tos'><FormattedMessage id='getting_started.terms' defaultMessage='Terms of Service' /></a> · </li>
-      <li><a href='/about/dmca'><FormattedMessage id='getting_started.dmca' defaultMessage='DMCA' /></a> · </li>
-      <li><a href='/about/privacy'><FormattedMessage id='getting_started.privacy' defaultMessage='Privacy Policy' /></a></li>
-      {account && <li> · <Link to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
+      {account && <li><Link to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
     </ul>
 
     <p>
