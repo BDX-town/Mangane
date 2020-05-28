@@ -194,7 +194,7 @@ module.exports = {
       {
         devDependencies: [
           'webpack/**',
-          'app/gabsocial/test_setup.js',
+          'app/soapbox/test_setup.js',
           'app/**/__tests__/**',
         ],
       },

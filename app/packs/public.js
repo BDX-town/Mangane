@@ -1,9 +1,9 @@
 'use strict';
 
 import escapeTextContentForBrowser from 'escape-html';
-import loadPolyfills from '../gabsocial/load_polyfills';
-import ready from '../gabsocial/ready';
-import { start } from '../gabsocial/common';
+import loadPolyfills from '../soapbox/load_polyfills';
+import ready from '../soapbox/ready';
+import { start } from '../soapbox/common';
 
 start();
 
@@ -26,10 +26,10 @@ window.addEventListener('message', e => {
 function main() {
   const IntlMessageFormat = require('intl-messageformat').default;
   import('intl-pluralrules'); // eslint-disable-line
-  const { timeAgoString } = require('../gabsocial/components/relative_timestamp');
+  const { timeAgoString } = require('../soapbox/components/relative_timestamp');
   const { delegate } = require('rails-ujs');
-  const emojify = require('../gabsocial/features/emoji/emoji').default;
-  const { getLocale } = require('../gabsocial/locales');
+  const emojify = require('../soapbox/features/emoji/emoji').default;
+  const { getLocale } = require('../soapbox/locales');
   const { messages } = getLocale();
   //(Rjc) 2019-05-24 defined but never used
   // const React = require('react');
@@ -85,7 +85,7 @@ function main() {
     const reactComponents = document.querySelectorAll('[data-component]');
 
     if (reactComponents.length > 0) {
-      import(/* webpackChunkName: "containers/media_container" */ '../gabsocial/containers/media_container')
+      import(/* webpackChunkName: "containers/media_container" */ '../soapbox/containers/media_container')
         .then(({ default: MediaContainer }) => {
           [].forEach.call(reactComponents, (component) => {
             [].forEach.call(component.children, (child) => {
@@ -155,7 +155,7 @@ function main() {
       href = e.target.href;
     }
 
-    window.open(href, 'gabsocial-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
+    window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   });
 
   delegate(document, '#account_display_name', 'input', ({ target }) => {

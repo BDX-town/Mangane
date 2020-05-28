@@ -1,4 +1,4 @@
-@import 'gabsocial-light/variables';
+@import 'soapbox-light/variables';
 
 $gab-brand-default: #1ca82b;
 $gab-background-base-light: #fafff9;
@@ -9,7 +9,7 @@ $nav-ui-highlight-color: #69f31f;
 $ui-base-lighter-color: darken(#69f31f, 35%);
 
 @import 'application';
-@import 'gabsocial-light/diff';
+@import 'soapbox-light/diff';
 
 .public-layout .footer ul li a {
   color: lighten($gab-brand-default, 10%);

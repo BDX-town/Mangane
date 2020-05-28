@@ -1,4 +1,4 @@
-@import 'gabsocial-light/variables';
+@import 'soapbox-light/variables';
 
 $gab-brand-default: #34565c;
 $gab-background-base-light: #f6fbfb;
@@ -9,7 +9,7 @@ $nav-ui-highlight-color: #2da8be;
 $ui-base-lighter-color: darken(#2da8be, 35%);
 
 @import 'application';
-@import 'gabsocial-light/diff';
+@import 'soapbox-light/diff';
 
 .public-layout {
   background: $gab-brand-default url("../images/neenster/fish.gif");

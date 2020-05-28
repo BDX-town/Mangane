@@ -1,15 +1,15 @@
 'use strict';
 
-import loadPolyfills from '../gabsocial/load_polyfills';
-import { start } from '../gabsocial/common';
+import loadPolyfills from '../soapbox/load_polyfills';
+import { start } from '../soapbox/common';
 
 start();
 
 function loaded() {
-  const TimelineContainer = require('../gabsocial/containers/timeline_container').default;
+  const TimelineContainer = require('../soapbox/containers/timeline_container').default;
   const React             = require('react');
   const ReactDOM          = require('react-dom');
-  const mountNode         = document.getElementById('gabsocial-timeline');
+  const mountNode         = document.getElementById('soapbox-timeline');
 
   if (mountNode !== null) {
     const props = JSON.parse(mountNode.getAttribute('data-props'));
@@ -18,7 +18,7 @@ function loaded() {
 }
 
 function main() {
-  const ready = require('../gabsocial/ready').default;
+  const ready = require('../soapbox/ready').default;
   ready(loaded);
 }
 

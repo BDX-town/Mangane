@@ -10,8 +10,8 @@
 
 body::before,
 body.app-body::after,
-#gabsocial::before,
-#gabsocial::after {
+#soapbox::before,
+#soapbox::after {
   content: '';
   display: block;
   position: fixed;
@@ -41,7 +41,7 @@ body.app-body::after {
   animation: twinkle 200s linear infinite;
 }
 
-#gabsocial::before {
+#soapbox::before {
   background-image: radial-gradient(
     circle,
     transparent 0%,
@@ -50,7 +50,7 @@ body.app-body::after {
   );
 }
 
-#gabsocial::after {
+#soapbox::after {
   background: transparent url("../images/clouds.png") repeat top center;
   animation: clouds 200s linear infinite;
 }

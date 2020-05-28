@@ -1,10 +1,10 @@
-import loadPolyfills from '../gabsocial/load_polyfills';
-import { start } from '../gabsocial/common';
+import loadPolyfills from '../soapbox/load_polyfills';
+import { start } from '../soapbox/common';
 
 start();
 
 loadPolyfills().then(() => {
-  require('../gabsocial/main').default();
+  require('../soapbox/main').default();
 }).catch(e => {
   console.error(e);
 });
