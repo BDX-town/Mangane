@@ -16,7 +16,7 @@ import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import MissingIndicator from 'gabsocial/components/missing_indicator';
-import { getHasMoreFollowsCount } from 'gabsocial/utils/accounts';
+import { getFollowDifference } from 'gabsocial/utils/accounts';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const me = state.get('me');
@@ -31,7 +31,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
     accountId = account ? account.getIn(['id'], null) : -1;
   }
 
-  const hasMoreFollows = getHasMoreFollowsCount(state, accountId, false);
+  const diffCount = getFollowDifference(state, accountId, 'followers');
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
   const isLocked = state.getIn(['accounts', accountId, 'locked'], false);
   const isFollowing = state.getIn(['relationships', accountId, 'following'], false);
@@ -43,7 +43,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
     isAccount: !!state.getIn(['accounts', accountId]),
     accountIds: state.getIn(['user_lists', 'followers', accountId, 'items']),
     hasMore: !!state.getIn(['user_lists', 'followers', accountId, 'next']),
-    hasMoreFollows,
+    diffCount,
   };
 };
 
@@ -55,7 +55,7 @@ class Followers extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     accountIds: ImmutablePropTypes.list,
     hasMore: PropTypes.bool,
-    hasMoreFollows: PropTypes.number,
+    diffCount: PropTypes.number,
     isAccount: PropTypes.bool,
     unavailable: PropTypes.bool,
   };
@@ -85,8 +85,7 @@ class Followers extends ImmutablePureComponent {
   }, 300, { leading: true });
 
   render() {
-    const { accountIds, hasMore, hasMoreFollows, isAccount, accountId, unavailable } = this.props;
-    const isFollowing = false;
+    const { accountIds, hasMore, diffCount, isAccount, accountId, unavailable } = this.props;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -119,8 +118,7 @@ class Followers extends ImmutablePureComponent {
         <ScrollableList
           scrollKey='followers'
           hasMore={hasMore}
-          hasMoreFollows={hasMoreFollows}
-          isFollowing={isFollowing}
+          diffCount={diffCount}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='account.followers.empty' defaultMessage='No one follows this user yet.' />}
         >

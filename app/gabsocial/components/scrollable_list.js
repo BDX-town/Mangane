@@ -22,14 +22,13 @@ export default class ScrollableList extends PureComponent {
     isLoading: PropTypes.bool,
     showLoading: PropTypes.bool,
     hasMore: PropTypes.bool,
-    hasMoreFollows: PropTypes.number,
+    diffCount: PropTypes.number,
     prepend: PropTypes.node,
     alwaysPrepend: PropTypes.bool,
     emptyMessage: PropTypes.node,
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
-    isFollowing: PropTypes.bool,
   };
 
   state = {
@@ -207,14 +206,22 @@ export default class ScrollableList extends PureComponent {
     this.props.onLoadMore();
   }
 
-  render() {
-    const { children, scrollKey, showLoading, isLoading, hasMore, hasMoreFollows, isFollowing, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
-    const childrenCount = React.Children.count(children);
+  getMoreFollows = () => {
+    const { scrollKey, isLoading, diffCount } = this.props;
+    const isMoreFollows = ['followers', 'following'].some(k => k === scrollKey);
+    if (!(diffCount && isMoreFollows)) return null;
 
+    return (
+      <MoreFollows visible={!isLoading} count={diffCount} type={scrollKey} />
+    );
+  }
+
+  render() {
+    const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
+    const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
 
     const loadMore     = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
-    const moreFollows = (hasMoreFollows !== undefined && isFollowing !== undefined) ? <MoreFollows visible={!isLoading} moreFollows={hasMoreFollows} isFollowing={isFollowing} /> : null;
     let scrollableArea = null;
 
     if (showLoading) {
@@ -252,7 +259,7 @@ export default class ScrollableList extends PureComponent {
                 })}
               </IntersectionObserverArticleContainer>
             ))}
-            {moreFollows}
+            {this.getMoreFollows()}
             {loadMore}
           </div>
         </div>
