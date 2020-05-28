@@ -1,5 +1,5 @@
 azure: styles/azure.scss
-purple: styles/gabsocial-light.scss
+purple: styles/soapbox-light.scss
 purple-dark: styles/application.scss
 purple-contrast: styles/contrast.scss
 halloween: styles/halloween.scss

@@ -4,7 +4,7 @@
 files:
   include: app/styles/**/*.scss
   ignore:
-    - app/styles/gabsocial/reset.scss
+    - app/styles/soapbox/reset.scss
 
 rules:
   # Disallows

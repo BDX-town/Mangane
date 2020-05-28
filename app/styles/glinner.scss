@@ -1,4 +1,4 @@
-@import 'gabsocial-light/variables';
+@import 'soapbox-light/variables';
 
 $glinner-yellow:  #fff360;
 $glinner-orange:  #ffa254;
@@ -23,7 +23,7 @@ $ui-base-lighter-color:     darken($glinner-orange, 35%);
 $bg-size: 720px;
 
 @import 'application';
-@import 'gabsocial-light/diff';
+@import 'soapbox-light/diff';
 
 body {
   background-color: #bcbb65;

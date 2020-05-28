@@ -6,7 +6,7 @@ const { default: manageTranslations, readMessageFiles  } = require('react-intl-t
 const RFC5646_REGEXP = /^[a-z]{2,3}(?:-(?:x|[A-Za-z]{2,4}))*$/;
 
 const rootDirectory = path.resolve(__dirname, '..');
-const translationsDirectory = path.resolve(rootDirectory, 'app', 'gabsocial', 'locales');
+const translationsDirectory = path.resolve(rootDirectory, 'app', 'soapbox', 'locales');
 const messagesDirectory = path.resolve(rootDirectory, 'build', 'messages');
 const availableLanguages = fs.readdirSync(translationsDirectory).reduce((languages, filename) => {
   const basename = path.basename(filename, '.json');

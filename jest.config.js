@@ -1,6 +1,6 @@
 module.exports = {
   'projects': [
-    '<rootDir>/app/gabsocial',
+    '<rootDir>/app/soapbox',
   ],
   'testPathIgnorePatterns': [
     '<rootDir>/node_modules/',
@@ -13,21 +13,21 @@ module.exports = {
 
     // Temporarily disable these tests
     // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/34
-    '<rootDir>/app/gabsocial/components/__tests__/avatar-test.js',
-    '<rootDir>/app/gabsocial/components/__tests__/avatar_overlay-test.js',
+    '<rootDir>/app/soapbox/components/__tests__/avatar-test.js',
+    '<rootDir>/app/soapbox/components/__tests__/avatar_overlay-test.js',
   ],
   'setupFiles': [
     'raf/polyfill',
   ],
   'setupFilesAfterEnv': [
-    '<rootDir>/app/gabsocial/test_setup.js',
+    '<rootDir>/app/soapbox/test_setup.js',
   ],
   'collectCoverageFrom': [
-    'app/gabsocial/**/*.js',
-    '!app/gabsocial/features/emoji/emoji_compressed.js',
-    '!app/gabsocial/locales/locale-data/*.js',
-    '!app/gabsocial/service_worker/entry.js',
-    '!app/gabsocial/test_setup.js',
+    'app/soapbox/**/*.js',
+    '!app/soapbox/features/emoji/emoji_compressed.js',
+    '!app/soapbox/locales/locale-data/*.js',
+    '!app/soapbox/service_worker/entry.js',
+    '!app/soapbox/test_setup.js',
   ],
   'coverageDirectory': '<rootDir>/coverage',
   'moduleDirectories': [
