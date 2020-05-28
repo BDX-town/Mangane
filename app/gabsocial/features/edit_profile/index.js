@@ -36,7 +36,7 @@ const mapStateToProps = state => {
 // Forces fields to be MAX_SIZE, filling empty values
 const normalizeFields = fields => (
   ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
-    field ? field : ImmutableMap({ name: undefined, value: undefined })
+    field ? field : ImmutableMap({ name: '', value: '' })
   )
 );
 
