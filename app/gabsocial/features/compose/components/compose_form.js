@@ -21,6 +21,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
 import Icon from 'gabsocial/components/icon';
+import { get } from 'lodash';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -194,6 +195,30 @@ class ComposeForm extends ImmutablePureComponent {
     const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
+  }
+
+  focusSpoilerInput = () => {
+    const spoilerInput = get(this, ['spoilerText', 'input']);
+    if (spoilerInput) spoilerInput.focus();
+  }
+
+  focusTextarea = () => {
+    const textarea = get(this, ['autosuggestTextarea', 'textarea']);
+    if (textarea) textarea.focus();
+  }
+
+  maybeUpdateFocus = prevProps => {
+    const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
+    if (spoilerUpdated) {
+      switch (this.props.spoiler) {
+      case true: this.focusSpoilerInput(); break;
+      case false: this.focusTextarea(); break;
+      }
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    this.maybeUpdateFocus(prevProps);
   }
 
   render() {
