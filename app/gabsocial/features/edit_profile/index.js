@@ -18,6 +18,7 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'gabsocial/actions/me';
+import { unescape } from 'lodash';
 
 const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
 
@@ -114,6 +115,13 @@ class EditProfile extends ImmutablePureComponent {
     const fields = normalizeFields(accountData.get('fields'));
     const initialState = accountData.set('fields', fields);
     this.setState(initialState.toObject());
+  }
+
+  componentDidMount() {
+    const display_name = unescape(this.state.display_name);
+    this.setState({ display_name: display_name });
+    const note = unescape(this.state.note);
+    this.setState({ note: note });
   }
 
   handleCheckboxChange = e => {
