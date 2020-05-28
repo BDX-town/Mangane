@@ -38,9 +38,9 @@ const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
     <ul>
       {(invitesEnabled && account) && <li><a href='/invites'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
       {account && <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a> · </li>}
-      {account && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>}
+      {/* {account && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>} */}
       <li><a href='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></a> · </li>
-      <li><a href='/settings/applications'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li>
+      {/* <li><a href='/settings/applications'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li> */}
       {account && <li><Link to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
     </ul>
 
