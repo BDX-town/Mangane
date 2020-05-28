@@ -57,6 +57,8 @@ class ModalRoot extends React.PureComponent {
         onConfirm: () => onCancelReplyCompose(),
         onCancel: () => onOpenModal('COMPOSE'),
       });
+    } else if (composeText && type === 'CONFIRM') {
+      onOpenModal('COMPOSE');
     } else {
       this.props.onClose();
     }
