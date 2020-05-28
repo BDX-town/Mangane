@@ -13,7 +13,7 @@ const defaultSettings = ImmutableMap({
 
   skinTone: 1,
   reduceMotion: false,
-  autoPlayGif: false,
+  autoPlayGif: true,
   displayMedia: true,
   expandSpoilers: false,
   unfollowModal: false,
