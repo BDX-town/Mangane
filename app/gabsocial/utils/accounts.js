@@ -1,4 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 
 export const getDomain = account => {
   let re = /https?:\/\/(.*?)\//i;
@@ -28,3 +29,18 @@ export const isAdmin = account => (
 export const isModerator = account => (
   account.getIn(['pleroma', 'is_moderator']) === true
 );
+
+export const getHasMoreFollowsCount = (state, accountId, isFollowing) => {
+  let moreFollowsCount = undefined; //variable text in defaultMessage with null value preventing rendering
+  let emptyList = ImmutableList();
+  if (isFollowing) {
+    let followingList = ImmutableList();
+    followingList = state.getIn(['user_lists', 'following', accountId, 'items'], emptyList);
+    moreFollowsCount = parseInt(state.getIn(['accounts_counters', accountId, 'following_count']), 0) - followingList.size;
+  } else {
+    let followersList = ImmutableList();
+    followersList = state.getIn(['user_lists', 'followers', accountId, 'items'], emptyList);
+    moreFollowsCount = parseInt(state.getIn(['accounts_counters', accountId, 'followers_count']), 0) - followersList.size;
+  }
+  return moreFollowsCount;
+};

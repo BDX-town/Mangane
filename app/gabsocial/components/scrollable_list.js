@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
 import LoadMore from './load_more';
+import MoreFollows from './more_follows';
 import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
 import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
@@ -21,16 +22,18 @@ export default class ScrollableList extends PureComponent {
     isLoading: PropTypes.bool,
     showLoading: PropTypes.bool,
     hasMore: PropTypes.bool,
+    hasMoreFollows: PropTypes.number,
     prepend: PropTypes.node,
     alwaysPrepend: PropTypes.bool,
     emptyMessage: PropTypes.node,
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
+    isFollowing: PropTypes.bool,
   };
 
   state = {
-    cachedMediaWidth: 250, // Default media/card width using default Gab Social theme
+    cachedMediaWidth: 250, // Default media/card width using default theme
   };
 
   intersectionObserverWrapper = new IntersectionObserverWrapper();
@@ -205,12 +208,13 @@ export default class ScrollableList extends PureComponent {
   }
 
   render() {
-    const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
+    const { children, scrollKey, showLoading, isLoading, hasMore, hasMoreFollows, isFollowing, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
     const childrenCount = React.Children.count(children);
 
     const trackScroll = true; //placeholder
 
     const loadMore     = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
+    const moreFollows = (hasMoreFollows !== undefined && isFollowing !== undefined) ? <MoreFollows visible={!isLoading} moreFollows={hasMoreFollows} isFollowing={isFollowing} /> : null;
     let scrollableArea = null;
 
     if (showLoading) {
@@ -248,7 +252,7 @@ export default class ScrollableList extends PureComponent {
                 })}
               </IntersectionObserverArticleContainer>
             ))}
-
+            {moreFollows}
             {loadMore}
           </div>
         </div>
