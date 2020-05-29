@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { profile_directory } from '../../initial_state';
 import { fetchFollowRequests } from 'soapbox/actions/accounts';
 import { List as ImmutableList } from 'immutable';
 import NavigationBar from '../compose/components/navigation_bar';
@@ -31,7 +30,6 @@ const messages = defineMessages({
   personal: { id: 'navigation_bar.personal', defaultMessage: 'Personal' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   menu: { id: 'getting_started.heading', defaultMessage: 'Getting started' },
-  profile_directory: { id: 'getting_started.directory', defaultMessage: 'Profile directory' },
 });
 
 const mapStateToProps = state => {
@@ -103,25 +101,11 @@ class GettingStarted extends ImmutablePureComponent {
 
       height += 34 + 48*2;
 
-      if (profile_directory) {
-        navItems.push(
-          <ColumnLink key={i++} icon='address-book' text={intl.formatMessage(messages.profile_directory)} href='/explore' />
-        );
-
-        height += 48;
-      }
-
       navItems.push(
         <ColumnSubheading key={i++} text={intl.formatMessage(messages.personal)} />
       );
 
       height += 34;
-    } else if (profile_directory) {
-      navItems.push(
-        <ColumnLink key={i++} icon='address-book' text={intl.formatMessage(messages.profile_directory)} href='/explore' />
-      );
-
-      height += 48;
     }
 
     navItems.push(
