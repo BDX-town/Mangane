@@ -50,6 +50,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
+    displayMedia: getSettings(state).get('displayMedia'),
   });
 
   return mapStateToProps;

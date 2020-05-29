@@ -1,14 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { fromJS, is } from 'immutable';
 import { throttle } from 'lodash';
 import classNames from 'classnames';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
-import { displayMedia } from '../../initial_state';
 import Icon from 'soapbox/components/icon';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
+import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },
@@ -87,7 +88,12 @@ export const getPointerPosition = (el, event) => {
   return position;
 };
 
-export default @injectIntl
+const mapStateToProps = state => ({
+  displayMedia: getSettings(state).get('displayMedia'),
+});
+
+export default @connect(mapStateToProps)
+@injectIntl
 class Video extends React.PureComponent {
 
   static propTypes = {
@@ -109,6 +115,7 @@ class Video extends React.PureComponent {
     blurhash: PropTypes.string,
     link: PropTypes.node,
     aspectRatio: PropTypes.number,
+    displayMedia: PropTypes.string,
   };
 
   state = {
@@ -121,7 +128,7 @@ class Video extends React.PureComponent {
     fullscreen: false,
     hovered: false,
     muted: false,
-    revealed: this.props.visible !== undefined ? this.props.visible : (displayMedia !== 'hide_all' && !this.props.sensitive || displayMedia === 'show_all'),
+    revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
   };
 
   // hard coded in components.scss

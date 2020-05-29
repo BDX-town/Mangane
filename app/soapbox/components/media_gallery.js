@@ -7,7 +7,6 @@ import IconButton from './icon_button';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
 import classNames from 'classnames';
-import { displayMedia } from '../initial_state';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
@@ -17,11 +16,11 @@ const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
 });
 
-const mapStateToProps = state => ({
+const mapStateToItemProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
 });
 
-@connect(mapStateToProps)
+@connect(mapStateToItemProps)
 class Item extends React.PureComponent {
 
   static propTypes = {
@@ -238,7 +237,12 @@ class Item extends React.PureComponent {
 
 }
 
-export default @injectIntl
+const mapStateToMediaGalleryProps = state => ({
+  displayMedia: getSettings(state).get('displayMedia'),
+});
+
+export default @connect(mapStateToMediaGalleryProps)
+@injectIntl
 class MediaGallery extends React.PureComponent {
 
   static propTypes = {
@@ -253,6 +257,7 @@ class MediaGallery extends React.PureComponent {
     cacheWidth: PropTypes.func,
     visible: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
+    displayMedia: PropTypes.string,
   };
 
   static defaultProps = {
@@ -260,11 +265,12 @@ class MediaGallery extends React.PureComponent {
   };
 
   state = {
-    visible: this.props.visible !== undefined ? this.props.visible : (displayMedia !== 'hide_all' && !this.props.sensitive || displayMedia === 'show_all'),
+    visible: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
     width: this.props.defaultWidth,
   };
 
   componentWillReceiveProps(nextProps) {
+    const { displayMedia } = this.props;
     if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
       this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
     } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {

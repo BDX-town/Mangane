@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
-import { displayMedia } from 'soapbox/initial_state';
 import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isIOS } from 'soapbox/is_mobile';
@@ -12,6 +11,7 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
+  displayMedia: getSettings(state).get('displayMedia'),
 });
 
 export default @connect(mapStateToProps)
@@ -22,10 +22,11 @@ class MediaItem extends ImmutablePureComponent {
     displayWidth: PropTypes.number.isRequired,
     onOpenMedia: PropTypes.func.isRequired,
     autoPlayGif: PropTypes.bool,
+    displayMedia: PropTypes.string,
   };
 
   state = {
-    visible: displayMedia !== 'hide_all' && !this.props.attachment.getIn(['status', 'sensitive']) || displayMedia === 'show_all',
+    visible: this.props.displayMedia !== 'hide_all' && !this.props.attachment.getIn(['status', 'sensitive']) || this.props.displayMedia === 'show_all',
     loaded: false,
   };
 

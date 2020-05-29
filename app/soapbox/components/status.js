@@ -17,7 +17,6 @@ import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
-import { displayMedia } from '../initial_state';
 import { NavLink } from 'react-router-dom';
 
 // We use the component (and not the container) since we do not want
@@ -41,7 +40,7 @@ export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   return values.join(', ');
 };
 
-export const defaultMediaVisibility = (status) => {
+export const defaultMediaVisibility = (status, displayMedia) => {
   if (!status) {
     return undefined;
   }
@@ -89,6 +88,7 @@ class Status extends ImmutablePureComponent {
     cacheMediaWidth: PropTypes.func,
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
+    displayMedia: PropTypes.string,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -101,7 +101,7 @@ class Status extends ImmutablePureComponent {
   ];
 
   state = {
-    showMedia: defaultMediaVisibility(this.props.status),
+    showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
   };
 

@@ -14,7 +14,7 @@ const defaultSettings = ImmutableMap({
   skinTone: 1,
   reduceMotion: false,
   autoPlayGif: true,
-  displayMedia: true,
+  displayMedia: 'default',
   expandSpoilers: false,
   unfollowModal: false,
   boostModal: false,

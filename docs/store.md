@@ -11,7 +11,7 @@ Due to the large size of the Redux store in soapbox-fe, it's worth documenting t
 If it's not documented, it's because I inherited it from Mastodon and I don't know what it does yet.
 
 - `dropdown_menu`
-    
+
     Sample:
     ```
   dropdown_menu: {
@@ -22,7 +22,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `timelines`
-    
+
     Sample:
     ```
   timelines: {
@@ -49,8 +49,8 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   }
     ```
 
-- `meta` - User-specific data that is _not_ a frontend setting (see: `settings`). 
-    
+- `meta` - User-specific data that is _not_ a frontend setting (see: `settings`).
+
     Sample:
     ```
     meta: {
@@ -98,7 +98,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
 - `pleroma` - Pleroma specific metadata about the user pulled from `/api/v1/accounts/verify_credentials` (excluding the pleroma_settings_store)
 
 - `alerts`
-    
+
     Sample:
     ```
   alerts: []
@@ -114,7 +114,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `modal`
-    
+
     Sample:
     ```
   modal: {
@@ -123,7 +123,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   }
     ```
 - `user_lists`
-    
+
     Sample:
     ```
    user_lists: {
@@ -140,7 +140,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `domain_lists`
-    
+
     Sample:
     ```
   domain_lists: {
@@ -151,7 +151,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `status_lists`
-    
+
     Sample:
     ```
   status_lists: {
@@ -170,8 +170,8 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
   }
     ```
-- `accounts` - Data for all accounts you've viewed since launching the page, so they don't have to be downloaded twice. 
-    
+- `accounts` - Data for all accounts you've viewed since launching the page, so they don't have to be downloaded twice.
+
     Sample:
     ```
     accounts: {
@@ -248,7 +248,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `accounts_counters`
-    
+
     Sample:
     ```
   accounts_counters: {
@@ -271,7 +271,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `statuses` - Data for all statuses you've viewed since launching the page, so they don't have to be downloaded twice.
-    
+
     Sample:
     ```
     statuses: {
@@ -349,21 +349,21 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
      }
     }
     ```
-    
+
 - `relationships`
-    
+
     Sample:
     ```
   relationships: {}
     ```
 
 - `settings` - Any frontend configuration values that should be persisted to the backend database. This includes user preferences as well as metadata such as emoji usage counters. It uses [`pleroma_settings_store`](https://docs-develop.pleroma.social/backend/API/differences_in_mastoapi_responses/#accounts) to do it if it's available. If there's some other endpoint that handles your value, it doesn't belong here.
-    
+
     Sample:
     ```
     settings: {
      autoPlayGif: true,
-     displayMedia: true,
+     displayMedia: 'default',
      deleteModal: true,
      unfollowModal: false,
      frequentlyUsedEmojis: {
@@ -461,9 +461,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
      }
    }
     ```
-    
+
 - `push_notifications`
-    
+
     Sample:
     ```
   push_notifications: {
@@ -480,7 +480,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   }
     ```
 - `mutes`
-    
+
     Sample:
     ```
   mutes: {
@@ -491,9 +491,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
   }
     ```
-    
+
 - `reports`
-    
+
     Sample:
     ```
   reports: {
@@ -544,7 +544,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
     ```
 - `compose`
-    
+
     Sample:
     ```
   compose: {
@@ -577,7 +577,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `search`
-    
+
     Sample:
     ```
   search: {
@@ -588,7 +588,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   }
     ```
 - `media_attachments`
-    
+
     Sample:
     ```
   media_attachments: {
@@ -612,9 +612,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ]
   }
     ```
-    
+
 - `notifications`
-    
+
     Sample:
     ```
     notifications: {
@@ -651,8 +651,8 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
     ```
 
-- `height_cache` 
-    
+- `height_cache`
+
     Sample:
     ```
     height_cache: {
@@ -667,7 +667,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `custom_emojis`
-    
+
     Sample:
     ```
   custom_emojis: [
@@ -694,18 +694,18 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
   ]
     ```
-    
+
 - `identity_proofs`
 
 - `lists`
-    
+
     Sample:
     ```
   lists: {},
     ```
 
 - `listEditor`
-    
+
     Sample:
     ```
   listEditor: {
@@ -725,7 +725,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
   }
     ```
 - `listAdder`
-    
+
     Sample:
     ```
   listAdder: {
@@ -739,14 +739,14 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `filters`
-    
+
     Sample:
     ```
   filters: [],
     ```
 
 - `conversations`
-    
+
     Sample:
     ```
   conversations: {
@@ -758,7 +758,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `suggestions`
-    
+
     Sample:
     ```
   suggestions: {
@@ -768,7 +768,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `polls`
-    
+
     Sample:
     ```
   polls: {}
@@ -784,20 +784,20 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `groups`
-    
+
     Sample:
     ```
   groups: {}
     ```
 - `group_relationships`
-    
+
     Sample:
     ```
   group_relationships: {}
     ```
-    
+
 - `group_lists`
-    
+
     Sample:
     ```
   group_lists: {
@@ -806,9 +806,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     admin: []
   }
     ```
-    
+
 - `group_editor`
-    
+
     Sample:
     ```
   group_editor: {
@@ -822,21 +822,21 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `sidebar`
-    
+
     Sample:
     ```
   sidebar: {}
     ```
 
 - `patron` - Data related to [soapbox-patron](https://gitlab.com/soapbox-pub/soapbox-patron)
-    
+
     Sample:
     ```
   patron: {}
     ```
 
-- `soapbox` - Soapbox specific configuration pulled from `/instance/soapbox.json`. The configuration file isn't required and this map can be empty. 
-    
+- `soapbox` - Soapbox specific configuration pulled from `/instance/soapbox.json`. The configuration file isn't required and this map can be empty.
+
     Sample:
     ```
     soapbox: {
@@ -857,7 +857,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     ```
 
 - `instance` - Instance data pulled from `/api/v1/instance`
-    
+
     Sample:
     ```
   instance: {
@@ -892,16 +892,16 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
     }
   }
     ```
-    
+
 - `me` - The account ID of the currently logged in user, 'null' if loading, and 'false' if no user is logged in.
-    
+
     Sample:
     ```
   me: '9to1NPyS98J8cdicRE'
     ```
 
 - `auth` - Data used for authentication
-    
+
     Sample:
     ```
   auth: {
