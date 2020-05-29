@@ -7,6 +7,7 @@ import {
   REPORT_STATUS_TOGGLE,
   REPORT_COMMENT_CHANGE,
   REPORT_FORWARD_CHANGE,
+  REPORT_BLOCK_CHANGE,
 } from '../actions/reports';
 import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
 
@@ -17,6 +18,7 @@ const initialState = ImmutableMap({
     status_ids: ImmutableSet(),
     comment: '',
     forward: false,
+    block: false,
   }),
 });
 
@@ -46,6 +48,8 @@ export default function reports(state = initialState, action) {
     return state.setIn(['new', 'comment'], action.comment);
   case REPORT_FORWARD_CHANGE:
     return state.setIn(['new', 'forward'], action.forward);
+  case REPORT_BLOCK_CHANGE:
+      return state.setIn(['new', 'block'], action.block);
   case REPORT_SUBMIT_REQUEST:
     return state.setIn(['new', 'isSubmitting'], true);
   case REPORT_SUBMIT_FAIL:

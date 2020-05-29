@@ -2700,6 +2700,14 @@
       {
         "defaultMessage": "Forward to {target}",
         "id": "report.forward"
+      },
+      {
+        "defaultMessage": "Do you also want to block this account?",
+        "id": "report.block_hint"
+      },
+      {
+        "defaultMessage": "Block {target}",
+        "id": "report.block"
       }
     ],
     "path": "app/soapbox/features/ui/components/report_modal.json"

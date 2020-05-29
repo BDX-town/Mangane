@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeReportComment, changeReportForward, submitReport } from '../../../actions/reports';
+import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
+import { blockAccount } from '../../../actions/accounts';
 import { expandAccountTimeline } from '../../../actions/timelines';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -30,6 +31,7 @@ const makeMapStateToProps = () => {
       account: getAccount(state, accountId),
       comment: state.getIn(['reports', 'new', 'comment']),
       forward: state.getIn(['reports', 'new', 'forward']),
+      block: state.getIn(['reports', 'new', 'block']),
       statusIds: OrderedSet(state.getIn(['timelines', `account:${accountId}:with_replies`, 'items'])).union(state.getIn(['reports', 'new', 'status_ids'])),
     };
   };
@@ -47,6 +49,7 @@ class ReportModal extends ImmutablePureComponent {
     statusIds: ImmutablePropTypes.orderedSet.isRequired,
     comment: PropTypes.string.isRequired,
     forward: PropTypes.bool,
+    block: PropTypes.bool,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
@@ -59,8 +62,15 @@ class ReportModal extends ImmutablePureComponent {
     this.props.dispatch(changeReportForward(e.target.checked));
   }
 
+  handleBlockChange = e => {
+    this.props.dispatch(changeReportBlock(e.target.checked));
+  }
+
   handleSubmit = () => {
     this.props.dispatch(submitReport());
+    if (this.props.block) {
+      this.props.dispatch(blockAccount(this.props.account.get('id')));
+    }
   }
 
   handleKeyDown = e => {
@@ -80,7 +90,7 @@ class ReportModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, comment, intl, statusIds, isSubmitting, forward, onClose } = this.props;
+    const { account, comment, intl, statusIds, isSubmitting, forward, block, onClose } = this.props;
 
     if (!account) {
       return null;
@@ -119,6 +129,15 @@ class ReportModal extends ImmutablePureComponent {
                 </div>
               </div>
             )}
+
+            <div>
+              <p><FormattedMessage id='report.block_hint' defaultMessage='Do you also want to block this account?' /></p>
+
+              <div className='setting-toggle'>
+                <Toggle id='report-block' checked={block} disabled={isSubmitting} onChange={this.handleBlockChange} />
+                <label htmlFor='report-block' className='setting-toggle__label'><FormattedMessage id='report.block' defaultMessage='Block {target}' values={{ target: account.get('acct') }} /></label>
+              </div>
+            </div>
 
             <Button disabled={isSubmitting} text={intl.formatMessage(messages.submit)} onClick={this.handleSubmit} />
           </div>
