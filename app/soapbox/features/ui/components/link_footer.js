@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { invitesEnabled } from 'soapbox/initial_state';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
@@ -36,7 +35,6 @@ const mapDispatchToProps = (dispatch) => ({
 const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
   <div className='getting-started__footer'>
     <ul>
-      {(invitesEnabled && account) && <li><a href='/invites'><FormattedMessage id='getting_started.invite' defaultMessage='Invite people' /></a> · </li>}
       {account && <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a> · </li>}
       {/* {account && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>} */}
       <li><a href='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></a> · </li>
