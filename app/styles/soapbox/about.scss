@@ -62,7 +62,12 @@ $small-breakpoint: 960px;
     color: lighten($darker-text-color, 10%);
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: $font-display, sans-serif;
     margin-top: 2em;
     margin-bottom: 1.25em;
@@ -71,7 +76,12 @@ $small-breakpoint: 960px;
   }
 
   hr + {
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       margin-top: 1.25em;
     }
   }
@@ -663,18 +673,33 @@ $small-breakpoint: 960px;
 
   @media screen and (max-width: 767px) {
     background-image: none;
-    .brand__tagline, .brand h1 { color: white; }
+
+    .brand__tagline,
+    .brand h1 {
+      color: #fff;
+    }
+
     .header {
       .nav-link {
-        color: white;
-        &:hover, &:focus, &:active { color: $gab-background-base-light; }
+        color: #fff;
+
+        &:hover,
+        &:focus,
+        &:active {
+          color: $gab-background-base-light;
+        }
       }
+
       .brand {
         filter: brightness(0) invert(100%);
       }
+
       .nav-button {
         background: darken($gab-brand-default, 10%);
-        &:hover, &:focus, &:active {
+
+        &:hover,
+        &:focus,
+        &:active {
           background: darken($gab-brand-default, 15%);
         }
       }
@@ -690,7 +715,7 @@ $small-breakpoint: 960px;
   height: auto;
   min-height: 80vh;
 
-  @media (min-width:767px) {
+  @media (min-width: 767px) {
     min-height: 550px;
   }
 
@@ -708,8 +733,8 @@ $small-breakpoint: 960px;
       width: 395px;
     }
 
-    @media (min-width:767px) and (max-width:1024px) {
-      padding: 40px 20px 20px 20px;
+    @media (min-width: 767px) and (max-width: 1024px) {
+      padding: 40px 20px 20px;
 
       &--left {
         margin-right: 40px;
@@ -720,7 +745,7 @@ $small-breakpoint: 960px;
       }
     }
 
-    @media screen and (max-width:767px) {
+    @media screen and (max-width: 767px) {
       height: auto;
       padding: 20px 10px 30px;
       flex-direction: column;
@@ -752,11 +777,11 @@ $small-breakpoint: 960px;
     img {
       height: 100px;
 
-      @media (min-width:767px) and (max-width:1024px) {
+      @media (min-width: 767px) and (max-width: 1024px) {
         height: 60px;
       }
 
-      @media screen and (max-width:767px) {
+      @media screen and (max-width: 767px) {
         display: none;
       }
     }
@@ -933,7 +958,7 @@ $small-breakpoint: 960px;
   margin-right: 15px;
 
   h1 {
-    @include font-montserrat();
+    @include font-montserrat;
     color: $gab-brand-default;
   }
 }
@@ -947,19 +972,19 @@ $small-breakpoint: 960px;
   margin-top: 25px;
   font-weight: 400;
 
-  @media (min-width:767px) and (max-width:1024px) {
+  @media (min-width: 767px) and (max-width: 1024px) {
     width: 320px;
     font-size: 20px;
   }
 
-  @media screen and (max-width:767px) {
+  @media screen and (max-width: 767px) {
     width: 100%;
     font-size: 22px;
     margin-top: 0;
   }
 }
 
-@media (min-width:767px) {
+@media (min-width: 767px) {
   .hidden-sm {
     display: block;
   }
@@ -969,7 +994,7 @@ $small-breakpoint: 960px;
   }
 }
 
-@media screen and (max-width:767px) {
+@media screen and (max-width: 767px) {
   .hidden-sm {
     display: none !important;
   }

@@ -1,84 +1,84 @@
 .group {
-    .group__header-container {
+  .group__header-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .group__header {
+    width: 100%;
+    max-width: 1150px;
+    background: $gab-background-container;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px 0;
+
+    .group__cover {
+      img {
         width: 100%;
-        display: flex;
-        justify-content: center;
-        flex-direction: row;
+      }
     }
 
-    .group__header {
-        width: 100%;
-        max-width: 1150px;
-        background: $gab-background-container;
-        border-radius: 10px;
-        overflow: hidden;
-        margin: 20px 0;
+    .group__tabs {
+      .group__tabs__tab {
+        display: inline-block;
+    text-decoration: none;
+    padding: 16px 22px;
+        text-align: center;
+        color: $primary-text-color;
 
-        .group__cover {
-            img {
-                width: 100%;
-            }
+        &:hover,
+        &--active {
+          border-bottom: 2px solid $primary-text-color;
         }
+      }
 
-        .group__tabs {
-            .group__tabs__tab {
-                display: inline-block;
-        text-decoration: none;
-        padding: 16px 22px;
-                text-align: center;
-                color: $primary-text-color;
+      &::after {
+        content: "";
+        clear: both;
+        display: table;
+      }
 
-                &:hover,
-                &--active {
-                    border-bottom: 2px solid $primary-text-color;
-                }
-            }
+      button {
+        float: right;
+        margin: 7px;
+      }
 
-            &:after {
-                content: "";
-                clear: both;
-                display: table;
-            }
+      div {
+        float: right;
+        margin: 4px;
+      }
+    }
+  }
 
-            button {
-                float: right;
-                margin: 7px;
-            }
+  .group__panel {
+    padding: 10px 10px 20px;
 
-            div {
-                float: right;
-                margin: 4px;
-            }
-        }
+    h1 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 10px;
     }
 
-    .group__panel {
-        padding: 10px 10px 20px 10px;
-
-        h1 {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .group__panel__description {
-            font-size: 14px;
-        }
-
-        .group__panel__label {
-            display: inline-block;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            background: $gab-background-container;
-            font-size: 13px;
-            padding: 4px 8px;
-        }
+    .group__panel__description {
+      font-size: 14px;
     }
 
-    .group__feed {
+    .group__panel__label {
+      display: inline-block;
+      margin-bottom: 10px;
+      border-radius: 4px;
       background: $gab-background-container;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      overflow: hidden;
+      font-size: 13px;
+      padding: 4px 8px;
     }
+  }
+
+  .group__feed {
+    background: $gab-background-container;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+  }
 }

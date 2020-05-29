@@ -1,9 +1,10 @@
 .user-panel {
+  @include gab-container-standards;
   display: flex;
   width: 265px;
   flex-direction: column;
   overflow-y: hidden;
-  @include gab-container-standards();
+
   &__header {
     display: block;
     height: 112px;
@@ -36,7 +37,7 @@
 
   &__meta {
     display: block;
-    padding: 6px 20px 17px 20px;
+    padding: 6px 20px 17px;
   }
 
   &__account {

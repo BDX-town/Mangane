@@ -5,12 +5,13 @@
       &-description {
         input {
           &::placeholder {
-            opacity: 1.0;
+            opacity: 1;
           }
         }
       }
     }
   }
+
   .compose-form__warning {
     color: $inverted-text-color;
   }

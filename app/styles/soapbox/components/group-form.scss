@@ -1,12 +1,14 @@
 .group-form {
+  @include gab-container-standards;
   padding: 20px;
-  @include gab-container-standards();
-  &, 
+
+  &,
   div {
     box-sizing: border-box;
     float: left;
     width: 100%;
   }
+
   input[type=text],
   textarea {
     &.standard {
@@ -14,32 +16,37 @@
       margin: 0 0 10px;
     }
   }
+
   textarea {
     float: left;
     height: 88px;
   }
+
   .group-form__file-label {
+    @include font-size(12);
+    @include font-weight(light);
     cursor: pointer;
     display: block;
     box-sizing: border-box;
     float: left;
-     height: 20px; 
-     padding: 3px 0 0 33px;
-    @include font-size(12);
-    @include font-weight(light);
+    height: 20px;
+    padding: 3px 0 0 33px;
     color: $gab-secondary-text;
     background-repeat: no-repeat;
     background-image: url('../images/sprite-post-functions.png');
     background-size: 100px 1200px;
+
     &:hover {
       color: $gab-brand-default;
       background-position: 0 -100px;
     }
+
     &.group-form__file-label--selected {
       background-position: 0 -100px;
-      color: $gab-brand-default;;
+      color: $gab-brand-default;
     }
   }
+
   .group-form__file {
     width: 1px;
     height: 1px;

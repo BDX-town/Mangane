@@ -11,7 +11,7 @@ body {
   color: $white;
 
   &.button-alternative-2 {
-    color: black;
+    color: #000;
   }
 }
 
@@ -175,7 +175,7 @@ body {
 
 .embed-modal {
   background: #333;
-  color: white;
+  color: #fff;
 }
 
 .boost-modal__action-bar,
@@ -290,6 +290,7 @@ body {
 .simple_form input[type="password"],
 .simple_form textarea {
   border-color: $gab-brand-default;
+
   &:hover {
     border-color: $gab-brand-default;
   }
@@ -364,11 +365,11 @@ body {
 }
 
 .admin-wrapper .content > p {
-  color: black;
+  color: #000;
 }
 
 .btngroup__btn--active {
-  color: white;
+  color: #fff;
 }
 
 .timeline-compose-block .compose-form .compose-form__autosuggest-wrapper .autosuggest-textarea__textarea {
@@ -376,7 +377,7 @@ body {
 }
 
 .promo-panel-item {
-  @include light-theme-shadow();
+  @include light-theme-shadow;
   background: $gab-background-container-light;
 }
 
@@ -395,7 +396,7 @@ body {
 }
 
 .wtf-panel {
-  @include light-theme-shadow();
+  @include light-theme-shadow;
   background: $gab-background-container-light;
 }
 
@@ -424,10 +425,10 @@ body {
 input[type='text'],
 textarea {
   &.standard {
+    @include input-placeholder($gab-secondary-text);
     color: $gab-placeholder-accent;
     border-color: $gab-secondary-text;
     background: $gab-background-base-light;
-    @include input-placeholder($gab-secondary-text);
   }
 }
 
@@ -467,6 +468,6 @@ textarea {
   color: $gab-default-text-light;
 }
 
-.fa-site-icon:before {
+.fa-site-icon::before {
   filter: grayscale(100%) invert(0);
 }

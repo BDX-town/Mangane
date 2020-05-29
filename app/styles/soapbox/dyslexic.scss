@@ -5,7 +5,8 @@
 body.dyslexic {
 
   @media screen and (max-width: $nav-breakpoint-2) {
-    .column-header > button, .column-header > .btn {
+    .column-header > button,
+    .column-header > .btn {
       font-size: 11px;
     }
   }

@@ -9,7 +9,7 @@
     background-color: lighten($ui-base-color, 5%);
     border-top: darken($ui-base-color, 10%);
 
-    @media screen and (max-width:1024px) {
+    @media screen and (max-width: 1024px) {
       padding: 40px 20px;
     }
 
@@ -20,11 +20,11 @@
       flex-wrap: wrap;
       align-items: center;
 
-      @media screen and (max-width:1024px) {
+      @media screen and (max-width: 1024px) {
         width: 100%;
       }
 
-      @media screen and (max-width:767px) {
+      @media screen and (max-width: 767px) {
         flex-direction: column-reverse;
         justify-content: center;
       }
@@ -83,7 +83,7 @@
       }
     }
 
-    @media screen and (max-width:767px) {
+    @media screen and (max-width: 767px) {
       .copyright {
         margin: 0 auto auto;
         text-align: center;

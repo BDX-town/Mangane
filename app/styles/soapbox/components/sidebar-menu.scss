@@ -46,7 +46,7 @@
 
     &--borderless {
       margin: 0;
-      border-top: none;
+      border-top: 0;
     }
   }
 
@@ -63,7 +63,7 @@
   }
 
   .sidebar-menu__wrapper {
-    background-color: rgba(0,0,0,0.3);
+    background-color: rgba(0, 0, 0, 0.3);
   }
 }
 

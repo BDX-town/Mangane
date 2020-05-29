@@ -19,12 +19,15 @@ $ui-base-lighter-color: darken(#2da8be, 35%);
   }
 
   .brand__tagline {
-    color: white;
+    color: #fff;
   }
 
   .header .nav-link {
-    color: white;
-    &:hover, &:focus, &:active {
+    color: #fff;
+
+    &:hover,
+    &:focus,
+    &:active {
       color: $gab-background-base-light;
     }
   }

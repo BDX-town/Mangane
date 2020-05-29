@@ -2,11 +2,11 @@
   @if type-of($color) == 'color' {
     $color: str-slice(ie-hex-str($color), 4);
   }
-  @return '%23' + unquote($color)
+  @return '%23' + unquote($color);
 }
 
 html {
-  @include font-roboto();
+  @include font-roboto;
   @include font-weight(normal);
   font-size: 62.5%;
   text-size-adjust: 100%;
@@ -21,9 +21,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizelegibility;
   font-feature-settings: "kern";
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
-  color: white;
+  color: #fff;
   background-color: $gab-background-base;
 
   &.system-font {
@@ -150,7 +150,7 @@ button {
 
 .visuallyhidden {
   border: 0 !important;
-  clip: rect(1px,1px,1px,1px) !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
   font-size: 1px !important;
   height: 1px !important;
   overflow: hidden !important;

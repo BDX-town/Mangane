@@ -39,6 +39,8 @@
 }
 
 @mixin search-input {
+  @include font-size(16);
+  @include line-height(19);
   outline: 0;
   box-sizing: border-box;
   width: 100%;
@@ -47,8 +49,6 @@
   font-family: inherit;
   background: $nav-ui-search-bg-color;
   color: $nav-ui-highlight-color;
-  @include font-size(16);
-  @include line-height(19);
   margin: 0;
   border-radius: 4px;
 
@@ -69,22 +69,22 @@
 }
 
 @mixin search-popout {
+  @include font-size(12);
+  @include line-height(14);
+  @include font-weight(normal);
   background: $gab-background-container;
   border-radius: 4px;
   border: 1px solid $gab-placeholder-accent;
   padding: 8px 10px 17px;
   margin: 4px 0 0;
-  @include font-size(12);
-  @include line-height(14);
-  @include font-weight(normal);
   color: $gab-secondary-text;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
 
   h4 {
-    color: #fff;
     @include font-size(14);
     @include line-height(16);
     @include font-weight(bold);
+    color: #fff;
   }
 
   ul {

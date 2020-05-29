@@ -15,7 +15,10 @@ body.app-body::after,
   content: '';
   display: block;
   position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-size: cover;
   background-position: center;
   width: 100%;
@@ -70,21 +73,24 @@ body.app-body::after {
   z-index: -1;
   pointer-events: none;
 }
+
 .ui .page__columns::after {
   position: fixed;
   top: 50px;
 }
+
 .ui .page__top::after {
   position: absolute;
   bottom: -100px;
 }
+
 .ui .page__top + .page__columns::after {
   display: none;
 }
 
 .search__input {
   border-color: $halloween-dark;
-  color: black;
+  color: #000;
 }
 
 .search__icon .fa-times-circle,
@@ -101,7 +107,7 @@ body.app-body::after {
 }
 
 .admin-wrapper .content h2 {
-  color: white;
+  color: #fff;
 }
 
 .compose-form .autosuggest-textarea__textarea,
@@ -115,11 +121,18 @@ body.app-body::after {
 
 .button {
   background-color: $halloween-orange;
-  &:focus, &:hover { background-color: darken($halloween-orange, 10%);}
-  color: black;
+  color: #000;
+
+  &:focus,
+  &:hover {
+    background-color: darken($halloween-orange, 10%);
+  }
 }
-.simple_form button, .simple_form .button, .simple_form .block-button {
-  color: black;
+
+.simple_form button,
+.simple_form .button,
+.simple_form .block-button {
+  color: #000;
 }
 
 .getting-started__footer::before {
@@ -160,12 +173,15 @@ body.app-body::after {
 .dropdown-menu {
   border-color: $halloween-orange;
 }
+
 .dropdown-menu__item a {
   color: $halloween-orange;
 }
+
 .dropdown-menu__arrow.bottom {
   border-bottom-color: $halloween-orange;
 }
+
 .dropdown-menu__arrow.top {
   border-top-color: $halloween-orange;
 }
@@ -174,13 +190,20 @@ body.app-body::after {
   background: $gab-background-container;
 }
 
-.boost-modal__action-bar, .confirmation-modal__action-bar, .mute-modal__action-bar {
+.boost-modal__action-bar,
+.confirmation-modal__action-bar,
+.mute-modal__action-bar {
   background: $halloween-dark;
 }
-.boost-modal, .confirmation-modal, .report-modal, .actions-modal, .mute-modal {
+
+.boost-modal,
+.confirmation-modal,
+.report-modal,
+.actions-modal,
+.mute-modal {
   border-color: $halloween-orange;
 }
 
 .admin-wrapper .sidebar ul .simple-navigation-active-leaf a {
-  color: black;
+  color: #000;
 }

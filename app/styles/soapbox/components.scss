@@ -28,7 +28,9 @@
 
   &:active,
   &:focus,
-  &:hover {background-color: lighten($ui-highlight-color, 10%);}
+  &:hover {
+    background-color: lighten($ui-highlight-color, 10%);
+  }
 
   &--destructive {
     transition: none;
@@ -187,7 +189,7 @@
 
 .text-icon-button {
   color: $gab-secondary-text;
-  border: none;
+  border: 0;
   background: transparent;
   cursor: pointer;
   font-weight: 600;
@@ -245,14 +247,16 @@
 .ellipsis::after {content: "…";}
 
 .timeline-compose-block {
+  @include gab-container-standards;
   display: flex;
   align-items: flex-start;
   padding: 20px;
   margin-bottom: 20px;
-  @include gab-container-standards();
+
   .emoji-picker-wrapper {
     .emoji-picker-dropdown {top: 10px;}
   }
+
   .compose-form {
     flex: 1 1;
     padding: 0 0 0 20px !important;
@@ -263,12 +267,12 @@
     }
 
     .compose-form__autosuggest-wrapper {
-      &:before {
+      &::before {
         content: "";
         display: block;
         position: absolute;
-        height: 0px;
-        width: 0px;
+        height: 0;
+        width: 0;
         border-top: 11px solid transparent;
         border-right: 12px solid #fff;
         border-bottom: 11px solid transparent;
@@ -276,6 +280,7 @@
         left: -22px;
         top: 13px;
       }
+
       .autosuggest-textarea__textarea {
         padding: 14px 32px 13px 10px !important;
       }
@@ -314,7 +319,7 @@
   flex: 0 2 auto;
   max-height: 500px;
   @media screen and (min-width: 320px) and (max-width: 375px) {max-height: 220px;}
-  @media screen and (max-width: 320px) {max-height :130px;}
+  @media screen and (max-width: 320px) {max-height: 130px;}
 }
 
 .reply-indicator__header {
@@ -453,6 +458,7 @@
   background: transparent;
   padding: 0;
   padding-top: 8px;
+
   &:hover,
   &:active {
     text-decoration: underline;
@@ -788,7 +794,7 @@
 }
 
 .account__avatar {
-  @include avatar-radius();
+  @include avatar-radius;
   position: relative;
   background-color: $ui-base-color;
 
@@ -799,11 +805,11 @@
   }
 
   &-composite {
-    @include avatar-radius();
+    @include avatar-radius;
     overflow: hidden;
 
     & > div {
-      @include avatar-radius();
+      @include avatar-radius;
       float: left;
       position: relative;
       box-sizing: border-box;
@@ -819,12 +825,12 @@ a .account__avatar {
   @include avatar-size(48px);
 
   &-base {
-    @include avatar-radius();
+    @include avatar-radius;
     @include avatar-size(36px);
   }
 
   &-overlay {
-    @include avatar-radius();
+    @include avatar-radius;
     @include avatar-size(24px);
 
     position: absolute;
@@ -846,7 +852,7 @@ a .account__avatar {
 }
 
 .account__reciprocal_follow_message {
-  padding: 0px 5px;
+  padding: 0 5px;
   color: $gab-secondary-text;
   text-align: center;
 }
@@ -1198,7 +1204,7 @@ a.account__display-name {
     width: auto;
     height: auto;
     object-fit: contain;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -1228,13 +1234,13 @@ a.account__display-name {
     .icon-button.close {
       position: absolute;
       pointer-events: none;
-      transform: scale(0.0, 1.0) translate(-100%, 0);
+      transform: scale(0, 1) translate(-100%, 0);
       opacity: 0;
     }
 
     .compose__action-bar .icon-button {
       pointer-events: auto;
-      transform: scale(1.0, 1.0) translate(0, 0);
+      transform: scale(1, 1) translate(0, 0);
       opacity: 1;
     }
   }
@@ -1341,7 +1347,7 @@ a.account__display-name {
 .ui {
   display: block;
   width: 100%;
-  padding: 0 0 100px 0;
+  padding: 0 0 100px;
 
   .page {
   display: flex;
@@ -1354,7 +1360,7 @@ a.account__display-name {
     height: auto;
       z-index: 105;
 
-      @media (min-width:895px) {
+      @media (min-width: 895px) {
         top: -290px;
         position: sticky;
       }
@@ -1439,6 +1445,7 @@ a.account__display-name {
   width: 100%;
   margin: 0 auto;
   padding: 15px 0;
+
   .column,
   .drawer {
     width: 100%;
@@ -1446,6 +1453,7 @@ a.account__display-name {
     padding: 0;
   }
   .autosuggest-textarea__textarea {font-size: 16px;}
+
   .search__input {
     line-height: 18px;
     font-size: 16px;
@@ -1456,15 +1464,20 @@ a.account__display-name {
   @media screen and (min-width: 630px) {
     .detailed-status {
       padding: 15px;
+
       .media-gallery,
       .video-player {
         margin-top: 15px;
       }
     }
     .account__header__bar {padding: 5px 10px;}
+
     .navigation-bar,
-    .compose-form {padding: 15px;}
+    .compose-form {
+      padding: 15px;
+    }
     .compose-form .compose-form__publish .compose-form__publish-button-wrapper {padding-top: 15px;}
+
     .status {
       padding: 15px 15px 15px (48px + 15px * 2);
       min-height: 48px + 2px;
@@ -1534,7 +1547,7 @@ a.account__display-name {
   background-color: $nav-ui-highlight-color;
   border: 0;
   border-radius: 999px;
-  box-shadow: 2px 5px 5px rgba(0,0,0,0.5);
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
   font-size: 30px;
   align-items: center;
   justify-content: center;
@@ -1592,23 +1605,24 @@ a.account__display-name {
   height: 100%;
 
   &__badge {
+    @include font-montserrat;
+    @include font-size(14);
+    @include line-height(14);
     position: absolute;
     box-sizing: border-box;
     left: -10px;
     top: 3px;
-    @media screen and (max-width: 895px) {
-      top: 0;
-    }
     min-width: 16px;
     height: 16px;
     padding: 1px 3px 0;
     border-radius: 8px;
     text-align: center;
-    @include font-montserrat();
-    @include font-size(14);
-    @include line-height(14);
     color: #fff;
     background: $nav-ui-highlight-color;
+
+    @media screen and (max-width: 895px) {
+      top: 0;
+    }
   }
 }
 
@@ -1630,7 +1644,7 @@ a.account__display-name {
   background: $gab-background-container;
 
   &--highlighted {
-    background-color: #30CE7D;
+    background-color: #30ce7d;
     border-radius: 10px;
     font-weight: 600;
     margin-bottom: 10px;
@@ -1642,7 +1656,7 @@ a.account__display-name {
   }
 
   &:last-of-type {
-    border-bottom: none;
+    border-bottom: 0;
   }
 
   &__btn {
@@ -2057,7 +2071,7 @@ a.account__display-name {
 .setting-text {
   color: $darker-text-color;
   background: transparent;
-  border: none;
+  border: 0;
   border-bottom: 2px solid $ui-primary-color;
   box-sizing: border-box;
   display: block;
@@ -2367,7 +2381,8 @@ a.status-card.compact:hover {
   }
 }
 
-.columns-area--mobile .column {@include gab-container-standards();}
+.columns-area--mobile .column {@include gab-container-standards;}
+
 .column-header__wrapper {
   position: relative;
   flex: 0 0 auto;
@@ -2405,7 +2420,7 @@ a.status-card.compact:hover {
   & > button,
   & > .btn {
     margin: 0;
-    border: none;
+    border: 0;
     padding: 15px;
     color: inherit;
     background: transparent;
@@ -2531,6 +2546,7 @@ a.status-card.compact:hover {
       margin-left: 10px;
     }
   }
+
   &:hover {
     color: $darker-text-color;
     text-decoration: underline;
@@ -2607,11 +2623,11 @@ a.status-card.compact:hover {
 }
 
 .no-reduce-motion .loading-indicator span {
-  animation: loader-label 1.15s infinite cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation: loader-label 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .no-reduce-motion .loading-indicator__figure {
-  animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.610, 0.355, 1.000);
+  animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 @keyframes loader-figure {
@@ -2778,7 +2794,7 @@ a.status-card.compact:hover {
 
   .column-select {
     &__control {
-      @include search-input();
+      @include search-input;
     }
 
     &__placeholder {
@@ -2829,7 +2845,7 @@ a.status-card.compact:hover {
     }
 
     &__menu {
-      @include search-popout();
+      @include search-popout;
       padding: 0;
       background: $ui-secondary-color;
     }
@@ -2991,7 +3007,7 @@ a.status-card.compact:hover {
 
 .no-reduce-motion .shake-bottom {
   transform-origin: 50% 100%;
-  animation: shake-bottom 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) 2s 2 both;
+  animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) 2s 2 both;
 }
 
 .emoji-picker-dropdown__menu {
@@ -3287,9 +3303,9 @@ a.status-card.compact:hover {
 }
 
 .search__input {
+  @include search-input;
   display: block;
   padding: 7px 30px 6px 10px;
-  @include search-input();
 }
 
 .search__icon {
@@ -3303,6 +3319,7 @@ a.status-card.compact:hover {
   }
 
   .fa {
+    @include font-size(16);
     cursor: default;
     display: inline-block;
     position: absolute;
@@ -3311,7 +3328,6 @@ a.status-card.compact:hover {
     z-index: 2;
     width: 18px;
     height: 18px;
-    @include font-size(16);
     color: $gab-placeholder-accent;
     opacity: 0;
     pointer-events: none;
@@ -3324,8 +3340,8 @@ a.status-card.compact:hover {
   .fa-search.active {pointer-events: none;}
 
   .fa-times-circle {
-    cursor: pointer;
     @include font-size(17);
+    cursor: pointer;
     color: $nav-ui-highlight-color;
     &:hover {color: lighten($nav-ui-highlight-color, 7%);}
   }
@@ -3506,7 +3522,7 @@ a.status-card.compact:hover {
 }
 
 .media-gallery__item {
-  border: none;
+  border: 0;
   box-sizing: border-box;
   display: block;
   float: left;
@@ -3993,7 +4009,7 @@ a.status-card.compact:hover {
 }
 
 .account-gallery__item {
-  border: none;
+  border: 0;
   box-sizing: border-box;
   display: block;
   position: relative;
@@ -4076,13 +4092,13 @@ a.status-card.compact:hover {
   border-radius: 0;
 }
 
-.search-popout-container{
+.search-popout-container {
   width: 251px;
   @media screen and (max-width: $nav-breakpoint-2) {width: 100%;}
 }
 
 .search-popout {
-  @include search-popout();
+  @include search-popout;
 }
 
 noscript {
@@ -4184,14 +4200,14 @@ noscript {
         .icon-button.close {
           pointer-events: auto;
           opacity: 1;
-          transform: scale(1.0, 1.0) translate(0, 0);
+          transform: scale(1, 1) translate(0, 0);
           bottom: 5px;
         }
 
         .compose__action-bar .icon-button {
           pointer-events: none;
           opacity: 0;
-          transform: scale(0.0, 1.0) translate(100%, 0);
+          transform: scale(0, 1) translate(100%, 0);
         }
       }
     }
@@ -4221,7 +4237,7 @@ noscript {
       box-sizing: border-box;
       display: block;
       width: 100%;
-      border: none;
+      border: 0;
       border-radius: 5px;
       padding: 10px;
       font-family: $font-monospace, monospace;
@@ -4432,7 +4448,7 @@ noscript {
     display: flex;
 
     .account__relationship {
-      padding: 8px 5px 0 5px;
+      padding: 8px 5px 0;
     }
   }
 
@@ -4667,7 +4683,7 @@ noscript {
   display: flex;
   align-items: baseline;
   margin-bottom: 10px;
-  padding: 15px 15px 0 15px;
+  padding: 15px 15px 0;
 
   &__icon {
     margin-right: 10px;
@@ -4732,11 +4748,11 @@ noscript {
     padding-right: 10px;
 
     &__avatar {
-    height: 46px;
-    width: 46px;
-    background-color: red;
-    left: -58px;
-    position: absolute;
+      height: 46px;
+      width: 46px;
+      background-color: #ff0000;
+      left: -58px;
+      position: absolute;
     }
 
     &__name {
@@ -4786,11 +4802,11 @@ noscript {
   width: 15px;
   height: 15px;
 
-  &:before {
+  &::before {
     display: block;
     content: "";
     position: absolute;
-    background-color: #00A3ED;
+    background-color: #00a3ed;
     top: 0;
     right: 0;
     left: 0;
@@ -4798,7 +4814,7 @@ noscript {
     border-radius: 50%;
   }
 
-  &:after {
+  &::after {
     display: block;
     position: absolute;
     content: '\f00c';
@@ -4879,14 +4895,14 @@ noscript {
           max-height: 160px !important;
         }
 
-        .compose-form__autosuggest-wrapper:before {
+        .compose-form__autosuggest-wrapper::before {
           content: none !important;
         }
       }
     }
   }
 
-  @media screen and (max-width:895px) {
+  @media screen and (max-width: 895px) {
     margin: 0;
     border-radius: 0;
     height: 100vh;
@@ -4910,7 +4926,7 @@ noscript {
     flex-direction: column;
     flex: 1 1;
 
-    @media (min-width:895px) {
+    @media (min-width: 895px) {
       padding-top: 60px;
     }
   }
@@ -4998,7 +5014,7 @@ noscript {
       padding: 10px 0;
       margin: 5px 0;
 
-      @media screen and (max-width:895px) {
+      @media screen and (max-width: 895px) {
         border-bottom: 1px solid lighten($ui-base-color, 12%);
       }
 
@@ -5079,7 +5095,7 @@ noscript {
     }
   }
 
-  @media screen and (max-width:895px) {
+  @media screen and (max-width: 895px) {
     height: 270px !important;
     width: 330px !important;
   }
@@ -5113,7 +5129,7 @@ noscript {
     padding: 25px 0;
     background-color: lighten($ui-base-color, 6%);
 
-    @media (min-width:895px) {
+    @media (min-width: 895px) {
       display: block;
     }
   }
@@ -5137,12 +5153,12 @@ noscript {
     max-width: 1200px;
     margin: 0 auto;
 
-    @media screen and (max-width:895px) {
+    @media screen and (max-width: 895px) {
       max-width: 580px;
     }
   }
 
-  @media (min-width:895px) and (max-width:1190px) {
+  @media (min-width: 895px) and (max-width: 1190px) {
     &__title-text,
     &__type-filters-tabs {
       max-width: 900px;
@@ -5163,7 +5179,7 @@ noscript {
   overflow: hidden;
 
   &.hidden {
-    max-height: 0px;
+    max-height: 0;
   }
 
   &__btn {
@@ -5193,17 +5209,17 @@ noscript {
   margin: 0 5px 5px 0;
 
   &--pro {
-    background-color: blueviolet;
+    background-color: #8a2be2;
     color: #fff;
   }
 
   &--investor {
-    background-color: gold;
+    background-color: #ffd700;
     color: #000;
   }
 
   &--donor {
-    background-color: lightgreen;
+    background-color: #90ee90;
     color: #000;
   }
 

@@ -170,7 +170,7 @@ $content-width: 840px;
       text-transform: none;
       padding-bottom: 0;
       margin-bottom: 0;
-      border-bottom: none;
+      border-bottom: 0;
     }
 
     & > p {
@@ -502,10 +502,11 @@ $content-width: 840px;
   a {
     color: $ui-highlight-color;
     text-decoration: none;
+    font-weight: 500;
+
     &:hover {
       text-decoration: underline;
     }
-    font-weight: 500;
   }
 
   .diff-old {

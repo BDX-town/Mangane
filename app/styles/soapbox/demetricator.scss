@@ -7,8 +7,9 @@ body.demetricator {
   .sidebar-menu-profile__stats {
     display: none;
   }
+
   .account__header__bar {
     min-height: 50px;
-    @media (min-width:895px) {height: 50px;}
+    @media (min-width: 895px) {height: 50px;}
   }
 }
