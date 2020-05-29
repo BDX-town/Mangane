@@ -765,7 +765,7 @@ $small-breakpoint: 960px;
 
   &__brand {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
 
