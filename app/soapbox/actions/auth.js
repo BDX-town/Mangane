@@ -1,5 +1,5 @@
 import api from '../api';
-import { showAlert, showAlertForError } from 'soapbox/actions/alerts';
+import { showAlert } from 'soapbox/actions/alerts';
 import { fetchMe } from 'soapbox/actions/me';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
@@ -15,19 +15,7 @@ export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAIL    = 'RESET_PASSWORD_FAIL';
 
-const hasAppToken = getState => getState().hasIn(['auth', 'app', 'access_token']);
 const noOp = () => () => new Promise(f => f());
-
-function initAuthApp() {
-  return (dispatch, getState) => {
-    const hasToken = hasAppToken(getState);
-    const action   = hasToken ? verifyApp : createAppAndToken;
-    return dispatch(action())
-      .catch(error => {
-        dispatch(showAlertForError(error));
-      });
-  };
-}
 
 function createAppAndToken() {
   return (dispatch, getState) => {
@@ -66,14 +54,6 @@ function createAppToken() {
     }).then(response => {
       return dispatch(authAppAuthorized(response.data));
     });
-  };
-}
-
-function verifyApp() {
-  return (dispatch, getState) => {
-    return api(getState, 'app').get('/api/v1/apps/verify_credentials')
-      .then (response => dispatch(authAppCreated(response.data)))
-      .catch(error    => dispatch(createAppAndToken()));
   };
 }
 
@@ -133,7 +113,7 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     dispatch({ type: AUTH_REGISTER_REQUEST });
-    return dispatch(initAuthApp()).then(() => {
+    return dispatch(createAppAndToken()).then(() => {
       return api(getState, 'app').post('/api/v1/accounts', params);
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
