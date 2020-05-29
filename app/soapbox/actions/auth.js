@@ -114,7 +114,7 @@ export function refreshUserToken() {
 
 export function logIn(username, password) {
   return (dispatch, getState) => {
-    return dispatch(initAuthApp()).then(() => {
+    return dispatch(createAppAndToken()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       dispatch(showAlert('Login failed.', 'Invalid username or password.'));
