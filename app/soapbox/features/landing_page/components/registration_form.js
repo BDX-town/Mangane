@@ -12,6 +12,7 @@ import {
 import { register } from 'soapbox/actions/auth';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
+import { v4 as uuidv4 } from 'uuid';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
@@ -28,6 +29,7 @@ class RegistrationForm extends ImmutablePureComponent {
     captchaLoading: true,
     submissionLoading: false,
     params: ImmutableMap(),
+    captchaIdempotencyKey: uuidv4(),
   }
 
   setParams = map => {
@@ -59,6 +61,10 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onFetchCaptchaFail = error => {
     this.setState({ captchaLoading: false });
+  }
+
+  refreshCaptcha = () => {
+    this.setState({ captchaIdempotencyKey: uuidv4() });
   }
 
   render() {
@@ -108,6 +114,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 onFetch={this.onFetchCaptcha}
                 onFetchFail={this.onFetchCaptchaFail}
                 onChange={this.onInputChange}
+                idempotencyKey={this.state.captchaIdempotencyKey}
               />
               <div className='fields-group'>
                 <Checkbox

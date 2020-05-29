@@ -17,6 +17,7 @@ class CaptchaField extends React.Component {
     onFetchFail: PropTypes.func,
     dispatch: PropTypes.func,
     refreshInterval: PropTypes.number,
+    idempotencyKey: PropTypes.string,
   }
 
   static defaultProps = {
@@ -43,6 +44,12 @@ class CaptchaField extends React.Component {
     clearInterval(this.state.refresh);
   }
 
+  forceRefresh = () => {
+    this.fetchCaptcha();
+    this.endRefresh();
+    this.startRefresh();
+  }
+
   fetchCaptcha = () => {
     const { dispatch, onFetch, onFetchFail } = this.props;
     dispatch(fetchCaptcha()).then(response => {
@@ -61,6 +68,12 @@ class CaptchaField extends React.Component {
 
   componentWillUnmount() {
     this.endRefresh();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.idempotencyKey !== prevProps.idempotencyKey) {
+      this.forceRefresh();
+    }
   }
 
   render() {
