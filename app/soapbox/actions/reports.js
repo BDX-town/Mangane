@@ -11,6 +11,7 @@ export const REPORT_SUBMIT_FAIL    = 'REPORT_SUBMIT_FAIL';
 export const REPORT_STATUS_TOGGLE  = 'REPORT_STATUS_TOGGLE';
 export const REPORT_COMMENT_CHANGE = 'REPORT_COMMENT_CHANGE';
 export const REPORT_FORWARD_CHANGE = 'REPORT_FORWARD_CHANGE';
+export const REPORT_BLOCK_CHANGE   = 'REPORT_BLOCK_CHANGE';
 
 export function initReport(account, status) {
   return dispatch => {
@@ -85,5 +86,12 @@ export function changeReportForward(forward) {
   return {
     type: REPORT_FORWARD_CHANGE,
     forward,
+  };
+};
+
+export function changeReportBlock(block) {
+  return {
+    type: REPORT_BLOCK_CHANGE,
+    block,
   };
 };
