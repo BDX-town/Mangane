@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Overlay from 'react-overlays/lib/Overlay';
 import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
-import { searchEnabled } from '../../../initial_state';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
@@ -19,7 +18,7 @@ class SearchPopout extends React.PureComponent {
 
   render() {
     const { style } = this.props;
-    const extraInformation = searchEnabled ? <FormattedMessage id='search_popout.tips.full_text' defaultMessage='Simple text returns posts you have written, favorited, reposted, or have been mentioned in, as well as matching usernames, display names, and hashtags.' /> : <FormattedMessage id='search_popout.tips.text' defaultMessage='Simple text returns matching display names, usernames and hashtags' />;
+    const extraInformation = <FormattedMessage id='search_popout.tips.full_text' defaultMessage='Simple text returns posts you have written, favorited, reposted, or have been mentioned in, as well as matching usernames, display names, and hashtags.' />;
     return (
       <div className='search-popout-container' style={{ ...style, position: 'absolute', zIndex: 1000 }}>
         <Motion defaultStyle={{ opacity: 0, scaleX: 1, scaleY: 1 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
