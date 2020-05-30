@@ -89,6 +89,7 @@ class ComposeForm extends ImmutablePureComponent {
   handleKeyDown = (e) => {
     if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
       this.handleSubmit();
+      e.preventDefault(); // Prevent bubbling to other ComposeForm instances
     }
   }
 
