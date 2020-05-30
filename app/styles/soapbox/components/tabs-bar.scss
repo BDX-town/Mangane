@@ -1,4 +1,4 @@
-$nav-ui-background-color: $gab-brand-default !default;
+$nav-ui-background-color: var(--brand-color) !default;
 
 .tabs-bar {
   display: flex;

@@ -26,7 +26,7 @@
       color: $gab-secondary-text;
 
       &__unread {
-        color: $gab-brand-default;
+        color: var(--brand-color);
       }
     }
   }

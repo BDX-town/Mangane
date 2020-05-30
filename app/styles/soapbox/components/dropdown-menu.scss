@@ -71,7 +71,7 @@
     &:active {
       outline: 0;
       color: #fff;
-      background: $gab-brand-default !important;
+      background: var(--brand-color) !important;
     }
   }
 

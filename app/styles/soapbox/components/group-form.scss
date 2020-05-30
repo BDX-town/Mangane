@@ -37,13 +37,13 @@
     background-size: 100px 1200px;
 
     &:hover {
-      color: $gab-brand-default;
+      color: var(--brand-color);
       background-position: 0 -100px;
     }
 
     &.group-form__file-label--selected {
       background-position: 0 -100px;
-      color: $gab-brand-default;
+      color: var(--brand-color);
     }
   }
 

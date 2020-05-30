@@ -346,7 +346,7 @@
         &:hover,
         &:focus,
         &:active {
-          color: $gab-brand-default;
+          color: var(--brand-color);
         }
 
       }
@@ -359,7 +359,7 @@
     }
 
     .nav-button {
-      background: $gab-brand-default;
+      background: var(--brand-color);
       color: #fff;
       margin: 8px;
       margin-left: 0;

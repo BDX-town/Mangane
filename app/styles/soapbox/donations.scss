@@ -190,7 +190,7 @@ body.admin {
   }
 
   &__reached {
-    color: $gab-brand-default;
+    color: var(--brand-color);
   }
 
   .wtf-panel__content {
@@ -208,6 +208,6 @@ body.admin {
 
   &__progress {
     height: 100%;
-    background: $gab-brand-default;
+    background: var(--brand-color);
   }
 }

@@ -8,7 +8,7 @@ textarea {
     padding: 7px 10px;
     border: 1px solid;
     border-radius: 4px;
-    color: $gab-brand-default;
+    color: var(--brand-color);
     border-color: $gab-placeholder-accent;
     background: $gab-background-container;
     &:focus {outline: none;}

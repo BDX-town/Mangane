@@ -289,10 +289,10 @@ body {
 .simple_form input[type="email"],
 .simple_form input[type="password"],
 .simple_form textarea {
-  border-color: $gab-brand-default;
+  border-color: var(--brand-color);
 
   &:hover {
-    border-color: $gab-brand-default;
+    border-color: var(--brand-color);
   }
 }
 
@@ -355,7 +355,7 @@ body {
 
 .admin-wrapper .sidebar ul li a.selected {
   color: $gab-background-container-light;
-  background-color: $gab-brand-default;
+  background-color: var(--brand-color);
 }
 
 .admin-wrapper .sidebar ul li .simple-navigation-active-leaf a.selected {

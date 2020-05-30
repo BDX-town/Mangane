@@ -160,7 +160,7 @@ button {
 }
 
 ::selection {
-  background: $gab-brand-default;
+  background: var(--brand-color);
   color: $white;
 }
 

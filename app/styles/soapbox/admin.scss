@@ -57,7 +57,7 @@ $content-width: 840px;
         }
 
         &:hover {
-          color: $gab-brand-default;
+          color: var(--brand-color);
           background-color: $gab-background;
           transition: all 100ms linear;
           transition-property: color, background-color;

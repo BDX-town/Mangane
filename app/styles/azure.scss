@@ -1,14 +1,16 @@
 @import 'soapbox-light/variables';
 
-// $gab-brand-default: lighten(#149dfb, 10%);
 $gab-brand-default: #0482d8;
 $gab-background-base-light: #f2f3f6;
 $gab-background: $gab-background-base-light;
 $ui-base-color: #d9f2f9;
 $ui-highlight-color: $gab-brand-default;
-// $nav-ui-background-color: #000;
 $nav-ui-highlight-color: #149dfb;
 $ui-base-lighter-color: #b0c0cf;
+
+:root {
+  --brand-color: #0482d8;
+}
 
 @import 'application';
 @import 'soapbox-light/diff';
@@ -18,16 +20,7 @@ $ui-base-lighter-color: #b0c0cf;
   transition: 0.1s;
   outline: none;
 
-  // &.active {
-  //   color: darken(#04d8c4, 40%);
-  // }
-  //
-  // &:hover {
-  //   color: darken(#04d8c4, 60%);
-  // }
-
   &::before {
-    // background-color: darken($nav-ui-highlight-color, 10%);
     bottom: auto;
     opacity: 0;
     height: 15px;

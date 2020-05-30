@@ -391,7 +391,7 @@
   }
 
   a {
-    color: $gab-brand-default;
+    color: var(--brand-color);
     text-decoration: none;
 
     &:hover {
@@ -453,7 +453,7 @@
   display: block;
   font-size: 15px;
   line-height: 20px;
-  color: $gab-brand-default;
+  color: var(--brand-color);
   border: 0;
   background: transparent;
   padding: 0;
@@ -592,7 +592,7 @@
     color: $gab-secondary-text;
 
     a {
-      color: $gab-brand-default;
+      color: var(--brand-color);
       font-weight: bold;
       text-decoration: none;
 
@@ -1544,7 +1544,7 @@ a.account__display-name {
   right: 14px;
   width: 61px;
   height: 61px;
-  background-color: $nav-ui-highlight-color;
+  background-color: var(--brand-color);
   border: 0;
   border-radius: 999px;
   box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
@@ -1868,7 +1868,7 @@ a.account__display-name {
 }
 
 .react-toggle--checked .react-toggle-track {
-  background-color: $gab-brand-default;
+  background-color: var(--brand-color);
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
@@ -1928,7 +1928,7 @@ a.account__display-name {
 
 .react-toggle--checked .react-toggle-thumb {
   left: 27px;
-  border-color: $gab-brand-default;
+  border-color: var(--brand-color);
 }
 
 .column-link {
@@ -5090,7 +5090,7 @@ noscript {
       color: $secondary-text-color;
 
       a {
-        color: $gab-brand-default !important;
+        color: var(--brand-color) !important;
       }
     }
   }
@@ -5115,7 +5115,7 @@ noscript {
       display: block;
       margin: 15px auto;
       text-align: center;
-      color: $gab-brand-default;
+      color: var(--brand-color);
     }
   }
 }
@@ -5199,7 +5199,7 @@ noscript {
 }
 
 .badge {
-  background-color: $gab-brand-default;
+  background-color: var(--brand-color);
   color: #fff;
   font-size: 12px;
   font-weight: normal;
