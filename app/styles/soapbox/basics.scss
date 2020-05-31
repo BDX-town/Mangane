@@ -85,7 +85,7 @@ body {
   }
 
   &.admin {
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
     position: fixed;
     width: 100%;
     height: 100%;

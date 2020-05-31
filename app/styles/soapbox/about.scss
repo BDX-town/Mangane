@@ -170,7 +170,7 @@ $small-breakpoint: 960px;
 }
 
 .information-board {
-  background: darken($ui-base-color, 4%);
+  background: var(--brand-color-med);
   padding: 20px 0;
 
   .container-alt {
@@ -428,7 +428,7 @@ $small-breakpoint: 960px;
   }
 
   &__call-to-action {
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
     border-radius: 4px;
     padding: 25px 40px;
     overflow: hidden;

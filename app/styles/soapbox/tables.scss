@@ -11,7 +11,7 @@
     vertical-align: top;
     border-top: 1px solid $ui-base-color;
     text-align: left;
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
   }
 
   & > thead > tr > th {
@@ -183,7 +183,7 @@ a.table-action-link {
   &__row {
     border: 1px solid darken($ui-base-color, 8%);
     border-top: 0;
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
 
     @media screen and (max-width: $no-gap-breakpoint) {
       &:first-child {

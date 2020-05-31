@@ -864,7 +864,7 @@ code {
   margin-bottom: 25px;
 
   .fa-link {
-    background-color: darken($ui-base-color, 4%);
+    background-color: var(--brand-color-med);
     border-radius: 100%;
     font-size: 24px;
     padding: 10px;
@@ -904,7 +904,7 @@ code {
     text-align: center;
 
     &::after {
-      background-color: darken($ui-base-color, 4%);
+      background-color: var(--brand-color-med);
       content: '';
       display: block;
       height: 100%;

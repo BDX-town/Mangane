@@ -24,7 +24,7 @@ export const generateTheme = (brandColor, mode) => {
     'brand-color-faint': cssrgba(brandColor, 0.1),
     'brand-color-med': cssrgba(brandColor, 0.2),
     'highlight-text-color': makeContrast(5, brandColor, mode).hex,
-    'brand-color-hicontrast': makeContrast(20, brandColor, mode).hex,
+    'brand-color-hicontrast': makeContrast(15, brandColor, mode).hex,
   });
 };
 

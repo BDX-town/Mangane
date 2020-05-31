@@ -25,11 +25,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   width: auto;
+  transition: 0.2s;
 
   &:active,
   &:focus,
   &:hover {
-    background-color: lighten($ui-highlight-color, 10%);
+    background-color: var(--brand-color-hicontrast);
   }
 
   &--destructive {
@@ -391,7 +392,7 @@
   }
 
   a {
-    color: var(--brand-color-hicontrast);
+    color: var(--highlight-text-color);
     text-decoration: none;
 
     &:hover {
@@ -548,6 +549,10 @@
   &.status-direct:not(.read) {
     background: var(--brand-color-med);
     border-bottom-color: var(--brand-color-med);
+
+    .status__content a {
+      color: var(--brand-color-hicontrast);
+    }
   }
 
   &.light {
@@ -796,7 +801,7 @@
 .account__avatar {
   @include avatar-radius;
   position: relative;
-  background-color: var(--accent-color);
+  background-color: var(--brand-color-faint);
 
   &-inline {
     display: inline-block;
@@ -3366,7 +3371,7 @@ a.status-card.compact:hover {
   margin-bottom: 5px;
 
   h5 {
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
     border-bottom: 1px solid var(--brand-color-med);
     cursor: default;
     display: flex;
@@ -4018,6 +4023,10 @@ a.status-card.compact:hover {
   overflow: hidden;
   margin: 2px;
 
+  a {
+    background: var(--brand-color-faint);
+  }
+
   &__icons {
     position: absolute;
     top: 50%;
@@ -4029,14 +4038,14 @@ a.status-card.compact:hover {
 
 .notification__filter-bar,
 .account__section-headline {
-  background: darken($ui-base-color, 4%);
+  background: var(--brand-color-med);
   border-bottom: 1px solid var(--brand-color-med);
   cursor: default;
   display: flex;
   flex-shrink: 0;
 
   button {
-    background: darken($ui-base-color, 4%);
+    background: var(--brand-color-med);
     border: 0;
     margin: 0;
   }
@@ -4546,7 +4555,7 @@ noscript {
   &__header {
     color: $dark-text-color;
     background: lighten($ui-base-color, 2%);
-    border-bottom: 1px solid darken($ui-base-color, 4%);
+    border-bottom: 1px solid var(--brand-color-med);
     font-weight: 500;
     padding: 15px;
     font-size: 16px;
