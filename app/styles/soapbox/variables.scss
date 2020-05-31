@@ -51,12 +51,6 @@ $nav-breakpoint-4: 375px;
 
 // Commonly used web colors
 
-// We certainly don't need variables for white and black.
-// you can declare color: white; color: black; or #fff; #000;
-$black: #000000;            // Black
-$white: #ffffff;            // White
-
-
 $success-green: #79bd9a !default;    // Padua
 $error-red: #df405a !default;        // Cerise
 $warning-red: #ff5050 !default;      // Sunset Orange
@@ -69,9 +63,9 @@ $classic-secondary-color: $gab-placeholder-accent;
 $classic-highlight-color: $gab-text-highlight;
 
 // Variables for defaults in UI
-$base-shadow-color: $black !default;
-$base-overlay-background: $black !default;
-$simple-background-color: $white !default;
+$base-shadow-color: #000000 !default;
+$base-overlay-background: #000000 !default;
+$simple-background-color: #ffffff !default;
 $valid-value-color: $success-green !default;
 $error-value-color: $error-red !default;
 
