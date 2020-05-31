@@ -23,6 +23,9 @@ import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
+import { themeDataToCss } from 'soapbox/utils/theme';
+import { setTheme } from 'soapbox/actions/theme';
+import { Map as ImmutableMap } from 'immutable';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
@@ -48,6 +51,7 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: settings.get('locale'),
+    themeCss: themeDataToCss(state.get('theme')),
   };
 };
 
@@ -63,6 +67,8 @@ class SoapboxMount extends React.PureComponent {
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
+    themeCss: PropTypes.string,
+    dispatch: PropTypes.func,
   };
 
   getThemeChunk = theme => {
@@ -70,8 +76,14 @@ class SoapboxMount extends React.PureComponent {
     return cssChunks.filter(chunk => chunk.startsWith(theme))[0];
   };
 
+  componentDidMount() {
+    this.props.dispatch(setTheme(ImmutableMap({
+      'brand-color': 'green',
+    })));
+  }
+
   render() {
-    const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
+    const { me, theme, themeCss, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
     if (me === null) return null;
 
     const { localeData, messages } = getLocale();
@@ -98,6 +110,7 @@ class SoapboxMount extends React.PureComponent {
           <Helmet>
             <body className={bodyClass} />
             {theme && <link rel='stylesheet' href={`/packs/css/${this.getThemeChunk(theme)}.chunk.css`} />}
+            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
