@@ -1,29 +1,5 @@
 .page--floral { background-image: url('../images/pro_bg/floral--light.svg'); }
 
-body.theme-purple-dark,
-body.theme-purple-contrast {
+body.theme-dark {
   .page--floral { background-image: url('../images/pro_bg/floral--dark.svg'); }
-}
-
-body.theme-halloween {
-  .page--customization {
-    background-color: #904700;
-
-    &::before {
-      background: radial-gradient(circle, transparent 0%, transparent 60%, #000 100%);
-      content: "";
-      display: block;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-size: cover;
-      background-position: center;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-  }
-  .page--floral { background-image: url('../images/pro_bg/floral--halloween.svg'); }
 }

@@ -21,14 +21,8 @@ const messages = defineMessages({
 
 // TODO: Pull dynamically
 const themes = {
-  'azure':          'Azure',
-  'purple':          'Purple Light',
-  'purple-dark':     'Purple Dark',
-  'purple-contrast': 'Purple Contrast',
-  'halloween':       'Halloween',
-  'aquatic':         'Aquatic',
-  'paleblue':        'Pale Blue',
-  'lime':            'Lime Green',
+  'azure':       'Light',
+  'purple-dark': 'Dark',
 };
 
 const mapStateToProps = state => ({
