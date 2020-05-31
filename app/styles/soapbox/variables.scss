@@ -9,7 +9,6 @@
 // STATIC COLORS
 
 $gab-brand-default: #990099 !default;
-$gab-alert-red: #e600e6 !default;
 $gab-secondary-text: #999 !default;
 $gab-text-highlight: #e600e6 !default;
 $gab-small-cta-primary: #607cf5 !default;
@@ -72,7 +71,6 @@ $classic-highlight-color: $gab-text-highlight;
 // Variables for defaults in UI
 $base-shadow-color: $black !default;
 $base-overlay-background: $black !default;
-$base-border-color: $white !default;
 $simple-background-color: $white !default;
 $valid-value-color: $success-green !default;
 $error-value-color: $error-red !default;
@@ -89,7 +87,6 @@ $nav-ui-highlight-color: $gab-text-highlight !default;
 $nav-ui-search-bg-color: darken($nav-ui-highlight-color, 52%) !default;
 
 // Variables for texts
-$primary-text-color: $white !default;
 $darker-text-color: $gab-secondary-text !default;
 $dark-text-color: $ui-base-lighter-color !default;
 $secondary-text-color: $ui-secondary-color !default;

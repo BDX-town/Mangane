@@ -43,7 +43,7 @@
   &__account {
     a {
       text-decoration: none;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
 
     &__name {
@@ -85,7 +85,7 @@
     a {
       text-decoration: none;
 
-      color: $primary-text-color;
+      color: var(--primary-text-color);
 
       &:hover {
         opacity: 0.8;

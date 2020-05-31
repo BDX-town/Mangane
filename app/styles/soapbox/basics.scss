@@ -165,7 +165,7 @@ button {
 }
 
 .explanation-box {
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   padding: 15px 20px;
   font-size: 14px;
   background-color: var(--brand-color-faint);

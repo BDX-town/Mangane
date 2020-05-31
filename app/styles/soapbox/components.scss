@@ -8,7 +8,7 @@
   border: 10px none;
   border-radius: 4px;
   box-sizing: border-box;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
@@ -188,7 +188,7 @@
   &.overlayed {
     box-sizing: content-box;
     background: rgba($base-overlay-background, 0.6);
-    color: rgba($primary-text-color, 0.7);
+    color: var(--primary-text-color-faint);
     border-radius: 4px;
     padding: 2px;
 
@@ -372,7 +372,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding-top: 2px;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
 
   &:focus {
     outline: 0;
@@ -592,7 +592,7 @@
       }
 
       a.status__content__spoiler-link {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         background: $ui-primary-color;
 
         &:hover {
@@ -756,7 +756,7 @@
   .domain__domain-name {
     flex: 1 1 auto;
     display: block;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -961,7 +961,7 @@ a .account__avatar {
     display: block;
     font-size: 15px;
     font-weight: 500;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
 
     @each $lang in $cjk-langs {
       &:lang(#{$lang}) {
@@ -998,7 +998,7 @@ a .account__avatar {
 .status__display-name,
 .account__display-name {
   strong {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
   }
 }
 
@@ -1044,7 +1044,7 @@ a.account__display-name {
 
   strong {
     font-size: 16px;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
   }
 
   .display-name__account {
@@ -1139,7 +1139,7 @@ a.account__display-name {
   text-decoration: none;
 
   &:hover {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     text-decoration: underline;
   }
 }
@@ -1678,13 +1678,13 @@ a.account__display-name {
   &__btn {
     display: block;
     text-align: left;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     text-decoration: none;
     font-size: 15px;
     padding: 0 20px;
 
     &:hover {
-      color: darken($primary-text-color, 14%);
+      color: var(--primary-text-color-faint);
 
       span {
         text-decoration: underline;
@@ -1949,7 +1949,7 @@ a.account__display-name {
 
 .column-link {
   background: var(--brand-color-med);
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   display: block;
   font-size: 16px;
   padding: 15px;
@@ -1973,7 +1973,7 @@ a.account__display-name {
     &:focus,
     &:active {
       background: transparent;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
 
     &.active {
@@ -2098,7 +2098,7 @@ a.account__display-name {
 
   &:focus,
   &:active {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     border-bottom-color: var(--highlight-text-color);
   }
 
@@ -2179,7 +2179,7 @@ a.account__display-name {
       &:hover,
       &:active,
       &:focus {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
 
@@ -2455,7 +2455,7 @@ a.status-card.compact:hover {
     }
 
     &.active {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       border-radius: 10px;
       background-color: var(--brand-color-faint);
     }
@@ -2513,11 +2513,11 @@ a.status-card.compact:hover {
   &:hover {color: lighten($darker-text-color, 7%);}
 
   &.active {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     background: var(--brand-color-med);
 
     &:hover {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       background: var(--brand-color-med);
     }
   }
@@ -2683,7 +2683,7 @@ a.status-card.compact:hover {
 .video-error-cover {
   align-items: center;
   background: $base-overlay-background;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -2756,7 +2756,7 @@ a.status-card.compact:hover {
       background: rgba($base-overlay-background, 0.5);
       border-radius: 8px;
       padding: 8px 12px;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       font-weight: 500;
       font-size: 14px;
     }
@@ -2890,7 +2890,7 @@ a.status-card.compact:hover {
 }
 
 .relationship-tag {
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   margin-bottom: 4px;
   display: block;
   vertical-align: top;
@@ -3244,14 +3244,14 @@ a.status-card.compact:hover {
   &:hover,
   &.active {
     background: var(--brand-color);
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     outline: 0;
 
     .privacy-dropdown__option__content {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
 
       strong {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
   }
@@ -3299,7 +3299,7 @@ a.status-card.compact:hover {
       background: var(--brand-color);
 
       .icon-button {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
   }
@@ -3433,7 +3433,7 @@ a.status-card.compact:hover {
 .media-gallery__gifv__label {
   display: block;
   position: absolute;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   background: rgba($base-overlay-background, 0.5);
   bottom: 6px;
   left: 6px;
@@ -3572,7 +3572,7 @@ a.status-card.compact:hover {
     &::before {
       content: 'GIF';
       position: absolute;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       background: rgba($base-overlay-background, 0.5);
       bottom: 6px;
       left: 6px;
@@ -3664,7 +3664,7 @@ a.status-card.compact:hover {
 
 .status__video-player-expand,
 .status__video-player-mute {
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   opacity: 0.8;
   position: absolute;
   right: 4px;
@@ -3673,7 +3673,7 @@ a.status-card.compact:hover {
 
 .status__video-player-spoiler {
   display: none;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   left: 4px;
   position: absolute;
   text-shadow: 0 1px 1px $base-shadow-color, 1px 0 1px $base-shadow-color;
@@ -4008,7 +4008,7 @@ a.status-card.compact:hover {
 
 .media-spoiler-video-play-icon {
   border-radius: 100px;
-  color: rgba($primary-text-color, 0.8);
+  color: var(--primary-text-color-faint);
   font-size: 36px;
   left: 50%;
   padding: 5px;
@@ -4073,7 +4073,7 @@ a.status-card.compact:hover {
     position: relative;
 
     &.active {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
 
       &::before,
       &::after {
@@ -4262,7 +4262,7 @@ noscript {
       padding: 10px;
       font-family: $font-monospace, monospace;
       background: var(--brand-color-med);
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       font-size: 14px;
       margin: 0;
       margin-bottom: 15px;
@@ -4711,7 +4711,7 @@ noscript {
 
   &__label {
     flex: 1 1;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-size: 16px;
     font-weight: bold;
     line-height: 19px;
@@ -4782,7 +4782,7 @@ noscript {
     margin-top: 6px;
 
     &__name {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       font-size: 14px;
       font-weight: bold;
       line-height: 16px;
@@ -4808,7 +4808,7 @@ noscript {
     }
 
     &__icon {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     }
   }
   }
@@ -4969,7 +4969,7 @@ noscript {
         }
 
         span {
-          color: $primary-text-color;
+          color: var(--primary-text-color);
           font-size: 15px;
           line-height: 1.25;
         }
@@ -5017,7 +5017,7 @@ noscript {
     &__bio {
       display: block;
       flex: 1 1;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       margin: 15px 0;
       font-size: 15px;
       line-height: 1.25;
@@ -5155,7 +5155,7 @@ noscript {
   }
 
   &__title-text {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-size: 27px;
     font-weight: bold;
     line-height: 32px;

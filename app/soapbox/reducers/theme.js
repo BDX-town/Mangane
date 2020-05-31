@@ -7,6 +7,17 @@ import { brightness, hue, convert } from 'chromatism';
 
 const initialState = ImmutableMap();
 
+const modes = ImmutableMap({
+  light: ImmutableMap({
+    'primary-text-color': '#000000',
+    'primary-text-color-faint': 'rgba(0, 0, 0, 0.7)',
+  }),
+  dark: ImmutableMap({
+    'primary-text-color': '#ffffff',
+    'primary-text-color-faint': 'rgba(255, 255, 255, 0.7)',
+  }),
+});
+
 const cssrgba = (color, a) => {
   const { r, g, b } = convert(color).rgb;
   return `rgba(${[r, g, b, a].join(',')})`;
@@ -18,14 +29,14 @@ const makeContrast = (percent, color, mode) => {
 };
 
 export const generateTheme = (brandColor, mode) => {
-  return ImmutableMap({
+  return modes.get(mode).merge(ImmutableMap({
     'brand-color': brandColor,
     'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
     'brand-color-faint': cssrgba(brandColor, 0.1),
     'brand-color-med': cssrgba(brandColor, 0.2),
     'highlight-text-color': makeContrast(5, brandColor, mode).hex,
     'brand-color-hicontrast': makeContrast(15, brandColor, mode).hex,
-  });
+  }));
 };
 
 export const setTheme = themeData => {

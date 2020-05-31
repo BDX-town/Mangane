@@ -48,13 +48,13 @@
       margin-right: auto;
 
       span {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         font-size: 1.3rem;
         font-weight: 500;
         line-height: 1.5;
 
         &:last-of-type {
-          color: darken($primary-text-color, 20%);
+          color: var(--primary-text-color-faint);
         }
       }
     }

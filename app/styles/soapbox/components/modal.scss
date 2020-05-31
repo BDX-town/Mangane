@@ -98,7 +98,7 @@
   background: rgba($base-overlay-background, 0.5);
   box-sizing: border-box;
   border: 0;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -158,7 +158,7 @@
 }
 
 .media-modal__button {
-  background-color: $primary-text-color;
+  background-color: var(--primary-text-color);
   height: 12px;
   width: 12px;
   border-radius: 6px;

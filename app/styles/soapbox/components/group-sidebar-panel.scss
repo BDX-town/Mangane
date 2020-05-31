@@ -3,13 +3,13 @@
     padding: 0 15px 15px;
 
     &__show-all {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
   }
 
   &__item {
     display: block;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     text-decoration: none;
     margin-bottom: 15px;
 

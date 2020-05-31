@@ -47,7 +47,7 @@
     padding: 15px;
 
     .group-card__title {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       font-size: 16px;
       font-weight: bold;
     }
@@ -60,7 +60,7 @@
     }
 
     .group-card__description {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       font-size: 14px;
     }
   }

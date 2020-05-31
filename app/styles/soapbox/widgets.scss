@@ -142,7 +142,7 @@
     margin-top: 10px;
 
     a {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       text-decoration: none;
     }
   }
@@ -237,7 +237,7 @@
   margin: 10px 0;
 
   h1 {
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     font-size: 36px;
     line-height: 1.1;
     font-weight: 700;
@@ -303,7 +303,7 @@
       flex: 1 1 auto;
       font-size: 18px;
       font-weight: 700;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -325,7 +325,7 @@
       &,
       .fa,
       small {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
 
@@ -407,7 +407,7 @@
     text-align: center;
     font-size: 15px;
     font-weight: 500;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
 
     small {
       display: block;

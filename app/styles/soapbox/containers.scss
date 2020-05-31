@@ -30,7 +30,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       text-decoration: none;
       outline: 0;
       padding: 12px 16px;
@@ -329,7 +329,7 @@
       font-size: 14px;
       font-weight: 600;
       text-decoration: none;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       white-space: nowrap;
       text-align: center;
 
@@ -337,7 +337,7 @@
       &:focus,
       &:active {
         text-decoration: underline;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
 
       &--hollow {
@@ -574,7 +574,7 @@
         h1 {
           font-size: 20px;
           line-height: 18px * 1.5;
-          color: $primary-text-color;
+          color: var(--primary-text-color);
           font-weight: 500;
           overflow: hidden;
           white-space: nowrap;
@@ -584,7 +584,7 @@
           small {
             display: block;
             font-size: 14px;
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-weight: 400;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -695,7 +695,7 @@
             font-weight: 500;
             font-size: 18px;
             margin-bottom: 5px;
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-family: $font-display, sans-serif;
           }
         }
@@ -744,7 +744,7 @@
 
           strong {
             font-weight: 700;
-            color: $primary-text-color;
+            color: var(--primary-text-color);
           }
         }
       }
@@ -801,7 +801,7 @@
     .account__header__content {
       padding: 20px;
       padding-bottom: 0;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
 
     &__extra,

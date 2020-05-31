@@ -187,7 +187,7 @@ body {
 // Change the default color used for the text in an empty column or on the error column
 .empty-column-indicator,
 .error-column {
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   background: $white;
 }
 
@@ -210,12 +210,12 @@ body {
 
   .status.light {
     .status__content {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
 
     .display-name {
       strong {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
   }
@@ -226,7 +226,7 @@ body {
 
     .name {
       a {
-        color: $primary-text-color;
+        color: var(--primary-text-color);
       }
     }
 
@@ -235,7 +235,7 @@ body {
     }
 
     .account__header__content {
-      color: $primary-text-color;
+      color: var(--primary-text-color);
     }
   }
 }

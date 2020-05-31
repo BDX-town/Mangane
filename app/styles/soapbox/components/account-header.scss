@@ -128,7 +128,7 @@
           display: block;
 
           &:first-of-type {
-            color: $primary-text-color;
+            color: var(--primary-text-color);
             font-size: 20px;
             font-weight: 800;
             line-height: 24px;
@@ -148,7 +148,7 @@
 
         &:hover,
         &.active {
-          border-bottom: 2px solid $primary-text-color;
+          border-bottom: 2px solid var(--primary-text-color);
         }
         &.score {border-bottom: 0 !important;}
       }

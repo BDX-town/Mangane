@@ -189,7 +189,7 @@ $small-breakpoint: 960px;
     font-family: $font-sans-serif, sans-serif;
     font-size: 16px;
     line-height: 28px;
-    color: $primary-text-color;
+    color: var(--primary-text-color);
     text-align: right;
     padding: 10px 15px;
 
@@ -274,7 +274,7 @@ $small-breakpoint: 960px;
 
       a {
         display: block;
-        color: $primary-text-color;
+        color: var(--primary-text-color);
         text-decoration: none;
 
         &:hover {
@@ -586,7 +586,7 @@ $small-breakpoint: 960px;
 
     h1 {
       font-weight: 500;
-      color: $primary-text-color;
+      color: var(--primary-text-color);
       margin-bottom: 0;
 
       small {
@@ -659,8 +659,6 @@ $small-breakpoint: 960px;
 }
 
 .public-layout {
-  $gab-background: $gab-background-base-dark !default;
-
   position: relative;
   background-color: var(--brand-color);
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 889" width="1440px" height="889px"><path d="M 0 0 L 0 851.82031 C 115.03104 776.54213 236.097 723.10606 363.20703 691.54492 C 640.06491 622.80164 852.93698 468.14039 954.31055 358.01367 C 1092.1151 208.31032 1206.0509 47.69868 1365.3828 13.457031 C 1391.8162 7.7762737 1416.6827 3.2957237 1440 0.001953125 L 1440 0 L 0 0 z" fill="#{hex-color($gab-background)}"/></svg>');
@@ -966,7 +964,7 @@ $small-breakpoint: 960px;
 .brand__tagline {
   display: block;
   width: 470px;
-  color: $primary-text-color;
+  color: var(--primary-text-color);
   font-size: 30px;
   line-height: 1.4;
   margin-top: 25px;
