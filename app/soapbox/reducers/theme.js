@@ -14,7 +14,7 @@ const cssrgba = (color, a) => {
 const populate = themeData => {
   const { 'brand-color': brandColor } = themeData.toObject();
   return ImmutableMap({
-    'nav-ui-highlight-color': brightness(10, hue(-3, brandColor).hex).hex,
+    'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
     'brand-color-faint': cssrgba(brandColor, 0.1),
     'highlight-text-color': brandColor,
   }).merge(themeData);
