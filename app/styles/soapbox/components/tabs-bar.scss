@@ -1,9 +1,7 @@
-$nav-ui-background-color: var(--brand-color) !default;
-
 .tabs-bar {
   display: flex;
   box-sizing: border-box;
-  background: $nav-ui-background-color;
+  background: var(--brand-color);
   flex: 0 0 auto;
   overflow-y: auto;
   height: 50px;

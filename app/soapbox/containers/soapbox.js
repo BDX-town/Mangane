@@ -24,8 +24,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
 import { themeDataToCss } from 'soapbox/utils/theme';
-import { setTheme } from 'soapbox/actions/theme';
-import { Map as ImmutableMap } from 'immutable';
+import { generateTheme } from 'soapbox/actions/theme';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
@@ -77,10 +76,7 @@ class SoapboxMount extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.dispatch(setTheme(ImmutableMap({
-      // 'brand-color': '#0482d8',
-      'brand-color': '#1ca82b',
-    })));
+    this.props.dispatch(generateTheme('#1ca82b', 'light'));
   }
 
   render() {
