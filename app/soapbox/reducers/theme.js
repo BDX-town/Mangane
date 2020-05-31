@@ -12,12 +12,19 @@ const cssrgba = (color, a) => {
   return `rgba(${[r, g, b, a].join(',')})`;
 };
 
+const makeContrast = (percent, color, mode) => {
+  percent = mode === 'light' ? -percent : percent;
+  return brightness(percent, color);
+};
+
 export const generateTheme = (brandColor, mode) => {
   return ImmutableMap({
     'brand-color': brandColor,
     'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
     'brand-color-faint': cssrgba(brandColor, 0.1),
-    'highlight-text-color': brandColor,
+    'brand-color-med': cssrgba(brandColor, 0.2),
+    'highlight-text-color': makeContrast(10, brandColor, mode).hex,
+    'brand-color-hicontrast': makeContrast(20, brandColor, mode).hex,
   });
 };
 

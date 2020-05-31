@@ -50,7 +50,7 @@
     }
 
     a {
-      color: $lighter-text-color;
+      color: var(--highlight-text-color);
       font-weight: 500;
       text-decoration: underline;
 
@@ -184,7 +184,7 @@
     width: 16px;
     height: 16px;
   }
-  .autosuggest-account .display-name__account {color: $lighter-text-color;}
+  .autosuggest-account .display-name__account {color: var(--highlight-text-color);}
 
   .compose-form__modifiers {
     color: $inverted-text-color;

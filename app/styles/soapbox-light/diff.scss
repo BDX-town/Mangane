@@ -80,12 +80,7 @@ body {
 }
 
 .focusable:focus .status.status-direct {
-  background: lighten($ui-base-color, 8%);
-}
-
-.detailed-status,
-.detailed-status__action-bar {
-  background: darken($ui-base-color, 6%);
+  background: var(--brand-color-med);
 }
 
 // Change the background colors of status__content__spoiler-link
@@ -132,7 +127,6 @@ body {
 
   &__item {
     a {
-      background: $ui-base-color;
       color: $darker-text-color;
     }
   }
@@ -228,7 +222,7 @@ body {
 // Change the default colors used on some parts of the profile pages
 .activity-stream-tabs {
   background: $account-background-color;
-  border-bottom-color: lighten($ui-base-color, 8%);
+  border-bottom-color: var(--brand-color-med);
 }
 
 .activity-stream {
@@ -238,7 +232,7 @@ body {
     .detailed-status.light,
     .more.light,
     .status.light {
-      border-bottom-color: lighten($ui-base-color, 8%);
+      border-bottom-color: var(--brand-color-med);
     }
   }
 

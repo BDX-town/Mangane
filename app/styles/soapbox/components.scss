@@ -391,7 +391,7 @@
   }
 
   a {
-    color: var(--brand-color);
+    color: var(--brand-color-hicontrast);
     text-decoration: none;
 
     &:hover {
@@ -453,7 +453,7 @@
   display: block;
   font-size: 15px;
   line-height: 20px;
-  color: var(--brand-color);
+  color: var(--highlight-text-color);
   border: 0;
   background: transparent;
   padding: 0;
@@ -491,7 +491,7 @@
   box-sizing: border-box;
   width: 100%;
   clear: both;
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
 }
 
 .status__prepend-icon-wrapper {
@@ -514,7 +514,7 @@
 
     .detailed-status,
     .detailed-status__action-bar {
-      background: lighten($ui-base-color, 8%);
+      background: var(--brand-color-med);
     }
   }
 }
@@ -546,8 +546,8 @@
   }
 
   &.status-direct:not(.read) {
-    background: lighten($ui-base-color, 8%);
-    border-bottom-color: lighten($ui-base-color, 12%);
+    background: var(--brand-color-med);
+    border-bottom-color: var(--brand-color-med);
   }
 
   &.light {
@@ -730,13 +730,13 @@
   user-select: text;
 
   a {
-    color: $lighter-text-color;
+    color: var(--highlight-text-color);
   }
 }
 
 .domain {
   padding: 10px;
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
 
   .domain__domain-name {
     flex: 1 1 auto;
@@ -762,7 +762,7 @@
   padding: 10px;
 
   &:not(:last-of-type) {
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
   }
 
   &.compact {
@@ -859,7 +859,7 @@ a .account__avatar {
 
 .account__disclaimer {
   padding: 10px;
-  border-top: 1px solid lighten($ui-base-color, 8%);
+  border-top: 1px solid var(--brand-color-med);
   color: $dark-text-color;
 
   strong {
@@ -886,8 +886,8 @@ a .account__avatar {
 }
 
 .account__action-bar {
-  border-top: 1px solid lighten($ui-base-color, 8%);
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
   line-height: 36px;
   overflow: hidden;
   flex: 0 0 auto;
@@ -927,7 +927,7 @@ a .account__avatar {
   text-decoration: none;
   overflow: hidden;
   flex: 0 1 100%;
-  border-right: 1px solid lighten($ui-base-color, 8%);
+  border-right: 1px solid var(--brand-color-med);
   padding: 10px 0;
   border-bottom: 4px solid transparent;
 
@@ -1640,7 +1640,7 @@ a.account__display-name {
   display: block;
   height: 42px;
   line-height: 42px;
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
   background: $gab-background-container;
 
   &--highlighted {
@@ -1739,7 +1739,7 @@ a.account__display-name {
 .drawer__header {
   flex: 0 0 auto;
   font-size: 16px;
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;
@@ -1932,7 +1932,7 @@ a.account__display-name {
 }
 
 .column-link {
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
   color: $primary-text-color;
   display: block;
   font-size: 16px;
@@ -2122,7 +2122,7 @@ a.account__display-name {
 .status-card {
   display: flex;
   font-size: 14px;
-  border: 1px solid lighten($ui-base-color, 8%);
+  border: 1px solid var(--brand-color-med);
   border-radius: 4px;
   color: $dark-text-color;
   margin-top: 14px;
@@ -2179,7 +2179,7 @@ a.status-card {
   cursor: pointer;
 
   &:hover {
-    background: lighten($ui-base-color, 8%);
+    background: var(--brand-color-med);
   }
 }
 
@@ -2231,7 +2231,7 @@ a.status-card {
 
 .status-card__image {
   flex: 0 0 100px;
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
   position: relative;
 
   & > .fa {
@@ -2317,7 +2317,7 @@ a.status-card.compact:hover {
 }
 
 .load-gap {
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
 }
 
 .regeneration-indicator {
@@ -2498,11 +2498,11 @@ a.status-card.compact:hover {
 
   &.active {
     color: $primary-text-color;
-    background: lighten($ui-base-color, 8%);
+    background: var(--brand-color-med);
 
     &:hover {
       color: $primary-text-color;
-      background: lighten($ui-base-color, 8%);
+      background: var(--brand-color-med);
     }
   }
 }
@@ -2617,7 +2617,7 @@ a.status-card.compact:hover {
   height: 42px;
   box-sizing: border-box;
   background-color: transparent;
-  border: 0 solid lighten($ui-base-color, 26%);
+  border: 0 solid var(--brand-color-med);
   border-width: 6px;
   border-radius: 50%;
 }
@@ -2634,11 +2634,11 @@ a.status-card.compact:hover {
   0% {
     width: 0;
     height: 0;
-    background-color: lighten($ui-base-color, 26%);
+    background-color: var(--brand-color-med);
   }
 
   29% {
-    background-color: lighten($ui-base-color, 26%);
+    background-color: var(--brand-color-med);
   }
 
   30% {
@@ -2756,13 +2756,13 @@ a.status-card.compact:hover {
 }
 
 .modal-container--preloader {
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
 }
 
 .account--panel {
   background: var(--brand-color-faint);
-  border-top: 1px solid lighten($ui-base-color, 8%);
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
   display: flex;
   flex-direction: row;
   padding: 10px 0;
@@ -2775,7 +2775,7 @@ a.status-card.compact:hover {
 }
 
 .column-settings__outer {
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
   padding: 15px;
 }
 
@@ -2808,7 +2808,7 @@ a.status-card.compact:hover {
     }
 
     &__multi-value {
-      background: lighten($ui-base-color, 8%);
+      background: var(--brand-color-med);
 
       &__remove {
         cursor: pointer;
@@ -2841,7 +2841,7 @@ a.status-card.compact:hover {
     }
 
     &__indicator-separator {
-      background-color: lighten($ui-base-color, 8%);
+      background-color: var(--brand-color-med);
     }
 
     &__menu {
@@ -3123,7 +3123,7 @@ a.status-card.compact:hover {
 
 .upload-progress {
   padding: 10px;
-  color: $lighter-text-color;
+  color: var(--highlight-text-color);
   overflow: hidden;
   display: flex;
 
@@ -3254,7 +3254,7 @@ a.status-card.compact:hover {
 
 .privacy-dropdown__option__content {
   flex: 1 1 auto;
-  color: $lighter-text-color;
+  color: var(--highlight-text-color);
 
   strong {
     font-weight: 500;
@@ -3366,7 +3366,7 @@ a.status-card.compact:hover {
 
   h5 {
     background: darken($ui-base-color, 4%);
-    border-bottom: 1px solid lighten($ui-base-color, 8%);
+    border-bottom: 1px solid var(--brand-color-med);
     cursor: default;
     display: flex;
     padding: 15px;
@@ -3449,7 +3449,7 @@ a.status-card.compact:hover {
 .attachment-list {
   display: flex;
   font-size: 14px;
-  border: 1px solid lighten($ui-base-color, 8%);
+  border: 1px solid var(--brand-color-med);
   border-radius: 4px;
   margin-top: 14px;
   overflow: hidden;
@@ -3459,7 +3459,7 @@ a.status-card.compact:hover {
     color: $dark-text-color;
     padding: 8px 18px;
     cursor: default;
-    border-right: 1px solid lighten($ui-base-color, 8%);
+    border-right: 1px solid var(--brand-color-med);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -4029,7 +4029,7 @@ a.status-card.compact:hover {
 .notification__filter-bar,
 .account__section-headline {
   background: darken($ui-base-color, 4%);
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-bottom: 1px solid var(--brand-color-med);
   cursor: default;
   display: flex;
   flex-shrink: 0;
@@ -4067,7 +4067,7 @@ a.status-card.compact:hover {
         transform: translateX(-50%);
         border-style: solid;
         border-width: 0 10px 10px;
-        border-color: transparent transparent lighten($ui-base-color, 8%);
+        border-color: transparent transparent var(--brand-color-med);
       }
 
       &::after {
@@ -4283,8 +4283,8 @@ noscript {
   padding: 14px 10px;
   padding-bottom: 16px;
   background: var(--brand-color-faint);
-  border-top: 1px solid lighten($ui-base-color, 8%);
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
 
   &__message {
     position: relative;
@@ -4441,7 +4441,7 @@ noscript {
 
   .list {
     padding: 4px;
-    border-bottom: 1px solid lighten($ui-base-color, 8%);
+    border-bottom: 1px solid var(--brand-color-med);
   }
 
   .list__wrapper {
@@ -4561,7 +4561,7 @@ noscript {
     display: flex;
     align-items: center;
     padding: 15px;
-    border-bottom: 1px solid lighten($ui-base-color, 8%);
+    border-bottom: 1px solid var(--brand-color-med);
 
     &:last-child {
       border-bottom: 0;
@@ -4731,7 +4731,7 @@ noscript {
   }
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid lighten($ui-base-color, 8%);
+    border-bottom: 1px solid var(--brand-color-med);
   }
 
   &__content {
@@ -4772,7 +4772,7 @@ noscript {
     }
 
     &__username {
-      color: $lighter-text-color;
+      color: var(--highlight-text-color);
       font-size: 12px;
       line-height: 14px;
     }
@@ -5174,7 +5174,7 @@ noscript {
   background-color: darken($ui-base-color, 8%);
   border-bottom: 1px solid;
   border-top: 1px solid;
-  border-color: darken($ui-base-color, 4%);
+  border-color: var(--brand-color-faint);
   transition: max-height 150ms ease;
   overflow: hidden;
 

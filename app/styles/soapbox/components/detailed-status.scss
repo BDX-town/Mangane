@@ -53,8 +53,8 @@
 
 .detailed-status__action-bar {
   background: var(--brand-color-faint);
-  border-top: 1px solid lighten($ui-base-color, 8%);
-  border-bottom: 1px solid lighten($ui-base-color, 8%);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
   display: flex;
   flex-direction: row;
 }

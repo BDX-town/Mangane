@@ -240,7 +240,7 @@
 
   .onboarding-modal__nav,
   .error-modal__nav {
-    color: $lighter-text-color;
+    color: var(--highlight-text-color);
     border: 0;
     font-size: 14px;
     font-weight: 500;
@@ -376,7 +376,7 @@
   & > div {
     flex: 1 1 auto;
     text-align: right;
-    color: $lighter-text-color;
+    color: var(--highlight-text-color);
     padding-right: 10px;
   }
 
@@ -563,7 +563,7 @@
   .confirmation-modal__cancel-button,
   .mute-modal__cancel-button {
     background-color: transparent;
-    color: $lighter-text-color;
+    color: var(--highlight-text-color);
     font-size: 14px;
     font-weight: 500;
 

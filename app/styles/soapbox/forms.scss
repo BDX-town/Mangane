@@ -525,7 +525,7 @@ code {
 }
 
 .flash-message {
-  background: lighten($ui-base-color, 8%);
+  background: var(--brand-color-med);
   color: $darker-text-color;
   border-radius: 4px;
   padding: 15px 10px;
@@ -896,7 +896,7 @@ code {
   }
 
   &__connection {
-    background-color: lighten($ui-base-color, 8%);
+    background-color: var(--brand-color-med);
     box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
     border-radius: 4px;
     padding: 25px 10px;

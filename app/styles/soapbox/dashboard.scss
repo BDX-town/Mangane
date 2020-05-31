@@ -25,7 +25,7 @@
       &:hover,
       &:focus,
       &:active {
-        background: lighten($ui-base-color, 8%);
+        background: var(--brand-color-med);
       }
     }
   }

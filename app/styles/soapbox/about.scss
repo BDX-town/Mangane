@@ -928,7 +928,7 @@ $small-breakpoint: 960px;
       .hero-widget,
       .box-widget,
       .directory__tag {
-        border-bottom: 1px solid lighten($ui-base-color, 8%);
+        border-bottom: 1px solid var(--brand-color-med);
       }
 
       .directory {

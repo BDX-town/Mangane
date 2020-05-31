@@ -43,7 +43,7 @@
     kbd {
       display: inline-block;
       padding: 2px 8px;
-      background-color: lighten($ui-base-color, 8%);
+      background-color: var(--brand-color-med);
       border: 1px solid darken($ui-base-color, 4%);
       border-radius: 4px;
     }

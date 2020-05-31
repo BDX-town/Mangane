@@ -13,7 +13,7 @@
     &:active,
     &:focus {
       .card__bar {
-        background: lighten($ui-base-color, 8%);
+        background: var(--brand-color-med);
       }
     }
   }

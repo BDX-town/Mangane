@@ -98,7 +98,7 @@
         display: inline-block;
         background: darken($ui-base-color, 8%);
         font-size: 15px;
-        border: 1px solid lighten($ui-base-color, 8%);
+        border: 1px solid var(--brand-color-med);
         border-radius: 2px;
         padding: 1px 3px;
       }
@@ -132,7 +132,7 @@
     cursor: pointer;
 
     &:hover {
-      background: lighten($ui-base-color, 8%);
+      background: var(--brand-color-med);
     }
 
     &.active {
