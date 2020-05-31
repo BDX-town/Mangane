@@ -78,7 +78,8 @@ class SoapboxMount extends React.PureComponent {
 
   componentDidMount() {
     this.props.dispatch(setTheme(ImmutableMap({
-      'brand-color': 'green',
+      // 'brand-color': '#0482d8',
+      'brand-color': '#1ca82b',
     })));
   }
 
