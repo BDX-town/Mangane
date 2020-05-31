@@ -274,7 +274,7 @@
             a {
               padding: 4px;
               border-radius: 4px;
-              background-color: $ui-base-color;
+              background-color: var(--brand-color-med);
             }
           }
 
@@ -341,7 +341,7 @@
       }
 
       &--hollow {
-        background-color: $ui-base-color;
+        background-color: var(--brand-color-med);
 
         &:hover,
         &:focus,
@@ -722,7 +722,7 @@
         margin: 0 -5px;
 
         .account__header__fields {
-          border-top: 1px solid lighten($ui-base-color, 12%);
+          border-top: 1px solid var(--brand-color-med);
         }
 
         .roles {
@@ -864,7 +864,7 @@
         }
 
         .card__bar {
-          background: $ui-base-color;
+          background: var(--brand-color-med);
 
           &:hover,
           &:active,

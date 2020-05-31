@@ -20,7 +20,7 @@
   }
 
   &__text {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     padding: 20px;
     border-radius: 0 0 4px 4px;
     font-size: 15px;
@@ -115,7 +115,7 @@
   padding: 20px;
   min-height: 100%;
   border-radius: 4px;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
 }
 
@@ -152,7 +152,7 @@
   padding: 15px;
   padding-bottom: 20px;
   border-radius: 4px;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
   color: $secondary-text-color;
   font-weight: 400;
@@ -260,7 +260,7 @@
 }
 
 .directory {
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   border-radius: 4px;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
 
@@ -273,7 +273,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: $ui-base-color;
+      background: var(--brand-color-med);
       border-radius: 4px;
       padding: 15px;
       text-decoration: none;
@@ -352,7 +352,7 @@
     position: relative;
     margin-left: -10px;
     background: darken($ui-base-color, 8%);
-    border: 2px solid $ui-base-color;
+    border: 2px solid var(--brand-color-med);
 
     &:nth-child(1) {
       z-index: 1;

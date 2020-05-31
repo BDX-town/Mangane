@@ -79,12 +79,12 @@
   }
 
   &.button-alternative-2 {
-    background: $ui-base-lighter-color;
+    background: var(--brand-color-med);
 
     &:active,
     &:focus,
     &:hover {
-      background-color: lighten($ui-base-lighter-color, 4%);
+      background-color: var(--brand-color-faint);
     }
   }
 
@@ -126,6 +126,16 @@
   background: transparent;
   cursor: pointer;
   transition: color 100ms ease-in;
+
+  > div {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  i.fa {
+    margin: 0;
+  }
 
   &:hover,
   &:active,
@@ -506,7 +516,7 @@
     background: var(--brand-color-faint);
 
     .status.status-direct {
-      background: lighten($ui-base-color, 12%);
+      background: var(--brand-color-med);
 
       &.muted {
         background: transparent;
@@ -1080,11 +1090,11 @@ a.account__display-name {
   }
 
   a.status__content__spoiler-link {
-    background: $ui-base-lighter-color;
+    background: var(--brand-color-med);
     color: $inverted-text-color;
 
     &:hover {
-      background: lighten($ui-base-lighter-color, 7%);
+      background: var(--brand-color-faint);
       text-decoration: none;
     }
   }
@@ -1710,7 +1720,7 @@ a.account__display-name {
   height: 100%;
 
   &.darker {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
   }
 }
 
@@ -1865,7 +1875,7 @@ a.account__display-name {
   height: 24px;
   padding: 0;
   border-radius: 30px;
-  background-color: $ui-base-color;
+  background-color: var(--brand-color-med);
   transition: background-color 0.2s ease;
 }
 
@@ -1924,7 +1934,7 @@ a.account__display-name {
   left: 1px;
   width: 22px;
   height: 22px;
-  border: 1px solid $ui-base-color;
+  border: 1px solid var(--brand-color-med);
   border-radius: 50%;
   background-color: darken($simple-background-color, 2%);
   box-sizing: border-box;
@@ -1983,13 +1993,13 @@ a.account__display-name {
   font-size: 12px;
   line-height: 19px;
   font-weight: 500;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   padding: 4px 8px;
   margin: -6px 10px;
 }
 
 .column-subheading {
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   color: $dark-text-color;
   padding: 8px 20px;
   font-size: 12px;
@@ -2001,7 +2011,7 @@ a.account__display-name {
 .getting-started__wrapper,
 .getting-started,
 .flex-spacer {
-  background: $ui-base-color;
+  background: var(--brand-color-med);
 }
 
 .getting-started__wrapper {
@@ -2053,7 +2063,7 @@ a.account__display-name {
   }
 
   &__trends {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     flex: 0 1 auto;
 
     @media screen and (max-height: 810px) {
@@ -2318,7 +2328,7 @@ a.status-card.compact:hover {
   text-decoration: none;
 
   &:hover {
-    background: lighten($ui-base-color, 2%);
+    background: var(--brand-color-faint);
   }
 }
 
@@ -2331,7 +2341,7 @@ a.status-card.compact:hover {
   font-size: 16px;
   font-weight: 500;
   color: $dark-text-color;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   cursor: default;
   display: flex;
   flex: 1 1 auto;
@@ -2364,7 +2374,7 @@ a.status-card.compact:hover {
   font-size: 16px;
   font-weight: 500;
   color: $dark-text-color;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   cursor: default;
   display: flex;
   flex: 1 1 auto;
@@ -2534,7 +2544,7 @@ a.status-card.compact:hover {
     height: 0;
     background: transparent;
     border: 0;
-    border-top: 1px solid lighten($ui-base-color, 12%);
+    border-top: 1px solid var(--brand-color-med);
     margin: 10px 0;
   }
 }
@@ -2822,7 +2832,7 @@ a.status-card.compact:hover {
         &:hover,
         &:active,
         &:focus {
-          background: lighten($ui-base-color, 12%);
+          background: var(--brand-color-med);
           color: lighten($darker-text-color, 4%);
         }
       }
@@ -2913,7 +2923,7 @@ a.status-card.compact:hover {
 .empty-column-indicator,
 .error-column {
   color: $dark-text-color;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   text-align: center;
   padding: 40px;
   font-size: 15px;
@@ -3111,7 +3121,7 @@ a.status-card.compact:hover {
   left: 0;
   z-index: -1;
   border-radius: 4px;
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   box-shadow: 0 0 5px rgba($base-shadow-color, 0.2);
 }
 
@@ -3123,7 +3133,7 @@ a.status-card.compact:hover {
   color: $secondary-text-color;
   font-size: 18px;
   font-weight: 500;
-  border: 2px dashed $ui-base-lighter-color;
+  border: 2px dashed var(--brand-color-med);
   border-radius: 4px;
 }
 
@@ -3154,7 +3164,7 @@ a.status-card.compact:hover {
   width: 100%;
   height: 6px;
   border-radius: 6px;
-  background: $ui-base-lighter-color;
+  background: var(--brand-color-med);
   position: relative;
   margin-top: 5px;
 }
@@ -3355,7 +3365,7 @@ a.status-card.compact:hover {
 
 .search-results__header {
   color: $dark-text-color;
-  background: lighten($ui-base-color, 2%);
+  background: var(--brand-color-faint);
   padding: 15px;
   font-weight: 500;
   font-size: 16px;
@@ -3883,7 +3893,7 @@ a.status-card.compact:hover {
       border-radius: 4px;
       left: 70px;
       bottom: 20px;
-      background: lighten($ui-highlight-color, 8%);
+      background: var(--brand-color);
     }
 
     &__handle {
@@ -3895,7 +3905,7 @@ a.status-card.compact:hover {
       bottom: 16px;
       left: 70px;
       transition: opacity .1s ease;
-      background: lighten($ui-highlight-color, 8%);
+      background: var(--brand-color);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
       pointer-events: none;
     }
@@ -3941,7 +3951,7 @@ a.status-card.compact:hover {
       height: 4px;
       border-radius: 4px;
       top: 10px;
-      background: lighten($ui-highlight-color, 8%);
+      background: var(--brand-color);
     }
 
     &__buffer {
@@ -3958,7 +3968,7 @@ a.status-card.compact:hover {
       top: 6px;
       margin-left: -6px;
       transition: opacity .1s ease;
-      background: lighten($ui-highlight-color, 8%);
+      background: var(--brand-color);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
       pointer-events: none;
 
@@ -4082,7 +4092,7 @@ a.status-card.compact:hover {
 
       &::after {
         bottom: -1px;
-        border-color: transparent transparent $ui-base-color;
+        border-color: transparent transparent var(--brand-color-med);
       }
     }
   }
@@ -4251,7 +4261,7 @@ noscript {
       border-radius: 5px;
       padding: 10px;
       font-family: $font-monospace, monospace;
-      background: $ui-base-color;
+      background: var(--brand-color-med);
       color: $primary-text-color;
       font-size: 14px;
       margin: 0;
@@ -4554,7 +4564,7 @@ noscript {
 .trends {
   &__header {
     color: $dark-text-color;
-    background: lighten($ui-base-color, 2%);
+    background: var(--brand-color-faint);
     border-bottom: 1px solid var(--brand-color-med);
     font-weight: 500;
     padding: 15px;
@@ -4656,7 +4666,7 @@ noscript {
     height: auto;
 
     path:first-child {
-      fill: lighten($ui-base-color, 12%);
+      fill: var(--brand-color-med);
     }
 
     path:last-child {
@@ -4670,7 +4680,7 @@ noscript {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: lighten($ui-base-color, 12%);
+    background: var(--brand-color-med);
     border-radius: 50%;
     padding: 0.35rem;
   }
@@ -5013,23 +5023,23 @@ noscript {
       line-height: 1.25;
 
       a {
-        color: lighten($ui-highlight-color, 8%);
+        color: var(--highlight-text-color);
       }
     }
 
     &__fields {
       display: flex;
       flex-direction: column;
-      border-top: 1px solid lighten($ui-base-color, 12%);
+      border-top: 1px solid var(--brand-color-med);
       padding: 10px 0;
       margin: 5px 0;
 
       @media screen and (max-width: 895px) {
-        border-bottom: 1px solid lighten($ui-base-color, 12%);
+        border-bottom: 1px solid var(--brand-color-med);
       }
 
       a {
-        color: lighten($ui-highlight-color, 8%);
+        color: var(--highlight-text-color);
       }
 
       dl:first-child .verified {
@@ -5137,7 +5147,7 @@ noscript {
   &__text-container {
     display: none;
     padding: 25px 0;
-    background-color: lighten($ui-base-color, 6%);
+    background-color: var(--brand-color-faint);
 
     @media (min-width: 895px) {
       display: block;

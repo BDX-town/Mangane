@@ -173,7 +173,7 @@
 }
 
 .nothing-here {
-  background: $ui-base-color;
+  background: var(--brand-color-med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
   color: $gab-secondary-text;
   font-size: 14px;
@@ -226,14 +226,14 @@
   padding: 0;
   margin: 15px -15px -15px;
   border: 0 none;
-  border-top: 1px solid lighten($ui-base-color, 12%);
-  border-bottom: 1px solid lighten($ui-base-color, 12%);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
   font-size: 14px;
   line-height: 20px;
 
   dl {
     display: flex;
-    border-bottom: 1px solid lighten($ui-base-color, 12%);
+    border-bottom: 1px solid var(--brand-color-med);
   }
 
   dt,

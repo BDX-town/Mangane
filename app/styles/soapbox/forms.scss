@@ -446,7 +446,7 @@ code {
     outline: 0;
     font-family: inherit;
     resize: vertical;
-    background: darken($ui-base-color, 10%) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14.933 18.467' height='19.698' width='15.929'><path d='M3.467 14.967l-3.393-3.5H14.86l-3.392 3.5c-1.866 1.925-3.666 3.5-4 3.5-.335 0-2.135-1.575-4-3.5zm.266-11.234L7.467 0 11.2 3.733l3.733 3.734H0l3.733-3.734z' fill='#{hex-color(lighten($ui-base-color, 12%))}'/></svg>") no-repeat right 8px center / auto 16px;
+    background: darken($ui-base-color, 10%) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14.933 18.467' height='19.698' width='15.929'><path d='M3.467 14.967l-3.393-3.5H14.86l-3.392 3.5c-1.866 1.925-3.666 3.5-4 3.5-.335 0-2.135-1.575-4-3.5zm.266-11.234L7.467 0 11.2 3.733l3.733 3.734H0l3.733-3.734z' fill='#{hex-color(var(--brand-color-med))}'/></svg>") no-repeat right 8px center / auto 16px;
     border: 1px solid darken($ui-base-color, 14%);
     border-radius: 4px;
     padding-left: 10px;
@@ -567,7 +567,7 @@ code {
     border: 0;
     padding: 10px;
     font-family: $font-monospace, monospace;
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     color: $primary-text-color;
     font-size: 14px;
     margin: 0;

@@ -9,14 +9,14 @@
     padding: 8px;
     line-height: 18px;
     vertical-align: top;
-    border-top: 1px solid $ui-base-color;
+    border-top: 1px solid var(--brand-color-med);
     text-align: left;
     background: var(--brand-color-med);
   }
 
   & > thead > tr > th {
     vertical-align: bottom;
-    border-bottom: 2px solid $ui-base-color;
+    border-bottom: 2px solid var(--brand-color-med);
     border-top: 0;
     font-weight: 500;
   }
@@ -27,7 +27,7 @@
 
   & > tbody > tr:nth-child(odd) > td,
   & > tbody > tr:nth-child(odd) > th {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
   }
 
   a {
@@ -67,7 +67,7 @@
 
   &.batch-table {
     & > thead > tr > th {
-      background: $ui-base-color;
+      background: var(--brand-color-med);
       border-top: 1px solid darken($ui-base-color, 8%);
       border-bottom: 1px solid darken($ui-base-color, 8%);
 
@@ -165,7 +165,7 @@ a.table-action-link {
 
   &__toolbar {
     border: 1px solid darken($ui-base-color, 8%);
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     border-radius: 4px 0 0;
     height: 47px;
     align-items: center;
@@ -196,10 +196,10 @@ a.table-action-link {
     }
 
     &:nth-child(even) {
-      background: $ui-base-color;
+      background: var(--brand-color-med);
 
       &:hover {
-        background: lighten($ui-base-color, 2%);
+        background: var(--brand-color-faint);
       }
     }
 

@@ -26,7 +26,7 @@
   }
 
   .entry {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
 
     .detailed-status,
     .status,
@@ -95,7 +95,7 @@
   &:active,
   &:focus,
   &:hover {
-    background: lighten($ui-highlight-color, 10%);
+    background: var(--brand-color-hicontrast);
   }
 
   &:disabled,
@@ -103,7 +103,7 @@
     &:active,
     &:focus,
     &:hover {
-      background: $ui-primary-color;
+      background: var(--brand-color-med);
     }
   }
 

@@ -54,7 +54,7 @@ body {
   }
 
   &.lighter {
-    background: $ui-base-color;
+    background: var(--brand-color-med);
   }
 
   &.with-modals {
@@ -96,7 +96,7 @@ body {
     position: absolute;
     text-align: center;
     color: $darker-text-color;
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     width: 100%;
     height: 100%;
     padding: 0;
@@ -186,7 +186,7 @@ button {
   }
 
   a {
-    color: var(--highlight-text-color);
+    color: var(--brand-color-hicontrast);
     text-decoration: none;
 
     &:hover {

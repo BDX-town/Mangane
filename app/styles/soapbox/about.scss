@@ -549,7 +549,7 @@ $small-breakpoint: 960px;
   &__forms,
   #soapbox-timeline {
     box-sizing: border-box;
-    background: $ui-base-color;
+    background: var(--brand-color-med);
     border-radius: 4px;
     box-shadow: 0 0 6px rgba($black, 0.1);
   }
@@ -816,7 +816,7 @@ $small-breakpoint: 960px;
     }
 
     &__footer {
-      background: $ui-base-color;
+      background: var(--brand-color-med);
       padding: 10px;
       border-radius: 0 0 4px 4px;
       display: flex;
