@@ -55,7 +55,7 @@
 }
 
 .emoji-mart-anchor-selected {
-  color: $highlight-text-color;
+  color: var(--highlight-text-color);
 
   &:hover {
     color: darken($highlight-text-color, 4%);
@@ -72,7 +72,7 @@
   left: 0;
   width: 100%;
   height: 4px;
-  background-color: $highlight-text-color;
+  background-color: var(--highlight-text-color);
 }
 
 .emoji-mart-anchors {

@@ -6,7 +6,7 @@
     padding-top: 0;
     font-size: 14px;
     font-weight: 500;
-    &.active {color: $highlight-text-color;}
+    &.active {color: var(--highlight-text-color);}
     input[type=checkbox] {display: none;}
 
     .checkbox {
@@ -23,8 +23,8 @@
       vertical-align: middle;
 
       &.active {
-        border-color: $highlight-text-color;
-        background: $highlight-text-color;
+        border-color: var(--highlight-text-color);
+        background: var(--highlight-text-color);
       }
     }
   }

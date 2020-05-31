@@ -32,7 +32,7 @@ $small-breakpoint: 960px;
   }
 
   a {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
     text-decoration: underline;
   }
 
@@ -50,7 +50,7 @@ $small-breakpoint: 960px;
     color: $darker-text-color;
 
     a {
-      color: $highlight-text-color;
+      color: var(--highlight-text-color);
       text-decoration: underline;
     }
   }
@@ -304,7 +304,7 @@ $small-breakpoint: 960px;
     color: $darker-text-color;
 
     a {
-      color: $highlight-text-color;
+      color: var(--highlight-text-color);
       text-decoration: underline;
     }
   }

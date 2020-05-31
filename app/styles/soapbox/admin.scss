@@ -208,7 +208,7 @@ $content-width: 840px;
       color: $gab-secondary-text;
 
       a {
-        color: $highlight-text-color;
+        color: var(--highlight-text-color);
       }
     }
 
@@ -297,7 +297,7 @@ $content-width: 840px;
       }
 
       &.selected {
-        color: $highlight-text-color;
+        color: var(--highlight-text-color);
         border-bottom: 2px solid $ui-highlight-color;
       }
     }
@@ -401,7 +401,7 @@ $content-width: 840px;
   font-size: 14px;
 
   a {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
     text-decoration: none;
 
     &:hover {

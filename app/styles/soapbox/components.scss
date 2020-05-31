@@ -139,7 +139,7 @@
   }
 
   &.active {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
   }
 
   &::-moz-focus-inner {
@@ -166,7 +166,7 @@
     }
 
     &.active {
-      color: $highlight-text-color;
+      color: var(--highlight-text-color);
 
       &.disabled {
         color: lighten($highlight-text-color, 13%);
@@ -212,7 +212,7 @@
   }
 
   &.active {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
   }
 
   &::-moz-focus-inner {
@@ -573,7 +573,7 @@
       color: $inverted-text-color;
 
       a {
-        color: $highlight-text-color;
+        color: var(--highlight-text-color);
       }
 
       a.status__content__spoiler-link {
@@ -1095,7 +1095,7 @@ a.account__display-name {
   position: relative;
 
   .fa {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
   }
 
   > span {
@@ -1769,7 +1769,7 @@ a.account__display-name {
 
 .column-back-button {
   background: lighten($ui-base-color, 4%);
-  color: $highlight-text-color;
+  color: var(--highlight-text-color);
   cursor: pointer;
   flex: 0 0 auto;
   font-size: 16px;
@@ -1790,7 +1790,7 @@ a.account__display-name {
   background: lighten($ui-base-color, 4%);
   border: 0;
   font-family: inherit;
-  color: $highlight-text-color;
+  color: var(--highlight-text-color);
   cursor: pointer;
   white-space: nowrap;
   font-size: 16px;
@@ -2083,7 +2083,7 @@ a.account__display-name {
   &:focus,
   &:active {
     color: $primary-text-color;
-    border-bottom-color: $highlight-text-color;
+    border-bottom-color: var(--highlight-text-color);
   }
 
   @media screen and (max-width: 600px) {
@@ -2116,7 +2116,7 @@ a.account__display-name {
 }
 
 .reduce-motion button.icon-button.active i.fa-retweet {
-  color: $highlight-text-color;
+  color: var(--highlight-text-color);
 }
 
 .status-card {
@@ -2441,7 +2441,7 @@ a.status-card.compact:hover {
     &.active {
       color: $primary-text-color;
       border-radius: 10px;
-      background-color: rgba($highlight-text-color, .1);
+      background-color: var(--brand-color-faint);
     }
 
     @media screen and (max-width: $nav-breakpoint-2) {
@@ -2459,14 +2459,14 @@ a.status-card.compact:hover {
   }
 
   & > .column-header__back-button {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
   }
 
   &.active {
     box-shadow: 0 1px 0 rgba($highlight-text-color, 0.3);
 
     .column-header__icon {
-      color: $highlight-text-color;
+      color: var(--highlight-text-color);
       text-shadow: 0 0 10px rgba($highlight-text-color, 0.4);
     }
   }
@@ -2928,7 +2928,7 @@ a.status-card.compact:hover {
   }
 
   a {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
     text-decoration: none;
 
     &:hover {
@@ -3407,7 +3407,7 @@ a.status-card.compact:hover {
 
 
 .loading-bar {
-  background-color: $highlight-text-color;
+  background-color: var(--highlight-text-color);
   height: 3px;
   position: absolute;
   top: 0;
@@ -4117,7 +4117,7 @@ noscript {
     max-width: 400px;
 
     a {
-      color: $highlight-text-color;
+      color: var(--highlight-text-color);
       text-decoration: underline;
 
       &:hover {

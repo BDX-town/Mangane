@@ -57,7 +57,7 @@
       padding: 6px 10px;
 
       &:focus {
-        border-color: $highlight-text-color;
+        border-color: var(--highlight-text-color);
       }
     }
 

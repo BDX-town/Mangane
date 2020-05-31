@@ -168,7 +168,7 @@ button {
   color: $primary-text-color;
   padding: 15px 20px;
   font-size: 14px;
-  background-color: rgba($highlight-text-color, .1);
+  background-color: var(--brand-color-faint);
   margin: 5px 20px;
   border-radius: 8px;
 
@@ -186,7 +186,7 @@ button {
   }
 
   a {
-    color: $highlight-text-color;
+    color: var(--highlight-text-color);
     text-decoration: none;
 
     &:hover {
