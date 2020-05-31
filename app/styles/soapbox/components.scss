@@ -1358,12 +1358,13 @@ a.account__display-name {
     display: flex;
     width: 100%;
     height: auto;
-      z-index: 105;
+    z-index: 105;
+    background: $gab-background-container-light;
 
-      @media (min-width: 895px) {
-        top: -290px;
-        position: sticky;
-      }
+    @media (min-width: 895px) {
+      top: -290px;
+      position: sticky;
+    }
   }
 
   &__columns {

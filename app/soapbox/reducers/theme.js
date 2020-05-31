@@ -23,7 +23,7 @@ export const generateTheme = (brandColor, mode) => {
     'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
     'brand-color-faint': cssrgba(brandColor, 0.1),
     'brand-color-med': cssrgba(brandColor, 0.2),
-    'highlight-text-color': makeContrast(10, brandColor, mode).hex,
+    'highlight-text-color': makeContrast(5, brandColor, mode).hex,
     'brand-color-hicontrast': makeContrast(20, brandColor, mode).hex,
   });
 };
