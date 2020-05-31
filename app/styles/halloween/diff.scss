@@ -106,10 +106,6 @@ body.app-body::after {
   color: darken($halloween-dark, 10%);
 }
 
-.admin-wrapper .content h2 {
-  color: #fff;
-}
-
 .compose-form .autosuggest-textarea__textarea,
 .compose-form .spoiler-input__input {
   color: darken($halloween-dark, 15%);
@@ -202,8 +198,4 @@ body.app-body::after {
 .actions-modal,
 .mute-modal {
   border-color: $halloween-orange;
-}
-
-.admin-wrapper .sidebar ul .simple-navigation-active-leaf a {
-  color: #000;
 }

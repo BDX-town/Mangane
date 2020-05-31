@@ -151,7 +151,6 @@ body {
 .actions-modal ul li:not(:empty) a:focus button,
 .actions-modal ul li:not(:empty) a:hover,
 .actions-modal ul li:not(:empty) a:hover button,
-.admin-wrapper .sidebar ul li a.selected,
 .simple_form .block-button,
 .simple_form .button,
 .simple_form button {
@@ -351,21 +350,6 @@ body {
 .directory__tag > a,
 .directory__tag > div {
   box-shadow: none;
-}
-
-.admin-wrapper .sidebar ul li a.selected {
-  color: $gab-background-container-light;
-  background-color: var(--brand-color);
-}
-
-.admin-wrapper .sidebar ul li .simple-navigation-active-leaf a.selected {
-  color: #fff;
-  background-color: darken($gab-brand-default, 10%);
-  // Using Darken bc Lighten and Darken are reversed on light theme - actually lightens
-}
-
-.admin-wrapper .content > p {
-  color: #000;
 }
 
 .btngroup__btn--active {
