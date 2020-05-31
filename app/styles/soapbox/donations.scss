@@ -19,7 +19,7 @@
     }
 
     &--active {
-      background-color: $ui-highlight-color;
+      background-color: var(--brand-color);
       color: $primary-text-color;
     }
   }

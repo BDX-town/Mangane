@@ -76,7 +76,7 @@
 .button.logo-button {
   flex: 0 auto;
   font-size: 14px;
-  background: $ui-highlight-color;
+  background: var(--brand-color);
   color: $primary-text-color;
   text-transform: none;
   line-height: 36px;

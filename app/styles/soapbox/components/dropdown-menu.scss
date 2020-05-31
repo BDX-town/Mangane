@@ -145,7 +145,7 @@
     }
 
     &:hover {
-      background: $ui-highlight-color;
+      background: var(--brand-color);
       color: $secondary-text-color;
     }
   }

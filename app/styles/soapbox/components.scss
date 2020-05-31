@@ -937,7 +937,7 @@ a .account__avatar {
   border-bottom: 4px solid transparent;
 
   &.active {
-    border-bottom: 4px solid $ui-highlight-color;
+    border-bottom: 4px solid var(--brand-color);
   }
 
   & > span {
@@ -1967,7 +1967,7 @@ a.account__display-name {
     }
 
     &.active {
-      color: $ui-highlight-color;
+      color: var(--brand-color);
     }
   }
 }
@@ -3164,7 +3164,7 @@ a.status-card.compact:hover {
   left: 0;
   top: 0;
   height: 6px;
-  background: $ui-highlight-color;
+  background: var(--brand-color);
   border-radius: 6px;
 }
 
@@ -3233,7 +3233,7 @@ a.status-card.compact:hover {
 
   &:hover,
   &.active {
-    background: $ui-highlight-color;
+    background: var(--brand-color);
     color: $primary-text-color;
     outline: 0;
 
@@ -3286,7 +3286,7 @@ a.status-card.compact:hover {
     }
 
     &.active {
-      background: $ui-highlight-color;
+      background: var(--brand-color);
 
       .icon-button {
         color: $primary-text-color;
@@ -4665,7 +4665,7 @@ noscript {
   }
 
   &__active {
-    color: $ui-highlight-color;
+    color: var(--brand-color);
     position: absolute;
     top: 50%;
     left: 50%;

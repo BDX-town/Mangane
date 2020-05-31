@@ -290,7 +290,7 @@
     }
 
     &.active > a {
-      background: $ui-highlight-color;
+      background: var(--brand-color);
       cursor: default;
     }
 
@@ -335,7 +335,7 @@
     }
 
     &.active .avatar-stack .account__avatar {
-      border-color: $ui-highlight-color;
+      border-color: var(--brand-color);
     }
   }
 }
@@ -523,7 +523,7 @@ $fluid-breakpoint: $maximum-width + 20px;
     line-height: 20px;
     text-decoration: none;
     font-weight: 500;
-    color: $ui-highlight-color;
+    color: var(--brand-color);
 
     &:hover,
     &:focus,

@@ -389,7 +389,7 @@ code {
     width: 100%;
     border: 0;
     border-radius: 4px;
-    background: $ui-highlight-color;
+    background: var(--brand-color);
     color: $primary-text-color;
     font-size: 18px;
     line-height: inherit;

@@ -126,7 +126,7 @@
     width: 14px;
     height: 14px;
     border-radius: 14px;
-    border: 1px solid $ui-highlight-color;
+    border: 1px solid var(--brand-color);
     background: transparent;
     margin: 0 3px;
     cursor: pointer;
@@ -137,7 +137,7 @@
 
     &.active {
       cursor: default;
-      background: $ui-highlight-color;
+      background: var(--brand-color);
     }
   }
 
