@@ -48,7 +48,7 @@
   box-shadow: none;
   font-family: inherit;
   background: $nav-ui-search-bg-color;
-  color: $nav-ui-highlight-color;
+  color: var(--highlight-text-color);
   margin: 0;
   border-radius: 4px;
 
@@ -92,7 +92,7 @@
 
     li {
       margin: 0 0 2px;
-      em {color: $nav-ui-highlight-color;}
+      em {color: var(--brand-color);}
     }
   }
 }

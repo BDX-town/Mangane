@@ -796,7 +796,7 @@
 .account__avatar {
   @include avatar-radius;
   position: relative;
-  background-color: $ui-base-color;
+  background-color: var(--accent-color);
 
   &-inline {
     display: inline-block;
@@ -3342,8 +3342,8 @@ a.status-card.compact:hover {
   .fa-times-circle {
     @include font-size(17);
     cursor: pointer;
-    color: $nav-ui-highlight-color;
-    &:hover {color: lighten($nav-ui-highlight-color, 7%);}
+    color: var(--highlight-text-color);
+    &:hover {color: var(--brand-color);}
   }
 }
 

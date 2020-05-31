@@ -39,10 +39,6 @@ body {
     }
   }
 
-  .compose-form__buttons-wrapper {
-    background: darken($ui-base-color, 6%);
-  }
-
   .autosuggest-textarea__suggestions {
     background: darken($ui-base-color, 6%);
   }
@@ -105,26 +101,6 @@ body {
 
 // Change the colors used in the dropdown menu
 .dropdown-menu {
-  background: $ui-base-color;
-
-  &__arrow {
-    &.left {
-      border-left-color: $ui-base-color;
-    }
-
-    &.top {
-      border-top-color: $ui-base-color;
-    }
-
-    &.bottom {
-      border-bottom-color: $ui-base-color;
-    }
-
-    &.right {
-      border-right-color: $ui-base-color;
-    }
-  }
-
   &__item {
     a {
       color: $darker-text-color;
@@ -348,10 +324,6 @@ body {
 
 .btngroup__btn--active {
   color: #fff;
-}
-
-.timeline-compose-block .compose-form .compose-form__autosuggest-wrapper .autosuggest-textarea__textarea {
-  background: $gab-background-base-light;
 }
 
 .promo-panel-item {

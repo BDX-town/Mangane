@@ -98,7 +98,7 @@
     width: 100%;
     margin: 0;
     color: $inverted-text-color;
-    background: $simple-background-color;
+    background: $gab-background-base-light;
     padding: 10px;
     font-family: inherit;
     font-size: 14px;
@@ -283,7 +283,7 @@
 
   .compose-form__buttons-wrapper {
     padding: 10px;
-    background: darken($simple-background-color, 8%);
+    background: $gab-background-base-light;
     border-radius: 0 0 4px 4px;
     display: flex;
     justify-content: space-between;
