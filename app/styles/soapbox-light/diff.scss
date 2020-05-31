@@ -52,13 +52,13 @@ body {
     &:focus,
     &:active,
     &.selected {
-      background: lighten($ui-base-color, 4%);
+      background: var(--brand-color-faint);
     }
   }
 }
 
 .emoji-mart-bar {
-  border-color: lighten($ui-base-color, 4%);
+  border-color: var(--brand-color-faint);
 
   &:first-child {
     background: darken($ui-base-color, 6%);
@@ -72,11 +72,11 @@ body {
 
 // Change the background colors of statuses
 .focusable:focus {
-  background: $ui-base-color;
+  background: var(--brand-color-faint);
 }
 
 .status.status-direct {
-  background: lighten($ui-base-color, 4%);
+  background: var(--brand-color-faint);
 }
 
 .focusable:focus .status.status-direct {

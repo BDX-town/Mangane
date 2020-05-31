@@ -583,7 +583,7 @@ code {
     }
 
     &:focus {
-      background: lighten($ui-base-color, 4%);
+      background: var(--brand-color-faint);
     }
   }
 

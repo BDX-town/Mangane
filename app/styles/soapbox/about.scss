@@ -235,7 +235,7 @@ $small-breakpoint: 960px;
       color: $darker-text-color;
       padding-bottom: 5px;
       margin-bottom: 15px;
-      border-bottom: 1px solid lighten($ui-base-color, 4%);
+      border-bottom: 1px solid var(--brand-color-faint);
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;

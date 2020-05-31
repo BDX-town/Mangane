@@ -48,7 +48,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: lighten($ui-base-color, 4%);
+    background: var(--brand-color-faint);
     border-radius: 0 0 4px 4px;
 
     @media screen and (max-width: $no-gap-breakpoint) {

@@ -72,7 +72,7 @@ body {
   }
 
   &.embed {
-    background: lighten($ui-base-color, 4%);
+    background: var(--brand-color-faint);
     margin: 0;
     padding-bottom: 0;
 

@@ -7,7 +7,7 @@
 }
 
 .detailed-status {
-  background: lighten($ui-base-color, 4%);
+  background: var(--brand-color-faint);
   padding: 14px 10px;
 
   &--flex {
@@ -52,7 +52,7 @@
 }
 
 .detailed-status__action-bar {
-  background: lighten($ui-base-color, 4%);
+  background: var(--brand-color-faint);
   border-top: 1px solid lighten($ui-base-color, 8%);
   border-bottom: 1px solid lighten($ui-base-color, 8%);
   display: flex;

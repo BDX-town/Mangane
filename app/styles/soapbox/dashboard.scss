@@ -13,7 +13,7 @@
     & > div,
     & > a {
       padding: 20px;
-      background: lighten($ui-base-color, 4%);
+      background: var(--brand-color-faint);
       border-radius: 4px;
     }
 

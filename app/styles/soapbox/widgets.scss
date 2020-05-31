@@ -251,7 +251,7 @@
 
   @media screen and (max-width: $no-gap-breakpoint) {
     margin-top: 0;
-    background: lighten($ui-base-color, 4%);
+    background: var(--brand-color-faint);
 
     h1 {
       font-size: 24px;
