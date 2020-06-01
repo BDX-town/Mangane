@@ -39,13 +39,14 @@
   outline: 0;
   box-sizing: border-box;
   width: 100%;
-  border: 1px $gab-placeholder-accent solid;
   box-shadow: none;
   font-family: inherit;
   background: var(--background-color);
   color: var(--highlight-text-color);
   margin: 0;
-  border-radius: 4px;
+  border-radius: 999px;
+  border: 0;
+  padding-left: 15px;
 
   // Chrome does not like these concatinated together
   &::placeholder {color: $gab-placeholder-accent;}
