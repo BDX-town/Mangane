@@ -44,7 +44,6 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
-    theme: settings.get('theme'),
     reduceMotion: settings.get('reduceMotion'),
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
@@ -60,7 +59,6 @@ class SoapboxMount extends React.PureComponent {
   static propTypes = {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
-    theme: PropTypes.string,
     reduceMotion: PropTypes.bool,
     systemFont: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
@@ -70,12 +68,8 @@ class SoapboxMount extends React.PureComponent {
     dispatch: PropTypes.func,
   };
 
-  componentDidMount() {
-    this.props.dispatch(generateTheme('#bb0000', 'light'));
-  }
-
   render() {
-    const { me, theme, themeCss, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
+    const { me, themeCss, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
     if (me === null) return null;
 
     const { localeData, messages } = getLocale();
@@ -89,7 +83,6 @@ class SoapboxMount extends React.PureComponent {
     // }
 
     const bodyClass = classNames('app-body', {
-      [`theme-${theme}`]: theme,
       'system-font': systemFont,
       'no-reduce-motion': !reduceMotion,
       'dyslexic': dyslexicFont,

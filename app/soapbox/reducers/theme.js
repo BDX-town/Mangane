@@ -32,7 +32,8 @@ const makeContrast = (percent, color, mode) => {
   return brightness(percent, color);
 };
 
-export const generateTheme = (brandColor, mode) => {
+export const generateTheme = (brandColor, mode = 'light') => {
+  if (!brandColor) return modes.get(mode);
   return modes.get(mode).merge(ImmutableMap({
     'brand-color': brandColor,
     'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
