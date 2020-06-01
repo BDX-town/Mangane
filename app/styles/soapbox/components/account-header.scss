@@ -103,6 +103,10 @@
         border-radius: 4px;
         box-sizing: content-box;
         padding: 2px;
+
+        > div {
+          line-height: 31px !important;
+        }
       }
 
       .button { margin-right: 10px; }
