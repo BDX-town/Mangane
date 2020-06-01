@@ -1949,7 +1949,7 @@ a.account__display-name {
   &:hover,
   &:focus,
   &:active {
-    background: lighten($ui-base-color, 11%);
+    background: var(--brand-color-faint);
   }
 
   &:focus {
@@ -1991,7 +1991,7 @@ a.account__display-name {
 
 .column-subheading {
   background: var(--brand-color-med);
-  color: $dark-text-color;
+  color: var(--primary-text-color-faint);
   padding: 8px 20px;
   font-size: 12px;
   font-weight: 500;
@@ -2081,7 +2081,7 @@ a.account__display-name {
   color: var(--primary-text-color-faint);
   background: transparent;
   border: 0;
-  border-bottom: 2px solid $ui-primary-color;
+  border-bottom: 2px solid var(--brand-color);
   box-sizing: border-box;
   display: block;
   font-family: inherit;
@@ -2446,6 +2446,7 @@ a.status-card.compact:hover {
 
     &.grouped {
       margin: 6px;
+      color: var(--primary-text-color-faint);
     }
 
     &.active {
@@ -2547,7 +2548,7 @@ a.status-card.compact:hover {
 }
 
 .column-header__collapsible-inner {
-  background: #3f3f3f;
+  background: var(--background-color);
   padding: 15px;
 }
 
@@ -4684,6 +4685,7 @@ noscript {
 }
 
 .wtf-panel {
+  @include light-theme-shadow;
   display: flex;
   width: 100%;
   border-radius: 10px;

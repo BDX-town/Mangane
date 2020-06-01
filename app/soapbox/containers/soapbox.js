@@ -70,11 +70,6 @@ class SoapboxMount extends React.PureComponent {
     dispatch: PropTypes.func,
   };
 
-  getThemeChunk = theme => {
-    const cssChunks = JSON.parse(document.getElementById('css-chunks').innerHTML);
-    return cssChunks.filter(chunk => chunk.startsWith(theme))[0];
-  };
-
   componentDidMount() {
     this.props.dispatch(generateTheme('#bb0000', 'light'));
   }
@@ -106,7 +101,6 @@ class SoapboxMount extends React.PureComponent {
         <>
           <Helmet>
             <body className={bodyClass} />
-            {theme && <link rel='stylesheet' href={`/packs/css/${this.getThemeChunk(theme)}.chunk.css`} />}
             {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           </Helmet>
           <BrowserRouter>
