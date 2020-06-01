@@ -42,7 +42,7 @@
   border: 1px $gab-placeholder-accent solid;
   box-shadow: none;
   font-family: inherit;
-  background: $nav-ui-search-bg-color;
+  background: var(--background-color);
   color: var(--highlight-text-color);
   margin: 0;
   border-radius: 4px;
@@ -72,7 +72,7 @@
   border: 1px solid $gab-placeholder-accent;
   padding: 8px 10px 17px;
   margin: 4px 0 0;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
 
   h4 {

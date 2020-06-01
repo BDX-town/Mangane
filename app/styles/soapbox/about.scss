@@ -21,7 +21,7 @@ $small-breakpoint: 960px;
   font-weight: 400;
   font-size: 16px;
   line-height: 30px;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   max-width: 600px;
   padding: 15px 30px;
 
@@ -47,7 +47,7 @@ $small-breakpoint: 960px;
     font-weight: 400;
     font-size: 16px;
     line-height: 30px;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     a {
       color: var(--highlight-text-color);
@@ -232,7 +232,7 @@ $small-breakpoint: 960px;
       font-size: 14px;
       line-height: 24px;
       font-weight: 500;
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
       padding-bottom: 5px;
       margin-bottom: 15px;
       border-bottom: 1px solid var(--brand-color-faint);
@@ -286,7 +286,7 @@ $small-breakpoint: 960px;
 
       .username {
         display: block;
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
       }
     }
   }
@@ -301,7 +301,7 @@ $small-breakpoint: 960px;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 12px;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     a {
       color: var(--highlight-text-color);
@@ -590,7 +590,7 @@ $small-breakpoint: 960px;
       margin-bottom: 0;
 
       small {
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
 
         span {
           color: var(--primary-text-color-faint);
@@ -812,7 +812,7 @@ $small-breakpoint: 960px;
       text-transform: uppercase;
       font-weight: 700;
       font-size: 13px;
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
     }
 
     &__text {
@@ -859,18 +859,18 @@ $small-breakpoint: 960px;
 
       span {
         font-size: 14px;
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
       }
     }
   }
 
   .simple_form .user_agreement .label_input > label {
     font-weight: 400;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
   }
 
   .simple_form p.lead {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     font-size: 15px;
     line-height: 20px;
     font-weight: 400;

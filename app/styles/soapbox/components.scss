@@ -89,7 +89,7 @@
   }
 
   &.button-secondary {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     background: transparent;
     padding: 3px 15px;
     border: 1px solid $ui-primary-color;
@@ -121,7 +121,7 @@
 .icon-button {
   display: inline-block;
   padding: 0;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -158,7 +158,7 @@
   }
 
   &.inverted {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     &:hover,
     &:active,
@@ -193,7 +193,7 @@
 }
 
 .text-icon-button {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -598,7 +598,7 @@
 
   &__meta {
     font-size: 14px;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     a {
       color: var(--brand-color);
@@ -786,7 +786,7 @@
   .account__display-name {
     flex: 1 1 auto;
     display: block;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     overflow: hidden;
     text-decoration: none;
     font-size: 14px;
@@ -862,7 +862,7 @@ a .account__avatar {
 
 .account__reciprocal_follow_message {
   padding: 0 5px;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   text-align: center;
 }
 
@@ -948,7 +948,7 @@ a .account__avatar {
     display: block;
     text-transform: uppercase;
     font-size: 11px;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
   }
 
   strong {
@@ -1098,7 +1098,7 @@ a.account__display-name {
   margin: 0 10px 0 68px;
   padding: 8px 0 0;
   cursor: default;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   font-size: 15px;
   line-height: 22px;
   position: relative;
@@ -1223,7 +1223,7 @@ a.account__display-name {
   align-items: center;
   flex-shrink: 0;
   cursor: default;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
 
   strong {
     color: var(--primary-text-color-faint);
@@ -1392,7 +1392,7 @@ a.account__display-name {
   display: block;
   flex: 1 1 auto;
   padding: 15px 5px 13px;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   text-decoration: none;
   text-align: center;
   font-size: 16px;
@@ -2078,7 +2078,7 @@ a.account__display-name {
 }
 
 .setting-text {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   background: transparent;
   border: 0;
   border-bottom: 2px solid $ui-primary-color;
@@ -2212,7 +2212,7 @@ a.status-card {
   display: block;
   font-weight: 500;
   margin-bottom: 5px;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2226,7 +2226,7 @@ a.status-card {
 }
 
 .status-card__description {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
 }
 
 .status-card__host {
@@ -2502,11 +2502,11 @@ a.status-card.compact:hover {
   border: 0;
   padding: 0 15px;
   font-size: 16px;
-  color: #fff;
+  color: var(--primary-text-color);
   background: transparent;
 
   &:hover {
-    color: lighten($darker-text-color, 7%);
+    color: var(--primary-text-color-faint);
   }
 
   &.active {
@@ -2524,7 +2524,7 @@ a.status-card.compact:hover {
   max-height: 70vh;
   overflow: hidden;
   overflow-y: auto;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   transition: max-height 150ms ease-in-out, opacity 300ms linear;
   opacity: 1;
 
@@ -2561,7 +2561,7 @@ a.status-card.compact:hover {
   }
 
   &:hover {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     text-decoration: underline;
   }
 }
@@ -2694,7 +2694,7 @@ a.status-card.compact:hover {
 
 .media-spoiler {
   background: var(--background-color);
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   border: 0;
   padding: 0;
   width: 100%;
@@ -2793,7 +2793,7 @@ a.status-card.compact:hover {
 }
 
 .column-settings__section {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   cursor: default;
   display: block;
   font-weight: 500;
@@ -2837,7 +2837,7 @@ a.status-card.compact:hover {
 
     &__multi-value__label,
     &__input {
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
     }
 
     &__clear-indicator,
@@ -2910,7 +2910,7 @@ a.status-card.compact:hover {
 }
 
 .setting-toggle__label {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   display: inline-block;
   margin-bottom: 14px;
   margin-left: 8px;
@@ -3778,7 +3778,7 @@ a.status-card.compact:hover {
     z-index: 4;
     border: 0;
     background: var(--background-color);
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     transition: none;
     pointer-events: none;
 
@@ -4533,7 +4533,7 @@ noscript {
 }
 
 .account__header__content {
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;
@@ -4597,7 +4597,7 @@ noscript {
       }
 
       a {
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
         text-decoration: none;
         font-size: 14px;
         font-weight: 500;

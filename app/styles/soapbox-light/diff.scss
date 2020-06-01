@@ -87,7 +87,7 @@
 // .dropdown-menu {
 //   &__item {
 //     a {
-//       color: var(--primary-color-faint);
+//       color: var(--primary-text-color-faint);
 //     }
 //   }
 // }
@@ -219,7 +219,7 @@
 //     }
 //
 //     .username {
-//       color: var(--primary-color-faint);
+//       color: var(--primary-text-color-faint);
 //     }
 //
 //     .account__header__content {
@@ -251,7 +251,7 @@
 //
 // .simple_form select,
 // .admin select.dropdown {
-//   border-color: var(--primary-color-faint);
+//   border-color: var(--primary-text-color-faint);
 // }
 //
 // .button.logo-button {
@@ -342,7 +342,7 @@
 //   &.standard {
 //     @include input-placeholder($gab-secondary-text);
 //     color: $gab-placeholder-accent;
-//     border-color: var(--primary-color-faint);
+//     border-color: var(--primary-text-color-faint);
 //     background: $gab-background-base-light;
 //   }
 // }

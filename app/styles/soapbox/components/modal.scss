@@ -316,7 +316,7 @@
   max-width: 90vw;
   border-radius: 4px;
   border: 1px solid $gab-placeholder-accent;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   background: $gab-background-container;
 
   .status__display-name {
@@ -440,7 +440,7 @@
 
   .status__content,
   .status__content p {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
   }
 
   @media screen and (max-width: 480px) {
@@ -532,7 +532,7 @@
         align-items: center;
         padding: 13px 10px 12px;
         @inclide font-size(14);
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
         text-decoration: none;
 
         &,

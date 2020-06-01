@@ -95,7 +95,7 @@ code {
   }
 
   .hint {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     a {
       color: var(--highlight-text-color);
@@ -116,7 +116,7 @@ code {
 
   p.hint {
     margin-bottom: 15px;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
 
     &.subtle-hint {
       text-align: center;
@@ -519,7 +519,7 @@ code {
 
 .flash-message {
   background: var(--brand-color-med);
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
   border-radius: 4px;
   padding: 15px 10px;
   margin-bottom: 30px;
@@ -539,7 +539,7 @@ code {
 
   a {
     display: inline-block;
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     text-decoration: none;
 
     &:hover {
@@ -600,7 +600,7 @@ code {
   text-align: center;
 
   a {
-    color: var(--primary-color-faint);
+    color: var(--primary-text-color-faint);
     text-decoration: none;
 
     &:hover {
@@ -636,7 +636,7 @@ code {
 .oauth-prompt,
 .follow-prompt {
   margin-bottom: 30px;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
 
   h2 {
     font-size: 16px;
@@ -767,7 +767,7 @@ code {
 
 .post-follow-actions {
   text-align: center;
-  color: var(--primary-color-faint);
+  color: var(--primary-text-color-faint);
 
   div {
     margin-bottom: 4px;

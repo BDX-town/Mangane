@@ -612,7 +612,7 @@
             text-shadow: none;
 
             small {
-              color: var(--primary-color-faint);
+              color: var(--primary-text-color-faint);
             }
           }
         }
@@ -640,7 +640,7 @@
           width: 33.3%;
           box-sizing: border-box;
           flex: 0 0 auto;
-          color: var(--primary-color-faint);
+          color: var(--primary-text-color-faint);
           padding: 10px;
           border-right: 1px solid var(--brand-color-faint);
           cursor: default;
@@ -737,11 +737,11 @@
       &__links {
         margin-top: -15px;
         font-size: 14px;
-        color: var(--primary-color-faint);
+        color: var(--primary-text-color-faint);
 
         a {
           display: inline-block;
-          color: var(--primary-color-faint);
+          color: var(--primary-text-color-faint);
           text-decoration: none;
           padding: 15px;
           font-weight: 500;
@@ -812,7 +812,7 @@
     .roles {
       padding: 20px;
       font-size: 14px;
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
     }
 
     .roles {

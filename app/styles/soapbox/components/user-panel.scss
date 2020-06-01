@@ -64,7 +64,7 @@
       display: block;
       font-size: 14px;
       line-height: 16px;
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
       text-decoration: none !important;
     }
   }
@@ -103,7 +103,7 @@
     &__label {
       display: block;
       width: 100%;
-      color: var(--primary-color-faint);
+      color: var(--primary-text-color-faint);
       font-size: 12px;
       line-height: 14px;
     }
