@@ -24,7 +24,7 @@
     padding: 20px;
     border-radius: 0 0 4px 4px;
     font-size: 15px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     line-height: 20px;
     word-wrap: break-word;
     font-weight: 400;
@@ -56,7 +56,7 @@
     }
 
     a {
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
       text-decoration: none;
 
       &:hover {
@@ -79,7 +79,7 @@
     text-transform: uppercase;
     font-weight: 700;
     font-size: 13px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
   }
 
   .account {
@@ -121,7 +121,7 @@
 
 .contact-widget {
   font-size: 15px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   line-height: 20px;
   word-wrap: break-word;
   font-weight: 400;
@@ -154,7 +154,7 @@
   border-radius: 4px;
   background: var(--brand-color-med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  color: $secondary-text-color;
+  color: var(--primary-text-color-faint);
   font-weight: 400;
   margin-bottom: 10px;
 
@@ -197,7 +197,7 @@
 
     .fa {
       margin-right: 5px;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
     }
   }
 
@@ -224,7 +224,7 @@
   background: $base-shadow-color;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
   font-size: 14px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   margin-bottom: 10px;
 }
 
@@ -246,7 +246,7 @@
 
   p {
     font-size: 15px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
   }
 
   @media screen and (max-width: $no-gap-breakpoint) {
@@ -309,7 +309,7 @@
       text-overflow: ellipsis;
 
       .fa {
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
       }
 
       small {
@@ -317,7 +317,7 @@
         font-weight: 400;
         font-size: 15px;
         margin-top: 8px;
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
       }
     }
 
@@ -383,7 +383,7 @@
   thead th {
     text-align: center;
     text-transform: uppercase;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     font-weight: 700;
     padding: 10px;
 
@@ -411,7 +411,7 @@
 
     small {
       display: block;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
       font-weight: 400;
       font-size: 14px;
     }
@@ -508,7 +508,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
 .notice-widget {
   margin-bottom: 10px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
 
   p {
     margin-bottom: 10px;

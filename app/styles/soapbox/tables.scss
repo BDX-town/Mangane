@@ -109,7 +109,7 @@ a.table-action-link {
   display: inline-block;
   margin-right: 5px;
   padding: 0 10px;
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   font-weight: 500;
 
   &:hover {

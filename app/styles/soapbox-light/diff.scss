@@ -1,419 +1,384 @@
-// Notes!
-// Sass color functions, "darken" and "lighten" are automatically replaced.
-
-body {
-  color: $gab-default-text-light;
-  background-color: $gab-background;
-}
-
-// Change the colors of button texts
-.button {
-  color: #ffffff;
-
-  &.button-alternative-2 {
-    color: #000;
-  }
-}
-
-// Change default background colors of columns
-.column {
-  article {
-    background: #ffffff;
-  }
-}
-
-.drawer__inner {
-  background: var(--brand-color-med);
-}
-
-.drawer__inner__soapbox {
-  background: var(--brand-color-med) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color(#ffffff)}"/></svg>') no-repeat bottom / 100% auto;
-}
-
-// Change the colors used in compose-form
-.compose-form {
-  .compose-form__modifiers {
-    .compose-form__upload-description input {
-      color: lighten(#ffffff, 7%);
-      &::placeholder {color: lighten(#ffffff, 7%);}
-    }
-  }
-
-  .autosuggest-textarea__suggestions {
-    background: darken($ui-base-color, 6%);
-  }
-
-  .autosuggest-textarea__suggestions__item {
-    &:hover,
-    &:focus,
-    &:active,
-    &.selected {
-      background: var(--brand-color-faint);
-    }
-  }
-}
-
-.emoji-mart-bar {
-  border-color: var(--brand-color-faint);
-
-  &:first-child {
-    background: darken($ui-base-color, 6%);
-  }
-}
-
-.emoji-mart-search input {
-  background: rgba($ui-base-color, 0.3);
-  border-color: var(--brand-color-med);
-}
-
-// Change the background colors of statuses
-.focusable:focus {
-  background: var(--brand-color-faint);
-}
-
-.status.status-direct {
-  background: var(--brand-color-faint);
-}
-
-.focusable:focus .status.status-direct {
-  background: var(--brand-color-med);
-}
-
-// Change the background colors of status__content__spoiler-link
-.reply-indicator__content .status__content__spoiler-link,
-.status__content .status__content__spoiler-link {
-  background: $ui-base-lighter-color;
-
-  &:hover {
-    background: lighten($ui-base-lighter-color, 6%);
-  }
-}
-
-// Change the background colors of media and video spoilers
-.media-spoiler,
-.video-player__spoiler {
-  background: var(--brand-color-med);
-}
-
-// Change the colors used in the dropdown menu
-.dropdown-menu {
-  &__item {
-    a {
-      color: $darker-text-color;
-    }
-  }
-}
-
-// Change the text colors on inverted background
-.privacy-dropdown__option.active .privacy-dropdown__option__content,
-.privacy-dropdown__option.active .privacy-dropdown__option__content strong,
-.privacy-dropdown__option:hover .privacy-dropdown__option__content,
-.privacy-dropdown__option:hover .privacy-dropdown__option__content strong,
-.actions-modal ul li:not(:empty) a.active,
-.actions-modal ul li:not(:empty) a.active button,
-.actions-modal ul li:not(:empty) a:active,
-.actions-modal ul li:not(:empty) a:active button,
-.actions-modal ul li:not(:empty) a:focus,
-.actions-modal ul li:not(:empty) a:focus button,
-.actions-modal ul li:not(:empty) a:hover,
-.actions-modal ul li:not(:empty) a:hover button,
-.simple_form .block-button,
-.simple_form .button,
-.simple_form button {
-  color: #ffffff;
-}
-
-.dropdown-menu__separator {
-  border-bottom-color: var(--brand-color-med);
-}
-
-// Change the background colors of modals
-.actions-modal,
-.boost-modal,
-.confirmation-modal,
-.mute-modal,
-.report-modal,
-.error-modal,
-.onboarding-modal {
-  background: var(--brand-color-med);
-}
-
-.embed-modal {
-  background: #333;
-  color: #fff;
-}
-
-.boost-modal__action-bar,
-.confirmation-modal__action-bar,
-.mute-modal__action-bar,
-.onboarding-modal__paginator,
-.error-modal__footer {
-  background: darken($ui-base-color, 6%);
-
-  .onboarding-modal__nav,
-  .error-modal__nav {
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: darken($ui-base-color, 12%);
-    }
-  }
-}
-
-.display-case__case {
-  background: #ffffff;
-}
-
-.embed-modal .embed-modal__container .embed-modal__html {
-  background: #ffffff;
-
-  &:focus {
-    background: darken($ui-base-color, 6%);
-  }
-}
-
-.react-toggle-track {
-  background: $ui-secondary-color;
-}
-
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background: darken($ui-secondary-color, 10%);
-}
-
-.react-toggle.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background: lighten($gab-brand-default, 10%);
-}
-
-// Change the default color used for the text in an empty column or on the error column
-.empty-column-indicator,
-.error-column {
-  color: var(--primary-text-color);
-  background: #ffffff;
-}
-
-// Change the default colors used on some parts of the profile pages
-.activity-stream-tabs {
-  background: $account-background-color;
-  border-bottom-color: var(--brand-color-med);
-}
-
-.activity-stream {
-  .entry {
-    background: $account-background-color;
-
-    .detailed-status.light,
-    .more.light,
-    .status.light {
-      border-bottom-color: var(--brand-color-med);
-    }
-  }
-
-  .status.light {
-    .status__content {
-      color: var(--primary-text-color);
-    }
-
-    .display-name {
-      strong {
-        color: var(--primary-text-color);
-      }
-    }
-  }
-}
-
-.accounts-grid {
-  .account-grid-card {
-
-    .name {
-      a {
-        color: var(--primary-text-color);
-      }
-    }
-
-    .username {
-      color: $darker-text-color;
-    }
-
-    .account__header__content {
-      color: var(--primary-text-color);
-    }
-  }
-}
-
-.simple_form,
-.table-form {
-  .warning {
-    box-shadow: none;
-    background: rgba($error-red, 0.5);
-    text-shadow: none;
-  }
-}
-
-.simple_form input[type="text"],
-.simple_form input[type="number"],
-.simple_form input[type="email"],
-.simple_form input[type="password"],
-.simple_form textarea {
-  border-color: var(--brand-color);
-
-  &:hover {
-    border-color: var(--brand-color);
-  }
-}
-
-.simple_form select,
-.admin select.dropdown {
-  border-color: $gab-secondary-text;
-}
-
-.button.logo-button {
-  color: #ffffff;
-
-  svg {
-    fill: #ffffff;
-  }
-}
-
-.public-layout {
-  .header,
-  .public-account-header,
-  .public-account-bio {
-    box-shadow: none;
-  }
-
-  .public-account-header {
-    &__image {
-      background: var(--brand-color-med);
-
-      &::after {
-        box-shadow: none;
-      }
-    }
-
-    &__tabs {
-      &__name {
-        h1,
-        h1 small {
-          color: #ffffff;
-        }
-      }
-    }
-  }
-}
-
-.account__section-headline a.active::after {
-  border-color: transparent transparent #ffffff;
-}
-
-.hero-widget,
-.box-widget,
-.contact-widget,
-.landing-page__information.contact-widget,
-.moved-account-widget,
-.memoriam-widget,
-.activity-stream,
-.nothing-here,
-.directory__tag > a,
-.directory__tag > div {
-  box-shadow: none;
-}
-
-.btngroup__btn--active {
-  color: #fff;
-}
-
-.promo-panel-item {
-  @include light-theme-shadow;
-  background: $gab-background-container-light;
-}
-
-.column-header {
-  background: $gab-background-container-light;
-  color: $gab-default-text-light;
-}
-
-.column-header__button {
-  color: $gab-default-text-light;
-  background: $gab-background-container-light;
-}
-
-.column-header__collapsible-inner {
-  background: #e6e6e6;
-}
-
-.wtf-panel {
-  @include light-theme-shadow;
-  background: $gab-background-container-light;
-}
-
-.profile-info-panel .profile-info-panel-content span,
-.profile-info-panel .profile-info-panel-content__name h1,
-.profile-info-panel .profile-info-panel-content__name h1 span:first-of-type {
-  color: $gab-default-text-light;
-}
-
-.group-card .group-card__header img {
-  background: $gab-background-container-light;
-}
-
-.group .group__header {
-  background: $gab-background-container-light;
-}
-
-.group .group__panel .group__panel__label {
-  background: $gab-background-container-light;
-}
-
-.group .group__feed {
-  background: $gab-background-container-light;
-}
-
-input[type='text'],
-textarea {
-  &.standard {
-    @include input-placeholder($gab-secondary-text);
-    color: $gab-placeholder-accent;
-    border-color: $gab-secondary-text;
-    background: $gab-background-base-light;
-  }
-}
-
-
-.boost-modal,
-.confirmation-modal,
-.report-modal,
-.actions-modal,
-.mute-modal {
-  color: $gab-default-text-light;
-}
-
-.report-modal__statuses {
-  .status__content,
-  .status__content p {
-    color: $gab-default-text-light;
-  }
-}
-
-.user-panel__header {
-  background: darken($gab-background-container-light, 4%);
-}
-
-.user-panel__profile .account__avatar {
-  border: 6px solid $gab-background-base-light;
-}
-
-.user-panel__account__name {
-  color: $gab-default-text-light;
-}
-
-.user-panel .user-panel-stats-item__value {
-  color: $gab-default-text-light;
-}
-
-.poll__text {
-  color: $gab-default-text-light;
-}
-
-.fa-site-icon::before {
-  filter: grayscale(100%) invert(0);
-}
+// // Notes!
+// // Sass color functions, "darken" and "lighten" are automatically replaced.
+//
+// // Change the colors of button texts
+// .button {
+//   color: #ffffff;
+//
+//   &.button-alternative-2 {
+//     color: #000;
+//   }
+// }
+//
+// .drawer__inner {
+//   background: var(--brand-color-med);
+// }
+//
+// .drawer__inner__soapbox {
+//   background: var(--brand-color-med) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color(#ffffff)}"/></svg>') no-repeat bottom / 100% auto;
+// }
+//
+// // Change the colors used in compose-form
+// .compose-form {
+//   .compose-form__modifiers {
+//     .compose-form__upload-description input {
+//       color: lighten(#ffffff, 7%);
+//       &::placeholder {color: lighten(#ffffff, 7%);}
+//     }
+//   }
+//
+//   .autosuggest-textarea__suggestions {
+//     background: darken($ui-base-color, 6%);
+//   }
+//
+//   .autosuggest-textarea__suggestions__item {
+//     &:hover,
+//     &:focus,
+//     &:active,
+//     &.selected {
+//       background: var(--brand-color-faint);
+//     }
+//   }
+// }
+//
+// .emoji-mart-bar {
+//   border-color: var(--brand-color-faint);
+//
+//   &:first-child {
+//     background: darken($ui-base-color, 6%);
+//   }
+// }
+//
+// .emoji-mart-search input {
+//   background: rgba($ui-base-color, 0.3);
+//   border-color: var(--brand-color-med);
+// }
+//
+// // Change the background colors of statuses
+// .focusable:focus {
+//   background: var(--brand-color-faint);
+// }
+//
+// .status.status-direct {
+//   background: var(--brand-color-faint);
+// }
+//
+// .focusable:focus .status.status-direct {
+//   background: var(--brand-color-med);
+// }
+//
+// // Change the background colors of status__content__spoiler-link
+// .reply-indicator__content .status__content__spoiler-link,
+// .status__content .status__content__spoiler-link {
+//   background: $ui-base-lighter-color;
+//
+//   &:hover {
+//     background: lighten($ui-base-lighter-color, 6%);
+//   }
+// }
+//
+// // Change the background colors of media and video spoilers
+// .media-spoiler,
+// .video-player__spoiler {
+//   background: var(--brand-color-med);
+// }
+//
+// // Change the colors used in the dropdown menu
+// .dropdown-menu {
+//   &__item {
+//     a {
+//       color: var(--primary-color-faint);
+//     }
+//   }
+// }
+//
+// // Change the text colors on inverted background
+// .privacy-dropdown__option.active .privacy-dropdown__option__content,
+// .privacy-dropdown__option.active .privacy-dropdown__option__content strong,
+// .privacy-dropdown__option:hover .privacy-dropdown__option__content,
+// .privacy-dropdown__option:hover .privacy-dropdown__option__content strong,
+// .actions-modal ul li:not(:empty) a.active,
+// .actions-modal ul li:not(:empty) a.active button,
+// .actions-modal ul li:not(:empty) a:active,
+// .actions-modal ul li:not(:empty) a:active button,
+// .actions-modal ul li:not(:empty) a:focus,
+// .actions-modal ul li:not(:empty) a:focus button,
+// .actions-modal ul li:not(:empty) a:hover,
+// .actions-modal ul li:not(:empty) a:hover button,
+// .simple_form .block-button,
+// .simple_form .button,
+// .simple_form button {
+//   color: #ffffff;
+// }
+//
+// .dropdown-menu__separator {
+//   border-bottom-color: var(--brand-color-med);
+// }
+//
+// // Change the background colors of modals
+// .actions-modal,
+// .boost-modal,
+// .confirmation-modal,
+// .mute-modal,
+// .report-modal,
+// .error-modal,
+// .onboarding-modal {
+//   background: var(--brand-color-med);
+// }
+//
+// .embed-modal {
+//   background: #333;
+//   color: #fff;
+// }
+//
+// .boost-modal__action-bar,
+// .confirmation-modal__action-bar,
+// .mute-modal__action-bar,
+// .onboarding-modal__paginator,
+// .error-modal__footer {
+//   background: darken($ui-base-color, 6%);
+//
+//   .onboarding-modal__nav,
+//   .error-modal__nav {
+//     &:hover,
+//     &:focus,
+//     &:active {
+//       background-color: darken($ui-base-color, 12%);
+//     }
+//   }
+// }
+//
+// .display-case__case {
+//   background: #ffffff;
+// }
+//
+// .embed-modal .embed-modal__container .embed-modal__html {
+//   background: #ffffff;
+//
+//   &:focus {
+//     background: darken($ui-base-color, 6%);
+//   }
+// }
+//
+// .react-toggle-track {
+//   background: $ui-secondary-color;
+// }
+//
+// .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+//   background: darken($ui-secondary-color, 10%);
+// }
+//
+// .react-toggle.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+//   background: lighten($gab-brand-default, 10%);
+// }
+//
+// // Change the default color used for the text in an empty column or on the error column
+// .empty-column-indicator,
+// .error-column {
+//   color: var(--primary-text-color);
+//   background: #ffffff;
+// }
+//
+// // Change the default colors used on some parts of the profile pages
+// .activity-stream-tabs {
+//   background: $account-background-color;
+//   border-bottom-color: var(--brand-color-med);
+// }
+//
+// .activity-stream {
+//   .entry {
+//     background: $account-background-color;
+//
+//     .detailed-status.light,
+//     .more.light,
+//     .status.light {
+//       border-bottom-color: var(--brand-color-med);
+//     }
+//   }
+//
+//   .status.light {
+//     .status__content {
+//       color: var(--primary-text-color);
+//     }
+//
+//     .display-name {
+//       strong {
+//         color: var(--primary-text-color);
+//       }
+//     }
+//   }
+// }
+//
+// .accounts-grid {
+//   .account-grid-card {
+//
+//     .name {
+//       a {
+//         color: var(--primary-text-color);
+//       }
+//     }
+//
+//     .username {
+//       color: var(--primary-color-faint);
+//     }
+//
+//     .account__header__content {
+//       color: var(--primary-text-color);
+//     }
+//   }
+// }
+//
+// .simple_form,
+// .table-form {
+//   .warning {
+//     box-shadow: none;
+//     background: rgba($error-red, 0.5);
+//     text-shadow: none;
+//   }
+// }
+//
+// .simple_form input[type="text"],
+// .simple_form input[type="number"],
+// .simple_form input[type="email"],
+// .simple_form input[type="password"],
+// .simple_form textarea {
+//   border-color: var(--brand-color);
+//
+//   &:hover {
+//     border-color: var(--brand-color);
+//   }
+// }
+//
+// .simple_form select,
+// .admin select.dropdown {
+//   border-color: var(--primary-color-faint);
+// }
+//
+// .button.logo-button {
+//   color: #ffffff;
+//
+//   svg {
+//     fill: #ffffff;
+//   }
+// }
+//
+// .public-layout {
+//   .header,
+//   .public-account-header,
+//   .public-account-bio {
+//     box-shadow: none;
+//   }
+//
+//   .public-account-header {
+//     &__image {
+//       background: var(--brand-color-med);
+//
+//       &::after {
+//         box-shadow: none;
+//       }
+//     }
+//
+//     &__tabs {
+//       &__name {
+//         h1,
+//         h1 small {
+//           color: #ffffff;
+//         }
+//       }
+//     }
+//   }
+// }
+//
+// .account__section-headline a.active::after {
+//   border-color: transparent transparent #ffffff;
+// }
+//
+// .hero-widget,
+// .box-widget,
+// .contact-widget,
+// .landing-page__information.contact-widget,
+// .moved-account-widget,
+// .memoriam-widget,
+// .activity-stream,
+// .nothing-here,
+// .directory__tag > a,
+// .directory__tag > div {
+//   box-shadow: none;
+// }
+//
+// .btngroup__btn--active {
+//   color: #fff;
+// }
+//
+// .wtf-panel {
+//   @include light-theme-shadow;
+//   background: var(--foreground-color);
+// }
+//
+// .profile-info-panel .profile-info-panel-content span,
+// .profile-info-panel .profile-info-panel-content__name h1,
+// .profile-info-panel .profile-info-panel-content__name h1 span:first-of-type {
+//   color: $gab-default-text-light;
+// }
+//
+// .group-card .group-card__header img {
+//   background: var(--foreground-color);
+// }
+//
+// .group .group__header {
+//   background: var(--foreground-color);
+// }
+//
+// .group .group__panel .group__panel__label {
+//   background: var(--foreground-color);
+// }
+//
+// .group .group__feed {
+//   background: var(--foreground-color);
+// }
+//
+// input[type='text'],
+// textarea {
+//   &.standard {
+//     @include input-placeholder($gab-secondary-text);
+//     color: $gab-placeholder-accent;
+//     border-color: var(--primary-color-faint);
+//     background: $gab-background-base-light;
+//   }
+// }
+//
+//
+// .boost-modal,
+// .confirmation-modal,
+// .report-modal,
+// .actions-modal,
+// .mute-modal {
+//   color: $gab-default-text-light;
+// }
+//
+// .report-modal__statuses {
+//   .status__content,
+//   .status__content p {
+//     color: $gab-default-text-light;
+//   }
+// }
+//
+// .user-panel__header {
+//   background: darken($gab-background-container-light, 4%);
+// }
+//
+// .user-panel__profile .account__avatar {
+//   border: 6px solid $gab-background-base-light;
+// }
+//
+// .user-panel .user-panel-stats-item__value {
+//   color: $gab-default-text-light;
+// }
+//
+// .poll__text {
+//   color: $gab-default-text-light;
+// }
+//
+// .fa-site-icon::before {
+//   filter: grayscale(100%) invert(0);
+// }

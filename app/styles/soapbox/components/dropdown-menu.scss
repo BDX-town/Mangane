@@ -4,10 +4,10 @@
   @include font-weight(normal);
   z-index: 9999;
   position: absolute;
-  background: $gab-background-base-light;
+  background: var(--background-color);
   border-radius: 6px;
   padding: 4px 0;
-  color: $gab-secondary-text;
+  color: var(--primary-text-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
   &.left {transform-origin: 100% 50%;}
   &.top {transform-origin: 50% 100%;}
@@ -24,28 +24,28 @@
       right: -5px;
       margin-top: -5px;
       border-width: 5px 0 5px 5px;
-      border-left-color: $gab-background-base-light;
+      border-left-color: var(--background-color);
     }
 
     &.top {
       bottom: -5px;
       margin-left: -5px;
       border-width: 5px 5px 0;
-      border-top-color: $gab-background-base-light;
+      border-top-color: var(--background-color);
     }
 
     &.bottom {
       top: -5px;
       margin-left: -5px;
       border-width: 0 5px 5px;
-      border-bottom-color: $gab-background-base-light;
+      border-bottom-color: var(--background-color);
     }
 
     &.right {
       left: -5px;
       margin-top: -5px;
       border-width: 5px 5px 5px 0;
-      border-right-color: $gab-background-base-light;
+      border-right-color: var(--background-color);
     }
   }
 
@@ -63,7 +63,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     text-transform: capitalize;
-    color: $gab-secondary-text;
+    color: var(--primary-text-color);
 
     &:focus,
     &:hover,
@@ -78,7 +78,7 @@
     display: block;
     margin: 10px !important;
     height: 1px;
-    background: $gab-background-base;
+    background: var(--foreground-color);
   }
 }
 // end .dropdown-menu
@@ -146,7 +146,7 @@
 
     &:hover {
       background: var(--brand-color);
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
     }
   }
 }

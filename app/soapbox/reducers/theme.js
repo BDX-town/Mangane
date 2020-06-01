@@ -11,10 +11,14 @@ const modes = ImmutableMap({
   light: ImmutableMap({
     'primary-text-color': '#000000',
     'primary-text-color-faint': 'rgba(0, 0, 0, 0.7)',
+    'background-color': '#f2f2f2',
+    'foreground-color': '#ffffff',
   }),
   dark: ImmutableMap({
     'primary-text-color': '#ffffff',
     'primary-text-color-faint': 'rgba(255, 255, 255, 0.7)',
+    'background-color': '#333333',
+    'foreground-color': '#222222',
   }),
 });
 

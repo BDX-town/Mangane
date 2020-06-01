@@ -115,7 +115,7 @@
     &__links {
       display: flex;
       font-size: 14px;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
       @media screen and (max-width: 895px) {
         justify-content: center;
         flex-wrap: wrap;
@@ -143,7 +143,7 @@
           }
 
           &:last-of-type {
-            color: $ui-secondary-color;
+            color: var(--primary-text-color-faint);
             font-size: 12px;
             line-height: 14px;
             padding-top: 2px;

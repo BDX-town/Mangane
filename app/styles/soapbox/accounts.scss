@@ -87,7 +87,7 @@
       span {
         display: block;
         font-size: 14px;
-        color: $gab-secondary-text;
+        color: var(--primary-color-faint);
         font-weight: 400;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -130,7 +130,7 @@
   .older,
   .newer {
     text-transform: uppercase;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   .older {
@@ -175,7 +175,7 @@
 .nothing-here {
   background: var(--brand-color-med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -251,13 +251,13 @@
     font-weight: 500;
     width: 120px;
     flex: 0 0 auto;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
     background: rgba(darken($ui-base-color, 8%), 0.5);
   }
 
   dd {
     flex: 1 1 auto;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
   }
 
   a {
@@ -296,7 +296,7 @@
 
 .pending-account {
   &__header {
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
 
     a {
       color: $ui-secondary-color;

@@ -45,7 +45,7 @@
 
 .detailed-status__meta {
   margin-top: 15px;
-  color: $dark-text-color;
+  color: var(--primary-text-color-faint);
   font-size: 14px;
   line-height: 18px;
   display: flex;
@@ -60,7 +60,7 @@
 }
 
 .detailed-status__link {
-  color: $action-button-color;
+  color: var(--primary-text-color-faint);
   cursor: pointer;
   text-decoration: none;
   font-size: 13px;

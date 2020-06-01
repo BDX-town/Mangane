@@ -9,7 +9,7 @@
     display: block;
     height: 112px;
     width: 100%;
-    background: lighten($gab-background-container, 4%);
+    background: var(--brand-color-faint);
 
     img {
       display: block;
@@ -30,7 +30,7 @@
       display: block;
       width: 82px;
       height: 82px;
-      border: 6px solid $gab-background-base;
+      border: 6px solid var(--foreground-color);
       background-size: cover;
     }
   }
@@ -51,7 +51,7 @@
       font-size: 20px;
       font-weight: bold;
       line-height: 24px;
-      color: #fff;
+      color: var(--primary-text-color);
     }
 
     &:hover & {
@@ -64,7 +64,7 @@
       display: block;
       font-size: 14px;
       line-height: 16px;
-      color: $gab-secondary-text;
+      color: var(--primary-color-faint);
       text-decoration: none !important;
     }
   }
@@ -84,7 +84,6 @@
 
     a {
       text-decoration: none;
-
       color: var(--primary-text-color);
 
       &:hover {
@@ -95,7 +94,7 @@
     &__value {
       display: block;
       width: 100%;
-      color: #fff;
+      color: var(--primary-text-color);
       font-size: 20px;
       font-weight: 800;
       line-height: 24px;
@@ -104,7 +103,7 @@
     &__label {
       display: block;
       width: 100%;
-      color: $gab-secondary-text;
+      color: var(--primary-color-faint);
       font-size: 12px;
       line-height: 14px;
     }

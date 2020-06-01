@@ -76,7 +76,7 @@ class SoapboxMount extends React.PureComponent {
   };
 
   componentDidMount() {
-    this.props.dispatch(generateTheme('#0482d8', 'light'));
+    this.props.dispatch(generateTheme('#bb0000', 'light'));
   }
 
   render() {

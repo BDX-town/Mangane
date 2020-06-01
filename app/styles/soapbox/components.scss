@@ -8,7 +8,7 @@
   border: 10px none;
   border-radius: 4px;
   box-sizing: border-box;
-  color: var(--primary-text-color);
+  color: #fff;
   cursor: pointer;
   display: inline-block;
   font-family: inherit;
@@ -89,7 +89,7 @@
   }
 
   &.button-secondary {
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     background: transparent;
     padding: 3px 15px;
     border: 1px solid $ui-primary-color;
@@ -121,7 +121,7 @@
 .icon-button {
   display: inline-block;
   padding: 0;
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -158,7 +158,7 @@
   }
 
   &.inverted {
-    color: $gab-secondary-text;
+    color: var(--primary-color-faint);
 
     &:hover,
     &:active,
@@ -181,19 +181,19 @@
 
   &.overlayed {
     box-sizing: content-box;
-    background: rgba($base-overlay-background, 0.6);
+    background: var(--foreground-color);
     color: var(--primary-text-color-faint);
     border-radius: 4px;
     padding: 2px;
 
     &:hover {
-      background: rgba($base-overlay-background, 0.9);
+      background: var(--background-color);
     }
   }
 }
 
 .text-icon-button {
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -561,11 +561,11 @@
 
   &.light {
     .status__relative-time {
-      color: $light-text-color;
+      color: var(--primary-text-color-faint);
     }
 
     .status__display-name {
-      color: $inverted-text-color;
+      color: var(--primary-text-color-faint);
     }
 
     .display-name {
@@ -598,7 +598,7 @@
 
   &__meta {
     font-size: 14px;
-    color: $gab-secondary-text;
+    color: var(--primary-color-faint);
 
     a {
       color: var(--brand-color);
@@ -624,13 +624,13 @@
 
 .status__relative-time,
 .notification__relative_time {
-  color: $dark-text-color;
+  color: var(--primary-text-color-faint);
   float: right;
   font-size: 14px;
 }
 
 .status__display-name {
-  color: $dark-text-color;
+  color: var(--primary-text-color-faint);
 }
 
 .status__info .status__display-name {
@@ -786,7 +786,7 @@
   .account__display-name {
     flex: 1 1 auto;
     display: block;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     overflow: hidden;
     text-decoration: none;
     font-size: 14px;
@@ -862,7 +862,7 @@ a .account__avatar {
 
 .account__reciprocal_follow_message {
   padding: 0 5px;
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   text-align: center;
 }
 
@@ -948,7 +948,7 @@ a .account__avatar {
     display: block;
     text-transform: uppercase;
     font-size: 11px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
   }
 
   strong {
@@ -1023,7 +1023,7 @@ a.account__display-name {
 }
 
 .detailed-status__display-name {
-  color: $secondary-text-color;
+  color: var(--primary-text-color-faint);
   display: flex;
   line-height: 24px;
   margin-bottom: 15px;
@@ -1098,7 +1098,7 @@ a.account__display-name {
   margin: 0 10px 0 68px;
   padding: 8px 0 0;
   cursor: default;
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   font-size: 15px;
   line-height: 22px;
   position: relative;
@@ -1223,10 +1223,10 @@ a.account__display-name {
   align-items: center;
   flex-shrink: 0;
   cursor: default;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
 
   strong {
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   a {
@@ -1346,11 +1346,6 @@ a.account__display-name {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-
-  article {
-    // TEMPORARY - content of columns may be significantly altered
-    background: $gab-background-container;
-  }
 }
 
 .ui {
@@ -1368,7 +1363,7 @@ a.account__display-name {
     width: 100%;
     height: auto;
     z-index: 105;
-    background: $gab-background-container-light;
+    background: var(--foreground-color);
 
     @media (min-width: 895px) {
       top: -290px;
@@ -1397,7 +1392,7 @@ a.account__display-name {
   display: block;
   flex: 1 1 auto;
   padding: 15px 5px 13px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   text-decoration: none;
   text-align: center;
   font-size: 16px;
@@ -1462,6 +1457,7 @@ a.account__display-name {
     height: 100%;
     padding: 0;
   }
+
   .autosuggest-textarea__textarea {font-size: 16px;}
 
   .search__input {
@@ -1647,11 +1643,12 @@ a.account__display-name {
 }
 
 .promo-panel-item {
+  @include light-theme-shadow;
   display: block;
   height: 42px;
   line-height: 42px;
   border-bottom: 1px solid var(--brand-color-med);
-  background: $gab-background-container;
+  background: var(--foreground-color);
 
   &--highlighted {
     background-color: #30ce7d;
@@ -2017,13 +2014,13 @@ a.account__display-name {
 }
 
 .getting-started {
-  color: $dark-text-color;
   overflow: auto;
 
   &__footer {
     flex: 0 0 auto;
     padding: 10px;
     padding-top: 20px;
+    opacity: 0.7;
 
     ul {
       margin-bottom: 10px;
@@ -2034,19 +2031,21 @@ a.account__display-name {
     }
 
     p {
-      color: $dark-text-color;
+      color: var(--primary-text-color);
       font-size: 13px;
       margin-bottom: 20px;
 
       a {
-        color: $gab-secondary-text;
+        color: var(--primary-text-color-faint);
         text-decoration: underline;
+        opacity: 0.8;
       }
     }
 
     a {
       text-decoration: none;
-      color: $gab-secondary-text;
+      color: var(--primary-text-color-faint);
+      opacity: 0.8;
 
       &:hover,
       &:focus,
@@ -2079,7 +2078,7 @@ a.account__display-name {
 }
 
 .setting-text {
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   background: transparent;
   border: 0;
   border-bottom: 2px solid $ui-primary-color;
@@ -2162,7 +2161,7 @@ a.account__display-name {
     button,
     a {
       display: inline;
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
       background: transparent;
       border: 0;
       padding: 0 8px;
@@ -2213,7 +2212,7 @@ a.status-card {
   display: block;
   font-weight: 500;
   margin-bottom: 5px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2227,7 +2226,7 @@ a.status-card {
 }
 
 .status-card__description {
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
 }
 
 .status-card__host {
@@ -2391,7 +2390,9 @@ a.status-card.compact:hover {
   }
 }
 
-.columns-area--mobile .column {@include gab-container-standards;}
+.columns-area--mobile .column {
+  @include gab-container-standards;
+}
 
 .column-header__wrapper {
   position: relative;
@@ -2419,7 +2420,6 @@ a.status-card.compact:hover {
 .column-header {
   display: flex;
   font-size: 16px;
-  background: $gab-background-container;
   flex: 0 0 auto;
   cursor: pointer;
   position: relative;
@@ -2503,8 +2503,11 @@ a.status-card.compact:hover {
   padding: 0 15px;
   font-size: 16px;
   color: #fff;
-  background: $gab-background-container;
-  &:hover {color: lighten($darker-text-color, 7%);}
+  background: transparent;
+
+  &:hover {
+    color: lighten($darker-text-color, 7%);
+  }
 
   &.active {
     color: var(--primary-text-color);
@@ -2521,7 +2524,7 @@ a.status-card.compact:hover {
   max-height: 70vh;
   overflow: hidden;
   overflow-y: auto;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   transition: max-height 150ms ease-in-out, opacity 300ms linear;
   opacity: 1;
 
@@ -2558,7 +2561,7 @@ a.status-card.compact:hover {
   }
 
   &:hover {
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     text-decoration: underline;
   }
 }
@@ -2676,7 +2679,7 @@ a.status-card.compact:hover {
 
 .video-error-cover {
   align-items: center;
-  background: $base-overlay-background;
+  background: var(--background-color);
   color: var(--primary-text-color);
   cursor: pointer;
   display: flex;
@@ -2690,8 +2693,8 @@ a.status-card.compact:hover {
 }
 
 .media-spoiler {
-  background: $base-overlay-background;
-  color: $darker-text-color;
+  background: var(--background-color);
+  color: var(--primary-color-faint);
   border: 0;
   padding: 0;
   width: 100%;
@@ -2790,7 +2793,7 @@ a.status-card.compact:hover {
 }
 
 .column-settings__section {
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   cursor: default;
   display: block;
   font-weight: 500;
@@ -2834,7 +2837,7 @@ a.status-card.compact:hover {
 
     &__multi-value__label,
     &__input {
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
     }
 
     &__clear-indicator,
@@ -2888,7 +2891,7 @@ a.status-card.compact:hover {
   margin-bottom: 4px;
   display: block;
   vertical-align: top;
-  background-color: $base-overlay-background;
+  background-color: var(--background-color);
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 500;
@@ -2907,7 +2910,7 @@ a.status-card.compact:hover {
 }
 
 .setting-toggle__label {
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   display: inline-block;
   margin-bottom: 14px;
   margin-left: 8px;
@@ -3124,7 +3127,7 @@ a.status-card.compact:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: $secondary-text-color;
+  color: var(--primary-text-color-faint);
   font-size: 18px;
   font-weight: 500;
   border: 2px dashed var(--brand-color-med);
@@ -3399,7 +3402,7 @@ a.status-card.compact:hover {
 .search-results__hashtag {
   display: block;
   padding: 10px;
-  color: $secondary-text-color;
+  color: var(--primary-text-color-faint);
   text-decoration: none;
 
   &:hover,
@@ -3545,7 +3548,7 @@ a.status-card.compact:hover {
   cursor: zoom-in;
   display: block;
   text-decoration: none;
-  color: $secondary-text-color;
+  color: var(--primary-text-color-faint);
   line-height: 0;
   position: relative;
   z-index: 1;
@@ -3567,7 +3570,7 @@ a.status-card.compact:hover {
       content: 'GIF';
       position: absolute;
       color: var(--primary-text-color);
-      background: rgba($base-overlay-background, 0.5);
+      background: var(--foreground-color);
       bottom: 6px;
       left: 6px;
       padding: 2px 6px;
@@ -3603,7 +3606,7 @@ a.status-card.compact:hover {
   top: 0;
   left: 0;
   z-index: 0;
-  background: $base-overlay-background;
+  background: var(--background-color);
 
   &--hidden {
     display: none;
@@ -3638,7 +3641,7 @@ a.status-card.compact:hover {
 
 /* Status Video Player */
 .status__video-player {
-  background: $base-overlay-background;
+  background: var(--background-color);
   box-sizing: border-box;
   cursor: default; /* May not be needed */
   margin-top: 8px;
@@ -3774,8 +3777,8 @@ a.status-card.compact:hover {
     height: 100%;
     z-index: 4;
     border: 0;
-    background: $base-overlay-background;
-    color: $darker-text-color;
+    background: var(--background-color);
+    color: var(--primary-color-faint);
     transition: none;
     pointer-events: none;
 
@@ -4058,7 +4061,7 @@ a.status-card.compact:hover {
   a {
     display: block;
     flex: 1 1 auto;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
     padding: 15px 0;
     font-size: 14px;
     font-weight: 500;
@@ -4127,7 +4130,7 @@ noscript {
   div {
     font-size: 14px;
     margin: 30px auto;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
     max-width: 400px;
 
     a {
@@ -4530,7 +4533,7 @@ noscript {
 }
 
 .account__header__content {
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;
@@ -4594,7 +4597,7 @@ noscript {
       }
 
       a {
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
         text-decoration: none;
         font-size: 14px;
         font-weight: 500;
@@ -4620,7 +4623,7 @@ noscript {
       line-height: 36px;
       font-weight: 500;
       text-align: center;
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
     }
 
     &__sparkline {
@@ -4724,7 +4727,7 @@ noscript {
   &__subtitle {
     display: block;
     padding: 0 15px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   &__form {
@@ -4798,7 +4801,7 @@ noscript {
     padding-top: 6px;
 
     &__button {
-    display: flex;
+      display: flex;
     }
 
     &__icon {
@@ -4991,7 +4994,7 @@ noscript {
         span:first-of-type {
           font-size: 20px !important;
           line-height: 1.25;
-          color: #ffffff;
+          color: var(--primary-text-color);
           font-weight: 600 !important;
           max-width: 260px;
         }
@@ -5000,7 +5003,7 @@ noscript {
           display: block;
           font-size: 16px;
           line-height: 1.5;
-          color: $secondary-text-color;
+          color: var(--primary-text-color-faint);
           font-weight: 400;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -5101,7 +5104,7 @@ noscript {
 
     > span {
       font-size: 14px;
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
 
       a {
         color: var(--brand-color) !important;
@@ -5122,7 +5125,7 @@ noscript {
     span {
       display: block;
       text-align: center;
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
     }
 
     a {
@@ -5185,15 +5188,17 @@ noscript {
   width: 100%;
   max-height: 46px;
   position: relative;
-  background-color: darken($ui-base-color, 8%);
+  background-color: var(--brand-color-faint);
   border-bottom: 1px solid;
   border-top: 1px solid;
   border-color: var(--brand-color-faint);
   transition: max-height 150ms ease;
   overflow: hidden;
+  opacity: 1;
 
   &.hidden {
     max-height: 0;
+    opacity: 0;
   }
 
   &__btn {
@@ -5204,7 +5209,7 @@ noscript {
     line-height: 46px;
     font-size: 14px;
     cursor: pointer;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
 
     span {
       height: 46px;

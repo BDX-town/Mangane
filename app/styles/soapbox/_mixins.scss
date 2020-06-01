@@ -1,19 +1,15 @@
-// NEW GAB SPECIFIC MIXINS
-
 // THEME MIXINS
 
 // standard container drop shadow
-@mixin light-theme-shadow {box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);}
+@mixin light-theme-shadow {
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
+}
 
 // common properties for all standard containers
 @mixin gab-container-standards {
+  @include light-theme-shadow;
   border-radius: 10px;
-  background: $gab-background-container;
-  $light-theme: false !default;
-  @if $light-theme {
-    @include light-theme-shadow;
-    background: $gab-background-container-light;
-  }
+  background: var(--foreground-color);
 }
 
 // SHORTCUTS
@@ -24,7 +20,6 @@
   &:-moz-placeholder {color: $color;}
 }
 
-// OLDER MIXINS
 @mixin avatar-radius {
   border-radius: 50%;
   background: transparent no-repeat;
@@ -77,7 +72,7 @@
   border: 1px solid $gab-placeholder-accent;
   padding: 8px 10px 17px;
   margin: 4px 0 0;
-  color: $gab-secondary-text;
+  color: var(--primary-color-faint);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
 
   h4 {

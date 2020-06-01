@@ -6,7 +6,7 @@
     img {
       width: 20px;
       height: 20px;
-      filter: drop-shadow(2px 0 0 #fff); // FIXME: Use theme color
+      filter: drop-shadow(2px 0 0 var(--foreground-color));
     }
   }
 
@@ -57,7 +57,7 @@
 .emoji-react-selector {
   position: absolute;
   display: flex;
-  background-color: #fff;
+  background-color: var(--background-color);
   padding: 5px 8px;
   border-radius: 9999px;
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);

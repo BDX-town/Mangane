@@ -219,7 +219,7 @@
 
         .icon-button {
           flex: 0 1 auto;
-          color: $gab-secondary-text;
+          color: var(--primary-color-faint);
           font-size: 14px;
           font-weight: 500;
           padding: 10px;
@@ -250,8 +250,8 @@
           background: rgba(0, 0, 0, 0.3);
           box-sizing: border-box;
           background: transparent;
-          color: $gab-secondary-text;
-          border: 1px solid $gab-secondary-text;
+          color: var(--primary-color-faint);
+          border: 1px solid var(--primary-color-faint);
           outline: none;
           padding: 10px;
           margin: 0;
@@ -263,7 +263,7 @@
           &:focus {color: #fff;}
 
           &::placeholder {
-            color: $gab-secondary-text;
+            color: var(--primary-color-faint);
           }
         }
         &.active {opacity: 1;}
@@ -314,7 +314,7 @@
         font-family: $font-sans-serif, sans-serif;
         font-size: 14px;
         font-weight: 600;
-        color: $gab-secondary-text;
+        color: var(--primary-color-faint);
         &.character-counter--over {color: $warning-red;}
       }
     }

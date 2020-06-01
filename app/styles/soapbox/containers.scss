@@ -94,7 +94,7 @@
 
   .name {
     flex: 1 1 auto;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
     width: calc(100% - 88px);
 
     .username {
@@ -431,7 +431,7 @@
       }
 
       .logo-button {
-        background-color: $secondary-text-color;
+        background-color: var(--primary-text-color-faint);
       }
     }
 
@@ -612,7 +612,7 @@
             text-shadow: none;
 
             small {
-              color: $darker-text-color;
+              color: var(--primary-color-faint);
             }
           }
         }
@@ -640,7 +640,7 @@
           width: 33.3%;
           box-sizing: border-box;
           flex: 0 0 auto;
-          color: $darker-text-color;
+          color: var(--primary-color-faint);
           padding: 10px;
           border-right: 1px solid var(--brand-color-faint);
           cursor: default;
@@ -674,7 +674,7 @@
             }
 
             &.inactive::after {
-              border-bottom-color: $secondary-text-color;
+              border-bottom-color: var(--primary-text-color-faint);
             }
           }
 
@@ -737,11 +737,11 @@
       &__links {
         margin-top: -15px;
         font-size: 14px;
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
 
         a {
           display: inline-block;
-          color: $darker-text-color;
+          color: var(--primary-color-faint);
           text-decoration: none;
           padding: 15px;
           font-weight: 500;
@@ -812,7 +812,7 @@
     .roles {
       padding: 20px;
       font-size: 14px;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
     }
 
     .roles {

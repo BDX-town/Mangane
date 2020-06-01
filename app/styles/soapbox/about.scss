@@ -21,7 +21,7 @@ $small-breakpoint: 960px;
   font-weight: 400;
   font-size: 16px;
   line-height: 30px;
-  color: $darker-text-color;
+  color: var(--primary-color-faint);
   max-width: 600px;
   padding: 15px 30px;
 
@@ -47,7 +47,7 @@ $small-breakpoint: 960px;
     font-weight: 400;
     font-size: 16px;
     line-height: 30px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
 
     a {
       color: var(--highlight-text-color);
@@ -72,7 +72,7 @@ $small-breakpoint: 960px;
     margin-top: 2em;
     margin-bottom: 1.25em;
     font-weight: 500;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   hr + {
@@ -200,7 +200,7 @@ $small-breakpoint: 960px;
 
     span {
       &:last-child {
-        color: $secondary-text-color;
+        color: var(--primary-text-color-faint);
       }
     }
 
@@ -232,7 +232,7 @@ $small-breakpoint: 960px;
       font-size: 14px;
       line-height: 24px;
       font-weight: 500;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
       padding-bottom: 5px;
       margin-bottom: 15px;
       border-bottom: 1px solid var(--brand-color-faint);
@@ -286,7 +286,7 @@ $small-breakpoint: 960px;
 
       .username {
         display: block;
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
       }
     }
   }
@@ -301,7 +301,7 @@ $small-breakpoint: 960px;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 12px;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
 
     a {
       color: var(--highlight-text-color);
@@ -327,7 +327,7 @@ $small-breakpoint: 960px;
     line-height: 30px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
 
     small {
       font-family: $font-sans-serif, sans-serif;
@@ -344,7 +344,7 @@ $small-breakpoint: 960px;
     line-height: 26px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   h3 {
@@ -353,7 +353,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   h4 {
@@ -362,7 +362,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   h5 {
@@ -371,7 +371,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   h6 {
@@ -380,7 +380,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: $secondary-text-color;
+    color: var(--primary-text-color-faint);
   }
 
   ul,
@@ -581,7 +581,7 @@ $small-breakpoint: 960px;
     }
 
     p a {
-      color: $secondary-text-color;
+      color: var(--primary-text-color-faint);
     }
 
     h1 {
@@ -590,10 +590,10 @@ $small-breakpoint: 960px;
       margin-bottom: 0;
 
       small {
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
 
         span {
-          color: $secondary-text-color;
+          color: var(--primary-text-color-faint);
         }
       }
     }
@@ -812,7 +812,7 @@ $small-breakpoint: 960px;
       text-transform: uppercase;
       font-weight: 700;
       font-size: 13px;
-      color: $darker-text-color;
+      color: var(--primary-color-faint);
     }
 
     &__text {
@@ -859,18 +859,18 @@ $small-breakpoint: 960px;
 
       span {
         font-size: 14px;
-        color: $darker-text-color;
+        color: var(--primary-color-faint);
       }
     }
   }
 
   .simple_form .user_agreement .label_input > label {
     font-weight: 400;
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
   }
 
   .simple_form p.lead {
-    color: $darker-text-color;
+    color: var(--primary-color-faint);
     font-size: 15px;
     line-height: 20px;
     font-weight: 400;
