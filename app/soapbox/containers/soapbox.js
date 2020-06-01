@@ -24,7 +24,6 @@ import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
 import { themeDataToCss } from 'soapbox/utils/theme';
-import { generateTheme } from 'soapbox/actions/theme';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
