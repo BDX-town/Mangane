@@ -33,7 +33,7 @@ class AboutPage extends ImmutablePureComponent {
   render() {
     return (
       <div className='content'>
-        <div className='box-widget'>
+        <div className='about-page'>
           <div
             className='rich-formatting'
             dangerouslySetInnerHTML={{ __html: this.state.pageHtml }}

@@ -409,17 +409,10 @@ code {
       margin-right: 0;
     }
 
-    &:hover {
-      background-color: lighten($ui-highlight-color, 5%);
-    }
-
+    &:hover,
     &:active,
     &:focus {
-      background-color: darken($ui-highlight-color, 5%);
-    }
-
-    &:disabled:hover {
-      background-color: $ui-primary-color;
+      background-color: var(--brand-color-hicontrast);
     }
 
     &.negative {

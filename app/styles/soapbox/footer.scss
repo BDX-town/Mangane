@@ -6,8 +6,8 @@
     justify-content: center;
     align-items: center;
     margin-top: auto;
-    background-color: lighten($ui-base-color, 5%);
-    border-top: darken($ui-base-color, 10%);
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.15);
 
     @media screen and (max-width: 1024px) {
       padding: 40px 20px;
@@ -48,14 +48,9 @@
       margin-right: auto;
 
       span {
-        color: var(--primary-text-color);
         font-size: 1.3rem;
         font-weight: 500;
         line-height: 1.5;
-
-        &:last-of-type {
-          color: var(--primary-text-color-faint);
-        }
       }
     }
 
@@ -67,7 +62,7 @@
       li {
         a {
           text-decoration: none;
-          color: lighten($ui-base-color, 34%);
+          color: #fff;
           font-size: 1.3rem;
           font-weight: 500;
           line-height: 1.5;

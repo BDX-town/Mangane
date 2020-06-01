@@ -729,6 +729,13 @@ $small-breakpoint: 960px;
     &--right {
       margin-left: auto;
       width: 395px;
+      background-color: #fff;
+      border-radius: 6px;
+
+      .simple_form {
+        padding: 20px;
+        background-color: var(--brand-color-faint);
+      }
     }
 
     @media (min-width: 767px) and (max-width: 1024px) {
@@ -1004,4 +1011,8 @@ $small-breakpoint: 960px;
 
 .public-layout pre.canary {
   white-space: pre-wrap;
+}
+
+.about-page {
+  background: var(--brand-color-faint);
 }
