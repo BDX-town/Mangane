@@ -7,7 +7,7 @@ const AssetsManifestPlugin = require('webpack-assets-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const extname = require('path-complete-extname');
-const { env, settings, themes, output } = require('./configuration');
+const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 const localePackPaths = require('./generateLocalePacks');
 
@@ -19,10 +19,7 @@ module.exports = {
       localMap[basename(entry, extname(entry, extname(entry)))] = resolve(entry);
       return localMap;
     }, {}),
-    Object.keys(themes).reduce((themePaths, name) => {
-      themePaths[name] = resolve(join(settings.source_path, themes[name]));
-      return themePaths;
-    }, {})
+    { styles: resolve(join(settings.source_path, 'styles/application.scss')) }
   ),
 
   output: {
@@ -78,10 +75,9 @@ module.exports = {
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      inject: false,
       template: 'app/index.ejs',
       chunksSortMode: 'manual',
-      chunks: ['common', 'locale_en', 'application', 'azure'],
+      chunks: ['common', 'locale_en', 'application', 'styles'],
       alwaysWriteToDisk: true,
     }),
     new HtmlWebpackHarddiskPlugin({
