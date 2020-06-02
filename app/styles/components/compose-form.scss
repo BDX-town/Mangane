@@ -1,5 +1,4 @@
 .compose-form {
-  padding: 10px;
 
   &__sensitive-button {
     padding: 10px;
@@ -97,16 +96,22 @@
     box-sizing: border-box;
     width: 100%;
     margin: 0;
-    color: var(--inverted-text-color);
-    background: #f2f2f2;
+    background: var(--background-color);
+    color: var(--primary-text-color);
     padding: 10px;
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     resize: vertical;
     border: 0;
     outline: 0;
-    &:focus {outline: 0;}
-    @media screen and (max-width: 600px) {font-size: 16px;}
+
+    &:focus {
+      outline: 0;
+    }
+
+    @media screen and (max-width: 600px) {
+      font-size: 16px;
+    }
   }
   .spoiler-input__input {border-radius: 4px;}
 
@@ -184,13 +189,16 @@
     width: 16px;
     height: 16px;
   }
-  .autosuggest-account .display-name__account {color: var(--highlight-text-color);}
+
+  .autosuggest-account .display-name__account {
+    color: var(--highlight-text-color-faint);
+  }
 
   .compose-form__modifiers {
     color: var(--inverted-text-color);
     font-family: inherit;
     font-size: 14px;
-    background: $simple-background-color;
+    background: var(--foreground-color);
     .compose-form__upload-wrapper {overflow: hidden;}
 
     .compose-form__uploads-wrapper {
@@ -200,7 +208,7 @@
 
       &.contains-media {
         padding: 5px;
-        border-top: 1px solid darken($simple-background-color, 8%);
+        border-top: 1px solid var(--foreground-color);
       }
     }
 

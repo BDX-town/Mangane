@@ -16,13 +16,17 @@ body {
     calc(255 - var(--primary-text-color-g)),
     calc(255 - var(--primary-text-color-b))
   );
+  --background-color-rgb: var(--background-color-r), var(--background-color-g), var(--background-color-b);
+  --background-color: rgb(var(--background-color-rgb));
 }
 
 body.theme-mode-light {
   --primary-text-color-r: 0;
   --primary-text-color-g: 0;
   --primary-text-color-b: 0;
-  --background-color: #f2f2f2;
+  --background-color-r: 242;
+  --background-color-g: 242;
+  --background-color-b: 242;
   --foreground-color: #ffffff;
   --highlight-text-color: rgb(
     calc(var(--brand-color-r) - 25),
@@ -40,7 +44,9 @@ body.theme-mode-dark {
   --primary-text-color-r: 255;
   --primary-text-color-g: 255;
   --primary-text-color-b: 255;
-  --background-color: #333333;
+  --background-color-r: 51;
+  --background-color-g: 51;
+  --background-color-b: 51;
   --foreground-color: #222222;
   --highlight-text-color: rgb(
     calc(var(--brand-color-r) + 25),

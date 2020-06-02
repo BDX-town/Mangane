@@ -279,7 +279,7 @@
         height: 0;
         width: 0;
         border-top: 11px solid transparent;
-        border-right: 12px solid #fff;
+        border-right: 12px solid var(--background-color);
         border-bottom: 11px solid transparent;
         border-left: 11px solid transparent;
         left: -22px;
@@ -317,7 +317,7 @@
 .reply-indicator {
   border-radius: 4px;
   margin-bottom: 10px;
-  background: var(--background-color);
+  background: var(--brand-color-faint);
   padding: 10px;
   min-height: 23px;
   overflow-y: auto;
@@ -338,13 +338,17 @@
 }
 
 .reply-indicator__display-name {
-  color: var(--inverted-text-color);
+  color: var(--primary-text-color);
   display: block;
   max-width: 100%;
   line-height: 24px;
   overflow: hidden;
   padding-right: 25px;
   text-decoration: none;
+
+  .display-name__account {
+    color: var(--primary-text-color-faint);
+  }
 }
 
 .reply-indicator__display-avatar {
@@ -1902,7 +1906,7 @@ a.account__display-name {
   height: 22px;
   border: 1px solid var(--brand-color-med);
   border-radius: 50%;
-  background-color: darken($simple-background-color, 2%);
+  background-color: var(--background-color);
   box-sizing: border-box;
   transition: all 0.25s ease;
   transition-property: border-color, left;
@@ -3000,10 +3004,9 @@ a.status-card.compact:hover {
 }
 
 .emoji-picker-dropdown__menu {
-  background: $simple-background-color;
+  @include standard-panel;
+  background: var(--foreground-color);
   position: absolute;
-  box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
-  border-radius: 4px;
   margin-top: 5px;
   z-index: 20000;
 
@@ -3028,7 +3031,7 @@ a.status-card.compact:hover {
   z-index: 4;
   top: -4px;
   left: -8px;
-  background: $simple-background-color;
+  background: var(--foreground-color);
   border-radius: 4px;
   box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
   overflow: hidden;
@@ -3043,7 +3046,7 @@ a.status-card.compact:hover {
     &:hover,
     &:focus,
     &:active {
-      background: rgba(var(--background-color), 0.4);
+      background: rgba(var(--background-color-rgb), 0.4);
     }
   }
 
@@ -3192,7 +3195,7 @@ a.status-card.compact:hover {
 
 .privacy-dropdown__dropdown {
   position: absolute;
-  background: $simple-background-color;
+  background: var(--foreground-color);
   box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
   border-radius: 4px;
   margin-left: 40px;
@@ -3260,7 +3263,7 @@ a.status-card.compact:hover {
 
 .privacy-dropdown.active {
   .privacy-dropdown__value {
-    background: $simple-background-color;
+    background: var(--foreground-color);
     border-radius: 4px 4px 0 0;
     box-shadow: 0 -4px 4px rgba($base-shadow-color, 0.1);
 
@@ -4837,10 +4840,7 @@ noscript {
   &__header {
     display: block;
     position: relative;
-    border-bottom: 1px solid var(--background-color);
-    border-radius: 6px 6px 0 0;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding: 5px 0;
 
     &__title {
       display: block;
@@ -4849,7 +4849,7 @@ noscript {
       font-size: 18px;
       font-weight: bold;
       line-height: 24px;
-      color: var(--background-color);
+      color: var(--primary-text-color);
       text-align: center;
     }
   }
@@ -4857,7 +4857,7 @@ noscript {
   &__close {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 5px;
     color: #999;
   }
 
@@ -4876,7 +4876,7 @@ noscript {
     .timeline-compose-block {
       background: transparent !important;
       width: 100%;
-      padding: 10px 5px;
+      padding: 0;
       margin-bottom: 0;
 
       .compose-form {

@@ -471,7 +471,7 @@ code {
         right: 0;
         bottom: 1px;
         width: 5px;
-        background-image: linear-gradient(to right, rgba(var(--background-color), 0), var(--background-color));
+        background-image: linear-gradient(to right, rgba(var(--background-color-rgb), 0), var(--background-color));
       }
     }
   }
@@ -664,7 +664,7 @@ code {
 
 .qr-code {
   flex: 0 0 auto;
-  background: $simple-background-color;
+  background: var(--foreground-color);
   padding: 4px;
   margin: 0 10px 20px 0;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);

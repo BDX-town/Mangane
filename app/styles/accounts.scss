@@ -116,7 +116,7 @@
   }
 
   .current {
-    background: $simple-background-color;
+    background: var(--foreground-color);
     border-radius: 100px;
     color: var(--inverted-text-color);
     cursor: default;
@@ -206,8 +206,8 @@
   line-height: 12px;
   font-weight: 500;
   color: var(--background-color);
-  background-color: rgba(var(--background-color), 0.1);
-  border: 1px solid rgba(var(--background-color), 0.5);
+  background-color: rgba(var(--background-color-rgb), 0.1);
+  border: 1px solid rgba(var(--background-color-rgb), 0.5);
 
   &.moderator {
     color: $success-green;
@@ -252,7 +252,7 @@
     width: 120px;
     flex: 0 0 auto;
     color: var(--primary-text-color-faint);
-    background: rgba(var(--background-color), 0.5);
+    background: rgba(var(--background-color-rgb), 0.5);
   }
 
   dd {

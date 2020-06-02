@@ -238,7 +238,7 @@ body.rtl {
     &::after {
       right: auto;
       left: 0;
-      background-image: linear-gradient(to left, rgba(var(--background-color), 0), var(--background-color));
+      background-image: linear-gradient(to left, rgba(var(--background-color-rgb), 0), var(--background-color));
     }
   }
 
