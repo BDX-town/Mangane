@@ -24,6 +24,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
 import { themeDataToCss } from 'soapbox/utils/theme';
+import { generateTheme } from 'soapbox/actions/theme';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
@@ -49,6 +50,8 @@ const mapStateToProps = (state) => {
     demetricator: settings.get('demetricator'),
     locale: settings.get('locale'),
     themeCss: themeDataToCss(state.get('theme')),
+    themeMode: settings.get('themeMode'),
+    brandColor: state.getIn(['soapbox', 'brandColor']),
   };
 };
 
@@ -64,8 +67,24 @@ class SoapboxMount extends React.PureComponent {
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
     themeCss: PropTypes.string,
+    brandColor: PropTypes.string,
+    themeMode: PropTypes.string,
     dispatch: PropTypes.func,
   };
+
+  maybeUpdateTheme = prevProps => {
+    const updates = [
+      this.props.brandColor !== prevProps.brandColor,
+      this.props.themeMode  !== prevProps.themeMode,
+    ];
+    if (updates.some(u => u)) this.props.dispatch(
+      generateTheme(this.props.brandColor, this.props.themeMode)
+    );
+  }
+
+  componentDidUpdate(prevProps) {
+    this.maybeUpdateTheme(prevProps);
+  }
 
   render() {
     const { me, themeCss, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;

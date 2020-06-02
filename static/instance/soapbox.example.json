@@ -1,5 +1,6 @@
 {
   "logo": "https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg",
+  "brandColor": "#0482d8",
   "promoPanel": {
     "items": [{
       "icon": "area-chart",
@@ -16,7 +17,7 @@
   },
   "defaultSettings": {
     "autoPlayGif": false,
-    "theme": "azure"
+    "themeMode": "light"
   },
   "copyright": "♡2020. Copying is an act of love. Please copy and share.",
   "navlinks": {
