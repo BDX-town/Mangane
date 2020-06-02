@@ -52,7 +52,7 @@
       font-family: inherit;
       font-size: inherit;
       line-height: inherit;
-      color: lighten($darker-text-color, 10%);
+      color: var(--primary-text-color);
     }
 
     a {
@@ -105,7 +105,7 @@
 .box-widget {
   padding: 20px;
   border-radius: 4px;
-  background: lighten($ui-base-color, 2.5%);
+  background: var(--background-color);
   box-shadow: 0 0 1px 1px rgba($base-shadow-color, 0.2);
 }
 
@@ -351,7 +351,7 @@
     border-radius: 50%;
     position: relative;
     margin-left: -10px;
-    background: darken($ui-base-color, 8%);
+    background: var(--background-color);
     border: 2px solid var(--brand-color-med);
 
     &:nth-child(1) {
@@ -473,7 +473,7 @@ $fluid-breakpoint: $maximum-width + 20px;
     border-radius: 4px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
-      border-top: 1px solid lighten($ui-base-color, 16%);
+      border-top: 1px solid var(--background-color);
     }
 
     &.compact {

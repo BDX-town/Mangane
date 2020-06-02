@@ -21,7 +21,7 @@
   &__img {
     height: 130px;
     position: relative;
-    background: darken($ui-base-color, 12%);
+    background: var(--background-color);
     border-radius: 4px 4px 0 0;
 
     img {
@@ -67,7 +67,7 @@
         display: block;
         margin: 0;
         border-radius: 4px;
-        background: darken($ui-base-color, 8%);
+        background: var(--background-color);
         object-fit: cover;
       }
     }
@@ -118,7 +118,7 @@
   .current {
     background: $simple-background-color;
     border-radius: 100px;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     cursor: default;
     margin: 0 10px;
   }
@@ -155,7 +155,7 @@
 
   .disabled {
     cursor: default;
-    color: lighten($inverted-text-color, 10%);
+    color: var(--inverted-text-color);
   }
 
   @media screen and (max-width: 700px) {
@@ -205,9 +205,9 @@
   font-size: 12px;
   line-height: 12px;
   font-weight: 500;
-  color: $ui-secondary-color;
-  background-color: rgba($ui-secondary-color, 0.1);
-  border: 1px solid rgba($ui-secondary-color, 0.5);
+  color: var(--background-color);
+  background-color: rgba(var(--background-color), 0.1);
+  border: 1px solid rgba(var(--background-color), 0.5);
 
   &.moderator {
     color: $success-green;
@@ -252,7 +252,7 @@
     width: 120px;
     flex: 0 0 auto;
     color: var(--primary-text-color-faint);
-    background: rgba(darken($ui-base-color, 8%), 0.5);
+    background: rgba(var(--background-color), 0.5);
   }
 
   dd {
@@ -299,7 +299,7 @@
     color: var(--primary-text-color-faint);
 
     a {
-      color: $ui-secondary-color;
+      color: var(--background-color);
       text-decoration: none;
 
       &:hover,

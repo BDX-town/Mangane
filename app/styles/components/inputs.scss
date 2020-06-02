@@ -3,14 +3,14 @@ textarea {
   &.standard {
     @include font-size(16);
     @include line-height(18);
-    @include input-placeholder($gab-placeholder-accent);
+    @include input-placeholder(var(--primary-text-color-faint));
     box-sizing: border-box;
     padding: 7px 10px;
     border: 1px solid;
     border-radius: 4px;
     color: var(--brand-color);
-    border-color: $gab-placeholder-accent;
-    background: $gab-background-container;
+    border-color: var(--primary-text-color-faint);
+    background: var(--foreground-color);
     &:focus {outline: none;}
   }
 }

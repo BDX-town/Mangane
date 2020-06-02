@@ -5,12 +5,12 @@
   align-items: center !important;
 
   @media screen and (max-width: 920px) {
-    background: darken($ui-base-color, 8%);
+    background: var(--background-color);
     display: block !important;
   }
 
   &__pager {
-    background: darken($ui-base-color, 8%);
+    background: var(--background-color);
     box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
     overflow: hidden;
   }
@@ -96,7 +96,7 @@
 
       code {
         display: inline-block;
-        background: darken($ui-base-color, 8%);
+        background: var(--background-color);
         font-size: 15px;
         border: 1px solid var(--brand-color-med);
         border-radius: 2px;

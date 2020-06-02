@@ -68,17 +68,17 @@
   &.batch-table {
     & > thead > tr > th {
       background: var(--brand-color-med);
-      border-top: 1px solid darken($ui-base-color, 8%);
-      border-bottom: 1px solid darken($ui-base-color, 8%);
+      border-top: 1px solid var(--background-color);
+      border-bottom: 1px solid var(--background-color);
 
       &:first-child {
         border-radius: 4px 0 0;
-        border-left: 1px solid darken($ui-base-color, 8%);
+        border-left: 1px solid var(--background-color);
       }
 
       &:last-child {
         border-radius: 0 4px 0 0;
-        border-right: 1px solid darken($ui-base-color, 8%);
+        border-right: 1px solid var(--background-color);
       }
     }
   }
@@ -94,7 +94,7 @@
 }
 
 samp {
-  font-family: $font-monospace, monospace;
+  font-family: var(--font-monospace), monospace;
 }
 
 button.table-action-link {
@@ -164,7 +164,7 @@ a.table-action-link {
   }
 
   &__toolbar {
-    border: 1px solid darken($ui-base-color, 8%);
+    border: 1px solid var(--background-color);
     background: var(--brand-color-med);
     border-radius: 4px 0 0;
     height: 47px;
@@ -181,18 +181,18 @@ a.table-action-link {
   }
 
   &__row {
-    border: 1px solid darken($ui-base-color, 8%);
+    border: 1px solid var(--background-color);
     border-top: 0;
     background: var(--brand-color-med);
 
     @media screen and (max-width: $no-gap-breakpoint) {
       &:first-child {
-        border-top: 1px solid darken($ui-base-color, 8%);
+        border-top: 1px solid var(--background-color);
       }
     }
 
     &:hover {
-      background: darken($ui-base-color, 2%);
+      background: var(--background-color);
     }
 
     &:nth-child(even) {
@@ -226,12 +226,12 @@ a.table-action-link {
   }
 
   .nothing-here {
-    border: 1px solid darken($ui-base-color, 8%);
+    border: 1px solid var(--background-color);
     border-top: 0;
     box-shadow: none;
 
     @media screen and (max-width: $no-gap-breakpoint) {
-      border-top: 1px solid darken($ui-base-color, 8%);
+      border-top: 1px solid var(--background-color);
     }
   }
 

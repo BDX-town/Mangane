@@ -152,7 +152,7 @@
   font-weight: 400;
 
   &:hover {
-    background-color: rgba($gab-brand-default, 0.1);
+    background-color: rgba(var(--brand-color-rgb), 0.1);
 
     .fa {
       color: #000;

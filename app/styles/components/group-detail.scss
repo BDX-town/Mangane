@@ -9,7 +9,7 @@
   .group__header {
     width: 100%;
     max-width: 1150px;
-    background: $gab-background-container;
+    background: var(--foreground-color);
     border-radius: 10px;
     overflow: hidden;
     margin: 20px 0;
@@ -69,14 +69,14 @@
       display: inline-block;
       margin-bottom: 10px;
       border-radius: 4px;
-      background: $gab-background-container;
+      background: var(--foreground-color);
       font-size: 13px;
       padding: 4px 8px;
     }
   }
 
   .group__feed {
-    background: $gab-background-container;
+    background: var(--foreground-color);
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     overflow: hidden;

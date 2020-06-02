@@ -1,13 +1,13 @@
 // THEME MIXINS
 
 // standard container drop shadow
-@mixin light-theme-shadow {
+@mixin standard-panel-shadow {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1);
 }
 
 // common properties for all standard containers
-@mixin gab-container-standards {
-  @include light-theme-shadow;
+@mixin standard-panel {
+  @include standard-panel-shadow;
   border-radius: 10px;
   background: var(--foreground-color);
 }
@@ -49,9 +49,9 @@
   padding-left: 15px;
 
   // Chrome does not like these concatinated together
-  &::placeholder {color: $gab-placeholder-accent;}
-  &:-ms-input-placeholder {color: $gab-placeholder-accent;}
-  &::-ms-input-placeholder {color: $gab-placeholder-accent;}
+  &::placeholder {color: var(--primary-text-color-faint);}
+  &:-ms-input-placeholder {color: var(--primary-text-color-faint);}
+  &::-ms-input-placeholder {color: var(--primary-text-color-faint);}
 
   &::-moz-focus-inner {
     border: 0;
@@ -68,9 +68,8 @@
   @include font-size(12);
   @include line-height(14);
   @include font-weight(normal);
-  background: $gab-background-container;
-  border-radius: 4px;
-  border: 1px solid $gab-placeholder-accent;
+  background: var(--background-color);
+  border-radius: 6px;
   padding: 8px 10px 17px;
   margin: 4px 0 0;
   color: var(--primary-text-color-faint);
@@ -80,7 +79,7 @@
     @include font-size(14);
     @include line-height(16);
     @include font-weight(bold);
-    color: #fff;
+    color: var(--primary-text-color);
   }
 
   ul {

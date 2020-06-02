@@ -1,5 +1,5 @@
 .group-column-header {
-  @include gab-container-standards;
+  @include standard-panel;
   overflow: hidden;
 
   .group-column-header__title {
@@ -26,7 +26,7 @@
 }
 
 .group-card {
-  @include gab-container-standards;
+  @include standard-panel;
   display: block;
   flex: 0 0 calc(50% - 20px/2);
   margin-bottom: 20px;
@@ -39,7 +39,7 @@
     img {
       pointer-events: none;
       width: 100%;
-      background: $gab-background-container;
+      background: var(--foreground-color);
     }
   }
 

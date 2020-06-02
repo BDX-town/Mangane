@@ -1,35 +1,3 @@
-// Going to create a Gab Specific color stack and gracefully remove the existing stack
-// We know what colors we want to use for everything in the UI
-// The existing color stack is based on propagating color tint variants of a few basic colors
-
-////////// GAB SPECIFIC VARIABLE STACK //////////
-
-// NOTE - will eventually create a systematic approach of setting color variables to easily change instance themes
-
-// STATIC COLORS
-
-$gab-brand-default: #990099 !default;
-$gab-secondary-text: #999 !default;
-$gab-text-highlight: #e600e6 !default;
-$gab-small-cta-primary: #607cf5 !default;
-
-
-// THEME COLORS
-
-// default theme (dark)
-$gab-background-base: #333 !default;
-$gab-background-container: #222 !default;
-$gab-placeholder-accent: #666 !default;
-
-
-// light theme
-$gab-background-base-light: #f6f2f6 !default;
-$gab-default-text-light: #6c6c6c !default;
-
-$gab-background: $gab-background-base !default;
-
-
-
 // BREAKPOINT SETS
 
 // navigation breakpoints - by default show all elements and link names along with icons
@@ -38,15 +6,10 @@ $gab-background: $gab-background-base !default;
 $nav-breakpoint-1: 850px;
 // search field hidden and replaced with search icon link
 $nav-breakpoint-2: 650px;
-// "Gab" button hidden and replaced with floating button on bottom corner
+// "Post" button hidden and replaced with floating button on bottom corner
 $nav-breakpoint-3: 450px;
-// Gab Logo hidden - bare minimum navigation for smallest width devices
+// Site Logo hidden - bare minimum navigation for smallest width devices
 $nav-breakpoint-4: 375px;
-
-
-
-
-////////// EXISTING VARIABLE STACK (with modifications) //////////
 
 // Commonly used web colors
 
@@ -55,40 +18,12 @@ $error-red: #df405a !default;        // Cerise
 $warning-red: #ff5050 !default;      // Sunset Orange
 $gold-star: #ca8f04 !default;        // Dark Goldenrod
 
-// Values from the classic Gab Social UI
-$classic-base-color: $gab-background-base;
-$classic-primary-color: $gab-background-base;
-$classic-secondary-color: $gab-placeholder-accent;
-$classic-highlight-color: $gab-text-highlight;
-
 // Variables for defaults in UI
 $base-shadow-color: #000000 !default;
 $base-overlay-background: #000000 !default;
 $simple-background-color: #ffffff !default;
 $valid-value-color: $success-green !default;
 $error-value-color: $error-red !default;
-
-// Tell UI to use selected colors
-$ui-base-color: $classic-base-color !default;                  // Darkest
-$ui-base-lighter-color: lighten($ui-base-color, 26%) !default; // Lighter darkest
-$ui-primary-color: $classic-primary-color !default;            // Lighter
-$ui-secondary-color: $classic-secondary-color !default;        // Lightest
-$ui-highlight-color: $classic-highlight-color !default;
-
-// Nav UI
-$nav-ui-highlight-color: $gab-text-highlight !default;
-$nav-ui-search-bg-color: darken($nav-ui-highlight-color, 52%) !default;
-
-// Variables for texts
-$darker-text-color: $gab-secondary-text !default;
-$dark-text-color: $ui-base-lighter-color !default;
-$secondary-text-color: $ui-secondary-color !default;
-$highlight-text-color: $ui-highlight-color !default;
-$action-button-color: $ui-base-lighter-color !default;
-// For texts on inverted backgrounds
-$inverted-text-color: $ui-base-color !default;
-$lighter-text-color: $ui-base-lighter-color !default;
-$light-text-color: $ui-primary-color !default;
 
 // Language codes that uses CJK fonts
 $cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;
@@ -99,7 +34,3 @@ $media-modal-media-max-width: 100%;
 $media-modal-media-max-height: 80%;
 
 $no-gap-breakpoint: 415px;
-
-$font-sans-serif: 'soapbox-font-sans-serif' !default;
-$font-display: 'soapbox-font-display' !default;
-$font-monospace: 'soapbox-font-monospace' !default;

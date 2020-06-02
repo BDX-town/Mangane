@@ -143,7 +143,7 @@
   a {
     text-decoration: none;
     font-weight: 500;
-    color: $ui-secondary-color;
+    color: var(--background-color);
 
     &:hover,
     &:focus,
@@ -182,8 +182,8 @@
 .onboarding-modal,
 .error-modal,
 .embed-modal {
-  background: $ui-secondary-color;
-  color: $inverted-text-color;
+  background: var(--background-color);
+  color: var(--inverted-text-color);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
@@ -230,7 +230,7 @@
 .onboarding-modal__paginator,
 .error-modal__footer {
   flex: 0 0 auto;
-  background: darken($ui-secondary-color, 8%);
+  background: var(--background-color);
   display: flex;
   padding: 25px;
 
@@ -254,18 +254,18 @@
     &:hover,
     &:focus,
     &:active {
-      color: darken($lighter-text-color, 4%);
-      background-color: darken($ui-secondary-color, 16%);
+      color: var(--primary-text-color-faint);
+      background-color: var(--background-color);
     }
 
     &.onboarding-modal__done,
     &.onboarding-modal__next {
-      color: $inverted-text-color;
+      color: var(--inverted-text-color);
 
       &:hover,
       &:focus,
       &:active {
-        color: lighten($inverted-text-color, 4%);
+        color: var(--inverted-text-color);
       }
     }
   }
@@ -282,7 +282,7 @@
 
   &__label {
     font-weight: 500;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     margin-bottom: 5px;
     text-transform: uppercase;
     font-size: 12px;
@@ -315,9 +315,9 @@
   width: 480px;
   max-width: 90vw;
   border-radius: 4px;
-  border: 1px solid $gab-placeholder-accent;
+  border: 1px solid var(--primary-text-color-faint);
   color: var(--primary-text-color-faint);
-  background: $gab-background-container;
+  background: var(--foreground-color);
 
   .status__display-name {
     display: block;
@@ -334,14 +334,14 @@
   }
 
   .status__content__spoiler-link {
-    color: lighten($secondary-text-color, 8%);
+    color: var(--primary-text-color);
   }
 }
 
 .actions-modal {
   .status {
     background: #ffffff;
-    border-bottom-color: $ui-secondary-color;
+    border-bottom-color: var(--background-color);
     padding-top: 10px;
     padding-bottom: 10px;
   }
@@ -350,7 +350,7 @@
     display: block;
     margin: 10px;
     height: 1px;
-    background: $gab-background-base;
+    background: var(--background-color);
   }
 }
 
@@ -369,7 +369,7 @@
 .mute-modal__action-bar {
   display: flex;
   justify-content: space-between;
-  background: $ui-secondary-color;
+  background: var(--background-color);
   padding: 10px;
   line-height: 36px;
 
@@ -409,7 +409,7 @@
 
 .report-modal__container {
   display: flex;
-  border-top: 1px solid $ui-secondary-color;
+  border-top: 1px solid var(--background-color);
 
   @media screen and (max-width: 480px) {
     flex-wrap: wrap;
@@ -450,7 +450,7 @@
 
 .report-modal__comment {
   padding: 20px;
-  border-right: 1px solid $ui-secondary-color;
+  border-right: 1px solid var(--background-color);
   max-width: 320px;
 
   p {
@@ -464,7 +464,7 @@
     box-sizing: border-box;
     width: 100%;
     margin: 0;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     background: #ffffff;
     padding: 10px;
     font-family: inherit;
@@ -473,11 +473,11 @@
     border: 0;
     outline: 0;
     border-radius: 4px;
-    border: 1px solid $ui-secondary-color;
+    border: 1px solid var(--background-color);
     margin-bottom: 20px;
 
     &:focus {
-      border: 1px solid darken($ui-secondary-color, 8%);
+      border: 1px solid var(--background-color);
     }
   }
 
@@ -486,7 +486,7 @@
     margin-bottom: 24px;
 
     &__label {
-      color: $inverted-text-color;
+      color: var(--inverted-text-color);
       font-size: 14px;
     }
   }
@@ -546,8 +546,8 @@
         &:focus {
           &,
           button {
-            background: $gab-background-base;
-            color: $gab-text-highlight;
+            background: var(--background-color);
+            color: var(--highlight-text-color);
             box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
           }
         }
@@ -570,7 +570,7 @@
     &:hover,
     &:focus,
     &:active {
-      color: darken($lighter-text-color, 4%);
+      color: var(--primary-text-color-faint);
     }
   }
 
@@ -607,7 +607,7 @@
 }
 
 .modal-layout {
-  background: var(--brand-color-med) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color($ui-base-lighter-color)}"/></svg>') repeat-x bottom fixed;
+  background: var(--brand-color-med) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color(var(--background-color))}"/></svg>') repeat-x bottom fixed;
   display: flex;
   flex-direction: column;
   height: 100vh;

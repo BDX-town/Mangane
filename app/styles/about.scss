@@ -244,7 +244,7 @@ $small-breakpoint: 960px;
       overflow: hidden;
       height: 300px;
       position: relative;
-      background: darken($ui-base-color, 12%);
+      background: var(--background-color);
 
       &::after {
         content: "";
@@ -331,7 +331,7 @@ $small-breakpoint: 960px;
           margin: 0;
           border-radius: 50%;
           border: 4px solid var(--brand-color-faint);
-          background: darken($ui-base-color, 8%);
+          background: var(--background-color);
         }
       }
 
@@ -466,14 +466,14 @@ $small-breakpoint: 960px;
             bottom: 0;
             left: 0;
             width: 100%;
-            border-bottom: 4px solid $ui-primary-color;
+            border-bottom: 4px solid var(--brand-color);
             opacity: 0.5;
             transition: all 400ms ease;
           }
 
           &.active {
             &::after {
-              border-bottom: 4px solid $highlight-text-color;
+              border-bottom: 4px solid var(--highlight-text-color);
               opacity: 1;
             }
 
@@ -504,7 +504,7 @@ $small-breakpoint: 960px;
             font-size: 18px;
             margin-bottom: 5px;
             color: var(--primary-text-color);
-            font-family: $font-display, sans-serif;
+            font-family: var(--font-display), sans-serif;
           }
         }
 
@@ -594,7 +594,7 @@ $small-breakpoint: 960px;
       border-top: 0;
 
       a {
-        color: lighten($ui-highlight-color, 8%);
+        color: var(--brand-color);
       }
 
       dl:first-child .verified {
@@ -625,7 +625,7 @@ $small-breakpoint: 960px;
   }
 
   .static-icon-button {
-    color: $action-button-color;
+    color: #0482d8;
     font-size: 18px;
 
     & > span {
@@ -698,7 +698,7 @@ $small-breakpoint: 960px;
 }
 
 .rich-formatting {
-  font-family: $font-sans-serif, sans-serif;
+  font-family: var(--font-sans-serif), sans-serif;
   font-size: 16px;
   font-weight: 400;
   font-size: 16px;
@@ -724,7 +724,7 @@ $small-breakpoint: 960px;
 
   p,
   li {
-    font-family: $font-sans-serif, sans-serif;
+    font-family: var(--font-sans-serif), sans-serif;
     font-size: 16px;
     font-weight: 400;
     font-size: 16px;
@@ -741,7 +741,7 @@ $small-breakpoint: 960px;
   em,
   b {
     font-weight: bold;
-    color: lighten($darker-text-color, 10%);
+    color: var(--primary-text-color);
   }
 
   h1,
@@ -750,7 +750,7 @@ $small-breakpoint: 960px;
   h4,
   h5,
   h6 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     margin-top: 2em;
     margin-bottom: 1.25em;
     font-weight: 500;
@@ -773,11 +773,11 @@ $small-breakpoint: 960px;
     line-height: 30px;
 
     small {
-      font-family: $font-sans-serif, sans-serif;
+      font-family: var(--font-sans-serif), sans-serif;
       display: block;
       font-size: 18px;
       font-weight: 400;
-      color: lighten($darker-text-color, 10%);
+      color: var(--primary-text-color);
     }
   }
 
@@ -841,7 +841,7 @@ $small-breakpoint: 960px;
     width: 100%;
     height: 0;
     border: 0;
-    border-bottom: 1px solid rgba($ui-base-lighter-color, .6);
+    border-bottom: 1px solid rgba(var(--background-color), .6);
     margin: 2em 0;
 
     &.spacer {
@@ -868,7 +868,7 @@ $small-breakpoint: 960px;
 
   &__section {
     flex: 1 0 0;
-    font-family: $font-sans-serif, sans-serif;
+    font-family: var(--font-sans-serif), sans-serif;
     font-size: 16px;
     line-height: 28px;
     color: var(--primary-text-color);
@@ -887,7 +887,7 @@ $small-breakpoint: 960px;
     }
 
     strong {
-      font-family: $font-display, sans-serif;
+      font-family: var(--font-display), sans-serif;
       font-weight: 500;
       font-size: 32px;
       line-height: 48px;
@@ -902,7 +902,7 @@ $small-breakpoint: 960px;
     position: absolute;
     width: 280px;
     box-sizing: border-box;
-    background: darken($ui-base-color, 8%);
+    background: var(--background-color);
     padding: 20px;
     padding-top: 10px;
     border-radius: 4px 4px 0 0;
@@ -910,7 +910,7 @@ $small-breakpoint: 960px;
     bottom: -40px;
 
     .panel-header {
-      font-family: $font-display, sans-serif;
+      font-family: var(--font-display), sans-serif;
       font-size: 14px;
       line-height: 24px;
       font-weight: 500;
@@ -925,7 +925,7 @@ $small-breakpoint: 960px;
       a,
       span {
         font-weight: 400;
-        color: darken($darker-text-color, 10%);
+        color: var(--primary-text-color);
       }
 
       a {
@@ -977,7 +977,7 @@ $small-breakpoint: 960px;
 .landing-page {
   p,
   li {
-    font-family: $font-sans-serif, sans-serif;
+    font-family: var(--font-sans-serif), sans-serif;
     font-size: 16px;
     font-weight: 400;
     font-size: 16px;
@@ -1000,11 +1000,11 @@ $small-breakpoint: 960px;
     font-family: inherit;
     font-size: inherit;
     line-height: inherit;
-    color: lighten($darker-text-color, 10%);
+    color: var(--primary-text-color);
   }
 
   h1 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 26px;
     line-height: 30px;
     font-weight: 500;
@@ -1012,16 +1012,16 @@ $small-breakpoint: 960px;
     color: var(--primary-text-color-faint);
 
     small {
-      font-family: $font-sans-serif, sans-serif;
+      font-family: var(--font-sans-serif), sans-serif;
       display: block;
       font-size: 18px;
       font-weight: 400;
-      color: lighten($darker-text-color, 10%);
+      color: var(--primary-text-color);
     }
   }
 
   h2 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 22px;
     line-height: 26px;
     font-weight: 500;
@@ -1030,7 +1030,7 @@ $small-breakpoint: 960px;
   }
 
   h3 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 18px;
     line-height: 24px;
     font-weight: 500;
@@ -1039,7 +1039,7 @@ $small-breakpoint: 960px;
   }
 
   h4 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 16px;
     line-height: 24px;
     font-weight: 500;
@@ -1048,7 +1048,7 @@ $small-breakpoint: 960px;
   }
 
   h5 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 14px;
     line-height: 24px;
     font-weight: 500;
@@ -1057,7 +1057,7 @@ $small-breakpoint: 960px;
   }
 
   h6 {
-    font-family: $font-display, sans-serif;
+    font-family: var(--font-display), sans-serif;
     font-size: 12px;
     line-height: 24px;
     font-weight: 500;
@@ -1095,7 +1095,7 @@ $small-breakpoint: 960px;
     width: 100%;
     height: 0;
     border: 0;
-    border-bottom: 1px solid rgba($ui-base-lighter-color, .6);
+    border-bottom: 1px solid rgba(var(--background-color), .6);
     margin: 20px 0;
 
     &.spacer {
@@ -1171,7 +1171,7 @@ $small-breakpoint: 960px;
 
     strong {
       font-weight: 500;
-      color: lighten($darker-text-color, 10%);
+      color: var(--primary-text-color);
     }
 
     .account {
@@ -1535,7 +1535,7 @@ $small-breakpoint: 960px;
       padding: 10px;
 
       strong {
-        font-family: $font-display, sans-serif;
+        font-family: var(--font-display), sans-serif;
         font-size: 15px;
         font-weight: 700;
         display: block;

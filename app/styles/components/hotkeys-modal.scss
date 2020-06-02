@@ -1,7 +1,7 @@
 .hotkeys-modal {
   padding: 8px 0 0;
   overflow: hidden;
-  background-color: $classic-base-color;
+  background-color: var(--background-color);
   border-radius: 6px;
   flex-direction: column;
 
@@ -10,7 +10,7 @@
   }
 
   .compose-modal__content {
-    background-color: $gab-background-base-light;
+    background-color: var(--background-color);
     margin: 5px;
 
     @media screen and (max-width: 960px) {

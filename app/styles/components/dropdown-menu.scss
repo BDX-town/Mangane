@@ -109,7 +109,7 @@
 
   & > ul {
     list-style: none;
-    background: $ui-secondary-color;
+    background: var(--background-color);
     padding: 4px 0;
     border-radius: 4px;
     box-shadow: 0 0 15px rgba($base-shadow-color, 0.4);
@@ -134,8 +134,8 @@
     padding: 4px 14px;
     box-sizing: border-box;
     text-decoration: none;
-    background: $ui-secondary-color;
-    color: $inverted-text-color;
+    background: var(--background-color);
+    color: var(--inverted-text-color);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

@@ -1,7 +1,7 @@
 .emoji-mart {
   font-size: 13px;
   display: inline-block;
-  color: $inverted-text-color;
+  color: var(--inverted-text-color);
 
   &,
   * {
@@ -15,13 +15,13 @@
 }
 
 .emoji-mart-bar {
-  border: 0 solid darken($ui-secondary-color, 8%);
+  border: 0 solid var(--background-color);
 
   &:first-child {
     border-bottom-width: 1px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    background: $ui-secondary-color;
+    background: var(--background-color);
   }
 
   &:last-child {
@@ -50,7 +50,7 @@
   cursor: pointer;
 
   &:hover {
-    color: darken($lighter-text-color, 4%);
+    color: var(--primary-text-color-faint);
   }
 }
 
@@ -58,7 +58,7 @@
   color: var(--highlight-text-color);
 
   &:hover {
-    color: darken($highlight-text-color, 4%);
+    color: var(--highlight-text-color);
   }
 
   .emoji-mart-anchor-bar {
@@ -114,9 +114,9 @@
     font-family: inherit;
     display: block;
     width: 100%;
-    background: rgba($ui-secondary-color, 0.3);
-    color: $inverted-text-color;
-    border: 1px solid $ui-secondary-color;
+    background: rgba(var(--background-color), 0.3);
+    color: var(--inverted-text-color);
+    border: 1px solid var(--background-color);
     border-radius: 4px;
 
     &::-moz-focus-inner {
@@ -148,7 +148,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba($ui-secondary-color, 0.7);
+    background-color: rgba(var(--background-color), 0.7);
     border-radius: 100%;
   }
 }
@@ -184,7 +184,7 @@
   font-size: 14px;
   text-align: center;
   padding-top: 70px;
-  color: $light-text-color;
+  color: var(--primary-text-color-faint);
 
   .emoji-mart-category-label {
     display: none;

@@ -11,6 +11,11 @@ body {
   --primary-text-color-rgb: var(--primary-text-color-r), var(--primary-text-color-g), var(--primary-text-color-b);
   --primary-text-color: rgb(var(--primary-text-color-rgb));
   --primary-text-color-faint: rgba(var(--primary-text-color-rgb), 0.6);
+  --inverted-text-color: rgb(
+    calc(255 - var(--primary-text-color-r)),
+    calc(255 - var(--primary-text-color-g)),
+    calc(255 - var(--primary-text-color-b))
+  );
 }
 
 body.theme-mode-light {

@@ -68,13 +68,13 @@
   }
 
   &.button-alternative {
-    color: $inverted-text-color;
-    background: $ui-primary-color;
+    color: var(--inverted-text-color);
+    background: var(--brand-color);
 
     &:active,
     &:focus,
     &:hover {
-      background-color: lighten($ui-primary-color, 4%);
+      background-color: var(--brand-color);
     }
   }
 
@@ -92,13 +92,13 @@
     color: var(--primary-text-color-faint);
     background: transparent;
     padding: 3px 15px;
-    border: 1px solid $ui-primary-color;
+    border: 1px solid var(--brand-color);
 
     &:active,
     &:focus,
     &:hover {
-      border-color: lighten($ui-primary-color, 4%);
-      color: lighten($darker-text-color, 4%);
+      border-color: var(--brand-color);
+      color: var(--primary-text-color);
     }
 
     &:disabled {
@@ -121,7 +121,7 @@
 .icon-button {
   display: inline-block;
   padding: 0;
-  color: var(--primary-text-color-faint);
+  color: rgba(var(--primary-text-color-rgb), 0.4);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -134,12 +134,12 @@
   &:hover,
   &:active,
   &:focus {
-    color: lighten($action-button-color, 7%);
+    color: lighten(#0482d8, 7%);
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: darken($action-button-color, 13%);
+    color: darken(#0482d8, 13%);
     cursor: default;
   }
 
@@ -163,18 +163,18 @@
     &:hover,
     &:active,
     &:focus {
-      color: darken($lighter-text-color, 7%);
+      color: var(--primary-text-color-faint);
     }
 
     &.disabled {
-      color: lighten($lighter-text-color, 7%);
+      color: var(--primary-text-color-faint);
     }
 
     &.active {
       color: var(--highlight-text-color);
 
       &.disabled {
-        color: lighten($highlight-text-color, 13%);
+        color: var(--highlight-text-color);
       }
     }
   }
@@ -207,12 +207,12 @@
   &:hover,
   &:active,
   &:focus {
-    color: darken($lighter-text-color, 7%);
+    color: var(--primary-text-color-faint);
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: lighten($lighter-text-color, 20%);
+    color: var(--primary-text-color-faint);
     cursor: default;
   }
 
@@ -252,7 +252,7 @@
 .ellipsis::after {content: "…";}
 
 .timeline-compose-block {
-  @include gab-container-standards;
+  @include standard-panel;
   display: flex;
   align-items: flex-start;
   padding: 20px;
@@ -317,7 +317,7 @@
 .reply-indicator {
   border-radius: 4px;
   margin-bottom: 10px;
-  background: $gab-background-base-light;
+  background: var(--background-color);
   padding: 10px;
   min-height: 23px;
   overflow-y: auto;
@@ -338,7 +338,7 @@
 }
 
 .reply-indicator__display-name {
-  color: $inverted-text-color;
+  color: var(--inverted-text-color);
   display: block;
   max-width: 100%;
   line-height: 24px;
@@ -403,7 +403,7 @@
       text-decoration: underline;
 
       .fa {
-        color: lighten($dark-text-color, 7%);
+        color: var(--primary-text-color);
       }
     }
 
@@ -418,7 +418,7 @@
     }
 
     .fa {
-      color: $dark-text-color;
+      color: var(--primary-text-color);
     }
   }
 
@@ -487,7 +487,7 @@
 }
 
 .status__wrapper--filtered {
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   border: 0;
   font-size: inherit;
   text-align: center;
@@ -571,16 +571,16 @@
 
     .display-name {
       strong {
-        color: $inverted-text-color;
+        color: var(--inverted-text-color);
       }
 
       span {
-        color: $light-text-color;
+        color: var(--primary-text-color-faint);
       }
     }
 
     .status__content {
-      color: $inverted-text-color;
+      color: var(--inverted-text-color);
 
       a {
         color: var(--highlight-text-color);
@@ -588,10 +588,10 @@
 
       a.status__content__spoiler-link {
         color: var(--primary-text-color);
-        background: $ui-primary-color;
+        background: var(--brand-color);
 
         &:hover {
-          background: lighten($ui-primary-color, 8%);
+          background: var(--brand-color);
         }
       }
     }
@@ -618,7 +618,7 @@
     background: transparent;
 
     .icon-button.disabled {
-      color: lighten($action-button-color, 13%);
+      color: lighten(#0482d8, 13%);
     }
   }
 }
@@ -646,7 +646,7 @@
 }
 
 .status-check-box {
-  border-bottom: 1px solid $ui-secondary-color;
+  border-bottom: 1px solid var(--background-color);
   display: flex;
 
   .status-check-box__status {
@@ -683,14 +683,14 @@
 
 .status__prepend {
   margin-left: 68px;
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   padding: 8px 0;
   padding-bottom: 2px;
   font-size: 14px;
   position: relative;
 
   .status__display-name strong {
-    color: $dark-text-color;
+    color: var(--primary-text-color);
   }
 
   > span {
@@ -720,7 +720,7 @@
       width: 14px;
       font-size: 12px;
       font-weight: 500;
-      color: $action-button-color;
+      color: #0482d8;
     }
   }
 }
@@ -735,7 +735,7 @@
 }
 
 .reply-indicator__content {
-  color: $gab-default-text-light;
+  color: var(--primary-text-color);
   font-size: 14px;
   user-select: text;
 
@@ -870,7 +870,7 @@ a .account__avatar {
 .account__disclaimer {
   padding: 10px;
   border-top: 1px solid var(--brand-color-med);
-  color: $dark-text-color;
+  color: var(--primary-text-color);
 
   strong {
     font-weight: 500;
@@ -1073,11 +1073,11 @@ a.account__display-name {
 .muted {
   .status__content p,
   .status__content a {
-    color: $dark-text-color;
+    color: var(--primary-text-color);
   }
 
   .status__display-name strong {
-    color: $dark-text-color;
+    color: var(--primary-text-color);
   }
 
   .status__avatar {
@@ -1086,7 +1086,7 @@ a.account__display-name {
 
   a.status__content__spoiler-link {
     background: var(--brand-color-med);
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
 
     &:hover {
       background: var(--brand-color-faint);
@@ -1625,7 +1625,7 @@ a.account__display-name {
     border-radius: 8px;
     text-align: center;
     color: #fff;
-    background: $nav-ui-highlight-color;
+    background: var(--brand-color);
 
     @media screen and (max-width: 895px) {
       top: 0;
@@ -1634,7 +1634,7 @@ a.account__display-name {
 }
 
 .column-link--transparent .icon-with-badge__badge {
-  border-color: darken($ui-base-color, 8%);
+  border-color: var(--background-color);
 }
 
 .promo-panel {
@@ -1644,7 +1644,7 @@ a.account__display-name {
 }
 
 .promo-panel-item {
-  @include light-theme-shadow;
+  @include standard-panel-shadow;
   display: block;
   height: 42px;
   line-height: 42px;
@@ -1713,7 +1713,7 @@ a.account__display-name {
 }
 
 .pseudo-drawer {
-  background: lighten($ui-base-color, 13%);
+  background: var(--background-color);
   font-size: 13px;
   text-align: left;
 }
@@ -1730,7 +1730,7 @@ a.account__display-name {
     transition: background 100ms ease-in;
 
     &:hover {
-      background: lighten($ui-base-color, 3%);
+      background: var(--background-color);
       transition: background 200ms ease-out;
     }
   }
@@ -1846,7 +1846,7 @@ a.account__display-name {
 }
 
 .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: darken($ui-base-color, 10%);
+  background-color: var(--background-color);
 }
 
 .react-toggle--checked .react-toggle-track {
@@ -1854,7 +1854,7 @@ a.account__display-name {
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: lighten($gab-brand-default, 10%);
+  background-color: var(--brand-color-hicontrast);
 }
 
 .react-toggle-track-check {
@@ -1933,7 +1933,7 @@ a.account__display-name {
 
   &--transparent {
     background: transparent;
-    color: $ui-secondary-color;
+    color: var(--background-color);
 
     &:hover,
     &:focus,
@@ -2095,7 +2095,7 @@ a.account__display-name {
 }
 
 .reduce-motion button.icon-button i.fa-retweet {
-  color: $action-button-color;
+  color: #0482d8;
   transition: color 100ms ease-in;
 }
 
@@ -2108,7 +2108,7 @@ a.account__display-name {
   font-size: 14px;
   border: 1px solid var(--brand-color-med);
   border-radius: 4px;
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   margin-top: 14px;
   text-decoration: none;
   overflow: hidden;
@@ -2282,7 +2282,7 @@ a.status-card.compact:hover {
 
 .load-more {
   display: block;
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   background-color: transparent;
   border: 0;
   font-size: inherit;
@@ -2308,7 +2308,7 @@ a.status-card.compact:hover {
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   background: var(--brand-color-med);
   cursor: default;
   display: flex;
@@ -2327,7 +2327,7 @@ a.status-card.compact:hover {
     strong {
       display: block;
       margin-bottom: 10px;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
     }
 
     span {
@@ -2341,7 +2341,7 @@ a.status-card.compact:hover {
   text-align: center;
   font-size: 16px;
   font-weight: 500;
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   background: var(--brand-color-med);
   cursor: default;
   display: flex;
@@ -2360,13 +2360,13 @@ a.status-card.compact:hover {
     strong {
       display: block;
       margin-bottom: 10px;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
     }
   }
 }
 
 .columns-area--mobile .column {
-  @include gab-container-standards;
+  @include standard-panel;
 }
 
 .column-header__wrapper {
@@ -2387,7 +2387,7 @@ a.status-card.compact:hover {
       pointer-events: none;
       height: 28px;
       z-index: 1;
-      background: radial-gradient(ellipse, rgba($ui-highlight-color, 0.23) 0%, rgba($ui-highlight-color, 0) 60%);
+      background: radial-gradient(ellipse, rgba(var(--brand-color), 0.23) 0%, rgba(var(--brand-color), 0) 60%);
     }
   }
 }
@@ -2449,11 +2449,11 @@ a.status-card.compact:hover {
   }
 
   &.active {
-    box-shadow: 0 1px 0 rgba($highlight-text-color, 0.3);
+    box-shadow: 0 1px 0 rgba(var(--highlight-text-color), 0.3);
 
     .column-header__icon {
       color: var(--highlight-text-color);
-      text-shadow: 0 0 10px rgba($highlight-text-color, 0.4);
+      text-shadow: 0 0 10px rgba(var(--highlight-text-color), 0.4);
     }
   }
 
@@ -2478,11 +2478,11 @@ a.status-card.compact:hover {
   border: 0;
   padding: 0 15px;
   font-size: 16px;
-  color: var(--primary-text-color);
+  color: var(--primary-text-color-faint);
   background: transparent;
 
   &:hover {
-    color: var(--primary-text-color-faint);
+    color: rgba(var(--primary-text-color-rgb), 0.8);
   }
 
   &.active {
@@ -2682,7 +2682,7 @@ a.status-card.compact:hover {
   &:active,
   &:focus {
     padding: 0;
-    color: lighten($darker-text-color, 8%);
+    color: var(--primary-text-color);
   }
 }
 
@@ -2787,7 +2787,7 @@ a.status-card.compact:hover {
     }
 
     &__placeholder {
-      color: $dark-text-color;
+      color: var(--primary-text-color);
       padding-left: 2px;
       font-size: 12px;
     }
@@ -2806,7 +2806,7 @@ a.status-card.compact:hover {
         &:active,
         &:focus {
           background: var(--brand-color-med);
-          color: lighten($darker-text-color, 4%);
+          color: var(--primary-text-color);
         }
       }
     }
@@ -2820,12 +2820,12 @@ a.status-card.compact:hover {
     &__dropdown-indicator {
       cursor: pointer;
       transition: none;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
 
       &:hover,
       &:active,
       &:focus {
-        color: lighten($dark-text-color, 4%);
+        color: var(--primary-text-color);
       }
     }
 
@@ -2836,7 +2836,7 @@ a.status-card.compact:hover {
     &__menu {
       @include search-popout;
       padding: 0;
-      background: $ui-secondary-color;
+      background: var(--background-color);
     }
 
     &__menu-list {
@@ -2844,13 +2844,13 @@ a.status-card.compact:hover {
     }
 
     &__option {
-      color: $inverted-text-color;
+      color: var(--inverted-text-color);
       border-radius: 4px;
       font-size: 14px;
 
       &--is-focused,
       &--is-selected {
-        background: darken($ui-secondary-color, 10%);
+        background: var(--background-color);
       }
     }
   }
@@ -2895,7 +2895,7 @@ a.status-card.compact:hover {
 
 .empty-column-indicator,
 .error-column {
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   background: var(--brand-color-med);
   text-align: center;
   padding: 40px;
@@ -3043,7 +3043,7 @@ a.status-card.compact:hover {
     &:hover,
     &:focus,
     &:active {
-      background: rgba($ui-secondary-color, 0.4);
+      background: rgba(var(--background-color), 0.4);
     }
   }
 
@@ -3209,7 +3209,7 @@ a.status-card.compact:hover {
 }
 
 .privacy-dropdown__option {
-  color: $inverted-text-color;
+  color: var(--inverted-text-color);
   padding: 10px;
   cursor: pointer;
   display: flex;
@@ -3230,7 +3230,7 @@ a.status-card.compact:hover {
   }
 
   &.active:hover {
-    background: lighten($ui-highlight-color, 4%);
+    background: var(--brand-color);
   }
 }
 
@@ -3248,7 +3248,7 @@ a.status-card.compact:hover {
   strong {
     font-weight: 500;
     display: block;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
 
     @each $lang in $cjk-langs {
       &:lang(#{$lang}) {
@@ -3317,7 +3317,7 @@ a.status-card.compact:hover {
     z-index: 2;
     width: 18px;
     height: 18px;
-    color: $gab-placeholder-accent;
+    color: var(--primary-text-color-faint);
     opacity: 0;
     pointer-events: none;
 
@@ -3337,7 +3337,7 @@ a.status-card.compact:hover {
 }
 
 .search-results__header {
-  color: $dark-text-color;
+  color: var(--primary-text-color);
   background: var(--brand-color-med);
   padding: 15px;
   font-weight: 500;
@@ -3361,7 +3361,7 @@ a.status-card.compact:hover {
     padding: 15px;
     font-weight: 500;
     font-size: 16px;
-    color: $dark-text-color;
+    color: var(--primary-text-color);
 
     .fa {
       display: inline-block;
@@ -3384,7 +3384,7 @@ a.status-card.compact:hover {
   &:hover,
   &:active,
   &:focus {
-    color: lighten($secondary-text-color, 4%);
+    color: var(--primary-text-color);
     text-decoration: underline;
   }
 }
@@ -3445,7 +3445,7 @@ a.status-card.compact:hover {
 
   &__icon {
     flex: 0 0 auto;
-    color: $dark-text-color;
+    color: var(--primary-text-color);
     padding: 8px 18px;
     cursor: default;
     border-right: 1px solid var(--brand-color-med);
@@ -3475,7 +3475,7 @@ a.status-card.compact:hover {
 
     a {
       text-decoration: none;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
       font-weight: 500;
 
       &:hover {
@@ -3494,7 +3494,7 @@ a.status-card.compact:hover {
     }
 
     .fa {
-      color: $dark-text-color;
+      color: var(--primary-text-color);
     }
   }
 }
@@ -3765,7 +3765,7 @@ a.status-card.compact:hover {
       &:hover,
       &:active,
       &:focus {
-        color: lighten($darker-text-color, 7%);
+        color: var(--primary-text-color);
       }
     }
 
@@ -4233,7 +4233,7 @@ noscript {
       border: 0;
       border-radius: 5px;
       padding: 10px;
-      font-family: $font-monospace, monospace;
+      font-family: var(--font-monospace), monospace;
       background: var(--brand-color-med);
       color: var(--primary-text-color);
       font-size: 14px;
@@ -4282,7 +4282,7 @@ noscript {
   &__message {
     position: relative;
     margin-left: 58px;
-    color: $dark-text-color;
+    color: var(--primary-text-color);
     padding: 8px 0;
     padding-top: 0;
     padding-bottom: 4px;
@@ -4359,7 +4359,7 @@ noscript {
 
   h4 {
     padding: 15px 0;
-    background: lighten($ui-base-color, 13%);
+    background: var(--background-color);
     font-weight: 500;
     font-size: 16px;
     text-align: center;
@@ -4377,7 +4377,7 @@ noscript {
   }
 
   &__accounts {
-    background: lighten($ui-base-color, 13%);
+    background: var(--background-color);
     overflow-y: auto;
     max-height: 200px;
   }
@@ -4424,12 +4424,12 @@ noscript {
   }
 
   &__account {
-    background: lighten($ui-base-color, 13%);
+    background: var(--background-color);
     border-radius: 4px;
   }
 
   &__lists {
-    background: lighten($ui-base-color, 13%);
+    background: var(--background-color);
   }
 
   .list {
@@ -4536,7 +4536,7 @@ noscript {
 
 .trends {
   &__header {
-    color: $dark-text-color;
+    color: var(--primary-text-color);
     background: var(--brand-color-faint);
     border-bottom: 1px solid var(--brand-color-med);
     font-weight: 500;
@@ -4562,7 +4562,7 @@ noscript {
 
     &__name {
       flex: 1 1 auto;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -4607,7 +4607,7 @@ noscript {
       width: 50px;
 
       path {
-        stroke: lighten($highlight-text-color, 6%) !important;
+        stroke: var(--highlight-text-color) !important;
       }
     }
   }
@@ -4629,7 +4629,7 @@ noscript {
     &:focus,
     &:active {
       svg path:first-child {
-        fill: lighten($ui-base-color, 16%);
+        fill: var(--background-color);
       }
     }
   }
@@ -4643,7 +4643,7 @@ noscript {
     }
 
     path:last-child {
-      fill: darken($ui-base-color, 14%);
+      fill: var(--background-color);
     }
   }
 
@@ -4660,14 +4660,14 @@ noscript {
 }
 
 .wtf-panel {
-  @include light-theme-shadow;
+  @include standard-panel-shadow;
   display: flex;
   width: 100%;
   border-radius: 10px;
   flex-direction: column;
   height: auto;
   box-sizing: border-box;
-  background: $gab-background-container;
+  background: var(--foreground-color);
 
   &:not(:last-of-type) {
     margin-bottom: 10px;
@@ -4828,7 +4828,7 @@ noscript {
 .compose-modal {
   padding: 8px 0 0;
   overflow: hidden;
-  background-color: $classic-base-color;
+  background-color: var(--background-color);
   border-radius: 6px;
   flex-direction: column;
   width: 600px;
@@ -4837,7 +4837,7 @@ noscript {
   &__header {
     display: block;
     position: relative;
-    border-bottom: 1px solid lighten($classic-base-color, 8%);
+    border-bottom: 1px solid var(--background-color);
     border-radius: 6px 6px 0 0;
     padding-top: 12px;
     padding-bottom: 12px;
@@ -4849,7 +4849,7 @@ noscript {
       font-size: 18px;
       font-weight: bold;
       line-height: 24px;
-      color: $gab-background-base-light;
+      color: var(--background-color);
       text-align: center;
     }
   }

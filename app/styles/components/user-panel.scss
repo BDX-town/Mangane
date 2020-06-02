@@ -1,5 +1,5 @@
 .user-panel {
-  @include gab-container-standards;
+  @include standard-panel;
   display: flex;
   width: 265px;
   flex-direction: column;

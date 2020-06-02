@@ -1,7 +1,7 @@
 $no-columns-breakpoint: 600px;
 
 code {
-  font-family: $font-monospace, monospace;
+  font-family: var(--font-monospace), monospace;
   font-weight: 400;
 }
 
@@ -104,7 +104,7 @@ code {
     code {
       border-radius: 3px;
       padding: 0.2em 0.4em;
-      background: darken($ui-base-color, 12%);
+      background: var(--background-color);
     }
   }
 
@@ -455,7 +455,7 @@ code {
       padding: 10px;
       padding-bottom: 9px;
       font-size: 16px;
-      color: $dark-text-color;
+      color: var(--primary-text-color);
       font-family: inherit;
       pointer-events: none;
       cursor: default;
@@ -471,7 +471,7 @@ code {
         right: 0;
         bottom: 1px;
         width: 5px;
-        background-image: linear-gradient(to right, rgba(darken($ui-base-color, 10%), 0), darken($ui-base-color, 10%));
+        background-image: linear-gradient(to right, rgba(var(--background-color), 0), var(--background-color));
       }
     }
   }
@@ -488,7 +488,7 @@ code {
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba($ui-base-color, 0.65);
+      background: var(--background-color);
       backdrop-filter: blur(2px);
       border-radius: 4px;
 
@@ -555,7 +555,7 @@ code {
     width: 100%;
     border: 0;
     padding: 10px;
-    font-family: $font-monospace, monospace;
+    font-family: var(--font-monospace), monospace;
     background: var(--brand-color-med);
     color: var(--primary-text-color);
     font-size: 14px;
@@ -624,7 +624,7 @@ code {
     &:hover,
     &:focus,
     &:active {
-      color: lighten($highlight-text-color, 8%);
+      color: var(--highlight-text-color);
     }
   }
 }
@@ -799,13 +799,13 @@ code {
 .form_admin_settings_custom_css,
 .form_admin_settings_closed_registrations_message {
   textarea {
-    font-family: $font-monospace, monospace;
+    font-family: var(--font-monospace), monospace;
   }
 }
 
 .input-copy {
-  background: darken($ui-base-color, 10%);
-  border: 1px solid darken($ui-base-color, 14%);
+  background: var(--background-color);
+  border: 1px solid var(--background-color);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -823,7 +823,7 @@ code {
     border: 0;
     padding: 10px;
     font-size: 14px;
-    font-family: $font-monospace, monospace;
+    font-family: var(--font-monospace), monospace;
   }
 
   button {

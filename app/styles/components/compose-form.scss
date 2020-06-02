@@ -12,7 +12,7 @@
     .checkbox {
       display: inline-block;
       position: relative;
-      border: 1px solid $ui-primary-color;
+      border: 1px solid var(--brand-color);
       box-sizing: border-box;
       width: 18px;
       height: 18px;
@@ -32,7 +32,7 @@
   .compose-form__warning {
           color: var(--primary-text-color);
     margin-bottom: 10px;
-    background: $ui-primary-color;
+    background: var(--brand-color);
     box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
     padding: 8px 10px;
     border-radius: 4px;
@@ -40,7 +40,7 @@
     font-weight: 400;
 
     strong {
-      color: $inverted-text-color;
+      color: var(--inverted-text-color);
       font-weight: 500;
       @each $lang in $cjk-langs {
         &:lang(#{$lang}) {
@@ -97,7 +97,7 @@
     box-sizing: border-box;
     width: 100%;
     margin: 0;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     background: #f2f2f2;
     padding: 10px;
     font-family: inherit;
@@ -146,9 +146,9 @@
     width: 100%;
     z-index: 99;
     box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
-    background: $ui-secondary-color;
+    background: var(--background-color);
     border-radius: 0 0 4px 4px;
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     font-size: 14px;
     padding: 6px;
     &.autosuggest-textarea__suggestions--visible {display: block;}
@@ -163,7 +163,7 @@
     &:focus,
     &:active,
     &.selected {
-      background: darken($ui-secondary-color, 10%);
+      background: var(--background-color);
     }
   }
 
@@ -187,7 +187,7 @@
   .autosuggest-account .display-name__account {color: var(--highlight-text-color);}
 
   .compose-form__modifiers {
-    color: $inverted-text-color;
+    color: var(--inverted-text-color);
     font-family: inherit;
     font-size: 14px;
     background: $simple-background-color;
@@ -228,7 +228,7 @@
           &:hover,
           &:focus,
           &:active {
-            color: $gab-text-highlight;
+            color: var(--highlight-text-color);
           }
         }
         &.active {opacity: 1;}
@@ -283,7 +283,7 @@
 
   .compose-form__buttons-wrapper {
     padding: 10px;
-    background: $gab-background-base-light;
+    background: var(--background-color);
     border-radius: 0 0 4px 4px;
     display: flex;
     justify-content: space-between;
@@ -311,7 +311,7 @@
 
       .character-counter {
         cursor: default;
-        font-family: $font-sans-serif, sans-serif;
+        font-family: var(--font-sans-serif), sans-serif;
         font-size: 14px;
         font-weight: 600;
         color: var(--primary-text-color-faint);
