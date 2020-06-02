@@ -87,7 +87,7 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, themeCss, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
+    const { me, themeCss, locale } = this.props;
     if (me === null) return null;
 
     const { localeData, messages } = getLocale();
@@ -100,11 +100,11 @@ class SoapboxMount extends React.PureComponent {
     //   return <Introduction />;
     // }
 
-    const bodyClass = classNames('app-body', {
-      'system-font': systemFont,
-      'no-reduce-motion': !reduceMotion,
-      'dyslexic': dyslexicFont,
-      'demetricator': demetricator,
+    const bodyClass = classNames('app-body', `theme-mode-${this.props.themeMode}`, {
+      'system-font': this.props.systemFont,
+      'no-reduce-motion': !this.props.reduceMotion,
+      'dyslexic': this.props.dyslexicFont,
+      'demetricator': this.props.demetricator,
     });
 
     return (

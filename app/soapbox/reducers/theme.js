@@ -3,45 +3,19 @@ import {
   THEME_GENERATE,
 } from '../actions/theme';
 import { Map as ImmutableMap } from 'immutable';
-import { brightness, hue, convert } from 'chromatism';
 
 const initialState = ImmutableMap();
 
-const modes = ImmutableMap({
-  light: ImmutableMap({
-    'primary-text-color': '#000000',
-    'primary-text-color-faint': 'rgba(0,0,0,0.6)',
-    'background-color': '#f2f2f2',
-    'foreground-color': '#ffffff',
-  }),
-  dark: ImmutableMap({
-    'primary-text-color': '#ffffff',
-    'primary-text-color-faint': 'rgba(255,255,255,0.6)',
-    'background-color': '#333333',
-    'foreground-color': '#222222',
-  }),
-});
-
-const cssrgba = (color, a) => {
-  const { r, g, b } = convert(color).rgb;
-  return `rgba(${[r, g, b, a].join(',')})`;
-};
-
-const makeContrast = (percent, color, mode) => {
-  percent = mode === 'light' ? -percent : percent;
-  return brightness(percent, color);
-};
+const hex2rgb = c => c.substr(1).match(/../g).map(x => + `0x${x}`);
 
 export const generateTheme = (brandColor, mode = 'light') => {
-  if (!brandColor) return modes.get(mode);
-  return modes.get(mode).merge(ImmutableMap({
-    'brand-color': brandColor,
-    'accent-color': brightness(10, hue(-3, brandColor).hex).hex,
-    'brand-color-faint': cssrgba(brandColor, 0.1),
-    'brand-color-med': cssrgba(brandColor, 0.2),
-    'highlight-text-color': makeContrast(5, brandColor, mode).hex,
-    'brand-color-hicontrast': makeContrast(15, brandColor, mode).hex,
-  }));
+  if (!brandColor) return false;
+  const [ r, g, b ] = hex2rgb(brandColor);
+  return ImmutableMap({
+    'brand-color-r': r,
+    'brand-color-g': g,
+    'brand-color-b': b,
+  });
 };
 
 export const setTheme = themeData => {
