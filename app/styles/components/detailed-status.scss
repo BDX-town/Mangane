@@ -7,7 +7,7 @@
 }
 
 .detailed-status {
-  background: var(--brand-color-faint);
+  background: rgba(var(--brand-color-rgb), 0.03);
   padding: 14px 10px;
 
   &--flex {
@@ -52,9 +52,9 @@
 }
 
 .detailed-status__action-bar {
-  background: var(--brand-color-faint);
-  border-top: 1px solid var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  background: rgba(var(--brand-color-rgb), 0.03);
+  border-top: 1px solid var(--brand-color-faint);
+  border-bottom: 1px solid var(--brand-color-faint);
   display: flex;
   flex-direction: row;
 }

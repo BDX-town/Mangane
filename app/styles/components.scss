@@ -427,7 +427,7 @@
     transition: 0.2s;
 
     &:hover {
-      background: var(--brand-color-faint);
+      background: rgba(var(--brand-color-rgb), 0.5);
       text-decoration: none;
     }
 
@@ -476,7 +476,7 @@
   border-radius: 2px;
   background: transparent;
   border: 0;
-  color: $inverted-text-color;
+  color: var(--primary-text-color);
   font-weight: 700;
   font-size: 11px;
   padding: 0 6px;
@@ -1701,7 +1701,7 @@ a.account__display-name {
 .drawer__inner {
   top: 0;
   left: 0;
-  background: lighten($ui-base-color, 13%);
+  background: var(--foreground-color);
   box-sizing: border-box;
   padding: 0;
   display: flex;
@@ -1710,32 +1710,6 @@ a.account__display-name {
   overflow-y: auto;
   width: 100%;
   height: 100%;
-
-  &.darker {
-    background: var(--brand-color-med);
-  }
-}
-
-.drawer__inner__soapbox {
-  background: lighten($ui-base-color, 13%) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color($ui-base-color)}"/></svg>') no-repeat bottom / 100% auto;
-  flex: 1;
-  min-height: 47px;
-  display: none;
-
-  > img {
-    display: block;
-    object-fit: contain;
-    object-position: bottom left;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    user-drag: none;
-    user-select: none;
-  }
-
-  @media screen and (min-height: 640px) {
-    display: block;
-  }
 }
 
 .pseudo-drawer {
@@ -1776,7 +1750,7 @@ a.account__display-name {
 }
 
 .column-back-button {
-  background: var(--brand-color-faint);
+  background: var(--brand-color-med);
   color: var(--highlight-text-color);
   cursor: pointer;
   flex: 0 0 auto;
@@ -2632,7 +2606,7 @@ a.status-card.compact:hover {
   height: 42px;
   box-sizing: border-box;
   background-color: transparent;
-  border: 0 solid var(--brand-color-med);
+  border: 0 solid rgba(var(--brand-color-rgb), 0.5);
   border-width: 6px;
   border-radius: 50%;
 }
@@ -2649,11 +2623,11 @@ a.status-card.compact:hover {
   0% {
     width: 0;
     height: 0;
-    background-color: var(--brand-color-med);
+    background-color: rgba(var(--brand-color-rgb), 0.5);
   }
 
   29% {
-    background-color: var(--brand-color-med);
+    background-color: rgba(var(--brand-color-rgb), 0.5);
   }
 
   30% {
@@ -3364,7 +3338,7 @@ a.status-card.compact:hover {
 
 .search-results__header {
   color: $dark-text-color;
-  background: var(--brand-color-faint);
+  background: var(--brand-color-med);
   padding: 15px;
   font-weight: 500;
   font-size: 16px;
@@ -3380,8 +3354,8 @@ a.status-card.compact:hover {
   margin-bottom: 5px;
 
   h5 {
-    background: var(--brand-color-med);
-    border-bottom: 1px solid var(--brand-color-med);
+    background: var(--brand-color-faint);
+    border-bottom: 1px solid var(--brand-color-faint);
     cursor: default;
     display: flex;
     padding: 15px;
@@ -4047,8 +4021,8 @@ a.status-card.compact:hover {
 
 .notification__filter-bar,
 .account__section-headline {
-  background: var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  background: var(--brand-color-faint);
+  border-bottom: 1px solid var(--brand-color-faint);
   cursor: default;
   display: flex;
   flex-shrink: 0;
@@ -4086,12 +4060,12 @@ a.status-card.compact:hover {
         transform: translateX(-50%);
         border-style: solid;
         border-width: 0 10px 10px;
-        border-color: transparent transparent var(--brand-color-med);
+        border-color: transparent transparent var(--foreground-color);
       }
 
       &::after {
         bottom: -1px;
-        border-color: transparent transparent var(--brand-color-med);
+        border-color: transparent transparent var(--foreground-color);
       }
     }
   }
@@ -5148,7 +5122,7 @@ noscript {
   &__text-container {
     display: none;
     padding: 25px 0;
-    background-color: var(--brand-color-faint);
+    background-color: var(--brand-color-med);
 
     @media (min-width: 895px) {
       display: block;

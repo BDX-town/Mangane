@@ -27,7 +27,7 @@
     overflow: hidden;
     width: 100%;
     text-overflow: ellipsis;
-    color: #fff;
+    color: var(--primary-text-color-faint);
 
     input[type=radio],
     input[type=checkbox] {

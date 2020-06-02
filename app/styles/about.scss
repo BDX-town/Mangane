@@ -16,7 +16,7 @@ $small-breakpoint: 960px;
   .content {
     display: block;
     margin: 40px 0;
-    background: #fff;
+    background: var(--foreground-color);
     border-radius: 6px;
 
     @media screen and (max-width: 767px) {
@@ -1413,7 +1413,7 @@ $small-breakpoint: 960px;
     &--right {
       margin-left: auto;
       width: 395px;
-      background-color: #fff;
+      background-color: var(--foreground-color);
       border-radius: 6px;
 
       .simple_form {
