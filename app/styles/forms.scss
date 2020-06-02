@@ -319,7 +319,7 @@ code {
     font-family: inherit;
     resize: vertical;
     background: var(--foreground-color);
-    border: 1px solid var(--brand-color-faint);
+    border: 1px solid var(--highlight-text-color);
     border-radius: 4px;
     padding: 10px;
     transition: 0.2s;
@@ -338,7 +338,7 @@ code {
 
     &:active,
     &:focus {
-      border-color: var(--highlight-text-color);
+      border-color: var(--brand-color-hicontrast);
     }
   }
 
