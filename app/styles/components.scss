@@ -423,10 +423,11 @@
   }
 
   .status__content__spoiler-link {
-    background: $action-button-color;
+    background: var(--brand-color-med);
+    transition: 0.2s;
 
     &:hover {
-      background: lighten($action-button-color, 7%);
+      background: var(--brand-color-faint);
       text-decoration: none;
     }
 
@@ -1565,7 +1566,7 @@ a.account__display-name {
   &:hover,
   &:focus,
   &:active {
-    background-color: darken($nav-ui-highlight-color, 10%) !important;
+    background-color: var(--brand-color-hicontrast);
   }
 
   i.fa {
@@ -2602,7 +2603,7 @@ a.status-card.compact:hover {
 }
 
 .loading-indicator {
-  color: $dark-text-color;
+  color: var(--primary-text-color-faint);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -4880,9 +4881,10 @@ noscript {
   }
 
   &__close {
-  position: absolute;
-  right: 10px;
-  top: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #999;
   }
 
   &__content {
@@ -5190,7 +5192,6 @@ noscript {
   width: 100%;
   max-height: 46px;
   position: relative;
-  background-color: var(--brand-color-faint);
   border-bottom: 1px solid;
   border-top: 1px solid;
   border-color: var(--brand-color-faint);

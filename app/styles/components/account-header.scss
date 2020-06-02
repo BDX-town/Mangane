@@ -49,7 +49,7 @@
     border-radius: 50%;
     height: 200px;
     width: 200px;
-    background-color: darken($ui-base-color, 8%);
+    background-color: var(--foreground-color);
 
     // NOTE - patch fix for avatar size. Wrapper may not be needed when I do polish up on the page
     .account__avatar {
@@ -57,6 +57,7 @@
       height: 200px;
       background-size: 200px 200px;
     }
+
     @media screen and (max-width: 895px) {
       top: -45px;
       left: 10px;
