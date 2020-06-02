@@ -48,18 +48,6 @@ class Header extends ImmutablePureComponent {
               <NavLink to='/search' activeClassName='active'>
                 <FormattedMessage id='search_results.top' defaultMessage='Top' />
               </NavLink>
-              {/*<NavLink to='/search/gabs' activeClassName='active'>
-                <FormattedMessage id='search_results.statuses' defaultMessage='Posts' />
-              </NavLink>
-              <NavLink to='/search/people' activeClassName='active'>
-                <FormattedMessage id='search_results.accounts' defaultMessage='People' />
-              </NavLink>
-              <NavLink to='/search/hashtags' activeClassName='active'>
-                <FormattedMessage id='search_results.hashtags' defaultMessage='Hashtags' />
-              </NavLink>
-              <NavLink to='/search/groups' activeClassName='active'>
-                <FormattedMessage id='search_results.groups' defaultMessage='Groups' />
-              </NavLink>*/}
             </div>
           </div>
         </div>
