@@ -211,7 +211,11 @@ Soapbox supports customization of the user interface, to allow per instance bran
 * Favicon
 * About page
 * Terms of Service page
+* Privacy Policy page
+* Copyright Policy (DMCA) page
 * Promo panel list items, e.g. blog site link
+* Soapbox extensions, e.g. Patron module
+* Default settings, e.g. default theme
 
 Customization details can be found in the [Customization doc](docs/customization.md)
 
