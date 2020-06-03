@@ -134,12 +134,12 @@
   &:hover,
   &:active,
   &:focus {
-    color: lighten(#0482d8, 7%);
+    color: rgba(var(--primary-text-color-rgb), 0.6);
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: darken(#0482d8, 13%);
+    color: rgba(var(--primary-text-color-rgb), 0.2);
     cursor: default;
   }
 
@@ -2077,34 +2077,6 @@ a.account__display-name {
   @media screen and (max-width: 600px) {
     font-size: 16px;
   }
-}
-
-.no-reduce-motion button.icon-button i.fa-retweet {
-  background-position: 0 0;
-  height: 19px;
-  transition: background-position 0.9s steps(10);
-  transition-duration: 0s;
-  vertical-align: middle;
-  width: 22px;
-
-  &::before {
-    display: none !important;
-  }
-
-}
-
-.no-reduce-motion button.icon-button.active i.fa-retweet {
-  transition-duration: 0.9s;
-  background-position: 0 100%;
-}
-
-.reduce-motion button.icon-button i.fa-retweet {
-  color: #0482d8;
-  transition: color 100ms ease-in;
-}
-
-.reduce-motion button.icon-button.active i.fa-retweet {
-  color: var(--highlight-text-color);
 }
 
 .status-card {
