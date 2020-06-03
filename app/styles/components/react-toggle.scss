@@ -32,12 +32,12 @@
   height: 24px;
   padding: 0;
   border-radius: 30px;
-  background-color: var(--brand-color-med);
+  background-color: var(--brand-color);
   transition: background-color 0.2s ease;
 }
 
 .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: var(--background-color);
+  background-color: var(--brand-color-hicontrast);
 }
 
 .react-toggle--checked .react-toggle-track {
