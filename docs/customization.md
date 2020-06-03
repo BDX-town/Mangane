@@ -23,19 +23,22 @@ Instance description is edited during the Pleroma installation step or via admin
 ## Captcha on Registration Page
 Use of the Captcha feature on the registration page is configured during the Pleroma installation step or via admin configuration
 
-## Site Logo and Promo Panel List Items
-The site logo and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json`.
+## Site Logo, Brand Color, and Promo Panel List Items
+The site logo, brand color, and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json`.
 The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
 The logo colors are rendered in a color that provides contrast for the site theme.
 
 The `navlinks` section of the `soapbox.json` file references the links that are displayed at the bottom of the Registration/Login, About, Terms of Service, Privacy Policy and Copyright Policy (DMCA) pages.
+
+The `brandColor` in `soapbox.json` refers to the main color upon which the look of soapbox-fe is defined.
 
 After editing your HTML files and folder names, re-create the webpack and restart the soapbox-fe service to effect the changes.
 
 Following is an example of the contents of `soapbox.example.json`:
 ```
 {
-  "logo": "https://media.gleasonator.com/site_uploads/files/000/000/002/original/logo.svg",
+  "logo": ""/instance/images/soapbox-logo.svg",
+  "brandColor": "#0482d8",
   "promoPanel": {
     "items": [{
       "icon": "area-chart",
@@ -52,7 +55,7 @@ Following is an example of the contents of `soapbox.example.json`:
   },
   "defaultSettings": {
     "autoPlayGif": false,
-    "theme": "azure"
+    "theme": "light"
   },
   "copyright": "?2020. Copying is an act of love. Please copy and share.",
   "navlinks": {
