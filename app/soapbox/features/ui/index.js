@@ -247,6 +247,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
+        <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
 
