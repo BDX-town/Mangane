@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: column;
     padding: 4px 0;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--brand-color-med);
 
     &--borderless {
       margin: 0;
@@ -79,7 +79,7 @@
     display: block;
     font-size: 18px;
     font-weight: 600;
-    color: #000;
+    color: var(--primary-text-color);
   }
 
   &__btn {
@@ -129,12 +129,12 @@
     display: flex;
     margin-right: 3px;
     font-weight: 700;
-    color: #000;
+    color: var(--primary-text-color);
   }
 
   &__label {
     display: flex;
-    color: #444;
+    color: var(--primary-text-color);
   }
 
   &:hover {
@@ -147,7 +147,7 @@
   padding: 16px 18px;
   cursor: pointer;
   text-decoration: none;
-  color: #666;
+  color: var(--primary-text-color);
   font-size: 15px;
   font-weight: 400;
 
@@ -155,7 +155,7 @@
     background-color: rgba(var(--brand-color-rgb), 0.1);
 
     .fa {
-      color: #000;
+      color: var(--primary-text-color);
     }
   }
 
@@ -165,7 +165,7 @@
 
   &:hover {
     &__title {
-      color: #000;
+      color: var(--primary-text-color);
     }
   }
 }
