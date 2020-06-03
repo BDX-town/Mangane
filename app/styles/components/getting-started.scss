@@ -19,7 +19,6 @@
     flex: 0 0 auto;
     padding: 10px;
     padding-top: 20px;
-    opacity: 0.7;
 
     ul {
       margin-bottom: 10px;
@@ -30,21 +29,19 @@
     }
 
     p {
-      color: var(--primary-text-color);
+      color: rgba(var(--primary-text-color-rgb), 0.8);
       font-size: 13px;
       margin-bottom: 20px;
 
       a {
-        color: var(--primary-text-color-faint);
+        color: rgba(var(--primary-text-color-rgb), 0.4);
         text-decoration: underline;
-        opacity: 0.8;
       }
     }
 
     a {
       text-decoration: none;
-      color: var(--primary-text-color-faint);
-      opacity: 0.8;
+      color: rgba(var(--primary-text-color-rgb), 0.4);
 
       &:hover,
       &:focus,
