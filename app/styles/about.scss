@@ -625,7 +625,7 @@ $small-breakpoint: 960px;
   }
 
   .static-icon-button {
-    color: #0482d8;
+    color: var(--brand-color);
     font-size: 18px;
 
     & > span {
@@ -1367,6 +1367,7 @@ $small-breakpoint: 960px;
         &:hover,
         &:focus,
         &:active {
+          color: #fff;
           opacity: 0.9;
         }
       }
@@ -1703,6 +1704,7 @@ $small-breakpoint: 960px;
 
 .public-layout__top {
   position: relative;
+  flex: 1;
 
   .header,
   .container {

@@ -118,7 +118,7 @@
   .current {
     background: var(--foreground-color);
     border-radius: 100px;
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
     cursor: default;
     margin: 0 10px;
   }
@@ -155,7 +155,7 @@
 
   .disabled {
     cursor: default;
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
   }
 
   @media screen and (max-width: 700px) {

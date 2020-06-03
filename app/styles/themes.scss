@@ -3,11 +3,11 @@ body {
   --brand-color: rgb(var(--brand-color-rgb));
   --brand-color-faint: rgba(var(--brand-color-rgb), 0.1);
   --brand-color-med: rgba(var(--brand-color-rgb), 0.2);
-  --accent-color: rgb(
-    calc(var(--brand-color-r) + 25),
-    calc(var(--brand-color-g) + 25),
-    calc(var(--brand-color-b) + 25)
-  );
+  --accent-color-r: calc(var(--brand-color-r) + 25);
+  --accent-color-g: calc(var(--brand-color-g) + 25);
+  --accent-color-b: calc(var(--brand-color-b) + 25);
+  --accent-color-rgb: var(--accent-color-r), var(--accent-color-g), var(--accent-color-b);
+  --accent-color: rgb(var(--accent-color-rgb));
   --primary-text-color-rgb: var(--primary-text-color-r), var(--primary-text-color-g), var(--primary-text-color-b);
   --primary-text-color: rgb(var(--primary-text-color-rgb));
   --primary-text-color-faint: rgba(var(--primary-text-color-rgb), 0.6);
@@ -49,9 +49,9 @@ body.theme-mode-dark {
   --background-color-b: 51;
   --foreground-color: #222222;
   --highlight-text-color: rgb(
-    calc(var(--brand-color-r) + 25),
-    calc(var(--brand-color-g) + 25),
-    calc(var(--brand-color-b) + 25)
+    calc(var(--brand-color-r) + 40),
+    calc(var(--brand-color-g) + 40),
+    calc(var(--brand-color-b) + 40)
   );
   --brand-color-hicontrast: rgb(
     calc(var(--brand-color-r) + 50),

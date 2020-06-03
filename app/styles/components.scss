@@ -68,7 +68,7 @@
   }
 
   &.button-alternative {
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
     background: var(--brand-color);
 
     &:active,
@@ -575,7 +575,7 @@
 
     .display-name {
       strong {
-        color: var(--inverted-text-color);
+        color: var(--primary-text-color);
       }
 
       span {
@@ -584,7 +584,7 @@
     }
 
     .status__content {
-      color: var(--inverted-text-color);
+      color: var(--primary-text-color);
 
       a {
         color: var(--highlight-text-color);
@@ -622,7 +622,7 @@
     background: transparent;
 
     .icon-button.disabled {
-      color: lighten(#0482d8, 13%);
+      color: rgba(var(--brand-color-rgb), 0.2);
     }
   }
 }
@@ -724,7 +724,7 @@
       width: 14px;
       font-size: 12px;
       font-weight: 500;
-      color: #0482d8;
+      color: var(--brand-color);
     }
   }
 }
@@ -1090,7 +1090,7 @@ a.account__display-name {
 
   a.status__content__spoiler-link {
     background: var(--brand-color-med);
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
 
     &:hover {
       background: var(--brand-color-faint);
@@ -1562,6 +1562,7 @@ a.account__display-name {
   font-size: 30px;
   align-items: center;
   justify-content: center;
+  transition: 0.2s;
 
   @media screen and (max-width: 895px) {
     display: flex;
@@ -2820,7 +2821,7 @@ a.status-card.compact:hover {
     }
 
     &__option {
-      color: var(--inverted-text-color);
+      color: var(--primary-text-color);
       border-radius: 4px;
       font-size: 14px;
 
@@ -3166,6 +3167,7 @@ a.status-card.compact:hover {
 }
 
 .privacy-dropdown__dropdown {
+  font-size: 14px;
   position: absolute;
   background: var(--foreground-color);
   box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
@@ -3184,14 +3186,14 @@ a.status-card.compact:hover {
 }
 
 .privacy-dropdown__option {
-  color: var(--inverted-text-color);
+  color: var(--primary-text-color);
   padding: 10px;
   cursor: pointer;
   display: flex;
 
   &:hover,
   &.active {
-    background: var(--brand-color);
+    background: var(--brand-color-med);
     color: var(--primary-text-color);
     outline: 0;
 
@@ -3205,7 +3207,7 @@ a.status-card.compact:hover {
   }
 
   &.active:hover {
-    background: var(--brand-color);
+    background: rgba(var(--brand-color-rgb), 0.5);
   }
 }
 
@@ -3223,7 +3225,7 @@ a.status-card.compact:hover {
   strong {
     font-weight: 500;
     display: block;
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
 
     @each $lang in $cjk-langs {
       &:lang(#{$lang}) {
@@ -3996,14 +3998,12 @@ a.status-card.compact:hover {
 
 .notification__filter-bar,
 .account__section-headline {
-  background: var(--brand-color-faint);
   border-bottom: 1px solid var(--brand-color-faint);
   cursor: default;
   display: flex;
   flex-shrink: 0;
 
   button {
-    background: var(--brand-color-med);
     border: 0;
     margin: 0;
   }
@@ -4019,6 +4019,7 @@ a.status-card.compact:hover {
     text-align: center;
     text-decoration: none;
     position: relative;
+    background: transparent;
 
     &.active {
       color: var(--primary-text-color);
@@ -4035,24 +4036,32 @@ a.status-card.compact:hover {
         transform: translateX(-50%);
         border-style: solid;
         border-width: 0 10px 10px;
-        border-color: transparent transparent var(--foreground-color);
+        border-color: transparent transparent var(--brand-color-faint);
       }
 
       &::after {
         bottom: -1px;
-        border-color: transparent transparent var(--foreground-color);
       }
     }
   }
 }
 
 .account__section-headline {
+  background: var(--brand-color-faint);
+
   button,
   a {
     flex: none;
     padding: 18px 15px;
     font-size: 16px;
     font-weight: 600;
+
+    &.active {
+      &::before,
+      &::after {
+        border-color: transparent transparent var(--foreground-color);
+      }
+    }
   }
 }
 

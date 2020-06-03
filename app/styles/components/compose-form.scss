@@ -39,7 +39,7 @@
     font-weight: 400;
 
     strong {
-      color: var(--inverted-text-color);
+      color: var(--primary-text-color);
       font-weight: 500;
       @each $lang in $cjk-langs {
         &:lang(#{$lang}) {
@@ -194,10 +194,10 @@
   }
 
   .compose-form__modifiers {
-    color: var(--inverted-text-color);
+    color: var(--primary-text-color);
     font-family: inherit;
     font-size: 14px;
-    background: var(--foreground-color);
+    background: var(--background-color);
     .compose-form__upload-wrapper {overflow: hidden;}
 
     .compose-form__uploads-wrapper {
