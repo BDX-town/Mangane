@@ -1,0 +1,135 @@
+.profile-info-panel {
+  display: block;
+  position: relative;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1;
+
+    @media (min-width: 895px) {
+      padding-top: 60px;
+    }
+  }
+
+  .profile-info-panel-content {
+    display: flex;
+
+    &__badges {
+      display: flex;
+      margin: 5px 0;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      &__join-date {
+        display: block;
+        margin-top: 5px;
+
+        .fa {
+          margin-right: 8px;
+        }
+
+        span {
+          color: var(--primary-text-color);
+          font-size: 15px;
+          line-height: 1.25;
+        }
+      }
+    }
+
+    &__name {
+      display: block;
+
+      .account-role {
+        vertical-align: top;
+      }
+
+      .emojione {
+        width: 22px;
+        height: 22px;
+      }
+
+      // Hide "verified" emoji to avoid confusion
+      .emojione[alt*="verified"] {
+        display: none;
+      }
+
+      h1 {
+        span:first-of-type {
+          font-size: 20px !important;
+          line-height: 1.25;
+          color: var(--primary-text-color);
+          font-weight: 600 !important;
+          max-width: 260px;
+        }
+
+        small {
+          display: block;
+          font-size: 16px;
+          line-height: 1.5;
+          color: var(--primary-text-color-faint);
+          font-weight: 400;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    &__bio {
+      display: block;
+      flex: 1 1;
+      color: var(--primary-text-color);
+      margin: 15px 0;
+      font-size: 15px;
+      line-height: 1.25;
+
+      a {
+        color: var(--highlight-text-color);
+      }
+    }
+
+    &__fields {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--brand-color-med);
+      padding: 10px 0;
+      margin: 5px 0;
+
+      @media screen and (max-width: 895px) {
+        border-bottom: 1px solid var(--brand-color-med);
+      }
+
+      a {
+        color: var(--highlight-text-color);
+      }
+
+      dl:first-child .verified {
+        border-radius: 0 4px 0 0;
+      }
+
+      .verified a {
+        color: $valid-value-color;
+      }
+
+      &__item {
+        display: block;
+        padding: 2px 0;
+        margin: 2px 0;
+        flex: 1 1;
+
+        * {
+          font-size: 15px;
+          line-height: 24px;
+        }
+
+        dt {
+          min-width: 26px;
+        }
+
+        dd {
+          padding-left: 4px;
+        }
+      }
+    }
+  }
+}

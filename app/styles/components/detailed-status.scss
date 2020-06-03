@@ -92,3 +92,38 @@
 .detailed-status__wrapper {
   position: relative;
 }
+
+.detailed-status__application,
+.detailed-status__datetime {
+  color: inherit;
+}
+
+.detailed-status__display-name {
+  color: var(--primary-text-color-faint);
+  display: flex;
+  line-height: 24px;
+  margin-bottom: 15px;
+  overflow: hidden;
+
+  strong,
+  span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  strong {
+    font-size: 16px;
+    color: var(--primary-text-color);
+  }
+
+  .display-name__account {
+    display: block;
+    margin-top: -10px;
+  }
+}
+
+.detailed-status__display-avatar {
+  float: left;
+  margin-right: 10px;
+}

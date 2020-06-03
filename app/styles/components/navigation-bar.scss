@@ -1,0 +1,138 @@
+.navigation-bar {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: default;
+  color: var(--primary-text-color-faint);
+
+  strong {
+    color: var(--primary-text-color-faint);
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .permalink {
+    text-decoration: none;
+  }
+
+  .navigation-bar__actions {
+    position: relative;
+
+    .icon-button.close {
+      position: absolute;
+      pointer-events: none;
+      transform: scale(0, 1) translate(-100%, 0);
+      opacity: 0;
+    }
+
+    .compose__action-bar .icon-button {
+      pointer-events: auto;
+      transform: scale(1, 1) translate(0, 0);
+      opacity: 1;
+    }
+  }
+}
+
+.navigation-bar__profile {
+  flex: 1 1 auto;
+  margin-left: 8px;
+  line-height: 20px;
+  margin-top: -1px;
+  overflow: hidden;
+}
+
+.navigation-bar__profile-account {
+  display: block;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.navigation-bar__profile-edit {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 630px) and (max-height: 400px) {
+  $duration: 400ms;
+  $delay: 100ms;
+
+  .tabs-bar,
+  .search {
+    will-change: margin-top;
+    transition: margin-top $duration $delay;
+  }
+
+  .navigation-bar {
+    will-change: padding-bottom;
+    transition: padding-bottom $duration $delay;
+  }
+
+  .navigation-bar {
+    & > a:first-child {
+      will-change: margin-top, margin-left, margin-right, width;
+      transition: margin-top $duration $delay, margin-left $duration ($duration + $delay), margin-right $duration ($duration + $delay);
+    }
+
+    & > .navigation-bar__profile-edit {
+      will-change: margin-top;
+      transition: margin-top $duration $delay;
+    }
+
+    .navigation-bar__actions {
+      & > .icon-button.close {
+        will-change: opacity transform;
+        transition: opacity $duration * 0.5 $delay,
+                    transform $duration $delay;
+      }
+
+      & > .compose__action-bar .icon-button {
+        will-change: opacity transform;
+        transition: opacity $duration * 0.5 $delay + $duration * 0.5,
+                    transform $duration $delay;
+      }
+    }
+  }
+
+  .is-composing {
+    .tabs-bar,
+    .search {
+      margin-top: -50px;
+    }
+
+    .navigation-bar {
+      padding-bottom: 0;
+
+      & > a:first-child {
+        margin: -100px 10px 0 -50px;
+      }
+
+      .navigation-bar__profile {
+        padding-top: 2px;
+      }
+
+      .navigation-bar__profile-edit {
+        position: absolute;
+        margin-top: -60px;
+      }
+
+      .navigation-bar__actions {
+        .icon-button.close {
+          pointer-events: auto;
+          opacity: 1;
+          transform: scale(1, 1) translate(0, 0);
+          bottom: 5px;
+        }
+
+        .compose__action-bar .icon-button {
+          pointer-events: none;
+          opacity: 0;
+          transform: scale(0, 1) translate(100%, 0);
+        }
+      }
+    }
+  }
+}

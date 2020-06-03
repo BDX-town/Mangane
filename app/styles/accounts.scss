@@ -319,3 +319,336 @@
     margin-top: 10px;
   }
 }
+
+.account {
+  padding: 10px;
+
+  &:not(:last-of-type) {
+  border-bottom: 1px solid var(--brand-color-med);
+  }
+
+  &.compact {
+    padding: 0;
+    border-bottom: 0;
+
+    .account__avatar-wrapper {
+      margin-left: 0;
+    }
+  }
+
+  .account__display-name {
+    flex: 1 1 auto;
+    display: block;
+    color: var(--primary-text-color-faint);
+    overflow: hidden;
+    text-decoration: none;
+    font-size: 14px;
+  }
+}
+
+.account__wrapper {
+  display: flex;
+}
+
+.account__avatar-wrapper {
+  float: left;
+  margin-right: 12px;
+}
+
+.account__avatar {
+  @include avatar-radius;
+  position: relative;
+  background-color: var(--brand-color-faint);
+
+  &-inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  &-composite {
+    @include avatar-radius;
+    overflow: hidden;
+
+    & > div {
+      @include avatar-radius;
+      float: left;
+      position: relative;
+      box-sizing: border-box;
+    }
+  }
+}
+
+a .account__avatar {
+  cursor: pointer;
+}
+
+.account__avatar-overlay {
+  @include avatar-size(48px);
+
+  &-base {
+    @include avatar-radius;
+    @include avatar-size(36px);
+  }
+
+  &-overlay {
+    @include avatar-radius;
+    @include avatar-size(24px);
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+  }
+}
+
+.account__relationship {
+  height: auto;
+  padding: 0 0 0 5px;
+  position: relative;
+
+  .dismiss-account-btn {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
+.account__reciprocal_follow_message {
+  padding: 0 5px;
+  color: var(--primary-text-color-faint);
+  text-align: center;
+}
+
+.account__disclaimer {
+  padding: 10px;
+  border-top: 1px solid var(--brand-color-med);
+  color: var(--primary-text-color);
+
+  strong {
+    font-weight: 500;
+
+    @each $lang in $cjk-langs {
+      &:lang(#{$lang}) {
+        font-weight: 700;
+      }
+    }
+  }
+
+  a {
+    font-weight: 500;
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+    }
+  }
+}
+
+.account__action-bar {
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+  line-height: 36px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.account__action-bar-dropdown {
+  padding: 10px;
+
+  .icon-button {
+    vertical-align: middle;
+  }
+
+  .dropdown--active {
+    .dropdown__content.dropdown__right {
+      left: 6px;
+      right: initial;
+    }
+
+    &::after {
+      bottom: initial;
+      margin-left: 11px;
+      margin-top: -7px;
+      right: initial;
+    }
+  }
+}
+
+.account__action-bar-links {
+  display: flex;
+  flex: 1 1 auto;
+  line-height: 18px;
+  text-align: center;
+}
+
+.account__action-bar__tab {
+  text-decoration: none;
+  overflow: hidden;
+  flex: 0 1 100%;
+  border-right: 1px solid var(--brand-color-med);
+  padding: 10px 0;
+  border-bottom: 4px solid transparent;
+
+  &.active {
+    border-bottom: 4px solid var(--brand-color);
+  }
+
+  & > span {
+    display: block;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--primary-text-color-faint);
+  }
+
+  strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+
+    @each $lang in $cjk-langs {
+      &:lang(#{$lang}) {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.account-authorize {
+  padding: 14px 10px;
+
+  .detailed-status__display-name {
+    display: block;
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
+}
+
+.account-authorize__avatar {
+  float: left;
+  margin-right: 10px;
+}
+
+// TEMPORARY - need a default size for the avatars for now
+// They are sized individually all over the application and need to change with breakpoints as well
+// Might create a mixin to accept the size attribute and apply the various properties where necessary
+.account__avatar {
+  width: 56px;
+  height: 56px;
+  background-size: cover;
+}
+
+.account-gallery__container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px 2px;
+}
+
+.account-gallery__item {
+  border: 0;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 2px;
+
+  a {
+    background: var(--brand-color-faint);
+  }
+
+  &__icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+  }
+}
+
+.account--panel {
+  background: var(--brand-color-faint);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+}
+
+.account__section-headline {
+  background: var(--brand-color-faint);
+
+  button,
+  a {
+    flex: none;
+    padding: 18px 15px;
+    font-size: 16px;
+    font-weight: 600;
+
+    &.active {
+      &::before,
+      &::after {
+        border-color: transparent transparent var(--foreground-color);
+      }
+    }
+  }
+}
+
+.account__moved-note {
+  padding: 14px 10px;
+  padding-bottom: 16px;
+  background: var(--brand-color-faint);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+
+  &__message {
+    position: relative;
+    margin-left: 58px;
+    color: var(--primary-text-color);
+    padding: 8px 0;
+    padding-top: 0;
+    padding-bottom: 4px;
+    font-size: 14px;
+
+    > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__icon-wrapper {
+    left: -26px;
+    position: absolute;
+  }
+
+  .detailed-status__display-avatar {
+    position: relative;
+  }
+
+  .detailed-status__display-name {
+    margin-bottom: 0;
+  }
+}
+
+.relationship-tag {
+  color: var(--primary-text-color);
+  margin-bottom: 4px;
+  display: block;
+  vertical-align: top;
+  background-color: var(--background-color);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}

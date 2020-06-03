@@ -1,0 +1,53 @@
+.notification-favourite {
+  .status.status-direct {
+    background: transparent;
+
+    .icon-button.disabled {
+      color: rgba(var(--brand-color-rgb), 0.2);
+    }
+  }
+}
+
+.notification__message {
+  margin: 0 10px 0 68px;
+  padding: 8px 0 0;
+  cursor: default;
+  color: var(--primary-text-color-faint);
+  font-size: 15px;
+  line-height: 22px;
+  position: relative;
+
+  .fa {
+    color: var(--highlight-text-color);
+  }
+
+  > span {
+    display: inline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.notification__favourite-icon-wrapper {
+  left: -26px;
+  position: absolute;
+
+  .star-icon {
+    color: $gold-star;
+  }
+}
+
+.notification__display-name {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+
+  &:hover {
+    color: var(--primary-text-color);
+    text-decoration: underline;
+  }
+}
+
+.notification__relative_time {
+  float: right;
+}

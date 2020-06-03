@@ -13,9 +13,20 @@
 @import 'accounts';
 @import 'stream_entries';
 @import 'boost';
-
-// NOTE - In the process of stripping this giant file into individual components (below)
-@import 'components';
+@import 'loading';
+@import 'ui';
+@import 'polls';
+@import 'introduction';
+@import 'emoji_picker';
+@import 'about';
+@import 'tables';
+@import 'dashboard';
+@import 'rtl';
+@import 'accessibility';
+@import 'donations';
+@import 'dyslexic';
+@import 'demetricator';
+@import 'pro';
 
 // COMPONENTS
 @import 'components/buttons';
@@ -33,17 +44,26 @@
 @import 'components/sidebar-menu';
 @import 'components/hotkeys-modal';
 @import 'components/emoji-reacts';
+@import 'components/status';
+@import 'components/reply-indicator';
 @import 'components/detailed-status';
-
-@import 'polls';
-@import 'introduction';
-@import 'emoji_picker';
-@import 'about';
-@import 'tables';
-@import 'dashboard';
-@import 'rtl';
-@import 'accessibility';
-@import 'donations';
-@import 'dyslexic';
-@import 'demetricator';
-@import 'pro';
+@import 'components/list-forms';
+@import 'components/media-gallery';
+@import 'components/notification';
+@import 'components/display-name';
+@import 'components/columns';
+@import 'components/search';
+@import 'components/react-toggle';
+@import 'components/getting-started';
+@import 'components/navigation-bar';
+@import 'components/promo-panel';
+@import 'components/drawer';
+@import 'components/timeline-queue-header';
+@import 'components/badge';
+@import 'components/trends';
+@import 'components/wtf-panel';
+@import 'components/profile-info-panel';
+@import 'components/setting-toggle';
+@import 'components/spoiler-button';
+@import 'components/media-spoiler';
+@import 'components/error-boundary';

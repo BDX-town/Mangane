@@ -339,3 +339,230 @@
     }
   }
 } // end .compose-form
+
+.upload-area {
+  align-items: center;
+  background: rgba($base-overlay-background, 0.8);
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: 100%;
+  z-index: 2000;
+
+  * {
+    pointer-events: none;
+  }
+}
+
+.upload-area__drop {
+  width: 320px;
+  height: 160px;
+  display: flex;
+  box-sizing: border-box;
+  position: relative;
+  padding: 8px;
+}
+
+.upload-area__background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 4px;
+  background: var(--brand-color-med);
+  box-shadow: 0 0 5px rgba($base-shadow-color, 0.2);
+}
+
+.upload-area__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-text-color-faint);
+  font-size: 18px;
+  font-weight: 500;
+  border: 2px dashed var(--brand-color-med);
+  border-radius: 4px;
+}
+
+.upload-progress {
+  padding: 10px;
+  color: var(--highlight-text-color);
+  overflow: hidden;
+  display: flex;
+
+  .fa {
+    font-size: 34px;
+    margin-right: 10px;
+  }
+
+  span {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+    display: block;
+  }
+}
+
+.upload-progess__message {
+  flex: 1 1 auto;
+}
+
+.upload-progress__backdrop {
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--brand-color-med);
+  position: relative;
+  margin-top: 5px;
+}
+
+.upload-progress__tracker {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 6px;
+  background: var(--brand-color);
+  border-radius: 6px;
+}
+
+.privacy-dropdown__dropdown {
+  font-size: 14px;
+  position: absolute;
+  background: var(--foreground-color);
+  box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
+  border-radius: 4px;
+  margin-left: 40px;
+  overflow: hidden;
+  z-index: 10000;
+
+  &.top {
+    transform-origin: 50% 100%;
+  }
+
+  &.bottom {
+    transform-origin: 50% 0;
+  }
+}
+
+.privacy-dropdown__option {
+  color: var(--primary-text-color);
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+
+  &:hover,
+  &.active {
+    background: var(--brand-color-med);
+    color: var(--primary-text-color);
+    outline: 0;
+
+    .privacy-dropdown__option__content {
+      color: var(--primary-text-color);
+
+      strong {
+        color: var(--primary-text-color);
+      }
+    }
+  }
+
+  &.active:hover {
+    background: rgba(var(--brand-color-rgb), 0.5);
+  }
+}
+
+.privacy-dropdown__option__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.privacy-dropdown__option__content {
+  flex: 1 1 auto;
+  color: var(--highlight-text-color);
+
+  strong {
+    font-weight: 500;
+    display: block;
+    color: var(--primary-text-color);
+
+    @each $lang in $cjk-langs {
+      &:lang(#{$lang}) {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.privacy-dropdown.active {
+  .privacy-dropdown__value {
+    background: var(--foreground-color);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 -4px 4px rgba($base-shadow-color, 0.1);
+
+    .icon-button {
+      transition: none;
+    }
+
+    &.active {
+      background: var(--brand-color);
+
+      .icon-button {
+        color: var(--primary-text-color);
+      }
+    }
+  }
+
+  &.top .privacy-dropdown__value {
+    border-radius: 0 0 4px 4px;
+  }
+
+  .privacy-dropdown__dropdown {
+    display: block;
+    box-shadow: 2px 4px 6px rgba($base-shadow-color, 0.1);
+  }
+}
+
+.focal-point {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+
+  &.dragging {
+    cursor: move;
+  }
+
+  img {
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    margin: auto;
+  }
+
+  &__reticle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    transform: translate(-50%, -50%);
+    background: url('../images/reticle.png') no-repeat 0 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 9999em rgba($base-shadow-color, 0.35);
+  }
+
+  &__overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+  }
+}

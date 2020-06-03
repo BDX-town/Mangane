@@ -126,13 +126,9 @@ body {
   }
 }
 
-button {
-  font-family: inherit;
-  cursor: pointer;
-
-  &:focus {
-    outline: none;
-  }
+.app-body {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 .app-holder {
@@ -190,6 +186,150 @@ button {
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button {
+  background-color: var(--brand-color);
+  border: 10px none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  height: 36px;
+  letter-spacing: 0;
+  line-height: 36px;
+  overflow: hidden;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: auto;
+  transition: 0.2s;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: var(--brand-color-hicontrast);
+  }
+
+  &--destructive {
+    transition: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: $error-red;
+      transition: none;
+    }
+  }
+
+  &--small {
+    font-size: 13px;
+    height: auto;
+    line-height: normal;
+    padding: 4px 8px;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: var(--brand-color-med);
+    cursor: default;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &::-moz-focus-inner,
+  &:focus,
+  &:active {
+    outline: 0 !important;
+  }
+
+  &.button-alternative {
+    color: var(--primary-text-color);
+    background: var(--brand-color);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--brand-color);
+    }
+  }
+
+  &.button-alternative-2 {
+    background: var(--brand-color-med);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--brand-color-faint);
+    }
+  }
+
+  &.button-secondary {
+    color: var(--primary-text-color-faint);
+    background: transparent;
+    padding: 3px 15px;
+    border: 1px solid var(--brand-color);
+
+    &:active,
+    &:focus,
+    &:hover {
+      border-color: var(--brand-color);
+      color: var(--primary-text-color);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &.button--block {
+    display: block;
+    width: 100%;
+  }
+}
+
+noscript {
+  text-align: center;
+
+  img {
+    width: 200px;
+    opacity: 0.5;
+    animation: flicker 4s infinite;
+  }
+
+  div {
+    font-size: 14px;
+    margin: 30px auto;
+    color: var(--primary-text-color-faint);
+    max-width: 400px;
+
+    a {
+      color: var(--highlight-text-color);
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 }
