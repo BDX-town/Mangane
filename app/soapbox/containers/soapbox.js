@@ -48,7 +48,7 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: settings.get('locale'),
-    themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
+    themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'], '#0482d8')), // Azure default
     themeMode: settings.get('themeMode'),
   };
 };
