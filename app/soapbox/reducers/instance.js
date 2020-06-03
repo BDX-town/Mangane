@@ -1,6 +1,6 @@
 import {
-  INSTANCE_IMPORT,
-  NODEINFO_IMPORT,
+  INSTANCE_FETCH_SUCCESS,
+  NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
@@ -30,9 +30,9 @@ const initialState = ImmutableMap({
 
 export default function instance(state = initialState, action) {
   switch(action.type) {
-  case INSTANCE_IMPORT:
+  case INSTANCE_FETCH_SUCCESS:
     return initialState.merge(fromJS(action.instance));
-  case NODEINFO_IMPORT:
+  case NODEINFO_FETCH_SUCCESS:
     return nodeinfoToInstance(fromJS(action.nodeinfo)).merge(state);
   default:
     return state;

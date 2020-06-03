@@ -2,10 +2,10 @@ import api from '../api';
 import { get } from 'lodash';
 import { parseVersion } from 'soapbox/utils/features';
 
-export const INSTANCE_IMPORT = 'INSTANCE_IMPORT';
-export const INSTANCE_FAIL   = 'INSTANCE_FAIL';
-export const NODEINFO_IMPORT = 'NODEINFO_IMPORT';
-export const NODEINFO_FAIL   = 'NODEINFO_FAIL';
+export const INSTANCE_FETCH_SUCCESS = 'INSTANCE_FETCH_SUCCESS';
+export const INSTANCE_FETCH_FAIL    = 'INSTANCE_FETCH_FAIL';
+export const NODEINFO_FETCH_SUCCESS = 'NODEINFO_FETCH_SUCCESS';
+export const NODEINFO_FETCH_FAIL    = 'NODEINFO_FETCH_FAIL';
 
 export function fetchInstance() {
   return (dispatch, getState) => {
@@ -33,14 +33,14 @@ export function fetchNodeinfo() {
 
 export function importInstance(instance) {
   return {
-    type: INSTANCE_IMPORT,
+    type: INSTANCE_FETCH_SUCCESS,
     instance,
   };
 }
 
 export function instanceFail(error) {
   return {
-    type: INSTANCE_FAIL,
+    type: INSTANCE_FETCH_FAIL,
     error,
     skipAlert: true,
   };
@@ -48,14 +48,14 @@ export function instanceFail(error) {
 
 export function importNodeinfo(nodeinfo) {
   return {
-    type: NODEINFO_IMPORT,
+    type: NODEINFO_FETCH_SUCCESS,
     nodeinfo,
   };
 }
 
 export function nodeinfoFail(error) {
   return {
-    type: NODEINFO_FAIL,
+    type: NODEINFO_FETCH_FAIL,
     error,
     skipAlert: true,
   };

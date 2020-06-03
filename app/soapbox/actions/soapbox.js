@@ -1,7 +1,7 @@
 import api from '../api';
 
-export const SOAPBOX_CONFIG_IMPORT  = 'SOAPBOX_CONFIG_IMPORT';
-export const SOAPBOX_CONFIG_FAIL    = 'SOAPBOX_CONFIG_FAIL';
+export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
+export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 
 export function fetchSoapboxConfig() {
   return (dispatch, getState) => {
@@ -15,14 +15,14 @@ export function fetchSoapboxConfig() {
 
 export function importSoapboxConfig(soapboxConfig) {
   return {
-    type: SOAPBOX_CONFIG_IMPORT,
+    type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,
   };
 }
 
 export function soapboxConfigFail(error) {
   return {
-    type: SOAPBOX_CONFIG_FAIL,
+    type: SOAPBOX_CONFIG_REQUEST_FAIL,
     error,
     skipAlert: true,
   };
