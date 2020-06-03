@@ -19,18 +19,6 @@ const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
 });
 
-// TODO: Pull dynamically
-const themes = {
-  'azure':          'Azure',
-  'purple':          'Purple Light',
-  'purple-dark':     'Purple Dark',
-  'purple-contrast': 'Purple Contrast',
-  'halloween':       'Halloween',
-  'aquatic':         'Aquatic',
-  'paleblue':        'Pale Blue',
-  'lime':            'Lime Green',
-};
-
 const mapStateToProps = state => ({
   settings: state.get('settings'),
 });
@@ -47,7 +35,7 @@ class Preferences extends ImmutablePureComponent {
 
   onThemeChange = e => {
     const { dispatch } = this.props;
-    dispatch(changeSetting(['theme'], e.target.value));
+    dispatch(changeSetting(['themeMode'], e.target.value));
   }
 
   onDefaultPrivacyChange = e => {
@@ -63,9 +51,9 @@ class Preferences extends ImmutablePureComponent {
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown
-              label='Site theme'
-              items={themes}
-              defaultValue={settings.get('theme')}
+              label='Theme mode'
+              items={{ light: 'Light', dark: 'Dark' }}
+              defaultValue={settings.get('themeMode')}
               onChange={this.onThemeChange}
             />
           </FieldsGroup>

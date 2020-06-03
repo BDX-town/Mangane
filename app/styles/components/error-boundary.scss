@@ -1,0 +1,18 @@
+.error-boundary {
+  > div {
+    margin: auto;
+
+    span {
+      display: block;
+      text-align: center;
+      color: var(--primary-text-color-faint);
+    }
+
+    a {
+      display: block;
+      margin: 15px auto;
+      text-align: center;
+      color: var(--brand-color);
+    }
+  }
+}

@@ -73,66 +73,64 @@ class RegistrationForm extends ImmutablePureComponent {
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
-      <div className='box-widget'>
-        <SimpleForm onSubmit={this.onSubmit}>
-          <fieldset disabled={isLoading}>
-            <div className='simple_form__overlay-area'>
-              <p className='lead'>With an account on <strong>{instance.get('title')}</strong> you'll be able to follow people on any server in the fediverse.</p>
-              <div className='fields-group'>
-                <TextInput
-                  placeholder='Username'
-                  name='username'
-                  autoComplete='off'
-                  onChange={this.onInputChange}
-                  required
-                />
-                <SimpleInput
-                  placeholder='E-mail address'
-                  name='email'
-                  type='email'
-                  autoComplete='off'
-                  onChange={this.onInputChange}
-                  required
-                />
-                <SimpleInput
-                  placeholder='Password'
-                  name='password'
-                  type='password'
-                  autoComplete='off'
-                  onChange={this.onInputChange}
-                  required
-                />
-                <SimpleInput
-                  placeholder='Confirm password'
-                  name='confirm'
-                  type='password'
-                  autoComplete='off'
-                  onChange={this.onInputChange}
-                  required
-                />
-              </div>
-              <CaptchaField
-                onFetch={this.onFetchCaptcha}
-                onFetchFail={this.onFetchCaptchaFail}
+      <SimpleForm onSubmit={this.onSubmit}>
+        <fieldset disabled={isLoading}>
+          <div className='simple_form__overlay-area'>
+            <p className='lead'>With an account on <strong>{instance.get('title')}</strong> you'll be able to follow people on any server in the fediverse.</p>
+            <div className='fields-group'>
+              <TextInput
+                placeholder='Username'
+                name='username'
+                autoComplete='off'
                 onChange={this.onInputChange}
-                idempotencyKey={this.state.captchaIdempotencyKey}
+                required
               />
-              <div className='fields-group'>
-                <Checkbox
-                  label={<>I agree to the <Link to='/about/tos' target='_blank'>Terms of Service</Link>.</>}
-                  name='agreement'
-                  onChange={this.onCheckboxChange}
-                  required
-                />
-              </div>
-              <input type='hidden' name='locale' value='en_US' />
-              <div className='actions'>
-                <button name='button' type='submit' className='btn button button-primary'>Sign up</button>
-              </div>
+              <SimpleInput
+                placeholder='E-mail address'
+                name='email'
+                type='email'
+                autoComplete='off'
+                onChange={this.onInputChange}
+                required
+              />
+              <SimpleInput
+                placeholder='Password'
+                name='password'
+                type='password'
+                autoComplete='off'
+                onChange={this.onInputChange}
+                required
+              />
+              <SimpleInput
+                placeholder='Confirm password'
+                name='confirm'
+                type='password'
+                autoComplete='off'
+                onChange={this.onInputChange}
+                required
+              />
             </div>
-          </fieldset>
-        </SimpleForm>
-      </div>
+            <CaptchaField
+              onFetch={this.onFetchCaptcha}
+              onFetchFail={this.onFetchCaptchaFail}
+              onChange={this.onInputChange}
+              idempotencyKey={this.state.captchaIdempotencyKey}
+            />
+            <div className='fields-group'>
+              <Checkbox
+                label={<>I agree to the <Link to='/about/tos' target='_blank'>Terms of Service</Link>.</>}
+                name='agreement'
+                onChange={this.onCheckboxChange}
+                required
+              />
+            </div>
+            <input type='hidden' name='locale' value='en_US' />
+            <div className='actions'>
+              <button name='button' type='submit' className='btn button button-primary'>Sign up</button>
+            </div>
+          </div>
+        </fieldset>
+      </SimpleForm>
     );
   }
 

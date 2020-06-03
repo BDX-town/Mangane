@@ -1,0 +1,61 @@
+body {
+  --brand-color-rgb: var(--brand-color-r), var(--brand-color-g), var(--brand-color-b);
+  --brand-color: rgb(var(--brand-color-rgb));
+  --brand-color-faint: rgba(var(--brand-color-rgb), 0.1);
+  --brand-color-med: rgba(var(--brand-color-rgb), 0.2);
+  --accent-color-r: calc(var(--brand-color-r) + 25);
+  --accent-color-g: calc(var(--brand-color-g) + 25);
+  --accent-color-b: calc(var(--brand-color-b) + 25);
+  --accent-color-rgb: var(--accent-color-r), var(--accent-color-g), var(--accent-color-b);
+  --accent-color: rgb(var(--accent-color-rgb));
+  --primary-text-color-rgb: var(--primary-text-color-r), var(--primary-text-color-g), var(--primary-text-color-b);
+  --primary-text-color: rgb(var(--primary-text-color-rgb));
+  --primary-text-color-faint: rgba(var(--primary-text-color-rgb), 0.6);
+  --inverted-text-color: rgb(
+    calc(255 - var(--primary-text-color-r)),
+    calc(255 - var(--primary-text-color-g)),
+    calc(255 - var(--primary-text-color-b))
+  );
+  --background-color-rgb: var(--background-color-r), var(--background-color-g), var(--background-color-b);
+  --background-color: rgb(var(--background-color-rgb));
+}
+
+body.theme-mode-light {
+  --primary-text-color-r: 0;
+  --primary-text-color-g: 0;
+  --primary-text-color-b: 0;
+  --background-color-r: 242;
+  --background-color-g: 242;
+  --background-color-b: 242;
+  --foreground-color: #ffffff;
+  --highlight-text-color: rgb(
+    calc(var(--brand-color-r) - 25),
+    calc(var(--brand-color-g) - 25),
+    calc(var(--brand-color-b) - 25)
+  );
+  --brand-color-hicontrast: rgb(
+    calc(var(--brand-color-r) - 50),
+    calc(var(--brand-color-g) - 50),
+    calc(var(--brand-color-b) - 50)
+  );
+}
+
+body.theme-mode-dark {
+  --primary-text-color-r: 255;
+  --primary-text-color-g: 255;
+  --primary-text-color-b: 255;
+  --background-color-r: 51;
+  --background-color-g: 51;
+  --background-color-b: 51;
+  --foreground-color: #222222;
+  --highlight-text-color: rgb(
+    calc(var(--brand-color-r) + 40),
+    calc(var(--brand-color-g) + 40),
+    calc(var(--brand-color-b) + 40)
+  );
+  --brand-color-hicontrast: rgb(
+    calc(var(--brand-color-r) + 50),
+    calc(var(--brand-color-g) + 50),
+    calc(var(--brand-color-b) + 50)
+  );
+}

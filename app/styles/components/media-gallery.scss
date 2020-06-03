@@ -1,0 +1,145 @@
+.media-gallery {
+  box-sizing: border-box;
+  margin-top: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  position: relative;
+  width: 100%;
+  background-color: var(--brand-color-faint);
+}
+
+.media-gallery__item {
+  border: 0;
+  box-sizing: border-box;
+  display: block;
+  float: left;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.media-gallery__item-thumbnail {
+  cursor: zoom-in;
+  display: block;
+  text-decoration: none;
+  color: var(--primary-text-color-faint);
+  line-height: 0;
+  position: relative;
+  z-index: 1;
+
+  &,
+  img,
+  canvas {
+    height: 100%;
+    width: 100%;
+  }
+
+  img,
+  canvas {
+    object-fit: cover;
+  }
+
+  &--play-on-hover {
+    &::before {
+      content: 'GIF';
+      position: absolute;
+      color: var(--primary-text-color);
+      background: var(--foreground-color);
+      bottom: 6px;
+      left: 6px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      pointer-events: none;
+      opacity: 0.9;
+      transition: opacity 0.1s ease;
+      line-height: 18px;
+    }
+
+    img {
+      position: absolute;
+    }
+
+    img,
+    &:hover::before {
+      visibility: hidden;
+    }
+
+    &:hover img {
+      visibility: visible;
+    }
+  }
+}
+
+.media-gallery__preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  background: var(--background-color);
+
+  &--hidden {
+    display: none;
+  }
+}
+
+.media-gallery__gifv {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.media-gallery__item-gifv-thumbnail {
+  cursor: zoom-in;
+  height: 100%;
+  object-fit: cover;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+  transform: none;
+  top: 0;
+}
+
+.media-gallery__item-thumbnail-label {
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
+  overflow: hidden;
+  position: absolute;
+}
+
+.media-gallery__gifv__label {
+  display: block;
+  position: absolute;
+  color: var(--primary-text-color);
+  background: rgba($base-overlay-background, 0.5);
+  bottom: 6px;
+  left: 6px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.9;
+  transition: opacity 0.1s ease;
+  line-height: 18px;
+}
+
+.media-gallery__gifv {
+  &.autoplay {
+    .media-gallery__gifv__label {
+      display: none;
+    }
+  }
+
+  &:hover {
+    .media-gallery__gifv__label {
+      opacity: 1;
+    }
+  }
+}

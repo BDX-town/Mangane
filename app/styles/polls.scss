@@ -1,0 +1,217 @@
+.poll {
+  margin-top: 16px;
+  font-size: 14px;
+
+  li {
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  &__chart {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: inline-block;
+    border-radius: 4px;
+    background: rgba(var(--primary-text-color-rgb), .3);
+    &.leading {background: rgba(var(--primary-text-color-rgb), .6);}
+  }
+
+  &__text {
+    position: relative;
+    display: flex;
+    padding: 6px 0;
+    line-height: 18px;
+    cursor: default;
+    overflow: hidden;
+    width: 100%;
+    text-overflow: ellipsis;
+    color: var(--primary-text-color-faint);
+
+    input[type=radio],
+    input[type=checkbox] {
+      display: none;
+    }
+
+    > span:last-child {
+      flex: 1;
+    }
+
+    .autossugest-input {
+      flex: 1 1 auto;
+    }
+
+    input[type=text] {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      font-size: 14px;
+      color: var(--primary-text-color);
+      display: block;
+      outline: 0;
+      font-family: inherit;
+      background: var(--foreground-color);
+      border: 1px solid var(--foreground-color);
+      border-radius: 4px;
+      padding: 6px 10px;
+
+      &:focus {
+        border-color: var(--highlight-text-color);
+      }
+    }
+
+    &.selectable {
+      cursor: pointer;
+    }
+
+    &.editable {
+      display: flex;
+      align-items: center;
+      overflow: visible;
+
+      .autosuggest-input {
+        width: 100%;
+      }
+    }
+  }
+
+  &__input {
+    display: inline-block;
+    position: relative;
+    border: 1px solid var(--brand-color);
+    box-sizing: border-box;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin-right: 10px;
+    top: -1px;
+    border-radius: 50%;
+    vertical-align: middle;
+
+    &.checkbox {
+      border-radius: 4px;
+    }
+
+    &.active {
+      border-color: $valid-value-color;
+      background: $valid-value-color;
+    }
+  }
+
+  &__number {
+    display: inline-block;
+    width: 36px;
+    font-weight: 700;
+    padding: 0 10px;
+    text-align: right;
+  }
+
+  &__footer {
+    padding-top: 6px;
+    padding-bottom: 5px;
+    color: var(--primary-text-color);
+  }
+
+  &__link {
+    display: inline;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    color: var(--primary-text-color);
+    text-decoration: underline;
+    font-size: inherit;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &:active,
+    &:focus {
+      background-color: rgba(var(--primary-text-color-rgb), .1);
+    }
+  }
+
+  .button {
+    height: 36px;
+    padding: 0 16px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+}
+
+.compose-form__poll-wrapper {
+  border-top: 1px solid var(--foreground-color);
+
+  ul {
+    padding: 10px;
+  }
+
+  .poll__footer {
+    border-top: 1px solid var(--foreground-color);
+    padding: 10px;
+    margin: -5px 0 0 -5px;
+
+    button,
+    select {
+      flex: 1 1 50%;
+      margin: 5px 0 0 5px;
+    }
+  }
+
+  .button.button-secondary {
+    font-size: 14px;
+    font-weight: 400;
+    padding: 6px 10px;
+    height: auto;
+    line-height: inherit;
+    color: var(--brand-color);
+    border-color: var(--brand-color);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+
+    .poll__text {
+      flex: 0 0 auto;
+      width: calc(100% - (23px + 6px));
+      margin-right: 6px;
+    }
+  }
+
+  select {
+    box-sizing: border-box;
+    font-size: 14px;
+    color: var(--brand-color);
+    display: inline-block;
+    width: auto;
+    outline: 0;
+    font-family: inherit;
+    background-color: var(--foreground-color);
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: auto 16px;
+    border: 1px solid var(--brand-color);
+    border-radius: 4px;
+    padding: 6px 10px;
+    padding-right: 30px;
+  }
+
+  .icon-button.disabled {
+    color: var(--foreground-color);
+  }
+}
+
+.muted .poll {
+  color: var(--primary-text-color);
+
+  &__chart {
+    background: rgba(var(--brand-color), 0.2);
+
+    &.leading {
+      background: rgba(var(--brand-color), 0.2);
+    }
+  }
+}

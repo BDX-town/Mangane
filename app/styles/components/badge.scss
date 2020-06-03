@@ -1,0 +1,35 @@
+.badge {
+  background-color: var(--brand-color);
+  color: #fff;
+  font-size: 12px;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin: 0 5px 5px 0;
+
+  &--pro {
+    background-color: #8a2be2;
+    color: #fff;
+  }
+
+  &--investor {
+    background-color: #ffd700;
+    color: #000;
+  }
+
+  &--donor {
+    background-color: #90ee90;
+    color: #000;
+  }
+
+  &--admin {
+    background-color: #000;
+    color: #fff;
+  }
+
+  &--moderator {
+    background-color: #048ba8;
+    color: #fff;
+  }
+}

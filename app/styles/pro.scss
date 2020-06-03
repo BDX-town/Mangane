@@ -1,0 +1,5 @@
+.page--floral { background-image: url('../images/pro_bg/floral--light.svg'); }
+
+body.theme-dark {
+  .page--floral { background-image: url('../images/pro_bg/floral--dark.svg'); }
+}

@@ -1,0 +1,35 @@
+// BREAKPOINT SETS
+
+// navigation breakpoints - by default show all elements and link names along with icons
+
+// turns navigation links into icon-only buttons
+$nav-breakpoint-1: 850px;
+// search field hidden and replaced with search icon link
+$nav-breakpoint-2: 650px;
+// "Post" button hidden and replaced with floating button on bottom corner
+$nav-breakpoint-3: 450px;
+// Site Logo hidden - bare minimum navigation for smallest width devices
+$nav-breakpoint-4: 375px;
+
+// Commonly used web colors
+
+$success-green: #79bd9a !default;    // Padua
+$error-red: #df405a !default;        // Cerise
+$warning-red: #ff5050 !default;      // Sunset Orange
+$gold-star: #ca8f04 !default;        // Dark Goldenrod
+
+// Variables for defaults in UI
+$base-shadow-color: #000000 !default;
+$base-overlay-background: #000000 !default;
+$valid-value-color: $success-green !default;
+$error-value-color: $error-red !default;
+
+// Language codes that uses CJK fonts
+$cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;
+
+// Variables for components
+$media-modal-media-max-width: 100%;
+// put margins on top and bottom of image to avoid the screen covered by image.
+$media-modal-media-max-height: 80%;
+
+$no-gap-breakpoint: 415px;

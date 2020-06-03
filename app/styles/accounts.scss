@@ -1,0 +1,654 @@
+.card {
+  & > a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
+
+    @media screen and (max-width: $no-gap-breakpoint) {
+      box-shadow: none;
+    }
+
+    &:hover,
+    &:active,
+    &:focus {
+      .card__bar {
+        background: var(--brand-color-med);
+      }
+    }
+  }
+
+  &__img {
+    height: 130px;
+    position: relative;
+    background: var(--background-color);
+    border-radius: 4px 4px 0 0;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      object-fit: cover;
+      border-radius: 4px 4px 0 0;
+    }
+
+    @media screen and (max-width: 600px) {
+      height: 200px;
+    }
+
+    @media screen and (max-width: $no-gap-breakpoint) {
+      display: none;
+    }
+  }
+
+  &__bar {
+    position: relative;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: var(--brand-color-faint);
+    border-radius: 0 0 4px 4px;
+
+    @media screen and (max-width: $no-gap-breakpoint) {
+      border-radius: 0;
+    }
+
+    .avatar {
+      flex: 0 0 auto;
+      width: 48px;
+      height: 48px;
+      padding-top: 2px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        margin: 0;
+        border-radius: 4px;
+        background: var(--background-color);
+        object-fit: cover;
+      }
+    }
+
+    .display-name {
+      margin-left: 15px;
+      text-align: left;
+
+      strong {
+        font-size: 15px;
+        color: var(--primary-text-color);
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      span {
+        display: block;
+        font-size: 14px;
+        color: var(--primary-text-color-faint);
+        font-weight: 400;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+.pagination {
+  padding: 30px 0;
+  text-align: center;
+  overflow: hidden;
+
+  a,
+  .current,
+  .newer,
+  .older,
+  .page,
+  .gap {
+    font-size: 14px;
+    color: var(--primary-text-color);
+    font-weight: 500;
+    display: inline-block;
+    padding: 6px 10px;
+    text-decoration: none;
+  }
+
+  .current {
+    background: var(--foreground-color);
+    border-radius: 100px;
+    color: var(--primary-text-color);
+    cursor: default;
+    margin: 0 10px;
+  }
+
+  .gap {
+    cursor: default;
+  }
+
+  .older,
+  .newer {
+    text-transform: uppercase;
+    color: var(--primary-text-color-faint);
+  }
+
+  .older {
+    float: left;
+    padding-left: 0;
+
+    .fa {
+      display: inline-block;
+      margin-right: 5px;
+    }
+  }
+
+  .newer {
+    float: right;
+    padding-right: 0;
+
+    .fa {
+      display: inline-block;
+      margin-left: 5px;
+    }
+  }
+
+  .disabled {
+    cursor: default;
+    color: var(--primary-text-color);
+  }
+
+  @media screen and (max-width: 700px) {
+    padding: 30px 20px;
+
+    .page {
+      display: none;
+    }
+
+    .newer,
+    .older {
+      display: inline-block;
+    }
+  }
+}
+
+.nothing-here {
+  background: var(--brand-color-med);
+  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
+  color: var(--primary-text-color-faint);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+  border-radius: 4px;
+  padding: 20px;
+  min-height: 30vh;
+
+  &--under-tabs {
+    border-radius: 0 0 4px 4px;
+  }
+
+  &--flexible {
+    box-sizing: border-box;
+    min-height: 100%;
+  }
+}
+
+.account-role {
+  display: inline-block;
+  padding: 4px 6px;
+  cursor: default;
+  border-radius: 3px;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+  color: var(--background-color);
+  background-color: rgba(var(--background-color-rgb), 0.1);
+  border: 1px solid rgba(var(--background-color-rgb), 0.5);
+
+  &.moderator {
+    color: $success-green;
+    background-color: rgba($success-green, 0.1);
+    border-color: rgba($success-green, 0.5);
+  }
+
+  &.admin {
+    color: lighten($error-red, 12%);
+    background-color: rgba(lighten($error-red, 12%), 0.1);
+    border-color: rgba(lighten($error-red, 12%), 0.5);
+  }
+}
+
+.account__header__fields {
+  padding: 0;
+  margin: 15px -15px -15px;
+  border: 0 none;
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+  font-size: 14px;
+  line-height: 20px;
+
+  dl {
+    display: flex;
+    border-bottom: 1px solid var(--brand-color-med);
+  }
+
+  dt,
+  dd {
+    box-sizing: border-box;
+    padding: 14px;
+    text-align: center;
+    max-height: 48px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  dt {
+    font-weight: 500;
+    width: 120px;
+    flex: 0 0 auto;
+    color: var(--primary-text-color-faint);
+    background: rgba(var(--background-color-rgb), 0.5);
+  }
+
+  dd {
+    flex: 1 1 auto;
+    color: var(--primary-text-color-faint);
+  }
+
+  a {
+    color: var(--highlight-text-color);
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  .verified {
+    border: 1px solid rgba($valid-value-color, 0.5);
+    background: rgba($valid-value-color, 0.25);
+
+    a {
+      color: $valid-value-color;
+      font-weight: 500;
+    }
+
+    &__mark {
+      color: $valid-value-color;
+    }
+  }
+
+  dl:last-child {
+    border-bottom: 0;
+  }
+}
+
+.directory__tag .trends__item__current {
+  width: auto;
+}
+
+.pending-account {
+  &__header {
+    color: var(--primary-text-color-faint);
+
+    a {
+      color: var(--background-color);
+      text-decoration: none;
+
+      &:hover,
+      &:active,
+      &:focus {
+        text-decoration: underline;
+      }
+    }
+
+    strong {
+      color: var(--primary-text-color);
+      font-weight: 700;
+    }
+  }
+
+  &__body {
+    margin-top: 10px;
+  }
+}
+
+.account {
+  padding: 10px;
+
+  &:not(:last-of-type) {
+  border-bottom: 1px solid var(--brand-color-med);
+  }
+
+  &.compact {
+    padding: 0;
+    border-bottom: 0;
+
+    .account__avatar-wrapper {
+      margin-left: 0;
+    }
+  }
+
+  .account__display-name {
+    flex: 1 1 auto;
+    display: block;
+    color: var(--primary-text-color-faint);
+    overflow: hidden;
+    text-decoration: none;
+    font-size: 14px;
+  }
+}
+
+.account__wrapper {
+  display: flex;
+}
+
+.account__avatar-wrapper {
+  float: left;
+  margin-right: 12px;
+}
+
+.account__avatar {
+  @include avatar-radius;
+  position: relative;
+  background-color: var(--brand-color-faint);
+
+  &-inline {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  &-composite {
+    @include avatar-radius;
+    overflow: hidden;
+
+    & > div {
+      @include avatar-radius;
+      float: left;
+      position: relative;
+      box-sizing: border-box;
+    }
+  }
+}
+
+a .account__avatar {
+  cursor: pointer;
+}
+
+.account__avatar-overlay {
+  @include avatar-size(48px);
+
+  &-base {
+    @include avatar-radius;
+    @include avatar-size(36px);
+  }
+
+  &-overlay {
+    @include avatar-radius;
+    @include avatar-size(24px);
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+  }
+}
+
+.account__relationship {
+  height: auto;
+  padding: 0 0 0 5px;
+  position: relative;
+
+  .dismiss-account-btn {
+    display: block;
+    margin-bottom: 5px;
+  }
+}
+
+.account__reciprocal_follow_message {
+  padding: 0 5px;
+  color: var(--primary-text-color-faint);
+  text-align: center;
+}
+
+.account__disclaimer {
+  padding: 10px;
+  border-top: 1px solid var(--brand-color-med);
+  color: var(--primary-text-color);
+
+  strong {
+    font-weight: 500;
+
+    @each $lang in $cjk-langs {
+      &:lang(#{$lang}) {
+        font-weight: 700;
+      }
+    }
+  }
+
+  a {
+    font-weight: 500;
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: none;
+    }
+  }
+}
+
+.account__action-bar {
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+  line-height: 36px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  display: flex;
+}
+
+.account__action-bar-dropdown {
+  padding: 10px;
+
+  .icon-button {
+    vertical-align: middle;
+  }
+
+  .dropdown--active {
+    .dropdown__content.dropdown__right {
+      left: 6px;
+      right: initial;
+    }
+
+    &::after {
+      bottom: initial;
+      margin-left: 11px;
+      margin-top: -7px;
+      right: initial;
+    }
+  }
+}
+
+.account__action-bar-links {
+  display: flex;
+  flex: 1 1 auto;
+  line-height: 18px;
+  text-align: center;
+}
+
+.account__action-bar__tab {
+  text-decoration: none;
+  overflow: hidden;
+  flex: 0 1 100%;
+  border-right: 1px solid var(--brand-color-med);
+  padding: 10px 0;
+  border-bottom: 4px solid transparent;
+
+  &.active {
+    border-bottom: 4px solid var(--brand-color);
+  }
+
+  & > span {
+    display: block;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: var(--primary-text-color-faint);
+  }
+
+  strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+
+    @each $lang in $cjk-langs {
+      &:lang(#{$lang}) {
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+.account-authorize {
+  padding: 14px 10px;
+
+  .detailed-status__display-name {
+    display: block;
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
+}
+
+.account-authorize__avatar {
+  float: left;
+  margin-right: 10px;
+}
+
+// TEMPORARY - need a default size for the avatars for now
+// They are sized individually all over the application and need to change with breakpoints as well
+// Might create a mixin to accept the size attribute and apply the various properties where necessary
+.account__avatar {
+  width: 56px;
+  height: 56px;
+  background-size: cover;
+}
+
+.account-gallery__container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px 2px;
+}
+
+.account-gallery__item {
+  border: 0;
+  box-sizing: border-box;
+  display: block;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 2px;
+
+  a {
+    background: var(--brand-color-faint);
+  }
+
+  &__icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+  }
+}
+
+.account--panel {
+  background: var(--brand-color-faint);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+}
+
+.account__section-headline {
+  background: var(--brand-color-faint);
+
+  button,
+  a {
+    flex: none;
+    padding: 18px 15px;
+    font-size: 16px;
+    font-weight: 600;
+
+    &.active {
+      &::before,
+      &::after {
+        border-color: transparent transparent var(--foreground-color);
+      }
+    }
+  }
+}
+
+.account__moved-note {
+  padding: 14px 10px;
+  padding-bottom: 16px;
+  background: var(--brand-color-faint);
+  border-top: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color-med);
+
+  &__message {
+    position: relative;
+    margin-left: 58px;
+    color: var(--primary-text-color);
+    padding: 8px 0;
+    padding-top: 0;
+    padding-bottom: 4px;
+    font-size: 14px;
+
+    > span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__icon-wrapper {
+    left: -26px;
+    position: absolute;
+  }
+
+  .detailed-status__display-avatar {
+    position: relative;
+  }
+
+  .detailed-status__display-name {
+    margin-bottom: 0;
+  }
+}
+
+.relationship-tag {
+  color: var(--primary-text-color);
+  margin-bottom: 4px;
+  display: block;
+  vertical-align: top;
+  background-color: var(--background-color);
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
+}

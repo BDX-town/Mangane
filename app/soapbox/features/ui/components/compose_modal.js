@@ -59,9 +59,7 @@ class ComposeModal extends ImmutablePureComponent {
           <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
         </div>
         <div className='compose-modal__content compose-modal__content--scroll'>
-          <div className='timeline-compose-block'>
-            <ComposeFormContainer />
-          </div>
+          <ComposeFormContainer />
         </div>
       </div>
     );

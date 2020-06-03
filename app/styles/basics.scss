@@ -1,0 +1,335 @@
+@function hex-color($color) {
+  @if type-of($color) == 'color' {
+    $color: str-slice(ie-hex-str($color), 4);
+  }
+  @return '%23' + unquote($color);
+}
+
+html {
+  @include font-roboto;
+  @include font-weight(normal);
+  font-size: 62.5%;
+  text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  @include font-size(16);
+  @include line-height(19);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+  font-feature-settings: "kern";
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
+  color: var(--primary-text-color);
+  background-color: var(--background-color);
+
+  &.system-font {
+    // system-ui => standard property (Chrome/Android WebView 56+, Opera 43+, Safari 11+)
+    // -apple-system => Safari <11 specific
+    // BlinkMacSystemFont => Chrome <56 on macOS specific
+    // Segoe UI => Windows 7/8/10
+    // Oxygen => KDE
+    // Ubuntu => Unity/Ubuntu
+    // Cantarell => GNOME
+    // Fira Sans => Firefox OS
+    // Droid Sans => Older Androids (<4.0)
+    // Helvetica Neue => Older macOS <10.11
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  }
+
+  &.app-body {
+    position: absolute;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+
+    &.with-modals--active {
+      overflow-y: hidden;
+    }
+  }
+
+  &.lighter {
+    background: var(--brand-color-med);
+  }
+
+  &.with-modals {
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &--active {
+      overflow-y: hidden;
+      margin-right: 13px;
+    }
+  }
+
+  &.player {
+    text-align: center;
+  }
+
+  &.embed {
+    background: var(--brand-color-faint);
+    margin: 0;
+    padding-bottom: 0;
+
+    .container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+  }
+
+  &.admin {
+    background: var(--brand-color-med);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+  }
+
+  &.error {
+    position: absolute;
+    text-align: center;
+    color: var(--primary-text-color-faint);
+    background: var(--brand-color-med);
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .dialog {
+      vertical-align: middle;
+      margin: 20px;
+
+      &__illustration {
+        img {
+          display: block;
+          max-width: 470px;
+          width: 100%;
+          height: auto;
+          margin-top: -120px;
+        }
+      }
+
+      h1 {
+        font-size: 20px;
+        line-height: 28px;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+.app-body {
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.app-holder {
+  &,
+  & > div {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: flex-start;
+    justify-content: center;
+    outline: 0 !important;
+  }
+}
+
+.visuallyhidden {
+  border: 0 !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  font-size: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  position: absolute !important;
+  width: 1px !important;
+}
+
+::selection {
+  background: var(--highlight-text-color);
+  color: #ffffff;
+}
+
+.explanation-box {
+  color: var(--primary-text-color);
+  padding: 15px 20px;
+  font-size: 14px;
+  background-color: var(--brand-color-faint);
+  margin: 5px 20px;
+  border-radius: 8px;
+
+  &__title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 1em;
+  }
+
+  &__dismiss {
+    display: inline-block;
+    text-transform: uppercase;
+    margin-left: 5px;
+    font-size: 13px;
+  }
+
+  a {
+    color: var(--brand-color-hicontrast);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.button {
+  background-color: var(--brand-color);
+  border: 10px none;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  height: 36px;
+  letter-spacing: 0;
+  line-height: 36px;
+  overflow: hidden;
+  padding: 0 16px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: auto;
+  transition: 0.2s;
+
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: var(--brand-color-hicontrast);
+  }
+
+  &--destructive {
+    transition: none;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: $error-red;
+      transition: none;
+    }
+  }
+
+  &--small {
+    font-size: 13px;
+    height: auto;
+    line-height: normal;
+    padding: 4px 8px;
+  }
+
+  &:disabled,
+  &.disabled {
+    background-color: var(--brand-color-med);
+    cursor: default;
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &::-moz-focus-inner,
+  &:focus,
+  &:active {
+    outline: 0 !important;
+  }
+
+  &.button-alternative {
+    color: var(--primary-text-color);
+    background: var(--brand-color);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--brand-color);
+    }
+  }
+
+  &.button-alternative-2 {
+    background: var(--brand-color-med);
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: var(--brand-color-faint);
+    }
+  }
+
+  &.button-secondary {
+    color: var(--primary-text-color-faint);
+    background: transparent;
+    padding: 3px 15px;
+    border: 1px solid var(--brand-color);
+
+    &:active,
+    &:focus,
+    &:hover {
+      border-color: var(--brand-color);
+      color: var(--primary-text-color);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+    }
+  }
+
+  &.button--block {
+    display: block;
+    width: 100%;
+  }
+}
+
+noscript {
+  text-align: center;
+
+  img {
+    width: 200px;
+    opacity: 0.5;
+    animation: flicker 4s infinite;
+  }
+
+  div {
+    font-size: 14px;
+    margin: 30px auto;
+    color: var(--primary-text-color-faint);
+    max-width: 400px;
+
+    a {
+      color: var(--highlight-text-color);
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+.list-editor {
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 420px) {
+    width: 90%;
+  }
+
+  h4 {
+    padding: 15px 0;
+    background: var(--background-color);
+    font-weight: 500;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+  }
+
+  .drawer__inner {
+    border-radius: 0 0 8px 8px;
+
+    &.backdrop {
+      width: calc(100% - 60px);
+      box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
+      border-radius: 0 0 0 8px;
+    }
+  }
+
+  &__accounts {
+    background: var(--background-color);
+    overflow-y: auto;
+    max-height: 200px;
+  }
+
+  .account__display-name {
+    &:hover strong {
+      text-decoration: none;
+    }
+  }
+
+  .account__avatar {
+    cursor: default;
+  }
+
+  .search {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+
+    > label {
+      flex: 1 1;
+    }
+
+    > .search__icon .fa {
+      right: 102px !important;
+    }
+
+    > .button {
+      width: 80px;
+      margin-left: 10px;
+    }
+  }
+}
+
+.list-adder {
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  height: 100%;
+  overflow-y: scroll;
+
+  @media screen and (max-width: 420px) {
+    width: 90%;
+  }
+
+  &__account {
+    background: var(--background-color);
+    border-radius: 4px;
+  }
+
+  &__lists {
+    background: var(--background-color);
+  }
+
+  .list {
+    padding: 4px;
+    border-bottom: 1px solid var(--brand-color-med);
+  }
+
+  .list__wrapper {
+    display: flex;
+
+    .account__relationship {
+      padding: 8px 5px 0;
+    }
+  }
+
+  .list__display-name {
+    flex: 1 1 auto;
+    overflow: hidden;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px;
+  }
+}
+
+.new-list-form,
+.edit-list-form {
+  &__btn {
+    margin-left: 6px;
+    width: 112px;
+  }
+
+  &__input {
+    height: 36px;
+  }
+}

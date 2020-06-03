@@ -1,0 +1,129 @@
+.detailed-status__action-bar-dropdown {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.detailed-status {
+  background: rgba(var(--brand-color-rgb), 0.03);
+  padding: 14px 10px;
+
+  &--flex {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    .status__content,
+    .detailed-status__meta {
+      flex: 100%;
+    }
+  }
+
+  .status__content {
+    font-size: 19px;
+    line-height: 24px;
+
+    .emojione {
+      width: 24px;
+      height: 24px;
+      margin: -1px 0 0;
+    }
+
+    .status__content__spoiler-link {
+      line-height: 24px;
+      margin: -1px 0 0;
+    }
+  }
+
+  .video-player {
+    margin-top: 8px;
+  }
+}
+
+.detailed-status__meta {
+  margin-top: 15px;
+  color: var(--primary-text-color-faint);
+  font-size: 14px;
+  line-height: 18px;
+  display: flex;
+}
+
+.detailed-status__action-bar {
+  background: rgba(var(--brand-color-rgb), 0.03);
+  border-top: 1px solid var(--brand-color-faint);
+  border-bottom: 1px solid var(--brand-color-faint);
+  display: flex;
+  flex-direction: row;
+}
+
+.detailed-status__link {
+  color: var(--primary-text-color-faint);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.detailed-status__favorites,
+.detailed-status__reblogs {
+  display: inline-block;
+  font-weight: 500;
+  font-size: 12px;
+  margin-left: 6px;
+}
+
+.detailed-status__button {
+  padding: 10px 0;
+
+  .icon-button {
+    display: inline-flex;
+    align-items: center;
+
+    .icon_button__text {
+      font-size: 14px;
+      padding-left: 3px;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+.detailed-status__wrapper {
+  position: relative;
+}
+
+.detailed-status__application,
+.detailed-status__datetime {
+  color: inherit;
+}
+
+.detailed-status__display-name {
+  color: var(--primary-text-color-faint);
+  display: flex;
+  line-height: 24px;
+  margin-bottom: 15px;
+  overflow: hidden;
+
+  strong,
+  span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  strong {
+    font-size: 16px;
+    color: var(--primary-text-color);
+  }
+
+  .display-name__account {
+    display: block;
+    margin-top: -10px;
+  }
+}
+
+.detailed-status__display-avatar {
+  float: left;
+  margin-right: 10px;
+}

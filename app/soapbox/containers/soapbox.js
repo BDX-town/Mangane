@@ -23,6 +23,7 @@ import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
+import { generateThemeCss } from 'soapbox/utils/theme';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
@@ -42,12 +43,13 @@ const mapStateToProps = (state) => {
   return {
     showIntroduction,
     me,
-    theme: settings.get('theme'),
     reduceMotion: settings.get('reduceMotion'),
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: settings.get('locale'),
+    themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
+    themeMode: settings.get('themeMode'),
   };
 };
 
@@ -57,21 +59,18 @@ class SoapboxMount extends React.PureComponent {
   static propTypes = {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
-    theme: PropTypes.string,
     reduceMotion: PropTypes.bool,
     systemFont: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
-  };
-
-  getThemeChunk = theme => {
-    const cssChunks = JSON.parse(document.getElementById('css-chunks').innerHTML);
-    return cssChunks.filter(chunk => chunk.startsWith(theme))[0];
+    themeCss: PropTypes.string,
+    themeMode: PropTypes.string,
+    dispatch: PropTypes.func,
   };
 
   render() {
-    const { me, theme, reduceMotion, systemFont, dyslexicFont, demetricator, locale } = this.props;
+    const { me, themeCss, locale } = this.props;
     if (me === null) return null;
 
     const { localeData, messages } = getLocale();
@@ -84,12 +83,11 @@ class SoapboxMount extends React.PureComponent {
     //   return <Introduction />;
     // }
 
-    const bodyClass = classNames('app-body', {
-      [`theme-${theme}`]: theme,
-      'system-font': systemFont,
-      'no-reduce-motion': !reduceMotion,
-      'dyslexic': dyslexicFont,
-      'demetricator': demetricator,
+    const bodyClass = classNames('app-body', `theme-mode-${this.props.themeMode}`, {
+      'system-font': this.props.systemFont,
+      'no-reduce-motion': !this.props.reduceMotion,
+      'dyslexic': this.props.dyslexicFont,
+      'demetricator': this.props.demetricator,
     });
 
     return (
@@ -97,7 +95,7 @@ class SoapboxMount extends React.PureComponent {
         <>
           <Helmet>
             <body className={bodyClass} />
-            {theme && <link rel='stylesheet' href={`/packs/css/${this.getThemeChunk(theme)}.chunk.css`} />}
+            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
