@@ -68,26 +68,26 @@ class TabsBar extends React.PureComponent {
       links.push(
         <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
           <img alt='Logo' src={logo} />
-          <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+          <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
         </Link>);
     }
     links.push(
       <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
         <Icon id='home' />
-        <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+        <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
       </NavLink>);
     if (account) {
       links.push(
         <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
           <Icon id='bell' />
           <NotificationsCounterIcon />
-          <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
+          <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
         </NavLink>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
         <Icon id='search' />
-        <FormattedMessage id='tabs_bar.search' defaultMessage='Search' />
+        <span><FormattedMessage id='tabs_bar.search' defaultMessage='Search' /></span>
       </NavLink>
     );
     return links.map((link) =>
