@@ -86,7 +86,7 @@ $small-breakpoint: 960px;
             top: 30px;
             left: 160px;
             border-radius: 4px;
-            background: #fff;
+            background: var(--foreground-color);
             overflow: hidden;
 
             a {
@@ -1700,6 +1700,7 @@ $small-breakpoint: 960px;
 
 .about-page {
   background: var(--brand-color-faint);
+  border-radius: inherit;
 }
 
 .public-layout__top {
