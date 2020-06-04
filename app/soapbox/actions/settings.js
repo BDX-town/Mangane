@@ -21,8 +21,7 @@ const defaultSettings = ImmutableMap({
   deleteModal: true,
   defaultPrivacy: 'public',
   themeMode: 'light',
-  // locale: navigator.language.slice(0, 2) || 'en', // FIXME: Dynamic locales
-  locale: 'en',
+  locale: navigator.language.split(/[-_]/)[0] || 'en',
 
   systemFont: false,
   dyslexicFont: false,
