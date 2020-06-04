@@ -14,8 +14,7 @@ import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
 import { hydrateStore } from '../actions/store';
-import { IntlProvider, addLocaleData } from 'react-intl';
-import { getLocale } from '../locales';
+import { IntlProvider } from 'react-intl';
 import initialState from '../initial_state';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'soapbox/actions/instance';
@@ -24,6 +23,7 @@ import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
 import { generateThemeCss } from 'soapbox/utils/theme';
+import messages from 'soapbox/locales/messages';
 
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
@@ -73,9 +73,6 @@ class SoapboxMount extends React.PureComponent {
     const { me, themeCss, locale } = this.props;
     if (me === null) return null;
 
-    const { localeData, messages } = getLocale();
-    addLocaleData(localeData);
-
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
     //
@@ -91,7 +88,7 @@ class SoapboxMount extends React.PureComponent {
     });
 
     return (
-      <IntlProvider locale={locale} messages={messages}>
+      <IntlProvider locale={locale} messages={messages[locale]}>
         <>
           <Helmet>
             <body className={bodyClass} />
