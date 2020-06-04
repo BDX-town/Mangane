@@ -33,10 +33,11 @@ class Preferences extends ImmutablePureComponent {
     settings: ImmutablePropTypes.map,
   };
 
-  onThemeChange = e => {
-    const { dispatch } = this.props;
-    dispatch(changeSetting(['themeMode'], e.target.value));
-  }
+  onSelectChange = path => {
+    return e => {
+      this.props.dispatch(changeSetting(path, e.target.value));
+    };
+  };
 
   onDefaultPrivacyChange = e => {
     const { dispatch } = this.props;
@@ -51,10 +52,19 @@ class Preferences extends ImmutablePureComponent {
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown
-              label='Theme mode'
+              label='Theme'
               items={{ light: 'Light', dark: 'Dark' }}
               defaultValue={settings.get('themeMode')}
-              onChange={this.onThemeChange}
+              onChange={this.onSelectChange(['themeMode'])}
+            />
+          </FieldsGroup>
+
+          <FieldsGroup>
+            <SelectDropdown
+              label='Language'
+              items={{ en: 'English', es: 'Español', fr: 'Français' }}
+              defaultValue={settings.get('language')}
+              onChange={this.onSelectChange(['locale'])}
             />
           </FieldsGroup>
 
