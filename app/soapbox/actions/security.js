@@ -11,13 +11,14 @@ export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
 export function changeEmail(email, password) {
   return (dispatch, getState) => {
     dispatch({ type: CHANGE_EMAIL_REQUEST, email });
-    api(getState).post('/api/pleroma/change_email', {
+    return api(getState).post('/api/pleroma/change_email', {
       email,
       password,
     }).then(response => {
       dispatch({ type: CHANGE_EMAIL_SUCCESS, email, response });
     }).catch(error => {
-      dispatch({ type: CHANGE_EMAIL_FAIL, email, error });
+      dispatch({ type: CHANGE_EMAIL_FAIL, email, error, skipAlert: true });
+      throw error;
     });
   };
 }
@@ -25,7 +26,7 @@ export function changeEmail(email, password) {
 export function changePassword(oldPassword, newPassword, confirmation) {
   return (dispatch, getState) => {
     dispatch({ type: CHANGE_PASSWORD_REQUEST });
-    api(getState).post('/api/pleroma/change_password', {
+    return api(getState).post('/api/pleroma/change_password', {
       password: oldPassword,
       new_password: newPassword,
       new_password_confirmation: confirmation,

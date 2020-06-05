@@ -11,10 +11,13 @@ import {
   TextInput,
 } from 'soapbox/features/forms';
 import { changeEmail } from 'soapbox/actions/security';
+import { showAlert } from 'soapbox/actions/alerts';
 
 const messages = defineMessages({
   heading: { id: 'column.security', defaultMessage: 'Security' },
   submit: { id: 'security.submit', defaultMessage: 'Save changes' },
+  updateEmailSuccess: { id: 'security.update_email.success', defaultMessage: 'Email successfully updated.' },
+  updateEmailFail: { id: 'security.update_email.fail', defaultMessage: 'Update email failed.' },
 });
 
 export default @connect()
@@ -27,7 +30,10 @@ class Security extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  state = {}
+  state = {
+    email: '',
+    password: '',
+  }
 
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -35,7 +41,12 @@ class Security extends ImmutablePureComponent {
 
   handleSubmit = e => {
     const { email, password } = this.state;
-    this.props.dispatch(changeEmail(email, password));
+    const { dispatch, intl } = this.props;
+    dispatch(changeEmail(email, password)).then(() => {
+      dispatch(showAlert('', intl.formatMessage(messages.updateEmailSuccess)));
+    }).catch(error => {
+      dispatch(showAlert('', intl.formatMessage(messages.updateEmailFail)));
+    });
   }
 
   render() {
