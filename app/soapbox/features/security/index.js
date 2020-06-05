@@ -20,6 +20,11 @@ const messages = defineMessages({
   updateEmailFail: { id: 'security.update_email.fail', defaultMessage: 'Update email failed.' },
   updatePasswordSuccess: { id: 'security.update_password.success', defaultMessage: 'Password successfully updated.' },
   updatePasswordFail: { id: 'security.update_password.fail', defaultMessage: 'Update password failed.' },
+  emailFieldLabel: { id: 'security.fields.email.label', defaultMessage: 'Email address' },
+  passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
+  oldPasswordFieldLabel: { id: 'security.fields.old_password.label', defaultMessage: 'Current password' },
+  newPasswordFieldLabel: { id: 'security.fields.new_password.label', defaultMessage: 'New password' },
+  confirmationFieldLabel: { id: 'security.fields.password_confirmation.label', defaultMessage: 'New password (again)' },
 });
 
 export default @injectIntl
@@ -81,7 +86,7 @@ class ChangeEmailForm extends ImmutablePureComponent {
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
             <TextInput
-              label='Email address'
+              label={intl.formatMessage(messages.emailFieldLabel)}
               placeholder='me@example.com'
               name='email'
               onChange={this.handleInputChange}
@@ -89,7 +94,7 @@ class ChangeEmailForm extends ImmutablePureComponent {
             />
             <SimpleInput
               type='password'
-              label='Password'
+              label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
               onChange={this.handleInputChange}
               value={this.state.password}
@@ -155,21 +160,21 @@ class ChangePasswordForm extends ImmutablePureComponent {
           <FieldsGroup>
             <SimpleInput
               type='password'
-              label='Current password'
+              label={intl.formatMessage(messages.oldPasswordFieldLabel)}
               name='oldPassword'
               onChange={this.handleInputChange}
               value={this.state.oldPassword}
             />
             <SimpleInput
               type='password'
-              label='New password'
+              label={intl.formatMessage(messages.newPasswordFieldLabel)}
               name='newPassword'
               onChange={this.handleInputChange}
               value={this.state.newPassword}
             />
             <SimpleInput
               type='password'
-              label='New password (again)'
+              label={intl.formatMessage(messages.confirmationFieldLabel)}
               name='confirmation'
               onChange={this.handleInputChange}
               value={this.state.confirmation}
