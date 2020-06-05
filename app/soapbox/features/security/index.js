@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -31,10 +31,19 @@ const messages = defineMessages({
   oldPasswordFieldLabel: { id: 'security.fields.old_password.label', defaultMessage: 'Current password' },
   newPasswordFieldLabel: { id: 'security.fields.new_password.label', defaultMessage: 'New password' },
   confirmationFieldLabel: { id: 'security.fields.password_confirmation.label', defaultMessage: 'New password (again)' },
+  revoke: { id: 'security.tokens.revoke', defaultMessage: 'Revoke' },
+  emailHeader: { id: 'security.headers.update_email', defaultMessage: 'Change Email' },
+  passwordHeader: { id: 'security.headers.update_password', defaultMessage: 'Change Password' },
+  tokenHeader: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
 });
 
 export default @injectIntl
 class SecurityForm extends ImmutablePureComponent {
+
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    intl: PropTypes.object.isRequired,
+  };
 
   render() {
     const { intl } = this.props;
@@ -90,6 +99,7 @@ class ChangeEmailForm extends ImmutablePureComponent {
 
     return (
       <SimpleForm onSubmit={this.handleSubmit}>
+        <h2>{intl.formatMessage(messages.emailHeader)}</h2>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
             <TextInput
@@ -163,6 +173,7 @@ class ChangePasswordForm extends ImmutablePureComponent {
 
     return (
       <SimpleForm onSubmit={this.handleSubmit}>
+        <h2>{intl.formatMessage(messages.passwordHeader)}</h2>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
             <SimpleInput
@@ -208,8 +219,10 @@ const mapStateToProps = state => ({
 class AuthTokenList extends ImmutablePureComponent {
 
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    intl: PropTypes.object.isRequired,
     tokens: ImmutablePropTypes.list,
-  }
+  };
 
   handleRevoke = id => {
     return e => {
@@ -222,20 +235,34 @@ class AuthTokenList extends ImmutablePureComponent {
   }
 
   render() {
-    if (this.props.tokens.isEmpty()) return null;
+    const { tokens, intl } = this.props;
+    if (tokens.isEmpty()) return null;
     return (
       <SimpleForm>
-        {this.props.tokens.map((token, i) => (
-          <div key={i} className='authtoken'>
-            <div>{token.get('app_name')}</div>
-            <div>{token.get('valid_until')}</div>
-            <div>
-              <button onClick={this.handleRevoke(token.get('id'))}>
-                Revoke
-              </button>
+        <h2>{intl.formatMessage(messages.tokenHeader)}</h2>
+        <div className='authtokens'>
+          {tokens.reverse().map((token, i) => (
+            <div key={i} className='authtoken'>
+              <div className='authtoken__app-name'>{token.get('app_name')}</div>
+              <div className='authtoken__valid-until'>
+                <FormattedDate
+                  value={new Date(token.get('valid_until'))}
+                  hour12={false}
+                  year='numeric'
+                  month='short'
+                  day='2-digit'
+                  hour='2-digit'
+                  minute='2-digit'
+                />
+              </div>
+              <div className='authtoken__revoke'>
+                <button onClick={this.handleRevoke(token.get('id'))}>
+                  {this.props.intl.formatMessage(messages.revoke)}
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </SimpleForm>
     );
   }
