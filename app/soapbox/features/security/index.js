@@ -43,8 +43,10 @@ class Security extends ImmutablePureComponent {
     const { email, password } = this.state;
     const { dispatch, intl } = this.props;
     dispatch(changeEmail(email, password)).then(() => {
+      this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
       dispatch(showAlert('', intl.formatMessage(messages.updateEmailSuccess)));
     }).catch(error => {
+      this.setState({ password: '' });
       dispatch(showAlert('', intl.formatMessage(messages.updateEmailFail)));
     });
   }

@@ -15,6 +15,7 @@ export function changeEmail(email, password) {
       email,
       password,
     }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: CHANGE_EMAIL_SUCCESS, email, response });
     }).catch(error => {
       dispatch({ type: CHANGE_EMAIL_FAIL, email, error, skipAlert: true });
