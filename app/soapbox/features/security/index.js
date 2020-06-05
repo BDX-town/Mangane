@@ -15,6 +15,7 @@ import {
   changeEmail,
   changePassword,
   fetchOAuthTokens,
+  revokeOAuthToken,
 } from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
@@ -210,6 +211,12 @@ class AuthTokenList extends ImmutablePureComponent {
     tokens: ImmutablePropTypes.list,
   }
 
+  handleRevoke = id => {
+    return e => {
+      this.props.dispatch(revokeOAuthToken(id));
+    };
+  }
+
   componentDidMount() {
     this.props.dispatch(fetchOAuthTokens());
   }
@@ -221,9 +228,12 @@ class AuthTokenList extends ImmutablePureComponent {
         {this.props.tokens.map((token, i) => (
           <div key={i} className='authtoken'>
             <div>{token.get('app_name')}</div>
-            <div>{token.get('id')}</div>
             <div>{token.get('valid_until')}</div>
-            <div><button>Revoke</button></div>
+            <div>
+              <button onClick={this.handleRevoke(token.get('id'))}>
+                Revoke
+              </button>
+            </div>
           </div>
         ))}
       </SimpleForm>
