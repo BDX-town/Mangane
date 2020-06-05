@@ -9,14 +9,13 @@ import {
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
-import { getLocale } from '../locales';
-
-const { messages } = getLocale();
+import { getSettings } from 'soapbox/actions/settings';
+import messages from 'soapbox/locales/messages';
 
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
   return connectStream (path, pollingRefresh, (dispatch, getState) => {
-    const locale = getState().getIn(['meta', 'locale']);
+    const locale = getSettings(getState()).get('locale');
 
     return {
       onConnect() {
@@ -36,7 +35,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(deleteFromTimelines(data.payload));
           break;
         case 'notification':
-          dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
+          messages[locale]().then(messages => {
+            dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
+          }).catch(() => {});
           break;
         case 'conversation':
           dispatch(updateConversations(JSON.parse(data.payload)));

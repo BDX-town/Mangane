@@ -1,24 +1,17 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
 const webpack = require('webpack');
-const { basename, join, resolve } = require('path');
+const { join, resolve } = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const extname = require('path-complete-extname');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
-const localePackPaths = require('./generateLocalePacks');
 
 module.exports = {
   entry: Object.assign(
     { application: resolve('app/application.js') },
-    localePackPaths.reduce((map, entry) => {
-      const localMap = map;
-      localMap[basename(entry, extname(entry, extname(entry)))] = resolve(entry);
-      return localMap;
-    }, {}),
     { styles: resolve(join(settings.source_path, 'styles/application.scss')) }
   ),
 
