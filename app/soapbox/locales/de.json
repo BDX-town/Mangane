@@ -76,7 +76,7 @@
   "compose_form.poll.duration": "Umfragedauer",
   "compose_form.poll.option_placeholder": "Wahl {number}",
   "compose_form.poll.remove_option": "Wahl entfernen",
-  "compose_form.publish": "Tröt",
+  "compose_form.publish": "Senden",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Medien als heikel markieren",
   "compose_form.sensitive.marked": "Medien sind als heikel markiert",
