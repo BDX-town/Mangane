@@ -177,3 +177,7 @@ export function EditProfile() {
 export function PasswordReset() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
 }
+
+export function Security() {
+  return import(/* webpackChunkName: "features/security" */'../../security');
+}
