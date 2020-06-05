@@ -33,6 +33,7 @@ class Security extends ImmutablePureComponent {
   state = {
     email: '',
     password: '',
+    isLoading: false,
   }
 
   handleInputChange = e => {
@@ -42,12 +43,15 @@ class Security extends ImmutablePureComponent {
   handleSubmit = e => {
     const { email, password } = this.state;
     const { dispatch, intl } = this.props;
-    dispatch(changeEmail(email, password)).then(() => {
+    this.setState({ isLoading: true });
+    return dispatch(changeEmail(email, password)).then(() => {
       this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
       dispatch(showAlert('', intl.formatMessage(messages.updateEmailSuccess)));
     }).catch(error => {
       this.setState({ password: '' });
       dispatch(showAlert('', intl.formatMessage(messages.updateEmailFail)));
+    }).then(() => {
+      this.setState({ isLoading: false });
     });
   }
 
@@ -57,27 +61,29 @@ class Security extends ImmutablePureComponent {
     return (
       <Column icon='lock' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
-          <FieldsGroup>
-            <TextInput
-              label='Email address'
-              placeholder='me@example.com'
-              name='email'
-              onChange={this.handleInputChange}
-              value={this.state.email}
-            />
-            <SimpleInput
-              type='password'
-              label='Password'
-              name='password'
-              onChange={this.handleInputChange}
-              value={this.state.password}
-            />
-            <div className='actions'>
-              <button name='button' type='submit' className='btn button button-primary'>
-                {intl.formatMessage(messages.submit)}
-              </button>
-            </div>
-          </FieldsGroup>
+          <fieldset disabled={this.state.isLoading}>
+            <FieldsGroup>
+              <TextInput
+                label='Email address'
+                placeholder='me@example.com'
+                name='email'
+                onChange={this.handleInputChange}
+                value={this.state.email}
+              />
+              <SimpleInput
+                type='password'
+                label='Password'
+                name='password'
+                onChange={this.handleInputChange}
+                value={this.state.password}
+              />
+              <div className='actions'>
+                <button name='button' type='submit' className='btn button button-primary'>
+                  {intl.formatMessage(messages.submit)}
+                </button>
+              </div>
+            </FieldsGroup>
+          </fieldset>
         </SimpleForm>
       </Column>
     );
