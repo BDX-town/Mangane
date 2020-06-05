@@ -25,6 +25,8 @@ import { getSettings } from 'soapbox/actions/settings';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
 
+const validLocale = locale => Object.keys(messages).includes(locale);
+
 export const store = configureStore();
 const hydrateAction = hydrateStore(initialState);
 
@@ -39,6 +41,7 @@ const mapStateToProps = (state) => {
   const account = state.getIn(['accounts', me]);
   const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
   const settings = getSettings(state);
+  const locale = settings.get('locale');
 
   return {
     showIntroduction,
@@ -47,7 +50,7 @@ const mapStateToProps = (state) => {
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
-    locale: settings.get('locale'),
+    locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
     themeMode: settings.get('themeMode'),
   };
