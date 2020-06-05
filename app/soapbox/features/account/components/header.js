@@ -55,7 +55,7 @@ const mapStateToProps = state => {
     me,
     isStaff: isStaff(state.getIn(['accounts', me])),
     autoPlayGif: getSettings(state).get('autoPlayGif'),
-    version: parseVersion(state.getIn(['instance','version'])),
+    version: parseVersion(state.getIn(['instance', 'version'])),
   };
 };
 
@@ -140,8 +140,7 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
         menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
-      }
-      else if (version.software === 'Pleroma') {
+      } else if (version.software === 'Pleroma') {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
       }
 
@@ -278,18 +277,18 @@ class Header extends ImmutablePureComponent {
             <div className='account__header__extra__links'>
 
               <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                {shortNumberFormat(account.get('statuses_count'))}
-                <FormattedMessage id='account.posts' defaultMessage='Posts' />
+                <span>{shortNumberFormat(account.get('statuses_count'))}</span>
+                <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
               </NavLink>
 
               <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                {shortNumberFormat(account.get('following_count'))}
-                <FormattedMessage id='account.follows' defaultMessage='Follows' />
+                <span>{shortNumberFormat(account.get('following_count'))}</span>
+                <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
               </NavLink>
 
               <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                {shortNumberFormat(account.get('followers_count'))}
-                <FormattedMessage id='account.followers' defaultMessage='Followers' />
+                <span>{shortNumberFormat(account.get('followers_count'))}</span>
+                <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
               </NavLink>
 
               {
@@ -300,14 +299,14 @@ class Header extends ImmutablePureComponent {
                   >
                     { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
                     <span>•</span>
-                    <FormattedMessage id='navigation_bar.favourites' defaultMessage='Favorites' />
+                    <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Favorites' /></span>
                   </NavLink>
                   <NavLink
                     exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
                   >
                     { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
                     <span>•</span>
-                    <FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' />
+                    <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
                   </NavLink>
                 </div>
               }
