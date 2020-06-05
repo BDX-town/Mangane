@@ -69,9 +69,35 @@ class SoapboxMount extends React.PureComponent {
     dispatch: PropTypes.func,
   };
 
+  state = {
+    messages: {},
+    localeLoading: true,
+  }
+
+  setMessages = () => {
+    messages[this.props.locale]().then(messages => {
+      this.setState({ messages, localeLoading: false });
+    }).catch(() => {});
+  }
+
+  maybeUpdateMessages = prevProps => {
+    if (this.props.locale !== prevProps.locale) {
+      this.setMessages();
+    };
+  }
+
+  componentDidMount() {
+    this.setMessages();
+  }
+
+  componentDidUpdate(prevProps) {
+    this.maybeUpdateMessages(prevProps);
+  }
+
   render() {
     const { me, themeCss, locale } = this.props;
     if (me === null) return null;
+    if (this.state.localeLoading) return null;
 
     // Disabling introduction for launch
     // const { showIntroduction } = this.props;
@@ -88,7 +114,7 @@ class SoapboxMount extends React.PureComponent {
     });
 
     return (
-      <IntlProvider locale={locale} messages={messages[locale]}>
+      <IntlProvider locale={locale} messages={this.state.messages}>
         <>
           <Helmet>
             <body className={bodyClass} />

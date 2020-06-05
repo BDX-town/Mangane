@@ -125,7 +125,7 @@ class Preferences extends ImmutablePureComponent {
             <SelectDropdown
               label='Language'
               items={languages}
-              defaultValue={settings.get('language')}
+              defaultValue={settings.get('locale')}
               onChange={this.onSelectChange(['locale'])}
             />
           </FieldsGroup>
