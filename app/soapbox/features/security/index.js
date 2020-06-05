@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -10,7 +11,11 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
-import { changeEmail, changePassword } from 'soapbox/actions/auth';
+import {
+  changeEmail,
+  changePassword,
+  fetchOAuthTokens,
+} from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
 const messages = defineMessages({
@@ -37,6 +42,7 @@ class SecurityForm extends ImmutablePureComponent {
       <Column icon='lock' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <ChangeEmailForm />
         <ChangePasswordForm />
+        <AuthTokenList />
       </Column>
     );
   }
@@ -186,6 +192,40 @@ class ChangePasswordForm extends ImmutablePureComponent {
             </div>
           </FieldsGroup>
         </fieldset>
+      </SimpleForm>
+    );
+  }
+
+}
+
+const mapStateToProps = state => ({
+  tokens: state.getIn(['auth', 'tokens']),
+});
+
+@connect(mapStateToProps)
+@injectIntl
+class AuthTokenList extends ImmutablePureComponent {
+
+  static propTypes = {
+    tokens: ImmutablePropTypes.list,
+  }
+
+  componentDidMount() {
+    this.props.dispatch(fetchOAuthTokens());
+  }
+
+  render() {
+    if (this.props.tokens.isEmpty()) return null;
+    return (
+      <SimpleForm>
+        {this.props.tokens.map((token, i) => (
+          <div key={i} className='authtoken'>
+            <div>{token.get('app_name')}</div>
+            <div>{token.get('id')}</div>
+            <div>{token.get('valid_until')}</div>
+            <div><button>Revoke</button></div>
+          </div>
+        ))}
       </SimpleForm>
     );
   }

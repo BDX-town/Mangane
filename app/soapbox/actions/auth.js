@@ -23,6 +23,10 @@ export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
 export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
 
+export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
+export const FETCH_TOKENS_SUCCESS = 'FETCH_TOKENS_SUCCESS';
+export const FETCH_TOKENS_FAIL    = 'FETCH_TOKENS_FAIL';
+
 const noOp = () => () => new Promise(f => f());
 
 function createAppAndToken() {
@@ -185,6 +189,17 @@ export function changePassword(oldPassword, newPassword, confirmation) {
     }).catch(error => {
       dispatch({ type: CHANGE_PASSWORD_FAIL, error, skipAlert: true });
       throw error;
+    });
+  };
+}
+
+export function fetchOAuthTokens() {
+  return (dispatch, getState) => {
+    dispatch({ type: FETCH_TOKENS_REQUEST });
+    return api(getState).get('/api/oauth_tokens.json').then(response => {
+      dispatch({ type: FETCH_TOKENS_SUCCESS, tokens: response.data });
+    }).catch(error => {
+      dispatch({ type: FETCH_TOKENS_FAIL });
     });
   };
 }
