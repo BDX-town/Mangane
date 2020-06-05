@@ -22,7 +22,7 @@ const messages = defineMessages({
 
 export default @connect()
 @injectIntl
-class Security extends ImmutablePureComponent {
+class SecurityForm extends ImmutablePureComponent {
 
   static propTypes = {
     email: PropTypes.string,
