@@ -15,6 +15,22 @@ export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAIL    = 'RESET_PASSWORD_FAIL';
 
+export const CHANGE_EMAIL_REQUEST = 'CHANGE_EMAIL_REQUEST';
+export const CHANGE_EMAIL_SUCCESS = 'CHANGE_EMAIL_SUCCESS';
+export const CHANGE_EMAIL_FAIL    = 'CHANGE_EMAIL_FAIL';
+
+export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
+export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
+export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
+
+export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
+export const FETCH_TOKENS_SUCCESS = 'FETCH_TOKENS_SUCCESS';
+export const FETCH_TOKENS_FAIL    = 'FETCH_TOKENS_FAIL';
+
+export const REVOKE_TOKEN_REQUEST = 'REVOKE_TOKEN_REQUEST';
+export const REVOKE_TOKEN_SUCCESS = 'REVOKE_TOKEN_SUCCESS';
+export const REVOKE_TOKEN_FAIL    = 'REVOKE_TOKEN_FAIL';
+
 const noOp = () => () => new Promise(f => f());
 
 function createAppAndToken() {
@@ -144,6 +160,61 @@ export function resetPassword(nickNameOrEmail) {
     }).catch(error => {
       dispatch({ type: RESET_PASSWORD_FAIL, error });
       throw error;
+    });
+  };
+}
+
+export function changeEmail(email, password) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHANGE_EMAIL_REQUEST, email });
+    return api(getState).post('/api/pleroma/change_email', {
+      email,
+      password,
+    }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
+      dispatch({ type: CHANGE_EMAIL_SUCCESS, email, response });
+    }).catch(error => {
+      dispatch({ type: CHANGE_EMAIL_FAIL, email, error, skipAlert: true });
+      throw error;
+    });
+  };
+}
+
+export function changePassword(oldPassword, newPassword, confirmation) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHANGE_PASSWORD_REQUEST });
+    return api(getState).post('/api/pleroma/change_password', {
+      password: oldPassword,
+      new_password: newPassword,
+      new_password_confirmation: confirmation,
+    }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
+      dispatch({ type: CHANGE_PASSWORD_SUCCESS, response });
+    }).catch(error => {
+      dispatch({ type: CHANGE_PASSWORD_FAIL, error, skipAlert: true });
+      throw error;
+    });
+  };
+}
+
+export function fetchOAuthTokens() {
+  return (dispatch, getState) => {
+    dispatch({ type: FETCH_TOKENS_REQUEST });
+    return api(getState).get('/api/oauth_tokens.json').then(response => {
+      dispatch({ type: FETCH_TOKENS_SUCCESS, tokens: response.data });
+    }).catch(error => {
+      dispatch({ type: FETCH_TOKENS_FAIL });
+    });
+  };
+}
+
+export function revokeOAuthToken(id) {
+  return (dispatch, getState) => {
+    dispatch({ type: REVOKE_TOKEN_REQUEST, id });
+    return api(getState).delete(`/api/oauth_tokens/${id}`).then(response => {
+      dispatch({ type: REVOKE_TOKEN_SUCCESS, id });
+    }).catch(error => {
+      dispatch({ type: REVOKE_TOKEN_FAIL, id });
     });
   };
 }

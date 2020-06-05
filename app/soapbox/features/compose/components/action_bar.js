@@ -18,6 +18,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
+  security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Hotkeys' },
 });
@@ -80,6 +81,7 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin/' });
     }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
+    menu.push({ text: intl.formatMessage(messages.security), to: '/auth/edit' });
     menu.push({ text: intl.formatMessage(messages.logout), to: '/auth/sign_out', action: onClickLogOut });
 
     return (

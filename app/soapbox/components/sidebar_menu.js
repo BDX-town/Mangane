@@ -28,6 +28,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
+  security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
@@ -166,6 +167,10 @@ class SidebarMenu extends ImmutablePureComponent {
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
+              </NavLink>
+              <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={onClose}>
+                <Icon id='lock' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
               </NavLink>
             </div>
 

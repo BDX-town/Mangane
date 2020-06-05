@@ -504,6 +504,13 @@ code {
       }
     }
   }
+
+  h2 {
+    font-size: 20px;
+    line-height: normal;
+    margin-bottom: 14px;
+    font-weight: bold;
+  }
 }
 
 .block-icon {
@@ -928,5 +935,30 @@ code {
 
   input[type="text"] {
     border-radius: 0 0 4px 4px;
+  }
+}
+
+.authtokens {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-gap: 20px;
+}
+
+.authtoken {
+  &__app-name {
+    font-size: 16px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__valid-until {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__revoke {
+    margin-top: 10px;
   }
 }
