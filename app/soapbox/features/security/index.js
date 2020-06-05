@@ -10,7 +10,7 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
-import { changeEmail, changePassword } from 'soapbox/actions/security';
+import { changeEmail, changePassword } from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
 const messages = defineMessages({
