@@ -32,9 +32,11 @@ export function changePassword(oldPassword, newPassword, confirmation) {
       new_password: newPassword,
       new_password_confirmation: confirmation,
     }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: CHANGE_PASSWORD_SUCCESS, response });
     }).catch(error => {
-      dispatch({ type: CHANGE_PASSWORD_FAIL, error });
+      dispatch({ type: CHANGE_PASSWORD_FAIL, error, skipAlert: true });
+      throw error;
     });
   };
 }
