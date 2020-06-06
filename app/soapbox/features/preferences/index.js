@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -79,6 +79,8 @@ const languages = {
 
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
+  themeLight: { id: 'preferences.options.theme_light', defaultMessage: 'Light' },
+  themeDark: { id: 'preferences.options.theme_dark', defaultMessage: 'Dark' },
 });
 
 const mapStateToProps = state => ({
@@ -114,8 +116,8 @@ class Preferences extends ImmutablePureComponent {
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown
-              label='Theme'
-              items={{ light: 'Light', dark: 'Dark' }}
+              label={<FormattedMessage id='preferences.fields.theme_label' defaultMessage='Theme' />}
+              items={{ light: intl.formatMessage(messages.themeLight), dark: intl.formatMessage(messages.themeDark) }}
               defaultValue={settings.get('themeMode')}
               onChange={this.onSelectChange(['themeMode'])}
             />
@@ -123,7 +125,7 @@ class Preferences extends ImmutablePureComponent {
 
           <FieldsGroup>
             <SelectDropdown
-              label='Language'
+              label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}
               items={languages}
               defaultValue={settings.get('locale')}
               onChange={this.onSelectChange(['locale'])}
@@ -131,22 +133,25 @@ class Preferences extends ImmutablePureComponent {
           </FieldsGroup>
 
           <FieldsGroup>
-            <RadioGroup label='Post privacy' onChange={this.onDefaultPrivacyChange}>
+            <RadioGroup
+              label={<FormattedMessage id='preferences.fields.privacy_label' defaultMessage='Post privacy' />}
+              onChange={this.onDefaultPrivacyChange}
+            >
               <RadioItem
-                label='Public'
-                hint='Everyone can see'
+                label={<FormattedMessage id='preferences.options.privacy_public' defaultMessage='Public' />}
+                hint={<FormattedMessage id='preferences.hints.privacy_public' defaultMessage='Everyone can see' />}
                 checked={settings.get('defaultPrivacy') === 'public'}
                 value='public'
               />
               <RadioItem
-                label='Unlisted'
-                hint='Everyone can see, but not listed on public timelines'
+                label={<FormattedMessage id='preferences.options.privacy_unlisted' defaultMessage='Unlisted' />}
+                hint={<FormattedMessage id='preferences.hints.privacy_unlisted' defaultMessage='Everyone can see, but not listed on public timelines' />}
                 checked={settings.get('defaultPrivacy') === 'unlisted'}
                 value='unlisted'
               />
               <RadioItem
-                label='Followers-only'
-                hint='Only show to followers'
+                label={<FormattedMessage id='preferences.options.privacy_followers_only' defaultMessage='Followers-only' />}
+                hint={<FormattedMessage id='preferences.hints.privacy_followers_only' defaultMessage='Only show to followers' />}
                 checked={settings.get('defaultPrivacy') === 'private'}
                 value='private'
               />
@@ -155,45 +160,45 @@ class Preferences extends ImmutablePureComponent {
 
           <FieldsGroup>
             <SettingsCheckbox
-              label='Show confirmation dialog before unfollowing someone'
+              label={<FormattedMessage id='preferences.fields.unfollow_modal_label' defaultMessage='Show confirmation dialog before unfollowing someone' />}
               path={['unfollowModal']}
             />
             <SettingsCheckbox
-              label='Show confirmation dialog before reposting'
+              label={<FormattedMessage id='preferences.fields.boost_modal_label' defaultMessage='Show confirmation dialog before reposting' />}
               path={['boostModal']}
             />
             <SettingsCheckbox
-              label='Show confirmation dialog before deleting a post'
+              label={<FormattedMessage id='preferences.fields.delete_modal_label' defaultMessage='Show confirmation dialog before deleting a post' />}
               path={['deleteModal']}
             />
           </FieldsGroup>
 
           <FieldsGroup>
             <SettingsCheckbox
-              label='Auto-play animated GIFs'
+              label={<FormattedMessage id='preferences.fields.auto_play_gif_label' defaultMessage='Auto-play animated GIFs' />}
               path={['autoPlayGif']}
             />
             <SettingsCheckbox
-              label='Always expand posts marked with content warnings'
+              label={<FormattedMessage id='preferences.fields.expand_spoilers_label' defaultMessage='Always expand posts marked with content warnings' />}
               path={['expandSpoilers']}
             />
             <SettingsCheckbox
-              label='Reduce motion in animations'
+              label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}
               path={['reduceMotion']}
             />
             <SettingsCheckbox
-              label="Use system's default font"
+              label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}
               path={['systemFont']}
             />
             <div className='dyslexic'>
               <SettingsCheckbox
-                label='Dyslexic mode'
+                label={<FormattedMessage id='preferences.fields.dyslexic_font_label' defaultMessage='Dyslexic mode' />}
                 path={['dyslexicFont']}
               />
             </div>
             <SettingsCheckbox
-              label='Use Demetricator'
-              hint='Decrease social media anxiety by hiding all numbers from the site.'
+              label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}
+              hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}
               path={['demetricator']}
             />
           </FieldsGroup>

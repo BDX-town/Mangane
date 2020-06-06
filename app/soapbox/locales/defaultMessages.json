@@ -2098,6 +2098,90 @@
       {
         "defaultMessage": "Preferences",
         "id": "column.preferences"
+      },
+      {
+        "defaultMessage": "Light",
+        "id": "preferences.options.theme_light"
+      },
+      {
+        "defaultMessage": "Dark",
+        "id": "preferences.options.theme_dark"
+      },
+      {
+        "defaultMessage": "Theme",
+        "id": "preferences.fields.theme_label"
+      },
+      {
+        "defaultMessage": "Language",
+        "id": "preferences.fields.language_label"
+      },
+      {
+        "defaultMessage": "Post privacy",
+        "id": "preferences.fields.privacy_label"
+      },
+      {
+        "defaultMessage": "Public",
+        "id": "preferences.options.privacy_public"
+      },
+      {
+        "defaultMessage": "Everyone can see",
+        "id": "preferences.hints.privacy_public"
+      },
+      {
+        "defaultMessage": "Unlisted",
+        "id": "preferences.options.privacy_unlisted"
+      },
+      {
+        "defaultMessage": "Everyone can see, but not listed on public timelines",
+        "id": "preferences.hints.privacy_unlisted"
+      },
+      {
+        "defaultMessage": "Followers-only",
+        "id": "preferences.options.privacy_followers_only"
+      },
+      {
+        "defaultMessage": "Only show to followers",
+        "id": "preferences.hints.privacy_followers_only"
+      },
+      {
+        "defaultMessage": "Show confirmation dialog before unfollowing someone",
+        "id": "preferences.fields.unfollow_modal_label"
+      },
+      {
+        "defaultMessage": "Show confirmation dialog before reposting",
+        "id": "preferences.fields.boost_modal_label"
+      },
+      {
+        "defaultMessage": "Show confirmation dialog before deleting a post",
+        "id": "preferences.fields.delete_modal_label"
+      },
+      {
+        "defaultMessage": "Auto-play animated GIFs",
+        "id": "preferences.fields.auto_play_gif_label"
+      },
+      {
+        "defaultMessage": "Always expand posts marked with content warnings",
+        "id": "preferences.fields.expand_spoilers_label"
+      },
+      {
+        "defaultMessage": "Reduce motion in animations",
+        "id": "preferences.fields.reduce_motion_label"
+      },
+      {
+        "defaultMessage": "Use system's default font",
+        "id": "preferences.fields.system_font_label"
+      },
+      {
+        "defaultMessage": "Dyslexic mode",
+        "id": "preferences.fields.dyslexic_font_label"
+      },
+      {
+        "defaultMessage": "Use Demetricator",
+        "id": "preferences.fields.demetricator_label"
+      },
+      {
+        "defaultMessage": "Decrease social media anxiety by hiding all numbers from the site.",
+        "id": "preferences.hints.demetricator"
       }
     ],
     "path": "app/soapbox/features/preferences/index.json"
