@@ -1381,6 +1381,66 @@
       {
         "defaultMessage": "Edit profile",
         "id": "column.edit_profile"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "edit_profile.fields.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "Content",
+        "id": "edit_profile.fields.meta_fields.content_placeholder"
+      },
+      {
+        "defaultMessage": "Display name",
+        "id": "edit_profile.fields.display_name_label"
+      },
+      {
+        "defaultMessage": "Bio",
+        "id": "edit_profile.fields.bio_label"
+      },
+      {
+        "defaultMessage": "Header",
+        "id": "edit_profile.fields.header_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px",
+        "id": "edit_profile.hints.header"
+      },
+      {
+        "defaultMessage": "Avatar",
+        "id": "edit_profile.fields.avatar_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px",
+        "id": "edit_profile.hints.avatar"
+      },
+      {
+        "defaultMessage": "Lock account",
+        "id": "edit_profile.fields.locked_label"
+      },
+      {
+        "defaultMessage": "Requires you to manually approve followers",
+        "id": "edit_profile.hints.locked"
+      },
+      {
+        "defaultMessage": "This is a bot account",
+        "id": "edit_profile.fields.bot_label"
+      },
+      {
+        "defaultMessage": "This account mainly performs automated actions and might not be monitored",
+        "id": "edit_profile.hints.bot"
+      },
+      {
+        "defaultMessage": "Profile metadata",
+        "id": "edit_profile.fields.meta_fields_label"
+      },
+      {
+        "defaultMessage": "You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile",
+        "id": "edit_profile.hints.meta_fields"
+      },
+      {
+        "defaultMessage": "Save",
+        "id": "edit_profile.save"
       }
     ],
     "path": "app/soapbox/features/edit_profile/index.json"

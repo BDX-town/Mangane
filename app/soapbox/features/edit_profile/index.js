@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -24,6 +24,8 @@ const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
+  metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
+  metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
 });
 
 const mapStateToProps = state => {
@@ -165,7 +167,7 @@ class EditProfile extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
-                label='Display name'
+                label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
                 maxLength={30}
@@ -173,7 +175,7 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
               />
               <TextInput
-                label='Bio'
+                label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
                 name='note'
                 value={this.state.note}
                 onChange={this.handleTextChange}
@@ -184,29 +186,29 @@ class EditProfile extends ImmutablePureComponent {
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
-                    label='Header'
+                    label={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Header' />}
                     name='header'
-                    hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px'
+                    hint={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px' />}
                     onChange={this.handleFileChange}
                   />
                   <FileChooser
-                    label='Avatar'
+                    label={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Avatar' />}
                     name='avatar'
-                    hint='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px'
+                    hint={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
                     onChange={this.handleFileChange}
                   />
                 </div>
               </div>
               <Checkbox
-                label='Lock account'
-                hint='Requires you to manually approve followers'
+                label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
+                hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
                 name='locked'
                 checked={this.state.locked}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
-                label='This is a bot account'
-                hint='This account mainly performs automated actions and might not be monitored'
+                label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
+                hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
                 name='bot'
                 checked={this.state.bot}
                 onChange={this.handleCheckboxChange}
@@ -215,18 +217,20 @@ class EditProfile extends ImmutablePureComponent {
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
-                  <label>Profile metadata</label>
-                  <span className='hint'>You can have up to {MAX_FIELDS} items displayed as a table on your profile</span>
+                  <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
+                  <span className='hint'>
+                    <FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                  </span>
                   {
                     this.state.fields.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
-                          placeholder='Label'
+                          placeholder={intl.formatMessage(messages.metaFieldLabel)}
                           value={field.get('name')}
                           onChange={this.handleFieldChange(i, 'name')}
                         />
                         <TextInput
-                          placeholder='Content'
+                          placeholder={intl.formatMessage(messages.metaFieldContent)}
                           value={field.get('value')}
                           onChange={this.handleFieldChange(i, 'value')}
                         />
@@ -238,7 +242,9 @@ class EditProfile extends ImmutablePureComponent {
             </FieldsGroup>
           </fieldset>
           <div className='actions'>
-            <button name='button' type='submit' className='btn button button-primary'>Save changes</button>
+            <button name='button' type='submit' className='btn button button-primary'>
+              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+            </button>
           </div>
         </SimpleForm>
       </Column>

@@ -28,7 +28,7 @@ export const InputContainer = (props) => {
 
 InputContainer.propTypes = {
   label: FormPropTypes.label,
-  hint: PropTypes.string,
+  hint: PropTypes.node,
   required: PropTypes.bool,
   type: PropTypes.string,
   children: PropTypes.node,
@@ -71,7 +71,7 @@ export class SimpleInput extends ImmutablePureComponent {
 
   static propTypes = {
     label: FormPropTypes.label,
-    hint: PropTypes.string,
+    hint: PropTypes.node,
   }
 
   render() {
@@ -156,7 +156,7 @@ export class RadioItem extends ImmutablePureComponent {
 
   static propTypes = {
     label: FormPropTypes.label,
-    hint: PropTypes.string,
+    hint: PropTypes.node,
     value: PropTypes.string.isRequired,
     checked: PropTypes.bool.isRequired,
     onChange: PropTypes.func,
