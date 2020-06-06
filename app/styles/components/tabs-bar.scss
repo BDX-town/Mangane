@@ -114,7 +114,6 @@
   &__button-compose {
     display: block;
     @media screen and (max-width: $nav-breakpoint-3) {display: none;}
-    width: 65px;
     height: 34px;
     margin-left: 20px;
     border-radius: 6px;
