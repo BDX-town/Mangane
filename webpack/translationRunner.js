@@ -74,7 +74,7 @@ if (!fs.existsSync(messagesDirectory)) {
   console.error(`
 Error: messagesDirectory not exists
 (${messagesDirectory})
-Try to run "yarn build:development" first`);
+Try to run "yarn build" first`);
   process.exit(1);
 }
 
