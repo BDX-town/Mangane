@@ -18,7 +18,7 @@ $small-breakpoint: 960px;
     margin: 40px 0;
     background: var(--foreground-color);
     border-radius: 6px;
-    
+
     @media screen and (max-width: 520px) { margin: 40px 20px; }
 
     @media screen and (max-width: 767px) {
@@ -1377,13 +1377,16 @@ $small-breakpoint: 960px;
       }
 
       .nav-button {
-        background: var(--accent-color);
+        background: var(--brand-color);
         color: #fff;
+        filter: var(--accent-filter);
+        transition: 0.2s;
 
         &:hover,
         &:focus,
         &:active {
-          opacity: 0.9;
+          background: var(--brand-color);
+          filter: var(--accent-filter-hover);
         }
       }
     }

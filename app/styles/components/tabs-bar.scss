@@ -118,17 +118,15 @@
     height: 34px;
     margin-left: 20px;
     border-radius: 6px;
-    background-color: var(--accent-color);
+    background-color: var(--brand-color);
     font-weight: bold;
     font-size: 16px;
     transition: 0.2s;
+    filter: var(--accent-filter);
 
     &:hover {
-      background-color: rgb(
-        calc(var(--accent-color-r) + 10),
-        calc(var(--accent-color-g) + 10),
-        calc(var(--accent-color-b) + 10)
-      );
+      background-color: var(--brand-color);
+      filter: var(--accent-filter-hover);
     }
 
   }
@@ -207,7 +205,7 @@
   &::before {
     content: "";
     display: block;
-    background: var(--accent-color);
+    background: var(--brand-color);
     position: absolute;
     transition: 0.2s;
     left: 0;
@@ -218,6 +216,7 @@
     z-index: -1;
     width: calc(100% + 20px);
     margin-left: -12px;
+    filter: var(--accent-filter);
 
     @media screen and (max-width: 895px) {
       height: 0;

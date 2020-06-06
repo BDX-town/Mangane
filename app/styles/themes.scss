@@ -3,11 +3,8 @@ body {
   --brand-color: rgb(var(--brand-color-rgb));
   --brand-color-faint: rgba(var(--brand-color-rgb), 0.1);
   --brand-color-med: rgba(var(--brand-color-rgb), 0.2);
-  --accent-color-r: calc(var(--brand-color-r) + 25);
-  --accent-color-g: calc(var(--brand-color-g) + 25);
-  --accent-color-b: calc(var(--brand-color-b) + 25);
-  --accent-color-rgb: var(--accent-color-r), var(--accent-color-g), var(--accent-color-b);
-  --accent-color: rgb(var(--accent-color-rgb));
+  --accent-filter: saturate(1.3) hue-rotate(-20deg) brightness(1.2);
+  --accent-filter-hover: saturate(1.3) hue-rotate(-20deg) brightness(1.3);
   --primary-text-color-rgb: var(--primary-text-color-r), var(--primary-text-color-g), var(--primary-text-color-b);
   --primary-text-color: rgb(var(--primary-text-color-rgb));
   --primary-text-color-faint: rgba(var(--primary-text-color-rgb), 0.6);
