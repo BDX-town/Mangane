@@ -1,7 +1,9 @@
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 import {
   SimpleForm,
@@ -13,16 +15,30 @@ import { register } from 'soapbox/actions/auth';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
 import { v4 as uuidv4 } from 'uuid';
+import { getSettings } from 'soapbox/actions/settings';
+
+const messages = defineMessages({
+  username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
+  email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
+  password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
+  confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
+  agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
+  tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
+});
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
+  locale: getSettings(state).get('locale'),
 });
 
 export default @connect(mapStateToProps)
+@injectIntl
 class RegistrationForm extends ImmutablePureComponent {
 
   static propTypes = {
     instance: ImmutablePropTypes.map,
+    locale: PropTypes.string,
+    intl: PropTypes.func.isRequired,
   }
 
   state = {
@@ -45,8 +61,9 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   onSubmit = e => {
+    const params = this.state.params.set('locale', this.props.locale);
     this.setState({ submissionLoading: true });
-    this.props.dispatch(register(this.state.params.toJS())).catch(error => {
+    this.props.dispatch(register(params.toJS())).catch(error => {
       this.setState({ submissionLoading: false });
       this.refreshCaptcha();
     });
@@ -69,24 +86,30 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance } = this.props;
+    const { instance, intl } = this.props;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
       <SimpleForm onSubmit={this.onSubmit}>
         <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
-            <p className='lead'>With an account on <strong>{instance.get('title')}</strong> you'll be able to follow people on any server in the fediverse.</p>
+            <p className='lead'>
+              <FormattedMessage
+                id='registration.lead'
+                defaultMessage="With an account on {instance} you'll be able to follow people on any server in the fediverse."
+                values={{ instance: <strong>{instance.get('title')}</strong> }}
+              />
+            </p>
             <div className='fields-group'>
               <TextInput
-                placeholder='Username'
+                placeholder={intl.formatMessage(messages.username)}
                 name='username'
                 autoComplete='off'
                 onChange={this.onInputChange}
                 required
               />
               <SimpleInput
-                placeholder='E-mail address'
+                placeholder={intl.formatMessage(messages.email)}
                 name='email'
                 type='email'
                 autoComplete='off'
@@ -94,7 +117,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 required
               />
               <SimpleInput
-                placeholder='Password'
+                placeholder={intl.formatMessage(messages.password)}
                 name='password'
                 type='password'
                 autoComplete='off'
@@ -102,7 +125,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 required
               />
               <SimpleInput
-                placeholder='Confirm password'
+                placeholder={intl.formatMessage(messages.confirm)}
                 name='confirm'
                 type='password'
                 autoComplete='off'
@@ -118,15 +141,16 @@ class RegistrationForm extends ImmutablePureComponent {
             />
             <div className='fields-group'>
               <Checkbox
-                label={<>I agree to the <Link to='/about/tos' target='_blank'>Terms of Service</Link>.</>}
+                label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank'>{intl.formatMessage(messages.tos)}</Link> })}
                 name='agreement'
                 onChange={this.onCheckboxChange}
                 required
               />
             </div>
-            <input type='hidden' name='locale' value='en_US' />
             <div className='actions'>
-              <button name='button' type='submit' className='btn button button-primary'>Sign up</button>
+              <button name='button' type='submit' className='btn button button-primary'>
+                <FormattedMessage id='registration.sign_up' defaultMessage='Sign up' />
+              </button>
             </div>
           </div>
         </fieldset>

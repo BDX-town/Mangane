@@ -872,6 +872,27 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Username",
+        "id": "login.fields.username_placeholder"
+      },
+      {
+        "defaultMessage": "Password",
+        "id": "login.fields.password_placeholder"
+      },
+      {
+        "defaultMessage": "Trouble logging in?",
+        "id": "login.reset_password_hint"
+      },
+      {
+        "defaultMessage": "Log in",
+        "id": "login.log_in"
+      }
+    ],
+    "path": "app/soapbox/features/auth_login/components/login_form.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Blocked users",
         "id": "column.blocks"
       },
@@ -1705,6 +1726,43 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Username",
+        "id": "registration.fields.username_placeholder"
+      },
+      {
+        "defaultMessage": "E-Mail address",
+        "id": "registration.fields.email_placeholder"
+      },
+      {
+        "defaultMessage": "Password",
+        "id": "registration.fields.password_placeholder"
+      },
+      {
+        "defaultMessage": "Password (again)",
+        "id": "registration.fields.confirm_placeholder"
+      },
+      {
+        "defaultMessage": "I agree to the {tos}.",
+        "id": "registration.agreement"
+      },
+      {
+        "defaultMessage": "Terms of Service",
+        "id": "registration.tos"
+      },
+      {
+        "defaultMessage": "With an account on {instance} you'll be able to follow people on any server in the fediverse.",
+        "id": "registration.lead"
+      },
+      {
+        "defaultMessage": "Sign up",
+        "id": "registration.sign_up"
+      }
+    ],
+    "path": "app/soapbox/features/landing_page/components/registration_form.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Remove from list",
         "id": "lists.account.remove"
       },
@@ -2200,7 +2258,7 @@
         "id": "status.cannot_reblog"
       },
       {
-        "defaultMessage": "Favorite",
+        "defaultMessage": "Like",
         "id": "status.favourite"
       },
       {
@@ -2674,6 +2732,10 @@
   },
   {
     "descriptors": [
+      {
+        "defaultMessage": "Post",
+        "id": "tabs_bar.post"
+      },
       {
         "defaultMessage": "Home",
         "id": "tabs_bar.home"

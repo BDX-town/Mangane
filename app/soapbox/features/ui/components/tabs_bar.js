@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Link, NavLink, withRouter } from 'react-router-dom';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { throttle } from 'lodash';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -13,6 +13,10 @@ import ActionBar from 'soapbox/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
+
+const messages = defineMessages({
+  post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
+});
 
 @withRouter
 class TabsBar extends React.PureComponent {
@@ -120,7 +124,7 @@ class TabsBar extends React.PureComponent {
   });
 
   render() {
-    const { account, onOpenCompose, onOpenSidebar } = this.props;
+    const { account, onOpenCompose, onOpenSidebar, intl } = this.props;
     const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {
@@ -144,8 +148,8 @@ class TabsBar extends React.PureComponent {
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
                   <ActionBar account={account} size={34} />
                 </div>
-                <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label='Post'>
-                  <span>Post</span>
+                <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
+                  <span>{intl.formatMessage(messages.post)}</span>
                 </button>
               </div>
             }

@@ -21,7 +21,7 @@ const messages = defineMessages({
   reblog_private: { id: 'status.reblog_private', defaultMessage: 'Repost to original audience' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
-  favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
+  favourite: { id: 'status.favourite', defaultMessage: 'Like' },
   mute: { id: 'status.mute', defaultMessage: 'Mute @{name}' },
   muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute conversation' },
   unmuteConversation: { id: 'status.unmute_conversation', defaultMessage: 'Unmute conversation' },
@@ -302,7 +302,7 @@ class ActionBar extends React.PureComponent {
             title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
             icon={reblogIcon}
             onClick={this.handleReblogClick}
-            text='Repost'
+            text={intl.formatMessage(messages.reblog)}
           />
         </div>
         <div
@@ -319,7 +319,7 @@ class ActionBar extends React.PureComponent {
             title={intl.formatMessage(messages.favourite)}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            text='Like'
+            text={intl.formatMessage(messages.favourite)}
             onClick={this.handleLikeButtonClick}
           />
         </div>
