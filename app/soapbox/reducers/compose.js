@@ -99,7 +99,7 @@ function clearAll(state) {
     map.set('in_reply_to', null);
     map.set('privacy', state.get('default_privacy'));
     map.set('sensitive', false);
-    map.update('media_attachments', list => list.clear());
+    map.set('media_attachments', ImmutableList());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
   });
@@ -257,21 +257,12 @@ export default function compose(state = initialState, action) {
         map.set('spoiler_text', '');
       }
     });
-  case COMPOSE_REPLY_CANCEL:
-  case COMPOSE_RESET:
-    return state.withMutations(map => {
-      map.set('in_reply_to', null);
-      map.set('text', '');
-      map.set('spoiler', false);
-      map.set('spoiler_text', '');
-      map.set('privacy', state.get('default_privacy'));
-      map.set('poll', null);
-      map.set('idempotencyKey', uuid());
-    });
   case COMPOSE_SUBMIT_REQUEST:
     return state.set('is_submitting', true);
   case COMPOSE_UPLOAD_CHANGE_REQUEST:
     return state.set('is_changing_upload', true);
+  case COMPOSE_REPLY_CANCEL:
+  case COMPOSE_RESET:
   case COMPOSE_SUBMIT_SUCCESS:
     return clearAll(state);
   case COMPOSE_SUBMIT_FAIL:

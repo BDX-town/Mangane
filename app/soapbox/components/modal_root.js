@@ -9,8 +9,18 @@ const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
 });
 
+const checkComposeContent = compose => {
+  return [
+    compose.get('text').length > 0,
+    compose.get('spoiler_text').length > 0,
+    compose.get('media_attachments').size > 0,
+    compose.get('in_reply_to') !== null,
+    compose.get('poll') !== null,
+  ].some(check => check === true);
+};
+
 const mapStateToProps = state => ({
-  composeText: state.getIn(['compose', 'text']),
+  hasComposeContent: checkComposeContent(state.get('compose')),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -30,7 +40,7 @@ class ModalRoot extends React.PureComponent {
     onOpenModal: PropTypes.func.isRequired,
     onCancelReplyCompose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    composeText: PropTypes.string,
+    hasComposeContent: PropTypes.bool,
     type: PropTypes.string,
   };
 
@@ -48,16 +58,16 @@ class ModalRoot extends React.PureComponent {
   }
 
   handleOnClose = () => {
-    const { onOpenModal, composeText, intl, type, onCancelReplyCompose } = this.props;
+    const { onOpenModal, hasComposeContent, intl, type, onCancelReplyCompose } = this.props;
 
-    if (composeText && type === 'COMPOSE') {
+    if (hasComposeContent && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
         onConfirm: () => onCancelReplyCompose(),
         onCancel: () => onOpenModal('COMPOSE'),
       });
-    } else if (composeText && type === 'CONFIRM') {
+    } else if (hasComposeContent && type === 'CONFIRM') {
       onOpenModal('COMPOSE');
     } else {
       this.props.onClose();
