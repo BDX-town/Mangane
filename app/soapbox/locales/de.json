@@ -441,7 +441,7 @@
   "time_remaining.minutes": "{number, plural, one {# Minute} other {# Minuten}} verbleibend",
   "time_remaining.moments": "Schließt in Kürze",
   "time_remaining.seconds": "{number, plural, one {# Sekunde} other {# Sekunden}} verbleibend",
-  "timeline_queue.label": "{count} {count, plural, one {neuer Beitrag} other {neue Beiträge}}. Hier klicken, um sie anzuzeigen.",    
+  "timeline_queue.label": "Hier klicken, um {count, plural, one {# neuen Beitrag} other {# neue Beiträge}} anzuzeigen.",    
   "trends.count_by_accounts": "{count} {rawCount, plural, eine {Person} other {Personen}} reden darüber",
   "trends.title": "Trends",
   "ui.beforeunload": "Dein Entwurf geht verloren, wenn du Soapbox FE verlässt.",
