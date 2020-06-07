@@ -108,4 +108,20 @@ describe('getFeatures', () => {
       expect(features.attachmentLimit).toEqual(Infinity);
     });
   });
+
+  describe('focalPoint', () => {
+    it('is true for Mastodon 2.3.0+', () => {
+      const instance = ImmutableMap({ version: '2.3.0' });
+      const features = getFeatures(instance);
+      expect(features.focalPoint).toBe(true);
+    });
+
+    it('is false for Pleroma', () => {
+      const instance = ImmutableMap({
+        version: '2.7.2 (compatible; Pleroma 1.1.50-42-g3d9ac6ae-develop)',
+      });
+      const features = getFeatures(instance);
+      expect(features.focalPoint).toBe(false);
+    });
+  });
 });

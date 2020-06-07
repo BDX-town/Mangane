@@ -8,6 +8,7 @@ export const getFeatures = instance => {
     trends: v.software === 'Mastodon' && semver.gte(v.compatVersion, '3.0.0'),
     emojiReacts: v.software === 'Pleroma' && semver.gte(v.version, '2.0.0'),
     attachmentLimit: v.software === 'Pleroma' ? Infinity : 4,
+    focalPoint: v.software === 'Mastodon' && semver.gte(v.compatVersion, '2.3.0'),
   };
 };
 
