@@ -5,7 +5,7 @@
   border-radius: 4px;
   position: relative;
   width: 100%;
-  background-color: var(--brand-color-faint);
+  background-color: var(--brand-color--faint);
 }
 
 .media-gallery__item {
@@ -22,7 +22,7 @@
   cursor: zoom-in;
   display: block;
   text-decoration: none;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   line-height: 0;
   position: relative;
   z-index: 1;

@@ -67,7 +67,7 @@
           display: block;
           font-size: 16px;
           line-height: 1.5;
-          color: var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
           font-weight: 400;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -91,12 +91,12 @@
     &__fields {
       display: flex;
       flex-direction: column;
-      border-top: 1px solid var(--brand-color-med);
+      border-top: 1px solid var(--brand-color--med);
       padding: 10px 0;
       margin: 5px 0;
 
       @media screen and (max-width: 895px) {
-        border-bottom: 1px solid var(--brand-color-med);
+        border-bottom: 1px solid var(--brand-color--med);
       }
 
       a {

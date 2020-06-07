@@ -9,7 +9,7 @@
   display: block;
   height: 42px;
   line-height: 42px;
-  border-bottom: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color--med);
   background: var(--foreground-color);
 
   &--highlighted {
@@ -37,7 +37,7 @@
     padding: 0 20px;
 
     &:hover {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
 
       span {
         text-decoration: underline;

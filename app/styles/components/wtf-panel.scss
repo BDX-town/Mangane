@@ -43,7 +43,7 @@
   &__subtitle {
     display: block;
     padding: 0 15px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   &__form {
@@ -64,7 +64,7 @@
     }
 
     &:not(:last-of-type) {
-      border-bottom: 1px solid var(--brand-color-med);
+      border-bottom: 1px solid var(--brand-color--med);
     }
 
     &__content {

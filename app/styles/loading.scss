@@ -1,5 +1,5 @@
 .loading-indicator {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -28,7 +28,7 @@
   height: 42px;
   box-sizing: border-box;
   background-color: transparent;
-  border: 0 solid rgba(var(--brand-color-rgb), 0.5);
+  border: 0 solid hsla(var(--brand-color_hsl), 0.5);
   border-width: 6px;
   border-radius: 50%;
 }
@@ -45,11 +45,11 @@
   0% {
     width: 0;
     height: 0;
-    background-color: rgba(var(--brand-color-rgb), 0.5);
+    background-color: hsla(var(--brand-color_hsl), 0.5);
   }
 
   29% {
-    background-color: rgba(var(--brand-color-rgb), 0.5);
+    background-color: hsla(var(--brand-color_hsl), 0.5);
   }
 
   30% {
@@ -168,12 +168,12 @@
   text-decoration: none;
 
   &:hover {
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
   }
 }
 
 .load-gap {
-  border-bottom: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color--med);
 }
 
 .regeneration-indicator {
@@ -181,7 +181,7 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--primary-text-color);
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   cursor: default;
   display: flex;
   flex: 1 1 auto;

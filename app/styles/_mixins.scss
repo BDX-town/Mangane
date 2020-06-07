@@ -49,9 +49,9 @@
   padding-left: 15px;
 
   // Chrome does not like these concatinated together
-  &::placeholder {color: var(--primary-text-color-faint);}
-  &:-ms-input-placeholder {color: var(--primary-text-color-faint);}
-  &::-ms-input-placeholder {color: var(--primary-text-color-faint);}
+  &::placeholder {color: var(--primary-text-color--faint);}
+  &:-ms-input-placeholder {color: var(--primary-text-color--faint);}
+  &::-ms-input-placeholder {color: var(--primary-text-color--faint);}
 
   &::-moz-focus-inner {
     border: 0;
@@ -72,7 +72,7 @@
   border-radius: 6px;
   padding: 8px 10px 17px;
   margin: 4px 0 0;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
 
   h4 {

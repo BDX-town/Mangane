@@ -10,7 +10,7 @@
   display: block;
   flex: 1 1 auto;
   padding: 15px 5px 13px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   text-decoration: none;
   text-align: center;
   font-size: 16px;
@@ -55,7 +55,7 @@
 .drawer__header {
   flex: 0 0 auto;
   font-size: 16px;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   margin-bottom: 10px;
   display: flex;
   flex-direction: row;

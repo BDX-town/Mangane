@@ -1,7 +1,7 @@
 .getting-started__wrapper,
 .getting-started,
 .flex-spacer {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
 }
 
 .getting-started__wrapper {
@@ -29,19 +29,19 @@
     }
 
     p {
-      color: rgba(var(--primary-text-color-rgb), 0.8);
+      color: hsla(var(--primary-text-color_hsl), 0.8);
       font-size: 13px;
       margin-bottom: 20px;
 
       a {
-        color: rgba(var(--primary-text-color-rgb), 0.4);
+        color: hsla(var(--primary-text-color_hsl), 0.4);
         text-decoration: underline;
       }
     }
 
     a {
       text-decoration: none;
-      color: rgba(var(--primary-text-color-rgb), 0.4);
+      color: hsla(var(--primary-text-color_hsl), 0.4);
 
       &:hover,
       &:focus,
@@ -52,7 +52,7 @@
   }
 
   &__trends {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     flex: 0 1 auto;
 
     @media screen and (max-height: 810px) {

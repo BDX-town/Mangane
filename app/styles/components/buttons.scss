@@ -34,7 +34,7 @@ button {
   &:active,
   &:focus,
   &:hover {
-    background-color: var(--brand-color-hicontrast);
+    background-color: var(--brand-color--hicontrast);
   }
 
   &--destructive {
@@ -57,7 +57,7 @@ button {
 
   &:disabled,
   &.disabled {
-    background-color: var(--brand-color-med);
+    background-color: var(--brand-color--med);
     cursor: default;
   }
 
@@ -83,17 +83,17 @@ button {
   }
 
   &.button-alternative-2 {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
 
     &:active,
     &:focus,
     &:hover {
-      background-color: var(--brand-color-faint);
+      background-color: var(--brand-color--faint);
     }
   }
 
   &.button-secondary {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     background: transparent;
     padding: 3px 15px;
     border: 1px solid var(--brand-color);

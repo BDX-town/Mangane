@@ -93,7 +93,7 @@ $small-breakpoint: 960px;
 
             a {
               padding: 4px;
-              background-color: var(--brand-color-med);
+              background-color: var(--brand-color--med);
             }
           }
 
@@ -160,7 +160,7 @@ $small-breakpoint: 960px;
       }
 
       &--hollow {
-        background-color: var(--brand-color-med);
+        background-color: var(--brand-color--med);
 
         &:hover,
         &:focus,
@@ -237,7 +237,7 @@ $small-breakpoint: 960px;
       }
 
       .logo-button {
-        background-color: var(--primary-text-color-faint);
+        background-color: var(--primary-text-color--faint);
       }
     }
 
@@ -309,7 +309,7 @@ $small-breakpoint: 960px;
       &::before {
         content: "";
         display: block;
-        background: var(--brand-color-faint);
+        background: var(--brand-color--faint);
         position: absolute;
         bottom: 0;
         left: 0;
@@ -332,14 +332,14 @@ $small-breakpoint: 960px;
           height: 100%;
           margin: 0;
           border-radius: 50%;
-          border: 4px solid var(--brand-color-faint);
+          border: 4px solid var(--brand-color--faint);
           background: var(--background-color);
         }
       }
 
       @media screen and (max-width: 600px) {
         margin-top: 0;
-        background: var(--brand-color-faint);
+        background: var(--brand-color--faint);
         border-radius: 0 0 4px 4px;
         padding: 5px;
 
@@ -418,7 +418,7 @@ $small-breakpoint: 960px;
             text-shadow: none;
 
             small {
-              color: var(--primary-text-color-faint);
+              color: var(--primary-text-color--faint);
             }
           }
         }
@@ -446,9 +446,9 @@ $small-breakpoint: 960px;
           width: 33.3%;
           box-sizing: border-box;
           flex: 0 0 auto;
-          color: var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
           padding: 10px;
-          border-right: 1px solid var(--brand-color-faint);
+          border-right: 1px solid var(--brand-color--faint);
           cursor: default;
           text-align: center;
           position: relative;
@@ -480,7 +480,7 @@ $small-breakpoint: 960px;
             }
 
             &.inactive::after {
-              border-bottom-color: var(--primary-text-color-faint);
+              border-bottom-color: var(--primary-text-color--faint);
             }
           }
 
@@ -532,7 +532,7 @@ $small-breakpoint: 960px;
         margin: 0 -5px;
 
         .account__header__fields {
-          border-top: 1px solid var(--brand-color-med);
+          border-top: 1px solid var(--brand-color--med);
         }
 
         .roles {
@@ -543,11 +543,11 @@ $small-breakpoint: 960px;
       &__links {
         margin-top: -15px;
         font-size: 14px;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
 
         a {
           display: inline-block;
-          color: var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
           text-decoration: none;
           padding: 15px;
           font-weight: 500;
@@ -579,7 +579,7 @@ $small-breakpoint: 960px;
   }
 
   .public-account-bio {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
     border-radius: 4px;
     overflow: hidden;
@@ -618,7 +618,7 @@ $small-breakpoint: 960px;
     .roles {
       padding: 20px;
       font-size: 14px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     .roles {
@@ -661,25 +661,25 @@ $small-breakpoint: 960px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
       margin: 0;
-      border-top: 1px solid var(--brand-color-med);
+      border-top: 1px solid var(--brand-color--med);
 
       & > div {
         width: 100%;
         padding: 0;
         margin-bottom: 0;
-        border-bottom: 1px solid var(--brand-color-med);
+        border-bottom: 1px solid var(--brand-color--med);
 
         &:last-child {
           border-bottom: 0;
         }
 
         .card__bar {
-          background: var(--brand-color-med);
+          background: var(--brand-color--med);
 
           &:hover,
           &:active,
           &:focus {
-            background: var(--brand-color-faint);
+            background: var(--brand-color--faint);
           }
         }
       }
@@ -705,7 +705,7 @@ $small-breakpoint: 960px;
   font-weight: 400;
   font-size: 16px;
   line-height: 30px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   max-width: 600px;
   padding: 15px 30px;
 
@@ -729,7 +729,7 @@ $small-breakpoint: 960px;
     font-weight: 400;
     font-size: 16px;
     line-height: 30px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     a {
       color: var(--highlight-text-color);
@@ -754,7 +754,7 @@ $small-breakpoint: 960px;
     margin-top: 2em;
     margin-bottom: 1.25em;
     font-weight: 500;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   hr + {
@@ -841,7 +841,7 @@ $small-breakpoint: 960px;
     width: 100%;
     height: 0;
     border: 0;
-    border-bottom: 1px solid rgba(var(--background-color-rgb), .6);
+    border-bottom: 1px solid hsla(var(--background-color_hsl), .6);
     margin: 2em 0;
 
     &.spacer {
@@ -852,7 +852,7 @@ $small-breakpoint: 960px;
 }
 
 .information-board {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   padding: 20px 0;
 
   .container-alt {
@@ -882,7 +882,7 @@ $small-breakpoint: 960px;
 
     span {
       &:last-child {
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
       }
     }
 
@@ -914,10 +914,10 @@ $small-breakpoint: 960px;
       font-size: 14px;
       line-height: 24px;
       font-weight: 500;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       padding-bottom: 5px;
       margin-bottom: 15px;
-      border-bottom: 1px solid var(--brand-color-faint);
+      border-bottom: 1px solid var(--brand-color--faint);
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
@@ -968,7 +968,7 @@ $small-breakpoint: 960px;
 
       .username {
         display: block;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
       }
     }
   }
@@ -983,7 +983,7 @@ $small-breakpoint: 960px;
     font-size: 16px;
     line-height: 30px;
     margin-bottom: 12px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     a {
       color: var(--highlight-text-color);
@@ -1009,7 +1009,7 @@ $small-breakpoint: 960px;
     line-height: 30px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     small {
       font-family: var(--font-sans-serif), sans-serif;
@@ -1026,7 +1026,7 @@ $small-breakpoint: 960px;
     line-height: 26px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   h3 {
@@ -1035,7 +1035,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   h4 {
@@ -1044,7 +1044,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   h5 {
@@ -1053,7 +1053,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   h6 {
@@ -1062,7 +1062,7 @@ $small-breakpoint: 960px;
     line-height: 24px;
     font-weight: 500;
     margin-bottom: 20px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   ul,
@@ -1095,7 +1095,7 @@ $small-breakpoint: 960px;
     width: 100%;
     height: 0;
     border: 0;
-    border-bottom: 1px solid rgba(var(--background-color-rgb), .6);
+    border-bottom: 1px solid hsla(var(--background-color_hsl), .6);
     margin: 20px 0;
 
     &.spacer {
@@ -1110,7 +1110,7 @@ $small-breakpoint: 960px;
   }
 
   &__call-to-action {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     border-radius: 4px;
     padding: 25px 40px;
     overflow: hidden;
@@ -1231,7 +1231,7 @@ $small-breakpoint: 960px;
   &__forms,
   #soapbox-timeline {
     box-sizing: border-box;
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     border-radius: 4px;
     box-shadow: 0 0 6px rgba(#000000, 0.1);
   }
@@ -1263,7 +1263,7 @@ $small-breakpoint: 960px;
     }
 
     p a {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     h1 {
@@ -1272,10 +1272,10 @@ $small-breakpoint: 960px;
       margin-bottom: 0;
 
       small {
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
 
         span {
-          color: var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
         }
       }
     }
@@ -1386,7 +1386,7 @@ $small-breakpoint: 960px;
         &:focus,
         &:active {
           background: var(--brand-color);
-          filter: var(--accent-filter-hover);
+          filter: var(--accent-filter--hover);
         }
       }
     }
@@ -1422,7 +1422,7 @@ $small-breakpoint: 960px;
 
       .simple_form {
         padding: 20px;
-        background-color: var(--brand-color-faint);
+        background-color: var(--brand-color--faint);
       }
     }
 
@@ -1500,7 +1500,7 @@ $small-breakpoint: 960px;
       text-transform: uppercase;
       font-weight: 700;
       font-size: 13px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     &__text {
@@ -1509,7 +1509,7 @@ $small-breakpoint: 960px;
     }
 
     &__footer {
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
       padding: 10px;
       border-radius: 0 0 4px 4px;
       display: flex;
@@ -1547,14 +1547,14 @@ $small-breakpoint: 960px;
 
       span {
         font-size: 14px;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
       }
     }
   }
 
   .simple_form .user_agreement .label_input > label {
     font-weight: 400;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   .simple_form p.lead {
@@ -1621,7 +1621,7 @@ $small-breakpoint: 960px;
       .hero-widget,
       .box-widget,
       .directory__tag {
-        border-bottom: 1px solid var(--brand-color-med);
+        border-bottom: 1px solid var(--brand-color--med);
       }
 
       .directory {
@@ -1702,7 +1702,7 @@ $small-breakpoint: 960px;
 }
 
 .about-page {
-  background: var(--brand-color-faint);
+  background: var(--brand-color--faint);
   border-radius: inherit;
 }
 

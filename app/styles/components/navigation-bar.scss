@@ -4,10 +4,10 @@
   align-items: center;
   flex-shrink: 0;
   cursor: default;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
 
   strong {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   a {

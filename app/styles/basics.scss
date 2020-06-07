@@ -53,7 +53,7 @@ body {
   }
 
   &.lighter {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
   }
 
   &.with-modals {
@@ -71,7 +71,7 @@ body {
   }
 
   &.embed {
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
     margin: 0;
     padding-bottom: 0;
 
@@ -84,7 +84,7 @@ body {
   }
 
   &.admin {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     position: fixed;
     width: 100%;
     height: 100%;
@@ -94,8 +94,8 @@ body {
   &.error {
     position: absolute;
     text-align: center;
-    color: var(--primary-text-color-faint);
-    background: var(--brand-color-med);
+    color: var(--primary-text-color--faint);
+    background: var(--brand-color--med);
     width: 100%;
     height: 100%;
     padding: 0;
@@ -163,7 +163,7 @@ body {
   color: var(--primary-text-color);
   padding: 15px 20px;
   font-size: 14px;
-  background-color: var(--brand-color-faint);
+  background-color: var(--brand-color--faint);
   margin: 5px 20px;
   border-radius: 8px;
 
@@ -181,7 +181,7 @@ body {
   }
 
   a {
-    color: var(--brand-color-hicontrast);
+    color: var(--brand-color--hicontrast);
     text-decoration: none;
 
     &:hover {
@@ -202,7 +202,7 @@ noscript {
   div {
     font-size: 14px;
     margin: 30px auto;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     max-width: 400px;
 
     a {

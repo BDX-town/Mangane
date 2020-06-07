@@ -71,6 +71,7 @@
     "file-loader": "^4.0.0",
     "font-awesome": "^4.7.0",
     "glob": "^7.1.1",
+    "hex-to-hsl": "^1.0.2",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "html-webpack-plugin": "^4.3.0",
     "http-link-header": "^1.0.2",

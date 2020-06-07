@@ -26,7 +26,7 @@
 }
 
 .sub {
-  border: 1px solid rgba(var(--primary-text-color-rgb), 0.5);
+  border: 1px solid hsla(var(--primary-text-color_hsl), 0.5);
   padding: 20px;
   position: relative;
   border-radius: 4px;

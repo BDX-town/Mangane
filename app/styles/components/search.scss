@@ -34,7 +34,7 @@
     z-index: 2;
     width: 18px;
     height: 18px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     opacity: 0;
     pointer-events: none;
 
@@ -55,7 +55,7 @@
 
 .search-results__header {
   color: var(--primary-text-color);
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   padding: 15px;
   font-weight: 500;
   font-size: 16px;
@@ -71,8 +71,8 @@
   margin-bottom: 5px;
 
   h5 {
-    background: var(--brand-color-faint);
-    border-bottom: 1px solid var(--brand-color-faint);
+    background: var(--brand-color--faint);
+    border-bottom: 1px solid var(--brand-color--faint);
     cursor: default;
     display: flex;
     padding: 15px;
@@ -95,7 +95,7 @@
 .search-results__hashtag {
   display: block;
   padding: 10px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   text-decoration: none;
 
   &:hover,
@@ -113,7 +113,7 @@
   &__text-container {
     display: none;
     padding: 25px 0;
-    background-color: var(--brand-color-med);
+    background-color: var(--brand-color--med);
 
     @media (min-width: 895px) {
       display: block;
