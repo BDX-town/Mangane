@@ -455,7 +455,7 @@ class MediaGallery extends React.PureComponent {
           { w: 100, h: '50%', t: '2px' },
         ];
       }
-    } else if (size === 4) {
+    } else if (size >= 4) {
       if (
         (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isPortrait(ar4)) ||
         (isPortrait(ar1) && isPortrait(ar2) && isPortrait(ar3) && isNonConformingRatio(ar4)) ||
