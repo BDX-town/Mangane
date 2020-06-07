@@ -207,9 +207,10 @@ export default class ScrollableList extends PureComponent {
   }
 
   getMoreFollows = () => {
-    const { scrollKey, isLoading, diffCount } = this.props;
+    const { scrollKey, isLoading, diffCount, hasMore } = this.props;
     const isMoreFollows = ['followers', 'following'].some(k => k === scrollKey);
     if (!(diffCount && isMoreFollows)) return null;
+    if (hasMore) return null;
 
     return (
       <MoreFollows visible={!isLoading} count={diffCount} type={scrollKey} />
