@@ -3,6 +3,7 @@
 import React from 'react';
 import { Provider, connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import Helmet from 'soapbox/components/helmet';
 import classNames from 'classnames';
@@ -53,6 +54,7 @@ const mapStateToProps = (state) => {
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
     themeMode: settings.get('themeMode'),
+    customCss: state.getIn(['soapbox', 'customCss']),
   };
 };
 
@@ -69,6 +71,7 @@ class SoapboxMount extends React.PureComponent {
     locale: PropTypes.string.isRequired,
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
+    customCss: ImmutablePropTypes.list,
     dispatch: PropTypes.func,
   };
 
@@ -98,7 +101,7 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, themeCss, locale } = this.props;
+    const { me, themeCss, locale, customCss } = this.props;
     if (me === null) return null;
     if (this.state.localeLoading) return null;
 
@@ -122,6 +125,9 @@ class SoapboxMount extends React.PureComponent {
           <Helmet>
             <body className={bodyClass} />
             {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+            {customCss && customCss.map(css => (
+              <link rel='stylesheet' href={css} key={css} />
+            ))}
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
