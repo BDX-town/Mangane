@@ -203,7 +203,7 @@
 }
 
 .column-back-button {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   color: var(--highlight-text-color);
   cursor: pointer;
   flex: 0 0 auto;
@@ -222,7 +222,7 @@
 }
 
 .column-header__back-button {
-  background: var(--brand-color-faint);
+  background: var(--brand-color--faint);
   border: 0;
   font-family: inherit;
   color: var(--highlight-text-color);
@@ -261,7 +261,7 @@
 }
 
 .column-link {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   color: var(--primary-text-color);
   display: block;
   font-size: 16px;
@@ -271,7 +271,7 @@
   &:hover,
   &:focus,
   &:active {
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
   }
 
   &:focus {
@@ -306,14 +306,14 @@
   font-size: 12px;
   line-height: 19px;
   font-weight: 500;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   padding: 4px 8px;
   margin: -6px 10px;
 }
 
 .column-subheading {
-  background: var(--brand-color-med);
-  color: var(--primary-text-color-faint);
+  background: var(--brand-color--med);
+  color: var(--primary-text-color--faint);
   padding: 8px 20px;
   font-size: 12px;
   font-weight: 500;
@@ -343,7 +343,7 @@
       pointer-events: none;
       height: 28px;
       z-index: 1;
-      background: radial-gradient(ellipse, rgba(var(--brand-color), 0.23) 0%, rgba(var(--brand-color), 0) 60%);
+      background: radial-gradient(ellipse, hsla(var(--brand-color_hsl), 0.23) 0%, hsla(var(--brand-color_hsl), 0) 60%);
     }
   }
 }
@@ -382,7 +382,7 @@
 
     &.grouped {
       margin: 6px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     &.active {
@@ -399,7 +399,7 @@
       display: block;
       position: absolute;
       width: 100%;
-      background-color: var(--brand-color-faint);
+      background-color: var(--brand-color--faint);
       filter: var(--accent-filter);
       border-radius: 10px;
       transition: 0.2s;
@@ -441,11 +441,11 @@
   }
 
   &.active {
-    box-shadow: 0 1px 0 rgba(var(--highlight-text-color), 0.3);
+    box-shadow: 0 1px 0 hsla(var(--highlight-text-color_hsl), 0.3);
 
     .column-header__icon {
       color: var(--highlight-text-color);
-      text-shadow: 0 0 10px rgba(var(--highlight-text-color), 0.4);
+      text-shadow: 0 0 10px hsla(var(--highlight-text-color_hsl), 0.4);
     }
   }
 
@@ -470,20 +470,20 @@
   border: 0;
   padding: 0 15px;
   font-size: 16px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   background: transparent;
 
   &:hover {
-    color: rgba(var(--primary-text-color-rgb), 0.8);
+    color: hsla(var(--primary-text-color_hsl), 0.8);
   }
 
   &.active {
     color: var(--primary-text-color);
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
 
     &:hover {
       color: var(--primary-text-color);
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
     }
   }
 }
@@ -492,7 +492,7 @@
   max-height: 70vh;
   overflow: hidden;
   overflow-y: auto;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   transition: max-height 150ms ease-in-out, opacity 300ms linear;
   opacity: 1;
 
@@ -509,7 +509,7 @@
     height: 0;
     background: transparent;
     border: 0;
-    border-top: 1px solid var(--brand-color-med);
+    border-top: 1px solid var(--brand-color--med);
     margin: 10px 0;
   }
 }
@@ -529,7 +529,7 @@
   }
 
   &:hover {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     text-decoration: underline;
   }
 }
@@ -558,12 +558,12 @@
 }
 
 .column-settings__outer {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   padding: 15px;
 }
 
 .column-settings__section {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   cursor: default;
   display: block;
   font-weight: 500;
@@ -591,7 +591,7 @@
     }
 
     &__multi-value {
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
 
       &__remove {
         cursor: pointer;
@@ -599,7 +599,7 @@
         &:hover,
         &:active,
         &:focus {
-          background: var(--brand-color-med);
+          background: var(--brand-color--med);
           color: var(--primary-text-color);
         }
       }
@@ -607,7 +607,7 @@
 
     &__multi-value__label,
     &__input {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     &__clear-indicator,
@@ -624,7 +624,7 @@
     }
 
     &__indicator-separator {
-      background-color: var(--brand-color-med);
+      background-color: var(--brand-color--med);
     }
 
     &__menu {
@@ -659,7 +659,7 @@
 .empty-column-indicator,
 .error-column {
   color: var(--primary-text-color);
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   text-align: center;
   padding: 40px;
   font-size: 15px;

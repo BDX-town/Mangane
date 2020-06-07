@@ -18,7 +18,7 @@
     overflow: hidden;
     height: 350px;
     position: relative;
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     @media screen and (max-width: 895px) {height: 225px;}
     &--none {height: 125px;}
 
@@ -36,14 +36,14 @@
     min-height: 74px;
     width: 100%;
     position: relative;
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     @media (min-width: 895px) {height: 74px;}
   }
 
   &__avatar {
     display: block;
     position: absolute;
-    border: 5px solid var(--brand-color-faint);
+    border: 5px solid var(--brand-color--faint);
     left: 0;
     top: -90px;
     border-radius: 50%;
@@ -100,7 +100,7 @@
       margin-left: auto;
 
       .icon-button {
-        border: 1px solid var(--brand-color-med);
+        border: 1px solid var(--brand-color--med);
         border-radius: 4px;
         box-sizing: content-box;
         padding: 2px;
@@ -116,7 +116,7 @@
     &__links {
       display: flex;
       font-size: 14px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       @media screen and (max-width: 895px) {
         justify-content: center;
         flex-wrap: wrap;
@@ -144,7 +144,7 @@
           }
 
           &:last-of-type {
-            color: var(--primary-text-color-faint);
+            color: var(--primary-text-color--faint);
             font-size: 12px;
             line-height: 14px;
             padding-top: 2px;
@@ -162,7 +162,7 @@
   @media screen and (max-width: 895px) {
     .account-mobile-container {
       display: block;
-      background: var(--brand-color-faint);
+      background: var(--brand-color--faint);
       margin-top: 10px;
       position: relative;
       padding: 10px 10px 0;
@@ -179,7 +179,7 @@
 }
 
 .account__header__content {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 14px;
   font-weight: 400;
   overflow: hidden;

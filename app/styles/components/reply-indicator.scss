@@ -1,7 +1,7 @@
 .reply-indicator {
   border-radius: 4px;
   margin-bottom: 10px;
-  background: var(--brand-color-faint);
+  background: var(--brand-color--faint);
   padding: 10px;
   min-height: 23px;
   overflow-y: auto;
@@ -31,7 +31,7 @@
   text-decoration: none;
 
   .display-name__account {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 }
 

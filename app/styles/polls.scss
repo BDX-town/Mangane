@@ -14,8 +14,8 @@
     height: 100%;
     display: inline-block;
     border-radius: 4px;
-    background: rgba(var(--primary-text-color-rgb), .3);
-    &.leading {background: rgba(var(--primary-text-color-rgb), .6);}
+    background: hsla(var(--primary-text-color_hsl), .3);
+    &.leading {background: hsla(var(--primary-text-color_hsl), .6);}
   }
 
   &__text {
@@ -27,7 +27,7 @@
     overflow: hidden;
     width: 100%;
     text-overflow: ellipsis;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     input[type=radio],
     input[type=checkbox] {
@@ -129,7 +129,7 @@
 
     &:active,
     &:focus {
-      background-color: rgba(var(--primary-text-color-rgb), .1);
+      background-color: hsla(var(--primary-text-color_hsl), .1);
     }
   }
 
@@ -208,10 +208,10 @@
   color: var(--primary-text-color);
 
   &__chart {
-    background: rgba(var(--brand-color), 0.2);
+    background: hsla(var(--brand-color_hsl), 0.2);
 
     &.leading {
-      background: rgba(var(--brand-color), 0.2);
+      background: hsla(var(--brand-color_hsl), 0.2);
     }
   }
 }

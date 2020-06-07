@@ -92,13 +92,13 @@
       font-size: 16px;
       line-height: 24px;
       font-weight: 400;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
 
       code {
         display: inline-block;
         background: var(--background-color);
         font-size: 15px;
-        border: 1px solid var(--brand-color-med);
+        border: 1px solid var(--brand-color--med);
         border-radius: 2px;
         padding: 1px 3px;
       }
@@ -132,7 +132,7 @@
     cursor: pointer;
 
     &:hover {
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
     }
 
     &.active {

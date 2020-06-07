@@ -37,7 +37,7 @@
 }
 
 .react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: var(--brand-color-hicontrast);
+  background-color: var(--brand-color--hicontrast);
 }
 
 .react-toggle--checked .react-toggle-track {
@@ -45,7 +45,7 @@
 }
 
 .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: var(--brand-color-hicontrast);
+  background-color: var(--brand-color--hicontrast);
 }
 
 .react-toggle-track-check {
@@ -91,7 +91,7 @@
   left: 1px;
   width: 22px;
   height: 22px;
-  border: 1px solid var(--brand-color-med);
+  border: 1px solid var(--brand-color--med);
   border-radius: 50%;
   background-color: var(--background-color);
   box-sizing: border-box;

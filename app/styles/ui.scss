@@ -1,7 +1,7 @@
 .icon-button {
   display: inline-block;
   padding: 0;
-  color: rgba(var(--primary-text-color-rgb), 0.4);
+  color: hsla(var(--primary-text-color_hsl), 0.4);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -14,12 +14,12 @@
   &:hover,
   &:active,
   &:focus {
-    color: rgba(var(--primary-text-color-rgb), 0.6);
+    color: hsla(var(--primary-text-color_hsl), 0.6);
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: rgba(var(--primary-text-color-rgb), 0.2);
+    color: hsla(var(--primary-text-color_hsl), 0.2);
     cursor: default;
   }
 
@@ -38,16 +38,16 @@
   }
 
   &.inverted {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     &:hover,
     &:active,
     &:focus {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     &.disabled {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
 
     &.active {
@@ -62,7 +62,7 @@
   &.overlayed {
     box-sizing: content-box;
     background: var(--foreground-color);
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     border-radius: 4px;
     padding: 2px;
 
@@ -73,7 +73,7 @@
 }
 
 .text-icon-button {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   border: 0;
   background: transparent;
   cursor: pointer;
@@ -87,12 +87,12 @@
   &:hover,
   &:active,
   &:focus {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     cursor: default;
   }
 
@@ -196,14 +196,14 @@
 
 .status__relative-time,
 .notification__relative_time {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   float: right;
   font-size: 14px;
 }
 
 .domain {
   padding: 10px;
-  border-bottom: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color--med);
 
   .domain__domain-name {
     flex: 1 1 auto;
@@ -240,11 +240,11 @@
   }
 
   a.status__content__spoiler-link {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     color: var(--primary-text-color);
 
     &:hover {
-      background: var(--brand-color-faint);
+      background: var(--brand-color--faint);
       text-decoration: none;
     }
   }
@@ -376,7 +376,7 @@
   &:hover,
   &:focus,
   &:active {
-    background-color: var(--brand-color-hicontrast);
+    background-color: var(--brand-color--hicontrast);
   }
 
   i.fa {
@@ -436,7 +436,7 @@
 }
 
 .setting-text {
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   background: transparent;
   border: 0;
   border-bottom: 2px solid var(--brand-color);
@@ -463,7 +463,7 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--primary-text-color);
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   cursor: default;
   display: flex;
   flex: 1 1 auto;
@@ -545,7 +545,7 @@
 .attachment-list {
   display: flex;
   font-size: 14px;
-  border: 1px solid var(--brand-color-med);
+  border: 1px solid var(--brand-color--med);
   border-radius: 4px;
   margin-top: 14px;
   overflow: hidden;
@@ -555,7 +555,7 @@
     color: var(--primary-text-color);
     padding: 8px 18px;
     cursor: default;
-    border-right: 1px solid var(--brand-color-med);
+    border-right: 1px solid var(--brand-color--med);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -612,7 +612,7 @@
 
 .notification__filter-bar,
 .account__section-headline {
-  border-bottom: 1px solid var(--brand-color-faint);
+  border-bottom: 1px solid var(--brand-color--faint);
   cursor: default;
   display: flex;
   flex-shrink: 0;
@@ -626,7 +626,7 @@
   a {
     display: block;
     flex: 1 1 auto;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     padding: 15px 0;
     font-size: 14px;
     font-weight: 500;
@@ -650,7 +650,7 @@
         transform: translateX(-50%);
         border-style: solid;
         border-width: 0 10px 10px;
-        border-color: transparent transparent var(--brand-color-faint);
+        border-color: transparent transparent var(--brand-color--faint);
       }
 
       &::after {
@@ -696,7 +696,7 @@
     height: auto;
 
     path:first-child {
-      fill: var(--brand-color-med);
+      fill: var(--brand-color--med);
     }
 
     path:last-child {
@@ -710,7 +710,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     border-radius: 50%;
     padding: 0.35rem;
   }

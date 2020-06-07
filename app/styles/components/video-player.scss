@@ -151,7 +151,7 @@
     z-index: 4;
     border: 0;
     background: var(--background-color);
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     transition: none;
     pointer-events: none;
 
@@ -378,7 +378,7 @@
 
 .media-spoiler-video-play-icon {
   border-radius: 100px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 36px;
   left: 50%;
   padding: 5px;

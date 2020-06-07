@@ -13,7 +13,7 @@
     &:active,
     &:focus {
       .card__bar {
-        background: var(--brand-color-med);
+        background: var(--brand-color--med);
       }
     }
   }
@@ -48,7 +48,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
     border-radius: 0 0 4px 4px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
@@ -87,7 +87,7 @@
       span {
         display: block;
         font-size: 14px;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
         font-weight: 400;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -130,7 +130,7 @@
   .older,
   .newer {
     text-transform: uppercase;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   .older {
@@ -173,9 +173,9 @@
 }
 
 .nothing-here {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 14px;
   font-weight: 500;
   text-align: center;
@@ -206,8 +206,8 @@
   line-height: 12px;
   font-weight: 500;
   color: var(--background-color);
-  background-color: rgba(var(--background-color-rgb), 0.1);
-  border: 1px solid rgba(var(--background-color-rgb), 0.5);
+  background-color: hsla(var(--background-color_hsl), 0.1);
+  border: 1px solid hsla(var(--background-color_hsl), 0.5);
 
   &.moderator {
     color: $success-green;
@@ -226,14 +226,14 @@
   padding: 0;
   margin: 15px -15px -15px;
   border: 0 none;
-  border-top: 1px solid var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  border-top: 1px solid var(--brand-color--med);
+  border-bottom: 1px solid var(--brand-color--med);
   font-size: 14px;
   line-height: 20px;
 
   dl {
     display: flex;
-    border-bottom: 1px solid var(--brand-color-med);
+    border-bottom: 1px solid var(--brand-color--med);
   }
 
   dt,
@@ -251,13 +251,13 @@
     font-weight: 500;
     width: 120px;
     flex: 0 0 auto;
-    color: var(--primary-text-color-faint);
-    background: rgba(var(--background-color-rgb), 0.5);
+    color: var(--primary-text-color--faint);
+    background: hsla(var(--background-color_hsl), 0.5);
   }
 
   dd {
     flex: 1 1 auto;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   a {
@@ -296,7 +296,7 @@
 
 .pending-account {
   &__header {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     a {
       color: var(--background-color);
@@ -324,7 +324,7 @@
   padding: 10px;
 
   &:not(:last-of-type) {
-  border-bottom: 1px solid var(--brand-color-med);
+  border-bottom: 1px solid var(--brand-color--med);
   }
 
   &.compact {
@@ -339,7 +339,7 @@
   .account__display-name {
     flex: 1 1 auto;
     display: block;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     overflow: hidden;
     text-decoration: none;
     font-size: 14px;
@@ -358,7 +358,7 @@
 .account__avatar {
   @include avatar-radius;
   position: relative;
-  background-color: var(--brand-color-faint);
+  background-color: var(--brand-color--faint);
 
   &-inline {
     display: inline-block;
@@ -415,13 +415,13 @@ a .account__avatar {
 
 .account__reciprocal_follow_message {
   padding: 0 5px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   text-align: center;
 }
 
 .account__disclaimer {
   padding: 10px;
-  border-top: 1px solid var(--brand-color-med);
+  border-top: 1px solid var(--brand-color--med);
   color: var(--primary-text-color);
 
   strong {
@@ -448,8 +448,8 @@ a .account__avatar {
 }
 
 .account__action-bar {
-  border-top: 1px solid var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  border-top: 1px solid var(--brand-color--med);
+  border-bottom: 1px solid var(--brand-color--med);
   line-height: 36px;
   overflow: hidden;
   flex: 0 0 auto;
@@ -489,7 +489,7 @@ a .account__avatar {
   text-decoration: none;
   overflow: hidden;
   flex: 0 1 100%;
-  border-right: 1px solid var(--brand-color-med);
+  border-right: 1px solid var(--brand-color--med);
   padding: 10px 0;
   border-bottom: 4px solid transparent;
 
@@ -501,7 +501,7 @@ a .account__avatar {
     display: block;
     text-transform: uppercase;
     font-size: 11px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   strong {
@@ -558,7 +558,7 @@ a .account__avatar {
   margin: 2px;
 
   a {
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
   }
 
   &__icons {
@@ -571,16 +571,16 @@ a .account__avatar {
 }
 
 .account--panel {
-  background: var(--brand-color-faint);
-  border-top: 1px solid var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  background: var(--brand-color--faint);
+  border-top: 1px solid var(--brand-color--med);
+  border-bottom: 1px solid var(--brand-color--med);
   display: flex;
   flex-direction: row;
   padding: 10px 0;
 }
 
 .account__section-headline {
-  background: var(--brand-color-faint);
+  background: var(--brand-color--faint);
 
   button,
   a {
@@ -601,9 +601,9 @@ a .account__avatar {
 .account__moved-note {
   padding: 14px 10px;
   padding-bottom: 16px;
-  background: var(--brand-color-faint);
-  border-top: 1px solid var(--brand-color-med);
-  border-bottom: 1px solid var(--brand-color-med);
+  background: var(--brand-color--faint);
+  border-top: 1px solid var(--brand-color--med);
+  border-bottom: 1px solid var(--brand-color--med);
 
   &__message {
     position: relative;

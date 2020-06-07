@@ -1,6 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-
-const hex2rgb = c => c.substr(1).match(/../g).map(x => + `0x${x}`);
+import hexToHsl from 'hex-to-hsl';
 
 export const generateThemeCss = brandColor => {
   if (!brandColor) return null;
@@ -8,11 +7,11 @@ export const generateThemeCss = brandColor => {
 };
 
 export const brandColorToThemeData = brandColor => {
-  const [ r, g, b ] = hex2rgb(brandColor);
+  const [ h, s, l ] = hexToHsl(brandColor);
   return ImmutableMap({
-    'brand-color-r': r,
-    'brand-color-g': g,
-    'brand-color-b': b,
+    'brand-color_h': h,
+    'brand-color_s': `${s}%`,
+    'brand-color_l': `${l}%`,
   });
 };
 

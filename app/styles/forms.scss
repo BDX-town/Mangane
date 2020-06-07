@@ -95,7 +95,7 @@ code {
   }
 
   .hint {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     a {
       color: var(--highlight-text-color);
@@ -116,7 +116,7 @@ code {
 
   p.hint {
     margin-bottom: 15px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
 
     &.subtle-hint {
       text-align: center;
@@ -300,8 +300,8 @@ code {
     input[type=email],
     input[type=password],
     textarea {
-      color: var(--primary-text-color-faint);
-      border-color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
+      border-color: var(--primary-text-color--faint);
     }
   }
 
@@ -338,7 +338,7 @@ code {
 
     &:active,
     &:focus {
-      border-color: var(--brand-color-hicontrast);
+      border-color: var(--brand-color--hicontrast);
     }
   }
 
@@ -408,7 +408,7 @@ code {
     &:hover,
     &:active,
     &:focus {
-      background-color: var(--brand-color-hicontrast);
+      background-color: var(--brand-color--hicontrast);
     }
 
     &.negative {
@@ -471,7 +471,7 @@ code {
         right: 0;
         bottom: 1px;
         width: 5px;
-        background-image: linear-gradient(to right, rgba(var(--background-color-rgb), 0), var(--background-color));
+        background-image: linear-gradient(to right, hsla(var(--background-color_hsl), 0), var(--background-color));
       }
     }
   }
@@ -521,8 +521,8 @@ code {
 }
 
 .flash-message {
-  background: var(--brand-color-med);
-  color: var(--primary-text-color-faint);
+  background: var(--brand-color--med);
+  color: var(--primary-text-color--faint);
   border-radius: 4px;
   padding: 15px 10px;
   margin-bottom: 30px;
@@ -542,7 +542,7 @@ code {
 
   a {
     display: inline-block;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     text-decoration: none;
 
     &:hover {
@@ -563,7 +563,7 @@ code {
     border: 0;
     padding: 10px;
     font-family: var(--font-monospace), monospace;
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     color: var(--primary-text-color);
     font-size: 14px;
     margin: 0;
@@ -579,7 +579,7 @@ code {
     }
 
     &:focus {
-      background: var(--brand-color-faint);
+      background: var(--brand-color--faint);
     }
   }
 
@@ -603,7 +603,7 @@ code {
   text-align: center;
 
   a {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     text-decoration: none;
 
     &:hover {
@@ -639,7 +639,7 @@ code {
 .oauth-prompt,
 .follow-prompt {
   margin-bottom: 30px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
 
   h2 {
     font-size: 16px;
@@ -648,7 +648,7 @@ code {
   }
 
   strong {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     font-weight: 500;
 
     @each $lang in $cjk-langs {
@@ -685,7 +685,7 @@ code {
 
 .qr-alternative {
   margin-bottom: 20px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   flex: 150px;
 
   samp {
@@ -770,7 +770,7 @@ code {
 
 .post-follow-actions {
   text-align: center;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
 
   div {
     margin-bottom: 4px;
@@ -860,7 +860,7 @@ code {
   margin-bottom: 25px;
 
   .fa-link {
-    background-color: var(--brand-color-med);
+    background-color: var(--brand-color--med);
     border-radius: 100%;
     font-size: 24px;
     padding: 10px;
@@ -892,7 +892,7 @@ code {
   }
 
   &__connection {
-    background-color: var(--brand-color-med);
+    background-color: var(--brand-color--med);
     box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
     border-radius: 4px;
     padding: 25px 10px;
@@ -900,7 +900,7 @@ code {
     text-align: center;
 
     &::after {
-      background-color: var(--brand-color-med);
+      background-color: var(--brand-color--med);
       content: '';
       display: block;
       height: 100%;

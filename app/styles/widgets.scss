@@ -20,11 +20,11 @@
   }
 
   &__text {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     padding: 20px;
     border-radius: 0 0 4px 4px;
     font-size: 15px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     line-height: 20px;
     word-wrap: break-word;
     font-weight: 400;
@@ -56,7 +56,7 @@
     }
 
     a {
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       text-decoration: none;
 
       &:hover {
@@ -79,7 +79,7 @@
     text-transform: uppercase;
     font-weight: 700;
     font-size: 13px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   .account {
@@ -115,13 +115,13 @@
   padding: 20px;
   min-height: 100%;
   border-radius: 4px;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
 }
 
 .contact-widget {
   font-size: 15px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   line-height: 20px;
   word-wrap: break-word;
   font-weight: 400;
@@ -152,9 +152,9 @@
   padding: 15px;
   padding-bottom: 20px;
   border-radius: 4px;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-weight: 400;
   margin-bottom: 10px;
 
@@ -197,7 +197,7 @@
 
     .fa {
       margin-right: 5px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
     }
   }
 
@@ -224,12 +224,12 @@
   background: $base-shadow-color;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
   font-size: 14px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   margin-bottom: 10px;
 }
 
 .page-header {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
   border-radius: 4px;
   padding: 60px 15px;
@@ -246,12 +246,12 @@
 
   p {
     font-size: 15px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   @media screen and (max-width: $no-gap-breakpoint) {
     margin-top: 0;
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
 
     h1 {
       font-size: 24px;
@@ -260,7 +260,7 @@
 }
 
 .directory {
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   border-radius: 4px;
   box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
 
@@ -273,7 +273,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
       border-radius: 4px;
       padding: 15px;
       text-decoration: none;
@@ -285,7 +285,7 @@
       &:hover,
       &:active,
       &:focus {
-        background: var(--brand-color-med);
+        background: var(--brand-color--med);
       }
     }
 
@@ -309,7 +309,7 @@
       text-overflow: ellipsis;
 
       .fa {
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
       }
 
       small {
@@ -317,7 +317,7 @@
         font-weight: 400;
         font-size: 15px;
         margin-top: 8px;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
       }
     }
 
@@ -352,7 +352,7 @@
     position: relative;
     margin-left: -10px;
     background: var(--background-color);
-    border: 2px solid var(--brand-color-med);
+    border: 2px solid var(--brand-color--med);
 
     &:nth-child(1) {
       z-index: 1;
@@ -383,7 +383,7 @@
   thead th {
     text-align: center;
     text-transform: uppercase;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     font-weight: 700;
     padding: 10px;
 
@@ -395,7 +395,7 @@
   tbody td {
     padding: 15px 0;
     vertical-align: middle;
-    border-bottom: 1px solid var(--brand-color-med);
+    border-bottom: 1px solid var(--brand-color--med);
   }
 
   tbody tr:last-child td {
@@ -411,7 +411,7 @@
 
     small {
       display: block;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       font-weight: 400;
       font-size: 14px;
     }
@@ -508,7 +508,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
 .notice-widget {
   margin-bottom: 10px;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
 
   p {
     margin-bottom: 10px;

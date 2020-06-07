@@ -9,7 +9,7 @@
     display: block;
     height: 112px;
     width: 100%;
-    background: var(--brand-color-faint);
+    background: var(--brand-color--faint);
 
     img {
       display: block;
@@ -65,7 +65,7 @@
       display: block;
       font-size: 14px;
       line-height: 16px;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       text-decoration: none !important;
     }
   }
@@ -104,7 +104,7 @@
     &__label {
       display: block;
       width: 100%;
-      color: var(--primary-text-color-faint);
+      color: var(--primary-text-color--faint);
       font-size: 12px;
       line-height: 14px;
     }

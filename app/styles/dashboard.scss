@@ -13,7 +13,7 @@
     & > div,
     & > a {
       padding: 20px;
-      background: var(--brand-color-faint);
+      background: var(--brand-color--faint);
       border-radius: 4px;
     }
 
@@ -25,7 +25,7 @@
       &:hover,
       &:focus,
       &:active {
-        background: var(--brand-color-med);
+        background: var(--brand-color--med);
       }
     }
   }
@@ -48,7 +48,7 @@
 
   &__label {
     font-size: 14px;
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
     text-align: center;
     font-weight: 500;
   }

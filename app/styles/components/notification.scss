@@ -3,7 +3,7 @@
     background: transparent;
 
     .icon-button.disabled {
-      color: rgba(var(--brand-color-rgb), 0.2);
+      color: hsla(var(--brand-color_hsl), 0.2);
     }
   }
 }
@@ -12,7 +12,7 @@
   margin: 0 10px 0 68px;
   padding: 8px 0 0;
   cursor: default;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 15px;
   line-height: 22px;
   position: relative;

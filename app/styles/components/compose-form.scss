@@ -167,7 +167,7 @@
     &:focus,
     &:active,
     &.selected {
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
     }
   }
 
@@ -190,7 +190,7 @@
   }
 
   .autosuggest-account .display-name__account {
-    color: var(--primary-text-color-faint);
+    color: var(--primary-text-color--faint);
   }
 
   .compose-form__modifiers {
@@ -226,7 +226,7 @@
 
         .icon-button {
           flex: 0 1 auto;
-          color: var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
           font-size: 14px;
           font-weight: 500;
           padding: 10px;
@@ -257,8 +257,8 @@
           background: rgba(0, 0, 0, 0.3);
           box-sizing: border-box;
           background: transparent;
-          color: var(--primary-text-color-faint);
-          border: 1px solid var(--primary-text-color-faint);
+          color: var(--primary-text-color--faint);
+          border: 1px solid var(--primary-text-color--faint);
           outline: none;
           padding: 10px;
           margin: 0;
@@ -270,7 +270,7 @@
           &:focus {color: #fff;}
 
           &::placeholder {
-            color: var(--primary-text-color-faint);
+            color: var(--primary-text-color--faint);
           }
         }
         &.active {opacity: 1;}
@@ -321,7 +321,7 @@
         font-family: var(--font-sans-serif), sans-serif;
         font-size: 14px;
         font-weight: 600;
-        color: var(--primary-text-color-faint);
+        color: var(--primary-text-color--faint);
         &.character-counter--over {color: $warning-red;}
       }
     }
@@ -376,7 +376,7 @@
   left: 0;
   z-index: -1;
   border-radius: 4px;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   box-shadow: 0 0 5px rgba($base-shadow-color, 0.2);
 }
 
@@ -385,10 +385,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--primary-text-color-faint);
+  color: var(--primary-text-color--faint);
   font-size: 18px;
   font-weight: 500;
-  border: 2px dashed var(--brand-color-med);
+  border: 2px dashed var(--brand-color--med);
   border-radius: 4px;
 }
 
@@ -419,7 +419,7 @@
   width: 100%;
   height: 6px;
   border-radius: 6px;
-  background: var(--brand-color-med);
+  background: var(--brand-color--med);
   position: relative;
   margin-top: 5px;
 }
@@ -460,7 +460,7 @@
 
   &:hover,
   &.active {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
     color: var(--primary-text-color);
     outline: 0;
 
@@ -474,7 +474,7 @@
   }
 
   &.active:hover {
-    background: rgba(var(--brand-color-rgb), 0.5);
+    background: hsla(var(--brand-color_hsl), 0.5);
   }
 }
 

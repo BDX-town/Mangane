@@ -26,7 +26,7 @@
   }
 
   .entry {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
 
     .detailed-status,
     .status,
@@ -69,7 +69,7 @@
   }
 
   &--highlighted .entry {
-    background: var(--brand-color-med);
+    background: var(--brand-color--med);
   }
 }
 
@@ -95,7 +95,7 @@
   &:active,
   &:focus,
   &:hover {
-    background: var(--brand-color-hicontrast);
+    background: var(--brand-color--hicontrast);
   }
 
   &:disabled,
@@ -103,7 +103,7 @@
     &:active,
     &:focus,
     &:hover {
-      background: var(--brand-color-med);
+      background: var(--brand-color--med);
     }
   }
 
