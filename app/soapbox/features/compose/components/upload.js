@@ -27,7 +27,7 @@ class Upload extends ImmutablePureComponent {
     onDescriptionChange: PropTypes.func.isRequired,
     onOpenFocalPoint: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    features: PropTypes.map,
+    features: PropTypes.object,
   };
 
   state = {

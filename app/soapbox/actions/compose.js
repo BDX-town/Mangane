@@ -457,7 +457,9 @@ function insertIntoTagHistory(recognizedTags, text) {
     const state = getState();
     const oldHistory = state.getIn(['compose', 'tagHistory']);
     const me = state.get('me');
-    const names = recognizedTags.map(tag => text.match(new RegExp(`#${tag.name}`, 'i'))[0].slice(1));
+    const names = recognizedTags
+      .filter(tag => text.match(new RegExp(`#${tag.name}`, 'i')))
+      .map(tag => tag.name);
     const intersectedOldHistory = oldHistory.filter(name => names.findIndex(newName => newName.toLowerCase() === name.toLowerCase()) === -1);
 
     names.push(...intersectedOldHistory.toJS());
