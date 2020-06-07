@@ -33,5 +33,5 @@ export const isModerator = account => (
 export const getFollowDifference = (state, accountId, type) => {
   const listSize = state.getIn(['user_lists', type, accountId, 'items'], ImmutableList()).size;
   const counter = state.getIn(['accounts_counters', accountId, `${type}_count`], 0);
-  return counter - listSize;
+  return Math.max(counter - listSize, 0);
 };
