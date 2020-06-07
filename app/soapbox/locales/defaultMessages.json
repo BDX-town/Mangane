@@ -513,6 +513,10 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Click to see {count} new {count, plural, one {post} other {posts}}",
+        "id": "status_list.queue_label"
+      },
+      {
         "defaultMessage": "Loading…",
         "id": "regeneration_indicator.label"
       },
@@ -543,15 +547,6 @@
       }
     ],
     "path": "app/soapbox/components/status.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Click to see {count} new {type}",
-        "id": "timeline_queue.label"
-      }
-    ],
-    "path": "app/soapbox/components/timeline_queue_button_header.json"
   },
   {
     "descriptors": [
@@ -2136,6 +2131,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "column.notifications"
+      },
+      {
+        "defaultMessage": "Click to see {count} new {count, plural, one {notification} other {notifications}}",
+        "id": "notifications.queue_label"
       },
       {
         "defaultMessage": "You don't have any notifications yet. Interact with others to start the conversation.",
