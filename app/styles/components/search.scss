@@ -55,7 +55,7 @@
 
 .search-results__header {
   color: var(--primary-text-color);
-  background: var(--brand-color--med);
+  background: var(--accent-color--med);
   padding: 15px;
   font-weight: 500;
   font-size: 16px;
@@ -71,7 +71,7 @@
   margin-bottom: 5px;
 
   h5 {
-    background: var(--brand-color--faint);
+    background: var(--accent-color--faint);
     border-bottom: 1px solid var(--brand-color--faint);
     cursor: default;
     display: flex;
@@ -113,7 +113,7 @@
   &__text-container {
     display: none;
     padding: 25px 0;
-    background-color: var(--brand-color--med);
+    background-color: var(--accent-color--med);
 
     @media (min-width: 895px) {
       display: block;
