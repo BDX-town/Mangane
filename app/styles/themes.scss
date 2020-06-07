@@ -36,14 +36,15 @@ body {
   --accent-color_hsl: var(--accent-color_h), var(--accent-color_s), var(--accent-color_l);
   --primary-text-color_hsl: var(--primary-text-color_h), var(--primary-text-color_s), var(--primary-text-color_l);
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
-  --accent-color_h: calc(var(--brand-color_h) - 20);
-  --accent-color_s: calc(var(--brand-color_s) + 10%);
-  --accent-color_l: calc(var(--brand-color_l) + 5%);
+  --accent-color_h: calc(var(--brand-color_h) - 15);
+  --accent-color_s: 86%;
+  --accent-color_l: 44%;
 
   // Modifiers
   --brand-color--faint: hsla(var(--brand-color_hsl), 0.1);
   --brand-color--med: hsla(var(--brand-color_hsl), 0.2);
-  --accent-color--faint: hsla(var(--accent-color_hsl), 0.1);
+  --accent-color--faint: hsla(var(--accent-color_hsl), 0.15);
+  --accent-color--med: hsla(var(--accent-color_hsl), 0.25);
   --accent-color--bright: hsl(
     var(--accent-color_h),
     var(--accent-color_s),

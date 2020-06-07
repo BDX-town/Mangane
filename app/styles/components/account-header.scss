@@ -36,14 +36,14 @@
     min-height: 74px;
     width: 100%;
     position: relative;
-    background: var(--brand-color--med);
+    background: var(--accent-color--med);
     @media (min-width: 895px) {height: 74px;}
   }
 
   &__avatar {
     display: block;
     position: absolute;
-    border: 5px solid var(--brand-color--faint);
+    border: 5px solid var(--accent-color--faint);
     left: 0;
     top: -90px;
     border-radius: 50%;
@@ -162,7 +162,7 @@
   @media screen and (max-width: 895px) {
     .account-mobile-container {
       display: block;
-      background: var(--brand-color--faint);
+      background: var(--accent-color--faint);
       margin-top: 10px;
       position: relative;
       padding: 10px 10px 0;

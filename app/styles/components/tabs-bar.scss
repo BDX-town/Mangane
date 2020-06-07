@@ -122,6 +122,10 @@
     font-size: 16px;
     transition: 0.2s;
 
+    > span {
+      text-shadow: 0 0 3px hsla(0, 0%, 0%, 0.15);
+    }
+
     &:hover {
       background-color: var(--accent-color--bright);
     }
@@ -151,6 +155,7 @@
   font-weight: bold;
   transition: 0.1s;
   outline: none;
+  text-shadow: 0 0 3px hsla(0, 0%, 0%, 0.15);
 
   @media screen and (max-width: 895px) {
     width: 36px;
