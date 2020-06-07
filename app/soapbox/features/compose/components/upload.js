@@ -27,6 +27,7 @@ class Upload extends ImmutablePureComponent {
     onDescriptionChange: PropTypes.func.isRequired,
     onOpenFocalPoint: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    features: PropTypes.map,
   };
 
   state = {
@@ -102,7 +103,7 @@ class Upload extends ImmutablePureComponent {
             <div className='compose-form__upload-thumbnail' style={{ transform: `scale(${scale})`, backgroundImage: `url(${media.get('preview_url')})`, backgroundPosition: `${x}% ${y}%` }}>
               <div className={classNames('compose-form__upload__actions', { active })}>
                 <button className='icon-button' onClick={this.handleUndoClick}><Icon id='times' /> <FormattedMessage id='upload_form.undo' defaultMessage='Delete' /></button>
-                {media.get('type') === 'image' && <button className='icon-button' onClick={this.handleFocalPointClick}><Icon id='crosshairs' /> <FormattedMessage id='upload_form.focus' defaultMessage='Change preview' /></button>}
+                {this.props.features.focalPoint && media.get('type') === 'image' && <button className='icon-button' onClick={this.handleFocalPointClick}><Icon id='crosshairs' /> <FormattedMessage id='upload_form.focus' defaultMessage='Change preview' /></button>}
               </div>
 
               <div className={classNames('compose-form__upload-description', { active })}>
