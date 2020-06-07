@@ -135,6 +135,8 @@
   }
 
   &.inactive {
+    min-height: 300px;
+
     video,
     .video-player__controls {
       visibility: hidden;
