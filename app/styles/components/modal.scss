@@ -621,7 +621,6 @@
 }
 
 .compose-modal {
-  padding: 8px 0 0;
   overflow: hidden;
   background-color: var(--background-color);
   border-radius: 6px;
@@ -632,7 +631,11 @@
   &__header {
     display: block;
     position: relative;
-    padding: 5px 0;
+    padding: 10px 0;
+    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     &__title {
       display: block;
@@ -649,7 +652,6 @@
   &__close {
     position: absolute;
     right: 10px;
-    top: 5px;
     color: #999;
   }
 
@@ -686,6 +688,10 @@
           content: none !important;
         }
       }
+    }
+
+    .compose-form .compose-form__buttons-wrapper {
+      padding: 0;
     }
   }
 

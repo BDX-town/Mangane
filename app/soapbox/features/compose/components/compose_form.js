@@ -305,16 +305,11 @@ class ComposeForm extends ImmutablePureComponent {
               <SpoilerButtonContainer />
             </div>
             {maxTootChars && <div className='character-counter__wrapper'><CharacterCounter max={maxTootChars} text={text} /></div>}
+            <div className='compose-form__publish'>
+              <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
+            </div>
           </div>
         }
-
-        {
-          !condensed &&
-          <div className='compose-form__publish'>
-            <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
-          </div>
-        }
-
       </div>
     );
   }

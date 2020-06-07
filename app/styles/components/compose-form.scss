@@ -291,13 +291,19 @@
   .compose-form__buttons-wrapper {
     padding: 10px;
     background: var(--background-color);
-    border-radius: 0 0 4px 4px;
     display: flex;
     justify-content: space-between;
     flex: 0 0 auto;
 
     .compose-form__buttons {
       display: flex;
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
       .compose-form__upload-button-icon {line-height: 27px;}
 
       .compose-form__sensitive-button {
@@ -314,7 +320,7 @@
 
     .character-counter__wrapper {
       align-self: center;
-      margin-right: 4px;
+      margin: 0 10px 0 auto;
 
       .character-counter {
         cursor: default;
@@ -335,7 +341,6 @@
 
     .compose-form__publish-button-wrapper {
       overflow: hidden;
-      padding-top: 10px;
     }
   }
 } // end .compose-form
