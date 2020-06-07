@@ -1377,16 +1377,14 @@ $small-breakpoint: 960px;
       }
 
       .nav-button {
-        background: var(--brand-color);
+        background: var(--accent-color);
         color: #fff;
-        filter: var(--accent-filter);
         transition: 0.2s;
 
         &:hover,
         &:focus,
         &:active {
-          background: var(--brand-color);
-          filter: var(--accent-filter--hover);
+          background: var(--accent-color--bright);
         }
       }
     }
