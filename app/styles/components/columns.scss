@@ -369,6 +369,11 @@
     text-align: left;
     text-decoration: none;
     white-space: nowrap;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
 
     &--sub {
       font-size: 14px;
@@ -382,8 +387,23 @@
 
     &.active {
       color: var(--primary-text-color);
-      border-radius: 10px;
+
+      &::before {
+        height: 100%;
+        opacity: 1;
+      }
+    }
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
       background-color: var(--brand-color-faint);
+      filter: var(--accent-filter);
+      border-radius: 10px;
+      transition: 0.2s;
+      opacity: 0;
     }
 
     @media screen and (max-width: $nav-breakpoint-2) {
@@ -397,6 +417,22 @@
       &.active {
         border-radius: 5px;
       }
+    }
+  }
+
+  &:hover .btn.grouped {
+    &::before {
+      height: 70% !important;
+      opacity: 0 !important;
+    }
+
+    &:hover::before {
+      height: 100% !important;
+      opacity: 1 !important;
+    }
+
+    &:hover {
+      color: var(--primary-text-color);
     }
   }
 
