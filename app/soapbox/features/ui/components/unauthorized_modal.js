@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import IconButton from 'soapbox/components/icon_button';
 
@@ -42,15 +43,15 @@ class UnauthorizedModal extends ImmutablePureComponent {
             <span className='unauthorized-modal-content__text'>
               <FormattedMessage id='unauthorized_modal.text' defaultMessage='You need to be logged in to do that.' />
             </span>
-            <a href='/auth/sign_up' className='unauthorized-modal-content__button button'>
+            <Link to='/' className='unauthorized-modal-content__button button'>
               <FormattedMessage id='account.register' defaultMessage='Sign up' />
-            </a>
+            </Link>
           </div>
         </div>
         <div className='unauthorized-modal__footer'>
           <FormattedMessage
             id='unauthorized_modal.footer' defaultMessage='Already have an account? {login}.' values={{
-              login: <a href='/auth/sign_in'><FormattedMessage id='account.login' defaultMessage='Log in' /></a>,
+              login: <Link to='/auth/sign_in'><FormattedMessage id='account.login' defaultMessage='Log in' /></Link>,
             }}
           />
         </div>

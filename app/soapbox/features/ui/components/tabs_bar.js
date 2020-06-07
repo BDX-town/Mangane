@@ -159,7 +159,7 @@ class TabsBar extends React.PureComponent {
                 <Link className='tabs-bar__button button' to='/auth/sign_in'>
                   <FormattedMessage id='account.login' defaultMessage='Log In' />
                 </Link>
-                <Link className='tabs-bar__button button button-alternative-2' to='/auth/sign_up'>
+                <Link className='tabs-bar__button button button-alternative-2' to='/'>
                   <FormattedMessage id='account.register' defaultMessage='Sign up' />
                 </Link>
               </div>

@@ -18,7 +18,7 @@
     overflow: hidden;
     height: 350px;
     position: relative;
-    background: var(--brand-color--med);
+    background: var(--accent-color--med);
     @media screen and (max-width: 895px) {height: 225px;}
     &--none {height: 125px;}
 

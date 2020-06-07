@@ -26,7 +26,7 @@ const SignUpPanel = ({ siteTitle, me }) => {
           <FormattedMessage id='signup_panel.subtitle' defaultMessage='Sign up now to discuss.' />
         </span>
         <div className='wtf-panel__form'>
-          <a className='button' href='/auth/sign_up'>
+          <a className='button' href='/'>
             <FormattedMessage id='account.register' defaultMessage='Sign up' />
           </a>
         </div>
