@@ -44,7 +44,7 @@ const SearchPage = ({ children, features }) => (
 
 SearchPage.propTypes = {
   children: PropTypes.node,
-  features: PropTypes.node,
+  features: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(SearchPage);

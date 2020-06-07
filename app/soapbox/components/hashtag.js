@@ -12,16 +12,16 @@ const Hashtag = ({ hashtag }) => (
         #<span>{hashtag.get('name')}</span>
       </Permalink>
 
-      <div className='trends__item__count'>
+      {hashtag.get('history') && <div className='trends__item__count'>
         <FormattedMessage id='trends.count_by_accounts' defaultMessage='{count} {rawCount, plural, one {person} other {people}} talking' values={{ rawCount: hashtag.getIn(['history', 0, 'accounts']), count: <strong>{shortNumberFormat(hashtag.getIn(['history', 0, 'accounts']))}</strong> }} />
-      </div>
+      </div>}
     </div>
 
-    <div className='trends__item__sparkline'>
+    {hashtag.get('history') && <div className='trends__item__sparkline'>
       <Sparklines width={50} height={28} data={hashtag.get('history').reverse().map(day => day.get('uses')).toArray()}>
         <SparklinesCurve style={{ fill: 'none' }} />
       </Sparklines>
-    </div>
+    </div>}
   </div>
 );
 

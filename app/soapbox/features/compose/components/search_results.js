@@ -21,7 +21,7 @@ class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
     results: ImmutablePropTypes.map.isRequired,
-    features: PropTypes.node,
+    features: PropTypes.object,
     intl: PropTypes.object.isRequired,
   };
 
