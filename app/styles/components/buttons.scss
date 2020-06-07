@@ -83,12 +83,12 @@ button {
   }
 
   &.button-alternative-2 {
-    background: var(--brand-color--med);
+    background: var(--accent-color);
 
     &:active,
     &:focus,
     &:hover {
-      background-color: var(--brand-color--faint);
+      background-color: var(--accent-color--bright);
     }
   }
 
