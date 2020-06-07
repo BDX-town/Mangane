@@ -8,6 +8,7 @@ const FormPropTypes = {
   label: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.object,
+    PropTypes.node,
   ]),
 };
 
@@ -38,7 +39,7 @@ InputContainer.propTypes = {
 export const LabelInputContainer = ({ label, children, ...props }) => {
   const id = uuidv4();
   const childrenWithProps = React.Children.map(children, child => (
-    React.cloneElement(child, { id: id })
+    React.cloneElement(child, { id: id, key: id })
   ));
 
   return (

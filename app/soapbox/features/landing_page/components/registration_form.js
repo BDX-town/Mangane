@@ -38,7 +38,7 @@ class RegistrationForm extends ImmutablePureComponent {
   static propTypes = {
     instance: ImmutablePropTypes.map,
     locale: PropTypes.string,
-    intl: PropTypes.func.isRequired,
+    intl: PropTypes.object.isRequired,
   }
 
   state = {
@@ -141,7 +141,7 @@ class RegistrationForm extends ImmutablePureComponent {
             />
             <div className='fields-group'>
               <Checkbox
-                label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank'>{intl.formatMessage(messages.tos)}</Link> })}
+                label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
                 name='agreement'
                 onChange={this.onCheckboxChange}
                 required

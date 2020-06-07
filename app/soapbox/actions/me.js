@@ -62,6 +62,7 @@ export function fetchMeFail(error) {
   return {
     type: ME_FETCH_FAIL,
     error,
+    skipAlert: true,
   };
 };
 
