@@ -23,6 +23,7 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
+  queue: { id: 'notifications.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {notification} other {notifications}}' },
 });
 
 const getNotifications = createSelector([
@@ -182,7 +183,11 @@ class Notifications extends React.PureComponent {
           <ColumnSettingsContainer />
         </ColumnHeader>
         {filterBarContainer}
-        <TimelineQueueButtonHeader onClick={this.handleDequeueNotifications} count={totalQueuedNotificationsCount} itemType='notification' />
+        <TimelineQueueButtonHeader
+          onClick={this.handleDequeueNotifications}
+          count={totalQueuedNotificationsCount}
+          message={messages.queue}
+        />
         {scrollContainer}
       </Column>
     );

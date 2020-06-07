@@ -1,6 +1,6 @@
 import { debounce } from 'lodash';
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import StatusContainer from '../containers/status_container';
@@ -8,6 +8,10 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoadGap from './load_gap';
 import ScrollableList from './scrollable_list';
 import TimelineQueueButtonHeader from './timeline_queue_button_header';
+
+const messages = defineMessages({
+  queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
+});
 
 export default class StatusList extends ImmutablePureComponent {
 
@@ -138,7 +142,12 @@ export default class StatusList extends ImmutablePureComponent {
     }
 
     return [
-      <TimelineQueueButtonHeader key='timeline-queue-button-header' onClick={this.handleDequeueTimeline} count={totalQueuedItemsCount} itemType='post' />,
+      <TimelineQueueButtonHeader
+        key='timeline-queue-button-header'
+        onClick={this.handleDequeueTimeline}
+        count={totalQueuedItemsCount}
+        message={messages.queue}
+      />,
       <ScrollableList key='scrollable-list' {...other} isLoading={isLoading} showLoading={isLoading && statusIds.size === 0} onLoadMore={onLoadMore && this.handleLoadOlder} ref={this.setRef}>
         {scrollableContent}
       </ScrollableList>,
