@@ -10,11 +10,6 @@ module.exports = {
     '<rootDir>/static/',
     '<rootDir>/tmp/',
     '<rootDir>/webpack/',
-
-    // Temporarily disable these tests
-    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/34
-    '<rootDir>/app/soapbox/components/__tests__/avatar-test.js',
-    '<rootDir>/app/soapbox/components/__tests__/avatar_overlay-test.js',
   ],
   'setupFiles': [
     'raf/polyfill',

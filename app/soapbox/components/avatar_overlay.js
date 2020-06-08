@@ -8,8 +8,7 @@ const mapStateToProps = state => ({
   animate: getSettings(state).get('autoPlayGif'),
 });
 
-export default @connect(mapStateToProps)
-class AvatarOverlay extends React.PureComponent {
+export class AvatarOverlay extends React.PureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
@@ -37,3 +36,5 @@ class AvatarOverlay extends React.PureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(AvatarOverlay);
