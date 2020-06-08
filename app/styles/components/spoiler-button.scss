@@ -27,7 +27,7 @@
 
     &__label {
       display: inline-block;
-      background: rgba($base-overlay-background, 0.5);
+      background: var(--accent-color--faint);
       border-radius: 8px;
       padding: 8px 12px;
       color: var(--primary-text-color);
@@ -39,7 +39,7 @@
     &:focus,
     &:active {
       .spoiler-button__overlay__label {
-        background: rgba($base-overlay-background, 0.8);
+        background: var(--accent-color--med);
       }
     }
   }
