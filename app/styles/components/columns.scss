@@ -480,11 +480,11 @@
 
   &.active {
     color: var(--primary-text-color);
-    background: var(--brand-color--med);
+    background: var(--accent-color--med);
 
     &:hover {
       color: var(--primary-text-color);
-      background: var(--brand-color--med);
+      background: var(--accent-color--med);
     }
   }
 }
