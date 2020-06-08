@@ -430,7 +430,7 @@
   "status.show_thread": "Zeige Konversation",
   "status.unmute_conversation": "Stummschaltung von Konversation aufheben",
   "status.unpin": "Vom Profil lösen",
-  "status_list.queue_label": "{count, plural, one {# neuen Beitrag} other {# neue Beiträge}}. Hier klicken, um {count, plural, one {ihn} other {sie}} anzuzeigen.",
+  "status_list.queue_label": "{count, plural, one {Ein neuer Beitrag} other {# neue Beiträge}}. Hier klicken, um {count, plural, one {ihn} other {sie}} anzuzeigen.",
   "suggestions.dismiss": "Empfehlung ausblenden",
   "tabs_bar.apps": "Apps",
   "tabs_bar.home": "Startseite",
