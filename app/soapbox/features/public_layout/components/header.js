@@ -42,7 +42,10 @@ class Header extends ImmutablePureComponent {
               }
             </div>
             <div className='visible-sm'>
-              <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>Log in</Link>
+              {me
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>Back to {instance.get('title')}</Link>
+                : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>Log in</Link>
+              }
             </div>
           </div>
         </div>
