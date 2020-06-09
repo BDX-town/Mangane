@@ -4,6 +4,7 @@ const api = jest.requireActual('../api').default;
 let mocks = [];
 
 export const __stub = func => mocks.push(func);
+export const __clear = () => mocks = [];
 
 const setupMock = axios => {
   const mock = new MockAdapter(axios);

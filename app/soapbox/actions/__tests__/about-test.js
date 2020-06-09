@@ -12,7 +12,7 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('fetchAboutPage()', () => {
-  beforeAll(() => stubApi(mock => {
+  beforeEach(() => stubApi(mock => {
     mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
   }));
 
