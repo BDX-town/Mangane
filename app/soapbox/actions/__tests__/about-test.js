@@ -1,5 +1,3 @@
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 import {
   FETCH_ABOUT_PAGE_REQUEST,
   FETCH_ABOUT_PAGE_SUCCESS,
@@ -8,9 +6,7 @@ import {
 } from '../about';
 import { Map as ImmutableMap } from 'immutable';
 import { __stub as stubApi } from 'soapbox/api';
-
-const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
+import { mockStore } from 'soapbox/test_setup';
 
 describe('fetchAboutPage()', () => {
   it('creates the expected actions on success', () => {
