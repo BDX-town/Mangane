@@ -6,12 +6,17 @@ import {
   fetchAboutPage,
 } from '../about';
 import { Map as ImmutableMap } from 'immutable';
+import { __stub as stubApi } from 'soapbox/api';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
-describe('About actions', () => {
-  it('creates FETCH_ABOUT_PAGE_SUCCESS when fetching about page has been done', () => {
+describe('fetchAboutPage()', () => {
+  beforeAll(() => stubApi(mock => {
+    mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
+  }));
+
+  it('creates the expected actions', () => {
     const expectedActions = [
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'index' },
       { type: FETCH_ABOUT_PAGE_SUCCESS, slug: 'index' },

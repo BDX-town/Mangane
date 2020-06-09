@@ -1,10 +1,17 @@
 import MockAdapter from 'axios-mock-adapter';
 
 const api = jest.requireActual('../api').default;
+let mocks = [];
+
+export const __stub = func => mocks.push(func);
+
+const setupMock = axios => {
+  const mock = new MockAdapter(axios);
+  mocks.map(func => func(mock));
+};
 
 export default (...params) => {
-  const axiosInstance = api(...params);
-  const mock = new MockAdapter(axiosInstance);
-  mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
-  return axiosInstance;
+  const axios = api(...params);
+  setupMock(axios);
+  return axios;
 };
