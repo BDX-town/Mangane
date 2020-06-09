@@ -3,6 +3,7 @@ import thunk from 'redux-thunk';
 import {
   FETCH_ABOUT_PAGE_REQUEST,
   FETCH_ABOUT_PAGE_SUCCESS,
+  FETCH_ABOUT_PAGE_FAIL,
   fetchAboutPage,
 } from '../about';
 import { Map as ImmutableMap } from 'immutable';
@@ -12,11 +13,12 @@ const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 describe('fetchAboutPage()', () => {
-  beforeEach(() => stubApi(mock => {
-    mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
-  }));
+  it('creates the expected actions on success', () => {
 
-  it('creates the expected actions', () => {
+    stubApi(mock => {
+      mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
+    });
+
     const expectedActions = [
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'index' },
       { type: FETCH_ABOUT_PAGE_SUCCESS, slug: 'index' },
@@ -24,6 +26,18 @@ describe('fetchAboutPage()', () => {
     const store = mockStore(ImmutableMap());
 
     return store.dispatch(fetchAboutPage()).then(() => {
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  it('creates the expected actions on failure', () => {
+    const expectedActions = [
+      { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'asdf' },
+      { type: FETCH_ABOUT_PAGE_FAIL, slug: 'asdf' },
+    ];
+    const store = mockStore(ImmutableMap());
+
+    return store.dispatch(fetchAboutPage('asdf')).then(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
