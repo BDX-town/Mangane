@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -37,7 +37,7 @@ InputContainer.propTypes = {
 };
 
 export const LabelInputContainer = ({ label, children, ...props }) => {
-  const id = uuidv4();
+  const [id] = useState(uuidv4());
   const childrenWithProps = React.Children.map(children, child => (
     React.cloneElement(child, { id: id, key: id })
   ));
@@ -168,9 +168,13 @@ export class RadioItem extends ImmutablePureComponent {
     checked: false,
   }
 
+  state = {
+    id: uuidv4(),
+  }
+
   render() {
     const { label, hint, dispatch, ...props } = this.props;
-    const id = uuidv4();
+    const { id } = this.state;
 
     return (
       <li className='radio'>
