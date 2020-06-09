@@ -20,7 +20,7 @@ const messages = defineMessages({
   direct: { id: 'navigation_bar.direct', defaultMessage: 'Direct messages' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
-  favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Favorites' },
+  favourites: { id: 'navigation_bar.favourites', defaultMessage: 'Likes' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },

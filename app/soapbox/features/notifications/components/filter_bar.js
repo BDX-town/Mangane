@@ -5,7 +5,7 @@ import Icon from 'soapbox/components/icon';
 
 const tooltips = defineMessages({
   mentions: { id: 'notifications.filter.mentions', defaultMessage: 'Mentions' },
-  favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Favorites' },
+  favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Likes' },
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Reposts' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },

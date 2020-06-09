@@ -47,7 +47,7 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
               <tr>
                 <td><kbd>f</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to favorite' /></td>
+                <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></td>
               </tr>
               <tr>
                 <td><kbd>b</kbd></td>
@@ -133,7 +133,7 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
               <tr>
                 <td><kbd>g</kbd> + <kbd>f</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.favourites' defaultMessage='to open favorites list' /></td>
+                <td><FormattedMessage id='keyboard_shortcuts.favourites' defaultMessage='to open likes list' /></td>
               </tr>
               <tr>
                 <td><kbd>g</kbd> + <kbd>p</kbd></td>

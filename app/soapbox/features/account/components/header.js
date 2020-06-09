@@ -299,7 +299,7 @@ class Header extends ImmutablePureComponent {
                   >
                     { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
                     <span>•</span>
-                    <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Favorites' /></span>
+                    <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
                   </NavLink>
                   <NavLink
                     exact activeClassName='active' to={`/@${account.get('acct')}/pins`}

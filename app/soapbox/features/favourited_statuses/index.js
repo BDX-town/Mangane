@@ -53,7 +53,7 @@ class Favourites extends ImmutablePureComponent {
       );
     }
 
-    const emptyMessage = <FormattedMessage id='empty_column.favourited_statuses' defaultMessage="You don't have any favorite posts yet. When you favorite one, it will show up here." />;
+    const emptyMessage = <FormattedMessage id='empty_column.favourited_statuses' defaultMessage="You don't have any liked posts yet. When you like one, it will show up here." />;
 
     return (
       <Column>

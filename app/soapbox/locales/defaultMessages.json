@@ -850,7 +850,7 @@
         "id": "account.followers"
       },
       {
-        "defaultMessage": "Favorites",
+        "defaultMessage": "Likes",
         "id": "navigation_bar.favourites"
       },
       {
@@ -1443,7 +1443,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "You don't have any favorite posts yet. When you favorite one, it will show up here.",
+        "defaultMessage": "You don't have any liked posts yet. When you like one, it will show up here.",
         "id": "empty_column.favourited_statuses"
       }
     ],
@@ -1452,7 +1452,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "No one has favorited this post yet. When someone does, they will show up here.",
+        "defaultMessage": "No one has liked this post yet. When someone does, they will show up here.",
         "id": "empty_column.favourites"
       }
     ],
@@ -1550,7 +1550,7 @@
         "id": "navigation_bar.follow_requests"
       },
       {
-        "defaultMessage": "Favorites",
+        "defaultMessage": "Likes",
         "id": "navigation_bar.favourites"
       },
       {
@@ -2041,7 +2041,7 @@
         "id": "notifications.column_settings.follow"
       },
       {
-        "defaultMessage": "Favorites:",
+        "defaultMessage": "Likes:",
         "id": "notifications.column_settings.favourite"
       },
       {
@@ -2066,7 +2066,7 @@
         "id": "notifications.filter.mentions"
       },
       {
-        "defaultMessage": "Favorites",
+        "defaultMessage": "Likes",
         "id": "notifications.filter.favourites"
       },
       {
@@ -2633,7 +2633,7 @@
         "id": "keyboard_shortcuts.profile"
       },
       {
-        "defaultMessage": "to favorite",
+        "defaultMessage": "to like",
         "id": "keyboard_shortcuts.favourite"
       },
       {
@@ -2701,7 +2701,7 @@
         "id": "keyboard_shortcuts.start"
       },
       {
-        "defaultMessage": "to open favorites list",
+        "defaultMessage": "to open likes list",
         "id": "keyboard_shortcuts.favourites"
       },
       {

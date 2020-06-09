@@ -58,7 +58,7 @@ export default class ColumnSettings extends React.PureComponent {
         </div>
 
         <div role='group' aria-labelledby='notifications-favourite'>
-          <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.favourite' defaultMessage='Favorites:' /></span>
+          <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.favourite' defaultMessage='Likes:' /></span>
 
           <div className='column-settings__row'>
             <SettingToggle prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'favourite']} onChange={onChange} label={alertStr} />
