@@ -1,0 +1,28 @@
+.still-image {
+  position: relative;
+  overflow: hidden;
+
+  img,
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    font-family: inherit;
+  }
+
+  &--play-on-hover {
+    img {
+      position: absolute;
+      visibility: hidden;
+    }
+
+    &:hover img {
+      visibility: visible;
+    }
+
+    &:hover canvas {
+      visibility: hidden;
+    }
+  }
+}
