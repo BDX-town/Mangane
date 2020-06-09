@@ -2,7 +2,6 @@
 
 import axios from 'axios';
 import LinkHeader from 'http-link-header';
-import ready from './ready';
 
 export const getLinks = response => {
   const value = response.headers.link;
@@ -14,17 +13,6 @@ export const getLinks = response => {
   return LinkHeader.parse(value);
 };
 
-let csrfHeader = {};
-
-function setCSRFHeader() {
-  const csrfToken = document.querySelector('meta[name=csrf-token]');
-  if (csrfToken) {
-    csrfHeader['X-CSRF-Token'] = csrfToken.content;
-  }
-}
-
-ready(setCSRFHeader);
-
 const getToken = (getState, authType) =>
   getState().getIn(['auth', authType, 'access_token']);
 
@@ -32,7 +20,7 @@ export default (getState, authType = 'user') => {
   const accessToken = getToken(getState, authType);
 
   return axios.create({
-    headers: Object.assign(csrfHeader, accessToken ? {
+    headers: Object.assign(accessToken ? {
       'Authorization': `Bearer ${accessToken}`,
     } : {}),
 
