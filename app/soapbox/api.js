@@ -5,11 +5,7 @@ import LinkHeader from 'http-link-header';
 
 export const getLinks = response => {
   const value = response.headers.link;
-
-  if (!value) {
-    return { refs: [] };
-  }
-
+  if (!value) return { refs: [] };
   return LinkHeader.parse(value);
 };
 

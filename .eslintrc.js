@@ -196,6 +196,7 @@ module.exports = {
           'webpack/**',
           'app/soapbox/test_setup.js',
           'app/**/__tests__/**',
+          'app/**/__mocks__/**',
         ],
       },
     ],
