@@ -1,4 +1,4 @@
-// Roboto Regular
+soapbox// Roboto Regular
 @font-face {
   font-family: 'Roboto';
   font-weight: 400;
@@ -147,14 +147,14 @@
   line-height: #{$rem + "rem"};
 }
 
-// Spinster icon font
+// Soapbox icon font
 @font-face {
-  font-family: 'spinster';
-  src:  url('../fonts/spinster/spinster.eot?pryg6i');
-  src:  url('../fonts/spinster/spinster.eot?pryg6i#iefix') format('embedded-opentype'),
-    url('../fonts/spinster/spinster.ttf?pryg6i') format('truetype'),
-    url('../fonts/spinster/spinster.woff?pryg6i') format('woff'),
-    url('../fonts/spinster/spinster.svg?pryg6i#spinster') format('svg');
+  font-family: 'soapbox';
+  src:  url('../fonts/soapbox/soapbox.eot?pryg6i');
+  src:  url('../fonts/soapbox/soapbox.eot?pryg6i#iefix') format('embedded-opentype'),
+    url('../fonts/soapbox/soapbox.ttf?pryg6i') format('truetype'),
+    url('../fonts/soapbox/soapbox.woff?pryg6i') format('woff'),
+    url('../fonts/soapbox/soapbox.svg?pryg6i#soapbox') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -165,6 +165,6 @@
 }
 
 .fa-fediverse::before {
-  font-family: 'spinster' !important;
+  font-family: 'soapbox' !important;
   content: "\e901";
 }
