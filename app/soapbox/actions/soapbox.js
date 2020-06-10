@@ -21,9 +21,12 @@ export function importSoapboxConfig(soapboxConfig) {
 }
 
 export function soapboxConfigFail(error) {
+  if (!error.response) {
+    console.error('soapbox.json parsing error: ' + error);
+  }
   return {
     type: SOAPBOX_CONFIG_REQUEST_FAIL,
     error,
     skipAlert: true,
   };
-};
+}
