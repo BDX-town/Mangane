@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import renderer from 'react-test-renderer';
 import { Provider } from 'react-redux';
 import { IntlProvider } from 'react-intl';
+import { BrowserRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import { Map as ImmutableMap } from 'immutable';
 
@@ -13,13 +14,15 @@ import { Map as ImmutableMap } from 'immutable';
 const middlewares = [thunk];
 export const mockStore = configureMockStore(middlewares);
 
-// Test Redux connected components
-export const createComponentWithStore = (children, props = { store: mockStore(ImmutableMap()) }) => {
-  return renderer.create(<Provider {...props}>{children}</Provider>);
-};
-
-// Testing i18n components
-// https://formatjs.io/docs/react-intl/testing/#helper-function-2
-export const createComponentWithIntl = (children, props = { locale: 'en' }) => {
-  return renderer.create(<IntlProvider {...props}>{children}</IntlProvider>);
+// Create test component with i18n and Redux store, etc
+export const createComponent = (children, props = { locale: 'en', store: mockStore(ImmutableMap()) }) => {
+  return renderer.create(
+    <Provider store={props.store}>
+      <IntlProvider locale={props.locale}>
+        <BrowserRouter>
+          {children}
+        </BrowserRouter>
+      </IntlProvider>
+    </Provider>
+  );
 };

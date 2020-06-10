@@ -1,6 +1,6 @@
 import React from 'react';
 import TimelineQueueButtonHeader from '../timeline_queue_button_header';
-import { createComponentWithIntl } from 'soapbox/test_helpers';
+import { createComponent } from 'soapbox/test_helpers';
 import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
@@ -9,7 +9,7 @@ const messages = defineMessages({
 
 describe('<TimelineQueueButtonHeader />', () => {
   it('renders correctly', () => {
-    expect(createComponentWithIntl(
+    expect(createComponent(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
@@ -18,7 +18,7 @@ describe('<TimelineQueueButtonHeader />', () => {
       />
     ).toJSON()).toMatchSnapshot();
 
-    expect(createComponentWithIntl(
+    expect(createComponent(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
@@ -27,7 +27,7 @@ describe('<TimelineQueueButtonHeader />', () => {
       />
     ).toJSON()).toMatchSnapshot();
 
-    expect(createComponentWithIntl(
+    expect(createComponent(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind

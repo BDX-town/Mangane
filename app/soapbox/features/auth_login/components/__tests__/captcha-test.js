@@ -1,12 +1,12 @@
 import React from 'react';
 import CaptchaField, { NativeCaptchaField } from '../captcha';
 import renderer from 'react-test-renderer';
-import { createComponentWithStore } from 'soapbox/test_helpers';
+import { createComponent } from 'soapbox/test_helpers';
 import { Map as ImmutableMap } from 'immutable';
 
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {
-    expect(createComponentWithStore(
+    expect(createComponent(
       <CaptchaField />
     ).toJSON()).toMatchSnapshot();
   });
