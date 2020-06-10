@@ -60,7 +60,7 @@ describe('notifications reducer', () => {
       ]),
       hasMore: false,
       top: false,
-      unread: 0,
+      unread: 1,
       isLoading: false,
       queuedNotifications: ImmutableList(),
       totalQueuedNotificationsCount: 0,

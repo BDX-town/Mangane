@@ -140,7 +140,7 @@ export default function notifications(state = initialState, action) {
   case SAVE_MARKERS_SUCCESS:
     const prevRead = state.get('lastRead');
     const marker   = fromJS(action.markers);
-    const unread   = marker.getIn(['notifications', 'pleroma', 'unread_count'], 0);
+    const unread   = marker.getIn(['notifications', 'pleroma', 'unread_count'], state.get('unread', 0));
     const lastRead = marker.getIn(['notifications', 'last_read_id'], prevRead);
     return state.merge({ unread, lastRead });
   case NOTIFICATIONS_EXPAND_REQUEST:
@@ -161,7 +161,10 @@ export default function notifications(state = initialState, action) {
       mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
-    return expandNormalizedNotifications(state, action.notifications, action.next);
+    const legacyUnread = action.notifications.reduce((acc, cur) =>
+      get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
+    return expandNormalizedNotifications(state, action.notifications, action.next)
+      .merge({ unread: Math.max(legacyUnread, state.get('unread')) });
   case ACCOUNT_BLOCK_SUCCESS:
     return filterNotifications(state, action.relationship);
   case ACCOUNT_MUTE_SUCCESS:
