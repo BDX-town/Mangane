@@ -23,6 +23,7 @@ import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import compareId from '../compare_id';
 import { fromJS } from 'immutable';
+import { get } from 'lodash';
 
 const initialState = ImmutableMap({
   items: ImmutableList(),
@@ -42,6 +43,7 @@ const notificationToMap = notification => ImmutableMap({
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,
+  is_seen: get(notification, ['pleroma', 'is_seen'], true),
 });
 
 const normalizeNotification = (state, notification) => {
