@@ -49,7 +49,7 @@ export default function reports(state = initialState, action) {
   case REPORT_FORWARD_CHANGE:
     return state.setIn(['new', 'forward'], action.forward);
   case REPORT_BLOCK_CHANGE:
-      return state.setIn(['new', 'block'], action.block);
+    return state.setIn(['new', 'block'], action.block);
   case REPORT_SUBMIT_REQUEST:
     return state.setIn(['new', 'isSubmitting'], true);
   case REPORT_SUBMIT_FAIL:
