@@ -91,7 +91,7 @@ class CaptchaField extends React.Component {
 
 }
 
-const NativeCaptchaField = ({ captcha, onChange }) => (
+export const NativeCaptchaField = ({ captcha, onChange }) => (
   <div className='captcha'>
     <img alt='captcha' src={captcha.get('url')} />
     <TextInput
