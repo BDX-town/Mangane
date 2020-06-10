@@ -6,7 +6,7 @@ import {
 } from '../about';
 import { Map as ImmutableMap } from 'immutable';
 import { __stub as stubApi } from 'soapbox/api';
-import { mockStore } from 'soapbox/test_setup';
+import { mockStore } from 'soapbox/test_helpers';
 
 describe('fetchAboutPage()', () => {
   it('creates the expected actions on success', () => {

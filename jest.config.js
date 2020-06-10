@@ -23,6 +23,7 @@ module.exports = {
     '!app/soapbox/locales/locale-data/*.js',
     '!app/soapbox/service_worker/entry.js',
     '!app/soapbox/test_setup.js',
+    '!app/soapbox/test_helpers.js',
   ],
   'coverageDirectory': '<rootDir>/coverage',
   'moduleDirectories': [

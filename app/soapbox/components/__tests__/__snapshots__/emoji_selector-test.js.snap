@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmojiSelector /> renders correctly 1`] = `
+<div
+  className="emoji-react-selector"
+>
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"👍\\" title=\\":+1:\\" src=\\"/emoji/1f44d.svg\\" />",
+      }
+    }
+  />
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"❤\\" title=\\":heart:\\" src=\\"/emoji/2764.svg\\" />",
+      }
+    }
+  />
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😆\\" title=\\":laughing:\\" src=\\"/emoji/1f606.svg\\" />",
+      }
+    }
+  />
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😮\\" title=\\":open_mouth:\\" src=\\"/emoji/1f62e.svg\\" />",
+      }
+    }
+  />
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😢\\" title=\\":cry:\\" src=\\"/emoji/1f622.svg\\" />",
+      }
+    }
+  />
+  <button
+    className="emoji-react-selector__emoji"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"😩\\" title=\\":weary:\\" src=\\"/emoji/1f629.svg\\" />",
+      }
+    }
+  />
+</div>
+`;

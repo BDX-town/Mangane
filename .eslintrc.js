@@ -195,6 +195,7 @@ module.exports = {
         devDependencies: [
           'webpack/**',
           'app/soapbox/test_setup.js',
+          'app/soapbox/test_helpers.js',
           'app/**/__tests__/**',
           'app/**/__mocks__/**',
         ],

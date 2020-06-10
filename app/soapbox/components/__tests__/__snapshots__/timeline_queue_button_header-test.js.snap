@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TimelineQueueButtonHeader /> renders correctly 1`] = `
+<div
+  className="timeline-queue-header hidden"
+>
+  <a
+    className="timeline-queue-header__btn"
+    onClick={[Function]}
+  />
+</div>
+`;
+
+exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
+<div
+  className="timeline-queue-header"
+>
+  <a
+    className="timeline-queue-header__btn"
+    onClick={[Function]}
+  >
+    Click to see 1 new post
+  </a>
+</div>
+`;
+
+exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
+<div
+  className="timeline-queue-header"
+>
+  <a
+    className="timeline-queue-header__btn"
+    onClick={[Function]}
+  >
+    Click to see 9999999 new posts
+  </a>
+</div>
+`;

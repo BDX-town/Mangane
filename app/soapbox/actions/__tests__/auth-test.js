@@ -4,7 +4,7 @@ import {
 } from '../auth';
 import { ALERT_SHOW } from '../alerts';
 import { Map as ImmutableMap } from 'immutable';
-import { mockStore } from 'soapbox/test_setup';
+import { mockStore } from 'soapbox/test_helpers';
 
 describe('logOut()', () => {
   it('creates expected actions', () => {

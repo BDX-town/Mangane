@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<Avatar /> Autoplay renders a animated avatar 1`] = `
+exports[`<Avatar /> Autoplay renders an animated avatar 1`] = `
 <div
   className="account__avatar"
   onMouseEnter={[Function]}

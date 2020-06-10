@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ColumnBackButton /> renders correctly 1`] = `
+<button
+  className="column-back-button"
+  onClick={[Function]}
+>
+  <i
+    alt="chevron-left"
+    className="fa fa-chevron-left column-back-button__icon fa-fw"
+    role="img"
+  />
+  Back
+</button>
+`;

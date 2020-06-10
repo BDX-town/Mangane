@@ -12,10 +12,10 @@ describe('<Avatar />', () => {
     avatar_static: '/static/alice.jpg',
   });
 
-  const size     = 100;
+  const size = 100;
 
   describe('Autoplay', () => {
-    it('renders a animated avatar', () => {
+    it('renders an animated avatar', () => {
       const component = renderer.create(<Avatar account={account} animate size={size} />);
       const tree      = component.toJSON();
 
