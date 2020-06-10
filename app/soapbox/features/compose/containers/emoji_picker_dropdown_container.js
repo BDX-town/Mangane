@@ -72,7 +72,7 @@ const mapDispatchToProps = (dispatch, { onPickEmoji }) => ({
   },
 
   onPickEmoji: emoji => {
-    dispatch(useEmoji(emoji));
+    dispatch(useEmoji(emoji)); // eslint-disable-line react-hooks/rules-of-hooks
 
     if (onPickEmoji) {
       onPickEmoji(emoji);
