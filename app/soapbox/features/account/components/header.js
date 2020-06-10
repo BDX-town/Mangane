@@ -16,7 +16,7 @@ import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
 const messages = defineMessages({
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
@@ -54,7 +54,6 @@ const mapStateToProps = state => {
   return {
     me,
     isStaff: isStaff(state.getIn(['accounts', me])),
-    autoPlayGif: getSettings(state).get('autoPlayGif'),
     version: parseVersion(state.getIn(['instance', 'version'])),
   };
 };
@@ -70,7 +69,6 @@ class Header extends ImmutablePureComponent {
     onBlock: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
-    autoPlayGif: PropTypes.bool,
     isStaff: PropTypes.bool.isRequired,
     version: PropTypes.object,
   };
@@ -226,7 +224,7 @@ class Header extends ImmutablePureComponent {
   };
 
   render() {
-    const { account, intl, username, me, autoPlayGif } = this.props;
+    const { account, intl, username, me } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -252,8 +250,7 @@ class Header extends ImmutablePureComponent {
     const actionBtn = this.getActionBtn();
     const menu = this.makeMenu();
 
-    const headerImgSrc = autoPlayGif ? account.get('header') : account.get('header_static');
-    const headerMissing = (headerImgSrc.indexOf('/headers/original/missing.png') > -1);
+    const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
 
     const avatarSize = isSmallScreen ? 90 : 200;
 
@@ -264,7 +261,7 @@ class Header extends ImmutablePureComponent {
             {info}
           </div>
 
-          <img src={headerImgSrc} alt='' className='parallax' />
+          <StillImage src={account.get('header')} alt='' className='parallax' />
         </div>
 
         <div className='account__header__bar'>

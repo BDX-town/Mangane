@@ -24,7 +24,7 @@
     background: var(--background-color);
     border-radius: 4px 4px 0 0;
 
-    img {
+    .still-image {
       display: block;
       width: 100%;
       height: 100%;
@@ -61,7 +61,7 @@
       height: 48px;
       padding-top: 2px;
 
-      img {
+      .still-image {
         width: 100%;
         height: 100%;
         display: block;

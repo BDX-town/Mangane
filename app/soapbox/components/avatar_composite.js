@@ -1,24 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
-const mapStateToProps = state => ({
-  animate: getSettings(state).get('autoPlayGif'),
-});
-
-export default @connect(mapStateToProps)
-class AvatarComposite extends React.PureComponent {
+export default class AvatarComposite extends React.PureComponent {
 
   static propTypes = {
     accounts: ImmutablePropTypes.list.isRequired,
-    animate: PropTypes.bool,
     size: PropTypes.number.isRequired,
   };
 
   renderItem(account, size, index) {
-    const { animate } = this.props;
 
     let width  = 50;
     let height = 100;
@@ -76,12 +68,10 @@ class AvatarComposite extends React.PureComponent {
       bottom: bottom,
       width: `${width}%`,
       height: `${height}%`,
-      backgroundSize: 'cover',
-      backgroundImage: `url(${account.get(animate ? 'avatar' : 'avatar_static')})`,
     };
 
     return (
-      <div key={account.get('id')} style={style} />
+      <StillImage key={account.get('id')} src={account.get('avatar')} style={style} />
     );
   }
 

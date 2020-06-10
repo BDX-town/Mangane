@@ -9,7 +9,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -20,7 +20,7 @@ class UserPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, domain, autoPlayGif } = this.props;
+    const { account, intl, domain } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
@@ -30,7 +30,7 @@ class UserPanel extends ImmutablePureComponent {
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
-            <img src={autoPlayGif ? account.get('header') : account.get('header_static')} alt='' />
+            <StillImage src={account.get('header')} alt='' />
           </div>
 
           <div className='user-panel__profile'>
@@ -91,7 +91,6 @@ const mapStateToProps = state => {
 
   return {
     account: getAccount(state, me),
-    autoPlayGif: getSettings(state).get('autoPlayGif'),
   };
 };
 
