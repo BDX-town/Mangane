@@ -15,10 +15,15 @@ const middlewares = [thunk];
 export const mockStore = configureMockStore(middlewares);
 
 // Create test component with i18n and Redux store, etc
-export const createComponent = (children, props = { locale: 'en', store: mockStore(ImmutableMap()) }) => {
+export const createComponent = (children, props = {}) => {
+  props = ImmutableMap({
+    locale: 'en',
+    store: mockStore(ImmutableMap()),
+  }).merge(props);
+
   return renderer.create(
-    <Provider store={props.store}>
-      <IntlProvider locale={props.locale}>
+    <Provider store={props.get('store')}>
+      <IntlProvider locale={props.get('locale')}>
         <BrowserRouter>
           {children}
         </BrowserRouter>
