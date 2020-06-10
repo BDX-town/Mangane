@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginPage /> renders correctly 1`] = `
+<form
+  className="simple_form new_user"
+  onSubmit={[Function]}
+>
+  <fieldset
+    disabled={false}
+  >
+    <div
+      className="fields-group"
+    >
+      <div
+        className="input email optional user_email"
+      >
+        <input
+          aria-label="Username"
+          className="string email optional"
+          name="username"
+          placeholder="Username"
+          type="text"
+        />
+      </div>
+      <div
+        className="input password optional user_password"
+      >
+        <input
+          aria-label="Password"
+          className="password optional"
+          name="password"
+          placeholder="Password"
+          type="password"
+        />
+      </div>
+      <p
+        className="hint subtle-hint"
+      >
+        <a
+          href="/auth/reset_password"
+          onClick={[Function]}
+        >
+          Trouble logging in?
+        </a>
+      </p>
+    </div>
+  </fieldset>
+  <div
+    className="actions"
+  >
+    <button
+      className="btn button button-primary"
+      name="button"
+      type="submit"
+    >
+      Log in
+    </button>
+  </div>
+</form>
+`;
+
+exports[`<LoginPage /> renders correctly 2`] = `null`;
