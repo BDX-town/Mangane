@@ -31,7 +31,7 @@
   .compose-form__warning {
           color: var(--primary-text-color);
     margin-bottom: 10px;
-    background: var(--brand-color);
+    background: var(--brand-color--med);
     box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
     padding: 8px 10px;
     border-radius: 4px;
@@ -49,7 +49,7 @@
     }
 
     a {
-      color: var(--highlight-text-color);
+      color: var(--accent-color--bright);
       font-weight: 500;
       text-decoration: underline;
 
