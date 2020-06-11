@@ -49,11 +49,6 @@
         height: 22px;
       }
 
-      // Hide "verified" emoji to avoid confusion
-      .emojione[alt*="verified"] {
-        display: none;
-      }
-
       h1 {
         span:first-of-type {
           font-size: 20px !important;

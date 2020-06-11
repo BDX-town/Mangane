@@ -51,11 +51,3 @@ a.account__display-name {
 .display-name__account {
   font-size: 14px;
 }
-
-// Hide "verified" emoji to avoid confusion
-.display-name,
-.notification__display-name {
-  .emojione[alt*="verified"] {
-    display: none;
-  }
-}
