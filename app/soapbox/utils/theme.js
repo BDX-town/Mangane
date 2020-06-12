@@ -1,5 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
-import hexToHsl from 'hex-to-hsl';
+import { convert } from 'chromatism';
 
 export const generateThemeCss = brandColor => {
   if (!brandColor) return null;
@@ -7,7 +7,7 @@ export const generateThemeCss = brandColor => {
 };
 
 export const brandColorToThemeData = brandColor => {
-  const [ h, s, l ] = hexToHsl(brandColor);
+  const { h, s, l } = convert(brandColor).hsl;
   return ImmutableMap({
     'brand-color_h': h,
     'brand-color_s': `${s}%`,
