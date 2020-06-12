@@ -37,7 +37,7 @@ After editing your HTML files and folder names, re-create the webpack and restar
 Following is an example of the contents of `soapbox.example.json`:
 ```
 {
-  "logo": ""/instance/images/soapbox-logo.svg",
+  "logo": "/instance/images/soapbox-logo.svg",
   "brandColor": "#0482d8",
   "promoPanel": {
     "items": [{
