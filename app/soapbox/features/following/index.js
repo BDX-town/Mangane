@@ -33,9 +33,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
 
   const diffCount = getFollowDifference(state, accountId, 'following');
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const isLocked = state.getIn(['accounts', accountId, 'locked'], false);
-  const isFollowing = state.getIn(['relationships', accountId, 'following'], false);
-  const unavailable = (me === accountId) ? false : (isBlocked || (isLocked && !isFollowing));
+  const unavailable = (me === accountId) ? false : isBlocked;
 
   return {
     accountId,
