@@ -12,8 +12,8 @@ class AboutPage extends ImmutablePureComponent {
   loadPageHtml = () => {
     const { dispatch, match } = this.props;
     const { slug } = match.params;
-    dispatch(fetchAboutPage(slug)).then(response => {
-      this.setState({ pageHtml: response.data });
+    dispatch(fetchAboutPage(slug)).then(html => {
+      this.setState({ pageHtml: html });
     }).catch(error => {
       // TODO: Better error handling. 404 page?
       this.setState({ pageHtml: '<h1>Page not found</h1>' });
