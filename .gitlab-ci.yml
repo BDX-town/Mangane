@@ -30,15 +30,6 @@ jest:
   stage: test
   script: yarn test:jest
 
-build-development:
-  stage: build
-  script: yarn build
-  variables:
-    NODE_ENV: development
-  artifacts:
-    paths:
-    - static
-
 build-production:
   stage: build
   script: yarn build
@@ -48,11 +39,13 @@ build-production:
     paths:
     - static
 
-i18n:
-  stage: build
-  script: yarn manage:translations
-  variables:
-    NODE_ENV: development
-  before_script:
-    - yarn
-    - yarn build
+# Supposed to fail when translations are outdated, instead always passes
+#
+# i18n:
+#   stage: build
+#   script: yarn manage:translations
+#   variables:
+#     NODE_ENV: development
+#   before_script:
+#     - yarn
+#     - yarn build
