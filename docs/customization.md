@@ -1,41 +1,17 @@
 # Customizing Soapbox
 
-First [Install Soapbox](https://soapbox.pub/)
+If you haven't already, [install Soapbox](https://soapbox.pub/).
 
-Soapbox supports customization of the user interface, to allow per instance branding and other features.  Current customization features include:
-* Instance name
-* Site logo
-* Promo panel list items, e.g. blog site link
-* Favicon
-* About page
-* Terms of Service page
-* Privacy Policy page
-* Copyright Policy page
-* Soapbox extensions
-* Default settings
+There are two main places Soapbox gets its configuration:
 
-## Instance Name
-Instance name is edited during the Pleroma installation step or via admin configuration
+- `/opt/pleroma/config/prod.secret.exs`
 
-## Instance Description
-Instance description is edited during the Pleroma installation step or via admin configuration
+- `/opt/pleroma/instance/static/instance/soapbox.json`
 
-## Captcha on Registration Page
-Use of the Captcha feature on the registration page is configured during the Pleroma installation step or via admin configuration
+Logos, branding, etc. take place in the `soapbox.json` file.
+For example:
 
-## Site Logo, Brand Color, and Promo Panel List Items
-The site logo, brand color, and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json` and editing that file.  It is recommended that you test your edited soapbox.json file in a JSON validator, such as [JSONLint](https://jsonlint.com/), before using it.
-The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
-The logo colors are rendered in a color that provides contrast for the site theme.
-
-The `navlinks` section of the `soapbox.json` file references the links that are displayed at the bottom of the Registration/Login, About, Terms of Service, Privacy Policy and Copyright Policy (DMCA) pages.
-
-The `brandColor` in `soapbox.json` refers to the main color upon which the look of soapbox-fe is defined.
-
-After editing your HTML files and folder names, re-create the webpack and restart the soapbox-fe service to effect the changes.
-
-Following is an example of the contents of `soapbox.example.json`:
-```
+```json
 {
   "logo": "/instance/images/soapbox-logo.svg",
   "brandColor": "#0482d8",
@@ -55,9 +31,9 @@ Following is an example of the contents of `soapbox.example.json`:
   },
   "defaultSettings": {
     "autoPlayGif": false,
-    "theme": "light"
+    "themeMode": "light"
   },
-  "copyright": "?2020. Copying is an act of love. Please copy and share.",
+  "copyright": "♡2020. Copying is an act of love. Please copy and share.",
   "navlinks": {
     "homeFooter": [
       { "title": "About", "url": "/about" },
@@ -70,24 +46,52 @@ Following is an example of the contents of `soapbox.example.json`:
 }
 ```
 
+Customizable features include:
+
+* Instance name
+* Site logo
+* Promo panel list items, e.g. blog site link
+* Favicon
+* About pages
+* Default user settings
+
+## Instance Name
+Instance name is edited during the Pleroma installation step or via AdminFE.
+
+## Instance Description
+Instance description is edited during the Pleroma installation step or via AdminFE.
+
+## Captcha on Registration Page
+Use of the Captcha feature on the registration page is configured during the Pleroma installation step or via AdminFE.
+
+## Site Logo, Brand Color, and Promo Panel List Items
+The site logo, brand color, and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json` and editing that file.  It is recommended that you test your edited soapbox.json file in a JSON validator, such as [JSONLint](https://jsonlint.com/), before using it.
+The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
+The logo colors are rendered in a color that provides contrast for the site theme.
+
+The `navlinks` section of the `soapbox.json` file references the links that are displayed at the bottom of the Registration/Login, About, Terms of Service, Privacy Policy and Copyright Policy (DMCA) pages.
+
+The `brandColor` in `soapbox.json` refers to the main color upon which the look of soapbox-fe is defined.
+
+After editing your HTML files and folder names, re-create the webpack and restart the soapbox-fe service to effect the changes.
+
 ## Favicon
-The favicon is customized by dropping a favicon.png file into the `/static` folder. 
+The favicon is customized by dropping a favicon.png file into the `/static` folder.
 Re-create the webpack and start the soapbox-fe service to effect the changes.
 
-## About Page, Terms of Service Page, Privacy Policy Page and Copyright Policy (DMCA) Page
-These pages are all available for editing in the `static/instance/about.example` folder, as template files, named as:
+## About Pages
+Soapbox supports any number of custom HTML pages under `yoursite.com/about/:slug`.
+
+The finder will search `/opt/pleroma/instance/static/instance/about/:slug.html` to find your page.
+Use the name `index.html` for the root page.
+
+Example templates are available for editing in the `static/instance/about.example` folder, such as:
 * index.html
 * tos.html
 * privacy.html
 * dmca.html
- 
-The `soapbox.json` file navlinks section's default URL valuess are pointing to the above file location, when the `about.example` folder is renamed to `about`
+
+Simply rename `about.example` to `about`, or create your own.
+
+The `soapbox.json` file navlinks section's default URL values are pointing to the above file location, when the `about.example` folder is renamed to `about`
 These four template files have placeholders in them, e.g. "Your_Instance", that should be edited to match your Soapbox instance configuration, and will be meaningless to your users until you edit them.
-
-These pages will not become available resources on your instance until you rename the `static/instance/about.example` folder to `static/instance/about`, re-create the webpack and start the soapbox-fe service.
-
-## Source Code Link
-The Source Code link in the `soapbox.json` file, if used, references a bookmark in the `index.html` file in the `about` folder.  The template index.html file has a default bookmark and URL defined in it that you can edit.
-
-
-
