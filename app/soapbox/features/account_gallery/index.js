@@ -204,7 +204,12 @@ class AccountGallery extends ImmutablePureComponent {
             {attachments.map((attachment, index) => attachment === null ? (
               <LoadMoreMedia key={'more:' + attachments.getIn(index + 1, 'id')} maxId={index > 0 ? attachments.getIn(index - 1, 'id') : null} onLoadMore={this.handleLoadMore} />
             ) : (
-              <MediaItem key={attachment.get('id')} attachment={attachment} displayWidth={width} onOpenMedia={this.handleOpenMedia} />
+              <MediaItem
+                key={`${attachment.getIn(['status', 'id'])}+${attachment.get('id')}`}
+                attachment={attachment}
+                displayWidth={width}
+                onOpenMedia={this.handleOpenMedia}
+              />
             ))}
 
             {
