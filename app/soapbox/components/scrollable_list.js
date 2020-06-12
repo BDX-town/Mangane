@@ -271,7 +271,7 @@ export default class ScrollableList extends PureComponent {
           {alwaysPrepend && prepend}
 
           <div className='empty-column-indicator'>
-            {emptyMessage}
+            <div>{emptyMessage}</div>
           </div>
         </div>
       );
