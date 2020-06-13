@@ -135,11 +135,14 @@ export const makeGetNotification = () => {
 export const getAccountGallery = createSelector([
   (state, id) => state.getIn(['timelines', `account:${id}:media`, 'items'], ImmutableList()),
   state       => state.get('statuses'),
-], (statusIds, statuses) => {
+  state       => state.get('accounts'),
+], (statusIds, statuses, accounts) => {
 
   return statusIds.reduce((medias, statusId) => {
     const status = statuses.get(statusId);
+    const account = accounts.get(status.get('account'));
     if (status.get('reblogged') !== false) return medias;
-    return medias.concat(status.get('media_attachments').map(media => media.set('status', status)));
+    return medias.concat(status.get('media_attachments')
+      .map(media => media.merge({ status, account })));
   }, ImmutableList());
 });
