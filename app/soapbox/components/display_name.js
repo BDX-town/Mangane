@@ -11,9 +11,9 @@ export default class DisplayName extends React.PureComponent {
   };
 
   render() {
-    const { others } = this.props;
+    const { account, others } = this.props;
 
-    let displayName, suffix, account;
+    let displayName, suffix;
 
     if (others && others.size > 1) {
       displayName = others.take(2).map(a => [
@@ -27,12 +27,6 @@ export default class DisplayName extends React.PureComponent {
         suffix = `+${others.size - 2}`;
       }
     } else {
-      if (others && others.size > 0) {
-        account = others.first();
-      } else {
-        account = this.props.account;
-      }
-
       displayName = (
         <>
           <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} /></bdi>
