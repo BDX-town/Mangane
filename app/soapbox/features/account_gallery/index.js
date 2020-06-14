@@ -137,7 +137,7 @@ class AccountGallery extends ImmutablePureComponent {
       const media = attachment.getIn(['status', 'media_attachments']);
       const index = media.findIndex(x => x.get('id') === attachment.get('id'));
 
-      this.props.dispatch(openModal('MEDIA', { media, index, status: attachment.get('status') }));
+      this.props.dispatch(openModal('MEDIA', { media, index, status: attachment.get('status'), account: attachment.get('account') }));
     }
   }
 
@@ -204,7 +204,12 @@ class AccountGallery extends ImmutablePureComponent {
             {attachments.map((attachment, index) => attachment === null ? (
               <LoadMoreMedia key={'more:' + attachments.getIn(index + 1, 'id')} maxId={index > 0 ? attachments.getIn(index - 1, 'id') : null} onLoadMore={this.handleLoadMore} />
             ) : (
-              <MediaItem key={attachment.get('id')} attachment={attachment} displayWidth={width} onOpenMedia={this.handleOpenMedia} />
+              <MediaItem
+                key={`${attachment.getIn(['status', 'id'])}+${attachment.get('id')}`}
+                attachment={attachment}
+                displayWidth={width}
+                onOpenMedia={this.handleOpenMedia}
+              />
             ))}
 
             {

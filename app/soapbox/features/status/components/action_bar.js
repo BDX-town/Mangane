@@ -236,7 +236,7 @@ class ActionBar extends React.PureComponent {
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
-      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
       menu.push(null);
     }
 

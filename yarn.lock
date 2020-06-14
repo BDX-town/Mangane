@@ -3055,6 +3055,11 @@ chownr@^1.1.1:
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.1.tgz#54726b8b8fff4df053c42187e801fb4412df1494"
   integrity sha512-j38EvO5+LHX84jlo6h4UzmOwi0UgW61WRyPtJz4qaadK5eY3BTS5TY/S1Stc3Uk2lIM6TPevAlULiEJwie860g==
 
+chromatism@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/chromatism/-/chromatism-3.0.0.tgz#a7249d353c1e4f3577e444ac41171c4e2e624b12"
+  integrity sha1-pySdNTweTzV35ESsQRccTi5iSxI=
+
 chrome-trace-event@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/chrome-trace-event/-/chrome-trace-event-1.0.2.tgz#234090ee97c7d4ad1a2c4beae27505deffc608a4"
@@ -5606,19 +5611,6 @@ hex-color-regex@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
-
-hex-to-hsl@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/hex-to-hsl/-/hex-to-hsl-1.0.2.tgz#d5c59ece00178444e821c8fc58a430afc09831c2"
-  integrity sha1-1cWezgAXhEToIcj8WKQwr8CYMcI=
-  dependencies:
-    hex-to-rgb "^1.0.1"
-    rgb-to-hsl "0.0.2"
-
-hex-to-rgb@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/hex-to-rgb/-/hex-to-rgb-1.0.1.tgz#100b9df126b32f2762adf8486be68c65ef8ed2a4"
-  integrity sha1-EAud8SazLydirfhIa+aMZe+O0qQ=
 
 history@^4.7.2:
   version "4.10.1"
@@ -10213,11 +10205,6 @@ rgb-regex@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/rgb-regex/-/rgb-regex-1.0.1.tgz#c0e0d6882df0e23be254a475e8edd41915feaeb1"
   integrity sha1-wODWiC3w4jviVKR16O3UGRX+rrE=
-
-rgb-to-hsl@0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/rgb-to-hsl/-/rgb-to-hsl-0.0.2.tgz#36f9fc286376b90acc457e699005b4cb42d350ec"
-  integrity sha1-Nvn8KGN2uQrMRX5pkAW0y0LTUOw=
 
 rgba-regex@^1.0.0:
   version "1.0.0"

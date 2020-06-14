@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -244,7 +243,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
-      menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
 
     if (!me) {

@@ -17,7 +17,7 @@ describe('fetchAboutPage()', () => {
 
     const expectedActions = [
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'index' },
-      { type: FETCH_ABOUT_PAGE_SUCCESS, slug: 'index' },
+      { type: FETCH_ABOUT_PAGE_SUCCESS, slug: 'index', html: '<h1>Hello world</h1>' },
     ];
     const store = mockStore(ImmutableMap());
 
@@ -29,11 +29,11 @@ describe('fetchAboutPage()', () => {
   it('creates the expected actions on failure', () => {
     const expectedActions = [
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'asdf' },
-      { type: FETCH_ABOUT_PAGE_FAIL, slug: 'asdf' },
+      { type: FETCH_ABOUT_PAGE_FAIL, slug: 'asdf', error: new Error('Request failed with status code 404') },
     ];
     const store = mockStore(ImmutableMap());
 
-    return store.dispatch(fetchAboutPage('asdf')).then(() => {
+    return store.dispatch(fetchAboutPage('asdf')).catch(() => {
       expect(store.getActions()).toEqual(expectedActions);
     });
   });

@@ -170,8 +170,6 @@ class EditProfile extends ImmutablePureComponent {
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
-                maxLength={30}
-                size={30}
                 onChange={this.handleTextChange}
               />
               <TextInput

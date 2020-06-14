@@ -25,6 +25,7 @@ class MediaModal extends ImmutablePureComponent {
   static propTypes = {
     media: ImmutablePropTypes.list.isRequired,
     status: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.map,
     index: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -110,7 +111,10 @@ class MediaModal extends ImmutablePureComponent {
   handleStatusClick = e => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+      const { status, account } = this.props;
+      const acct = account.get('acct');
+      const statusId = status.get('id');
+      this.context.router.history.push(`/@${acct}/posts/${statusId}`);
     }
   }
 
