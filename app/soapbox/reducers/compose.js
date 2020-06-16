@@ -249,7 +249,7 @@ export default function compose(state = initialState, action) {
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
 
-      if (action.status.get('spoiler_text').length > 0) {
+      if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
         map.set('spoiler_text', action.status.get('spoiler_text'));
       } else {
