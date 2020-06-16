@@ -3,7 +3,7 @@ import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { STORE_HYDRATE } from '../actions/store';
 import { EMOJI_USE } from '../actions/emojis';
 import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
-import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import uuid from '../uuid';
 
@@ -32,6 +32,7 @@ export default function settings(state = initialState, action) {
   case STORE_HYDRATE:
     return hydrate(state, action.state.get('settings'));
   case ME_FETCH_SUCCESS:
+  case ME_PATCH_SUCCESS:
     const me = fromJS(action.me);
     const fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME]);
     return state.merge(fePrefs);
