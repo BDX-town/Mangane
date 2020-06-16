@@ -1,7 +1,7 @@
 import reducer from '../compose';
 import { Map as ImmutableMap } from 'immutable';
 import { COMPOSE_REPLY } from 'soapbox/actions/compose';
-import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 
 describe('compose reducer', () => {
@@ -113,6 +113,18 @@ describe('compose reducer', () => {
     expect(reducer(state, action).toJS()).toMatchObject({
       default_privacy: 'unlisted',
       privacy: 'unlisted',
+    });
+  });
+
+  it('sets default scope on settings save (but retains current scope)', () => {
+    const state = ImmutableMap({ default_privacy: 'public', privacy: 'public' });
+    const action = {
+      type: ME_PATCH_SUCCESS,
+      me: { pleroma: { settings_store: { soapbox_fe: { defaultPrivacy: 'unlisted' } } } },
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      default_privacy: 'unlisted',
+      privacy: 'public',
     });
   });
 });
