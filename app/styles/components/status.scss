@@ -152,12 +152,32 @@
 .status__info .status__display-name {
   display: block;
   max-width: 100%;
-  padding-right: 25px;
 }
 
 .status__info {
   font-size: 15px;
   z-index: 4;
+}
+
+.status__profile,
+.detailed-status__profile {
+  display: inline-block;
+
+  .user-panel {
+    position: absolute;
+    display: flex;
+    opacity: 0;
+    pointer-events: none;
+    transition-property: opacity;
+    transition-duration: 0.5s;
+    z-index: 999;
+
+    &--visible {
+      opacity: 1;
+      transition-delay: 1s;
+      pointer-events: all;
+    }
+  }
 }
 
 .status-check-box {

@@ -15,6 +15,7 @@ import { getFeatures } from 'soapbox/utils/features';
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
+    me,
     account: state.getIn(['accounts', me]),
     hasPatron: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
     features: getFeatures(state.get('instance')),
@@ -30,7 +31,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, account, hasPatron, features } = this.props;
+    const { me, children, account, hasPatron, features } = this.props;
 
     return (
       <div className='page'>
@@ -39,7 +40,7 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <UserPanel />
+                <UserPanel accountId={me} />
                 {hasPatron && <FundingPanel />}
                 <PromoPanel />
                 <LinkFooter />

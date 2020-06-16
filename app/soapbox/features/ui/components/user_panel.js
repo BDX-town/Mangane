@@ -10,6 +10,7 @@ import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
+import classNames from 'classnames';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -17,16 +18,23 @@ class UserPanel extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string,
+    style: PropTypes.object,
+    visible: PropTypes.bool,
+  }
+
+  static defaultProps = {
+    style: {},
+    visible: true,
   }
 
   render() {
-    const { account, intl, domain } = this.props;
+    const { account, intl, domain, style, visible } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
 
     return (
-      <div className='user-panel'>
+      <div className={classNames('user-panel', { 'user-panel--visible': visible })} style={style}>
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
@@ -84,17 +92,17 @@ class UserPanel extends ImmutablePureComponent {
 
 };
 
-
-const mapStateToProps = state => {
-  const me = state.get('me');
+const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  return {
-    account: getAccount(state, me),
-  };
+  const mapStateToProps = (state, { accountId }) => ({
+    account: getAccount(state, accountId),
+  });
+
+  return mapStateToProps;
 };
 
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(makeMapStateToProps, null, null, {
     forwardRef: true,
   })(UserPanel));
