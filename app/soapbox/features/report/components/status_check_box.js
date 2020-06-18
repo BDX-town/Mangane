@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Toggle from 'react-toggle';
 import noop from 'lodash/noop';
 import StatusContent from '../../../components/status_content';
-import { MediaGallery, Video } from '../../ui/util/async-components';
+import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 import Bundle from '../../ui/components/bundle';
 
 export default class StatusCheckBox extends React.PureComponent {
