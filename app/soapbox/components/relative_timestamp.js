@@ -147,7 +147,7 @@ class RelativeTimestamp extends React.Component {
     this._scheduleNextUpdate(this.props, this.state);
   }
 
-  componentWillUpdate(nextProps, nextState) {
+  componentDidUpdate(nextProps, nextState) {
     this._scheduleNextUpdate(nextProps, nextState);
   }
 
