@@ -5,22 +5,13 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { fromJS, is } from 'immutable';
 import { throttle } from 'lodash';
 import classNames from 'classnames';
-import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 import Icon from 'soapbox/components/icon';
-import { decode } from 'blurhash';
-import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
-  play: { id: 'video.play', defaultMessage: 'Play' },
-  pause: { id: 'video.pause', defaultMessage: 'Pause' },
-  mute: { id: 'video.mute', defaultMessage: 'Mute sound' },
-  unmute: { id: 'video.unmute', defaultMessage: 'Unmute sound' },
-  hide: { id: 'video.hide', defaultMessage: 'Hide video' },
-  expand: { id: 'video.expand', defaultMessage: 'Expand video' },
-  close: { id: 'video.close', defaultMessage: 'Close video' },
-  fullscreen: { id: 'video.fullscreen', defaultMessage: 'Full screen' },
-  exit_fullscreen: { id: 'video.exit_fullscreen', defaultMessage: 'Exit full screen' },
+  play: { id: 'audio.play', defaultMessage: 'Play' },
+  pause: { id: 'audio.pause', defaultMessage: 'Pause' },
+  hide: { id: 'video.hide', defaultMessage: 'Hide audio' },
 });
 
 const formatTime = secondsNum => {
@@ -94,27 +85,22 @@ const mapStateToProps = state => ({
 
 export default @connect(mapStateToProps)
 @injectIntl
-class Video extends React.PureComponent {
+class Audio extends React.PureComponent {
 
   static propTypes = {
-    preview: PropTypes.string,
     src: PropTypes.string.isRequired,
     alt: PropTypes.string,
-    width: PropTypes.number,
-    height: PropTypes.number,
     sensitive: PropTypes.bool,
     startTime: PropTypes.number,
-    onOpenVideo: PropTypes.func,
-    onCloseVideo: PropTypes.func,
+    onOpenAudio: PropTypes.func,
+    onCloseAudio: PropTypes.func,
     detailed: PropTypes.bool,
     inline: PropTypes.bool,
     cacheWidth: PropTypes.func,
     visible: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
     intl: PropTypes.object.isRequired,
-    blurhash: PropTypes.string,
     link: PropTypes.node,
-    aspectRatio: PropTypes.number,
     displayMedia: PropTypes.string,
   };
 
@@ -124,8 +110,6 @@ class Video extends React.PureComponent {
     volume: 0.5,
     paused: true,
     dragging: false,
-    containerWidth: this.props.width,
-    fullscreen: false,
     hovered: false,
     muted: false,
     revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
@@ -151,11 +135,11 @@ class Video extends React.PureComponent {
     }
   }
 
-  setVideoRef = c => {
-    this.video = c;
+  setAudioRef = c => {
+    this.audio = c;
 
-    if (this.video) {
-      this.setState({ volume: this.video.volume, muted: this.video.muted });
+    if (this.audio) {
+      this.setState({ volume: this.audio.volume, muted: this.audio.muted });
     }
   }
 
@@ -183,8 +167,8 @@ class Video extends React.PureComponent {
 
   handleTimeUpdate = () => {
     this.setState({
-      currentTime: Math.floor(this.video.currentTime),
-      duration: Math.floor(this.video.duration),
+      currentTime: Math.floor(this.audio.currentTime),
+      duration: Math.floor(this.audio.duration),
     });
   }
 
@@ -218,7 +202,7 @@ class Video extends React.PureComponent {
       } else if(x < 0) {
         slideamt = 0;
       }
-      this.video.volume = slideamt;
+      this.audio.volume = slideamt;
       this.setState({ volume: slideamt });
     }
   }, 60);
@@ -230,7 +214,7 @@ class Video extends React.PureComponent {
     document.addEventListener('touchend', this.handleMouseUp, true);
 
     this.setState({ dragging: true });
-    this.video.pause();
+    this.audio.pause();
     this.handleMouseMove(e);
 
     e.preventDefault();
@@ -244,7 +228,7 @@ class Video extends React.PureComponent {
     document.removeEventListener('touchend', this.handleMouseUp, true);
 
     this.setState({ dragging: false });
-    this.video.play();
+    this.audio.play();
   }
 
   handleMouseMove = throttle(e => {
@@ -252,43 +236,17 @@ class Video extends React.PureComponent {
     const currentTime = Math.floor(this.video.duration * x);
 
     if (!isNaN(currentTime)) {
-      this.video.currentTime = currentTime;
+      this.audio.currentTime = currentTime;
       this.setState({ currentTime });
     }
   }, 60);
 
   togglePlay = () => {
     if (this.state.paused) {
-      this.video.play();
+      this.audio.play();
     } else {
-      this.video.pause();
+      this.audio.pause();
     }
-  }
-
-  toggleFullscreen = () => {
-    if (isFullscreen()) {
-      exitFullscreen();
-    } else {
-      requestFullscreen(this.player);
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('fullscreenchange', this.handleFullscreenChange, true);
-    document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
-    document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
-    document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
-
-    if (this.props.blurhash) {
-      this._decode();
-    }
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('fullscreenchange', this.handleFullscreenChange, true);
-    document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
-    document.removeEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
-    document.removeEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -298,28 +256,9 @@ class Video extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.revealed && !this.state.revealed && this.video) {
-      this.video.pause();
+    if (prevState.revealed && !this.state.revealed && this.audio) {
+      this.audio.pause();
     }
-    if (prevProps.blurhash !== this.props.blurhash && this.props.blurhash) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.blurhash;
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
-    }
-  }
-
-  handleFullscreenChange = () => {
-    this.setState({ fullscreen: isFullscreen() });
   }
 
   handleMouseEnter = () => {
@@ -331,8 +270,8 @@ class Video extends React.PureComponent {
   }
 
   toggleMute = () => {
-    this.video.muted = !this.video.muted;
-    this.setState({ muted: this.video.muted });
+    this.audio.muted = !this.audio.muted;
+    this.setState({ muted: this.audio.muted });
   }
 
   toggleReveal = () => {
@@ -345,47 +284,44 @@ class Video extends React.PureComponent {
 
   handleLoadedData = () => {
     if (this.props.startTime) {
-      this.video.currentTime = this.props.startTime;
-      this.video.play();
+      this.audio.currentTime = this.props.startTime;
+      this.audio.play();
     }
   }
 
   handleProgress = () => {
-    if (this.video.buffered.length > 0) {
-      this.setState({ buffer: this.video.buffered.end(0) / this.video.duration * 100 });
+    if (this.audio.buffered.length > 0) {
+      this.setState({ buffer: this.audio.buffered.end(0) / this.audio.duration * 100 });
     }
   }
 
   handleVolumeChange = () => {
-    this.setState({ volume: this.video.volume, muted: this.video.muted });
+    this.setState({ volume: this.audio.volume, muted: this.audio.muted });
   }
 
-  handleOpenVideo = () => {
-    const { src, preview, width, height, alt } = this.props;
+  handleOpenAudio = () => {
+    const { src, alt } = this.props;
 
     const media = fromJS({
-      type: 'video',
+      type: 'audio',
       url: src,
-      preview_url: preview,
       description: alt,
-      width,
-      height,
     });
 
-    this.video.pause();
-    this.props.onOpenVideo(media, this.video.currentTime);
+    this.audio.pause();
+    this.props.onOpenAudio(media, this.audio.currentTime);
   }
 
-  handleCloseVideo = () => {
-    this.video.pause();
-    this.props.onCloseVideo();
+  handleCloseAudio = () => {
+    this.audio.pause();
+    this.props.onCloseAudio();
   }
 
   getPreload = () => {
     const { startTime, detailed } = this.props;
-    const { dragging, fullscreen } = this.state;
+    const { dragging } = this.state;
 
-    if (startTime || fullscreen || dragging) {
+    if (startTime || dragging) {
       return 'auto';
     } else if (detailed) {
       return 'metadata';
@@ -395,30 +331,13 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { preview, src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
-    const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
+    const { src, inline, onOpenAudio, onCloseAudio, intl, alt, detailed, sensitive, link } = this.props;
+    const { currentTime, duration, volume, buffer, dragging, paused, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
 
     const volumeWidth = (muted) ? 0 : volume * this.volWidth;
     const volumeHandleLoc = (muted) ? this.volHandleOffset(0) : this.volHandleOffset(volume);
     const playerStyle = {};
-
-    let { width, height } = this.props;
-
-    if (inline && containerWidth) {
-      width = containerWidth;
-      const minSize = containerWidth / (16/9);
-
-      if (isPanoramic(aspectRatio)) {
-        height = Math.max(Math.floor(containerWidth / maximumAspectRatio), minSize);
-      } else if (isPortrait(aspectRatio)) {
-        height = Math.max(Math.floor(containerWidth / minimumAspectRatio), minSize);
-      } else {
-        height = Math.floor(containerWidth / aspectRatio);
-      }
-
-      if (height) playerStyle.height = height;
-    }
 
     let warning;
 
@@ -431,7 +350,7 @@ class Video extends React.PureComponent {
     return (
       <div
         role='menuitem'
-        className={classNames('video-player', { inactive: !revealed, detailed, inline: inline && !fullscreen, fullscreen })}
+        className={classNames('audio-player', { inactive: !revealed, detailed, inline: inline })}
         style={playerStyle}
         ref={this.setPlayerRef}
         onMouseEnter={this.handleMouseEnter}
@@ -441,18 +360,13 @@ class Video extends React.PureComponent {
       >
         <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': revealed })} />
 
-        {revealed && <video
-          ref={this.setVideoRef}
+        {revealed && <audio
           src={src}
-          poster={preview}
           // preload={this.getPreload()}
-          loop
           role='button'
           tabIndex='0'
           aria-label={alt}
           title={alt}
-          width={width}
-          height={height || 300}
           volume={volume}
           onClick={this.togglePlay}
           onPlay={this.handlePlay}
@@ -469,48 +383,47 @@ class Video extends React.PureComponent {
           </button>
         </div>
 
-        <div className={classNames('video-player__controls', { active: paused || hovered })}>
-          <div className='video-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
-            <div className='video-player__seek__buffer' style={{ width: `${buffer}%` }} />
-            <div className='video-player__seek__progress' style={{ width: `${progress}%` }} />
+        <div className={classNames('audio-player__controls', { active: paused || hovered })}>
+          <div className='audio-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
+            <div className='audio-player__seek__buffer' style={{ width: `${buffer}%` }} />
+            <div className='audio-player__seek__progress' style={{ width: `${progress}%` }} />
 
             <span
-              className={classNames('video-player__seek__handle', { active: dragging })}
+              className={classNames('audio-player__seek__handle', { active: dragging })}
               tabIndex='0'
               style={{ left: `${progress}%` }}
             />
           </div>
 
-          <div className='video-player__buttons-bar'>
-            <div className='video-player__buttons left'>
+          <div className='audio-player__buttons-bar'>
+            <div className='audio-player__buttons left'>
               <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
               <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
 
-              <div className='video-player__volume' onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
-                <div className='video-player__volume__current' style={{ width: `${volumeWidth}px` }} />
+              <div className='audio-player__volume' onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
+                <div className='audio-player__volume__current' style={{ width: `${volumeWidth}px` }} />
                 <span
-                  className={classNames('video-player__volume__handle')}
+                  className={classNames('audio-player__volume__handle')}
                   tabIndex='0'
                   style={{ left: `${volumeHandleLoc}px` }}
                 />
               </div>
 
-              {(detailed || fullscreen) && (
+              {detailed && (
                 <span>
-                  <span className='video-player__time-current'>{formatTime(currentTime)}</span>
-                  <span className='video-player__time-sep'>/</span>
-                  <span className='video-player__time-total'>{formatTime(duration)}</span>
+                  <span className='audio-player__time-current'>{formatTime(currentTime)}</span>
+                  <span className='audio-player__time-sep'>/</span>
+                  <span className='audio-player__time-total'>{formatTime(duration)}</span>
                 </span>
               )}
 
-              {link && <span className='video-player__link'>{link}</span>}
+              {link && <span className='audio-player__link'>{link}</span>}
             </div>
 
-            <div className='video-player__buttons right'>
-              {!onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
-              {(!fullscreen && onOpenVideo) && <button type='button' aria-label={intl.formatMessage(messages.expand)} onClick={this.handleOpenVideo}><Icon id='expand' fixedWidth /></button>}
-              {onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.close)} onClick={this.handleCloseVideo}><Icon id='compress' fixedWidth /></button>}
-              <button type='button' aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} onClick={this.toggleFullscreen}><Icon id={fullscreen ? 'compress' : 'arrows-alt'} fixedWidth /></button>
+            <div className='audio-player__buttons right'>
+              {(onOpenAudio) && <button type='button' aria-label={intl.formatMessage(messages.expand)} onClick={this.handleOpenAudio}><Icon id='expand' fixedWidth /></button>}
+              {!onCloseAudio && <button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
+              {onCloseAudio && <button type='button' aria-label={intl.formatMessage(messages.close)} onClick={this.handleCloseAudio}><Icon id='compress' fixedWidth /></button>}
             </div>
           </div>
         </div>
