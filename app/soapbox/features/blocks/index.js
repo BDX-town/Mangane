@@ -32,7 +32,7 @@ class Blocks extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchBlocks());
   }
 

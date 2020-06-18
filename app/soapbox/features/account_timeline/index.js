@@ -64,7 +64,7 @@ class AccountTimeline extends ImmutablePureComponent {
     unavailable: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { username }, accountId, withReplies, me } = this.props;
 
     if (accountId && accountId !== -1) {

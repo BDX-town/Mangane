@@ -91,7 +91,7 @@ class Header extends ImmutablePureComponent {
     return !location.pathname.match(/\/(followers|following|favorites|pins)\/?$/);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 

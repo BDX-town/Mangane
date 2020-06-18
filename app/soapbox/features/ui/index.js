@@ -167,7 +167,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     mobile: isMobile(window.innerWidth),
   };
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
@@ -394,9 +394,9 @@ class UI extends React.PureComponent {
     }
   }
 
-
-  componentWillMount() {
+  componentDidMount() {
     const { me } = this.props;
+    if (!me) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -420,11 +420,6 @@ class UI extends React.PureComponent {
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
-  }
-
-  componentDidMount() {
-    const { me } = this.props;
-    if (!me) return;
     this.connectStreaming();
   }
 

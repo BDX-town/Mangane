@@ -34,7 +34,7 @@ class FocalPointModal extends ImmutablePureComponent {
     dragging: false,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updatePositionFromMedia(this.props.media);
   }
 

@@ -139,11 +139,8 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
   };
 
-  componentWillMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
-  }
-
   componentDidMount() {
+    this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
   }
 

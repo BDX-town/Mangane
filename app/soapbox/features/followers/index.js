@@ -58,7 +58,7 @@ class Followers extends ImmutablePureComponent {
     unavailable: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
