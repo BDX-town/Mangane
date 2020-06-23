@@ -137,7 +137,7 @@ class RelativeTimestamp extends React.Component {
       this.state.now !== nextState.now;
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (this.props.timestamp !== nextProps.timestamp) {
       this.setState({ now: Date.now() });
     }

@@ -61,7 +61,7 @@ class Edit extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (!this.props.group && nextProps.group) {
       this.props.setUp(nextProps.group);
     }
