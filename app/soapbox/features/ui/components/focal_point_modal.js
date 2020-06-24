@@ -38,7 +38,7 @@ class FocalPointModal extends ImmutablePureComponent {
     this.updatePositionFromMedia(this.props.media);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (this.props.media.get('id') !== nextProps.media.get('id')) {
       this.updatePositionFromMedia(nextProps.media);
     }
