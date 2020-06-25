@@ -12,7 +12,7 @@ import AttachmentList from './attachment_list';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video } from '../features/ui/util/async-components';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
@@ -73,6 +73,7 @@ class Status extends ImmutablePureComponent {
     onPin: PropTypes.func,
     onOpenMedia: PropTypes.func,
     onOpenVideo: PropTypes.func,
+    onOpenAudio: PropTypes.func,
     onBlock: PropTypes.func,
     onEmbed: PropTypes.func,
     onHeightChange: PropTypes.func,
@@ -194,8 +195,16 @@ class Status extends ImmutablePureComponent {
     return <div className='media-spoiler-video' style={{ height: '110px' }} />;
   }
 
+  renderLoadingAudioPlayer() {
+    return <div className='media-spoiler-audio' style={{ height: '110px' }} />;
+  }
+
   handleOpenVideo = (media, startTime) => {
     this.props.onOpenVideo(media, startTime);
+  }
+
+  handleOpenAudio = (media, startTime) => {
+    this.props.OnOpenAudio(media, startTime);
   }
 
   handleHotkeyReply = e => {
@@ -352,6 +361,23 @@ class Status extends ImmutablePureComponent {
                 cacheWidth={this.props.cacheMediaWidth}
                 visible={this.state.showMedia}
                 onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+            )}
+          </Bundle>
+        );
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
+        const audio = status.getIn(['media_attachments', 0]);
+
+        media = (
+          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
+            {Component => (
+              <Component
+                src={audio.get('url')}
+                alt={audio.get('description')}
+                inline
+                sensitive={status.get('sensitive')}
+                cacheWidth={this.props.cacheMediaWidth}
+                onOpenAudio={this.handleOpenAudio}
               />
             )}
           </Bundle>

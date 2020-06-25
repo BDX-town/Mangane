@@ -3049,5 +3049,46 @@
       }
     ],
     "path": "app/soapbox/features/video/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Play",
+        "id": "audio.play"
+      },
+      {
+        "defaultMessage": "Pause",
+        "id": "audio.pause"
+      },
+      {
+        "defaultMessage": "Mute sound",
+        "id": "audio.mute"
+      },
+      {
+        "defaultMessage": "Unmute sound",
+        "id": "audio.unmute"
+      },
+      {
+        "defaultMessage": "Hide audio",
+        "id": "audio.hide"
+      },
+      {
+        "defaultMessage": "Expand audio",
+        "id": "audio.expand"
+      },
+      {
+        "defaultMessage": "Close audio",
+        "id": "audio.close"
+      },
+      {
+        "defaultMessage": "Sensitive content",
+        "id": "status.sensitive_warning"
+      },
+      {
+        "defaultMessage": "Media hidden",
+        "id": "status.media_hidden"
+      }
+    ],
+    "path": "app/soapbox/features/audio/index.json"
   }
 ]

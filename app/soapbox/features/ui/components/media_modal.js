@@ -3,6 +3,7 @@ import ReactSwipeableViews from 'react-swipeable-views';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import Video from 'soapbox/features/video';
+import Audio from 'soapbox/features/audio';
 import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import classNames from 'classnames';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
@@ -166,6 +167,18 @@ class MediaModal extends ImmutablePureComponent {
             height={image.get('height')}
             startTime={time || 0}
             onCloseVideo={onClose}
+            detailed
+            alt={image.get('description')}
+            key={image.get('url')}
+          />
+        );
+      } else if (image.get('type') === 'audio') {
+        const { time } = this.props;
+
+        return (
+          <Audio
+            src={image.get('url')}
+            startTime={time || 0}
             detailed
             alt={image.get('description')}
             key={image.get('url')}

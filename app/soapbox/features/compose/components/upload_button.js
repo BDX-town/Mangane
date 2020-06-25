@@ -52,7 +52,7 @@ class UploadButton extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, resetFileKey, unavailable, disabled, acceptContentTypes } = this.props;
+    const { intl, resetFileKey, unavailable, disabled } = this.props;
 
     if (unavailable) {
       return null;
@@ -68,7 +68,8 @@ class UploadButton extends ImmutablePureComponent {
             ref={this.setRef}
             type='file'
             multiple
-            accept={acceptContentTypes.toArray().join(',')}
+            accept='*.*'
+            //accept={acceptContentTypes.toArray().join(',')}
             onChange={this.handleChange}
             disabled={disabled}
             style={{ display: 'none' }}

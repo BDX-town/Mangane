@@ -7,6 +7,7 @@ import ModalLoading from './modal_loading';
 import ActionsModal from './actions_modal';
 import MediaModal from './media_modal';
 import VideoModal from './video_modal';
+import AudioModal from './audio_modal';
 import BoostModal from './boost_modal';
 import ConfirmationModal from './confirmation_modal';
 import FocalPointModal from './focal_point_modal';
@@ -25,6 +26,7 @@ import {
 const MODAL_COMPONENTS = {
   'MEDIA': () => Promise.resolve({ default: MediaModal }),
   'VIDEO': () => Promise.resolve({ default: VideoModal }),
+  'AUDIO': () => Promise.resolve({ default: AudioModal }),
   'BOOST': () => Promise.resolve({ default: BoostModal }),
   'CONFIRM': () => Promise.resolve({ default: ConfirmationModal }),
   'MUTE': MuteModal,
@@ -60,7 +62,7 @@ export default class ModalRoot extends React.PureComponent {
   }
 
   renderLoading = modalId => () => {
-    return ['MEDIA', 'VIDEO', 'BOOST', 'CONFIRM', 'ACTIONS'].indexOf(modalId) === -1 ? <ModalLoading /> : null;
+    return ['MEDIA', 'VIDEO', 'AUDIO', 'BOOST', 'CONFIRM', 'ACTIONS'].indexOf(modalId) === -1 ? <ModalLoading /> : null;
   }
 
   renderError = (props) => {

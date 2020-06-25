@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { fromJS, is } from 'immutable';
+import { is } from 'immutable';
 import { throttle } from 'lodash';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
@@ -11,7 +11,11 @@ import { getSettings } from 'soapbox/actions/settings';
 const messages = defineMessages({
   play: { id: 'audio.play', defaultMessage: 'Play' },
   pause: { id: 'audio.pause', defaultMessage: 'Pause' },
-  hide: { id: 'video.hide', defaultMessage: 'Hide audio' },
+  mute: { id: 'audio.mute', defaultMessage: 'Mute' },
+  unmute: { id: 'audio.unmute', defaultMessage: 'Unmute' },
+  hide: { id: 'audio.hide', defaultMessage: 'Hide audio' },
+  expand: { id: 'audio.expand', defaultMessage: 'Expand audio' },
+  close: { id: 'audio.close', defaultMessage: 'Close audio' },
 });
 
 const formatTime = secondsNum => {
@@ -20,7 +24,7 @@ const formatTime = secondsNum => {
   let seconds = secondsNum - (hours * 3600) - (minutes * 60);
 
   if (hours   < 10) hours   = '0' + hours;
-  if (minutes < 10) minutes = '0' + minutes;
+  if (minutes < 10 && hours >= 1) minutes = '0' + minutes;
   if (seconds < 10) seconds = '0' + seconds;
 
   return (hours === '00' ? '' : `${hours}:`) + `${minutes}:${seconds}`;
@@ -92,8 +96,6 @@ class Audio extends React.PureComponent {
     alt: PropTypes.string,
     sensitive: PropTypes.bool,
     startTime: PropTypes.number,
-    onOpenAudio: PropTypes.func,
-    onCloseAudio: PropTypes.func,
     detailed: PropTypes.bool,
     inline: PropTypes.bool,
     cacheWidth: PropTypes.func,
@@ -110,7 +112,6 @@ class Audio extends React.PureComponent {
     volume: 0.5,
     paused: true,
     dragging: false,
-    hovered: false,
     muted: false,
     revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
   };
@@ -118,10 +119,10 @@ class Audio extends React.PureComponent {
   // hard coded in components.scss
   // any way to get ::before values programatically?
   volWidth = 50;
-  volOffset = 70;
+  volOffset = 85;
   volHandleOffset = v => {
     const offset = v * this.volWidth + this.volOffset;
-    return (offset > 110) ? 110 : offset;
+    return (offset > 125) ? 125 : offset;
   }
 
   setPlayerRef = c => {
@@ -233,7 +234,7 @@ class Audio extends React.PureComponent {
 
   handleMouseMove = throttle(e => {
     const { x } = getPointerPosition(this.seek, e);
-    const currentTime = Math.floor(this.video.duration * x);
+    const currentTime = Math.floor(this.audio.duration * x);
 
     if (!isNaN(currentTime)) {
       this.audio.currentTime = currentTime;
@@ -259,14 +260,6 @@ class Audio extends React.PureComponent {
     if (prevState.revealed && !this.state.revealed && this.audio) {
       this.audio.pause();
     }
-  }
-
-  handleMouseEnter = () => {
-    this.setState({ hovered: true });
-  }
-
-  handleMouseLeave = () => {
-    this.setState({ hovered: false });
   }
 
   toggleMute = () => {
@@ -299,24 +292,6 @@ class Audio extends React.PureComponent {
     this.setState({ volume: this.audio.volume, muted: this.audio.muted });
   }
 
-  handleOpenAudio = () => {
-    const { src, alt } = this.props;
-
-    const media = fromJS({
-      type: 'audio',
-      url: src,
-      description: alt,
-    });
-
-    this.audio.pause();
-    this.props.onOpenAudio(media, this.audio.currentTime);
-  }
-
-  handleCloseAudio = () => {
-    this.audio.pause();
-    this.props.onCloseAudio();
-  }
-
   getPreload = () => {
     const { startTime, detailed } = this.props;
     const { dragging } = this.state;
@@ -331,8 +306,8 @@ class Audio extends React.PureComponent {
   }
 
   render() {
-    const { src, inline, onOpenAudio, onCloseAudio, intl, alt, detailed, sensitive, link } = this.props;
-    const { currentTime, duration, volume, buffer, dragging, paused, hovered, muted, revealed } = this.state;
+    const { src, inline, intl, alt, detailed, sensitive, link } = this.props;
+    const { currentTime, duration, volume, buffer, dragging, paused, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
 
     const volumeWidth = (muted) ? 0 : volume * this.volWidth;
@@ -361,6 +336,7 @@ class Audio extends React.PureComponent {
         <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': revealed })} />
 
         {revealed && <audio
+          ref={this.setAudioRef}
           src={src}
           // preload={this.getPreload()}
           role='button'
@@ -383,7 +359,7 @@ class Audio extends React.PureComponent {
           </button>
         </div>
 
-        <div className={classNames('audio-player__controls', { active: paused || hovered })}>
+        <div className={classNames('audio-player__controls')}>
           <div className='audio-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
             <div className='audio-player__seek__buffer' style={{ width: `${buffer}%` }} />
             <div className='audio-player__seek__progress' style={{ width: `${progress}%` }} />
@@ -409,21 +385,17 @@ class Audio extends React.PureComponent {
                 />
               </div>
 
-              {detailed && (
-                <span>
-                  <span className='audio-player__time-current'>{formatTime(currentTime)}</span>
-                  <span className='audio-player__time-sep'>/</span>
-                  <span className='audio-player__time-total'>{formatTime(duration)}</span>
-                </span>
-              )}
+              <span>
+                <span className='audio-player__time-current'>{formatTime(currentTime)}</span>
+                <span className='audio-player__time-sep'>/</span>
+                <span className='audio-player__time-total'>{formatTime(duration)}</span>
+              </span>
 
               {link && <span className='audio-player__link'>{link}</span>}
             </div>
 
             <div className='audio-player__buttons right'>
-              {(onOpenAudio) && <button type='button' aria-label={intl.formatMessage(messages.expand)} onClick={this.handleOpenAudio}><Icon id='expand' fixedWidth /></button>}
-              {!onCloseAudio && <button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
-              {onCloseAudio && <button type='button' aria-label={intl.formatMessage(messages.close)} onClick={this.handleCloseAudio}><Icon id='compress' fixedWidth /></button>}
+              {<button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
             </div>
           </div>
         </div>
