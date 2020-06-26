@@ -5,20 +5,24 @@ exports[`<AvatarOverlay renders a overlay avatar 1`] = `
   className="account__avatar-overlay"
 >
   <div
-    className="account__avatar-overlay-base"
-    style={
-      Object {
-        "backgroundImage": "url(/static/alice.jpg)",
-      }
-    }
-  />
+    className="account__avatar-overlay-base still-image"
+    style={Object {}}
+  >
+    <img
+      alt=""
+      onLoad={[Function]}
+      src="/animated/alice.gif"
+    />
+  </div>
   <div
-    className="account__avatar-overlay-overlay"
-    style={
-      Object {
-        "backgroundImage": "url(/static/eve.jpg)",
-      }
-    }
-  />
+    className="account__avatar-overlay-overlay still-image"
+    style={Object {}}
+  >
+    <img
+      alt=""
+      onLoad={[Function]}
+      src="/animated/eve.gif"
+    />
+  </div>
 </div>
 `;

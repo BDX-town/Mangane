@@ -28,47 +28,26 @@
   z-index: 1;
 
   &,
-  img,
-  canvas {
+  .still-image {
     height: 100%;
     width: 100%;
   }
 
-  img,
-  canvas {
-    object-fit: cover;
-  }
-
-  &--play-on-hover {
-    &::before {
-      content: 'GIF';
-      position: absolute;
-      color: var(--primary-text-color);
-      background: var(--foreground-color);
-      bottom: 6px;
-      left: 6px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-size: 11px;
-      font-weight: 600;
-      pointer-events: none;
-      opacity: 0.9;
-      transition: opacity 0.1s ease;
-      line-height: 18px;
-    }
-
-    img {
-      position: absolute;
-    }
-
-    img,
-    &:hover::before {
-      visibility: hidden;
-    }
-
-    &:hover img {
-      visibility: visible;
-    }
+  .still-image--play-on-hover::before {
+    content: 'GIF';
+    position: absolute;
+    color: var(--primary-text-color);
+    background: var(--foreground-color);
+    bottom: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.1s ease;
+    line-height: 18px;
   }
 }
 
@@ -81,6 +60,23 @@
   left: 0;
   z-index: 0;
   background: var(--background-color);
+
+  .still-image--play-on-hover::before {
+    content: 'GIF';
+    position: absolute;
+    color: var(--primary-text-color);
+    background: var(--foreground-color);
+    bottom: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.1s ease;
+    line-height: 18px;
+  }
 
   &--hidden {
     display: none;
