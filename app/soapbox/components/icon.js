@@ -12,7 +12,7 @@ export default class Icon extends React.PureComponent {
 
   render() {
     const { id, className, fixedWidth, ...other } = this.props;
-    // Use the font awesome retweet icon, but change its alt
+    // Use the Fork Awesome retweet icon, but change its alt
     // tag. There is a common adblocker rule which hides elements with
     // alt='retweet' unless the domain is twitter.com. This should
     // change what screenreaders call it as well.
