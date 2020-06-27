@@ -19,6 +19,16 @@ import {
 } from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
+/*
+Security settings page for user account
+Routed to /auth/edit
+Includes following features:
+- Change Email
+- Change Password
+- Sessions
+- Deactivate Account
+*/
+
 const messages = defineMessages({
   heading: { id: 'column.security', defaultMessage: 'Security' },
   submit: { id: 'security.submit', defaultMessage: 'Save changes' },
@@ -35,6 +45,10 @@ const messages = defineMessages({
   emailHeader: { id: 'security.headers.update_email', defaultMessage: 'Change Email' },
   passwordHeader: { id: 'security.headers.update_password', defaultMessage: 'Change Password' },
   tokenHeader: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
+  deactivateHeader: { id: 'security.headers.deactivate', defaultMessage: 'Deactivate Account' },
+  deactivateText: { id: 'security.text.deactivate', defaultMessage: 'Deactivate your account. \n This action will hide your profile and your posts on this server. \n \
+  However, your account will not be deleted and your data will not be purged. \n In addition, any of your data that was distributed to other servers will remain on those \
+  servers.' },
 });
 
 export default @injectIntl
