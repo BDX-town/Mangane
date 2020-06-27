@@ -61,7 +61,7 @@ class CaptchaField extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchCaptcha();
     this.startRefresh(); // Refresh periodically
   }

@@ -20,7 +20,7 @@ class AboutPage extends ImmutablePureComponent {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.loadPageHtml();
   }
 

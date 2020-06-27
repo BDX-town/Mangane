@@ -58,7 +58,7 @@ class Following extends ImmutablePureComponent {
     diffCount: PropTypes.number,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {

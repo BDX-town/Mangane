@@ -117,18 +117,15 @@ class EditProfile extends ImmutablePureComponent {
     event.preventDefault();
   }
 
-  setInitialState = () => {
+  constructor(props) {
+    super(props);
     const initialState = this.props.account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields')));
       unescapeParams(map, ['display_name', 'note']);
     });
-    this.setState(initialState.toObject());
-  }
-
-  componentWillMount() {
-    this.setInitialState();
+    this.state = initialState.toObject();
   }
 
   handleCheckboxChange = e => {

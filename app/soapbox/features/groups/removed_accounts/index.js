@@ -37,7 +37,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     hasMore: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { id } } = this.props;
 
     this.props.dispatch(fetchRemovedAccounts(id));
