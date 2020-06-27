@@ -43,7 +43,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
     this.props.dispatch(fetchRemovedAccounts(id));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.props.dispatch(fetchRemovedAccounts(nextProps.params.id));
     }

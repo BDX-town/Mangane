@@ -78,21 +78,18 @@ class ModalRoot extends React.PureComponent {
     window.addEventListener('keyup', this.handleKeyUp, false);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps, prevProps) {
     if (!!nextProps.children && !this.props.children) {
       this.activeElement = document.activeElement;
-
       this.getSiblings().forEach(sibling => sibling.setAttribute('inert', true));
     } else if (!nextProps.children) {
       this.setState({ revealed: false });
     }
     if (!nextProps.children && !!this.props.children) {
+      this.activeElement = document.activeElement;
       this.activeElement.focus();
       this.activeElement = null;
     }
-  }
-
-  componentDidUpdate(prevProps) {
     if (!this.props.children && !!prevProps.children) {
       this.getSiblings().forEach(sibling => sibling.removeAttribute('inert'));
     }
