@@ -15,16 +15,12 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "File upload quantity limit exceeded.",
+        "defaultMessage": "File upload limit exceeded.",
         "id": "upload_error.limit"
       },
       {
         "defaultMessage": "File upload not allowed with polls.",
         "id": "upload_error.poll"
-      },
-      {
-        "defaultMessage": "File upload size limit exceeded.",
-        "id": "upload_error.size"
       }
     ],
     "path": "app/soapbox/actions/compose.json"
@@ -871,47 +867,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Play",
-        "id": "audio.play"
-      },
-      {
-        "defaultMessage": "Pause",
-        "id": "audio.pause"
-      },
-      {
-        "defaultMessage": "Mute",
-        "id": "audio.mute"
-      },
-      {
-        "defaultMessage": "Unmute",
-        "id": "audio.unmute"
-      },
-      {
-        "defaultMessage": "Hide audio",
-        "id": "audio.hide"
-      },
-      {
-        "defaultMessage": "Expand audio",
-        "id": "audio.expand"
-      },
-      {
-        "defaultMessage": "Close audio",
-        "id": "audio.close"
-      },
-      {
-        "defaultMessage": "Sensitive content",
-        "id": "status.sensitive_warning"
-      },
-      {
-        "defaultMessage": "Media hidden",
-        "id": "status.media_hidden"
-      }
-    ],
-    "path": "app/soapbox/features/audio/index.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Username",
         "id": "login.fields.username_placeholder"
       },
@@ -1155,10 +1110,6 @@
       {
         "defaultMessage": "{number, plural, one {# day} other {# days}}",
         "id": "intervals.full.days"
-      },
-      {
-        "defaultMessage": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
-        "id": "compose_form.poll.type.hint"
       }
     ],
     "path": "app/soapbox/features/compose/components/poll_form.json"
@@ -2576,15 +2527,6 @@
       }
     ],
     "path": "app/soapbox/features/status/index.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "View context",
-        "id": "lightbox.view_context"
-      }
-    ],
-    "path": "app/soapbox/features/ui/components/audio_modal.json"
   },
   {
     "descriptors": [
