@@ -15,12 +15,16 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "File upload limit exceeded.",
+        "defaultMessage": "File upload quantity limit exceeded.",
         "id": "upload_error.limit"
       },
       {
         "defaultMessage": "File upload not allowed with polls.",
         "id": "upload_error.poll"
+      },
+      {
+        "defaultMessage": "File upload size limit exceeded.",
+        "id": "upload_error.size"
       }
     ],
     "path": "app/soapbox/actions/compose.json"
@@ -867,6 +871,47 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Play",
+        "id": "audio.play"
+      },
+      {
+        "defaultMessage": "Pause",
+        "id": "audio.pause"
+      },
+      {
+        "defaultMessage": "Mute",
+        "id": "audio.mute"
+      },
+      {
+        "defaultMessage": "Unmute",
+        "id": "audio.unmute"
+      },
+      {
+        "defaultMessage": "Hide audio",
+        "id": "audio.hide"
+      },
+      {
+        "defaultMessage": "Expand audio",
+        "id": "audio.expand"
+      },
+      {
+        "defaultMessage": "Close audio",
+        "id": "audio.close"
+      },
+      {
+        "defaultMessage": "Sensitive content",
+        "id": "status.sensitive_warning"
+      },
+      {
+        "defaultMessage": "Media hidden",
+        "id": "status.media_hidden"
+      }
+    ],
+    "path": "app/soapbox/features/audio/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Username",
         "id": "login.fields.username_placeholder"
       },
@@ -1110,6 +1155,10 @@
       {
         "defaultMessage": "{number, plural, one {# day} other {# days}}",
         "id": "intervals.full.days"
+      },
+      {
+        "defaultMessage": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
+        "id": "compose_form.poll.type.hint"
       }
     ],
     "path": "app/soapbox/features/compose/components/poll_form.json"
@@ -2358,6 +2407,26 @@
       {
         "defaultMessage": "Sessions",
         "id": "security.headers.tokens"
+      },
+      {
+        "defaultMessage": "Deactivate Account",
+        "id": "security.headers.deactivate"
+      },
+      {
+        "defaultMessage": "To deactivate your account, you must first enter your account password, then click Deactivate Account.   \n Account deactivation will hide your profile and your posts on this server. \n However, your account will not be deleted and your data will not be purged.   \n In addition, any of your data that was previously distributed to other servers will remain on those servers.",
+        "id": "security.text.deactivate"
+      },
+      {
+        "defaultMessage": "Deactivate Account",
+        "id": "security.submit.deactivate"
+      },
+      {
+        "defaultMessage": "Account successfully deactivated.",
+        "id": "security.deactivate_account.success"
+      },
+      {
+        "defaultMessage": "Account deactivation failed.",
+        "id": "security.deactivate_account.fail"
       }
     ],
     "path": "app/soapbox/features/security/index.json"
@@ -2507,6 +2576,15 @@
       }
     ],
     "path": "app/soapbox/features/status/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "View context",
+        "id": "lightbox.view_context"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/audio_modal.json"
   },
   {
     "descriptors": [
