@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Durasi jajak pendapat",
   "compose_form.poll.option_placeholder": "Pilihan {number}",
   "compose_form.poll.remove_option": "Hapus opsi ini",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Publish",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Tandai sebagai media sensitif",

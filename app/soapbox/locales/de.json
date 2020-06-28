@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Umfragedauer",
   "compose_form.poll.option_placeholder": "Antwortmöglichkeit {number}",
   "compose_form.poll.remove_option": "Antwortmöglichkeit entfernen",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Senden",
   "compose_form.publish_loud": "{publish}",
   "compose_form.sensitive.hide": "Medien als heikel markieren",

@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "வாக்கெடுப்பு காலம்",
   "compose_form.poll.option_placeholder": "தேர்ந்தெடுப்ப {number}",
   "compose_form.poll.remove_option": "இந்த விருப்பத்தை அகற்றவும்",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Publish",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Mark media as sensitive",

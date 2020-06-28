@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Durata di u scandagliu",
   "compose_form.poll.option_placeholder": "Scelta {number}",
   "compose_form.poll.remove_option": "Toglie sta scelta",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Publish",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Indicà u media cum'è sensibile",

@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Сауалнама мерзімі",
   "compose_form.poll.option_placeholder": "Жауап {number}",
   "compose_form.poll.remove_option": "Бұл жауапты өшір",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Түрт",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Mark media as sensitive",

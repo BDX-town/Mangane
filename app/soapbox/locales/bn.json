@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "ভোটগ্রহনের সময়",
   "compose_form.poll.option_placeholder": "বিকল্প {number}",
   "compose_form.poll.remove_option": "এই বিকল্পটি মুছে ফেলুন",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "টুট",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "এই ছবি বা ভিডিওটি সংবেদনশীল হিসেবে চিহ্নিত করতে",

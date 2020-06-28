@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Szavazás időtartama",
   "compose_form.poll.option_placeholder": "Lehetőség {number}",
   "compose_form.poll.remove_option": "Lehetőség törlése",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Tülk",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Média megjelölése szenzitívként",

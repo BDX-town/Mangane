@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Длительность опроса",
   "compose_form.poll.option_placeholder": "Вариант {number}",
   "compose_form.poll.remove_option": "Удалить этот вариант",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Запостить",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Пометить медиафайл как чувствительный",

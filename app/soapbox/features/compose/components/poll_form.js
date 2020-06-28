@@ -19,6 +19,7 @@ const messages = defineMessages({
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },
   hours: { id: 'intervals.full.hours', defaultMessage: '{number, plural, one {# hour} other {# hours}}' },
   days: { id: 'intervals.full.days', defaultMessage: '{number, plural, one {# day} other {# days}}' },
+  hint: { id: 'compose_form.poll.type.hint', defaultMessage: 'Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.' },
 });
 
 @injectIntl
@@ -77,6 +78,7 @@ class Option extends React.PureComponent {
             onClick={this.handleToggleMultiple}
             role='button'
             tabIndex='0'
+            title={intl.formatMessage(messages.hint)}
           />
 
           <AutosuggestInput

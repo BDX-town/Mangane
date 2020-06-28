@@ -1110,6 +1110,10 @@
       {
         "defaultMessage": "{number, plural, one {# day} other {# days}}",
         "id": "intervals.full.days"
+      },
+      {
+        "defaultMessage": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
+        "id": "compose_form.poll.type.hint"
       }
     ],
     "path": "app/soapbox/features/compose/components/poll_form.json"

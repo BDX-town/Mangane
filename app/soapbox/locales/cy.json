@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "Cyfnod pleidlais",
   "compose_form.poll.option_placeholder": "Dewisiad {number}",
   "compose_form.poll.remove_option": "Tynnu'r dewisiad",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Tŵt",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Marcio cyfryngau fel eu bod yn sensitif",

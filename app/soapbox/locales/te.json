@@ -80,6 +80,7 @@
   "compose_form.poll.duration": "ఎన్నిక వ్యవధి",
   "compose_form.poll.option_placeholder": "ఎంపిక {number}",
   "compose_form.poll.remove_option": "ఈ ఎంపికను తొలగించు",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "టూట్",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Mark media as sensitive",
