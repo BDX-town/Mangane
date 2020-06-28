@@ -16,6 +16,7 @@ import {
   changePassword,
   fetchOAuthTokens,
   revokeOAuthToken,
+  deactivateAccount,
 } from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
