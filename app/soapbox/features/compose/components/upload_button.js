@@ -7,7 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 const messages = defineMessages({
-  upload: { id: 'upload_button.label', defaultMessage: 'Add media (JPEG, PNG, GIF, WebM, MP4, MOV)' },
+  upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },
 });
 
 const makeMapStateToProps = () => {
@@ -52,7 +52,7 @@ class UploadButton extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, resetFileKey, unavailable, disabled } = this.props;
+    const { intl, resetFileKey, unavailable, disabled, acceptContentTypes } = this.props;
 
     if (unavailable) {
       return null;
@@ -68,8 +68,7 @@ class UploadButton extends ImmutablePureComponent {
             ref={this.setRef}
             type='file'
             multiple
-            accept='*.*'
-            //accept={acceptContentTypes.toArray().join(',')}
+            accept={acceptContentTypes.toArray().join(',')}
             onChange={this.handleChange}
             disabled={disabled}
             style={{ display: 'none' }}

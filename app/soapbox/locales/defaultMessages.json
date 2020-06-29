@@ -1217,7 +1217,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Add media (JPEG, PNG, GIF, WebM, MP4, MOV)",
+        "defaultMessage": "Add media attachment",
         "id": "upload_button.label"
       }
     ],

@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { is } from 'immutable';
 import { throttle } from 'lodash';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
@@ -104,6 +103,7 @@ class Audio extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     link: PropTypes.node,
     displayMedia: PropTypes.string,
+    expandSpoilers: PropTypes.bool,
   };
 
   state = {
@@ -150,10 +150,6 @@ class Audio extends React.PureComponent {
 
   setVolumeRef = c => {
     this.volume = c;
-  }
-
-  setCanvasRef = c => {
-    this.canvas = c;
   }
 
   handleClickRoot = e => e.stopPropagation();
@@ -250,29 +246,13 @@ class Audio extends React.PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
-      this.setState({ revealed: nextProps.visible });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.revealed && !this.state.revealed && this.audio) {
-      this.audio.pause();
-    }
-  }
-
   toggleMute = () => {
     this.audio.muted = !this.audio.muted;
     this.setState({ muted: this.audio.muted });
   }
 
-  toggleReveal = () => {
-    if (this.props.onToggleVisibility) {
-      this.props.onToggleVisibility();
-    } else {
-      this.setState({ revealed: !this.state.revealed });
-    }
+  toggleWarning = () => {
+    this.setState({ revealed: !this.state.revealed });
   }
 
   handleLoadedData = () => {
@@ -325,7 +305,7 @@ class Audio extends React.PureComponent {
     return (
       <div
         role='menuitem'
-        className={classNames('audio-player', { inactive: !revealed, detailed, inline: inline })}
+        className={classNames('audio-player', { detailed: detailed, inline: inline, warning_visible: !revealed })}
         style={playerStyle}
         ref={this.setPlayerRef}
         onMouseEnter={this.handleMouseEnter}
@@ -333,9 +313,8 @@ class Audio extends React.PureComponent {
         onClick={this.handleClickRoot}
         tabIndex={0}
       >
-        <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': revealed })} />
 
-        {revealed && <audio
+        <audio
           ref={this.setAudioRef}
           src={src}
           // preload={this.getPreload()}
@@ -351,12 +330,11 @@ class Audio extends React.PureComponent {
           onLoadedData={this.handleLoadedData}
           onProgress={this.handleProgress}
           onVolumeChange={this.handleVolumeChange}
-        />}
+        />
 
-        <div className={classNames('spoiler-button', { 'spoiler-button--hidden': revealed })}>
-          <button type='button' className='spoiler-button__overlay' onClick={this.toggleReveal}>
-            <span className='spoiler-button__overlay__label'>{warning}</span>
-          </button>
+        <div className={classNames('audio-player__spoiler-warning', { 'spoiler-button--hidden': revealed })}>
+          <span className='audio-player__spoiler-warning__label'><Icon id='warning' fixedWidth /> {warning}</span>
+          <button aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleWarning}><Icon id='times' fixedWidth /></button>
         </div>
 
         <div className={classNames('audio-player__controls')}>
@@ -392,10 +370,6 @@ class Audio extends React.PureComponent {
               </span>
 
               {link && <span className='audio-player__link'>{link}</span>}
-            </div>
-
-            <div className='audio-player__buttons right'>
-              {<button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
             </div>
           </div>
         </div>

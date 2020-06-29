@@ -377,6 +377,7 @@ class Status extends ImmutablePureComponent {
                 inline
                 sensitive={status.get('sensitive')}
                 cacheWidth={this.props.cacheMediaWidth}
+                visible={this.state.showMedia}
                 onOpenAudio={this.handleOpenAudio}
               />
             )}

@@ -48,9 +48,9 @@ export default class StatusCheckBox extends React.PureComponent {
             )}
           </Bundle>
         );
-      } else if (status.getIn(['media_attacjments', 0, 'type']) === 'audio') {
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
         const audio = status.getIn(['media_attachments', 0]);
-        
+
         media = (
           <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
             {Component => (
