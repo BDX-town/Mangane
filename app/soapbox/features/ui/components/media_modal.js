@@ -139,9 +139,18 @@ class MediaModal extends ImmutablePureComponent {
       });
     }
 
+    const isMultiMedia = media.map((image) => {
+      if (image.get('type') !== 'image') {
+        return true;
+      }
+
+      return false;
+    }).toArray();
+
     const content = media.map((image) => {
       const width  = image.getIn(['meta', 'original', 'width']) || null;
       const height = image.getIn(['meta', 'original', 'height']) || null;
+      const link = (status && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
 
       if (image.get('type') === 'image') {
         return (
@@ -168,6 +177,7 @@ class MediaModal extends ImmutablePureComponent {
             startTime={time || 0}
             onCloseVideo={onClose}
             detailed
+            link={link}
             alt={image.get('description')}
             key={image.get('url')}
           />
@@ -180,6 +190,7 @@ class MediaModal extends ImmutablePureComponent {
             src={image.get('url')}
             startTime={time || 0}
             detailed
+            link={link}
             alt={image.get('description')}
             key={image.get('url')}
           />
@@ -191,6 +202,7 @@ class MediaModal extends ImmutablePureComponent {
             muted
             controls={false}
             width={width}
+            link={link}
             height={height}
             key={image.get('preview_url')}
             alt={image.get('description')}
@@ -243,7 +255,7 @@ class MediaModal extends ImmutablePureComponent {
           {leftNav}
           {rightNav}
 
-          {status && (
+          {(status && !isMultiMedia[index]) && (
             <div className={classNames('media-modal__meta', { 'media-modal__meta--shifted': media.size > 1 })}>
               <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>
             </div>
