@@ -11,6 +11,7 @@ import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
@@ -224,6 +225,24 @@ class Item extends React.PureComponent {
 
           <span className='media-gallery__gifv__label'>GIF</span>
         </div>
+      );
+    } else if (attachment.get('type') === 'audio') {
+      const remoteURL = attachment.get('remote_url');
+      const originalUrl = attachment.get('url');
+      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
+      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      thumbnail = (
+        <a
+          className={classNames('media-gallery__item-thumbnail')}
+          href={attachment.get('remote_url') || originalUrl}
+          onClick={this.handleClick}
+          target='_blank'
+          alt={attachment.get('description')}
+          title={attachment.get('description')}
+        >
+          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+        </a>
       );
     }
 
