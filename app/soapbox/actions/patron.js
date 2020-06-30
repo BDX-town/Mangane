@@ -1,11 +1,12 @@
-import api from '../api';
+import axios from 'axios';
 
 export const PATRON_FUNDING_IMPORT        = 'PATRON_FUNDING_IMPORT';
 export const PATRON_FUNDING_FETCH_FAIL    = 'PATRON_FUNDING_FETCH_FAIL';
 
 export function fetchFunding() {
   return (dispatch, getState) => {
-    api(getState).get('/patron/v1/funding').then(response => {
+    const baseUrl = getState().getIn(['soapbox', 'extensions', 'patron', 'baseUrl']);
+    axios.get(`${baseUrl}/api/patron/v1/instance`).then(response => {
       dispatch(importFetchedFunding(response.data));
     }).catch(error => {
       dispatch(fetchFundingFail(error));

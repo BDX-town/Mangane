@@ -13,7 +13,10 @@
     }]
   },
   "extensions": {
-    "patron": false
+    "patron": {
+      "enabled": false,
+      "baseUrl": "https://patron.example.com"
+    }
   },
   "defaultSettings": {
     "autoPlayGif": false,
