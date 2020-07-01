@@ -1,12 +1,11 @@
 import reducer from '../compose';
 import { Map as ImmutableMap } from 'immutable';
-//import { COMPOSE_REPLY } from 'soapbox/actions/compose';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import * as actions from 'soapbox/actions/compose';
-import { STORE_HYDRATE } from 'soapbox/actions/store';
-import { REDRAFT } from 'soapbox/actions/statuses';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+//import { STORE_HYDRATE } from 'soapbox/actions/store';
+//import { REDRAFT } from 'soapbox/actions/statuses';
+//import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
 describe('compose reducer', () => {
   it('returns the initial state by default', () => {
