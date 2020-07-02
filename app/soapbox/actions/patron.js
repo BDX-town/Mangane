@@ -5,7 +5,7 @@ export const PATRON_FUNDING_FETCH_FAIL    = 'PATRON_FUNDING_FETCH_FAIL';
 
 export function fetchFunding() {
   return (dispatch, getState) => {
-    api(getState).get('/patron/v1/funding').then(response => {
+    api(getState).get('/api/patron/v1/instance').then(response => {
       dispatch(importFetchedFunding(response.data));
     }).catch(error => {
       dispatch(fetchFundingFail(error));

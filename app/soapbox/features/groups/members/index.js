@@ -30,13 +30,13 @@ class GroupMembers extends ImmutablePureComponent {
     hasMore: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { id } } = this.props;
 
     this.props.dispatch(fetchMembers(id));
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.params.id !== this.props.params.id) {
       this.props.dispatch(fetchMembers(nextProps.params.id));
     }

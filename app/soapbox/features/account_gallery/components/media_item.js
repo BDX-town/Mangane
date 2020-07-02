@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isIOS } from 'soapbox/is_mobile';
 import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
@@ -113,12 +114,10 @@ class MediaItem extends ImmutablePureComponent {
       const y      = ((focusY / -2) + .5) * 100;
 
       thumbnail = (
-        <img
+        <StillImage
           src={attachment.get('preview_url')}
           alt={attachment.get('description')}
-          title={attachment.get('description')}
           style={{ objectPosition: `${x}% ${y}%` }}
-          onLoad={this.handleImageLoad}
         />
       );
     } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {

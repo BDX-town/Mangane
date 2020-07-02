@@ -49,7 +49,8 @@ class Create extends React.PureComponent {
     onCoverImageChange: PropTypes.func.isRequired,
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.props.reset();
   }
 

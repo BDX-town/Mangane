@@ -12,6 +12,7 @@ import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maxi
 import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
+import StillImage from 'soapbox/components/still_image';
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
@@ -61,8 +62,7 @@ class Item extends React.PureComponent {
 
   hoverToPlay() {
     const { attachment, autoPlayGif } = this.props;
-    return !autoPlayGif &&
-      (attachment.get('type') === 'gifv' || attachment.getIn(['pleroma', 'mime_type']) === 'image/gif');
+    return !autoPlayGif && attachment.get('type') === 'gifv';
   }
 
   handleClick = (e) => {
@@ -73,7 +73,7 @@ class Item extends React.PureComponent {
       e.preventDefault();
     } else {
       if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-        if (!this.canvas && this.hoverToPlay()) {
+        if (this.hoverToPlay()) {
           e.target.pause();
           e.target.currentTime = 0;
         }
@@ -113,23 +113,12 @@ class Item extends React.PureComponent {
     this.canvas = c;
   }
 
-  setImageRef = i => {
-    this.image = i;
-  }
-
   handleImageLoad = () => {
     this.setState({ loaded: true });
-    if (this.hoverToPlay()) {
-      const image = this.image;
-      const canvas = this.canvas;
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      canvas.getContext('2d').drawImage(image, 0, 0);
-    }
   }
 
   render() {
-    const { attachment, standalone, displayWidth, visible, dimensions, autoPlayGif } = this.props;
+    const { attachment, standalone, visible, dimensions, autoPlayGif } = this.props;
 
     let width  = 100;
     let height = '100%';
@@ -163,39 +152,17 @@ class Item extends React.PureComponent {
       );
     } else if (attachment.get('type') === 'image') {
       const previewUrl   = attachment.get('preview_url');
-      const previewWidth = attachment.getIn(['meta', 'small', 'width']);
 
       const originalUrl   = attachment.get('url');
-      const originalWidth = attachment.getIn(['meta', 'original', 'width']);
-
-      const hasSize = typeof originalWidth === 'number' && typeof previewWidth === 'number';
-
-      const srcSet = hasSize ? `${originalUrl} ${originalWidth}w, ${previewUrl} ${previewWidth}w` : null;
-      const sizes  = hasSize && (displayWidth > 0) ? `${displayWidth * (width / 100)}px` : null;
-
-      const focusX = attachment.getIn(['meta', 'focus', 'x']) || 0;
-      const focusY = attachment.getIn(['meta', 'focus', 'y']) || 0;
-      const x      = ((focusX /  2) + .5) * 100;
-      const y      = ((focusY / -2) + .5) * 100;
 
       thumbnail = (
         <a
-          className={classNames('media-gallery__item-thumbnail', { 'media-gallery__item-thumbnail--play-on-hover': this.hoverToPlay() })}
+          className='media-gallery__item-thumbnail'
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
         >
-          <img
-            src={previewUrl}
-            srcSet={srcSet}
-            sizes={sizes}
-            alt={attachment.get('description')}
-            title={attachment.get('description')}
-            style={{ objectPosition: `${x}% ${y}%` }}
-            onLoad={this.handleImageLoad}
-            ref={this.setImageRef}
-          />
-          {this.hoverToPlay() && <canvas ref={this.setCanvasRef} style={{ objectPosition: `${x}% ${y}%` }} />}
+          <StillImage src={previewUrl} alt={attachment.get('description')} />
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
@@ -286,15 +253,21 @@ class MediaGallery extends React.PureComponent {
   state = {
     visible: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
     width: this.props.defaultWidth,
+    media: this.props.media,
+    displayMedia: this.props.displayMedia,
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { displayMedia } = this.props;
-    if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
-      this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
-    } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
-      this.setState({ visible: nextProps.visible });
+  static getDerivedStateFromProps(nextProps, state) {
+    if (!is(nextProps.media, state.media) && nextProps.visible === undefined) {
+      return {
+        visible: state.displayMedia !== 'hide_all' && !nextProps.sensitive || state.displayMedia === 'show_all',
+      };
+    } else if (!is(nextProps.visible, state.visible) && nextProps.visible !== undefined) {
+      return {
+        visible: nextProps.visible,
+      };
     }
+    return null;
   }
 
   handleOpen = () => {

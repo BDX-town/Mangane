@@ -58,7 +58,7 @@ class Followers extends ImmutablePureComponent {
     unavailable: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
@@ -69,7 +69,7 @@ class Followers extends ImmutablePureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
       this.props.dispatch(fetchAccount(nextProps.accountId));
       this.props.dispatch(fetchFollowers(nextProps.accountId));

@@ -139,23 +139,9 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
   };
 
-  componentWillMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
-  }
-
   componentDidMount() {
+    this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
-      this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(nextProps.params.statusId));
-    }
-
-    if (nextProps.status && nextProps.status.get('id') !== this.state.loadedStatusId) {
-      this.setState({ showMedia: defaultMediaVisibility(nextProps.status), loadedStatusId: nextProps.status.get('id') });
-    }
   }
 
   handleToggleMediaVisibility = () => {
@@ -404,7 +390,16 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(nextProps) {
+    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
+      this._scrolledIntoView = false;
+      this.props.dispatch(fetchStatus(nextProps.params.statusId));
+    }
+
+    if (nextProps.status && nextProps.status.get('id') !== this.state.loadedStatusId) {
+      this.setState({ showMedia: defaultMediaVisibility(nextProps.status), loadedStatusId: nextProps.status.get('id') });
+    }
+
     if (this._scrolledIntoView) {
       return;
     }

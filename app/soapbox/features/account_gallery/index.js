@@ -97,7 +97,7 @@ class AccountGallery extends ImmutablePureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentDidUpdate(nextProps) {
     if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
       this.props.dispatch(fetchAccount(nextProps.params.accountId));
       this.props.dispatch(expandAccountMediaTimeline(nextProps.accountId));

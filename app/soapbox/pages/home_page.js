@@ -16,7 +16,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    hasPatron: state.getIn(['soapbox', 'extensions', 'patron']),
+    hasPatron: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
     features: getFeatures(state.get('instance')),
   };
 };
