@@ -40,12 +40,13 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const getAccount = makeGetAccount();
-  const patron = state.getIn(['soapbox', 'extensions', 'patron'], ImmutableMap());
+  const patronEnabled = state.getIn(['soapbox', 'extensions', 'patron', 'enabled']);
+  const patronUrl = state.getIn(['soapbox', 'extensions', 'patron', 'baseUrl']);
 
   return {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
-    patronUrl: patron.get('enabled') && patron.get('baseUrl'),
+    patronUrl: patronEnabled && patronUrl,
     isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
