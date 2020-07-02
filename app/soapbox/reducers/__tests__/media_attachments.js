@@ -14,6 +14,8 @@ describe('media_attachments reducer', () => {
         '.mp4',
         '.m4v',
         '.mov',
+        '.mp3',
+        '.ogg',
         'image/jpeg',
         'image/png',
         'image/gif',
@@ -21,6 +23,9 @@ describe('media_attachments reducer', () => {
         'video/webm',
         'video/mp4',
         'video/quicktime',
+        'audio/mp3',
+        'audio/mpeg',
+        'audio/ogg',
       ]),
     }));
   });

@@ -146,6 +146,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(openModal('VIDEO', { media, time }));
   },
 
+  onOpenAudio(media, time) {
+    dispatch(openModal('AUDIO', { media, time }));
+  },
+
   onBlock(status) {
     const account = status.get('account');
     dispatch(openModal('CONFIRM', {

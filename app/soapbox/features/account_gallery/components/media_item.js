@@ -146,6 +146,16 @@ class MediaItem extends ImmutablePureComponent {
           <span className='media-gallery__gifv__label'>GIF</span>
         </div>
       );
+    } else if (attachment.get('type') === 'audio') {
+      const remoteURL = attachment.get('remote_url');
+      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
+      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      thumbnail = (
+        <div className='media-gallery__item-thumbnail'>
+          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+        </div>
+      );
     }
 
     if (!visible) {
