@@ -399,6 +399,10 @@ a .account__avatar {
     bottom: 0;
     right: 0;
     z-index: 1;
+
+    &.still-image {
+      position: absolute;
+    }
   }
 }
 
