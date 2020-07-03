@@ -1,5 +1,5 @@
 import reducer from '../compose';
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import * as actions from 'soapbox/actions/compose';
@@ -153,7 +153,7 @@ describe('compose reducer', () => {
   });
 
   it('should handle COMPOSE_UNMOUNT', () => {
-    const state = ImmutableMap({ mounted: 1});
+    const state = ImmutableMap({ mounted: 1 });
     const action = {
       type: actions.COMPOSE_UNMOUNT,
     };
@@ -162,8 +162,9 @@ describe('compose reducer', () => {
     });
   });
 
+  //Remove this test once spoiler is decoupled from marking media as sensitive
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
-    const state = ImmutableMap({ spoiler: true, sensitive: true});
+    const state = ImmutableMap({ spoiler: true, sensitive: true, idempotencyKey: null });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -172,8 +173,9 @@ describe('compose reducer', () => {
     });
   });
 
+  //Edit this test to not pass spoiler state once spoiler is decoupled from marking media as sensitive
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
-    const state = ImmutableMap({ spoiler: false, sensitive: true});
+    const state = ImmutableMap({ spoiler: false, sensitive: true });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -182,149 +184,144 @@ describe('compose reducer', () => {
     });
   });
 
-  // it('should handle COMPOSE_SPOILERNESS_CHANGE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_SPOILERNESS_CHANGE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_SPOILER_TEXT_CHANGE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_SPOILER_TEXT_CHANGE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_VISIBILITY_CHANGE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_VISIBILITY_CHANGE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_CHANGE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_CHANGE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_COMPOSING_CHANGE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_COMPOSING_CHANGE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_SUBMIT_REQUEST', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_SUBMIT_REQUEST,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_UPLOAD_CHANGE_REQUEST', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_CHANGE_REQUEST,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_SUBMIT_SUCCESS', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_SUBMIT_SUCCESS,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_SUBMIT_FAIL', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_SUBMIT_FAIL,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_UPLOAD_CHANGE_FAIL', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_CHANGE_FAIL,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_UPLOAD_REQUEST', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_REQUEST,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle COMPOSE_UPLOAD_SUCCESS', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  it('should handle COMPOSE_SPOILERNESS_CHANGE on CW button click', () => {
+    const state = ImmutableMap({ spoiler_text: 'spoiler text', spoiler: true, media_attachments: { } });
+    const action = {
+      type: actions.COMPOSE_SPOILERNESS_CHANGE,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      spoiler: false,
+      spoiler_text: '',
+    });
+  });
+
+  it('should handle COMPOSE_SPOILER_TEXT_CHANGE', () => {
+    const state = ImmutableMap({ spoiler_text: 'prevtext' });
+    const action = {
+      type: actions.COMPOSE_SPOILER_TEXT_CHANGE,
+      text: 'nexttext',
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      spoiler_text: 'nexttext',
+    });
+  });
+
+  it('should handle COMPOSE_VISIBILITY_CHANGE', () => {
+    const state = ImmutableMap({ privacy: 'public' });
+    const action = {
+      type: actions.COMPOSE_VISIBILITY_CHANGE,
+      value: 'direct'
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      privacy: 'direct',
+    });
+  });
+
+  it('should handle COMPOSE_CHANGE', () => {
+    const state = ImmutableMap({ text: 'prevtext' });
+    const action = {
+      type: actions.COMPOSE_CHANGE,
+      text: 'nexttext',
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      text: 'nexttext',
+    });
+  });
+
+  it('should handle COMPOSE_COMPOSING_CHANGE', () => {
+    const state = ImmutableMap({ is_composing: true });
+    const action = {
+      type: actions.COMPOSE_COMPOSING_CHANGE,
+      value: false,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_composing: false,
+    });
+  });
+
+  it('should handle COMPOSE_SUBMIT_REQUEST', () => {
+    const state = ImmutableMap({ is_submitting: false });
+    const action = {
+      type: actions.COMPOSE_SUBMIT_REQUEST,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_submitting: true,
+    });
+  });
+
+  it('should handle COMPOSE_UPLOAD_CHANGE_REQUEST', () => {
+    const state = ImmutableMap({ is_changing_upload: false });
+    const action = {
+      type: actions.COMPOSE_UPLOAD_CHANGE_REQUEST,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_changing_upload: true,
+    });
+  });
+
+  it('should handle COMPOSE_SUBMIT_SUCCESS', () => {
+    const state = ImmutableMap({ privacy: 'public' });
+    const action = {
+      type: actions.COMPOSE_SUBMIT_SUCCESS,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      privacy: undefined,
+    });
+  });
+
+  it('should handle COMPOSE_SUBMIT_FAIL', () => {
+    const state = ImmutableMap({ is_submitting: true });
+    const action = {
+      type: actions.COMPOSE_SUBMIT_FAIL,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_submitting: false,
+    });
+  });
+
+  it('should handle COMPOSE_UPLOAD_CHANGE_FAIL', () => {
+    const state = ImmutableMap({ is_changing_upload: true });
+    const action = {
+      type: actions.COMPOSE_UPLOAD_CHANGE_FAIL,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_changing_upload: false,
+    });
+  });
+
+  it('should handle COMPOSE_UPLOAD_REQUEST', () => {
+    const state = ImmutableMap({ is_uploading: false });
+    const action = {
+      type: actions.COMPOSE_UPLOAD_REQUEST,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_uploading: true,
+    });
+  });
+
+  // it('should handle COMPOSE_UPLOAD_SUCCESS and mark sensitive if default sensitive enabled', () => {
+  //   const state = ImmutableMap({ media_attachments: { } });
+  //   const media = null;
   //   const action = {
   //     type: actions.COMPOSE_UPLOAD_SUCCESS,
+  //     media: media,
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     is_uploading: false,
+  //     sensitive: true,
   //   });
   // });
-  //
-  // it('should handle COMPOSE_UPLOAD_FAIL', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_FAIL,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
+
+  it('should handle COMPOSE_UPLOAD_FAIL', () => {
+    const state = ImmutableMap({ is_uploading: true });
+    const action = {
+      type: actions.COMPOSE_UPLOAD_FAIL,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_uploading: false,
+    });
+  });
+
   // it('should handle COMPOSE_UPLOAD_UNDO', () => {
   //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
   //   const action = {
@@ -336,36 +333,38 @@ describe('compose reducer', () => {
   //   });
   // });
   //
-  // it('should handle COMPOSE_UPLOAD_PROGRESS', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_PROGRESS,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
+  it('should handle COMPOSE_UPLOAD_PROGRESS', () => {
+    const state = ImmutableMap({ progress: 0 });
+    const action = {
+      type: actions.COMPOSE_UPLOAD_PROGRESS,
+      loaded: 10,
+      total: 15,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      progress: 67,
+    });
+  });
+
   // it('should handle COMPOSE_MENTION', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ focusDate: null, caretPosition: 0 });
   //   const action = {
   //     type: actions.COMPOSE_MENTION,
+  //     account: '@alex@gleasonator.com',
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     focusDate: 'unlisted',
+  //     caretPosition: 12,
   //   });
   // });
-  //
+
   // it('should handle COMPOSE_DIRECT', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ caretPosition: 0, privacy: 'public' });
   //   const action = {
   //     type: actions.COMPOSE_DIRECT,
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     caretPosition: 12,
+  //     privacy: 'direct',
   //   });
   // });
   //
@@ -469,13 +468,17 @@ describe('compose reducer', () => {
   // });
   //
   // it('should handle COMPOSE_POLL_ADD', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ poll: null });
+  //   const initialPoll = ImmutableMap({
+  //     options: ImmutableList(['', '']),
+  //     expires_in: 24 * 3600,
+  //     multiple: false,
+  //   });
   //   const action = {
   //     type: actions.COMPOSE_POLL_ADD,
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     poll: initialPoll,
   //   });
   // });
   //
