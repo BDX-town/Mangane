@@ -121,7 +121,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
             onToggleVisibility={this.props.onToggleMediaVisibility}
           />
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const audio = status.getIn(['media_attachments', 0]);
 
         media = (
