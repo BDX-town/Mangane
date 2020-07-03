@@ -39,11 +39,13 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const getAccount = makeGetAccount();
+  const patronEnabled = state.getIn(['soapbox', 'extensions', 'patron', 'enabled']);
+  const patronUrl = state.getIn(['soapbox', 'extensions', 'patron', 'baseUrl']);
 
   return {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
-    hasPatron: state.getIn(['soapbox', 'extensions', 'patron']),
+    patronUrl: patronEnabled && patronUrl,
     isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
@@ -75,7 +77,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, onClose, intl, account, onClickLogOut, hasPatron, isStaff } = this.props;
+    const { sidebarOpen, onClose, intl, account, onClickLogOut, patronUrl, isStaff } = this.props;
     if (!account) return null;
     const acct = account.get('acct');
 
@@ -127,11 +129,11 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='envelope' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.messages)}</span>
               </NavLink>
-              {hasPatron ?
-                <NavLink className='sidebar-menu-item' to='/donate' onClick={onClose}>
+              {patronUrl ?
+                <a className='sidebar-menu-item' href={patronUrl} onClick={onClose}>
                   <Icon id='dollar' />
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
-                </NavLink>
+                </a>
                 : ''}
               <NavLink className='sidebar-menu-item' to='/lists' onClick={onClose}>
                 <Icon id='list' />

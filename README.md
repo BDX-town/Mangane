@@ -124,7 +124,7 @@ For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
 
 Allows using an HTTPS backend if set to `true`.
 
-This is needed if `BACKEND_URL` or `PATRON_URL` are set to an `https://` value.
+This is needed if `BACKEND_URL` is set to an `https://` value.
 [More info](https://stackoverflow.com/a/48624590/8811886).
 
 **Default:** `false`

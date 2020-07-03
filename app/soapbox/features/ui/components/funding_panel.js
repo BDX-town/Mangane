@@ -5,6 +5,16 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ProgressBar from '../../../components/progress_bar';
 import { fetchFunding } from 'soapbox/actions/patron';
 
+const moneyFormat = amount => (
+  new Intl
+    .NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'usd',
+      notation: 'compact',
+    })
+    .format(amount/100)
+);
+
 class FundingPanel extends ImmutablePureComponent {
 
   componentDidMount() {
@@ -12,21 +22,22 @@ class FundingPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { funding } = this.props;
+    const { funding, patronUrl } = this.props;
 
     if (!funding) {
       return null;
     }
 
+    const amount = funding.getIn(['funding', 'amount']);
     const goal = funding.getIn(['goals', '0', 'amount']);
     const goal_text = funding.getIn(['goals', '0', 'text']);
-    const goal_reached = funding.get('amount') >= goal;
+    const goal_reached = amount >= goal;
     let ratio_text;
 
     if (goal_reached) {
-      ratio_text = <><strong>${Math.floor(goal/100)}</strong> per month<span className='funding-panel__reached'>&mdash; reached!</span></>;
+      ratio_text = <><strong>{moneyFormat(goal)}</strong> per month<span className='funding-panel__reached'>&mdash; reached!</span></>;
     } else {
-      ratio_text = <><strong>${Math.floor(funding.get('amount')/100)} out of ${Math.floor(goal/100)}</strong> per month</>;
+      ratio_text = <><strong>{moneyFormat(amount)} out of {moneyFormat(goal)}</strong> per month</>;
     }
 
     return (
@@ -41,11 +52,11 @@ class FundingPanel extends ImmutablePureComponent {
           <div className='funding-panel__ratio'>
             {ratio_text}
           </div>
-          <ProgressBar progress={funding.get('amount')/goal} />
+          <ProgressBar progress={amount/goal} />
           <div className='funding-panel__description'>
             {goal_text}
           </div>
-          <a className='button' href='/donate'>Donate</a>
+          {patronUrl && <a className='button' href={patronUrl}>Donate</a>}
         </div>
       </div>
     );
@@ -56,6 +67,7 @@ class FundingPanel extends ImmutablePureComponent {
 const mapStateToProps = state => {
   return {
     funding: state.getIn(['patron', 'funding']),
+    patronUrl: state.getIn(['soapbox', 'extensions', 'patron', 'baseUrl']),
   };
 };
 

@@ -16,6 +16,14 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+
+  &__icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+  }
 }
 
 .media-gallery__item-thumbnail {
@@ -31,6 +39,10 @@
   .still-image {
     height: 100%;
     width: 100%;
+
+    img {
+      object-fit: contain;
+    }
   }
 
   .still-image--play-on-hover::before {
@@ -108,7 +120,8 @@
   position: absolute;
 }
 
-.media-gallery__gifv__label {
+.media-gallery__gifv__label,
+.media-gallery__file-extension__label {
   display: block;
   position: absolute;
   color: var(--primary-text-color);

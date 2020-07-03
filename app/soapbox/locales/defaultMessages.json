@@ -867,11 +867,43 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Click the image to get a new captcha",
-        "id": "registration.captcha.hint"
+        "defaultMessage": "Play",
+        "id": "audio.play"
+      },
+      {
+        "defaultMessage": "Pause",
+        "id": "audio.pause"
+      },
+      {
+        "defaultMessage": "Mute",
+        "id": "audio.mute"
+      },
+      {
+        "defaultMessage": "Unmute",
+        "id": "audio.unmute"
+      },
+      {
+        "defaultMessage": "Hide audio",
+        "id": "audio.hide"
+      },
+      {
+        "defaultMessage": "Expand audio",
+        "id": "audio.expand"
+      },
+      {
+        "defaultMessage": "Close audio",
+        "id": "audio.close"
+      },
+      {
+        "defaultMessage": "Sensitive content",
+        "id": "status.sensitive_warning"
+      },
+      {
+        "defaultMessage": "Media hidden",
+        "id": "status.media_hidden"
       }
     ],
-    "path": "app/soapbox/features/auth_login/components/captcha.json"
+    "path": "app/soapbox/features/audio/index.json"
   },
   {
     "descriptors": [
@@ -1226,7 +1258,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Add media (JPEG, PNG, GIF, WebM, MP4, MOV)",
+        "defaultMessage": "Add media attachment",
         "id": "upload_button.label"
       }
     ],

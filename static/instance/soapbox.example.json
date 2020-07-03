@@ -12,9 +12,6 @@
       "url": "https://blog.example.com"
     }]
   },
-  "extensions": {
-    "patron": false
-  },
   "defaultSettings": {
     "autoPlayGif": false,
     "themeMode": "light"

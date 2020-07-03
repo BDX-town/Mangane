@@ -10,6 +10,7 @@ import { FormattedDate, FormattedNumber } from 'react-intl';
 import Card from './card';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Video from '../../video';
+import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
@@ -115,6 +116,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
             height={150}
             inline
             onOpenVideo={this.handleOpenVideo}
+            sensitive={status.get('sensitive')}
+            visible={this.props.showMedia}
+            onToggleVisibility={this.props.onToggleMediaVisibility}
+          />
+        );
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+        const audio = status.getIn(['media_attachments', 0]);
+
+        media = (
+          <Audio
+            src={audio.get('url')}
+            alt={audio.get('description')}
+            inline
             sensitive={status.get('sensitive')}
             visible={this.props.showMedia}
             onToggleVisibility={this.props.onToggleMediaVisibility}
