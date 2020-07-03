@@ -210,7 +210,7 @@ describe('compose reducer', () => {
     const state = ImmutableMap({ privacy: 'public' });
     const action = {
       type: actions.COMPOSE_VISIBILITY_CHANGE,
-      value: 'direct'
+      value: 'direct',
     };
     expect(reducer(state, action).toJS()).toMatchObject({
       privacy: 'direct',
@@ -299,18 +299,31 @@ describe('compose reducer', () => {
     });
   });
 
-  // it('should handle COMPOSE_UPLOAD_SUCCESS and mark sensitive if default sensitive enabled', () => {
-  //   const state = ImmutableMap({ media_attachments: { } });
-  //   const media = null;
-  //   const action = {
-  //     type: actions.COMPOSE_UPLOAD_SUCCESS,
-  //     media: media,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     is_uploading: false,
-  //     sensitive: true,
-  //   });
-  // });
+  it('should handle COMPOSE_UPLOAD_SUCCESS', () => {
+    const state = ImmutableMap({ media_attachments: [] });
+    const media = [
+      {
+        description: null,
+        id: '1375732379',
+        pleroma: {
+          mime_type: 'image/jpeg'
+        },
+        preview_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+        remote_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+        text_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+        type: 'image',
+        url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg'
+      }
+    ];
+    const action = {
+      type: actions.COMPOSE_UPLOAD_SUCCESS,
+      media: media,
+      skipLoading: true,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      is_uploading: false,
+    });
+  });
 
   it('should handle COMPOSE_UPLOAD_FAIL', () => {
     const state = ImmutableMap({ is_uploading: true });
@@ -323,16 +336,30 @@ describe('compose reducer', () => {
   });
 
   // it('should handle COMPOSE_UPLOAD_UNDO', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ media_attachments: [] });
   //   const action = {
   //     type: actions.COMPOSE_UPLOAD_UNDO,
+  //     media_attachments: [
+  //       {
+  //         description: null,
+  //         id: '1375732379',
+  //         pleroma: {
+  //           mime_type: 'image/jpeg'
+  //         },
+  //         preview_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //         remote_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //         text_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //         type: 'image',
+  //         url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg'
+  //       }
+  //     ],
+  //     mediaId: '1375732379',
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     media_attachments: [],
   //   });
   // });
-  //
+
   it('should handle COMPOSE_UPLOAD_PROGRESS', () => {
     const state = ImmutableMap({ progress: 0 });
     const action = {
@@ -345,17 +372,103 @@ describe('compose reducer', () => {
     });
   });
 
-  // it('should handle COMPOSE_MENTION', () => {
-  //   const state = ImmutableMap({ focusDate: null, caretPosition: 0 });
-  //   const action = {
-  //     type: actions.COMPOSE_MENTION,
-  //     account: '@alex@gleasonator.com',
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     focusDate: 'unlisted',
-  //     caretPosition: 12,
-  //   });
-  // });
+//   it('should handle COMPOSE_MENTION', () => {
+//     const state = ImmutableMap({});
+//     const account = {
+//   '9w1HhmenIAKBHJiUs4': {
+//     header_static: 'https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png',
+//     display_name_html: 'Alex Gleason',
+//     bot: false,
+//     display_name: 'Alex Gleason',
+//     created_at: '2020-06-12T21:47:28.000Z',
+//     locked: false,
+//     emojis: [],
+//     header: 'https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png',
+//     url: 'https://gleasonator.com/users/alex',
+//     note: 'Fediverse developer. I come in peace. <a class="hashtag" data-tag="vegan" href="https://gleasonator.com/tag/vegan">#vegan</a> <a class="hashtag" data-tag="freeculture" href="https://gleasonator.com/tag/freeculture">#freeculture</a> <a class="hashtag" data-tag="atheist" href="https://gleasonator.com/tag/atheist">#atheist</a> <a class="hashtag" data-tag="antiporn" href="https://gleasonator.com/tag/antiporn">#antiporn</a> <a class="hashtag" data-tag="gendercritical" href="https://gleasonator.com/tag/gendercritical">#gendercritical</a>. Boosts ≠ endorsements.',
+//     acct: 'alex@gleasonator.com',
+//     avatar_static: 'https://media.gleasonator.com/accounts/avatars/000/000/001/original/1a630e4c4c64c948.jpg',
+//     username: 'alex',
+//     avatar: 'https://media.gleasonator.com/accounts/avatars/000/000/001/original/1a630e4c4c64c948.jpg',
+//     fields: [
+//       {
+//         name: 'Website',
+//         value: '<a href="https://alexgleason.me" rel="ugc">https://alexgleason.me</a>',
+//         name_emojified: 'Website',
+//         value_emojified: '<a href="https://alexgleason.me" rel="ugc">https://alexgleason.me</a>',
+//         value_plain: 'https://alexgleason.me'
+//       },
+//       {
+//         name: 'Pleroma+Soapbox',
+//         value: '<a href="https://soapbox.pub" rel="ugc">https://soapbox.pub</a>',
+//         name_emojified: 'Pleroma+Soapbox',
+//         value_emojified: '<a href="https://soapbox.pub" rel="ugc">https://soapbox.pub</a>',
+//         value_plain: 'https://soapbox.pub'
+//       },
+//       {
+//         name: 'Email',
+//         value: 'alex@alexgleason.me',
+//         name_emojified: 'Email',
+//         value_emojified: 'alex@alexgleason.me',
+//         value_plain: 'alex@alexgleason.me'
+//       },
+//       {
+//         name: 'Gender identity',
+//         value: 'Soyboy',
+//         name_emojified: 'Gender identity',
+//         value_emojified: 'Soyboy',
+//         value_plain: 'Soyboy'
+//       }
+//     ],
+//     pleroma: {
+//       hide_follows: false,
+//       hide_followers_count: false,
+//       background_image: null,
+//       confirmation_pending: false,
+//       is_moderator: false,
+//       hide_follows_count: false,
+//       hide_followers: false,
+//       relationship: {
+//         showing_reblogs: true,
+//         followed_by: false,
+//         subscribing: false,
+//         blocked_by: false,
+//         requested: false,
+//         domain_blocking: false,
+//         following: false,
+//         endorsed: false,
+//         blocking: false,
+//         muting: false,
+//         id: '9w1HhmenIAKBHJiUs4',
+//         muting_notifications: false
+//       },
+//       tags: [],
+//       hide_favorites: true,
+//       is_admin: false,
+//       skip_thread_containment: false
+//     },
+//     source: {
+//       fields: [],
+//       note: 'Fediverse developer. I come in peace. #vegan #freeculture #atheist #antiporn #gendercritical. Boosts ≠ endorsements.',
+//       pleroma: {
+//         actor_type: 'Person',
+//         discoverable: false
+//       },
+//       sensitive: false
+//     },
+//     id: '9w1HhmenIAKBHJiUs4',
+//     note_emojified: 'Fediverse developer. I come in peace. <a class="hashtag" data-tag="vegan" href="https://gleasonator.com/tag/vegan">#vegan</a> <a class="hashtag" data-tag="freeculture" href="https://gleasonator.com/tag/freeculture">#freeculture</a> <a class="hashtag" data-tag="atheist" href="https://gleasonator.com/tag/atheist">#atheist</a> <a class="hashtag" data-tag="antiporn" href="https://gleasonator.com/tag/antiporn">#antiporn</a> <a class="hashtag" data-tag="gendercritical" href="https://gleasonator.com/tag/gendercritical">#gendercritical</a>. Boosts ≠ endorsements.'
+//   }
+// };
+//     const action = {
+//       type: actions.COMPOSE_MENTION,
+//       account: account,
+//     };
+//     expect(reducer(state, action).toJS()).toMatchObject({
+//       text: '@alex@gleasonator.com',
+//       caretPosition: null,
+//     });
+//   });
 
   // it('should handle COMPOSE_DIRECT', () => {
   //   const state = ImmutableMap({ caretPosition: 0, privacy: 'public' });
@@ -467,21 +580,21 @@ describe('compose reducer', () => {
   //   });
   // });
   //
-  // it('should handle COMPOSE_POLL_ADD', () => {
-  //   const state = ImmutableMap({ poll: null });
-  //   const initialPoll = ImmutableMap({
-  //     options: ImmutableList(['', '']),
-  //     expires_in: 24 * 3600,
-  //     multiple: false,
-  //   });
-  //   const action = {
-  //     type: actions.COMPOSE_POLL_ADD,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     poll: initialPoll,
-  //   });
-  // });
-  //
+  it('should handle COMPOSE_POLL_ADD', () => {
+    const state = ImmutableMap({ poll: null });
+    const initialPoll = Object({
+      options: [ '', '' ],
+      expires_in: 24 * 3600,
+      multiple: false,
+    });
+    const action = {
+      type: actions.COMPOSE_POLL_ADD,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      poll: initialPoll,
+    });
+  });
+
   // it('should handle COMPOSE_POLL_REMOVE', () => {
   //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
   //   const action = {
