@@ -9,6 +9,7 @@ const { settings, output } = require('./configuration');
 const watchOptions = {};
 
 const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
+const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
 const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
 
 const backendEndpoints = [
@@ -25,6 +26,10 @@ const backendEndpoints = [
 
 const makeProxyConfig = () => {
   let proxyConfig = {};
+  proxyConfig['/api/patron'] = {
+    target: patronUrl,
+    secure: secureProxy,
+  };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
       target: backendUrl,
