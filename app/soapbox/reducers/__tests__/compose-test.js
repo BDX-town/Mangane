@@ -5,7 +5,7 @@ import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import * as actions from 'soapbox/actions/compose';
 //import { STORE_HYDRATE } from 'soapbox/actions/store';
 //import { REDRAFT } from 'soapbox/actions/statuses';
-//import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
 describe('compose reducer', () => {
   it('returns the initial state by default', () => {
@@ -570,7 +570,7 @@ describe('compose reducer', () => {
   //   });
   //
   it('should handle COMPOSE_SUGGESTIONS_CLEAR', () => {
-    const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+    const state = ImmutableMap({ });
     const action = {
       type: actions.COMPOSE_SUGGESTIONS_CLEAR,
       suggestions: [],
@@ -578,7 +578,6 @@ describe('compose reducer', () => {
     };
     expect(reducer(state, action).toJS()).toMatchObject({
       suggestion_token: null,
-      privacy: 'public',
     });
   });
 
@@ -613,45 +612,48 @@ describe('compose reducer', () => {
     expect(reducer(state, action).toJS()).toMatchObject({
       suggestion_token: 'aaadken3',
       suggestions: [],
-      tagHistory: [ 'hashtag', ],
+      tagHistory: [ 'hashtag' ],
     });
   });
 
-  // it('should handle COMPOSE_TAG_HISTORY_UPDATE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_TAG_HISTORY_UPDATE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
-  // it('should handle TIMELINE_DELETE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: TIMELINE_DELETE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
+  it('should handle COMPOSE_TAG_HISTORY_UPDATE', () => {
+    const state = ImmutableMap({ });
+    const action = {
+      type: actions.COMPOSE_TAG_HISTORY_UPDATE,
+      tags: [ 'hashtag', 'hashtag2'],
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      tagHistory: [ 'hashtag', 'hashtag2' ],
+    });
+  });
+
+  it('should handle TIMELINE_DELETE - delete status from timeline', () => {
+    const state = ImmutableMap({ in_reply_to: '9wk6pmImMrZjgrK7iC' });
+    const action = {
+      type: TIMELINE_DELETE,
+      id: '9wk6pmImMrZjgrK7iC',
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      in_reply_to: null,
+    });
+  });
+
   // it('should handle COMPOSE_EMOJI_INSERT', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ text: 'this is my' });
   //   const action = {
   //     type: actions.COMPOSE_EMOJI_INSERT,
+  //     position: 11,
+  //     emoji: [],
+  //     needsSpace, true,
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     text: 'this is my :emoji:',
+  //     caretPosition: 15,
   //   });
   // });
   //
   // it('should handle COMPOSE_UPLOAD_CHANGE_SUCCESS', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ default_privacy: 'public' });
   //   const action = {
   //     type: actions.COMPOSE_UPLOAD_CHANGE_SUCCESS,
   //   };
@@ -662,7 +664,7 @@ describe('compose reducer', () => {
   // });
   //
   // it('should handle REDRAFT', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const state = ImmutableMap({ default_privacy: 'public' });
   //   const action = {
   //     type: REDRAFT,
   //   };
@@ -675,9 +677,12 @@ describe('compose reducer', () => {
   it('should handle COMPOSE_POLL_ADD', () => {
     const state = ImmutableMap({ poll: null });
     const initialPoll = Object({
-      options: [ '', '' ],
-      expires_in: 24 * 3600,
-      multiple: false,
+      options: [
+        '',
+        ''
+      ],
+      expires_in: 86400,
+      multiple: false
     });
     const action = {
       type: actions.COMPOSE_POLL_ADD,
@@ -687,28 +692,44 @@ describe('compose reducer', () => {
     });
   });
 
-  // it('should handle COMPOSE_POLL_REMOVE', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
-  //   const action = {
-  //     type: actions.COMPOSE_POLL_REMOVE,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
-  // });
-  //
+  it('should handle COMPOSE_POLL_REMOVE', () => {
+    const state = ImmutableMap({ });
+    const action = {
+      type: actions.COMPOSE_POLL_REMOVE,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      poll: null,
+    });
+  });
+
   // it('should handle COMPOSE_POLL_OPTION_ADD', () => {
-  //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
+  //   const initialPoll = Object({
+  //     options: [
+  //       'option 1',
+  //       'option 2',
+  //     ],
+  //     expires_in: 86400,
+  //     multiple: false
+  //   });
+  //   const updatedPoll = Object({
+  //     options: [
+  //       'option 1',
+  //       'option 2',
+  //       'option 3',
+  //     ],
+  //     expires_in: 86400,
+  //     multiple: false
+  //   });
+  //   const state = ImmutableMap({ poll: initialPoll });
   //   const action = {
   //     type: actions.COMPOSE_POLL_OPTION_ADD,
+  //     title: 'option 3',
   //   };
   //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
+  //     poll: updatedPoll,
   //   });
   // });
-  //
+
   // it('should handle COMPOSE_POLL_OPTION_CHANGE', () => {
   //   const state = ImmutableMap({ default_privacy: 'public', privacy: 'public'});
   //   const action = {
