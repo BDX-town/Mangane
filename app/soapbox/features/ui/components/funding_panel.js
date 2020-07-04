@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ProgressBar from '../../../components/progress_bar';
-import { fetchFunding } from 'soapbox/actions/patron';
+import { fetchPatronInstance } from 'soapbox/actions/patron';
 
 const moneyFormat = amount => (
   new Intl
@@ -18,19 +18,16 @@ const moneyFormat = amount => (
 class FundingPanel extends ImmutablePureComponent {
 
   componentDidMount() {
-    this.props.dispatch(fetchFunding());
+    this.props.dispatch(fetchPatronInstance());
   }
 
   render() {
-    const { funding, patronUrl } = this.props;
+    const { patron, patronUrl } = this.props;
+    if (patron.isEmpty()) return null;
 
-    if (!funding) {
-      return null;
-    }
-
-    const amount = funding.getIn(['funding', 'amount']);
-    const goal = funding.getIn(['goals', '0', 'amount']);
-    const goal_text = funding.getIn(['goals', '0', 'text']);
+    const amount = patron.getIn(['funding', 'amount']);
+    const goal = patron.getIn(['goals', '0', 'amount']);
+    const goal_text = patron.getIn(['goals', '0', 'text']);
     const goal_reached = amount >= goal;
     let ratio_text;
 
@@ -66,7 +63,7 @@ class FundingPanel extends ImmutablePureComponent {
 
 const mapStateToProps = state => {
   return {
-    funding: state.getIn(['patron', 'funding']),
+    patron: state.get('patron'),
     patronUrl: state.getIn(['soapbox', 'extensions', 'patron', 'baseUrl']),
   };
 };
