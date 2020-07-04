@@ -103,7 +103,7 @@
   background: rgba($base-overlay-background, 0.5);
   box-sizing: border-box;
   border: 0;
-  color: var(--primary-text-color);
+  color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -114,6 +114,12 @@
   position: absolute;
   top: 0;
   bottom: 0;
+
+  @media screen and (max-width: 600px) { padding: 30px 2px; }
+
+  .fa {
+    margin-right: 0;
+  }
 }
 
 .media-modal__nav--left {
@@ -182,6 +188,7 @@
   right: 8px;
   top: 8px;
   z-index: 100;
+  color: #fff;
 }
 
 .onboarding-modal,

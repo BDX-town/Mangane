@@ -365,6 +365,8 @@
     width: 100vmin;
     height: 80px;
 
+    @media screen and (max-width: 790px) { width: 80vmin; }
+
     .audio-player__buttons {
       button {
         padding-top: 10px;
