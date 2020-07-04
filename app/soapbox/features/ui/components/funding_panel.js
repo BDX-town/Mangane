@@ -22,7 +22,7 @@ class FundingPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { patron, patronUrl } = this.props;
+    const { patron } = this.props;
     if (patron.isEmpty()) return null;
 
     const amount = patron.getIn(['funding', 'amount']);
@@ -53,7 +53,7 @@ class FundingPanel extends ImmutablePureComponent {
           <div className='funding-panel__description'>
             {goal_text}
           </div>
-          {patronUrl && <a className='button' href={patronUrl}>Donate</a>}
+          <a className='button' href={patron.get('url')}>Donate</a>
         </div>
       </div>
     );
@@ -64,7 +64,6 @@ class FundingPanel extends ImmutablePureComponent {
 const mapStateToProps = state => {
   return {
     patron: state.get('patron'),
-    patronUrl: state.getIn(['soapbox', 'extensions', 'patron', 'baseUrl']),
   };
 };
 
