@@ -137,8 +137,8 @@ class RelativeTimestamp extends React.Component {
       this.state.now !== nextState.now;
   }
 
-  componentDidUpdate(nextProps) {
-    if (this.props.timestamp !== nextProps.timestamp) {
+  componentDidUpdate(prevProps) {
+    if (this.props.timestamp !== prevProps.timestamp) {
       this.setState({ now: Date.now() });
     }
   }
@@ -147,19 +147,19 @@ class RelativeTimestamp extends React.Component {
     this._scheduleNextUpdate(this.props, this.state);
   }
 
-  componentDidUpdate(nextProps, nextState) {
-    this._scheduleNextUpdate(nextProps, nextState);
+  componentDidUpdate() {
+    this._scheduleNextUpdate();
   }
 
   componentWillUnmount() {
     clearTimeout(this._timer);
   }
 
-  _scheduleNextUpdate(props, state) {
+  _scheduleNextUpdate() {
     clearTimeout(this._timer);
 
-    const { timestamp }  = props;
-    const delta          = (new Date(timestamp)).getTime() - state.now;
+    const { timestamp }  = this.props;
+    const delta          = (new Date(timestamp)).getTime() - this.state.now;
     const unitDelay      = getUnitDelay(selectUnits(delta));
     const unitRemainder  = Math.abs(delta % unitDelay);
     const updateInterval = 1000 * 10;

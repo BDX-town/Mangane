@@ -390,23 +390,24 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
+  componentDidUpdate(prevProps, prevState) {
+    const { params, status } = this.props;
+    const { ancestorsIds } = prevProps;
+
+    if (params.statusId !== prevProps.params.statusId && params.statusId) {
       this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(nextProps.params.statusId));
+      this.props.dispatch(fetchStatus(params.statusId));
     }
 
-    if (nextProps.status && nextProps.status.get('id') !== this.state.loadedStatusId) {
-      this.setState({ showMedia: defaultMediaVisibility(nextProps.status), loadedStatusId: nextProps.status.get('id') });
+    if (status && status.get('id') !== prevState.loadedStatusId) {
+      this.setState({ showMedia: defaultMediaVisibility(status), loadedStatusId: status.get('id') });
     }
 
     if (this._scrolledIntoView) {
       return;
     }
 
-    const { status, ancestorsIds } = this.props;
-
-    if (status && ancestorsIds && ancestorsIds.size > 0) {
+    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
       const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
 
       window.requestAnimationFrame(() => {

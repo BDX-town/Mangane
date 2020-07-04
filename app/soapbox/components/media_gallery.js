@@ -253,21 +253,15 @@ class MediaGallery extends React.PureComponent {
   state = {
     visible: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
     width: this.props.defaultWidth,
-    media: this.props.media,
-    displayMedia: this.props.displayMedia,
   };
 
-  static getDerivedStateFromProps(nextProps, state) {
-    if (!is(nextProps.media, state.media) && nextProps.visible === undefined) {
-      return {
-        visible: state.displayMedia !== 'hide_all' && !nextProps.sensitive || state.displayMedia === 'show_all',
-      };
-    } else if (!is(nextProps.visible, state.visible) && nextProps.visible !== undefined) {
-      return {
-        visible: nextProps.visible,
-      };
+  componentDidUpdate(prevProps) {
+    const { media, visible, sensitive } = this.props;
+    if (!is(media, prevProps.media) && visible === undefined) {
+      this.setState({ visible: prevProps.displayMedia !== 'hide_all' && !sensitive || prevProps.displayMedia === 'show_all' });
+    } else if (!is(visible, prevProps.visible) && visible !== undefined) {
+      this.setState({ visible });
     }
-    return null;
   }
 
   handleOpen = () => {

@@ -291,17 +291,18 @@ class Video extends React.PureComponent {
     document.removeEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
-      this.setState({ revealed: nextProps.visible });
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
+    const { visible, blurhash } = this.props;
+
+    if (!is(visible, prevProps.visible) && visible !== undefined) {
+      this.setState({ revealed: visible });
+    }
+
     if (prevState.revealed && !this.state.revealed && this.video) {
       this.video.pause();
     }
-    if (prevProps.blurhash !== this.props.blurhash && this.props.blurhash) {
+
+    if (prevProps.blurhash !== blurhash && blurhash) {
       this._decode();
     }
   }

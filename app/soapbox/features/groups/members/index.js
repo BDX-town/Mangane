@@ -36,9 +36,9 @@ class GroupMembers extends ImmutablePureComponent {
     this.props.dispatch(fetchMembers(id));
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.params.id !== this.props.params.id) {
-      this.props.dispatch(fetchMembers(nextProps.params.id));
+  componentDidUpdate(prevProps) {
+    if (this.props.params.id !== prevProps.params.id) {
+      this.props.dispatch(fetchMembers(this.props.params.id));
     }
   }
 
