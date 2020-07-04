@@ -9,9 +9,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
-import ProBadge from 'soapbox/components/pro_badge';
-import DonorBadge from 'soapbox/components/donor_badge';
-import InvestorBadge from 'soapbox/components/investor_badge';
 import { List as ImmutableList } from 'immutable';
 import { acctFull, isAdmin, isModerator } from 'soapbox/utils/accounts';
 
@@ -79,9 +76,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           <div className='profile-info-panel-content__badges'>
             {isAdmin(account) && <Badge slug='admin' title='Admin' />}
             {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
-            {account.get('is_pro') && <ProBadge />}
-            {account.get('is_donor') && <DonorBadge />}
-            {account.get('is_investor') && <InvestorBadge />}
+            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
             {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
               <Icon id='calendar' />
               <FormattedMessage
