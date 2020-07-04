@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "ระยะเวลาโพล",
   "compose_form.poll.option_placeholder": "ทางเลือก {number}",
   "compose_form.poll.remove_option": "เอาทางเลือกนี้ออก",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "โพสต์",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "ทำเครื่องหมายสื่อว่าละเอียดอ่อน",

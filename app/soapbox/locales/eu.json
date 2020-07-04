@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "Inkestaren iraupena",
   "compose_form.poll.option_placeholder": "{number}. aukera",
   "compose_form.poll.remove_option": "Kendu aukera hau",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Publish",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Markatu multimedia hunkigarri gisa",

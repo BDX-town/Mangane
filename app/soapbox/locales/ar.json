@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "مدة استطلاع الرأي",
   "compose_form.poll.option_placeholder": "الخيار {number}",
   "compose_form.poll.remove_option": "إزالة هذا الخيار",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "بوّق",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "تحديد الوسائط كحساسة",

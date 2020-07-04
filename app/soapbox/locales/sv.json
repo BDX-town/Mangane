@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "Varaktighet för omröstning",
   "compose_form.poll.option_placeholder": "Alternativ {number}",
   "compose_form.poll.remove_option": "Ta bort alternativ",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Tut",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "Markera media som känsligt",

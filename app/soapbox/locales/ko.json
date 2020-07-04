@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "투표 기간",
   "compose_form.poll.option_placeholder": "{number}번 항목",
   "compose_form.poll.remove_option": "이 항목 삭제",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "툿",
   "compose_form.publish_loud": "{publish}!",
   "compose_form.sensitive.hide": "미디어를 민감함으로 설정하기",

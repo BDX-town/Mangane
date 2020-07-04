@@ -87,6 +87,7 @@
   "compose_form.poll.duration": "Äänestyksen kesto",
   "compose_form.poll.option_placeholder": "Valinta numero",
   "compose_form.poll.remove_option": "Poista tämä valinta",
+  "compose_form.poll.type.hint": "Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.",
   "compose_form.publish": "Tuuttaa",
   "compose_form.publish_loud": "Julkista!",
   "compose_form.sensitive.hide": "Valitse tämä arkaluontoisena",
