@@ -14,6 +14,10 @@ import {
   RELATIONSHIPS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
+  ACCOUNT_IMPORT,
+  ACCOUNTS_IMPORT,
+} from '../actions/importer';
+import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
 } from '../actions/domain_blocks';
@@ -37,10 +41,27 @@ const setDomainBlocking = (state, accounts, blocking) => {
   });
 };
 
+const importPleromaAccount = (state, account) => {
+  if (!account.pleroma) return state;
+  return normalizeRelationship(state, account.pleroma.relationship);
+};
+
+const importPleromaAccounts = (state, accounts) => {
+  accounts.forEach(account => {
+    state = importPleromaAccount(state, account);
+  });
+
+  return state;
+};
+
 const initialState = ImmutableMap();
 
 export default function relationships(state = initialState, action) {
   switch(action.type) {
+  case ACCOUNT_IMPORT:
+    return importPleromaAccount(state, action.account);
+  case ACCOUNTS_IMPORT:
+    return importPleromaAccounts(state, action.accounts);
   case ACCOUNT_FOLLOW_REQUEST:
     return state.setIn([action.id, action.locked ? 'requested' : 'following'], true);
   case ACCOUNT_FOLLOW_FAIL:
