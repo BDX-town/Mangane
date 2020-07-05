@@ -11,10 +11,12 @@ import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
 import { acctFull } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+import { makeGetAccount } from '../selectors';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const getAccount = makeGetAccount();
 
   let accountId = -1;
   let account = null;
@@ -30,7 +32,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   //Children components fetch information
 
   return {
-    account,
+    account: accountId ? getAccount(state, accountId) : account,
     accountId,
     accountUsername,
     features: getFeatures(state.get('instance')),

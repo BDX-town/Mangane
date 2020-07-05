@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ProgressBar from '../../../components/progress_bar';
 import { fetchPatronInstance } from 'soapbox/actions/patron';
+import { Map as ImmutableMap } from 'immutable';
 
 const moneyFormat = amount => (
   new Intl
@@ -63,7 +64,7 @@ class FundingPanel extends ImmutablePureComponent {
 
 const mapStateToProps = state => {
   return {
-    patron: state.get('patron'),
+    patron: state.getIn(['patron', 'instance'], ImmutableMap()),
   };
 };
 
