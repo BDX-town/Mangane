@@ -1,0 +1,57 @@
+{
+    "acct": "lain@lain.com",
+    "avatar": "https://lain.com/media/0b7eb9eee68845f94dd1c7bd10d9bae90a2420cf6704de5485179c441eb0e6e0.jpg",
+    "avatar_static": "https://lain.com/media/0b7eb9eee68845f94dd1c7bd10d9bae90a2420cf6704de5485179c441eb0e6e0.jpg",
+    "bot": false,
+    "created_at": "2020-01-10T17:30:10.000Z",
+    "display_name": "Avalokiteshvara",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 807,
+    "following_count": 223,
+    "header": "https://lain.com/media/fb0768dfa331ad730de32189d2e89b99fe51eebe1782a16cf076d7693394e4f9.png",
+    "header_static": "https://lain.com/media/fb0768dfa331ad730de32189d2e89b99fe51eebe1782a16cf076d7693394e4f9.png",
+    "id": "9v5bqYwY2jfmvPNhTM",
+    "locked": false,
+    "note": "No more hiding",
+    "pleroma": {
+        "background_image": null,
+        "confirmation_pending": true,
+        "deactivated": false,
+        "hide_favorites": true,
+        "hide_followers": false,
+        "hide_followers_count": false,
+        "hide_follows": false,
+        "hide_follows_count": false,
+        "is_admin": false,
+        "is_moderator": false,
+        "relationship": {
+            "blocked_by": false,
+            "blocking": false,
+            "domain_blocking": false,
+            "endorsed": false,
+            "followed_by": true,
+            "following": true,
+            "id": "9v5bqYwY2jfmvPNhTM",
+            "muting": false,
+            "muting_notifications": false,
+            "requested": false,
+            "showing_reblogs": true,
+            "subscribing": false
+        },
+        "skip_thread_containment": false,
+        "tags": []
+    },
+    "source": {
+        "fields": [],
+        "note": "No more hiding",
+        "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false
+        },
+        "sensitive": false
+    },
+    "statuses_count": 21107,
+    "url": "https://lain.com/users/lain",
+    "username": "lain"
+}
