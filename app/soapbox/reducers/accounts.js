@@ -8,13 +8,13 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 const initialState = ImmutableMap();
 
 const normalizeAccount = (state, account) => {
-  account = { ...account };
+  const normalized = fromJS(account).deleteAll([
+    'followers_count',
+    'following_count',
+    'statuses_count',
+  ]);
 
-  delete account.followers_count;
-  delete account.following_count;
-  delete account.statuses_count;
-
-  return state.set(account.id, fromJS(account));
+  return state.set(account.id, normalized);
 };
 
 const normalizeAccounts = (state, accounts) => {
