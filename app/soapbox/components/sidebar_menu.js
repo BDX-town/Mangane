@@ -43,7 +43,7 @@ const mapStateToProps = state => {
   return {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
-    donateUrl: state.getIn(['patron', 'url']),
+    donateUrl: state.getIn(['patron', 'instance', 'url']),
     isStaff: isStaff(state.getIn(['accounts', me])),
   };
 };
