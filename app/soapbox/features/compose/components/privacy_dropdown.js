@@ -170,7 +170,7 @@ class PrivacyDropdown extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    const { intl: { formatMessage } } = this.props;
+    const { intl: { formatMessage } } = props;
 
     this.options = [
       { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },

@@ -64,6 +64,17 @@ class EditProfile extends ImmutablePureComponent {
     fields: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
+  constructor(props) {
+    super(props);
+    const initialState = props.account.withMutations(map => {
+      map.merge(map.get('source'));
+      map.delete('source');
+      map.set('fields', normalizeFields(map.get('fields')));
+      unescapeParams(map, ['display_name', 'note']);
+    });
+    this.state = initialState.toObject();
+  }
+
   makePreviewAccount = () => {
     const { account } = this.props;
     return account.merge(ImmutableMap({
@@ -115,17 +126,6 @@ class EditProfile extends ImmutablePureComponent {
     });
     this.setState({ isLoading: true });
     event.preventDefault();
-  }
-
-  constructor(props) {
-    super(props);
-    const initialState = this.props.account.withMutations(map => {
-      map.merge(map.get('source'));
-      map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields')));
-      unescapeParams(map, ['display_name', 'note']);
-    });
-    this.state = initialState.toObject();
   }
 
   handleCheckboxChange = e => {

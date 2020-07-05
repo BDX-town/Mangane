@@ -51,7 +51,7 @@ class Create extends React.PureComponent {
 
   constructor(props) {
     super(props);
-    this.props.reset();
+    props.reset();
   }
 
   handleTitleChange = e => {
