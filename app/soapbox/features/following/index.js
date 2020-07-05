@@ -69,10 +69,11 @@ class Following extends ImmutablePureComponent {
     }
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
-      this.props.dispatch(fetchAccount(nextProps.accountId));
-      this.props.dispatch(fetchFollowing(nextProps.accountId));
+  componentDidUpdate(prevProps) {
+    const { accountId, dispatch } = this.props;
+    if (accountId && accountId !== -1 && (accountId !== prevProps.accountId && accountId)) {
+      dispatch(fetchAccount(accountId));
+      dispatch(fetchFollowing(accountId));
     }
   }
 

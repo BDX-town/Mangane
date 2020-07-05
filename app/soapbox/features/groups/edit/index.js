@@ -55,16 +55,14 @@ class Edit extends React.PureComponent {
     setUp: PropTypes.func.isRequired,
   };
 
-  constructor(nextProps) {
-    super(nextProps);
-    if (this.props.group) {
-      this.props.setUp(this.props.group);
-    }
+  constructor(props) {
+    super(props);
+    if (props.group) props.setUp(props.group);
   }
 
-  componentDidUpdate(nextProps) {
-    if (!this.props.group && nextProps.group) {
-      this.props.setUp(nextProps.group);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.group && this.props.group) {
+      this.props.setUp(this.props.group);
     }
   }
 

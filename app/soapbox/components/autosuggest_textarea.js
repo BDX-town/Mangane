@@ -159,13 +159,11 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.textarea.focus();
   }
 
-  static getDerivedStateFromProps(nextProps, state) {
-    if (nextProps.suggestions && nextProps.suggestions.size > 0 && state.suggestionsHidden && state.focused) {
-      return {
-        suggestionsHidden: false,
-      };
+  componentDidUpdate(prevProps, prevState) {
+    const { suggestions } = this.props;
+    if (suggestions !== prevProps.suggestions && suggestions.size > 0 && prevState.suggestionsHidden && prevState.focused) {
+      this.setState({ suggestionsHidden: false });
     }
-    return null;
   }
 
   setTextarea = (c) => {

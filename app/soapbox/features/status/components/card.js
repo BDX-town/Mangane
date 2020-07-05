@@ -75,8 +75,8 @@ export default class Card extends React.PureComponent {
     embedded: false,
   };
 
-  componentDidUpdate(nextProps) {
-    if (!Immutable.is(this.props.card, nextProps.card)) {
+  componentDidUpdate(prevProps) {
+    if (!Immutable.is(prevProps.card, this.props.card)) {
       this.setState({ embedded: false });
     }
   }

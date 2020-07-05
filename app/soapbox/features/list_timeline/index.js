@@ -50,10 +50,10 @@ class ListTimeline extends React.PureComponent {
     this.handleDisconnect();
   }
 
-  componentDidUpdate(nextProps) {
-    if (nextProps.params.id !== this.props.params.id) {
+  componentDidUpdate(prevProps) {
+    if (this.props.params.id !== prevProps.params.id) {
       this.handleDisconnect();
-      this.handleConnect(nextProps.params.id);
+      this.handleConnect(this.props.params.id);
     }
   }
 

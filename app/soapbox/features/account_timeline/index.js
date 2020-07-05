@@ -81,17 +81,17 @@ class AccountTimeline extends ImmutablePureComponent {
     }
   }
 
-  componentDidUpdate(nextProps) {
-    const { me } = nextProps;
-    if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId) || nextProps.withReplies !== this.props.withReplies) {
-      this.props.dispatch(fetchAccount(nextProps.accountId));
-      if (me) this.props.dispatch(fetchAccountIdentityProofs(nextProps.accountId));
+  componentDidUpdate(prevProps) {
+    const { me, accountId, withReplies } = this.props;
+    if (accountId && accountId !== -1 && (accountId !== prevProps.accountId && accountId) || withReplies !== prevProps.withReplies) {
+      this.props.dispatch(fetchAccount(accountId));
+      if (me) this.props.dispatch(fetchAccountIdentityProofs(accountId));
 
-      if (!nextProps.withReplies) {
-        this.props.dispatch(expandAccountFeaturedTimeline(nextProps.accountId));
+      if (!withReplies) {
+        this.props.dispatch(expandAccountFeaturedTimeline(accountId));
       }
 
-      this.props.dispatch(expandAccountTimeline(nextProps.accountId, { withReplies: nextProps.withReplies }));
+      this.props.dispatch(expandAccountTimeline(accountId, { withReplies }));
     }
   }
 
