@@ -93,7 +93,7 @@ describe('accounts reducer', () => {
         },
         id: '9w1HhmenIAKBHJiUs4',
         note_emojified: 'Fediverse developer. I come in peace. <a class="hashtag" data-tag="vegan" href="https://gleasonator.com/tag/vegan">#vegan</a> <a class="hashtag" data-tag="freeculture" href="https://gleasonator.com/tag/freeculture">#freeculture</a> <a class="hashtag" data-tag="atheist" href="https://gleasonator.com/tag/atheist">#atheist</a> <a class="hashtag" data-tag="antiporn" href="https://gleasonator.com/tag/antiporn">#antiporn</a> <a class="hashtag" data-tag="gendercritical" href="https://gleasonator.com/tag/gendercritical">#gendercritical</a>. Boosts ≠ endorsements.',
-      }
+      },
     };
     const action = {
       type: actions.ACCOUNT_IMPORT,
