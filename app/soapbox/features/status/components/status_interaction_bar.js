@@ -1,8 +1,11 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { FormattedNumber } from 'react-intl';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { Link } from 'react-router-dom';
+import Icon from 'soapbox/components/icon';
 
 export class StatusInteractionBar extends React.Component {
 
@@ -20,11 +23,28 @@ export class StatusInteractionBar extends React.Component {
     ).reverse();
   }
 
+  getRepost = () => {
+    const { status } = this.props;
+    if (status.get('reblogs_count')) {
+      return (
+        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='reblogs'>
+          <Icon id='retweet' />
+          <span className='reblogs__count'>
+            <FormattedNumber value={status.get('reblogs_count')} />
+          </span>
+        </Link>
+      );
+    }
+
+    return '';
+  }
+
   render() {
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
       acc + cur.get('count')
     ), 0);
+    const repost = this.getRepost();
 
     const EmojiReactsContainer = () => (
       <div className='emoji-reacts-container'>
@@ -48,6 +68,7 @@ export class StatusInteractionBar extends React.Component {
     return (
       <div className='status-interaction-bar'>
         {count > 0 && <EmojiReactsContainer />}
+        {repost}
       </div>
     );
   }
