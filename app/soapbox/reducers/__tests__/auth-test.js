@@ -1,8 +1,6 @@
 import reducer from '../auth';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import * as actions from '../auth';
-
-const auth =
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
@@ -30,7 +28,7 @@ describe('auth reducer', () => {
           refresh_token: 'aydRA4eragIhavCdAyg6QQnDJmiMbdc-oEBvHYcW_PQ',
           website: null,
           id: '113',
-          access_token: 'pbXS8HkoWodrAt_QE1NENcwqigxgWr3P1RIQCKMN0Os'
+          access_token: 'pbXS8HkoWodrAt_QE1NENcwqigxgWr3P1RIQCKMN0Os',
         },
         user: {
           access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
@@ -38,10 +36,10 @@ describe('auth reducer', () => {
           me: 'https://social.teci.world/users/curtis',
           refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
           scope: 'read write follow push admin',
-          token_type: 'Bearer'
+          token_type: 'Bearer',
         },
-        tokens: []
-      }
+        tokens: [],
+      },
     };
     const action = {
       type: actions.AUTH_APP_CREATED,
