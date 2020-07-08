@@ -8,6 +8,6 @@ describe('height_cache reducer', () => {
   });
 
   it('should handle HEIGHT_CACHE_CLEAR', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+    expect(reducer(undefined, { type: HEIGHT_CACHE_CLEAR })).toEqual(ImmutableMap());
   });
 });
