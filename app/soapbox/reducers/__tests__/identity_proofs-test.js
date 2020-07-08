@@ -1,6 +1,6 @@
 import reducer from '../identity_proofs';
 import { Map as ImmutableMap } from 'immutable';
-import * as actions from '../identity_proofs';
+//import * as actions from '../identity_proofs';
 
 describe('identity_proofs reducer', () => {
   it('should return the initial state', () => {

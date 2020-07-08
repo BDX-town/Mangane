@@ -8,10 +8,6 @@ describe('height_cache reducer', () => {
   });
 
   it('should handle HEIGHT_CACHE_CLEAR', () => {
-    const state = ImmutableMap({ is_uploading: true });
-    const action = {
-      type: HEIGHT_CACHE_CLEAR,
-    };
     expect(reducer(undefined, {})).toEqual(ImmutableMap());
-  })
+  });
 });
