@@ -71,23 +71,6 @@
   font-size: 13px;
 }
 
-.reblogs {
-  color: var(--highlight-text-color);
-  text-decoration: none;
-  vertical-align: middle;
-  display: inline-flex;
-
-  i {
-    font-size: 20px;
-    margin-right: 0.2em;
-  }
-
-  &__count {
-    font-weight: bold;
-    font-size: 12px;
-  }
-}
-
 .detailed-status__button {
   padding: 10px 0;
 

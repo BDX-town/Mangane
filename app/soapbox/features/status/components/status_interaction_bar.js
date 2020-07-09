@@ -27,9 +27,9 @@ export class StatusInteractionBar extends React.Component {
     const { status } = this.props;
     if (status.get('reblogs_count')) {
       return (
-        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='reblogs'>
+        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='emoji-react emoji-react--reblogs'>
           <Icon id='retweet' />
-          <span className='reblogs__count'>
+          <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>
         </Link>
