@@ -1,6 +1,6 @@
 import reducer from '../alerts';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import * as actions from 'soapbox/actions/alerts';
+import { List as ImmutableList } from 'immutable';
+//import * as actions from 'soapbox/actions/alerts';
 
 describe('alerts reducer', () => {
   it('should return the initial state', () => {
