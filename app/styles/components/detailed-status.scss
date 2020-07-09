@@ -50,6 +50,10 @@
   font-size: 14px;
   line-height: 18px;
   display: flex;
+
+  i {
+    margin-right: 0.4em;
+  }
 }
 
 .detailed-status__action-bar {
@@ -67,12 +71,21 @@
   font-size: 13px;
 }
 
-.detailed-status__favorites,
-.detailed-status__reblogs {
-  display: inline-block;
-  font-weight: 500;
-  font-size: 12px;
-  margin-left: 6px;
+.reblogs {
+  color: var(--highlight-text-color);
+  text-decoration: none;
+  vertical-align: middle;
+  display: inline-flex;
+
+  i {
+    font-size: 20px;
+    margin-right: 0.2em;
+  }
+
+  &__count {
+    font-weight: bold;
+    font-size: 12px;
+  }
 }
 
 .detailed-status__button {

@@ -5,8 +5,8 @@ import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import StatusContent from '../../../components/status_content';
 import MediaGallery from '../../../components/media_gallery';
-import { Link, NavLink } from 'react-router-dom';
-import { FormattedDate, FormattedNumber } from 'react-intl';
+import { NavLink } from 'react-router-dom';
+import { FormattedDate } from 'react-intl';
 import Card from './card';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Video from '../../video';
@@ -91,8 +91,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
-    let reblogLink = '';
-    let reblogIcon = 'retweet';
+    let statusTypeIcon = '';
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
@@ -151,31 +150,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     if (status.get('visibility') === 'direct') {
-      reblogIcon = 'envelope';
+      statusTypeIcon = <Icon id='envelope' />;
     } else if (status.get('visibility') === 'private') {
-      reblogIcon = 'lock';
-    }
-
-    if (status.get('visibility') === 'private') {
-      reblogLink = <Icon id={reblogIcon} />;
-    } else if (this.context.router) {
-      reblogLink = (
-        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>
-          <Icon id={reblogIcon} />
-          <span className='detailed-status__reblogs'>
-            <FormattedNumber value={status.get('reblogs_count')} />
-          </span>
-        </Link>
-      );
-    } else {
-      reblogLink = (
-        <a href={`/interact/${status.get('id')}?type=reblog`} className='detailed-status__link' onClick={this.handleModalLink}>
-          <Icon id={reblogIcon} />
-          <span className='detailed-status__reblogs'>
-            <FormattedNumber value={status.get('reblogs_count')} />
-          </span>
-        </a>
-      );
+      statusTypeIcon = <Icon id='lock' />;
     }
 
     return (
@@ -199,7 +176,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
             <div>
-              {reblogLink} · <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
+              {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>
             </div>
