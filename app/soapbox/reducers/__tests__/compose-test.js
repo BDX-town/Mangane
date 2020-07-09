@@ -3,7 +3,7 @@ import { Map as ImmutableMap } from 'immutable';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import * as actions from 'soapbox/actions/compose';
-//import { STORE_HYDRATE } from 'soapbox/actions/store';
+import { STORE_HYDRATE } from 'soapbox/actions/store';
 //import { REDRAFT } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
@@ -132,16 +132,22 @@ describe('compose reducer', () => {
   });
 
   // it('should handle STORE_HYDRATE', () => {
-  //   const state = ImmutableMap({ compose: 'public' });
+  //   const state = ImmutableMap({ });
   //   const action = {
   //     type: STORE_HYDRATE,
+  //     state: ImmutableMap({
+  //       compose: true,
+  //       text: 'newtext',
+  //     }),
   //   };
-  //   expect(reducer.hydrate(state, action.toJS()).toMatchObject({
-  //     default_privacy: 'unlisted',
-  //     privacy: 'public',
-  //   });
+  //   expect(reducer(state, action)).toEqual(ImmutableMap({
+  //     state: ImmutableMap({
+  //       compose: true,
+  //       text: 'newtext',
+  //     }),
+  //   }));
   // });
-  //
+
   it('should handle COMPOSE_MOUNT', () => {
     const state = ImmutableMap({ mounted: 1 });
     const action = {
@@ -336,26 +342,25 @@ describe('compose reducer', () => {
   });
 
   // it('should handle COMPOSE_UPLOAD_UNDO', () => {
-  //   const state = ImmutableMap({ media_attachments: [] });
+  //   const state = ImmutableMap({
+  //     media_attachments: ImmutableList([
+  //       description: null,
+  //       id: '1375732379',
+  //       pleroma: {
+  //         mime_type: 'image/jpeg'
+  //       },
+  //       preview_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //       remote_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //       text_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
+  //       type: 'image',
+  //       url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg'
+  //     ]),
+  //   });
   //   const action = {
   //     type: actions.COMPOSE_UPLOAD_UNDO,
-  //     media_attachments: [
-  //       {
-  //         description: null,
-  //         id: '1375732379',
-  //         pleroma: {
-  //           mime_type: 'image/jpeg'
-  //         },
-  //         preview_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
-  //         remote_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
-  //         text_url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg',
-  //         type: 'image',
-  //         url: 'https://media.gleasonator.com/media_attachments/files/000/853/856/original/7035d67937053e1d.jpg'
-  //       }
-  //     ],
   //     mediaId: '1375732379',
   //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
+  //   expect(reducer(state, action)).toEqual({
   //     media_attachments: [],
   //   });
   // });
