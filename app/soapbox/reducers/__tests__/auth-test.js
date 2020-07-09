@@ -1,6 +1,6 @@
 import reducer from '../auth';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import * as actions from '../auth';
+import * as actions from 'soapbox/actions/auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
@@ -46,30 +46,26 @@ describe('auth reducer', () => {
       app: auth,
     };
     expect(reducer(state, action).toJS()).toMatchObject({
+      app: auth,
     });
   });
 
-  // it('should handle the Action AUTH_LOGGED_OUT', () => {
-  //   const user = {
-  //     access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
-  //     expires_in: 600,
-  //     me: 'https://social.teci.world/users/curtis',
-  //     refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
-  //     scope: 'read write follow push admin',
-  //     token_type: 'Bearer'
-  //   };
-  //   expect(
-  //     reducer(
-  //       {
-  //         user: user,
-  //       },
-  //       {
-  //         type: 'AUTH_LOGGED_OUT',
-  //       },
-  //     ),
-  //   ).toEqual({
-  //     user: ImmutableMap(),
-  //   });
-  // });
+  it('should handle the Action AUTH_LOGGED_OUT', () => {
+    const state = ImmutableMap({ user: {
+        access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
+        expires_in: 600,
+        me: 'https://social.teci.world/users/curtis',
+        refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
+        scope: 'read write follow push admin',
+        token_type: 'Bearer',
+      },
+    });
+    const action = {
+      type: actions.AUTH_LOGGED_OUT,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      user: {},
+    });
+  });
 
 });
