@@ -1,6 +1,6 @@
 import reducer from '../list_adder';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import * as actions from '../list_adder';
+import * as actions from 'soapbox/actions/lists';
 
 describe('list_adder reducer', () => {
   it('should return the initial state', () => {
@@ -39,29 +39,29 @@ describe('list_adder reducer', () => {
     }));
   });
 
-  // it('should handle LIST_ADDER_LISTS_FETCH_REQUEST', () => {
-  //   const state = ImmutableMap({
-  //     accountId: null,
-  //
-  //     lists: ImmutableMap({
-  //       items: ImmutableList(),
-  //       loaded: false,
-  //       isLoading: false,
-  //     }),
-  //   });
-  //   const action = {
-  //     type: actions.LIST_ADDER_LISTS_FETCH_REQUEST,
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     accountId: null,
-  //
-  //     lists: ImmutableMap({
-  //       items: ImmutableList(),
-  //       loaded: false,
-  //       isLoading: true,
-  //     }),
-  //   }));
-  // });
+  it('should handle LIST_ADDER_LISTS_FETCH_REQUEST', () => {
+    const state = ImmutableMap({
+      accountId: null,
+
+      lists: ImmutableMap({
+        items: ImmutableList(),
+        loaded: false,
+        isLoading: false,
+      }),
+    });
+    const action = {
+      type: actions.LIST_ADDER_LISTS_FETCH_REQUEST,
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      accountId: null,
+
+      lists: ImmutableMap({
+        items: ImmutableList(),
+        loaded: false,
+        isLoading: true,
+      }),
+    }));
+  });
 
   it('should handle LIST_ADDER_LISTS_FETCH_FAIL', () => {
     const state = ImmutableMap({
