@@ -27,7 +27,7 @@ describe('mutes reducer', () => {
     const action = {
       type: MUTES_INIT_MODAL,
       account: 'account1',
-    }
+    };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       new: ImmutableMap({
         isSubmitting: false,
@@ -45,7 +45,7 @@ describe('mutes reducer', () => {
     });
     const action = {
       type: MUTES_TOGGLE_HIDE_NOTIFICATIONS,
-    }
+    };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       new: ImmutableMap({
         notifications: false,
