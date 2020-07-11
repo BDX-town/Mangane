@@ -219,4 +219,34 @@ describe('notifications reducer', () => {
     }));
   });
 
+  it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
+    const state = ImmutableMap({
+      items: ImmutableList(),
+      queuedNotifications: take(notifications, 3),
+      totalQueuedNotificationsCount: 3,
+    });
+    //const notification = notification;
+    const action = {
+      type: actions.NOTIFICATIONS_UPDATE_QUEUE,
+      notification: notification,
+      intlMessages: null,
+      intlLocale: 'en',
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+                ImmutableMap({
+                  id: '10744',
+                  type: 'pleroma:emoji_reaction',
+                  account: '9vMAje101ngtjlMj7w',
+                  created_at: '2020-06-10T02:54:39.000Z',
+                  status: '9vvNxoo5EFbbnfdXQu',
+                  emoji: '😢',
+                  is_seen: false,
+                }),
+            ]),
+      top: false,
+      unread: 2,
+    }));
+  });
+
 });
