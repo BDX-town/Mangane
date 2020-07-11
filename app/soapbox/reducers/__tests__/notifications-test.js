@@ -7,6 +7,7 @@ import { take } from 'lodash';
 import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
+import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -225,11 +226,10 @@ describe('notifications reducer', () => {
       queuedNotifications: take(notifications, 3),
       totalQueuedNotificationsCount: 3,
     });
-    //const notification = notification;
     const action = {
       type: actions.NOTIFICATIONS_UPDATE_QUEUE,
       notification: notification,
-      intlMessages: null,
+      intlMessages: intlMessages,
       intlLocale: 'en',
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
