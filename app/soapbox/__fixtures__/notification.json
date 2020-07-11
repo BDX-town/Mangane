@@ -1,23 +1,40 @@
 {
   "account": {
-    "acct": "seanking",
-    "avatar": "https://gleasonator.com/images/avi.png",
-    "avatar_static": "https://gleasonator.com/images/avi.png",
+    "acct": "crockwave",
+    "avatar": "https://media.gleasonator.com/d6dcd2779bdb63ef8b8a5f127743f5ad757046943c4b4a8867215c15a72c5e55.png",
+    "avatar_static": "https://media.gleasonator.com/d6dcd2779bdb63ef8b8a5f127743f5ad757046943c4b4a8867215c15a72c5e55.png",
     "bot": false,
-    "created_at": "2020-05-24T01:46:12.000Z",
-    "display_name": "Sean King",
+    "created_at": "2020-02-26T16:31:25.000Z",
+    "display_name": "Curtis Rock",
     "emojis": [],
-    "fields": [],
-    "followers_count": 8,
-    "following_count": 4,
-    "header": "https://gleasonator.com/images/banner.png",
-    "header_static": "https://gleasonator.com/images/banner.png",
-    "id": "9vMAje101ngtjlMj7w",
+    "fields": [
+      {
+        "name": "Web Site/Book",
+        "value": "<a href=\"https://teci.world/a-users-guide-to-the-great-awakening\" rel=\"ugc\">https://teci.world/a-users-guide-to-the-great-awakening</a>"
+      },
+      {
+        "name": "Gab",
+        "value": "<a href=\"https://gab.com/crockwave\" rel=\"ugc\">https://gab.com/crockwave</a>"
+      },
+      {
+        "name": "Twitter",
+        "value": "<a href=\"https://twitter.com/GAP_Great\" rel=\"ugc\">https://twitter.com/GAP_Great</a>"
+      },
+      {
+        "name": "MeWe",
+        "value": "<a href=\"https://mewe.com/i/curtisrock\" rel=\"ugc\">https://mewe.com/i/curtisrock</a>"
+      }
+    ],
+    "followers_count": 13,
+    "following_count": 11,
+    "header": "https://media.gleasonator.com/82720af49afb0daa2a700f4371db9848cd7efb38eaca09d47898e8e7b527e0b4.png",
+    "header_static": "https://media.gleasonator.com/82720af49afb0daa2a700f4371db9848cd7efb38eaca09d47898e8e7b527e0b4.png",
+    "id": "9v5c6xSEgAi3Zu1Lv6",
     "locked": false,
-    "note": "Hi, I&#39;m Sean King, Founder and President of Sandia Mesa. I&#39;ll be here to try out new features and help test out some with Soapbox FE.",
+    "note": "soapbox development team test test2",
     "pleroma": {
       "background_image": null,
-      "confirmation_pending": true,
+      "confirmation_pending": false,
       "deactivated": false,
       "hide_favorites": true,
       "hide_followers": false,
@@ -33,7 +50,7 @@
         "endorsed": false,
         "followed_by": true,
         "following": true,
-        "id": "9vMAje101ngtjlMj7w",
+        "id": "9v5c6xSEgAi3Zu1Lv6",
         "muting": false,
         "muting_notifications": false,
         "requested": false,
@@ -44,23 +61,39 @@
       "tags": []
     },
     "source": {
-      "fields": [],
-      "note": "Hi, I&#39;m Sean King, Founder and President of Sandia Mesa. I&#39;ll be here to try out new features and help test out some with Soapbox FE.",
+      "fields": [
+        {
+          "name": "Web Site/Book",
+          "value": "https://teci.world/a-users-guide-to-the-great-awakening"
+        },
+        {
+          "name": "Gab",
+          "value": "https://gab.com/crockwave"
+        },
+        {
+          "name": "Twitter",
+          "value": "https://twitter.com/GAP_Great"
+        },
+        {
+          "name": "MeWe",
+          "value": "https://mewe.com/i/curtisrock"
+        }
+      ],
+      "note": "soapbox development team test test2",
       "pleroma": {
         "actor_type": "Person",
         "discoverable": false
       },
       "sensitive": false
     },
-    "statuses_count": 15,
-    "url": "https://gleasonator.com/users/seanking",
-    "username": "seanking"
+    "statuses_count": 212,
+    "url": "https://gleasonator.com/users/crockwave",
+    "username": "crockwave"
   },
-  "created_at": "2020-06-10T02:54:39.000Z",
-  "emoji": "😢",
-  "id": "10744",
+  "created_at": "2020-06-10T02:51:05.000Z",
+  "id": "10743",
   "pleroma": {
-    "is_seen": false
+    "is_seen": true
   },
   "status": {
     "account": {
@@ -188,7 +221,7 @@
     "pinned": false,
     "pleroma": {
       "content": {
-        "text/plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+        "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
       },
       "conversation_id": 1168229,
       "direct_conversation_id": null,
@@ -197,7 +230,7 @@
       "in_reply_to_account_acct": null,
       "local": true,
       "spoiler_text": {
-        "text/plain": ""
+        "text_plain": ""
       },
       "thread_muted": false
     },
@@ -213,5 +246,5 @@
     "url": "https://gleasonator.com/notice/9vvNxoo5EFbbnfdXQu",
     "visibility": "public"
   },
-  "type": "pleroma:emoji_reaction"
+  "type": "favourite"
 }

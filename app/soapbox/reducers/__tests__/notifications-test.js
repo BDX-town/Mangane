@@ -206,13 +206,13 @@ describe('notifications reducer', () => {
     expect(reducer(state, action)).toEqual(ImmutableMap({
       items: ImmutableList([
                 ImmutableMap({
-                  id: '10744',
-                  type: 'pleroma:emoji_reaction',
-                  account: '9vMAje101ngtjlMj7w',
-                  created_at: '2020-06-10T02:54:39.000Z',
+                  id: '10743',
+                  type: 'favourite',
+                  account: '9v5c6xSEgAi3Zu1Lv6',
+                  created_at: '2020-06-10T02:51:05.000Z',
                   status: '9vvNxoo5EFbbnfdXQu',
-                  emoji: '😢',
-                  is_seen: false,
+                  emoji: undefined,
+                  is_seen: true,
                 }),
             ]),
       top: false,
@@ -220,32 +220,39 @@ describe('notifications reducer', () => {
     }));
   });
 
-  it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
+  // it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
+  //   const state = ImmutableMap({
+  //     items: ImmutableList(),
+  //     queuedNotifications: ImmutableList([ take(notifications, 1) ]),
+  //     totalQueuedNotificationsCount: 1,
+  //   });
+  //   const action = {
+  //     type: actions.NOTIFICATIONS_UPDATE_QUEUE,
+  //     notification: notification,
+  //     intlMessages: intlMessages,
+  //     intlLocale: 'en',
+  //   };
+  //   debugger;
+  //   expect(reducer(state, action)).toEqual(ImmutableMap({
+  //     items: ImmutableList([]),
+  //     queuedNotifications: ImmutableList([ take(notifications, 2), ImmutableMap( intlMessages ), 'en' ]),
+  //     totalQueuedNotificationsCount: 2,
+  //   }));
+  // });
+
+  it('should handle NOTIFICATIONS_DEQUEUE', () => {
     const state = ImmutableMap({
-      items: ImmutableList(),
-      queuedNotifications: take(notifications, 3),
-      totalQueuedNotificationsCount: 3,
+      items: ImmutableList([]),
+      queuedNotifications: take(notifications, 1),
+      totalQueuedNotificationsCount: 1,
     });
     const action = {
-      type: actions.NOTIFICATIONS_UPDATE_QUEUE,
-      notification: notification,
-      intlMessages: intlMessages,
-      intlLocale: 'en',
+      type: actions.NOTIFICATIONS_DEQUEUE,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
-                ImmutableMap({
-                  id: '10744',
-                  type: 'pleroma:emoji_reaction',
-                  account: '9vMAje101ngtjlMj7w',
-                  created_at: '2020-06-10T02:54:39.000Z',
-                  status: '9vvNxoo5EFbbnfdXQu',
-                  emoji: '😢',
-                  is_seen: false,
-                }),
-            ]),
-      top: false,
-      unread: 2,
+      items: ImmutableList([]),
+      queuedNotifications: ImmutableList([]),
+      totalQueuedNotificationsCount: 0,
     }));
   });
 
