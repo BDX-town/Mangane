@@ -349,6 +349,7 @@
   "regeneration_indicator.label": "載入中…",
   "regeneration_indicator.sublabel": "你的主頁時間軸正在準備中!",
   "registration.agreement": "I agree to the {tos}.",
+  "registration.captcha.hint": "Click the image to get a new captcha",
   "registration.fields.confirm_placeholder": "Password (again)",
   "registration.fields.email_placeholder": "E-Mail address",
   "registration.fields.password_placeholder": "Password",

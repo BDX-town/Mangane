@@ -349,6 +349,7 @@
   "regeneration_indicator.label": "불러오는 중…",
   "regeneration_indicator.sublabel": "당신의 홈 피드가 준비되는 중입니다!",
   "registration.agreement": "I agree to the {tos}.",
+  "registration.captcha.hint": "Click the image to get a new captcha",
   "registration.fields.confirm_placeholder": "Password (again)",
   "registration.fields.email_placeholder": "E-Mail address",
   "registration.fields.password_placeholder": "Password",

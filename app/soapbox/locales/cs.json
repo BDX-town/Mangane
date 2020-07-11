@@ -349,6 +349,7 @@
   "regeneration_indicator.label": "Načítám…",
   "regeneration_indicator.sublabel": "Váš domovský proud se připravuje!",
   "registration.agreement": "Souhlasím s {tos}.",
+  "registration.captcha.hint": "Click the image to get a new captcha",
   "registration.fields.confirm_placeholder": "Heslo (znovu)",
   "registration.fields.email_placeholder": "Emailová adresa",
   "registration.fields.password_placeholder": "Heslo",

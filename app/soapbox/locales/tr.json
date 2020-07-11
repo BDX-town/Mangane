@@ -349,6 +349,7 @@
   "regeneration_indicator.label": "Yükleniyor…",
   "regeneration_indicator.sublabel": "Ev akışınız hazırlanıyor!",
   "registration.agreement": "I agree to the {tos}.",
+  "registration.captcha.hint": "Click the image to get a new captcha",
   "registration.fields.confirm_placeholder": "Password (again)",
   "registration.fields.email_placeholder": "E-Mail address",
   "registration.fields.password_placeholder": "Password",

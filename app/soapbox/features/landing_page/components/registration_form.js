@@ -69,6 +69,10 @@ class RegistrationForm extends ImmutablePureComponent {
     });
   }
 
+  onCaptchaClick = e => {
+    this.refreshCaptcha();
+  }
+
   onFetchCaptcha = captcha => {
     this.setState({ captchaLoading: false });
     this.setParams({
@@ -137,6 +141,7 @@ class RegistrationForm extends ImmutablePureComponent {
               onFetch={this.onFetchCaptcha}
               onFetchFail={this.onFetchCaptchaFail}
               onChange={this.onInputChange}
+              onClick={this.onCaptchaClick}
               idempotencyKey={this.state.captchaIdempotencyKey}
             />
             <div className='fields-group'>

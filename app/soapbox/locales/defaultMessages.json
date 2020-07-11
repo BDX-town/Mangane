@@ -908,6 +908,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Click the image to get a new captcha",
+        "id": "registration.captcha.hint"
+      }
+    ],
+    "path": "app/soapbox/features/auth_login/components/captcha.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Username",
         "id": "login.fields.username_placeholder"
       },
