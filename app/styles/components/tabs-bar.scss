@@ -55,7 +55,7 @@
   &__profile {
     position: relative;
     overflow: hidden;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     height: 34px;
     width: 34px;
 
@@ -109,6 +109,14 @@
     @media (min-width: 895px) {
       display: none;
     }
+  }
+
+  &__button-theme-toggle {
+    margin-left: 10px;
+    padding: 0 10px;
+    font-size: 20px;
+
+    .fa { margin-right: 0; }
   }
 
   &__button-compose {
