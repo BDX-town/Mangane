@@ -37,7 +37,6 @@ class TabsBar extends React.PureComponent {
 
   state = {
     collapsed: false,
-    isLight: this.props.settings.get('themeMode') === 'light' ? true : false,
   }
 
   static contextTypes = {
@@ -116,8 +115,6 @@ class TabsBar extends React.PureComponent {
 
   handleToggleTheme = () => {
     this.props.toggleTheme(this.getNewThemeValue());
-
-    this.setState({ isLight: !this.state.isLight });
   }
 
   handleScroll = throttle(() => {
@@ -142,8 +139,8 @@ class TabsBar extends React.PureComponent {
   });
 
   render() {
-    const { account, onOpenCompose, onOpenSidebar, intl } = this.props;
-    const { collapsed, isLight } = this.state;
+    const { account, onOpenCompose, onOpenSidebar, intl, settings } = this.props;
+    const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
@@ -161,8 +158,8 @@ class TabsBar extends React.PureComponent {
             </div>
             { account &&
               <div className='flex'>
-                <button className='tabs-bar__button-theme-toggle button' onClick={this.handleToggleTheme} aria-label={isLight ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)}>
-                  <Icon id={isLight ? 'moon' : 'sun'} />
+                <button className='tabs-bar__button-theme-toggle button' onClick={this.handleToggleTheme} aria-label={settings.get('themeMode') === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)}>
+                  <Icon id={settings.get('themeMode') === 'light' ? 'sun' : 'moon'} />
                 </button>
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
