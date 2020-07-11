@@ -13,9 +13,12 @@ import ActionBar from 'soapbox/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
+import { changeSetting } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
+  switchToLight: { id: 'tabs_bar.theme_toggle_light', defaultMessage: 'Switch to light theme' },
+  switchToDark: { id: 'tabs_bar.theme_toggle_dark', defaultMessage: 'Switch to dark theme' },
 });
 
 @withRouter
@@ -26,8 +29,10 @@ class TabsBar extends React.PureComponent {
     history: PropTypes.object.isRequired,
     onOpenCompose: PropTypes.func,
     onOpenSidebar: PropTypes.func.isRequired,
+    toggleTheme: PropTypes.func,
     logo: PropTypes.string,
     account: ImmutablePropTypes.map,
+    settings: ImmutablePropTypes.map,
   }
 
   state = {
@@ -102,6 +107,16 @@ class TabsBar extends React.PureComponent {
       }));
   }
 
+  getNewThemeValue() {
+    if (this.props.settings.get('themeMode') === 'light') return 'dark';
+
+    return 'light';
+  }
+
+  handleToggleTheme = () => {
+    this.props.toggleTheme(this.getNewThemeValue());
+  }
+
   handleScroll = throttle(() => {
     if (this.window) {
       const { pageYOffset, innerWidth } = this.window;
@@ -124,7 +139,7 @@ class TabsBar extends React.PureComponent {
   });
 
   render() {
-    const { account, onOpenCompose, onOpenSidebar, intl } = this.props;
+    const { account, onOpenCompose, onOpenSidebar, intl, settings } = this.props;
     const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {
@@ -143,6 +158,9 @@ class TabsBar extends React.PureComponent {
             </div>
             { account &&
               <div className='flex'>
+                <button className='tabs-bar__button-theme-toggle button' onClick={this.handleToggleTheme} aria-label={settings.get('themeMode') === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)}>
+                  <Icon id={settings.get('themeMode') === 'light' ? 'sun' : 'moon'} />
+                </button>
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
@@ -177,6 +195,7 @@ const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
     logo: state.getIn(['soapbox', 'logo']),
+    settings: state.get('settings'),
   };
 };
 
@@ -186,6 +205,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
   onOpenSidebar() {
     dispatch(openSidebar());
+  },
+  toggleTheme(setting) {
+    dispatch(changeSetting(['themeMode'], setting));
   },
 });
 
