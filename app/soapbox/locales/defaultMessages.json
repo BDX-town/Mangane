@@ -2213,18 +2213,6 @@
         "id": "column.preferences"
       },
       {
-        "defaultMessage": "Light",
-        "id": "preferences.options.theme_light"
-      },
-      {
-        "defaultMessage": "Dark",
-        "id": "preferences.options.theme_dark"
-      },
-      {
-        "defaultMessage": "Theme",
-        "id": "preferences.fields.theme_label"
-      },
-      {
         "defaultMessage": "Language",
         "id": "preferences.fields.language_label"
       },
@@ -2932,6 +2920,14 @@
       {
         "defaultMessage": "Post",
         "id": "tabs_bar.post"
+      },
+      {
+        "defaultMessage": "Switch to light theme",
+        "id": "tabs_bar.theme_toggle_light"
+      },
+      {
+        "defaultMessage": "Switch to dark theme",
+        "id": "tabs_bar.theme_toggle_dark"
       },
       {
         "defaultMessage": "Home",
