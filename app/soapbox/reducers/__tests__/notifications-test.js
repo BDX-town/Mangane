@@ -5,9 +5,8 @@ import markers from 'soapbox/__fixtures__/markers.json';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { take } from 'lodash';
 import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
-import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
+// import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
-import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -253,6 +252,121 @@ describe('notifications reducer', () => {
       items: ImmutableList([]),
       queuedNotifications: ImmutableList([]),
       totalQueuedNotificationsCount: 0,
+    }));
+  });
+
+  it('should handle NOTIFICATIONS_EXPAND_SUCCESS with non-empty items and next set true', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: "10734",
+          type: "pleroma:emoji_reaction",
+          account: "9vMAje101ngtjlMj7w",
+          created_at: "2020-06-10T02:54:39.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: "😢",
+          is_seen: false,
+        }),
+      ]),
+      unread: 1,
+      hasMore: true,
+      isLoading: false,
+    });
+    const action = {
+      type: actions.NOTIFICATIONS_EXPAND_SUCCESS,
+      notifications: take(notifications, 3),
+      next: true,
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: "10744",
+          type: "pleroma:emoji_reaction",
+          account: "9vMAje101ngtjlMj7w",
+          created_at: "2020-06-10T02:54:39.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: "😢",
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: "10743",
+          type: "favourite",
+          account: "9v5c6xSEgAi3Zu1Lv6",
+          created_at: "2020-06-10T02:51:05.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: "10741",
+          type: "favourite",
+          account: "9v5cKMOPGqPcgfcWp6",
+          created_at: "2020-06-10T02:05:06.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: "10734",
+          type: "pleroma:emoji_reaction",
+          account: "9vMAje101ngtjlMj7w",
+          created_at: "2020-06-10T02:54:39.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: "😢",
+          is_seen: false,
+        }),
+      ]),
+      unread: 1,
+      hasMore: true,
+      isLoading: false,
+    }));
+  });
+
+  it('should handle NOTIFICATIONS_EXPAND_SUCCESS with empty items and next set true', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([]),
+      unread: 1,
+      hasMore: true,
+      isLoading: false,
+    });
+    const action = {
+      type: actions.NOTIFICATIONS_EXPAND_SUCCESS,
+      notifications: take(notifications, 3),
+      next: true,
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: "10744",
+          type: "pleroma:emoji_reaction",
+          account: "9vMAje101ngtjlMj7w",
+          created_at: "2020-06-10T02:54:39.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: "😢",
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: "10743",
+          type: "favourite",
+          account: "9v5c6xSEgAi3Zu1Lv6",
+          created_at: "2020-06-10T02:51:05.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: "10741",
+          type: "favourite",
+          account: "9v5cKMOPGqPcgfcWp6",
+          created_at: "2020-06-10T02:05:06.000Z",
+          status: "9vvNxoo5EFbbnfdXQu",
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+      unread: 1,
+      hasMore: true,
+      isLoading: false,
     }));
   });
 
