@@ -27,8 +27,6 @@ It is recommended that you use the following guidelines to contribute to the Soa
     ```
     * Re-protect the master branch of your fork from force push    
 
-Please note we have a code of conduct, please follow it in all your interactions with the project.
-
 ## Pull Request Process
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a
