@@ -7,6 +7,7 @@ import { take } from 'lodash';
 import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
 // import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
+import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -219,25 +220,28 @@ describe('notifications reducer', () => {
     }));
   });
 
-  // it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
-  //   const state = ImmutableMap({
-  //     items: ImmutableList(),
-  //     queuedNotifications: ImmutableList([ take(notifications, 1) ]),
-  //     totalQueuedNotificationsCount: 1,
-  //   });
-  //   const action = {
-  //     type: actions.NOTIFICATIONS_UPDATE_QUEUE,
-  //     notification: notification,
-  //     intlMessages: intlMessages,
-  //     intlLocale: 'en',
-  //   };
-  //   debugger;
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableList([]),
-  //     queuedNotifications: ImmutableList([ take(notifications, 2), ImmutableMap( intlMessages ), 'en' ]),
-  //     totalQueuedNotificationsCount: 2,
-  //   }));
-  // });
+  it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([]),
+      queuedNotifications: ImmutableList([]),
+      totalQueuedNotificationsCount: 0,
+    });
+    const action = {
+      type: actions.NOTIFICATIONS_UPDATE_QUEUE,
+      notification: notification,
+      intlMessages: intlMessages,
+      intlLocale: 'en',
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([]),
+      queuedNotifications: ImmutableList([{
+        notification: notification,
+        intlMessages: intlMessages,
+        intlLocale: 'en',
+      }]),
+      totalQueuedNotificationsCount: 1,
+    }));
+  });
 
   it('should handle NOTIFICATIONS_DEQUEUE', () => {
     const state = ImmutableMap({
@@ -372,19 +376,21 @@ describe('notifications reducer', () => {
 
   // it('should handle ACCOUNT_BLOCK_SUCCESS', () => {
   //   const relationship = ImmutableMap({
-  //   showing_reblogs: true,
-  //   followed_by: false,
-  //   subscribing: false,
-  //   blocked_by: true,
-  //   requested: false,
-  //   domain_blocking: false,
-  //   following: false,
-  //   endorsed: false,
-  //   blocking: true,
-  //   muting: false,
-  //   id: '9vMAje101ngtjlMj7w',
-  //   muting_notifications: false,
-  // })
+  //     relationship: ImmutableMap({
+  //       // showing_reblogs: true,
+  //       // followed_by: false,
+  //       // subscribing: false,
+  //       // blocked_by: true,
+  //       // requested: false,
+  //       // domain_blocking: false,
+  //       // following: false,
+  //       // endorsed: false,
+  //       // blocking: true,
+  //       // muting: false,
+  //       id: '9vMAje101ngtjlMj7w',
+  //       // muting_notifications: false,
+  //     }),
+  //   });
   //   const state = ImmutableMap({
   //     items: ImmutableList([
   //       ImmutableMap({
@@ -417,20 +423,11 @@ describe('notifications reducer', () => {
   //     ]),
   //   });
   //   const action = {
-  //     type: actions.ACCOUNT_BLOCK_SUCCESS,
+  //     type: ACCOUNT_BLOCK_SUCCESS,
   //     relationship: relationship,
   //   };
   //   expect(reducer(state, action)).toEqual(ImmutableMap({
   //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
   //       ImmutableMap({
   //         id: '10743',
   //         type: 'favourite',
@@ -452,21 +449,21 @@ describe('notifications reducer', () => {
   //     ]),
   //   }));
   // });
-
+  //
   // it('should handle ACCOUNT_MUTE_SUCCESS', () => {
   //   const relationship = ImmutableMap({
-  //     showing_reblogs: true,
-  //     followed_by: false,
-  //     subscribing: false,
-  //     blocked_by: true,
-  //     requested: false,
-  //     domain_blocking: false,
-  //     following: false,
-  //     endorsed: false,
-  //     blocking: true,
-  //     muting: false,
+  //     // showing_reblogs: true,
+  //     // followed_by: false,
+  //     // subscribing: false,
+  //     // blocked_by: false,
+  //     // requested: false,
+  //     // domain_blocking: false,
+  //     // following: false,
+  //     // endorsed: false,
+  //     // blocking: true,
+  //     // muting: false,
   //     id: '9vMAje101ngtjlMj7w',
-  //     muting_notifications: true,
+  //     // muting_notifications: true,
   //   })
   //   const state = ImmutableMap({
   //     items: ImmutableList([
@@ -500,7 +497,7 @@ describe('notifications reducer', () => {
   //     ]),
   //   });
   //   const action = {
-  //     type: actions.ACCOUNT_MUTE_SUCCESS,
+  //     type: ACCOUNT_MUTE_SUCCESS,
   //     relationship: relationship,
   //   };
   //   expect(reducer(state, action)).toEqual(ImmutableMap({
