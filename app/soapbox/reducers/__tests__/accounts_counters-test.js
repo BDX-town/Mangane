@@ -19,7 +19,6 @@ describe('accounts_counters reducer', () => {
   //     relationship: relationship,
   //     alreadyFollowing: false,
   //   };
-  //   debugger;
   //   expect(reducer(state, action)).toEqual(
   //     ImmutableList([ accounts_counter_follow ]));
   // });
