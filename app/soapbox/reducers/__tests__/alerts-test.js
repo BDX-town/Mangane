@@ -1,5 +1,5 @@
 import reducer from '../alerts';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { List as ImmutableList } from 'immutable';
 import * as actions from 'soapbox/actions/alerts';
 
 describe('alerts reducer', () => {
