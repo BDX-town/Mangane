@@ -5,9 +5,11 @@ import markers from 'soapbox/__fixtures__/markers.json';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { take } from 'lodash';
 import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
-// import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
+import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
+import relationship from 'soapbox/__fixtures__/relationship';
+import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from 'soapbox/actions/timelines';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -198,7 +200,6 @@ describe('notifications reducer', () => {
       top: false,
       unread: 1,
     });
-    //const notification = notification;
     const action = {
       type: actions.NOTIFICATIONS_UPDATE,
       notification: notification,
@@ -374,164 +375,125 @@ describe('notifications reducer', () => {
     }));
   });
 
-  // it('should handle ACCOUNT_BLOCK_SUCCESS', () => {
-  //   const relationship = ImmutableMap({
-  //     relationship: ImmutableMap({
-  //       // showing_reblogs: true,
-  //       // followed_by: false,
-  //       // subscribing: false,
-  //       // blocked_by: true,
-  //       // requested: false,
-  //       // domain_blocking: false,
-  //       // following: false,
-  //       // endorsed: false,
-  //       // blocking: true,
-  //       // muting: false,
-  //       id: '9vMAje101ngtjlMj7w',
-  //       // muting_notifications: false,
-  //     }),
-  //   });
-  //   const state = ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   });
-  //   const action = {
-  //     type: ACCOUNT_BLOCK_SUCCESS,
-  //     relationship: relationship,
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   }));
-  // });
-  //
-  // it('should handle ACCOUNT_MUTE_SUCCESS', () => {
-  //   const relationship = ImmutableMap({
-  //     // showing_reblogs: true,
-  //     // followed_by: false,
-  //     // subscribing: false,
-  //     // blocked_by: false,
-  //     // requested: false,
-  //     // domain_blocking: false,
-  //     // following: false,
-  //     // endorsed: false,
-  //     // blocking: true,
-  //     // muting: false,
-  //     id: '9vMAje101ngtjlMj7w',
-  //     // muting_notifications: true,
-  //   })
-  //   const state = ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   });
-  //   const action = {
-  //     type: ACCOUNT_MUTE_SUCCESS,
-  //     relationship: relationship,
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   }));
-  // });
+  it('should handle ACCOUNT_BLOCK_SUCCESS', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10744',
+          type: 'pleroma:emoji_reaction',
+          account: '9vMAje101ngtjlMj7w',
+          created_at: '2020-06-10T02:54:39.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: '😢',
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    });
+    const action = {
+      type: ACCOUNT_BLOCK_SUCCESS,
+      relationship: relationship,
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    }));
+  });
+
+  it('should handle ACCOUNT_MUTE_SUCCESS', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10744',
+          type: 'pleroma:emoji_reaction',
+          account: '9vMAje101ngtjlMj7w',
+          created_at: '2020-06-10T02:54:39.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: '😢',
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    });
+    const action = {
+      type: ACCOUNT_MUTE_SUCCESS,
+      relationship: relationship,
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    }));
+  });
 
   it('should handle NOTIFICATIONS_CLEAR', () => {
     const state = ImmutableMap({
@@ -561,142 +523,115 @@ describe('notifications reducer', () => {
     }));
   });
 
-  // it('should handle TIMELINE_DELETE', () => {
-  //   const state = ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   });
-  //   const action = {
-  //     type: actions.TIMELINE_DELETE,
-  //     id: '9vvNxoo5EFbbnfdXQu',
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   }));
-  // });
+  it('should handle TIMELINE_DELETE', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10744',
+          type: 'pleroma:emoji_reaction',
+          account: '9vMAje101ngtjlMj7w',
+          created_at: '2020-06-10T02:54:39.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: '😢',
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    });
+    const action = {
+      type: TIMELINE_DELETE,
+      id: '9vvNxoo5EFbbnfdXQu',
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([]),
+    }));
+  });
 
-  // it('should handle TIMELINE_DISCONNECT', () => {
-  //   const state = ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   });
-  //   const action = {
-  //     type: actions.TIMELINE_DISCONNECT,
-  //     timeline: 'home',
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableList([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         is_seen: false,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         is_seen: true,
-  //       }),
-  //     ]),
-  //   }));
-  // });
+  it('should handle TIMELINE_DISCONNECT', () => {
+    const state = ImmutableMap({
+      items: ImmutableList([
+        ImmutableMap({
+          id: '10744',
+          type: 'pleroma:emoji_reaction',
+          account: '9vMAje101ngtjlMj7w',
+          created_at: '2020-06-10T02:54:39.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: '😢',
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    });
+    const action = {
+      type: TIMELINE_DISCONNECT,
+      timeline: 'home',
+    };
+    expect(reducer(state, action)).toEqual(ImmutableMap({
+      items: ImmutableList([
+        null,
+        ImmutableMap({
+          id: '10744',
+          type: 'pleroma:emoji_reaction',
+          account: '9vMAje101ngtjlMj7w',
+          created_at: '2020-06-10T02:54:39.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: '😢',
+          is_seen: false,
+        }),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+        ImmutableMap({
+          id: '10741',
+          type: 'favourite',
+          account: '9v5cKMOPGqPcgfcWp6',
+          created_at: '2020-06-10T02:05:06.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
+    }));
+  });
 
 });
