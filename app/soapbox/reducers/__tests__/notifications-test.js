@@ -8,7 +8,7 @@ import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
-import relationship from 'soapbox/__fixtures__/relationship';
+import relationship from 'soapbox/__fixtures__/relationship.json';
 import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from 'soapbox/actions/timelines';
 
 describe('notifications reducer', () => {
