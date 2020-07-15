@@ -72,6 +72,14 @@ module.exports = {
       chunksSortMode: 'manual',
       chunks: ['common', 'locale_en', 'application', 'styles'],
       alwaysWriteToDisk: true,
+      minify: {
+        collapseWhitespace: true,
+        removeComments: false,
+        removeRedundantAttributes: true,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true,
+      },
     }),
     new HtmlWebpackHarddiskPlugin({
       outputPath: join(__dirname, '..', 'static'),
