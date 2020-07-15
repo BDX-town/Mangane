@@ -1,0 +1,15 @@
+{
+  "vapid_key": "BHczIFh4Wn3Q_7wDgehaB8Ti3Uu8BoyOgXxkOVuEJRuEqxtd9TAno8K9ycz4myiQ1ruiyVfG6xT1JLeXtpxDzUs",
+  "token_type": "Bearer",
+  "client_secret": "cm_8Zip_UYyYq1DPQ-CRFUolrz894MmWYUC0aeVcklM",
+  "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+  "created_at": 1594764335,
+  "name": "SoapboxFE_2020-07-14T22:05:17.054Z",
+  "client_id": "bjiy8AxGKXXesfZcyp_iN-uQVE6Cnl03efWoSdOPh9M",
+  "expires_in": 600,
+  "scope": "read write follow push admin",
+  "refresh_token": "IXoCKCsZi3ZCuCjIkeadvEoHRdqOYHklZmv9jvkJ5VA",
+  "website": null,
+  "id": "134",
+  "access_token": "XSkQFSV1R_IvycQmw_uD5z6hQmNyuhh9PtMQbv8TgG8"
+}
