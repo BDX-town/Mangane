@@ -13,6 +13,7 @@ import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import SettingToggle from '../../notifications/components/setting_toggle';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -31,7 +32,7 @@ class TabsBar extends React.PureComponent {
     toggleTheme: PropTypes.func,
     logo: PropTypes.string,
     account: ImmutablePropTypes.map,
-    themeMode: PropTypes.string,
+    settings: ImmutablePropTypes.map.isRequired,
   }
 
   state = {
@@ -83,18 +84,12 @@ class TabsBar extends React.PureComponent {
       }));
   }
 
-  getNewThemeValue() {
-    if (this.props.themeMode === 'light') return 'dark';
-
-    return 'light';
-  }
-
   handleToggleTheme = () => {
-    this.props.toggleTheme(this.getNewThemeValue());
+    this.props.toggleTheme(this.props.settings.get('themeMode') === 'light' ? 'dark' : 'light');
   }
 
   render() {
-    const { account, onOpenCompose, onOpenSidebar, intl, themeMode } = this.props;
+    const { account, onOpenCompose, onOpenSidebar, intl, settings } = this.props;
     const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {
@@ -113,9 +108,7 @@ class TabsBar extends React.PureComponent {
             </div>
             { account &&
               <div className='flex'>
-                <button className='tabs-bar__button-theme-toggle button' onClick={this.handleToggleTheme} aria-label={themeMode === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)}>
-                  <Icon id={themeMode === 'light' ? 'sun' : 'moon'} />
-                </button>
+                <SettingToggle settings={settings} settingPath={['themeMode']} condition={'light'} onChange={this.handleToggleTheme} icons={{ checked: <Icon id='sun' />, unchecked: <Icon id='moon' /> }} ariaLabel={settings.get('themeMode') === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)} />
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
@@ -151,7 +144,7 @@ const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
     logo: state.getIn(['soapbox', 'logo']),
-    themeMode: settings.get('themeMode'),
+    settings: settings,
   };
 };
 

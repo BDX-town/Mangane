@@ -149,6 +149,25 @@
     display: flex;
   }
 
+  .setting-toggle {
+    margin-top: 5px;
+    margin-left: 10px;
+
+    .react-toggle-track-check,
+    .react-toggle-track-x {
+      height: 15px;
+      color: #fff;
+    }
+
+    .react-toggle--checked {
+      .react-toggle-track {
+        background-color: var(--accent-color);
+      }
+      &:hover:not(.react-toggle--disabled) .react-toggle-track {
+        background-color: var(--accent-color--bright);
+      }
+    }
+  }
 }
 
 .tabs-bar__link {
