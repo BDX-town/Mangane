@@ -1,0 +1,250 @@
+{
+  "account": {
+    "acct": "crockwave",
+    "avatar": "https://media.gleasonator.com/d6dcd2779bdb63ef8b8a5f127743f5ad757046943c4b4a8867215c15a72c5e55.png",
+    "avatar_static": "https://media.gleasonator.com/d6dcd2779bdb63ef8b8a5f127743f5ad757046943c4b4a8867215c15a72c5e55.png",
+    "bot": false,
+    "created_at": "2020-02-26T16:31:25.000Z",
+    "display_name": "Curtis Rock",
+    "emojis": [],
+    "fields": [
+      {
+        "name": "Web Site/Book",
+        "value": "<a href=\"https://teci.world/a-users-guide-to-the-great-awakening\" rel=\"ugc\">https://teci.world/a-users-guide-to-the-great-awakening</a>"
+      },
+      {
+        "name": "Gab",
+        "value": "<a href=\"https://gab.com/crockwave\" rel=\"ugc\">https://gab.com/crockwave</a>"
+      },
+      {
+        "name": "Twitter",
+        "value": "<a href=\"https://twitter.com/GAP_Great\" rel=\"ugc\">https://twitter.com/GAP_Great</a>"
+      },
+      {
+        "name": "MeWe",
+        "value": "<a href=\"https://mewe.com/i/curtisrock\" rel=\"ugc\">https://mewe.com/i/curtisrock</a>"
+      }
+    ],
+    "followers_count": 13,
+    "following_count": 11,
+    "header": "https://media.gleasonator.com/82720af49afb0daa2a700f4371db9848cd7efb38eaca09d47898e8e7b527e0b4.png",
+    "header_static": "https://media.gleasonator.com/82720af49afb0daa2a700f4371db9848cd7efb38eaca09d47898e8e7b527e0b4.png",
+    "id": "9v5c6xSEgAi3Zu1Lv6",
+    "locked": false,
+    "note": "soapbox development team test test2",
+    "pleroma": {
+      "background_image": null,
+      "confirmation_pending": false,
+      "deactivated": false,
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_moderator": false,
+      "relationship": {
+        "blocked_by": false,
+        "blocking": false,
+        "domain_blocking": false,
+        "endorsed": false,
+        "followed_by": true,
+        "following": true,
+        "id": "9v5c6xSEgAi3Zu1Lv6",
+        "muting": false,
+        "muting_notifications": false,
+        "requested": false,
+        "showing_reblogs": true,
+        "subscribing": false
+      },
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [
+        {
+          "name": "Web Site/Book",
+          "value": "https://teci.world/a-users-guide-to-the-great-awakening"
+        },
+        {
+          "name": "Gab",
+          "value": "https://gab.com/crockwave"
+        },
+        {
+          "name": "Twitter",
+          "value": "https://twitter.com/GAP_Great"
+        },
+        {
+          "name": "MeWe",
+          "value": "https://mewe.com/i/curtisrock"
+        }
+      ],
+      "note": "soapbox development team test test2",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 212,
+    "url": "https://gleasonator.com/users/crockwave",
+    "username": "crockwave"
+  },
+  "created_at": "2020-06-10T02:51:05.000Z",
+  "id": "10743",
+  "pleroma": {
+    "is_seen": true
+  },
+  "status": {
+    "account": {
+      "acct": "alex",
+      "avatar": "https://media.gleasonator.com/accounts/avatars/000/000/001/original/1a630e4c4c64c948.jpg",
+      "avatar_static": "https://media.gleasonator.com/accounts/avatars/000/000/001/original/1a630e4c4c64c948.jpg",
+      "bot": false,
+      "created_at": "2020-01-08T01:25:43.000Z",
+      "display_name": "Alex Gleason",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Website",
+          "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+        },
+        {
+          "name": "Pleroma+Soapbox",
+          "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+        },
+        {
+          "name": "Email",
+          "value": "alex@alexgleason.me"
+        },
+        {
+          "name": "Gender identity",
+          "value": "Soyboy"
+        }
+      ],
+      "follow_requests_count": 0,
+      "followers_count": 474,
+      "following_count": 1083,
+      "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+      "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+      "id": "9v5bmRalQvjOy0ECcC",
+      "locked": false,
+      "note": "Fediverse developer. I come in peace. <a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>. Boosts ≠ endorsements.",
+      "pleroma": {
+        "allow_following_move": true,
+        "background_image": null,
+        "confirmation_pending": false,
+        "deactivated": false,
+        "hide_favorites": true,
+        "hide_followers": false,
+        "hide_followers_count": false,
+        "hide_follows": false,
+        "hide_follows_count": false,
+        "is_admin": true,
+        "is_moderator": false,
+        "notification_settings": {
+          "followers": true,
+          "follows": true,
+          "non_followers": true,
+          "non_follows": true,
+          "privacy_option": false
+        },
+        "relationship": {
+          "blocked_by": false,
+          "blocking": false,
+          "domain_blocking": false,
+          "endorsed": false,
+          "followed_by": false,
+          "following": false,
+          "id": "9v5bmRalQvjOy0ECcC",
+          "muting": false,
+          "muting_notifications": false,
+          "requested": false,
+          "showing_reblogs": true,
+          "subscribing": false
+        },
+        "skip_thread_containment": false,
+        "tags": [],
+        "unread_conversation_count": 25
+      },
+      "source": {
+        "fields": [
+          {
+            "name": "Website",
+            "value": "https://alexgleason.me"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "https://soapbox.pub"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "note": "Fediverse developer. I come in peace. #vegan #freeculture #atheist #antiporn #gendercritical. Boosts ≠ endorsements.",
+        "pleroma": {
+          "actor_type": "Person",
+          "discoverable": false,
+          "no_rich_text": false,
+          "show_role": true
+        },
+        "privacy": "public",
+        "sensitive": false
+      },
+      "statuses_count": 4857,
+      "url": "https://gleasonator.com/users/alex",
+      "username": "alex"
+    },
+    "application": {
+      "name": "Web",
+      "website": null
+    },
+    "bookmarked": false,
+    "card": null,
+    "content": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.<br/><br/>Pleroma FE doesn&#39;t seem to report coverage, but I suspect it&#39;s better than both of these combined.<br/><br/>I don&#39;t know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus.",
+    "created_at": "2020-06-10T01:29:20.000Z",
+    "emojis": [],
+    "favourited": false,
+    "favourites_count": 4,
+    "id": "9vvNxoo5EFbbnfdXQu",
+    "in_reply_to_account_id": null,
+    "in_reply_to_id": null,
+    "language": null,
+    "media_attachments": [],
+    "mentions": [],
+    "muted": false,
+    "pinned": false,
+    "pleroma": {
+      "content": {
+        "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+      },
+      "conversation_id": 1168229,
+      "direct_conversation_id": null,
+      "emoji_reactions": [],
+      "expires_at": null,
+      "in_reply_to_account_acct": null,
+      "local": true,
+      "spoiler_text": {
+        "text_plain": ""
+      },
+      "thread_muted": false
+    },
+    "poll": null,
+    "reblog": null,
+    "reblogged": false,
+    "reblogs_count": 0,
+    "replies_count": 0,
+    "sensitive": false,
+    "spoiler_text": "",
+    "tags": [],
+    "uri": "https://gleasonator.com/objects/aa294f83-5a6c-4d2b-ba20-2b8bf69a82ba",
+    "url": "https://gleasonator.com/notice/9vvNxoo5EFbbnfdXQu",
+    "visibility": "public"
+  },
+  "type": "favourite"
+}

@@ -1,0 +1,18 @@
+{
+  "notifications": {
+    "last_read_id": "35098814",
+    "version": 361,
+    "updated_at": "2019-11-26T22:37:25.239Z",
+    "pleroma": {
+      "unread_count": 3
+    }
+  },
+  "home": {
+    "last_read_id": "103206604258487607",
+    "version": 468,
+    "updated_at": "2019-11-26T22:37:25.235Z",
+    "pleroma": {
+      "unread_count": 32
+    }
+  }
+}

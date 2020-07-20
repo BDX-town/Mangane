@@ -1,0 +1,8 @@
+{
+  "access_token": "UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE",
+  "expires_in": 600,
+  "me": "https://social.teci.world/users/curtis",
+  "refresh_token": "c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY",
+  "scope": "read write follow push admin",
+  "token_type": "Bearer"
+}
