@@ -16,7 +16,7 @@ import {
   changePassword,
   fetchOAuthTokens,
   revokeOAuthToken,
-  deactivateAccount,
+  deleteAccount,
 } from 'soapbox/actions/auth';
 import { showAlert } from 'soapbox/actions/alerts';
 
@@ -46,13 +46,11 @@ const messages = defineMessages({
   emailHeader: { id: 'security.headers.update_email', defaultMessage: 'Change Email' },
   passwordHeader: { id: 'security.headers.update_password', defaultMessage: 'Change Password' },
   tokenHeader: { id: 'security.headers.tokens', defaultMessage: 'Sessions' },
-  deactivateHeader: { id: 'security.headers.deactivate', defaultMessage: 'Deactivate Account' },
-  deactivateText: { id: 'security.text.deactivate', defaultMessage: 'To deactivate your account, you must first enter your account password, then click Deactivate Account. \
-  \n Account deactivation will hide your profile and your posts on this server. \n However, your account will not be deleted and your data will not be purged. \
-  \n In addition, any of your data that was previously distributed to other servers will remain on those servers.' },
-  deactivateSubmit: { id: 'security.submit.deactivate', defaultMessage: 'Deactivate Account' },
-  deactivateAccountSuccess: { id: 'security.deactivate_account.success', defaultMessage: 'Account successfully deactivated.' },
-  deactivateAccountFail: { id: 'security.deactivate_account.fail', defaultMessage: 'Account deactivation failed.' },
+  deleteHeader: { id: 'security.headers.delete', defaultMessage: 'Delete Account' },
+  deleteText: { id: 'security.text.delete', defaultMessage: 'To delete your account, enter your password then click Delete Account. This is a permanent action that cannot be undone. Your account will be destroyed from this server, and a deletion request will be sent to other servers. It\'s not guaranteed that all servers will purge your account.' },
+  deleteSubmit: { id: 'security.submit.delete', defaultMessage: 'Delete Account' },
+  deleteAccountSuccess: { id: 'security.delete_account.success', defaultMessage: 'Account successfully deleted.' },
+  deleteAccountFail: { id: 'security.delete_account.fail', defaultMessage: 'Account deletion failed.' },
 });
 
 export default @injectIntl
@@ -310,12 +308,12 @@ class DeactivateAccount extends ImmutablePureComponent {
     const { password } = this.state;
     const { dispatch, intl } = this.props;
     this.setState({ isLoading: true });
-    return dispatch(deactivateAccount(password)).then(() => {
+    return dispatch(deleteAccount(password)).then(() => {
       //this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
-      dispatch(showAlert('', intl.formatMessage(messages.deactivateAccountSuccess)));
+      dispatch(showAlert('', intl.formatMessage(messages.deleteAccountSuccess)));
     }).catch(error => {
       this.setState({ password: '' });
-      dispatch(showAlert('', intl.formatMessage(messages.deactivateAccountFail)));
+      dispatch(showAlert('', intl.formatMessage(messages.deleteAccountFail)));
     }).then(() => {
       this.setState({ isLoading: false });
     });
@@ -326,9 +324,9 @@ class DeactivateAccount extends ImmutablePureComponent {
 
     return (
       <SimpleForm onSubmit={this.handleSubmit}>
-        <h2>{intl.formatMessage(messages.deactivateHeader)}</h2>
+        <h2>{intl.formatMessage(messages.deleteHeader)}</h2>
         <p className='hint'>
-          {intl.formatMessage(messages.deactivateText)}
+          {intl.formatMessage(messages.deleteText)}
         </p>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
@@ -341,7 +339,7 @@ class DeactivateAccount extends ImmutablePureComponent {
             />
             <div className='actions'>
               <button name='button' type='submit' className='btn button button-primary'>
-                {intl.formatMessage(messages.deactivateSubmit)}
+                {intl.formatMessage(messages.deleteSubmit)}
               </button>
             </div>
           </FieldsGroup>

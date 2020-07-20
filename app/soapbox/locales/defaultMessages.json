@@ -1271,7 +1271,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Add media attachment",
+        "defaultMessage": "Add media (JPEG, PNG, GIF, WebM, MP4, MOV)",
         "id": "upload_button.label"
       }
     ],
@@ -2402,24 +2402,24 @@
         "id": "security.headers.tokens"
       },
       {
-        "defaultMessage": "Deactivate Account",
-        "id": "security.headers.deactivate"
+        "defaultMessage": "Delete Account",
+        "id": "security.headers.delete"
       },
       {
-        "defaultMessage": "To deactivate your account, you must first enter your account password, then click Deactivate Account.   \n Account deactivation will hide your profile and your posts on this server. \n However, your account will not be deleted and your data will not be purged.   \n In addition, any of your data that was previously distributed to other servers will remain on those servers.",
-        "id": "security.text.deactivate"
+        "defaultMessage": "To delete your account, enter your password then click Delete Account. This is a permanent action that cannot be undone. Your account will be destroyed from this server, and a deletion request will be sent to other servers. It's not guaranteed that all servers will purge your account.",
+        "id": "security.text.delete"
       },
       {
-        "defaultMessage": "Deactivate Account",
-        "id": "security.submit.deactivate"
+        "defaultMessage": "Delete Account",
+        "id": "security.submit.delete"
       },
       {
-        "defaultMessage": "Account successfully deactivated.",
-        "id": "security.deactivate_account.success"
+        "defaultMessage": "Account successfully deleted.",
+        "id": "security.delete_account.success"
       },
       {
-        "defaultMessage": "Account deactivation failed.",
-        "id": "security.deactivate_account.fail"
+        "defaultMessage": "Account deletion failed.",
+        "id": "security.delete_account.fail"
       }
     ],
     "path": "app/soapbox/features/security/index.json"
@@ -2942,14 +2942,6 @@
         "id": "tabs_bar.post"
       },
       {
-        "defaultMessage": "Switch to light theme",
-        "id": "tabs_bar.theme_toggle_light"
-      },
-      {
-        "defaultMessage": "Switch to dark theme",
-        "id": "tabs_bar.theme_toggle_dark"
-      },
-      {
         "defaultMessage": "Home",
         "id": "tabs_bar.home"
       },
@@ -2971,6 +2963,19 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/tabs_bar.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Switch to light theme",
+        "id": "tabs_bar.theme_toggle_light"
+      },
+      {
+        "defaultMessage": "Switch to dark theme",
+        "id": "tabs_bar.theme_toggle_dark"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/theme_toggle.json"
   },
   {
     "descriptors": [
