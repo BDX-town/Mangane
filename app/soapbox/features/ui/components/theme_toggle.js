@@ -42,7 +42,7 @@ class ThemeToggle extends React.PureComponent {
   render() {
     const { intl, settings, showLabel } = this.props;
     let toggle = (
-      <SettingToggle settings={settings} settingPath={['themeMode']} condition={'light'} onChange={this.handleToggleTheme} icons={{ checked: <Icon id='sun' />, unchecked: <Icon id='moon' /> }}ariaLabel={settings.get('themeMode') === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)} />
+      <SettingToggle settings={settings} settingPath={['themeMode']} condition={'light'} onChange={this.handleToggleTheme} icons={{ checked: <Icon id='sun' />, unchecked: <Icon id='moon' /> }} ariaLabel={settings.get('themeMode') === 'light' ? intl.formatMessage(messages.switchToDark) : intl.formatMessage(messages.switchToLight)} />
     );
 
     if (showLabel) {
@@ -57,5 +57,5 @@ class ThemeToggle extends React.PureComponent {
       </div>
     );
   }
-  
+
 }
