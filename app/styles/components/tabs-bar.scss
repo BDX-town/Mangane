@@ -39,7 +39,7 @@
 
     &--right {
       margin-left: auto;
-      padding-top: 8px;
+      align-items: center;
     }
   }
 
@@ -137,21 +137,17 @@
     height: 34px;
   }
 
-  .flex {
-    display: flex;
-  }
-
   .theme-toggle {
     @media screen and (max-width: $nav-breakpoint-3) {display: none;}
 
     .setting-toggle {
-      margin-top: 3px;
       margin-left: 10px;
 
       .react-toggle--checked {
         .react-toggle-track {
           background-color: var(--accent-color);
         }
+
         &:hover:not(.react-toggle--disabled) .react-toggle-track {
           background-color: var(--accent-color--bright);
         }

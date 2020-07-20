@@ -52,7 +52,7 @@ class ThemeToggle extends React.PureComponent {
     }
 
     return (
-      <div class='theme-toggle'>
+      <div className='theme-toggle'>
         {toggle}
       </div>
     );

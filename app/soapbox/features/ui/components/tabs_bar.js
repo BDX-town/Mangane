@@ -98,7 +98,7 @@ class TabsBar extends React.PureComponent {
               <SearchContainer openInRoute />
             </div>
             { account &&
-              <div className='flex'>
+              <>
                 <ThemeToggle />
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
@@ -108,7 +108,7 @@ class TabsBar extends React.PureComponent {
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
                   <span>{intl.formatMessage(messages.post)}</span>
                 </button>
-              </div>
+              </>
             }
             {
               !account &&
