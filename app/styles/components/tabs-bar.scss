@@ -111,14 +111,6 @@
     }
   }
 
-  &__button-theme-toggle {
-    margin-left: 10px;
-    padding: 0 10px;
-    font-size: 20px;
-
-    .fa { margin-right: 0; }
-  }
-
   &__button-compose {
     display: block;
     @media screen and (max-width: $nav-breakpoint-3) {display: none;}
@@ -149,6 +141,23 @@
     display: flex;
   }
 
+  .theme-toggle {
+    @media screen and (max-width: $nav-breakpoint-3) {display: none;}
+
+    .setting-toggle {
+      margin-top: 3px;
+      margin-left: 10px;
+
+      .react-toggle--checked {
+        .react-toggle-track {
+          background-color: var(--accent-color);
+        }
+        &:hover:not(.react-toggle--disabled) .react-toggle-track {
+          background-color: var(--accent-color--bright);
+        }
+      }
+    }
+  }
 }
 
 .tabs-bar__link {

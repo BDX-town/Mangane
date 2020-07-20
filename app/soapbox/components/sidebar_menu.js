@@ -15,6 +15,7 @@ import { shortNumberFormat } from '../utils/numbers';
 import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
 import { logOut } from 'soapbox/actions/auth';
+import ThemeToggle from '../features/ui/components/theme_toggle';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -119,6 +120,12 @@ class SidebarMenu extends ImmutablePureComponent {
             </div>
 
             <div className='sidebar-menu__section sidebar-menu__section--borderless'>
+              <div className='sidebar-menu-item theme-toggle'>
+                <ThemeToggle showLabel />
+              </div>
+            </div>
+
+            <div className='sidebar-menu__section sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={onClose}>
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
