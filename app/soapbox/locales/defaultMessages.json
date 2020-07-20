@@ -2400,6 +2400,26 @@
       {
         "defaultMessage": "Sessions",
         "id": "security.headers.tokens"
+      },
+      {
+        "defaultMessage": "Deactivate Account",
+        "id": "security.headers.deactivate"
+      },
+      {
+        "defaultMessage": "To deactivate your account, you must first enter your account password, then click Deactivate Account.   \n Account deactivation will hide your profile and your posts on this server. \n However, your account will not be deleted and your data will not be purged.   \n In addition, any of your data that was previously distributed to other servers will remain on those servers.",
+        "id": "security.text.deactivate"
+      },
+      {
+        "defaultMessage": "Deactivate Account",
+        "id": "security.submit.deactivate"
+      },
+      {
+        "defaultMessage": "Account successfully deactivated.",
+        "id": "security.deactivate_account.success"
+      },
+      {
+        "defaultMessage": "Account deactivation failed.",
+        "id": "security.deactivate_account.fail"
       }
     ],
     "path": "app/soapbox/features/security/index.json"
