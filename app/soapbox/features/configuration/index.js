@@ -12,6 +12,7 @@ import {
   Checkbox,
   FileChooser,
 } from 'soapbox/features/forms';
+import BrandingPreview from './components/branding_preview';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -19,81 +20,36 @@ import {
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
 
+const MAX_FIELDS = 6; // Max promoPanel fields
+
 const messages = defineMessages({
-  heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
-  metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
-  metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
+  heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
+  promoPanelIcon: { id: 'soapbox_settings.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
+  promoPanelLabel: { id: 'soapbox_settings.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
+  promoPanelURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  homeFooterLabel: { id: 'soapbox_settings.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
+  homeFooterURL: { id: 'soapbox_settings.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
 });
 
 const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
   return {
     themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
-    customCss: state.getIn(['soapbox', 'customCss']),
-    logo: state.getIn(['soapbox', 'logo']),
     logo: state.getIn(['soapbox', 'logo']),
     promoPanel: state.getIn(['soapbox', 'promoPanel', 'items']),
     patronEnabled: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
-    displayMode: state.getIn(['soapbox', 'defaultSettings', 'mode']),
+    autoPlayGif: state.getIn(['soapbox', 'defaultSettings', 'autoPlayGif']),
     copyright: state.getIn(['soapbox', 'copyright']),
     homeFooter: state.getIn(['soapbox', 'navLinks', 'homeFooter']),
-
-    // {
-    //   soapbox: {
-    //     brandColor: '#1ca82b',
-    //     logo: '/favicon.png',
-    //     promoPanel: {
-    //       items: [
-    //         {
-    //           icon: 'area-chart',
-    //           text: 'Gleasonator stats',
-    //           url: 'https://fediverse.network/gleasonator.com'
-    //         },
-    //         {
-    //           icon: 'comment-o',
-    //           text: 'Gleasonator theme song',
-    //           url: 'https://media.gleasonator.com/custom/261905_gleasonator_song.mp3'
-    //         }
-    //       ]
-    //     },
-    //     extensions: {
-    //       patron: {
-    //         enabled: true
-    //       }
-    //     },
-    //     defaultSettings: {
-    //       mode: 'light'
-    //     },
-    //     copyright: '♡2020. Copying is an act of love. Please copy and share.',
-    //     navlinks: {
-    //       homeFooter: [
-    //         {
-    //           title: 'About',
-    //           url: '/about'
-    //         },
-    //         {
-    //           title: 'Terms of Service',
-    //           url: '/about/tos'
-    //         },
-    //         {
-    //           title: 'Privacy Policy',
-    //           url: '/about/privacy'
-    //         },
-    //         {
-    //           title: 'DMCA',
-    //           url: '/about/dmca'
-    //         },
-    //         {
-    //           title: 'Source Code',
-    //           url: '/about#opensource'
-    //         }
-    //       ]
-    //     }
-    //   }
-    // }
-
   };
 };
+
+// Forces fields to be MAX_SIZE, filling empty values
+const normalizeFields = fields => (
+  ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
+    field ? field : ImmutableMap({ name: '', value: '' })
+  )
+);
 
 // HTML unescape for special chars, eg <br>
 const unescapeParams = (map, params) => (
@@ -109,26 +65,31 @@ class ConfigSoapbox extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map,
+    themeCss: PropTypes.text,
+    logo: PropTypes.object,
+    promoPanel: ImmutablePropTypes.map,
+    patronEnabled: PropTypes.Boolean,
+    autoPlayGif: PropTypes.Boolean,
+    copyright: PropTypes.text,
+    homeFooter: ImmutablePropTypes.map,
   };
 
   state = {
     isLoading: false,
-    fields: normalizeFields(Array.from({ length: MAX_FIELDS })),
+    promoPanel: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
   constructor(props) {
     super(props);
-    const initialState = props.account.withMutations(map => {
+    const initialState = props.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields')));
-      unescapeParams(map, ['display_name', 'note']);
+      map.set('promoPanel', normalizeFields(map.get('promoPanel')));
     });
     this.state = initialState.toObject();
   }
 
-  makePreviewAccount = () => {
+  makePreviewLogo = () => {
     const { account } = this.props;
     return account.merge(ImmutableMap({
       header: this.state.header,
@@ -137,12 +98,12 @@ class ConfigSoapbox extends ImmutablePureComponent {
     }));
   }
 
-  getFieldParams = () => {
+  getPromoPanelParams = () => {
     let params = ImmutableMap();
-    this.state.fields.forEach((f, i) =>
+    this.state.promoPanel.forEach((f, i) =>
       params = params
-        .set(`fields_attributes[${i}][name]`,  f.get('name'))
-        .set(`fields_attributes[${i}][value]`, f.get('value'))
+        .set(`promo_panel_attributes[${i}][name]`,  f.get('name'))
+        .set(`promo_panel_attributes[${i}][value]`, f.get('value'))
     );
     return params;
   }
@@ -150,21 +111,20 @@ class ConfigSoapbox extends ImmutablePureComponent {
   getParams = () => {
     const { state } = this;
     return Object.assign({
-      discoverable: state.discoverable,
-      bot: state.bot,
-      display_name: state.display_name,
-      note: state.note,
-      avatar: state.avatar_file,
-      header: state.header_file,
-      locked: state.locked,
-    }, this.getFieldParams().toJS());
+      themeCss: state.themeCss,
+      logoFile: state.logoFile,
+      patronEnabled: state.patronEnabled,
+      displayMode: state.displayMode,
+      copyright: state.copyright,
+      homeFooter: state.homeFooter,
+    }, this.getPromoPanelParams().toJS());
   }
 
   getFormdata = () => {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
+      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -189,7 +149,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleFieldChange = (i, key) => {
+  handlePromoPanelChange = (i, key) => {
     return (e) => {
       this.setState({
         fields: this.state.fields.setIn([i, key], e.target.value),
@@ -212,7 +172,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='gears' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
@@ -230,7 +190,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <ProfilePreview account={this.makePreviewAccount()} />
+                  <ProfilePreview account={this.makePreviewLogo()} />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
@@ -275,12 +235,12 @@ class ConfigSoapbox extends ImmutablePureComponent {
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldLabel)}
                           value={field.get('name')}
-                          onChange={this.handleFieldChange(i, 'name')}
+                          onChange={this.handlePromoPanelChange(i, 'name')}
                         />
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldContent)}
                           value={field.get('value')}
-                          onChange={this.handleFieldChange(i, 'value')}
+                          onChange={this.handlePromoPanelChange(i, 'value')}
                         />
                       </div>
                     ))
