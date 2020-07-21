@@ -29,6 +29,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
+  soapbox_settings: { id: 'navigation_bar.soapbox_settings', defaultMessage: 'Soapbox settings' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -170,6 +171,10 @@ class SidebarMenu extends ImmutablePureComponent {
               { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} onClick={onClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
+              </a> }
+              { isStaff && <a className='sidebar-menu-item' href={'/admin/'} onClick={onClose}>
+                <Icon id='shield' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_settings)}</span>
               </a> }
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
                 <Icon id='cog' />

@@ -354,6 +354,10 @@
         "id": "navigation_bar.admin_settings"
       },
       {
+        "defaultMessage": "Soapbox settings",
+        "id": "navigation_bar.soapbox_settings"
+      },
+      {
         "defaultMessage": "Security",
         "id": "navigation_bar.security"
       },
@@ -1013,6 +1017,10 @@
         "id": "navigation_bar.admin_settings"
       },
       {
+        "defaultMessage": "Soapbox settings",
+        "id": "navigation_bar.soapbox_settings"
+      },
+      {
         "defaultMessage": "Security",
         "id": "navigation_bar.security"
       },
@@ -1271,7 +1279,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Add media (JPEG, PNG, GIF, WebM, MP4, MOV)",
+        "defaultMessage": "Add media attachment",
         "id": "upload_button.label"
       }
     ],

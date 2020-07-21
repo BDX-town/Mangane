@@ -281,6 +281,7 @@
   "navigation_bar.preferences": "Preferencias",
   "navigation_bar.public_timeline": "Historia federada",
   "navigation_bar.security": "Seguridad",
+  "navigation_bar.soapbox_settings": "Soapbox settings",
   "notification.emoji_react": "{name} reacted to your post",
   "notification.favourite": "{name} marcó tu estado como favorito",
   "notification.follow": "{name} te empezó a seguir",
