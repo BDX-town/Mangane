@@ -38,19 +38,19 @@ const mapStateToProps = state => {
   console.log(soapbox);
   console.log(generateThemeCss(soapbox.get('brandColor')));
   console.log(soapbox.get('logo'));
-  console.log(soapbox.get('promoPanel'));
-  console.log(soapbox.get('extensions'));
-  console.log(soapbox.get('defaultSettings'));
+  console.log(soapbox.getIn(['promoPanel', 'items']));
+  console.log(soapbox.getIn(['extensions', 'patron']));
+  console.log(soapbox.getIn(['defaultSettings', 'autoPlayGif']));
   console.log(soapbox.get('copyright'));
-  console.log(soapbox.get('navLinks'));
+  console.log(soapbox.getIn(['navlinks', 'homeFooter']));
   return {
     themeCss: generateThemeCss(soapbox.get('brandColor')),
     logo: soapbox.get('logo'),
-    promoPanel: soapbox.get('promoPanel'),
-    patronEnabled: soapbox.get('extensions'),
-    autoPlayGif: soapbox.get('defaultSettings'),
+    promoPanel: soapbox.getIn(['promoPanel', 'items']),
+    patronEnabled: soapbox.getIn(['extensions', 'patron']),
+    autoPlayGif: soapbox.getIn(['defaultSettings', 'autoPlayGif']),
     copyright: soapbox.get('copyright'),
-    homeFooter: soapbox.get('navLinks'),
+    homeFooter: soapbox.getIn(['navlinks', 'homeFooter']),
   };
 };
 
@@ -64,16 +64,27 @@ class ConfigSoapbox extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     themeCss: PropTypes.string,
     logo: PropTypes.string,
-    promoPanel: ImmutablePropTypes.map,
-    patronEnabled: PropTypes.object,
-    autoPlayGif: PropTypes.object,
+    promoPanel: ImmutablePropTypes.list,
+    patronEnabled: PropTypes.bool,
+    autoPlayGif: PropTypes.bool,
     copyright: PropTypes.string,
-    homeFooter: ImmutablePropTypes.map,
+    homeFooter: ImmutablePropTypes.list,
   };
 
   state = {
     isLoading: false,
     // promoPanel: normalizeFields(Array.from({ length: MAX_FIELDS })),
+  }
+
+  constructor(props) {
+    super(props);
+    const initialState = props.withMutations(map => {
+      map.merge(map.get('source'));
+      map.delete('source');
+      map.set('fields', normalizeFields(map.get('fields')));
+      unescapeParams(map, ['display_name', 'note']);
+    });
+    this.state = initialState.toObject();
   }
 
   // makePreviewLogo = () => {
@@ -95,6 +106,16 @@ class ConfigSoapbox extends ImmutablePureComponent {
     return params;
   }
 
+  getHomeFooterParams = () => {
+    let params = ImmutableMap();
+    this.state.homeFooter.forEach((f, i) =>
+      params = params
+        .set(`home_footer_attributes[${i}][name]`,  f.get('name'))
+        .set(`home_footer_attributes[${i}][value]`, f.get('value'))
+    );
+    return params;
+  }
+
   getParams = () => {
     const { state } = this;
     return Object.assign({
@@ -104,14 +125,16 @@ class ConfigSoapbox extends ImmutablePureComponent {
       displayMode: state.displayMode,
       copyright: state.copyright,
       homeFooter: state.homeFooter,
-    }, this.getPromoPanelParams().toJS());
+    },
+    this.getHomeFooterParams().toJS(),
+    this.getPromoPanelParams().toJS());
   }
 
   getFormdata = () => {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes'));
+      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes') || key.startsWith('home_footer_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -140,6 +163,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
     return (e) => {
       this.setState({
         promoPanel: this.state.promoPanel.setIn([i, key], e.target.value),
+      });
+    };
+  }
+
+  handleHomeFooterChange = (i, key) => {
+    return (e) => {
+      this.setState({
+        homeFooter: this.state.homeFooter.setIn([i, key], e.target.value),
       });
     };
   }
@@ -228,6 +259,28 @@ class ConfigSoapbox extends ImmutablePureComponent {
                           placeholder={intl.formatMessage(messages.metaFieldContent)}
                           value={field.get('value')}
                           onChange={this.handlePromoPanelChange(i, 'value')}
+                        />
+                      </div>
+                    ))
+                  }
+                </div>
+                <div className='input with_block_label'>
+                  <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
+                  <span className='hint'>
+                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                  </span>
+                  {
+                    this.state.homeFooter.map((field, i) => (
+                      <div className='row' key={i}>
+                        <TextInput
+                          placeholder={intl.formatMessage(messages.metaFieldLabel)}
+                          value={field.get('name')}
+                          onChange={this.handleHomeFooterChange(i, 'name')}
+                        />
+                        <TextInput
+                          placeholder={intl.formatMessage(messages.metaFieldContent)}
+                          value={field.get('value')}
+                          onChange={this.handleHomeFooterChange(i, 'value')}
                         />
                       </div>
                     ))
