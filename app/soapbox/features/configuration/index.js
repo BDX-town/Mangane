@@ -12,13 +12,15 @@ import {
   Checkbox,
   FileChooser,
 } from 'soapbox/features/forms';
-import BrandingPreview from './components/branding_preview';
+// import BrandingPreview from './components/branding_preview';
+import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
+import { generateThemeCss } from 'soapbox/utils/theme';
 
 const MAX_FIELDS = 6; // Max promoPanel fields
 
@@ -33,23 +35,24 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
+  console.log(soapbox);
+  console.log(generateThemeCss(soapbox.get('brandColor')));
+  console.log(soapbox.get('logo'));
+  console.log(soapbox.get('promoPanel'));
+  console.log(soapbox.get('extensions'));
+  console.log(soapbox.get('defaultSettings'));
+  console.log(soapbox.get('copyright'));
+  console.log(soapbox.get('navLinks'));
   return {
-    themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
-    logo: state.getIn(['soapbox', 'logo']),
-    promoPanel: state.getIn(['soapbox', 'promoPanel', 'items']),
-    patronEnabled: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
-    autoPlayGif: state.getIn(['soapbox', 'defaultSettings', 'autoPlayGif']),
-    copyright: state.getIn(['soapbox', 'copyright']),
-    homeFooter: state.getIn(['soapbox', 'navLinks', 'homeFooter']),
+    themeCss: generateThemeCss(soapbox.get('brandColor')),
+    logo: soapbox.get('logo'),
+    promoPanel: soapbox.get('promoPanel'),
+    patronEnabled: soapbox.get('extensions'),
+    autoPlayGif: soapbox.get('defaultSettings'),
+    copyright: soapbox.get('copyright'),
+    homeFooter: soapbox.get('navLinks'),
   };
 };
-
-// Forces fields to be MAX_SIZE, filling empty values
-const normalizeFields = fields => (
-  ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
-    field ? field : ImmutableMap({ name: '', value: '' })
-  )
-);
 
 // HTML unescape for special chars, eg <br>
 const unescapeParams = (map, params) => (
@@ -59,44 +62,35 @@ const unescapeParams = (map, params) => (
 );
 
 export default @connect(mapStateToProps)
+// export default @connect()
 @injectIntl
 class ConfigSoapbox extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    themeCss: PropTypes.text,
-    logo: PropTypes.object,
+    themeCss: PropTypes.string,
+    logo: PropTypes.string,
     promoPanel: ImmutablePropTypes.map,
-    patronEnabled: PropTypes.Boolean,
-    autoPlayGif: PropTypes.Boolean,
-    copyright: PropTypes.text,
+    patronEnabled: PropTypes.object,
+    autoPlayGif: PropTypes.object,
+    copyright: PropTypes.string,
     homeFooter: ImmutablePropTypes.map,
   };
 
   state = {
     isLoading: false,
-    promoPanel: normalizeFields(Array.from({ length: MAX_FIELDS })),
+    // promoPanel: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
-  constructor(props) {
-    super(props);
-    const initialState = props.withMutations(map => {
-      map.merge(map.get('source'));
-      map.delete('source');
-      map.set('promoPanel', normalizeFields(map.get('promoPanel')));
-    });
-    this.state = initialState.toObject();
-  }
-
-  makePreviewLogo = () => {
-    const { account } = this.props;
-    return account.merge(ImmutableMap({
-      header: this.state.header,
-      avatar: this.state.avatar,
-      display_name: this.state.display_name,
-    }));
-  }
+  // makePreviewLogo = () => {
+  //   const { logo } = this.props;
+  //   return logo.merge(ImmutableMap({
+  //     header: this.state.header,
+  //     avatar: this.state.avatar,
+  //     display_name: this.state.display_name,
+  //   }));
+  // }
 
   getPromoPanelParams = () => {
     let params = ImmutableMap();
@@ -152,7 +146,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   handlePromoPanelChange = (i, key) => {
     return (e) => {
       this.setState({
-        fields: this.state.fields.setIn([i, key], e.target.value),
+        promoPanel: this.state.promoPanel.setIn([i, key], e.target.value),
       });
     };
   }
@@ -177,46 +171,46 @@ class ConfigSoapbox extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
-                label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
+                label={<FormattedMessage id='soapbox_settings.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
                 onChange={this.handleTextChange}
               />
               <TextInput
-                label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
+                label={<FormattedMessage id='soapbox_settings.fields.bio_label' defaultMessage='Bio' />}
                 name='note'
                 value={this.state.note}
                 onChange={this.handleTextChange}
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <ProfilePreview account={this.makePreviewLogo()} />
+                  <StillImage src={this.state.logo} />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
-                    label={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Header' />}
+                    label={<FormattedMessage id='soapbox_settings.fields.header_label' defaultMessage='Header' />}
                     name='header'
-                    hint={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px' />}
+                    hint={<FormattedMessage id='soapbox_settings.hints.header' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px' />}
                     onChange={this.handleFileChange}
                   />
                   <FileChooser
-                    label={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Avatar' />}
+                    label={<FormattedMessage id='soapbox_settings.fields.avatar_label' defaultMessage='Avatar' />}
                     name='avatar'
-                    hint={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
+                    hint={<FormattedMessage id='soapbox_settings.hints.avatar' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
                     onChange={this.handleFileChange}
                   />
                 </div>
               </div>
               <Checkbox
-                label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
-                hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
+                label={<FormattedMessage id='soapbox_settings.fields.locked_label' defaultMessage='Lock account' />}
+                hint={<FormattedMessage id='soapbox_settings.hints.locked' defaultMessage='Requires you to manually approve followers' />}
                 name='locked'
                 checked={this.state.locked}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
-                label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
-                hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
+                label={<FormattedMessage id='soapbox_settings.fields.bot_label' defaultMessage='This is a bot account' />}
+                hint={<FormattedMessage id='soapbox_settings.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
                 name='bot'
                 checked={this.state.bot}
                 onChange={this.handleCheckboxChange}
@@ -225,12 +219,12 @@ class ConfigSoapbox extends ImmutablePureComponent {
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
-                  <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
+                  <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
                   </span>
                   {
-                    this.state.fields.map((field, i) => (
+                    this.state.promoPanel.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldLabel)}
@@ -251,7 +245,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>
-              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+              <FormattedMessage id='soapbox_settings.save' defaultMessage='Save' />
             </button>
           </div>
         </SimpleForm>

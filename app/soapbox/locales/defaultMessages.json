@@ -41,6 +41,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Click to see {count} new {count, plural, one {post} other {posts}}",
+        "id": "status_list.queue_label"
+      }
+    ],
+    "path": "app/soapbox/components/__tests__/timeline_queue_button_header-test.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Follow",
         "id": "account.follow"
       },
@@ -1406,6 +1415,87 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Soapbox settings",
+        "id": "column.soapbox_settings"
+      },
+      {
+        "defaultMessage": "Icon",
+        "id": "soapbox_settings.promo_panel.meta_fields.icon_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_settings.promo_panel.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_settings.promo_panel.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_settings.home_footer.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_settings.home_footer.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Display name",
+        "id": "soapbox_settings.fields.display_name_label"
+      },
+      {
+        "defaultMessage": "Bio",
+        "id": "soapbox_settings.fields.bio_label"
+      },
+      {
+        "defaultMessage": "Header",
+        "id": "soapbox_settings.fields.header_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px",
+        "id": "soapbox_settings.hints.header"
+      },
+      {
+        "defaultMessage": "Avatar",
+        "id": "soapbox_settings.fields.avatar_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px",
+        "id": "soapbox_settings.hints.avatar"
+      },
+      {
+        "defaultMessage": "Lock account",
+        "id": "soapbox_settings.fields.locked_label"
+      },
+      {
+        "defaultMessage": "Requires you to manually approve followers",
+        "id": "soapbox_settings.hints.locked"
+      },
+      {
+        "defaultMessage": "This is a bot account",
+        "id": "soapbox_settings.fields.bot_label"
+      },
+      {
+        "defaultMessage": "This account mainly performs automated actions and might not be monitored",
+        "id": "soapbox_settings.hints.bot"
+      },
+      {
+        "defaultMessage": "Profile metadata",
+        "id": "soapbox_settings.fields.meta_fields_label"
+      },
+      {
+        "defaultMessage": "You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile",
+        "id": "soapbox_settings.hints.meta_fields"
+      },
+      {
+        "defaultMessage": "Save",
+        "id": "soapbox_settings.save"
+      }
+    ],
+    "path": "app/soapbox/features/configuration/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Direct messages",
         "id": "column.direct"
       },
@@ -1779,6 +1869,66 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Groups You're In",
+        "id": "groups.sidebar-panel.title"
+      },
+      {
+        "defaultMessage": "Show all",
+        "id": "groups.sidebar-panel.show_all"
+      }
+    ],
+    "path": "app/soapbox/features/groups/sidebar_panel/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "new posts",
+        "id": "groups.sidebar-panel.item.view"
+      },
+      {
+        "defaultMessage": "No recent activity",
+        "id": "groups.sidebar-panel.item.no_recent_activity"
+      }
+    ],
+    "path": "app/soapbox/features/groups/sidebar_panel/item.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Join group",
+        "id": "groups.join"
+      },
+      {
+        "defaultMessage": "Leave group",
+        "id": "groups.leave"
+      },
+      {
+        "defaultMessage": "Removed Accounts",
+        "id": "groups.removed_accounts"
+      },
+      {
+        "defaultMessage": "Edit",
+        "id": "groups.edit"
+      }
+    ],
+    "path": "app/soapbox/features/groups/timeline/components/header.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Archived group",
+        "id": "group.detail.archived_group"
+      },
+      {
+        "defaultMessage": "You're an admin",
+        "id": "groups.detail.role_admin"
+      }
+    ],
+    "path": "app/soapbox/features/groups/timeline/components/panel.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "There is nothing in this group yet. When members of this group make new posts, they will appear here.",
         "id": "empty_column.group"
       }
@@ -1839,6 +1989,63 @@
       }
     ],
     "path": "app/soapbox/features/home_timeline/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "First steps",
+        "id": "introduction.welcome.headline"
+      },
+      {
+        "defaultMessage": "Welcome to the fediverse! In a few moments, you'll be able to broadcast messages and talk to your friends across a wide variety of servers. But this server, {domain}, is special—it hosts your profile, so remember its name.",
+        "id": "introduction.welcome.text"
+      },
+      {
+        "defaultMessage": "Let's go!",
+        "id": "introduction.welcome.action"
+      },
+      {
+        "defaultMessage": "Home",
+        "id": "introduction.federation.home.headline"
+      },
+      {
+        "defaultMessage": "Posts from people you follow will appear in your home feed. You can follow anyone on any server!",
+        "id": "introduction.federation.home.text"
+      },
+      {
+        "defaultMessage": "Next",
+        "id": "introduction.federation.action"
+      },
+      {
+        "defaultMessage": "Reply",
+        "id": "introduction.interactions.reply.headline"
+      },
+      {
+        "defaultMessage": "You can reply to other people's and your own posts, which will chain them together in a conversation.",
+        "id": "introduction.interactions.reply.text"
+      },
+      {
+        "defaultMessage": "Repost",
+        "id": "introduction.interactions.reblog.headline"
+      },
+      {
+        "defaultMessage": "You can share other people's posts with your followers by reposting them.",
+        "id": "introduction.interactions.reblog.text"
+      },
+      {
+        "defaultMessage": "Favorite",
+        "id": "introduction.interactions.favourite.headline"
+      },
+      {
+        "defaultMessage": "You can save a post for later, and let the author know that you liked it, by favoriting it.",
+        "id": "introduction.interactions.favourite.text"
+      },
+      {
+        "defaultMessage": "Finish tutorial!",
+        "id": "introduction.interactions.action"
+      }
+    ],
+    "path": "app/soapbox/features/introduction/index.json"
   },
   {
     "descriptors": [
@@ -2548,6 +2755,47 @@
         "id": "confirmations.block.confirm"
       },
       {
+        "defaultMessage": "Reply",
+        "id": "confirmations.reply.confirm"
+      },
+      {
+        "defaultMessage": "Replying now will overwrite the message you are currently composing. Are you sure you want to proceed?",
+        "id": "confirmations.reply.message"
+      },
+      {
+        "defaultMessage": "Block & Report",
+        "id": "confirmations.block.block_and_report"
+      },
+      {
+        "defaultMessage": "Are you sure you want to block {name}?",
+        "id": "confirmations.block.message"
+      }
+    ],
+    "path": "app/soapbox/features/status/containers/detailed_status_container.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Delete",
+        "id": "confirmations.delete.confirm"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this post?",
+        "id": "confirmations.delete.message"
+      },
+      {
+        "defaultMessage": "Delete & redraft",
+        "id": "confirmations.redraft.confirm"
+      },
+      {
+        "defaultMessage": "Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.",
+        "id": "confirmations.redraft.message"
+      },
+      {
+        "defaultMessage": "Block",
+        "id": "confirmations.block.confirm"
+      },
+      {
         "defaultMessage": "Show more for all",
         "id": "status.show_more_all"
       },
@@ -2675,6 +2923,15 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/embed_modal.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Follow requests",
+        "id": "navigation_bar.follow_requests"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/follow_requests_nav_link.json"
   },
   {
     "descriptors": [
