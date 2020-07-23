@@ -19,7 +19,7 @@ import {
   // List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
-import { unescape } from 'lodash';
+//import { unescape } from 'lodash';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 const MAX_FIELDS = 6; // Max promoPanel fields
