@@ -16,7 +16,7 @@ import {
 import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
-  List as ImmutableList,
+  // List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
@@ -53,13 +53,6 @@ const mapStateToProps = state => {
     homeFooter: soapbox.get('navLinks'),
   };
 };
-
-// HTML unescape for special chars, eg <br>
-const unescapeParams = (map, params) => (
-  params.reduce((map, param) => (
-    map.set(param, unescape(map.get(param)))
-  ), map)
-);
 
 export default @connect(mapStateToProps)
 // export default @connect()
