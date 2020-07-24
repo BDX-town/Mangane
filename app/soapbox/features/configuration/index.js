@@ -22,15 +22,13 @@ import { patchMe } from 'soapbox/actions/me';
 //import { unescape } from 'lodash';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-const MAX_FIELDS = 6; // Max promoPanel fields
-
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
-  promoPanelIcon: { id: 'soapbox_settings.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
-  promoPanelLabel: { id: 'soapbox_settings.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
-  promoPanelURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
-  homeFooterLabel: { id: 'soapbox_settings.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
-  homeFooterURL: { id: 'soapbox_settings.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  promoItemIcon: { id: 'soapbox_settings.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
+  promoItemLabel: { id: 'soapbox_settings.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
+  promoItemURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  homeFooterItemLabel: { id: 'soapbox_settings.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
+  homeFooterItemURL: { id: 'soapbox_settings.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
 });
 
 const mapStateToProps = state => {
@@ -46,11 +44,11 @@ const mapStateToProps = state => {
   return {
     themeCss: generateThemeCss(soapbox.get('brandColor')),
     logo: soapbox.get('logo'),
-    promoPanel: soapbox.getIn(['promoPanel', 'items']),
+    promoItems: soapbox.getIn(['promoPanel', 'items']),
     patronEnabled: soapbox.getIn(['extensions', 'patron']),
     autoPlayGif: soapbox.getIn(['defaultSettings', 'autoPlayGif']),
     copyright: soapbox.get('copyright'),
-    homeFooter: soapbox.getIn(['navlinks', 'homeFooter']),
+    homeFooterItems: soapbox.getIn(['navlinks', 'homeFooter']),
   };
 };
 
@@ -64,28 +62,23 @@ class ConfigSoapbox extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     themeCss: PropTypes.string,
     logo: PropTypes.string,
-    promoPanel: ImmutablePropTypes.list,
+    promoItems: ImmutablePropTypes.list,
     patronEnabled: PropTypes.bool,
     autoPlayGif: PropTypes.bool,
     copyright: PropTypes.string,
-    homeFooter: ImmutablePropTypes.list,
+    homeFooterItems: ImmutablePropTypes.list,
   };
 
   state = {
     isLoading: false,
-    // promoPanel: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
-  constructor(props) {
-    super(props);
-    const initialState = props.withMutations(map => {
-      map.merge(map.get('source'));
-      map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields')));
-      unescapeParams(map, ['display_name', 'note']);
-    });
-    this.state = initialState.toObject();
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     logo: props.themeCss,
+  //   };
+  // }
 
   // makePreviewLogo = () => {
   //   const { logo } = this.props;
@@ -96,9 +89,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
   //   }));
   // }
 
-  getPromoPanelParams = () => {
+  getPromoItemsParams = () => {
     let params = ImmutableMap();
-    this.state.promoPanel.forEach((f, i) =>
+    this.state.promoItems.forEach((f, i) =>
       params = params
         .set(`promo_panel_attributes[${i}][name]`,  f.get('name'))
         .set(`promo_panel_attributes[${i}][value]`, f.get('value'))
@@ -108,7 +101,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   getHomeFooterParams = () => {
     let params = ImmutableMap();
-    this.state.homeFooter.forEach((f, i) =>
+    this.state.homeFooterItems.forEach((f, i) =>
       params = params
         .set(`home_footer_attributes[${i}][name]`,  f.get('name'))
         .set(`home_footer_attributes[${i}][value]`, f.get('value'))
@@ -124,10 +117,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
       patronEnabled: state.patronEnabled,
       displayMode: state.displayMode,
       copyright: state.copyright,
-      homeFooter: state.homeFooter,
     },
     this.getHomeFooterParams().toJS(),
-    this.getPromoPanelParams().toJS());
+    this.getPromoItemsParams().toJS());
   }
 
   getFormdata = () => {
@@ -159,18 +151,18 @@ class ConfigSoapbox extends ImmutablePureComponent {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handlePromoPanelChange = (i, key) => {
+  handlePromoItemsChange = (i, key) => {
     return (e) => {
       this.setState({
-        promoPanel: this.state.promoPanel.setIn([i, key], e.target.value),
+        promoItems: this.state.promoItems.setIn([i, key], e.target.value),
       });
     };
   }
 
-  handleHomeFooterChange = (i, key) => {
+  handleHomeFooterItemsChange = (i, key) => {
     return (e) => {
       this.setState({
-        homeFooter: this.state.homeFooter.setIn([i, key], e.target.value),
+        homeFooterItems: this.state.homeFooterItems.setIn([i, key], e.target.value),
       });
     };
   }
@@ -208,35 +200,47 @@ class ConfigSoapbox extends ImmutablePureComponent {
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <StillImage src={this.state.logo} />
+                  if ({this.state.logo}) {
+                    <StillImage src={this.state.logo} />
+                  } else {
+                    <StillImage src={this.props.logo} />
+                  };
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
-                    label={<FormattedMessage id='soapbox_settings.fields.header_label' defaultMessage='Header' />}
-                    name='header'
-                    hint={<FormattedMessage id='soapbox_settings.hints.header' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px' />}
+                    label={<FormattedMessage id='soapbox_settings.fields.logo_label' defaultMessage='Logo' />}
+                    name='logo'
+                    hint={<FormattedMessage id='soapbox_settings.hints.logo' defaultMessage='SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio' />}
                     onChange={this.handleFileChange}
                   />
                   <FileChooser
-                    label={<FormattedMessage id='soapbox_settings.fields.avatar_label' defaultMessage='Avatar' />}
-                    name='avatar'
-                    hint={<FormattedMessage id='soapbox_settings.hints.avatar' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
+                    label={<FormattedMessage id='soapbox_settings.fields.banner_label' defaultMessage='Banner' />}
+                    name='banner'
+                    hint={<FormattedMessage id='soapbox_settings.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
                     onChange={this.handleFileChange}
                   />
                 </div>
               </div>
               <Checkbox
-                label={<FormattedMessage id='soapbox_settings.fields.locked_label' defaultMessage='Lock account' />}
-                hint={<FormattedMessage id='soapbox_settings.hints.locked' defaultMessage='Requires you to manually approve followers' />}
-                name='locked'
-                checked={this.state.locked}
+                label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Enable Patron module' />}
+                hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
+                name='patron_enabled'
+                if ({this.state.patronEnabled}) {
+                  checked={this.state.patronEnabled}
+                } else {
+                  checked={this.props.patronEnabled}
+                };
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
-                label={<FormattedMessage id='soapbox_settings.fields.bot_label' defaultMessage='This is a bot account' />}
-                hint={<FormattedMessage id='soapbox_settings.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
-                name='bot'
-                checked={this.state.bot}
+                label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
+                hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
+                name='auto_play_gif'
+                if ({this.state.autoPlayGif}) {
+                  checked={this.state.autoPlayGif}
+                } else {
+                  checked={this.props.autoPlayGif}
+                };
                 onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
@@ -248,17 +252,17 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
                   </span>
                   {
-                    this.state.promoPanel.map((field, i) => (
+                    this.state.promoItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldLabel)}
                           value={field.get('name')}
-                          onChange={this.handlePromoPanelChange(i, 'name')}
+                          onChange={this.handlePromoItemsChange(i, 'name')}
                         />
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldContent)}
                           value={field.get('value')}
-                          onChange={this.handlePromoPanelChange(i, 'value')}
+                          onChange={this.handlePromoItemsChange(i, 'value')}
                         />
                       </div>
                     ))
@@ -270,17 +274,17 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
                   </span>
                   {
-                    this.state.homeFooter.map((field, i) => (
+                    this.state.homeFooterItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldLabel)}
                           value={field.get('name')}
-                          onChange={this.handleHomeFooterChange(i, 'name')}
+                          onChange={this.handleHomeFooterItemsChange(i, 'name')}
                         />
                         <TextInput
                           placeholder={intl.formatMessage(messages.metaFieldContent)}
                           value={field.get('value')}
-                          onChange={this.handleHomeFooterChange(i, 'value')}
+                          onChange={this.handleHomeFooterItemsChange(i, 'value')}
                         />
                       </div>
                     ))
