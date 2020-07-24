@@ -186,25 +186,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
-              <TextInput
-                label={<FormattedMessage id='soapbox_settings.fields.display_name_label' defaultMessage='Display name' />}
-                name='display_name'
-                value={this.state.display_name}
-                onChange={this.handleTextChange}
-              />
-              <TextInput
-                label={<FormattedMessage id='soapbox_settings.fields.bio_label' defaultMessage='Bio' />}
-                name='note'
-                value={this.state.note}
-                onChange={this.handleTextChange}
-              />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  if ({this.state.logo}) {
-                    <StillImage src={this.state.logo} />
-                  } else {
-                    <StillImage src={this.props.logo} />
-                  };
+                  {this.state.logo ? (<StillImage src={this.state.logo} />) : (<StillImage src={this.props.logo} />)}
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
@@ -225,22 +209,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Enable Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
                 name='patron_enabled'
-                if ({this.state.patronEnabled}) {
-                  checked={this.state.patronEnabled}
-                } else {
-                  checked={this.props.patronEnabled}
-                };
+                checked={this.state.patronEnabled ? this.state.patronEnabled : this.props.patronEnabled}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
                 name='auto_play_gif'
-                if ({this.state.autoPlayGif}) {
-                  checked={this.state.autoPlayGif}
-                } else {
-                  checked={this.props.autoPlayGif}
-                };
+                checked={this.state.autoPlayGif ? this.state.autoPlayGif : this.props.autoPlayGif}
                 onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
