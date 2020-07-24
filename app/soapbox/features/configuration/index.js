@@ -225,7 +225,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' /* values={{ count: MAX_FIELDS }} */ />
                   </span>
                   {
                     this.state.promoItems.map((field, i) => (
@@ -247,7 +247,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' /* values={{ count: MAX_FIELDS }} */ />
                   </span>
                   {
                     this.state.homeFooterItems.map((field, i) => (
