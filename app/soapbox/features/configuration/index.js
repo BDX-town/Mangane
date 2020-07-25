@@ -29,21 +29,16 @@ const messages = defineMessages({
   promoItemURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
   homeFooterItemLabel: { id: 'soapbox_settings.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_settings.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  customCssLabel: { id: 'soapbox_settings.custom_css.meta_fields.label_placeholder', defaultMessage: 'CSS' },
 });
 
 const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
-  console.log(soapbox);
-  console.log(generateThemeCss(soapbox.get('brandColor')));
-  console.log(soapbox.get('logo'));
-  console.log(soapbox.getIn(['promoPanel', 'items']));
-  console.log(soapbox.getIn(['extensions', 'patron']));
-  console.log(soapbox.getIn(['defaultSettings', 'autoPlayGif']));
-  console.log(soapbox.get('copyright'));
-  console.log(soapbox.getIn(['navlinks', 'homeFooter']));
   return {
     themeCss: generateThemeCss(soapbox.get('brandColor')),
+    customCssItems: soapbox.getIn(['customCSS', 'items']),
     logo: soapbox.get('logo'),
+    banner: soapbox.get('banner'),
     promoItems: soapbox.getIn(['promoPanel', 'items']),
     patronEnabled: soapbox.getIn(['extensions', 'patron']),
     autoPlayGif: soapbox.getIn(['defaultSettings', 'autoPlayGif']),
@@ -61,7 +56,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     themeCss: PropTypes.string,
+    customCssItems: ImmutablePropTypes.list,
     logo: PropTypes.string,
+    banner: PropTypes.string,
     promoItems: ImmutablePropTypes.list,
     patronEnabled: PropTypes.bool,
     autoPlayGif: PropTypes.bool,
@@ -73,28 +70,24 @@ class ConfigSoapbox extends ImmutablePureComponent {
     isLoading: false,
   }
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     logo: props.themeCss,
-  //   };
-  // }
-
-  // makePreviewLogo = () => {
-  //   const { logo } = this.props;
-  //   return logo.merge(ImmutableMap({
-  //     header: this.state.header,
-  //     avatar: this.state.avatar,
-  //     display_name: this.state.display_name,
-  //   }));
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      logo: props.logo,
+      banner: props.banner,
+      promoItems: props.promoItems,
+      homeFooterItems: props.homeFooterItems,
+      customCssItems: props.customCssItems,
+    };
+  }
 
   getPromoItemsParams = () => {
     let params = ImmutableMap();
     this.state.promoItems.forEach((f, i) =>
       params = params
-        .set(`promo_panel_attributes[${i}][name]`,  f.get('name'))
-        .set(`promo_panel_attributes[${i}][value]`, f.get('value'))
+        .set(`promo_panel_attributes[${i}][icon]`,  f.get('icon'))
+        .set(`promo_panel_attributes[${i}][text]`, f.get('text'))
+        .set(`promo_panel_attributes[${i}][url]`, f.get('url'))
     );
     return params;
   }
@@ -103,8 +96,17 @@ class ConfigSoapbox extends ImmutablePureComponent {
     let params = ImmutableMap();
     this.state.homeFooterItems.forEach((f, i) =>
       params = params
-        .set(`home_footer_attributes[${i}][name]`,  f.get('name'))
-        .set(`home_footer_attributes[${i}][value]`, f.get('value'))
+        .set(`home_footer_attributes[${i}][title]`,  f.get('title'))
+        .set(`home_footer_attributes[${i}][url]`, f.get('url'))
+    );
+    return params;
+  }
+
+  getCustomCssParams = () => {
+    let params = ImmutableMap();
+    this.state.customCssItems.forEach((f, i) =>
+      params = params
+        .set(`custom_css_attributes[${i}][css]`,  f.get('css'))
     );
     return params;
   }
@@ -119,14 +121,15 @@ class ConfigSoapbox extends ImmutablePureComponent {
       copyright: state.copyright,
     },
     this.getHomeFooterParams().toJS(),
-    this.getPromoItemsParams().toJS());
+    this.getPromoItemsParams().toJS()),
+    this.getCustomCSSParams().toJS();
   }
 
   getFormdata = () => {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes') || key.startsWith('home_footer_attributes'));
+      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes') || key.startsWith('home_footer_attributes') || key.startsWith('custom_css_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -167,6 +170,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
     };
   }
 
+  handleCustomCSSChange = (i, key) => {
+    return (e) => {
+      this.setState({
+        customCssItems: this.state.customCssItems.setIn([i, key], e.target.value),
+      });
+    };
+  }
+
   handleFileChange = e => {
     const { name } = e.target;
     const [file] = e.target.files || [];
@@ -182,7 +193,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='gears' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='shield' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
@@ -197,6 +208,13 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     hint={<FormattedMessage id='soapbox_settings.hints.logo' defaultMessage='SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio' />}
                     onChange={this.handleFileChange}
                   />
+                </div>
+              </div>
+              <div className='fields-row'>
+                <div className='fields-row__column fields-row__column-6'>
+                  {this.state.banner ? (<StillImage src={this.state.banner} />) : (<StillImage src={this.props.banner} />)}
+                </div>
+                <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
                     label={<FormattedMessage id='soapbox_settings.fields.banner_label' defaultMessage='Banner' />}
                     name='banner'
@@ -205,8 +223,16 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   />
                 </div>
               </div>
+            </FieldsGroup>
+            <FieldsGroup>
+              <div>
+                <label for='brand_color'><FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' /></label><br /><br />
+                <input type='color' id='brand_color' name='brand_color' value='#e66465' />
+              </div>
+            </FieldsGroup>
+            <FieldsGroup>
               <Checkbox
-                label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Enable Patron module' />}
+                label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
                 name='patron_enabled'
                 checked={this.state.patronEnabled ? this.state.patronEnabled : this.props.patronEnabled}
@@ -223,48 +249,93 @@ class ConfigSoapbox extends ImmutablePureComponent {
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
+                  <label><FormattedMessage id='soapbox_settings.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' /* values={{ count: MAX_FIELDS }} */ />
+                    <FormattedMessage id='soapbox_settings.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page' />
                   </span>
                   {
                     this.state.promoItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
-                          placeholder={intl.formatMessage(messages.metaFieldLabel)}
-                          value={field.get('name')}
-                          onChange={this.handlePromoItemsChange(i, 'name')}
+                          label={intl.formatMessage(messages.promoItemIcon)}
+                          placeholder={intl.formatMessage(messages.promoItemIcon)}
+                          value={field.get('icon')}
+                          onChange={this.handlePromoItemsChange(i, 'icon')}
                         />
                         <TextInput
-                          placeholder={intl.formatMessage(messages.metaFieldContent)}
-                          value={field.get('value')}
-                          onChange={this.handlePromoItemsChange(i, 'value')}
+                          label={intl.formatMessage(messages.promoItemLabel)}
+                          placeholder={intl.formatMessage(messages.promoItemLabel)}
+                          value={field.get('text')}
+                          onChange={this.handlePromoItemsChange(i, 'text')}
+                        />
+                        <TextInput
+                          label={intl.formatMessage(messages.promoItemURL)}
+                          placeholder={intl.formatMessage(messages.promoItemURL)}
+                          value={field.get('url')}
+                          onChange={this.handlePromoItemsChange(i, 'url')}
                         />
                       </div>
                     ))
                   }
+                  <div className='actions'>
+                    <button name='button' type='submit' className='btn button button-secondary'>
+                      <FormattedMessage id='soapbox_settings.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
+                    </button>
+                  </div>
                 </div>
                 <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_settings.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
+                  <label><FormattedMessage id='soapbox_settings.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' /* values={{ count: MAX_FIELDS }} */ />
+                    <FormattedMessage id='soapbox_settings.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
                   </span>
                   {
                     this.state.homeFooterItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
-                          placeholder={intl.formatMessage(messages.metaFieldLabel)}
-                          value={field.get('name')}
-                          onChange={this.handleHomeFooterItemsChange(i, 'name')}
+                          label={intl.formatMessage(messages.homeFooterItemLabel)}
+                          placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
+                          value={field.get('title')}
+                          onChange={this.handleHomeFooterItemsChange(i, 'title')}
                         />
                         <TextInput
-                          placeholder={intl.formatMessage(messages.metaFieldContent)}
-                          value={field.get('value')}
-                          onChange={this.handleHomeFooterItemsChange(i, 'value')}
+                          label={intl.formatMessage(messages.homeFooterItemURL)}
+                          placeholder={intl.formatMessage(messages.homeFooterItemURL)}
+                          value={field.get('url')}
+                          onChange={this.handleHomeFooterItemsChange(i, 'url')}
                         />
                       </div>
                     ))
                   }
+                  <div className='actions'>
+                    <button name='button' type='submit' className='btn button button-secondary'>
+                      <FormattedMessage id='soapbox_settings.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className='fields-row__column fields-group'>
+                <div className='input with_block_label'>
+                  <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
+                  <span className='hint'>
+                    <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
+                  </span>
+                  {
+                    this.state.customCssItems.map((field, i) => (
+                      <div className='row' key={i}>
+                        <TextInput
+                          label={intl.formatMessage(messages.customCssLabel)}
+                          placeholder={intl.formatMessage(messages.customCssLabel)}
+                          value={field.get('css')}
+                          onChange={this.handlecustomCSSChange(i, 'css')}
+                        />
+                      </div>
+                    ))
+                  }
+                  <div className='actions'>
+                    <button name='button' type='submit' className='btn button button-secondary'>
+                      <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
+                    </button>
+                  </div>
                 </div>
               </div>
             </FieldsGroup>
