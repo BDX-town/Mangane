@@ -16,7 +16,7 @@ import {
 import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
-  // List as ImmutableList,
+  List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 //import { unescape } from 'lodash';
@@ -36,6 +36,7 @@ const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
   return {
     themeCss: generateThemeCss(soapbox.get('brandColor')),
+    brandColor: soapbox.get('brandColor'),
     customCssItems: soapbox.getIn(['customCSS', 'items']),
     logo: soapbox.get('logo'),
     banner: soapbox.get('banner'),
@@ -56,6 +57,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     themeCss: PropTypes.string,
+    brandColor: PropTypes.string,
     customCssItems: ImmutablePropTypes.list,
     logo: PropTypes.string,
     banner: PropTypes.string,
@@ -78,6 +80,36 @@ class ConfigSoapbox extends ImmutablePureComponent {
       promoItems: props.promoItems,
       homeFooterItems: props.homeFooterItems,
       customCssItems: props.customCssItems,
+    };
+    if (!this.state.logo) {
+      this.state.logo = '';
+    }
+    if (!this.state.banner) {
+      this.state.banner = '';
+    }
+    if (!this.state.promoItems) {
+      this.state.promoItems = ImmutableList([
+        ImmutableMap({
+          icon: '',
+          text: '',
+          url: '',
+        }),
+      ]);
+    };
+    if (!this.state.homeFooterItems) {
+      this.state.homeFooterItems = ImmutableList([
+        ImmutableMap({
+          title: '',
+          url: '',
+        }),
+      ]);
+    };
+    if (!this.state.customCssItems) {
+      this.state.customCssItems = ImmutableList([
+        ImmutableMap({
+          css: '',
+        }),
+      ]);
     };
   }
 
@@ -148,6 +180,10 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   handleCheckboxChange = e => {
     this.setState({ [e.target.name]: e.target.checked });
+  }
+
+  handleBrandColorChange = e => {
+    this.setState({ brandColor: e.target.value });
   }
 
   handleTextChange = e => {
@@ -226,8 +262,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
             </FieldsGroup>
             <FieldsGroup>
               <div>
-                <label for='brand_color'><FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' /></label><br /><br />
-                <input type='color' id='brand_color' name='brand_color' value='#e66465' />
+                <label htmlFor='brand_color'><FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' /></label><br /><br />
+                <input type='color' id='brand_color' name='brand_color' value={this.state.brandColor} onChange={this.handleBrandColorChange} /><br /><br />
+                <label>{ this.state.brandColor }</label>
               </div>
             </FieldsGroup>
             <FieldsGroup>
@@ -313,29 +350,27 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              <div className='fields-row__column fields-group'>
-                <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
-                  </span>
-                  {
-                    this.state.customCssItems.map((field, i) => (
-                      <div className='row' key={i}>
-                        <TextInput
-                          label={intl.formatMessage(messages.customCssLabel)}
-                          placeholder={intl.formatMessage(messages.customCssLabel)}
-                          value={field.get('css')}
-                          onChange={this.handlecustomCSSChange(i, 'css')}
-                        />
-                      </div>
-                    ))
-                  }
-                  <div className='actions'>
-                    <button name='button' type='submit' className='btn button button-secondary'>
-                      <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
-                    </button>
-                  </div>
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
+                </span>
+                {
+                  this.state.customCssItems.map((field, i) => (
+                    <div className='row' key={i}>
+                      <TextInput
+                        label={intl.formatMessage(messages.customCssLabel)}
+                        placeholder={intl.formatMessage(messages.customCssLabel)}
+                        value={field.get('css')}
+                        onChange={this.handlecustomCSSChange(i, 'css')}
+                      />
+                    </div>
+                  ))
+                }
+                <div className='actions'>
+                  <button name='button' type='submit' className='btn button button-secondary'>
+                    <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
+                  </button>
                 </div>
               </div>
             </FieldsGroup>
