@@ -350,7 +350,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              <div className='input with_block_label'>
+              {/* <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
@@ -373,6 +373,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </button>
                 </div>
               </div>
+              */}
             </FieldsGroup>
           </fieldset>
           <div className='actions'>
