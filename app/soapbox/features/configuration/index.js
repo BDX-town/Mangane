@@ -12,15 +12,13 @@ import {
   Checkbox,
   FileChooser,
 } from 'soapbox/features/forms';
-// import BrandingPreview from './components/branding_preview';
 import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
-//import { unescape } from 'lodash';
-import { generateThemeCss } from 'soapbox/utils/theme';
+//import { generateThemeCss } from 'soapbox/utils/theme';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
@@ -29,13 +27,13 @@ const messages = defineMessages({
   promoItemURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
   homeFooterItemLabel: { id: 'soapbox_settings.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_settings.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
-  customCssLabel: { id: 'soapbox_settings.custom_css.meta_fields.label_placeholder', defaultMessage: 'CSS' },
+  customCssLabel: { id: 'soapbox_settings.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
 });
 
 const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
   return {
-    themeCss: generateThemeCss(soapbox.get('brandColor')),
+    // themeCss: generateThemeCss(soapbox.get('brandColor')),
     brandColor: soapbox.get('brandColor'),
     customCssItems: soapbox.getIn(['customCSS', 'items']),
     logo: soapbox.get('logo'),
@@ -56,7 +54,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    themeCss: PropTypes.string,
+    // themeCss: PropTypes.string,
     brandColor: PropTypes.string,
     customCssItems: ImmutablePropTypes.list,
     logo: PropTypes.string,
@@ -107,7 +105,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     if (!this.state.customCssItems) {
       this.state.customCssItems = ImmutableList([
         ImmutableMap({
-          css: '',
+          url: '',
         }),
       ]);
     };
@@ -139,7 +137,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     let params = ImmutableMap();
     this.state.customCssItems.forEach((f, i) =>
       params = params
-        .set(`custom_css_attributes[${i}][css]`,  f.get('css'))
+        .set(`custom_css_attributes[${i}][url]`,  f.get('url'))
     );
     return params;
   }
@@ -147,7 +145,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
   getParams = () => {
     const { state } = this;
     return Object.assign({
-      themeCss: state.themeCss,
+      // themeCss: state.themeCss,
+      brandColor: state.brandColor,
       logoFile: state.logoFile,
       patronEnabled: state.patronEnabled,
       displayMode: state.displayMode,
@@ -236,7 +235,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
             <FieldsGroup>
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  {this.state.logo ? (<StillImage src={this.state.logo} />) : (<StillImage src={this.props.logo} />)}
+                  {this.state.logo ? (<StillImage src={this.state.logo || ''} />) : (<StillImage src={this.props.logo || ''} />)}
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
@@ -249,7 +248,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
               </div>
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  {this.state.banner ? (<StillImage src={this.state.banner} />) : (<StillImage src={this.props.banner} />)}
+                  {this.state.banner ? (<StillImage src={this.state.banner || ''} />) : (<StillImage src={this.props.banner || ''} />)}
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooser
@@ -272,14 +271,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
-                name='patron_enabled'
+                name='patronEnabled'
                 checked={this.state.patronEnabled ? this.state.patronEnabled : this.props.patronEnabled}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
-                name='auto_play_gif'
+                name='autoPlayGif'
                 checked={this.state.autoPlayGif ? this.state.autoPlayGif : this.props.autoPlayGif}
                 onChange={this.handleCheckboxChange}
               />
@@ -289,7 +288,10 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='soapbox_settings.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='soapbox_settings.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page' />
+                    <FormattedMessage id='soapbox_settings.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
+                  </span>
+                  <span className='hint'>
+                    <FormattedMessage id='soapbox_settings.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
                   </span>
                   {
                     this.state.promoItems.map((field, i) => (
@@ -362,8 +364,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                       <TextInput
                         label={intl.formatMessage(messages.customCssLabel)}
                         placeholder={intl.formatMessage(messages.customCssLabel)}
-                        value={field.get('css')}
-                        onChange={this.handlecustomCSSChange(i, 'css')}
+                        value={field.get('url')}
+                        onChange={this.handlecustomCSSChange(i, 'url')}
                       />
                     </div>
                   ))
