@@ -111,6 +111,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
         }),
       ]);
     };
+    this.handlecustomCSSChange = this.handleCustomCSSChange.bind(this);
   }
 
   getPromoItemsParams = () => {
@@ -263,7 +264,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
             <FieldsGroup>
               <div>
                 <label htmlFor='brand_color'><FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' /></label><br /><br />
-                <input type='color' id='brand_color' name='brand_color' value={this.state.brandColor} onChange={this.handleBrandColorChange} /><br /><br />
+                <input type='color' id='brand_color' name='brand_color' value={this.state.brandColor || '#0482d8'} onChange={this.handleBrandColorChange} /><br /><br />
                 <label>{ this.state.brandColor }</label>
               </div>
             </FieldsGroup>
@@ -350,7 +351,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              {/* <div className='input with_block_label'>
+              <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
@@ -373,7 +374,6 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </button>
                 </div>
               </div>
-              */}
             </FieldsGroup>
           </fieldset>
           <div className='actions'>
