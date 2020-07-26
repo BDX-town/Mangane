@@ -22,6 +22,7 @@ const defaultSettings = ImmutableMap({
   defaultPrivacy: 'public',
   themeMode: 'light',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
+  explanationBox: true,
 
   systemFont: false,
   dyslexicFont: false,
