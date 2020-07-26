@@ -170,7 +170,10 @@ body {
   &__title {
     font-weight: bold;
     font-size: 16px;
-    margin-bottom: 1em;
+  }
+
+  &__explanation {
+    margin-top: 1em;
   }
 
   &__dismiss {
