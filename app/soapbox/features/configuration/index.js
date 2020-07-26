@@ -110,6 +110,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
       ]);
     };
     this.handlecustomCSSChange = this.handleCustomCSSChange.bind(this);
+    // this.handleAddPromoPanelItem = this.handleAddPromoPanelItem.bind(this);
+    // this.handleAddHomeFooterItem = this.handleAddHomeFooterItem.bind(this);
+    // this.handleAddCSSItem = this.handleAddCSSItem.bind(this);
   }
 
   getPromoItemsParams = () => {
@@ -225,6 +228,39 @@ class ConfigSoapbox extends ImmutablePureComponent {
     });
   }
 
+  handleAddPromoPanelItem = () => {
+    this.setState({
+      promoItems: this.state.promoItems.concat([
+        ImmutableMap({
+          icon: '',
+          text: '',
+          url: '',
+        }),
+      ]),
+    });
+  }
+
+  handleAddHomeFooterItem = () => {
+    this.setState({
+      homeFooterItems: this.state.homeFooterItems.concat([
+        ImmutableMap({
+          title: '',
+          url: '',
+        }),
+      ]),
+    });
+  }
+
+  handleAddCSSItem = () => {
+    this.setState({
+      customCssItems: this.state.customCssItems.concat([
+        ImmutableMap({
+          url: '',
+        }),
+      ]),
+    });
+  }
+
   render() {
     const { intl } = this.props;
 
@@ -318,7 +354,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     ))
                   }
                   <div className='actions'>
-                    <button name='button' type='submit' className='btn button button-secondary'>
+                    <button name='button' type='button' className='btn button button-secondary' onClick={this.handleAddPromoPanelItem}>
                       <FormattedMessage id='soapbox_settings.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                     </button>
                   </div>
@@ -347,7 +383,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     ))
                   }
                   <div className='actions'>
-                    <button name='button' type='submit' className='btn button button-secondary'>
+                    <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddHomeFooterItem}>
                       <FormattedMessage id='soapbox_settings.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                     </button>
                   </div>
@@ -371,7 +407,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   ))
                 }
                 <div className='actions'>
-                  <button name='button' type='submit' className='btn button button-secondary'>
+                  <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddCSSItem}>
                     <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
                   </button>
                 </div>
