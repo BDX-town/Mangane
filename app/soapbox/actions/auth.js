@@ -133,15 +133,20 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
+    const needsApproval = getState().getIn(['instance', 'approval_required']);
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
       return api(getState, 'app').post('/api/v1/accounts', params);
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      return needsConfirmation
-        ? dispatch(showAlert('', 'Check your email for further instructions.'))
-        : dispatch(fetchMe());
+      if (needsConfirmation) {
+        return dispatch(showAlert('', 'Check your email for further instructions.'));
+      } else if (needsApproval) {
+        return dispatch(showAlert('', 'Your account has been submitted for approval.'));
+      } else {
+        return dispatch(fetchMe());
+      }
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
       throw error;

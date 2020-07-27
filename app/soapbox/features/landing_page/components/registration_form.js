@@ -24,6 +24,7 @@ const messages = defineMessages({
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
+  reason: { id: 'registration.reason', defaultMessage: 'Reason for Joining' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -136,6 +137,15 @@ class RegistrationForm extends ImmutablePureComponent {
                 onChange={this.onInputChange}
                 required
               />
+              {instance.get('approval_required') &&
+                <TextInput
+                  placeholder={intl.formatMessage(messages.reason)}
+                  name='reason'
+                  maxLength={500}
+                  autoComplete='off'
+                  onChange={this.onInputChange}
+                  required
+                />}
             </div>
             <CaptchaField
               onFetch={this.onFetchCaptcha}
