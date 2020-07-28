@@ -12,6 +12,7 @@ const messages = defineMessages({
 
 const mapStateToProps = state => ({
   active: state.getIn(['compose', 'sensitive']),
+  disabled: state.getIn(['compose', 'spoiler']),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -26,12 +27,13 @@ class SensitiveButton extends React.PureComponent {
 
   static propTypes = {
     active: PropTypes.bool,
+    disabled: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
   render() {
-    const { active, onClick, intl } = this.props;
+    const { active, disabled, onClick, intl } = this.props;
 
     return (
       <div className='compose-form__sensitive-button'>
@@ -41,6 +43,7 @@ class SensitiveButton extends React.PureComponent {
             type='checkbox'
             checked={active}
             onChange={onClick}
+            disabled={disabled}
           />
 
           <span className={classNames('checkbox', { active })} />
