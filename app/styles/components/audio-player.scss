@@ -173,11 +173,11 @@
     white-space: nowrap;
     overlow: hidden;
     text-overflow: ellipsis;
-    background: hsl( var(--brand-color_h), var(--brand-color_s), 20% );
+    background: hsl(var(--brand-color_h), var(--brand-color_s), 20%);
     padding: 5px;
 
     &__label {
-      color: white;
+      color: #ffffff;
     }
 
     button {
