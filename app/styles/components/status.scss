@@ -1,17 +1,21 @@
 .status__content {
-  p, li {
+  p,
+  li {
     strong {
       font-weight: bold;
     }
   }
 
-  p, li {
+  p,
+  li {
     em {
       font-style: italic;
     }
   }
 
-  ul, ol, blockquote {
+  ul,
+  ol,
+  blockquote {
     margin-bottom: 20px;
     margin-left: 15px;
   }

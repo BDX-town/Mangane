@@ -497,7 +497,7 @@ export function changeComposeSpoilerness() {
   };
 };
 
-export function changeComposeMarkdown(value) {
+export function changeComposeContentType(value) {
   return {
     type: COMPOSE_TYPE_CHANGE,
     value,

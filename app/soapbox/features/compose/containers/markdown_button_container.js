@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import TextIconButton from '../components/text_icon_button';
-import { changeComposeMarkdown } from '../../../actions/compose';
+import { changeComposeContentType } from '../../../actions/compose';
 import { injectIntl, defineMessages } from 'react-intl';
 
 const messages = defineMessages({
@@ -18,7 +18,7 @@ const mapStateToProps = (state, { intl }) => ({
 const mapDispatchToProps = dispatch => ({
 
   onClick() {
-    dispatch(changeComposeMarkdown(this.active ? 'text/plain' : 'text/markdown'));
+    dispatch(changeComposeContentType(this.active ? 'text/plain' : 'text/markdown'));
   },
 
 });
