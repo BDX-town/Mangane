@@ -3,6 +3,10 @@ import api from '../api';
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 
+export const SOAPBOX_PATCH_REQUEST = 'SOAPBOX_PATCH_REQUEST';
+export const SOAPBOX_PATCH_SUCCESS = 'SOAPBOX_PATCH_SUCCESS';
+export const SOAPBOX_PATCH_FAIL    = 'SOAPBOX_PATCH_FAIL';
+
 export function fetchSoapboxConfig() {
   return (dispatch, getState) => {
     api(getState).get('/api/pleroma/frontend_configurations').then(response => {
@@ -42,3 +46,39 @@ export function soapboxConfigFail(error) {
     skipAlert: true,
   };
 }
+
+export function patchSoapbox(params) {
+  console.log(JSON.stringify(params));
+  return (dispatch, getState) => {
+    dispatch(patchSoapboxRequest());
+    return api(getState)
+      .patch('/api/pleroma/admin/config', params)
+      .then(response => {
+        dispatch(patchSoapboxSuccess(response.data));
+      }).catch(error => {
+        dispatch(patchSoapboxFail(error));
+      });
+  };
+}
+
+export function patchSoapboxRequest() {
+  return {
+    type: SOAPBOX_PATCH_REQUEST,
+  };
+}
+
+export function patchSoapboxSuccess(me) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: SOAPBOX_PATCH_SUCCESS,
+      me,
+    });
+  };
+}
+
+export function patchSoapboxFail(error) {
+  return {
+    type: SOAPBOX_PATCH_FAIL,
+    error,
+  };
+};
