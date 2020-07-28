@@ -43,6 +43,7 @@ export const COMPOSE_UNMOUNT = 'COMPOSE_UNMOUNT';
 
 export const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
 export const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
+export const COMPOSE_TYPE_CHANGE = 'COMPOSE_TYPE_CHANGE';
 export const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
 export const COMPOSE_VISIBILITY_CHANGE  = 'COMPOSE_VISIBILITY_CHANGE';
 export const COMPOSE_LISTABILITY_CHANGE = 'COMPOSE_LISTABILITY_CHANGE';
@@ -175,6 +176,7 @@ export function submitCompose(routerHistory, group) {
       sensitive: getState().getIn(['compose', 'sensitive']),
       spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
       visibility: getState().getIn(['compose', 'privacy']),
+      content_type: getState().getIn(['compose', 'content_type']),
       poll: getState().getIn(['compose', 'poll'], null),
       group_id: group ? group.get('id') : null,
     }, {
@@ -492,6 +494,13 @@ export function changeComposeSensitivity() {
 export function changeComposeSpoilerness() {
   return {
     type: COMPOSE_SPOILERNESS_CHANGE,
+  };
+};
+
+export function changeComposeContentType(value) {
+  return {
+    type: COMPOSE_TYPE_CHANGE,
+    value,
   };
 };
 
