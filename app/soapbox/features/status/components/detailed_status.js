@@ -91,6 +91,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
+    let poll = '';
     let statusTypeIcon = '';
 
     if (this.props.measureHeight) {
@@ -98,8 +99,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     if (status.get('poll')) {
-      media = <PollContainer pollId={status.get('poll')} />;
-    } else if (status.get('media_attachments').size > 0) {
+      poll = <PollContainer pollId={status.get('poll')} />;
+    }
+    if (status.get('media_attachments').size > 0) {
       if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
@@ -172,6 +174,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <StatusContent status={status} expanded={!status.get('hidden')} onExpandedToggle={this.handleExpandedToggle} />
 
           {media}
+          {poll}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
