@@ -77,6 +77,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
       promoItems: props.promoItems,
       homeFooterItems: props.homeFooterItems,
       customCssItems: props.customCssItems,
+      patronEnabled: false,
+      autoPlayGif: false,
     };
     if (!this.state.logo) {
       this.state.logo = '';
@@ -298,14 +300,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
                 name='patronEnabled'
-                checked={this.state.patronEnabled ? this.state.patronEnabled : this.props.patronEnabled}
+                checked={this.state.patronEnabled ? this.state.patronEnabled : this.props.patronEnabled || false}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
                 name='autoPlayGif'
-                checked={this.state.autoPlayGif ? this.state.autoPlayGif : this.props.autoPlayGif}
+                checked={this.state.autoPlayGif ? this.state.autoPlayGif : this.props.autoPlayGif || false}
                 onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
