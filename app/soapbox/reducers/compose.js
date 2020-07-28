@@ -211,8 +211,7 @@ export default function compose(state = initialState, action) {
       .set('is_composing', false);
   case COMPOSE_SENSITIVITY_CHANGE:
     return state.withMutations(map => {
-    map.set('sensitive', !state.get('sensitive'));
-
+      map.set('sensitive', !state.get('sensitive'));
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_SPOILERNESS_CHANGE:

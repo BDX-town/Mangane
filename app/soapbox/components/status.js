@@ -265,6 +265,7 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
+    let poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
@@ -332,8 +333,9 @@ class Status extends ImmutablePureComponent {
     }
 
     if (status.get('poll')) {
-      media = <PollContainer pollId={status.get('poll')} />;
-    } else if (status.get('media_attachments').size > 0) {
+      poll = <PollContainer pollId={status.get('poll')} />;
+    }
+    if (status.get('media_attachments').size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -473,6 +475,7 @@ class Status extends ImmutablePureComponent {
             />
 
             {media}
+            {poll}
 
             {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
               <button className='status__content__read-more-button' onClick={this.handleClick}>
