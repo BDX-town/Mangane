@@ -168,8 +168,18 @@ describe('compose reducer', () => {
     });
   });
 
+  it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
+    const state = ImmutableMap({ spoiler: true, sensitive: true, idempotencyKey: null });
+    const action = {
+      type: actions.COMPOSE_SENSITIVITY_CHANGE,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      sensitive: true,
+    });
+  });
+
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
-    const state = ImmutableMap({ sensitive: true });
+    const state = ImmutableMap({ spoiler: false, sensitive: true });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
