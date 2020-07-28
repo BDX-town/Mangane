@@ -35,7 +35,7 @@ const mapStateToProps = state => {
   return {
     // themeCss: generateThemeCss(soapbox.get('brandColor')),
     brandColor: soapbox.get('brandColor'),
-    customCssItems: soapbox.getIn(['customCSS', 'items']),
+    customCssItems: soapbox.get('customCss'),
     logo: soapbox.get('logo'),
     banner: soapbox.get('banner'),
     promoItems: soapbox.getIn(['promoPanel', 'items']),
@@ -54,7 +54,6 @@ class ConfigSoapbox extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    // themeCss: PropTypes.string,
     brandColor: PropTypes.string,
     customCssItems: ImmutablePropTypes.list,
     logo: PropTypes.string,
@@ -103,16 +102,12 @@ class ConfigSoapbox extends ImmutablePureComponent {
       ]);
     };
     if (!this.state.customCssItems) {
-      this.state.customCssItems = ImmutableList([
-        ImmutableMap({
-          url: '',
-        }),
-      ]);
+      this.state.customCssItems = ImmutableList([]);
     };
     this.handlecustomCSSChange = this.handleCustomCSSChange.bind(this);
     // this.handleAddPromoPanelItem = this.handleAddPromoPanelItem.bind(this);
-    // this.handleAddHomeFooterItem = this.handleAddHomeFooterItem.bind(this);
-    // this.handleAddCSSItem = this.handleAddCSSItem.bind(this);
+    this.handleAddHomeFooterItem = this.handleAddHomeFooterItem.bind(this);
+    this.handleAddCSSItem = this.handleAddCSSItem.bind(this);
   }
 
   getPromoItemsParams = () => {
@@ -140,7 +135,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     let params = ImmutableMap();
     this.state.customCssItems.forEach((f, i) =>
       params = params
-        .set(`custom_css_attributes[${i}][url]`,  f.get('url'))
+        .set(`custom_css_attributes[${i}][url]`,  f)
     );
     return params;
   }
@@ -148,7 +143,6 @@ class ConfigSoapbox extends ImmutablePureComponent {
   getParams = () => {
     const { state } = this;
     return Object.assign({
-      // themeCss: state.themeCss,
       brandColor: state.brandColor,
       logoFile: state.logoFile,
       patronEnabled: state.patronEnabled,
@@ -209,10 +203,10 @@ class ConfigSoapbox extends ImmutablePureComponent {
     };
   }
 
-  handleCustomCSSChange = (i, key) => {
+  handleCustomCSSChange = i => {
     return (e) => {
       this.setState({
-        customCssItems: this.state.customCssItems.setIn([i, key], e.target.value),
+        customCssItems: this.state.customCssItems.setIn([i], e.target.value),
       });
     };
   }
@@ -253,11 +247,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   handleAddCSSItem = () => {
     this.setState({
-      customCssItems: this.state.customCssItems.concat([
-        ImmutableMap({
-          url: '',
-        }),
-      ]),
+      customCssItems: this.state.customCssItems.concat(['']),
     });
   }
 
@@ -400,8 +390,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                       <TextInput
                         label={intl.formatMessage(messages.customCssLabel)}
                         placeholder={intl.formatMessage(messages.customCssLabel)}
-                        value={field.get('url')}
-                        onChange={this.handlecustomCSSChange(i, 'url')}
+                        value={field}
+                        onChange={this.handlecustomCSSChange(i)}
                       />
                     </div>
                   ))
