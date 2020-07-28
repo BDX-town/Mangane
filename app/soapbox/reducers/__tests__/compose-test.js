@@ -168,7 +168,6 @@ describe('compose reducer', () => {
     });
   });
 
-  //Remove this test once spoiler is decoupled from marking media as sensitive
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
     const state = ImmutableMap({ spoiler: true, sensitive: true, idempotencyKey: null });
     const action = {
@@ -179,7 +178,6 @@ describe('compose reducer', () => {
     });
   });
 
-  //Edit this test to not pass spoiler state once spoiler is decoupled from marking media as sensitive
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
     const state = ImmutableMap({ spoiler: false, sensitive: true });
     const action = {
