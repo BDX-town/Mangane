@@ -11,6 +11,7 @@ import PollButtonContainer from '../containers/poll_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
+import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import PollFormContainer from '../containers/poll_form_container';
@@ -48,6 +49,7 @@ class ComposeForm extends ImmutablePureComponent {
     text: PropTypes.string.isRequired,
     suggestions: ImmutablePropTypes.list,
     spoiler: PropTypes.bool,
+    markdown: PropTypes.bool,
     privacy: PropTypes.string,
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
@@ -303,6 +305,7 @@ class ComposeForm extends ImmutablePureComponent {
               <PollButtonContainer />
               <PrivacyDropdownContainer />
               <SpoilerButtonContainer />
+              <MarkdownButtonContainer />
             </div>
             {maxTootChars && <div className='character-counter__wrapper'><CharacterCounter max={maxTootChars} text={text} /></div>}
             <div className='compose-form__publish'>

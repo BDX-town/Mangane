@@ -21,6 +21,7 @@ import {
   COMPOSE_TAG_HISTORY_UPDATE,
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
+  COMPOSE_MARKDOWN_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
@@ -50,6 +51,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
+  markdown: true,
   privacy: null,
   text: '',
   focusDate: null,
@@ -94,6 +96,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
+    map.set('markdown', true);
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -215,6 +218,11 @@ export default function compose(state = initialState, action) {
 
       map.set('idempotencyKey', uuid());
     });
+  case COMPOSE_MARKDOWN_CHANGE:
+    return state.withMutations(map => {
+      map.set('markdown', !state.get('markdown'));
+      map.set('idempotencyKey', uuid());
+    });
   case COMPOSE_SPOILERNESS_CHANGE:
     return state.withMutations(map => {
       map.set('spoiler_text', '');
@@ -243,6 +251,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('markdown', true);
 
       if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
@@ -326,6 +335,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('markdown', true);
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);

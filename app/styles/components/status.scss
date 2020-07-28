@@ -1,3 +1,34 @@
+.status__content {
+  p, li {
+    strong {
+      font-weight: bold;
+    }
+  }
+
+  p, li {
+    em {
+      font-style: italic;
+    }
+  }
+
+  ul, ol, blockquote {
+    margin-bottom: 20px;
+    margin-left: 15px;
+  }
+
+  ul {
+    list-style: disc inside none;
+  }
+
+  ol {
+    list-style: decimal inside none;
+  }
+
+  blockquote p {
+    font-style: italic;
+  }
+}
+
 .status__content--with-action {
   cursor: pointer;
 }
