@@ -10,15 +10,15 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { intl }) => ({
   label: 'MD',
-  title: intl.formatMessage(state.getIn(['compose', 'markdown']) ? messages.marked : messages.unmarked),
-  active: state.getIn(['compose', 'markdown']),
+  title: intl.formatMessage(state.getIn(['compose', 'content_type']) === 'text/markdown' ? messages.marked : messages.unmarked),
+  active: state.getIn(['compose', 'content_type']) === 'text/markdown',
   ariaControls: 'markdown-input',
 });
 
 const mapDispatchToProps = dispatch => ({
 
   onClick() {
-    dispatch(changeComposeMarkdown());
+    dispatch(changeComposeMarkdown(this.active ? 'text/plain' : 'text/markdown'));
   },
 
 });
