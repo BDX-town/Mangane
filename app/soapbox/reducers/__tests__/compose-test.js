@@ -32,6 +32,7 @@ describe('compose reducer', () => {
       default_sensitive: false,
       idempotencyKey: null,
       tagHistory: [],
+      content_type: 'text/markdown',
     });
   });
 
@@ -777,4 +778,11 @@ describe('compose reducer', () => {
   //   });
   // });
 
+  it('sets the post content-type', () => {
+    const action = {
+      type: actions.COMPOSE_TYPE_CHANGE,
+      value: 'text/plain',
+    };
+    expect(reducer(undefined, action).toJS()).toMatchObject({ content_type: 'text/plain' });
+  });
 });
