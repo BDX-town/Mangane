@@ -18,7 +18,6 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchSoapbox } from 'soapbox/actions/soapbox';
-//import { generateThemeCss } from 'soapbox/utils/theme';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
@@ -33,7 +32,6 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const soapbox = state.get('soapbox');
   return {
-    // themeCss: generateThemeCss(soapbox.get('brandColor')),
     brandColor: soapbox.get('brandColor'),
     customCssItems: soapbox.get('customCss'),
     logo: soapbox.get('logo'),
@@ -47,7 +45,6 @@ const mapStateToProps = state => {
 };
 
 export default @connect(mapStateToProps)
-// export default @connect()
 @injectIntl
 class ConfigSoapbox extends ImmutablePureComponent {
 
@@ -159,6 +156,71 @@ class ConfigSoapbox extends ImmutablePureComponent {
     this.getPromoItemsParams().toJS(),
     this.getCustomCssParams().toJS());
   }
+
+  // Target object to be JSON.stringified
+  // var obj = {
+  //   configs: [{
+  //     group: ":pleroma",
+  //     key: ":frontend_configurations",
+  //     value: [{
+  //       tuple: [":soapbox_fe",
+  //         {
+  //           logo: "/instance/images/teci_social_logo.svg",
+  //           banner: "/instance/images/teci_social_logo2.svg",
+  //           brandColor: "#3b5998",
+  //           customCss: [
+  //             "/instance/custom.css",
+  //             "/instance/custom2.css",
+  //           ],
+  //           promoPanel: {
+  //             items: [{
+  //               icon: "comment-o",
+  //               text: "TECI blog",
+  //               url: "https://www.teci.world/blog",
+  //             }, {
+  //               icon: "globe",
+  //               text: "TECI web site",
+  //               url: "https://teci.world",
+  //             }, {
+  //               icon: "globe",
+  //               text: "TECI Social Mastodon FE",
+  //               url: "https://social.teci.world/web",
+  //             }, {
+  //               icon: "area-chart",
+  //               text: "TECI Social stats",
+  //               url: "https://fediverse.network/social.teci.world",
+  //             }]
+  //           },
+  //           extensions: {
+  //             patron: false,
+  //           },
+  //           defaultSettings: {
+  //             autoPlayGif: false,
+  //           },
+  //           copyright: "?2020. Copying is an act of love. Please copy and share.",
+  //           navlinks: {
+  //             homeFooter: [{
+  //               title: "About",
+  //               url: "/about",
+  //             }, {
+  //               title: "Terms of Service",
+  //               url: "/about/tos",
+  //             }, {
+  //               title: "Privacy Policy",
+  //               url: "/about/privacy",
+  //             }, {
+  //               title: "DMCA",
+  //               url: "/about/dmca",
+  //             }, {
+  //               title: "Source Code",
+  //               url: "/about#opensource",
+  //             }],
+  //           },
+  //         },
+  //       ],
+  //     }],
+  //   }],
+  // };
 
   getFormdata = () => {
     const data = this.getParams();
