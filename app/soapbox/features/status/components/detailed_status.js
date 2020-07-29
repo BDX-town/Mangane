@@ -16,7 +16,8 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
-import UserPanel from '../../ui/components/user_panel';
+import ProfileHoverCardContainer from 'soapbox/features/profile_hover_card/profile_hover_card_container';
+import { isMobile } from 'soapbox/is_mobile';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -39,9 +40,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
   state = {
     height: null,
-    profilePanelVisible: false,
-    profilePanelX: 0,
-    profilePanelY: 0,
+    profileCardVisible: false,
   };
 
   handleOpenVideo = (media, startTime) => {
@@ -85,21 +84,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleProfileHover = e => {
-    if (!this.isMobile()) this.setState({ profilePanelVisible: true, profilePanelX: e.nativeEvent.offsetX, profilePanelY: e.nativeEvent.offsetY });
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: true });
   }
 
   handleProfileLeave = e => {
-    if (!this.isMobile()) this.setState({ profilePanelVisible: false });
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
   }
 
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
-    const { profilePanelVisible, profilePanelX, profilePanelY } = this.state;
+    const { profileCardVisible } = this.state;
 
     if (!status) {
       return null;
@@ -176,9 +173,10 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
             <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
               <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-              <DisplayName account={status.get('account')} />
-              <UserPanel accountId={status.getIn(['account', 'id'])} visible={profilePanelVisible} style={{ top: `${profilePanelY+15}px`, left: `${profilePanelX-132}px` }} />
             </NavLink>
+            <DisplayName account={status.get('account')}>
+              <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
+            </DisplayName>
           </div>
 
           {status.get('group') && (

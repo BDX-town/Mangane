@@ -253,11 +253,11 @@ class Status extends ImmutablePureComponent {
   }
 
   handleProfileHover = e => {
-    if (!isMobile()) this.setState({ profileCardVisible: true });
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: true });
   }
 
   handleProfileLeave = e => {
-    if (!isMobile()) this.setState({ profileCardVisible: false });
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
   }
 
   _properStatus() {
@@ -467,7 +467,7 @@ class Status extends ImmutablePureComponent {
                   </div>
                 </NavLink>
                 <DisplayName account={status.get('account')} others={otherAccounts}>
-                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={profileCardVisible} />
+                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
                 </DisplayName>
               </div>
             </div>

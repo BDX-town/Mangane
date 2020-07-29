@@ -9,6 +9,8 @@ import UserPanel from '../ui/components/user_panel';
 import ActionButton from '../ui/components/action_button';
 import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 import Badge from 'soapbox/components/badge';
+import classNames from 'classnames';
+import { isMobile } from 'soapbox/is_mobile';
 
 const getAccount = makeGetAccount();
 
@@ -43,8 +45,8 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
     const accountBio = { __html: account.get('note_emojified') };
     let followed_by  = account.getIn(['relationship', 'followed_by']);
 
-    return visible && (
-      <div className='profile-hover-card'>
+    return (
+      <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })}>
         <div className='profile-hover-card__container'>
           <div className='profile-hover-card__action-button'><ActionButton account={account} /></div>
           <UserPanel className='profile-hover-card__user' accountId={accountId} />

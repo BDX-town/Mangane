@@ -1,17 +1,25 @@
 .display-name__account {
   position: relative;
+  cursor: pointer;
 }
 
 .profile-hover-card {
   @include standard-panel;
   position: absolute;
+  pointer-events: none;
   opacity: 0;
   transition-property: opacity;
-  transition-duration: 0.5s;
+  transition-duration: 0.2s;
+  transition-delay: 0.7s;
   z-index: 998;
-  opacity: 1;
-  transition-delay: 1s;
   left: -10px;
+  top: 70px;
+
+  &--visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
 
   @media(min-width: 750px) {
     left: -80px;
@@ -45,10 +53,18 @@
       margin-right: 5px;
       border-radius: 3px;
       font-size: 11px;
+      opacity: 1;
     }
   }
 
   .profile-hover-card__bio {
     margin: 0 20px 20px;
+  }
+}
+
+.detailed-status {
+  .profile-hover-card {
+    top: -20px;
+    left: 80px;
   }
 }
