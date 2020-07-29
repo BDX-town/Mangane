@@ -70,7 +70,7 @@ LabelInput.propTypes = {
 
 export const LabelTextarea = ({ label, dispatch, ...props }) => (
   <LabelInputContainer label={label}>
-    <intextarea {...props} />
+    <textarea {...props} />
   </LabelInputContainer>
 );
 

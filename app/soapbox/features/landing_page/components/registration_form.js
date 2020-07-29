@@ -9,6 +9,7 @@ import {
   SimpleForm,
   SimpleInput,
   TextInput,
+  SimpleTextarea,
   Checkbox,
 } from 'soapbox/features/forms';
 import { register } from 'soapbox/actions/auth';
@@ -24,7 +25,6 @@ const messages = defineMessages({
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
-  reason: { id: 'registration.reason', defaultMessage: 'Reason for Joining' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -138,8 +138,9 @@ class RegistrationForm extends ImmutablePureComponent {
                 required
               />
               {instance.get('approval_required') &&
-                <TextInput
-                  placeholder={intl.formatMessage(messages.reason)}
+                <SimpleTextarea
+                  label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
+                  hint={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
                   name='reason'
                   maxLength={500}
                   autoComplete='off'
