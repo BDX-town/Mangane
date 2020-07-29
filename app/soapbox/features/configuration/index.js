@@ -17,7 +17,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
-import { patchMe } from 'soapbox/actions/me';
+import { patchSoapbox } from 'soapbox/actions/soapbox';
 //import { generateThemeCss } from 'soapbox/utils/theme';
 
 const messages = defineMessages({
@@ -74,9 +74,11 @@ class ConfigSoapbox extends ImmutablePureComponent {
     this.state = {
       logo: props.logo,
       banner: props.banner,
+      brandColor: props.brandColor,
+      customCssItems: props.customCssItems,
       promoItems: props.promoItems,
       homeFooterItems: props.homeFooterItems,
-      customCssItems: props.customCssItems,
+      copyright: props.copyright,
       patronEnabled: false,
       autoPlayGif: false,
     };
@@ -107,9 +109,10 @@ class ConfigSoapbox extends ImmutablePureComponent {
       this.state.customCssItems = ImmutableList([]);
     };
     this.handlecustomCSSChange = this.handleCustomCSSChange.bind(this);
-    // this.handleAddPromoPanelItem = this.handleAddPromoPanelItem.bind(this);
+    this.handleAddPromoPanelItem = this.handleAddPromoPanelItem.bind(this);
     this.handleAddHomeFooterItem = this.handleAddHomeFooterItem.bind(this);
-    this.handleAddCSSItem = this.handleAddCSSItem.bind(this);
+    this.handleAddCssItem = this.handleAddCssItem.bind(this);
+    this.getCustomCssParams = this.getCustomCssParams.bind(this);
   }
 
   getPromoItemsParams = () => {
@@ -145,30 +148,36 @@ class ConfigSoapbox extends ImmutablePureComponent {
   getParams = () => {
     const { state } = this;
     return Object.assign({
+      logo: state.logo,
+      banner: state.banner,
       brandColor: state.brandColor,
-      logoFile: state.logoFile,
       patronEnabled: state.patronEnabled,
-      displayMode: state.displayMode,
+      autoPlayGif: state.autoPlayGif,
       copyright: state.copyright,
     },
     this.getHomeFooterParams().toJS(),
-    this.getPromoItemsParams().toJS()),
-    this.getCustomCSSParams().toJS();
+    this.getPromoItemsParams().toJS(),
+    this.getCustomCssParams().toJS());
   }
 
   getFormdata = () => {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('promo_panel_attributes') || key.startsWith('home_footer_attributes') || key.startsWith('custom_css_attributes'));
+      const shouldAppend = Boolean(data[key]
+        || key.startsWith('promo_panel_attributes')
+        || key.startsWith('home_footer_attributes')
+        || key.startsWith('custom_css_attributes')
+        || (key === 'patronEnabled' && data.patronEnabled !== undefined)
+        || (key === 'autoPlayGif' && data.autoPlayGif !== undefined));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
-    return formData;
+    return JSON.stringify(formData);
   }
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(patchMe(this.getFormdata())).then(() => {
+    dispatch(patchSoapbox(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
@@ -247,7 +256,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     });
   }
 
-  handleAddCSSItem = () => {
+  handleAddCssItem = () => {
     this.setState({
       customCssItems: this.state.customCssItems.concat(['']),
     });
@@ -399,7 +408,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   ))
                 }
                 <div className='actions'>
-                  <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddCSSItem}>
+                  <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddCssItem}>
                     <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
                   </button>
                 </div>

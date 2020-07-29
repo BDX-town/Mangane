@@ -17,7 +17,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
 } from 'immutable';
-import { patchSoapbox } from 'soapbox/actions/soapbox';
+import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
 
 const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
@@ -111,7 +111,8 @@ class EditProfile extends ImmutablePureComponent {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
+      const shouldAppend = Boolean(data[key]
+        || key.startsWith('fields_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -119,7 +120,7 @@ class EditProfile extends ImmutablePureComponent {
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(patchSoapbox(this.getFormdata())).then(() => {
+    dispatch(patchMe(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });

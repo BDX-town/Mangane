@@ -48,7 +48,7 @@ export function soapboxConfigFail(error) {
 }
 
 export function patchSoapbox(params) {
-  console.log(JSON.stringify(params));
+  console.log(params);
   return (dispatch, getState) => {
     dispatch(patchSoapboxRequest());
     return api(getState)
