@@ -193,10 +193,11 @@ export class SelectDropdown extends ImmutablePureComponent {
   static propTypes = {
     label: FormPropTypes.label,
     items: PropTypes.object.isRequired,
+    hint: PropTypes.node,
   }
 
   render() {
-    const { label, items, ...props } = this.props;
+    const { label, items, hint, ...props } = this.props;
 
     const optionElems = Object.keys(items).map(item => (
       <option key={item} value={item}>{items[item]}</option>
@@ -205,7 +206,9 @@ export class SelectDropdown extends ImmutablePureComponent {
     const selectElem = <select {...props}>{optionElems}</select>;
 
     return label ? (
-      <LabelInputContainer label={label}>{selectElem}</LabelInputContainer>
+      <LabelInputContainer label={label}>{selectElem}
+        {hint && <span className='hint'>{hint}</span>}
+      </LabelInputContainer>
     ) : selectElem;
   }
 

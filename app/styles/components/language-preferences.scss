@@ -1,0 +1,10 @@
+.select-languages__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+  .label_input {
+    width: 50%;
+    padding-right: 20px;
+  }
+}

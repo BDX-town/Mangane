@@ -113,12 +113,22 @@ class Preferences extends ImmutablePureComponent {
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm>
           <FieldsGroup>
-            <SelectDropdown
-              label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}
-              items={languages}
-              defaultValue={settings.get('locale')}
-              onChange={this.onSelectChange(['locale'])}
-            />
+            <div className='select-languages__container'>
+              <SelectDropdown
+                label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Interface language' />}
+                hint={<FormattedMessage id='preferences.fields.language_hint' defaultMessage='The language of the user interface, e-mails and push notifications' />}
+                items={languages}
+                defaultValue={settings.get('locale')}
+                onChange={this.onSelectChange(['locale'])}
+              />
+              <SelectDropdown
+                label={<FormattedMessage id='preferences.fields.posting_language_label' defaultMessage='Posting language' />}
+                hint={<FormattedMessage id='preferences.fields.posting_language_hint' defaultMessage='The language of your posts cannot currently be detected automatically' />}
+                items={languages}
+                defaultValue={settings.get('posting_language')}
+                onChange={this.onSelectChange(['posting_language'])}
+              />
+            </div>
           </FieldsGroup>
 
           <FieldsGroup>

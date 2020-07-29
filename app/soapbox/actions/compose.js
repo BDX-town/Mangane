@@ -178,6 +178,7 @@ export function submitCompose(routerHistory, group) {
       visibility: getState().getIn(['compose', 'privacy']),
       content_type: getState().getIn(['compose', 'content_type']),
       poll: getState().getIn(['compose', 'poll'], null),
+      language: getState().getIn(['settings', 'posting_language'], null),
       group_id: group ? group.get('id') : null,
     }, {
       headers: {
