@@ -64,6 +64,7 @@ import {
   // GroupTimeline,
   ListTimeline,
   Lists,
+  Bookmarks,
   // GroupMembers,
   // GroupRemovedAccounts,
   // GroupCreate,
@@ -227,6 +228,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/lists' layout={LAYOUT.DEFAULT} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
+        <WrappedRoute path='/bookmarks' layout={LAYOUT.DEFAULT} component={Bookmarks} content={children} />
 
         <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
 
