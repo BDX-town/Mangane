@@ -68,6 +68,17 @@ LabelInput.propTypes = {
   dispatch: PropTypes.func,
 };
 
+export const LabelTextarea = ({ label, dispatch, ...props }) => (
+  <LabelInputContainer label={label}>
+    <textarea {...props} />
+  </LabelInputContainer>
+);
+
+LabelTextarea.propTypes = {
+  label: FormPropTypes.label.isRequired,
+  dispatch: PropTypes.func,
+};
+
 export class SimpleInput extends ImmutablePureComponent {
 
   static propTypes = {
@@ -78,6 +89,26 @@ export class SimpleInput extends ImmutablePureComponent {
   render() {
     const { hint, ...props } = this.props;
     const Input = this.props.label ? LabelInput : 'input';
+
+    return (
+      <InputContainer {...this.props}>
+        <Input {...props} />
+      </InputContainer>
+    );
+  }
+
+}
+
+export class SimpleTextarea extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: FormPropTypes.label,
+    hint: PropTypes.node,
+  }
+
+  render() {
+    const { hint, ...props } = this.props;
+    const Input = this.props.label ? LabelTextarea : 'textarea';
 
     return (
       <InputContainer {...this.props}>
