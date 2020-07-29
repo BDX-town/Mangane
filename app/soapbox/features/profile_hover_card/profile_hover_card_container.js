@@ -10,7 +10,6 @@ import ActionButton from '../ui/components/action_button';
 import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 import Badge from 'soapbox/components/badge';
 import classNames from 'classnames';
-import { isMobile } from 'soapbox/is_mobile';
 
 const getAccount = makeGetAccount();
 
