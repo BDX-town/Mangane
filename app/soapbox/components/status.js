@@ -18,7 +18,8 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { NavLink } from 'react-router-dom';
-import UserPanel from '../features/ui/components/user_panel';
+import ProfileHoverCardContainer from '../features/profile_hover_card/profile_hover_card_container';
+import { isMobile } from '../../../app/soapbox/is_mobile';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -105,9 +106,7 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
-    profilePanelVisible: false,
-    profilePanelX: 0,
-    profilePanelY: 0,
+    profileCardVisible: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -253,14 +252,12 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleProfileHover = e => {
-    if (!this.isMobile()) this.setState({ profilePanelVisible: true, profilePanelX: e.nativeEvent.offsetX, profilePanelY: e.nativeEvent.offsetY });
+    if (!isMobile()) this.setState({ profileCardVisible: true });
   }
 
   handleProfileLeave = e => {
-    if (!this.isMobile()) this.setState({ profilePanelVisible: false });
+    if (!isMobile()) this.setState({ profileCardVisible: false });
   }
 
   _properStatus() {
@@ -449,7 +446,7 @@ class Status extends ImmutablePureComponent {
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
-    const { profilePanelVisible, profilePanelX, profilePanelY } = this.state;
+    const { profileCardVisible } = this.state;
 
     return (
       <HotKeys handlers={handlers}>
@@ -468,9 +465,10 @@ class Status extends ImmutablePureComponent {
                   <div className='status__avatar'>
                     {statusAvatar}
                   </div>
-                  <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
-                <UserPanel accountId={status.getIn(['account', 'id'])} visible={profilePanelVisible} style={{ top: `${profilePanelY+15}px`, left: `${profilePanelX-132}px` }} />
+                <DisplayName account={status.get('account')} others={otherAccounts}>
+                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={profileCardVisible} />
+                </DisplayName>
               </div>
             </div>
 

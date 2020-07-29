@@ -19,22 +19,20 @@ class UserPanel extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string,
     style: PropTypes.object,
-    visible: PropTypes.bool,
   }
 
   static defaultProps = {
     style: {},
-    visible: true,
   }
 
   render() {
-    const { account, intl, domain, style, visible } = this.props;
+    const { account, intl, domain, style } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
 
     return (
-      <div className={classNames('user-panel', { 'user-panel--visible': visible })} style={style}>
+      <div className={classNames('user-panel')} style={style}>
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
