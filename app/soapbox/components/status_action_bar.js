@@ -31,6 +31,8 @@ const messages = defineMessages({
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
   favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
+  bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
   report: { id: 'status.report', defaultMessage: 'Report @{name}' },
   muteConversation: { id: 'status.mute_conversation', defaultMessage: 'Mute conversation' },
   unmuteConversation: { id: 'status.unmute_conversation', defaultMessage: 'Unmute conversation' },
@@ -55,6 +57,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
+    onBookmark: PropTypes.func,
     onReblog: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
@@ -147,6 +150,10 @@ class StatusActionBar extends ImmutablePureComponent {
     } else {
       this.props.onOpenUnauthorizedModal();
     }
+  }
+
+  handleBookmarkClick = () => {
+    this.props.onBookmark(this.props.status);
   }
 
   handleReblogClick = e => {
@@ -245,6 +252,8 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
       // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
+
+    menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
 
     if (!me) {
       return menu;
