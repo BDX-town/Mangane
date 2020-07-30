@@ -109,37 +109,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     this.handleAddPromoPanelItem = this.handleAddPromoPanelItem.bind(this);
     this.handleAddHomeFooterItem = this.handleAddHomeFooterItem.bind(this);
     this.handleAddCssItem = this.handleAddCssItem.bind(this);
-    this.getCustomCssParams = this.getCustomCssParams.bind(this);
-  }
-
-  getPromoItemsParams = () => {
-    let params = ImmutableMap();
-    this.state.promoItems.forEach((f, i) =>
-      params = params
-        .set(`promo_panel_attributes[${i}][icon]`,  f.get('icon'))
-        .set(`promo_panel_attributes[${i}][text]`, f.get('text'))
-        .set(`promo_panel_attributes[${i}][url]`, f.get('url'))
-    );
-    return params;
-  }
-
-  getHomeFooterParams = () => {
-    let params = ImmutableMap();
-    this.state.homeFooterItems.forEach((f, i) =>
-      params = params
-        .set(`home_footer_attributes[${i}][title]`,  f.get('title'))
-        .set(`home_footer_attributes[${i}][url]`, f.get('url'))
-    );
-    return params;
-  }
-
-  getCustomCssParams = () => {
-    let params = ImmutableMap();
-    this.state.customCssItems.forEach((f, i) =>
-      params = params
-        .set(`custom_css_attributes[${i}][url]`,  f)
-    );
-    return params;
+    this.getParams = this.getParams.bind(this);
   }
 
   getParams = () => {
@@ -154,15 +124,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
               logo: '',
               banner: '',
               brandColor: '',
-              customCss: [
-                '',
-              ],
+              customCss: [],
               promoPanel: {
-                items: [{
-                  icon: '',
-                  text: '',
-                  url: '',
-                }],
+                items: [],
               },
               extensions: {
                 patron: false,
@@ -172,10 +136,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
               },
               copyright: '',
               navlinks: {
-                homeFooter: [{
-                  title: '',
-                  url: '',
-                }],
+                homeFooter: [],
               },
             },
           ],
@@ -188,112 +149,22 @@ class ConfigSoapbox extends ImmutablePureComponent {
     obj.configs[0].value[0].tuple[1].extensions.patron = state.patronEnabled;
     obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.autoPlayGif;
     obj.configs[0].value[0].tuple[1].copyright = state.copyright;
-    obj.configs[0].value[0].tuple[1].customCss[0] = '/instance/custom.css';
-    obj.configs[0].value[0].tuple[1].customCss.push('/instance/custom2.css');
-    obj.configs[0].value[0].tuple[1].promoPanel.items[0].icon = 'comment-o';
-    obj.configs[0].value[0].tuple[1].promoPanel.items[0].text = 'TECI blog';
-    obj.configs[0].value[0].tuple[1].promoPanel.items[0].url = 'https://www.teci.world/blog';
-    obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: 'globe', text: 'TECI web site', url: 'https://teci.world' });
-    obj.configs[0].value[0].tuple[1].navlinks.homeFooter[0].title = 'About';
-    obj.configs[0].value[0].tuple[1].navlinks.homeFooter[0].url = '/about';
-    obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: 'Terms of Service', url: '/about/tos' });
-    console.log(JSON.stringify(obj, null, 2));
-    return Object.assign({
-      logo: state.logo,
-      banner: state.banner,
-      brandColor: state.brandColor,
-      patronEnabled: state.patronEnabled,
-      autoPlayGif: state.autoPlayGif,
-      copyright: state.copyright,
-    },
-    this.getHomeFooterParams().toJS(),
-    this.getPromoItemsParams().toJS(),
-    this.getCustomCssParams().toJS());
-  }
-
-  // Target object to be JSON.stringified
-  // var obj = {
-  //   configs: [{
-  //     group: ":pleroma",
-  //     key: ":frontend_configurations",
-  //     value: [{
-  //       tuple: [":soapbox_fe",
-  //         {
-  //           logo: "/instance/images/teci_social_logo.svg",
-  //           banner: "/instance/images/teci_social_logo2.svg",
-  //           brandColor: "#3b5998",
-  //           customCss: [
-  //             "/instance/custom.css",
-  //             "/instance/custom2.css",
-  //           ],
-  //           promoPanel: {
-  //             items: [{
-  //               icon: "comment-o",
-  //               text: "TECI blog",
-  //               url: "https://www.teci.world/blog",
-  //             }, {
-  //               icon: "globe",
-  //               text: "TECI web site",
-  //               url: "https://teci.world",
-  //             }, {
-  //               icon: "globe",
-  //               text: "TECI Social Mastodon FE",
-  //               url: "https://social.teci.world/web",
-  //             }, {
-  //               icon: "area-chart",
-  //               text: "TECI Social stats",
-  //               url: "https://fediverse.network/social.teci.world",
-  //             }]
-  //           },
-  //           extensions: {
-  //             patron: false,
-  //           },
-  //           defaultSettings: {
-  //             autoPlayGif: false,
-  //           },
-  //           copyright: "?2020. Copying is an act of love. Please copy and share.",
-  //           navlinks: {
-  //             homeFooter: [{
-  //               title: "About",
-  //               url: "/about",
-  //             }, {
-  //               title: "Terms of Service",
-  //               url: "/about/tos",
-  //             }, {
-  //               title: "Privacy Policy",
-  //               url: "/about/privacy",
-  //             }, {
-  //               title: "DMCA",
-  //               url: "/about/dmca",
-  //             }, {
-  //               title: "Source Code",
-  //               url: "/about#opensource",
-  //             }],
-  //           },
-  //         },
-  //       ],
-  //     }],
-  //   }],
-  // };
-
-  getFormdata = () => {
-    const data = this.getParams();
-    let formData = new FormData();
-    for (let key in data) {
-      const shouldAppend = Boolean(data[key]
-        || key.startsWith('promo_panel_attributes')
-        || key.startsWith('home_footer_attributes')
-        || key.startsWith('custom_css_attributes')
-        || (key === 'patronEnabled' && data.patronEnabled !== undefined)
-        || (key === 'autoPlayGif' && data.autoPlayGif !== undefined));
-      if (shouldAppend) formData.append(key, data[key] || '');
-    }
-    return JSON.stringify(formData);
+    this.state.homeFooterItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
+    );
+    this.state.promoItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
+    );
+    this.state.customCssItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].customCss.push(f)
+    );
+    // console.log(JSON.stringify(obj, null, 2));
+    return JSON.stringify(obj);
   }
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(patchSoapbox(this.getFormdata())).then(() => {
+    dispatch(patchSoapbox(this.getParams())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
