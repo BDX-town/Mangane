@@ -144,6 +144,60 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   getParams = () => {
     const { state } = this;
+    var obj = {
+      configs: [{
+        group: ':pleroma',
+        key: ':frontend_configurations',
+        value: [{
+          tuple: [':soapbox_fe',
+            {
+              logo: '',
+              banner: '',
+              brandColor: '',
+              customCss: [
+                '',
+              ],
+              promoPanel: {
+                items: [{
+                  icon: '',
+                  text: '',
+                  url: '',
+                }],
+              },
+              extensions: {
+                patron: false,
+              },
+              defaultSettings: {
+                autoPlayGif: false,
+              },
+              copyright: '',
+              navlinks: {
+                homeFooter: [{
+                  title: '',
+                  url: '',
+                }],
+              },
+            },
+          ],
+        }],
+      }],
+    };
+    obj.configs[0].value[0].tuple[1].logo = state.logo;
+    obj.configs[0].value[0].tuple[1].banner = state.banner;
+    obj.configs[0].value[0].tuple[1].brandColor = state.brandColor;
+    obj.configs[0].value[0].tuple[1].extensions.patron = state.patronEnabled;
+    obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.autoPlayGif;
+    obj.configs[0].value[0].tuple[1].copyright = state.copyright;
+    obj.configs[0].value[0].tuple[1].customCss[0] = '/instance/custom.css';
+    obj.configs[0].value[0].tuple[1].customCss.push('/instance/custom2.css');
+    obj.configs[0].value[0].tuple[1].promoPanel.items[0].icon = 'comment-o';
+    obj.configs[0].value[0].tuple[1].promoPanel.items[0].text = 'TECI blog';
+    obj.configs[0].value[0].tuple[1].promoPanel.items[0].url = 'https://www.teci.world/blog';
+    obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: 'globe', text: 'TECI web site', url: 'https://teci.world' });
+    obj.configs[0].value[0].tuple[1].navlinks.homeFooter[0].title = 'About';
+    obj.configs[0].value[0].tuple[1].navlinks.homeFooter[0].url = '/about';
+    obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: 'Terms of Service', url: '/about/tos' });
+    console.log(JSON.stringify(obj, null, 2));
     return Object.assign({
       logo: state.logo,
       banner: state.banner,
