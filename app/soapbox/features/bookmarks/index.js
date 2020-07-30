@@ -6,7 +6,8 @@ import Column from '../ui/components/column';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import StatusList from '../../components/status_list';
-import { fetchBookmarkedStatuses } from '../../actions/bookmarks';
+import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
+import { debounce } from 'lodash';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
@@ -42,15 +43,9 @@ class Bookmarks extends ImmutablePureComponent {
     dispatch(fetchBookmarkedStatuses());
   }
 
-  componentDidUpdate(prevProps) {
-    const { dispatch } = this.props;
-    dispatch(fetchBookmarkedStatuses());
-  }
-
-  handleLoadMore = maxId => {
-    const { dispatch } = this.props;
-    dispatch(fetchBookmarkedStatuses({ maxId }));
-  }
+  handleLoadMore = debounce(() => {
+    this.props.dispatch(expandBookmarkedStatuses());
+  }, 300, { leading: true })
 
 
   render() {
