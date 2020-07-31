@@ -113,7 +113,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   getParams = () => {
-    const { state } = this;
+    // const { state } = this;
     var obj = {
       configs: [{
         group: ':pleroma',
