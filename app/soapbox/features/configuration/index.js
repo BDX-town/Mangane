@@ -159,6 +159,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
       obj.configs[0].value[0].tuple[1].customCss.push(f)
     );
     // console.log(JSON.stringify(obj, null, 2));
+    console.log(JSON.stringify(obj.configs[0].value[0].tuple[1], null, 2));
     return JSON.stringify(obj);
   }
 
