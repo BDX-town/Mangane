@@ -113,7 +113,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   getParams = () => {
-    // const { state } = this;
+    const { state } = this;
     var obj = {
       configs: [{
         group: ':pleroma',
@@ -121,46 +121,44 @@ class ConfigSoapbox extends ImmutablePureComponent {
         value: [{
           tuple: [':soapbox_fe',
             {
-              // logo: '',
-              // banner: '',
-              // brandColor: '',
-              // customCss: [],
-              // promoPanel: {
-              //   items: [],
-              // },
-              // extensions: {
-              //   patron: false,
-              // },
-              // defaultSettings: {
-              //   autoPlayGif: false,
-              // },
-              // copyright: '',
-              // navlinks: {
-              //   homeFooter: [],
-              // },
+              logo: '',
+              banner: '',
+              brandColor: '',
+              customCss: [],
+              promoPanel: {
+                items: [],
+              },
+              extensions: {
+                patron: false,
+              },
+              defaultSettings: {
+                autoPlayGif: false,
+              },
+              copyright: '',
+              navlinks: {
+                homeFooter: [],
+              },
             },
           ],
         }],
       }],
     };
-    // obj.configs[0].value[0].tuple[1].logo = state.logo;
-    // obj.configs[0].value[0].tuple[1].banner = state.banner;
-    // obj.configs[0].value[0].tuple[1].brandColor = state.brandColor;
-    // obj.configs[0].value[0].tuple[1].extensions.patron = state.patronEnabled;
-    // obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.autoPlayGif;
-    // obj.configs[0].value[0].tuple[1].copyright = state.copyright;
-    // this.state.homeFooterItems.forEach((f) =>
-    //   obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
-    // );
-    // this.state.promoItems.forEach((f) =>
-    //   obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
-    // );
-    // this.state.customCssItems.forEach((f) =>
-    //   obj.configs[0].value[0].tuple[1].customCss.push(f)
-    // );
-    console.log(JSON.stringify(obj, null, 2));
-    // console.log(JSON.stringify(obj.configs[0].value[0].tuple[1], null, 2));
-    return JSON.stringify(obj);
+    obj.configs[0].value[0].tuple[1].logo = state.logo;
+    obj.configs[0].value[0].tuple[1].banner = state.banner;
+    obj.configs[0].value[0].tuple[1].brandColor = state.brandColor;
+    obj.configs[0].value[0].tuple[1].extensions.patron = state.patronEnabled;
+    obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.autoPlayGif;
+    obj.configs[0].value[0].tuple[1].copyright = state.copyright;
+    this.state.homeFooterItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
+    );
+    this.state.promoItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
+    );
+    this.state.customCssItems.forEach((f) =>
+      obj.configs[0].value[0].tuple[1].customCss.push(f)
+    );
+    return obj;
   }
 
   handleSubmit = (event) => {
