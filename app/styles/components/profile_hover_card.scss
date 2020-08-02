@@ -3,6 +3,10 @@
   cursor: pointer;
 }
 
+.display-name .profile-hover-card {
+  white-space: normal;
+}
+
 .profile-hover-card {
   @include standard-panel;
   position: absolute;
@@ -11,6 +15,7 @@
   transition-property: opacity;
   transition-duration: 0.2s;
   transition-delay: 0.7s;
+  width: 265px;
   z-index: 998;
   left: -10px;
   top: 70px;
@@ -38,6 +43,7 @@
 
   .user-panel {
     box-shadow: none;
+    width: auto;
 
     .user-panel-stats-item a strong {
       text-decoration: none;
@@ -48,7 +54,8 @@
     margin: 0 20px 20px;
     display: flex;
 
-    .badge, .relationship-tag {
+    .badge,
+    .relationship-tag {
       padding: 2px 4px;
       margin-right: 5px;
       border-radius: 3px;
