@@ -8,7 +8,6 @@
 }
 
 .profile-hover-card {
-  @include standard-panel;
   position: absolute;
   pointer-events: none;
   opacity: 0;
@@ -18,7 +17,7 @@
   width: 265px;
   z-index: 998;
   left: -10px;
-  top: 70px;
+  padding-top: 20px;
 
   &--visible {
     opacity: 1;
@@ -31,7 +30,9 @@
   }
 
   .profile-hover-card__container {
+    @include standard-panel;
     position: relative;
+    overflow: hidden;
   }
 
   .profile-hover-card__action-button {
