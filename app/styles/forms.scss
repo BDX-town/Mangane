@@ -380,7 +380,8 @@ code {
 
   button,
   .button,
-  .block-button {
+  .block-button,
+  .color-swatch {
     display: block;
     width: 100%;
     border: 0;
@@ -453,7 +454,6 @@ code {
         width: 32px;
         height: 16px;
         margin-left: 12px;
-        display: inline-block;
       }
     }
 
