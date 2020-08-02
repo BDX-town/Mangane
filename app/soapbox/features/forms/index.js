@@ -320,3 +320,11 @@ export const FileChooser = props => (
 FileChooser.defaultProps = {
   accept: ['image/jpeg', 'image/png', 'image/gif', 'image/webp'],
 };
+
+export const FileChooserLogo = props => (
+  <SimpleInput type='file' {...props} />
+);
+
+FileChooserLogo.defaultProps = {
+  accept: ['image/svg', 'image/png'],
+};
