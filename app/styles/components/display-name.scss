@@ -41,6 +41,7 @@ a.account__display-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  position: relative;
 }
 
 .display-name__html {
