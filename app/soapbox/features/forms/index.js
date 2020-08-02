@@ -241,7 +241,7 @@ export class ColorWithPicker extends ImmutablePureComponent {
     return (
       <div className='label_input__color'>
         <label>{label}</label>
-        <button id={buttonId} className='color-swatch' style={{ background: value }} value={value} onClick={this.onToggle} />
+        <div id={buttonId} className='color-swatch' style={{ background: value }} value={value} onClick={this.onToggle} />
         <Overlay show={active} placement={placement} target={this}>
           <ColorPicker value={value} onChange={onChange} onClose={this.onHidePicker} />
         </Overlay>
