@@ -11,6 +11,7 @@ import {
   TextInput,
   Checkbox,
   FileChooser,
+  ColorWithPicker,
   FileChooserLogo,
 } from 'soapbox/features/forms';
 import StillImage from 'soapbox/components/still_image';
@@ -178,7 +179,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   handleBrandColorChange = e => {
-    this.setState({ brandColor: e.target.value });
+    this.setState({ brandColor: e.hex });
   }
 
   handleTextChange = e => {
@@ -285,10 +286,13 @@ class ConfigSoapbox extends ImmutablePureComponent {
               </div>
             </FieldsGroup>
             <FieldsGroup>
-              <div>
-                <label htmlFor='brand_color'><FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' /></label><br /><br />
-                <input type='color' id='brand_color' name='brand_color' value={this.state.brandColor || '#0482d8'} onChange={this.handleBrandColorChange} /><br /><br />
-                <label>{ this.state.brandColor }</label>
+              <div className='fields-row__column fields-group'>
+                <ColorWithPicker
+                  buttonId='brand_color'
+                  label={<FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' />}
+                  value={this.state.brandColor || '#0482d8'}
+                  onChange={this.handleBrandColorChange}
+                />
               </div>
             </FieldsGroup>
             <FieldsGroup>
