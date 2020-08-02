@@ -173,10 +173,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
             <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
               <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-              <DisplayName account={status.get('account')}>
-                <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
-              </DisplayName>
+              <DisplayName account={status.get('account')} />
             </NavLink>
+            <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
           </div>
 
           {status.get('group') && (

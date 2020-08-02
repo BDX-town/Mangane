@@ -465,10 +465,9 @@ class Status extends ImmutablePureComponent {
                   <div className='status__avatar'>
                     {statusAvatar}
                   </div>
-                  <DisplayName account={status.get('account')} others={otherAccounts}>
-                    <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
-                  </DisplayName>
+                  <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
+                <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
               </div>
             </div>
 
