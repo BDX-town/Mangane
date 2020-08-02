@@ -102,6 +102,7 @@
     "punycode": "^2.1.0",
     "rails-ujs": "^5.2.3",
     "react": "^16.13.1",
+    "react-color": "^2.18.1",
     "react-dom": "^16.13.1",
     "react-helmet": "^6.0.0",
     "react-hotkeys": "^1.1.4",

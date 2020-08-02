@@ -444,6 +444,19 @@ code {
   }
 
   .label_input {
+
+    &__color {
+      display: inline-flex;
+      font-size: 14px;
+
+      .color-swatch {
+        width: 32px;
+        height: 16px;
+        margin-left: 12px;
+        display: inline-block;
+      }
+    }
+
     &__wrapper {
       position: relative;
     }
