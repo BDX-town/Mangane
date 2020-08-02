@@ -11,6 +11,7 @@ import {
   TextInput,
   Checkbox,
   FileChooser,
+  FileChooserLogo,
 } from 'soapbox/features/forms';
 import StillImage from 'soapbox/components/still_image';
 import {
@@ -261,7 +262,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   {this.state.logo ? (<StillImage src={this.state.logo || ''} />) : (<StillImage src={this.props.logo || ''} />)}
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
-                  <FileChooser
+                  <FileChooserLogo
                     label={<FormattedMessage id='soapbox_settings.fields.logo_label' defaultMessage='Logo' />}
                     name='logo'
                     hint={<FormattedMessage id='soapbox_settings.hints.logo' defaultMessage='SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio' />}
