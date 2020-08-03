@@ -14,7 +14,7 @@
   transition-property: opacity;
   transition-duration: 0.2s;
   transition-delay: 0.7s;
-  width: 300px;
+  width: 320px;
   z-index: 998;
   left: -10px;
   padding-top: 20px;
@@ -48,6 +48,24 @@
 
     .user-panel-stats-item a strong {
       text-decoration: none;
+    }
+
+    &__header {
+      height: 96px;
+    }
+
+    .user-panel-stats-item {
+      margin-right: 10px;
+
+      &__label,
+      &__value {
+        display: inline;
+        font-size: 15px;
+      }
+
+      &__value {
+        margin-right: 5px;
+      }
     }
   }
 
