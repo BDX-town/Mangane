@@ -102,7 +102,7 @@ button {
     &:focus,
     &:hover {
       border-color: var(--brand-color);
-      color: var(--primary-text-color);
+      color: var(--background-color);
     }
 
     &:disabled {
