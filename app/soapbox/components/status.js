@@ -20,6 +20,7 @@ import PollContainer from 'soapbox/containers/poll_container';
 import { NavLink } from 'react-router-dom';
 import ProfileHoverCardContainer from '../features/profile_hover_card/profile_hover_card_container';
 import { isMobile } from '../../../app/soapbox/is_mobile';
+import { debounce } from 'lodash';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -252,11 +253,16 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  showProfileCard = debounce(() => {
+    this.setState({ profileCardVisible: true });
+  }, 1200);
+
   handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: true });
+    if (!isMobile(window.innerWidth)) this.showProfileCard();
   }
 
   handleProfileLeave = e => {
+    this.showProfileCard.cancel();
     if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
   }
 
