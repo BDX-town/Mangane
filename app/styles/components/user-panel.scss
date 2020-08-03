@@ -9,6 +9,7 @@
   .user-panel__account__username {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &__header {
