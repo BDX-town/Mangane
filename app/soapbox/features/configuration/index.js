@@ -23,6 +23,7 @@ import { postSoapbox } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
+  copyrightFooterLabel: { id: 'soapbox_settings.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
   promoItemIcon: { id: 'soapbox_settings.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
   promoItemLabel: { id: 'soapbox_settings.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
   promoItemURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
@@ -311,6 +312,15 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 name='autoPlayGif'
                 checked={this.state.autoPlayGif ? this.state.autoPlayGif : this.props.autoPlayGif || false}
                 onChange={this.handleCheckboxChange}
+              />
+            </FieldsGroup>
+            <FieldsGroup>
+              <TextInput
+                name='copyright'
+                label={intl.formatMessage(messages.copyrightFooterLabel)}
+                placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
+                value={this.state.copyright}
+                onChange={this.handleTextChange}
               />
             </FieldsGroup>
             <FieldsGroup>
