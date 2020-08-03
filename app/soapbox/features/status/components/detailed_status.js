@@ -18,6 +18,7 @@ import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
 import ProfileHoverCardContainer from 'soapbox/features/profile_hover_card/profile_hover_card_container';
 import { isMobile } from 'soapbox/is_mobile';
+import { debounce } from 'lodash';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -84,12 +85,17 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
+  showProfileCard = debounce(() => {
+    this.setState({ profileCardVisible: true });
+  }, 1200);
+
   handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: true });
+    if (!isMobile(window.innerWidth)) this.showProfileCard();
   }
 
   handleProfileLeave = e => {
-    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
+    this.showProfileCard.cancel();
+    this.setState({ profileCardVisible: false });
   }
 
   render() {

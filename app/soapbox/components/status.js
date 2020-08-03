@@ -263,7 +263,7 @@ class Status extends ImmutablePureComponent {
 
   handleProfileLeave = e => {
     this.showProfileCard.cancel();
-    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
+    this.setState({ profileCardVisible: false });
   }
 
   _properStatus() {
