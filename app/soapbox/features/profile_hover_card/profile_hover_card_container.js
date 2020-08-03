@@ -38,28 +38,37 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
     visible: true,
   }
 
+  getBadges = () => {
+    const { account } = this.props;
+    let badges = [];
+    if (isAdmin(account)) badges.push(<Badge slug='admin' title='Admin' />);
+    if (isModerator(account)) badges.push(<Badge slug='moderator' title='Moderator' />);
+    if (account.getIn(['patron', 'is_patron'])) badges.push(<Badge slug='patron' title='Patron' />);
+    return badges;
+  }
+
   render() {
     const { visible, accountId, account } = this.props;
     if (!accountId) return null;
     const accountBio = { __html: account.get('note_emojified') };
-    let followed_by  = account.getIn(['relationship', 'followed_by']);
+    const followedBy  = account.getIn(['relationship', 'followed_by']);
+    const badges = this.getBadges();
 
     return (
       <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })}>
         <div className='profile-hover-card__container'>
-          { followed_by ?
+          {followedBy &&
             <span className='relationship-tag'>
               <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
-            </span>
-            : '' }
+            </span>}
           <div className='profile-hover-card__action-button'><ActionButton account={account} /></div>
           <UserPanel className='profile-hover-card__user' accountId={accountId} />
-          <div className='profile-hover-card__badges'>
-            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
-            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
-            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-          </div>
-          <div className='profile-hover-card__bio' dangerouslySetInnerHTML={accountBio} />
+          {badges.length > 0 &&
+            <div className='profile-hover-card__badges'>
+              {badges}
+            </div>}
+          {account.getIn(['source', 'note'], '').length > 0 &&
+            <div className='profile-hover-card__bio' dangerouslySetInnerHTML={accountBio} />}
         </div>
       </div>
     );

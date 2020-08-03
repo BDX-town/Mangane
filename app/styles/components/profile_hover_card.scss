@@ -14,7 +14,7 @@
   transition-property: opacity;
   transition-duration: 0.2s;
   transition-delay: 0.7s;
-  width: 265px;
+  width: 300px;
   z-index: 998;
   left: -10px;
   padding-top: 20px;
@@ -73,6 +73,18 @@
 
   .profile-hover-card__bio {
     margin: 0 20px 20px;
+    max-height: 4em;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 20px;
+      bottom: 0;
+      left: 0;
+      background: linear-gradient(0deg, var(--foreground-color) 0%, var(--foreground-color), 80%, transparent);
+    }
   }
 }
 
