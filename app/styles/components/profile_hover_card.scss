@@ -98,3 +98,15 @@
     left: 80px;
   }
 }
+
+/* Prevent floating avatars from intercepting with current card */
+.status,
+.detailed-status {
+  .floating-link {
+    display: none;
+  }
+
+  &:hover .floating-link {
+    display: block;
+  }
+}
