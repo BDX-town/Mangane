@@ -15,7 +15,7 @@ class SiteLogo extends ImmutablePureComponent {
       imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
       textLogo: (<h1>{instance.get('title')}</h1>),
     };
-    return soapbox.has('logo') ? logos.imgLogo : logos.textLogo;
+    return soapbox.getIn(['logo']) ? logos.imgLogo : logos.textLogo;
   }
 
 }
