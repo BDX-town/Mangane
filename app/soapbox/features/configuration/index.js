@@ -23,7 +23,7 @@ import { postSoapbox } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
-  copyrightFooterLabel: { id: 'soapbox_settings.copyright_footer.meta_firelds.label_placeholder', defaultMessage: 'Copyright footer' },
+  copyrightFooterLabel: { id: 'soapbox_settings.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
   promoItemIcon: { id: 'soapbox_settings.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
   promoItemLabel: { id: 'soapbox_settings.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
   promoItemURL: { id: 'soapbox_settings.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
