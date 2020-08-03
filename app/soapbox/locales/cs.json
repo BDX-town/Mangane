@@ -402,6 +402,7 @@
   "security.update_password.success": "Heslo úspěšně změněno.",
   "signup_panel.subtitle": "Registrujte se pro diskuzi.",
   "signup_panel.title": "Nový na {site_title}?",
+  "soapbox_settings.copyright_footer.meta_fields.label_placeholder": "Copyright footer",
   "soapbox_settings.custom_css.meta_fields.url_placeholder": "URL",
   "soapbox_settings.fields.auto_play_gif_label": "Auto-play GIFs",
   "soapbox_settings.fields.banner_label": "Banner",

@@ -1410,6 +1410,10 @@
         "id": "column.soapbox_settings"
       },
       {
+        "defaultMessage": "Copyright footer",
+        "id": "soapbox_settings.copyright_footer.meta_fields.label_placeholder"
+      },
+      {
         "defaultMessage": "Icon",
         "id": "soapbox_settings.promo_panel.meta_fields.icon_placeholder"
       },

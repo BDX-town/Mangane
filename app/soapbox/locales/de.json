@@ -402,6 +402,7 @@
   "security.update_password.success": "Das Passwort wurde erfolgreich geändert.",
   "signup_panel.subtitle": "Jetzt anmelden, um mitzureden.",
   "signup_panel.title": "Neu auf {site_title}?",
+  "soapbox_settings.copyright_footer.meta_fields.label_placeholder": "Copyright footer",
   "soapbox_settings.custom_css.meta_fields.url_placeholder": "URL",
   "soapbox_settings.fields.auto_play_gif_label": "Auto-play GIFs",
   "soapbox_settings.fields.banner_label": "Banner",
