@@ -66,7 +66,6 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-
   onMuteNotifications(account, notifications) {
     dispatch(muteAccount(account.get('id'), notifications));
   },

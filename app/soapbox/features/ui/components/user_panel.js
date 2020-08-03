@@ -84,17 +84,17 @@ class UserPanel extends ImmutablePureComponent {
 
 };
 
-
-const mapStateToProps = state => {
-  const me = state.get('me');
+const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  return {
-    account: getAccount(state, me),
-  };
+  const mapStateToProps = (state, { accountId }) => ({
+    account: getAccount(state, accountId),
+  });
+
+  return mapStateToProps;
 };
 
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(makeMapStateToProps, null, null, {
     forwardRef: true,
   })(UserPanel));

@@ -16,6 +16,8 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
+import ProfileHoverCardContainer from 'soapbox/features/profile_hover_card/profile_hover_card_container';
+import { isMobile } from 'soapbox/is_mobile';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -38,6 +40,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
   state = {
     height: null,
+    profileCardVisible: false,
   };
 
   handleOpenVideo = (media, startTime) => {
@@ -81,10 +84,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
+  handleProfileHover = e => {
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: true });
+  }
+
+  handleProfileLeave = e => {
+    if (!isMobile(window.innerWidth)) this.setState({ profileCardVisible: false });
+  }
+
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
+    const { profileCardVisible } = this.state;
 
     if (!status) {
       return null;
@@ -160,10 +172,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
-            <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-            <DisplayName account={status.get('account')} />
-          </NavLink>
+          <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+            <div className='detailed-status__display-name'>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
+                <div className='detailed-status__display-avatar'>
+                  <Avatar account={status.get('account')} size={48} />
+                </div>
+              </NavLink>
+              <DisplayName account={status.get('account')}>
+                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+              </DisplayName>
+            </div>
+            <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
+          </div>
 
           {status.get('group') && (
             <div className='status__meta'>
