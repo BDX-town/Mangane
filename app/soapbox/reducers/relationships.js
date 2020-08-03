@@ -22,6 +22,7 @@ import {
   DOMAIN_UNBLOCK_SUCCESS,
 } from '../actions/domain_blocks';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+import { get } from 'lodash';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
 
@@ -42,8 +43,10 @@ const setDomainBlocking = (state, accounts, blocking) => {
 };
 
 const importPleromaAccount = (state, account) => {
-  if (!account.pleroma) return state;
-  return normalizeRelationship(state, account.pleroma.relationship);
+  const relationship = get(account, ['pleroma', 'relationship'], {});
+  if (relationship.id && relationship !== {})
+    return normalizeRelationship(state, relationship);
+  return state;
 };
 
 const importPleromaAccounts = (state, accounts) => {

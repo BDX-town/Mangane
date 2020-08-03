@@ -50,18 +50,18 @@ describe('alerts reducer', () => {
   // });
 
   it('should handle ALERT_CLEAR', () => {
-      const state = ImmutableList([
-        {
-          key: 0,
-          message: 'message_1',
-          title: 'title_1',
-        },
-        {
-          key: 1,
-          message: 'message_2',
-          title: 'title_2',
-        },
-      ]);
+    const state = ImmutableList([
+      {
+        key: 0,
+        message: 'message_1',
+        title: 'title_1',
+      },
+      {
+        key: 1,
+        message: 'message_2',
+        title: 'title_2',
+      },
+    ]);
     const action = {
       type: actions.ALERT_CLEAR,
     };

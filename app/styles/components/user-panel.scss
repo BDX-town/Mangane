@@ -3,7 +3,14 @@
   display: flex;
   width: 265px;
   flex-direction: column;
-  overflow-y: hidden;
+
+  &,
+  .user-panel__account__name,
+  .user-panel__account__username {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
   &__header {
     display: block;

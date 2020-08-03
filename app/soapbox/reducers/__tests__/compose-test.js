@@ -32,6 +32,7 @@ describe('compose reducer', () => {
       default_sensitive: false,
       idempotencyKey: null,
       tagHistory: [],
+      content_type: 'text/markdown',
     });
   });
 
@@ -168,8 +169,18 @@ describe('compose reducer', () => {
     });
   });
 
+  it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, don\'t toggle if spoiler active', () => {
+    const state = ImmutableMap({ spoiler: true, sensitive: true, idempotencyKey: null });
+    const action = {
+      type: actions.COMPOSE_SENSITIVITY_CHANGE,
+    };
+    expect(reducer(state, action).toJS()).toMatchObject({
+      sensitive: true,
+    });
+  });
+
   it('should handle COMPOSE_SENSITIVITY_CHANGE on Mark Sensitive click, toggle if spoiler inactive', () => {
-    const state = ImmutableMap({ sensitive: true });
+    const state = ImmutableMap({ spoiler: false, sensitive: true });
     const action = {
       type: actions.COMPOSE_SENSITIVITY_CHANGE,
     };
@@ -777,4 +788,11 @@ describe('compose reducer', () => {
   //   });
   // });
 
+  it('sets the post content-type', () => {
+    const action = {
+      type: actions.COMPOSE_TYPE_CHANGE,
+      value: 'text/plain',
+    };
+    expect(reducer(undefined, action).toJS()).toMatchObject({ content_type: 'text/plain' });
+  });
 });

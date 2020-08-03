@@ -16,6 +16,9 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
+import ProfileHoverCardContainer from 'soapbox/features/profile_hover_card/profile_hover_card_container';
+import { isMobile } from 'soapbox/is_mobile';
+import { debounce } from 'lodash';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -38,6 +41,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
   state = {
     height: null,
+    profileCardVisible: false,
   };
 
   handleOpenVideo = (media, startTime) => {
@@ -81,16 +85,31 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
+  showProfileCard = debounce(() => {
+    this.setState({ profileCardVisible: true });
+  }, 1200);
+
+  handleProfileHover = e => {
+    if (!isMobile(window.innerWidth)) this.showProfileCard();
+  }
+
+  handleProfileLeave = e => {
+    this.showProfileCard.cancel();
+    this.setState({ profileCardVisible: false });
+  }
+
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
+    const { profileCardVisible } = this.state;
 
     if (!status) {
       return null;
     }
 
     let media           = '';
+    let poll = '';
     let statusTypeIcon = '';
 
     if (this.props.measureHeight) {
@@ -98,8 +117,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     if (status.get('poll')) {
-      media = <PollContainer pollId={status.get('poll')} />;
-    } else if (status.get('media_attachments').size > 0) {
+      poll = <PollContainer pollId={status.get('poll')} />;
+    }
+    if (status.get('media_attachments').size > 0) {
       if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
@@ -158,10 +178,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
-            <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-            <DisplayName account={status.get('account')} />
-          </NavLink>
+          <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+            <div className='detailed-status__display-name'>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
+                <div className='detailed-status__display-avatar'>
+                  <Avatar account={status.get('account')} size={48} />
+                </div>
+              </NavLink>
+              <DisplayName account={status.get('account')}>
+                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+              </DisplayName>
+            </div>
+            <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
+          </div>
 
           {status.get('group') && (
             <div className='status__meta'>
@@ -172,6 +201,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <StatusContent status={status} expanded={!status.get('hidden')} onExpandedToggle={this.handleExpandedToggle} />
 
           {media}
+          {poll}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />

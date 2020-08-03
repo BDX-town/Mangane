@@ -2,7 +2,7 @@
   .setting-toggle {
 
     &__label {
-      margin-bottom: 0px;
+      margin-bottom: 0;
       vertical-align: middle;
     }
 
@@ -11,6 +11,8 @@
 
       &-track-check,
       &-track-x {
+        display: flex;
+        align-items: center;
         height: 15px;
         color: #fff;
       }

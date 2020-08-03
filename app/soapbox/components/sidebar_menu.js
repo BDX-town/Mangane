@@ -33,6 +33,7 @@ const messages = defineMessages({
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
@@ -144,6 +145,10 @@ class SidebarMenu extends ImmutablePureComponent {
               <NavLink className='sidebar-menu-item' to='/lists' onClick={onClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
+              </NavLink>
+              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={onClose}>
+                <Icon id='bookmark' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
               </NavLink>
             </div>
 

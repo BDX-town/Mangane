@@ -9,6 +9,11 @@ describe('status_lists reducer', () => {
         loaded: false,
         items: ImmutableList(),
       }),
+      bookmarks: ImmutableMap({
+        next: null,
+        loaded: false,
+        items: ImmutableList(),
+      }),
       pins: ImmutableMap({
         next: null,
         loaded: false,

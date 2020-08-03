@@ -22,12 +22,17 @@
     background: var(--accent-color--med);
     @media screen and (max-width: 895px) {height: 225px;}
     &--none {height: 125px;}
+
     img {
       object-fit: cover;
       display: block;
       width: 100%;
       height: 100%;
       margin: 0;
+    }
+
+    .still-image {
+      height: 100%;
     }
 
     .still-image--play-on-hover::before {

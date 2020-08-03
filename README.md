@@ -54,7 +54,7 @@ yarn
 Finally, run the dev server:
 
 ```sh
-yarn start
+yarn dev
 ```
 
 **That's it!** :tada:
@@ -140,7 +140,7 @@ NODE_ENV=development
 ```
 
 #### Local dev server
-- `yarn dev` - Exact same as above, aliased to `yarn start` for convenience.
+- `yarn dev` - Run the local dev server.
 
 #### Building
 - `yarn build` - Compile without a dev server, into `/static` directory.

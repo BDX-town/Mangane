@@ -62,6 +62,10 @@ export function Lists() {
   return import(/* webpackChunkName: "features/lists" */'../../lists');
 }
 
+export function Bookmarks() {
+  return import(/* webpackChunkName: "features/bookmarks" */'../../bookmarks');
+}
+
 export function Status() {
   return import(/* webpackChunkName: "features/status" */'../../status');
 }

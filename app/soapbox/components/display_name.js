@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import VerificationBadge from './verification_badge';
 import { acctFull } from '../utils/accounts';
@@ -8,10 +9,11 @@ export default class DisplayName extends React.PureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
     others: ImmutablePropTypes.list,
+    children: PropTypes.node,
   };
 
   render() {
-    const { account, others } = this.props;
+    const { account, others, children } = this.props;
 
     let displayName, suffix;
 
@@ -40,6 +42,7 @@ export default class DisplayName extends React.PureComponent {
       <span className='display-name'>
         {displayName}
         {suffix}
+        {children}
       </span>
     );
   }
