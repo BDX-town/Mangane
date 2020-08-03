@@ -47,17 +47,17 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
     return (
       <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })}>
         <div className='profile-hover-card__container'>
+          { followed_by ?
+            <span className='relationship-tag'>
+              <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
+            </span>
+            : '' }
           <div className='profile-hover-card__action-button'><ActionButton account={account} /></div>
           <UserPanel className='profile-hover-card__user' accountId={accountId} />
           <div className='profile-hover-card__badges'>
             {isAdmin(account) && <Badge slug='admin' title='Admin' />}
             {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
             {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-            { followed_by ?
-              <span className='relationship-tag'>
-                <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
-              </span>
-              : '' }
           </div>
           <div className='profile-hover-card__bio' dangerouslySetInnerHTML={accountBio} />
         </div>
