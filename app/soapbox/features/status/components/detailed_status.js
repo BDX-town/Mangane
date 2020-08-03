@@ -171,12 +171,16 @@ export default class DetailedStatus extends ImmutablePureComponent {
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
           <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
-            <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
-              <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
+            <div className='detailed-status__display-name'>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
+                <div className='detailed-status__display-avatar'>
+                  <Avatar account={status.get('account')} size={48} />
+                </div>
+              </NavLink>
               <DisplayName account={status.get('account')}>
                 <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
               </DisplayName>
-            </NavLink>
+            </div>
             <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
           </div>
 

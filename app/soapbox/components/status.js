@@ -461,11 +461,11 @@ class Status extends ImmutablePureComponent {
               </NavLink>
 
               <div className='status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+                <div className='status__avatar'>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+                  {statusAvatar}
+                </div>
                 <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                  <div className='status__avatar'>
-                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
-                    {statusAvatar}
-                  </div>
                   <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
                 <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
