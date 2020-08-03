@@ -75,6 +75,10 @@
     margin: 0 20px 20px;
     max-height: 4em;
 
+    a {
+      color: var(--highlight-text-color);
+    }
+
     &::after {
       content: '';
       display: block;
