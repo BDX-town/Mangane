@@ -77,8 +77,10 @@
   }
 
   .profile-hover-card__badges {
-    margin: 0 20px 20px;
     display: flex;
+    position: absolute;
+    top: 110px;
+    left: 120px;
 
     .badge {
       padding: 2px 4px;
