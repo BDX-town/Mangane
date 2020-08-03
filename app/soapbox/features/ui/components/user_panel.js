@@ -10,7 +10,6 @@ import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
-import classNames from 'classnames';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -18,21 +17,16 @@ class UserPanel extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string,
-    style: PropTypes.object,
-  }
-
-  static defaultProps = {
-    style: {},
   }
 
   render() {
-    const { account, intl, domain, style } = this.props;
+    const { account, intl, domain } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
 
     return (
-      <div className={classNames('user-panel')} style={style}>
+      <div className='user-panel'>
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
