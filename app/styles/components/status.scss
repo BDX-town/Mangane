@@ -219,7 +219,12 @@
 
 .status__profile,
 .detailed-status__profile {
-  display: inline-block;
+  display: block;
+  max-width: 100%;
+}
+
+.status__profile {
+  padding-right: 25px;
 }
 
 .status-check-box {
