@@ -12,6 +12,7 @@ const nodeinfoToInstance = nodeinfo => {
         account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
         features: nodeinfo.getIn(['metadata', 'features']),
         federation: nodeinfo.getIn(['metadata', 'federation']),
+        fieldsLimits: nodeinfo.getIn(['metadata', 'fieldsLimits']),
       }),
     }),
   });

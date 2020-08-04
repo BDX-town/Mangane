@@ -20,8 +20,6 @@ import {
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
 
-const MAX_FIELDS = 4; // TODO: Make this dynamic by the instance
-
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
@@ -32,12 +30,13 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
+    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fieldsLimits', 'maxFields']),
   };
 };
 
-// Forces fields to be MAX_SIZE, filling empty values
-const normalizeFields = fields => (
-  ImmutableList(fields).setSize(MAX_FIELDS).map(field =>
+// Forces fields to be maxFields size, filling empty values
+const normalizeFields = (fields, maxFields) => (
+  ImmutableList(fields).setSize(maxFields).map(field =>
     field ? field : ImmutableMap({ name: '', value: '' })
   )
 );
@@ -57,11 +56,11 @@ class EditProfile extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map,
+    maxFields: PropTypes.number,
   };
 
   state = {
     isLoading: false,
-    fields: normalizeFields(Array.from({ length: MAX_FIELDS })),
   }
 
   constructor(props) {
@@ -69,7 +68,7 @@ class EditProfile extends ImmutablePureComponent {
     const initialState = props.account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields')));
+      map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
       unescapeParams(map, ['display_name', 'note']);
     });
     this.state = initialState.toObject();
@@ -156,7 +155,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl } = this.props;
+    const { intl, maxFields } = this.props;
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -214,7 +213,7 @@ class EditProfile extends ImmutablePureComponent {
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
                   <span className='hint'>
-                    <FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: MAX_FIELDS }} />
+                    <FormattedMessage id='edit_profile.hints.meta_fields' defaultMessage='You can have up to {count, plural, one {# item} other {# items}} displayed as a table on your profile' values={{ count: maxFields }} />
                   </span>
                   {
                     this.state.fields.map((field, i) => (
