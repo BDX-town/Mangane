@@ -16,13 +16,14 @@ export default class DisplayName extends React.PureComponent {
     const { account, others, children } = this.props;
 
     let displayName, suffix;
+    const verified = account.get('pleroma').get('tags').includes('verified');
 
     if (others && others.size > 1) {
       displayName = others.take(2).map(a => [
         <bdi key={a.get('id')}>
           <strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} />
         </bdi>,
-        a.get('is_verified') && <VerificationBadge />,
+        verified && <VerificationBadge />,
       ]).reduce((prev, cur) => [prev, ', ', cur]);
 
       if (others.size - 2 > 0) {
@@ -32,7 +33,7 @@ export default class DisplayName extends React.PureComponent {
       displayName = (
         <>
           <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} /></bdi>
-          {account.get('is_verified') && <VerificationBadge />}
+          {verified && <VerificationBadge />}
         </>
       );
       suffix = <span className='display-name__account'>@{acctFull(account)}</span>;

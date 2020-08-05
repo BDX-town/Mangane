@@ -10,6 +10,7 @@ import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -24,6 +25,7 @@ class UserPanel extends ImmutablePureComponent {
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
+    const verified = account.get('pleroma').get('tags').includes('verified');
 
     return (
       <div className='user-panel'>
@@ -45,6 +47,7 @@ class UserPanel extends ImmutablePureComponent {
               <h1>
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
+                  {verified && <VerificationBadge />}
                   <small className='user-panel__account__username'>@{acctFull(account)}</small>
                 </Link>
               </h1>
