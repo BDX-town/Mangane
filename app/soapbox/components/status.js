@@ -476,7 +476,9 @@ class Status extends ImmutablePureComponent {
                 <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
                   <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
-                <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
+                { profileCardVisible &&
+                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth)} />
+                }
               </div>
             </div>
 
