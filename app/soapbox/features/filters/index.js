@@ -139,22 +139,24 @@ class Filters extends ImmutablePureComponent {
           <div className='filter-settings-panel'>
             <fieldset disabled={false}>
               <FieldsGroup>
-
-                <SimpleInput
-                  label={intl.formatMessage(messages.keyword)}
-                  required
-                  type='text'
-                  name='phrase'
-                  onChange={this.handleInputChange}
-                />
-
-                <SelectDropdown
-                  label={intl.formatMessage(messages.expires)}
-                  hint={intl.formatMessage(messages.expires_hint)}
-                  items={expirations}
-                  defaultValue={expirations.never}
-                  onChange={this.handleSelectChange}
-                />
+                <div className='two-col'>
+                  <SimpleInput
+                    label={intl.formatMessage(messages.keyword)}
+                    required
+                    type='text'
+                    name='phrase'
+                    onChange={this.handleInputChange}
+                  />
+                  <div className='input with_label required'>
+                    <SelectDropdown
+                      label={intl.formatMessage(messages.expires)}
+                      hint={intl.formatMessage(messages.expires_hint)}
+                      items={expirations}
+                      defaultValue={expirations.never}
+                      onChange={this.handleSelectChange}
+                    />
+                  </div>
+                </div>
               </FieldsGroup>
 
               <FieldsGroup>
@@ -164,30 +166,32 @@ class Filters extends ImmutablePureComponent {
                 <span className='hint'>
                   <FormattedMessage id='filters.context_hint' defaultMessage='One or multiple contexts where the filter should apply' />
                 </span>
-                <Checkbox
-                  label={intl.formatMessage(messages.home_timeline)}
-                  name='home_timeline'
-                  checked={this.state.home_timeline}
-                  onChange={this.handleCheckboxChange}
-                />
-                <Checkbox
-                  label={intl.formatMessage(messages.public_timeline)}
-                  name='public_timeline'
-                  checked={this.state.public_timeline}
-                  onChange={this.handleCheckboxChange}
-                />
-                <Checkbox
-                  label={intl.formatMessage(messages.notifications)}
-                  name='notifications'
-                  checked={this.state.notifications}
-                  onChange={this.handleCheckboxChange}
-                />
-                <Checkbox
-                  label={intl.formatMessage(messages.conversations)}
-                  name='conversations'
-                  checked={this.state.conversations}
-                  onChange={this.handleCheckboxChange}
-                />
+                <div className='two-col'>
+                  <Checkbox
+                    label={intl.formatMessage(messages.home_timeline)}
+                    name='home_timeline'
+                    checked={this.state.home_timeline}
+                    onChange={this.handleCheckboxChange}
+                  />
+                  <Checkbox
+                    label={intl.formatMessage(messages.public_timeline)}
+                    name='public_timeline'
+                    checked={this.state.public_timeline}
+                    onChange={this.handleCheckboxChange}
+                  />
+                  <Checkbox
+                    label={intl.formatMessage(messages.notifications)}
+                    name='notifications'
+                    checked={this.state.notifications}
+                    onChange={this.handleCheckboxChange}
+                  />
+                  <Checkbox
+                    label={intl.formatMessage(messages.conversations)}
+                    name='conversations'
+                    checked={this.state.conversations}
+                    onChange={this.handleCheckboxChange}
+                  />
+                </div>
 
               </FieldsGroup>
 

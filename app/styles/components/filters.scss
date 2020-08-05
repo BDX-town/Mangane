@@ -13,7 +13,34 @@
     &:last-child {
       border-bottom: 0;
     }
+  }
 
+  .fields-group .two-col {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    div.input {
+      width: 45%;
+      margin-right: 20px;
+
+      .label_input {
+        width: 100%;
+      }
+    }
+
+    @media(max-width: 485px){
+      div.input {
+        width: 100%;
+        margin-right: 5px;
+
+        .label_input {
+          width: auto;
+        }
+      }
+    }
   }
 
   .filter__container {
