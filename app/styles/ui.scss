@@ -654,6 +654,7 @@
 
       &::after {
         bottom: -1px;
+        border-color: transparent transparent var(--foreground-color);
       }
     }
   }
