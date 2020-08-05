@@ -367,7 +367,9 @@ class StatusActionBar extends ImmutablePureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
           ref={this.setRef}
         >
-          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          { emojiSelectorVisible &&
+            <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          }
           <IconButton
             className='status__action-bar-button star-icon'
             animate
