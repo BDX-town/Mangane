@@ -4,23 +4,26 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import Column from '../ui/components/column';
-import { fetchFilters, createFilter } from '../../actions/filters';
+import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
 import ScrollableList from '../../components/scrollable_list';
 import Button from 'soapbox/components/button';
 import {
   SimpleForm,
   SimpleInput,
   FieldsGroup,
-  TextInput,
   SelectDropdown,
   Checkbox,
 } from 'soapbox/features/forms';
 import { showAlert } from 'soapbox/actions/alerts';
+import Icon from 'soapbox/components/icon';
+import ColumnSubheading from '../ui/components/column_subheading';
 
 const messages = defineMessages({
   heading: { id: 'column.filters', defaultMessage: 'Muted words' },
+  subheading_add_new: { id: 'column.filters.subheading_add_new', defaultMessage: 'Add New Filter' },
   keyword: { id: 'column.filters.keyword', defaultMessage: 'Keyword or phrase' },
   expires: { id: 'column.filters.expires', defaultMessage: 'Expire after' },
+  expires_hint: { id: 'column.filters.expires_hint', defaultMessage: 'Expiration dates are not currently supported' },
   home_timeline: { id: 'column.filters.home_timeline', defaultMessage: 'Home timeline' },
   public_timeline: { id: 'column.filters.public_timeline', defaultMessage: 'Public timeline' },
   notifications: { id: 'column.filters.notifications', defaultMessage: 'Notifications' },
@@ -29,17 +32,20 @@ const messages = defineMessages({
   drop_hint: { id: 'column.filters.drop_hint', defaultMessage: 'Filtered posts will disappear irreversibly, even if filter is later removed' },
   whole_word_header: { id: 'column.filters.whole_word_header', defaultMessage: 'Whole word' },
   whole_word_hint: { id: 'column.filters.whole_word_hint', defaultMessage: 'When the keyword or phrase is alphanumeric only, it will only be applied if it matches the whole word' },
-  add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Muted Word' },
-  error: { id: 'column.filters.error', defaultMessage: 'Error adding filter' },
+  add_new: { id: 'column.filters.add_new', defaultMessage: 'Add New Filter' },
+  create_error: { id: 'column.filters.create_error', defaultMessage: 'Error adding filter' },
+  delete_error: { id: 'column.filters.delete_error', defaultMessage: 'Error deleting filter' },
+  subheading_filters: { id: 'column.filters.subheading_filters', defaultMessage: 'Current Filters' },
+  delete: { id: 'column.filters.delete', defaultMessage: 'Delete' },
 });
 
 const expirations = {
-  1800: 'Never',
-  3600: '30 minutes',
-  21600: '1 hour',
-  43200: '12 hours',
-  86400 : '1 day',
-  604800: '1 week',
+  null: 'Never',
+  // 3600: '30 minutes',
+  // 21600: '1 hour',
+  // 43200: '12 hours',
+  // 86400 : '1 day',
+  // 604800: '1 week',
 };
 
 const mapStateToProps = state => ({
@@ -60,12 +66,10 @@ class Filters extends ImmutablePureComponent {
   state = {
     phrase: '',
     expires_at: '',
-    context: {
-      home_timeline: false,
-      public_timeline: false,
-      notifications: false,
-      conversations: false,
-    },
+    home_timeline: true,
+    public_timeline: false,
+    notifications: false,
+    conversations: false,
     irreversible: false,
     whole_word: true,
   }
@@ -89,12 +93,37 @@ class Filters extends ImmutablePureComponent {
 
   handleAddNew = e => {
     e.preventDefault();
-    const { intl, dispatch } = this.state;
-    const { phrase, context, whole_word, expires_at } = this.state;
-    dispatch(createFilter(phrase, context, whole_word, expires_at)).then(response => {
-      dispatch(fetchFilters());
+    const { intl, dispatch } = this.props;
+    const { phrase, whole_word, expires_at, irreversible } = this.state;
+    const { home_timeline, public_timeline, notifications, conversations } = this.state;
+    let context = [];
+
+    if (home_timeline) {
+      context.push('home');
+    };
+    if (public_timeline) {
+      context.push('public');
+    };
+    if (notifications) {
+      context.push('notifications');
+    };
+    if (conversations) {
+      context.push('thread');
+    };
+
+    dispatch(createFilter(phrase, expires_at, context, whole_word, irreversible)).then(response => {
+      return dispatch(fetchFilters());
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.error)));
+      dispatch(showAlert('', intl.formatMessage(messages.create_error)));
+    });
+  }
+
+  handleFilterDelete = e => {
+    const { intl, dispatch } = this.props;
+    dispatch(deleteFilter(e.currentTarget.dataset.value)).then(response => {
+      return dispatch(fetchFilters());
+    }).catch(error => {
+      dispatch(showAlert('', intl.formatMessage(messages.delete_error)));
     });
   }
 
@@ -104,14 +133,10 @@ class Filters extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.filters' defaultMessage="You haven't created any muted words yet." />;
 
     return (
-      <Column icon='filter' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-
+      <Column className='filter-settings-panel' icon='filter' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+        <ColumnSubheading text={intl.formatMessage(messages.subheading_add_new)} />
         <SimpleForm>
           <div className='filter-settings-panel'>
-            <h1 className='filter-settings-panel__add-new'>
-              <FormattedMessage id='filters.add_new_title' defaultMessage='Add New Filter' />
-            </h1>
-
             <fieldset disabled={false}>
               <FieldsGroup>
 
@@ -119,12 +144,13 @@ class Filters extends ImmutablePureComponent {
                   label={intl.formatMessage(messages.keyword)}
                   required
                   type='text'
-                  name='custom_filter_phrase'
+                  name='phrase'
                   onChange={this.handleInputChange}
                 />
 
                 <SelectDropdown
                   label={intl.formatMessage(messages.expires)}
+                  hint={intl.formatMessage(messages.expires_hint)}
                   items={expirations}
                   defaultValue={expirations.never}
                   onChange={this.handleSelectChange}
@@ -141,25 +167,25 @@ class Filters extends ImmutablePureComponent {
                 <Checkbox
                   label={intl.formatMessage(messages.home_timeline)}
                   name='home_timeline'
-                  checked={this.state.context.home_timeline}
+                  checked={this.state.home_timeline}
                   onChange={this.handleCheckboxChange}
                 />
                 <Checkbox
                   label={intl.formatMessage(messages.public_timeline)}
                   name='public_timeline'
-                  checked={this.state.context.public_timeline}
+                  checked={this.state.public_timeline}
                   onChange={this.handleCheckboxChange}
                 />
                 <Checkbox
                   label={intl.formatMessage(messages.notifications)}
                   name='notifications'
-                  checked={this.state.context.notifications}
+                  checked={this.state.notifications}
                   onChange={this.handleCheckboxChange}
                 />
                 <Checkbox
                   label={intl.formatMessage(messages.conversations)}
                   name='conversations'
-                  checked={this.state.context.conversations}
+                  checked={this.state.conversations}
                   onChange={this.handleCheckboxChange}
                 />
 
@@ -183,16 +209,46 @@ class Filters extends ImmutablePureComponent {
               </FieldsGroup>
             </fieldset>
 
-            <Button className='button button-primary setup' text={intl.formatMessage(messages.add_new)} onClick={this.props.handleAddNew} />
+            <Button className='button button-primary setup' text={intl.formatMessage(messages.add_new)} onClick={this.handleAddNew} />
+
+            <ColumnSubheading text={intl.formatMessage(messages.subheading_filters)} />
 
             <ScrollableList
-              scrollKey='mutes'
-              onLoadMore={this.handleLoadMore}
+              scrollKey='filters'
               emptyMessage={emptyMessage}
             >
               {filters.map((filter, i) => (
-                <div key={i} className='backup_code'>
-                  <div className='backup_code'>{filter}</div>
+                <div key={i} className='filter__container'>
+                  <div className='filter__details'>
+                    <div className='filter__phrase'>
+                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
+                      <span className='filter__list-value'>{filter.get('phrase')}</span>
+                    </div>
+                    <div className='filter__contexts'>
+                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' /></span>
+                      <span className='filter__list-value'>
+                        {filter.get('context').map((context, i) => (
+                          <span key={i} className='context'>{context}</span>
+                        ))}
+                      </span>
+                    </div>
+                    <div className='filter__details'>
+                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
+                      <span className='filter__list-value'>
+                        {filter.get('irreversible') ?
+                          <span><FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /></span> :
+                          <span><FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' /></span>
+                        }
+                        {filter.get('whole_word') &&
+                          <span><FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' /></span>
+                        }
+                      </span>
+                    </div>
+                  </div>
+                  <div className='filter__delete' role='button' tabIndex='0' onClick={this.handleFilterDelete} data-value={filter.get('id')} aria-label={intl.formatMessage(messages.delete)}>
+                    <Icon className='filter__delete-icon' id='times' size={40} />
+                    <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
+                  </div>
                 </div>
               ))}
             </ScrollableList>
