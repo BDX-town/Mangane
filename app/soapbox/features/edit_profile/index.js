@@ -24,6 +24,7 @@ const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
+  verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
 });
 
 const mapStateToProps = state => {
@@ -155,7 +156,8 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields } = this.props;
+    const { intl, maxFields, account } = this.props;
+    const verified = account.get('pleroma').get('tags').includes('verified');
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -163,10 +165,13 @@ class EditProfile extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
+                className={verified && 'disabled'}
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
                 onChange={this.handleTextChange}
+                disabled={verified}
+                hint={verified && intl.formatMessage(messages.verified)}
               />
               <TextInput
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
