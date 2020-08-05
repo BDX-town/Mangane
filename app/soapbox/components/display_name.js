@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import VerificationBadge from './verification_badge';
 import { acctFull } from '../utils/accounts';
+import { List as ImmutableList } from 'immutable';
 
 export default class DisplayName extends React.PureComponent {
 
@@ -16,7 +17,7 @@ export default class DisplayName extends React.PureComponent {
     const { account, others, children } = this.props;
 
     let displayName, suffix;
-    const verified = account.get('pleroma').get('tags').includes('verified');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     if (others && others.size > 1) {
       displayName = others.take(2).map(a => [
