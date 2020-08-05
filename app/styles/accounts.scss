@@ -13,7 +13,7 @@
     &:active,
     &:focus {
       .card__bar {
-        background: var(--brand-color--med);
+        background: var(--foreground-color);
       }
     }
   }
@@ -584,7 +584,7 @@ a .account__avatar {
 }
 
 .account__section-headline {
-  background: var(--accent-color--faint);
+  background: var(--foreground-color);
 
   button,
   a {
