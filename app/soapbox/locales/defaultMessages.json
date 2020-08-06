@@ -366,6 +366,10 @@
         "id": "column.lists"
       },
       {
+        "defaultMessage": "Bookmarks",
+        "id": "column.bookmarks"
+      },
+      {
         "defaultMessage": "Apps",
         "id": "tabs_bar.apps"
       },
@@ -445,6 +449,14 @@
       {
         "defaultMessage": "Expand this post",
         "id": "status.open"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
       },
       {
         "defaultMessage": "Report @{name}",
@@ -710,22 +722,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Unfollow",
-        "id": "account.unfollow"
-      },
-      {
-        "defaultMessage": "Follow",
-        "id": "account.follow"
-      },
-      {
-        "defaultMessage": "Awaiting approval. Click to cancel follow request",
-        "id": "account.requested"
-      },
-      {
-        "defaultMessage": "Unblock @{name}",
-        "id": "account.unblock"
-      },
-      {
         "defaultMessage": "Edit profile",
         "id": "account.edit_profile"
       },
@@ -951,6 +947,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Bookmarks",
+        "id": "column.bookmarks"
+      },
+      {
+        "defaultMessage": "You don't have any bookmarks yet. When you add one, it will show up here.",
+        "id": "empty_column.bookmarks"
+      }
+    ],
+    "path": "app/soapbox/features/bookmarks/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -983,6 +992,10 @@
       {
         "defaultMessage": "Lists",
         "id": "navigation_bar.lists"
+      },
+      {
+        "defaultMessage": "Bookmarks",
+        "id": "navigation_bar.bookmarks"
       },
       {
         "defaultMessage": "Preferences",
@@ -1271,7 +1284,7 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Add media (JPEG, PNG, GIF, WebM, MP4, MOV)",
+        "defaultMessage": "Add media attachment",
         "id": "upload_button.label"
       }
     ],
@@ -1302,6 +1315,19 @@
       }
     ],
     "path": "app/soapbox/features/compose/components/upload.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Post markdown enabled",
+        "id": "compose_form.markdown.marked"
+      },
+      {
+        "defaultMessage": "Post markdown disabled",
+        "id": "compose_form.markdown.unmarked"
+      }
+    ],
+    "path": "app/soapbox/features/compose/containers/markdown_button_container.json"
   },
   {
     "descriptors": [
@@ -1394,6 +1420,123 @@
       }
     ],
     "path": "app/soapbox/features/compose/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Soapbox settings",
+        "id": "column.soapbox_settings"
+      },
+      {
+        "defaultMessage": "Copyright footer",
+        "id": "soapbox_settings.copyright_footer.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "Icon",
+        "id": "soapbox_settings.promo_panel.meta_fields.icon_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_settings.promo_panel.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_settings.promo_panel.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_settings.home_footer.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_settings.home_footer.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_settings.custom_css.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Logo",
+        "id": "soapbox_settings.fields.logo_label"
+      },
+      {
+        "defaultMessage": "SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio",
+        "id": "soapbox_settings.hints.logo"
+      },
+      {
+        "defaultMessage": "Banner",
+        "id": "soapbox_settings.fields.banner_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px",
+        "id": "soapbox_settings.hints.banner"
+      },
+      {
+        "defaultMessage": "Brand color",
+        "id": "soapbox_settings.fields.brand_color_label"
+      },
+      {
+        "defaultMessage": "Patron module",
+        "id": "soapbox_settings.fields.patron_enabled_label"
+      },
+      {
+        "defaultMessage": "Enables display of Patron module.  Requires installation of Patron module.",
+        "id": "soapbox_settings.hints.patron_enabled"
+      },
+      {
+        "defaultMessage": "Auto-play GIFs",
+        "id": "soapbox_settings.fields.auto_play_gif_label"
+      },
+      {
+        "defaultMessage": "Enable auto-playing of GIF files in timeline",
+        "id": "soapbox_settings.hints.auto_play_gif"
+      },
+      {
+        "defaultMessage": "Promo panel items",
+        "id": "soapbox_settings.fields.promo_panel_fields_label"
+      },
+      {
+        "defaultMessage": "You can have custom defined links displayed on the left panel of the timelines page.",
+        "id": "soapbox_settings.hints.promo_panel_fields"
+      },
+      {
+        "defaultMessage": "{ link }",
+        "id": "soapbox_settings.hints.promo_panel_icons"
+      },
+      {
+        "defaultMessage": "Add new Promo panel item",
+        "id": "soapbox_settings.fields.promo_panel.add"
+      },
+      {
+        "defaultMessage": "Home footer items",
+        "id": "soapbox_settings.fields.home_footer_fields_label"
+      },
+      {
+        "defaultMessage": "You can have custom defined links displayed on the footer of your static pages",
+        "id": "soapbox_settings.hints.home_footer_fields"
+      },
+      {
+        "defaultMessage": "Add new Home Footer Item",
+        "id": "soapbox_settings.fields.home_footer.add"
+      },
+      {
+        "defaultMessage": "Custom CSS",
+        "id": "soapbox_settings.fields.custom_css_fields_label"
+      },
+      {
+        "defaultMessage": "You can have custom CSS definitions",
+        "id": "soapbox_settings.hints.custom_css_fields"
+      },
+      {
+        "defaultMessage": "Add new Custom CSS item",
+        "id": "soapbox_settings.fields.custom_css.add"
+      },
+      {
+        "defaultMessage": "Save",
+        "id": "soapbox_settings.save"
+      }
+    ],
+    "path": "app/soapbox/features/configuration/index.json"
   },
   {
     "descriptors": [
@@ -1863,6 +2006,14 @@
         "id": "registration.lead"
       },
       {
+        "defaultMessage": "Why do you want to join?",
+        "id": "registration.reason"
+      },
+      {
+        "defaultMessage": "This will help us review your application",
+        "id": "registration.reason_hint"
+      },
+      {
         "defaultMessage": "Sign up",
         "id": "registration.sign_up"
       }
@@ -2290,6 +2441,36 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Follows you",
+        "id": "account.follows_you"
+      }
+    ],
+    "path": "app/soapbox/features/profile_hover_card/profile_hover_card_container.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Home",
+        "id": "header.home.label"
+      },
+      {
+        "defaultMessage": "About",
+        "id": "header.about.label"
+      },
+      {
+        "defaultMessage": "Back to",
+        "id": "header.back_to.label"
+      },
+      {
+        "defaultMessage": "Log in",
+        "id": "header.login.label"
+      }
+    ],
+    "path": "app/soapbox/features/public_layout/components/header.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -2573,6 +2754,31 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Unfollow",
+        "id": "account.unfollow"
+      },
+      {
+        "defaultMessage": "Follow",
+        "id": "account.follow"
+      },
+      {
+        "defaultMessage": "Awaiting approval. Click to cancel follow request",
+        "id": "account.requested"
+      },
+      {
+        "defaultMessage": "Unblock @{name}",
+        "id": "account.unblock"
+      },
+      {
+        "defaultMessage": "Edit profile",
+        "id": "account.edit_profile"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/action_button.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Un-repost",
         "id": "status.cancel_reblog_private"
       },
@@ -2667,6 +2873,19 @@
       }
     ],
     "path": "app/soapbox/features/ui/components/embed_modal.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Collapse explanation box",
+        "id": "explanation_box.collapse"
+      },
+      {
+        "defaultMessage": "Expand explanation box",
+        "id": "explanation_box.expand"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/explanation_box.json"
   },
   {
     "descriptors": [
