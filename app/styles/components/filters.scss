@@ -1,0 +1,99 @@
+.filter-settings-panel {
+  h1 {
+    font-size: 18px;
+    line-height: 1.25;
+    color: var(--primary-text-color);
+    font-weight: 400;
+    margin: 20px auto;
+  }
+
+  .item-list article {
+    border-bottom: 1px solid var(--primary-text-color--faint);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .fields-group .two-col {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+
+    div.input {
+      width: 45%;
+      margin-right: 20px;
+
+      .label_input {
+        width: 100%;
+      }
+    }
+
+    @media(max-width: 485px){
+      div.input {
+        width: 100%;
+        margin-right: 5px;
+
+        .label_input {
+          width: auto;
+        }
+      }
+    }
+  }
+
+  .filter__container {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+
+    .filter__phrase, .filter__contexts, .filter__details {
+      padding: 5px 0;
+    }
+
+    span.filter__list-label {
+      padding-right: 5px;
+      color: var(--primary-text-color--faint);
+    }
+
+    span.filter__list-value span {
+      padding-right: 5px;
+      text-transform: capitalize;
+
+      &::after {
+        content: ',';
+      }
+
+      &:last-of-type {
+        &::after {
+          content: '';
+        }
+      }
+    }
+
+    .filter__delete {
+      display: flex;
+      margin: 10px;
+      align-items: baseline;
+      cursor: pointer;
+      height: 20px;
+
+      span.filter__delete-label {
+        color: var(--primary-text-color--faint);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .filter__delete-icon {
+        background: none;
+        color: var(--primary-text-color--faint);
+        padding: 0 5px;
+        margin: 0 auto;
+        font-size: 16px;
+      }
+    }
+
+  }
+}
