@@ -342,6 +342,15 @@ code {
     }
   }
 
+  input[type=text][disabled],
+  input[type=number][disabled],
+  input[type=email][disabled],
+  input[type=password][disabled],
+  textarea {
+    color: var(--primary-text-color--faint);
+    border-color: var(--primary-text-color--faint);
+  }
+
   .input.field_with_errors {
     label {
       color: lighten($error-red, 12%);
