@@ -3,8 +3,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
-
-
+import { List as ImmutableList } from 'immutable';
 
 const ProfilePreview = ({ account }) => (
   <div className='card h-card'>
@@ -21,7 +20,7 @@ const ProfilePreview = ({ account }) => (
           <bdi>
             <strong className='emojify p-name'>
               {account.get('display_name')}
-              {account.get('pleroma').get('tags').includes('verified') && <VerificationBadge />}
+              {account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified') && <VerificationBadge />}
             </strong>
           </bdi>
           <span>{acctFull(account)}</span>
