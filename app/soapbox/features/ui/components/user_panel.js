@@ -11,6 +11,7 @@ import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import { List as ImmutableList } from 'immutable';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -25,7 +26,7 @@ class UserPanel extends ImmutablePureComponent {
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
-    const verified = account.get('pleroma').get('tags').includes('verified');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     return (
       <div className='user-panel'>
