@@ -30,12 +30,14 @@ body {
   --accent-color: hsl(var(--accent-color_hsl));
   --primary-text-color: hsl(var(--primary-text-color_hsl));
   --background-color: hsl(var(--background-color_hsl));
+  --warning-color: hsla(var(--warning-color_hsl));
 
   // Meta-variables
   --brand-color_hsl: var(--brand-color_h), var(--brand-color_s), var(--brand-color_l);
   --accent-color_hsl: var(--accent-color_h), var(--accent-color_s), var(--accent-color_l);
   --primary-text-color_hsl: var(--primary-text-color_h), var(--primary-text-color_s), var(--primary-text-color_l);
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
+  --warning-color_hsl: var(--warning-color_h), var(--warning-color_s), var(--warning-color_l);
   --accent-color_h: calc(var(--brand-color_h) - 15);
   --accent-color_s: 86%;
   --accent-color_l: 44%;
@@ -51,6 +53,7 @@ body {
     calc(var(--accent-color_l) + 3%)
   );
   --primary-text-color--faint: hsla(var(--primary-text-color_hsl), 0.6);
+  --warning-color--faint: hsla(var(--warning-color_hsl), 0.5);
 }
 
 body.theme-mode-light {
@@ -69,6 +72,9 @@ body.theme-mode-light {
   --background-color_h: 0;
   --background-color_s: 0%;
   --background-color_l: 94.9%;
+  --warning-color_h: 0;
+  --warning-color_s: 100%;
+  --warning-color_l: 66%;
 
   // Modifiers
   --brand-color--hicontrast: hsl(
@@ -94,6 +100,9 @@ body.theme-mode-dark {
   --background-color_h: 0;
   --background-color_s: 0%;
   --background-color_l: 20%;
+  --warning-color_h: 0;
+  --warning-color_s: 100%;
+  --warning-color_l: 66%;
 
   // Modifiers
   --brand-color--hicontrast: hsl(
