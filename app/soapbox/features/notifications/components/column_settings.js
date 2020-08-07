@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import ClearColumnButton from './clear_column_button';
 import SettingToggle from './setting_toggle';
+import MultiSettingToggle from './multi_setting_toggle';
 
 export default class ColumnSettings extends React.PureComponent {
 
@@ -18,15 +19,24 @@ export default class ColumnSettings extends React.PureComponent {
     this.props.onChange(['push', ...path], checked);
   }
 
+  onAllSoundsChange = (path, checked) => {
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
+
+    for (var i = 0; i < soundSettings.length; i++) {
+      this.props.onChange(soundSettings[i], checked);
+    }
+  }
+
   render() {
     const { settings, pushSettings, onChange, onClear } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;
     const filterAdvancedStr = <FormattedMessage id='notifications.column_settings.filter_bar.advanced' defaultMessage='Display all categories' />;
     const alertStr  = <FormattedMessage id='notifications.column_settings.alert' defaultMessage='Desktop notifications' />;
+    const allSoundsStr  = <FormattedMessage id='notifications.column_settings.sounds.all_sounds' defaultMessage='Play sound for all notifications' />;
     const showStr   = <FormattedMessage id='notifications.column_settings.show' defaultMessage='Show in column' />;
     const soundStr  = <FormattedMessage id='notifications.column_settings.sound' defaultMessage='Play sound' />;
-
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
     const showPushSettings = pushSettings.get('browserSupport') && pushSettings.get('isSubscribed');
     const pushStr = showPushSettings && <FormattedMessage id='notifications.column_settings.push' defaultMessage='Push notifications' />;
 
@@ -36,11 +46,19 @@ export default class ColumnSettings extends React.PureComponent {
           <ClearColumnButton onClick={onClear} />
         </div>
 
+        <div role='group' aria-labelledby='notifications-all_sounds'>
+          <span id='notifications-filter-bar' className='column-settings__section'>
+            <FormattedMessage id='notifications.column_settings.sounds' defaultMessage='Sounds' />
+          </span>
+          <MultiSettingToggle prefix='notifications_all_sounds' settings={settings} settingPaths={soundSettings} onChange={this.onAllSoundsChange} label={allSoundsStr} />
+        </div>
+
         <div role='group' aria-labelledby='notifications-filter-bar'>
           <span id='notifications-filter-bar' className='column-settings__section'>
             <FormattedMessage id='notifications.column_settings.filter_bar.category' defaultMessage='Quick filter bar' />
           </span>
           <div className='column-settings__row'>
+            <SettingToggle id='show-filter-bar' prefix='notifications' settings={settings} settingPath={['quickFilter', 'show']} onChange={onChange} label={filterShowStr} />
             <SettingToggle id='show-filter-bar' prefix='notifications' settings={settings} settingPath={['quickFilter', 'show']} onChange={onChange} label={filterShowStr} />
             <SettingToggle id='show-filter-bar' prefix='notifications' settings={settings} settingPath={['quickFilter', 'advanced']} onChange={onChange} label={filterAdvancedStr} />
           </div>

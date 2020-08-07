@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
+import Button from 'soapbox/components/button';
 import {
   SimpleForm,
   SimpleInput,
@@ -18,7 +19,9 @@ import {
   revokeOAuthToken,
   deleteAccount,
 } from 'soapbox/actions/auth';
+import { fetchUserMfaSettings } from '../../actions/mfa';
 import { showAlert } from 'soapbox/actions/alerts';
+import { changeSetting, getSettings } from 'soapbox/actions/settings';
 
 /*
 Security settings page for user account
@@ -51,9 +54,22 @@ const messages = defineMessages({
   deleteSubmit: { id: 'security.submit.delete', defaultMessage: 'Delete Account' },
   deleteAccountSuccess: { id: 'security.delete_account.success', defaultMessage: 'Account successfully deleted.' },
   deleteAccountFail: { id: 'security.delete_account.fail', defaultMessage: 'Account deletion failed.' },
+  mfa: { id: 'security.mfa', defaultMessage: 'Set up 2-Factor Auth' },
+  mfa_setup_hint: { id: 'security.mfa_setup_hint', defaultMessage: 'Configure multi-factor authentication with OTP' },
+  mfa_enabled: { id: 'security.mfa_enabled', defaultMessage: 'You have multi-factor authentication set up with OTP.' },
+  disable_mfa: { id: 'security.disable_mfa', defaultMessage: 'Disable' },
+  mfaHeader: { id: 'security.mfa_header', defaultMessage: 'Authorization Methods' },
+
 });
 
-export default @injectIntl
+const mapStateToProps = state => ({
+  backup_codes: state.getIn(['auth', 'backup_codes', 'codes']),
+  settings: getSettings(state),
+  tokens: state.getIn(['auth', 'tokens']),
+});
+
+export default @connect(mapStateToProps)
+@injectIntl
 class SecurityForm extends ImmutablePureComponent {
 
   static propTypes = {
@@ -68,6 +84,7 @@ class SecurityForm extends ImmutablePureComponent {
       <Column icon='lock' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <ChangeEmailForm />
         <ChangePasswordForm />
+        <SetUpMfa />
         <AuthTokenList />
         <DeactivateAccount />
       </Column>
@@ -227,9 +244,56 @@ class ChangePasswordForm extends ImmutablePureComponent {
 
 }
 
-const mapStateToProps = state => ({
-  tokens: state.getIn(['auth', 'tokens']),
-});
+@connect(mapStateToProps)
+@injectIntl
+class SetUpMfa extends ImmutablePureComponent {
+
+  constructor(props) {
+    super(props);
+    this.props.dispatch(fetchUserMfaSettings()).then(response => {
+      this.props.dispatch(changeSetting(['otpEnabled'], response.data.settings.enabled));
+    }).catch(e => e);
+  }
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
+  static propTypes = {
+    intl: PropTypes.object.isRequired,
+    settings: ImmutablePropTypes.map.isRequired,
+  };
+
+  handleMfaClick = e => {
+    this.context.router.history.push('../auth/mfa');
+  }
+
+  render() {
+    const { intl, settings } = this.props;
+
+    return (
+      <SimpleForm>
+        <h2>{intl.formatMessage(messages.mfaHeader)}</h2>
+        { settings.get('otpEnabled') === false ?
+          <div>
+            <p className='hint'>
+              {intl.formatMessage(messages.mfa_setup_hint)}
+            </p>
+            <Button className='button button-secondary set-up-mfa' text={intl.formatMessage(messages.mfa)} onClick={this.handleMfaClick} />
+          </div> :
+          <div>
+            <p className='hint'>
+              {intl.formatMessage(messages.mfa_enabled)}
+            </p>
+            <Button className='button button--destructive disable-mfa' text={intl.formatMessage(messages.disable_mfa)} onClick={this.handleMfaClick} />
+          </div>
+        }
+      </SimpleForm>
+    );
+  }
+
+}
+
 
 @connect(mapStateToProps)
 @injectIntl

@@ -112,12 +112,32 @@ export function refreshUserToken() {
   };
 }
 
+export function otpVerify(code, mfa_token) {
+  return (dispatch, getState) => {
+    const app = getState().getIn(['auth', 'app']);
+    return api(getState, 'app').post('/oauth/mfa/challenge', {
+      client_id: app.get('client_id'),
+      client_secret: app.get('client_secret'),
+      mfa_token: mfa_token,
+      code: code,
+      challenge_type: 'totp',
+      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+    }).then(response => {
+      dispatch(authLoggedIn(response.data));
+    });
+  };
+}
+
 export function logIn(username, password) {
   return (dispatch, getState) => {
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
-      dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      if (error.response.data.error === 'mfa_required') {
+        throw error;
+      } else {
+        dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      }
       throw error;
     });
   };

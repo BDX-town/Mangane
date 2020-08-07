@@ -189,3 +189,7 @@ export function PasswordReset() {
 export function SecurityForm() {
   return import(/* webpackChunkName: "features/security" */'../../security');
 }
+
+export function MfaForm() {
+  return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
+}

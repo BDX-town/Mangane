@@ -8,22 +8,62 @@ import SiteLogo from './site_logo';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
+import { logIn } from 'soapbox/actions/auth';
+import { fetchMe } from 'soapbox/actions/me';
+import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   about: { id: 'header.about.label', defaultMessage: 'About' },
   backTo: { id: 'header.back_to.label', defaultMessage: 'Back to' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
+  close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
 const mapStateToProps = state => ({
   me: state.get('me'),
   instance: state.get('instance'),
+  isLoading: false,
 });
 
 export default @connect(mapStateToProps)
 @injectIntl
 class Header extends ImmutablePureComponent {
+
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+    getFormData = (form) => {
+      return Object.fromEntries(
+        Array.from(form).map(i => [i.name, i.value])
+      );
+    }
+
+    static contextTypes = {
+      router: PropTypes.object,
+    };
+
+    handleSubmit = (event) => {
+      const { dispatch } = this.props;
+      const { username, password } = this.getFormData(event.target);
+      dispatch(logIn(username, password)).then(() => {
+        return dispatch(fetchMe());
+      }).catch(error => {
+        if (error.response.data.error === 'mfa_required') {
+          this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
+        }
+        this.setState({ isLoading: false });
+      });
+      this.setState({ isLoading: true });
+      event.preventDefault();
+    }
+
+    onClickClose = (event) => {
+      this.setState({ mfa_auth_needed: false, mfa_token: '' });
+    }
 
   static propTypes = {
     me: SoapboxPropTypes.me,
@@ -31,11 +71,25 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   }
 
+  state = {
+    mfa_auth_needed: false,
+    mfa_token: '',
+  }
+
   render() {
-    const { me, instance, intl } = this.props;
+    const { me, instance, isLoading, intl } = this.props;
+    const { mfa_auth_needed, mfa_token } = this.state;
 
     return (
       <nav className='header'>
+        { mfa_auth_needed &&
+          <div className='otp-form-overlay__container'>
+            <div className='otp-form-overlay__form'>
+              <IconButton className='otp-form-overlay__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+              <OtpAuthForm mfa_token={mfa_token} />
+            </div>
+          </div>
+        }
         <div className='header-container'>
           <div className='nav-left'>
             <Link className='brand' to='/'>
@@ -49,7 +103,7 @@ class Header extends ImmutablePureComponent {
             <div className='hidden-sm'>
               {me
                 ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo)} {instance.get('title')}</Link>
-                : <LoginForm />
+                : <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />
               }
             </div>
             <div className='visible-sm'>
