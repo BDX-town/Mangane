@@ -74,6 +74,7 @@ import {
   EditProfile,
   PasswordReset,
   SecurityForm,
+  MfaForm,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -197,6 +198,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
         <WrappedRoute path='/auth/edit' component={SecurityForm} exact />
+        <WrappedRoute path='/auth/mfa' component={MfaForm} exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
