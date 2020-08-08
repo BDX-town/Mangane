@@ -18,8 +18,6 @@ class ColumnSettings extends React.PureComponent {
 
     return (
       <div>
-        <span className='column-settings__section'><FormattedMessage id='home.column_settings.basic' defaultMessage='Basic' /></span>
-
         <div className='column-settings__row'>
           <SettingToggle prefix='home_timeline' settings={settings} settingPath={['shows', 'reblog']} onChange={onChange} label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />} />
         </div>

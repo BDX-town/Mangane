@@ -73,6 +73,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   community: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),
@@ -82,6 +86,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   public: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),
