@@ -33,6 +33,7 @@ const defaultSettings = ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
       reply: true,
+      direct: false,
     }),
 
     regex: ImmutableMap({
