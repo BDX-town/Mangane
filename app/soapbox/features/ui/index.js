@@ -24,6 +24,7 @@ import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
 import WhoToFollowPanel from './components/who_to_follow_panel';
 import LinkFooter from './components/link_footer';
+import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -137,19 +138,16 @@ const LAYOUT = {
   },
   DEFAULT: {
     LEFT: [
-      <WhoToFollowPanel key='0' />,
       <LinkFooter key='1' />,
     ],
     RIGHT: [
-      // <GroupSidebarPanel key='0' />
+      <FeaturesPanel key='0' />,
     ],
   },
   STATUS: {
     TOP: null,
     LEFT: null,
     RIGHT: [
-      // <GroupSidebarPanel key='0' />,
-      <WhoToFollowPanel key='1' />,
       <LinkFooter key='2' />,
     ],
   },
@@ -197,13 +195,13 @@ class SwitchingColumnsArea extends React.PureComponent {
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
-        <WrappedRoute path='/auth/edit' component={SecurityForm} exact />
-        <WrappedRoute path='/auth/mfa' component={MfaForm} exact />
+        <WrappedRoute path='/auth/edit' layout={LAYOUT.DEFAULT} component={SecurityForm} exact />
+        <WrappedRoute path='/auth/mfa' layout={LAYOUT.DEFAULT} component={MfaForm} exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
-        <WrappedRoute path='/messages' component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
