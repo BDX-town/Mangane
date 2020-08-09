@@ -29,11 +29,9 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const maxFields = state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields']) ?
-  state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields']) : state.getIn(['instance', 'pleroma', 'metadata', 'fieldsLimits', 'maxFields']);
   return {
     account: state.getIn(['accounts', me]),
-    maxFields: maxFields,
+    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
   };
 };
 
