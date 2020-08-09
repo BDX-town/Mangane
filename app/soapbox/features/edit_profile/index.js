@@ -11,6 +11,7 @@ import {
   TextInput,
   Checkbox,
   FileChooser,
+  SimpleTextarea,
 } from 'soapbox/features/forms';
 import ProfilePreview from './components/profile_preview';
 import {
@@ -18,7 +19,7 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
-import { unescape } from 'lodash';
+import { unescape, escape } from 'lodash';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -70,7 +71,7 @@ class EditProfile extends ImmutablePureComponent {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
-      unescapeParams(map, ['display_name', 'note']);
+      unescapeParams(map, ['display_name']);
     });
     this.state = initialState.toObject();
   }
@@ -111,7 +112,9 @@ class EditProfile extends ImmutablePureComponent {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
+      const shouldAppend = Boolean(data[key]
+        || key.startsWith('fields_attributes')
+        || key.startsWith('note'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -134,6 +137,11 @@ class EditProfile extends ImmutablePureComponent {
 
   handleTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+  }
+
+  handleTextAreaChange = e => {
+    const value = escape(e.target.value);
+    this.setState({ [e.target.name]: value });
   }
 
   handleFieldChange = (i, key) => {
@@ -173,11 +181,13 @@ class EditProfile extends ImmutablePureComponent {
                 disabled={verified}
                 hint={verified && intl.formatMessage(messages.verified)}
               />
-              <TextInput
+              <SimpleTextarea
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
                 name='note'
-                value={this.state.note}
-                onChange={this.handleTextChange}
+                autoComplete='off'
+                value={this.state.note.replace(/<br\s*\/?>/gi, '\n')}
+                wrap='hard'
+                onChange={this.handleTextAreaChange}
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
