@@ -31,7 +31,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fieldsLimits', 'maxFields']),
+    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields']),
   };
 };
 
