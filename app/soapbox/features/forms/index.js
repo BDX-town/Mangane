@@ -42,7 +42,7 @@ InputContainer.propTypes = {
   extraClass: PropTypes.string,
 };
 
-export const LabelInputContainer = ({ label, children, ...props }) => {
+export const LabelInputContainer = ({ label, hint, children, ...props }) => {
   const [id] = useState(uuidv4());
   const childrenWithProps = React.Children.map(children, child => (
     React.cloneElement(child, { id: id, key: id })
@@ -54,12 +54,14 @@ export const LabelInputContainer = ({ label, children, ...props }) => {
       <div className='label_input__wrapper'>
         {childrenWithProps}
       </div>
+      {hint && <span className='hint'>{hint}</span>}
     </div>
   );
 };
 
 LabelInputContainer.propTypes = {
   label: FormPropTypes.label.isRequired,
+  hint: PropTypes.node,
   children: PropTypes.node,
 };
 
@@ -74,6 +76,17 @@ LabelInput.propTypes = {
   dispatch: PropTypes.func,
 };
 
+export const LabelTextarea = ({ label, dispatch, ...props }) => (
+  <LabelInputContainer label={label}>
+    <textarea {...props} />
+  </LabelInputContainer>
+);
+
+LabelTextarea.propTypes = {
+  label: FormPropTypes.label.isRequired,
+  dispatch: PropTypes.func,
+};
+
 export class SimpleInput extends ImmutablePureComponent {
 
   static propTypes = {
@@ -84,6 +97,26 @@ export class SimpleInput extends ImmutablePureComponent {
   render() {
     const { hint, ...props } = this.props;
     const Input = this.props.label ? LabelInput : 'input';
+
+    return (
+      <InputContainer {...this.props}>
+        <Input {...props} />
+      </InputContainer>
+    );
+  }
+
+}
+
+export class SimpleTextarea extends ImmutablePureComponent {
+
+  static propTypes = {
+    label: FormPropTypes.label,
+    hint: PropTypes.node,
+  }
+
+  render() {
+    const { hint, ...props } = this.props;
+    const Input = this.props.label ? LabelTextarea : 'textarea';
 
     return (
       <InputContainer {...this.props}>
@@ -290,11 +323,12 @@ export class SelectDropdown extends ImmutablePureComponent {
 
   static propTypes = {
     label: FormPropTypes.label,
+    hint: PropTypes.node,
     items: PropTypes.object.isRequired,
   }
 
   render() {
-    const { label, items, ...props } = this.props;
+    const { label, hint, items, ...props } = this.props;
 
     const optionElems = Object.keys(items).map(item => (
       <option key={item} value={item}>{items[item]}</option>
@@ -303,7 +337,7 @@ export class SelectDropdown extends ImmutablePureComponent {
     const selectElem = <select {...props}>{optionElems}</select>;
 
     return label ? (
-      <LabelInputContainer label={label}>{selectElem}</LabelInputContainer>
+      <LabelInputContainer label={label} hint={hint}>{selectElem}</LabelInputContainer>
     ) : selectElem;
   }
 

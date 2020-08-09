@@ -33,6 +33,7 @@ const messages = defineMessages({
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
+  bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
@@ -145,6 +146,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
               </NavLink>
+              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={onClose}>
+                <Icon id='bookmark' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
+              </NavLink>
             </div>
 
             <div className='sidebar-menu__section'>
@@ -164,11 +169,11 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='times-circle' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
-              {/* <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
-              </NavLink> */}
-              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} onClick={onClose}>
+              </NavLink>
+              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} target='_blank' onClick={onClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a> }

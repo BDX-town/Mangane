@@ -10,6 +10,8 @@ import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import { List as ImmutableList } from 'immutable';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -24,6 +26,7 @@ class UserPanel extends ImmutablePureComponent {
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     return (
       <div className='user-panel'>
@@ -45,6 +48,7 @@ class UserPanel extends ImmutablePureComponent {
               <h1>
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
+                  {verified && <VerificationBadge />}
                   <small className='user-panel__account__username'>@{acctFull(account)}</small>
                 </Link>
               </h1>
@@ -84,17 +88,17 @@ class UserPanel extends ImmutablePureComponent {
 
 };
 
-
-const mapStateToProps = state => {
-  const me = state.get('me');
+const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  return {
-    account: getAccount(state, me),
-  };
+  const mapStateToProps = (state, { accountId }) => ({
+    account: getAccount(state, accountId),
+  });
+
+  return mapStateToProps;
 };
 
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(makeMapStateToProps, null, null, {
     forwardRef: true,
   })(UserPanel));

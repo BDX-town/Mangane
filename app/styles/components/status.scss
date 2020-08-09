@@ -1,3 +1,61 @@
+.status__content {
+  p,
+  li {
+    strong {
+      font-weight: bold;
+    }
+  }
+
+  p,
+  li {
+    em {
+      font-style: italic;
+    }
+  }
+
+  ul,
+  ol,
+  blockquote {
+    margin-bottom: 20px;
+    margin-left: 15px;
+  }
+
+  ul {
+    list-style: disc inside none;
+  }
+
+  ol {
+    list-style: decimal inside none;
+  }
+
+  blockquote p {
+    font-style: italic;
+  }
+
+  code {
+    font-family: 'Roboto Mono', monospace;
+    cursor: text;
+  }
+
+  /* Inline code */
+  p > code {
+    padding: 2px 4px;
+    background-color: var(--background-color);
+    border-radius: 4px;
+  }
+
+  /* Code block */
+  pre {
+    line-height: 1.6em;
+    overflow-x: auto;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 20px;
+    word-break: break-all;
+    background-color: var(--background-color);
+  }
+}
+
 .status__content--with-action {
   cursor: pointer;
 }
@@ -152,12 +210,21 @@
 .status__info .status__display-name {
   display: block;
   max-width: 100%;
-  padding-right: 25px;
 }
 
 .status__info {
   font-size: 15px;
   z-index: 4;
+}
+
+.status__profile,
+.detailed-status__profile {
+  display: block;
+  max-width: 100%;
+}
+
+.status__profile {
+  padding-right: 25px;
 }
 
 .status-check-box {

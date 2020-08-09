@@ -11,6 +11,7 @@ const messages = defineMessages({
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
+  bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -70,17 +71,18 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
     menu.push({ text: intl.formatMessage(messages.messages), to: '/messages' });
     menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
+    menu.push({ text: intl.formatMessage(messages.bookmarks), to: '/bookmarks' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
     menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
     menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
     menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
-    // menu.push({ text: intl.formatMessage(messages.filters), to: '/filters' });
+    menu.push({ text: intl.formatMessage(messages.filters), to: '/filters' });
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.keyboard_shortcuts), action: this.handleHotkeyClick });
     if (isStaff) {
       menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin/' });
-      menu.push({ text: intl.formatMessage(messages.soapbox_settings), href: '/admin/' });
+      menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin/', newTab: true });
     }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
     menu.push({ text: intl.formatMessage(messages.security), to: '/auth/edit' });

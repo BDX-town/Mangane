@@ -17,12 +17,9 @@ import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
+import ActionButton from 'soapbox/features/ui/components/action_button';
 
 const messages = defineMessages({
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
-  follow: { id: 'account.follow', defaultMessage: 'Follow' },
-  requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
-  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
@@ -65,8 +62,6 @@ class Header extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map,
     identity_props: ImmutablePropTypes.list,
-    onFollow: PropTypes.func.isRequired,
-    onBlock: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     isStaff: PropTypes.bool.isRequired,
@@ -171,7 +166,7 @@ class Header extends ImmutablePureComponent {
 
     if (account.get('id') !== me && isStaff) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/` });
+      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
     }
 
     return menu;
@@ -199,30 +194,6 @@ class Header extends ImmutablePureComponent {
     return info;
   };
 
-  getActionBtn() {
-    const { account, intl, me } = this.props;
-
-    let actionBtn = null;
-
-    if (!account || !me) return actionBtn;
-
-    if (me !== account.get('id')) {
-      if (!account.get('relationship')) { // Wait until the relationship is loaded
-        //
-      } else if (account.getIn(['relationship', 'requested'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.requested)} onClick={this.props.onFollow} />;
-      } else if (!account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button disabled={account.getIn(['relationship', 'blocked_by'])} className={classNames('logo-button', { 'button--destructive': account.getIn(['relationship', 'following']) })} text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)} onClick={this.props.onFollow} />;
-      } else if (account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.props.onBlock} />;
-      }
-    } else {
-      actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
-    }
-
-    return actionBtn;
-  };
-
   render() {
     const { account, intl, username, me } = this.props;
     const { isSmallScreen } = this.state;
@@ -247,7 +218,6 @@ class Header extends ImmutablePureComponent {
     }
 
     const info = this.makeInfo();
-    const actionBtn = this.getActionBtn();
     const menu = this.makeMenu();
 
     const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
@@ -319,7 +289,7 @@ class Header extends ImmutablePureComponent {
             {
               me &&
               <div className='account__header__extra__buttons'>
-                {actionBtn}
+                <ActionButton account={account} />
                 {account.get('id') !== me &&
                   <Button className='button button-alternative-2' onClick={this.props.onDirect}>
                     <FormattedMessage

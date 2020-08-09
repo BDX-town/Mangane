@@ -206,16 +206,16 @@ describe('notifications reducer', () => {
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       items: ImmutableList([
-                ImmutableMap({
-                  id: '10743',
-                  type: 'favourite',
-                  account: '9v5c6xSEgAi3Zu1Lv6',
-                  created_at: '2020-06-10T02:51:05.000Z',
-                  status: '9vvNxoo5EFbbnfdXQu',
-                  emoji: undefined,
-                  is_seen: true,
-                }),
-            ]),
+        ImmutableMap({
+          id: '10743',
+          type: 'favourite',
+          account: '9v5c6xSEgAi3Zu1Lv6',
+          created_at: '2020-06-10T02:51:05.000Z',
+          status: '9vvNxoo5EFbbnfdXQu',
+          emoji: undefined,
+          is_seen: true,
+        }),
+      ]),
       top: false,
       unread: 2,
     }));

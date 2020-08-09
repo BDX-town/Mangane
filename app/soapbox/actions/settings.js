@@ -22,6 +22,8 @@ const defaultSettings = ImmutableMap({
   defaultPrivacy: 'public',
   themeMode: 'light',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
+  explanationBox: true,
+  otpEnabled: false,
 
   systemFont: false,
   dyslexicFont: false,
@@ -31,6 +33,7 @@ const defaultSettings = ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
       reply: true,
+      direct: false,
     }),
 
     regex: ImmutableMap({
@@ -71,6 +74,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   community: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),
@@ -80,6 +87,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   public: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),

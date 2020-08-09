@@ -3,7 +3,23 @@
   display: flex;
   width: 265px;
   flex-direction: column;
-  overflow-y: hidden;
+
+  .user-panel__account__name {
+    display: inline;
+  }
+
+  .verified-icon {
+    opacity: 1;
+  }
+
+  &,
+  .user-panel__account__name,
+  .user-panel__account__username {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--primary-text-color--faint);
+  }
 
   &__header {
     display: block;
@@ -42,13 +58,13 @@
   &__meta {
     display: block;
     padding: 6px 20px 17px;
-    opacity: 0.6;
+    // opacity: 0.6;
   }
 
   &__account {
     a {
       text-decoration: none;
-      color: var(--primary-text-color);
+      color: var(--primary-text-color--faint);
     }
 
     &__name {
@@ -56,7 +72,7 @@
       font-size: 20px;
       font-weight: bold;
       line-height: 24px;
-      color: var(--primary-text-color);
+      color: var(--primary-text-color--faint);
     }
 
     &:hover & {
@@ -89,7 +105,7 @@
 
     a {
       text-decoration: none;
-      color: var(--primary-text-color);
+      color: var(--primary-text-color--faint);
 
       &:hover {
         opacity: 0.8;
@@ -99,7 +115,7 @@
     &__value {
       display: block;
       width: 100%;
-      color: var(--primary-text-color);
+      color: var(--primary-text-color--faint);
       font-size: 20px;
       font-weight: 800;
       line-height: 24px;

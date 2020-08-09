@@ -32,7 +32,7 @@
   height: 24px;
   padding: 0;
   border-radius: 30px;
-  background-color: var(--foreground-color);
+  background-color: hsla(var(--brand-color_h), var(--brand-color_s), var(--brand-color_l), 0.35);
   transition: background-color 0.2s ease;
 }
 

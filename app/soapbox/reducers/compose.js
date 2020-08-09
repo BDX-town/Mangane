@@ -21,6 +21,7 @@ import {
   COMPOSE_TAG_HISTORY_UPDATE,
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
+  COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
@@ -50,6 +51,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
+  content_type: 'text/markdown',
   privacy: null,
   text: '',
   focusDate: null,
@@ -94,6 +96,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
+    map.set('content_type', 'text/markdown');
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -114,7 +117,7 @@ function appendMedia(state, media) {
     map.set('resetFileKey', Math.floor((Math.random() * 0x10000)));
     map.set('idempotencyKey', uuid());
 
-    if (prevSize === 0 && state.get('default_sensitive')) {
+    if (prevSize === 0 && (state.get('default_sensitive') || state.get('spoiler'))) {
       map.set('sensitive', true);
     }
   });
@@ -211,8 +214,15 @@ export default function compose(state = initialState, action) {
       .set('is_composing', false);
   case COMPOSE_SENSITIVITY_CHANGE:
     return state.withMutations(map => {
-    map.set('sensitive', !state.get('sensitive'));
+      if (!state.get('spoiler')) {
+        map.set('sensitive', !state.get('sensitive'));
+      }
 
+      map.set('idempotencyKey', uuid());
+    });
+  case COMPOSE_TYPE_CHANGE:
+    return state.withMutations(map => {
+      map.set('content_type', action.value);
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_SPOILERNESS_CHANGE:
@@ -220,6 +230,10 @@ export default function compose(state = initialState, action) {
       map.set('spoiler_text', '');
       map.set('spoiler', !state.get('spoiler'));
       map.set('idempotencyKey', uuid());
+
+      if (!state.get('sensitive') && state.get('media_attachments').size >= 1) {
+        map.set('sensitive', true);
+      }
     });
   case COMPOSE_SPOILER_TEXT_CHANGE:
     return state
@@ -243,6 +257,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('content_type', 'text/markdown');
 
       if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
@@ -326,6 +341,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('content_type', 'text/markdown');
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);

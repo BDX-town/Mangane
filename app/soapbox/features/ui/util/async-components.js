@@ -62,6 +62,10 @@ export function Lists() {
   return import(/* webpackChunkName: "features/lists" */'../../lists');
 }
 
+export function Bookmarks() {
+  return import(/* webpackChunkName: "features/bookmarks" */'../../bookmarks');
+}
+
 export function Status() {
   return import(/* webpackChunkName: "features/status" */'../../status');
 }
@@ -188,4 +192,8 @@ export function PasswordReset() {
 
 export function SecurityForm() {
   return import(/* webpackChunkName: "features/security" */'../../security');
+}
+
+export function MfaForm() {
+  return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
 }

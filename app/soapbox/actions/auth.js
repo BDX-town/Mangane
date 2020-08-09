@@ -112,12 +112,32 @@ export function refreshUserToken() {
   };
 }
 
+export function otpVerify(code, mfa_token) {
+  return (dispatch, getState) => {
+    const app = getState().getIn(['auth', 'app']);
+    return api(getState, 'app').post('/oauth/mfa/challenge', {
+      client_id: app.get('client_id'),
+      client_secret: app.get('client_secret'),
+      mfa_token: mfa_token,
+      code: code,
+      challenge_type: 'totp',
+      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+    }).then(response => {
+      dispatch(authLoggedIn(response.data));
+    });
+  };
+}
+
 export function logIn(username, password) {
   return (dispatch, getState) => {
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
-      dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      if (error.response.data.error === 'mfa_required') {
+        throw error;
+      } else {
+        dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      }
       throw error;
     });
   };
@@ -133,15 +153,20 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
+    const needsApproval = getState().getIn(['instance', 'approval_required']);
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
       return api(getState, 'app').post('/api/v1/accounts', params);
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      return needsConfirmation
-        ? dispatch(showAlert('', 'Check your email for further instructions.'))
-        : dispatch(fetchMe());
+      if (needsConfirmation) {
+        return dispatch(showAlert('', 'Check your email for further instructions.'));
+      } else if (needsApproval) {
+        return dispatch(showAlert('', 'Your account has been submitted for approval.'));
+      } else {
+        return dispatch(fetchMe());
+      }
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
       throw error;

@@ -19,15 +19,20 @@
     overflow: hidden;
     height: 350px;
     position: relative;
-    background: var(--accent-color--med);
+    background: var(--accent-color--faint);
     @media screen and (max-width: 895px) {height: 225px;}
     &--none {height: 125px;}
+
     img {
       object-fit: cover;
       display: block;
       width: 100%;
       height: 100%;
       margin: 0;
+    }
+
+    .still-image {
+      height: 100%;
     }
 
     .still-image--play-on-hover::before {
@@ -53,7 +58,7 @@
     min-height: 74px;
     width: 100%;
     position: relative;
-    background: var(--accent-color--med);
+    background: var(--background-color);
     @media (min-width: 895px) {height: 74px;}
   }
 

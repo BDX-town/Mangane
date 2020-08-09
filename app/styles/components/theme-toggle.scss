@@ -2,15 +2,21 @@
   .setting-toggle {
 
     &__label {
-      margin-bottom: 0px;
+      margin-bottom: 0;
       vertical-align: middle;
     }
 
     .react-toggle {
       vertical-align: middle;
 
+      &-track {
+        background-color: var(--foreground-color);
+      }
+
       &-track-check,
       &-track-x {
+        display: flex;
+        align-items: center;
         height: 15px;
         color: #fff;
       }

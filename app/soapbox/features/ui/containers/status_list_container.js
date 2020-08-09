@@ -5,9 +5,10 @@ import { createSelector } from 'reselect';
 import { debounce } from 'lodash';
 import { dequeueTimeline } from 'soapbox/actions/timelines';
 import { scrollTopTimeline } from '../../../actions/timelines';
+import { getSettings } from 'soapbox/actions/settings';
 
 const makeGetStatusIds = () => createSelector([
-  (state, { type }) => state.getIn(['settings', type], ImmutableMap()),
+  (state, { type }) => getSettings(state).get(type, ImmutableMap()),
   (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
   (state)           => state.get('statuses'),
   (state)           => state.get('me'),
@@ -23,7 +24,11 @@ const makeGetStatusIds = () => createSelector([
     }
 
     if (columnSettings.getIn(['shows', 'reply']) === false) {
-      showStatus = showStatus && (statusForId.get('in_reply_to_id') === null || statusForId.get('in_reply_to_account_id') === me);
+      showStatus = showStatus && (statusForId.get('in_reply_to_id') === null);
+    }
+
+    if (columnSettings.getIn(['shows', 'direct']) === false) {
+      showStatus = showStatus && (statusForId.get('visibility') !== 'direct');
     }
 
     return showStatus;

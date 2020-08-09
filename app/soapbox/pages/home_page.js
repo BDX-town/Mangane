@@ -4,6 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 import TrendsPanel from '../features/ui/components/trends_panel';
 import LinkFooter from '../features/ui/components/link_footer';
+import FeaturesPanel from '../features/ui/components/features_panel';
 import PromoPanel from '../features/ui/components/promo_panel';
 import UserPanel from '../features/ui/components/user_panel';
 import FundingPanel from '../features/ui/components/funding_panel';
@@ -15,6 +16,7 @@ import { getFeatures } from 'soapbox/utils/features';
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
+    me,
     account: state.getIn(['accounts', me]),
     hasPatron: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
     features: getFeatures(state.get('instance')),
@@ -30,7 +32,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, account, hasPatron, features } = this.props;
+    const { me, children, account, hasPatron, features } = this.props;
 
     return (
       <div className='page'>
@@ -39,10 +41,8 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <UserPanel />
+                <UserPanel accountId={me} />
                 {hasPatron && <FundingPanel />}
-                <PromoPanel />
-                <LinkFooter />
               </div>
             </div>
 
@@ -68,6 +68,9 @@ class HomePage extends ImmutablePureComponent {
                 {/* <GroupSidebarPanel /> */}
                 {features.trends && <TrendsPanel limit={3} />}
                 {features.suggestions && <WhoToFollowPanel limit={5} />}
+                <FeaturesPanel />
+                <PromoPanel />
+                <LinkFooter />
               </div>
             </div>
           </div>
