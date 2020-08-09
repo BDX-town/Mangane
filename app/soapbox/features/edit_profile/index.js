@@ -165,7 +165,7 @@ class EditProfile extends ImmutablePureComponent {
 
   render() {
     const { intl, maxFields, account } = this.props;
-    const verified = account.get('pleroma').get('tags').includes('verified');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
