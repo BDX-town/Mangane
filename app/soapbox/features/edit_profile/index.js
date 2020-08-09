@@ -165,7 +165,7 @@ class EditProfile extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
-                className={verified && 'disabled'}
+                className={verified ? 'disabled' : ''}
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
