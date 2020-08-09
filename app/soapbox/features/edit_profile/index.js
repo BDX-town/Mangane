@@ -4,6 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { showAlert } from 'soapbox/actions/alerts';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -19,7 +20,7 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
-import { unescape, escape } from 'lodash';
+import { unescape } from 'lodash';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -71,7 +72,7 @@ class EditProfile extends ImmutablePureComponent {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
-      unescapeParams(map, ['display_name']);
+      unescapeParams(map, ['display_name', 'bio']);
     });
     this.state = initialState.toObject();
   }
@@ -112,9 +113,8 @@ class EditProfile extends ImmutablePureComponent {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key]
-        || key.startsWith('fields_attributes')
-        || key.startsWith('note'));
+      // Compact the submission. This should probably be done better.
+      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
@@ -124,6 +124,7 @@ class EditProfile extends ImmutablePureComponent {
     const { dispatch } = this.props;
     dispatch(patchMe(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
+      dispatch(showAlert('', 'Profile saved!'));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
@@ -137,11 +138,6 @@ class EditProfile extends ImmutablePureComponent {
 
   handleTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
-
-  handleTextAreaChange = e => {
-    const value = escape(e.target.value);
-    this.setState({ [e.target.name]: value });
   }
 
   handleFieldChange = (i, key) => {
@@ -185,9 +181,10 @@ class EditProfile extends ImmutablePureComponent {
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
                 name='note'
                 autoComplete='off'
-                value={this.state.note.replace(/<br\s*\/?>/gi, '\n')}
+                value={this.state.note}
                 wrap='hard'
-                onChange={this.handleTextAreaChange}
+                onChange={this.handleTextChange}
+                rows={3}
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>

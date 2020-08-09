@@ -346,7 +346,7 @@ code {
   input[type=number][disabled],
   input[type=email][disabled],
   input[type=password][disabled],
-  textarea {
+  textarea[disabled] {
     color: var(--primary-text-color--faint);
     border-color: var(--primary-text-color--faint);
   }
