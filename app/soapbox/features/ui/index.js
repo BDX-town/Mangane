@@ -22,7 +22,6 @@ import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
-import WhoToFollowPanel from './components/who_to_follow_panel';
 import LinkFooter from './components/link_footer';
 import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
