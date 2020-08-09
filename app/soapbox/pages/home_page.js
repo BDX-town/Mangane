@@ -4,6 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 import TrendsPanel from '../features/ui/components/trends_panel';
 import LinkFooter from '../features/ui/components/link_footer';
+import FeaturesPanel from '../features/ui/components/features_panel';
 import PromoPanel from '../features/ui/components/promo_panel';
 import UserPanel from '../features/ui/components/user_panel';
 import FundingPanel from '../features/ui/components/funding_panel';
@@ -42,8 +43,6 @@ class HomePage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel accountId={me} />
                 {hasPatron && <FundingPanel />}
-                <PromoPanel />
-                <LinkFooter />
               </div>
             </div>
 
@@ -69,6 +68,9 @@ class HomePage extends ImmutablePureComponent {
                 {/* <GroupSidebarPanel /> */}
                 {features.trends && <TrendsPanel limit={3} />}
                 {features.suggestions && <WhoToFollowPanel limit={5} />}
+                <FeaturesPanel />
+                <PromoPanel />
+                <LinkFooter />
               </div>
             </div>
           </div>

@@ -8,6 +8,10 @@
   box-sizing: border-box;
   background: var(--foreground-color);
 
+  &:first-child {
+    margin-top: 0;
+  }
+
   &:not(:last-of-type) {
     margin-bottom: 10px;
   }
