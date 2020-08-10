@@ -24,6 +24,10 @@
     list-style: disc inside none;
   }
 
+  li p {
+    display: inline-block;
+  }
+
   ol {
     list-style: decimal inside none;
   }
