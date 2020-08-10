@@ -63,7 +63,7 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
             <span className='relationship-tag'>
               <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
             </span>}
-          <div className='profile-hover-card__action-button'><ActionButton account={account} /></div>
+          <div className='profile-hover-card__action-button'><ActionButton account={account} small /></div>
           <UserPanel className='profile-hover-card__user' accountId={accountId} />
           {badges.length > 0 &&
             <div className='profile-hover-card__badges'>
