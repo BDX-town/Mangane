@@ -59,6 +59,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const fields = account.get('fields');
     const displayNameHtml = { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
+    const verified = account.get('pleroma').get('tags').includes('verified');
 
     return (
       <div className='profile-info-panel'>
@@ -67,7 +68,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           <div className='profile-info-panel-content__name'>
             <h1>
               <span dangerouslySetInnerHTML={displayNameHtml} />
-              {account.get('is_verified') && <VerificationBadge />}
+              {verified && <VerificationBadge />}
               {badge}
               <small>@{acctFull(account)} {lockedIcon}</small>
             </h1>

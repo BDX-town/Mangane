@@ -169,11 +169,11 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='times-circle' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
-              {/* <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
-              </NavLink> */}
-              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} onClick={onClose}>
+              </NavLink>
+              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} target='_blank' onClick={onClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a> }

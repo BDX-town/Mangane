@@ -19,7 +19,7 @@
     overflow: hidden;
     height: 350px;
     position: relative;
-    background: var(--accent-color--med);
+    background: var(--accent-color--faint);
     @media screen and (max-width: 895px) {height: 225px;}
     &--none {height: 125px;}
 
@@ -58,7 +58,7 @@
     min-height: 74px;
     width: 100%;
     position: relative;
-    background: var(--accent-color--med);
+    background: var(--background-color);
     @media (min-width: 895px) {height: 74px;}
   }
 

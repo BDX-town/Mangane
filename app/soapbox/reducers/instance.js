@@ -12,6 +12,9 @@ const nodeinfoToInstance = nodeinfo => {
         account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
         features: nodeinfo.getIn(['metadata', 'features']),
         federation: nodeinfo.getIn(['metadata', 'federation']),
+        fields_limits: ImmutableMap({
+          max_fields: nodeinfo.getIn(['metadata', 'fieldsLimits', 'maxFields']),
+        }),
       }),
     }),
   });
@@ -31,9 +34,9 @@ const initialState = ImmutableMap({
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case INSTANCE_FETCH_SUCCESS:
-    return initialState.merge(fromJS(action.instance));
+    return initialState.mergeDeep(fromJS(action.instance));
   case NODEINFO_FETCH_SUCCESS:
-    return nodeinfoToInstance(fromJS(action.nodeinfo)).merge(state);
+    return nodeinfoToInstance(fromJS(action.nodeinfo)).mergeDeep(state);
   default:
     return state;
   }
