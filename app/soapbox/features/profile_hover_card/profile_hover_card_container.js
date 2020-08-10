@@ -10,6 +10,7 @@ import ActionButton from '../ui/components/action_button';
 import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 import Badge from 'soapbox/components/badge';
 import classNames from 'classnames';
+import { fetchRelationships } from 'soapbox/actions/accounts';
 
 const getAccount = makeGetAccount();
 
@@ -19,11 +20,7 @@ const mapStateToProps = (state, { accountId }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-
-});
-
-export default @connect(mapStateToProps, mapDispatchToProps)
+export default @connect(mapStateToProps)
 @injectIntl
 class ProfileHoverCardContainer extends ImmutablePureComponent {
 
@@ -32,6 +29,7 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
     accountId: PropTypes.string,
     account: ImmutablePropTypes.map,
     intl: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
@@ -45,6 +43,10 @@ class ProfileHoverCardContainer extends ImmutablePureComponent {
     if (isModerator(account)) badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
     if (account.getIn(['patron', 'is_patron'])) badges.push(<Badge key='patron' slug='patron' title='Patron' />);
     return badges;
+  }
+
+  componentDidMount() {
+    this.props.dispatch(fetchRelationships([this.props.accountId]));
   }
 
   render() {
