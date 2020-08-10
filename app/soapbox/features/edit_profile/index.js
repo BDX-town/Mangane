@@ -114,7 +114,7 @@ class EditProfile extends ImmutablePureComponent {
     let formData = new FormData();
     for (let key in data) {
       // Compact the submission. This should probably be done better.
-      const shouldAppend = Boolean(data[key] || key.startsWith('fields_attributes'));
+      const shouldAppend = Boolean(data[key] !== undefined || key.startsWith('fields_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
     }
     return formData;
