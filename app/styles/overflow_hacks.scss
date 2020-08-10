@@ -14,3 +14,8 @@ button.column-header__button.active {
 .detailed-status__wrapper .detailed-status__action-bar {
   border-radius: 0;
 }
+
+.slist .item-list .column-link {
+  background-color: transparent;
+  border-top: 1px solid var(--brand-color--med);
+}
