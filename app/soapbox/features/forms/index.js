@@ -36,7 +36,7 @@ InputContainer.propTypes = {
   extraClass: PropTypes.string,
 };
 
-export const LabelInputContainer = ({ label, children, ...props }) => {
+export const LabelInputContainer = ({ label, hint, children, ...props }) => {
   const [id] = useState(uuidv4());
   const childrenWithProps = React.Children.map(children, child => (
     React.cloneElement(child, { id: id, key: id })
@@ -48,12 +48,14 @@ export const LabelInputContainer = ({ label, children, ...props }) => {
       <div className='label_input__wrapper'>
         {childrenWithProps}
       </div>
+      {hint && <span className='hint'>{hint}</span>}
     </div>
   );
 };
 
 LabelInputContainer.propTypes = {
   label: FormPropTypes.label.isRequired,
+  hint: PropTypes.node,
   children: PropTypes.node,
 };
 
@@ -223,11 +225,12 @@ export class SelectDropdown extends ImmutablePureComponent {
 
   static propTypes = {
     label: FormPropTypes.label,
+    hint: PropTypes.node,
     items: PropTypes.object.isRequired,
   }
 
   render() {
-    const { label, items, ...props } = this.props;
+    const { label, hint, items, ...props } = this.props;
 
     const optionElems = Object.keys(items).map(item => (
       <option key={item} value={item}>{items[item]}</option>
@@ -236,7 +239,7 @@ export class SelectDropdown extends ImmutablePureComponent {
     const selectElem = <select {...props}>{optionElems}</select>;
 
     return label ? (
-      <LabelInputContainer label={label}>{selectElem}</LabelInputContainer>
+      <LabelInputContainer label={label} hint={hint}>{selectElem}</LabelInputContainer>
     ) : selectElem;
   }
 

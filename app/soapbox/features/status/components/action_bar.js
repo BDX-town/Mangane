@@ -311,7 +311,9 @@ class ActionBar extends React.PureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
           ref={this.setRef}
         >
-          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          { emojiSelectorVisible &&
+            <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          }
           <IconButton
             className='star-icon'
             animate
