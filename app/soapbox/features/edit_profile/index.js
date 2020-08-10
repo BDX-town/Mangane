@@ -111,10 +111,11 @@ class EditProfile extends ImmutablePureComponent {
     const data = this.getParams();
     let formData = new FormData();
     for (let key in data) {
-      const shouldAppend = Boolean(data[key]
-        || key.startsWith('fields_attributes')
-        || (key === 'bot' && data.bot !== undefined)
-        || (key === 'locked' && data.locked !== undefined));
+      const shouldAppend = Boolean(data[key] !== undefined || key.startsWith('fields_attributes'));
+      // const shouldAppend = Boolean(data[key]
+      //   || key.startsWith('fields_attributes')
+      //   || (key === 'bot' && data.bot !== undefined)
+      //   || (key === 'locked' && data.locked !== undefined));
       if (shouldAppend) formData.append(key, String(data[key]) || '');
     }
     return formData;
@@ -204,13 +205,13 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.locked}
                 onChange={this.handleCheckboxChange}
               />
-              {/* <Checkbox
+              <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
                 hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
                 name='bot'
                 checked={this.state.bot}
                 onChange={this.handleCheckboxChange}
-              /> */}
+              />
             </FieldsGroup>
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
