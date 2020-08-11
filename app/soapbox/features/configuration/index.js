@@ -19,7 +19,6 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   getIn,
-  mergeDeep,
 } from 'immutable';
 import { postSoapbox } from 'soapbox/actions/soapbox';
 
@@ -63,23 +62,30 @@ class ConfigSoapbox extends ImmutablePureComponent {
     // this.state = ImmutableMap(props.soapbox);
     console.log(JSON.stringify(this.state, null, 2));
     if (!this.state.logo) {
-      this.state.logo = '';
+      this.state.concat({ logo: '' });
     }
     if (!this.state.banner) {
-      this.state.banner = '';
+      this.state.concat({ banner: '' });
     }
     if (getIn(this.state, ['defaultSettings', 'autoPlayGif'], 'notSet') === 'notSet') {
-      this.state.defaultSettings.autoPlayGif = false;
+      this.state.concat({ defaultSettings: { autoPlayGif: false } });
     };
     if (getIn(this.state, ['extensions', 'patron'], 'notSet') === 'notSet') {
-      this.state.extensions.patron = false;
+      this.state.concat({ extensions: { patron: false } });
+      // this.state.extensions.patron = false;
     };
     if (getIn(this.state, ['promoPanel', 'items', 'icon'], 'notSet') === 'notSet') {
-      mergeDeep(this.state, { promoPanel: { items: [ {
-        icon: '',
-        text: '',
-        url: '',
-      } ] } });
+      this.state = {
+        promoPanel: {
+          items: [
+            {
+              icon: '',
+              text: '',
+              url: '',
+            },
+          ],
+        },
+      };
       // this.state.promoPanel.items = ImmutableList([
       //   ImmutableMap({
       //     icon: '',
@@ -120,7 +126,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   getParams = () => {
-    const { state } = this;
+    // const { state } = this;
     var obj = {
       configs: [{
         group: ':pleroma',
@@ -128,23 +134,23 @@ class ConfigSoapbox extends ImmutablePureComponent {
         value: [{
           tuple: [':soapbox_fe',
             {
-              logo: '',
-              banner: '',
-              brandColor: '',
-              customCss: [],
-              promoPanel: {
-                items: [],
-              },
-              extensions: {
-                patron: false,
-              },
-              defaultSettings: {
-                autoPlayGif: false,
-              },
-              copyright: '',
-              navlinks: {
-                homeFooter: [],
-              },
+              // logo: '',
+              // banner: '',
+              // brandColor: '',
+              // customCss: [],
+              // promoPanel: {
+              //   items: [],
+              // },
+              // extensions: {
+              //   patron: false,
+              // },
+              // defaultSettings: {
+              //   autoPlayGif: false,
+              // },
+              // copyright: '',
+              // navlinks: {
+              //   homeFooter: [],
+              // },
             },
           ],
         }],
@@ -292,10 +298,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   render() {
     const { intl } = this.props;
-    const { logo, banner, brandColor, extensions, defaultSettings, copyright,
-      promoPanel, navlinks, customCss } = this.state;
+    // const { logo, banner, brandColor, extensions, defaultSettings, copyright,
+    //   promoPanel, navlinks, customCss } = this.state;
       const patron = false;
       const autoPlayGif = false;
+      const logo = '';
+      const banner = '';
+      const brandColor = '#3b5998';
+      const copyright = '';
     // const patron = (extensions.patron === 'true');
     // const autoPlayGif = (defaultSettings.autoPlayGif === 'true');
     // console.log(navlinks.homeFooter);
