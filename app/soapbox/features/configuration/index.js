@@ -142,13 +142,13 @@ class ConfigSoapbox extends ImmutablePureComponent {
     obj.configs[0].value[0].tuple[1].extensions.patron = state.extensions.patron;
     obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.defaultSettings.autoPlayGif;
     obj.configs[0].value[0].tuple[1].copyright = state.copyright;
-    this.state.homeFooterItems.forEach((f) =>
+    this.state.navlinks.homeFooter.forEach((f) =>
       obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
     );
-    this.state.promoItems.forEach((f) =>
+    this.state.promoPanel.items.forEach((f) =>
       obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
     );
-    this.state.customCssItems.forEach((f) =>
+    this.state.customCss.forEach((f) =>
       obj.configs[0].value[0].tuple[1].customCss.push(f)
     );
     return obj;
@@ -205,7 +205,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
     return (e) => {
       // this.state.soapbox.promoItems.setIn([i, key], e.target.value);
       this.setState({
-        promoItems: this.state.promoItems.setIn([i, key], e.target.value),
+        promoPanel: {
+          items: this.state.promoPanel.items.setIn([i, key], e.target.value),
+        },
       });
     };
   }
@@ -214,7 +216,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
     return (e) => {
       // this.state.soapbox.homeFooterItems.setIn([i, key], e.target.value);
       this.setState({
-        homeFooterItems: this.state.homeFooterItems.setIn([i, key], e.target.value),
+        navlinks: {
+          homeFooter: this.state.navlinks.homeFooter.setIn([i, key], e.target.value),
+        },
       });
     };
   }
@@ -223,7 +227,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
     return (e) => {
       // this.state.soapbox.customCssItems.setIn([i], e.target.value);
       this.setState({
-        customCssItems: this.state.customCssItems.setIn([i], e.target.value),
+        customCss: this.state.customCss.setIn([i], e.target.value),
       });
     };
   }
@@ -243,7 +247,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   handleAddPromoPanelItem = () => {
     this.setState({
-      Items: this.state.promoPanel.Items.concat([
+      Items: this.state.promoPanel.items.concat([
         ImmutableMap({
           icon: '',
           text: '',
@@ -274,6 +278,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
     const { intl } = this.props;
     const { logo, banner, brandColor, extensions, defaultSettings, copyright,
       promoPanel, navlinks, customCss } = this.state;
+    const patron = (extensions.patron === 'true');
+    const autoPlayGif = (defaultSettings.autoPlayGif === 'true');
     // console.log(navlinks.homeFooter);
     // console.log(promoPanel.items);
 
@@ -324,14 +330,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
                 name='patron'
-                checked={extensions.patron ? extensions.patron : false}
+                checked={patron ? patron : false}
                 onChange={this.handleExtensionsCheckboxChange}
               />
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
                 name='autoPlayGif'
-                checked={defaultSettings.autoPlayGif ? defaultSettings.autoPlayGif : false}
+                checked={autoPlayGif ? autoPlayGif : false}
                 onChange={this.handleDefaultSettingsCheckboxChange}
               />
             </FieldsGroup>
@@ -379,9 +385,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     ))
                   }
                   <div className='actions'>
-                    <button name='button' type='button' className='btn button button-secondary' onClick={this.handleAddPromoPanelItem}>
+                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddPromoPanelItem}>
                       <FormattedMessage id='soapbox_settings.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
-                    </button>
+                    </div>
                   </div>
                 </div>
                 <div className='input with_block_label'>
@@ -408,9 +414,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     ))
                   }
                   <div className='actions'>
-                    <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddHomeFooterItem}>
+                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddHomeFooterItem}>
                       <FormattedMessage id='soapbox_settings.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
-                    </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -432,9 +438,9 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   ))
                 }
                 <div className='actions'>
-                  <button name='button' type='submit' className='btn button button-secondary' onClick={this.handleAddCssItem}>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddCssItem}>
                     <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
-                  </button>
+                  </div>
                 </div>
               </div>
             </FieldsGroup>
