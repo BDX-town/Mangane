@@ -18,6 +18,8 @@ import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
+  getIn,
+  mergeDeep,
 } from 'immutable';
 import { postSoapbox } from 'soapbox/actions/soapbox';
 
@@ -55,43 +57,55 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   constructor(props) {
     super(props);
-    const initialState = props.soapbox.withMutations(map => {
-    });
-    this.state = initialState.toObject();
+    // const initialState = props.soapbox.withMutations(map => {
+    // });
+    this.state = ImmutableMap(props.soapbox);
     // this.state = ImmutableMap(props.soapbox);
-    // console.log(this.state);
-    // console.log(JSON.stringify(this.state, null, 2));
+    console.log(JSON.stringify(this.state, null, 2));
     if (!this.state.logo) {
       this.state.logo = '';
     }
     if (!this.state.banner) {
       this.state.banner = '';
     }
-    if (!this.state.defaultSettings.autoPlayGif) {
+    if (getIn(this.state, ['defaultSettings', 'autoPlayGif'], 'notSet') === 'notSet') {
       this.state.defaultSettings.autoPlayGif = false;
-      // console.log(this.state.defaultSettings.autoPlayGif);
     };
-    if (!this.state.extensions.patron) {
+    if (getIn(this.state, ['extensions', 'patron'], 'notSet') === 'notSet') {
       this.state.extensions.patron = false;
-      // console.log(this.state.extensions.patron);
     };
-    if (!this.state.promoPanel.items) {
-      this.state.promoPanel.items = ImmutableList([
-        ImmutableMap({
-          icon: '',
-          text: '',
-          url: '',
-        }),
-      ]);
+    if (getIn(this.state, ['promoPanel', 'items', 'icon'], 'notSet') === 'notSet') {
+      mergeDeep(this.state, { promoPanel: { items: [ {
+        icon: '',
+        text: '',
+        url: '',
+      } ] } });
+      // this.state.promoPanel.items = ImmutableList([
+      //   ImmutableMap({
+      //     icon: '',
+      //     text: '',
+      //     url: '',
+      //   }),
+      // ]);
     };
-    if (!this.state.navlinks.homeFooter) {
-      this.state.navlinks.homeFooter = ImmutableList([
-        ImmutableMap({
-          title: '',
-          url: '',
-        }),
-      ]);
-    };
+    console.log(JSON.stringify(this.state, null, 2));
+    // if (!this.state.promoPanel.items) {
+    //   this.state.promoPanel.items = ImmutableList([
+    //     ImmutableMap({
+    //       icon: '',
+    //       text: '',
+    //       url: '',
+    //     }),
+    //   ]);
+    // };
+    // if (!this.state.navlinks.homeFooter) {
+    //   this.state.navlinks.homeFooter = ImmutableList([
+    //     ImmutableMap({
+    //       title: '',
+    //       url: '',
+    //     }),
+    //   ]);
+    // };
     if (!this.state.customCssItems) {
       this.state.customCssItems = ImmutableList([' ']);
     };
@@ -136,21 +150,22 @@ class ConfigSoapbox extends ImmutablePureComponent {
         }],
       }],
     };
-    obj.configs[0].value[0].tuple[1].logo = state.logo;
-    obj.configs[0].value[0].tuple[1].banner = state.banner;
-    obj.configs[0].value[0].tuple[1].brandColor = state.brandColor;
-    obj.configs[0].value[0].tuple[1].extensions.patron = state.extensions.patron;
-    obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.defaultSettings.autoPlayGif;
-    obj.configs[0].value[0].tuple[1].copyright = state.copyright;
-    this.state.navlinks.homeFooter.forEach((f) =>
-      obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
-    );
-    this.state.promoPanel.items.forEach((f) =>
-      obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
-    );
-    this.state.customCss.forEach((f) =>
-      obj.configs[0].value[0].tuple[1].customCss.push(f)
-    );
+    // obj.configs[0].value[0].tuple[1].logo = state.logo;
+    // obj.configs[0].value[0].tuple[1].banner = state.banner;
+    // obj.configs[0].value[0].tuple[1].brandColor = state.brandColor;
+    // obj.configs[0].value[0].tuple[1].extensions.patron = state.extensions.patron;
+    // obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = state.defaultSettings.autoPlayGif;
+    // obj.configs[0].value[0].tuple[1].copyright = state.copyright;
+    // this.state.navlinks.homeFooter.forEach((f) =>
+    //   obj.configs[0].value[0].tuple[1].navlinks.homeFooter.push({ title: f.get('title'), url: f.get('url') })
+    // );
+    // this.state.promoPanel.items.forEach((f) =>
+    //   obj.configs[0].value[0].tuple[1].promoPanel.items.push({ icon: f.get('icon'), text: f.get('text'), url: f.get('url') })
+    // );
+    // this.state.customCss.forEach((f) =>
+    //   obj.configs[0].value[0].tuple[1].customCss.push(f)
+    // );
+    console.log(JSON.stringify(obj, null, 2));
     return obj;
   }
 
@@ -246,6 +261,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   handleAddPromoPanelItem = () => {
+
     this.setState({
       Items: this.state.promoPanel.items.concat([
         ImmutableMap({
@@ -278,8 +294,10 @@ class ConfigSoapbox extends ImmutablePureComponent {
     const { intl } = this.props;
     const { logo, banner, brandColor, extensions, defaultSettings, copyright,
       promoPanel, navlinks, customCss } = this.state;
-    const patron = (extensions.patron === 'true');
-    const autoPlayGif = (defaultSettings.autoPlayGif === 'true');
+      const patron = false;
+      const autoPlayGif = false;
+    // const patron = (extensions.patron === 'true');
+    // const autoPlayGif = (defaultSettings.autoPlayGif === 'true');
     // console.log(navlinks.homeFooter);
     // console.log(promoPanel.items);
 
@@ -350,7 +368,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
               />
             </FieldsGroup>
-            <FieldsGroup>
+            {/* <FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='soapbox_settings.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
@@ -443,7 +461,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-            </FieldsGroup>
+            </FieldsGroup> */}
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>
