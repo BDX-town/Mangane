@@ -286,22 +286,19 @@ class Header extends ImmutablePureComponent {
               </div>
             }
 
-            {
-              me &&
-              <div className='account__header__extra__buttons'>
-                <ActionButton account={account} />
-                {account.get('id') !== me &&
-                  <Button className='button button-alternative-2' onClick={this.props.onDirect}>
-                    <FormattedMessage
-                      id='account.message' defaultMessage='Message' values={{
-                        name: account.get('acct'),
-                      }}
-                    />
-                  </Button>
-                }
-                <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />
-              </div>
-            }
+            <div className='account__header__extra__buttons'>
+              <ActionButton account={account} />
+              {(me && account.get('id') !== me) &&
+                <Button className='button button-alternative-2' onClick={this.props.onDirect}>
+                  <FormattedMessage
+                    id='account.message' defaultMessage='Message' values={{
+                      name: account.get('acct'),
+                    }}
+                  />
+                </Button>
+              }
+              { me && <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' /> }
+            </div>
 
           </div>
         </div>

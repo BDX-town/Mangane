@@ -16,6 +16,7 @@ import {
 const messages = defineMessages({
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
+  remote_follow: { id: 'account.remote_follow', defaultMessage: 'Remote follow' },
   requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
   requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
@@ -83,7 +84,9 @@ class ActionButton extends ImmutablePureComponent {
     const { account, intl, me, small } = this.props;
     let actionBtn = null;
 
-    if (!account || !me) return actionBtn;
+    if (!me) {
+      actionBtn = <form method='POST' action='/main/ostatus'><input type='hidden' name='nickname' value={account.get('username')} /><input type='hidden' name='profile' value='' /><Button className='logo-button' text={intl.formatMessage(messages.remote_follow)} click='submit' /></form>;
+    }
 
     if (me !== account.get('id')) {
       if (!account.get('relationship')) { // Wait until the relationship is loaded
