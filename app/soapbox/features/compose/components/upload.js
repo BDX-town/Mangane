@@ -95,12 +95,19 @@ class Upload extends ImmutablePureComponent {
     const focusY = media.getIn(['meta', 'focus', 'y']);
     const x = ((focusX /  2) + .5) * 100;
     const y = ((focusY / -2) + .5) * 100;
+    const mediaType = media.get('type');
 
     return (
       <div className='compose-form__upload' tabIndex='0' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} onClick={this.handleClick} role='button'>
         <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
           {({ scale }) => (
-            <div className='compose-form__upload-thumbnail' style={{ transform: `scale(${scale})`, backgroundImage: `url(${media.get('preview_url')})`, backgroundPosition: `${x}% ${y}%` }}>
+            <div
+              className={classNames('compose-form__upload-thumbnail',  `${mediaType}`)}
+              style={{
+                transform: `scale(${scale})`,
+                backgroundImage: (mediaType !== 'video' && mediaType !== 'audio' ? `url(${media.get('preview_url')})` : null),
+                backgroundPosition: `${x}% ${y}%` }}
+            >
               <div className={classNames('compose-form__upload__actions', { active })}>
                 <button className='icon-button' onClick={this.handleUndoClick}><Icon id='times' /> <FormattedMessage id='upload_form.undo' defaultMessage='Delete' /></button>
                 {this.props.features.focalPoint && media.get('type') === 'image' && <button className='icon-button' onClick={this.handleFocalPointClick}><Icon id='crosshairs' /> <FormattedMessage id='upload_form.focus' defaultMessage='Change preview' /></button>}
