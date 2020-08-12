@@ -3,12 +3,28 @@ import {
   SOAPBOX_CONFIG_REQUEST_FAIL,
   SOAPBOX_POST_SUCCESS,
 } from '../actions/soapbox';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 
 const defaultState = ImmutableMap({
+  logo: '',
+  banner: '',
   brandColor: '#0482d8', // Azure
+  customCss: ImmutableList([]),
+  promoPanel: ImmutableMap({
+    items: ImmutableList([]),
+  }),
+  extensions: ImmutableMap({
+    patron: false,
+  }),
+  defaultSettings: ImmutableMap({
+    autoPlayGif: false,
+  }),
+  copyright: '',
+  navlinks: ImmutableMap({
+    homeFooter: ImmutableList([]),
+  }),
 });
 
 export default function soapbox(state = initialState, action) {
