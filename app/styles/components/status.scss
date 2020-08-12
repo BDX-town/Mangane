@@ -14,8 +14,7 @@
   }
 
   ul,
-  ol,
-  blockquote {
+  ol {
     margin-bottom: 20px;
     margin-left: 15px;
   }
@@ -33,7 +32,10 @@
   }
 
   blockquote p {
-    font-style: italic;
+    margin-bottom: 20px;
+    padding-left: 15px;
+    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
+    color: var(--primary-text-color--faint);
   }
 
   code {
