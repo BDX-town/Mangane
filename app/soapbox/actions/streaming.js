@@ -12,10 +12,17 @@ import { fetchFilters } from './filters';
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
+const validLocale = locale => Object.keys(messages).includes(locale);
+
+const getLocale = state => {
+  const locale = getSettings(state).get('locale');
+  return validLocale(locale) ? locale : 'en';
+};
+
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
   return connectStream (path, pollingRefresh, (dispatch, getState) => {
-    const locale = getSettings(getState()).get('locale');
+    const locale = getLocale(getState());
 
     return {
       onConnect() {
