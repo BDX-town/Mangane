@@ -92,6 +92,11 @@
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
+      bdi,
+      span.verified-icon {
+        display: inline-block;
+      }
     }
   }
 }

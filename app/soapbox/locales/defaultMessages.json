@@ -985,6 +985,17 @@
   {
     "descriptors": [
       {
+<<<<<<< app/soapbox/locales/defaultMessages.json
+=======
+        "defaultMessage": "Show reposts",
+        "id": "home.column_settings.show_reblogs"
+      },
+      {
+        "defaultMessage": "Show replies",
+        "id": "home.column_settings.show_replies"
+      },
+      {
+>>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -1608,6 +1619,10 @@
         "id": "edit_profile.fields.meta_fields.content_placeholder"
       },
       {
+        "defaultMessage": "Verified users may not update their display name",
+        "id": "edit_profile.fields.verified_display_name"
+      },
+      {
         "defaultMessage": "Display name",
         "id": "edit_profile.fields.display_name_label"
       },
@@ -1687,8 +1702,112 @@
         "id": "column.filters"
       },
       {
+        "defaultMessage": "Add New Filter",
+        "id": "column.filters.subheading_add_new"
+      },
+      {
+        "defaultMessage": "Keyword or phrase",
+        "id": "column.filters.keyword"
+      },
+      {
+        "defaultMessage": "Expire after",
+        "id": "column.filters.expires"
+      },
+      {
+        "defaultMessage": "Expiration dates are not currently supported",
+        "id": "column.filters.expires_hint"
+      },
+      {
+        "defaultMessage": "Home timeline",
+        "id": "column.filters.home_timeline"
+      },
+      {
+        "defaultMessage": "Public timeline",
+        "id": "column.filters.public_timeline"
+      },
+      {
+        "defaultMessage": "Notifications",
+        "id": "column.filters.notifications"
+      },
+      {
+        "defaultMessage": "Conversations",
+        "id": "column.filters.conversations"
+      },
+      {
+        "defaultMessage": "Drop instead of hide",
+        "id": "column.filters.drop_header"
+      },
+      {
+        "defaultMessage": "Filtered posts will disappear irreversibly, even if filter is later removed",
+        "id": "column.filters.drop_hint"
+      },
+      {
+        "defaultMessage": "Whole word",
+        "id": "column.filters.whole_word_header"
+      },
+      {
+        "defaultMessage": "When the keyword or phrase is alphanumeric only, it will only be applied if it matches the whole word",
+        "id": "column.filters.whole_word_hint"
+      },
+      {
+        "defaultMessage": "Add New Filter",
+        "id": "column.filters.add_new"
+      },
+      {
+        "defaultMessage": "Error adding filter",
+        "id": "column.filters.create_error"
+      },
+      {
+        "defaultMessage": "Error deleting filter",
+        "id": "column.filters.delete_error"
+      },
+      {
+        "defaultMessage": "Current Filters",
+        "id": "column.filters.subheading_filters"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "column.filters.delete"
+      },
+      {
         "defaultMessage": "You haven't created any muted words yet.",
         "id": "empty_column.filters"
+      },
+      {
+        "defaultMessage": "Filter contexts",
+        "id": "filters.context_header"
+      },
+      {
+        "defaultMessage": "One or multiple contexts where the filter should apply",
+        "id": "filters.context_hint"
+      },
+      {
+        "defaultMessage": "Keyword or phrase:",
+        "id": "filters.filters_list_phrase_label"
+      },
+      {
+        "defaultMessage": "Filter contexts:",
+        "id": "filters.filters_list_context_label"
+      },
+      {
+        "defaultMessage": "Filter settings:",
+        "id": "filters.filters_list_details_label"
+      },
+      {
+        "defaultMessage": "Drop",
+        "id": "filters.filters_list_drop"
+      },
+      {
+        "defaultMessage": "Hide",
+        "id": "filters.filters_list_hide"
+      },
+      {
+        "defaultMessage": "Whole word",
+        "id": "filters.filters_list_whole-word"
+      },
+      {
+        "defaultMessage": "Delete",
+        "id": "filters.filters_list_delete"
       }
     ],
     "path": "app/soapbox/features/filters/index.json"
@@ -1969,16 +2088,16 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Basic",
-        "id": "home.column_settings.basic"
-      },
-      {
         "defaultMessage": "Show reposts",
         "id": "home.column_settings.show_reblogs"
       },
       {
         "defaultMessage": "Show replies",
         "id": "home.column_settings.show_replies"
+      },
+      {
+        "defaultMessage": "Show direct messages",
+        "id": "home.column_settings.show_direct"
       }
     ],
     "path": "app/soapbox/features/home_timeline/components/column_settings.json"
@@ -2512,6 +2631,17 @@
   {
     "descriptors": [
       {
+<<<<<<< app/soapbox/locales/defaultMessages.json
+=======
+        "defaultMessage": "Show reposts",
+        "id": "home.column_settings.show_reblogs"
+      },
+      {
+        "defaultMessage": "Show replies",
+        "id": "home.column_settings.show_replies"
+      },
+      {
+>>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -2928,6 +3058,13 @@
         "id": "account.requested"
       },
       {
+<<<<<<< app/soapbox/locales/defaultMessages.json
+=======
+        "defaultMessage": "Awaiting approval",
+        "id": "account.requested_small"
+      },
+      {
+>>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Unblock @{name}",
         "id": "account.unblock"
       },
@@ -3052,6 +3189,38 @@
   {
     "descriptors": [
       {
+<<<<<<< app/soapbox/locales/defaultMessages.json
+=======
+        "defaultMessage": "Edit Profile",
+        "id": "account.edit_profile"
+      },
+      {
+        "defaultMessage": "Messages",
+        "id": "navigation_bar.messages"
+      },
+      {
+        "defaultMessage": "Preferences",
+        "id": "navigation_bar.preferences"
+      },
+      {
+        "defaultMessage": "Security",
+        "id": "navigation_bar.security"
+      },
+      {
+        "defaultMessage": "Lists",
+        "id": "column.lists"
+      },
+      {
+        "defaultMessage": "Bookmarks",
+        "id": "column.bookmarks"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/features_panel.json"
+  },
+  {
+    "descriptors": [
+      {
+>>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Close",
         "id": "lightbox.close"
       },

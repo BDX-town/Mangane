@@ -14,8 +14,7 @@
   }
 
   ul,
-  ol,
-  blockquote {
+  ol {
     margin-bottom: 20px;
     margin-left: 15px;
   }
@@ -24,12 +23,18 @@
     list-style: disc inside none;
   }
 
+  li p {
+    display: inline-block;
+  }
+
   ol {
     list-style: decimal inside none;
   }
 
-  blockquote p {
-    font-style: italic;
+  blockquote {
+    padding: 5px 0 5px 15px;
+    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
+    color: var(--primary-text-color--faint);
   }
 
   code {
@@ -54,6 +59,10 @@
     word-break: break-all;
     background-color: var(--background-color);
   }
+}
+
+.status__content > blockquote {
+  margin-bottom: 20px;
 }
 
 .status__content--with-action {

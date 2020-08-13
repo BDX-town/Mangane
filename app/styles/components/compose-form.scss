@@ -289,6 +289,16 @@
       height: 140px;
       width: 100%;
       overflow: hidden;
+
+      &.video {
+        background-image: url('../images/video-placeholder.png');
+        background-size: cover;
+      }
+
+      &.audio {
+        background-image: url('../images/audio-placeholder.png');
+        background-size: cover;
+      }
     }
   } // end .compose-form .compose-form__modifiers
 
