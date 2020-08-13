@@ -18,7 +18,7 @@ import StillImage from 'soapbox/components/still_image';
 import {
   Map as ImmutableMap,
   // List as ImmutableList,
-  // getIn,
+  getIn,
 } from 'immutable';
 import { postSoapbox } from 'soapbox/actions/soapbox';
 
@@ -298,14 +298,16 @@ class ConfigSoapbox extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, soapbox } = this.props;
-    const { logo, banner, brandColor, extensions, defaultSettings, copyright,
-      promoPanel, navlinks, customCss } = soapbox;
-    const patron = (this.state.patron ? this.state.patron : extensions.patron);
-    const autoPlayGif = (this.state.autoPlayGif ? this.state.autoPlayGif : defaultSettings.autoPlayGif);
-    const promoPanelItems = (this.state.promoPanelItems ? this.state.promoPanelItems : promoPanel.items);
-    const homeFooterItems = (this.state.homeFooterItems ? this.state.homeFooterItems : navlinks.homeFooter);
-    const customCssItems = (this.state.customCssItems ? this.state.customCssItems : customCss);
+    const { intl } = this.props;
+    const logo = (this.state.logo ? this.state.logo : getIn(this.props.soapbox, ['logo'], ''));
+    const banner = (this.state.banner ? this.state.banner : getIn(this.props.soapbox, ['banner'], ''));
+    const brandColor = (this.state.brandColor ? this.state.brandColor : getIn(this.props.soapbox, ['brandColor'], ''));
+    const patron = (this.state.patron ? this.state.patron : getIn(this.props.soapbox, ['extensions'], ['patron'], false));
+    const autoPlayGif = (this.state.autoPlayGif ? this.state.autoPlayGif : getIn(this.props.soapbox, ['defaultSettings'], ['autoPlayGif'], false));
+    const promoPanelItems = (this.state.promoPanelItems ? this.state.promoPanelItems : getIn(this.props.soapbox, ['promoPanel'], ['items'], []));
+    const homeFooterItems = (this.state.homeFooterItems ? this.state.homeFooterItems : getIn(this.props.soapbox, ['navlinks'], ['homeFooter'], []));
+    const customCssItems = (this.state.customCssItems ? this.state.customCssItems : getIn(this.props.soapbox, ['customCss'], []));
+    const copyright = (this.state.copyright ? this.state.copyright : getIn(this.props.soapbox, ['copyright'], ''));
     console.log(promoPanelItems);
     console.log(homeFooterItems);
     console.log(customCssItems);
@@ -317,7 +319,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
             <FieldsGroup>
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
-                  {this.state.logo ? (<StillImage src={this.state.logo} />) : (<StillImage src={logo || ''} />)}
+                  <StillImage src={logo} />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooserLogo
@@ -347,7 +349,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 <ColorWithPicker
                   buttonId='brand_color'
                   label={<FormattedMessage id='soapbox_settings.fields.brand_color_label' defaultMessage='Brand color' />}
-                  value={this.state.brandColor ? this.state.brandColor : brandColor || '#0482d8'}
+                  value={brandColor}
                   onChange={this.handleBrandColorChange}
                 />
               </div>
@@ -357,14 +359,14 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 label={<FormattedMessage id='soapbox_settings.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
                 name='patron'
-                checked={patron ? patron : false}
+                checked={patron}
                 onChange={this.handlePatronCheckboxChange}
               />
               <Checkbox
                 label={<FormattedMessage id='soapbox_settings.fields.auto_play_gif_label' defaultMessage='Auto-play GIFs' />}
                 hint={<FormattedMessage id='soapbox_settings.hints.auto_play_gif' defaultMessage='Enable auto-playing of GIF files in timeline' />}
                 name='autoPlayGif'
-                checked={autoPlayGif ? autoPlayGif : false}
+                checked={autoPlayGif}
                 onChange={this.handleAutoPlayGifCheckboxChange}
               />
             </FieldsGroup>
@@ -373,7 +375,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 name='copyright'
                 label={intl.formatMessage(messages.copyrightFooterLabel)}
                 placeholder={intl.formatMessage(messages.copyrightFooterLabel)}
-                value={this.state.copyright ? this.state.copyright : copyright || ''}
+                value={copyright}
                 onChange={this.handleTextChange}
               />
             </FieldsGroup>
@@ -388,7 +390,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_settings.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
                   </span>
                   {
-                    promoPanelItems.map((field, i) => (
+                    promoPanelItems.valueSeq().map((field, i) => (
+                    // promoPanelItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
                           label={intl.formatMessage(messages.promoItemIcon)}
@@ -423,7 +426,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_settings.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
                   </span>
                   {
-                    homeFooterItems.map((field, i) => (
+                    homeFooterItems.valueSeq().map((field, i) => (
+                    // homeFooterItems.map((field, i) => (
                       <div className='row' key={i}>
                         <TextInput
                           label={intl.formatMessage(messages.homeFooterItemLabel)}
@@ -453,7 +457,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
                 </span>
                 {
-                  customCssItems.map((field, i) => (
+                  customCssItems.valueSeq().map((field, i) => (
+                  // customCssItems.map((field, i) => (
                     <div className='row' key={i}>
                       <TextInput
                         label={intl.formatMessage(messages.customCssLabel)}
