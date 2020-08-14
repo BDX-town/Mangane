@@ -1,6 +1,8 @@
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import api, { getLinks } from '../api';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { getSettings } from 'soapbox/actions/settings';
+import { shouldFilter } from 'soapbox/utils/timelines';
 
 export const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
 export const TIMELINE_DELETE  = 'TIMELINE_DELETE';
@@ -17,6 +19,19 @@ export const TIMELINE_CONNECT    = 'TIMELINE_CONNECT';
 export const TIMELINE_DISCONNECT = 'TIMELINE_DISCONNECT';
 
 export const MAX_QUEUED_ITEMS = 40;
+
+export function processTimelineUpdate(timeline, status, accept) {
+  return (dispatch, getState) => {
+    const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
+    const shouldSkipQueue = shouldFilter(fromJS(status), columnSettings);
+
+    if (shouldSkipQueue) {
+      return dispatch(updateTimeline(timeline, status, accept));
+    } else {
+      return dispatch(updateTimelineQueue(timeline, status, accept));
+    }
+  };
+}
 
 export function updateTimeline(timeline, status, accept) {
   return dispatch => {
