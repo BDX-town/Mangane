@@ -27,6 +27,7 @@ const messages = defineMessages({
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
