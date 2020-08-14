@@ -429,15 +429,6 @@
   }
 
   &:hover .btn.grouped {
-    &::before {
-      height: 70% !important;
-      opacity: 0 !important;
-    }
-
-    &:hover::before {
-      height: 100% !important;
-      opacity: 1 !important;
-    }
 
     &:hover {
       color: var(--primary-text-color);
