@@ -20,6 +20,9 @@ import {
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import compareId from '../compare_id';
 import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
+import { createSelector } from 'reselect';
+import { getSettings } from 'soapbox/actions/settings';
+
 
 const initialState = ImmutableMap();
 
@@ -86,8 +89,37 @@ const updateTimeline = (state, timeline, status) => {
 
 const updateTimelineQueue = (state, timeline, status) => {
   const queuedStatuses = state.getIn([timeline, 'queuedItems'], ImmutableList());
+
+  const filteredQueuedStatuses = () => createSelector([
+    (state, timeline) => getSettings(state).get(timeline, ImmutableMap()),
+    (state, timeline) => state.getIn([timeline, 'queuedItems'], ImmutableList()),
+    (state)           => state.get('statuses'),
+    (state)           => state.get('me'),
+  ], (columnSettings, queuedStatuses, statuses, me) => {
+    return queuedStatuses.filter(id => {
+      if (id === null) return true;
+
+      const statusForId = statuses.get(id);
+      let showStatus    = true;
+
+      if (columnSettings.getIn(['shows', 'reblog']) === false) {
+        showStatus = showStatus && statusForId.get('reblog') === null;
+      }
+
+      if (columnSettings.getIn(['shows', 'reply']) === false) {
+        showStatus = showStatus && (statusForId.get('in_reply_to_id') === null);
+      }
+
+      if (columnSettings.getIn(['shows', 'direct']) === false) {
+        showStatus = showStatus && (statusForId.get('visibility') !== 'direct');
+      }
+
+      return showStatus;
+    });
+  });
+
   const listedStatuses = state.getIn([timeline, 'items'], ImmutableList());
-  const totalQueuedItemsCount = state.getIn([timeline, 'totalQueuedItemsCount'], 0);
+  const totalQueuedItemsCount = filteredQueuedStatuses.length;
 
   let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus.get('id') === status.get('id'));
   if (!alreadyExists) alreadyExists = listedStatuses.find(existingListedStatusId => existingListedStatusId === status.get('id'));
@@ -96,7 +128,7 @@ const updateTimelineQueue = (state, timeline, status) => {
     return state;
   }
 
-  let newQueuedStatuses = queuedStatuses;
+  let newQueuedStatuses = filteredQueuedStatuses;
 
   return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
     if (totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
