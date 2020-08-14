@@ -11,7 +11,7 @@ const defaultState = ImmutableMap({
   logo: '',
   banner: '',
   brandColor: '#0482d8', // Azure
-  customCss: ImmutableList([]),
+  customCss: ImmutableList(['']),
   promoPanel: ImmutableMap({
     items: ImmutableList([]),
   }),
