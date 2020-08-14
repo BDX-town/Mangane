@@ -185,8 +185,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
                   <Avatar account={status.get('account')} size={48} />
                 </div>
               </NavLink>
-              <DisplayName account={status.get('account')}>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+              <DisplayName account={status.get('account')} className='floating-link'>
+                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
               </DisplayName>
             </div>
             { profileCardVisible &&
