@@ -9,7 +9,7 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const makeGetStatusIds = () => createSelector([
   (state, { type }) => getSettings(state).get(type, ImmutableMap()),
-  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
+  (state, { type, queued }) => state.getIn(['timelines', type, queued ? 'queuedItems' : 'items'], ImmutableList()),
   (state)           => state.get('statuses'),
   (state)           => state.get('me'),
 ], (columnSettings, statusIds, statuses, me) => {
@@ -38,21 +38,12 @@ const makeGetStatusIds = () => createSelector([
 const mapStateToProps = (state, { timelineId }) => {
   const getStatusIds = makeGetStatusIds();
 
-  const queuedItems = state.getIn(['timelines', timelineId, 'queuedItems'], ImmutableList());
-  console.log('queuedItems:', queuedItems);
-
-  const filteredQueuedItems = queuedItems.filter((id) => getStatusIds(state, { type: timelineId }).includes(id));
-  console.log('filteredQueuedItems:', filteredQueuedItems);
-
-  const filteredQueuedItemsCount = filteredQueuedItems.count();
-  console.log('filteredQueuedItemsCount:', filteredQueuedItemsCount);
-
   return {
     statusIds: getStatusIds(state, { type: timelineId }),
     isLoading: state.getIn(['timelines', timelineId, 'isLoading'], true),
     isPartial: state.getIn(['timelines', timelineId, 'isPartial'], false),
     hasMore:   state.getIn(['timelines', timelineId, 'hasMore']),
-    totalQueuedItemsCount: filteredQueuedItemsCount,
+    totalQueuedItemsCount: getStatusIds(state, { type: timelineId, queued: true }).count(),
   };
 };
 
