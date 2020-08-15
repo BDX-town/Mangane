@@ -43,11 +43,8 @@ class ProfileMediaPanel extends ImmutablePureComponent {
 
   render() {
     const { attachments, account } = this.props;
-    const nineAttachments = attachments.slice(0, 9);
-    //
-    // if (attachments.isEmpty()) {
-    //   return null;
-    // }
+    const publicAttachments = attachments.filter(attachment => attachment.getIn(['status', 'visibility']) === 'public');
+    const nineAttachments = publicAttachments.slice(0, 9);
 
     return (
       <div className='media-panel'>
