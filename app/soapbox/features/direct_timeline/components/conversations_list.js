@@ -51,10 +51,16 @@ export default class ConversationsList extends ImmutablePureComponent {
   }, 300, { leading: true })
 
   render() {
-    const { conversations, onLoadMore, ...other } = this.props;
+    const { conversations, isLoading, onLoadMore, ...other } = this.props;
 
     return (
-      <ScrollableList {...other} onLoadMore={onLoadMore && this.handleLoadOlder} scrollKey='direct' ref={this.setRef}>
+      <ScrollableList
+        {...other}
+        onLoadMore={onLoadMore && this.handleLoadOlder}
+        scrollKey='direct' ref={this.setRef}
+        isLoading={isLoading}
+        showLoading={isLoading && conversations.size === 0}
+      >
         {conversations.map(item => (
           <ConversationContainer
             key={item.get('id')}
