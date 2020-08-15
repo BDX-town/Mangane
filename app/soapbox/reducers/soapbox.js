@@ -21,7 +21,7 @@ const defaultState = ImmutableMap({
   defaultSettings: ImmutableMap({
     autoPlayGif: false,
   }),
-  copyright: '',
+  copyright: '♥2020. Copying is an act of love. Please copy and share.',
   navlinks: ImmutableMap({
     homeFooter: ImmutableList([]),
   }),

@@ -84,7 +84,11 @@ class ConfigSoapbox extends ImmutablePureComponent {
     } else {
       this.state.customCssItems = customCssItems;
     };
+    this.state.patron = getIn(this.props.soapbox, ['extensions', 'patron'], false);
+    this.state.autoPlayGif = getIn(this.props.soapbox, ['defaultSettings', 'autoPlayGif'], false);
     this.handlecustomCSSChange = this.handleCustomCSSChange.bind(this);
+    this.handleAutoPlayGifCheckboxChange = this.handleAutoPlayGifCheckboxChange.bind(this);
+    this.handlePatronCheckboxChange = this.handlePatronCheckboxChange.bind(this);
   }
 
   getParams = () => {
@@ -121,8 +125,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
     obj.configs[0].value[0].tuple[1].logo = (state.logo ? state.logo : getIn(this.props.soapbox, ['logo'], ''));
     obj.configs[0].value[0].tuple[1].banner = (state.banner ? state.banner : getIn(this.props.soapbox, ['banner'], ''));
     obj.configs[0].value[0].tuple[1].brandColor = (state.brandColor ? state.brandColor : getIn(this.props.soapbox, ['brandColor'], ''));
-    obj.configs[0].value[0].tuple[1].extensions.patron = (state.patron ? state.patron : getIn(this.props.soapbox, ['extensions', 'patron'], false));
-    obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = (state.autoPlayGif ? state.autoPlayGif : getIn(this.props.soapbox, ['defaultSettings', 'autoPlayGif'], false));
+    obj.configs[0].value[0].tuple[1].extensions.patron = (state.patron !== undefined ? state.patron : getIn(this.props.soapbox, ['extensions', 'patron'], false));
+    obj.configs[0].value[0].tuple[1].defaultSettings.autoPlayGif = (state.autoPlayGif !== undefined ? state.autoPlayGif : getIn(this.props.soapbox, ['defaultSettings', 'autoPlayGif'], false));
     obj.configs[0].value[0].tuple[1].copyright = (state.copyright ? state.copyright : getIn(this.props.soapbox, ['copyright'], ''));
     var homeFooterItems = (state.homeFooterItems ? state.homeFooterItems : getIn(this.props.soapbox, ['navlinks'], ['homeFooter'], []));
     homeFooterItems.forEach((f) =>
@@ -240,8 +244,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
     const logo = (this.state.logo ? this.state.logo : getIn(this.props.soapbox, ['logo'], ''));
     const banner = (this.state.banner ? this.state.banner : getIn(this.props.soapbox, ['banner'], ''));
     const brandColor = (this.state.brandColor ? this.state.brandColor : getIn(this.props.soapbox, ['brandColor'], ''));
-    const patron = (this.state.patron ? this.state.patron : getIn(this.props.soapbox, ['extensions', 'patron'], false));
-    const autoPlayGif = (this.state.autoPlayGif ? this.state.autoPlayGif : getIn(this.props.soapbox, ['defaultSettings', 'autoPlayGif'], false));
+    const patron = (this.state.patron !== undefined ? this.state.patron : getIn(this.props.soapbox, ['extensions', 'patron'], false));
+    const autoPlayGif = (this.state.autoPlayGif !== undefined ? this.state.autoPlayGif : getIn(this.props.soapbox, ['defaultSettings', 'autoPlayGif'], false));
     const promoPanelItems = (this.state.promoPanelItems ? this.state.promoPanelItems : getIn(this.props.soapbox, ['promoPanel'], ['items'], []).get('items'));
     const homeFooterItems = (this.state.homeFooterItems ? this.state.homeFooterItems : getIn(this.props.soapbox, ['navlinks'], ['homeFooter'], []).get('homeFooter'));
     const customCssItems = (this.state.customCssItems ? this.state.customCssItems : getIn(this.props.soapbox, ['customCss'], []));
