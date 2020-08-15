@@ -34,7 +34,7 @@ export default function settings(state = initialState, action) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     const me = fromJS(action.me);
-    let fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME]);
+    let fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
     // Spinster migration hotfix
     if (fePrefs.get('locale') === '') {
       fePrefs = fePrefs.delete('locale');
