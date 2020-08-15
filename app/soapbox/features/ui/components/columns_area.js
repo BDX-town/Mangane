@@ -24,9 +24,11 @@ class ColumnsArea extends ImmutablePureComponent {
           <div className='columns-area__panels'>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
-              <div className='columns-area__panels__pane__inner'>
-                {layout.LEFT}
-              </div>
+              { layout.LEFT &&
+                <div className='columns-area__panels__pane__inner'>
+                  {layout.LEFT}
+                </div>
+              }
             </div>
 
             <div className='columns-area__panels__main'>
@@ -36,9 +38,11 @@ class ColumnsArea extends ImmutablePureComponent {
             </div>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
-              <div className='columns-area__panels__pane__inner'>
-                {layout.RIGHT}
-              </div>
+              { layout.RIGHT &&
+                <div className='columns-area__panels__pane__inner'>
+                  {layout.RIGHT}
+                </div>
+              }
             </div>
           </div>
         </div>

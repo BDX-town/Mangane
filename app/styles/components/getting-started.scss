@@ -28,6 +28,14 @@
       display: inline;
     }
 
+    ul li::after {
+      content: ' · ';
+    }
+
+    ul li:last-child::after {
+      content: '';
+    }
+
     p {
       color: hsla(var(--primary-text-color_hsl), 0.8);
       font-size: 13px;
