@@ -18,10 +18,6 @@ class ProfileMediaPanel extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
   };
 
-  state = {
-    width: 255,
-  };
-
   handleOpenMedia = attachment => {
     if (attachment.get('type') === 'video') {
       this.props.dispatch(openModal('VIDEO', { media: attachment, status: attachment.get('status') }));
@@ -41,7 +37,6 @@ class ProfileMediaPanel extends ImmutablePureComponent {
 
   render() {
     const { attachments } = this.props;
-    const { width } = this.state;
     const nineAttachments = attachments.slice(0, 9);
 
     if (attachments.isEmpty()) {
@@ -62,7 +57,7 @@ class ProfileMediaPanel extends ImmutablePureComponent {
               <MediaItem
                 key={`${attachment.getIn(['status', 'id'])}+${attachment.get('id')}`}
                 attachment={attachment}
-                displayWidth={width}
+                displayWidth={255}
                 onOpenMedia={this.handleOpenMedia}
               />
             ))}
