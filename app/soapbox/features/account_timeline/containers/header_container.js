@@ -8,8 +8,8 @@ import {
   blockAccount,
   unblockAccount,
   unmuteAccount,
-  pinAccount,
-  unpinAccount,
+  // pinAccount,
+  // unpinAccount,
 } from '../../../actions/accounts';
 import {
   mentionCompose,
@@ -95,13 +95,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onEndorseToggle(account) {
-    if (account.getIn(['relationship', 'endorsed'])) {
-      dispatch(unpinAccount(account.get('id')));
-    } else {
-      dispatch(pinAccount(account.get('id')));
-    }
-  },
+  // onEndorseToggle(account) {
+  //   if (account.getIn(['relationship', 'endorsed'])) {
+  //     dispatch(unpinAccount(account.get('id')));
+  //   } else {
+  //     dispatch(pinAccount(account.get('id')));
+  //   }
+  // },
 
   onReport(account) {
     dispatch(initReport(account));
