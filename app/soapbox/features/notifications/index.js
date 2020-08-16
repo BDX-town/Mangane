@@ -20,6 +20,7 @@ import ScrollableList from '../../components/scrollable_list';
 import LoadGap from '../../components/load_gap';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import { getSettings } from 'soapbox/actions/settings';
+import LoadingIndicator from '../../components/loading_indicator';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -163,18 +164,25 @@ class Notifications extends React.PureComponent {
     this.scrollableContent = scrollableContent;
 
     const scrollContainer = (
-      <ScrollableList
-        scrollKey='notifications'
-        isLoading={isLoading}
-        showLoading={isLoading && notifications.size === 0}
-        hasMore={hasMore}
-        emptyMessage={emptyMessage}
-        onLoadMore={this.handleLoadOlder}
-        onScrollToTop={this.handleScrollToTop}
-        onScroll={this.handleScroll}
-      >
-        {scrollableContent}
-      </ScrollableList>
+      <div>
+        <ScrollableList
+          scrollKey='notifications'
+          isLoading={isLoading}
+          // showLoading={isLoading && notifications.size === 0}
+          hasMore={hasMore}
+          emptyMessage={emptyMessage}
+          onLoadMore={this.handleLoadOlder}
+          onScrollToTop={this.handleScrollToTop}
+          onScroll={this.handleScroll}
+        >
+          {scrollableContent}
+        </ScrollableList>
+        {isLoading &&
+          <div className='slist__append'>
+            <LoadingIndicator />
+          </div>
+        }
+      </div>
     );
 
     return (

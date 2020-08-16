@@ -8,6 +8,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoadGap from './load_gap';
 import ScrollableList from './scrollable_list';
 import TimelineQueueButtonHeader from './timeline_queue_button_header';
+import LoadingIndicator from './loading_indicator';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
@@ -148,9 +149,13 @@ export default class StatusList extends ImmutablePureComponent {
         count={totalQueuedItemsCount}
         message={messages.queue}
       />,
-      <ScrollableList key='scrollable-list' {...other} isLoading={isLoading} showLoading={isLoading && statusIds.size === 0} onLoadMore={onLoadMore && this.handleLoadOlder} ref={this.setRef}>
+      <ScrollableList key='scrollable-list' {...other} isLoading={isLoading} onLoadMore={onLoadMore && this.handleLoadOlder} ref={this.setRef}>
         {scrollableContent}
       </ScrollableList>,
+      isLoading &&
+        <div className='slist__append'>
+          <LoadingIndicator />
+        </div>,
     ];
   }
 
