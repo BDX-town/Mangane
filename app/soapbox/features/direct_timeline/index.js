@@ -1,18 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { mountConversations, unmountConversations, expandConversations } from '../../actions/conversations';
+import { expandDirectTimeline } from '../../actions/timelines';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
-import ConversationsListContainer from '../conversations/containers/conversations_list_container';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
 });
 
-export default @connect()
+const mapStateToProps = state => ({
+  hasUnread: state.getIn(['timelines', 'direct', 'unread']) > 0,
+});
+
+export default @connect(mapStateToProps)
 @injectIntl
 class DirectTimeline extends React.PureComponent {
 
@@ -25,14 +29,11 @@ class DirectTimeline extends React.PureComponent {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch(mountConversations());
-    dispatch(expandConversations());
+    dispatch(expandDirectTimeline());
     this.disconnect = dispatch(connectDirectStream());
   }
 
   componentWillUnmount() {
-    this.props.dispatch(unmountConversations());
-
     if (this.disconnect) {
       this.disconnect();
       this.disconnect = null;
@@ -40,7 +41,7 @@ class DirectTimeline extends React.PureComponent {
   }
 
   handleLoadMore = maxId => {
-    this.props.dispatch(expandConversations({ maxId }));
+    this.props.dispatch(expandDirectTimeline({ maxId }));
   }
 
   render() {
@@ -48,9 +49,14 @@ class DirectTimeline extends React.PureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
-        <ColumnHeader icon='envelope' active={hasUnread} title={intl.formatMessage(messages.title)} />
+        <ColumnHeader
+          icon='envelope'
+          active={hasUnread}
+          title={intl.formatMessage(messages.title)}
+          onPin={this.handlePin}
+        />
 
-        <ConversationsListContainer
+        <StatusListContainer
           scrollKey='direct_timeline'
           timelineId='direct'
           onLoadMore={this.handleLoadMore}
