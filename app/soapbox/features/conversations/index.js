@@ -6,7 +6,7 @@ import ColumnHeader from '../../components/column_header';
 import { mountConversations, unmountConversations, expandConversations } from '../../actions/conversations';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
-import ConversationsListContainer from '../conversations/containers/conversations_list_container';
+import ConversationsListContainer from './containers/conversations_list_container';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
@@ -14,7 +14,7 @@ const messages = defineMessages({
 
 export default @connect()
 @injectIntl
-class DirectTimeline extends React.PureComponent {
+class ConversationsTimeline extends React.PureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
