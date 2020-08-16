@@ -26,11 +26,7 @@ button.column-header__button.active {
   }
 }
 
-.focusable:focus .status.status-direct {
-  border-radius: 0 0 10px 10px;
-}
-
-.status.status-direct:not(.read) {
+.load-more:hover {
   border-radius: 0 0 10px 10px;
 }
 
