@@ -142,6 +142,16 @@ class Status extends ImmutablePureComponent {
   componentDidMount() {
     this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
+    const { ancestorsIds } = this.props;
+
+    if (ancestorsIds && ancestorsIds.size > 0) {
+      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
+
+      window.requestAnimationFrame(() => {
+        element.scrollIntoView(true);
+      });
+      this._scrolledIntoView = true;
+    }
   }
 
   handleToggleMediaVisibility = () => {
@@ -391,8 +401,7 @@ class Status extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { params, status } = this.props;
-    const { ancestorsIds } = prevProps;
+    const { params, status, ancestorsIds } = this.props;
 
     if (params.statusId !== prevProps.params.statusId && params.statusId) {
       this._scrolledIntoView = false;
@@ -403,11 +412,7 @@ class Status extends ImmutablePureComponent {
       this.setState({ showMedia: defaultMediaVisibility(status), loadedStatusId: status.get('id') });
     }
 
-    if (this._scrolledIntoView) {
-      return;
-    }
-
-    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
+    if (ancestorsIds && ancestorsIds.size > 0) {
       const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
 
       window.requestAnimationFrame(() => {
