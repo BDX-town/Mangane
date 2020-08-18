@@ -72,9 +72,9 @@ export default class Header extends ImmutablePureComponent {
     this.props.onUnblockDomain(domain);
   }
 
-  handleEndorseToggle = () => {
-    this.props.onEndorseToggle(this.props.account);
-  }
+  // handleEndorseToggle = () => {
+  //   this.props.onEndorseToggle(this.props.account);
+  // }
 
   handleAddToList = () => {
     this.props.onAddToList(this.props.account);

@@ -14,26 +14,26 @@
   }
 
   ul,
-  ol,
-  blockquote {
-    margin-bottom: 20px;
-    margin-left: 15px;
+  ol {
+    margin-left: 20px;
   }
 
   ul {
-    list-style: disc inside none;
+    list-style: disc outside none;
+  }
+
+  ol {
+    list-style: decimal outside none;
   }
 
   li p {
     display: inline-block;
   }
 
-  ol {
-    list-style: decimal inside none;
-  }
-
-  blockquote p {
-    font-style: italic;
+  blockquote {
+    padding: 5px 0 5px 15px;
+    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
+    color: var(--primary-text-color--faint);
   }
 
   code {
@@ -58,6 +58,15 @@
     word-break: break-all;
     background-color: var(--background-color);
   }
+}
+
+.status__content > ul,
+.status__content > ol {
+  margin-bottom: 20px;
+}
+
+.status__content > blockquote {
+  margin-bottom: 20px;
 }
 
 .status__content--with-action {

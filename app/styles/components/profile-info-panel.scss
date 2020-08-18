@@ -128,3 +128,21 @@
     }
   }
 }
+
+.profile-info-panel.deactivated {
+  .profile-info-panel__name-content {
+    text-transform: uppercase;
+  }
+
+  .profile-info-panel__name-content::before {
+    content: '[';
+  }
+
+  .profile-info-panel__name-content::after {
+    content: ']';
+  }
+
+  .profile-info-panel-content__deactivated {
+    color: var(--primary-text-color--faint);
+  }
+}

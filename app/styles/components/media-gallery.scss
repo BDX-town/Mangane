@@ -5,6 +5,7 @@
   border-radius: 4px;
   position: relative;
   width: 100%;
+  height: auto;
   background-color: var(--brand-color--faint);
 }
 
@@ -41,7 +42,7 @@
     width: 100%;
 
     img {
-      object-fit: contain;
+      object-fit: cover;
     }
   }
 
@@ -60,6 +61,18 @@
     opacity: 0.9;
     transition: opacity 0.1s ease;
     line-height: 18px;
+  }
+}
+
+.status__wrapper, .detailed-status__wrapper {
+  .media-gallery__item-thumbnail {
+    &,
+    .still-image {
+
+      img {
+        object-fit: contain;
+      }
+    }
   }
 }
 

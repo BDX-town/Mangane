@@ -11,10 +11,12 @@ import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
 import { List as ImmutableList } from 'immutable';
 import { acctFull, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
+  deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
 });
 
 const dateFormatOptions = {
@@ -57,38 +59,49 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const badge = account.get('bot') ? (<div className='account-role bot'><FormattedMessage id='account.badges.bot' defaultMessage='Bot' /></div>) : null;
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
-    const displayNameHtml = { __html: account.get('display_name_html') };
+    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
+    const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
-    const verified = account.get('pleroma').get('tags').includes('verified');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     return (
-      <div className='profile-info-panel'>
+      <div className={classNames('profile-info-panel', { 'deactivated': deactivated })} >
         <div className='profile-info-panel__content'>
 
           <div className='profile-info-panel-content__name'>
             <h1>
-              <span dangerouslySetInnerHTML={displayNameHtml} />
+              <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {badge}
-              <small>@{acctFull(account)} {lockedIcon}</small>
+              { !deactivated && <small>@{acctFull(account)} {lockedIcon}</small> }
             </h1>
           </div>
 
-          <div className='profile-info-panel-content__badges'>
-            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
-            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
-            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-            {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-              <Icon id='calendar' />
-              <FormattedMessage
-                id='account.member_since' defaultMessage='Member since {date}' values={{
-                  date: memberSinceDate,
-                }}
-              />
-            </div>}
-          </div>
+          { !deactivated &&
+            <div className='profile-info-panel-content__badges'>
+              {isAdmin(account) && <Badge slug='admin' title='Admin' />}
+              {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
+              {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
+              {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
+                <Icon id='calendar' />
+                <FormattedMessage
+                  id='account.member_since' defaultMessage='Member since {date}' values={{
+                    date: memberSinceDate,
+                  }}
+                />
+              </div>}
+            </div>
+          }
 
-          {
+          { deactivated &&
+            <div className='profile-info-panel-content__deactivated'>
+              <FormattedMessage
+                id='account.deactivated_description' defaultMessage='This account has been deactivated.'
+              />
+            </div>
+          }
+
+          { !deactivated &&
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
