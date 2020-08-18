@@ -101,7 +101,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             </div>
           }
 
-          {
+          { !deactivated &&
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
