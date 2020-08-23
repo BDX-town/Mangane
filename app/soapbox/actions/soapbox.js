@@ -9,18 +9,20 @@ export function fetchSoapboxConfig() {
       if (response.data.soapbox_fe) {
         dispatch(importSoapboxConfig(response.data.soapbox_fe));
       } else {
-        api(getState).get('/instance/soapbox.json').then(response => {
-          dispatch(importSoapboxConfig(response.data));
-        }).catch(error => {
-          dispatch(soapboxConfigFail(error));
-        });
+        dispatch(fetchSoapboxJson());
       }
     }).catch(error => {
-      api(getState).get('/instance/soapbox.json').then(response => {
-        dispatch(importSoapboxConfig(response.data));
-      }).catch(error => {
-        dispatch(soapboxConfigFail(error));
-      });
+      dispatch(fetchSoapboxJson());
+    });
+  };
+}
+
+export function fetchSoapboxJson() {
+  return (dispatch, getState) => {
+    api(getState).get('/instance/soapbox.json').then(response => {
+      dispatch(importSoapboxConfig(response.data));
+    }).catch(error => {
+      dispatch(soapboxConfigFail(error));
     });
   };
 }
