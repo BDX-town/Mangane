@@ -22,6 +22,7 @@ import {
 } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -34,11 +35,9 @@ const messages = defineMessages({
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
 });
 
-const mapStateToProps = state => {
-  return {
-    soapbox: state.get('soapbox'),
-  };
-};
+const mapStateToProps = state => ({
+  soapbox: getSoapboxConfig(state),
+});
 
 export default @connect(mapStateToProps)
 @injectIntl

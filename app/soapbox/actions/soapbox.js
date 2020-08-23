@@ -1,7 +1,28 @@
 import api from '../api';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
+
+const defaultConfig = ImmutableMap({
+  logo: '',
+  banner: '',
+  brandColor: '#0482d8', // Azure
+  customCss: ImmutableList(),
+  promoPanel: ImmutableMap({
+    items: ImmutableList(),
+  }),
+  extensions: ImmutableMap(),
+  defaultSettings: ImmutableMap(),
+  copyright: '♥2020. Copying is an act of love. Please copy and share.',
+  navlinks: ImmutableMap({
+    homeFooter: ImmutableList(),
+  }),
+});
+
+export function getSoapboxConfig(state) {
+  return defaultConfig.mergeDeep(state.get('soapbox'));
+}
 
 export function fetchSoapboxConfig() {
   return (dispatch, getState) => {

@@ -6,9 +6,9 @@ import soapbox from 'soapbox/__fixtures__/soapbox.json';
 import soapboxConfig from 'soapbox/__fixtures__/admin_api_frontend_config.json';
 
 describe('soapbox reducer', () => {
-  // it('should return the initial state', () => {
-  //   expect(reducer(undefined, {})).toEqual(ImmutableMap());
-  // });
+  it('should return the initial state', () => {
+    expect(reducer(undefined, {})).toEqual(ImmutableMap());
+  });
 
   it('should handle SOAPBOX_CONFIG_REQUEST_SUCCESS', () => {
     const state = ImmutableMap({ brandColor: '#354e91' });

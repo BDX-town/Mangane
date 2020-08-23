@@ -13,6 +13,7 @@ import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
 import ThemeToggle from '../../ui/components/theme_toggle';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -133,7 +134,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    logo: state.getIn(['soapbox', 'logo']),
+    logo: getSoapboxConfig(state).get('logo'),
   };
 };
 
