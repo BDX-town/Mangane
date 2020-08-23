@@ -20,7 +20,7 @@ import {
   List as ImmutableList,
   getIn,
 } from 'immutable';
-import { postSoapbox } from 'soapbox/actions/soapbox';
+import { updateAdminConfig } from 'soapbox/actions/admin';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
@@ -145,7 +145,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(postSoapbox(this.getParams())).then(() => {
+    dispatch(updateAdminConfig(this.getParams())).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
