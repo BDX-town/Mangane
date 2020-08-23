@@ -182,8 +182,8 @@ export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
 }
 
-export function ConfigSoapbox() {
-  return import(/* webpackChunkName: "features/configuration" */'../../configuration');
+export function SoapboxConfig() {
+  return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
 }
 
 export function PasswordReset() {

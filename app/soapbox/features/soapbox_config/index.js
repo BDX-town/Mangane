@@ -42,7 +42,7 @@ const mapStateToProps = state => {
 
 export default @connect(mapStateToProps)
 @injectIntl
-class ConfigSoapbox extends ImmutablePureComponent {
+class SoapboxConfig extends ImmutablePureComponent {
 
   static propTypes = {
     soapbox: ImmutablePropTypes.map,
