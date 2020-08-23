@@ -17,6 +17,7 @@ const messages = defineMessages({
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
   requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
+  requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
 });
@@ -55,7 +56,12 @@ class ActionButton extends ImmutablePureComponent {
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    small: PropTypes.bool,
   };
+
+  static defaultProps = {
+    small: false,
+  }
 
   componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
@@ -74,7 +80,7 @@ class ActionButton extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, me } = this.props;
+    const { account, intl, me, small } = this.props;
     let actionBtn = null;
 
     if (!account || !me) return actionBtn;
@@ -83,7 +89,7 @@ class ActionButton extends ImmutablePureComponent {
       if (!account.get('relationship')) { // Wait until the relationship is loaded
         //
       } else if (account.getIn(['relationship', 'requested'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
+        actionBtn = <Button className='logo-button' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
       } else if (!account.getIn(['relationship', 'blocking'])) {
         actionBtn = <Button disabled={account.getIn(['relationship', 'blocked_by'])} className={classNames('logo-button', { 'button--destructive': account.getIn(['relationship', 'following']) })} text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)} onClick={this.handleFollow} />;
       } else if (account.getIn(['relationship', 'blocking'])) {

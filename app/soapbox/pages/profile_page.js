@@ -9,6 +9,7 @@ import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
+import ProfileMediaPanel from '../features/ui/components/profile_media_panel';
 import { acctFull } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
@@ -81,6 +82,7 @@ class ProfilePage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 <SignUpPanel />
                 {features.suggestions && <WhoToFollowPanel />}
+                {account && <ProfileMediaPanel account={account} />}
                 <LinkFooter />
               </div>
             </div>

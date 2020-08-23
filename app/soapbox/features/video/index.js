@@ -396,7 +396,7 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { preview, src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
+    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
 
@@ -445,7 +445,6 @@ class Video extends React.PureComponent {
         {revealed && <video
           ref={this.setVideoRef}
           src={src}
-          poster={preview}
           // preload={this.getPreload()}
           loop
           role='button'

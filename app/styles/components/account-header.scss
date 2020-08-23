@@ -201,11 +201,15 @@
   @media screen and (max-width: 895px) {
     .account-mobile-container {
       display: block;
-      background: var(--accent-color--faint);
+      background: var(--background-color);
       margin-top: 10px;
       position: relative;
       padding: 10px 10px 0;
       &--nonuser {padding: 10px 10px 15px;}
+    }
+
+    .account-mobile-container.deactivated {
+      margin-top: 50px;
     }
   }
 } // end .account__header

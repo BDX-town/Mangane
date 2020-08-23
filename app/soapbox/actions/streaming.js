@@ -4,7 +4,7 @@ import {
   expandHomeTimeline,
   connectTimeline,
   disconnectTimeline,
-  updateTimelineQueue,
+  processTimelineUpdate,
 } from './timelines';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateConversations } from './conversations';
@@ -12,10 +12,17 @@ import { fetchFilters } from './filters';
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
+const validLocale = locale => Object.keys(messages).includes(locale);
+
+const getLocale = state => {
+  const locale = getSettings(state).get('locale');
+  return validLocale(locale) ? locale : 'en';
+};
+
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
   return connectStream (path, pollingRefresh, (dispatch, getState) => {
-    const locale = getSettings(getState()).get('locale');
+    const locale = getLocale(getState());
 
     return {
       onConnect() {
@@ -29,7 +36,7 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
       onReceive(data) {
         switch(data.event) {
         case 'update':
-          dispatch(updateTimelineQueue(timelineId, JSON.parse(data.payload), accept));
+          dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
           break;
         case 'delete':
           dispatch(deleteFromTimelines(data.payload));

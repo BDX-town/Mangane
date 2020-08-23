@@ -75,7 +75,7 @@ const defaultSettings = ImmutableMap({
 
   community: ImmutableMap({
     shows: ImmutableMap({
-      reblog: true,
+      reblog: false,
       reply: true,
     }),
     other: ImmutableMap({

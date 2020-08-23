@@ -27,6 +27,7 @@ const messages = defineMessages({
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
@@ -131,7 +132,7 @@ class Header extends ImmutablePureComponent {
         }
 
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
-        menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (version.software === 'Pleroma') {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
@@ -221,12 +222,12 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
 
     const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
-
     const avatarSize = isSmallScreen ? 90 : 200;
+    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved') })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing })}>
+        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
           <div className='account__header__info'>
             {info}
           </div>
@@ -238,56 +239,58 @@ class Header extends ImmutablePureComponent {
           <div className='account__header__extra'>
 
             <div className='account__header__avatar'>
-              <Avatar account={account} size={avatarSize} />
+              { !deactivated && <Avatar account={account} size={avatarSize} /> }
             </div>
 
-            <div className='account__header__extra__links'>
+            { !deactivated &&
+              <div className='account__header__extra__links'>
 
-              <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                <span>{shortNumberFormat(account.get('statuses_count'))}</span>
-                <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
-              </NavLink>
+                <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
+                  <span>{shortNumberFormat(account.get('statuses_count'))}</span>
+                  <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
+                </NavLink>
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                <span>{shortNumberFormat(account.get('following_count'))}</span>
-                <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
-              </NavLink>
+                <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                  <span>{shortNumberFormat(account.get('following_count'))}</span>
+                  <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
+                </NavLink>
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                <span>{shortNumberFormat(account.get('followers_count'))}</span>
-                <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
-              </NavLink>
+                <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                  <span>{shortNumberFormat(account.get('followers_count'))}</span>
+                  <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
+                </NavLink>
 
-              {
-                account.get('id') === me &&
-                <div>
-                  <NavLink
-                    exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
-                  >
-                    { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
-                    <span>•</span>
-                    <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
-                  </NavLink>
-                  <NavLink
-                    exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
-                  >
-                    { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
-                    <span>•</span>
-                    <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
-                  </NavLink>
-                </div>
-              }
-            </div>
+                {
+                  account.get('id') === me &&
+                  <div>
+                    <NavLink
+                      exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
+                    >
+                      { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
+                      <span>•</span>
+                      <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
+                    </NavLink>
+                    <NavLink
+                      exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
+                    >
+                      { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
+                      <span>•</span>
+                      <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
+                    </NavLink>
+                  </div>
+                }
+              </div>
+            }
 
             {
               isSmallScreen &&
-              <div className='account-mobile-container'>
+              <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
                 <ProfileInfoPanel username={username} account={account} />
               </div>
             }
 
             {
-              me &&
+              me && !deactivated &&
               <div className='account__header__extra__buttons'>
                 <ActionButton account={account} />
                 {account.get('id') !== me &&
