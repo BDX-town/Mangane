@@ -21,6 +21,7 @@ import {
   getIn,
 } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_settings', defaultMessage: 'Soapbox settings' },
@@ -354,6 +355,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   }
                   <div className='actions'>
                     <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddPromoPanelItem}>
+                      <Icon id='plus-circle' />
                       <FormattedMessage id='soapbox_settings.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                     </div>
                   </div>
@@ -383,6 +385,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
                   }
                   <div className='actions'>
                     <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddHomeFooterItem}>
+                      <Icon id='plus-circle' />
                       <FormattedMessage id='soapbox_settings.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                     </div>
                   </div>
@@ -391,7 +394,7 @@ class ConfigSoapbox extends ImmutablePureComponent {
               <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_settings.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='You can have custom CSS definitions' />
+                  <FormattedMessage id='soapbox_settings.hints.custom_css_fields' defaultMessage='Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`' />
                 </span>
                 {
                   customCssItems.valueSeq().map((field, i) => (
@@ -407,7 +410,8 @@ class ConfigSoapbox extends ImmutablePureComponent {
                 }
                 <div className='actions'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddCssItem}>
-                    <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add new Custom CSS item' />
+                    <Icon id='plus-circle' />
+                    <FormattedMessage id='soapbox_settings.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
                   </div>
                 </div>
               </div>

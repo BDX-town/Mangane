@@ -5,6 +5,7 @@ import {
 } from '../actions/soapbox';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
+// TODO: Handle this more like getSettings()
 const initialState = ImmutableMap({
   logo: '',
   banner: '',
