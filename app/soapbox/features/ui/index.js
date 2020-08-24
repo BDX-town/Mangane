@@ -16,6 +16,7 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
+import { fetchReports } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
@@ -420,6 +421,7 @@ class UI extends React.PureComponent {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
       // this.props.dispatch(fetchGroups('member'));
+      this.props.dispatch(fetchReports());
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
