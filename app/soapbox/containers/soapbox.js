@@ -14,9 +14,8 @@ import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
-import { hydrateStore } from '../actions/store';
+import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
-import initialState from '../initial_state';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -30,9 +29,8 @@ import messages from 'soapbox/locales/messages';
 const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
-const hydrateAction = hydrateStore(initialState);
 
-store.dispatch(hydrateAction);
+store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
 store.dispatch(fetchSoapboxConfig());
