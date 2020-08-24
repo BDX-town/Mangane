@@ -989,3 +989,8 @@ code {
   max-width: 100px;
   max-height: 100px;
 }
+
+.code-editor textarea {
+  font-family: monospace;
+  white-space: pre;
+}

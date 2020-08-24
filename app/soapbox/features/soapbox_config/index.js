@@ -11,10 +11,11 @@ import {
   TextInput,
   Checkbox,
   FileChooser,
+  SimpleTextarea,
   ColorWithPicker,
   FileChooserLogo,
 } from 'soapbox/features/forms';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
 import { defaultConfig } from 'soapbox/actions/soapbox';
@@ -29,6 +30,8 @@ const messages = defineMessages({
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Raw JSON data' },
+  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly. You need to paste it in for now.' },
 });
 
 const templates = {
@@ -58,6 +61,10 @@ class SoapboxConfig extends ImmutablePureComponent {
   setConfig = (path, value) => {
     const { soapbox } = this.state;
     const config = soapbox.setIn(path, value);
+    this.setState({ soapbox: config });
+  };
+
+  putConfig = config => {
     this.setState({ soapbox: config });
   };
 
@@ -138,13 +145,22 @@ class SoapboxConfig extends ImmutablePureComponent {
     );
   };
 
+  handleEditJSON = e => {
+    try {
+      const data = fromJS(JSON.parse(e.target.value));
+      this.putConfig(data);
+    } catch {
+      // do nothing
+    }
+  }
+
   getSoapboxConfig = () => {
     return defaultConfig.mergeDeep(this.state.soapbox);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.soapbox !== this.props.soapbox) {
-      this.setState({ soapbox: this.props.soapbox });
+      this.putConfig(this.props.soapbox);
     }
   }
 
@@ -312,6 +328,17 @@ class SoapboxConfig extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_config.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
                   </div>
                 </div>
+              </div>
+            </FieldsGroup>
+            <FieldsGroup>
+              <div className='code-editor'>
+                <SimpleTextarea
+                  label={intl.formatMessage(messages.rawJSONLabel)}
+                  hint={intl.formatMessage(messages.rawJSONHint)}
+                  value={JSON.stringify(this.state.soapbox, null, 2)}
+                  onChange={this.handleEditJSON}
+                  rows={12}
+                />
               </div>
             </FieldsGroup>
           </fieldset>
