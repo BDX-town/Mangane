@@ -18,6 +18,7 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
 import { defaultConfig } from 'soapbox/actions/soapbox';
+import { uploadMedia } from 'soapbox/actions/media';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -90,6 +91,16 @@ class SoapboxConfig extends ImmutablePureComponent {
     };
   };
 
+  handleFileChange = path => {
+    return e => {
+      const data = new FormData();
+      data.append('file', e.target.files[0]);
+      this.props.dispatch(uploadMedia(data)).then(({ data }) => {
+        this.handleChange(path, e => data.url)(e);
+      }).catch(() => {});
+    };
+  };
+
   handleAddItem = (path, template) => {
     return e => {
       this.setConfig(
@@ -139,7 +150,7 @@ class SoapboxConfig extends ImmutablePureComponent {
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
-              <div className='fields-row'>
+              <div className='fields-row file-picker'>
                 <div className='fields-row__column fields-row__column-6'>
                   <img src={soapbox.get('logo')} />
                 </div>
@@ -148,11 +159,11 @@ class SoapboxConfig extends ImmutablePureComponent {
                     label={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
                     name='logo'
                     hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio' />}
-                    // onChange={this.handleFileChange}
+                    onChange={this.handleFileChange(['logo'])}
                   />
                 </div>
               </div>
-              <div className='fields-row'>
+              <div className='fields-row file-picker'>
                 <div className='fields-row__column fields-row__column-6'>
                   <img src={soapbox.get('banner')} />
                 </div>
@@ -161,7 +172,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     label={<FormattedMessage id='soapbox_config.fields.banner_label' defaultMessage='Banner' />}
                     name='banner'
                     hint={<FormattedMessage id='soapbox_config.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
-                    // onChange={this.handleFileChange}
+                    onChange={this.handleFileChange(['banner'])}
                   />
                 </div>
               </div>
