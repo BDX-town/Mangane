@@ -77,7 +77,7 @@ class SoapboxConfig extends ImmutablePureComponent {
         group: ':pleroma',
         key: ':frontend_configurations',
         value: [{
-          tuple: [':soapbox_fe', soapbox.toJSON()],
+          tuple: [':soapbox_fe', soapbox.toJS()],
         }],
       }],
     };
