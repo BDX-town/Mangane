@@ -2,6 +2,7 @@ import {
   INSTANCE_FETCH_SUCCESS,
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
+import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const nodeinfoToInstance = nodeinfo => {
@@ -31,8 +32,15 @@ const initialState = ImmutableMap({
   }),
 });
 
+const preloadImport = (state, action, path) => {
+  const data = action.data[path];
+  return data ? initialState.mergeDeep(fromJS(data)) : state;
+};
+
 export default function instance(state = initialState, action) {
   switch(action.type) {
+  case PRELOAD_IMPORT:
+    return preloadImport(state, action, '/api/v1/instance');
   case INSTANCE_FETCH_SUCCESS:
     return initialState.mergeDeep(fromJS(action.instance));
   case NODEINFO_FETCH_SUCCESS:
