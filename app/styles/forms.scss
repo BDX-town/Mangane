@@ -999,3 +999,10 @@ code {
   border-color: $error-red !important;
   color: $error-red;
 }
+
+.input .row .fa-times-circle {
+  position: absolute;
+  right: 7px;
+  cursor: pointer;
+  color: $error-red;
+}
