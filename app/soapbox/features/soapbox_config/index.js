@@ -110,6 +110,13 @@ class SoapboxConfig extends ImmutablePureComponent {
     };
   };
 
+  handleDeleteItem = path => {
+    return e => {
+      const soapbox = this.state.soapbox.deleteIn(path);
+      this.setState({ soapbox });
+    };
+  };
+
   handleItemChange = (path, key, field, template) => {
     return this.handleChange(
       path, (e) =>
@@ -238,6 +245,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                           value={field.get('url')}
                           onChange={this.handlePromoItemChange(i, 'url', field)}
                         />
+                        <a onClick={this.handleDeleteItem(['promoPanel', 'items', i])}>Delete</a>
                       </div>
                     ))
                   }
@@ -268,6 +276,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                           value={field.get('url')}
                           onChange={this.handleHomeFooterItemChange(i, 'url', field)}
                         />
+                        <a onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])}>Delete</a>
                       </div>
                     ))
                   }
@@ -293,6 +302,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field}
                         onChange={this.handleChange(['customCss', i], (e) => e.target.value)}
                       />
+                      <a onClick={this.handleDeleteItem(['customCss', i])}>Delete</a>
                     </div>
                   ))
                 }

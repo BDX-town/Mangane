@@ -6,9 +6,7 @@ const initialState = ImmutableMap();
 
 const updateFromAdmin = (state, config) => {
   // TODO: Generalize this with an API similar to `Pleroma.Config` in Pleroma BE
-  const soapboxConfig = config.getIn(['configs', 0, 'value', 0, 'tuple', 1]);
-  if (soapboxConfig) return state.mergeDeep(soapboxConfig);
-  return state;
+  return config.getIn(['configs', 0, 'value', 0, 'tuple', 1], state);
 };
 
 export default function soapbox(state = initialState, action) {
