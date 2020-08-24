@@ -82,7 +82,7 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.keyboard_shortcuts), action: this.handleHotkeyClick });
     if (isStaff) {
       menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin', newTab: true });
-      menu.push({ text: intl.formatMessage(messages.soapbox_config), to: '/admin' });
+      menu.push({ text: intl.formatMessage(messages.soapbox_config), to: '/soapbox/config' });
     }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
     menu.push({ text: intl.formatMessage(messages.security), to: '/auth/edit' });
