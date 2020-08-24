@@ -146,7 +146,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     const soapbox = this.getSoapboxConfig();
 
     return (
-      <Column icon='shield' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>

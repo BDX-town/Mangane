@@ -178,7 +178,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a> }
               { isStaff && <NavLink className='sidebar-menu-item' to='/admin' onClick={onClose}>
-                <Icon id='shield' />
+                <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
               </NavLink> }
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
