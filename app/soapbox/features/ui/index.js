@@ -35,6 +35,7 @@ import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
+import { isStaff } from 'soapbox/utils/accounts';
 
 import {
   Status,
@@ -90,7 +91,7 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const meUsername = state.getIn(['accounts', me, 'username']);
+  const account = state.getIn(['accounts', me]);
 
   return {
     isComposing: state.getIn(['compose', 'is_composing']),
@@ -100,7 +101,7 @@ const mapStateToProps = state => {
     accessToken: state.getIn(['auth', 'user', 'access_token']),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
-    meUsername,
+    account,
   };
 };
 
@@ -285,7 +286,7 @@ class UI extends React.PureComponent {
     dropdownMenuIsOpen: PropTypes.bool,
     me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
-    meUsername: PropTypes.string,
+    account: PropTypes.object,
   };
 
   state = {
@@ -399,8 +400,8 @@ class UI extends React.PureComponent {
   }
 
   componentDidMount() {
-    const { me } = this.props;
-    if (!me) return;
+    const { account } = this.props;
+    if (!account) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -417,11 +418,11 @@ class UI extends React.PureComponent {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
 
-    if (me) {
+    if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
       // this.props.dispatch(fetchGroups('member'));
-      this.props.dispatch(fetchReports());
+      if (isStaff(account)) this.props.dispatch(fetchReports());
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
@@ -524,18 +525,24 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyGoToFavourites = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}/favorites`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}/pins`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}`);
   }
 
   handleHotkeyGoToBlocked = () => {
