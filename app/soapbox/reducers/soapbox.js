@@ -11,7 +11,7 @@ const updateFromAdmin = (state, config) => {
   try {
     return ConfigDB.find(configs, ':pleroma', ':frontend_configurations')
       .get('value')
-      .find(value => value.getIn(['tuple', 0] === ':soapbox_fe'))
+      .find(value => value.getIn(['tuple', 0]) === ':soapbox_fe')
       .getIn(['tuple', 1]);
   } catch {
     return state;
