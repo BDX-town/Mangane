@@ -994,3 +994,8 @@ code {
   font-family: monospace;
   white-space: pre;
 }
+
+.code-editor--invalid textarea {
+  border-color: $error-red !important;
+  color: $error-red;
+}

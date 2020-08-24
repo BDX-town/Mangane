@@ -31,7 +31,7 @@ const messages = defineMessages({
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Raw JSON data' },
-  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly. You need to paste it in for now.' },
+  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly.' },
 });
 
 const templates = {
@@ -56,16 +56,18 @@ class SoapboxConfig extends ImmutablePureComponent {
   state = {
     isLoading: false,
     soapbox: this.props.soapbox,
+    rawJSON: JSON.stringify(this.props.soapbox, null, 2),
+    jsonValid: true,
   }
 
   setConfig = (path, value) => {
     const { soapbox } = this.state;
     const config = soapbox.setIn(path, value);
-    this.setState({ soapbox: config });
+    this.setState({ soapbox: config, jsonValid: true });
   };
 
   putConfig = config => {
-    this.setState({ soapbox: config });
+    this.setState({ soapbox: config, jsonValid: true });
   };
 
   getParams = () => {
@@ -146,12 +148,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   };
 
   handleEditJSON = e => {
-    try {
-      const data = fromJS(JSON.parse(e.target.value));
-      this.putConfig(data);
-    } catch {
-      // do nothing
-    }
+    this.setState({ rawJSON: e.target.value });
   }
 
   getSoapboxConfig = () => {
@@ -161,6 +158,19 @@ class SoapboxConfig extends ImmutablePureComponent {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.soapbox !== this.props.soapbox) {
       this.putConfig(this.props.soapbox);
+    }
+
+    if (prevState.soapbox !== this.state.soapbox) {
+      this.setState({ rawJSON: JSON.stringify(this.state.soapbox, null, 2) });
+    }
+
+    if (prevState.rawJSON !== this.state.rawJSON) {
+      try {
+        const data = fromJS(JSON.parse(this.state.rawJSON));
+        this.putConfig(data);
+      } catch {
+        this.setState({ jsonValid: false });
+      }
     }
   }
 
@@ -331,11 +341,11 @@ class SoapboxConfig extends ImmutablePureComponent {
               </div>
             </FieldsGroup>
             <FieldsGroup>
-              <div className='code-editor'>
+              <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
                 <SimpleTextarea
                   label={intl.formatMessage(messages.rawJSONLabel)}
                   hint={intl.formatMessage(messages.rawJSONHint)}
-                  value={JSON.stringify(this.state.soapbox, null, 2)}
+                  value={this.state.rawJSON}
                   onChange={this.handleEditJSON}
                   rows={12}
                 />
