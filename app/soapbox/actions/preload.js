@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash';
 
-const PRELOAD_IMPORT = 'PRELOAD_IMPORT';
+export const PRELOAD_IMPORT = 'PRELOAD_IMPORT';
 
 // https://git.pleroma.social/pleroma/pleroma-fe/-/merge_requests/1176/diffs
 const decodeUTF8Base64 = (data) => {
