@@ -1,12 +1,21 @@
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin';
 import { SOAPBOX_CONFIG_REQUEST_SUCCESS } from '../actions/soapbox';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { ConfigDB } from 'soapbox/utils/config_db';
 
 const initialState = ImmutableMap();
 
 const updateFromAdmin = (state, config) => {
-  // TODO: Generalize this with an API similar to `Pleroma.Config` in Pleroma BE
-  return config.getIn(['configs', 0, 'value', 0, 'tuple', 1], state);
+  const configs = config.get('configs', ImmutableList());
+
+  try {
+    return ConfigDB.find(configs, ':pleroma', ':frontend_configurations')
+      .get('value')
+      .find(value => value.getIn(['tuple', 0] === ':soapbox_fe'))
+      .getIn(['tuple', 1]);
+  } catch {
+    return state;
+  }
 };
 
 export default function soapbox(state = initialState, action) {
