@@ -3,14 +3,19 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   reports: ImmutableList(),
-  report_count: 0,
+  open_report_count: 0,
 });
 
 export default function admin(state = initialState, action) {
   switch(action.type) {
   case ADMIN_REPORTS_FETCH_SUCCESS:
-    return state.set('reports', fromJS(action.data.reports))
-      .set('report_count', action.data.total);
+    if (action.params && action.params.state === 'open') {
+      return state
+        .set('reports', fromJS(action.data.reports))
+        .set('open_report_count', action.data.total);
+    } else {
+      return state.set('reports', fromJS(action.data.reports));
+    }
   default:
     return state;
   }

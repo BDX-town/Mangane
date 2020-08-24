@@ -25,7 +25,7 @@ export function fetchReports(params) {
   return (dispatch, getState) => {
     dispatch({ type: ADMIN_REPORTS_FETCH_REQUEST, params });
     return api(getState)
-      .get('/api/pleroma/admin/reports', params)
+      .get('/api/pleroma/admin/reports', { params })
       .then(({ data }) => {
         dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, data, params });
       }).catch(error => {

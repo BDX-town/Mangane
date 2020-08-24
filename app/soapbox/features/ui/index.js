@@ -422,7 +422,8 @@ class UI extends React.PureComponent {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
       // this.props.dispatch(fetchGroups('member'));
-      if (isStaff(account)) this.props.dispatch(fetchReports());
+      if (isStaff(account))
+        this.props.dispatch(fetchReports({ state: 'open' }));
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
