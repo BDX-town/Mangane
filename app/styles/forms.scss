@@ -389,7 +389,8 @@ code {
 
   button,
   .button,
-  .block-button {
+  .block-button,
+  .color-swatch {
     display: block;
     width: 100%;
     border: 0;
@@ -453,6 +454,18 @@ code {
   }
 
   .label_input {
+
+    &__color {
+      display: inline-flex;
+      font-size: 14px;
+
+      .color-swatch {
+        width: 32px;
+        height: 16px;
+        margin-left: 12px;
+      }
+    }
+
     &__wrapper {
       position: relative;
     }
@@ -970,4 +983,26 @@ code {
   &__revoke {
     margin-top: 10px;
   }
+}
+
+.file-picker img {
+  max-width: 100px;
+  max-height: 100px;
+}
+
+.code-editor textarea {
+  font-family: monospace;
+  white-space: pre;
+}
+
+.code-editor--invalid textarea {
+  border-color: $error-red !important;
+  color: $error-red;
+}
+
+.input .row .fa-times-circle {
+  position: absolute;
+  right: 7px;
+  cursor: pointer;
+  color: $error-red;
 }

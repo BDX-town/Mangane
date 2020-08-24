@@ -1,0 +1,2735 @@
+{
+  "configs": [
+    {
+      "group": ":phoenix",
+      "key": ":format_encoders",
+      "value": [
+        {
+          "tuple": [
+            ":json",
+            "Jason"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":phoenix",
+      "key": ":json_library",
+      "value": "Jason"
+    },
+    {
+      "group": ":phoenix",
+      "key": ":filter_parameters",
+      "value": [
+        "password",
+        "confirm"
+      ]
+    },
+    {
+      "group": ":phoenix",
+      "key": ":stacktrace_depth",
+      "value": 20
+    },
+    {
+      "group": ":logger",
+      "key": ":ex_syslogger",
+      "value": [
+        {
+          "tuple": [
+            ":level",
+            ":debug"
+          ]
+        },
+        {
+          "tuple": [
+            ":ident",
+            "pleroma"
+          ]
+        },
+        {
+          "tuple": [
+            ":format",
+            "$metadata[$level] $message"
+          ]
+        },
+        {
+          "tuple": [
+            ":metadata",
+            [
+              ":request_id"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":logger",
+      "key": ":console",
+      "value": [
+        {
+          "tuple": [
+            ":level",
+            ":debug"
+          ]
+        },
+        {
+          "tuple": [
+            ":metadata",
+            [
+              ":request_id"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":format",
+            "[$level] $message\n"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":floki",
+      "key": ":html_parser",
+      "value": "Floki.HTMLParser.FastHtml"
+    },
+    {
+      "group": ":tzdata",
+      "key": ":http_client",
+      "value": "Pleroma.HTTP.Tzdata"
+    },
+    {
+      "group": ":http_signatures",
+      "key": ":adapter",
+      "value": "Pleroma.Signature"
+    },
+    {
+      "group": ":prometheus",
+      "key": "Pleroma.Web.Endpoint.MetricsExporter",
+      "value": [
+        {
+          "tuple": [
+            ":path",
+            "/api/pleroma/app_metrics"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":ueberauth",
+      "key": "Ueberauth",
+      "value": [
+        {
+          "tuple": [
+            ":base_path",
+            "/oauth"
+          ]
+        },
+        {
+          "tuple": [
+            ":providers",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":esshd",
+      "key": ":enabled",
+      "value": false
+    },
+    {
+      "group": ":cors_plug",
+      "key": ":max_age",
+      "value": 86400
+    },
+    {
+      "group": ":cors_plug",
+      "key": ":methods",
+      "value": [
+        "POST",
+        "PUT",
+        "DELETE",
+        "GET",
+        "PATCH",
+        "OPTIONS"
+      ]
+    },
+    {
+      "group": ":cors_plug",
+      "key": ":expose",
+      "value": [
+        "Link",
+        "X-RateLimit-Reset",
+        "X-RateLimit-Limit",
+        "X-RateLimit-Remaining",
+        "X-Request-Id",
+        "Idempotency-Key"
+      ]
+    },
+    {
+      "group": ":cors_plug",
+      "key": ":credentials",
+      "value": true
+    },
+    {
+      "group": ":cors_plug",
+      "key": ":headers",
+      "value": [
+        "Authorization",
+        "Content-Type",
+        "Idempotency-Key"
+      ]
+    },
+    {
+      "group": ":mime",
+      "key": ":types",
+      "value": {
+        "application/activity+json": [
+          "activity+json"
+        ],
+        "application/jrd+json": [
+          "jrd+json"
+        ],
+        "application/ld+json": [
+          "activity+json"
+        ],
+        "application/xml": [
+          "xml"
+        ],
+        "application/xrd+xml": [
+          "xrd+xml"
+        ]
+      }
+    },
+    {
+      "group": ":quack",
+      "key": ":level",
+      "value": ":warn"
+    },
+    {
+      "group": ":quack",
+      "key": ":meta",
+      "value": [
+        ":all"
+      ]
+    },
+    {
+      "group": ":quack",
+      "key": ":webhook_url",
+      "value": "https://hooks.slack.com/services/YOUR-KEY-HERE"
+    },
+    {
+      "db": [
+        ":subject",
+        ":public_key",
+        ":private_key"
+      ],
+      "group": ":web_push_encryption",
+      "key": ":vapid_details",
+      "value": [
+        {
+          "tuple": [
+            ":subject",
+            "mailto:alex@alexgleason.me"
+          ]
+        },
+        {
+          "tuple": [
+            ":public_key",
+            "BAlKFlwdC-9z36ObeNyiIRdGT0luMx-SDEQzrsIRLWvcspqMU7oIhT9HbgTo2gNt8lhtKoOyiQEH9IQqUxwmBp0"
+          ]
+        },
+        {
+          "tuple": [
+            ":private_key",
+            "o6y0A1DtjJGURKJ2RH4BLAHuqG8RcD1rDqxrUOo8wIw"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":ex_aws",
+      "key": ":http_client",
+      "value": "Pleroma.HTTP.ExAws"
+    },
+    {
+      "db": [
+        ":access_key_id",
+        ":secret_access_key",
+        ":scheme",
+        ":host",
+        ":region"
+      ],
+      "group": ":ex_aws",
+      "key": ":s3",
+      "value": [
+        {
+          "tuple": [
+            ":access_key_id",
+            "3WJHLX5DH6LQT5NKXKU2"
+          ]
+        },
+        {
+          "tuple": [
+            ":secret_access_key",
+            "6Zdlw6XKtmlvvj1to1B25YlEpBAG5ahEs2ExaEqBG4k"
+          ]
+        },
+        {
+          "tuple": [
+            ":scheme",
+            "https://"
+          ]
+        },
+        {
+          "tuple": [
+            ":host",
+            "sfo2.digitaloceanspaces.com"
+          ]
+        },
+        {
+          "tuple": [
+            ":region",
+            "sfo2"
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":default_signer"
+      ],
+      "group": ":joken",
+      "key": ":default_signer",
+      "value": "AvRdJr2XiCKeLDrU33rsKA1nTzu1aHypRDpRDCmN00oSHM8+f7Z9BkilF6nWwwv6"
+    },
+    {
+      "group": ":pleroma",
+      "key": ":ecto_repos",
+      "value": [
+        "Pleroma.Repo"
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Captcha",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":seconds_valid",
+            300
+          ]
+        },
+        {
+          "tuple": [
+            ":method",
+            "Pleroma.Captcha.Native"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Captcha.Kocaptcha",
+      "value": [
+        {
+          "tuple": [
+            ":endpoint",
+            "https://captcha.kotobank.ch"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":emoji",
+      "value": [
+        {
+          "tuple": [
+            ":shortcode_globs",
+            [
+              "/emoji/custom/**/*.png"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":pack_extensions",
+            [
+              ".png",
+              ".gif"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":groups",
+            [
+              {
+                "tuple": [
+                  ":Custom",
+                  [
+                    "/emoji/*.png",
+                    "/emoji/**/*.png"
+                  ]
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":default_manifest",
+            "https://git.pleroma.social/pleroma/emoji-index/raw/master/index.json"
+          ]
+        },
+        {
+          "tuple": [
+            ":shared_pack_cache_seconds_per_file",
+            60
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":uri_schemes",
+      "value": [
+        {
+          "tuple": [
+            ":valid_schemes",
+            [
+              "https",
+              "http",
+              "dat",
+              "dweb",
+              "gopher",
+              "hyper",
+              "ipfs",
+              "ipns",
+              "irc",
+              "ircs",
+              "magnet",
+              "mailto",
+              "mumble",
+              "ssb",
+              "xmpp"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":http",
+      "value": [
+        {
+          "tuple": [
+            ":proxy_url",
+            null
+          ]
+        },
+        {
+          "tuple": [
+            ":send_user_agent",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":user_agent",
+            ":default"
+          ]
+        },
+        {
+          "tuple": [
+            ":adapter",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":welcome",
+      "value": [
+        {
+          "tuple": [
+            ":direct_message",
+            [
+              {
+                "tuple": [
+                  ":enabled",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":sender_nickname",
+                  null
+                ]
+              },
+              {
+                "tuple": [
+                  ":message",
+                  null
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":chat_message",
+            [
+              {
+                "tuple": [
+                  ":enabled",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":sender_nickname",
+                  null
+                ]
+              },
+              {
+                "tuple": [
+                  ":message",
+                  null
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":email",
+            [
+              {
+                "tuple": [
+                  ":enabled",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":sender",
+                  null
+                ]
+              },
+              {
+                "tuple": [
+                  ":subject",
+                  "Welcome to <%= instance_name %>"
+                ]
+              },
+              {
+                "tuple": [
+                  ":html",
+                  "Welcome to <%= instance_name %>"
+                ]
+              },
+              {
+                "tuple": [
+                  ":text",
+                  "Welcome to <%= instance_name %>"
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":feed",
+      "value": [
+        {
+          "tuple": [
+            ":post_title",
+            {
+              ":max_length": 100,
+              ":omission": "..."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":markup",
+      "value": [
+        {
+          "tuple": [
+            ":allow_inline_images",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":allow_headings",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":allow_tables",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":allow_fonts",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":scrub_policy",
+            [
+              "Pleroma.HTML.Scrubber.Default",
+              "Pleroma.HTML.Transform.MediaProxy"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":assets",
+      "value": [
+        {
+          "tuple": [
+            ":mascots",
+            [
+              {
+                "tuple": [
+                  ":pleroma_fox_tan",
+                  {
+                    ":mime_type": "image/png",
+                    ":url": "/images/pleroma-fox-tan-smol.png"
+                  }
+                ]
+              },
+              {
+                "tuple": [
+                  ":pleroma_fox_tan_shy",
+                  {
+                    ":mime_type": "image/png",
+                    ":url": "/images/pleroma-fox-tan-shy.png"
+                  }
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":default_mascot",
+            ":pleroma_fox_tan"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":manifest",
+      "value": [
+        {
+          "tuple": [
+            ":icons",
+            [
+              {
+                ":src": "/static/logo.png",
+                ":type": "image/png"
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":theme_color",
+            "#282c37"
+          ]
+        },
+        {
+          "tuple": [
+            ":background_color",
+            "#191b22"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":activitypub",
+      "value": [
+        {
+          "tuple": [
+            ":unfollow_blocked",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":outgoing_blocks",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":follow_handshake_timeout",
+            500
+          ]
+        },
+        {
+          "tuple": [
+            ":note_replies_output_limit",
+            5
+          ]
+        },
+        {
+          "tuple": [
+            ":sign_object_fetches",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":authorized_fetch_mode",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":streamer",
+      "value": [
+        {
+          "tuple": [
+            ":workers",
+            3
+          ]
+        },
+        {
+          "tuple": [
+            ":overflow_workers",
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":user",
+      "value": [
+        {
+          "tuple": [
+            ":deny_follow_blocked",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_normalize_markup",
+      "value": [
+        {
+          "tuple": [
+            ":scrub_policy",
+            "Pleroma.HTML.Scrubber.Default"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_rejectnonpublic",
+      "value": [
+        {
+          "tuple": [
+            ":allow_followersonly",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":allow_direct",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_hellthread",
+      "value": [
+        {
+          "tuple": [
+            ":delist_threshold",
+            10
+          ]
+        },
+        {
+          "tuple": [
+            ":reject_threshold",
+            20
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_simple",
+      "value": [
+        {
+          "tuple": [
+            ":media_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":media_nsfw",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":federated_timeline_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":report_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":reject",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":followers_only",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":accept",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":avatar_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":banner_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":reject_deletes",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_keyword",
+      "value": [
+        {
+          "tuple": [
+            ":reject",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":federated_timeline_removal",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":replace",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_subchain",
+      "value": [
+        {
+          "tuple": [
+            ":match_actor",
+            {}
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_activity_expiration",
+      "value": [
+        {
+          "tuple": [
+            ":days",
+            365
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_vocabulary",
+      "value": [
+        {
+          "tuple": [
+            ":accept",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":reject",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf_object_age",
+      "value": [
+        {
+          "tuple": [
+            ":threshold",
+            604800
+          ]
+        },
+        {
+          "tuple": [
+            ":actions",
+            [
+              ":delist",
+              ":strip_followers"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.MediaProxy.Invalidation.Http",
+      "value": [
+        {
+          "tuple": [
+            ":method",
+            ":purge"
+          ]
+        },
+        {
+          "tuple": [
+            ":headers",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":options",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.MediaProxy.Invalidation.Script",
+      "value": [
+        {
+          "tuple": [
+            ":script_path",
+            null
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":chat",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":gopher",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":ip",
+            {
+              "tuple": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":port",
+            9999
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.Metadata",
+      "value": [
+        {
+          "tuple": [
+            ":providers",
+            [
+              "Pleroma.Web.Metadata.Providers.OpenGraph",
+              "Pleroma.Web.Metadata.Providers.TwitterCard",
+              "Pleroma.Web.Metadata.Providers.RelMe",
+              "Pleroma.Web.Metadata.Providers.Feed"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":unfurl_nsfw",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.Preload",
+      "value": [
+        {
+          "tuple": [
+            ":providers",
+            [
+              "Pleroma.Web.Preload.Providers.Instance"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":http_security",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":sts",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":sts_max_age",
+            31536000
+          ]
+        },
+        {
+          "tuple": [
+            ":ct_max_age",
+            2592000
+          ]
+        },
+        {
+          "tuple": [
+            ":referrer_policy",
+            "same-origin"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.User",
+      "value": [
+        {
+          "tuple": [
+            ":restricted_nicknames",
+            [
+              ".well-known",
+              "~",
+              "about",
+              "activities",
+              "api",
+              "auth",
+              "check_password",
+              "dev",
+              "friend-requests",
+              "inbox",
+              "internal",
+              "main",
+              "media",
+              "nodeinfo",
+              "notice",
+              "oauth",
+              "objects",
+              "ostatus_subscribe",
+              "pleroma",
+              "proxy",
+              "push",
+              "registration",
+              "relay",
+              "settings",
+              "status",
+              "tag",
+              "user-search",
+              "user_exists",
+              "users",
+              "web",
+              "verify_credentials",
+              "update_credentials",
+              "relationships",
+              "search",
+              "confirmation_resend",
+              "mfa"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":email_blacklist",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Oban",
+      "value": [
+        {
+          "tuple": [
+            ":repo",
+            "Pleroma.Repo"
+          ]
+        },
+        {
+          "tuple": [
+            ":log",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":queues",
+            [
+              {
+                "tuple": [
+                  ":activity_expiration",
+                  10
+                ]
+              },
+              {
+                "tuple": [
+                  ":federator_incoming",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":federator_outgoing",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":web_push",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":mailer",
+                  10
+                ]
+              },
+              {
+                "tuple": [
+                  ":transmogrifier",
+                  20
+                ]
+              },
+              {
+                "tuple": [
+                  ":scheduled_activities",
+                  10
+                ]
+              },
+              {
+                "tuple": [
+                  ":background",
+                  5
+                ]
+              },
+              {
+                "tuple": [
+                  ":remote_fetcher",
+                  2
+                ]
+              },
+              {
+                "tuple": [
+                  ":attachments_cleanup",
+                  5
+                ]
+              },
+              {
+                "tuple": [
+                  ":new_users_digest",
+                  1
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":plugins",
+            [
+              "Oban.Plugins.Pruner"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":crontab",
+            [
+              {
+                "tuple": [
+                  "0 0 * * *",
+                  "Pleroma.Workers.Cron.ClearOauthTokenWorker"
+                ]
+              },
+              {
+                "tuple": [
+                  "0 * * * *",
+                  "Pleroma.Workers.Cron.StatsWorker"
+                ]
+              },
+              {
+                "tuple": [
+                  "* * * * *",
+                  "Pleroma.Workers.Cron.PurgeExpiredActivitiesWorker"
+                ]
+              },
+              {
+                "tuple": [
+                  "0 0 * * 0",
+                  "Pleroma.Workers.Cron.DigestEmailsWorker"
+                ]
+              },
+              {
+                "tuple": [
+                  "0 0 * * *",
+                  "Pleroma.Workers.Cron.NewUsersDigestWorker"
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":workers",
+      "value": [
+        {
+          "tuple": [
+            ":retries",
+            [
+              {
+                "tuple": [
+                  ":federator_incoming",
+                  5
+                ]
+              },
+              {
+                "tuple": [
+                  ":federator_outgoing",
+                  5
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Formatter",
+      "value": [
+        {
+          "tuple": [
+            ":class",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":rel",
+            "ugc"
+          ]
+        },
+        {
+          "tuple": [
+            ":new_window",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":truncate",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":strip_prefix",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":extra",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":validate_tld",
+            ":no_scheme"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":ldap",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":host",
+            "localhost"
+          ]
+        },
+        {
+          "tuple": [
+            ":port",
+            389
+          ]
+        },
+        {
+          "tuple": [
+            ":ssl",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":sslopts",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":tls",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":tlsopts",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":base",
+            "dc=example,dc=com"
+          ]
+        },
+        {
+          "tuple": [
+            ":uid",
+            "cn"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":auth",
+      "value": [
+        {
+          "tuple": [
+            ":enforce_oauth_admin_scope_usage",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":oauth_consumer_strategies",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Emails.UserEmail",
+      "value": [
+        {
+          "tuple": [
+            ":logo",
+            null
+          ]
+        },
+        {
+          "tuple": [
+            ":styling",
+            {
+              ":background_color": "#2C3645",
+              ":content_background_color": "#1B2635",
+              ":header_color": "#d8a070",
+              ":link_color": "#d8a070",
+              ":text_color": "#b9b9ba",
+              ":text_muted_color": "#b9b9ba"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Emails.NewUsersDigestEmail",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.ScheduledActivity",
+      "value": [
+        {
+          "tuple": [
+            ":daily_user_limit",
+            25
+          ]
+        },
+        {
+          "tuple": [
+            ":total_user_limit",
+            300
+          ]
+        },
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":email_notifications",
+      "value": [
+        {
+          "tuple": [
+            ":digest",
+            {
+              ":active": false,
+              ":inactivity_threshold": 7,
+              ":interval": 7
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":oauth2",
+      "value": [
+        {
+          "tuple": [
+            ":token_expires_in",
+            600
+          ]
+        },
+        {
+          "tuple": [
+            ":issue_new_refresh_token",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":clean_expired_tokens",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":rate_limit",
+      "value": [
+        {
+          "tuple": [
+            ":authentication",
+            {
+              "tuple": [
+                60000,
+                15
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":timeline",
+            {
+              "tuple": [
+                500,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":search",
+            [
+              {
+                "tuple": [
+                  1000,
+                  10
+                ]
+              },
+              {
+                "tuple": [
+                  1000,
+                  30
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":app_account_creation",
+            {
+              "tuple": [
+                1800000,
+                25
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":relations_actions",
+            {
+              "tuple": [
+                10000,
+                10
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":relation_id_action",
+            {
+              "tuple": [
+                60000,
+                2
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":statuses_actions",
+            {
+              "tuple": [
+                10000,
+                15
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":status_id_action",
+            {
+              "tuple": [
+                60000,
+                3
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":password_reset",
+            {
+              "tuple": [
+                1800000,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":account_confirmation_resend",
+            {
+              "tuple": [
+                8640000,
+                5
+              ]
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":ap_routes",
+            {
+              "tuple": [
+                60000,
+                15
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.ActivityExpiration",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Plugs.RemoteIp",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":web_cache_ttl",
+      "value": [
+        {
+          "tuple": [
+            ":activity_pub",
+            null
+          ]
+        },
+        {
+          "tuple": [
+            ":activity_pub_question",
+            30000
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":modules",
+      "value": [
+        {
+          "tuple": [
+            ":runtime_dir",
+            "instance/modules"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":connections_pool",
+      "value": [
+        {
+          "tuple": [
+            ":reclaim_multiplier",
+            0.1
+          ]
+        },
+        {
+          "tuple": [
+            ":connection_acquisition_wait",
+            250
+          ]
+        },
+        {
+          "tuple": [
+            ":connection_acquisition_retries",
+            5
+          ]
+        },
+        {
+          "tuple": [
+            ":max_connections",
+            250
+          ]
+        },
+        {
+          "tuple": [
+            ":max_idle_time",
+            30000
+          ]
+        },
+        {
+          "tuple": [
+            ":retry",
+            0
+          ]
+        },
+        {
+          "tuple": [
+            ":await_up_timeout",
+            5000
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":pools",
+      "value": [
+        {
+          "tuple": [
+            ":federation",
+            [
+              {
+                "tuple": [
+                  ":size",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_waiting",
+                  10
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":media",
+            [
+              {
+                "tuple": [
+                  ":size",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_waiting",
+                  10
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":upload",
+            [
+              {
+                "tuple": [
+                  ":size",
+                  25
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_waiting",
+                  5
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":default",
+            [
+              {
+                "tuple": [
+                  ":size",
+                  10
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_waiting",
+                  2
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":hackney_pools",
+      "value": [
+        {
+          "tuple": [
+            ":federation",
+            [
+              {
+                "tuple": [
+                  ":max_connections",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":timeout",
+                  150000
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":media",
+            [
+              {
+                "tuple": [
+                  ":max_connections",
+                  50
+                ]
+              },
+              {
+                "tuple": [
+                  ":timeout",
+                  150000
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":upload",
+            [
+              {
+                "tuple": [
+                  ":max_connections",
+                  25
+                ]
+              },
+              {
+                "tuple": [
+                  ":timeout",
+                  300000
+                ]
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":restrict_unauthenticated",
+      "value": [
+        {
+          "tuple": [
+            ":timelines",
+            {
+              ":federated": ":if_instance_is_private",
+              ":local": ":if_instance_is_private"
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":profiles",
+            {
+              ":local": ":if_instance_is_private",
+              ":remote": ":if_instance_is_private"
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":activities",
+            {
+              ":local": ":if_instance_is_private",
+              ":remote": ":if_instance_is_private"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":mrf",
+      "value": [
+        {
+          "tuple": [
+            ":policies",
+            "Pleroma.Web.ActivityPub.MRF.ObjectAgePolicy"
+          ]
+        },
+        {
+          "tuple": [
+            ":transparency",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":transparency_exclusions",
+            []
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": ":instances_favicons",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.Auth.Authenticator",
+      "value": "Pleroma.Web.Auth.PleromaAuthenticator"
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Emails.Mailer",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":adapter",
+            "Swoosh.Adapters.Local"
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Web.ApiSpec.CastAndValidate",
+      "value": [
+        {
+          "tuple": [
+            ":strict",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "group": ":pleroma",
+      "key": "Pleroma.Uploaders.S3",
+      "value": [
+        {
+          "tuple": [
+            ":streaming_enabled",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":public_endpoint",
+            "https://media.gleasonator.com"
+          ]
+        },
+        {
+          "tuple": [
+            ":bucket",
+            "gleasonator-media"
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":enabled"
+      ],
+      "group": ":pleroma",
+      "key": ":static_fe",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":enabled",
+        ":redirect_on_failure"
+      ],
+      "group": ":pleroma",
+      "key": ":media_proxy",
+      "value": [
+        {
+          "tuple": [
+            ":invalidation",
+            [
+              {
+                "tuple": [
+                  ":enabled",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":provider",
+                  "Pleroma.Web.MediaProxy.Invalidation.Script"
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":proxy_opts",
+            [
+              {
+                "tuple": [
+                  ":redirect_on_failure",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_body_length",
+                  26214400
+                ]
+              },
+              {
+                "tuple": [
+                  ":http",
+                  [
+                    {
+                      "tuple": [
+                        ":follow_redirect",
+                        true
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        ":pool",
+                        ":media"
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":whitelist",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":enabled",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":redirect_on_failure",
+            true
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":name",
+        ":email",
+        ":notify_email",
+        ":limit",
+        ":registrations_open",
+        ":rewrite_policy",
+        ":max_pinned_statuses",
+        ":federating",
+        ":static_dir"
+      ],
+      "group": ":pleroma",
+      "key": ":instance",
+      "value": [
+        {
+          "tuple": [
+            ":description",
+            "Pleroma: An efficient and flexible fediverse server"
+          ]
+        },
+        {
+          "tuple": [
+            ":background_image",
+            "/images/city.jpg"
+          ]
+        },
+        {
+          "tuple": [
+            ":instance_thumbnail",
+            "/instance/thumbnail.jpeg"
+          ]
+        },
+        {
+          "tuple": [
+            ":description_limit",
+            5000
+          ]
+        },
+        {
+          "tuple": [
+            ":chat_limit",
+            5000
+          ]
+        },
+        {
+          "tuple": [
+            ":remote_limit",
+            100000
+          ]
+        },
+        {
+          "tuple": [
+            ":upload_limit",
+            16000000
+          ]
+        },
+        {
+          "tuple": [
+            ":avatar_upload_limit",
+            2000000
+          ]
+        },
+        {
+          "tuple": [
+            ":background_upload_limit",
+            4000000
+          ]
+        },
+        {
+          "tuple": [
+            ":banner_upload_limit",
+            4000000
+          ]
+        },
+        {
+          "tuple": [
+            ":poll_limits",
+            {
+              ":max_expiration": 31536000,
+              ":max_option_chars": 200,
+              ":max_options": 20,
+              ":min_expiration": 0
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":invites_enabled",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":account_activation_required",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":account_approval_required",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":federation_incoming_replies_max_depth",
+            100
+          ]
+        },
+        {
+          "tuple": [
+            ":federation_reachability_timeout_days",
+            7
+          ]
+        },
+        {
+          "tuple": [
+            ":federation_publisher_modules",
+            [
+              "Pleroma.Web.ActivityPub.Publisher"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":allow_relay",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":public",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":quarantined_instances",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":managed_config",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":allowed_post_formats",
+            [
+              "text/plain",
+              "text/html",
+              "text/markdown",
+              "text/bbcode"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":autofollowed_nicknames",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":attachment_links",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":max_report_comment_size",
+            1000
+          ]
+        },
+        {
+          "tuple": [
+            ":safe_dm_mentions",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":healthcheck",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":remote_post_retention_days",
+            90
+          ]
+        },
+        {
+          "tuple": [
+            ":skip_thread_containment",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":limit_to_local_content",
+            ":unauthenticated"
+          ]
+        },
+        {
+          "tuple": [
+            ":user_bio_length",
+            5000
+          ]
+        },
+        {
+          "tuple": [
+            ":user_name_length",
+            100
+          ]
+        },
+        {
+          "tuple": [
+            ":max_account_fields",
+            10
+          ]
+        },
+        {
+          "tuple": [
+            ":max_remote_account_fields",
+            20
+          ]
+        },
+        {
+          "tuple": [
+            ":account_field_name_length",
+            512
+          ]
+        },
+        {
+          "tuple": [
+            ":account_field_value_length",
+            2048
+          ]
+        },
+        {
+          "tuple": [
+            ":registration_reason_length",
+            500
+          ]
+        },
+        {
+          "tuple": [
+            ":external_user_synchronization",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":extended_nickname_format",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":cleanup_attachments",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":multi_factor_authentication",
+            [
+              {
+                "tuple": [
+                  ":totp",
+                  [
+                    {
+                      "tuple": [
+                        ":digits",
+                        6
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        ":period",
+                        30
+                      ]
+                    }
+                  ]
+                ]
+              },
+              {
+                "tuple": [
+                  ":backup_codes",
+                  [
+                    {
+                      "tuple": [
+                        ":number",
+                        5
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        ":length",
+                        16
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":show_reactions",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":name",
+            "Soapbox FE Demo"
+          ]
+        },
+        {
+          "tuple": [
+            ":email",
+            "alex@alexgleason.me"
+          ]
+        },
+        {
+          "tuple": [
+            ":notify_email",
+            "alex@alexgleason.me"
+          ]
+        },
+        {
+          "tuple": [
+            ":limit",
+            5000
+          ]
+        },
+        {
+          "tuple": [
+            ":registrations_open",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":rewrite_policy",
+            "Pleroma.Web.ActivityPub.MRF.SimplePolicy"
+          ]
+        },
+        {
+          "tuple": [
+            ":max_pinned_statuses",
+            10
+          ]
+        },
+        {
+          "tuple": [
+            ":federating",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":static_dir",
+            "instance/static"
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":uploads"
+      ],
+      "group": ":pleroma",
+      "key": "Pleroma.Uploaders.Local",
+      "value": [
+        {
+          "tuple": [
+            ":uploads",
+            "uploads"
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":parsers"
+      ],
+      "group": ":pleroma",
+      "key": ":rich_media",
+      "value": [
+        {
+          "tuple": [
+            ":enabled",
+            true
+          ]
+        },
+        {
+          "tuple": [
+            ":ignore_hosts",
+            []
+          ]
+        },
+        {
+          "tuple": [
+            ":ignore_tld",
+            [
+              "local",
+              "localdomain",
+              "lan"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":ttl_setters",
+            [
+              "Pleroma.Web.RichMedia.Parser.TTL.AwsSignedUrl"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":parsers",
+            [
+              "Pleroma.Web.RichMedia.Parsers.OEmbed",
+              "Pleroma.Web.RichMedia.Parsers.TwitterCard"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":uploader"
+      ],
+      "group": ":pleroma",
+      "key": "Pleroma.Upload",
+      "value": [
+        {
+          "tuple": [
+            ":filters",
+            [
+              "Pleroma.Upload.Filter.Dedupe"
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":link_name",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":proxy_remote",
+            false
+          ]
+        },
+        {
+          "tuple": [
+            ":proxy_opts",
+            [
+              {
+                "tuple": [
+                  ":redirect_on_failure",
+                  false
+                ]
+              },
+              {
+                "tuple": [
+                  ":max_body_length",
+                  26214400
+                ]
+              },
+              {
+                "tuple": [
+                  ":http",
+                  [
+                    {
+                      "tuple": [
+                        ":follow_redirect",
+                        true
+                      ]
+                    },
+                    {
+                      "tuple": [
+                        ":pool",
+                        ":upload"
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        },
+        {
+          "tuple": [
+            ":filename_display_max_length",
+            30
+          ]
+        },
+        {
+          "tuple": [
+            ":uploader",
+            "Pleroma.Uploaders.Local"
+          ]
+        }
+      ]
+    },
+    {
+      "db": [
+        ":soapbox_fe"
+      ],
+      "group": ":pleroma",
+      "key": ":frontend_configurations",
+      "value": [
+        {
+          "tuple": [
+            ":pleroma_fe",
+            {
+              ":alwaysShowSubjectInput": true,
+              ":background": "/images/city.jpg",
+              ":collapseMessageWithSubject": false,
+              ":disableChat": false,
+              ":greentext": false,
+              ":hideFilteredStatuses": false,
+              ":hideMutedPosts": false,
+              ":hidePostStats": false,
+              ":hideSitename": false,
+              ":hideUserStats": false,
+              ":loginMethod": "password",
+              ":logo": "/static/logo.png",
+              ":logoMargin": ".1em",
+              ":logoMask": true,
+              ":minimalScopesMode": false,
+              ":noAttachmentLinks": false,
+              ":nsfwCensorImage": "",
+              ":postContentType": "text/plain",
+              ":redirectRootLogin": "/main/friends",
+              ":redirectRootNoLogin": "/main/all",
+              ":scopeCopy": true,
+              ":showFeaturesPanel": true,
+              ":showInstanceSpecificPanel": false,
+              ":sidebarRight": false,
+              ":subjectLineBehavior": "email",
+              ":theme": "pleroma-dark",
+              ":webPushNotifications": false
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":masto_fe",
+            {
+              ":showInstanceSpecificPanel": true
+            }
+          ]
+        },
+        {
+          "tuple": [
+            ":soapbox_fe",
+            {
+              "brandColor": "#0e9066",
+              "copyright": "♥2020. Copying is an act of love. Please copy and share.",
+              "customCss": [],
+              "navlinks": {
+                "homeFooter": []
+              },
+              "promoPanel": {
+                "items": []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "need_reboot": false
+}
