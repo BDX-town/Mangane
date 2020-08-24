@@ -42,6 +42,7 @@ import soapbox from './soapbox';
 import instance from './instance';
 import me from './me';
 import auth from './auth';
+import admin from './admin';
 
 const reducers = {
   dropdown_menu,
@@ -87,6 +88,7 @@ const reducers = {
   instance,
   me,
   auth,
+  admin,
 };
 
 export default combineReducers(reducers);
