@@ -165,7 +165,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   <FileChooserLogo
                     label={<FormattedMessage id='soapbox_config.fields.logo_label' defaultMessage='Logo' />}
                     name='logo'
-                    hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio' />}
+                    hint={<FormattedMessage id='soapbox_config.hints.logo' defaultMessage='SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio' />}
                     onChange={this.handleFileChange(['logo'])}
                   />
                 </div>
@@ -178,7 +178,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   <FileChooser
                     label={<FormattedMessage id='soapbox_config.fields.banner_label' defaultMessage='Banner' />}
                     name='banner'
-                    hint={<FormattedMessage id='soapbox_config.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
+                    hint={<FormattedMessage id='soapbox_config.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be displayed to 400x400px' />}
                     onChange={this.handleFileChange(['banner'])}
                   />
                 </div>
