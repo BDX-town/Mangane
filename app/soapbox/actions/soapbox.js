@@ -4,7 +4,7 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 
-const defaultConfig = ImmutableMap({
+export const defaultConfig = ImmutableMap({
   logo: '',
   banner: '',
   brandColor: '#0482d8', // Azure
