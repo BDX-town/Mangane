@@ -1,0 +1,38 @@
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import PropTypes from 'prop-types';
+import Avatar from '../../../components/avatar';
+import DisplayName from '../../../components/display_name';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+
+export default class ChatListAccount extends ImmutablePureComponent {
+
+  static propTypes = {
+    account: ImmutablePropTypes.map.isRequired,
+    onClick: PropTypes.func,
+  };
+
+  handleClick = () => {
+    this.props.onClick(this.props.account);
+  }
+
+  render() {
+    const { account } = this.props;
+    if (!account) return null;
+
+    return (
+      <div className='account'>
+        <button className='floating-link' onClick={this.handleClick} />
+        <div className='account__wrapper'>
+          <div key={account.get('id')} className='account__display-name'>
+            <div className='account__avatar-wrapper'>
+              <Avatar account={account} size={36} />
+            </div>
+            <DisplayName account={account} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+}

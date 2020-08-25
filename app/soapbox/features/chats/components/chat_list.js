@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { fetchChats } from 'soapbox/actions/chats';
-import Account from 'soapbox/components/account';
+import ChatListAccount from './chat_list_account';
 
 const mapStateToProps = state => ({
   chats: state.get('chats'),
@@ -23,6 +23,10 @@ class ChatList extends ImmutablePureComponent {
     this.props.dispatch(fetchChats());
   }
 
+  handleClickChat = () => {
+    // TODO: Open or focus chat panel
+  }
+
   render() {
     const { chats } = this.props;
 
@@ -34,7 +38,10 @@ class ChatList extends ImmutablePureComponent {
         <div className='chat-list__content'>
           {chats.toList().map(chat => (
             <div className='chat-list-item'>
-              <Account account={chat.get('account')} />
+              <ChatListAccount
+                account={chat.get('account')}
+                onClick={this.handleClickChat}
+              />
             </div>
           ))}
         </div>
