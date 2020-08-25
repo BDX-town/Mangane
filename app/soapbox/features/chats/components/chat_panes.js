@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-// import { getSettings } from 'soapbox/actions/settings';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
@@ -24,15 +24,7 @@ const addChatsToPanes = (state, panesData) => {
 };
 
 const mapStateToProps = state => {
-  // const panesData = getSettings(state).get('chats');
-
-  const panesData = fromJS({
-    panes: [
-      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
-      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
-      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
-    ],
-  });
+  const panesData = getSettings(state).get('chats');
 
   return {
     panesData: addChatsToPanes(state, panesData),
@@ -47,6 +39,13 @@ class ChatPanes extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     panesData: ImmutablePropTypes.map,
+  }
+
+  handleClickChat = (chat) => {
+    // TODO: Refactor
+    this.props.dispatch(changeSetting(['chats', 'panes'], fromJS([
+      { chat_id: chat.get('id'), state: 'open' },
+    ])));
   }
 
   renderChatPane = (pane, i) => {
@@ -88,7 +87,7 @@ class ChatPanes extends ImmutablePureComponent {
             <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
           </div>
           <div className='pane__content'>
-            <ChatList />
+            <ChatList onClickChat={this.handleClickChat} />
           </div>
         </div>
         {this.renderChatPanes(panes)}

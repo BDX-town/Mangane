@@ -21,14 +21,11 @@ class ChatList extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    onClickChat: PropTypes.func,
   };
 
   componentDidMount() {
     this.props.dispatch(fetchChats());
-  }
-
-  handleClickChat = () => {
-    // TODO: Open or focus chat panel
   }
 
   render() {
@@ -40,8 +37,8 @@ class ChatList extends ImmutablePureComponent {
           {chats.toList().map(chat => (
             <div key={chat.get('id')} className='chat-list-item'>
               <ChatListAccount
-                account={chat.get('account')}
-                onClick={this.handleClickChat}
+                chat={chat}
+                onClick={this.props.onClickChat}
               />
             </div>
           ))}

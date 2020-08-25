@@ -8,17 +8,18 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 export default class ChatListAccount extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    chat: ImmutablePropTypes.map.isRequired,
     onClick: PropTypes.func,
   };
 
   handleClick = () => {
-    this.props.onClick(this.props.account);
+    this.props.onClick(this.props.chat);
   }
 
   render() {
-    const { account } = this.props;
-    if (!account) return null;
+    const { chat } = this.props;
+    if (!chat) return null;
+    const account = chat.get('account');
 
     return (
       <div className='account'>
