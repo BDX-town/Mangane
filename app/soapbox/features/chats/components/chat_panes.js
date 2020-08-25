@@ -10,7 +10,12 @@ import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
-import { openChat, closeChat, toggleChat } from 'soapbox/actions/chats';
+import {
+  openChat,
+  closeChat,
+  toggleChat,
+  toggleMainWindow,
+} from 'soapbox/actions/chats';
 import IconButton from 'soapbox/components/icon_button';
 
 const addChatsToPanes = (state, panesData) => {
@@ -59,6 +64,10 @@ class ChatPanes extends ImmutablePureComponent {
     };
   }
 
+  handleMainWindowToggle = () => {
+    this.props.dispatch(toggleMainWindow());
+  }
+
   renderChatPane = (pane, i) => {
     const chat = pane.get('chat');
     const account = pane.getIn(['chat', 'account']);
@@ -96,13 +105,17 @@ class ChatPanes extends ImmutablePureComponent {
   )
 
   render() {
-    const panes = this.props.panesData.get('panes');
+    const { panesData } = this.props;
+    const panes = panesData.get('panes');
+    const mainWindow = panesData.get('mainWindow');
 
     return (
       <div className='chat-panes'>
-        <div className='pane pane--main'>
+        <div className={`pane pane--main pane--${mainWindow}`}>
           <div className='pane__header'>
-            <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
+            <a onClick={this.handleMainWindowToggle}>
+              <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
+            </a>
           </div>
           <div className='pane__content'>
             <ChatList onClickChat={this.handleClickChat} />

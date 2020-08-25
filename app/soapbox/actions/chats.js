@@ -59,3 +59,11 @@ export function toggleChat(chatId) {
     }
   };
 }
+
+export function toggleMainWindow() {
+  return (dispatch, getState) => {
+    const main = getSettings(getState()).getIn(['chats', 'mainWindow']);
+    const state = main === 'minimized' ? 'open' : 'minimized';
+    return dispatch(changeSetting(['chats', 'mainWindow'], state));
+  };
+}
