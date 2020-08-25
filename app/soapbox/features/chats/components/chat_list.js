@@ -36,9 +36,6 @@ class ChatList extends ImmutablePureComponent {
 
     return (
       <div className='chat-list'>
-        <div className='chat-list__header'>
-          <FormattedMessage id='chat_list.title' defaultMessage='Chats' />
-        </div>
         <div className='chat-list__content'>
           {chats.toList().map(chat => (
             <div key={chat.get('id')} className='chat-list-item'>
