@@ -126,12 +126,29 @@
         }
       }
     }
+
+    &__deactivated {
+      display: none;
+    }
   }
 }
 
 .profile-info-panel.deactivated {
+
+  .profile-info-panel-content__name h1 small,
+  .profile-info-panel-content__badges__join-date,
+  .profile-info-panel-content__bio,
+  .profile-info-panel-content__fields {
+    display: none;
+  }
+
   .profile-info-panel__name-content {
     text-transform: uppercase;
+  }
+
+  .profile-info-panel-content__deactivated {
+    color: var(--primary-text-color--faint);
+    display: block;
   }
 
   .profile-info-panel__name-content::before {
@@ -140,9 +157,5 @@
 
   .profile-info-panel__name-content::after {
     content: ']';
-  }
-
-  .profile-info-panel-content__deactivated {
-    color: var(--primary-text-color--faint);
   }
 }

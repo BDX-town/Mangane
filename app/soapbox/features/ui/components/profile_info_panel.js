@@ -73,35 +73,31 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {badge}
-              { !deactivated && <small>@{acctFull(account)} {lockedIcon}</small> }
+              { <small>@{acctFull(account)} {lockedIcon}</small> }
             </h1>
           </div>
 
-          { !deactivated &&
-            <div className='profile-info-panel-content__badges'>
-              {isAdmin(account) && <Badge slug='admin' title='Admin' />}
-              {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
-              {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-              {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-                <Icon id='calendar' />
-                <FormattedMessage
-                  id='account.member_since' defaultMessage='Member since {date}' values={{
-                    date: memberSinceDate,
-                  }}
-                />
-              </div>}
-            </div>
-          }
-
-          { deactivated &&
-            <div className='profile-info-panel-content__deactivated'>
+          <div className='profile-info-panel-content__badges'>
+            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
+            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
+            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
+            {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
+              <Icon id='calendar' />
               <FormattedMessage
-                id='account.deactivated_description' defaultMessage='This account has been deactivated.'
+                id='account.member_since' defaultMessage='Member since {date}' values={{
+                  date: memberSinceDate,
+                }}
               />
-            </div>
-          }
+            </div>}
+          </div>
 
-          { !deactivated &&
+          <div className='profile-info-panel-content__deactivated'>
+            <FormattedMessage
+              id='account.deactivated_description' defaultMessage='This account has been deactivated.'
+            />
+          </div>
+
+          {
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
