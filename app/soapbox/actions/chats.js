@@ -45,3 +45,17 @@ export function closeChat(chatId) {
     }
   };
 }
+
+export function toggleChat(chatId) {
+  return (dispatch, getState) => {
+    const panes = getSettings(getState()).getIn(['chats', 'panes']);
+    const [idx, pane] = panes.findEntry(pane => pane.get('chat_id') === chatId);
+
+    if (idx > -1) {
+      const state = pane.get('state') === 'minimized' ? 'open' : 'minimized';
+      return dispatch(changeSetting(['chats', 'panes', idx, 'state'], state));
+    } else {
+      return false;
+    }
+  };
+}

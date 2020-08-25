@@ -14,7 +14,12 @@
     height: calc(100vh - 70px);
   }
 
+  &--minimized {
+    top: calc(100% - 31px);
+  }
+
   &__header {
+    box-sizing: border-box;
     background: var(--brand-color);
     color: #fff;
     padding: 6px 10px;
@@ -23,6 +28,7 @@
     border-radius: 6px 6px 0 0;
     display: flex;
     align-items: center;
+    height: 31px;
 
     .account__avatar {
       margin-right: 7px;
