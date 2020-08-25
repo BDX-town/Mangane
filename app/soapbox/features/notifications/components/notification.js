@@ -142,6 +142,26 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderChatMention(notification, link) {
+    const { intl } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-chat-mention focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.chat_mention', defaultMessage: '{name} sent you a message' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='chat' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.chat_mention' defaultMessage='{name} sent you a message' values={{ name: link }} />
+            </span>
+          </div>
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderEmojiReact(notification, link) {
     const { intl } = this.props;
 
@@ -289,6 +309,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderPoll(notification);
     case 'pleroma:emoji_reaction':
       return this.renderEmojiReact(notification, link);
+    case 'pleroma:chat_mention':
+      return this.renderChatMention(notification);
     }
 
     return null;
