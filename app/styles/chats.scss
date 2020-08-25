@@ -3,6 +3,7 @@
   bottom: 0;
   right: 20px;
   width: 265px;
+  z-index: 99999;
 
   &__header {
     background: var(--brand-color);
