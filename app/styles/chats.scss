@@ -1,24 +1,61 @@
 .pane {
+  @include standard-panel-shadow;
   position: fixed;
   bottom: 0;
   right: 20px;
   width: 265px;
+  height: 265px;
+  max-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
   z-index: 99999;
+
+  &--main {
+    height: calc(100vh - 70px);
+  }
 
   &__header {
     background: var(--brand-color);
     color: #fff;
     padding: 6px 10px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+
+    .account__avatar {
+      margin-right: 7px;
+    }
+
+    .display-name__account {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__content {
+    height: 100%;
     background: var(--foreground-color);
+    display: flex;
+    flex-direction: column;
   }
 
   &__actions {
     background: var(--foreground-color);
+    margin-top: auto;
+
+    input {
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+      padding: 6px;
+      background: var(--background-color);
+      border: 6px solid var(--foreground-color);
+      border-radius: 10px;
+      color: var(--primary-text-color);
+      font-size: 16px;
+    }
   }
 }

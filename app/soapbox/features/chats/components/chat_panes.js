@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getSettings } from 'soapbox/actions/settings';
+// import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
-// import { fromJS } from 'immutable';
+import { fromJS } from 'immutable';
+import Avatar from 'soapbox/components/avatar';
+import { acctFull } from 'soapbox/utils/accounts';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -22,13 +24,15 @@ const addChatsToPanes = (state, panesData) => {
 };
 
 const mapStateToProps = state => {
-  const panesData = getSettings(state).get('chats');
+  // const panesData = getSettings(state).get('chats');
 
-  // const panesData = fromJS({
-  //   panes: [
-  //     { chat_id: '9ySohyWw0Gecd3WHKK', state: 'open' },
-  //   ],
-  // });
+  const panesData = fromJS({
+    panes: [
+      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
+      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
+      { chat_id: '9ySoi8J7eTY0x78OBc', state: 'open' },
+    ],
+  });
 
   return {
     panesData: addChatsToPanes(state, panesData),
@@ -47,17 +51,21 @@ class ChatPanes extends ImmutablePureComponent {
 
   renderChatPane = (pane, i) => {
     const chat = pane.get('chat');
-    if (!chat) return null;
+    const account = pane.getIn(['chat', 'account']);
+    if (!chat || !account) return null;
+
+    const right = (285 * (i + 1)) + 20;
 
     return (
-      <div key={i} className='pane'>
+      <div key={i} className='pane' style={{ right: `${right}px` }}>
         <div className='pane__header'>
-          {chat.getIn(['account', 'acct'])}
+          <Avatar account={account} size={18} />
+          <div className='display-name__account'>@{acctFull(account)}</div>
         </div>
         <div className='pane__content'>
-          // TODO: Show the chat messages
+          <div style={{ padding: '10px' }}>TODO: Show the chat messages</div>
           <div className='pane__actions'>
-            <input type='text' />
+            <input type='text' placeholder='Send a message...' />
           </div>
         </div>
       </div>
