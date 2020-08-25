@@ -10,7 +10,8 @@ import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
-import { openChat } from 'soapbox/actions/chats';
+import { openChat, closeChat } from 'soapbox/actions/chats';
+import IconButton from 'soapbox/components/icon_button';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -46,6 +47,12 @@ class ChatPanes extends ImmutablePureComponent {
     // TODO: Focus chat input
   }
 
+  handleChatClose = (chatId) => {
+    return (e) => {
+      this.props.dispatch(closeChat(chatId));
+    };
+  }
+
   renderChatPane = (pane, i) => {
     const chat = pane.get('chat');
     const account = pane.getIn(['chat', 'account']);
@@ -58,6 +65,9 @@ class ChatPanes extends ImmutablePureComponent {
         <div className='pane__header'>
           <Avatar account={account} size={18} />
           <div className='display-name__account'>@{acctFull(account)}</div>
+          <div className='pane__close'>
+            <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
+          </div>
         </div>
         <div className='pane__content'>
           <div style={{ padding: '10px' }}>TODO: Show the chat messages</div>

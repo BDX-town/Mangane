@@ -32,3 +32,16 @@ export function openChat(chatId) {
     }
   };
 }
+
+export function closeChat(chatId) {
+  return (dispatch, getState) => {
+    const panes = getSettings(getState()).getIn(['chats', 'panes']);
+    const idx = panes.findIndex(pane => pane.get('chat_id') === chatId);
+
+    if (idx > -1) {
+      return dispatch(changeSetting(['chats', 'panes'], panes.delete(idx)));
+    } else {
+      return false;
+    }
+  };
+}

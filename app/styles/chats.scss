@@ -33,6 +33,20 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    .icon-button {
+      color: #fff;
+
+      > div {
+        height: auto !important;
+        width: auto !important;
+        margin-right: -6px;
+      }
+    }
+
+    .pane__close {
+      margin-left: auto;
+    }
   }
 
   &__content {
