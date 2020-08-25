@@ -1,4 +1,5 @@
 import api from '../api';
+import { importFetchedChats } from 'soapbox/actions/importer';
 
 export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 export const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';
@@ -8,6 +9,7 @@ export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
+      dispatch(importFetchedChats(data));
       dispatch({ type: CHATS_FETCH_SUCCESS, data });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });

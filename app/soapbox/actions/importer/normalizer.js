@@ -80,3 +80,11 @@ export function normalizePoll(poll) {
 
   return normalPoll;
 }
+
+export function normalizeChat(chat, normalOldChat) {
+  const normalChat   = { ...chat };
+
+  normalChat.account = chat.account.id;
+
+  return normalChat;
+}

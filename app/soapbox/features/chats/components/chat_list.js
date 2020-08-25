@@ -5,10 +5,14 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { fetchChats } from 'soapbox/actions/chats';
 import ChatListAccount from './chat_list_account';
+import { makeGetChat } from 'soapbox/selectors';
 
-const mapStateToProps = state => ({
-  chats: state.get('chats'),
-});
+const mapStateToProps = state => {
+  const getChat = makeGetChat();
+  return {
+    chats: state.get('chats').map(chat => getChat(state, chat.toJS())),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -37,7 +41,7 @@ class ChatList extends ImmutablePureComponent {
         </div>
         <div className='chat-list__content'>
           {chats.toList().map(chat => (
-            <div className='chat-list-item'>
+            <div key={chat.get('id')} className='chat-list-item'>
               <ChatListAccount
                 account={chat.get('account')}
                 onClick={this.handleClickChat}
