@@ -1,0 +1,24 @@
+.chat-list {
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 265px;
+
+  &__header {
+    background: var(--brand-color);
+    color: #fff;
+    padding: 6px 10px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 6px 6px 0 0;
+  }
+
+  &__content {
+    background: var(--foreground-color);
+    padding: 10px;
+  }
+
+  &__actions {
+    background: var(--foreground-color);
+  }
+}

@@ -36,6 +36,7 @@ import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
+import ChatList from 'soapbox/features/chats/components/chat_list';
 
 import {
   Status,
@@ -604,6 +605,7 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
+          {me && <ChatList />}
         </div>
       </HotKeys>
     );

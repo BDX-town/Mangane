@@ -43,6 +43,7 @@ import instance from './instance';
 import me from './me';
 import auth from './auth';
 import admin from './admin';
+import chats from './chats';
 
 const reducers = {
   dropdown_menu,
@@ -89,6 +90,7 @@ const reducers = {
   me,
   auth,
   admin,
+  chats,
 };
 
 export default combineReducers(reducers);
