@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
-import { fromJS } from 'immutable';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
+import { openChat } from 'soapbox/actions/chats';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -42,10 +42,8 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   handleClickChat = (chat) => {
-    // TODO: Refactor
-    this.props.dispatch(changeSetting(['chats', 'panes'], fromJS([
-      { chat_id: chat.get('id'), state: 'open' },
-    ])));
+    this.props.dispatch(openChat(chat.get('id')));
+    // TODO: Focus chat input
   }
 
   renderChatPane = (pane, i) => {
