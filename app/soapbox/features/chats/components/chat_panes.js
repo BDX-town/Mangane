@@ -7,10 +7,33 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
+import { makeGetChat } from 'soapbox/selectors';
+// import { fromJS } from 'immutable';
 
-const mapStateToProps = state => ({
-  panesData: getSettings(state).get('chats'),
-});
+const addChatsToPanes = (state, panesData) => {
+  const getChat = makeGetChat();
+
+  const newPanes = panesData.get('panes').map(pane => {
+    const chat = getChat(state, { id: pane.get('chat_id') });
+    return pane.set('chat', chat);
+  });
+
+  return panesData.set('panes', newPanes);
+};
+
+const mapStateToProps = state => {
+  const panesData = getSettings(state).get('chats');
+
+  // const panesData = fromJS({
+  //   panes: [
+  //     { chat_id: '9ySohyWw0Gecd3WHKK', state: 'open' },
+  //   ],
+  // });
+
+  return {
+    panesData: addChatsToPanes(state, panesData),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -23,11 +46,13 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   renderChatPane = (pane, i) => {
-    // const chat = getChat(pane.get('chat_id'))
+    const chat = pane.get('chat');
+    if (!chat) return null;
+
     return (
       <div key={i} className='pane'>
         <div className='pane__header'>
-          // {chat.getIn(['account', 'acct'])}
+          {chat.getIn(['account', 'acct'])}
         </div>
         <div className='pane__content'>
           // TODO: Show the chat messages
