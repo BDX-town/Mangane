@@ -2,7 +2,7 @@ import {
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_SUCCESS,
 } from 'soapbox/actions/chats';
-import { CHAT_MESSAGES_IMPORT } from 'soapbox/actions/importer';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const initialState = ImmutableMap();
@@ -25,8 +25,8 @@ const importMessages = (state, chatMessages) => (
 
 export default function chatMessageLists(state = initialState, action) {
   switch(action.type) {
-  case CHAT_MESSAGES_IMPORT:
-    return importMessages(state, action.chatMessages);
+  case STREAMING_CHAT_UPDATE:
+    return importMessages(state, [action.payload.last_message]);
   case CHAT_MESSAGES_FETCH_SUCCESS:
     return updateList(state, action.chatId, action.data.map(chat => chat.id).reverse());
   case CHAT_MESSAGE_SEND_SUCCESS:

@@ -85,6 +85,7 @@ export function normalizeChat(chat, normalOldChat) {
   const normalChat   = { ...chat };
 
   normalChat.account = chat.account.id;
+  normalChat.last_message = chat.last_message.id;
 
   return normalChat;
 }

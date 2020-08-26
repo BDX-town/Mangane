@@ -9,9 +9,10 @@ import {
 import { updateNotificationsQueue, expandNotifications } from './notifications';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
-import { importFetchedChat } from './importer';
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+
+export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -54,7 +55,7 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-          dispatch(importFetchedChat(JSON.parse(data.payload)));
+          dispatch({ type: STREAMING_CHAT_UPDATE, payload: JSON.parse(data.payload) });
           break;
         }
       },
