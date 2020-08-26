@@ -29,11 +29,13 @@ const makeProxyConfig = () => {
   proxyConfig['/api/patron'] = {
     target: patronUrl,
     secure: secureProxy,
+    changeOrigin: true,
   };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
       target: backendUrl,
       secure: secureProxy,
+      changeOrigin: true,
     };
   });
   return proxyConfig;
