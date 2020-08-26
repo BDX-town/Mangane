@@ -8,12 +8,12 @@ import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
 import IconButton from 'soapbox/components/icon_button';
 import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapbox/actions/chats';
-import { List as ImmutableList } from 'immutable';
-import emojify from 'soapbox/features/emoji/emoji';
+import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import ChatMessageList from './chat_message_list';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
-  chatMessages: state.getIn(['chat_messages', pane.get('chat_id')], ImmutableList()).reverse(),
+  chatMessageIds: state.getIn(['chat_message_lists', pane.get('chat_id')], ImmutableOrderedSet()),
 });
 
 export default @connect(mapStateToProps)
@@ -25,7 +25,7 @@ class ChatWindow extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     pane: ImmutablePropTypes.map.isRequired,
     idx: PropTypes.number,
-    chatMessages: ImmutablePropTypes.list,
+    chatMessageIds: ImmutablePropTypes.orderedSet,
     me: PropTypes.node,
   }
 
@@ -62,20 +62,10 @@ class ChatWindow extends ImmutablePureComponent {
     this.setState({ content: e.target.value });
   }
 
-  scrollToBottom = () => {
-    if (!this.messagesEnd) return;
-    this.messagesEnd.scrollIntoView();
-  }
-
   focusInput = () => {
     if (!this.inputElem) return;
     this.inputElem.focus();
   }
-
-  setMessageEndRef = (el) => {
-    this.messagesEnd = el;
-    this.scrollToBottom();
-  };
 
   setInputRef = (el) => {
     const { pane } = this.props;
@@ -90,9 +80,6 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.chatMessages !== this.props.chatMessages)
-      this.scrollToBottom();
-
     const oldState = prevProps.pane.get('state');
     const newState = this.props.pane.get('state');
 
@@ -101,7 +88,7 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   render() {
-    const { pane, idx, chatMessages, me } = this.props;
+    const { pane, idx, chatMessageIds } = this.props;
     const chat = pane.get('chat');
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
@@ -120,17 +107,7 @@ class ChatWindow extends ImmutablePureComponent {
           </div>
         </div>
         <div className='pane__content'>
-          <div className='chat-messages'>
-            {chatMessages.map(chatMessage => (
-              <div className={`chat-message${me === chatMessage.get('account_id') ? ' chat-message--me' : ''}`} key={chatMessage.get('id')}>
-                <span
-                  className='chat-message__bubble'
-                  dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content')) }}
-                />
-              </div>
-            ))}
-            <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
-          </div>
+          <ChatMessageList chatMessageIds={chatMessageIds} />
           <div className='pane__actions'>
             <input
               type='text'
