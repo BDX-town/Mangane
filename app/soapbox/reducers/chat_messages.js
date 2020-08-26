@@ -2,20 +2,18 @@ import {
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_SUCCESS,
 } from 'soapbox/actions/chats';
-import { CHAT_IMPORT, CHATS_IMPORT } from 'soapbox/actions/importer';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { CHATS_IMPORT } from 'soapbox/actions/importer';
+import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 
-const insertMessage = (state, chatId, message) => {
-  const newMessages = state.get(chatId, ImmutableList()).insert(0, message);
-  return state.set(chatId, newMessages);
+const importMessage = (state, message) => {
+  return state.set(message.get('id'), message);
 };
 
-const importMessage = (state, message) => {
-  const chatId = message.get('chat_id');
-  return insertMessage(state, chatId, message);
-};
+const importMessages = (state, messages) =>
+  state.withMutations(mutable =>
+    messages.forEach(message => importMessage(mutable, message)));
 
 const importLastMessages = (state, chats) =>
   state.withMutations(mutable =>
@@ -23,15 +21,12 @@ const importLastMessages = (state, chats) =>
 
 export default function chatMessages(state = initialState, action) {
   switch(action.type) {
-  case CHAT_IMPORT:
-    return importMessage(state, fromJS(action.chat.last_message));
   case CHATS_IMPORT:
     return importLastMessages(state, fromJS(action.chats));
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return state.set(action.chatId, fromJS(action.data));
-  // TODO: Prevent conflicts
-  // case CHAT_MESSAGE_SEND_SUCCESS:
-  //   return insertMessage(state, action.chatId, fromJS(action.data));
+    return importMessages(state, fromJS(action.data));
+  case CHAT_MESSAGE_SEND_SUCCESS:
+    return importMessage(state, fromJS(action.data));
   default:
     return state;
   }

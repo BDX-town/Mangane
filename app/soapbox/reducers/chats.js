@@ -1,4 +1,4 @@
-import { CHAT_IMPORT, CHATS_IMPORT } from 'soapbox/actions/importer';
+import { CHATS_IMPORT } from 'soapbox/actions/importer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const importChat = (state, chat) => state.set(chat.id, fromJS(chat));
@@ -10,8 +10,6 @@ const initialState = ImmutableMap();
 
 export default function chats(state = initialState, action) {
   switch(action.type) {
-  case CHAT_IMPORT:
-    return importChat(state, action.chat);
   case CHATS_IMPORT:
     return importChats(state, action.chats);
   default:
