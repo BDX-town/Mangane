@@ -69,10 +69,11 @@
   }
 
   &__content {
-    height: 100%;
     background: var(--foreground-color);
     display: flex;
+    flex: 1;
     flex-direction: column;
+    overflow: hidden;
   }
 
   &__actions {
@@ -91,5 +92,20 @@
       color: var(--primary-text-color);
       font-size: 16px;
     }
+  }
+}
+
+.chat-messages {
+  overflow-y: scroll;
+}
+
+.chat-message {
+  margin: 14px 10px;
+
+  &__bubble {
+    padding: 4px 10px;
+    max-width: 70%;
+    border-radius: 10px;
+    background-color: var(--background-color);
   }
 }

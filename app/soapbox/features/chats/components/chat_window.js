@@ -69,9 +69,13 @@ class ChatWindow extends ImmutablePureComponent {
         </div>
         <div className='pane__content'>
           <div className='chat-messages'>
-            {chatMessages.map(chatMessage =>
-              <div class='chat-message'>{chatMessage.get('content')}</div>
-            )}
+            {chatMessages.map(chatMessage => (
+              <div className='chat-message' key={chatMessage.get('id')}>
+                <span className='chat-message__bubble'>
+                  {chatMessage.get('content')}
+                </span>
+              </div>
+            ))}
           </div>
           <div className='pane__actions'>
             <input type='text' placeholder='Send a message...' />
