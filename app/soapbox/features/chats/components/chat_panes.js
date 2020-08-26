@@ -79,11 +79,9 @@ class ChatPanes extends ImmutablePureComponent {
       <div key={i} className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
         <div className='pane__header'>
           <Avatar account={account} size={18} />
-          <div className='display-name__account'>
-            <a onClick={this.handleChatToggle(chat.get('id'))}>
-              @{acctFull(account)}
-            </a>
-          </div>
+          <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
+            @{acctFull(account)}
+          </button>
           <div className='pane__close'>
             <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
           </div>
@@ -113,9 +111,9 @@ class ChatPanes extends ImmutablePureComponent {
       <div className='chat-panes'>
         <div className={`pane pane--main pane--${mainWindow}`}>
           <div className='pane__header'>
-            <a onClick={this.handleMainWindowToggle}>
+            <button className='pane__title' onClick={this.handleMainWindowToggle}>
               <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
-            </a>
+            </button>
           </div>
           <div className='pane__content'>
             <ChatList onClickChat={this.handleClickChat} />
