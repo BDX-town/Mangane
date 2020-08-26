@@ -28,7 +28,7 @@ export default function chatMessageLists(state = initialState, action) {
   case CHAT_MESSAGES_IMPORT:
     return importMessages(state, action.chatMessages);
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return updateList(state, action.chatId, action.data.map(chat => chat.id));
+    return updateList(state, action.chatId, action.data.map(chat => chat.id).reverse());
   case CHAT_MESSAGE_SEND_SUCCESS:
     return updateList(state, action.chatId, [action.data.id]);
   default:

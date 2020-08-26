@@ -12,7 +12,7 @@ const mapStateToProps = (state, { chatMessageIds }) => ({
   chatMessages: chatMessageIds.reduce((acc, curr) => {
     const chatMessage = state.getIn(['chat_messages', curr]);
     return chatMessage ? acc.push(chatMessage) : acc;
-  }, ImmutableList()),
+  }, ImmutableList()).sort(),
 });
 
 export default @connect(mapStateToProps)
