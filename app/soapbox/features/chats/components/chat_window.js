@@ -7,11 +7,11 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
 import IconButton from 'soapbox/components/icon_button';
-import { closeChat, toggleChat, fetchChatMessages } from 'soapbox/actions/chats';
+import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapbox/actions/chats';
 import { List as ImmutableList } from 'immutable';
 
 const mapStateToProps = (state, { pane }) => ({
-  chatMessages: state.getIn(['chat_messages', pane.get('chat_id')], ImmutableList()),
+  chatMessages: state.getIn(['chat_messages', pane.get('chat_id')], ImmutableList()).reverse(),
 });
 
 export default @connect(mapStateToProps)
@@ -30,6 +30,10 @@ class ChatWindow extends ImmutablePureComponent {
     chatMessages: ImmutableList(),
   }
 
+  state = {
+    content: '',
+  }
+
   handleChatClose = (chatId) => {
     return (e) => {
       this.props.dispatch(closeChat(chatId));
@@ -40,6 +44,19 @@ class ChatWindow extends ImmutablePureComponent {
     return (e) => {
       this.props.dispatch(toggleChat(chatId));
     };
+  }
+
+  handleKeyDown = (chatId) => {
+    return (e) => {
+      if (e.key === 'Enter') {
+        this.props.dispatch(sendChatMessage(chatId, this.state));
+        this.setState({ content: '' });
+      }
+    };
+  }
+
+  handleContentChange = (e) => {
+    this.setState({ content: e.target.value });
   }
 
   componentDidMount() {
@@ -78,7 +95,13 @@ class ChatWindow extends ImmutablePureComponent {
             ))}
           </div>
           <div className='pane__actions'>
-            <input type='text' placeholder='Send a message...' />
+            <input
+              type='text'
+              placeholder='Send a message...'
+              onKeyDown={this.handleKeyDown(chat.get('id'))}
+              onChange={this.handleContentChange}
+              value={this.state.content}
+            />
           </div>
         </div>
       </div>
