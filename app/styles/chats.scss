@@ -1,5 +1,6 @@
 .pane {
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
+  border-radius: 6px 6px 0 0;
   position: fixed;
   bottom: 0;
   right: 20px;
@@ -97,6 +98,7 @@
 
 .chat-messages {
   overflow-y: scroll;
+  flex: 1;
 }
 
 .chat-message {
