@@ -59,10 +59,22 @@ class ChatWindow extends ImmutablePureComponent {
     this.setState({ content: e.target.value });
   }
 
+  scrollToBottom = () => {
+    if (!this.messagesEnd) return;
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  setRef = (el) => this.messagesEnd = el;
+
   componentDidMount() {
     const { dispatch, pane, chatMessages } = this.props;
+    this.scrollToBottom();
     if (chatMessages && chatMessages.count() < 1)
       dispatch(fetchChatMessages(pane.get('chat_id')));
+  }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
   }
 
   render() {
@@ -93,6 +105,7 @@ class ChatWindow extends ImmutablePureComponent {
                 </span>
               </div>
             ))}
+            <div style={{ float: 'left', clear: 'both' }} ref={this.setRef} />
           </div>
           <div className='pane__actions'>
             <input
