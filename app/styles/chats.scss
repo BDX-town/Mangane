@@ -1,5 +1,5 @@
 .pane {
-  @include standard-panel-shadow;
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
   position: fixed;
   bottom: 0;
   right: 20px;
@@ -101,11 +101,17 @@
 
 .chat-message {
   margin: 14px 10px;
+  display: flex;
 
   &__bubble {
     padding: 4px 10px;
     max-width: 70%;
     border-radius: 10px;
     background-color: var(--background-color);
+  }
+
+  &--me .chat-message__bubble {
+    margin-left: auto;
+    background-color: hsla(var(--brand-color_hsl), 0.2);
   }
 }

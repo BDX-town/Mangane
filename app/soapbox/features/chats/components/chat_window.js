@@ -11,6 +11,7 @@ import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapb
 import { List as ImmutableList } from 'immutable';
 
 const mapStateToProps = (state, { pane }) => ({
+  me: state.get('me'),
   chatMessages: state.getIn(['chat_messages', pane.get('chat_id')], ImmutableList()).reverse(),
 });
 
@@ -24,6 +25,7 @@ class ChatWindow extends ImmutablePureComponent {
     pane: ImmutablePropTypes.map.isRequired,
     idx: PropTypes.number,
     chatMessages: ImmutablePropTypes.list,
+    me: PropTypes.node,
   }
 
   static defaultProps = {
@@ -98,7 +100,7 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   render() {
-    const { pane, idx, chatMessages } = this.props;
+    const { pane, idx, chatMessages, me } = this.props;
     const chat = pane.get('chat');
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
@@ -119,7 +121,7 @@ class ChatWindow extends ImmutablePureComponent {
         <div className='pane__content'>
           <div className='chat-messages'>
             {chatMessages.map(chatMessage => (
-              <div className='chat-message' key={chatMessage.get('id')}>
+              <div className={`chat-message${me === chatMessage.get('account_id') ? ' chat-message--me' : ''}`} key={chatMessage.get('id')}>
                 <span className='chat-message__bubble'>
                   {chatMessage.get('content')}
                 </span>
