@@ -8,15 +8,12 @@ import { scrollTopTimeline } from '../../../actions/timelines';
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
-let lastStatusId;
-
 const makeGetStatusIds = () => createSelector([
   (state, { type }) => getSettings(state).get(type, ImmutableMap()),
   (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
   (state)           => state.get('statuses'),
   (state)           => state.get('me'),
 ], (columnSettings, statusIds, statuses, me) => {
-  lastStatusId = statusIds.last();
   return statusIds.filter(id => {
     const status = statuses.get(id);
     if (!status) return true;
@@ -25,6 +22,7 @@ const makeGetStatusIds = () => createSelector([
 });
 
 const mapStateToProps = (state, { timelineId }) => {
+  const lastStatusId = state.getIn(['timelines', timelineId, 'items'], ImmutableList()).last();
   const getStatusIds = makeGetStatusIds();
 
   return {
