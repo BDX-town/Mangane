@@ -8,7 +8,8 @@ import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutabl
 const initialState = ImmutableMap();
 
 const updateList = (state, chatId, messageIds) => {
-  const newIds = state.get(chatId, ImmutableOrderedSet()).union(messageIds);
+  const ids = state.get(chatId, ImmutableOrderedSet());
+  const newIds = ids.union(messageIds);
   return state.set(chatId, newIds);
 };
 
@@ -29,7 +30,7 @@ export default function chatMessageLists(state = initialState, action) {
   case CHAT_MESSAGES_FETCH_SUCCESS:
     return updateList(state, action.chatId, action.data.map(chat => chat.id));
   case CHAT_MESSAGE_SEND_SUCCESS:
-    return updateList(state, action.chatId, action.data.id);
+    return updateList(state, action.chatId, [action.data.id]);
   default:
     return state;
   }

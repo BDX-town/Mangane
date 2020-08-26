@@ -9,7 +9,10 @@ import emojify from 'soapbox/features/emoji/emoji';
 
 const mapStateToProps = (state, { chatMessageIds }) => ({
   me: state.get('me'),
-  chatMessages: chatMessageIds.map(id => state.getIn(['chat_messages', id])).toList(),
+  chatMessages: chatMessageIds.reduce((acc, curr) => {
+    const chatMessage = state.getIn(['chat_messages', curr]);
+    return chatMessage ? acc.push(chatMessage) : acc;
+  }, ImmutableList()),
 });
 
 export default @connect(mapStateToProps)
