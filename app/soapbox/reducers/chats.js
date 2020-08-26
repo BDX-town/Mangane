@@ -8,7 +8,7 @@ const importChats = (state, chats) =>
 
 const initialState = ImmutableMap();
 
-export default function admin(state = initialState, action) {
+export default function chats(state = initialState, action) {
   switch(action.type) {
   case CHAT_IMPORT:
     return importChat(state, action.chat);

@@ -8,15 +8,8 @@ import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
-import Avatar from 'soapbox/components/avatar';
-import { acctFull } from 'soapbox/utils/accounts';
-import {
-  openChat,
-  closeChat,
-  toggleChat,
-  toggleMainWindow,
-} from 'soapbox/actions/chats';
-import IconButton from 'soapbox/components/icon_button';
+import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
+import ChatWindow from './chat_window';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -52,55 +45,9 @@ class ChatPanes extends ImmutablePureComponent {
     // TODO: Focus chat input
   }
 
-  handleChatClose = (chatId) => {
-    return (e) => {
-      this.props.dispatch(closeChat(chatId));
-    };
-  }
-
-  handleChatToggle = (chatId) => {
-    return (e) => {
-      this.props.dispatch(toggleChat(chatId));
-    };
-  }
-
   handleMainWindowToggle = () => {
     this.props.dispatch(toggleMainWindow());
   }
-
-  renderChatPane = (pane, i) => {
-    const chat = pane.get('chat');
-    const account = pane.getIn(['chat', 'account']);
-    if (!chat || !account) return null;
-
-    const right = (285 * (i + 1)) + 20;
-
-    return (
-      <div key={i} className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
-        <div className='pane__header'>
-          <Avatar account={account} size={18} />
-          <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
-            @{acctFull(account)}
-          </button>
-          <div className='pane__close'>
-            <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
-          </div>
-        </div>
-        <div className='pane__content'>
-          <div style={{ padding: '10px' }}>TODO: Show the chat messages</div>
-          <div className='pane__actions'>
-            <input type='text' placeholder='Send a message...' />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  renderChatPanes = (panes) => (
-    panes.map((pane, i) =>
-      this.renderChatPane(pane, i)
-    )
-  )
 
   render() {
     const { panesData } = this.props;
@@ -119,7 +66,9 @@ class ChatPanes extends ImmutablePureComponent {
             <ChatList onClickChat={this.handleClickChat} />
           </div>
         </div>
-        {this.renderChatPanes(panes)}
+        {panes.map((pane, i) =>
+          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />
+        )}
       </div>
     );
   }

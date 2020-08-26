@@ -7,6 +7,10 @@ export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 export const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';
 export const CHATS_FETCH_FAIL    = 'CHATS_FETCH_FAIL';
 
+export const CHAT_MESSAGES_FETCH_REQUEST = 'CHAT_MESSAGES_FETCH_REQUEST';
+export const CHAT_MESSAGES_FETCH_SUCCESS = 'CHAT_MESSAGES_FETCH_SUCCESS';
+export const CHAT_MESSAGES_FETCH_FAIL    = 'CHAT_MESSAGES_FETCH_FAIL';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -15,6 +19,17 @@ export function fetchChats() {
       dispatch({ type: CHATS_FETCH_SUCCESS, data });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
+    });
+  };
+}
+
+export function fetchChatMessages(chatId) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId });
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`).then(({ data }) => {
+      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, data });
+    }).catch(error => {
+      dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, error });
     });
   };
 }
