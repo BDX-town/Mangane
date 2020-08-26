@@ -64,17 +64,31 @@ class ChatWindow extends ImmutablePureComponent {
     this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
   }
 
-  setRef = (el) => this.messagesEnd = el;
+  focusInput = () => {
+    if (!this.inputElem) return;
+    this.inputElem.focus();
+  }
+
+  setMessageEndRef = (el) => this.messagesEnd = el;
+  setInputRef = (el) => this.inputElem = el;
 
   componentDidMount() {
     const { dispatch, pane, chatMessages } = this.props;
     this.scrollToBottom();
     if (chatMessages && chatMessages.count() < 1)
       dispatch(fetchChatMessages(pane.get('chat_id')));
+    if (pane.get('state') === 'open')
+      this.focusInput();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.scrollToBottom();
+
+    const oldState = prevProps.pane.get('state');
+    const newState = this.props.pane.get('state');
+
+    if (oldState !== newState && newState === 'open')
+      this.focusInput();
   }
 
   render() {
@@ -105,7 +119,7 @@ class ChatWindow extends ImmutablePureComponent {
                 </span>
               </div>
             ))}
-            <div style={{ float: 'left', clear: 'both' }} ref={this.setRef} />
+            <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
           </div>
           <div className='pane__actions'>
             <input
@@ -114,6 +128,7 @@ class ChatWindow extends ImmutablePureComponent {
               onKeyDown={this.handleKeyDown(chat.get('id'))}
               onChange={this.handleContentChange}
               value={this.state.content}
+              ref={this.setInputRef}
             />
           </div>
         </div>
