@@ -61,7 +61,7 @@ class ChatWindow extends ImmutablePureComponent {
 
   scrollToBottom = () => {
     if (!this.messagesEnd) return;
-    this.messagesEnd.scrollIntoView({ behavior: 'smooth' });
+    this.messagesEnd.scrollIntoView();
   }
 
   focusInput = () => {
@@ -69,20 +69,26 @@ class ChatWindow extends ImmutablePureComponent {
     this.inputElem.focus();
   }
 
-  setMessageEndRef = (el) => this.messagesEnd = el;
-  setInputRef = (el) => this.inputElem = el;
+  setMessageEndRef = (el) => {
+    this.messagesEnd = el;
+    this.scrollToBottom();
+  };
+
+  setInputRef = (el) => {
+    const { pane } = this.props;
+    this.inputElem = el;
+    if (pane.get('state') === 'open') this.focusInput();
+  };
 
   componentDidMount() {
     const { dispatch, pane, chatMessages } = this.props;
-    this.scrollToBottom();
     if (chatMessages && chatMessages.count() < 1)
       dispatch(fetchChatMessages(pane.get('chat_id')));
-    if (pane.get('state') === 'open')
-      this.focusInput();
   }
 
   componentDidUpdate(prevProps) {
-    this.scrollToBottom();
+    if (prevProps.chatMessages !== this.props.chatMessages)
+      this.scrollToBottom();
 
     const oldState = prevProps.pane.get('state');
     const newState = this.props.pane.get('state');
