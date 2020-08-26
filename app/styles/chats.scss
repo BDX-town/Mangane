@@ -78,6 +78,7 @@
   &__actions {
     background: var(--foreground-color);
     margin-top: auto;
+    padding: 6px;
 
     input {
       width: 100%;
@@ -85,8 +86,8 @@
       box-sizing: border-box;
       padding: 6px;
       background: var(--background-color);
-      border: 6px solid var(--foreground-color);
-      border-radius: 10px;
+      border: 0;
+      border-radius: 6px;
       color: var(--primary-text-color);
       font-size: 16px;
     }
