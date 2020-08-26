@@ -9,6 +9,7 @@ import { acctFull } from 'soapbox/utils/accounts';
 import IconButton from 'soapbox/components/icon_button';
 import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapbox/actions/chats';
 import { List as ImmutableList } from 'immutable';
+import emojify from 'soapbox/features/emoji/emoji';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
@@ -122,9 +123,10 @@ class ChatWindow extends ImmutablePureComponent {
           <div className='chat-messages'>
             {chatMessages.map(chatMessage => (
               <div className={`chat-message${me === chatMessage.get('account_id') ? ' chat-message--me' : ''}`} key={chatMessage.get('id')}>
-                <span className='chat-message__bubble'>
-                  {chatMessage.get('content')}
-                </span>
+                <span
+                  className='chat-message__bubble'
+                  dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content')) }}
+                />
               </div>
             ))}
             <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
