@@ -1,4 +1,5 @@
 import {
+  CHATS_FETCH_SUCCESS,
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_SUCCESS,
 } from 'soapbox/actions/chats';
@@ -23,8 +24,14 @@ const importMessages = (state, chatMessages) => (
       importMessage(map, chatMessage)))
 );
 
+const importLastMessages = (state, chats) =>
+  state.withMutations(mutable =>
+    chats.forEach(chat => importMessage(mutable, chat.last_message)));
+
 export default function chatMessageLists(state = initialState, action) {
   switch(action.type) {
+  case CHATS_FETCH_SUCCESS:
+    return importLastMessages(state, action.data);
   case STREAMING_CHAT_UPDATE:
     return importMessages(state, [action.payload.last_message]);
   case CHAT_MESSAGES_FETCH_SUCCESS:

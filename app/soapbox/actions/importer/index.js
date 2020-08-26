@@ -3,7 +3,6 @@ import {
   normalizeAccount,
   normalizeStatus,
   normalizePoll,
-  normalizeChat,
 } from './normalizer';
 
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
@@ -12,8 +11,6 @@ export const STATUS_IMPORT   = 'STATUS_IMPORT';
 export const STATUSES_IMPORT = 'STATUSES_IMPORT';
 export const POLLS_IMPORT    = 'POLLS_IMPORT';
 export const ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP = 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP';
-export const CHATS_IMPORT    = 'CHATS_IMPORT';
-export const CHAT_MESSAGES_IMPORT = 'CHAT_MESSAGES_IMPORT';
 
 function pushUnique(array, object) {
   if (array.every(element => element.id !== object.id)) {
@@ -39,14 +36,6 @@ export function importStatuses(statuses) {
 
 export function importPolls(polls) {
   return { type: POLLS_IMPORT, polls };
-}
-
-export function importChats(chats) {
-  return { type: CHATS_IMPORT, chats };
-}
-
-export function importChatMessages(chatMessages) {
-  return { type: CHAT_MESSAGES_IMPORT, chatMessages };
 }
 
 export function importFetchedAccount(account) {
@@ -112,29 +101,3 @@ export function importFetchedPoll(poll) {
 export function importErrorWhileFetchingAccountByUsername(username) {
   return { type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username };
 };
-
-export function importFetchedChat(chat) {
-  return importFetchedChats([chat]);
-}
-
-export function importFetchedChats(chats) {
-  return (dispatch, getState) => {
-    const accounts = [];
-    const chatMessages = [];
-    const normalChats = [];
-
-    function processChat(chat) {
-      const normalOldChat = getState().getIn(['chats', chat.id]);
-
-      pushUnique(normalChats, normalizeChat(chat, normalOldChat));
-      pushUnique(accounts, chat.account);
-      pushUnique(chatMessages, chat.last_message);
-    }
-
-    chats.forEach(processChat);
-
-    dispatch(importFetchedAccounts(accounts));
-    dispatch(importChatMessages(chatMessages));
-    dispatch(importChats(normalChats));
-  };
-}
