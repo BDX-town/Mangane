@@ -112,11 +112,13 @@ class ChatWindow extends ImmutablePureComponent {
     return (
       <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }} onMouseOver={this.handleReadChat}>
         <div className='pane__header'>
-          <Avatar account={account} size={18} />
+          {unreadCount > 0
+            ? <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>
+            : <Avatar account={account} size={18} />
+          }
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
             @{acctFull(account)}
           </button>
-          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           <div className='pane__close'>
             <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
           </div>

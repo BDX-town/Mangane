@@ -59,10 +59,10 @@ class ChatPanes extends ImmutablePureComponent {
     const mainWindowPane = (
       <div className={`pane pane--main pane--${mainWindow}`}>
         <div className='pane__header'>
+          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           <button className='pane__title' onClick={this.handleMainWindowToggle}>
             <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
           </button>
-          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
         </div>
         <div className='pane__content'>
           <ChatList

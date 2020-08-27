@@ -71,6 +71,12 @@
     .icon-with-badge__badge {
       position: static;
       pointer-events: none;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
     }
   }
 
