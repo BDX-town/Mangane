@@ -1,5 +1,6 @@
 import api from '../api';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
 
 export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
@@ -42,11 +43,13 @@ export function fetchChatMessages(chatId) {
 
 export function sendChatMessage(chatId, params) {
   return (dispatch, getState) => {
-    dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params });
+    const uuid = uuidv4();
+    const me = getState().get('me');
+    dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params, uuid, me });
     return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, chatMessage: data });
+      dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, chatMessage: data, uuid });
     }).catch(error => {
-      dispatch({ type: CHAT_MESSAGE_SEND_FAIL, chatId, error });
+      dispatch({ type: CHAT_MESSAGE_SEND_FAIL, chatId, error, uuid });
     });
   };
 }
