@@ -13,9 +13,9 @@ const initialState = ImmutableMap();
 export default function chats(state = initialState, action) {
   switch(action.type) {
   case CHATS_FETCH_SUCCESS:
-    return importChats(state, action.data);
+    return importChats(state, action.chats);
   case STREAMING_CHAT_UPDATE:
-    return importChats(state, [action.payload]);
+    return importChats(state, [action.chat]);
   default:
     return state;
   }

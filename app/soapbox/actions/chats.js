@@ -22,7 +22,7 @@ export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
-      dispatch({ type: CHATS_FETCH_SUCCESS, data });
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
@@ -33,7 +33,7 @@ export function fetchChatMessages(chatId) {
   return (dispatch, getState) => {
     dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId });
     return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, data });
+      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, chatMessages: data });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, error });
     });
@@ -44,7 +44,7 @@ export function sendChatMessage(chatId, params) {
   return (dispatch, getState) => {
     dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params });
     return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, data });
+      dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, chatMessage: data });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGE_SEND_FAIL, chatId, error });
     });

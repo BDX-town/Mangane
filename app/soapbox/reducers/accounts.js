@@ -47,9 +47,9 @@ export default function accounts(state = initialState, action) {
       username: action.username,
     }));
   case CHATS_FETCH_SUCCESS:
-    return importAccountsFromChats(state, action.data);
+    return importAccountsFromChats(state, action.chats);
   case STREAMING_CHAT_UPDATE:
-    return importAccountsFromChats(state, [action.payload]);
+    return importAccountsFromChats(state, [action.chat]);
   default:
     return state;
   }

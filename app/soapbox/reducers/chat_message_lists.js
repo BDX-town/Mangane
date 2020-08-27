@@ -31,13 +31,13 @@ const importLastMessages = (state, chats) =>
 export default function chatMessageLists(state = initialState, action) {
   switch(action.type) {
   case CHATS_FETCH_SUCCESS:
-    return importLastMessages(state, action.data);
+    return importLastMessages(state, action.chats);
   case STREAMING_CHAT_UPDATE:
-    return importMessages(state, [action.payload.last_message]);
+    return importMessages(state, [action.chat.last_message]);
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return updateList(state, action.chatId, action.data.map(chat => chat.id).reverse());
+    return updateList(state, action.chatId, action.chatMessages.map(chat => chat.id).reverse());
   case CHAT_MESSAGE_SEND_SUCCESS:
-    return updateList(state, action.chatId, [action.data.id]);
+    return updateList(state, action.chatId, [action.chatMessage.id]);
   default:
     return state;
   }

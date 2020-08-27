@@ -23,13 +23,13 @@ const importLastMessages = (state, chats) =>
 export default function chatMessages(state = initialState, action) {
   switch(action.type) {
   case CHATS_FETCH_SUCCESS:
-    return importLastMessages(state, fromJS(action.data));
+    return importLastMessages(state, fromJS(action.chats));
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return importMessages(state, fromJS(action.data));
+    return importMessages(state, fromJS(action.chatMessages));
   case CHAT_MESSAGE_SEND_SUCCESS:
-    return importMessage(state, fromJS(action.data));
+    return importMessage(state, fromJS(action.chatMessage));
   case STREAMING_CHAT_UPDATE:
-    return importLastMessages(state, fromJS([action.payload]));
+    return importLastMessages(state, fromJS([action.chat]));
   default:
     return state;
   }
