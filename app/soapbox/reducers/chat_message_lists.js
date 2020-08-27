@@ -38,15 +38,16 @@ export default function chatMessageLists(state = initialState, action) {
   case CHATS_FETCH_SUCCESS:
     return importLastMessages(state, action.chats).sort();
   case STREAMING_CHAT_UPDATE:
-    if (action.chat.last_message)
+    if (action.chat.last_message &&
+        action.chat.last_message.account_id !== action.me)
       return importMessages(state, [action.chat.last_message]).sort();
     else
-      return state.sort();
+      return state;
   case CHAT_MESSAGES_FETCH_SUCCESS:
     return updateList(state, action.chatId, action.chatMessages.map(chat => chat.id).reverse()).sort();
   case CHAT_MESSAGE_SEND_SUCCESS:
     return updateList(state, action.chatId, [action.chatMessage.id]).sort();
   default:
-    return state.sort();
+    return state;
   }
 };

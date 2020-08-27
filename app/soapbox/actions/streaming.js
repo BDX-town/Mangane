@@ -55,7 +55,7 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload) });
+          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
           break;
         }
       },
