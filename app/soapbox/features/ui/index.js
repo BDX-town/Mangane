@@ -292,6 +292,7 @@ class UI extends React.PureComponent {
 
   state = {
     draggingOver: false,
+    mobile: isMobile(window.innerWidth),
   };
 
   handleBeforeUnload = (e) => {
@@ -400,10 +401,17 @@ class UI extends React.PureComponent {
     }
   }
 
+  handleResize = debounce(() => {
+    this.setState({ mobile: isMobile(window.innerWidth) });
+  }, 500, {
+    trailing: true,
+  });
+
   componentDidMount() {
     const { account } = this.props;
     if (!account) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
+    window.addEventListener('resize', this.handleResize, { passive: true });
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
     document.addEventListener('dragover', this.handleDragOver, false);
@@ -437,6 +445,7 @@ class UI extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
     document.removeEventListener('drop', this.handleDrop);
@@ -565,7 +574,7 @@ class UI extends React.PureComponent {
 
   render() {
     const { streamingUrl } = this.props;
-    const { draggingOver } = this.state;
+    const { draggingOver, mobile } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
     if (me === null || !streamingUrl) return null;
@@ -605,7 +614,7 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
-          {me && <ChatPanes />}
+          {me && !mobile && <ChatPanes />}
         </div>
       </HotKeys>
     );
