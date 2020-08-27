@@ -110,6 +110,12 @@
     max-width: 70%;
     border-radius: 10px;
     background-color: var(--background-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    a {
+      color: var(--brand-color--hicontrast);
+    }
   }
 
   &--me .chat-message__bubble {
