@@ -99,6 +99,15 @@ class ChatWindow extends ImmutablePureComponent {
 
     if (oldState !== newState && newState === 'open')
       this.focusInput();
+
+    const markReadConditions = [
+      () => this.props.chat !== undefined,
+      () => document.activeElement === this.inputElem,
+      () => this.props.chat.get('unread') > 0,
+    ];
+
+    if (markReadConditions.every(c => c() === true))
+      this.handleReadChat();
   }
 
   render() {
