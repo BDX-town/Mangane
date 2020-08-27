@@ -7,10 +7,21 @@ import { fetchChats } from 'soapbox/actions/chats';
 import ChatListAccount from './chat_list_account';
 import { makeGetChat } from 'soapbox/selectors';
 
+const chatDateComparator = (chatA, chatB) => {
+  // Sort most recently updated chats at the top
+  const a = new Date(chatA.get('updated_at'));
+  const b = new Date(chatB.get('updated_at'));
+
+  if (a === b) return 0;
+  if (a > b) return -1;
+  if (a < b) return 1;
+  return 0;
+};
+
 const mapStateToProps = state => {
   const getChat = makeGetChat();
   return {
-    chats: state.get('chats').map(chat => getChat(state, chat.toJS())).toList(),
+    chats: state.get('chats').map(chat => getChat(state, chat.toJS())).toList().sort(chatDateComparator),
   };
 };
 
