@@ -9,7 +9,7 @@
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
-  z-index: 9;
+  z-index: 999;
   transition: 0.2s;
 
   &--main {
