@@ -19,7 +19,7 @@ export default class Header extends ImmutablePureComponent {
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
-    onEndorseToggle: PropTypes.func.isRequired,
+    // onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
   };
