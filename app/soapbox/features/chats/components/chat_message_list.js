@@ -42,6 +42,20 @@ class ChatMessageList extends ImmutablePureComponent {
     this.scrollToBottom();
   };
 
+  getFormattedTimestamp = (chatMessage) => {
+    const { intl } = this.props;
+    return intl.formatDate(
+      new Date(chatMessage.get('created_at')), {
+        hour12: false,
+        year: 'numeric',
+        month: 'short',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+      }
+    );
+  };
+
   componentDidUpdate(prevProps) {
     if (prevProps.chatMessages !== this.props.chatMessages)
       this.scrollToBottom();
@@ -61,6 +75,7 @@ class ChatMessageList extends ImmutablePureComponent {
             key={chatMessage.get('id')}
           >
             <span
+              title={this.getFormattedTimestamp(chatMessage)}
               className='chat-message__bubble'
               dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content')) }}
             />
