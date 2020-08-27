@@ -294,7 +294,7 @@ class Header extends ImmutablePureComponent {
               <div className='account__header__extra__buttons'>
                 <ActionButton account={account} />
                 {account.get('id') !== me &&
-                  <Button className='button button-alternative-2' onClick={this.props.onDirect}>
+                  <Button className='button-alternative-2' onClick={this.props.onMessage}>
                     <FormattedMessage
                       id='account.message' defaultMessage='Message' values={{
                         name: account.get('acct'),

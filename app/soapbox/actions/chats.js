@@ -14,6 +14,10 @@ export const CHAT_MESSAGE_SEND_REQUEST = 'CHAT_MESSAGE_SEND_REQUEST';
 export const CHAT_MESSAGE_SEND_SUCCESS = 'CHAT_MESSAGE_SEND_SUCCESS';
 export const CHAT_MESSAGE_SEND_FAIL    = 'CHAT_MESSAGE_SEND_FAIL';
 
+export const CHAT_FETCH_REQUEST = 'CHAT_FETCH_REQUEST';
+export const CHAT_FETCH_SUCCESS = 'CHAT_FETCH_SUCCESS';
+export const CHAT_FETCH_FAIL    = 'CHAT_FETCH_FAIL';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -93,5 +97,16 @@ export function toggleMainWindow() {
     const main = getSettings(getState()).getIn(['chats', 'mainWindow']);
     const state = main === 'minimized' ? 'open' : 'minimized';
     return dispatch(changeSetting(['chats', 'mainWindow'], state));
+  };
+}
+
+export function startChat(accountId) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHAT_FETCH_REQUEST, accountId });
+    return api(getState).post(`/api/v1/pleroma/chats/by-account-id/${accountId}`).then(({ data }) => {
+      dispatch({ type: CHAT_FETCH_SUCCESS, chat: data });
+    }).catch(error => {
+      dispatch({ type: CHAT_FETCH_FAIL, accountId, error });
+    });
   };
 }
