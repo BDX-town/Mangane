@@ -1,4 +1,4 @@
-import { CHATS_FETCH_SUCCESS } from 'soapbox/actions/chats';
+import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChat } from 'soapbox/actions/importer/normalizer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
@@ -15,6 +15,8 @@ export default function chats(state = initialState, action) {
   case CHATS_FETCH_SUCCESS:
     return importChats(state, action.chats);
   case STREAMING_CHAT_UPDATE:
+    return importChats(state, [action.chat]);
+  case CHAT_FETCH_SUCCESS:
     return importChats(state, [action.chat]);
   default:
     return state;
