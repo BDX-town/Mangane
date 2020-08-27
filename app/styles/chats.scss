@@ -67,6 +67,11 @@
     .pane__close {
       margin-left: auto;
     }
+
+    .icon-with-badge__badge {
+      position: static;
+      pointer-events: none;
+    }
   }
 
   &__content {
@@ -141,5 +146,16 @@
     box-sizing: border-box;
     background: transparent;
     align-items: start;
+  }
+
+  .account__display-name {
+    position: relative;
+  }
+
+  .icon-with-badge__badge {
+    top: 0;
+    right: 0;
+    left: auto;
+    bottom: auto;
   }
 }

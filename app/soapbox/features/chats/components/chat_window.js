@@ -10,9 +10,11 @@ import IconButton from 'soapbox/components/icon_button';
 import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapbox/actions/chats';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
+  chat: state.getIn(['chats', pane.get('chat_id')]),
   chatMessageIds: state.getIn(['chat_message_lists', pane.get('chat_id')], ImmutableOrderedSet()),
 });
 
@@ -26,6 +28,7 @@ class ChatWindow extends ImmutablePureComponent {
     pane: ImmutablePropTypes.map.isRequired,
     idx: PropTypes.number,
     chatMessageIds: ImmutablePropTypes.orderedSet,
+    chat: ImmutablePropTypes.map,
     me: PropTypes.node,
   }
 
@@ -88,12 +91,12 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   render() {
-    const { pane, idx, chatMessageIds } = this.props;
-    const chat = pane.get('chat');
+    const { pane, idx, chatMessageIds, chat } = this.props;
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
 
     const right = (285 * (idx + 1)) + 20;
+    const unreadCount = chat.get('unread');
 
     return (
       <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
@@ -102,6 +105,7 @@ class ChatWindow extends ImmutablePureComponent {
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
             @{acctFull(account)}
           </button>
+          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           <div className='pane__close'>
             <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
           </div>

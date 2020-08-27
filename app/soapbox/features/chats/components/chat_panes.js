@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { makeGetChat } from 'soapbox/selectors';
 import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
 import ChatWindow from './chat_window';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -27,6 +28,7 @@ const mapStateToProps = state => {
 
   return {
     panesData: addChatsToPanes(state, panesData),
+    unreadCount: state.get('chats').reduce((acc, curr) => acc + curr.get('unread'), 0),
   };
 };
 
@@ -50,7 +52,7 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   render() {
-    const { panesData } = this.props;
+    const { panesData, unreadCount } = this.props;
     const panes = panesData.get('panes');
     const mainWindow = panesData.get('mainWindow');
 
@@ -60,6 +62,7 @@ class ChatPanes extends ImmutablePureComponent {
           <button className='pane__title' onClick={this.handleMainWindowToggle}>
             <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
           </button>
+          {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
         </div>
         <div className='pane__content'>
           <ChatList

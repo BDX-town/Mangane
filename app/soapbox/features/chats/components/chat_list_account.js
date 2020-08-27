@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 export default class ChatListAccount extends ImmutablePureComponent {
 
@@ -20,6 +21,7 @@ export default class ChatListAccount extends ImmutablePureComponent {
     const { chat } = this.props;
     if (!chat) return null;
     const account = chat.get('account');
+    const unreadCount = chat.get('unread');
 
     return (
       <div className='account'>
@@ -30,6 +32,7 @@ export default class ChatListAccount extends ImmutablePureComponent {
               <Avatar account={account} size={36} />
             </div>
             <DisplayName account={account} />
+            {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           </div>
         </div>
       </div>

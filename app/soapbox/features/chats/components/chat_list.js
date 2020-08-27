@@ -20,8 +20,14 @@ const chatDateComparator = (chatA, chatB) => {
 
 const mapStateToProps = state => {
   const getChat = makeGetChat();
+
+  const chats = state.get('chats')
+    .map(chat => getChat(state, chat.toJS()))
+    .toList()
+    .sort(chatDateComparator);
+
   return {
-    chats: state.get('chats').map(chat => getChat(state, chat.toJS())).toList().sort(chatDateComparator),
+    chats,
   };
 };
 
