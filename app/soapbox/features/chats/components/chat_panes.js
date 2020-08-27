@@ -54,18 +54,25 @@ class ChatPanes extends ImmutablePureComponent {
     const panes = panesData.get('panes');
     const mainWindow = panesData.get('mainWindow');
 
+    const mainWindowPane = (
+      <div className={`pane pane--main pane--${mainWindow}`}>
+        <div className='pane__header'>
+          <button className='pane__title' onClick={this.handleMainWindowToggle}>
+            <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
+          </button>
+        </div>
+        <div className='pane__content'>
+          <ChatList
+            onClickChat={this.handleClickChat}
+            emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
+          />
+        </div>
+      </div>
+    );
+
     return (
       <div className='chat-panes'>
-        <div className={`pane pane--main pane--${mainWindow}`}>
-          <div className='pane__header'>
-            <button className='pane__title' onClick={this.handleMainWindowToggle}>
-              <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
-            </button>
-          </div>
-          <div className='pane__content'>
-            <ChatList onClickChat={this.handleClickChat} />
-          </div>
-        </div>
+        {mainWindowPane}
         {panes.map((pane, i) =>
           <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />
         )}

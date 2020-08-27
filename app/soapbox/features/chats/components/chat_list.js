@@ -10,7 +10,7 @@ import { makeGetChat } from 'soapbox/selectors';
 const mapStateToProps = state => {
   const getChat = makeGetChat();
   return {
-    chats: state.get('chats').map(chat => getChat(state, chat.toJS())),
+    chats: state.get('chats').map(chat => getChat(state, chat.toJS())).toList(),
   };
 };
 
@@ -22,6 +22,7 @@ class ChatList extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     onClickChat: PropTypes.func,
+    emptyMessage: PropTypes.node,
   };
 
   componentDidMount() {
@@ -29,12 +30,15 @@ class ChatList extends ImmutablePureComponent {
   }
 
   render() {
-    const { chats } = this.props;
+    const { chats, emptyMessage } = this.props;
 
     return (
       <div className='chat-list'>
         <div className='chat-list__content'>
-          {chats.toList().map(chat => (
+          {chats.count() === 0 &&
+            <div className='empty-column-indicator'>{emptyMessage}</div>
+          }
+          {chats.map(chat => (
             <div key={chat.get('id')} className='chat-list-item'>
               <ChatListAccount
                 chat={chat}

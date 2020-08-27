@@ -130,4 +130,16 @@
 
 .chat-list {
   overflow-y: auto;
+  flex: 1;
+
+  &__content {
+    height: 100%;
+  }
+
+  .empty-column-indicator {
+    height: 100%;
+    box-sizing: border-box;
+    background: transparent;
+    align-items: start;
+  }
 }
