@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isStaff } from 'soapbox/utils/accounts';
@@ -293,13 +294,10 @@ class Header extends ImmutablePureComponent {
               me && !deactivated &&
               <div className='account__header__extra__buttons'>
                 <ActionButton account={account} />
-                {account.get('id') !== me &&
-                  <Button className='button-alternative-2' onClick={this.props.onMessage}>
-                    <FormattedMessage
-                      id='account.message' defaultMessage='Message' values={{
-                        name: account.get('acct'),
-                      }}
-                    />
+                {account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
+                  <Button className='button-alternative-2' onClick={this.props.onChat}>
+                    <Icon id='comment' />
+                    <FormattedMessage id='account.message' defaultMessage='Message' />
                   </Button>
                 }
                 <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />

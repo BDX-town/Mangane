@@ -72,10 +72,9 @@ export default class Header extends ImmutablePureComponent {
     this.props.onUnblockDomain(domain);
   }
 
-  handleMessage = () => {
-    this.props.onMessage(this.props.account, this.context.router.history);
+  handleChat = () => {
+    this.props.onChat(this.props.account, this.context.router.history);
   }
-
 
   // handleEndorseToggle = () => {
   //   this.props.onEndorseToggle(this.props.account);
@@ -100,7 +99,7 @@ export default class Header extends ImmutablePureComponent {
           onBlock={this.handleBlock}
           onMention={this.handleMention}
           onDirect={this.handleDirect}
-          onMessage={this.handleMessage}
+          onChat={this.handleChat}
           onReblogToggle={this.handleReblogToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}

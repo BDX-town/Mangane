@@ -134,7 +134,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }));
   },
 
-  onMessage(account, router) {
+  onChat(account, router) {
     dispatch(startChat(account.get('id')));
   },
 });
