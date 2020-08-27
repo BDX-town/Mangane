@@ -10,7 +10,18 @@ import { makeGetChat } from 'soapbox/selectors';
 const mapStateToProps = state => {
   const getChat = makeGetChat();
   return {
-    chats: state.get('chats').map(chat => getChat(state, chat.toJS())),
+    chats: state.get('chats').map(chat =>
+      getChat(state, chat.toJS())
+    ).sort((valueA, valueB) => {
+      // Sort most recently updated chats at the top
+      const a = new Date(valueA.get('updated_at'));
+      const b = new Date(valueB.get('updated_at'));
+
+      if (a === b) return 0;
+      if (a > b) return -1;
+      if (a < b) return 1;
+      return 0;
+    }),
   };
 };
 
