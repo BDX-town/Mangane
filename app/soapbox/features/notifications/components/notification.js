@@ -150,13 +150,20 @@ class Notification extends ImmutablePureComponent {
         <div className='notification notification-chat-mention focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.chat_mention', defaultMessage: '{name} sent you a message' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <Icon id='chat' fixedWidth />
+              <Icon id='comment' fixedWidth />
             </div>
 
             <span title={notification.get('created_at')}>
               <FormattedMessage id='notification.chat_mention' defaultMessage='{name} sent you a message' values={{ name: link }} />
             </span>
           </div>
+        </div>
+
+        <div className='chat-message'>
+          <span
+            className='chat-message__bubble'
+            dangerouslySetInnerHTML={{ __html: emojify(notification.getIn(['chat_message', 'content'])) }}
+          />
         </div>
       </HotKeys>
     );
@@ -310,7 +317,7 @@ class Notification extends ImmutablePureComponent {
     case 'pleroma:emoji_reaction':
       return this.renderEmojiReact(notification, link);
     case 'pleroma:chat_mention':
-      return this.renderChatMention(notification);
+      return this.renderChatMention(notification, link);
     }
 
     return null;

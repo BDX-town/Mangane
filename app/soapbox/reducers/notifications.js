@@ -43,6 +43,7 @@ const notificationToMap = notification => ImmutableMap({
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,
+  chat_message: notification.chat_message,
   is_seen: get(notification, ['pleroma', 'is_seen'], true),
 });
 
