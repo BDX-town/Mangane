@@ -7,7 +7,13 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
 import IconButton from 'soapbox/components/icon_button';
-import { closeChat, toggleChat, fetchChatMessages, sendChatMessage } from 'soapbox/actions/chats';
+import {
+  closeChat,
+  toggleChat,
+  fetchChatMessages,
+  sendChatMessage,
+  markChatRead,
+} from 'soapbox/actions/chats';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -65,6 +71,11 @@ class ChatWindow extends ImmutablePureComponent {
     this.setState({ content: e.target.value });
   }
 
+  handleReadChat = (e) => {
+    const { dispatch, chat } = this.props;
+    dispatch(markChatRead(chat.get('id')));
+  }
+
   focusInput = () => {
     if (!this.inputElem) return;
     this.inputElem.focus();
@@ -99,7 +110,7 @@ class ChatWindow extends ImmutablePureComponent {
     const unreadCount = chat.get('unread');
 
     return (
-      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
+      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }} onMouseOver={this.handleReadChat}>
         <div className='pane__header'>
           <Avatar account={account} size={18} />
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>

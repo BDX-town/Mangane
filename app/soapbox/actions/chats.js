@@ -19,6 +19,10 @@ export const CHAT_FETCH_REQUEST = 'CHAT_FETCH_REQUEST';
 export const CHAT_FETCH_SUCCESS = 'CHAT_FETCH_SUCCESS';
 export const CHAT_FETCH_FAIL    = 'CHAT_FETCH_FAIL';
 
+export const CHAT_READ_REQUEST = 'CHAT_READ_REQUEST';
+export const CHAT_READ_SUCCESS = 'CHAT_READ_SUCCESS';
+export const CHAT_READ_FAIL    = 'CHAT_READ_FAIL';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -56,8 +60,11 @@ export function sendChatMessage(chatId, params) {
 
 export function openChat(chatId) {
   return (dispatch, getState) => {
-    const panes = getSettings(getState()).getIn(['chats', 'panes']);
+    const state = getState();
+    const panes = getSettings(state).getIn(['chats', 'panes']);
     const idx = panes.findIndex(pane => pane.get('chat_id') === chatId);
+
+    dispatch(markChatRead(chatId));
 
     if (idx > -1) {
       return dispatch(changeSetting(['chats', 'panes', idx, 'state'], 'open'));
@@ -88,6 +95,7 @@ export function toggleChat(chatId) {
 
     if (idx > -1) {
       const state = pane.get('state') === 'minimized' ? 'open' : 'minimized';
+      if (state === 'open') dispatch(markChatRead(chatId));
       return dispatch(changeSetting(['chats', 'panes', idx, 'state'], state));
     } else {
       return false;
@@ -111,6 +119,23 @@ export function startChat(accountId) {
       dispatch(openChat(data.id));
     }).catch(error => {
       dispatch({ type: CHAT_FETCH_FAIL, accountId, error });
+    });
+  };
+}
+
+export function markChatRead(chatId, lastReadId) {
+  return (dispatch, getState) => {
+    const chat = getState().getIn(['chats', chatId]);
+    if (!lastReadId) lastReadId = chat.get('last_message');
+
+    if (chat.get('unread') < 1) return;
+    if (!lastReadId) return;
+
+    dispatch({ type: CHAT_READ_REQUEST, chatId, lastReadId });
+    api(getState).post(`/api/v1/pleroma/chats/${chatId}/read`, { last_read_id: lastReadId }).then(({ data }) => {
+      dispatch({ type: CHAT_READ_SUCCESS, chat: data, lastReadId });
+    }).catch(error => {
+      dispatch({ type: CHAT_READ_FAIL, chatId, error, lastReadId });
     });
   };
 }
