@@ -71,6 +71,8 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
 
 export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
   return (dispatch, getState) => {
+    if (notification.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
+
     const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', notification.type]);
     const filters = getFilters(getState(), { contextType: 'notifications' });
     const playSound = getSettings(getState()).getIn(['notifications', 'sounds', notification.type]);
