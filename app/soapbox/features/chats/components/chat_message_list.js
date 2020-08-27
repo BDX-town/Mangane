@@ -6,6 +6,7 @@ import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { List as ImmutableList } from 'immutable';
 import emojify from 'soapbox/features/emoji/emoji';
+import classNames from 'classnames';
 
 const mapStateToProps = (state, { chatMessageIds }) => ({
   me: state.get('me'),
@@ -52,7 +53,13 @@ class ChatMessageList extends ImmutablePureComponent {
     return (
       <div className='chat-messages'>
         {chatMessages.map(chatMessage => (
-          <div className={`chat-message${me === chatMessage.get('account_id') ? ' chat-message--me' : ''}`} key={chatMessage.get('id')}>
+          <div
+            className={classNames('chat-message', {
+              'chat-message--me': chatMessage.get('account_id') === me,
+              'chat-message--pending': chatMessage.get('pending', false) === true,
+            })}
+            key={chatMessage.get('id')}
+          >
             <span
               className='chat-message__bubble'
               dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content')) }}

@@ -122,4 +122,8 @@
     margin-left: auto;
     background-color: hsla(var(--brand-color_hsl), 0.2);
   }
+
+  &--pending .chat-message__bubble {
+    opacity: 0.5;
+  }
 }
