@@ -100,6 +100,7 @@ export default class Header extends ImmutablePureComponent {
           onBlock={this.handleBlock}
           onMention={this.handleMention}
           onDirect={this.handleDirect}
+          onMessage={this.handleMessage}
           onReblogToggle={this.handleReblogToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}

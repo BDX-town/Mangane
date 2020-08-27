@@ -83,9 +83,10 @@ export function normalizePoll(poll) {
 
 export function normalizeChat(chat, normalOldChat) {
   const normalChat   = { ...chat };
+  const { account, last_message: lastMessage } = chat;
 
-  normalChat.account = chat.account.id;
-  normalChat.last_message = chat.last_message.id;
+  if (account) normalChat.account = account.id;
+  if (lastMessage) normalChat.last_message = lastMessage.id;
 
   return normalChat;
 }

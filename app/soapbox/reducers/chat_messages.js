@@ -18,7 +18,10 @@ const importMessages = (state, messages) =>
 
 const importLastMessages = (state, chats) =>
   state.withMutations(mutable =>
-    chats.forEach(chat => importMessage(mutable, chat.get('last_message'))));
+    chats.forEach(chat => {
+      if (chat.get('last_message'))
+        importMessage(mutable, chat.get('last_message'));
+    }));
 
 export default function chatMessages(state = initialState, action) {
   switch(action.type) {
