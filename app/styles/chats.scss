@@ -164,6 +164,7 @@
 
     textarea {
       width: 100%;
+      height: 100%;
       margin: 0;
       box-sizing: border-box;
       padding: 6px;
@@ -195,6 +196,11 @@
       flex-direction: column;
       overflow: hidden;
       flex: 1;
+      border-radius: 0 0 10px 10px;
+
+      &__actions textarea {
+        padding: 10px;
+      }
     }
   }
 }
