@@ -69,7 +69,6 @@ class ActionBar extends React.PureComponent {
     let menu = [];
 
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
-    menu.push({ text: intl.formatMessage(messages.messages), to: '/messages' });
     menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
     menu.push({ text: intl.formatMessage(messages.bookmarks), to: '/bookmarks' });
     menu.push(null);

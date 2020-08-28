@@ -36,6 +36,7 @@ import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
+import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 
 import {
   Status,
@@ -78,6 +79,8 @@ import {
   PasswordReset,
   SecurityForm,
   MfaForm,
+  ChatIndex,
+  ChatRoom,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -154,8 +157,6 @@ const LAYOUT = {
     ],
   },
 };
-
-const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started/);
 
 class SwitchingColumnsArea extends React.PureComponent {
 
@@ -236,6 +237,9 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
 
+        <WrappedRoute path='/chats' exact layout={LAYOUT.DEFAULT} component={ChatIndex} content={children} />
+        <WrappedRoute path='/chats/:chatId' layout={LAYOUT.DEFAULT} component={ChatRoom} content={children} />
+
         <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
         <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
         <WrappedRoute path='/domain_blocks' layout={LAYOUT.DEFAULT} component={DomainBlocks} content={children} />
@@ -291,6 +295,7 @@ class UI extends React.PureComponent {
 
   state = {
     draggingOver: false,
+    mobile: isMobile(window.innerWidth),
   };
 
   handleBeforeUnload = (e) => {
@@ -399,10 +404,17 @@ class UI extends React.PureComponent {
     }
   }
 
+  handleResize = debounce(() => {
+    this.setState({ mobile: isMobile(window.innerWidth) });
+  }, 500, {
+    trailing: true,
+  });
+
   componentDidMount() {
     const { account } = this.props;
     if (!account) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
+    window.addEventListener('resize', this.handleResize, { passive: true });
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
     document.addEventListener('dragover', this.handleDragOver, false);
@@ -436,6 +448,7 @@ class UI extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
     document.removeEventListener('drop', this.handleDrop);
@@ -562,9 +575,19 @@ class UI extends React.PureComponent {
     this.props.dispatch(openModal('COMPOSE'));
   }
 
+  shouldHideFAB = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
+  }
+
+  isChatRoomLocation = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/chats\/(.*)/);
+  }
+
   render() {
     const { streamingUrl } = this.props;
-    const { draggingOver } = this.state;
+    const { draggingOver, mobile } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
     if (me === null || !streamingUrl) return null;
@@ -587,11 +610,31 @@ class UI extends React.PureComponent {
       goToRequests: this.handleHotkeyGoToRequests,
     } : {};
 
-    const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <button key='floating-action-button' onClick={this.handleOpenComposeModal} className='floating-action-button' aria-label={intl.formatMessage(messages.publish)}><Icon id='pencil' fixedWidth /></button>;
+    const fabElem = (
+      <button
+        key='floating-action-button'
+        onClick={this.handleOpenComposeModal}
+        className='floating-action-button'
+        aria-label={intl.formatMessage(messages.publish)}
+      >
+        <Icon id='pencil' fixedWidth />
+      </button>
+    );
+
+    const floatingActionButton = this.shouldHideFAB() ? null : fabElem;
+
+    const classnames = classNames('ui', {
+      'is-composing': isComposing,
+      'ui--chatroom': this.isChatRoomLocation(),
+    });
+
+    const style = {
+      pointerEvents: dropdownMenuIsOpen ? 'none' : null,
+    };
 
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
-        <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef} style={{ pointerEvents: dropdownMenuIsOpen ? 'none' : null }}>
+        <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
             {children}
@@ -604,6 +647,7 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
+          {me && !mobile && <ChatPanes />}
         </div>
       </HotKeys>
     );

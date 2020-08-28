@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import NotificationsCounterIcon from './notifications_counter_icon';
 import ReportsCounterIcon from './reports_counter_icon';
+import ChatsCounterIcon from './chats_counter_icon';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
 import ActionBar from 'soapbox/features/compose/components/action_bar';
@@ -66,6 +67,14 @@ class TabsBar extends React.PureComponent {
           <Icon id='bell' />
           <NotificationsCounterIcon />
           <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
+        </NavLink>);
+    }
+    if (account) {
+      links.push(
+        <NavLink key='chats' className='tabs-bar__link tabs-bar__link--chats' to='/chats' data-preview-title-id='column.chats'>
+          <Icon id='comment' />
+          <ChatsCounterIcon />
+          <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
         </NavLink>);
     }
     if (account && isStaff(account)) {
