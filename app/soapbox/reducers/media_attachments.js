@@ -18,6 +18,7 @@ const initialState = ImmutableMap({
     '.mov',
     '.mp3',
     '.ogg',
+    '.wav',
     'image/jpeg',
     'image/png',
     'image/gif',
@@ -28,6 +29,7 @@ const initialState = ImmutableMap({
     'audio/mp3',
     'audio/mpeg',
     'audio/ogg',
+    'audio/wav',
   ]),
 });
 
