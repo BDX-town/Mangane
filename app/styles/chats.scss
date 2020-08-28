@@ -86,23 +86,12 @@
     flex: 1;
     flex-direction: column;
     overflow: hidden;
-  }
 
-  &__actions {
-    background: var(--foreground-color);
-    margin-top: auto;
-    padding: 6px;
-
-    textarea {
-      width: 100%;
-      margin: 0;
-      box-sizing: border-box;
-      padding: 6px;
-      background: var(--background-color);
-      border: 0;
-      border-radius: 6px;
-      color: var(--primary-text-color);
-      font-size: 15px;
+    .chat-box {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      overflow: hidden;
     }
   }
 }
@@ -164,5 +153,25 @@
     right: 0;
     left: auto;
     bottom: auto;
+  }
+}
+
+.chat-box {
+  &__actions {
+    background: var(--foreground-color);
+    margin-top: auto;
+    padding: 6px;
+
+    textarea {
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box;
+      padding: 6px;
+      background: var(--background-color);
+      border: 0;
+      border-radius: 6px;
+      color: var(--primary-text-color);
+      font-size: 15px;
+    }
   }
 }

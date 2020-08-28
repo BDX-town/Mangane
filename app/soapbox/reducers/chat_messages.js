@@ -32,6 +32,7 @@ export default function chatMessages(state = initialState, action) {
       chat_id: action.chatId,
       account_id: action.me,
       content: action.params.content,
+      created_at: (new Date()).toISOString(),
       pending: true,
     }));
   case CHATS_FETCH_SUCCESS:

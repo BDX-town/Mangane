@@ -10,18 +10,13 @@ import IconButton from 'soapbox/components/icon_button';
 import {
   closeChat,
   toggleChat,
-  fetchChatMessages,
-  sendChatMessage,
-  markChatRead,
 } from 'soapbox/actions/chats';
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import ChatMessageList from './chat_message_list';
+import ChatBox from './chat_box';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
   chat: state.getIn(['chats', pane.get('chat_id')]),
-  chatMessageIds: state.getIn(['chat_message_lists', pane.get('chat_id')], ImmutableOrderedSet()),
 });
 
 export default @connect(mapStateToProps)
@@ -33,13 +28,8 @@ class ChatWindow extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     pane: ImmutablePropTypes.map.isRequired,
     idx: PropTypes.number,
-    chatMessageIds: ImmutablePropTypes.orderedSet,
     chat: ImmutablePropTypes.map,
     me: PropTypes.node,
-  }
-
-  static defaultProps = {
-    chatMessages: ImmutableList(),
   }
 
   state = {
@@ -58,44 +48,18 @@ class ChatWindow extends ImmutablePureComponent {
     };
   }
 
-  handleKeyDown = (chatId) => {
-    return (e) => {
-      if (e.key === 'Enter') {
-        this.props.dispatch(sendChatMessage(chatId, this.state));
-        this.setState({ content: '' });
-        e.preventDefault();
-      }
-    };
-  }
-
   handleContentChange = (e) => {
     this.setState({ content: e.target.value });
   }
 
-  handleHover = () => {
-    if (this.props.pane.get('state') === 'open') this.markRead();
-  }
-
-  markRead = () => {
-    const { dispatch, chat } = this.props;
-    dispatch(markChatRead(chat.get('id')));
-  }
+  handleInputRef = (el) => {
+    this.inputElem = el;
+    this.focusInput();
+  };
 
   focusInput = () => {
     if (!this.inputElem) return;
     this.inputElem.focus();
-  }
-
-  setInputRef = (el) => {
-    const { pane } = this.props;
-    this.inputElem = el;
-    if (pane.get('state') === 'open') this.focusInput();
-  };
-
-  componentDidMount() {
-    const { dispatch, pane, chatMessages } = this.props;
-    if (chatMessages && chatMessages.count() < 1)
-      dispatch(fetchChatMessages(pane.get('chat_id')));
   }
 
   componentDidUpdate(prevProps) {
@@ -104,19 +68,10 @@ class ChatWindow extends ImmutablePureComponent {
 
     if (oldState !== newState && newState === 'open')
       this.focusInput();
-
-    const markReadConditions = [
-      () => this.props.chat !== undefined,
-      () => document.activeElement === this.inputElem,
-      () => this.props.chat.get('unread') > 0,
-    ];
-
-    if (markReadConditions.every(c => c() === true))
-      this.markRead();
   }
 
   render() {
-    const { pane, idx, chatMessageIds, chat } = this.props;
+    const { pane, idx, chat } = this.props;
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
 
@@ -124,7 +79,7 @@ class ChatWindow extends ImmutablePureComponent {
     const unreadCount = chat.get('unread');
 
     return (
-      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }} onMouseOver={this.handleHover}>
+      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
         <div className='pane__header'>
           {unreadCount > 0
             ? <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>
@@ -138,17 +93,10 @@ class ChatWindow extends ImmutablePureComponent {
           </div>
         </div>
         <div className='pane__content'>
-          <ChatMessageList chatMessageIds={chatMessageIds} />
-          <div className='pane__actions simple_form'>
-            <textarea
-              rows={1}
-              placeholder='Send a message...'
-              onKeyDown={this.handleKeyDown(chat.get('id'))}
-              onChange={this.handleContentChange}
-              value={this.state.content}
-              ref={this.setInputRef}
-            />
-          </div>
+          <ChatBox
+            chatId={chat.get('id')}
+            onSetInputRef={this.handleInputRef}
+          />
         </div>
       </div>
     );

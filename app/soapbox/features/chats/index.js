@@ -13,7 +13,6 @@ export default @injectIntl
 class ChatIndex extends React.PureComponent {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 

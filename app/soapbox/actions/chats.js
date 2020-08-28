@@ -111,6 +111,17 @@ export function toggleMainWindow() {
   };
 }
 
+export function fetchChat(chatId) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHAT_FETCH_REQUEST, chatId });
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}`).then(({ data }) => {
+      dispatch({ type: CHAT_FETCH_SUCCESS, chat: data });
+    }).catch(error => {
+      dispatch({ type: CHAT_FETCH_FAIL, chatId, error });
+    });
+  };
+}
+
 export function startChat(accountId) {
   return (dispatch, getState) => {
     dispatch({ type: CHAT_FETCH_REQUEST, accountId });
