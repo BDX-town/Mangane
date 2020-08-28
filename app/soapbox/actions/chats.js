@@ -127,7 +127,7 @@ export function startChat(accountId) {
     dispatch({ type: CHAT_FETCH_REQUEST, accountId });
     return api(getState).post(`/api/v1/pleroma/chats/by-account-id/${accountId}`).then(({ data }) => {
       dispatch({ type: CHAT_FETCH_SUCCESS, chat: data });
-      dispatch(openChat(data.id));
+      return data;
     }).catch(error => {
       dispatch({ type: CHAT_FETCH_FAIL, accountId, error });
     });
