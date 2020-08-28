@@ -175,3 +175,10 @@
     }
   }
 }
+
+.column .chat-box {
+  max-height: calc(100vh - 125px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
