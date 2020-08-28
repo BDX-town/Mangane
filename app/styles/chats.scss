@@ -198,3 +198,15 @@
     }
   }
 }
+
+@media(max-width: 630px) {
+  .chat-panes {
+    display: none;
+  }
+}
+
+@media(min-width: 630px) {
+  .tabs-bar .tabs-bar__link--chats {
+    display: none;
+  }
+}
