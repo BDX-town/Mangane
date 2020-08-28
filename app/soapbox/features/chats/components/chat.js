@@ -6,7 +6,7 @@ import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-export default class ChatListAccount extends ImmutablePureComponent {
+export default class Chat extends ImmutablePureComponent {
 
   static propTypes = {
     chat: ImmutablePropTypes.map.isRequired,

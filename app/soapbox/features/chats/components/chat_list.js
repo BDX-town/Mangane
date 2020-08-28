@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { fetchChats } from 'soapbox/actions/chats';
-import ChatListAccount from './chat_list_account';
+import Chat from './chat';
 import { makeGetChat } from 'soapbox/selectors';
 
 const chatDateComparator = (chatA, chatB) => {
@@ -57,7 +57,7 @@ class ChatList extends ImmutablePureComponent {
           }
           {chats.map(chat => (
             <div key={chat.get('id')} className='chat-list-item'>
-              <ChatListAccount
+              <Chat
                 chat={chat}
                 onClick={this.props.onClickChat}
               />
