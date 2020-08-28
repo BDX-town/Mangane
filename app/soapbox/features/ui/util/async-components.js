@@ -201,3 +201,7 @@ export function MfaForm() {
 export function ChatIndex() {
   return import(/* webpackChunkName: "features/chats" */'../../chats');
 }
+
+export function ChatRoom() {
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
+}
