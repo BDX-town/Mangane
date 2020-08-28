@@ -158,8 +158,6 @@ const LAYOUT = {
   },
 };
 
-const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
-
 class SwitchingColumnsArea extends React.PureComponent {
 
   static propTypes = {
@@ -577,6 +575,16 @@ class UI extends React.PureComponent {
     this.props.dispatch(openModal('COMPOSE'));
   }
 
+  shouldHideFAB = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
+  }
+
+  isChatRoomLocation = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/chats\/(.*)/);
+  }
+
   render() {
     const { streamingUrl } = this.props;
     const { draggingOver, mobile } = this.state;
@@ -602,11 +610,31 @@ class UI extends React.PureComponent {
       goToRequests: this.handleHotkeyGoToRequests,
     } : {};
 
-    const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <button key='floating-action-button' onClick={this.handleOpenComposeModal} className='floating-action-button' aria-label={intl.formatMessage(messages.publish)}><Icon id='pencil' fixedWidth /></button>;
+    const fabElem = (
+      <button
+        key='floating-action-button'
+        onClick={this.handleOpenComposeModal}
+        className='floating-action-button'
+        aria-label={intl.formatMessage(messages.publish)}
+      >
+        <Icon id='pencil' fixedWidth />
+      </button>
+    );
+
+    const floatingActionButton = this.shouldHideFAB() ? null : fabElem;
+
+    const classnames = classNames('ui', {
+      'is-composing': isComposing,
+      'ui--chatroom': this.isChatRoomLocation(),
+    });
+
+    const style = {
+      pointerEvents: dropdownMenuIsOpen ? 'none' : null,
+    };
 
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
-        <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef} style={{ pointerEvents: dropdownMenuIsOpen ? 'none' : null }}>
+        <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
             {children}

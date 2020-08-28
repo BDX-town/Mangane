@@ -176,9 +176,24 @@
   }
 }
 
-.column .chat-box {
-  max-height: calc(100vh - 125px);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+.ui--chatroom {
+  padding-bottom: 0;
+
+  .columns-area__panels__main .columns-area {
+    height: calc(100vh - 100px);
+    box-sizing: border-box;
+    overflow: hidden;
+
+    @media(max-width: 630px) {
+      height: calc(100vh - 50px);
+    }
+  }
+
+  .page {
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+  }
 }

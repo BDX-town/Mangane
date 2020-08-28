@@ -3,7 +3,7 @@ import {
   ACCOUNTS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from '../actions/importer';
-import { CHATS_FETCH_SUCCESS } from 'soapbox/actions/chats';
+import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
@@ -48,6 +48,7 @@ export default function accounts(state = initialState, action) {
     }));
   case CHATS_FETCH_SUCCESS:
     return importAccountsFromChats(state, action.chats);
+  case CHAT_FETCH_SUCCESS:
   case STREAMING_CHAT_UPDATE:
     return importAccountsFromChats(state, [action.chat]);
   default:
