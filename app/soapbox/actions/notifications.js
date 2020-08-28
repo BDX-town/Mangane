@@ -13,7 +13,6 @@ import { defineMessages } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
-import { fetchMarkers } from './markers';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -175,7 +174,6 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       params.since_id = notifications.getIn(['items', 0, 'id']);
     }
 
-    dispatch(fetchMarkers(['notifications']));
     dispatch(expandNotificationsRequest(isLoadingMore));
 
     api(getState).get('/api/v1/notifications', { params }).then(response => {
