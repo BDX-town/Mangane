@@ -63,6 +63,7 @@ class ChatWindow extends ImmutablePureComponent {
       if (e.key === 'Enter') {
         this.props.dispatch(sendChatMessage(chatId, this.state));
         this.setState({ content: '' });
+        e.preventDefault();
       }
     };
   }
@@ -134,9 +135,9 @@ class ChatWindow extends ImmutablePureComponent {
         </div>
         <div className='pane__content'>
           <ChatMessageList chatMessageIds={chatMessageIds} />
-          <div className='pane__actions'>
-            <input
-              type='text'
+          <div className='pane__actions simple_form'>
+            <textarea
+              rows={1}
               placeholder='Send a message...'
               onKeyDown={this.handleKeyDown(chat.get('id'))}
               onChange={this.handleContentChange}
