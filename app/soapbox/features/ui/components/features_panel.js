@@ -6,7 +6,6 @@ import { injectIntl, defineMessages } from 'react-intl';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit Profile' },
-  messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -32,13 +31,6 @@ class FeaturesPanel extends React.PureComponent {
             <NavLink className='promo-panel-item__btn' to='/settings/profile'>
               <Icon id='user' className='promo-panel-item__icon' fixedWidth />
               {intl.formatMessage(messages.edit_profile)}
-            </NavLink>
-          </div>
-
-          <div className='promo-panel-item'>
-            <NavLink className='promo-panel-item__btn' to='/messages'>
-              <Icon id='envelope' className='promo-panel-item__icon' fixedWidth />
-              {intl.formatMessage(messages.messages)}
             </NavLink>
           </div>
 

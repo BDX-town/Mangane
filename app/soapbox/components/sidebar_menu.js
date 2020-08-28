@@ -21,7 +21,6 @@ const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
-  messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -131,10 +130,6 @@ class SidebarMenu extends ImmutablePureComponent {
               <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={onClose}>
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to={'/messages'} onClick={onClose}>
-                <Icon id='envelope' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.messages)}</span>
               </NavLink>
               {donateUrl ?
                 <a className='sidebar-menu-item' href={donateUrl} onClick={onClose}>
