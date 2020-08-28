@@ -38,6 +38,7 @@ const messages = defineMessages({
   showReblogs: { id: 'account.show_reblogs', defaultMessage: 'Show reposts from @{name}' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  manage_followers: { id: 'navigation_bar.manage_followers', defaultMessage: 'Manage Followers' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
@@ -117,7 +118,7 @@ class Header extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.edit_profile), to: '/settings/profile' });
       menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
+      menu.push({ text: intl.formatMessage(messages.manage_followers), to: '/manage_followers' });
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
       menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });

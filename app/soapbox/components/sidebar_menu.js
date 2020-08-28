@@ -24,6 +24,7 @@ const messages = defineMessages({
   messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  manage_followers: { id: 'navigation_bar.manage_followers', defaultMessage: 'Manage Followers' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
@@ -153,9 +154,9 @@ class SidebarMenu extends ImmutablePureComponent {
             </div>
 
             <div className='sidebar-menu__section'>
-              <NavLink className='sidebar-menu-item' to='/follow_requests' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/manage_followers' onClick={onClose}>
                 <Icon id='user-plus' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.follow_requests)}</span>
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.manage_followers)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/blocks' onClick={onClose}>
                 <Icon id='ban' />

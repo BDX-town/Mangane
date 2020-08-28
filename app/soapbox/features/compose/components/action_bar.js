@@ -14,6 +14,7 @@ const messages = defineMessages({
   bookmarks: { id: 'navigation_bar.bookmarks', defaultMessage: 'Bookmarks' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
+  manage_followers: { id: 'navigation_bar.manage_followers', defaultMessage: 'Manage Followers' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
@@ -73,7 +74,7 @@ class ActionBar extends React.PureComponent {
     menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
     menu.push({ text: intl.formatMessage(messages.bookmarks), to: '/bookmarks' });
     menu.push(null);
-    menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
+    menu.push({ text: intl.formatMessage(messages.manage_followers), to: '/manage_followers' });
     menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
     menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
     menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });

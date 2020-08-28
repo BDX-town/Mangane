@@ -80,7 +80,7 @@ class ColumnHeader extends React.PureComponent {
     const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists, siteTitle } = this.props;
     const { collapsed, animating, expandedFor } = this.state;
 
-    const wrapperClassName = classNames('column-header__wrapper', {
+    const wrapperClassName = classNames('column-header__wrapper', 'home_page', {
       'active': active,
     });
 

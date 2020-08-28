@@ -106,6 +106,14 @@ export function FollowRequests() {
   return import(/* webpackChunkName: "features/follow_requests" */'../../follow_requests');
 }
 
+export function ManageFollowers() {
+  return import(/* webpackChunkName: "features/manage_followers" */'../../manage_followers');
+}
+
+export function ManageFollows() {
+  return import(/* webpackChunkName: "features/manage_follows" */'../../manage_follows');
+}
+
 export function GenericNotFound() {
   return import(/* webpackChunkName: "features/generic_not_found" */'../../generic_not_found');
 }

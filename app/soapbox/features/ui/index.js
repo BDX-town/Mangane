@@ -25,6 +25,7 @@ import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
 import LinkFooter from './components/link_footer';
 import FeaturesPanel from './components/features_panel';
+import ManageFollowersMenu from './components/manage_followers_menu';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -53,6 +54,8 @@ import {
   HashtagTimeline,
   Notifications,
   FollowRequests,
+  ManageFollowers,
+  ManageFollows,
   GenericNotFound,
   FavouritedStatuses,
   Blocks,
@@ -153,6 +156,14 @@ const LAYOUT = {
       <LinkFooter key='2' />,
     ],
   },
+  FOLLOWERS: {
+    LEFT: [
+      <LinkFooter key='1' />,
+    ],
+    RIGHT: [
+      <ManageFollowersMenu key='0' />,
+    ],
+  },
 };
 
 const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started/);
@@ -236,7 +247,9 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
 
-        <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
+        <WrappedRoute path='/follow_requests' layout={LAYOUT.FOLLOWERS} component={FollowRequests} content={children} />
+        <WrappedRoute path='/manage_followers' layout={LAYOUT.FOLLOWERS} component={ManageFollowers} content={children} />
+        <WrappedRoute path='/manage_follows' layout={LAYOUT.FOLLOWERS} component={ManageFollows} content={children} />
         <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
         <WrappedRoute path='/domain_blocks' layout={LAYOUT.DEFAULT} component={DomainBlocks} content={children} />
         <WrappedRoute path='/mutes' layout={LAYOUT.DEFAULT} component={Mutes} content={children} />
