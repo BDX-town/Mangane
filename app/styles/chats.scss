@@ -102,7 +102,7 @@
       border: 0;
       border-radius: 6px;
       color: var(--primary-text-color);
-      font-size: 16px;
+      font-size: 15px;
     }
   }
 }
@@ -117,6 +117,7 @@
   display: flex;
 
   &__bubble {
+    font-size: 15px;
     padding: 4px 10px;
     max-width: 70%;
     border-radius: 10px;
