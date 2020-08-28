@@ -79,6 +79,7 @@ import {
   PasswordReset,
   SecurityForm,
   MfaForm,
+  ChatIndex,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -236,6 +237,9 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
 
         <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
+
+        <WrappedRoute path='/chats' exact layout={LAYOUT.DEFAULT} component={ChatIndex} content={children} />
+        {/* <WrappedRoute path='/chats/:chatId' layout={LAYOUT.DEFAULT} component={ChatRoom} content={children} /> */}
 
         <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
         <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />

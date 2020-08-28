@@ -197,3 +197,7 @@ export function SecurityForm() {
 export function MfaForm() {
   return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
 }
+
+export function ChatIndex() {
+  return import(/* webpackChunkName: "features/chats" */'../../chats');
+}

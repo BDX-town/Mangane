@@ -44,7 +44,6 @@ class ChatPanes extends ImmutablePureComponent {
 
   handleClickChat = (chat) => {
     this.props.dispatch(openChat(chat.get('id')));
-    // TODO: Focus chat input
   }
 
   handleMainWindowToggle = () => {
