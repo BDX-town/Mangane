@@ -158,7 +158,7 @@ const LAYOUT = {
   },
 };
 
-const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started/);
+const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
 
 class SwitchingColumnsArea extends React.PureComponent {
 
