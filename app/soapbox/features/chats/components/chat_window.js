@@ -72,7 +72,11 @@ class ChatWindow extends ImmutablePureComponent {
     this.setState({ content: e.target.value });
   }
 
-  handleReadChat = (e) => {
+  handleHover = () => {
+    if (this.props.pane.get('state') === 'open') this.markRead();
+  }
+
+  markRead = () => {
     const { dispatch, chat } = this.props;
     dispatch(markChatRead(chat.get('id')));
   }
@@ -108,7 +112,7 @@ class ChatWindow extends ImmutablePureComponent {
     ];
 
     if (markReadConditions.every(c => c() === true))
-      this.handleReadChat();
+      this.markRead();
   }
 
   render() {
@@ -120,7 +124,7 @@ class ChatWindow extends ImmutablePureComponent {
     const unreadCount = chat.get('unread');
 
     return (
-      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }} onMouseOver={this.handleReadChat}>
+      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }} onMouseOver={this.handleHover}>
         <div className='pane__header'>
           {unreadCount > 0
             ? <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>
