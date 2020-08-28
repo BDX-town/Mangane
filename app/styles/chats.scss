@@ -216,3 +216,40 @@
     display: none;
   }
 }
+
+.chatroom__header {
+  display: flex;
+  margin-left: auto;
+  padding-right: 15px;
+  overflow: hidden;
+
+  .account__avatar {
+    margin-right: 7px;
+  }
+
+  .chatroom__title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    height: 100%;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    font-size: 14px;
+  }
+}
+
+.chatroom__back {
+  display: flex;
+  align-items: center;
+  background: var(--accent-color--faint);
+  border-radius: 10px 10px 0 0;
+
+  .column-back-button {
+    background: transparent;
+  }
+}
