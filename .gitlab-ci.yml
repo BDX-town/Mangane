@@ -43,7 +43,7 @@ build-production:
 deploy-docs:
   stage: deploy-docs
   script:
-  - curl -X POST -F token=5dca17d4153d8096c8576a5ea44471 -F ref=master https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
+  - curl -X POST -F"token=$DOCS_TRIGGER_PIPELINE" -F"ref=master" https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
     refs:
     - develop
