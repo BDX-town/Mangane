@@ -14,6 +14,7 @@ stages:
   - lint
   - test
   - build
+  - deploy-docs
 
 before_script:
   - yarn
@@ -38,6 +39,16 @@ build-production:
   artifacts:
     paths:
     - static
+
+deploy-docs:
+  stage: deploy-docs
+  script:
+  - curl -X POST -F token=5dca17d4153d8096c8576a5ea44471 -F ref=master https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
+  only:
+    refs:
+    - develop
+    changes:
+    - docs/*
 
 # Supposed to fail when translations are outdated, instead always passes
 #
