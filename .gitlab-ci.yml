@@ -43,13 +43,15 @@ build-production:
 deploy-docs:
   stage: deploy-docs
   image: python:3.8-alpine
-  before_script: apk add curl
-  script: curl -X POST -F"token=$DOCS_TRIGGER_PIPELINE" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
+  before_script:
+    - apk add curl
+  script:
+    - curl -X POST -F"token=$DOCS_TRIGGER_PIPELINE" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
     refs:
-    - develop
+      - develop
     changes:
-    - docs/*
+      - docs/*
 
 # Supposed to fail when translations are outdated, instead always passes
 #
