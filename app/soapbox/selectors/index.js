@@ -157,3 +157,20 @@ export const getAccountGallery = createSelector([
       .map(media => media.merge({ status, account })));
   }, ImmutableList());
 });
+
+export const makeGetChat = () => {
+  return createSelector(
+    [
+      (state, { id }) => state.getIn(['chats', id]),
+      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', id, 'account'])]),
+    ],
+
+    (chat, account) => {
+      if (!chat) return null;
+
+      return chat.withMutations(map => {
+        map.set('account', account);
+      });
+    }
+  );
+};

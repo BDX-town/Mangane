@@ -12,13 +12,14 @@ import ComposeFormContainer from '../features/compose/containers/compose_form_co
 import Avatar from '../components/avatar';
 import { getFeatures } from 'soapbox/utils/features';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = state => {
   const me = state.get('me');
   return {
     me,
     account: state.getIn(['accounts', me]),
-    hasPatron: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
+    hasPatron: getSoapboxConfig(state).getIn(['extensions', 'patron', 'enabled']),
     features: getFeatures(state.get('instance')),
   };
 };

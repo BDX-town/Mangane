@@ -2,9 +2,10 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'soapbox/components/icon';
 import { connect } from 'react-redux';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = state => ({
-  promoItems: state.getIn(['soapbox', 'promoPanel', 'items']),
+  promoItems: getSoapboxConfig(state).getIn(['promoPanel', 'items']),
 });
 
 export default @connect(mapStateToProps)
