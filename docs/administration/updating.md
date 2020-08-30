@@ -10,13 +10,12 @@ To update Soapbox FE via the command line, do the following:
 
 ```
 # Download the build.
-
 curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v(latest.version.here)/download?job=build-production -o soapbox-fe.zip
 
 # Remove all the current Soapbox FE build in Pleroma's instance directory.
-sudo rm -R /opt/pleroma/instance/static/packs
-sudo rm /opt/pleroma/instance/static/index.html
-sudo rm -R /opt/pleroma/instance/static/sounds
+rm -R /opt/pleroma/instance/static/packs
+rm /opt/pleroma/instance/static/index.html
+rm -R /opt/pleroma/instance/static/sounds
 
 # Unzip the new build to Pleroma's instance directory.
 busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
@@ -26,11 +25,11 @@ busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
 
 You can also update Soapbox using [Sandia Mesa's updater bash script for Soapbox FE](https://code.sandiamesa.com/traboone/soapbox-update).
 
-First, download the updater script if you haven't yet: ``curl -O https://code.sandiamesa.com/traboone/soapbox-update/raw/branch/master/soapbox-update.sh``
+First, download the updater script if you haven't yet: ``sudo -Hu pleroma wget -P /var/lib/pleroma https://code.sandiamesa.com/traboone/soapbox-update/raw/branch/master/soapbox-update.sh -N``
 
-Then, set the permissions of the updater script so that it can be executed: ``chmod u+x soapbox-update.sh``
+Then, set the permissions of the updater script so that it can be executed: ``chmod u+x /var/lib/pleroma/soapbox-update.sh``
 
-Finally, run ``sudo ./soapbox-update.sh``.
+Finally, go to the Pleroma user's directory ``cd /var/lib/pleroma`` and then run ``sudo -Hu pleroma ./soapbox-update.sh``.
 
 ## After updating Soapbox
 
