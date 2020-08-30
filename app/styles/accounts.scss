@@ -327,9 +327,10 @@
 
 .account {
   padding: 10px;
+  position: relative;
 
   &:not(:last-of-type) {
-  border-bottom: 1px solid var(--brand-color--med);
+    border-bottom: 1px solid var(--brand-color--med);
   }
 
   &.compact {

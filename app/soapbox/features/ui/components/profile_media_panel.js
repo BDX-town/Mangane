@@ -35,13 +35,16 @@ class ProfileMediaPanel extends ImmutablePureComponent {
     this.props.dispatch(expandAccountMediaTimeline(accountId));
   }
 
-  render() {
-    const { attachments } = this.props;
-    const nineAttachments = attachments.slice(0, 9);
+  componentDidUpdate() {
+    const { account } = this.props;
+    const accountId = account.get('id');
+    this.props.dispatch(expandAccountMediaTimeline(accountId));
+  }
 
-    if (attachments.isEmpty()) {
-      return null;
-    }
+  render() {
+    const { attachments, account } = this.props;
+    const publicAttachments = attachments.filter(attachment => attachment.getIn(['status', 'visibility']) === 'public');
+    const nineAttachments = publicAttachments.slice(0, 9);
 
     return (
       <div className='media-panel'>
@@ -51,18 +54,20 @@ class ProfileMediaPanel extends ImmutablePureComponent {
             <FormattedMessage id='media_panel.title' defaultMessage='Media' />
           </span>
         </div>
-        <div className='media-panel__content'>
-          <div className='media-panel__list'>
-            {nineAttachments.map((attachment, index) => (
-              <MediaItem
-                key={`${attachment.getIn(['status', 'id'])}+${attachment.get('id')}`}
-                attachment={attachment}
-                displayWidth={255}
-                onOpenMedia={this.handleOpenMedia}
-              />
-            ))}
+        {account &&
+          <div className='media-panel__content'>
+            <div className='media-panel__list'>
+              {!nineAttachments.isEmpty() && nineAttachments.map((attachment, index) => (
+                <MediaItem
+                  key={`${attachment.getIn(['status', 'id'])}+${attachment.get('id')}`}
+                  attachment={attachment}
+                  displayWidth={255}
+                  onOpenMedia={this.handleOpenMedia}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        }
       </div>
     );
   };

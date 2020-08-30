@@ -42,6 +42,10 @@ import soapbox from './soapbox';
 import instance from './instance';
 import me from './me';
 import auth from './auth';
+import admin from './admin';
+import chats from './chats';
+import chat_messages from './chat_messages';
+import chat_message_lists from './chat_message_lists';
 
 const reducers = {
   dropdown_menu,
@@ -87,6 +91,10 @@ const reducers = {
   instance,
   me,
   auth,
+  admin,
+  chats,
+  chat_messages,
+  chat_message_lists,
 };
 
 export default combineReducers(reducers);

@@ -182,6 +182,10 @@ export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
 }
 
+export function SoapboxConfig() {
+  return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
+}
+
 export function PasswordReset() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
 }
@@ -192,4 +196,12 @@ export function SecurityForm() {
 
 export function MfaForm() {
   return import(/* webpackChunkName: "features/security/mfa_form" */'../../security/mfa_form');
+}
+
+export function ChatIndex() {
+  return import(/* webpackChunkName: "features/chats" */'../../chats');
+}
+
+export function ChatRoom() {
+  return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
 }

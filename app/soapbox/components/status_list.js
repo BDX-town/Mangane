@@ -19,6 +19,7 @@ export default class StatusList extends ImmutablePureComponent {
   static propTypes = {
     scrollKey: PropTypes.string.isRequired,
     statusIds: ImmutablePropTypes.list.isRequired,
+    lastStatusId: PropTypes.string,
     featuredStatusIds: ImmutablePropTypes.list,
     onLoadMore: PropTypes.func,
     isLoading: PropTypes.bool,
@@ -63,7 +64,8 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   handleLoadOlder = debounce(() => {
-    this.props.onLoadMore(this.props.statusIds.size > 0 ? this.props.statusIds.last() : undefined);
+    const loadMoreID = this.props.lastStatusId ? this.props.lastStatusId : this.props.statusIds.last();
+    this.props.onLoadMore(loadMoreID);
   }, 300, { leading: true })
 
   _selectChild(index, align_top) {

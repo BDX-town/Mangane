@@ -15,20 +15,15 @@
 
   ul,
   ol {
-    margin-bottom: 20px;
-    margin-left: 15px;
+    margin-left: 20px;
   }
 
   ul {
-    list-style: disc inside none;
-  }
-
-  li p {
-    display: inline-block;
+    list-style: disc outside none;
   }
 
   ol {
-    list-style: decimal inside none;
+    list-style: decimal outside none;
   }
 
   blockquote {
@@ -59,6 +54,11 @@
     word-break: break-all;
     background-color: var(--background-color);
   }
+}
+
+.status__content > ul,
+.status__content > ol {
+  margin-bottom: 20px;
 }
 
 .status__content > blockquote {

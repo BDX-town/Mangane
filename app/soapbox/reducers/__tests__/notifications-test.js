@@ -1,10 +1,8 @@
 import * as actions from 'soapbox/actions/notifications';
 import reducer from '../notifications';
 import notifications from 'soapbox/__fixtures__/notifications.json';
-import markers from 'soapbox/__fixtures__/markers.json';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { take } from 'lodash';
-import { SAVE_MARKERS_SUCCESS } from 'soapbox/actions/markers';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
@@ -42,6 +40,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -51,6 +50,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -60,6 +60,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -70,21 +71,6 @@ describe('notifications reducer', () => {
       queuedNotifications: ImmutableList(),
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
-    }));
-  });
-
-  it('should handle SAVE_MARKERS_SUCCESS', () => {
-    const state = ImmutableMap({
-      unread: 1,
-      lastRead: '35098811',
-    });
-    const action = {
-      type: SAVE_MARKERS_SUCCESS,
-      markers: markers,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      unread: 3,
-      lastRead: '35098814',
     }));
   });
 
@@ -122,6 +108,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -131,6 +118,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -140,6 +128,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -213,6 +202,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -270,6 +260,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
       ]),
@@ -291,6 +282,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -300,6 +292,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -309,6 +302,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -318,6 +312,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
       ]),
@@ -348,6 +343,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -357,6 +353,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -366,6 +363,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -385,6 +383,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -394,6 +393,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -403,6 +403,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -420,6 +421,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -429,6 +431,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -445,6 +448,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -454,6 +458,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -463,6 +468,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -480,6 +486,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -489,6 +496,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -533,6 +541,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -542,6 +551,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -551,6 +561,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -574,6 +585,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -583,6 +595,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -592,6 +605,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),
@@ -610,6 +624,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:54:39.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
+          chat_message: undefined,
           is_seen: false,
         }),
         ImmutableMap({
@@ -619,6 +634,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:51:05.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
         ImmutableMap({
@@ -628,6 +644,7 @@ describe('notifications reducer', () => {
           created_at: '2020-06-10T02:05:06.000Z',
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
+          chat_message: undefined,
           is_seen: true,
         }),
       ]),

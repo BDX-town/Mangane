@@ -22,6 +22,8 @@ import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
+import { startChat, openChat } from 'soapbox/actions/chats';
+import { isMobile } from 'soapbox/is_mobile';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -127,12 +129,22 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(unblockDomain(domain));
   },
 
-  onAddToList(account){
+  onAddToList(account) {
     dispatch(openModal('LIST_ADDER', {
       accountId: account.get('id'),
     }));
   },
 
+  onChat(account, router) {
+    // TODO make this faster
+    dispatch(startChat(account.get('id'))).then(chat => {
+      if (isMobile(window.innerWidth)) {
+        router.push(`/chats/${chat.id}`);
+      } else {
+        dispatch(openChat(chat.id));
+      }
+    }).catch(() => {});
+  },
 });
 
 export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Header));

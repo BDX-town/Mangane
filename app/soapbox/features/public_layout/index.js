@@ -7,10 +7,11 @@ import Header from './components/header';
 import Footer from './components/footer';
 import LandingPage from '../landing_page';
 import AboutPage from '../about';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
-  soapbox: state.get('soapbox'),
+  soapbox: getSoapboxConfig(state),
 });
 
 const wave = (
