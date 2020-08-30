@@ -50,8 +50,6 @@ docs-deploy:
   only:
     refs:
       - develop
-    changes:
-      - docs/**/*
 
 # Supposed to fail when translations are outdated, instead always passes
 #
