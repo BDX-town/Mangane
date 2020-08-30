@@ -154,6 +154,7 @@ export function register(params) {
   return (dispatch, getState) => {
     const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
     const needsApproval = getState().getIn(['instance', 'approval_required']);
+    params.fullname = params.username;
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
       return api(getState, 'app').post('/api/v1/accounts', params);
