@@ -10,3 +10,4 @@ rm -R /opt/pleroma/instance/static/sounds
 If you need to remove other stuff, feel free to do so. But be careful not to remove your own HTML files.
 
 Testing docs CI
+QQ

@@ -51,7 +51,7 @@ docs-deploy:
     refs:
       - develop
     changes:
-      - docs/*
+      - docs/**/*
 
 # Supposed to fail when translations are outdated, instead always passes
 #
