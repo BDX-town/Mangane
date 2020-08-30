@@ -142,16 +142,7 @@ class Status extends ImmutablePureComponent {
   componentDidMount() {
     this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
-    const { ancestorsIds } = this.props;
-
-    if (ancestorsIds && ancestorsIds.size > 0) {
-      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
-
-      window.requestAnimationFrame(() => {
-        element.scrollIntoView(true);
-      });
-      this._scrolledIntoView = true;
-    }
+    this.maybeScrollIntoView();
   }
 
   handleToggleMediaVisibility = () => {
@@ -370,6 +361,29 @@ class Status extends ImmutablePureComponent {
     }
   }
 
+  maybeScrollIntoView = () => {
+    const { status, ancestorsIds } = this.props;
+
+    const conditions = [
+      () => this._scrolledIntoView !== true,
+      () => status,
+      () => ancestorsIds,
+      () => ancestorsIds.size > 0,
+      () => this.node,
+      () => this.node.querySelectorAll('.focusable'),
+    ];
+
+    if (conditions.every(c => c())) {
+      const focusables = this.node.querySelectorAll('.focusable');
+      const element = focusables[ancestorsIds.size - 1];
+
+      window.requestAnimationFrame(() => {
+        element.scrollIntoView(true);
+      });
+      this._scrolledIntoView = true;
+    }
+  }
+
   _selectChild(index, align_top) {
     const container = this.node;
     const element = container.querySelectorAll('.focusable')[index];
@@ -401,7 +415,7 @@ class Status extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { params, status, ancestorsIds } = this.props;
+    const { params, status } = this.props;
 
     if (params.statusId !== prevProps.params.statusId && params.statusId) {
       this._scrolledIntoView = false;
@@ -412,14 +426,7 @@ class Status extends ImmutablePureComponent {
       this.setState({ showMedia: defaultMediaVisibility(status), loadedStatusId: status.get('id') });
     }
 
-    if (ancestorsIds && ancestorsIds.size > 0) {
-      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
-
-      window.requestAnimationFrame(() => {
-        element.scrollIntoView(true);
-      });
-      this._scrolledIntoView = true;
-    }
+    this.maybeScrollIntoView();
   }
 
   componentWillUnmount() {
