@@ -14,7 +14,7 @@ stages:
   - lint
   - test
   - build
-  - deploy-docs
+  - deploy
 
 before_script:
   - yarn
@@ -40,9 +40,9 @@ build-production:
     paths:
     - static
 
-deploy-docs:
-  stage: deploy-docs
-  image: python:3.8-alpine
+docs-deploy:
+  stage: deploy
+  image: alpine:latest
   before_script:
     - apk add curl
   script:
