@@ -54,7 +54,7 @@ class OtpAuthForm extends ImmutablePureComponent {
     const { code_error } = this.state;
 
     return (
-      <form className='simple_form new_user otp-auth' onSubmit={this.handleSubmit}>
+      <form className='simple_form new_user otp-auth' method='post' onSubmit={this.handleSubmit}>
         <fieldset disabled={this.state.isLoading}>
           <div className='fields-group'>
             <div className='input email optional user_email'>

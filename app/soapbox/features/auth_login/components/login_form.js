@@ -17,7 +17,7 @@ class LoginForm extends ImmutablePureComponent {
     const { intl, isLoading, handleSubmit } = this.props;
 
     return (
-      <form className='simple_form new_user' onSubmit={handleSubmit}>
+      <form className='simple_form new_user' method='post' onSubmit={handleSubmit}>
         <fieldset disabled={isLoading}>
           <div className='fields-group'>
             <div className='input email optional user_email'>
