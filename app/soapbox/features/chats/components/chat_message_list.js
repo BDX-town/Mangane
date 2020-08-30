@@ -77,7 +77,7 @@ class ChatMessageList extends ImmutablePureComponent {
             <span
               title={this.getFormattedTimestamp(chatMessage)}
               className='chat-message__bubble'
-              dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content')) }}
+              dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content') || '') }}
             />
           </div>
         ))}
