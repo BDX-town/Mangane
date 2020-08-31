@@ -16,6 +16,7 @@ describe('media_attachments reducer', () => {
         '.mov',
         '.mp3',
         '.ogg',
+        '.wav',
         'image/jpeg',
         'image/png',
         'image/gif',
@@ -26,6 +27,7 @@ describe('media_attachments reducer', () => {
         'audio/mp3',
         'audio/mpeg',
         'audio/ogg',
+        'audio/wav',
       ]),
     }));
   });

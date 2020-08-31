@@ -15,8 +15,6 @@
   &,
   .user-panel__account__name,
   .user-panel__account__username {
-    overflow: hidden;
-    text-overflow: ellipsis;
     white-space: nowrap;
     color: var(--primary-text-color--faint);
   }
@@ -65,6 +63,9 @@
     a {
       text-decoration: none;
       color: var(--primary-text-color--faint);
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     &__name {

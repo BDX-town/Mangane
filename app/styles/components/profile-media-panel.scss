@@ -1,0 +1,48 @@
+.media-panel {
+  @include standard-panel-shadow;
+  display: flex;
+  width: 100%;
+  border-radius: 10px;
+  flex-direction: column;
+  height: auto;
+  box-sizing: border-box;
+  background: var(--foreground-color);
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+
+  .media-panel-header {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 10px;
+    padding: 15px 15px 0;
+
+    &__icon {
+      margin-right: 10px;
+    }
+
+    &__label {
+      flex: 1 1;
+      color: var(--primary-text-color);
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 19px;
+    }
+  }
+
+  &__content {
+    width: 100%;
+    padding: 8px 0;
+  }
+
+  &__list {
+    padding: 0 5px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

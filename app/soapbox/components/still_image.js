@@ -27,7 +27,7 @@ class StillImage extends React.PureComponent {
 
   hoverToPlay() {
     const { autoPlayGif, src } = this.props;
-    return !autoPlayGif && (src.endsWith('.gif') || src.startsWith('blob:'));
+    return src && !autoPlayGif && (src.endsWith('.gif') || src.startsWith('blob:'));
   }
 
   setCanvasRef = c => {

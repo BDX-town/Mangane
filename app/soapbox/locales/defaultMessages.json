@@ -354,6 +354,10 @@
         "id": "navigation_bar.admin_settings"
       },
       {
+        "defaultMessage": "Soapbox config",
+        "id": "navigation_bar.soapbox_config"
+      },
+      {
         "defaultMessage": "Security",
         "id": "navigation_bar.security"
       },
@@ -750,6 +754,10 @@
         "id": "account.block"
       },
       {
+        "defaultMessage": "Unblock @{name}",
+        "id": "account.unblock"
+      },
+      {
         "defaultMessage": "Mute @{name}",
         "id": "account.mute"
       },
@@ -1060,6 +1068,10 @@
       {
         "defaultMessage": "Admin settings",
         "id": "navigation_bar.admin_settings"
+      },
+      {
+        "defaultMessage": "Soapbox config",
+        "id": "navigation_bar.soapbox_config"
       },
       {
         "defaultMessage": "Security",
@@ -2900,6 +2912,123 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Soapbox config",
+        "id": "column.soapbox_config"
+      },
+      {
+        "defaultMessage": "Copyright footer",
+        "id": "soapbox_config.copyright_footer.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "Icon",
+        "id": "soapbox_config.promo_panel.meta_fields.icon_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_config.promo_panel.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_config.promo_panel.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Label",
+        "id": "soapbox_config.home_footer.meta_fields.label_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_config.home_footer.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "URL",
+        "id": "soapbox_config.custom_css.meta_fields.url_placeholder"
+      },
+      {
+        "defaultMessage": "Raw JSON data",
+        "id": "soapbox_config.raw_json_label"
+      },
+      {
+        "defaultMessage": "Advanced: Edit the settings data directly.",
+        "id": "soapbox_config.raw_json_hint"
+      },
+      {
+        "defaultMessage": "Logo",
+        "id": "soapbox_config.fields.logo_label"
+      },
+      {
+        "defaultMessage": "SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio",
+        "id": "soapbox_config.hints.logo"
+      },
+      {
+        "defaultMessage": "Banner",
+        "id": "soapbox_config.fields.banner_label"
+      },
+      {
+        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be displayed to 400x400px",
+        "id": "soapbox_config.hints.banner"
+      },
+      {
+        "defaultMessage": "Brand color",
+        "id": "soapbox_config.fields.brand_color_label"
+      },
+      {
+        "defaultMessage": "Patron module",
+        "id": "soapbox_config.fields.patron_enabled_label"
+      },
+      {
+        "defaultMessage": "Enables display of Patron module.  Requires installation of Patron module.",
+        "id": "soapbox_config.hints.patron_enabled"
+      },
+      {
+        "defaultMessage": "Promo panel items",
+        "id": "soapbox_config.fields.promo_panel_fields_label"
+      },
+      {
+        "defaultMessage": "You can have custom defined links displayed on the left panel of the timelines page.",
+        "id": "soapbox_config.hints.promo_panel_fields"
+      },
+      {
+        "defaultMessage": "{ link }",
+        "id": "soapbox_config.hints.promo_panel_icons"
+      },
+      {
+        "defaultMessage": "Add new Promo panel item",
+        "id": "soapbox_config.fields.promo_panel.add"
+      },
+      {
+        "defaultMessage": "Home footer items",
+        "id": "soapbox_config.fields.home_footer_fields_label"
+      },
+      {
+        "defaultMessage": "You can have custom defined links displayed on the footer of your static pages",
+        "id": "soapbox_config.hints.home_footer_fields"
+      },
+      {
+        "defaultMessage": "Add new Home Footer Item",
+        "id": "soapbox_config.fields.home_footer.add"
+      },
+      {
+        "defaultMessage": "Custom CSS",
+        "id": "soapbox_config.fields.custom_css_fields_label"
+      },
+      {
+        "defaultMessage": "Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`",
+        "id": "soapbox_config.hints.custom_css_fields"
+      },
+      {
+        "defaultMessage": "Add another custom CSS URL",
+        "id": "soapbox_config.fields.custom_css.add"
+      },
+      {
+        "defaultMessage": "Save",
+        "id": "soapbox_config.save"
+      }
+    ],
+    "path": "app/soapbox/features/soapbox_config/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Delete",
         "id": "status.delete"
       },
@@ -3417,15 +3546,32 @@
         "id": "account.locked_info"
       },
       {
+        "defaultMessage": "Deactivated",
+        "id": "account.deactivated"
+      },
+      {
         "defaultMessage": "Bot",
         "id": "account.badges.bot"
       },
       {
         "defaultMessage": "Member since {date}",
         "id": "account.member_since"
+      },
+      {
+        "defaultMessage": "This account has been deactivated.",
+        "id": "account.deactivated_description"
       }
     ],
     "path": "app/soapbox/features/ui/components/profile_info_panel.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Media",
+        "id": "media_panel.title"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/profile_media_panel.json"
   },
   {
     "descriptors": [
@@ -3498,6 +3644,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Reports",
+        "id": "tabs_bar.reports"
       },
       {
         "defaultMessage": "Search",

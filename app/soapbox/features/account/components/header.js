@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isStaff } from 'soapbox/utils/accounts';
@@ -27,6 +28,7 @@ const messages = defineMessages({
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
@@ -131,7 +133,7 @@ class Header extends ImmutablePureComponent {
         }
 
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
-        menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (version.software === 'Pleroma') {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
@@ -221,12 +223,12 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
 
     const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
-
     const avatarSize = isSmallScreen ? 90 : 200;
+    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
 
     return (
-      <div className={classNames('account__header', { inactive: !!account.get('moved') })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing })}>
+      <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
+        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
           <div className='account__header__info'>
             {info}
           </div>
@@ -281,7 +283,7 @@ class Header extends ImmutablePureComponent {
 
             {
               isSmallScreen &&
-              <div className='account-mobile-container'>
+              <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
                 <ProfileInfoPanel username={username} account={account} />
               </div>
             }
@@ -290,13 +292,10 @@ class Header extends ImmutablePureComponent {
               me &&
               <div className='account__header__extra__buttons'>
                 <ActionButton account={account} />
-                {account.get('id') !== me &&
-                  <Button className='button button-alternative-2' onClick={this.props.onDirect}>
-                    <FormattedMessage
-                      id='account.message' defaultMessage='Message' values={{
-                        name: account.get('acct'),
-                      }}
-                    />
+                {account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
+                  <Button className='button-alternative-2' onClick={this.props.onChat}>
+                    <Icon id='comment' />
+                    <FormattedMessage id='account.message' defaultMessage='Message' />
                   </Button>
                 }
                 <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />

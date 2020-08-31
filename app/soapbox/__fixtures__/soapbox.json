@@ -1,0 +1,40 @@
+{
+  "logo": "blob:http://localhost:3036/0cdfa863-6889-4199-b870-4942cedd364f",
+  "banner": "blob:http://localhost:3036/a835afed-6078-45bd-92b4-7ffd858c3eca",
+  "brandColor": "#254f92",
+  "customCss": [
+    "/instance/static/custom.css"
+  ],
+  "promoPanel": {
+    "items": [
+      {
+        "icon": "globe",
+        "text": "blog",
+        "url": "https://teci.world/blog"
+      },
+      {
+        "icon": "globe",
+        "text": "book",
+        "url": "https://teci.world/book"
+      }
+    ]
+  },
+  "extensions": {
+    "patron": false
+  },
+  "defaultSettings": {
+    "autoPlayGif": false
+  },
+  "navlinks": {
+    "homeFooter": [
+      {
+        "title": "about",
+        "url": "/instance/about/index.html"
+      },
+      {
+        "title": "tos",
+        "url": "/instance/about/tos.html"
+      }
+    ]
+  }
+}

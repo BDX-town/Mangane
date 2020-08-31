@@ -14,6 +14,7 @@ import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const emptyList = ImmutableList();
 
@@ -21,6 +22,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const soapboxConfig = getSoapboxConfig(state);
 
   let accountId = -1;
   let accountUsername = username;
@@ -50,7 +52,7 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
     isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
     hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
     me,
-    patronEnabled: state.getIn(['soapbox', 'extensions', 'patron', 'enabled']),
+    patronEnabled: soapboxConfig.getIn(['extensions', 'patron', 'enabled']),
   };
 };
 

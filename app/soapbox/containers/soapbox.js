@@ -15,23 +15,27 @@ import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
 import { hydrateStore } from '../actions/store';
-import { IntlProvider } from 'react-intl';
 import initialState from '../initial_state';
+import { preload } from '../actions/preload';
+import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
+
 const hydrateAction = hydrateStore(initialState);
 
 store.dispatch(hydrateAction);
+store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
 store.dispatch(fetchSoapboxConfig());
@@ -42,6 +46,7 @@ const mapStateToProps = (state) => {
   const account = state.getIn(['accounts', me]);
   const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
   const settings = getSettings(state);
+  const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
   return {
@@ -52,9 +57,9 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
-    themeCss: generateThemeCss(state.getIn(['soapbox', 'brandColor'])),
+    themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
     themeMode: settings.get('themeMode'),
-    customCss: state.getIn(['soapbox', 'customCss']),
+    customCss: soapboxConfig.get('customCss'),
   };
 };
 

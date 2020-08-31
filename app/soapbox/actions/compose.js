@@ -7,12 +7,12 @@ import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
 import { importFetchedAccounts } from './importer';
 import { updateTimeline, dequeueTimeline } from './timelines';
-import { showAlertForError } from './alerts';
-import { showAlert } from './alerts';
+import { showAlert, showAlertForError } from './alerts';
 import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
+import { uploadMedia } from './media';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -239,12 +239,14 @@ export function uploadCompose(files) {
         // Account for disparity in size of original image and resized data
         total += file.size - f.size;
 
-        return api(getState).post('/api/v1/media', data, {
-          onUploadProgress: function({ loaded }){
-            progress[i] = loaded;
-            dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
-          },
-        }).then(({ data }) => dispatch(uploadComposeSuccess(data)));
+        const onUploadProgress = function({ loaded }) {
+          progress[i] = loaded;
+          dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
+        };
+
+        return dispatch(uploadMedia(data, onUploadProgress))
+          .then(({ data }) => dispatch(uploadComposeSuccess(data)));
+
       }).catch(error => dispatch(uploadComposeFail(error)));
     };
   };

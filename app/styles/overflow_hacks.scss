@@ -12,10 +12,26 @@ button.column-header__button.active {
 }
 
 .detailed-status__wrapper .detailed-status__action-bar {
-  border-radius: 0;
+  border-radius: 0 0 10px 10px;
 }
 
 .slist .item-list .column-link {
   background-color: transparent;
   border-top: 1px solid var(--brand-color--med);
+}
+
+.focusable {
+  &:focus {
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+.load-more:hover {
+  border-radius: 0 0 10px 10px;
+}
+
+// this still looks like shit but at least it's better than it overflowing
+
+.empty-column-indicator {
+  border-radius: 0 0 10px 10px;
 }

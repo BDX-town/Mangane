@@ -192,15 +192,15 @@ class Status extends ImmutablePureComponent {
   };
 
   renderLoadingMediaGallery() {
-    return <div className='media_gallery' style={{ height: '110px' }} />;
+    return <div className='media_gallery' style={{ height: '285px' }} />;
   }
 
   renderLoadingVideoPlayer() {
-    return <div className='media-spoiler-video' style={{ height: '110px' }} />;
+    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
   }
 
   renderLoadingAudioPlayer() {
-    return <div className='media-spoiler-audio' style={{ height: '110px' }} />;
+    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
   }
 
   handleOpenVideo = (media, startTime) => {
@@ -373,7 +373,7 @@ class Status extends ImmutablePureComponent {
                 alt={video.get('description')}
                 aspectRatio={video.getIn(['meta', 'small', 'aspect'])}
                 width={this.props.cachedMediaWidth}
-                height={110}
+                height={285}
                 inline
                 sensitive={status.get('sensitive')}
                 onOpenVideo={this.handleOpenVideo}
@@ -409,7 +409,7 @@ class Status extends ImmutablePureComponent {
               <Component
                 media={status.get('media_attachments')}
                 sensitive={status.get('sensitive')}
-                height={110}
+                height={285}
                 onOpenMedia={this.props.onOpenMedia}
                 cacheWidth={this.props.cacheMediaWidth}
                 defaultWidth={this.props.cachedMediaWidth}
