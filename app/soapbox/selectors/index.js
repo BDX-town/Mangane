@@ -163,13 +163,15 @@ export const makeGetChat = () => {
     [
       (state, { id }) => state.getIn(['chats', id]),
       (state, { id }) => state.getIn(['accounts', state.getIn(['chats', id, 'account'])]),
+      (state, { last_message }) => state.getIn(['chat_messages', last_message]),
     ],
 
-    (chat, account) => {
+    (chat, account, lastMessage) => {
       if (!chat) return null;
 
       return chat.withMutations(map => {
         map.set('account', account);
+        map.set('last_message', lastMessage);
       });
     }
   );

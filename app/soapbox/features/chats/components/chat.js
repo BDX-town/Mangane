@@ -5,6 +5,7 @@ import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+import emojify from 'soapbox/features/emoji/emoji';
 
 export default class Chat extends ImmutablePureComponent {
 
@@ -22,6 +23,8 @@ export default class Chat extends ImmutablePureComponent {
     if (!chat) return null;
     const account = chat.get('account');
     const unreadCount = chat.get('unread');
+    const content = chat.getIn(['last_message', 'content']);
+    const parsedContent = content ? emojify(content) : '';
 
     return (
       <div className='account'>
@@ -32,6 +35,10 @@ export default class Chat extends ImmutablePureComponent {
               <Avatar account={account} size={36} />
             </div>
             <DisplayName account={account} />
+            <span
+              className='chat__last-message'
+              dangerouslySetInnerHTML={{ __html: parsedContent }}
+            />
             {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           </div>
         </div>

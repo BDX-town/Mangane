@@ -146,6 +146,22 @@
 
   .account__display-name {
     position: relative;
+
+    .display-name {
+      display: flex;
+
+      bdi {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .display-name__account {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        display: none;
+      }
+    }
   }
 
   .icon-with-badge__badge {
@@ -251,5 +267,14 @@
 
   .column-back-button {
     background: transparent;
+  }
+}
+
+.chat {
+  &__last-message {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
