@@ -2,7 +2,8 @@
 
 exports[`<LoginForm /> renders correctly 1`] = `
 <form
-  className="simple_form new_user" method='post'
+  className="simple_form new_user"
+  method="post"
 >
   <fieldset>
     <div
