@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
@@ -83,7 +84,7 @@ class ChatWindow extends ImmutablePureComponent {
         <div className='pane__header'>
           {unreadCount > 0
             ? <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>
-            : <Avatar account={account} size={18} />
+            : <Link to={`/@${account.get('acct')}`}><Avatar account={account} size={18} /></Link>
           }
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
             @{acctFull(account)}
