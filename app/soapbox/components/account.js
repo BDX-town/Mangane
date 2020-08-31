@@ -13,6 +13,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
+  remove: { id: 'account.remove', defaultMessage: 'Remove' },
   requested: { id: 'account.requested', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
@@ -34,6 +35,7 @@ class Account extends ImmutablePureComponent {
     account: ImmutablePropTypes.map.isRequired,
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
+    onRemoveFollower: PropTypes.func.isRequired,
     onMute: PropTypes.func.isRequired,
     onMuteNotifications: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -53,6 +55,10 @@ class Account extends ImmutablePureComponent {
 
   handleMute = () => {
     this.props.onMute(this.props.account);
+  }
+
+  handleRemoveFollower = () => {
+    this.props.onRemoveFollower(this.props.account);
   }
 
   handleMuteNotifications = () => {
@@ -129,6 +135,7 @@ class Account extends ImmutablePureComponent {
           { followed_by ?
             <span className='relationship-tag'>
               <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
+              <IconButton icon={'minus-circle'} title={intl.formatMessage(messages.remove)} onClick={this.handleRemoveFollower} active={followed_by} />
             </span>
             : '' }
 

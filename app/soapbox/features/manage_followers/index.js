@@ -16,6 +16,7 @@ import {
 
 const messages = defineMessages({
   heading: { id: 'column.manage_followers', defaultMessage: 'Manage followers' },
+  remove: { id: 'column.manage_followers.remove', defaultMessage: 'Remove' },
 });
 
 const mapStateToProps = state => {
@@ -77,7 +78,9 @@ class ManageFollowers extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds && accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />
+            (
+              <AccountContainer key={id} id={id} withNote={false} />
+            )
           )}
         </ScrollableList>
       </Column>

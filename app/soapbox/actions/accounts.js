@@ -27,6 +27,10 @@ export const ACCOUNT_UNBLOCK_REQUEST = 'ACCOUNT_UNBLOCK_REQUEST';
 export const ACCOUNT_UNBLOCK_SUCCESS = 'ACCOUNT_UNBLOCK_SUCCESS';
 export const ACCOUNT_UNBLOCK_FAIL    = 'ACCOUNT_UNBLOCK_FAIL';
 
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAIL    = 'REMOVE_FOLLOWER_FAIL';
+
 export const ACCOUNT_MUTE_REQUEST = 'ACCOUNT_MUTE_REQUEST';
 export const ACCOUNT_MUTE_SUCCESS = 'ACCOUNT_MUTE_SUCCESS';
 export const ACCOUNT_MUTE_FAIL    = 'ACCOUNT_MUTE_FAIL';
@@ -315,6 +319,45 @@ export function unblockAccountFail(error) {
   };
 };
 
+export function removeFollower(id) {
+  return (dispatch, getState) => {
+    if (!getState().get('me')) return;
+
+    dispatch(removeFollowerRequest(id));
+    // no endpoint exists to remove follower, so use "soft block" to do the same
+    api(getState).post(`/api/v1/accounts/${id}/block`).then(response => {
+      api(getState).post(`/api/v1/accounts/${id}/unblock`).then(response => {
+        dispatch(removeFollowerSuccess(response.data));
+      }).catch(error => {
+        dispatch(removeFollowerFail(id, error));
+      });
+    }).catch(error => {
+      dispatch(removeFollowerFail(id, error));
+    });
+  };
+};
+
+export function removeFollowerRequest(id) {
+  return {
+    type: REMOVE_FOLLOWER_REQUEST,
+    id,
+  };
+};
+
+export function removeFollowerSuccess(relationship, statuses) {
+  return {
+    type: REMOVE_FOLLOWER_SUCCESS,
+    relationship,
+    statuses,
+  };
+};
+
+export function removeFollowerFail(error) {
+  return {
+    type: REMOVE_FOLLOWER_FAIL,
+    error,
+  };
+};
 
 export function muteAccount(id, notifications) {
   return (dispatch, getState) => {

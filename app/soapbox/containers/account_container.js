@@ -10,6 +10,7 @@ import {
   unblockAccount,
   muteAccount,
   unmuteAccount,
+  removeFollower,
 } from '../actions/accounts';
 import { openModal } from '../actions/modal';
 import { initMuteModal } from '../actions/mutes';
@@ -17,6 +18,7 @@ import { getSettings } from '../actions/settings';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
+  removeFollowerConfirm: { id: 'confirmations.remove.confirm', defaultMessage: 'Remove' },
 });
 
 const makeMapStateToProps = () => {
@@ -64,6 +66,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     } else {
       dispatch(initMuteModal(account));
     }
+  },
+
+  onRemoveFollower(account) {
+    dispatch(removeFollower(account.get('id')));
   },
 
   onMuteNotifications(account, notifications) {
