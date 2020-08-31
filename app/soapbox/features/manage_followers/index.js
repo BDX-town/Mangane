@@ -7,18 +7,26 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
-import AccountAuthorizeContainer from './containers/account_authorize_container';
-import { fetchFollowRequests, expandFollowRequests } from '../../actions/accounts';
+import AccountContainer from '../../containers/account_container';
 import ScrollableList from '../../components/scrollable_list';
+import {
+  fetchFollowers,
+  expandFollowers,
+} from '../../actions/accounts';
 
 const messages = defineMessages({
   heading: { id: 'column.manage_followers', defaultMessage: 'Manage followers' },
 });
 
-const mapStateToProps = state => ({
-  accountIds: state.getIn(['user_lists', 'follow_requests', 'items']),
-  hasMore: !!state.getIn(['user_lists', 'follow_requests', 'next']),
-});
+const mapStateToProps = state => {
+  const accountId = state.get('me');
+
+  return {
+    accountId,
+    accountIds: state.getIn(['user_lists', 'followers', accountId, 'items']),
+    hasMore: !!state.getIn(['user_lists', 'followers', accountId, 'next']),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -33,11 +41,18 @@ class ManageFollowers extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    this.props.dispatch(fetchFollowRequests());
+    const { accountId } = this.props;
+    this.props.dispatch(fetchFollowers(accountId));
+  }
+
+  componentDidUpdate(prevProps) {
+    const { accountId } = this.props;
+    this.props.dispatch(fetchFollowers(accountId));
   }
 
   handleLoadMore = debounce(() => {
-    this.props.dispatch(expandFollowRequests());
+    const { accountId } = this.props;
+    this.props.dispatch(expandFollowers(accountId));
   }, 300, { leading: true });
 
   render() {
@@ -51,18 +66,18 @@ class ManageFollowers extends ImmutablePureComponent {
       );
     }
 
-    const emptyMessage = <FormattedMessage id='empty_column.follow_requests' defaultMessage="You don't have any follow requests yet. When you receive one, it will show up here." />;
+    const emptyMessage = <FormattedMessage id='empty_column.followers' defaultMessage="You don't have any followers yet. When you do, they will show up here." />;
 
     return (
       <Column icon='users' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <ScrollableList
-          scrollKey='follow_requests'
+          scrollKey='followers'
           onLoadMore={this.handleLoadMore}
           hasMore={hasMore}
           emptyMessage={emptyMessage}
         >
-          {accountIds.map(id =>
-            <AccountAuthorizeContainer key={id} id={id} />
+          {accountIds && accountIds.map(id =>
+            <AccountContainer key={id} id={id} withNote={false} />
           )}
         </ScrollableList>
       </Column>
