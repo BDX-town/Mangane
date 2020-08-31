@@ -21,7 +21,6 @@ const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
-  messages: { id: 'navigation_bar.messages', defaultMessage: 'Messages' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -29,6 +28,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
+  soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -131,10 +131,6 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to={'/messages'} onClick={onClose}>
-                <Icon id='envelope' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.messages)}</span>
-              </NavLink>
               {donateUrl ?
                 <a className='sidebar-menu-item' href={donateUrl} onClick={onClose}>
                   <Icon id='dollar' />
@@ -172,10 +168,14 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink>
-              { isStaff && <a className='sidebar-menu-item' href={'/pleroma/admin/'} target='_blank' onClick={onClose}>
+              { isStaff && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={onClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a> }
+              { isStaff && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={onClose}>
+                <Icon id='cog' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
+              </NavLink> }
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>

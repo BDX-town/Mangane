@@ -1,10 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
-  soapbox: state.get('soapbox'),
+  soapbox: getSoapboxConfig(state),
 });
 
 class SiteLogo extends ImmutablePureComponent {
@@ -15,7 +16,7 @@ class SiteLogo extends ImmutablePureComponent {
       imgLogo:  (<img alt={instance.get('title')} src={soapbox.get('logo')} />),
       textLogo: (<h1>{instance.get('title')}</h1>),
     };
-    return soapbox.has('logo') ? logos.imgLogo : logos.textLogo;
+    return soapbox.getIn(['logo']) ? logos.imgLogo : logos.textLogo;
   }
 
 }

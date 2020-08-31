@@ -108,6 +108,10 @@ button {
     &:disabled {
       opacity: 0.5;
     }
+
+    i.fa {
+      margin-right: 0.5em;
+    }
   }
 
   &.button--block {

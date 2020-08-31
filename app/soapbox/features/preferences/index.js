@@ -13,7 +13,7 @@ import {
   RadioItem,
   SelectDropdown,
 } from 'soapbox/features/forms';
-import SettingsCheckbox from './components/settings_checkbox';
+import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 
 const languages = {
   en: 'English',

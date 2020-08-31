@@ -12,6 +12,8 @@ import { fetchFilters } from './filters';
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
+export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+
 const validLocale = locale => Object.keys(messages).includes(locale);
 
 const getLocale = state => {
@@ -51,6 +53,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           break;
         case 'filters_changed':
           dispatch(fetchFilters());
+          break;
+        case 'pleroma:chat_update':
+          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
           break;
         }
       },

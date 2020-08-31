@@ -1,6 +1,6 @@
 # Customizing Soapbox
 
-If you haven't already, [install Soapbox](https://soapbox.pub/). But before you install soapbox, you should consider how Soapbox is installed, by default.
+If you haven't already, [install Soapbox](../installing). But before you install soapbox, you should consider how Soapbox is installed, by default.
 
 Soapbox, by default, is installed to replace the default Pleroma front end.  By extension, the Pleroma Masto front end continues to be available at the `/web` sub-URL, which you can reference, if you'd like, in the `promoPanel` section of `soapbox.json`
 
@@ -104,4 +104,3 @@ These four template files have placeholders in them, e.g. "Your_Instance", that 
 If you want to install Soapbox at an alternate URL, allowing you to potentially run more than 2 front ends on a Pleroma server, you can consider deploying the Nginx config created by @a1batross, available [here](https://git.mentality.rip/a1batross/soapbox-nginx-config/src/branch/master/soapbox.nginx)
 
 Tech support is limited for this level of customization
-

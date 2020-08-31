@@ -1,5 +1,9 @@
 import { getSettings } from '../settings';
-import { normalizeAccount, normalizeStatus, normalizePoll } from './normalizer';
+import {
+  normalizeAccount,
+  normalizeStatus,
+  normalizePoll,
+} from './normalizer';
 
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 export const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';

@@ -212,7 +212,22 @@
       margin-top: 50px;
     }
   }
-} // end .account__header
+}
+
+.account__header.deactivated {
+  .still-image img,
+  .still-image canvas {
+    display: none;
+  }
+
+  .account__header__extra__links,
+  .account__header__extra__buttons {
+    display: none;
+  }
+}
+
+
+// end .account__header
 
 .account-timeline {
   &__header {

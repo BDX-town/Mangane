@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -28,6 +28,11 @@ const defaultSettings = ImmutableMap({
   systemFont: false,
   dyslexicFont: false,
   demetricator: false,
+
+  chats: ImmutableMap({
+    panes: ImmutableList(),
+    mainWindow: 'minimized',
+  }),
 
   home: ImmutableMap({
     shows: ImmutableMap({

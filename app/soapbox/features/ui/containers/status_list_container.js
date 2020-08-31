@@ -22,10 +22,12 @@ const makeGetStatusIds = () => createSelector([
 });
 
 const mapStateToProps = (state, { timelineId }) => {
+  const lastStatusId = state.getIn(['timelines', timelineId, 'items'], ImmutableList()).last();
   const getStatusIds = makeGetStatusIds();
 
   return {
     statusIds: getStatusIds(state, { type: timelineId }),
+    lastStatusId: lastStatusId,
     isLoading: state.getIn(['timelines', timelineId, 'isLoading'], true),
     isPartial: state.getIn(['timelines', timelineId, 'isPartial'], false),
     hasMore:   state.getIn(['timelines', timelineId, 'hasMore']),

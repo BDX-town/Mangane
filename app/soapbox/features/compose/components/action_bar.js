@@ -19,6 +19,7 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
+  soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Hotkeys' },
@@ -68,7 +69,6 @@ class ActionBar extends React.PureComponent {
     let menu = [];
 
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
-    menu.push({ text: intl.formatMessage(messages.messages), to: '/messages' });
     menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });
     menu.push({ text: intl.formatMessage(messages.bookmarks), to: '/bookmarks' });
     menu.push(null);
@@ -80,7 +80,8 @@ class ActionBar extends React.PureComponent {
     menu.push(null);
     menu.push({ text: intl.formatMessage(messages.keyboard_shortcuts), action: this.handleHotkeyClick });
     if (isStaff) {
-      menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin/', newTab: true });
+      menu.push({ text: intl.formatMessage(messages.admin_settings), href: '/pleroma/admin', newTab: true });
+      menu.push({ text: intl.formatMessage(messages.soapbox_config), to: '/soapbox/config' });
     }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
     menu.push({ text: intl.formatMessage(messages.security), to: '/auth/edit' });
