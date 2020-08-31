@@ -75,7 +75,7 @@ class Create extends React.PureComponent {
     const { title, description, coverImage, disabled, intl } = this.props;
 
     return (
-      <form className='group-form' onSubmit={this.handleSubmit}>
+      <form className='group-form' method='post' onSubmit={this.handleSubmit}>
         <div>
           <input
             className='standard'
