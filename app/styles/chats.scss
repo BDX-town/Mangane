@@ -276,5 +276,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    a {
+      color: var(--highlight-text-color);
+    }
   }
 }
