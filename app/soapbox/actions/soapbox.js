@@ -7,7 +7,7 @@ export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 export const defaultConfig = ImmutableMap({
   logo: '',
   banner: '',
-  brandColor: '#0482d8', // Azure
+  brandColor: '', // Empty
   customCss: ImmutableList(),
   promoPanel: ImmutableMap({
     items: ImmutableList(),
@@ -48,7 +48,13 @@ export function fetchSoapboxJson() {
   };
 }
 
-export function importSoapboxConfig(soapboxConfig) {
+export function importSoapboxConfig(soapboxConfig, getIn) {
+  if(soapboxConfig.get('brandColor') === '') {
+    const defaultBrandColor = ImmutableMap({
+      brandColor: '#0482d8', // Azure
+    });
+    defaultBrandColor.mergeDeep(soapboxConfig);
+  };
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,
