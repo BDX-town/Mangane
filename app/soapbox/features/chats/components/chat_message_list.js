@@ -56,6 +56,16 @@ class ChatMessageList extends ImmutablePureComponent {
     );
   };
 
+  setRef = (c) => {
+    const links = c.querySelectorAll('a[rel="ugc"]');
+
+    links.forEach(link => {
+      link.classList.add('chat-link');
+      link.setAttribute('rel', 'ugc nofollow noopener');
+      link.setAttribute('target', '_blank');
+    });
+  }
+
   componentDidUpdate(prevProps) {
     if (prevProps.chatMessages !== this.props.chatMessages)
       this.scrollToBottom();
@@ -78,6 +88,7 @@ class ChatMessageList extends ImmutablePureComponent {
               title={this.getFormattedTimestamp(chatMessage)}
               className='chat-message__bubble'
               dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content') || '') }}
+              ref={this.setRef}
             />
           </div>
         ))}
