@@ -57,6 +57,7 @@ class ChatMessageList extends ImmutablePureComponent {
   };
 
   setRef = (c) => {
+    if (!c) return;
     const links = c.querySelectorAll('a[rel="ugc"]');
 
     links.forEach(link => {
