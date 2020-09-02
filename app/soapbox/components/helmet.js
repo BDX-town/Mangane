@@ -3,9 +3,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from'react-helmet';
 
+const getNotifTotals = state => {
+  const normNotif = state.getIn(['notifications', 'unread']);
+  const chatNotif = state.get('chats').reduce((acc, curr) => acc + curr.get('unread'), 0);
+  const notifTotals = normNotif + chatNotif;
+  return notifTotals;
+};
+
 const mapStateToProps = state => ({
   siteTitle: state.getIn(['instance', 'title']),
-  unreadCount: state.getIn(['notifications', 'unread']),
+  unreadCount: getNotifTotals(state),
 });
 
 class SoapboxHelmet extends React.Component {
