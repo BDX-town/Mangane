@@ -9,10 +9,6 @@
     .react-toggle {
       vertical-align: middle;
 
-      &-track {
-        background-color: var(--foreground-color);
-      }
-
       &-track-check,
       &-track-x {
         display: flex;
