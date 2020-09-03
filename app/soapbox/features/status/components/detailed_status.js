@@ -208,6 +208,11 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
             <div>
+              {status.hasIn(['account', 'pleroma', 'favicon']) &&
+                <div className='status__favicon'>
+                  <img src={status.getIn(['account', 'pleroma', 'favicon'])} alt='' />
+                </div>}
+
               {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>

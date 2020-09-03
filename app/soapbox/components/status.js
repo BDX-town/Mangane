@@ -468,6 +468,11 @@ class Status extends ImmutablePureComponent {
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </NavLink>
 
+              {status.hasIn(['account', 'pleroma', 'favicon']) &&
+                <div className='status__favicon'>
+                  <img src={status.getIn(['account', 'pleroma', 'favicon'])} alt='' />
+                </div>}
+
               <div className='status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
                 <div className='status__avatar'>
                   <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
