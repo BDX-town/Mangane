@@ -48,12 +48,9 @@ export function fetchSoapboxJson() {
   };
 }
 
-export function importSoapboxConfig(soapboxConfig, getIn) {
-  if(soapboxConfig.get('brandColor') === '') {
-    const defaultBrandColor = ImmutableMap({
-      brandColor: '#0482d8', // Azure
-    });
-    defaultBrandColor.mergeDeep(soapboxConfig);
+export function importSoapboxConfig(soapboxConfig) {
+  if (!soapboxConfig.brandColor) {
+    soapboxConfig.brandColor = '#0482d8';
   };
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,

@@ -8,6 +8,10 @@ import { ConfigDB } from 'soapbox/utils/config_db';
 
 const initialState = ImmutableMap();
 
+const fallbackState = ImmutableMap({
+  brandColor: '#0482d8', // Azure
+});
+
 const updateFromAdmin = (state, config) => {
   const configs = config.get('configs', ImmutableList());
 
@@ -26,10 +30,7 @@ export default function soapbox(state = initialState, action) {
   case SOAPBOX_CONFIG_REQUEST_SUCCESS:
     return fromJS(action.soapboxConfig);
   case SOAPBOX_CONFIG_REQUEST_FAIL:
-    const defaultBrandColor = ImmutableMap({
-      brandColor: '#0482d8', // Azure
-    });
-    return defaultBrandColor.mergeDeep(state.get('soapbox'));
+    return fallbackState.mergeDeep(state.get('soapbox'));
   case ADMIN_CONFIG_UPDATE_SUCCESS:
     return updateFromAdmin(state, fromJS(action.config));
   default:
