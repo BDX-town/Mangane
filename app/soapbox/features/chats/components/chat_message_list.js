@@ -7,6 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
+import { escape } from 'lodash';
 
 const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map, emoji) => {
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
@@ -76,9 +77,16 @@ class ChatMessageList extends ImmutablePureComponent {
       this.scrollToBottom();
   }
 
+  parsePendingContent = content => {
+    return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
+  }
+
   parseContent = chatMessage => {
+    const content = chatMessage.get('content') || '';
+    const pending = chatMessage.get('pending', false);
+    const formatted = pending ? this.parsePendingContent(content) : content;
     const emojiMap = makeEmojiMap(chatMessage);
-    return emojify(chatMessage.get('content') || '', emojiMap.toJS());
+    return emojify(formatted, emojiMap.toJS());
   }
 
   render() {

@@ -40,11 +40,24 @@ class ChatBox extends ImmutablePureComponent {
     content: '',
   }
 
-  handleKeyDown = (e) => {
+  sendMessage = () => {
     const { chatId } = this.props;
-    if (e.key === 'Enter') {
-      this.props.dispatch(sendChatMessage(chatId, this.state));
-      this.setState({ content: '' });
+    if (this.state.content.length < 1) return;
+    this.props.dispatch(sendChatMessage(chatId, this.state));
+    this.setState({ content: '' });
+  }
+
+  insertLine = () => {
+    const { content } = this.state;
+    this.setState({ content: content + '\n' });
+  }
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Enter' && e.shiftKey) {
+      this.insertLine();
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      this.sendMessage();
       e.preventDefault();
     }
   }
