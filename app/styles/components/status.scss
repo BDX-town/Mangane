@@ -635,3 +635,15 @@ a.status-card.compact:hover {
   background-size: cover;
   background-position: center center;
 }
+
+.status__favicon {
+  width: 16px;
+  height: 16px;
+  float: right;
+  margin-right: 4px;
+
+  img {
+    width: 100%;
+    max-height: 100%;
+  }
+}
