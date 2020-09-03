@@ -7,7 +7,7 @@ export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 export const defaultConfig = ImmutableMap({
   logo: '',
   banner: '',
-  brandColor: '#0482d8', // Azure
+  brandColor: '', // Empty
   customCss: ImmutableList(),
   promoPanel: ImmutableMap({
     items: ImmutableList(),
@@ -50,6 +50,9 @@ export function fetchSoapboxJson() {
 }
 
 export function importSoapboxConfig(soapboxConfig) {
+  if (!soapboxConfig.brandColor) {
+    soapboxConfig.brandColor = '#0482d8';
+  };
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,
