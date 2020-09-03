@@ -30,7 +30,7 @@ export default function soapbox(state = initialState, action) {
   case SOAPBOX_CONFIG_REQUEST_SUCCESS:
     return fromJS(action.soapboxConfig);
   case SOAPBOX_CONFIG_REQUEST_FAIL:
-    return fallbackState.mergeDeep(state.get('soapbox'));
+    return fallbackState.mergeDeep(state);
   case ADMIN_CONFIG_UPDATE_SUCCESS:
     return updateFromAdmin(state, fromJS(action.config));
   default:
