@@ -4,9 +4,13 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
+
+const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map, emoji) => {
+  return map.set(`:${emoji.get('shortcode')}:`, emoji);
+}, ImmutableMap());
 
 const mapStateToProps = (state, { chatMessageIds }) => ({
   me: state.get('me'),
@@ -72,6 +76,11 @@ class ChatMessageList extends ImmutablePureComponent {
       this.scrollToBottom();
   }
 
+  parseContent = chatMessage => {
+    const emojiMap = makeEmojiMap(chatMessage);
+    return emojify(chatMessage.get('content') || '', emojiMap.toJS());
+  }
+
   render() {
     const { chatMessages, me } = this.props;
 
@@ -88,7 +97,7 @@ class ChatMessageList extends ImmutablePureComponent {
             <span
               title={this.getFormattedTimestamp(chatMessage)}
               className='chat-message__bubble'
-              dangerouslySetInnerHTML={{ __html: emojify(chatMessage.get('content') || '') }}
+              dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
               ref={this.setRef}
             />
           </div>
