@@ -213,7 +213,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
             <div>
               {favicon &&
                 <div className='status__favicon'>
-                  <img src={favicon} alt={domain} title={domain} />
+                  <img src={favicon} alt='' title={domain} />
                 </div>}
 
               {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>

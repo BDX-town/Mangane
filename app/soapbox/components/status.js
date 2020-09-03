@@ -473,7 +473,7 @@ class Status extends ImmutablePureComponent {
 
               {favicon &&
                 <div className='status__favicon'>
-                  <img src={favicon} alt={domain} title={domain} />
+                  <img src={favicon} alt='' title={domain} />
                 </div>}
 
               <div className='status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
