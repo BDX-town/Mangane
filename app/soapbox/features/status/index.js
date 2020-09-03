@@ -14,6 +14,8 @@ import {
   unfavourite,
   reblog,
   unreblog,
+  bookmark,
+  unbookmark,
   pin,
   unpin,
 } from '../../actions/interactions';
@@ -165,6 +167,14 @@ class Status extends ImmutablePureComponent {
       this.props.dispatch(unpin(status));
     } else {
       this.props.dispatch(pin(status));
+    }
+  }
+
+  handleBookmark = (status) => {
+    if (status.get('bookmarked')) {
+      this.props.dispatch(unbookmark(status));
+    } else {
+      this.props.dispatch(bookmark(status));
     }
   }
 
@@ -507,6 +517,7 @@ class Status extends ImmutablePureComponent {
                 onBlock={this.handleBlockClick}
                 onReport={this.handleReport}
                 onPin={this.handlePin}
+                onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
               />
             </div>
