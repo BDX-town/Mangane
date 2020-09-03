@@ -34,6 +34,8 @@ const messages = defineMessages({
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this post in the moderation interface' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
+  bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
+  unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
 });
 
 const mapStateToProps = state => {
@@ -63,6 +65,7 @@ class ActionBar extends React.PureComponent {
     onFavourite: PropTypes.func.isRequired,
     onEmojiReact: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
+    onBookmark: PropTypes.func,
     onDirect: PropTypes.func.isRequired,
     onMention: PropTypes.func.isRequired,
     onMute: PropTypes.func,
@@ -101,6 +104,10 @@ class ActionBar extends React.PureComponent {
     } else {
       this.props.onOpenUnauthorizedModal();
     }
+  }
+
+  handleBookmarkClick = () => {
+    this.props.onBookmark(this.props.status);
   }
 
   handleFavouriteClick = () => {
@@ -237,8 +244,11 @@ class ActionBar extends React.PureComponent {
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
       // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
-      menu.push(null);
     }
+
+    menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+
+    menu.push(null);
 
     if (me === status.getIn(['account', 'id'])) {
       if (publicStatus) {

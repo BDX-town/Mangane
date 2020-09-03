@@ -113,6 +113,8 @@
     background-color: var(--background-color);
     overflow: hidden;
     text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    white-space: break-spaces;
 
     a {
       color: var(--brand-color--hicontrast);
@@ -252,7 +254,7 @@
     background: transparent;
     border: 0;
     padding: 0;
-    color: #fff;
+    color: var(--primary-text-color);
     font-weight: bold;
     text-align: left;
     font-size: 14px;
