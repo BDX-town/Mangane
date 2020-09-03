@@ -18,6 +18,7 @@ import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchReports } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
+import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
@@ -433,6 +434,7 @@ class UI extends React.PureComponent {
     if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
+      this.props.dispatch(fetchChats());
       // this.props.dispatch(fetchGroups('member'));
       if (isStaff(account))
         this.props.dispatch(fetchReports({ state: 'open' }));

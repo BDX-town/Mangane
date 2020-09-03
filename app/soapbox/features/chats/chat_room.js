@@ -6,18 +6,20 @@ import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
-import { fetchChat } from 'soapbox/actions/chats';
+import { fetchChat, markChatRead } from 'soapbox/actions/chats';
 import ChatBox from './components/chat_box';
 import Column from 'soapbox/components/column';
 import ColumnBackButton from 'soapbox/components/column_back_button';
+import { Map as ImmutableMap } from 'immutable';
 import { makeGetChat } from 'soapbox/selectors';
 
 const mapStateToProps = (state, { params }) => {
   const getChat = makeGetChat();
+  const chat = state.getIn(['chats', params.chatId], ImmutableMap()).toJS();
 
   return {
     me: state.get('me'),
-    chat: getChat(state, { id: params.chatId }),
+    chat: getChat(state, chat),
   };
 };
 
@@ -42,9 +44,26 @@ class ChatRoom extends ImmutablePureComponent {
     this.inputElem.focus();
   }
 
+  markRead = () => {
+    const { dispatch, chat } = this.props;
+    if (!chat) return;
+    dispatch(markChatRead(chat.get('id')));
+  }
+
   componentDidMount() {
     const { dispatch, params } = this.props;
     dispatch(fetchChat(params.chatId));
+    this.markRead();
+  }
+
+  componentDidUpdate(prevProps) {
+    const markReadConditions = [
+      () => this.props.chat !== undefined,
+      () => this.props.chat.get('unread') > 0,
+    ];
+
+    if (markReadConditions.every(c => c() === true))
+      this.markRead();
   }
 
   render() {

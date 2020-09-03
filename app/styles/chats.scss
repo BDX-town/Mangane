@@ -113,6 +113,8 @@
     background-color: var(--background-color);
     overflow: hidden;
     text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    white-space: break-spaces;
 
     a {
       color: var(--brand-color--hicontrast);
