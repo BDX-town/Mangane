@@ -98,12 +98,12 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, intl } = this.props;
+    const { chatMessageIds, chatId, intl } = this.props;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
-        <ChatMessageList chatMessageIds={chatMessageIds} />
+        <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         <div className='chat-box__actions simple_form'>
           <textarea
             rows={1}

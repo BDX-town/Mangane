@@ -34,13 +34,13 @@ export function fetchChats() {
   };
 }
 
-export function fetchChatMessages(chatId) {
+export function fetchChatMessages(chatId, maxId = null) {
   return (dispatch, getState) => {
-    dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId });
-    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, chatMessages: data });
+    dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId, maxId });
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`, { params: { max_id: maxId } }).then(({ data }) => {
+      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, maxId, chatMessages: data });
     }).catch(error => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, error });
+      dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, maxId, error });
     });
   };
 }
