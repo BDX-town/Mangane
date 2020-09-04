@@ -80,6 +80,9 @@ class ChatMessageList extends ImmutablePureComponent {
   }
 
   componentDidMount() {
+    const { dispatch, chatId } = this.props;
+    dispatch(fetchChatMessages(chatId));
+
     this.node.addEventListener('scroll', this.handleScroll);
   }
 
