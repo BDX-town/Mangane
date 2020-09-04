@@ -144,7 +144,7 @@
       margin-left: 10px;
 
       .react-toggle-track {
-        background-color: rgba(0,0,0,0.2);
+        background-color: var(--foreground-color);
       }
 
       .react-toggle--checked {
