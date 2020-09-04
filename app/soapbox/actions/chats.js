@@ -47,7 +47,7 @@ export function fetchChatMessages(chatId, maxId = null) {
 
 export function sendChatMessage(chatId, params) {
   return (dispatch, getState) => {
-    const uuid = uuidv4();
+    const uuid = `末_${Date.now()}_${uuidv4()}`;
     const me = getState().get('me');
     dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params, uuid, me });
     return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
