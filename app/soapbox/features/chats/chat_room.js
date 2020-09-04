@@ -58,11 +58,11 @@ class ChatRoom extends ImmutablePureComponent {
 
   componentDidUpdate(prevProps) {
     const markReadConditions = [
-      () => this.props.chat !== undefined,
+      () => this.props.chat,
       () => this.props.chat.get('unread') > 0,
     ];
 
-    if (markReadConditions.every(c => c() === true))
+    if (markReadConditions.every(c => c()))
       this.markRead();
   }
 

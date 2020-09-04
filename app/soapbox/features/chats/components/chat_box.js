@@ -5,7 +5,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
-  fetchChatMessages,
   sendChatMessage,
   markChatRead,
 } from 'soapbox/actions/chats';
@@ -81,11 +80,6 @@ class ChatBox extends ImmutablePureComponent {
     onSetInputRef(el);
   };
 
-  componentDidMount() {
-    const { dispatch, chatId } = this.props;
-    dispatch(fetchChatMessages(chatId));
-  }
-
   componentDidUpdate(prevProps) {
     const markReadConditions = [
       () => this.props.chat !== undefined,
@@ -98,12 +92,12 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, intl } = this.props;
+    const { chatMessageIds, chatId, intl } = this.props;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
-        <ChatMessageList chatMessageIds={chatMessageIds} />
+        <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         <div className='chat-box__actions simple_form'>
           <textarea
             rows={1}
