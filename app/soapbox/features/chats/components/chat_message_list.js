@@ -9,6 +9,8 @@ import { fetchChatMessages } from 'soapbox/actions/chats';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
 import { escape, throttle } from 'lodash';
+import { MediaGallery } from 'soapbox/features/ui/util/async-components';
+import Bundle from 'soapbox/features/ui/components/bundle';
 
 const scrollBottom = (elem) => elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
 
@@ -115,6 +117,21 @@ class ChatMessageList extends ImmutablePureComponent {
     trailing: true,
   });
 
+  maybeRenderMedia = chatMessage => {
+    const attachment = chatMessage.get('attachment');
+    if (!attachment) return null;
+    return (
+      <Bundle fetchComponent={MediaGallery}>
+        {Component => (
+          <Component
+            media={ImmutableList([attachment])}
+            height={100}
+          />
+        )}
+      </Bundle>
+    );
+  }
+
   parsePendingContent = content => {
     return escape(content).replace(/(?:\r\n|\r|\n)/g, '<br>');
   }
@@ -145,12 +162,17 @@ class ChatMessageList extends ImmutablePureComponent {
             })}
             key={chatMessage.get('id')}
           >
-            <span
+            <div
               title={this.getFormattedTimestamp(chatMessage)}
               className='chat-message__bubble'
-              dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
               ref={this.setBubbleRef}
-            />
+            >
+              <span
+                className='chat-message__content'
+                dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
+              />
+              {this.maybeRenderMedia(chatMessage)}
+            </div>
           </div>
         ))}
       </div>

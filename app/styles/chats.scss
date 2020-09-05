@@ -290,3 +290,8 @@
     }
   }
 }
+
+.chat-message .media-gallery__item-thumbnail img,
+.chat-message .media-gallery__item-thumbnail .still-image img {
+  object-fit: contain;
+}
