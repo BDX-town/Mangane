@@ -291,7 +291,15 @@
   }
 }
 
-.chat-message .media-gallery__item-thumbnail img,
-.chat-message .media-gallery__item-thumbnail .still-image img {
-  object-fit: contain;
+.chat-message .media-gallery {
+  height: 120px !important;
+
+  .spoiler-button {
+    display: none;
+  }
+
+  &__item-thumbnail img,
+  &__item-thumbnail .still-image img {
+    object-fit: contain;
+  }
 }

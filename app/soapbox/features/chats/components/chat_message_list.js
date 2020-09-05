@@ -8,6 +8,7 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { fetchChatMessages } from 'soapbox/actions/chats';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
+import { openModal } from 'soapbox/actions/modal';
 import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -117,6 +118,10 @@ class ChatMessageList extends ImmutablePureComponent {
     trailing: true,
   });
 
+  onOpenMedia = (media, index) => {
+    this.props.dispatch(openModal('MEDIA', { media, index }));
+  };
+
   maybeRenderMedia = chatMessage => {
     const attachment = chatMessage.get('attachment');
     if (!attachment) return null;
@@ -125,7 +130,8 @@ class ChatMessageList extends ImmutablePureComponent {
         {Component => (
           <Component
             media={ImmutableList([attachment])}
-            height={100}
+            height={120}
+            onOpenMedia={this.onOpenMedia}
           />
         )}
       </Bundle>
