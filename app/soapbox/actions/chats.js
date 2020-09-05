@@ -23,6 +23,8 @@ export const CHAT_READ_REQUEST = 'CHAT_READ_REQUEST';
 export const CHAT_READ_SUCCESS = 'CHAT_READ_SUCCESS';
 export const CHAT_READ_FAIL    = 'CHAT_READ_FAIL';
 
+export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -150,3 +152,55 @@ export function markChatRead(chatId, lastReadId) {
     });
   };
 }
+
+export function updateChatsQueue(chat) {
+  return (dispatch, getState) => {
+    if (chat.type === 'pleroma:chat_mention') return; // Drop chat notifications, handle them per-chat
+
+    // const showAlert = getSettings(getState()).getIn(['notifications', 'alerts', chat.type]);
+    // const filters = getFilters(getState(), { contextType: 'notifications' });
+    // const playSound = getSettings(getState()).getIn(['notifications', 'sounds', chat.type]);
+    //
+    // let filtered = false;
+    //
+    // const isOnNotificationsPage = curPath === '/notifications';
+    //
+    // if (chat.type === 'mention') {
+    //   const regex = regexFromFilters(filters);
+    //   const searchIndex = chat.status.spoiler_text + '\n' + unescapeHTML(chat.status.content);
+    //   filtered = regex && regex.test(searchIndex);
+    // }
+    //
+    // // Desktop notifications
+    // if (typeof window.Notification !== 'undefined' && showAlert && !filtered) {
+    //   const title = new IntlMessageFormat(intlMessages[`notification.${chat.type}`], intlLocale).format({ name: chat.account.display_name.length > 0 ? chat.account.display_name : notification.account.username });
+    //   const body = (chat.status && chat.status.spoiler_text.length > 0) ? chat.status.spoiler_text : unescapeHTML(chat.status ? chat.status.content : '');
+    //
+    //   const notify = new Notification(title, { body, icon: chat.account.avatar, tag: chat.id });
+    //
+    //   notify.addEventListener('click', () => {
+    //     window.focus();
+    //     notify.close();
+    //   });
+    // }
+
+    // if (playSound && !filtered) {
+    //   dispatch({
+    //     type: CHATS_UPDATE_NOOP,
+    //     meta: { sound: 'boop' },
+    //   });
+    // }
+
+    dispatch({ type: STREAMING_CHAT_UPDATE, chat: chat, me: getState().get('me') });
+    // if (isOnNotificationsPage) {
+    //   dispatch({
+    //     type: CHATS_UPDATE_QUEUE,
+    //     chat,
+    //     intlMessages,
+    //     intlLocale,
+    //   });
+    // } else {
+    //   dispatch(updateChats(chat, intlMessages, intlLocale));
+    // }
+  };
+};

@@ -4,7 +4,7 @@ import {
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from '../actions/importer';
 import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/chats';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 

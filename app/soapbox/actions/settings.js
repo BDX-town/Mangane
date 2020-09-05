@@ -32,6 +32,8 @@ const defaultSettings = ImmutableMap({
   chats: ImmutableMap({
     panes: ImmutableList(),
     mainWindow: 'minimized',
+    sound: true,
+    flash: true,
   }),
 
   home: ImmutableMap({
