@@ -65,16 +65,22 @@ class ChatBox extends ImmutablePureComponent {
     };
   }
 
-  sendMessage = () => {
-    const { dispatch, chatId } = this.props;
-    const { content, attachment, isUploading } = this.state;
+  canSubmit = () => {
+    const { content, attachment } = this.state;
 
     const conds = [
       content.length > 0,
       attachment,
     ];
 
-    if (!isUploading && conds.some(c => c)) {
+    return conds.some(c => c);
+  }
+
+  sendMessage = () => {
+    const { dispatch, chatId } = this.props;
+    const { isUploading } = this.state;
+
+    if (this.canSubmit() && !isUploading) {
       const params = this.getParams();
 
       dispatch(sendChatMessage(chatId, params));
@@ -167,9 +173,21 @@ class ChatBox extends ImmutablePureComponent {
     );
   }
 
+  renderActionButton = () => {
+    const { resetFileKey } = this.state;
+
+    return this.canSubmit() ? (
+      <div className='chat-box__send'>
+        <IconButton icon='send' size={16} onClick={this.sendMessage} />
+      </div>
+    ) : (
+      <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
+    );
+  }
+
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
-    const { content, isUploading, uploadProgress, resetFileKey } = this.state;
+    const { content, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
     return (
@@ -178,7 +196,7 @@ class ChatBox extends ImmutablePureComponent {
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
-          <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
+          {this.renderActionButton()}
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}
