@@ -94,6 +94,29 @@
       overflow: hidden;
     }
   }
+
+  .audio-toggle .react-toggle-thumb {
+    height: 21px;
+    width: 21px;
+  }
+
+  .audio-toggle .react-toggle {
+    height: 23px;
+    top: 4px;
+  }
+
+  .audio-toggle .react-toggle-track {
+    height: 23px;
+  }
+
+  .audio-toggle .react-toggle-track-check {
+    bottom: 4px;
+  }
+
+  .audio-toggle .react-toggle-track-x {
+    bottom: 4px;
+  }
+
 }
 
 .chat-messages {
