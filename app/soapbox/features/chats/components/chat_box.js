@@ -12,7 +12,6 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
-import { Map as ImmutableMap } from 'immutable';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 
 const messages = defineMessages({
@@ -39,44 +38,48 @@ class ChatBox extends ImmutablePureComponent {
     me: PropTypes.node,
   }
 
-  initialParams = {
+  initialState = () => ({
     content: '',
-    media_id: undefined,
-  }
-
-  state = {
-    params: ImmutableMap(this.initialParams),
+    attachment: undefined,
     isUploading: false,
     uploadProgress: 0,
+  })
+
+  state = this.initialState()
+
+  clearState = () => {
+    this.setState(this.initialState());
   }
 
-  setParams = newParams => {
-    const { params } = this.state;
-    this.setState({ params: params.merge(newParams) });
-  }
+  getParams = () => {
+    const { content, attachment } = this.state;
 
-  clearParams = () => {
-    this.setState({ params: ImmutableMap(this.initialParams) });
+    return {
+      content,
+      media_id: attachment && attachment.id,
+    };
   }
 
   sendMessage = () => {
-    const { chatId } = this.props;
-    const { params, isUploading } = this.state;
+    const { dispatch, chatId } = this.props;
+    const { content, attachment, isUploading } = this.state;
 
     const conds = [
-      params.get('content', '').length > 0,
-      params.get('media_id'),
+      content.length > 0,
+      attachment,
     ];
 
     if (!isUploading && conds.some(c => c)) {
-      this.props.dispatch(sendChatMessage(chatId, params.toJS()));
-      this.clearParams();
+      const params = this.getParams();
+
+      dispatch(sendChatMessage(chatId, params));
+      this.clearState();
     }
   }
 
   insertLine = () => {
-    const { params } = this.state;
-    this.setParams({ content: params.get('content') + '\n' });
+    const { content } = this.state;
+    this.setState({ content: content + '\n' });
   }
 
   handleKeyDown = (e) => {
@@ -90,7 +93,7 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   handleContentChange = (e) => {
-    this.setParams({ content: e.target.value });
+    this.setState({ content: e.target.value });
   }
 
   markRead = () => {
@@ -125,23 +128,40 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   handleFiles = (files) => {
+    const { dispatch } = this.props;
+
     this.setState({ isUploading: true });
+
     const data = new FormData();
     data.append('file', files[0]);
-    this.props.dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
-      const newParams = this.state.params.merge({ media_id: response.data.id });
-      this.setState({ params: newParams, isUploading: false });
-    }).catch(() => {});
+
+    dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
+      this.setState({ attachment: response.data, isUploading: false });
+    }).catch(() => {
+      this.setState({ isUploading: false });
+    });
+  }
+
+  renderAttachment = () => {
+    const { attachment } = this.state;
+    if (!attachment) return null;
+
+    return (
+      <div className='chat-box__attachment'>
+        {attachment.preview_url}
+      </div>
+    );
   }
 
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
-    const { params, isUploading, uploadProgress } = this.state;
+    const { content, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
+        {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
           <UploadButton onSelectFile={this.handleFiles} />
@@ -150,7 +170,7 @@ class ChatBox extends ImmutablePureComponent {
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
-            value={params.get('content', '')}
+            value={content}
             ref={this.setInputRef}
           />
         </div>
