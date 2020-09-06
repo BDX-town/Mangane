@@ -173,11 +173,11 @@ class ChatMessageList extends ImmutablePureComponent {
               className='chat-message__bubble'
               ref={this.setBubbleRef}
             >
+              {this.maybeRenderMedia(chatMessage)}
               <span
                 className='chat-message__content'
                 dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
               />
-              {this.maybeRenderMedia(chatMessage)}
             </div>
           </div>
         ))}
