@@ -13,6 +13,8 @@ import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
+import { truncateFilename } from 'soapbox/utils/media';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -23,6 +25,8 @@ const mapStateToProps = (state, { chatId }) => ({
   chat: state.getIn(['chats', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
+
+const fileKeyGen = () => Math.floor((Math.random() * 0x10000));
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -43,6 +47,7 @@ class ChatBox extends ImmutablePureComponent {
     attachment: undefined,
     isUploading: false,
     uploadProgress: 0,
+    resetFileKey: fileKeyGen(),
   })
 
   state = this.initialState()
@@ -122,6 +127,10 @@ class ChatBox extends ImmutablePureComponent {
       this.markRead();
   }
 
+  handleRemoveFile = (e) => {
+    this.setState({ attachment: undefined, resetFileKey: fileKeyGen() });
+  }
+
   onUploadProgress = (e) => {
     const { loaded, total } = e;
     this.setState({ uploadProgress: loaded/total });
@@ -148,14 +157,19 @@ class ChatBox extends ImmutablePureComponent {
 
     return (
       <div className='chat-box__attachment'>
-        {attachment.preview_url}
+        <div className='chat-box__filename'>
+          {truncateFilename(attachment.preview_url, 20)}
+        </div>
+        <div class='chat-box__remove-attachment'>
+          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+        </div>
       </div>
     );
   }
 
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
-    const { content, isUploading, uploadProgress } = this.state;
+    const { content, isUploading, uploadProgress, resetFileKey } = this.state;
     if (!chatMessageIds) return null;
 
     return (
@@ -164,7 +178,7 @@ class ChatBox extends ImmutablePureComponent {
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
-          <UploadButton onSelectFile={this.handleFiles} />
+          <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}

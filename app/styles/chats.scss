@@ -184,6 +184,7 @@
   .upload-progress {
     padding: 0 10px;
     align-items: center;
+    height: 25px;
 
     .fa {
       font-size: 22px;
@@ -197,6 +198,23 @@
 
     &__backdrop {
       margin-top: 2px;
+    }
+  }
+
+  &__attachment {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    padding: 0 10px;
+    height: 25px;
+
+    .chat-box__remove-attachment {
+      margin-left: auto;
+
+      .icon-button > div {
+        display: flex;
+        align-items: center;
+      }
     }
   }
 
