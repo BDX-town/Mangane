@@ -351,6 +351,12 @@
     display: none;
   }
 
+  .media-gallery__item:not(.media-gallery__item--image) {
+    max-width: 100%;
+    width: 120px !important;
+    height: 70px !important;
+  }
+
   &__preview {
     background-color: transparent;
   }
