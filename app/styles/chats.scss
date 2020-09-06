@@ -181,6 +181,25 @@
 }
 
 .chat-box {
+  .upload-progress {
+    padding: 0 10px;
+    align-items: center;
+
+    .fa {
+      font-size: 22px;
+    }
+
+    &__message {
+      font-size: 13px;
+      flex: 1;
+      align-items: center;
+    }
+
+    &__backdrop {
+      margin-top: 2px;
+    }
+  }
+
   &__actions {
     background: var(--foreground-color);
     margin-top: auto;

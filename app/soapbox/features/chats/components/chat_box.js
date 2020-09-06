@@ -13,6 +13,7 @@ import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
 import { Map as ImmutableMap } from 'immutable';
+import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -45,6 +46,8 @@ class ChatBox extends ImmutablePureComponent {
 
   state = {
     params: ImmutableMap(this.initialParams),
+    isUploading: false,
+    uploadProgress: 0,
   }
 
   setParams = newParams => {
@@ -58,14 +61,14 @@ class ChatBox extends ImmutablePureComponent {
 
   sendMessage = () => {
     const { chatId } = this.props;
-    const { params } = this.state;
+    const { params, isUploading } = this.state;
 
     const conds = [
       params.get('content', '').length > 0,
       params.get('media_id'),
     ];
 
-    if (conds.some(c => c)) {
+    if (!isUploading && conds.some(c => c)) {
       this.props.dispatch(sendChatMessage(chatId, params.toJS()));
       this.clearParams();
     }
@@ -116,22 +119,30 @@ class ChatBox extends ImmutablePureComponent {
       this.markRead();
   }
 
+  onUploadProgress = (e) => {
+    const { loaded, total } = e;
+    this.setState({ uploadProgress: loaded/total });
+  }
+
   handleFiles = (files) => {
+    this.setState({ isUploading: true });
     const data = new FormData();
     data.append('file', files[0]);
-    this.props.dispatch(uploadMedia(data)).then(response => {
-      this.setParams({ media_id: response.data.id });
+    this.props.dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
+      const newParams = this.state.params.merge({ media_id: response.data.id });
+      this.setState({ params: newParams, isUploading: false });
     }).catch(() => {});
   }
 
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
-    const { params } = this.state;
+    const { params, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
+        <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
           <UploadButton onSelectFile={this.handleFiles} />
           <textarea
