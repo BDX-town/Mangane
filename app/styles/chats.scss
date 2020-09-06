@@ -98,6 +98,7 @@
   .audio-toggle .react-toggle-thumb {
     height: 21px;
     width: 21px;
+    border: 1px solid var(--brand-color--med);
   }
 
   .audio-toggle .react-toggle {
@@ -107,6 +108,7 @@
 
   .audio-toggle .react-toggle-track {
     height: 23px;
+    background-color: var(--accent-color);
   }
 
   .audio-toggle .react-toggle-track-check {
