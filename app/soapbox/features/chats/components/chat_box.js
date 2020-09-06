@@ -12,6 +12,7 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
+import { Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -37,22 +38,42 @@ class ChatBox extends ImmutablePureComponent {
     me: PropTypes.node,
   }
 
-  state = {
+  initialParams = {
     content: '',
     media_id: undefined,
   }
 
+  state = {
+    params: ImmutableMap(this.initialParams),
+  }
+
+  setParams = newParams => {
+    const { params } = this.state;
+    this.setState({ params: params.merge(newParams) });
+  }
+
+  clearParams = () => {
+    this.setState({ params: ImmutableMap(this.initialParams) });
+  }
+
   sendMessage = () => {
     const { chatId } = this.props;
-    const { content, media_id } = this.state;
-    if (content.length < 1 && !media_id) return;
-    this.props.dispatch(sendChatMessage(chatId, this.state));
-    this.setState({ content: '' });
+    const { params } = this.state;
+
+    const conds = [
+      params.get('content', '').length > 0,
+      params.get('media_id'),
+    ];
+
+    if (conds.some(c => c)) {
+      this.props.dispatch(sendChatMessage(chatId, params.toJS()));
+      this.clearParams();
+    }
   }
 
   insertLine = () => {
-    const { content } = this.state;
-    this.setState({ content: content + '\n' });
+    const { params } = this.state;
+    this.setParams({ content: params.get('content') + '\n' });
   }
 
   handleKeyDown = (e) => {
@@ -66,7 +87,7 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   handleContentChange = (e) => {
-    this.setState({ content: e.target.value });
+    this.setParams({ content: e.target.value });
   }
 
   markRead = () => {
@@ -99,12 +120,13 @@ class ChatBox extends ImmutablePureComponent {
     const data = new FormData();
     data.append('file', files[0]);
     this.props.dispatch(uploadMedia(data)).then(response => {
-      this.setState({ media_id: response.data.id });
+      this.setParams({ media_id: response.data.id });
     }).catch(() => {});
   }
 
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
+    const { params } = this.state;
     if (!chatMessageIds) return null;
 
     return (
@@ -117,7 +139,7 @@ class ChatBox extends ImmutablePureComponent {
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
-            value={this.state.content}
+            value={params.get('content', '')}
             ref={this.setInputRef}
           />
         </div>
