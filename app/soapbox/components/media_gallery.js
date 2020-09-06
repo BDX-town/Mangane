@@ -6,6 +6,7 @@ import { is } from 'immutable';
 import IconButton from './icon_button';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
+import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
@@ -13,6 +14,8 @@ import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
+
+const MAX_FILENAME_LENGTH = 45;
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
@@ -142,19 +145,8 @@ class Item extends React.PureComponent {
 
     let thumbnail = '';
 
-    const MAX_FILENAME_LENGTH = 45;
-    const getCroppedFilename = () => {
-      const remoteURL = attachment.get('remote_url');
-      const filenameLastIndex = remoteURL.lastIndexOf('/');
-      const filename = remoteURL.substr(filenameLastIndex + 1);
-      if (filename.length <= MAX_FILENAME_LENGTH)
-        return filename;
-      else
-        return filename.substr(0, MAX_FILENAME_LENGTH/2) + '...' + filename.substr(filename.length - MAX_FILENAME_LENGTH/2);
-    };
-
     if (attachment.get('type') === 'unknown') {
-      const filename = getCroppedFilename();
+      const filename = truncateFilename(attachment.get('remote_url'), MAX_FILENAME_LENGTH);
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
@@ -228,7 +220,7 @@ class Item extends React.PureComponent {
     }
 
     return (
-      <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+      <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.get('type')}`, { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
         <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && this.state.loaded })} />
         {visible && thumbnail}
       </div>
