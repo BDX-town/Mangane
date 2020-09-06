@@ -160,10 +160,13 @@ export function updateChatsQueue(chat) {
     // const flashWindow = getSettings(getState()).getIn(['chats', 'flash']);
 
     if (playSound) {
-      dispatch({
-        type: CHATS_UPDATE_NOOP,
-        meta: { sound: 'chat' },
-      });
+      if (chat.last_message &&
+          chat.last_message.account_id !== getState().get('me')) {
+        dispatch({
+          type: CHATS_UPDATE_NOOP,
+          meta: { sound: 'chat' },
+        });
+      }
     }
 
     dispatch({ type: STREAMING_CHAT_UPDATE, chat: chat, me: getState().get('me') });
