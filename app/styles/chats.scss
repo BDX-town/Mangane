@@ -185,6 +185,19 @@
     background: var(--foreground-color);
     margin-top: auto;
     padding: 6px;
+    position: relative;
+
+    .icon-button {
+      position: absolute;
+      right: 10px;
+      top: 8px;
+      width: auto;
+      height: auto;
+      background: transparent !important;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
 
     textarea {
       width: 100%;
@@ -192,11 +205,13 @@
       margin: 0;
       box-sizing: border-box;
       padding: 6px;
+      padding-right: 25px;
       background: var(--background-color);
       border: 0;
       border-radius: 6px;
       color: var(--primary-text-color);
       font-size: 15px;
+      overflow: hidden;
     }
   }
 }

@@ -10,6 +10,7 @@ import {
 } from 'soapbox/actions/chats';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
+import UploadButton from 'soapbox/features/compose/components/upload_button';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -91,6 +92,10 @@ class ChatBox extends ImmutablePureComponent {
       this.markRead();
   }
 
+  handleFiles = (files) => {
+    // TODO: Upload attachment
+  }
+
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
     if (!chatMessageIds) return null;
@@ -99,6 +104,7 @@ class ChatBox extends ImmutablePureComponent {
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         <div className='chat-box__actions simple_form'>
+          <UploadButton onSelectFile={this.handleFiles} />
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}
