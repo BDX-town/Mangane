@@ -11,6 +11,7 @@ import {
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
+import { uploadMedia } from 'soapbox/actions/media';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -38,11 +39,13 @@ class ChatBox extends ImmutablePureComponent {
 
   state = {
     content: '',
+    media_id: undefined,
   }
 
   sendMessage = () => {
     const { chatId } = this.props;
-    if (this.state.content.length < 1) return;
+    const { content, media_id } = this.state;
+    if (content.length < 1 && !media_id) return;
     this.props.dispatch(sendChatMessage(chatId, this.state));
     this.setState({ content: '' });
   }
@@ -93,7 +96,11 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   handleFiles = (files) => {
-    // TODO: Upload attachment
+    const data = new FormData();
+    data.append('file', files[0]);
+    this.props.dispatch(uploadMedia(data)).then(response => {
+      this.setState({ media_id: response.data.id });
+    }).catch(() => {});
   }
 
   render() {
