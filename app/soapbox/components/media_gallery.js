@@ -142,11 +142,25 @@ class Item extends React.PureComponent {
 
     let thumbnail = '';
 
+    const MAX_FILENAME_LENGTH = 45;
+    const getCroppedFilename = () => {
+      const remoteURL = attachment.get('remote_url');
+      const filenameLastIndex = remoteURL.lastIndexOf('/');
+      const filename = remoteURL.substr(filenameLastIndex + 1);
+      if (filename.length <= MAX_FILENAME_LENGTH)
+        return filename;
+      else
+        return filename.substr(0, MAX_FILENAME_LENGTH/2) + '...' + filename.substr(filename.length - MAX_FILENAME_LENGTH/2);
+    };
+
     if (attachment.get('type') === 'unknown') {
+      const filename = getCroppedFilename();
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
             <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
+            <span className='media-gallery__item__icons'><Icon id='file' /></span>
+            <span className='media-gallery__filename__label'>{filename}</span>
           </a>
         </div>
       );
