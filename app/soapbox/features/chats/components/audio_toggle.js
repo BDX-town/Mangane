@@ -36,18 +36,18 @@ class AudioToggle extends React.PureComponent {
   };
 
   handleToggleAudio = () => {
-    this.props.toggleAudio(this.props.settings.get('chats', 'sound') === true ? false : true);
+    this.props.toggleAudio(this.props.settings.getIn(['chats', 'sound']) === true ? false : true);
   }
 
   render() {
     const { intl, settings, showLabel } = this.props;
     let toggle = (
-      <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} ariaLabel={settings.get('chats', 'sound') === 'light' ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
+      <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} ariaLabel={settings.get('chats', 'sound') === true ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
     );
 
     if (showLabel) {
       toggle = (
-        <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} label={settings.get('chats', 'sound') === 'light' ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
+        <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} label={settings.get('chats', 'sound') === true ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
       );
     }
 

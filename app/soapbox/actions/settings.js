@@ -33,7 +33,6 @@ const defaultSettings = ImmutableMap({
     panes: ImmutableList(),
     mainWindow: 'minimized',
     sound: true,
-    flash: true,
   }),
 
   home: ImmutableMap({
