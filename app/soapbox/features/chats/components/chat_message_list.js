@@ -13,8 +13,6 @@ import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
 
-const scrollBottom = (elem) => elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
-
 const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map, emoji) => {
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
 }, ImmutableMap());
@@ -45,12 +43,13 @@ class ChatMessageList extends ImmutablePureComponent {
   }
 
   state = {
+    initialLoad: true,
     isLoading: false,
   }
 
   scrollToBottom = () => {
     if (!this.messagesEnd) return;
-    this.messagesEnd.scrollIntoView();
+    this.messagesEnd.scrollIntoView(false);
   }
 
   setMessageEndRef = (el) => {
@@ -82,22 +81,40 @@ class ChatMessageList extends ImmutablePureComponent {
     });
   }
 
+  isNearBottom = () => {
+    const elem = this.node;
+    if (!elem) return false;
+
+    const scrollBottom = elem.scrollHeight - elem.offsetHeight - elem.scrollTop;
+    return scrollBottom < elem.offsetHeight * 1.5;
+  }
+
   componentDidMount() {
     const { dispatch, chatId } = this.props;
     dispatch(fetchChatMessages(chatId));
 
     this.node.addEventListener('scroll', this.handleScroll);
+    this.scrollToBottom();
   }
 
-  componentDidUpdate(prevProps) {
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    const { scrollHeight, scrollTop } = this.node;
+    return scrollHeight - scrollTop;
+  }
+
+  componentDidUpdate(prevProps, prevState, scrollBottom) {
+    const { initialLoad } = this.state;
     const oldCount = prevProps.chatMessages.count();
     const newCount = this.props.chatMessages.count();
-    const isNearBottom = scrollBottom(this.node) < 150;
-    const historyAdded = prevProps.chatMessages.getIn([-1, 'id']) !== this.props.chatMessages.getIn([-1, 'id']);
+    const isNearBottom = this.isNearBottom();
+    const historyAdded = prevProps.chatMessages.getIn([0, 'id']) !== this.props.chatMessages.getIn([0, 'id']);
+
+    // Retain scroll bar position when loading old messages
+    this.node.scrollTop = this.node.scrollHeight - scrollBottom;
 
     if (oldCount !== newCount) {
-      if (isNearBottom) this.scrollToBottom();
-      if (historyAdded) this.setState({ isLoading: false });
+      if (isNearBottom || initialLoad) this.scrollToBottom();
+      if (historyAdded) this.setState({ isLoading: false, initialLoad: false });
     }
   }
 
@@ -107,13 +124,14 @@ class ChatMessageList extends ImmutablePureComponent {
 
   handleLoadMore = () => {
     const { dispatch, chatId, chatMessages } = this.props;
-    const maxId = chatMessages.getIn([-1, 'id']);
+    const maxId = chatMessages.getIn([0, 'id']);
     dispatch(fetchChatMessages(chatId, maxId));
     this.setState({ isLoading: true });
   }
 
   handleScroll = throttle(() => {
-    if (this.node.scrollTop < 150 && !this.state.isLoading) this.handleLoadMore();
+    if (this.node.scrollTop < this.node.offsetHeight * 2 && !this.state.isLoading)
+      this.handleLoadMore();
   }, 150, {
     trailing: true,
   });
@@ -159,7 +177,6 @@ class ChatMessageList extends ImmutablePureComponent {
 
     return (
       <div className='chat-messages' ref={this.setRef}>
-        <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
         {chatMessages.map(chatMessage => (
           <div
             className={classNames('chat-message', {
@@ -181,6 +198,7 @@ class ChatMessageList extends ImmutablePureComponent {
             </div>
           </div>
         ))}
+        <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
       </div>
     );
   }

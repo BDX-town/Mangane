@@ -99,17 +99,11 @@
 .chat-messages {
   overflow-y: scroll;
   flex: 1;
-  display: flex;
-  flex-direction: column-reverse;
 }
 
 .chat-message {
-  padding: 7px 10px;
+  margin: 14px 10px;
   display: flex;
-
-  &:last-child {
-    padding-top: 14px;
-  }
 
   &__bubble {
     font-size: 15px;
