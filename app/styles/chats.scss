@@ -222,7 +222,7 @@
       color: var(--primary-text-color--faint);
       position: absolute;
       right: 10px;
-      top: 8px;
+      top: calc(50% - 13px);
       width: auto;
       height: auto;
       background: transparent !important;
@@ -232,7 +232,7 @@
     }
 
     .chat-box__send .icon-button {
-      top: 12px;
+      top: calc(50% - 9px);
     }
 
     textarea {
