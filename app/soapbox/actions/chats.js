@@ -23,8 +23,7 @@ export const CHAT_READ_REQUEST = 'CHAT_READ_REQUEST';
 export const CHAT_READ_SUCCESS = 'CHAT_READ_SUCCESS';
 export const CHAT_READ_FAIL    = 'CHAT_READ_FAIL';
 
-export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
-export const CHATS_UPDATE_NOOP = 'CHATS_UPDATE_NOOP';
+export const CHAT_NOTIFICATION = 'CHAT_NOTIFICATION';
 
 export function fetchChats() {
   return (dispatch, getState) => {
@@ -154,21 +153,19 @@ export function markChatRead(chatId, lastReadId) {
   };
 }
 
-export function updateChatsQueue(chat) {
+export function chatsNotification(chat) {
   return (dispatch, getState) => {
     const playSound = getSettings(getState()).getIn(['chats', 'sound']);
-    // const flashWindow = getSettings(getState()).getIn(['chats', 'flash']);
+    // const flashWindow = getSettings(getState()).getIn(['chats', 'flash']);  // implement when developing chat window flashing notification
 
     if (playSound) {
       if (chat.last_message &&
           chat.last_message.account_id !== getState().get('me')) {
         dispatch({
-          type: CHATS_UPDATE_NOOP,
+          type: CHAT_NOTIFICATION,
           meta: { sound: 'chat' },
         });
       }
     }
-
-    dispatch({ type: STREAMING_CHAT_UPDATE, chat: chat, me: getState().get('me') });
   };
 };

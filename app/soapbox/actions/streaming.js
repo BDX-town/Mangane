@@ -7,13 +7,13 @@ import {
   processTimelineUpdate,
 } from './timelines';
 import { updateNotificationsQueue, expandNotifications } from './notifications';
-import { updateChatsQueue } from './chats';
+import { chatsNotification } from './chats';
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
-// export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -56,8 +56,8 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-          dispatch(updateChatsQueue(JSON.parse(data.payload)));
-          // dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
+          dispatch(chatsNotification(JSON.parse(data.payload)));
+          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
           break;
         }
       },
