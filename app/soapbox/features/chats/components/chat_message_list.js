@@ -102,6 +102,11 @@ class ChatMessageList extends ImmutablePureComponent {
     return scrollHeight - scrollTop;
   }
 
+  restoreScrollPosition = (scrollBottom) => {
+    this.lastComputedScroll = this.node.scrollHeight - scrollBottom;
+    this.node.scrollTop = this.lastComputedScroll;
+  }
+
   componentDidUpdate(prevProps, prevState, scrollBottom) {
     const { initialLoad } = this.state;
     const oldCount = prevProps.chatMessages.count();
@@ -110,7 +115,7 @@ class ChatMessageList extends ImmutablePureComponent {
     const historyAdded = prevProps.chatMessages.getIn([0, 'id']) !== this.props.chatMessages.getIn([0, 'id']);
 
     // Retain scroll bar position when loading old messages
-    this.node.scrollTop = this.node.scrollHeight - scrollBottom;
+    this.restoreScrollPosition(scrollBottom);
 
     if (oldCount !== newCount) {
       if (isNearBottom || initialLoad) this.scrollToBottom();
@@ -130,7 +135,13 @@ class ChatMessageList extends ImmutablePureComponent {
   }
 
   handleScroll = throttle(() => {
-    if (this.node.scrollTop < this.node.offsetHeight * 2 && !this.state.isLoading)
+    const { lastComputedScroll } = this;
+    const { isLoading, initialLoad } = this.state;
+    const { scrollTop, offsetHeight } = this.node;
+    const computedScroll = lastComputedScroll === scrollTop;
+    const nearTop = scrollTop < offsetHeight * 2;
+
+    if (nearTop && !isLoading && !initialLoad && !computedScroll)
       this.handleLoadMore();
   }, 150, {
     trailing: true,
