@@ -38,6 +38,8 @@ class Option extends React.PureComponent {
     onSuggestionSelected: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     maxChars: PropTypes.number.isRequired,
+    onRemovePoll: PropTypes.func.isRequired,
+    numOptions: PropTypes.number.isRequired,
   };
 
   handleOptionTitleChange = e => {
@@ -45,9 +47,11 @@ class Option extends React.PureComponent {
   };
 
   handleOptionRemove = () => {
-    this.props.onRemove(this.props.index);
+    if (this.props.numOptions > 2)
+      this.props.onRemove(this.props.index);
+    else
+      this.props.onRemovePoll();
   };
-
 
   handleToggleMultiple = e => {
     this.props.onToggleMultiple();
@@ -95,7 +99,7 @@ class Option extends React.PureComponent {
         </label>
 
         <div className='poll__cancel'>
-          <IconButton disabled={index <= 1} title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
         </div>
       </li>
     );
@@ -156,6 +160,7 @@ class PollForm extends ImmutablePureComponent {
               isPollMultiple={isMultiple}
               onToggleMultiple={this.handleToggleMultiple}
               maxChars={maxOptionChars}
+              numOptions={options.size}
               {...other}
             />
           ))}
