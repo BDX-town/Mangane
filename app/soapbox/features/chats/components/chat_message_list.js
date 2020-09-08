@@ -155,15 +155,17 @@ class ChatMessageList extends ImmutablePureComponent {
     const attachment = chatMessage.get('attachment');
     if (!attachment) return null;
     return (
-      <Bundle fetchComponent={MediaGallery}>
-        {Component => (
-          <Component
-            media={ImmutableList([attachment])}
-            height={120}
-            onOpenMedia={this.onOpenMedia}
-          />
-        )}
-      </Bundle>
+      <div className='chat-message__media'>
+        <Bundle fetchComponent={MediaGallery}>
+          {Component => (
+            <Component
+              media={ImmutableList([attachment])}
+              height={120}
+              onOpenMedia={this.onOpenMedia}
+            />
+          )}
+        </Bundle>
+      </div>
     );
   }
 

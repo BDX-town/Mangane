@@ -342,8 +342,12 @@
   }
 }
 
+.chat-message__media {
+  height: 120px;
+}
+
 .chat-message .media-gallery {
-  height: auto !important;
+  height: 100% !important;
   margin: 4px 0 8px;
 
   .spoiler-button {
@@ -353,7 +357,7 @@
   .media-gallery__item:not(.media-gallery__item--image) {
     max-width: 100%;
     width: 120px !important;
-    height: 70px !important;
+    height: 100% !important;
   }
 
   &__preview {
