@@ -262,6 +262,10 @@ code {
     }
   }
 
+  .input.popup {
+    overflow: visible;
+  }
+
   .input.radio_buttons .radio label {
     margin-bottom: 5px;
     font-family: inherit;
@@ -309,7 +313,8 @@ code {
   input[type=number],
   input[type=email],
   input[type=password],
-  textarea {
+  textarea,
+  .rfipbtn {
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -340,6 +345,11 @@ code {
     &:focus {
       border-color: var(--brand-color--hicontrast);
     }
+  }
+
+  .rfip {
+    width: 100%;
+    margin: 0;
   }
 
   input[type=text][disabled],
@@ -463,6 +473,48 @@ code {
         width: 32px;
         height: 16px;
         margin-left: 12px;
+      }
+    }
+
+    &__icon_picker {
+      font-size: 14px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      .rfipbtn {
+        display: inline-flex;
+        line-height: 19px;
+        min-height: 19px;
+        padding: 0;
+
+        &__icon {
+          margin: 3.5px 0 3.5px 10px;
+        }
+
+        &__icon--empty {
+          text-transform: none;
+          font-style: normal;
+          color: var(--primary-text-color--faint);
+          font-size: 16px;
+          line-height: 15px;
+          padding: 10px;
+        }
+
+        &__current {
+          flex: 0;
+        }
+
+        &--default:active, &--default:focus {
+          box-shadow: none;
+        }
+
+        &__button {
+          border-top-right-radius: inherit;
+          border-bottom-right-radius: inherit;
+        }
       }
     }
 
@@ -1000,7 +1052,7 @@ code {
   color: $error-red;
 }
 
-.input .row .fa-times-circle {
+.input .row > .fa-times-circle {
   position: absolute;
   right: 7px;
   cursor: pointer;

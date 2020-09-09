@@ -1187,6 +1187,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/utils/-/utils-0.8.2.tgz#576ff7fb1230185b619a75d258cbc98f0867a8dc"
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
+"@fonticonpicker/react-fonticonpicker@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@fonticonpicker/react-fonticonpicker/-/react-fonticonpicker-1.2.0.tgz#cbcb898f3d788ef50d7090fe623afe2e8e5eb1d7"
+  integrity sha512-I7U4VNIpwJHnOaWq1v2MSuaUTxPiur/MYG4B1hr+FWI1O7k+tTym1ysdAyfp7YbEdF4Q8TYoY5Q2hbTmhQeTSQ==
+
 "@formatjs/intl-displaynames@^2.2.4":
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/@formatjs/intl-displaynames/-/intl-displaynames-2.2.4.tgz#c85d59b0d157470347fdfe86fb8fba7da998ebe1"

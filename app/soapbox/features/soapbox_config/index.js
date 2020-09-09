@@ -14,6 +14,7 @@ import {
   SimpleTextarea,
   ColorWithPicker,
   FileChooserLogo,
+  IconPicker,
 } from 'soapbox/features/forms';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
@@ -58,6 +59,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     soapbox: this.props.soapbox,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
+    iconValue: 'fa fa-pleroma',
   }
 
   setConfig = (path, value) => {
@@ -140,6 +142,10 @@ class SoapboxConfig extends ImmutablePureComponent {
       ['promoPanel', 'items', index], key, field, templates.promoPanelItem
     );
   };
+
+  handleIconChange = (value) => {
+    this.setState({ iconValue: value });
+  }
 
   handleHomeFooterItemChange = (index, key, field) => {
     return this.handleItemChange(
@@ -242,7 +248,7 @@ class SoapboxConfig extends ImmutablePureComponent {
             </FieldsGroup>
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
-                <div className='input with_block_label'>
+                <div className='input with_block_label popup'>
                   <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                   <span className='hint'>
                     <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
@@ -253,11 +259,11 @@ class SoapboxConfig extends ImmutablePureComponent {
                   {
                     soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
                       <div className='row' key={i}>
-                        <TextInput
+                        <IconPicker
                           label={intl.formatMessage(messages.promoItemIcon)}
                           placeholder={intl.formatMessage(messages.promoItemIcon)}
                           value={field.get('icon')}
-                          onChange={this.handlePromoItemChange(i, 'icon', field)}
+                          onChange={this.handleIconChange}
                         />
                         <TextInput
                           label={intl.formatMessage(messages.promoItemLabel)}
