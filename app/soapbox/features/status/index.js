@@ -418,7 +418,7 @@ class Status extends ImmutablePureComponent {
     }
 
     if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
-      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
+      const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
         element.scrollIntoView(true);
