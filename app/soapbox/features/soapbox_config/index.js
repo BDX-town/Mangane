@@ -127,18 +127,18 @@ class SoapboxConfig extends ImmutablePureComponent {
     };
   };
 
-  handleItemChange = (path, key, field, template) => {
+  handleItemChange = (path, key, field, template, getValue) => {
     return this.handleChange(
       path, (e) =>
         template
           .merge(field)
-          .set(key, e.target.value)
+          .set(key, getValue(e))
     );
   };
 
-  handlePromoItemChange = (index, key, field) => {
+  handlePromoItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
-      ['promoPanel', 'items', index], key, field, templates.promoPanelItem
+      ['promoPanel', 'items', index], key, field, templates.promoPanelItem, getValue
     );
   };
 
@@ -258,19 +258,19 @@ class SoapboxConfig extends ImmutablePureComponent {
                           label={intl.formatMessage(messages.promoItemIcon)}
                           placeholder={intl.formatMessage(messages.promoItemIcon)}
                           value={field.get('icon')}
-                          onChange={this.handlePromoItemChange(i, 'icon', field)}
+                          onChange={this.handlePromoItemChange(i, 'icon', field, val => val.substring(6))}
                         />
                         <TextInput
                           label={intl.formatMessage(messages.promoItemLabel)}
                           placeholder={intl.formatMessage(messages.promoItemLabel)}
                           value={field.get('text')}
-                          onChange={this.handlePromoItemChange(i, 'text', field)}
+                          onChange={this.handlePromoItemChange(i, 'text', field, e => e.target.value)}
                         />
                         <TextInput
                           label={intl.formatMessage(messages.promoItemURL)}
                           placeholder={intl.formatMessage(messages.promoItemURL)}
                           value={field.get('url')}
-                          onChange={this.handlePromoItemChange(i, 'url', field)}
+                          onChange={this.handlePromoItemChange(i, 'url', field, e => e.target.value)}
                         />
                         <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                       </div>
