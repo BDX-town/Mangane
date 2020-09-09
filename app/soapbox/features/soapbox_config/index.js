@@ -59,7 +59,6 @@ class SoapboxConfig extends ImmutablePureComponent {
     soapbox: this.props.soapbox,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
-    iconValue: 'fa fa-pleroma',
   }
 
   setConfig = (path, value) => {
@@ -142,10 +141,6 @@ class SoapboxConfig extends ImmutablePureComponent {
       ['promoPanel', 'items', index], key, field, templates.promoPanelItem
     );
   };
-
-  handleIconChange = (value) => {
-    this.setState({ iconValue: value });
-  }
 
   handleHomeFooterItemChange = (index, key, field) => {
     return this.handleItemChange(
@@ -263,7 +258,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                           label={intl.formatMessage(messages.promoItemIcon)}
                           placeholder={intl.formatMessage(messages.promoItemIcon)}
                           value={field.get('icon')}
-                          onChange={this.handleIconChange}
+                          onChange={this.handlePromoItemChange(i, 'icon', field)}
                         />
                         <TextInput
                           label={intl.formatMessage(messages.promoItemLabel)}

@@ -217,7 +217,7 @@ export class IconPicker extends ImmutablePureComponent {
         <div className='label_input__icon_picker'>
           {label && (<label>{label}</label>)}
           <div className='label_input__wrapper'>
-            <FontIconPicker icons={icons} onChange={onChange} value={value} noSelectedPlaceholder={placeholder} />
+            <FontIconPicker icons={icons} onChange={onChange} value={value !== '' ? "fa fa-" + value : value} noSelectedPlaceholder={placeholder} />
           </div>
         </div>
       </div>
