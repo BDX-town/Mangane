@@ -46,6 +46,11 @@ class TabsBar extends React.PureComponent {
     this.node = ref;
   }
 
+  isHomeActive = (match, location) => {
+    const { pathname } = location;
+    return pathname === '/' || pathname.startsWith('/timeline/');
+  }
+
   getNavLinks() {
     const { intl: { formatMessage }, logo, account } = this.props;
     let links = [];
@@ -57,7 +62,7 @@ class TabsBar extends React.PureComponent {
         </Link>);
     }
     links.push(
-      <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
+      <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home' isActive={this.isHomeActive}>
         <Icon id='home' />
         <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
       </NavLink>);
