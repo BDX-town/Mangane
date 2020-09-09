@@ -492,6 +492,24 @@ code {
 
         &__icon {
           margin: 3.5px 0 3.5px 10px;
+          color: var(--primary-text-color);
+        }
+
+        &--default {
+          .rfipbtn__icon {
+            border-color: var(--primary-text-color);
+          }
+
+          .rfipbtn__del {
+            background-color: var(--primary-text-color--faint);
+            color: var(--foreground-color);
+          }
+
+          .rfipbtn__button {
+            border-left: 1px solid var(--highlight-text-color);
+            background-color: var(--foreground-color);
+            color: var(--primary-text-color);
+          }
         }
 
         &__icon--empty {
@@ -514,6 +532,38 @@ code {
         &__button {
           border-top-right-radius: inherit;
           border-bottom-right-radius: inherit;
+        }
+      }
+
+      .rfipdropdown {
+        &--default {
+          background-color: var(--background-color);
+          border: none;
+          color: var(--primary-text-color);
+
+          input,
+          select {
+            color: var(--primary-text-color);
+            background-color: var(--foreground-color);
+          }
+
+          .rfipsearch input:focus,
+          .rfipsearch input:active {
+            box-shadow: none;
+          }
+
+          .rfipicons__ibox,
+          .rfipicons__left,
+          .rfipicons__right {
+            border: none;
+            background-color: var(--foreground-color);
+            color: var(--primary-text-color);
+          }
+
+          .rfipicons__cp,
+          .rfipcategory select {
+            border-bottom: 1px solid var(--highlight-text-color);
+          }
         }
       }
     }
