@@ -40,9 +40,7 @@ module.exports = merge(sharedConfig, {
         sourceMap: true,
 
         uglifyOptions: {
-          compress: {
-            warnings: false,
-          },
+          warnings: false,
 
           output: {
             comments: false,
