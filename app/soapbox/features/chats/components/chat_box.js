@@ -52,6 +52,7 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   handleKeyDown = (e) => {
+    this.markRead();
     if (e.key === 'Enter' && e.shiftKey) {
       this.insertLine();
       e.preventDefault();
