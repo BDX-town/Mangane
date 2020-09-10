@@ -30,6 +30,7 @@ export function fetchChats() {
     dispatch({ type: CHATS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
       dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
+      chatsNotification(data);
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });

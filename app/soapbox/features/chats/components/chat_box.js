@@ -80,16 +80,16 @@ class ChatBox extends ImmutablePureComponent {
     onSetInputRef(el);
   };
 
-  componentDidUpdate(prevProps) {
-    const markReadConditions = [
-      () => this.props.chat !== undefined,
-      () => document.activeElement === this.inputElem,
-      () => this.props.chat.get('unread') > 0,
-    ];
-
-    if (markReadConditions.every(c => c() === true))
-      this.markRead();
-  }
+  // componentDidUpdate(prevProps) {
+  //   const markReadConditions = [
+  //     () => this.props.chat !== undefined,
+  //     () => document.activeElement === this.inputElem,
+  //     () => this.props.chat.get('unread') > 0,
+  //   ];
+  //
+  //   if (markReadConditions.every(c => c() === true))
+  //     this.markRead();
+  // }
 
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
