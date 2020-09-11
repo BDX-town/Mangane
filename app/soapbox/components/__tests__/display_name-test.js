@@ -1,7 +1,7 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { fromJS }  from 'immutable';
 import DisplayName from '../display_name';
+import { createComponent } from 'soapbox/test_helpers';
 
 describe('<DisplayName />', () => {
   it('renders display name + account name', () => {
@@ -10,7 +10,7 @@ describe('<DisplayName />', () => {
       acct: 'bar@baz',
       display_name_html: '<p>Foo</p>',
     });
-    const component = renderer.create(<DisplayName account={account} />);
+    const component = createComponent(<DisplayName account={account} />);
     const tree      = component.toJSON();
 
     expect(tree).toMatchSnapshot();
