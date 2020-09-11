@@ -265,6 +265,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Follows you",
+        "id": "account.follows_you"
+      }
+    ],
+    "path": "app/soapbox/components/profile_hover_card.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "now",
         "id": "relative_time.just_now"
       },
@@ -320,10 +329,6 @@
       {
         "defaultMessage": "Profile",
         "id": "account.profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
       },
       {
         "defaultMessage": "Preferences",
@@ -989,6 +994,41 @@
       }
     ],
     "path": "app/soapbox/features/bookmarks/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Send a message…",
+        "id": "chat_box.input.placeholder"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_box.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "chat_panels.main_window.title"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_panes.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "column.chats"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/index.json"
   },
   {
     "descriptors": [
@@ -2344,6 +2384,10 @@
         "id": "notification.follow"
       },
       {
+        "defaultMessage": "{name} sent you a message",
+        "id": "notification.chat_mention"
+      },
+      {
         "defaultMessage": "{name} reacted to your post",
         "id": "notification.emoji_react"
       },
@@ -2972,6 +3016,14 @@
       {
         "defaultMessage": "Copy link to post",
         "id": "status.copy"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
       }
     ],
     "path": "app/soapbox/features/status/components/action_bar.json"
@@ -3174,10 +3226,6 @@
       {
         "defaultMessage": "Edit Profile",
         "id": "account.edit_profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
       },
       {
         "defaultMessage": "Preferences",
@@ -3495,6 +3543,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
       },
       {
         "defaultMessage": "Reports",
