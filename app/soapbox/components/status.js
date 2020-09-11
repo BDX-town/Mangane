@@ -93,6 +93,7 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
+    depth: PropTypes.number,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -275,7 +276,7 @@ class Status extends ImmutablePureComponent {
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
 
-    let { status, account, ...other } = this.props;
+    let { status, account, depth, ...other } = this.props;
 
     if (status === null) {
       return null;
@@ -450,7 +451,7 @@ class Status extends ImmutablePureComponent {
         <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
           {prepend}
 
-          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
+          <div className={classNames('status', `status-${status.get('visibility')}`, `status__nested--${depth}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
             <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
             <div className='status__info'>
               <NavLink to={statusUrl} className='status__relative-time'>

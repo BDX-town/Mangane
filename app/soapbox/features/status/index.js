@@ -72,8 +72,11 @@ const makeMapStateToProps = () => {
 
     let ancestorsIds = Immutable.List();
     let descendantsIds = Immutable.List();
+    let depths = {};
 
     if (status) {
+      depths[status.get('id')] = 0;
+
       ancestorsIds = ancestorsIds.withMutations(mutable => {
         let id = status.get('in_reply_to_id');
 
@@ -89,6 +92,8 @@ const makeMapStateToProps = () => {
         while (ids.length > 0) {
           let id        = ids.shift();
           const replies = state.getIn(['contexts', 'replies', id]);
+          const depth = depths[id];
+
 
           if (status.get('id') !== id) {
             mutable.push(id);
@@ -97,6 +102,7 @@ const makeMapStateToProps = () => {
           if (replies) {
             replies.reverse().forEach(reply => {
               ids.unshift(reply);
+              depths[reply] = depth + 1;
             });
           }
         }
@@ -110,6 +116,7 @@ const makeMapStateToProps = () => {
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
+      depths,
     };
   };
 
@@ -392,6 +399,7 @@ class Status extends ImmutablePureComponent {
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
+        depth={this.props.depths[id]}
       />
     ));
   }
