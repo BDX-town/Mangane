@@ -26,6 +26,13 @@ const handleMouseLeave = (dispatch) => {
   };
 };
 
+const handleClick = (dispatch) => {
+  return e => {
+    showProfileHoverCard.cancel();
+    dispatch(closeProfileHoverCard(true));
+  };
+};
+
 export const HoverRefWrapper = ({ accountId, children, inline }) => {
   const dispatch = useDispatch();
   const ref = useRef();
@@ -37,6 +44,7 @@ export const HoverRefWrapper = ({ accountId, children, inline }) => {
       className='hover-ref-wrapper'
       onMouseEnter={handleMouseEnter(dispatch, ref, accountId)}
       onMouseLeave={handleMouseLeave(dispatch)}
+      onClick={handleClick(dispatch)}
     >
       {children}
     </Elem>

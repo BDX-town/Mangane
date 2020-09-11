@@ -6,6 +6,7 @@ exports[`<DisplayName /> renders display name + account name 1`] = `
 >
   <span
     className="hover-ref-wrapper"
+    onClick={[Function]}
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
