@@ -45,7 +45,7 @@ export const ProfileHoverCard = ({ visible }) => {
 
   const accountId = useSelector(state => state.getIn(['profile_hover_card', 'accountId']));
   const account   = useSelector(state => accountId && getAccount(state, accountId));
-  const targetRef = useSelector(state => state.getIn(['profile_hover_card', 'ref']));
+  const targetRef = useSelector(state => state.getIn(['profile_hover_card', 'ref', 'current']));
   const badges = account ? getBadges(account) : [];
 
   useEffect(() => {

@@ -18,9 +18,8 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { NavLink } from 'react-router-dom';
-import { isMobile } from '../../../app/soapbox/is_mobile';
-import { debounce } from 'lodash';
 import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -255,20 +254,6 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
-  showProfileHoverCard = debounce(() => {
-    const { onShowProfileHoverCard, status } = this.props;
-    onShowProfileHoverCard(this.profileNode, status.getIn(['account', 'id']));
-  }, 1200);
-
-  handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.showProfileHoverCard();
-  }
-
-  handleProfileLeave = e => {
-    this.showProfileHoverCard.cancel();
-    this.props.onClearProfileHoverCard();
-  }
-
   _properStatus() {
     const { status } = this.props;
 
@@ -281,10 +266,6 @@ class Status extends ImmutablePureComponent {
 
   handleRef = c => {
     this.node = c;
-  }
-
-  setProfileRef = c => {
-    this.profileNode = c;
   }
 
   render() {
@@ -481,15 +462,17 @@ class Status extends ImmutablePureComponent {
                   <img src={favicon} alt='' title={domain} />
                 </div>}
 
-              <div className='status__profile' ref={this.setProfileRef} onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
-                <div className='status__avatar'>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
-                  {statusAvatar}
+              <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                <div className='status__profile'>
+                  <div className='status__avatar'>
+                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+                    {statusAvatar}
+                  </div>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
+                    <DisplayName account={status.get('account')} others={otherAccounts} />
+                  </NavLink>
                 </div>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                  <DisplayName account={status.get('account')} others={otherAccounts} />
-                </NavLink>
-              </div>
+              </HoverRefWrapper>
             </div>
 
             {!group && status.get('group') && (
