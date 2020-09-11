@@ -152,6 +152,10 @@
     .display-name {
       display: flex;
 
+      .hover-ref-wrapper {
+        display: flex;
+      }
+
       bdi {
         overflow: hidden;
         text-overflow: ellipsis;
