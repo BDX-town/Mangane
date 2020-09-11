@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import VerificationBadge from './verification_badge';
 import { acctFull } from '../utils/accounts';
 import { List as ImmutableList } from 'immutable';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 export default class DisplayName extends React.PureComponent {
 
@@ -42,7 +43,9 @@ export default class DisplayName extends React.PureComponent {
 
     return (
       <span className='display-name'>
-        {displayName}
+        <HoverRefWrapper accountId={account.get('id')} inline>
+          {displayName}
+        </HoverRefWrapper>
         {suffix}
         {children}
       </span>

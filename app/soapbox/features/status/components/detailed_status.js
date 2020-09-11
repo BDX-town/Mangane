@@ -164,20 +164,22 @@ export default class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-            <div className='detailed-status__profile'>
-              <div className='detailed-status__display-name'>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
-                  <div className='detailed-status__display-avatar'>
+          <div className='detailed-status__profile'>
+            <div className='detailed-status__display-name'>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
+                <div className='detailed-status__display-avatar'>
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
                     <Avatar account={status.get('account')} size={48} />
-                  </div>
-                </NavLink>
-                <DisplayName account={status.get('account')}>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
-                </DisplayName>
-              </div>
+                  </HoverRefWrapper>
+                </div>
+              </NavLink>
+              <DisplayName account={status.get('account')}>
+                <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
+                </HoverRefWrapper>
+              </DisplayName>
             </div>
-          </HoverRefWrapper>
+          </div>
 
           {status.get('group') && (
             <div className='status__meta'>

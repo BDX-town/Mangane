@@ -462,17 +462,18 @@ class Status extends ImmutablePureComponent {
                   <img src={favicon} alt='' title={domain} />
                 </div>}
 
-              <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                <div className='status__profile'>
-                  <div className='status__avatar'>
-                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
-                    {statusAvatar}
-                  </div>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                    <DisplayName account={status.get('account')} others={otherAccounts} />
-                  </NavLink>
+              <div className='status__profile'>
+                <div className='status__avatar'>
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
+                      {statusAvatar}
+                    </NavLink>
+                  </HoverRefWrapper>
                 </div>
-              </HoverRefWrapper>
+                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
+                  <DisplayName account={status.get('account')} others={otherAccounts} />
+                </NavLink>
+              </div>
             </div>
 
             {!group && status.get('group') && (

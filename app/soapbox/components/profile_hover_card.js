@@ -52,14 +52,7 @@ export const ProfileHoverCard = ({ visible }) => {
     if (accountId) dispatch(fetchRelationships([accountId]));
   }, [dispatch, accountId]);
 
-  const { styles, attributes } = usePopper(targetRef, popperElement, {
-    modifiers: [{
-      name: 'offset',
-      options: {
-        offset: [-100, 0],
-      },
-    }],
-  });
+  const { styles, attributes } = usePopper(targetRef, popperElement);
 
   if (!account) return null;
   const accountBio = { __html: account.get('note_emojified') };

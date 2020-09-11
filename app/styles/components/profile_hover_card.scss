@@ -113,18 +113,6 @@
   }
 }
 
-/* Prevent floating avatars from intercepting with current card */
-.status,
-.detailed-status {
-  .floating-link {
-    display: none;
-  }
-
-  &:hover .floating-link {
-    display: block;
-  }
-}
-
 /* Hide the popper when the reference is hidden */
 #popper[data-popper-reference-hidden] {
   visibility: hidden;

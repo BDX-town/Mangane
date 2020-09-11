@@ -26,25 +26,31 @@ const handleMouseLeave = (dispatch) => {
   };
 };
 
-export const HoverRefWrapper = ({ accountId, children }) => {
+export const HoverRefWrapper = ({ accountId, children, inline }) => {
   const dispatch = useDispatch();
   const ref = useRef();
+  const Elem = inline ? 'span' : 'div';
 
   return (
-    <div
+    <Elem
       ref={ref}
       className='hover-ref-wrapper'
       onMouseEnter={handleMouseEnter(dispatch, ref, accountId)}
       onMouseLeave={handleMouseLeave(dispatch)}
     >
       {children}
-    </div>
+    </Elem>
   );
 };
 
 HoverRefWrapper.propTypes = {
   accountId: PropTypes.string,
   children: PropTypes.node,
+  inline: PropTypes.bool,
+};
+
+HoverRefWrapper.defaultProps = {
+  inline: false,
 };
 
 export default HoverRefWrapper;
