@@ -86,16 +86,16 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
-  showProfileCard = debounce(() => {
+  showProfileHoverCard = debounce(() => {
     this.setState({ profileCardVisible: true });
   }, 1200);
 
   handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.showProfileCard();
+    if (!isMobile(window.innerWidth)) this.showProfileHoverCard();
   }
 
   handleProfileLeave = e => {
-    this.showProfileCard.cancel();
+    this.showProfileHoverCard.cancel();
     this.setState({ profileCardVisible: false });
   }
 

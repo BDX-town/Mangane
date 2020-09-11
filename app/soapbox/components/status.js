@@ -81,7 +81,7 @@ class Status extends ImmutablePureComponent {
     onEmbed: PropTypes.func,
     onHeightChange: PropTypes.func,
     onToggleHidden: PropTypes.func,
-    onShowProfileCard: PropTypes.func,
+    onShowHoverProfileCard: PropTypes.func,
     muted: PropTypes.bool,
     hidden: PropTypes.bool,
     unread: PropTypes.bool,
@@ -256,17 +256,18 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
-  showProfileCard = debounce(() => {
-    const { onShowProfileCard, status } = this.props;
-    onShowProfileCard(this.profileNode, status.getIn(['account', 'id']));
+  showProfileHoverCard = debounce(() => {
+    const { onShowProfileHoverCard, status } = this.props;
+    onShowProfileHoverCard(this.profileNode, status.getIn(['account', 'id']));
   }, 1200);
 
   handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.showProfileCard();
+    if (!isMobile(window.innerWidth)) this.showProfileHoverCard();
   }
 
   handleProfileLeave = e => {
-    this.showProfileCard.cancel();
+    this.showProfileHoverCard.cancel();
+    this.props.onClearProfileHoverCard();
     this.setState({ profileCardVisible: false });
   }
 

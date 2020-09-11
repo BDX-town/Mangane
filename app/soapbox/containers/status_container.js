@@ -35,7 +35,10 @@ import {
   groupRemoveStatus,
 } from '../actions/groups';
 import { getSettings } from '../actions/settings';
-import { openProfileHoverCard } from 'soapbox/actions/profile_hover_card';
+import {
+  openProfileHoverCard,
+  clearProfileHoverCard,
+} from 'soapbox/actions/profile_hover_card';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -207,8 +210,12 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(groupRemoveStatus(groupId, statusId));
   },
 
-  onShowProfileCard(ref, accountId) {
+  onShowProfileHoverCard(ref, accountId) {
     dispatch(openProfileHoverCard(ref, accountId));
+  },
+
+  onClearProfileHoverCard() {
+    dispatch(clearProfileHoverCard());
   },
 
 });
