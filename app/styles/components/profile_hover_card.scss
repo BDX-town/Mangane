@@ -106,15 +106,8 @@
   }
 }
 
-.detailed-status {
-  .profile-hover-card {
-    top: 0;
-    left: 0;
-  }
-}
-
 /* Hide the popper when the reference is hidden */
-#popper[data-popper-reference-hidden] {
+.profile-hover-card[data-popper-reference-hidden] {
   visibility: hidden;
   pointer-events: none;
 }
