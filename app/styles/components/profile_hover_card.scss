@@ -105,9 +105,3 @@
     }
   }
 }
-
-/* Hide the popper when the reference is hidden */
-.profile-hover-card[data-popper-reference-hidden] {
-  visibility: hidden;
-  pointer-events: none;
-}
