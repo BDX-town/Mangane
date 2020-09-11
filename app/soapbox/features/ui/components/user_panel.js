@@ -56,26 +56,26 @@ class UserPanel extends ImmutablePureComponent {
 
             <div className='user-panel__stats-block'>
 
-              <div className='user-panel-stats-item'>
+              {account.get('statuses_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('statuses_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.posts' defaultMessage='Posts' /></span>
                 </Link>
-              </div>
+              </div>}
 
-              <div className='user-panel-stats-item'>
+              {account.get('followers_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('followers_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
                 </Link>
-              </div>
+              </div>}
 
-              <div className='user-panel-stats-item'>
+              {account.get('following_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('following_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.follows' defaultMessage='Follows' /></span>
                 </Link>
-              </div>
+              </div>}
 
             </div>
 
