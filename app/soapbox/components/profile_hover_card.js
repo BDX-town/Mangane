@@ -11,6 +11,7 @@ import Badge from 'soapbox/components/badge';
 import classNames from 'classnames';
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { usePopper } from 'react-popper';
+import { clearProfileHoverCard } from 'soapbox/actions/profile_hover_card';
 
 const getAccount = makeGetAccount();
 
@@ -22,13 +23,19 @@ const getBadges = (account) => {
   return badges;
 };
 
+const handleMouseLeave = (dispatch) => {
+  return e => {
+    dispatch(clearProfileHoverCard());
+  };
+};
+
 export const ProfileHoverCard = ({ visible }) => {
   const dispatch = useDispatch();
 
   const [popperElement, setPopperElement] = useState(null);
 
   const accountId = useSelector(state => state.getIn(['profile_hover_card', 'accountId']));
-  const account = useSelector(state => accountId && getAccount(state, accountId));
+  const account   = useSelector(state => accountId && getAccount(state, accountId));
   const targetRef = useSelector(state => state.getIn(['profile_hover_card', 'ref']));
   const badges = account ? getBadges(account) : [];
 
@@ -36,14 +43,21 @@ export const ProfileHoverCard = ({ visible }) => {
     if (accountId) dispatch(fetchRelationships([accountId]));
   }, [dispatch, accountId]);
 
-  const { styles, attributes } = usePopper(targetRef, popperElement);
+  const { styles, attributes } = usePopper(targetRef, popperElement, {
+    modifiers: [{
+      name: 'offset',
+      options: {
+        offset: [-100, 0],
+      },
+    }],
+  });
 
   if (!account) return null;
   const accountBio = { __html: account.get('note_emojified') };
   const followedBy  = account.getIn(['relationship', 'followed_by']);
 
   return (
-    <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })} ref={setPopperElement} style={styles.popper} {...attributes.popper}>
+    <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })} ref={setPopperElement} style={styles.popper} {...attributes.popper} onMouseLeave={handleMouseLeave(dispatch)}>
       <div className='profile-hover-card__container'>
         {followedBy &&
           <span className='relationship-tag'>

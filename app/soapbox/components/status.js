@@ -108,7 +108,6 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
-    profileCardVisible: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -268,7 +267,6 @@ class Status extends ImmutablePureComponent {
   handleProfileLeave = e => {
     this.showProfileHoverCard.cancel();
     this.props.onClearProfileHoverCard();
-    this.setState({ profileCardVisible: false });
   }
 
   _properStatus() {
