@@ -11,7 +11,10 @@ import Badge from 'soapbox/components/badge';
 import classNames from 'classnames';
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import { usePopper } from 'react-popper';
-import { clearProfileHoverCard } from 'soapbox/actions/profile_hover_card';
+import {
+  closeProfileHoverCard,
+  updateProfileHoverCard,
+} from 'soapbox/actions/profile_hover_card';
 
 const getAccount = makeGetAccount();
 
@@ -23,9 +26,15 @@ const getBadges = (account) => {
   return badges;
 };
 
+const handleMouseEnter = (dispatch) => {
+  return e => {
+    dispatch(updateProfileHoverCard());
+  };
+};
+
 const handleMouseLeave = (dispatch) => {
   return e => {
-    dispatch(clearProfileHoverCard());
+    dispatch(closeProfileHoverCard(true));
   };
 };
 
@@ -57,7 +66,7 @@ export const ProfileHoverCard = ({ visible }) => {
   const followedBy  = account.getIn(['relationship', 'followed_by']);
 
   return (
-    <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })} ref={setPopperElement} style={styles.popper} {...attributes.popper} onMouseLeave={handleMouseLeave(dispatch)}>
+    <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })} ref={setPopperElement} style={styles.popper} {...attributes.popper} onMouseEnter={handleMouseEnter(dispatch)} onMouseLeave={handleMouseLeave(dispatch)}>
       <div className='profile-hover-card__container'>
         {followedBy &&
           <span className='relationship-tag'>

@@ -37,7 +37,7 @@ import {
 import { getSettings } from '../actions/settings';
 import {
   openProfileHoverCard,
-  clearProfileHoverCard,
+  closeProfileHoverCard,
 } from 'soapbox/actions/profile_hover_card';
 
 const messages = defineMessages({
@@ -215,7 +215,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onClearProfileHoverCard() {
-    dispatch(clearProfileHoverCard());
+    setTimeout(() => dispatch(closeProfileHoverCard()), 300);
   },
 
 });

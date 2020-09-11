@@ -1,5 +1,6 @@
 export const PROFILE_HOVER_CARD_OPEN = 'PROFILE_HOVER_CARD_OPEN';
-export const PROFILE_HOVER_CARD_CLEAR = 'PROFILE_HOVER_CARD_CLEAR';
+export const PROFILE_HOVER_CARD_UPDATE = 'PROFILE_HOVER_CARD_UPDATE';
+export const PROFILE_HOVER_CARD_CLOSE = 'PROFILE_HOVER_CARD_CLOSE';
 
 export function openProfileHoverCard(ref, accountId) {
   return {
@@ -9,8 +10,15 @@ export function openProfileHoverCard(ref, accountId) {
   };
 }
 
-export function clearProfileHoverCard() {
+export function updateProfileHoverCard() {
   return {
-    type: PROFILE_HOVER_CARD_CLEAR,
+    type: PROFILE_HOVER_CARD_UPDATE,
+  };
+}
+
+export function closeProfileHoverCard(force = false) {
+  return {
+    type: PROFILE_HOVER_CARD_CLOSE,
+    force,
   };
 }

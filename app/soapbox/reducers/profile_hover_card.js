@@ -1,6 +1,7 @@
 import {
   PROFILE_HOVER_CARD_OPEN,
-  PROFILE_HOVER_CARD_CLEAR,
+  PROFILE_HOVER_CARD_CLOSE,
+  PROFILE_HOVER_CARD_UPDATE,
 } from 'soapbox/actions/profile_hover_card';
 import { Map as ImmutableMap } from 'immutable';
 
@@ -13,8 +14,13 @@ export default function profileHoverCard(state = initialState, action) {
       ref: action.ref,
       accountId: action.accountId,
     });
-  case PROFILE_HOVER_CARD_CLEAR:
-    return ImmutableMap();
+  case PROFILE_HOVER_CARD_UPDATE:
+    return state.set('hovered', true);
+  case PROFILE_HOVER_CARD_CLOSE:
+    if (state.get('hovered') === true && !action.force)
+      return state;
+    else
+      return ImmutableMap();
   default:
     return state;
   }
