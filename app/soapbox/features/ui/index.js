@@ -38,6 +38,7 @@ import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
+import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 
 import {
   Status,
@@ -650,6 +651,7 @@ class UI extends React.PureComponent {
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
           {me && !mobile && <ChatPanes />}
+          <ProfileHoverCard />
         </div>
       </HotKeys>
     );

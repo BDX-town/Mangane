@@ -18,7 +18,6 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { NavLink } from 'react-router-dom';
-import ProfileHoverCardContainer from '../features/profile_hover_card/profile_hover_card_container';
 import { isMobile } from '../../../app/soapbox/is_mobile';
 import { debounce } from 'lodash';
 import { getDomain } from 'soapbox/utils/accounts';
@@ -82,6 +81,7 @@ class Status extends ImmutablePureComponent {
     onEmbed: PropTypes.func,
     onHeightChange: PropTypes.func,
     onToggleHidden: PropTypes.func,
+    onShowProfileCard: PropTypes.func,
     muted: PropTypes.bool,
     hidden: PropTypes.bool,
     unread: PropTypes.bool,
@@ -257,7 +257,8 @@ class Status extends ImmutablePureComponent {
   }
 
   showProfileCard = debounce(() => {
-    this.setState({ profileCardVisible: true });
+    const { onShowProfileCard, status } = this.props;
+    onShowProfileCard(this.profileNode, status.getIn(['account', 'id']));
   }, 1200);
 
   handleProfileHover = e => {
@@ -281,6 +282,10 @@ class Status extends ImmutablePureComponent {
 
   handleRef = c => {
     this.node = c;
+  }
+
+  setProfileRef = c => {
+    this.profileNode = c;
   }
 
   render() {
@@ -457,7 +462,6 @@ class Status extends ImmutablePureComponent {
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
-    const { profileCardVisible } = this.state;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
@@ -478,7 +482,7 @@ class Status extends ImmutablePureComponent {
                   <img src={favicon} alt='' title={domain} />
                 </div>}
 
-              <div className='status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+              <div className='status__profile' ref={this.setProfileRef} onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
                 <div className='status__avatar'>
                   <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
                   {statusAvatar}
@@ -486,9 +490,6 @@ class Status extends ImmutablePureComponent {
                 <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
                   <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
-                { profileCardVisible &&
-                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth)} />
-                }
               </div>
             </div>
 
