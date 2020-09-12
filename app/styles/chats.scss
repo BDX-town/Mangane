@@ -282,6 +282,37 @@
       }
     }
   }
+
+  @media(max-width: 630px) {
+    .columns-area__panels__main .columns-area {
+      padding: 0;
+    }
+
+    .columns-area__panels__main {
+      padding: 0;
+      max-width: none;
+    }
+
+    .columns-area--mobile .column {
+      border-radius: 0;
+    }
+
+    .page {
+      .chat-box {
+        border-radius: 0;
+        border: 2px solid var(--foreground-color);
+
+        &__actions {
+          padding: 0;
+
+          textarea {
+            height: 4em;
+            border-radius: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media(max-width: 630px) {
