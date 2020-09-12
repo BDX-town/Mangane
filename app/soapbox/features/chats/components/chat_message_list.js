@@ -89,11 +89,16 @@ class ChatMessageList extends ImmutablePureComponent {
     return scrollBottom < elem.offsetHeight * 1.5;
   }
 
+  handleResize = (e) => {
+    if (this.isNearBottom()) this.scrollToBottom();
+  }
+
   componentDidMount() {
     const { dispatch, chatId } = this.props;
     dispatch(fetchChatMessages(chatId));
 
     this.node.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize);
     this.scrollToBottom();
   }
 
@@ -125,6 +130,7 @@ class ChatMessageList extends ImmutablePureComponent {
 
   componentWillUnmount() {
     this.node.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   handleLoadMore = () => {
