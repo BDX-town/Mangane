@@ -29,6 +29,7 @@ const messages = defineMessages({
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
+  import_follows: { id: 'navigation_bar.import_follows', defaultMessage: 'Import follows' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -183,6 +184,10 @@ class SidebarMenu extends ImmutablePureComponent {
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={onClose}>
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
+              </NavLink>
+              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={onClose}>
+                <Icon id='community' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_follows)}</span>
               </NavLink>
             </div>
 
