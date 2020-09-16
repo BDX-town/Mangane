@@ -65,7 +65,9 @@ self.addEventListener('fetch', function(event) {
     url.pathname.startsWith('/avatars') ||
     url.pathname.startsWith('/authorize_follow') ||
     url.pathname.startsWith('/media_proxy') ||
-    url.pathname.startsWith('/relationships')) {
+    url.pathname.startsWith('/relationships') ||
+    url.pathname.startsWith('/main/ostatus') ||
+    url.pathname.startsWith('/ostatus_subscribe')) {
     //non-webapp routes
   } else if (url.pathname.startsWith('/')) {
     // : TODO : if is /web
