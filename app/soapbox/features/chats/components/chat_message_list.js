@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
+import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { fetchChatMessages } from 'soapbox/actions/chats';
@@ -12,6 +12,22 @@ import { openModal } from 'soapbox/actions/modal';
 import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
+
+const messages = defineMessages({
+  today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
+});
+
+const timeChange = (prev, curr) => {
+  const prevDate = new Date(prev.get('created_at')).getDate();
+  const currDate = new Date(curr.get('created_at')).getDate();
+  const nowDate  = new Date().getDate();
+
+  if (prevDate !== currDate) {
+    return currDate === nowDate ? 'today' : 'date';
+  };
+
+  return null;
+};
 
 const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map, emoji) => {
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
@@ -191,32 +207,58 @@ class ChatMessageList extends ImmutablePureComponent {
     this.node = c;
   }
 
+  renderDivider = (text) => (
+    <div className='chat-messages__divider'>{text}</div>
+  )
+
+  renderMessage = (chatMessage) => {
+    const { me } = this.props;
+
+    return (
+      <div
+        className={classNames('chat-message', {
+          'chat-message--me': chatMessage.get('account_id') === me,
+          'chat-message--pending': chatMessage.get('pending', false) === true,
+        })}
+        key={chatMessage.get('id')}
+      >
+        <div
+          title={this.getFormattedTimestamp(chatMessage)}
+          className='chat-message__bubble'
+          ref={this.setBubbleRef}
+        >
+          {this.maybeRenderMedia(chatMessage)}
+          <span
+            className='chat-message__content'
+            dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { chatMessages, me } = this.props;
+    const { chatMessages, intl } = this.props;
 
     return (
       <div className='chat-messages' ref={this.setRef}>
-        {chatMessages.map(chatMessage => (
-          <div
-            className={classNames('chat-message', {
-              'chat-message--me': chatMessage.get('account_id') === me,
-              'chat-message--pending': chatMessage.get('pending', false) === true,
-            })}
-            key={chatMessage.get('id')}
-          >
-            <div
-              title={this.getFormattedTimestamp(chatMessage)}
-              className='chat-message__bubble'
-              ref={this.setBubbleRef}
-            >
-              {this.maybeRenderMedia(chatMessage)}
-              <span
-                className='chat-message__content'
-                dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
-              />
-            </div>
-          </div>
-        ))}
+        {chatMessages.reduce((acc, curr, idx) => {
+          const lastMessage = chatMessages.get(idx-1);
+
+          if (lastMessage) {
+            switch(timeChange(lastMessage, curr)) {
+            case 'today':
+              acc.push(this.renderDivider(intl.formatMessage(messages.today)));
+              break;
+            case 'date':
+              acc.push(this.renderDivider(new Date(curr.get('created_at')).toDateString()));
+              break;
+            }
+          }
+
+          acc.push(this.renderMessage(curr));
+          return acc;
+        }, [])}
         <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
       </div>
     );
