@@ -16,8 +16,7 @@ import IconButton from 'soapbox/components/icon_button';
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   about: { id: 'header.about.label', defaultMessage: 'About' },
-  backTo: { id: 'header.back_to.label', defaultMessage: 'Back to' },
-  backToEnding: { id: 'header.back_to_ending.label', defaultMessage: ' ' },
+  backTo: { id: 'header.back_to.label', defaultMessage: 'Back to {siteTitle}' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
@@ -103,13 +102,13 @@ class Header extends ImmutablePureComponent {
           <div className='nav-right'>
             <div className='hidden-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo)} {instance.get('title')} {intl.formatMessage(messages.backToEnding)}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
                 : <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />
               }
             </div>
             <div className='visible-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo)} {instance.get('title')} {intl.formatMessage(messages.backToEnding)}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
                 : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>{intl.formatMessage(messages.login)}</Link>
               }
             </div>
