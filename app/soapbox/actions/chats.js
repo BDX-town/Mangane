@@ -23,14 +23,11 @@ export const CHAT_READ_REQUEST = 'CHAT_READ_REQUEST';
 export const CHAT_READ_SUCCESS = 'CHAT_READ_SUCCESS';
 export const CHAT_READ_FAIL    = 'CHAT_READ_FAIL';
 
-export const CHAT_NOTIFICATION = 'CHAT_NOTIFICATION';
-
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
       dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
-      chatsNotification(data);
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
@@ -153,20 +150,3 @@ export function markChatRead(chatId, lastReadId) {
     });
   };
 }
-
-export function chatsNotification(chat) {
-  return (dispatch, getState) => {
-    const playSound = getSettings(getState()).getIn(['chats', 'sound']);
-    // const flashWindow = getSettings(getState()).getIn(['chats', 'flash']);  // implement when developing chat window flashing notification
-
-    if (playSound) {
-      if (chat.last_message &&
-          chat.last_message.account_id !== getState().get('me')) {
-        dispatch({
-          type: CHAT_NOTIFICATION,
-          meta: { sound: 'chat' },
-        });
-      }
-    }
-  };
-};
