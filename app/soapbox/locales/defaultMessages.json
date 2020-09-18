@@ -265,6 +265,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Follows you",
+        "id": "account.follows_you"
+      }
+    ],
+    "path": "app/soapbox/components/profile_hover_card.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "now",
         "id": "relative_time.just_now"
       },
@@ -320,10 +329,6 @@
       {
         "defaultMessage": "Profile",
         "id": "account.profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
       },
       {
         "defaultMessage": "Preferences",
@@ -993,8 +998,41 @@
   {
     "descriptors": [
       {
-<<<<<<< app/soapbox/locales/defaultMessages.json
-=======
+        "defaultMessage": "Send a message…",
+        "id": "chat_box.input.placeholder"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_box.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "chat_panels.main_window.title"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_panes.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "column.chats"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Show reposts",
         "id": "home.column_settings.show_reblogs"
       },
@@ -1003,7 +1041,6 @@
         "id": "home.column_settings.show_replies"
       },
       {
->>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -1468,123 +1505,6 @@
       }
     ],
     "path": "app/soapbox/features/compose/index.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Soapbox settings",
-        "id": "column.soapbox_settings"
-      },
-      {
-        "defaultMessage": "Copyright footer",
-        "id": "soapbox_settings.copyright_footer.meta_fields.label_placeholder"
-      },
-      {
-        "defaultMessage": "Icon",
-        "id": "soapbox_settings.promo_panel.meta_fields.icon_placeholder"
-      },
-      {
-        "defaultMessage": "Label",
-        "id": "soapbox_settings.promo_panel.meta_fields.label_placeholder"
-      },
-      {
-        "defaultMessage": "URL",
-        "id": "soapbox_settings.promo_panel.meta_fields.url_placeholder"
-      },
-      {
-        "defaultMessage": "Label",
-        "id": "soapbox_settings.home_footer.meta_fields.label_placeholder"
-      },
-      {
-        "defaultMessage": "URL",
-        "id": "soapbox_settings.home_footer.meta_fields.url_placeholder"
-      },
-      {
-        "defaultMessage": "URL",
-        "id": "soapbox_settings.custom_css.meta_fields.url_placeholder"
-      },
-      {
-        "defaultMessage": "Logo",
-        "id": "soapbox_settings.fields.logo_label"
-      },
-      {
-        "defaultMessage": "SVG. At most 2 MB. Will be downscaled to 50px height, maintaining aspect ratio",
-        "id": "soapbox_settings.hints.logo"
-      },
-      {
-        "defaultMessage": "Banner",
-        "id": "soapbox_settings.fields.banner_label"
-      },
-      {
-        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px",
-        "id": "soapbox_settings.hints.banner"
-      },
-      {
-        "defaultMessage": "Brand color",
-        "id": "soapbox_settings.fields.brand_color_label"
-      },
-      {
-        "defaultMessage": "Patron module",
-        "id": "soapbox_settings.fields.patron_enabled_label"
-      },
-      {
-        "defaultMessage": "Enables display of Patron module.  Requires installation of Patron module.",
-        "id": "soapbox_settings.hints.patron_enabled"
-      },
-      {
-        "defaultMessage": "Auto-play GIFs",
-        "id": "soapbox_settings.fields.auto_play_gif_label"
-      },
-      {
-        "defaultMessage": "Enable auto-playing of GIF files in timeline",
-        "id": "soapbox_settings.hints.auto_play_gif"
-      },
-      {
-        "defaultMessage": "Promo panel items",
-        "id": "soapbox_settings.fields.promo_panel_fields_label"
-      },
-      {
-        "defaultMessage": "You can have custom defined links displayed on the left panel of the timelines page.",
-        "id": "soapbox_settings.hints.promo_panel_fields"
-      },
-      {
-        "defaultMessage": "{ link }",
-        "id": "soapbox_settings.hints.promo_panel_icons"
-      },
-      {
-        "defaultMessage": "Add new Promo panel item",
-        "id": "soapbox_settings.fields.promo_panel.add"
-      },
-      {
-        "defaultMessage": "Home footer items",
-        "id": "soapbox_settings.fields.home_footer_fields_label"
-      },
-      {
-        "defaultMessage": "You can have custom defined links displayed on the footer of your static pages",
-        "id": "soapbox_settings.hints.home_footer_fields"
-      },
-      {
-        "defaultMessage": "Add new Home Footer Item",
-        "id": "soapbox_settings.fields.home_footer.add"
-      },
-      {
-        "defaultMessage": "Custom CSS",
-        "id": "soapbox_settings.fields.custom_css_fields_label"
-      },
-      {
-        "defaultMessage": "You can have custom CSS definitions",
-        "id": "soapbox_settings.hints.custom_css_fields"
-      },
-      {
-        "defaultMessage": "Add new Custom CSS item",
-        "id": "soapbox_settings.fields.custom_css.add"
-      },
-      {
-        "defaultMessage": "Save",
-        "id": "soapbox_settings.save"
-      }
-    ],
-    "path": "app/soapbox/features/configuration/index.json"
   },
   {
     "descriptors": [
@@ -2464,6 +2384,10 @@
         "id": "notification.follow"
       },
       {
+        "defaultMessage": "{name} sent you a message",
+        "id": "notification.chat_mention"
+      },
+      {
         "defaultMessage": "{name} reacted to your post",
         "id": "notification.emoji_react"
       },
@@ -2614,26 +2538,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Home",
-        "id": "header.home.label"
-      },
-      {
-        "defaultMessage": "About",
-        "id": "header.about.label"
-      },
-      {
-        "defaultMessage": "Back to",
-        "id": "header.back_to.label"
-      },
-      {
-        "defaultMessage": " ",
-        "id": "header.back_to_ending.label"
-      },
-      {
-        "defaultMessage": "Log in",
-        "id": "header.login.label"
-      },
-      {
         "defaultMessage": "Close",
         "id": "lightbox.close"
       }
@@ -2643,8 +2547,6 @@
   {
     "descriptors": [
       {
-<<<<<<< app/soapbox/locales/defaultMessages.json
-=======
         "defaultMessage": "Show reposts",
         "id": "home.column_settings.show_reblogs"
       },
@@ -2653,7 +2555,6 @@
         "id": "home.column_settings.show_replies"
       },
       {
->>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Media Only",
         "id": "community.column_settings.media_only"
       }
@@ -3115,6 +3016,14 @@
       {
         "defaultMessage": "Copy link to post",
         "id": "status.copy"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
       }
     ],
     "path": "app/soapbox/features/status/components/action_bar.json"
@@ -3187,13 +3096,10 @@
         "id": "account.requested"
       },
       {
-<<<<<<< app/soapbox/locales/defaultMessages.json
-=======
         "defaultMessage": "Awaiting approval",
         "id": "account.requested_small"
       },
       {
->>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Unblock @{name}",
         "id": "account.unblock"
       },
@@ -3318,14 +3224,8 @@
   {
     "descriptors": [
       {
-<<<<<<< app/soapbox/locales/defaultMessages.json
-=======
         "defaultMessage": "Edit Profile",
         "id": "account.edit_profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
       },
       {
         "defaultMessage": "Preferences",
@@ -3349,7 +3249,6 @@
   {
     "descriptors": [
       {
->>>>>>> app/soapbox/locales/defaultMessages.json
         "defaultMessage": "Close",
         "id": "lightbox.close"
       },
@@ -3644,6 +3543,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
       },
       {
         "defaultMessage": "Reports",
