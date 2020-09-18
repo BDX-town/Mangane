@@ -15,17 +15,12 @@
   transition-duration: 0.2s;
   width: 320px;
   z-index: 200;
-  left: -10px;
-  padding: 20px;
-  margin-bottom: 10px;
+  top: 0;
+  left: 0;
 
   &--visible {
     opacity: 1;
     pointer-events: all;
-  }
-
-  @media(min-width: 750px) {
-    left: -100px;
   }
 
   .profile-hover-card__container {
@@ -108,24 +103,5 @@
       left: 0;
       background: linear-gradient(0deg, var(--foreground-color) 0%, var(--foreground-color), 80%, transparent);
     }
-  }
-}
-
-.detailed-status {
-  .profile-hover-card {
-    top: 0;
-    left: 60px;
-  }
-}
-
-/* Prevent floating avatars from intercepting with current card */
-.status,
-.detailed-status {
-  .floating-link {
-    display: none;
-  }
-
-  &:hover .floating-link {
-    display: block;
   }
 }

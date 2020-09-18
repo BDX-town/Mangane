@@ -46,6 +46,7 @@ import admin from './admin';
 import chats from './chats';
 import chat_messages from './chat_messages';
 import chat_message_lists from './chat_message_lists';
+import profile_hover_card from './profile_hover_card';
 
 const reducers = {
   dropdown_menu,
@@ -95,6 +96,7 @@ const reducers = {
   chats,
   chat_messages,
   chat_message_lists,
+  profile_hover_card,
 };
 
 export default combineReducers(reducers);

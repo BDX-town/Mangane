@@ -10,8 +10,8 @@ import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutabl
 const initialState = ImmutableMap();
 
 const idComparator = (a, b) => {
-  if (a < b) return 1;
-  if (a > b) return -1;
+  if (a < b) return -1;
+  if (a > b) return 1;
   return 0;
 };
 

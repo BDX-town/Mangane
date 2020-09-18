@@ -124,17 +124,11 @@
 .chat-messages {
   overflow-y: scroll;
   flex: 1;
-  display: flex;
-  flex-direction: column-reverse;
 }
 
 .chat-message {
-  padding: 7px 10px;
+  margin: 14px 10px;
   display: flex;
-
-  &:last-child {
-    padding-top: 14px;
-  }
 
   &__bubble {
     font-size: 15px;
@@ -183,6 +177,10 @@
     .display-name {
       display: flex;
 
+      .hover-ref-wrapper {
+        display: flex;
+      }
+
       bdi {
         overflow: hidden;
         text-overflow: ellipsis;
@@ -206,10 +204,65 @@
 }
 
 .chat-box {
+  .upload-progress {
+    padding: 0 10px;
+    align-items: center;
+    height: 25px;
+
+    .fa {
+      font-size: 22px;
+    }
+
+    &__message {
+      font-size: 13px;
+      flex: 1;
+      align-items: center;
+    }
+
+    &__backdrop {
+      margin-top: 2px;
+    }
+  }
+
+  &__attachment {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    padding: 0 10px;
+    height: 25px;
+
+    .chat-box__remove-attachment {
+      margin-left: auto;
+
+      .icon-button > div {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
   &__actions {
     background: var(--foreground-color);
     margin-top: auto;
     padding: 6px;
+    position: relative;
+
+    .icon-button {
+      color: var(--primary-text-color--faint);
+      position: absolute;
+      right: 10px;
+      top: calc(50% - 13px);
+      width: auto;
+      height: auto;
+      background: transparent !important;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .chat-box__send .icon-button {
+      top: calc(50% - 9px);
+    }
 
     textarea {
       width: 100%;
@@ -217,11 +270,13 @@
       margin: 0;
       box-sizing: border-box;
       padding: 6px;
+      padding-right: 25px;
       background: var(--background-color);
       border: 0;
       border-radius: 6px;
       color: var(--primary-text-color);
       font-size: 15px;
+      overflow: hidden;
     }
   }
 }
@@ -248,7 +303,38 @@
       border-radius: 0 0 10px 10px;
 
       &__actions textarea {
-        padding: 10px;
+        padding: 10px 40px 10px 10px;
+      }
+    }
+  }
+
+  @media(max-width: 630px) {
+    .columns-area__panels__main .columns-area {
+      padding: 0;
+    }
+
+    .columns-area__panels__main {
+      padding: 0;
+      max-width: none;
+    }
+
+    .columns-area--mobile .column {
+      border-radius: 0;
+    }
+
+    .page {
+      .chat-box {
+        border-radius: 0;
+        border: 2px solid var(--foreground-color);
+
+        &__actions {
+          padding: 0;
+
+          textarea {
+            height: 4em;
+            border-radius: 0;
+          }
+        }
       }
     }
   }
@@ -271,6 +357,7 @@
   margin-left: auto;
   padding-right: 15px;
   overflow: hidden;
+  text-decoration: none;
 
   .account__avatar {
     margin-right: 7px;
@@ -296,7 +383,6 @@
   display: flex;
   align-items: center;
   background: var(--accent-color--faint);
-  border-radius: 10px 10px 0 0;
 
   .column-back-button {
     background: transparent;
@@ -313,5 +399,33 @@
     a {
       color: var(--highlight-text-color);
     }
+  }
+}
+
+.chat-message__media {
+  height: 120px;
+}
+
+.chat-message .media-gallery {
+  height: 100% !important;
+  margin: 4px 0 8px;
+
+  .spoiler-button {
+    display: none;
+  }
+
+  .media-gallery__item:not(.media-gallery__item--image) {
+    max-width: 100%;
+    width: 120px !important;
+    height: 100% !important;
+  }
+
+  &__preview {
+    background-color: transparent;
+  }
+
+  &__item-thumbnail img,
+  &__item-thumbnail .still-image img {
+    object-fit: contain;
   }
 }

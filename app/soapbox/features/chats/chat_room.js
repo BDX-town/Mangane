@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
@@ -75,12 +76,12 @@ class ChatRoom extends ImmutablePureComponent {
       <Column>
         <div className='chatroom__back'>
           <ColumnBackButton />
-          <div className='chatroom__header'>
+          <Link to={`/@${account.get('acct')}`} className='chatroom__header'>
             <Avatar account={account} size={18} />
             <div className='chatroom__title'>
               @{acctFull(account)}
             </div>
-          </div>
+          </Link>
         </div>
         <ChatBox
           chatId={chat.get('id')}
