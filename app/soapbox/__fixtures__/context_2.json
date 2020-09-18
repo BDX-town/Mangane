@@ -1,0 +1,739 @@
+{
+  "ancestors": [
+    {
+      "account": {
+        "acct": "alex",
+        "avatar": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "avatar_static": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "bot": false,
+        "created_at": "2020-01-08T01:25:43.000Z",
+        "display_name": "Alex Gleason",
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "follow_requests_count": 0,
+        "followers_count": 725,
+        "following_count": 1211,
+        "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "id": "9v5bmRalQvjOy0ECcC",
+        "locked": false,
+        "note": "Fediverse developer. I come in peace.<br/><br/><a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>.<br/><br/>Boosts ≠ endorsements.",
+        "pleroma": {
+          "accepts_chat_messages": true,
+          "allow_following_move": true,
+          "ap_id": "https://gleasonator.com/users/alex",
+          "background_image": null,
+          "confirmation_pending": false,
+          "deactivated": false,
+          "favicon": "https://gleasonator.com/favicon.png",
+          "hide_favorites": true,
+          "hide_followers": false,
+          "hide_followers_count": false,
+          "hide_follows": false,
+          "hide_follows_count": false,
+          "is_admin": true,
+          "is_moderator": false,
+          "notification_settings": {
+            "block_from_strangers": false,
+            "hide_notification_contents": false
+          },
+          "relationship": {},
+          "skip_thread_containment": false,
+          "tags": [],
+          "unread_conversation_count": 95,
+          "unread_notifications_count": 0
+        },
+        "source": {
+          "fields": [
+            {
+              "name": "Website",
+              "value": "https://alexgleason.me"
+            },
+            {
+              "name": "Pleroma+Soapbox",
+              "value": "https://soapbox.pub"
+            },
+            {
+              "name": "Email",
+              "value": "alex@alexgleason.me"
+            },
+            {
+              "name": "Gender identity",
+              "value": "Soyboy"
+            }
+          ],
+          "note": "Fediverse developer. I come in peace.\r\n\r\n#vegan #freeculture #atheist #antiporn #gendercritical.\r\n\r\nBoosts ≠ endorsements.",
+          "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false,
+            "no_rich_text": false,
+            "show_role": true
+          },
+          "privacy": "public",
+          "sensitive": false
+        },
+        "statuses_count": 9157,
+        "url": "https://gleasonator.com/users/alex",
+        "username": "alex"
+      },
+      "application": {
+        "name": "Web",
+        "website": null
+      },
+      "bookmarked": false,
+      "card": null,
+      "content": "<p>A</p>",
+      "created_at": "2020-09-18T20:07:10.000Z",
+      "emojis": [],
+      "favourited": false,
+      "favourites_count": 0,
+      "id": "9zIH6kDXA10YqhMKqO",
+      "in_reply_to_account_id": null,
+      "in_reply_to_id": null,
+      "language": null,
+      "media_attachments": [],
+      "mentions": [],
+      "muted": false,
+      "pinned": false,
+      "pleroma": {
+        "content": {
+          "text/plain": "A"
+        },
+        "conversation_id": 5089485,
+        "direct_conversation_id": null,
+        "emoji_reactions": [],
+        "expires_at": null,
+        "in_reply_to_account_acct": null,
+        "local": true,
+        "parent_visible": false,
+        "spoiler_text": {
+          "text/plain": ""
+        },
+        "thread_muted": false
+      },
+      "poll": null,
+      "reblog": null,
+      "reblogged": false,
+      "reblogs_count": 0,
+      "replies_count": 0,
+      "sensitive": false,
+      "spoiler_text": "",
+      "tags": [],
+      "text": null,
+      "uri": "https://gleasonator.com/objects/9995c074-2ff6-4a01-b596-7ef6971ed5d2",
+      "url": "https://gleasonator.com/notice/9zIH6kDXA10YqhMKqO",
+      "visibility": "direct"
+    }
+  ],
+  "descendants": [
+    {
+      "account": {
+        "acct": "alex",
+        "avatar": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "avatar_static": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "bot": false,
+        "created_at": "2020-01-08T01:25:43.000Z",
+        "display_name": "Alex Gleason",
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "follow_requests_count": 0,
+        "followers_count": 725,
+        "following_count": 1211,
+        "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "id": "9v5bmRalQvjOy0ECcC",
+        "locked": false,
+        "note": "Fediverse developer. I come in peace.<br/><br/><a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>.<br/><br/>Boosts ≠ endorsements.",
+        "pleroma": {
+          "accepts_chat_messages": true,
+          "allow_following_move": true,
+          "ap_id": "https://gleasonator.com/users/alex",
+          "background_image": null,
+          "confirmation_pending": false,
+          "deactivated": false,
+          "favicon": "https://gleasonator.com/favicon.png",
+          "hide_favorites": true,
+          "hide_followers": false,
+          "hide_followers_count": false,
+          "hide_follows": false,
+          "hide_follows_count": false,
+          "is_admin": true,
+          "is_moderator": false,
+          "notification_settings": {
+            "block_from_strangers": false,
+            "hide_notification_contents": false
+          },
+          "relationship": {},
+          "skip_thread_containment": false,
+          "tags": [],
+          "unread_conversation_count": 95,
+          "unread_notifications_count": 0
+        },
+        "source": {
+          "fields": [
+            {
+              "name": "Website",
+              "value": "https://alexgleason.me"
+            },
+            {
+              "name": "Pleroma+Soapbox",
+              "value": "https://soapbox.pub"
+            },
+            {
+              "name": "Email",
+              "value": "alex@alexgleason.me"
+            },
+            {
+              "name": "Gender identity",
+              "value": "Soyboy"
+            }
+          ],
+          "note": "Fediverse developer. I come in peace.\r\n\r\n#vegan #freeculture #atheist #antiporn #gendercritical.\r\n\r\nBoosts ≠ endorsements.",
+          "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false,
+            "no_rich_text": false,
+            "show_role": true
+          },
+          "privacy": "public",
+          "sensitive": false
+        },
+        "statuses_count": 9157,
+        "url": "https://gleasonator.com/users/alex",
+        "username": "alex"
+      },
+      "application": {
+        "name": "Web",
+        "website": null
+      },
+      "bookmarked": false,
+      "card": null,
+      "content": "<p>C</p>",
+      "created_at": "2020-09-18T20:07:22.000Z",
+      "emojis": [],
+      "favourited": false,
+      "favourites_count": 0,
+      "id": "9zIH7mMGgc1RmJwDLM",
+      "in_reply_to_account_id": "9v5bmRalQvjOy0ECcC",
+      "in_reply_to_id": "9zIH6kDXA10YqhMKqO",
+      "language": null,
+      "media_attachments": [],
+      "mentions": [
+        {
+          "acct": "alex",
+          "id": "9v5bmRalQvjOy0ECcC",
+          "url": "https://gleasonator.com/users/alex",
+          "username": "alex"
+        }
+      ],
+      "muted": false,
+      "pinned": false,
+      "pleroma": {
+        "content": {
+          "text/plain": "C"
+        },
+        "conversation_id": 5089485,
+        "direct_conversation_id": null,
+        "emoji_reactions": [],
+        "expires_at": null,
+        "in_reply_to_account_acct": "alex",
+        "local": true,
+        "parent_visible": true,
+        "spoiler_text": {
+          "text/plain": ""
+        },
+        "thread_muted": false
+      },
+      "poll": null,
+      "reblog": null,
+      "reblogged": false,
+      "reblogs_count": 0,
+      "replies_count": 0,
+      "sensitive": false,
+      "spoiler_text": "",
+      "tags": [],
+      "text": null,
+      "uri": "https://gleasonator.com/objects/a2c25ef5-a40e-4098-b07e-b468989ef749",
+      "url": "https://gleasonator.com/notice/9zIH7mMGgc1RmJwDLM",
+      "visibility": "direct"
+    },
+    {
+      "account": {
+        "acct": "alex",
+        "avatar": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "avatar_static": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "bot": false,
+        "created_at": "2020-01-08T01:25:43.000Z",
+        "display_name": "Alex Gleason",
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "follow_requests_count": 0,
+        "followers_count": 725,
+        "following_count": 1211,
+        "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "id": "9v5bmRalQvjOy0ECcC",
+        "locked": false,
+        "note": "Fediverse developer. I come in peace.<br/><br/><a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>.<br/><br/>Boosts ≠ endorsements.",
+        "pleroma": {
+          "accepts_chat_messages": true,
+          "allow_following_move": true,
+          "ap_id": "https://gleasonator.com/users/alex",
+          "background_image": null,
+          "confirmation_pending": false,
+          "deactivated": false,
+          "favicon": "https://gleasonator.com/favicon.png",
+          "hide_favorites": true,
+          "hide_followers": false,
+          "hide_followers_count": false,
+          "hide_follows": false,
+          "hide_follows_count": false,
+          "is_admin": true,
+          "is_moderator": false,
+          "notification_settings": {
+            "block_from_strangers": false,
+            "hide_notification_contents": false
+          },
+          "relationship": {},
+          "skip_thread_containment": false,
+          "tags": [],
+          "unread_conversation_count": 95,
+          "unread_notifications_count": 0
+        },
+        "source": {
+          "fields": [
+            {
+              "name": "Website",
+              "value": "https://alexgleason.me"
+            },
+            {
+              "name": "Pleroma+Soapbox",
+              "value": "https://soapbox.pub"
+            },
+            {
+              "name": "Email",
+              "value": "alex@alexgleason.me"
+            },
+            {
+              "name": "Gender identity",
+              "value": "Soyboy"
+            }
+          ],
+          "note": "Fediverse developer. I come in peace.\r\n\r\n#vegan #freeculture #atheist #antiporn #gendercritical.\r\n\r\nBoosts ≠ endorsements.",
+          "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false,
+            "no_rich_text": false,
+            "show_role": true
+          },
+          "privacy": "public",
+          "sensitive": false
+        },
+        "statuses_count": 9157,
+        "url": "https://gleasonator.com/users/alex",
+        "username": "alex"
+      },
+      "application": {
+        "name": "Web",
+        "website": null
+      },
+      "bookmarked": false,
+      "card": null,
+      "content": "<p>D</p>",
+      "created_at": "2020-09-18T20:07:30.000Z",
+      "emojis": [],
+      "favourited": false,
+      "favourites_count": 0,
+      "id": "9zIH8WYwtnUx4yDzUm",
+      "in_reply_to_account_id": "9v5bmRalQvjOy0ECcC",
+      "in_reply_to_id": "9zIH7PUdhK3Ircg4hM",
+      "language": null,
+      "media_attachments": [],
+      "mentions": [
+        {
+          "acct": "alex",
+          "id": "9v5bmRalQvjOy0ECcC",
+          "url": "https://gleasonator.com/users/alex",
+          "username": "alex"
+        }
+      ],
+      "muted": false,
+      "pinned": false,
+      "pleroma": {
+        "content": {
+          "text/plain": "D"
+        },
+        "conversation_id": 5089485,
+        "direct_conversation_id": null,
+        "emoji_reactions": [],
+        "expires_at": null,
+        "in_reply_to_account_acct": "alex",
+        "local": true,
+        "parent_visible": true,
+        "spoiler_text": {
+          "text/plain": ""
+        },
+        "thread_muted": false
+      },
+      "poll": null,
+      "reblog": null,
+      "reblogged": false,
+      "reblogs_count": 0,
+      "replies_count": 0,
+      "sensitive": false,
+      "spoiler_text": "",
+      "tags": [],
+      "text": null,
+      "uri": "https://gleasonator.com/objects/bb423adc-ed86-42d8-942e-84efbe7b1acf",
+      "url": "https://gleasonator.com/notice/9zIH8WYwtnUx4yDzUm",
+      "visibility": "direct"
+    },
+    {
+      "account": {
+        "acct": "alex",
+        "avatar": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "avatar_static": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "bot": false,
+        "created_at": "2020-01-08T01:25:43.000Z",
+        "display_name": "Alex Gleason",
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "follow_requests_count": 0,
+        "followers_count": 725,
+        "following_count": 1211,
+        "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "id": "9v5bmRalQvjOy0ECcC",
+        "locked": false,
+        "note": "Fediverse developer. I come in peace.<br/><br/><a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>.<br/><br/>Boosts ≠ endorsements.",
+        "pleroma": {
+          "accepts_chat_messages": true,
+          "allow_following_move": true,
+          "ap_id": "https://gleasonator.com/users/alex",
+          "background_image": null,
+          "confirmation_pending": false,
+          "deactivated": false,
+          "favicon": "https://gleasonator.com/favicon.png",
+          "hide_favorites": true,
+          "hide_followers": false,
+          "hide_followers_count": false,
+          "hide_follows": false,
+          "hide_follows_count": false,
+          "is_admin": true,
+          "is_moderator": false,
+          "notification_settings": {
+            "block_from_strangers": false,
+            "hide_notification_contents": false
+          },
+          "relationship": {},
+          "skip_thread_containment": false,
+          "tags": [],
+          "unread_conversation_count": 95,
+          "unread_notifications_count": 0
+        },
+        "source": {
+          "fields": [
+            {
+              "name": "Website",
+              "value": "https://alexgleason.me"
+            },
+            {
+              "name": "Pleroma+Soapbox",
+              "value": "https://soapbox.pub"
+            },
+            {
+              "name": "Email",
+              "value": "alex@alexgleason.me"
+            },
+            {
+              "name": "Gender identity",
+              "value": "Soyboy"
+            }
+          ],
+          "note": "Fediverse developer. I come in peace.\r\n\r\n#vegan #freeculture #atheist #antiporn #gendercritical.\r\n\r\nBoosts ≠ endorsements.",
+          "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false,
+            "no_rich_text": false,
+            "show_role": true
+          },
+          "privacy": "public",
+          "sensitive": false
+        },
+        "statuses_count": 9157,
+        "url": "https://gleasonator.com/users/alex",
+        "username": "alex"
+      },
+      "application": {
+        "name": "Web",
+        "website": null
+      },
+      "bookmarked": false,
+      "card": null,
+      "content": "<p>E</p>",
+      "created_at": "2020-09-18T20:07:38.000Z",
+      "emojis": [],
+      "favourited": false,
+      "favourites_count": 0,
+      "id": "9zIH9GTCDWEFSRt2um",
+      "in_reply_to_account_id": "9v5bmRalQvjOy0ECcC",
+      "in_reply_to_id": "9zIH7PUdhK3Ircg4hM",
+      "language": null,
+      "media_attachments": [],
+      "mentions": [
+        {
+          "acct": "alex",
+          "id": "9v5bmRalQvjOy0ECcC",
+          "url": "https://gleasonator.com/users/alex",
+          "username": "alex"
+        }
+      ],
+      "muted": false,
+      "pinned": false,
+      "pleroma": {
+        "content": {
+          "text/plain": "E"
+        },
+        "conversation_id": 5089485,
+        "direct_conversation_id": null,
+        "emoji_reactions": [],
+        "expires_at": null,
+        "in_reply_to_account_acct": "alex",
+        "local": true,
+        "parent_visible": true,
+        "spoiler_text": {
+          "text/plain": ""
+        },
+        "thread_muted": false
+      },
+      "poll": null,
+      "reblog": null,
+      "reblogged": false,
+      "reblogs_count": 0,
+      "replies_count": 0,
+      "sensitive": false,
+      "spoiler_text": "",
+      "tags": [],
+      "text": null,
+      "uri": "https://gleasonator.com/objects/a1e45493-2158-4f11-88ca-ba621429dbe5",
+      "url": "https://gleasonator.com/notice/9zIH9GTCDWEFSRt2um",
+      "visibility": "direct"
+    },
+    {
+      "account": {
+        "acct": "alex",
+        "avatar": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "avatar_static": "https://media.gleasonator.com/26f0ca4ef51f7047829fdb65a43cb7d0304413ce0a5d00dd1638458994608718.jpg",
+        "bot": false,
+        "created_at": "2020-01-08T01:25:43.000Z",
+        "display_name": "Alex Gleason",
+        "emojis": [],
+        "fields": [
+          {
+            "name": "Website",
+            "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+          },
+          {
+            "name": "Pleroma+Soapbox",
+            "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          }
+        ],
+        "follow_requests_count": 0,
+        "followers_count": 725,
+        "following_count": 1211,
+        "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+        "id": "9v5bmRalQvjOy0ECcC",
+        "locked": false,
+        "note": "Fediverse developer. I come in peace.<br/><br/><a class=\"hashtag\" data-tag=\"vegan\" href=\"https://gleasonator.com/tag/vegan\">#vegan</a> <a class=\"hashtag\" data-tag=\"freeculture\" href=\"https://gleasonator.com/tag/freeculture\">#freeculture</a> <a class=\"hashtag\" data-tag=\"atheist\" href=\"https://gleasonator.com/tag/atheist\">#atheist</a> <a class=\"hashtag\" data-tag=\"antiporn\" href=\"https://gleasonator.com/tag/antiporn\">#antiporn</a> <a class=\"hashtag\" data-tag=\"gendercritical\" href=\"https://gleasonator.com/tag/gendercritical\">#gendercritical</a>.<br/><br/>Boosts ≠ endorsements.",
+        "pleroma": {
+          "accepts_chat_messages": true,
+          "allow_following_move": true,
+          "ap_id": "https://gleasonator.com/users/alex",
+          "background_image": null,
+          "confirmation_pending": false,
+          "deactivated": false,
+          "favicon": "https://gleasonator.com/favicon.png",
+          "hide_favorites": true,
+          "hide_followers": false,
+          "hide_followers_count": false,
+          "hide_follows": false,
+          "hide_follows_count": false,
+          "is_admin": true,
+          "is_moderator": false,
+          "notification_settings": {
+            "block_from_strangers": false,
+            "hide_notification_contents": false
+          },
+          "relationship": {},
+          "skip_thread_containment": false,
+          "tags": [],
+          "unread_conversation_count": 95,
+          "unread_notifications_count": 0
+        },
+        "source": {
+          "fields": [
+            {
+              "name": "Website",
+              "value": "https://alexgleason.me"
+            },
+            {
+              "name": "Pleroma+Soapbox",
+              "value": "https://soapbox.pub"
+            },
+            {
+              "name": "Email",
+              "value": "alex@alexgleason.me"
+            },
+            {
+              "name": "Gender identity",
+              "value": "Soyboy"
+            }
+          ],
+          "note": "Fediverse developer. I come in peace.\r\n\r\n#vegan #freeculture #atheist #antiporn #gendercritical.\r\n\r\nBoosts ≠ endorsements.",
+          "pleroma": {
+            "actor_type": "Person",
+            "discoverable": false,
+            "no_rich_text": false,
+            "show_role": true
+          },
+          "privacy": "public",
+          "sensitive": false
+        },
+        "statuses_count": 9157,
+        "url": "https://gleasonator.com/users/alex",
+        "username": "alex"
+      },
+      "application": {
+        "name": "Web",
+        "website": null
+      },
+      "bookmarked": false,
+      "card": null,
+      "content": "<p>F</p>",
+      "created_at": "2020-09-18T20:07:42.000Z",
+      "emojis": [],
+      "favourited": false,
+      "favourites_count": 0,
+      "id": "9zIH9fhaP9atiJoOJc",
+      "in_reply_to_account_id": "9v5bmRalQvjOy0ECcC",
+      "in_reply_to_id": "9zIH8WYwtnUx4yDzUm",
+      "language": null,
+      "media_attachments": [],
+      "mentions": [
+        {
+          "acct": "alex",
+          "id": "9v5bmRalQvjOy0ECcC",
+          "url": "https://gleasonator.com/users/alex",
+          "username": "alex"
+        }
+      ],
+      "muted": false,
+      "pinned": false,
+      "pleroma": {
+        "content": {
+          "text/plain": "F"
+        },
+        "conversation_id": 5089485,
+        "direct_conversation_id": null,
+        "emoji_reactions": [],
+        "expires_at": null,
+        "in_reply_to_account_acct": "alex",
+        "local": true,
+        "parent_visible": true,
+        "spoiler_text": {
+          "text/plain": ""
+        },
+        "thread_muted": false
+      },
+      "poll": null,
+      "reblog": null,
+      "reblogged": false,
+      "reblogs_count": 0,
+      "replies_count": 0,
+      "sensitive": false,
+      "spoiler_text": "",
+      "tags": [],
+      "text": null,
+      "uri": "https://gleasonator.com/objects/ee661cf9-35d4-4e84-88ff-13b5950f7556",
+      "url": "https://gleasonator.com/notice/9zIH9fhaP9atiJoOJc",
+      "visibility": "direct"
+    }
+  ]
+}
