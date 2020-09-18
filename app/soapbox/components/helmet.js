@@ -36,6 +36,7 @@ class SoapboxHelmet extends React.Component {
       <Helmet
         titleTemplate={this.addCounter(`%s | ${siteTitle}`)}
         defaultTitle={this.addCounter(siteTitle)}
+        defer={false}
       >
         {children}
       </Helmet>

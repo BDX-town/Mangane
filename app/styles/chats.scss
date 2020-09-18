@@ -94,6 +94,41 @@
       overflow: hidden;
     }
   }
+
+  .audio-toggle .react-toggle-thumb {
+    height: 14px;
+    width: 14px;
+    border: 1px solid var(--brand-color--med);
+  }
+
+  .audio-toggle .react-toggle {
+    height: 16px;
+    top: 4px;
+  }
+
+  .audio-toggle .react-toggle-track {
+    height: 16px;
+    width: 34px;
+    background-color: var(--accent-color);
+  }
+
+  .audio-toggle .react-toggle-track-check {
+    left: 4px;
+    bottom: 4px;
+  }
+
+  .react-toggle--checked .react-toggle-thumb {
+    left: 19px;
+  }
+
+  .audio-toggle .react-toggle-track-x {
+    right: 4px;
+    bottom: 4px;
+  }
+
+  .fa {
+    font-size: 14px;
+  }
 }
 
 .chat-messages {
