@@ -33,7 +33,7 @@ export default function settings(state = initialState, action) {
     return hydrate(state, action.state.get('settings'));
   case ME_FETCH_SUCCESS:
     const me = fromJS(action.me);
-    const fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME]);
+    let fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
     return state.merge(fePrefs);
   case NOTIFICATIONS_FILTER_SET:
   case SETTING_CHANGE:

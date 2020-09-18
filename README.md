@@ -54,7 +54,7 @@ yarn
 Finally, run the dev server:
 
 ```sh
-yarn start
+yarn dev
 ```
 
 **That's it!** :tada:
@@ -79,7 +79,7 @@ Try again.
 
 You can also run Soapbox FE locally with a live production server as the backend.
 
-> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare.
+> **Note:** Whether or not this works depends on your production server. It does not seem to work with Cloudflare or VanwaNet.
 
 To do so, just copy the env file:
 
@@ -124,7 +124,7 @@ For https, be sure to also set `PROXY_HTTPS_INSECURE=true`.
 
 Allows using an HTTPS backend if set to `true`.
 
-This is needed if `BACKEND_URL` or `PATRON_URL` are set to an `https://` value.
+This is needed if `BACKEND_URL` is set to an `https://` value.
 [More info](https://stackoverflow.com/a/48624590/8811886).
 
 **Default:** `false`
@@ -140,7 +140,7 @@ NODE_ENV=development
 ```
 
 #### Local dev server
-- `yarn dev` - Exact same as above, aliased to `yarn start` for convenience.
+- `yarn dev` - Run the local dev server.
 
 #### Building
 - `yarn build` - Compile without a dev server, into `/static` directory.

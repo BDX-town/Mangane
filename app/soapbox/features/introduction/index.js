@@ -84,9 +84,10 @@ class Introduction extends React.PureComponent {
     currentIndex: 0,
   };
 
-  componentWillMount() {
+  constructor(props) {
+    super(props);
     this.pages = [
-      <FrameWelcome domain={this.props.domain} onNext={this.handleNext} />,
+      <FrameWelcome domain={props.domain} onNext={this.handleNext} />,
       <FrameFederation onNext={this.handleNext} />,
       <FrameInteractions onNext={this.handleFinish} />,
     ];

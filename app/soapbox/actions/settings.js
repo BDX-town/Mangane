@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -22,15 +22,23 @@ const defaultSettings = ImmutableMap({
   defaultPrivacy: 'public',
   themeMode: 'light',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
+  explanationBox: true,
+  otpEnabled: false,
 
   systemFont: false,
   dyslexicFont: false,
   demetricator: false,
 
+  chats: ImmutableMap({
+    panes: ImmutableList(),
+    mainWindow: 'minimized',
+  }),
+
   home: ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
       reply: true,
+      direct: false,
     }),
 
     regex: ImmutableMap({
@@ -71,6 +79,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   community: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: false,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),
@@ -80,6 +92,10 @@ const defaultSettings = ImmutableMap({
   }),
 
   public: ImmutableMap({
+    shows: ImmutableMap({
+      reblog: true,
+      reply: true,
+    }),
     other: ImmutableMap({
       onlyMedia: false,
     }),

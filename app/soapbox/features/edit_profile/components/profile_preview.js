@@ -1,21 +1,27 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { acctFull } from 'soapbox/utils/accounts';
+import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import { List as ImmutableList } from 'immutable';
 
 const ProfilePreview = ({ account }) => (
   <div className='card h-card'>
     <a target='_blank' rel='noopener' href={account.get('url')}>
       <div className='card__img'>
-        <img alt='' src={account.get('header')} />
+        <StillImage alt='' src={account.get('header')} />
       </div>
       <div className='card__bar'>
         <div className='avatar'>
-          <img alt='' className='u-photo' src={account.get('avatar')} width='48' height='48' />
+          <StillImage alt='' className='u-photo' src={account.get('avatar')} width='48' height='48' />
         </div>
         <div className='display-name'>
           <span style={{ display: 'none' }}>{account.get('username')}</span>
           <bdi>
-            <strong className='emojify p-name'>{account.get('display_name')}</strong>
+            <strong className='emojify p-name'>
+              {account.get('display_name')}
+              {account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified') && <VerificationBadge />}
+            </strong>
           </bdi>
           <span>{acctFull(account)}</span>
         </div>

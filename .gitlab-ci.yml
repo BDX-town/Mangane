@@ -14,6 +14,7 @@ stages:
   - lint
   - test
   - build
+  - deploy
 
 before_script:
   - yarn
@@ -38,6 +39,16 @@ build-production:
   artifacts:
     paths:
     - static
+
+docs-deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add curl
+  script:
+    - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
+  only:
+    - develop
 
 # Supposed to fail when translations are outdated, instead always passes
 #

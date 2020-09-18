@@ -1,40 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
-const mapStateToProps = state => ({
-  animate: getSettings(state).get('autoPlayGif'),
-});
-
-export class AvatarOverlay extends React.PureComponent {
+export default class AvatarOverlay extends React.PureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
     friend: ImmutablePropTypes.map.isRequired,
-    animate: PropTypes.bool,
   };
 
   render() {
-    const { account, friend, animate } = this.props;
-
-    const baseStyle = {
-      backgroundImage: `url(${account.get(animate ? 'avatar' : 'avatar_static')})`,
-    };
-
-    const overlayStyle = {
-      backgroundImage: `url(${friend.get(animate ? 'avatar' : 'avatar_static')})`,
-    };
+    const { account, friend } = this.props;
 
     return (
       <div className='account__avatar-overlay'>
-        <div className='account__avatar-overlay-base' style={baseStyle} />
-        <div className='account__avatar-overlay-overlay' style={overlayStyle} />
+        <StillImage src={account.get('avatar')} className='account__avatar-overlay-base' />
+        <StillImage src={friend.get('avatar')} className='account__avatar-overlay-overlay' />
       </div>
     );
   }
 
 }
-
-export default connect(mapStateToProps)(AvatarOverlay);

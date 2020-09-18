@@ -3,16 +3,20 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
-import { throttle } from 'lodash';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import NotificationsCounterIcon from './notifications_counter_icon';
+import ReportsCounterIcon from './reports_counter_icon';
+import ChatsCounterIcon from './chats_counter_icon';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
 import ActionBar from 'soapbox/features/compose/components/action_bar';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
+import ThemeToggle from '../../ui/components/theme_toggle';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { isStaff } from 'soapbox/utils/accounts';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -38,31 +42,13 @@ class TabsBar extends React.PureComponent {
     router: PropTypes.object,
   }
 
-  lastScrollTop = 0;
-
-  componentDidMount() {
-    this.window = window;
-    this.documentElement = document.scrollingElement || document.documentElement;
-
-    this.attachScrollListener();
-    // Handle initial scroll posiiton
-    this.handleScroll();
-  }
-
-  componentWillUnmount() {
-    this.detachScrollListener();
-  }
-
   setRef = ref => {
     this.node = ref;
   }
 
-  attachScrollListener() {
-    this.window.addEventListener('scroll', this.handleScroll);
-  }
-
-  detachScrollListener() {
-    this.window.removeEventListener('scroll', this.handleScroll);
+  isHomeActive = (match, location) => {
+    const { pathname } = location;
+    return pathname === '/' || pathname.startsWith('/timeline/');
   }
 
   getNavLinks() {
@@ -76,7 +62,7 @@ class TabsBar extends React.PureComponent {
         </Link>);
     }
     links.push(
-      <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home'>
+      <NavLink key='home' className='tabs-bar__link' exact to='/' data-preview-title-id='column.home' isActive={this.isHomeActive}>
         <Icon id='home' />
         <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
       </NavLink>);
@@ -87,6 +73,22 @@ class TabsBar extends React.PureComponent {
           <NotificationsCounterIcon />
           <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
         </NavLink>);
+    }
+    if (account) {
+      links.push(
+        <NavLink key='chats' className='tabs-bar__link tabs-bar__link--chats' to='/chats' data-preview-title-id='column.chats'>
+          <Icon id='comment' />
+          <ChatsCounterIcon />
+          <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
+        </NavLink>);
+    }
+    if (account && isStaff(account)) {
+      links.push(
+        <a key='reports' className='tabs-bar__link' href='/pleroma/admin/#/reports/index' target='_blank' data-preview-title-id='tabs_bar.reports'>
+          <Icon id='gavel' />
+          <ReportsCounterIcon />
+          <span><FormattedMessage id='tabs_bar.reports' defaultMessage='Reports' /></span>
+        </a>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
@@ -101,27 +103,6 @@ class TabsBar extends React.PureComponent {
         }),
       }));
   }
-
-  handleScroll = throttle(() => {
-    if (this.window) {
-      const { pageYOffset, innerWidth } = this.window;
-      if (innerWidth > 895) return;
-      const { scrollTop } = this.documentElement;
-
-      let st = pageYOffset || scrollTop;
-      if (st > this.lastScrollTop){
-        let offset = st - this.lastScrollTop;
-        if (offset > 50) this.setState({ collapsed: true });
-      } else {
-        let offset = this.lastScrollTop - st;
-        if (offset > 50) this.setState({ collapsed: false });
-      }
-
-      this.lastScrollTop = st <= 0 ? 0 : st;
-    }
-  }, 150, {
-    trailing: true,
-  });
 
   render() {
     const { account, onOpenCompose, onOpenSidebar, intl } = this.props;
@@ -142,7 +123,8 @@ class TabsBar extends React.PureComponent {
               <SearchContainer openInRoute />
             </div>
             { account &&
-              <div className='flex'>
+              <>
+                <ThemeToggle />
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
@@ -151,7 +133,7 @@ class TabsBar extends React.PureComponent {
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
                   <span>{intl.formatMessage(messages.post)}</span>
                 </button>
-              </div>
+              </>
             }
             {
               !account &&
@@ -176,7 +158,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
-    logo: state.getIn(['soapbox', 'logo']),
+    logo: getSoapboxConfig(state).get('logo'),
   };
 };
 

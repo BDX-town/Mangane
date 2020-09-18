@@ -26,19 +26,19 @@ class GroupMembers extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { id } } = this.props;
 
     this.props.dispatch(fetchMembers(id));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.id !== this.props.params.id) {
-      this.props.dispatch(fetchMembers(nextProps.params.id));
+  componentDidUpdate(prevProps) {
+    if (this.props.params.id !== prevProps.params.id) {
+      this.props.dispatch(fetchMembers(this.props.params.id));
     }
   }
 

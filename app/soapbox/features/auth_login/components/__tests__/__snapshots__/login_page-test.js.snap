@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<LoginPage /> renders correctly 1`] = `
+exports[`<LoginPage /> renders correctly on load 1`] = `
 <form
   className="simple_form new_user"
+  method="post"
   onSubmit={[Function]}
 >
   <fieldset
@@ -59,4 +60,4 @@ exports[`<LoginPage /> renders correctly 1`] = `
 </form>
 `;
 
-exports[`<LoginPage /> renders correctly 2`] = `null`;
+exports[`<LoginPage /> renders correctly on load 2`] = `null`;

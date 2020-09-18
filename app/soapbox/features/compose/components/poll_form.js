@@ -19,6 +19,7 @@ const messages = defineMessages({
   minutes: { id: 'intervals.full.minutes', defaultMessage: '{number, plural, one {# minute} other {# minutes}}' },
   hours: { id: 'intervals.full.hours', defaultMessage: '{number, plural, one {# hour} other {# hours}}' },
   days: { id: 'intervals.full.days', defaultMessage: '{number, plural, one {# day} other {# days}}' },
+  hint: { id: 'compose_form.poll.type.hint', defaultMessage: 'Click to toggle poll type. Radio button (default) is single. Checkbox is multiple.' },
 });
 
 @injectIntl
@@ -37,6 +38,8 @@ class Option extends React.PureComponent {
     onSuggestionSelected: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     maxChars: PropTypes.number.isRequired,
+    onRemovePoll: PropTypes.func.isRequired,
+    numOptions: PropTypes.number.isRequired,
   };
 
   handleOptionTitleChange = e => {
@@ -44,9 +47,11 @@ class Option extends React.PureComponent {
   };
 
   handleOptionRemove = () => {
-    this.props.onRemove(this.props.index);
+    if (this.props.numOptions > 2)
+      this.props.onRemove(this.props.index);
+    else
+      this.props.onRemovePoll();
   };
-
 
   handleToggleMultiple = e => {
     this.props.onToggleMultiple();
@@ -77,6 +82,7 @@ class Option extends React.PureComponent {
             onClick={this.handleToggleMultiple}
             role='button'
             tabIndex='0'
+            title={intl.formatMessage(messages.hint)}
           />
 
           <AutosuggestInput
@@ -93,7 +99,7 @@ class Option extends React.PureComponent {
         </label>
 
         <div className='poll__cancel'>
-          <IconButton disabled={index <= 1} title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
         </div>
       </li>
     );
@@ -154,6 +160,7 @@ class PollForm extends ImmutablePureComponent {
               isPollMultiple={isMultiple}
               onToggleMultiple={this.handleToggleMultiple}
               maxChars={maxOptionChars}
+              numOptions={options.size}
               {...other}
             />
           ))}

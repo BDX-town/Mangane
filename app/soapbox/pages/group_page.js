@@ -25,7 +25,7 @@ class GroupPage extends ImmutablePureComponent {
       dispatch: PropTypes.func.isRequired,
     };
 
-    componentWillMount() {
+    componentDidMount() {
       const { params: { id }, dispatch } = this.props;
 
       dispatch(fetchGroup(id));

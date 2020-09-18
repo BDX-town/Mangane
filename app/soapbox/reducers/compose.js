@@ -21,6 +21,7 @@ import {
   COMPOSE_TAG_HISTORY_UPDATE,
   COMPOSE_SENSITIVITY_CHANGE,
   COMPOSE_SPOILERNESS_CHANGE,
+  COMPOSE_TYPE_CHANGE,
   COMPOSE_SPOILER_TEXT_CHANGE,
   COMPOSE_VISIBILITY_CHANGE,
   COMPOSE_COMPOSING_CHANGE,
@@ -39,7 +40,7 @@ import {
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { STORE_HYDRATE } from '../actions/store';
 import { REDRAFT } from '../actions/statuses';
-import { ME_FETCH_SUCCESS } from '../actions/me';
+import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import uuid from '../uuid';
@@ -50,6 +51,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
+  content_type: 'text/markdown',
   privacy: null,
   text: '',
   focusDate: null,
@@ -94,6 +96,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
+    map.set('content_type', 'text/markdown');
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -199,6 +202,7 @@ const expandMentions = status => {
 };
 
 export default function compose(state = initialState, action) {
+  let me, defaultPrivacy;
   switch(action.type) {
   case STORE_HYDRATE:
     return hydrate(state, action.state.get('compose'));
@@ -214,6 +218,11 @@ export default function compose(state = initialState, action) {
         map.set('sensitive', !state.get('sensitive'));
       }
 
+      map.set('idempotencyKey', uuid());
+    });
+  case COMPOSE_TYPE_CHANGE:
+    return state.withMutations(map => {
+      map.set('content_type', action.value);
       map.set('idempotencyKey', uuid());
     });
   case COMPOSE_SPOILERNESS_CHANGE:
@@ -248,8 +257,9 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('content_type', 'text/markdown');
 
-      if (action.status.get('spoiler_text').length > 0) {
+      if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
         map.set('spoiler_text', action.status.get('spoiler_text'));
       } else {
@@ -327,10 +337,12 @@ export default function compose(state = initialState, action) {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
-      map.set('media_attachments', action.status.get('media_attachments'));
+      // TODO: Actually fix this rather than just removing it
+      // map.set('media_attachments', action.status.get('media_attachments'));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
+      map.set('content_type', 'text/markdown');
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);
@@ -361,10 +373,15 @@ export default function compose(state = initialState, action) {
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case ME_FETCH_SUCCESS:
-    const me = fromJS(action.me);
-    const defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
+    me = fromJS(action.me);
+    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
     if (!defaultPrivacy) return state;
     return state.set('default_privacy', defaultPrivacy).set('privacy', defaultPrivacy);
+  case ME_PATCH_SUCCESS:
+    me = fromJS(action.me);
+    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
+    if (!defaultPrivacy) return state;
+    return state.set('default_privacy', defaultPrivacy);
   case SETTING_CHANGE:
     const pathString = action.path.join(',');
     if (pathString === 'defaultPrivacy')

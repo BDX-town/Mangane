@@ -28,11 +28,11 @@ class Mutes extends ImmutablePureComponent {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasMore: PropTypes.bool,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchMutes());
   }
 

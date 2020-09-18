@@ -78,6 +78,7 @@ exports[`<SimpleForm /> renders correctly 1`] = `
 <form
   acceptCharset="UTF-8"
   className="simple_form"
+  method="post"
   onSubmit={[Function]}
 />
 `;

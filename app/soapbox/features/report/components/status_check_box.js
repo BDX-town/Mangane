@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Toggle from 'react-toggle';
 import noop from 'lodash/noop';
 import StatusContent from '../../../components/status_content';
-import { MediaGallery, Video } from '../../ui/util/async-components';
+import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 import Bundle from '../../ui/components/bundle';
 
 export default class StatusCheckBox extends React.PureComponent {
@@ -44,6 +44,22 @@ export default class StatusCheckBox extends React.PureComponent {
                 inline
                 sensitive={status.get('sensitive')}
                 onOpenVideo={noop}
+              />
+            )}
+          </Bundle>
+        );
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio') {
+        const audio = status.getIn(['media_attachments', 0]);
+
+        media = (
+          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
+            {Component => (
+              <Component
+                src={audio.get('url')}
+                alt={audio.get('description')}
+                inline
+                sensitive={status.get('sensitive')}
+                onOpenAudio={noop}
               />
             )}
           </Bundle>

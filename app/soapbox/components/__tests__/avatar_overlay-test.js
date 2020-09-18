@@ -1,7 +1,7 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
-import { AvatarOverlay } from '../avatar_overlay';
+import { createComponent } from 'soapbox/test_helpers';
+import AvatarOverlay from '../avatar_overlay';
 
 describe('<AvatarOverlay', () => {
   const account = fromJS({
@@ -21,7 +21,7 @@ describe('<AvatarOverlay', () => {
   });
 
   it('renders a overlay avatar', () => {
-    const component = renderer.create(<AvatarOverlay account={account} friend={friend} />);
+    const component = createComponent(<AvatarOverlay account={account} friend={friend} />);
     const tree      = component.toJSON();
 
     expect(tree).toMatchSnapshot();

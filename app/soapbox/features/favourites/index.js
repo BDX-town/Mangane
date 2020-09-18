@@ -20,16 +20,19 @@ class Favourites extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchFavourites(this.props.params.statusId));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
-      this.props.dispatch(fetchFavourites(nextProps.params.statusId));
+  componentDidUpdate(prevProps) {
+    const { statusId } = this.props.params;
+    const { prevStatusId } = prevProps.params;
+
+    if (statusId !== prevStatusId && statusId) {
+      this.props.dispatch(fetchFavourites(statusId));
     }
   }
 

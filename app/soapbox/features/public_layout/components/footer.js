@@ -5,11 +5,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import { List as ImmutableList } from 'immutable';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
-const mapStateToProps = (state, props) => ({
-  copyright: state.getIn(['soapbox', 'copyright']),
-  navlinks: state.getIn(['soapbox', 'navlinks', 'homeFooter'], ImmutableList()),
-});
+const mapStateToProps = (state, props) => {
+  const soapboxConfig = getSoapboxConfig(state);
+
+  return {
+    copyright: soapboxConfig.get('copyright'),
+    navlinks: soapboxConfig.getIn(['navlinks', 'homeFooter'], ImmutableList()),
+  };
+};
 
 export default @connect(mapStateToProps)
 class Footer extends ImmutablePureComponent {

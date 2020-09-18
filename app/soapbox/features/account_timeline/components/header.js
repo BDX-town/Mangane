@@ -19,7 +19,7 @@ export default class Header extends ImmutablePureComponent {
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
-    onEndorseToggle: PropTypes.func.isRequired,
+    // onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
   };
@@ -72,9 +72,13 @@ export default class Header extends ImmutablePureComponent {
     this.props.onUnblockDomain(domain);
   }
 
-  handleEndorseToggle = () => {
-    this.props.onEndorseToggle(this.props.account);
+  handleChat = () => {
+    this.props.onChat(this.props.account, this.context.router.history);
   }
+
+  // handleEndorseToggle = () => {
+  //   this.props.onEndorseToggle(this.props.account);
+  // }
 
   handleAddToList = () => {
     this.props.onAddToList(this.props.account);
@@ -95,6 +99,7 @@ export default class Header extends ImmutablePureComponent {
           onBlock={this.handleBlock}
           onMention={this.handleMention}
           onDirect={this.handleDirect}
+          onChat={this.handleChat}
           onReblogToggle={this.handleReblogToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}

@@ -34,6 +34,7 @@ $small-breakpoint: 960px;
     flex-wrap: nowrap;
     padding: 14px 0;
     box-sizing: border-box;
+    position: relative;
 
     @media screen and (max-width: 1024px) {
       padding: 14px 20px;
@@ -1712,7 +1713,40 @@ $small-breakpoint: 960px;
   .header,
   .container {
     position: relative;
-    z-index: 1;
+  }
+
+  .otp-form-overlay__container {
+    z-index: 9998;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba($base-overlay-background, 0.7);
+
+    .otp-form-overlay__form {
+      @include standard-panel-shadow;
+      border-radius: 10px;
+      z-index: 9999;
+      margin: 0 auto;
+      max-width: 800px;
+      position: relative;
+      padding: 20px;
+      background-color: var(--background-color);
+      display: flex;
+      flex-direction: column;
+
+      .simple_form {
+        padding: 30px 50px 50px;
+      }
+
+      .otp-form-overlay__close {
+        align-self: flex-end;
+      }
+    }
   }
 }
 
@@ -1724,4 +1758,11 @@ $small-breakpoint: 960px;
   left: 0;
   bottom: 0;
   right: 0;
+}
+
+h1.otp-login {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 800;
+  padding: 10px 0;
 }

@@ -5,16 +5,19 @@ import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import StatusContent from '../../../components/status_content';
 import MediaGallery from '../../../components/media_gallery';
-import { Link, NavLink } from 'react-router-dom';
-import { FormattedDate, FormattedNumber } from 'react-intl';
+import { NavLink } from 'react-router-dom';
+import { FormattedDate } from 'react-intl';
 import Card from './card';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Video from '../../video';
+import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
+import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -84,23 +87,25 @@ export default class DetailedStatus extends ImmutablePureComponent {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
+    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
+    const domain = getDomain(status.get('account'));
 
     if (!status) {
       return null;
     }
 
     let media           = '';
-    let applicationLink = '';
-    let reblogLink = '';
-    let reblogIcon = 'retweet';
+    let poll = '';
+    let statusTypeIcon = '';
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
     }
 
     if (status.get('poll')) {
-      media = <PollContainer pollId={status.get('poll')} />;
-    } else if (status.get('media_attachments').size > 0) {
+      poll = <PollContainer pollId={status.get('poll')} />;
+    }
+    if (status.get('media_attachments').size > 0) {
       if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
@@ -115,6 +120,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
             height={150}
             inline
             onOpenVideo={this.handleOpenVideo}
+            sensitive={status.get('sensitive')}
+            visible={this.props.showMedia}
+            onToggleVisibility={this.props.onToggleMediaVisibility}
+          />
+        );
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+        const audio = status.getIn(['media_attachments', 0]);
+
+        media = (
+          <Audio
+            src={audio.get('url')}
+            alt={audio.get('description')}
+            inline
             sensitive={status.get('sensitive')}
             visible={this.props.showMedia}
             onToggleVisibility={this.props.onToggleMediaVisibility}
@@ -137,45 +155,31 @@ export default class DetailedStatus extends ImmutablePureComponent {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
     }
 
-    if (status.get('application')) {
-      applicationLink = <span> · <a className='detailed-status__application' href={status.getIn(['application', 'website'])} target='_blank' rel='noopener'>{status.getIn(['application', 'name'])}</a></span>;
-    }
-
     if (status.get('visibility') === 'direct') {
-      reblogIcon = 'envelope';
+      statusTypeIcon = <Icon id='envelope' />;
     } else if (status.get('visibility') === 'private') {
-      reblogIcon = 'lock';
-    }
-
-    if (status.get('visibility') === 'private') {
-      reblogLink = <Icon id={reblogIcon} />;
-    } else if (this.context.router) {
-      reblogLink = (
-        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>
-          <Icon id={reblogIcon} />
-          <span className='detailed-status__reblogs'>
-            <FormattedNumber value={status.get('reblogs_count')} />
-          </span>
-        </Link>
-      );
-    } else {
-      reblogLink = (
-        <a href={`/interact/${status.get('id')}?type=reblog`} className='detailed-status__link' onClick={this.handleModalLink}>
-          <Icon id={reblogIcon} />
-          <span className='detailed-status__reblogs'>
-            <FormattedNumber value={status.get('reblogs_count')} />
-          </span>
-        </a>
-      );
+      statusTypeIcon = <Icon id='lock' />;
     }
 
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='detailed-status__display-name'>
-            <div className='detailed-status__display-avatar'><Avatar account={status.get('account')} size={48} /></div>
-            <DisplayName account={status.get('account')} />
-          </NavLink>
+          <div className='detailed-status__profile'>
+            <div className='detailed-status__display-name'>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
+                <div className='detailed-status__display-avatar'>
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                    <Avatar account={status.get('account')} size={48} />
+                  </HoverRefWrapper>
+                </div>
+              </NavLink>
+              <DisplayName account={status.get('account')}>
+                <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
+                </HoverRefWrapper>
+              </DisplayName>
+            </div>
+          </div>
 
           {status.get('group') && (
             <div className='status__meta'>
@@ -186,11 +190,17 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <StatusContent status={status} expanded={!status.get('hidden')} onExpandedToggle={this.handleExpandedToggle} />
 
           {media}
+          {poll}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
             <div>
-              {reblogLink} {applicationLink} · <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
+              {favicon &&
+                <div className='status__favicon'>
+                  <img src={favicon} alt='' title={domain} />
+                </div>}
+
+              {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>
             </div>

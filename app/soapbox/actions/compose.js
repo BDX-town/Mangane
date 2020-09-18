@@ -7,12 +7,12 @@ import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
 import { importFetchedAccounts } from './importer';
 import { updateTimeline, dequeueTimeline } from './timelines';
-import { showAlertForError } from './alerts';
-import { showAlert } from './alerts';
+import { showAlert, showAlertForError } from './alerts';
 import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
+import { uploadMedia } from './media';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -43,6 +43,7 @@ export const COMPOSE_UNMOUNT = 'COMPOSE_UNMOUNT';
 
 export const COMPOSE_SENSITIVITY_CHANGE = 'COMPOSE_SENSITIVITY_CHANGE';
 export const COMPOSE_SPOILERNESS_CHANGE = 'COMPOSE_SPOILERNESS_CHANGE';
+export const COMPOSE_TYPE_CHANGE = 'COMPOSE_TYPE_CHANGE';
 export const COMPOSE_SPOILER_TEXT_CHANGE = 'COMPOSE_SPOILER_TEXT_CHANGE';
 export const COMPOSE_VISIBILITY_CHANGE  = 'COMPOSE_VISIBILITY_CHANGE';
 export const COMPOSE_LISTABILITY_CHANGE = 'COMPOSE_LISTABILITY_CHANGE';
@@ -175,6 +176,7 @@ export function submitCompose(routerHistory, group) {
       sensitive: getState().getIn(['compose', 'sensitive']),
       spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
       visibility: getState().getIn(['compose', 'privacy']),
+      content_type: getState().getIn(['compose', 'content_type']),
       poll: getState().getIn(['compose', 'poll'], null),
       group_id: group ? group.get('id') : null,
     }, {
@@ -226,11 +228,6 @@ export function uploadCompose(files) {
       return;
     }
 
-    if (getState().getIn(['compose', 'poll'])) {
-      dispatch(showAlert(undefined, messages.uploadErrorPoll));
-      return;
-    }
-
     dispatch(uploadComposeRequest());
 
     for (const [i, f] of Array.from(files).entries()) {
@@ -242,12 +239,14 @@ export function uploadCompose(files) {
         // Account for disparity in size of original image and resized data
         total += file.size - f.size;
 
-        return api(getState).post('/api/v1/media', data, {
-          onUploadProgress: function({ loaded }){
-            progress[i] = loaded;
-            dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
-          },
-        }).then(({ data }) => dispatch(uploadComposeSuccess(data)));
+        const onUploadProgress = function({ loaded }) {
+          progress[i] = loaded;
+          dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
+        };
+
+        return dispatch(uploadMedia(data, onUploadProgress))
+          .then(({ data }) => dispatch(uploadComposeSuccess(data)));
+
       }).catch(error => dispatch(uploadComposeFail(error)));
     };
   };
@@ -492,6 +491,13 @@ export function changeComposeSensitivity() {
 export function changeComposeSpoilerness() {
   return {
     type: COMPOSE_SPOILERNESS_CHANGE,
+  };
+};
+
+export function changeComposeContentType(value) {
+  return {
+    type: COMPOSE_TYPE_CHANGE,
+    value,
   };
 };
 

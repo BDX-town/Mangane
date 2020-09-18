@@ -27,12 +27,12 @@ class Blocks extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchBlocks());
   }
 

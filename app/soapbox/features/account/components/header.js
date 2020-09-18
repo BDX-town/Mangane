@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isStaff } from 'soapbox/utils/accounts';
@@ -16,13 +17,10 @@ import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
+import ActionButton from 'soapbox/features/ui/components/action_button';
 
 const messages = defineMessages({
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
-  follow: { id: 'account.follow', defaultMessage: 'Follow' },
-  requested: { id: 'account.requested', defaultMessage: 'Awaiting approval. Click to cancel follow request' },
-  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
@@ -30,6 +28,7 @@ const messages = defineMessages({
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
+  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   report: { id: 'account.report', defaultMessage: 'Report @{name}' },
   share: { id: 'account.share', defaultMessage: 'Share @{name}\'s profile' },
@@ -54,7 +53,6 @@ const mapStateToProps = state => {
   return {
     me,
     isStaff: isStaff(state.getIn(['accounts', me])),
-    autoPlayGif: getSettings(state).get('autoPlayGif'),
     version: parseVersion(state.getIn(['instance', 'version'])),
   };
 };
@@ -66,11 +64,8 @@ class Header extends ImmutablePureComponent {
   static propTypes = {
     account: ImmutablePropTypes.map,
     identity_props: ImmutablePropTypes.list,
-    onFollow: PropTypes.func.isRequired,
-    onBlock: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
-    autoPlayGif: PropTypes.bool,
     isStaff: PropTypes.bool.isRequired,
     version: PropTypes.object,
   };
@@ -91,7 +86,7 @@ class Header extends ImmutablePureComponent {
     return !location.pathname.match(/\/(followers|following|favorites|pins)\/?$/);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
@@ -138,7 +133,7 @@ class Header extends ImmutablePureComponent {
         }
 
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
-        menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (version.software === 'Pleroma') {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
@@ -173,7 +168,7 @@ class Header extends ImmutablePureComponent {
 
     if (account.get('id') !== me && isStaff) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/` });
+      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
     }
 
     return menu;
@@ -201,32 +196,8 @@ class Header extends ImmutablePureComponent {
     return info;
   };
 
-  getActionBtn() {
-    const { account, intl, me } = this.props;
-
-    let actionBtn = null;
-
-    if (!account || !me) return actionBtn;
-
-    if (me !== account.get('id')) {
-      if (!account.get('relationship')) { // Wait until the relationship is loaded
-        //
-      } else if (account.getIn(['relationship', 'requested'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.requested)} onClick={this.props.onFollow} />;
-      } else if (!account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button disabled={account.getIn(['relationship', 'blocked_by'])} className={classNames('logo-button', { 'button--destructive': account.getIn(['relationship', 'following']) })} text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)} onClick={this.props.onFollow} />;
-      } else if (account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.props.onBlock} />;
-      }
-    } else {
-      actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
-    }
-
-    return actionBtn;
-  };
-
   render() {
-    const { account, intl, username, me, autoPlayGif } = this.props;
+    const { account, intl, username, me } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -249,22 +220,20 @@ class Header extends ImmutablePureComponent {
     }
 
     const info = this.makeInfo();
-    const actionBtn = this.getActionBtn();
     const menu = this.makeMenu();
 
-    const headerImgSrc = autoPlayGif ? account.get('header') : account.get('header_static');
-    const headerMissing = (headerImgSrc.indexOf('/headers/original/missing.png') > -1);
-
+    const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
     const avatarSize = isSmallScreen ? 90 : 200;
+    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
 
     return (
-      <div className={classNames('account__header', { inactive: !!account.get('moved') })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing })}>
+      <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
+        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
           <div className='account__header__info'>
             {info}
           </div>
 
-          <img src={headerImgSrc} alt='' className='parallax' />
+          <StillImage src={account.get('header')} alt='' className='parallax' />
         </div>
 
         <div className='account__header__bar'>
@@ -314,7 +283,7 @@ class Header extends ImmutablePureComponent {
 
             {
               isSmallScreen &&
-              <div className='account-mobile-container'>
+              <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
                 <ProfileInfoPanel username={username} account={account} />
               </div>
             }
@@ -322,14 +291,11 @@ class Header extends ImmutablePureComponent {
             {
               me &&
               <div className='account__header__extra__buttons'>
-                {actionBtn}
-                {account.get('id') !== me &&
-                  <Button className='button button-alternative-2' onClick={this.props.onDirect}>
-                    <FormattedMessage
-                      id='account.message' defaultMessage='Message' values={{
-                        name: account.get('acct'),
-                      }}
-                    />
+                <ActionButton account={account} />
+                {account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
+                  <Button className='button-alternative-2' onClick={this.props.onChat}>
+                    <Icon id='comment' />
+                    <FormattedMessage id='account.message' defaultMessage='Message' />
                   </Button>
                 }
                 <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />

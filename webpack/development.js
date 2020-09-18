@@ -9,7 +9,7 @@ const { settings, output } = require('./configuration');
 const watchOptions = {};
 
 const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
-const patronUrl   = process.env.PATRON_URL  || 'http://localhost:5000';
+const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
 const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
 
 const backendEndpoints = [
@@ -22,21 +22,22 @@ const backendEndpoints = [
   '/.well-known/webfinger',
   '/static',
   '/emoji',
-  '/patron',
 ];
 
 const makeProxyConfig = () => {
   let proxyConfig = {};
+  proxyConfig['/api/patron'] = {
+    target: patronUrl,
+    secure: secureProxy,
+    changeOrigin: true,
+  };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
       target: backendUrl,
       secure: secureProxy,
+      changeOrigin: true,
     };
   });
-  proxyConfig['/patron'] = {
-    target: patronUrl,
-    secure: secureProxy,
-  };
   return proxyConfig;
 };
 

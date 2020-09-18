@@ -15,14 +15,9 @@ import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
-import {
-  FETCH_MARKERS_SUCCESS,
-  SAVE_MARKERS_SUCCESS,
-} from '../actions/markers';
 import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import compareId from '../compare_id';
-import { fromJS } from 'immutable';
 import { get } from 'lodash';
 
 const initialState = ImmutableMap({
@@ -43,6 +38,7 @@ const notificationToMap = notification => ImmutableMap({
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,
+  chat_message: notification.chat_message,
   is_seen: get(notification, ['pleroma', 'is_seen'], true),
 });
 
@@ -65,8 +61,9 @@ const normalizeNotification = (state, notification) => {
 const expandNormalizedNotifications = (state, notifications, next) => {
   let items = ImmutableList();
 
-  notifications.forEach((n, i) => {
-    items = items.set(i, notificationToMap(n));
+  notifications.forEach((n) => {
+    if (!n.account.id) return;
+    items = items.push(notificationToMap(n));
   });
 
   return state.withMutations(mutable => {
@@ -136,13 +133,6 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
 
 export default function notifications(state = initialState, action) {
   switch(action.type) {
-  case FETCH_MARKERS_SUCCESS:
-  case SAVE_MARKERS_SUCCESS:
-    const prevRead = state.get('lastRead');
-    const marker   = fromJS(action.markers);
-    const unread   = marker.getIn(['notifications', 'pleroma', 'unread_count'], state.get('unread', 0));
-    const lastRead = marker.getIn(['notifications', 'last_read_id'], prevRead);
-    return state.merge({ unread, lastRead });
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);
   case NOTIFICATIONS_EXPAND_FAIL:

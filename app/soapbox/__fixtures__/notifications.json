@@ -189,7 +189,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+          "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
         },
         "conversation_id": 1168229,
         "direct_conversation_id": null,
@@ -198,7 +198,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -439,7 +439,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+          "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
         },
         "conversation_id": 1168229,
         "direct_conversation_id": null,
@@ -448,7 +448,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -668,7 +668,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+          "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
         },
         "conversation_id": 1168229,
         "direct_conversation_id": null,
@@ -677,7 +677,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -918,7 +918,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex you dont need to write tests when your community builds a social framework that flags people not using your software as bad people. They have no choice but to eat it up bugs in all"
+          "text_plain": "@alex you dont need to write tests when your community builds a social framework that flags people not using your software as bad people. They have no choice but to eat it up bugs in all"
         },
         "conversation_id": 1168229,
         "direct_conversation_id": null,
@@ -933,7 +933,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -1140,7 +1140,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
+          "text_plain": "At 10.72% test coverage, Soapbox FE now has 2x more than MastoFE, which only has 4.21%.Pleroma FE doesn't seem to report coverage, but I suspect it's better than both of these combined.I don't know how Mastodon got away with not writing tests for so long, but I feel like there could be an entire release dedicated only to going back and writing missing tests... jesus."
         },
         "conversation_id": 1168229,
         "direct_conversation_id": null,
@@ -1149,7 +1149,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -1316,7 +1316,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex The first step to getting people to commit inhumane acts is to convince them that they are incapable of doing so."
+          "text_plain": "@alex The first step to getting people to commit inhumane acts is to convince them that they are incapable of doing so."
         },
         "conversation_id": 1117237,
         "direct_conversation_id": null,
@@ -1325,7 +1325,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -1532,7 +1532,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
+          "text_plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -1541,7 +1541,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -1714,7 +1714,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex @crockwave well, the preliminary state of the issue is not \"no it's not happening\", but rather \" let's find a way to make this possible in the generic case\", so we'll see what can be done. I think a wrapper is definitely possible but also probably expensive to maintain."
+          "text_plain": "@alex @crockwave well, the preliminary state of the issue is not \"no it's not happening\", but rather \" let's find a way to make this possible in the generic case\", so we'll see what can be done. I think a wrapper is definitely possible but also probably expensive to maintain."
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -1723,7 +1723,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -1971,7 +1971,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@crockwave I think we can achieve both those things (funding goal on homepage, Patron badge) by exposing API endpoints from fosspay.I agree a wrapper service could provide many future benefits, but I've done that exact thing before (see: Mastodon Engine: https://gitlab.com/soapbox-pub/mastodon-engine ) and it was experimental, back-breaking, and required a DEEP understanding of the underlying tech. I just don't have the time or energy to dive that deep into Phoenix right now, especially not having a strong grasp of Elixir."
+          "text_plain": "@crockwave I think we can achieve both those things (funding goal on homepage, Patron badge) by exposing API endpoints from fosspay.I agree a wrapper service could provide many future benefits, but I've done that exact thing before (see: Mastodon Engine: https://gitlab.com/soapbox-pub/mastodon-engine ) and it was experimental, back-breaking, and required a DEEP understanding of the underlying tech. I just don't have the time or energy to dive that deep into Phoenix right now, especially not having a strong grasp of Elixir."
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -1980,7 +1980,7 @@
         "in_reply_to_account_acct": "crockwave",
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -2188,7 +2188,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "Been feeling like I'm losing my mind a bit the past few days. I feel like I'm pushing heavy weights up a steep hill and it's never-ending. Can't wait to get to the top so I can sail down.Working on automated tests today."
+          "text_plain": "Been feeling like I'm losing my mind a bit the past few days. I feel like I'm pushing heavy weights up a steep hill and it's never-ending. Can't wait to get to the top so I can sail down.Working on automated tests today."
         },
         "conversation_id": 1150963,
         "direct_conversation_id": null,
@@ -2203,7 +2203,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -2438,7 +2438,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex Can you create some automated test templates, then outsource the drudgerous portion of the effort to your support team?"
+          "text_plain": "@alex Can you create some automated test templates, then outsource the drudgerous portion of the effort to your support team?"
         },
         "conversation_id": 1150963,
         "direct_conversation_id": null,
@@ -2447,7 +2447,7 @@
         "in_reply_to_account_acct": "alex",
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -2640,7 +2640,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex it's good to be thorough, and is useful if that code ever changes down the line."
+          "text_plain": "@alex it's good to be thorough, and is useful if that code ever changes down the line."
         },
         "conversation_id": 1147390,
         "direct_conversation_id": null,
@@ -2649,7 +2649,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -2834,7 +2834,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex whatever you do: KEEP GOING ALMOST THERE YOU CAN DO IT!"
+          "text_plain": "@alex whatever you do: KEEP GOING ALMOST THERE YOU CAN DO IT!"
         },
         "conversation_id": 1150963,
         "direct_conversation_id": null,
@@ -2843,7 +2843,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -3063,7 +3063,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "Been feeling like I'm losing my mind a bit the past few days. I feel like I'm pushing heavy weights up a steep hill and it's never-ending. Can't wait to get to the top so I can sail down.Working on automated tests today."
+          "text_plain": "Been feeling like I'm losing my mind a bit the past few days. I feel like I'm pushing heavy weights up a steep hill and it's never-ending. Can't wait to get to the top so I can sail down.Working on automated tests today."
         },
         "conversation_id": 1150963,
         "direct_conversation_id": null,
@@ -3078,7 +3078,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -3271,7 +3271,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex You're close to a finish line 🌈"
+          "text_plain": "@alex You're close to a finish line 🌈"
         },
         "conversation_id": 1150963,
         "direct_conversation_id": null,
@@ -3280,7 +3280,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -3515,7 +3515,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex I think a wrapper service can provide many future benefits, if the complications are manageable.  It would allow you to stay well ahead of the features development curve.  There is also great value in displaying funding goals status on the home page.  The Patron tag is also highly valuable from a social community standpoint."
+          "text_plain": "@alex I think a wrapper service can provide many future benefits, if the complications are manageable.  It would allow you to stay well ahead of the features development curve.  There is also great value in displaying funding goals status on the home page.  The Patron tag is also highly valuable from a social community standpoint."
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -3524,7 +3524,7 @@
         "in_reply_to_account_acct": "alex",
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -3765,7 +3765,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
+          "text_plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -3774,7 +3774,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -3995,7 +3995,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@lain Yeah I have no clue what the reasoning was for that one. 😆 It's crazy how \"words\" are such an ongoing issue in FOSS.A seasoned programmer once told me she's had the deepest programming debates about \"naming things.\" It's true that names are important in programming, but at the end of the day it's just code."
+          "text_plain": "@lain Yeah I have no clue what the reasoning was for that one. 😆 It's crazy how \"words\" are such an ongoing issue in FOSS.A seasoned programmer once told me she's had the deepest programming debates about \"naming things.\" It's true that names are important in programming, but at the end of the day it's just code."
         },
         "conversation_id": 1122858,
         "direct_conversation_id": null,
@@ -4004,7 +4004,7 @@
         "in_reply_to_account_acct": "lain@lain.com",
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -4191,7 +4191,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "@alex @lain The Peter Principle has a chapter on this.The less significant the decision the more people feel qualified to have an opinion on it."
+          "text_plain": "@alex @lain The Peter Principle has a chapter on this.The less significant the decision the more people feel qualified to have an opinion on it."
         },
         "conversation_id": 1122858,
         "direct_conversation_id": null,
@@ -4200,7 +4200,7 @@
         "in_reply_to_account_acct": "alex",
         "local": false,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },
@@ -4431,7 +4431,7 @@
       "pinned": false,
       "pleroma": {
         "content": {
-          "text/plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
+          "text_plain": "Pleroma Recurring Donations update: looking into other solutions, possibly working from fosspay instead: https://git.pleroma.social/pleroma/pleroma/-/issues/1853#note_62881"
         },
         "conversation_id": 1149840,
         "direct_conversation_id": null,
@@ -4440,7 +4440,7 @@
         "in_reply_to_account_acct": null,
         "local": true,
         "spoiler_text": {
-          "text/plain": ""
+          "text_plain": ""
         },
         "thread_muted": false
       },

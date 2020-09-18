@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Audio player for audio uploads.
+- Integration with Patron recurring donations platform.
+
+## [Unreleased patch]
+### Fixed
+- Composer: Forcing the scope to default after settings save.
+
+### Removed
+- Removed the app name on statuses.
+
 ## [1.0.0] - 2020-06-15
 ### Added
 - Emoji reactions.
@@ -43,5 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial beta release.
 
+[Unreleased]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v1.0.0...develop
+[Unreleased patch]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v1.0.0...stable/1.0.x
 [1.0.0]: https://gitlab.com/soapbox-pub/soapbox-fe/-/compare/v0.9.0...v1.0.0
 [0.9.0]: https://gitlab.com/soapbox-pub/soapbox-fe/-/tags/v0.9.0

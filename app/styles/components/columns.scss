@@ -205,7 +205,7 @@
 }
 
 .column-back-button {
-  background: var(--accent-color--med);
+  background: var(--accent-color--faint);
   color: var(--highlight-text-color);
   cursor: pointer;
   flex: 0 0 auto;
@@ -260,7 +260,7 @@
   position: absolute;
   right: 0;
   top: -49px;
-  
+
   @media screen and (max-width: $nav-breakpoint-2) {
     top: -35px;
     font-size: 14px;

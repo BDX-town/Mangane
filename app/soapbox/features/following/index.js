@@ -51,14 +51,14 @@ class Following extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
     isAccount: PropTypes.bool,
     unavailable: PropTypes.bool,
     diffCount: PropTypes.number,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { username }, accountId } = this.props;
 
     if (accountId && accountId !== -1) {
@@ -69,10 +69,11 @@ class Following extends ImmutablePureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.accountId && nextProps.accountId !== -1 && (nextProps.accountId !== this.props.accountId && nextProps.accountId)) {
-      this.props.dispatch(fetchAccount(nextProps.accountId));
-      this.props.dispatch(fetchFollowing(nextProps.accountId));
+  componentDidUpdate(prevProps) {
+    const { accountId, dispatch } = this.props;
+    if (accountId && accountId !== -1 && (accountId !== prevProps.accountId && accountId)) {
+      dispatch(fetchAccount(accountId));
+      dispatch(fetchFollowing(accountId));
     }
   }
 

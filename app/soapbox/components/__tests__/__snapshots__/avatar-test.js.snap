@@ -2,30 +2,36 @@
 
 exports[`<Avatar /> Autoplay renders an animated avatar 1`] = `
 <div
-  className="account__avatar"
-  onMouseEnter={[Function]}
-  onMouseLeave={[Function]}
+  className="account__avatar still-image"
   style={
     Object {
-      "backgroundImage": "url(/animated/alice.gif)",
       "height": "100px",
       "width": "100px",
     }
   }
-/>
+>
+  <img
+    alt=""
+    onLoad={[Function]}
+    src="/animated/alice.gif"
+  />
+</div>
 `;
 
 exports[`<Avatar /> Still renders a still avatar 1`] = `
 <div
-  className="account__avatar"
-  onMouseEnter={[Function]}
-  onMouseLeave={[Function]}
+  className="account__avatar still-image"
   style={
     Object {
-      "backgroundImage": "url(/static/alice.jpg)",
       "height": "100px",
       "width": "100px",
     }
   }
-/>
+>
+  <img
+    alt=""
+    onLoad={[Function]}
+    src="/animated/alice.gif"
+  />
+</div>
 `;

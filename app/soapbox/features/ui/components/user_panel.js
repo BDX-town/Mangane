@@ -9,7 +9,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { acctFull } from 'soapbox/utils/accounts';
-import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import { List as ImmutableList } from 'immutable';
 
 class UserPanel extends ImmutablePureComponent {
 
@@ -20,17 +22,18 @@ class UserPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, domain, autoPlayGif } = this.props;
+    const { account, intl, domain } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
     return (
       <div className='user-panel'>
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
-            <img src={autoPlayGif ? account.get('header') : account.get('header_static')} alt='' />
+            <StillImage src={account.get('header')} alt='' />
           </div>
 
           <div className='user-panel__profile'>
@@ -45,6 +48,7 @@ class UserPanel extends ImmutablePureComponent {
               <h1>
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
+                  {verified && <VerificationBadge />}
                   <small className='user-panel__account__username'>@{acctFull(account)}</small>
                 </Link>
               </h1>
@@ -52,26 +56,26 @@ class UserPanel extends ImmutablePureComponent {
 
             <div className='user-panel__stats-block'>
 
-              <div className='user-panel-stats-item'>
+              {account.get('statuses_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('statuses_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.posts' defaultMessage='Posts' /></span>
                 </Link>
-              </div>
+              </div>}
 
-              <div className='user-panel-stats-item'>
+              {account.get('followers_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('followers_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
                 </Link>
-              </div>
+              </div>}
 
-              <div className='user-panel-stats-item'>
+              {account.get('following_count') && <div className='user-panel-stats-item'>
                 <Link to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
                   <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('following_count'))}</strong>
                   <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.follows' defaultMessage='Follows' /></span>
                 </Link>
-              </div>
+              </div>}
 
             </div>
 
@@ -84,18 +88,17 @@ class UserPanel extends ImmutablePureComponent {
 
 };
 
-
-const mapStateToProps = state => {
-  const me = state.get('me');
+const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  return {
-    account: getAccount(state, me),
-    autoPlayGif: getSettings(state).get('autoPlayGif'),
-  };
+  const mapStateToProps = (state, { accountId }) => ({
+    account: getAccount(state, accountId),
+  });
+
+  return mapStateToProps;
 };
 
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(makeMapStateToProps, null, null, {
     forwardRef: true,
   })(UserPanel));

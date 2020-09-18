@@ -3,11 +3,9 @@
 exports[`<LoginForm /> renders correctly 1`] = `
 <form
   className="simple_form new_user"
-  onSubmit={[Function]}
+  method="post"
 >
-  <fieldset
-    disabled={false}
-  >
+  <fieldset>
     <div
       className="fields-group"
     >

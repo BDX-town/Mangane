@@ -6,11 +6,16 @@ import { is } from 'immutable';
 import IconButton from './icon_button';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
+import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
+import Icon from 'soapbox/components/icon';
+import StillImage from 'soapbox/components/still_image';
+
+const MAX_FILENAME_LENGTH = 45;
 
 const messages = defineMessages({
   toggle_visible: { id: 'media_gallery.toggle_visible', defaultMessage: 'Toggle visibility' },
@@ -60,8 +65,7 @@ class Item extends React.PureComponent {
 
   hoverToPlay() {
     const { attachment, autoPlayGif } = this.props;
-    return !autoPlayGif &&
-      (attachment.get('type') === 'gifv' || attachment.getIn(['pleroma', 'mime_type']) === 'image/gif');
+    return !autoPlayGif && attachment.get('type') === 'gifv';
   }
 
   handleClick = (e) => {
@@ -72,7 +76,7 @@ class Item extends React.PureComponent {
       e.preventDefault();
     } else {
       if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
-        if (!this.canvas && this.hoverToPlay()) {
+        if (this.hoverToPlay()) {
           e.target.pause();
           e.target.currentTime = 0;
         }
@@ -112,23 +116,12 @@ class Item extends React.PureComponent {
     this.canvas = c;
   }
 
-  setImageRef = i => {
-    this.image = i;
-  }
-
   handleImageLoad = () => {
     this.setState({ loaded: true });
-    if (this.hoverToPlay()) {
-      const image = this.image;
-      const canvas = this.canvas;
-      canvas.width = image.naturalWidth;
-      canvas.height = image.naturalHeight;
-      canvas.getContext('2d').drawImage(image, 0, 0);
-    }
   }
 
   render() {
-    const { attachment, standalone, displayWidth, visible, dimensions, autoPlayGif } = this.props;
+    const { attachment, standalone, visible, dimensions, autoPlayGif } = this.props;
 
     let width  = 100;
     let height = '100%';
@@ -153,48 +146,29 @@ class Item extends React.PureComponent {
     let thumbnail = '';
 
     if (attachment.get('type') === 'unknown') {
+      const filename = truncateFilename(attachment.get('remote_url'), MAX_FILENAME_LENGTH);
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
             <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
+            <span className='media-gallery__item__icons'><Icon id='file' /></span>
+            <span className='media-gallery__filename__label'>{filename}</span>
           </a>
         </div>
       );
     } else if (attachment.get('type') === 'image') {
       const previewUrl   = attachment.get('preview_url');
-      const previewWidth = attachment.getIn(['meta', 'small', 'width']);
 
       const originalUrl   = attachment.get('url');
-      const originalWidth = attachment.getIn(['meta', 'original', 'width']);
-
-      const hasSize = typeof originalWidth === 'number' && typeof previewWidth === 'number';
-
-      const srcSet = hasSize ? `${originalUrl} ${originalWidth}w, ${previewUrl} ${previewWidth}w` : null;
-      const sizes  = hasSize && (displayWidth > 0) ? `${displayWidth * (width / 100)}px` : null;
-
-      const focusX = attachment.getIn(['meta', 'focus', 'x']) || 0;
-      const focusY = attachment.getIn(['meta', 'focus', 'y']) || 0;
-      const x      = ((focusX /  2) + .5) * 100;
-      const y      = ((focusY / -2) + .5) * 100;
 
       thumbnail = (
         <a
-          className={classNames('media-gallery__item-thumbnail', { 'media-gallery__item-thumbnail--play-on-hover': this.hoverToPlay() })}
+          className='media-gallery__item-thumbnail'
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
         >
-          <img
-            src={previewUrl}
-            srcSet={srcSet}
-            sizes={sizes}
-            alt={attachment.get('description')}
-            title={attachment.get('description')}
-            style={{ objectPosition: `${x}% ${y}%` }}
-            onLoad={this.handleImageLoad}
-            ref={this.setImageRef}
-          />
-          {this.hoverToPlay() && <canvas ref={this.setCanvasRef} style={{ objectPosition: `${x}% ${y}%` }} />}
+          <StillImage src={previewUrl} alt={attachment.get('description')} />
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
@@ -225,10 +199,28 @@ class Item extends React.PureComponent {
           <span className='media-gallery__gifv__label'>GIF</span>
         </div>
       );
+    } else if (attachment.get('type') === 'audio') {
+      const remoteURL = attachment.get('remote_url');
+      const originalUrl = attachment.get('url');
+      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
+      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      thumbnail = (
+        <a
+          className={classNames('media-gallery__item-thumbnail')}
+          href={attachment.get('remote_url') || originalUrl}
+          onClick={this.handleClick}
+          target='_blank'
+          alt={attachment.get('description')}
+          title={attachment.get('description')}
+        >
+          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+        </a>
+      );
     }
 
     return (
-      <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+      <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.get('type')}`, { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
         <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && this.state.loaded })} />
         {visible && thumbnail}
       </div>
@@ -269,12 +261,12 @@ class MediaGallery extends React.PureComponent {
     width: this.props.defaultWidth,
   };
 
-  componentWillReceiveProps(nextProps) {
-    const { displayMedia } = this.props;
-    if (!is(nextProps.media, this.props.media) && nextProps.visible === undefined) {
-      this.setState({ visible: displayMedia !== 'hide_all' && !nextProps.sensitive || displayMedia === 'show_all' });
-    } else if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
-      this.setState({ visible: nextProps.visible });
+  componentDidUpdate(prevProps) {
+    const { media, visible, sensitive } = this.props;
+    if (!is(media, prevProps.media) && visible === undefined) {
+      this.setState({ visible: prevProps.displayMedia !== 'hide_all' && !sensitive || prevProps.displayMedia === 'show_all' });
+    } else if (!is(visible, prevProps.visible) && visible !== undefined) {
+      this.setState({ visible });
     }
   }
 

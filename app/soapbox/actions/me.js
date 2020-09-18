@@ -7,6 +7,7 @@ export const ME_FETCH_FAIL    = 'ME_FETCH_FAIL';
 export const ME_FETCH_SKIP    = 'ME_FETCH_SKIP';
 
 export const ME_PATCH_REQUEST = 'ME_PATCH_REQUEST';
+export const ME_PATCH_SUCCESS = 'ME_PATCH_SUCCESS';
 export const ME_PATCH_FAIL    = 'ME_PATCH_FAIL';
 
 const hasToken = getState => getState().hasIn(['auth', 'user', 'access_token']);
@@ -35,7 +36,7 @@ export function patchMe(params) {
     return api(getState)
       .patch('/api/v1/accounts/update_credentials', params)
       .then(response => {
-        dispatch(fetchMeSuccess(response.data));
+        dispatch(patchMeSuccess(response.data));
       }).catch(error => {
         dispatch(patchMeFail(error));
       });
@@ -69,6 +70,16 @@ export function fetchMeFail(error) {
 export function patchMeRequest() {
   return {
     type: ME_PATCH_REQUEST,
+  };
+}
+
+export function patchMeSuccess(me) {
+  return (dispatch, getState) => {
+    dispatch(importFetchedAccount(me));
+    dispatch({
+      type: ME_PATCH_SUCCESS,
+      me,
+    });
   };
 }
 

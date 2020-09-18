@@ -1,7 +1,7 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 import { fromJS } from 'immutable';
-import { Avatar } from '../avatar';
+import { createComponent } from 'soapbox/test_helpers';
+import Avatar from '../avatar';
 
 describe('<Avatar />', () => {
   const account = fromJS({
@@ -16,7 +16,7 @@ describe('<Avatar />', () => {
 
   describe('Autoplay', () => {
     it('renders an animated avatar', () => {
-      const component = renderer.create(<Avatar account={account} animate size={size} />);
+      const component = createComponent(<Avatar account={account} animate size={size} />);
       const tree      = component.toJSON();
 
       expect(tree).toMatchSnapshot();
@@ -25,7 +25,7 @@ describe('<Avatar />', () => {
 
   describe('Still', () => {
     it('renders a still avatar', () => {
-      const component = renderer.create(<Avatar account={account} size={size} />);
+      const component = createComponent(<Avatar account={account} size={size} />);
       const tree      = component.toJSON();
 
       expect(tree).toMatchSnapshot();

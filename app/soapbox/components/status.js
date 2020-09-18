@@ -12,12 +12,14 @@ import AttachmentList from './attachment_list';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video } from '../features/ui/util/async-components';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { NavLink } from 'react-router-dom';
+import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -73,10 +75,12 @@ class Status extends ImmutablePureComponent {
     onPin: PropTypes.func,
     onOpenMedia: PropTypes.func,
     onOpenVideo: PropTypes.func,
+    onOpenAudio: PropTypes.func,
     onBlock: PropTypes.func,
     onEmbed: PropTypes.func,
     onHeightChange: PropTypes.func,
     onToggleHidden: PropTypes.func,
+    onShowHoverProfileCard: PropTypes.func,
     muted: PropTypes.bool,
     hidden: PropTypes.bool,
     unread: PropTypes.bool,
@@ -145,14 +149,16 @@ class Status extends ImmutablePureComponent {
   }
 
   componentWillUnmount() {
-    if (this.node && this.props.getScrollPosition) {
-      const position = this.props.getScrollPosition();
-      if (position !== null && this.node.offsetTop < position.top) {
-        requestAnimationFrame(() => {
-          this.props.updateScrollBottom(position.height - position.top);
-        });
-      }
-    }
+    // FIXME: Run this code only when a status is being deleted.
+    //
+    // if (this.node && this.props.getScrollPosition) {
+    //   const position = this.props.getScrollPosition();
+    //   if (position !== null && this.node.offsetTop < position.top) {
+    //     requestAnimationFrame(() => {
+    //       this.props.updateScrollBottom(position.height - position.top);
+    //     });
+    //   }
+    // }
   }
 
   handleToggleMediaVisibility = () => {
@@ -187,15 +193,23 @@ class Status extends ImmutablePureComponent {
   };
 
   renderLoadingMediaGallery() {
-    return <div className='media_gallery' style={{ height: '110px' }} />;
+    return <div className='media_gallery' style={{ height: '285px' }} />;
   }
 
   renderLoadingVideoPlayer() {
-    return <div className='media-spoiler-video' style={{ height: '110px' }} />;
+    return <div className='media-spoiler-video' style={{ height: '285px' }} />;
+  }
+
+  renderLoadingAudioPlayer() {
+    return <div className='media-spoiler-audio' style={{ height: '285px' }} />;
   }
 
   handleOpenVideo = (media, startTime) => {
     this.props.onOpenVideo(media, startTime);
+  }
+
+  handleOpenAudio = (media, startTime) => {
+    this.props.OnOpenAudio(media, startTime);
   }
 
   handleHotkeyReply = e => {
@@ -256,6 +270,7 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
+    let poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
@@ -323,8 +338,9 @@ class Status extends ImmutablePureComponent {
     }
 
     if (status.get('poll')) {
-      media = <PollContainer pollId={status.get('poll')} />;
-    } else if (status.get('media_attachments').size > 0) {
+      poll = <PollContainer pollId={status.get('poll')} />;
+    }
+    if (status.get('media_attachments').size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -345,13 +361,31 @@ class Status extends ImmutablePureComponent {
                 alt={video.get('description')}
                 aspectRatio={video.getIn(['meta', 'small', 'aspect'])}
                 width={this.props.cachedMediaWidth}
-                height={110}
+                height={285}
                 inline
                 sensitive={status.get('sensitive')}
                 onOpenVideo={this.handleOpenVideo}
                 cacheWidth={this.props.cacheMediaWidth}
                 visible={this.state.showMedia}
                 onToggleVisibility={this.handleToggleMediaVisibility}
+              />
+            )}
+          </Bundle>
+        );
+      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+        const audio = status.getIn(['media_attachments', 0]);
+
+        media = (
+          <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
+            {Component => (
+              <Component
+                src={audio.get('url')}
+                alt={audio.get('description')}
+                inline
+                sensitive={status.get('sensitive')}
+                cacheWidth={this.props.cacheMediaWidth}
+                visible={this.state.showMedia}
+                onOpenAudio={this.handleOpenAudio}
               />
             )}
           </Bundle>
@@ -363,7 +397,7 @@ class Status extends ImmutablePureComponent {
               <Component
                 media={status.get('media_attachments')}
                 sensitive={status.get('sensitive')}
-                height={110}
+                height={285}
                 onOpenMedia={this.props.onOpenMedia}
                 cacheWidth={this.props.cacheMediaWidth}
                 defaultWidth={this.props.cachedMediaWidth}
@@ -408,6 +442,8 @@ class Status extends ImmutablePureComponent {
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
+    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
+    const domain = getDomain(status.get('account'));
 
     return (
       <HotKeys handlers={handlers}>
@@ -421,13 +457,23 @@ class Status extends ImmutablePureComponent {
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </NavLink>
 
-              <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                <div className='status__avatar'>
-                  {statusAvatar}
-                </div>
+              {favicon &&
+                <div className='status__favicon'>
+                  <img src={favicon} alt='' title={domain} />
+                </div>}
 
-                <DisplayName account={status.get('account')} others={otherAccounts} />
-              </NavLink>
+              <div className='status__profile'>
+                <div className='status__avatar'>
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
+                      {statusAvatar}
+                    </NavLink>
+                  </HoverRefWrapper>
+                </div>
+                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
+                  <DisplayName account={status.get('account')} others={otherAccounts} />
+                </NavLink>
+              </div>
             </div>
 
             {!group && status.get('group') && (
@@ -446,6 +492,7 @@ class Status extends ImmutablePureComponent {
             />
 
             {media}
+            {poll}
 
             {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
               <button className='status__content__read-more-button' onClick={this.handleClick}>

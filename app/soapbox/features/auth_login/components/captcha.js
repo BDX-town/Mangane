@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Map as ImmutableMap } from 'immutable';
 import { fetchCaptcha } from 'soapbox/actions/auth';
 import { TextInput } from 'soapbox/features/forms';
+import { FormattedMessage } from 'react-intl';
 
 const noOp = () => {};
 
@@ -15,6 +16,7 @@ class CaptchaField extends React.Component {
     onChange: PropTypes.func,
     onFetch: PropTypes.func,
     onFetchFail: PropTypes.func,
+    onClick: PropTypes.func,
     dispatch: PropTypes.func,
     refreshInterval: PropTypes.number,
     idempotencyKey: PropTypes.string,
@@ -24,6 +26,7 @@ class CaptchaField extends React.Component {
     onChange: noOp,
     onFetch: noOp,
     onFetchFail: noOp,
+    onClick: noOp,
     refreshInterval: 5*60*1000, // 5 minutes, Pleroma default
   }
 
@@ -61,7 +64,7 @@ class CaptchaField extends React.Component {
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.fetchCaptcha();
     this.startRefresh(); // Refresh periodically
   }
@@ -79,10 +82,16 @@ class CaptchaField extends React.Component {
   render() {
     const { captcha } = this.state;
     const { onChange } = this.props;
+    const { onClick } = this.props;
 
     switch(captcha.get('type')) {
     case 'native':
-      return <NativeCaptchaField captcha={captcha} onChange={onChange} />;
+      return (
+        <div>
+          <p>{<FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />}</p>
+          <NativeCaptchaField captcha={captcha} onChange={onChange} onClick={onClick} />
+        </div>
+      );
     case 'none':
     default:
       return null;
@@ -91,9 +100,9 @@ class CaptchaField extends React.Component {
 
 }
 
-export const NativeCaptchaField = ({ captcha, onChange }) => (
-  <div className='captcha'>
-    <img alt='captcha' src={captcha.get('url')} />
+export const NativeCaptchaField = ({ captcha, onChange, onClick }) => (
+  <div className='captcha' >
+    <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
     <TextInput
       placeholder='Enter the pictured text'
       name='captcha_solution'
@@ -107,4 +116,5 @@ export const NativeCaptchaField = ({ captcha, onChange }) => (
 NativeCaptchaField.propTypes = {
   captcha: ImmutablePropTypes.map.isRequired,
   onChange: PropTypes.func,
+  onClick: PropTypes.func,
 };

@@ -16,14 +16,16 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
+import { fetchReports } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
+import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
-import WhoToFollowPanel from './components/who_to_follow_panel';
 import LinkFooter from './components/link_footer';
+import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -34,6 +36,9 @@ import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
+import { isStaff } from 'soapbox/utils/accounts';
+import ChatPanes from 'soapbox/features/chats/components/chat_panes';
+import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 
 import {
   Status,
@@ -64,6 +69,7 @@ import {
   // GroupTimeline,
   ListTimeline,
   Lists,
+  Bookmarks,
   // GroupMembers,
   // GroupRemovedAccounts,
   // GroupCreate,
@@ -71,8 +77,12 @@ import {
   LoginPage,
   Preferences,
   EditProfile,
+  SoapboxConfig,
   PasswordReset,
   SecurityForm,
+  MfaForm,
+  ChatIndex,
+  ChatRoom,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -86,7 +96,7 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const meUsername = state.getIn(['accounts', me, 'username']);
+  const account = state.getIn(['accounts', me]);
 
   return {
     isComposing: state.getIn(['compose', 'is_composing']),
@@ -96,7 +106,7 @@ const mapStateToProps = state => {
     accessToken: state.getIn(['auth', 'user', 'access_token']),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
-    meUsername,
+    account,
   };
 };
 
@@ -135,25 +145,20 @@ const LAYOUT = {
   },
   DEFAULT: {
     LEFT: [
-      <WhoToFollowPanel key='0' />,
       <LinkFooter key='1' />,
     ],
     RIGHT: [
-      // <GroupSidebarPanel key='0' />
+      <FeaturesPanel key='0' />,
     ],
   },
   STATUS: {
     TOP: null,
     LEFT: null,
     RIGHT: [
-      // <GroupSidebarPanel key='0' />,
-      <WhoToFollowPanel key='1' />,
       <LinkFooter key='2' />,
     ],
   },
 };
-
-const shouldHideFAB = path => path.match(/^\/posts\/|^\/search|^\/getting-started/);
 
 class SwitchingColumnsArea extends React.PureComponent {
 
@@ -167,7 +172,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     mobile: isMobile(window.innerWidth),
   };
 
-  componentWillMount() {
+  componentDidMount() {
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
@@ -195,12 +200,13 @@ class SwitchingColumnsArea extends React.PureComponent {
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
-        <WrappedRoute path='/auth/edit' component={SecurityForm} exact />
+        <WrappedRoute path='/auth/edit' layout={LAYOUT.DEFAULT} component={SecurityForm} exact />
+        <WrappedRoute path='/auth/mfa' layout={LAYOUT.DEFAULT} component={MfaForm} exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
-        <WrappedRoute path='/messages' component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
@@ -227,10 +233,14 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/lists' layout={LAYOUT.DEFAULT} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
+        <WrappedRoute path='/bookmarks' layout={LAYOUT.DEFAULT} component={Bookmarks} content={children} />
 
         <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
 
         <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
+
+        <WrappedRoute path='/chats' exact layout={LAYOUT.DEFAULT} component={ChatIndex} content={children} />
+        <WrappedRoute path='/chats/:chatId' layout={LAYOUT.DEFAULT} component={ChatRoom} content={children} />
 
         <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
         <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
@@ -253,6 +263,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
+        <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
       </Switch>
@@ -281,11 +292,12 @@ class UI extends React.PureComponent {
     dropdownMenuIsOpen: PropTypes.bool,
     me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
-    meUsername: PropTypes.string,
+    account: PropTypes.object,
   };
 
   state = {
     draggingOver: false,
+    mobile: isMobile(window.innerWidth),
   };
 
   handleBeforeUnload = (e) => {
@@ -394,10 +406,17 @@ class UI extends React.PureComponent {
     }
   }
 
+  handleResize = debounce(() => {
+    this.setState({ mobile: isMobile(window.innerWidth) });
+  }, 500, {
+    trailing: true,
+  });
 
-  componentWillMount() {
-    const { me } = this.props;
+  componentDidMount() {
+    const { account } = this.props;
+    if (!account) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
+    window.addEventListener('resize', this.handleResize, { passive: true });
 
     document.addEventListener('dragenter', this.handleDragEnter, false);
     document.addEventListener('dragover', this.handleDragOver, false);
@@ -413,18 +432,16 @@ class UI extends React.PureComponent {
       window.setTimeout(() => Notification.requestPermission(), 120 * 1000);
     }
 
-    if (me) {
+    if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
+      this.props.dispatch(fetchChats());
       // this.props.dispatch(fetchGroups('member'));
+      if (isStaff(account))
+        this.props.dispatch(fetchReports({ state: 'open' }));
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
-  }
-
-  componentDidMount() {
-    const { me } = this.props;
-    if (!me) return;
     this.connectStreaming();
   }
 
@@ -434,6 +451,7 @@ class UI extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
+    window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
     document.removeEventListener('drop', this.handleDrop);
@@ -524,18 +542,24 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyGoToFavourites = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}/favorites`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}/pins`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
-    const { meUsername } = this.props;
-    this.context.router.history.push(`/${meUsername}`);
+    const { account } = this.props;
+    if (!account) return;
+
+    this.context.router.history.push(`/${account.get('username')}`);
   }
 
   handleHotkeyGoToBlocked = () => {
@@ -554,9 +578,19 @@ class UI extends React.PureComponent {
     this.props.dispatch(openModal('COMPOSE'));
   }
 
+  shouldHideFAB = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
+  }
+
+  isChatRoomLocation = () => {
+    const path = this.context.router.history.location.pathname;
+    return path.match(/^\/chats\/(.*)/);
+  }
+
   render() {
     const { streamingUrl } = this.props;
-    const { draggingOver } = this.state;
+    const { draggingOver, mobile } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
     if (me === null || !streamingUrl) return null;
@@ -579,11 +613,31 @@ class UI extends React.PureComponent {
       goToRequests: this.handleHotkeyGoToRequests,
     } : {};
 
-    const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <button key='floating-action-button' onClick={this.handleOpenComposeModal} className='floating-action-button' aria-label={intl.formatMessage(messages.publish)}><Icon id='pencil' fixedWidth /></button>;
+    const fabElem = (
+      <button
+        key='floating-action-button'
+        onClick={this.handleOpenComposeModal}
+        className='floating-action-button'
+        aria-label={intl.formatMessage(messages.publish)}
+      >
+        <Icon id='pencil' fixedWidth />
+      </button>
+    );
+
+    const floatingActionButton = this.shouldHideFAB() ? null : fabElem;
+
+    const classnames = classNames('ui', {
+      'is-composing': isComposing,
+      'ui--chatroom': this.isChatRoomLocation(),
+    });
+
+    const style = {
+      pointerEvents: dropdownMenuIsOpen ? 'none' : null,
+    };
 
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
-        <div className={classNames('ui', { 'is-composing': isComposing })} ref={this.setRef} style={{ pointerEvents: dropdownMenuIsOpen ? 'none' : null }}>
+        <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
             {children}
@@ -596,6 +650,8 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
+          {me && !mobile && <ChatPanes />}
+          <ProfileHoverCard />
         </div>
       </HotKeys>
     );

@@ -19,6 +19,19 @@
   }
 }
 
+.emoji-react--reblogs {
+  color: var(--primary-text-color--faint);
+  text-decoration: none;
+  vertical-align: middle;
+  display: inline-flex;
+
+  i.fa {
+    color: var(--highlight-text-color);
+    font-size: 20px;
+    margin-right: 0.2em;
+  }
+}
+
 .emoji-reacts {
   display: inline-flex;
   flex-direction: row-reverse;
@@ -31,7 +44,7 @@
 
 .emoji-reacts-container {
   display: inline-flex;
-  margin-right: auto;
+  margin-right: 0.4em;
 
   &:hover {
     .emoji-react {
@@ -52,6 +65,7 @@
 .emoji-react__count {
   font-size: 12px;
   font-weight: bold;
+  transform: translateY(2px);
 }
 
 .emoji-react-selector {

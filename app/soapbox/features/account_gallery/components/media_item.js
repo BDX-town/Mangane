@@ -8,6 +8,7 @@ import classNames from 'classnames';
 import { decode } from 'blurhash';
 import { isIOS } from 'soapbox/is_mobile';
 import { getSettings } from 'soapbox/actions/settings';
+import StillImage from 'soapbox/components/still_image';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
@@ -113,12 +114,10 @@ class MediaItem extends ImmutablePureComponent {
       const y      = ((focusY / -2) + .5) * 100;
 
       thumbnail = (
-        <img
+        <StillImage
           src={attachment.get('preview_url')}
           alt={attachment.get('description')}
-          title={attachment.get('description')}
           style={{ objectPosition: `${x}% ${y}%` }}
-          onLoad={this.handleImageLoad}
         />
       );
     } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {
@@ -145,6 +144,16 @@ class MediaItem extends ImmutablePureComponent {
           />
 
           <span className='media-gallery__gifv__label'>GIF</span>
+        </div>
+      );
+    } else if (attachment.get('type') === 'audio') {
+      const remoteURL = attachment.get('remote_url');
+      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
+      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      thumbnail = (
+        <div className='media-gallery__item-thumbnail'>
+          <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
+          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
         </div>
       );
     }

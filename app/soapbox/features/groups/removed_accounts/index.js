@@ -33,19 +33,19 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const { params: { id } } = this.props;
 
     this.props.dispatch(fetchRemovedAccounts(id));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.id !== this.props.params.id) {
-      this.props.dispatch(fetchRemovedAccounts(nextProps.params.id));
+  componentDidUpdate(prevProps) {
+    if (this.props.params.id !== prevProps.params.id) {
+      this.props.dispatch(fetchRemovedAccounts(this.props.params.id));
     }
   }
 

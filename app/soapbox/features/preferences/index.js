@@ -13,7 +13,7 @@ import {
   RadioItem,
   SelectDropdown,
 } from 'soapbox/features/forms';
-import SettingsCheckbox from './components/settings_checkbox';
+import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 
 const languages = {
   en: 'English',
@@ -79,8 +79,6 @@ const languages = {
 
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
-  themeLight: { id: 'preferences.options.theme_light', defaultMessage: 'Light' },
-  themeDark: { id: 'preferences.options.theme_dark', defaultMessage: 'Dark' },
 });
 
 const mapStateToProps = state => ({
@@ -114,15 +112,6 @@ class Preferences extends ImmutablePureComponent {
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm>
-          <FieldsGroup>
-            <SelectDropdown
-              label={<FormattedMessage id='preferences.fields.theme_label' defaultMessage='Theme' />}
-              items={{ light: intl.formatMessage(messages.themeLight), dark: intl.formatMessage(messages.themeDark) }}
-              defaultValue={settings.get('themeMode')}
-              onChange={this.onSelectChange(['themeMode'])}
-            />
-          </FieldsGroup>
-
           <FieldsGroup>
             <SelectDropdown
               label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}

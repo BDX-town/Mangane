@@ -5,9 +5,19 @@ const getAccountBase         = (state, id) => state.getIn(['accounts', id], null
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
 const getAccountRelationship = (state, id) => state.getIn(['relationships', id], null);
 const getAccountMoved        = (state, id) => state.getIn(['accounts', state.getIn(['accounts', id, 'moved'])]);
+const getAccountPatron       = (state, id) => {
+  const url = state.getIn(['accounts', id, 'url']);
+  return state.getIn(['patron', 'accounts', url]);
+};
 
 export const makeGetAccount = () => {
-  return createSelector([getAccountBase, getAccountCounters, getAccountRelationship, getAccountMoved], (base, counters, relationship, moved) => {
+  return createSelector([
+    getAccountBase,
+    getAccountCounters,
+    getAccountRelationship,
+    getAccountMoved,
+    getAccountPatron,
+  ], (base, counters, relationship, moved, patron) => {
     if (base === null) {
       return null;
     }
@@ -15,6 +25,7 @@ export const makeGetAccount = () => {
     return base.merge(counters).withMutations(map => {
       map.set('relationship', relationship);
       map.set('moved', moved);
+      map.set('patron', patron);
     });
   });
 };
@@ -146,3 +157,22 @@ export const getAccountGallery = createSelector([
       .map(media => media.merge({ status, account })));
   }, ImmutableList());
 });
+
+export const makeGetChat = () => {
+  return createSelector(
+    [
+      (state, { id }) => state.getIn(['chats', id]),
+      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', id, 'account'])]),
+      (state, { last_message }) => state.getIn(['chat_messages', last_message]),
+    ],
+
+    (chat, account, lastMessage) => {
+      if (!chat) return null;
+
+      return chat.withMutations(map => {
+        map.set('account', account);
+        map.set('last_message', lastMessage);
+      });
+    }
+  );
+};

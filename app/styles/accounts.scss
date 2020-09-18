@@ -13,7 +13,7 @@
     &:active,
     &:focus {
       .card__bar {
-        background: var(--brand-color--med);
+        background: var(--foreground-color);
       }
     }
   }
@@ -24,7 +24,7 @@
     background: var(--background-color);
     border-radius: 4px 4px 0 0;
 
-    img {
+    .still-image {
       display: block;
       width: 100%;
       height: 100%;
@@ -61,7 +61,7 @@
       height: 48px;
       padding-top: 2px;
 
-      img {
+      .still-image {
         width: 100%;
         height: 100%;
         display: block;
@@ -91,6 +91,11 @@
         font-weight: 400;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+
+      bdi,
+      span.verified-icon {
+        display: inline-block;
       }
     }
   }
@@ -322,9 +327,10 @@
 
 .account {
   padding: 10px;
+  position: relative;
 
   &:not(:last-of-type) {
-  border-bottom: 1px solid var(--brand-color--med);
+    border-bottom: 1px solid var(--brand-color--med);
   }
 
   &.compact {
@@ -399,6 +405,10 @@ a .account__avatar {
     bottom: 0;
     right: 0;
     z-index: 1;
+
+    &.still-image {
+      position: absolute;
+    }
   }
 }
 
@@ -580,7 +590,7 @@ a .account__avatar {
 }
 
 .account__section-headline {
-  background: var(--accent-color--faint);
+  background: var(--foreground-color);
 
   button,
   a {

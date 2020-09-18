@@ -75,8 +75,8 @@ export default class Card extends React.PureComponent {
     embedded: false,
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (!Immutable.is(this.props.card, nextProps.card)) {
+  componentDidUpdate(prevProps) {
+    if (!Immutable.is(prevProps.card, this.props.card)) {
       this.setState({ embedded: false });
     }
   }
@@ -121,9 +121,12 @@ export default class Card extends React.PureComponent {
 
   renderVideo() {
     const { card }  = this.props;
-    const content   = { __html: addAutoPlay(card.get('html')) };
+    const cardWidth  = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
+    const cardHeight = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
+    const html      = card.get('html', card.getIn(['pleroma', 'opengraph', 'html']));
+    const content   = { __html: addAutoPlay(html) };
     const { width } = this.state;
-    const ratio     = card.get('width') / card.get('height');
+    const ratio     = cardWidth / cardHeight;
     const height    = width / ratio;
 
     return (
@@ -144,12 +147,14 @@ export default class Card extends React.PureComponent {
       return null;
     }
 
+    const cardWidth   = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
+    const cardHeight  = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
     const provider    = card.get('provider_name').length === 0 ? decodeIDNA(getHostname(card.get('url'))) : card.get('provider_name');
-    const horizontal  = (!compact && card.get('width') > card.get('height') && (card.get('width') + 100 >= width)) || card.get('type') !== 'link' || embedded;
-    const interactive = card.get('type') !== 'link';
+    const interactive = card.get('type') !== 'link' || card.getIn(['pleroma', 'opengraph', 'html']);
+    const horizontal  = (!compact && cardWidth > cardHeight && (cardWidth + 100 >= width)) || interactive || embedded;
     const className   = classnames('status-card', { horizontal, compact, interactive });
     const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
-    const ratio       = card.get('width') / card.get('height');
+    const ratio       = cardWidth / cardHeight;
     const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
     const description = (
@@ -161,7 +166,8 @@ export default class Card extends React.PureComponent {
     );
 
     let embed     = '';
-    let thumbnail = <div style={{ backgroundImage: `url(${card.get('image')})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
+    const imageUrl = card.get('image') || card.getIn(['pleroma', 'opengraph', 'thumbnail_url']);
+    let thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
 
     if (interactive) {
       if (embedded) {

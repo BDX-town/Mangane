@@ -284,11 +284,21 @@
     .compose-form__upload-thumbnail {
       border-radius: 4px;
       background-position: center;
-      background-size: cover;
+      background-size: contain;
       background-repeat: no-repeat;
       height: 140px;
       width: 100%;
       overflow: hidden;
+
+      &.video {
+        background-image: url('../images/video-placeholder.png');
+        background-size: cover;
+      }
+
+      &.audio {
+        background-image: url('../images/audio-placeholder.png');
+        background-size: cover;
+      }
     }
   } // end .compose-form .compose-form__modifiers
 
@@ -298,6 +308,7 @@
     display: flex;
     justify-content: space-between;
     flex: 0 0 auto;
+    border-radius: 0 0 5px 5px;
 
     .compose-form__buttons {
       display: flex;

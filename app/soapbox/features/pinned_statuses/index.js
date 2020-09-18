@@ -31,7 +31,7 @@ class PinnedStatuses extends ImmutablePureComponent {
     isMyAccount: PropTypes.bool.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchPinnedStatuses());
   }
 

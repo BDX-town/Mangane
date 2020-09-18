@@ -1,0 +1,21 @@
+.theme-toggle {
+  .setting-toggle {
+
+    &__label {
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+
+    .react-toggle {
+      vertical-align: middle;
+
+      &-track-check,
+      &-track-x {
+        display: flex;
+        align-items: center;
+        height: 15px;
+        color: #fff;
+      }
+    }
+  }
+}

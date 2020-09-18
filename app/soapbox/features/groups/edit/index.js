@@ -55,15 +55,14 @@ class Edit extends React.PureComponent {
     setUp: PropTypes.func.isRequired,
   };
 
-  componentWillMount(nextProps) {
-    if (this.props.group) {
-      this.props.setUp(this.props.group);
-    }
+  constructor(props) {
+    super(props);
+    if (props.group) props.setUp(props.group);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.group && nextProps.group) {
-      this.props.setUp(nextProps.group);
+  componentDidUpdate(prevProps) {
+    if (!prevProps.group && this.props.group) {
+      this.props.setUp(this.props.group);
     }
   }
 
@@ -106,7 +105,7 @@ class Edit extends React.PureComponent {
     }
 
     return (
-      <form className='group-form' onSubmit={this.handleSubmit}>
+      <form className='group-form' method='post' onSubmit={this.handleSubmit}>
         <div>
           <input
             className='standard'

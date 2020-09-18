@@ -42,9 +42,9 @@ export default class ImageLoader extends React.PureComponent {
     this.loadImage(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.src !== nextProps.src) {
-      this.loadImage(nextProps);
+  componentDidUpdate(prevProps) {
+    if (prevProps.src !== this.props.src) {
+      this.loadImage(this.props);
     }
   }
 

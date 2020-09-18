@@ -33,7 +33,7 @@ class Bundle extends React.PureComponent {
     forceRender: false,
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.load(this.props);
   }
 

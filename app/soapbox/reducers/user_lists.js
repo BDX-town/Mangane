@@ -20,7 +20,7 @@ import {
   MUTES_FETCH_SUCCESS,
   MUTES_EXPAND_SUCCESS,
 } from '../actions/mutes';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
   GROUP_MEMBERS_FETCH_SUCCESS,
   GROUP_MEMBERS_EXPAND_SUCCESS,
@@ -44,7 +44,7 @@ const initialState = ImmutableMap({
 const normalizeList = (state, type, id, accounts, next) => {
   return state.setIn([type, id], ImmutableMap({
     next,
-    items: ImmutableList(accounts.map(item => item.id)),
+    items: ImmutableOrderedSet(accounts.map(item => item.id)),
   }));
 };
 
@@ -65,22 +65,22 @@ export default function userLists(state = initialState, action) {
   case FOLLOWING_EXPAND_SUCCESS:
     return appendToList(state, 'following', action.id, action.accounts, action.next);
   case REBLOGS_FETCH_SUCCESS:
-    return state.setIn(['reblogged_by', action.id], ImmutableList(action.accounts.map(item => item.id)));
+    return state.setIn(['reblogged_by', action.id], ImmutableOrderedSet(action.accounts.map(item => item.id)));
   case FAVOURITES_FETCH_SUCCESS:
-    return state.setIn(['favourited_by', action.id], ImmutableList(action.accounts.map(item => item.id)));
+    return state.setIn(['favourited_by', action.id], ImmutableOrderedSet(action.accounts.map(item => item.id)));
   case FOLLOW_REQUESTS_FETCH_SUCCESS:
-    return state.setIn(['follow_requests', 'items'], ImmutableList(action.accounts.map(item => item.id))).setIn(['follow_requests', 'next'], action.next);
+    return state.setIn(['follow_requests', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['follow_requests', 'next'], action.next);
   case FOLLOW_REQUESTS_EXPAND_SUCCESS:
     return state.updateIn(['follow_requests', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['follow_requests', 'next'], action.next);
   case FOLLOW_REQUEST_AUTHORIZE_SUCCESS:
   case FOLLOW_REQUEST_REJECT_SUCCESS:
     return state.updateIn(['follow_requests', 'items'], list => list.filterNot(item => item === action.id));
   case BLOCKS_FETCH_SUCCESS:
-    return state.setIn(['blocks', 'items'], ImmutableList(action.accounts.map(item => item.id))).setIn(['blocks', 'next'], action.next);
+    return state.setIn(['blocks', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['blocks', 'next'], action.next);
   case BLOCKS_EXPAND_SUCCESS:
     return state.updateIn(['blocks', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['blocks', 'next'], action.next);
   case MUTES_FETCH_SUCCESS:
-    return state.setIn(['mutes', 'items'], ImmutableList(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
+    return state.setIn(['mutes', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
   case MUTES_EXPAND_SUCCESS:
     return state.updateIn(['mutes', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
   case GROUP_MEMBERS_FETCH_SUCCESS:

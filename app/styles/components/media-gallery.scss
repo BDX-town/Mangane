@@ -5,6 +5,7 @@
   border-radius: 4px;
   position: relative;
   width: 100%;
+  height: auto;
   background-color: var(--brand-color--faint);
 }
 
@@ -16,6 +17,14 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
+
+  &__icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+  }
 }
 
 .media-gallery__item-thumbnail {
@@ -28,46 +37,41 @@
   z-index: 1;
 
   &,
-  img,
-  canvas {
+  .still-image {
     height: 100%;
     width: 100%;
-  }
-
-  img,
-  canvas {
-    object-fit: cover;
-  }
-
-  &--play-on-hover {
-    &::before {
-      content: 'GIF';
-      position: absolute;
-      color: var(--primary-text-color);
-      background: var(--foreground-color);
-      bottom: 6px;
-      left: 6px;
-      padding: 2px 6px;
-      border-radius: 2px;
-      font-size: 11px;
-      font-weight: 600;
-      pointer-events: none;
-      opacity: 0.9;
-      transition: opacity 0.1s ease;
-      line-height: 18px;
-    }
 
     img {
-      position: absolute;
+      object-fit: cover;
     }
+  }
 
-    img,
-    &:hover::before {
-      visibility: hidden;
-    }
+  .still-image--play-on-hover::before {
+    content: 'GIF';
+    position: absolute;
+    color: var(--primary-text-color);
+    background: var(--foreground-color);
+    bottom: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.1s ease;
+    line-height: 18px;
+  }
+}
 
-    &:hover img {
-      visibility: visible;
+.status__wrapper, .detailed-status__wrapper {
+  .media-gallery__item-thumbnail {
+    &,
+    .still-image {
+
+      img {
+        object-fit: contain;
+      }
     }
   }
 }
@@ -81,6 +85,23 @@
   left: 0;
   z-index: 0;
   background: var(--background-color);
+
+  .still-image--play-on-hover::before {
+    content: 'GIF';
+    position: absolute;
+    color: var(--primary-text-color);
+    background: var(--foreground-color);
+    bottom: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    pointer-events: none;
+    opacity: 0.9;
+    transition: opacity 0.1s ease;
+    line-height: 18px;
+  }
 
   &--hidden {
     display: none;
@@ -112,7 +133,9 @@
   position: absolute;
 }
 
-.media-gallery__gifv__label {
+.media-gallery__gifv__label,
+.media-gallery__filename__label,
+.media-gallery__file-extension__label {
   display: block;
   position: absolute;
   color: var(--primary-text-color);

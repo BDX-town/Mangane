@@ -32,19 +32,20 @@ class Reblogs extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     status: ImmutablePropTypes.map,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchReblogs(this.props.params.statusId));
     this.props.dispatch(fetchStatus(this.props.params.statusId));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
-      this.props.dispatch(fetchReblogs(nextProps.params.statusId));
-      this.props.dispatch(fetchStatus(nextProps.params.statusId));
+  componentDidUpdate(prevProps) {
+    const { params } = this.props;
+    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+      prevProps.dispatch(fetchReblogs(params.statusId));
+      prevProps.dispatch(fetchStatus(params.statusId));
     }
   }
 

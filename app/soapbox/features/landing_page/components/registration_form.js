@@ -9,6 +9,7 @@ import {
   SimpleForm,
   SimpleInput,
   TextInput,
+  SimpleTextarea,
   Checkbox,
 } from 'soapbox/features/forms';
 import { register } from 'soapbox/actions/auth';
@@ -67,6 +68,10 @@ class RegistrationForm extends ImmutablePureComponent {
       this.setState({ submissionLoading: false });
       this.refreshCaptcha();
     });
+  }
+
+  onCaptchaClick = e => {
+    this.refreshCaptcha();
   }
 
   onFetchCaptcha = captcha => {
@@ -132,11 +137,22 @@ class RegistrationForm extends ImmutablePureComponent {
                 onChange={this.onInputChange}
                 required
               />
+              {instance.get('approval_required') &&
+                <SimpleTextarea
+                  label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
+                  hint={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
+                  name='reason'
+                  maxLength={500}
+                  autoComplete='off'
+                  onChange={this.onInputChange}
+                  required
+                />}
             </div>
             <CaptchaField
               onFetch={this.onFetchCaptcha}
               onFetchFail={this.onFetchCaptchaFail}
               onChange={this.onInputChange}
+              onClick={this.onCaptchaClick}
               idempotencyKey={this.state.captchaIdempotencyKey}
             />
             <div className='fields-group'>

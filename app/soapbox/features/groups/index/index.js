@@ -36,7 +36,7 @@ class Groups extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.dispatch(fetchGroups(this.props.activeTab));
   }
 

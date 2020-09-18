@@ -291,17 +291,18 @@ class Video extends React.PureComponent {
     document.removeEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!is(nextProps.visible, this.props.visible) && nextProps.visible !== undefined) {
-      this.setState({ revealed: nextProps.visible });
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
+    const { visible, blurhash } = this.props;
+
+    if (!is(visible, prevProps.visible) && visible !== undefined) {
+      this.setState({ revealed: visible });
+    }
+
     if (prevState.revealed && !this.state.revealed && this.video) {
       this.video.pause();
     }
-    if (prevProps.blurhash !== this.props.blurhash && this.props.blurhash) {
+
+    if (prevProps.blurhash !== blurhash && blurhash) {
       this._decode();
     }
   }
@@ -395,7 +396,7 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { preview, src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
+    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
 
@@ -444,7 +445,6 @@ class Video extends React.PureComponent {
         {revealed && <video
           ref={this.setVideoRef}
           src={src}
-          poster={preview}
           // preload={this.getPreload()}
           loop
           role='button'

@@ -19,6 +19,10 @@ export const CHANGE_EMAIL_REQUEST = 'CHANGE_EMAIL_REQUEST';
 export const CHANGE_EMAIL_SUCCESS = 'CHANGE_EMAIL_SUCCESS';
 export const CHANGE_EMAIL_FAIL    = 'CHANGE_EMAIL_FAIL';
 
+export const DELETE_ACCOUNT_REQUEST = 'DELETE_ACCOUNT_REQUEST';
+export const DELETE_ACCOUNT_SUCCESS = 'DELETE_ACCOUNT_SUCCESS';
+export const DELETE_ACCOUNT_FAIL    = 'DELETE_ACCOUNT_FAIL';
+
 export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
 export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
@@ -108,12 +112,32 @@ export function refreshUserToken() {
   };
 }
 
+export function otpVerify(code, mfa_token) {
+  return (dispatch, getState) => {
+    const app = getState().getIn(['auth', 'app']);
+    return api(getState, 'app').post('/oauth/mfa/challenge', {
+      client_id: app.get('client_id'),
+      client_secret: app.get('client_secret'),
+      mfa_token: mfa_token,
+      code: code,
+      challenge_type: 'totp',
+      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+    }).then(response => {
+      dispatch(authLoggedIn(response.data));
+    });
+  };
+}
+
 export function logIn(username, password) {
   return (dispatch, getState) => {
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
-      dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      if (error.response.data.error === 'mfa_required') {
+        throw error;
+      } else {
+        dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+      }
       throw error;
     });
   };
@@ -129,15 +153,21 @@ export function logOut() {
 export function register(params) {
   return (dispatch, getState) => {
     const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
+    const needsApproval = getState().getIn(['instance', 'approval_required']);
+    params.fullname = params.username;
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
       return api(getState, 'app').post('/api/v1/accounts', params);
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      return needsConfirmation
-        ? dispatch(showAlert('', 'Check your email for further instructions.'))
-        : dispatch(fetchMe());
+      if (needsConfirmation) {
+        return dispatch(showAlert('', 'Check your email for further instructions.'));
+      } else if (needsApproval) {
+        return dispatch(showAlert('', 'Your account has been submitted for approval.'));
+      } else {
+        return dispatch(fetchMe());
+      }
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
       throw error;
@@ -178,6 +208,23 @@ export function changeEmail(email, password) {
       dispatch({ type: CHANGE_EMAIL_SUCCESS, email, response });
     }).catch(error => {
       dispatch({ type: CHANGE_EMAIL_FAIL, email, error, skipAlert: true });
+      throw error;
+    });
+  };
+}
+
+export function deleteAccount(password) {
+  return (dispatch, getState) => {
+    dispatch({ type: DELETE_ACCOUNT_REQUEST });
+    return api(getState).post('/api/pleroma/delete_account', {
+      password,
+    }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
+      dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
+      dispatch({ type: AUTH_LOGGED_OUT });
+      dispatch(showAlert('Successfully logged out.', ''));
+    }).catch(error => {
+      dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;
     });
   };

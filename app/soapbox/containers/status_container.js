@@ -12,6 +12,8 @@ import {
   favourite,
   unreblog,
   unfavourite,
+  bookmark,
+  unbookmark,
   pin,
   unpin,
 } from '../actions/interactions';
@@ -100,6 +102,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
+  onBookmark(status) {
+    if (status.get('bookmarked')) {
+      dispatch(unbookmark(status));
+    } else {
+      dispatch(bookmark(status));
+    }
+  },
+
   onPin(status) {
     if (status.get('pinned')) {
       dispatch(unpin(status));
@@ -144,6 +154,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onOpenVideo(media, time) {
     dispatch(openModal('VIDEO', { media, time }));
+  },
+
+  onOpenAudio(media, time) {
+    dispatch(openModal('AUDIO', { media, time }));
   },
 
   onBlock(status) {

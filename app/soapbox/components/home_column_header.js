@@ -143,7 +143,7 @@ class ColumnHeader extends React.PureComponent {
           </Link>
 
           <Link to='/timeline/local' className={classNames('btn grouped', { 'active': 'local' === activeItem })}>
-            <Icon id='site-icon' fixedWidth className='column-header__icon' />
+            <Icon id='users' fixedWidth className='column-header__icon' />
             {siteTitle}
           </Link>
 

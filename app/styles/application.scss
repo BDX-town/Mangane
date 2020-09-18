@@ -27,6 +27,7 @@
 @import 'dyslexic';
 @import 'demetricator';
 @import 'pro';
+@import 'chats';
 
 // COMPONENTS
 @import 'components/buttons';
@@ -58,13 +59,20 @@
 @import 'components/navigation-bar';
 @import 'components/promo-panel';
 @import 'components/drawer';
+@import 'components/still-image';
 @import 'components/timeline-queue-header';
 @import 'components/badge';
+@import 'components/theme-toggle';
 @import 'components/trends';
 @import 'components/wtf-panel';
+@import 'components/profile-media-panel';
 @import 'components/profile-info-panel';
 @import 'components/setting-toggle';
 @import 'components/spoiler-button';
 @import 'components/media-spoiler';
 @import 'components/error-boundary';
 @import 'components/video-player';
+@import 'components/audio-player';
+@import 'components/profile_hover_card';
+@import 'components/filters';
+@import 'components/mfa_form';

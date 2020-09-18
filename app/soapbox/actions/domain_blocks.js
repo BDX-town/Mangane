@@ -61,7 +61,13 @@ export function unblockDomain(domain) {
 
     dispatch(unblockDomainRequest(domain));
 
-    api(getState).delete('/api/v1/domain_blocks', { params: { domain } }).then(() => {
+    // Do it both ways for maximum compatibility
+    const params = {
+      params: { domain },
+      data: { domain },
+    };
+
+    api(getState).delete('/api/v1/domain_blocks', params).then(() => {
       const at_domain = '@' + domain;
       const accounts = getState().get('accounts').filter(item => item.get('acct').endsWith(at_domain)).valueSeq().map(item => item.get('id'));
       dispatch(unblockDomainSuccess(domain, accounts));

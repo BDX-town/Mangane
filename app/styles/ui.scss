@@ -369,7 +369,7 @@
   justify-content: center;
   transition: 0.2s;
 
-  @media screen and (max-width: 895px) {
+  @media screen and (max-width: 630px) {
     display: flex;
   }
 
@@ -654,6 +654,7 @@
 
       &::after {
         bottom: -1px;
+        border-color: transparent transparent var(--foreground-color);
       }
     }
   }
@@ -739,7 +740,7 @@
     display: block;
     position: absolute;
     content: '\f00c';
-    font: normal normal normal 14px/1 FontAwesome;
+    font: normal normal normal 14px/1 ForkAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;

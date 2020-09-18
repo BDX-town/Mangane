@@ -39,7 +39,7 @@
 
     &--right {
       margin-left: auto;
-      padding-top: 8px;
+      align-items: center;
     }
   }
 
@@ -55,7 +55,7 @@
   &__profile {
     position: relative;
     overflow: hidden;
-    margin: 0 0 0 20px;
+    margin: 0 0 0 10px;
     height: 34px;
     width: 34px;
 
@@ -137,10 +137,27 @@
     height: 34px;
   }
 
-  .flex {
-    display: flex;
-  }
+  .theme-toggle {
+    @media screen and (max-width: $nav-breakpoint-3) {display: none;}
 
+    .setting-toggle {
+      margin-left: 10px;
+
+      .react-toggle-track {
+        background-color: var(--foreground-color);
+      }
+
+      .react-toggle--checked {
+        .react-toggle-track {
+          background-color: var(--accent-color);
+        }
+
+        &:hover:not(.react-toggle--disabled) .react-toggle-track {
+          background-color: var(--accent-color--bright);
+        }
+      }
+    }
+  }
 }
 
 .tabs-bar__link {
@@ -242,9 +259,9 @@
     display: block;
     margin-right: 30px;
     border: 0;
-    height: 50px;
+    height: 40px;
     overflow: hidden;
-    padding: 10px 0;
+    padding: 13px 0 0;
     box-sizing: border-box;
     filter: brightness(0%) grayscale(100%) invert(100%);
     & span {display: none !important;}

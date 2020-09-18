@@ -14,6 +14,8 @@ import {
   unfavourite,
   reblog,
   unreblog,
+  bookmark,
+  unbookmark,
   pin,
   unpin,
 } from '../../actions/interactions';
@@ -139,23 +141,9 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
   };
 
-  componentWillMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
-  }
-
   componentDidMount() {
+    this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.statusId !== this.props.params.statusId && nextProps.params.statusId) {
-      this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(nextProps.params.statusId));
-    }
-
-    if (nextProps.status && nextProps.status.get('id') !== this.state.loadedStatusId) {
-      this.setState({ showMedia: defaultMediaVisibility(nextProps.status), loadedStatusId: nextProps.status.get('id') });
-    }
   }
 
   handleToggleMediaVisibility = () => {
@@ -179,6 +167,14 @@ class Status extends ImmutablePureComponent {
       this.props.dispatch(unpin(status));
     } else {
       this.props.dispatch(pin(status));
+    }
+  }
+
+  handleBookmark = (status) => {
+    if (status.get('bookmarked')) {
+      this.props.dispatch(unbookmark(status));
+    } else {
+      this.props.dispatch(bookmark(status));
     }
   }
 
@@ -404,15 +400,25 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
+    const { params, status } = this.props;
+    const { ancestorsIds } = prevProps;
+
+    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+      this._scrolledIntoView = false;
+      this.props.dispatch(fetchStatus(params.statusId));
+    }
+
+    if (status && status.get('id') !== prevState.loadedStatusId) {
+      this.setState({ showMedia: defaultMediaVisibility(status), loadedStatusId: status.get('id') });
+    }
+
     if (this._scrolledIntoView) {
       return;
     }
 
-    const { status, ancestorsIds } = this.props;
-
-    if (status && ancestorsIds && ancestorsIds.size > 0) {
-      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
+    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
+      const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
         element.scrollIntoView(true);
@@ -511,6 +517,7 @@ class Status extends ImmutablePureComponent {
                 onBlock={this.handleBlockClick}
                 onReport={this.handleReport}
                 onPin={this.handlePin}
+                onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
               />
             </div>
