@@ -6,14 +6,18 @@ import { Link } from 'react-router-dom';
 import LoginForm from 'soapbox/features/auth_login/components/login_form';
 import SiteLogo from './site_logo';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { defineMessages, injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { logIn } from 'soapbox/actions/auth';
 import { fetchMe } from 'soapbox/actions/me';
-import PropTypes from 'prop-types';
 import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
 import IconButton from 'soapbox/components/icon_button';
-import { defineMessages, injectIntl } from 'react-intl';
 
 const messages = defineMessages({
+  home: { id: 'header.home.label', defaultMessage: 'Home' },
+  about: { id: 'header.about.label', defaultMessage: 'About' },
+  backTo: { id: 'header.back_to.label', defaultMessage: 'Back to {siteTitle}' },
+  login: { id: 'header.login.label', defaultMessage: 'Log in' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
@@ -64,6 +68,7 @@ class Header extends ImmutablePureComponent {
   static propTypes = {
     me: SoapboxPropTypes.me,
     instance: ImmutablePropTypes.map,
+    intl: PropTypes.object.isRequired,
   }
 
   state = {
@@ -90,21 +95,21 @@ class Header extends ImmutablePureComponent {
             <Link className='brand' to='/'>
               <SiteLogo />
             </Link>
-            <Link className='nav-link optional' to='/'>Home</Link>
-            <Link className='nav-link' to='/about'>About</Link>
+            <Link className='nav-link optional' to='/'>{intl.formatMessage(messages.home)}</Link>
+            <Link className='nav-link' to='/about'>{intl.formatMessage(messages.about)}</Link>
           </div>
           <div className='nav-center' />
           <div className='nav-right'>
             <div className='hidden-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>Back to {instance.get('title')}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
                 : <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />
               }
             </div>
             <div className='visible-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>Back to {instance.get('title')}</Link>
-                : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>Log in</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
+                : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>{intl.formatMessage(messages.login)}</Link>
               }
             </div>
           </div>
