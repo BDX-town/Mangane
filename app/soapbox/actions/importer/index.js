@@ -46,6 +46,8 @@ export function importFetchedAccounts(accounts) {
   const normalAccounts = [];
 
   function processAccount(account) {
+    if (!account.id) return;
+
     pushUnique(normalAccounts, normalizeAccount(account));
 
     if (account.moved) {
@@ -69,6 +71,8 @@ export function importFetchedStatuses(statuses) {
     const polls = [];
 
     function processStatus(status) {
+      if (!status.account.id) return;
+
       const normalOldStatus = getState().getIn(['statuses', status.id]);
       const expandSpoilers = getSettings(getState()).get('expandSpoilers');
 

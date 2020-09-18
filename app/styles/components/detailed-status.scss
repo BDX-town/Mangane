@@ -62,7 +62,6 @@
   border-bottom: 1px solid var(--brand-color--faint);
   display: flex;
   flex-direction: row;
-  border-radius: 0 0 10px 10px;
 }
 
 .detailed-status__link {
@@ -124,4 +123,9 @@
 .detailed-status__display-avatar {
   float: left;
   margin-right: 10px;
+}
+
+.detailed-status .status__favicon {
+  float: left;
+  margin-right: 5px;
 }

@@ -7,7 +7,7 @@ export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
 export const defaultConfig = ImmutableMap({
   logo: '',
   banner: '',
-  brandColor: '#0482d8', // Azure
+  brandColor: '', // Empty
   customCss: ImmutableList(),
   promoPanel: ImmutableMap({
     items: ImmutableList(),
@@ -40,8 +40,9 @@ export function fetchSoapboxConfig() {
 
 export function fetchSoapboxJson() {
   return (dispatch, getState) => {
-    api(getState).get('/instance/soapbox.json').then(response => {
-      dispatch(importSoapboxConfig(response.data));
+    api(getState).get('/instance/soapbox.json').then(({ data }) => {
+      if (!isObject(data)) throw 'soapbox.json failed';
+      dispatch(importSoapboxConfig(data));
     }).catch(error => {
       dispatch(soapboxConfigFail(error));
     });
@@ -49,6 +50,9 @@ export function fetchSoapboxJson() {
 }
 
 export function importSoapboxConfig(soapboxConfig) {
+  if (!soapboxConfig.brandColor) {
+    soapboxConfig.brandColor = '#0482d8';
+  };
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,
@@ -56,12 +60,14 @@ export function importSoapboxConfig(soapboxConfig) {
 }
 
 export function soapboxConfigFail(error) {
-  if (!error.response) {
-    console.error('Unable to obtain soapbox configuration: ' + error);
-  }
   return {
     type: SOAPBOX_CONFIG_REQUEST_FAIL,
     error,
     skipAlert: true,
   };
+}
+
+// https://stackoverflow.com/a/46663081
+function isObject(o) {
+  return o instanceof Object && o.constructor === Object;
 }

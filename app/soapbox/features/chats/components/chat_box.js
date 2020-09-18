@@ -5,12 +5,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
-  fetchChatMessages,
   sendChatMessage,
   markChatRead,
 } from 'soapbox/actions/chats';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
+import UploadButton from 'soapbox/features/compose/components/upload_button';
+import { uploadMedia } from 'soapbox/actions/media';
+import UploadProgress from 'soapbox/features/compose/components/upload_progress';
+import { truncateFilename } from 'soapbox/utils/media';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -21,6 +25,8 @@ const mapStateToProps = (state, { chatId }) => ({
   chat: state.getIn(['chats', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
+
+const fileKeyGen = () => Math.floor((Math.random() * 0x10000));
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -36,15 +42,63 @@ class ChatBox extends ImmutablePureComponent {
     me: PropTypes.node,
   }
 
-  state = {
+  initialState = () => ({
     content: '',
+    attachment: undefined,
+    isUploading: false,
+    uploadProgress: 0,
+    resetFileKey: fileKeyGen(),
+  })
+
+  state = this.initialState()
+
+  clearState = () => {
+    this.setState(this.initialState());
+  }
+
+  getParams = () => {
+    const { content, attachment } = this.state;
+
+    return {
+      content,
+      media_id: attachment && attachment.id,
+    };
+  }
+
+  canSubmit = () => {
+    const { content, attachment } = this.state;
+
+    const conds = [
+      content.length > 0,
+      attachment,
+    ];
+
+    return conds.some(c => c);
+  }
+
+  sendMessage = () => {
+    const { dispatch, chatId } = this.props;
+    const { isUploading } = this.state;
+
+    if (this.canSubmit() && !isUploading) {
+      const params = this.getParams();
+
+      dispatch(sendChatMessage(chatId, params));
+      this.clearState();
+    }
+  }
+
+  insertLine = () => {
+    const { content } = this.state;
+    this.setState({ content: content + '\n' });
   }
 
   handleKeyDown = (e) => {
-    const { chatId } = this.props;
-    if (e.key === 'Enter') {
-      this.props.dispatch(sendChatMessage(chatId, this.state));
-      this.setState({ content: '' });
+    if (e.key === 'Enter' && e.shiftKey) {
+      this.insertLine();
+      e.preventDefault();
+    } else if (e.key === 'Enter') {
+      this.sendMessage();
       e.preventDefault();
     }
   }
@@ -68,11 +122,6 @@ class ChatBox extends ImmutablePureComponent {
     onSetInputRef(el);
   };
 
-  componentDidMount() {
-    const { dispatch, chatId } = this.props;
-    dispatch(fetchChatMessages(chatId));
-  }
-
   componentDidUpdate(prevProps) {
     const markReadConditions = [
       () => this.props.chat !== undefined,
@@ -84,20 +133,76 @@ class ChatBox extends ImmutablePureComponent {
       this.markRead();
   }
 
+  handleRemoveFile = (e) => {
+    this.setState({ attachment: undefined, resetFileKey: fileKeyGen() });
+  }
+
+  onUploadProgress = (e) => {
+    const { loaded, total } = e;
+    this.setState({ uploadProgress: loaded/total });
+  }
+
+  handleFiles = (files) => {
+    const { dispatch } = this.props;
+
+    this.setState({ isUploading: true });
+
+    const data = new FormData();
+    data.append('file', files[0]);
+
+    dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
+      this.setState({ attachment: response.data, isUploading: false });
+    }).catch(() => {
+      this.setState({ isUploading: false });
+    });
+  }
+
+  renderAttachment = () => {
+    const { attachment } = this.state;
+    if (!attachment) return null;
+
+    return (
+      <div className='chat-box__attachment'>
+        <div className='chat-box__filename'>
+          {truncateFilename(attachment.preview_url, 20)}
+        </div>
+        <div class='chat-box__remove-attachment'>
+          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+        </div>
+      </div>
+    );
+  }
+
+  renderActionButton = () => {
+    const { resetFileKey } = this.state;
+
+    return this.canSubmit() ? (
+      <div className='chat-box__send'>
+        <IconButton icon='send' size={16} onClick={this.sendMessage} />
+      </div>
+    ) : (
+      <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
+    );
+  }
+
   render() {
-    const { chatMessageIds, intl } = this.props;
+    const { chatMessageIds, chatId, intl } = this.props;
+    const { content, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
-        <ChatMessageList chatMessageIds={chatMessageIds} />
+        <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
+        {this.renderAttachment()}
+        <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
+          {this.renderActionButton()}
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
-            value={this.state.content}
+            value={content}
             ref={this.setInputRef}
           />
         </div>

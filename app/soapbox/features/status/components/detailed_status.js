@@ -16,9 +16,8 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { StatusInteractionBar } from './status_interaction_bar';
-import ProfileHoverCardContainer from 'soapbox/features/profile_hover_card/profile_hover_card_container';
-import { isMobile } from 'soapbox/is_mobile';
-import { debounce } from 'lodash';
+import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -41,7 +40,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
   state = {
     height: null,
-    profileCardVisible: false,
   };
 
   handleOpenVideo = (media, startTime) => {
@@ -85,24 +83,12 @@ export default class DetailedStatus extends ImmutablePureComponent {
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
 
-  showProfileCard = debounce(() => {
-    this.setState({ profileCardVisible: true });
-  }, 1200);
-
-  handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.showProfileCard();
-  }
-
-  handleProfileLeave = e => {
-    this.showProfileCard.cancel();
-    this.setState({ profileCardVisible: false });
-  }
-
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
     const { compact } = this.props;
-    const { profileCardVisible } = this.state;
+    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
+    const domain = getDomain(status.get('account'));
 
     if (!status) {
       return null;
@@ -178,20 +164,21 @@ export default class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <div className='detailed-status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+          <div className='detailed-status__profile'>
             <div className='detailed-status__display-name'>
               <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
                 <div className='detailed-status__display-avatar'>
-                  <Avatar account={status.get('account')} size={48} />
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                    <Avatar account={status.get('account')} size={48} />
+                  </HoverRefWrapper>
                 </div>
               </NavLink>
               <DisplayName account={status.get('account')}>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
+                <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
+                </HoverRefWrapper>
               </DisplayName>
             </div>
-            { profileCardVisible &&
-              <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth) && profileCardVisible} />
-            }
           </div>
 
           {status.get('group') && (
@@ -208,6 +195,11 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
             <div>
+              {favicon &&
+                <div className='status__favicon'>
+                  <img src={favicon} alt='' title={domain} />
+                </div>}
+
               {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>

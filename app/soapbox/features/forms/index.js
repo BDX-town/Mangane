@@ -146,7 +146,7 @@ export class SimpleForm extends ImmutablePureComponent {
   render() {
     const { children, onSubmit, ...props } = this.props;
     return (
-      <form className='simple_form' onSubmit={this.onSubmit} {...props}>
+      <form className='simple_form' method='post' onSubmit={this.onSubmit} {...props}>
         {children}
       </form>
     );

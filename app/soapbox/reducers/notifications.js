@@ -61,8 +61,9 @@ const normalizeNotification = (state, notification) => {
 const expandNormalizedNotifications = (state, notifications, next) => {
   let items = ImmutableList();
 
-  notifications.forEach((n, i) => {
-    items = items.set(i, notificationToMap(n));
+  notifications.forEach((n) => {
+    if (!n.account.id) return;
+    items = items.push(notificationToMap(n));
   });
 
   return state.withMutations(mutable => {

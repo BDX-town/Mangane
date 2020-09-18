@@ -3,21 +3,24 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { acctFull } from 'soapbox/utils/accounts';
-import { fetchChat } from 'soapbox/actions/chats';
+import { fetchChat, markChatRead } from 'soapbox/actions/chats';
 import ChatBox from './components/chat_box';
 import Column from 'soapbox/components/column';
 import ColumnBackButton from 'soapbox/components/column_back_button';
+import { Map as ImmutableMap } from 'immutable';
 import { makeGetChat } from 'soapbox/selectors';
 
 const mapStateToProps = (state, { params }) => {
   const getChat = makeGetChat();
+  const chat = state.getIn(['chats', params.chatId], ImmutableMap()).toJS();
 
   return {
     me: state.get('me'),
-    chat: getChat(state, { id: params.chatId }),
+    chat: getChat(state, chat),
   };
 };
 
@@ -42,9 +45,26 @@ class ChatRoom extends ImmutablePureComponent {
     this.inputElem.focus();
   }
 
+  markRead = () => {
+    const { dispatch, chat } = this.props;
+    if (!chat) return;
+    dispatch(markChatRead(chat.get('id')));
+  }
+
   componentDidMount() {
     const { dispatch, params } = this.props;
     dispatch(fetchChat(params.chatId));
+    this.markRead();
+  }
+
+  componentDidUpdate(prevProps) {
+    const markReadConditions = [
+      () => this.props.chat,
+      () => this.props.chat.get('unread') > 0,
+    ];
+
+    if (markReadConditions.every(c => c()))
+      this.markRead();
   }
 
   render() {
@@ -56,12 +76,12 @@ class ChatRoom extends ImmutablePureComponent {
       <Column>
         <div className='chatroom__back'>
           <ColumnBackButton />
-          <div className='chatroom__header'>
+          <Link to={`/@${account.get('acct')}`} className='chatroom__header'>
             <Avatar account={account} size={18} />
             <div className='chatroom__title'>
               @{acctFull(account)}
             </div>
-          </div>
+          </Link>
         </div>
         <ChatBox
           chatId={chat.get('id')}

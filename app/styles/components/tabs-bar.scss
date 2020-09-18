@@ -143,6 +143,10 @@
     .setting-toggle {
       margin-left: 10px;
 
+      .react-toggle-track {
+        background-color: var(--foreground-color);
+      }
+
       .react-toggle--checked {
         .react-toggle-track {
           background-color: var(--accent-color);

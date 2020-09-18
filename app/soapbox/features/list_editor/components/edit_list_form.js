@@ -50,7 +50,7 @@ class ListForm extends React.PureComponent {
     const save = intl.formatMessage(messages.save);
 
     return (
-      <form className='column-inline-form' onSubmit={this.handleSubmit}>
+      <form className='column-inline-form' method='post' onSubmit={this.handleSubmit}>
         <input
           className='setting-text new-list-form__input'
           value={value}
