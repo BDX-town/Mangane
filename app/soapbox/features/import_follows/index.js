@@ -1,5 +1,5 @@
 import React from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
@@ -16,12 +16,12 @@ const messages = defineMessages({
   heading: { id: 'column.import_follows', defaultMessage: 'Import follows' },
 });
 
-// const mapStateToProps = state => ({
-//   follows: state.get('follows'),
-// });
+const mapStateToProps = state => ({
+  follows: state.get('follows'),
+});
 
-// export default @connect(mapStateToProps)
-export default @injectIntl
+export default @connect(mapStateToProps)
+@injectIntl
 class ImportFollows extends ImmutablePureComponent {
 
   static propTypes = {
@@ -39,18 +39,9 @@ class ImportFollows extends ImmutablePureComponent {
     this.setState({ follows: value });
   };
 
-  // putConfig = config => {
-  //   this.setState({ soapbox: config, jsonValid: true });
-  // };
-
-  getParams = () => {
-    const { follows } = this.state;
-    return { follows: follows.toJS() };
-  }
-
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(importFollows(this.getParams())).then(() => {
+    dispatch(importFollows(this.state.follows)).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
@@ -64,17 +55,6 @@ class ImportFollows extends ImmutablePureComponent {
       this.setConfig(getValue(e));
     };
   };
-
-  // handleUpload = (event) => {
-  //   const { dispatch } = this.props;
-  //   dispatch(importFollows(event.target.files[0])).then(() => {
-  //     this.setState({ isLoading: false });
-  //   }).catch((error) => {
-  //     this.setState({ isLoading: false });
-  //   });
-  //   this.setState({ isLoading: true });
-  //   event.preventDefault();
-  // }
 
   handleFileChange = path => {
     return e => {
