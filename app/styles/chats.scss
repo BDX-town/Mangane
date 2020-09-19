@@ -439,3 +439,11 @@
     object-fit: contain;
   }
 }
+
+.chat-messages__divider {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 14px 0 2px;
+  opacity: 0.8;
+}
