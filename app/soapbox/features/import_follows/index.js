@@ -10,7 +10,6 @@ import {
   FileChooserCSV,
 } from 'soapbox/features/forms';
 import { importFollows } from 'soapbox/actions/import_follows';
-import { uploadMedia } from 'soapbox/actions/media';
 
 const messages = defineMessages({
   heading: { id: 'column.import_follows', defaultMessage: 'Import follows' },
@@ -24,24 +23,27 @@ export default @connect(mapStateToProps)
 @injectIntl
 class ImportFollows extends ImmutablePureComponent {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: null,
+    };
+  }
+
   static propTypes = {
-    follows: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
   state = {
     isLoading: false,
-    follows: this.props.follows,
   }
-
-  setConfig = (value) => {
-    this.setState({ follows: value });
-  };
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(importFollows(this.state.follows)).then(() => {
+    let params = new FormData();
+    params.append('list', this.state.list);
+    dispatch(importFollows(params)).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
@@ -50,19 +52,18 @@ class ImportFollows extends ImmutablePureComponent {
     event.preventDefault();
   }
 
-  handleChange = (getValue) => {
-    return e => {
-      this.setConfig(getValue(e));
-    };
+  handleChange = (e) => {
+    const content = e.target.result;
+    this.setState({
+      list: content,
+    });
   };
 
   handleFileChange = path => {
     return e => {
-      const data = new FormData();
-      data.append('file', e.target.files[0]);
-      this.props.dispatch(uploadMedia(data)).then(({ data }) => {
-        this.handleChange(e => data.url)(e);
-      }).catch(() => {});
+      let fileData = new FileReader();
+      fileData.onloadend = this.handleChange;
+      fileData.readAsText(e.target.files[0]);
     };
   };
 
