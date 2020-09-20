@@ -27,6 +27,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
+import { SnackbarProvider } from 'notistack';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -126,7 +127,7 @@ class SoapboxMount extends React.PureComponent {
 
     return (
       <IntlProvider locale={locale} messages={this.state.messages}>
-        <>
+        <SnackbarProvider>
           <Helmet>
             <body className={bodyClass} />
             {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
@@ -143,7 +144,7 @@ class SoapboxMount extends React.PureComponent {
               </Switch>
             </ScrollContext>
           </BrowserRouter>
-        </>
+        </SnackbarProvider>
       </IntlProvider>
     );
   }

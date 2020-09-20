@@ -4,7 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { showAlert } from 'soapbox/actions/alerts';
+import { withSnackbar } from 'notistack';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -53,6 +53,7 @@ const unescapeParams = (map, params) => (
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withSnackbar
 class EditProfile extends ImmutablePureComponent {
 
   static propTypes = {
@@ -124,7 +125,7 @@ class EditProfile extends ImmutablePureComponent {
     const { dispatch } = this.props;
     dispatch(patchMe(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
-      dispatch(showAlert('', 'Profile saved!'));
+      this.props.enqueueSnackbar('Profile saved!', { variant: 'success' });
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
