@@ -41,6 +41,7 @@ class ChatBox extends ImmutablePureComponent {
     chat: ImmutablePropTypes.map,
     onSetInputRef: PropTypes.func,
     me: PropTypes.node,
+    onAttachment: PropTypes.func,
   }
 
   initialState = () => ({
@@ -49,7 +50,6 @@ class ChatBox extends ImmutablePureComponent {
     isUploading: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
-    // showScroll: false,
   })
 
   state = this.initialState()
@@ -129,10 +129,13 @@ class ChatBox extends ImmutablePureComponent {
 
   setInputRef = (el) => {
     const { onSetInputRef } = this.props;
-    this.inputElem = el;
-    // this.inputElem = this.textarea;
     onSetInputRef(el);
   };
+
+  handleAttachment = () => {
+    const { onAttachment } = this.props;
+    onAttachment(true);
+  }
 
   handleRemoveFile = (e) => {
     this.setState({ attachment: undefined, resetFileKey: fileKeyGen() });
@@ -153,6 +156,7 @@ class ChatBox extends ImmutablePureComponent {
 
     dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
       this.setState({ attachment: response.data, isUploading: false });
+      this.handleAttachment();
     }).catch(() => {
       this.setState({ isUploading: false });
     });

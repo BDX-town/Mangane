@@ -111,6 +111,7 @@ class ChatWindow extends ImmutablePureComponent {
           <ChatBox
             chatId={chat.get('id')}
             onSetInputRef={this.handleInputRef}
+            onAttachment={this.focusInput}
           />
         </div>
       </div>
