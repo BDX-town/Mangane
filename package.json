@@ -123,7 +123,7 @@
     "react-select": "^2.4.4",
     "react-sparklines": "^1.7.0",
     "react-swipeable-views": "^0.13.0",
-    "react-textarea-autosize": "^7.1.0",
+    "react-textarea-autosize": "^7.1.2",
     "react-toggle": "^4.0.1",
     "redis": "^2.7.1",
     "redux": "^4.0.5",

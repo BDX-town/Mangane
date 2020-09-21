@@ -15,6 +15,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
 import IconButton from 'soapbox/components/icon_button';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -48,6 +49,7 @@ class ChatBox extends ImmutablePureComponent {
     isUploading: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
+    // showScroll: false,
   })
 
   state = this.initialState()
@@ -108,6 +110,14 @@ class ChatBox extends ImmutablePureComponent {
     this.setState({ content: e.target.value });
   }
 
+  handleHeightChange = (e, el) => {
+    if (e >= el.state.maxHeight) {
+      // can use this to implement appearance of vertical scrollbar
+      // setting showScroll true would allow render to change div className so that scss can set overflow-y: scroll on the TextareaAutosize
+      // this.setState({ showScroll: true });
+    }
+  }
+
   markRead = () => {
     const { dispatch, chatId } = this.props;
     dispatch(markChatRead(chatId));
@@ -120,6 +130,7 @@ class ChatBox extends ImmutablePureComponent {
   setInputRef = (el) => {
     const { onSetInputRef } = this.props;
     this.inputElem = el;
+    // this.inputElem = this.textarea;
     onSetInputRef(el);
   };
 
@@ -156,7 +167,7 @@ class ChatBox extends ImmutablePureComponent {
         <div className='chat-box__filename'>
           {truncateFilename(attachment.preview_url, 20)}
         </div>
-        <div class='chat-box__remove-attachment'>
+        <div className='chat-box__remove-attachment'>
           <IconButton icon='remove' onClick={this.handleRemoveFile} />
         </div>
       </div>
@@ -187,11 +198,14 @@ class ChatBox extends ImmutablePureComponent {
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
           {this.renderActionButton()}
-          <textarea
-            rows={1}
+          <TextareaAutosize
+            maxRows={4}
+            minRows={1}
+            autoFocus
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
+            onHeightChange={this.handleHeightChange}
             value={content}
             ref={this.setInputRef}
           />

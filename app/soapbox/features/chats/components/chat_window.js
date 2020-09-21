@@ -55,8 +55,10 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   handleInputRef = (el) => {
-    this.inputElem = el;
-    this.focusInput();
+    if (el) {
+      this.inputElem = el._ref;
+      this.focusInput();
+    }
   };
 
   focusInput = () => {
