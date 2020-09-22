@@ -248,6 +248,7 @@ class ChatMessageList extends ImmutablePureComponent {
           title={this.getFormattedTimestamp(chatMessage)}
           className='chat-message__bubble'
           ref={this.setBubbleRef}
+          tabIndex={0}
         >
           {this.maybeRenderMedia(chatMessage)}
           <span
