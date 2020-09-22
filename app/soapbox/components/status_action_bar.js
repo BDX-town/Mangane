@@ -73,6 +73,7 @@ class StatusActionBar extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    style: PropTypes.object,
   };
 
   static defaultProps = {
@@ -313,7 +314,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, intl } = this.props;
+    const { status, intl, style } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -352,7 +353,7 @@ class StatusActionBar extends ImmutablePureComponent {
     );
 
     return (
-      <div className='status__action-bar'>
+      <div className='status__action-bar' style={style}>
         <div className='status__action-bar__counter'>
           <IconButton className='status__action-bar-button' title={replyTitle} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} />
           {replyCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`} className='detailed-status__link'>{replyCount}</Link>}
