@@ -207,8 +207,8 @@ class ChatMessageList extends ImmutablePureComponent {
     this.node = c;
   }
 
-  renderDivider = (text) => (
-    <div className='chat-messages__divider'>{text}</div>
+  renderDivider = (key, text) => (
+    <div className='chat-messages__divider' key={key}>{text}</div>
   )
 
   renderMessage = (chatMessage) => {
@@ -246,12 +246,13 @@ class ChatMessageList extends ImmutablePureComponent {
           const lastMessage = chatMessages.get(idx-1);
 
           if (lastMessage) {
+            const key = `${curr.get('id')}_divider`;
             switch(timeChange(lastMessage, curr)) {
             case 'today':
-              acc.push(this.renderDivider(intl.formatMessage(messages.today)));
+              acc.push(this.renderDivider(key, intl.formatMessage(messages.today)));
               break;
             case 'date':
-              acc.push(this.renderDivider(new Date(curr.get('created_at')).toDateString()));
+              acc.push(this.renderDivider(key, new Date(curr.get('created_at')).toDateString()));
               break;
             }
           }
