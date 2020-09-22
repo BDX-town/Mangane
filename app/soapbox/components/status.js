@@ -452,8 +452,8 @@ class Status extends ImmutablePureComponent {
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, `status__nested--${depth}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
-            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
-            <div className='status__info'>
+            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' style={{ paddingLeft: `${(depth - 1) * 30}px` }} />
+            <div className='status__info' style={{ paddingLeft: `${(depth - 1) * 30}px` }}>
               <NavLink to={statusUrl} className='status__relative-time'>
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </NavLink>
@@ -464,7 +464,7 @@ class Status extends ImmutablePureComponent {
                 </div>}
 
               <div className='status__profile'>
-                <div className='status__avatar'>
+                <div className='status__avatar' style={{ paddingLeft: `${(depth - 1) * 30}px` }}>
                   <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
                     <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
                       {statusAvatar}
@@ -490,6 +490,7 @@ class Status extends ImmutablePureComponent {
               expanded={!status.get('hidden')}
               onExpandedToggle={this.handleExpandedToggle}
               collapsable
+              style={{ paddingLeft: `${(depth - 1) * 30}px` }}
             />
 
             {media}
@@ -501,7 +502,7 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
 
-            <StatusActionBar status={status} account={account} {...other} />
+            <StatusActionBar status={status} style={{ paddingLeft: `${(depth - 1) * 30}px` }} account={account} {...other} />
           </div>
         </div>
       </HotKeys>

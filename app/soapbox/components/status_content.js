@@ -22,6 +22,7 @@ export default class StatusContent extends React.PureComponent {
     onExpandedToggle: PropTypes.func,
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
+    style: PropTypes.object,
   };
 
   state = {
@@ -146,7 +147,7 @@ export default class StatusContent extends React.PureComponent {
   }
 
   render() {
-    const { status } = this.props;
+    const { status, style } = this.props;
 
     if (status.get('content').length === 0) {
       return null;
@@ -208,7 +209,7 @@ export default class StatusContent extends React.PureComponent {
           tabIndex='0'
           key='content'
           className={classNames}
-          style={directionStyle}
+          style={directionStyle, style}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}
           onMouseDown={this.handleMouseDown}
