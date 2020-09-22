@@ -10,7 +10,11 @@ import {
 } from './importer';
 import { getSettings, saveSettings } from './settings';
 import { defineMessages } from 'react-intl';
-import { List as ImmutableList } from 'immutable';
+import {
+  List as ImmutableList,
+  Map as ImmutableMap,
+  OrderedSet as ImmutableOrderedSet,
+} from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
 
@@ -121,7 +125,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
 export function dequeueNotifications() {
   return (dispatch, getState) => {
-    const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableList());
+    const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableOrderedSet());
     const totalQueuedNotificationsCount = getState().getIn(['notifications', 'totalQueuedNotificationsCount'], 0);
 
     if (totalQueuedNotificationsCount === 0) {
@@ -252,9 +256,12 @@ export function setFilter(filterType) {
 
 export function markReadNotifications() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
-    const topNotification = parseInt(getState().getIn(['notifications', 'items', 0, 'id']));
-    const lastRead = getState().getIn(['notifications', 'lastRead']);
+    const state = getState();
+    if (!state.get('me')) return;
+
+    const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedSet()).first(ImmutableMap()).get('id');
+    const lastRead = state.getIn(['notifications', 'lastRead']);
+
     if (!(topNotification && topNotification > lastRead)) return;
 
     dispatch({
