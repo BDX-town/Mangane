@@ -25,6 +25,17 @@ export function initReport(account, status) {
   };
 };
 
+export function initReportById(accountId) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: REPORT_INIT,
+      account: getState().getIn(['accounts', accountId]),
+    });
+
+    dispatch(openModal('REPORT'));
+  };
+};
+
 export function cancelReport() {
   return {
     type: REPORT_CANCEL,

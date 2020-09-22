@@ -13,6 +13,7 @@ import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { initReportById } from 'soapbox/actions/reports';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -224,7 +225,7 @@ class ChatMessageList extends ImmutablePureComponent {
 
   handleReportUser = (userId) => {
     return () => {
-      console.log(`should report user ${userId}`);
+      this.props.dispatch(initReportById(userId));
     };
   }
 
