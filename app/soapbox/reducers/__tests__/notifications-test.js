@@ -1,7 +1,7 @@
 import * as actions from 'soapbox/actions/notifications';
 import reducer from '../notifications';
 import notifications from 'soapbox/__fixtures__/notifications.json';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { take } from 'lodash';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
@@ -12,12 +12,12 @@ import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from 'soapbox/actions/timelines'
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      items: ImmutableList(),
+      items: ImmutableOrderedSet(),
       hasMore: true,
       top: false,
       unread: 0,
       isLoading: false,
-      queuedNotifications: ImmutableList(),
+      queuedNotifications: ImmutableOrderedSet(),
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
     }));
@@ -32,7 +32,7 @@ describe('notifications reducer', () => {
       skipLoading: true,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -68,7 +68,7 @@ describe('notifications reducer', () => {
       top: false,
       unread: 1,
       isLoading: false,
-      queuedNotifications: ImmutableList(),
+      queuedNotifications: ImmutableOrderedSet(),
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
     }));
@@ -100,7 +100,7 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_FILTER_SET', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -136,7 +136,7 @@ describe('notifications reducer', () => {
       top: false,
       unread: 1,
       isLoading: false,
-      queuedNotifications: ImmutableList(),
+      queuedNotifications: ImmutableOrderedSet(),
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
     });
@@ -144,12 +144,12 @@ describe('notifications reducer', () => {
       type: actions.NOTIFICATIONS_FILTER_SET,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList(),
+      items: ImmutableOrderedSet(),
       hasMore: true,
       top: false,
       unread: 1,
       isLoading: false,
-      queuedNotifications: ImmutableList(),
+      queuedNotifications: ImmutableOrderedSet(),
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
     }));
@@ -185,7 +185,7 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_UPDATE, when top = false, increment unread', () => {
     const state = ImmutableMap({
-      items: ImmutableList(),
+      items: ImmutableOrderedSet(),
       top: false,
       unread: 1,
     });
@@ -194,7 +194,7 @@ describe('notifications reducer', () => {
       notification: notification,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10743',
           type: 'favourite',
@@ -213,8 +213,8 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
     const state = ImmutableMap({
-      items: ImmutableList([]),
-      queuedNotifications: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
+      queuedNotifications: ImmutableOrderedSet([]),
       totalQueuedNotificationsCount: 0,
     });
     const action = {
@@ -224,8 +224,8 @@ describe('notifications reducer', () => {
       intlLocale: 'en',
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([]),
-      queuedNotifications: ImmutableList([{
+      items: ImmutableOrderedSet([]),
+      queuedNotifications: ImmutableOrderedSet([{
         notification: notification,
         intlMessages: intlMessages,
         intlLocale: 'en',
@@ -236,7 +236,7 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_DEQUEUE', () => {
     const state = ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
       queuedNotifications: take(notifications, 1),
       totalQueuedNotificationsCount: 1,
     });
@@ -244,15 +244,15 @@ describe('notifications reducer', () => {
       type: actions.NOTIFICATIONS_DEQUEUE,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([]),
-      queuedNotifications: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
+      queuedNotifications: ImmutableOrderedSet([]),
       totalQueuedNotificationsCount: 0,
     }));
   });
 
   it('should handle NOTIFICATIONS_EXPAND_SUCCESS with non-empty items and next set true', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10734',
           type: 'pleroma:emoji_reaction',
@@ -274,7 +274,7 @@ describe('notifications reducer', () => {
       next: true,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -324,7 +324,7 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_EXPAND_SUCCESS with empty items and next set true', () => {
     const state = ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
       unread: 1,
       hasMore: true,
       isLoading: false,
@@ -335,7 +335,7 @@ describe('notifications reducer', () => {
       next: true,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -375,7 +375,7 @@ describe('notifications reducer', () => {
 
   it('should handle ACCOUNT_BLOCK_SUCCESS', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -413,7 +413,7 @@ describe('notifications reducer', () => {
       relationship: relationship,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10743',
           type: 'favourite',
@@ -440,7 +440,7 @@ describe('notifications reducer', () => {
 
   it('should handle ACCOUNT_MUTE_SUCCESS', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -478,7 +478,7 @@ describe('notifications reducer', () => {
       relationship: relationship,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10743',
           type: 'favourite',
@@ -505,35 +505,35 @@ describe('notifications reducer', () => {
 
   it('should handle NOTIFICATIONS_CLEAR', () => {
     const state = ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
       hasMore: true,
     });
     const action = {
       type: actions.NOTIFICATIONS_CLEAR,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
       hasMore: false,
     }));
   });
 
   it('should handle NOTIFICATIONS_MARK_READ_REQUEST', () => {
     const state = ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
     });
     const action = {
       type: actions.NOTIFICATIONS_MARK_READ_REQUEST,
       lastRead: 35098814,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
       lastRead: 35098814,
     }));
   });
 
   it('should handle TIMELINE_DELETE', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -571,13 +571,13 @@ describe('notifications reducer', () => {
       id: '9vvNxoo5EFbbnfdXQu',
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([]),
+      items: ImmutableOrderedSet([]),
     }));
   });
 
   it('should handle TIMELINE_DISCONNECT', () => {
     const state = ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         ImmutableMap({
           id: '10744',
           type: 'pleroma:emoji_reaction',
@@ -615,7 +615,7 @@ describe('notifications reducer', () => {
       timeline: 'home',
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableList([
+      items: ImmutableOrderedSet([
         null,
         ImmutableMap({
           id: '10744',
