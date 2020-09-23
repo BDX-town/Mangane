@@ -15,6 +15,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
 import IconButton from 'soapbox/components/icon_button';
+import UploadArea from 'soapbox/features/ui/components/upload_area';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -40,6 +41,7 @@ class ChatBox extends ImmutablePureComponent {
     chat: ImmutablePropTypes.map,
     onSetInputRef: PropTypes.func,
     me: PropTypes.node,
+    onAttachment: PropTypes.func,
   }
 
   initialState = () => ({
@@ -48,9 +50,26 @@ class ChatBox extends ImmutablePureComponent {
     isUploading: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
+    draggingOver: false,
   })
 
   state = this.initialState()
+
+  componentDidMount() {
+    window.addEventListener('dragenter', this.handleDragEnter, false);
+    window.addEventListener('dragover', this.handleDragOver, false);
+    window.addEventListener('drop', this.handleDrop, false);
+    window.addEventListener('dragleave', this.handleDragLeave, false);
+    window.addEventListener('dragend', this.handleDragEnd, false);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('dragenter', this.handleDragEnter);
+    window.removeEventListener('dragover', this.handleDragOver);
+    window.removeEventListener('drop', this.handleDrop);
+    window.removeEventListener('dragleave', this.handleDragLeave);
+    window.removeEventListener('dragend', this.handleDragEnd);
+  }
 
   clearState = () => {
     this.setState(this.initialState());
@@ -119,12 +138,87 @@ class ChatBox extends ImmutablePureComponent {
 
   setInputRef = (el) => {
     const { onSetInputRef } = this.props;
-    this.inputElem = el;
     onSetInputRef(el);
   };
 
+  setRef = c => {
+    this.node = c;
+  }
+
+  handleAttachment = () => {
+    const { onAttachment } = this.props;
+    onAttachment(true);
+  }
+
   handleRemoveFile = (e) => {
     this.setState({ attachment: undefined, resetFileKey: fileKeyGen() });
+  }
+
+  dataTransferIsText = (dataTransfer) => {
+    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
+  }
+
+  handleDragEnter = (e) => {
+    e.preventDefault();
+
+    if (!this.dragTargets) {
+      this.dragTargets = [];
+    }
+
+    if (this.dragTargets.indexOf(e.target) === -1) {
+      this.dragTargets.push(e.target);
+    }
+
+    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
+      this.setState({ draggingOver: true });
+    }
+  }
+
+  handleDragOver = (e) => {
+    if (this.dataTransferIsText(e.dataTransfer)) return false;
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      e.dataTransfer.dropEffect = 'copy';
+    } catch (err) {
+
+    }
+
+    return false;
+  }
+
+  handleDrop = (e) => {
+    const { me } = this.props;
+    if (!me) return;
+
+    if (this.dataTransferIsText(e.dataTransfer)) return;
+    e.preventDefault();
+
+    this.setState({ draggingOver: false });
+    this.dragTargets = [];
+
+    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
+      this.handleFiles(e.dataTransfer.files);
+      // this.props.dispatch(uploadCompose(e.dataTransfer.files));
+    }
+  }
+
+  handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.dragTargets = this.dragTargets.filter(el => el !== e.target && this.node.contains(el));
+
+    if (this.dragTargets.length > 0) {
+      return;
+    }
+
+    this.setState({ draggingOver: false });
+  }
+
+  closeUploadModal = () => {
+    this.setState({ draggingOver: false });
   }
 
   onUploadProgress = (e) => {
@@ -142,6 +236,7 @@ class ChatBox extends ImmutablePureComponent {
 
     dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
       this.setState({ attachment: response.data, isUploading: false });
+      this.handleAttachment();
     }).catch(() => {
       this.setState({ isUploading: false });
     });
@@ -178,13 +273,15 @@ class ChatBox extends ImmutablePureComponent {
   render() {
     const { chatMessageIds, chatId, intl } = this.props;
     const { content, isUploading, uploadProgress } = this.state;
+    const { draggingOver } = this.state;
     if (!chatMessageIds) return null;
 
     return (
-      <div className='chat-box' onMouseOver={this.handleHover}>
+      <div className='chat-box' ref={this.setRef} onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
+        <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
         <div className='chat-box__actions simple_form'>
           {this.renderActionButton()}
           <textarea

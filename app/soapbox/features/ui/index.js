@@ -13,7 +13,7 @@ import LoadingBarContainer from './containers/loading_bar_container';
 import ModalContainer from './containers/modal_container';
 import { isMobile } from '../../is_mobile';
 import { debounce } from 'lodash';
-import { uploadCompose, resetCompose } from '../../actions/compose';
+import { resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchReports } from '../../actions/admin';
@@ -22,7 +22,6 @@ import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
-import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
 import LinkFooter from './components/link_footer';
 import FeaturesPanel from './components/features_panel';
@@ -296,7 +295,6 @@ class UI extends React.PureComponent {
   };
 
   state = {
-    draggingOver: false,
     mobile: isMobile(window.innerWidth),
   };
 
@@ -314,72 +312,6 @@ class UI extends React.PureComponent {
   handleLayoutChange = () => {
     // The cached heights are no longer accurate, invalidate
     this.props.dispatch(clearHeight());
-  }
-
-  handleDragEnter = (e) => {
-    e.preventDefault();
-
-    if (!this.dragTargets) {
-      this.dragTargets = [];
-    }
-
-    if (this.dragTargets.indexOf(e.target) === -1) {
-      this.dragTargets.push(e.target);
-    }
-
-    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
-      this.setState({ draggingOver: true });
-    }
-  }
-
-  handleDragOver = (e) => {
-    if (this.dataTransferIsText(e.dataTransfer)) return false;
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      e.dataTransfer.dropEffect = 'copy';
-    } catch (err) {
-
-    }
-
-    return false;
-  }
-
-  handleDrop = (e) => {
-    const { me } = this.props;
-    if (!me) return;
-
-    if (this.dataTransferIsText(e.dataTransfer)) return;
-    e.preventDefault();
-
-    this.setState({ draggingOver: false });
-    this.dragTargets = [];
-
-    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      this.props.dispatch(uploadCompose(e.dataTransfer.files));
-    }
-  }
-
-  handleDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.dragTargets = this.dragTargets.filter(el => el !== e.target && this.node.contains(el));
-
-    if (this.dragTargets.length > 0) {
-      return;
-    }
-
-    this.setState({ draggingOver: false });
-  }
-
-  dataTransferIsText = (dataTransfer) => {
-    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
-  }
-
-  closeUploadModal = () => {
-    this.setState({ draggingOver: false });
   }
 
   handleServiceWorkerPostMessage = ({ data }) => {
@@ -417,12 +349,6 @@ class UI extends React.PureComponent {
     if (!account) return;
     window.addEventListener('beforeunload', this.handleBeforeUnload, false);
     window.addEventListener('resize', this.handleResize, { passive: true });
-
-    document.addEventListener('dragenter', this.handleDragEnter, false);
-    document.addEventListener('dragover', this.handleDragOver, false);
-    document.addEventListener('drop', this.handleDrop, false);
-    document.addEventListener('dragleave', this.handleDragLeave, false);
-    document.addEventListener('dragend', this.handleDragEnd, false);
 
     if ('serviceWorker' in  navigator) {
       navigator.serviceWorker.addEventListener('message', this.handleServiceWorkerPostMessage);
@@ -590,7 +516,7 @@ class UI extends React.PureComponent {
 
   render() {
     const { streamingUrl } = this.props;
-    const { draggingOver, mobile } = this.state;
+    const { mobile } = this.state;
     const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
 
     if (me === null || !streamingUrl) return null;
@@ -648,7 +574,6 @@ class UI extends React.PureComponent {
           <NotificationsContainer />
           <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
-          <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
           {me && !mobile && <ChatPanes />}
           <ProfileHoverCard />
