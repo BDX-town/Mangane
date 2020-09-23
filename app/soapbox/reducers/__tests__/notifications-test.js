@@ -7,7 +7,7 @@ import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/acc
 import notification from 'soapbox/__fixtures__/notification.json';
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import relationship from 'soapbox/__fixtures__/relationship.json';
-import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from 'soapbox/actions/timelines';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -575,80 +575,83 @@ describe('notifications reducer', () => {
     }));
   });
 
-  it('should handle TIMELINE_DISCONNECT', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedSet([
-        ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-          is_seen: false,
-        }),
-        ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-          is_seen: true,
-        }),
-        ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-          is_seen: true,
-        }),
-      ]),
-    });
-    const action = {
-      type: TIMELINE_DISCONNECT,
-      timeline: 'home',
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedSet([
-        null,
-        ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-          is_seen: false,
-        }),
-        ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-          is_seen: true,
-        }),
-        ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-          is_seen: true,
-        }),
-      ]),
-    }));
-  });
+  // Disable for now
+  // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/432
+  //
+  // it('should handle TIMELINE_DISCONNECT', () => {
+  //   const state = ImmutableMap({
+  //     items: ImmutableOrderedSet([
+  //       ImmutableMap({
+  //         id: '10744',
+  //         type: 'pleroma:emoji_reaction',
+  //         account: '9vMAje101ngtjlMj7w',
+  //         created_at: '2020-06-10T02:54:39.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: '😢',
+  //         chat_message: undefined,
+  //         is_seen: false,
+  //       }),
+  //       ImmutableMap({
+  //         id: '10743',
+  //         type: 'favourite',
+  //         account: '9v5c6xSEgAi3Zu1Lv6',
+  //         created_at: '2020-06-10T02:51:05.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: undefined,
+  //         chat_message: undefined,
+  //         is_seen: true,
+  //       }),
+  //       ImmutableMap({
+  //         id: '10741',
+  //         type: 'favourite',
+  //         account: '9v5cKMOPGqPcgfcWp6',
+  //         created_at: '2020-06-10T02:05:06.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: undefined,
+  //         chat_message: undefined,
+  //         is_seen: true,
+  //       }),
+  //     ]),
+  //   });
+  //   const action = {
+  //     type: TIMELINE_DISCONNECT,
+  //     timeline: 'home',
+  //   };
+  //   expect(reducer(state, action)).toEqual(ImmutableMap({
+  //     items: ImmutableOrderedSet([
+  //       null,
+  //       ImmutableMap({
+  //         id: '10744',
+  //         type: 'pleroma:emoji_reaction',
+  //         account: '9vMAje101ngtjlMj7w',
+  //         created_at: '2020-06-10T02:54:39.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: '😢',
+  //         chat_message: undefined,
+  //         is_seen: false,
+  //       }),
+  //       ImmutableMap({
+  //         id: '10743',
+  //         type: 'favourite',
+  //         account: '9v5c6xSEgAi3Zu1Lv6',
+  //         created_at: '2020-06-10T02:51:05.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: undefined,
+  //         chat_message: undefined,
+  //         is_seen: true,
+  //       }),
+  //       ImmutableMap({
+  //         id: '10741',
+  //         type: 'favourite',
+  //         account: '9v5cKMOPGqPcgfcWp6',
+  //         created_at: '2020-06-10T02:05:06.000Z',
+  //         status: '9vvNxoo5EFbbnfdXQu',
+  //         emoji: undefined,
+  //         chat_message: undefined,
+  //         is_seen: true,
+  //       }),
+  //     ]),
+  //   }));
+  // });
 
 });
