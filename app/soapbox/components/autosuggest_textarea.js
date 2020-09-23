@@ -320,6 +320,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children } = this.props;
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };
+    const { draggingOver } = this.state;
 
     if (isRtl(value)) {
       style.direction = 'rtl';
