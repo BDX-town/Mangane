@@ -42,6 +42,7 @@ class ChatBox extends ImmutablePureComponent {
     onSetInputRef: PropTypes.func,
     me: PropTypes.node,
     onAttachment: PropTypes.func,
+    windowState: PropTypes.string,
   }
 
   initialState = () => ({
@@ -200,7 +201,6 @@ class ChatBox extends ImmutablePureComponent {
 
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
       this.handleFiles(e.dataTransfer.files);
-      // this.props.dispatch(uploadCompose(e.dataTransfer.files));
     }
   }
 
@@ -242,6 +242,16 @@ class ChatBox extends ImmutablePureComponent {
     });
   }
 
+  renderUploadArea = () => {
+    const { windowState } = this.props;
+    const { draggingOver } = this.state;
+    if (windowState !== 'open') return null;
+
+    return (
+      <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
+    );
+  }
+
   renderAttachment = () => {
     const { attachment } = this.state;
     if (!attachment) return null;
@@ -271,9 +281,9 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, chatId, intl } = this.props;
+    const { chatMessageIds, chatId, intl, windowState } = this.props;
     const { content, isUploading, uploadProgress } = this.state;
-    const { draggingOver } = this.state;
+    console.log('window state: ' + windowState + ', chatID: ' + chatId);
     if (!chatMessageIds) return null;
 
     return (
@@ -281,7 +291,7 @@ class ChatBox extends ImmutablePureComponent {
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
-        <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
+        {this.renderUploadArea()}
         <div className='chat-box__actions simple_form'>
           {this.renderActionButton()}
           <textarea

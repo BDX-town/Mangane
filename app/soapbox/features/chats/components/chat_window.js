@@ -108,6 +108,7 @@ class ChatWindow extends ImmutablePureComponent {
         <div className='pane__content'>
           <ChatBox
             chatId={chat.get('id')}
+            windowState={pane.get('state')}
             onSetInputRef={this.handleInputRef}
           />
         </div>
