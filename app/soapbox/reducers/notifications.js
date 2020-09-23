@@ -155,12 +155,16 @@ export default function notifications(state = initialState, action) {
     return state.set('lastRead', action.lastRead);
   case TIMELINE_DELETE:
     return deleteByStatus(state, action.id);
-  case TIMELINE_DISCONNECT:
-    // This is kind of a hack - `null` renders a LoadGap in the component
-    // https://github.com/tootsuite/mastodon/pull/6886
-    return action.timeline === 'home' ?
-      state.update('items', items => items.first() ? ImmutableOrderedSet([null]).union(items) : items) :
-      state;
+
+  // Disable for now
+  // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/432
+  //
+  // case TIMELINE_DISCONNECT:
+  //   // This is kind of a hack - `null` renders a LoadGap in the component
+  //   // https://github.com/tootsuite/mastodon/pull/6886
+  //   return action.timeline === 'home' ?
+  //     state.update('items', items => items.first() ? ImmutableOrderedSet([null]).union(items) : items) :
+  //     state;
   default:
     return state;
   }
