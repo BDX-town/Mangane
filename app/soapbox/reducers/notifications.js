@@ -15,7 +15,7 @@ import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
-import { TIMELINE_DELETE, TIMELINE_DISCONNECT } from '../actions/timelines';
+import { TIMELINE_DELETE } from '../actions/timelines';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { get } from 'lodash';
 
