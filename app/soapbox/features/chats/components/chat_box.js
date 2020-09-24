@@ -57,19 +57,19 @@ class ChatBox extends ImmutablePureComponent {
   state = this.initialState()
 
   componentDidMount() {
-    window.addEventListener('dragenter', this.handleDragEnter, false);
-    window.addEventListener('dragover', this.handleDragOver, false);
-    window.addEventListener('drop', this.handleDrop, false);
-    window.addEventListener('dragleave', this.handleDragLeave, false);
-    window.addEventListener('dragend', this.handleDragEnd, false);
+    this.node.addEventListener('dragenter', this.handleDragEnter, false);
+    this.node.addEventListener('dragover', this.handleDragOver, false);
+    this.node.addEventListener('drop', this.handleDrop, false);
+    this.node.addEventListener('dragleave', this.handleDragLeave, false);
+    this.node.addEventListener('dragend', this.handleDragEnd, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('dragenter', this.handleDragEnter);
-    window.removeEventListener('dragover', this.handleDragOver);
-    window.removeEventListener('drop', this.handleDrop);
-    window.removeEventListener('dragleave', this.handleDragLeave);
-    window.removeEventListener('dragend', this.handleDragEnd);
+    this.node.removeEventListener('dragenter', this.handleDragEnter);
+    this.node.removeEventListener('dragover', this.handleDragOver);
+    this.node.removeEventListener('drop', this.handleDrop);
+    this.node.removeEventListener('dragleave', this.handleDragLeave);
+    this.node.removeEventListener('dragend', this.handleDragEnd);
   }
 
   clearState = () => {
@@ -261,8 +261,8 @@ class ChatBox extends ImmutablePureComponent {
         <div className='chat-box__filename'>
           {truncateFilename(attachment.preview_url, 20)}
         </div>
-        <div class='chat-box__remove-attachment'>
-          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+        <div className='chat-box__remove-attachment'>
+          <IconButton icon='remove' title='remove' onClick={this.handleRemoveFile} />
         </div>
       </div>
     );
@@ -273,7 +273,7 @@ class ChatBox extends ImmutablePureComponent {
 
     return this.canSubmit() ? (
       <div className='chat-box__send'>
-        <IconButton icon='send' size={16} onClick={this.sendMessage} />
+        <IconButton icon='send' size={16} title='send' onClick={this.sendMessage} />
       </div>
     ) : (
       <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
