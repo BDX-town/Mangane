@@ -13,7 +13,7 @@ import { defineMessages } from 'react-intl';
 import {
   List as ImmutableList,
   Map as ImmutableMap,
-  OrderedSet as ImmutableOrderedSet,
+  OrderedMap as ImmutableOrderedMap,
 } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
@@ -125,7 +125,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
 export function dequeueNotifications() {
   return (dispatch, getState) => {
-    const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableOrderedSet());
+    const queuedNotifications = getState().getIn(['notifications', 'queuedNotifications'], ImmutableOrderedMap());
     const totalQueuedNotificationsCount = getState().getIn(['notifications', 'totalQueuedNotificationsCount'], 0);
 
     if (totalQueuedNotificationsCount === 0) {
@@ -259,7 +259,7 @@ export function markReadNotifications() {
     const state = getState();
     if (!state.get('me')) return;
 
-    const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedSet()).first(ImmutableMap()).get('id');
+    const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
     const lastRead = state.getIn(['notifications', 'lastRead']);
 
     if (!(topNotification && topNotification > lastRead)) return;

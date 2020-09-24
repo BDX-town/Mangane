@@ -30,7 +30,7 @@ const getNotifications = createSelector([
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'active']),
   state => ImmutableList(getSettings(state).getIn(['notifications', 'shows']).filter(item => !item).keys()),
-  state => state.getIn(['notifications', 'items']),
+  state => state.getIn(['notifications', 'items']).toList(),
 ], (showFilterBar, allowedType, excludedTypes, notifications) => {
   if (!showFilterBar || allowedType === 'all') {
     // used if user changed the notification settings after loading the notifications from the server
@@ -55,7 +55,7 @@ export default @connect(mapStateToProps)
 class Notifications extends React.PureComponent {
 
   static propTypes = {
-    notifications: ImmutablePropTypes.orderedSet.isRequired,
+    notifications: ImmutablePropTypes.list.isRequired,
     showFilterBar: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -142,8 +142,6 @@ class Notifications extends React.PureComponent {
     } else if (notifications.size > 0 || hasMore) {
       scrollableContent = notifications.map((item, index) => item === null ? (
         <LoadGap
-          // FIXME: This won't work, can't get OrderedSet by index
-          // https://github.com/immutable-js/immutable-js/issues/1790
           key={'gap:' + notifications.getIn([index + 1, 'id'])}
           disabled={isLoading}
           maxId={index > 0 ? notifications.getIn([index - 1, 'id']) : null}

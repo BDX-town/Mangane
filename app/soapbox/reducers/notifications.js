@@ -16,16 +16,16 @@ import {
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
 import { get } from 'lodash';
 
 const initialState = ImmutableMap({
-  items: ImmutableOrderedSet(),
+  items: ImmutableOrderedMap(),
   hasMore: true,
   top: false,
   unread: 0,
   isLoading: false,
-  queuedNotifications: ImmutableOrderedSet(), //max = MAX_QUEUED_NOTIFICATIONS
+  queuedNotifications: ImmutableOrderedMap(), //max = MAX_QUEUED_NOTIFICATIONS
   totalQueuedNotificationsCount: 0, //used for queuedItems overflow for MAX_QUEUED_NOTIFICATIONS+
   lastRead: -1,
 });
@@ -56,26 +56,27 @@ const normalizeNotification = (state, notification) => {
 
   if (!top) state = state.update('unread', unread => unread + 1);
 
-  return state.update('items', list => {
-    if (top && list.size > 40) {
-      list = list.take(20);
+  return state.update('items', map => {
+    if (top && map.size > 40) {
+      map = map.take(20);
     }
 
-    return list.add(notificationToMap(notification)).sort(comparator);
+    return map.set(notification.id, notificationToMap(notification)).sort(comparator);
   });
 };
 
 const processRawNotifications = notifications => (
-  ImmutableOrderedSet(
+  ImmutableOrderedMap(
     notifications
       .filter(isValid)
-      .map(notificationToMap)));
+      .map(n => [n.id, notificationToMap(n)])
+  ));
 
 const expandNormalizedNotifications = (state, notifications, next) => {
   const items = processRawNotifications(notifications);
 
   return state.withMutations(mutable => {
-    mutable.update('items', list => list.union(items).sort(comparator));
+    mutable.update('items', map => map.merge(items).sort(comparator));
 
     if (!next) mutable.set('hasMore', false);
     mutable.set('isLoading', false);
@@ -83,7 +84,7 @@ const expandNormalizedNotifications = (state, notifications, next) => {
 };
 
 const filterNotifications = (state, relationship) => {
-  return state.update('items', list => list.filterNot(item => item !== null && item.get('account') === relationship.id));
+  return state.update('items', map => map.filterNot(item => item !== null && item.get('account') === relationship.id));
 };
 
 const updateTop = (state, top) => {
@@ -92,26 +93,22 @@ const updateTop = (state, top) => {
 };
 
 const deleteByStatus = (state, statusId) => {
-  return state.update('items', list => list.filterNot(item => item !== null && item.get('status') === statusId));
+  return state.update('items', map => map.filterNot(item => item !== null && item.get('status') === statusId));
 };
 
 const updateNotificationsQueue = (state, notification, intlMessages, intlLocale) => {
-  const queuedNotifications = state.getIn(['queuedNotifications'], ImmutableOrderedSet());
-  const listedNotifications = state.getIn(['items'], ImmutableOrderedSet());
+  const queuedNotifications = state.getIn(['queuedNotifications'], ImmutableOrderedMap());
+  const listedNotifications = state.getIn(['items'], ImmutableOrderedMap());
   const totalQueuedNotificationsCount = state.getIn(['totalQueuedNotificationsCount'], 0);
 
-  let alreadyExists = queuedNotifications.find(existingQueuedNotification => existingQueuedNotification.id === notification.id);
-  if (!alreadyExists) alreadyExists = listedNotifications.find(existingListedNotification => existingListedNotification.get('id') === notification.id);
-
-  if (alreadyExists) {
-    return state;
-  }
+  const alreadyExists = queuedNotifications.has(notification.id) || listedNotifications.has(notification.id);
+  if (alreadyExists) return state;
 
   let newQueuedNotifications = queuedNotifications;
 
   return state.withMutations(mutable => {
     if (totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
-      mutable.set('queuedNotifications', newQueuedNotifications.add({
+      mutable.set('queuedNotifications', newQueuedNotifications.set(notification.id, {
         notification,
         intlMessages,
         intlLocale,
@@ -121,6 +118,9 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   });
 };
 
+const countUnseen = notifications => notifications.reduce((acc, cur) =>
+  get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
+
 export default function notifications(state = initialState, action) {
   switch(action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
@@ -128,7 +128,7 @@ export default function notifications(state = initialState, action) {
   case NOTIFICATIONS_EXPAND_FAIL:
     return state.set('isLoading', false);
   case NOTIFICATIONS_FILTER_SET:
-    return state.set('items', ImmutableOrderedSet()).set('hasMore', true);
+    return state.set('items', ImmutableOrderedMap()).set('hasMore', true);
   case NOTIFICATIONS_SCROLL_TOP:
     return updateTop(state, action.top);
   case NOTIFICATIONS_UPDATE:
@@ -137,12 +137,11 @@ export default function notifications(state = initialState, action) {
     return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
   case NOTIFICATIONS_DEQUEUE:
     return state.withMutations(mutable => {
-      mutable.set('queuedNotifications', ImmutableOrderedSet());
+      mutable.set('queuedNotifications', ImmutableOrderedMap());
       mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
-    const legacyUnread = action.notifications.reduce((acc, cur) =>
-      get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
+    const legacyUnread = countUnseen(action.notifications);
     return expandNormalizedNotifications(state, action.notifications, action.next)
       .merge({ unread: Math.max(legacyUnread, state.get('unread')) });
   case ACCOUNT_BLOCK_SUCCESS:
@@ -150,7 +149,7 @@ export default function notifications(state = initialState, action) {
   case ACCOUNT_MUTE_SUCCESS:
     return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
   case NOTIFICATIONS_CLEAR:
-    return state.set('items', ImmutableOrderedSet()).set('hasMore', false);
+    return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
     return state.set('lastRead', action.lastRead);
   case TIMELINE_DELETE:
