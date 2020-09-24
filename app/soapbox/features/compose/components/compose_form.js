@@ -87,6 +87,12 @@ class ComposeForm extends ImmutablePureComponent {
     });
   }
 
+  handleAttachment = () => {
+    this.setState({
+      shouldCondense: false,
+    });
+  }
+
   handleKeyDown = (e) => {
     if (e.keyCode === 13 && (e.ctrlKey || e.metaKey)) {
       this.handleSubmit();
@@ -173,6 +179,9 @@ class ComposeForm extends ImmutablePureComponent {
   componentDidMount() {
     document.addEventListener('click', this.handleClick, true);
     this.setCursor(this.props.text.length); // Set cursor at end
+    this.setState({
+      shouldCondense: this.props.shouldCondense,
+    });
   }
 
   componentWillUnmount() {
@@ -224,7 +233,8 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, autoFocus, isModalOpen, maxTootChars } = this.props;
+    const { shouldCondense } = this.state;
     const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -285,6 +295,7 @@ class ComposeForm extends ImmutablePureComponent {
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
+          onAttachment={this.handleAttachment}
           autoFocus={shouldAutoFocus}
         >
           {

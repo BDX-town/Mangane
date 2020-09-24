@@ -55,7 +55,7 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    // onAttachment: PropTypes.func,
+    onAttachment: PropTypes.func,
   };
 
   static defaultProps = {
@@ -231,20 +231,20 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     return false;
   }
 
-  // handleAttachment = () => {
-  //   const { onAttachment } = this.props;
-  //   onAttachment(true);
-  // }
+  handleAttachment = () => {
+    const { onAttachment } = this.props;
+    onAttachment(true);
+  }
 
   handleFiles = (files) => {
     const { dispatch } = this.props;
 
     this.setState({ isUploading: true });
 
-    const data = new FormData();
-    data.append('file', files[0]);
-    dispatch(uploadCompose(data));
-    // dispatch(this.handleAttachment());
+    // const data = new FormData();
+    // data.append('file', files[0]);
+    dispatch(uploadCompose(files));
+    dispatch(this.handleAttachment());
     // dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
     //   this.setState({ attachment: response.data, isUploading: false });
     //   this.handleAttachment();
@@ -316,15 +316,14 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children } = this.props;
     const { draggingOver, suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };
-    const { draggingOver } = this.state;
 
     if (isRtl(value)) {
       style.direction = 'rtl';
     }
 
     return [
-      <div className='compose-form__autosuggest-wrapper' key='compose-form__autosuggest-wrapper'>
-        <div className='autosuggest-textarea' ref={this.setRef}>
+      <div className='compose-form__autosuggest-wrapper' key='compose-form__autosuggest-wrapper' ref={this.setRef}>
+        <div className='autosuggest-textarea'>
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           <label>
             <span style={{ display: 'none' }}>{placeholder}</span>
