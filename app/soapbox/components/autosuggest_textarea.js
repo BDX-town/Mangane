@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
 import AutosuggestEmoji from './autosuggest_emoji';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -35,9 +36,11 @@ const textAtCursorMatchesToken = (str, caretPosition) => {
   }
 };
 
-export default class AutosuggestTextarea extends ImmutablePureComponent {
+export default @connect()
+class AutosuggestTextarea extends ImmutablePureComponent {
 
   static propTypes = {
+    dispatch: PropTypes.func.isRequired,
     value: PropTypes.string,
     suggestions: ImmutablePropTypes.list,
     disabled: PropTypes.bool,
@@ -52,7 +55,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    onAttachment: PropTypes.func,
+    // onAttachment: PropTypes.func,
   };
 
   static defaultProps = {
@@ -69,19 +72,19 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
   };
 
   componentDidMount() {
-    window.addEventListener('dragenter', this.handleDragEnter, false);
-    window.addEventListener('dragover', this.handleDragOver, false);
-    window.addEventListener('drop', this.handleDrop, false);
-    window.addEventListener('dragleave', this.handleDragLeave, false);
-    window.addEventListener('dragend', this.handleDragEnd, false);
+    this.node.addEventListener('dragenter', this.handleDragEnter, false);
+    this.node.addEventListener('dragover', this.handleDragOver, false);
+    this.node.addEventListener('drop', this.handleDrop, false);
+    this.node.addEventListener('dragleave', this.handleDragLeave, false);
+    this.node.addEventListener('dragend', this.handleDragEnd, false);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('dragenter', this.handleDragEnter);
-    window.removeEventListener('dragover', this.handleDragOver);
-    window.removeEventListener('drop', this.handleDrop);
-    window.removeEventListener('dragleave', this.handleDragLeave);
-    window.removeEventListener('dragend', this.handleDragEnd);
+    this.node.removeEventListener('dragenter', this.handleDragEnter);
+    this.node.removeEventListener('dragover', this.handleDragOver);
+    this.node.removeEventListener('drop', this.handleDrop);
+    this.node.removeEventListener('dragleave', this.handleDragLeave);
+    this.node.removeEventListener('dragend', this.handleDragEnd);
   }
 
   onChange = (e) => {
@@ -194,10 +197,6 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.node = c;
   }
 
-  handleAttachment = () => {
-    const { onAttachment } = this.props;
-    onAttachment(true);
-  }
   dataTransferIsText = (dataTransfer) => {
     return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
   }
@@ -232,10 +231,10 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     return false;
   }
 
-  handleAttachment = () => {
-    const { onAttachment } = this.props;
-    onAttachment(true);
-  }
+  // handleAttachment = () => {
+  //   const { onAttachment } = this.props;
+  //   onAttachment(true);
+  // }
 
   handleFiles = (files) => {
     const { dispatch } = this.props;
@@ -245,7 +244,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     const data = new FormData();
     data.append('file', files[0]);
     dispatch(uploadCompose(data));
-    dispatch(this.handleAttachment());
+    // dispatch(this.handleAttachment());
     // dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
     //   this.setState({ attachment: response.data, isUploading: false });
     //   this.handleAttachment();
@@ -255,9 +254,6 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
   }
 
   handleDrop = (e) => {
-    const { me } = this.props;
-    if (!me) return;
-
     if (this.dataTransferIsText(e.dataTransfer)) return;
     e.preventDefault();
 
