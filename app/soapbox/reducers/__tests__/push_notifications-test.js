@@ -11,6 +11,7 @@ describe('push_notifications reducer', () => {
         reblog: false,
         mention: false,
         poll: false,
+        'pleroma:chat_mention': false,
       }),
       isSubscribed: false,
       browserSupport: false,
