@@ -295,6 +295,7 @@ class UI extends React.PureComponent {
   };
 
   state = {
+    draggingOver: false,
     mobile: isMobile(window.innerWidth),
   };
 
@@ -313,6 +314,72 @@ class UI extends React.PureComponent {
     // The cached heights are no longer accurate, invalidate
     this.props.dispatch(clearHeight());
   }
+
+  // handleDragEnter = (e) => {
+  //   e.preventDefault();
+  //
+  //   if (!this.dragTargets) {
+  //     this.dragTargets = [];
+  //   }
+  //
+  //   if (this.dragTargets.indexOf(e.target) === -1) {
+  //     this.dragTargets.push(e.target);
+  //   }
+  //
+  //   if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
+  //     this.setState({ draggingOver: true });
+  //   }
+  // }
+  //
+  // handleDragOver = (e) => {
+  //   if (this.dataTransferIsText(e.dataTransfer)) return false;
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //
+  //   try {
+  //     e.dataTransfer.dropEffect = 'copy';
+  //   } catch (err) {
+  //
+  //   }
+  //
+  //   return false;
+  // }
+  //
+  // handleDrop = (e) => {
+  //   const { me } = this.props;
+  //   if (!me) return;
+  //
+  //   if (this.dataTransferIsText(e.dataTransfer)) return;
+  //   e.preventDefault();
+  //
+  //   this.setState({ draggingOver: false });
+  //   this.dragTargets = [];
+  //
+  //   if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
+  //     this.props.dispatch(uploadCompose(e.dataTransfer.files));
+  //   }
+  // }
+  //
+  // handleDragLeave = (e) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //
+  //   this.dragTargets = this.dragTargets.filter(el => el !== e.target && this.node.contains(el));
+  //
+  //   if (this.dragTargets.length > 0) {
+  //     return;
+  //   }
+  //
+  //   this.setState({ draggingOver: false });
+  // }
+  //
+  // dataTransferIsText = (dataTransfer) => {
+  //   return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
+  // }
+  //
+  // closeUploadModal = () => {
+  //   this.setState({ draggingOver: false });
+  // }
 
   handleServiceWorkerPostMessage = ({ data }) => {
     if (data.type === 'navigate') {
@@ -378,11 +445,6 @@ class UI extends React.PureComponent {
   componentWillUnmount() {
     window.removeEventListener('beforeunload', this.handleBeforeUnload);
     window.removeEventListener('resize', this.handleResize);
-    document.removeEventListener('dragenter', this.handleDragEnter);
-    document.removeEventListener('dragover', this.handleDragOver);
-    document.removeEventListener('drop', this.handleDrop);
-    document.removeEventListener('dragleave', this.handleDragLeave);
-    document.removeEventListener('dragend', this.handleDragEnd);
     this.disconnectStreaming();
   }
 

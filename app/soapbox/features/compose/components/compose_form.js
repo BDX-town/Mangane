@@ -10,6 +10,7 @@ import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
 import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
@@ -23,6 +24,8 @@ import { length } from 'stringz';
 import { countableText } from '../util/counter';
 import Icon from 'soapbox/components/icon';
 import { get } from 'lodash';
+import UploadArea from 'soapbox/features/ui/components/upload_area';
+import { uploadCompose } from 'soapbox/actions/compose';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -33,7 +36,8 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
-export default @injectIntl
+export default @connect()
+@injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   state = {
@@ -46,6 +50,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
     text: PropTypes.string.isRequired,
     suggestions: ImmutablePropTypes.list,
     spoiler: PropTypes.bool,
@@ -84,12 +89,6 @@ class ComposeForm extends ImmutablePureComponent {
   handleComposeFocus = () => {
     this.setState({
       composeFocused: true,
-    });
-  }
-
-  handleAttachment = () => {
-    this.setState({
-      shouldCondense: false,
     });
   }
 
@@ -179,13 +178,83 @@ class ComposeForm extends ImmutablePureComponent {
   componentDidMount() {
     document.addEventListener('click', this.handleClick, true);
     this.setCursor(this.props.text.length); // Set cursor at end
-    this.setState({
-      shouldCondense: this.props.shouldCondense,
-    });
+    const composeForm = document.getElementById('compose-form');
+    composeForm.addEventListener('dragenter', this.handleDragEnter, false);
+    composeForm.addEventListener('dragover', this.handleDragOver, false);
+    composeForm.addEventListener('drop', this.handleDrop, false);
+    composeForm.addEventListener('dragleave', this.handleDragLeave, false);
   }
 
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClick, true);
+    const composeForm = document.getElementById('compose-form');
+    composeForm.removeEventListener('dragenter', this.handleDragEnter);
+    composeForm.removeEventListener('dragover', this.handleDragOver);
+    composeForm.removeEventListener('drop', this.handleDrop);
+    composeForm.removeEventListener('dragleave', this.handleDragLeave);
+  }
+
+  handleDragEnter = (e) => {
+    e.preventDefault();
+
+    if (!this.dragTargets) {
+      this.dragTargets = [];
+    }
+
+    if (this.dragTargets.indexOf(e.target) === -1) {
+      this.dragTargets.push(e.target);
+    }
+
+    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
+      this.setState({ draggingOver: true });
+    }
+  }
+
+  handleDragOver = (e) => {
+    if (this.dataTransferIsText(e.dataTransfer)) return false;
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      e.dataTransfer.dropEffect = 'copy';
+    } catch (err) {
+
+    }
+
+    return false;
+  }
+
+  handleDrop = (e) => {
+    if (this.dataTransferIsText(e.dataTransfer)) return;
+    e.preventDefault();
+
+    this.setState({ draggingOver: false });
+    this.dragTargets = [];
+
+    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
+      this.props.dispatch(uploadCompose(e.dataTransfer.files));
+    }
+  }
+
+  handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    this.dragTargets = this.dragTargets.filter(el => el !== e.target && this.form.contains(el));
+
+    if (this.dragTargets.length > 0) {
+      return;
+    }
+
+    this.setState({ draggingOver: false });
+  }
+
+  dataTransferIsText = (dataTransfer) => {
+    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
+  }
+
+  closeUploadModal = () => {
+    this.setState({ draggingOver: false });
   }
 
   setAutosuggestTextarea = (c) => {
@@ -233,8 +302,8 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, autoFocus, isModalOpen, maxTootChars } = this.props;
-    const { shouldCondense } = this.state;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
+    const { draggingOver } = this.state;
     const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -255,7 +324,7 @@ class ComposeForm extends ImmutablePureComponent {
     });
 
     return (
-      <div className={composeClassNames} ref={this.setForm} onClick={this.handleClick}>
+      <div className={composeClassNames} ref={this.setForm} onClick={this.handleClick} id='compose-form'>
         <WarningContainer />
 
         { !shouldCondense && <ReplyIndicatorContainer /> }
@@ -281,6 +350,7 @@ class ComposeForm extends ImmutablePureComponent {
         <div className='emoji-picker-wrapper'>
           <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
         </div>
+        <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
 
         <AutosuggestTextarea
           ref={(isModalOpen && shouldCondense) ? null : this.setAutosuggestTextarea}
@@ -295,7 +365,6 @@ class ComposeForm extends ImmutablePureComponent {
           onSuggestionsClearRequested={this.onSuggestionsClearRequested}
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
-          onAttachment={this.handleAttachment}
           autoFocus={shouldAutoFocus}
         >
           {

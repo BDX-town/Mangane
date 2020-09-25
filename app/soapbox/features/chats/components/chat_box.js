@@ -281,9 +281,8 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, chatId, intl, windowState } = this.props;
+    const { chatMessageIds, chatId, intl } = this.props;
     const { content, isUploading, uploadProgress } = this.state;
-    console.log('window state: ' + windowState + ', chatID: ' + chatId);
     if (!chatMessageIds) return null;
 
     return (

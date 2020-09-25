@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
 import AutosuggestEmoji from './autosuggest_emoji';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -8,8 +7,6 @@ import { isRtl } from '../rtl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 import classNames from 'classnames';
-import UploadArea from 'soapbox/features/ui/components/upload_area';
-import { uploadCompose } from 'soapbox/actions/compose';
 
 const textAtCursorMatchesToken = (str, caretPosition) => {
   let word;
@@ -36,11 +33,9 @@ const textAtCursorMatchesToken = (str, caretPosition) => {
   }
 };
 
-export default @connect()
-class AutosuggestTextarea extends ImmutablePureComponent {
+export default class AutosuggestTextarea extends ImmutablePureComponent {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     value: PropTypes.string,
     suggestions: ImmutablePropTypes.list,
     disabled: PropTypes.bool,
@@ -55,7 +50,6 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
-    onAttachment: PropTypes.func,
   };
 
   static defaultProps = {
@@ -68,24 +62,7 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     selectedSuggestion: 0,
     lastToken: null,
     tokenStart: 0,
-    draggingOver: false,
   };
-
-  componentDidMount() {
-    this.node.addEventListener('dragenter', this.handleDragEnter, false);
-    this.node.addEventListener('dragover', this.handleDragOver, false);
-    this.node.addEventListener('drop', this.handleDrop, false);
-    this.node.addEventListener('dragleave', this.handleDragLeave, false);
-    this.node.addEventListener('dragend', this.handleDragEnd, false);
-  }
-
-  componentWillUnmount() {
-    this.node.removeEventListener('dragenter', this.handleDragEnter);
-    this.node.removeEventListener('dragover', this.handleDragOver);
-    this.node.removeEventListener('drop', this.handleDrop);
-    this.node.removeEventListener('dragleave', this.handleDragLeave);
-    this.node.removeEventListener('dragend', this.handleDragEnd);
-  }
 
   onChange = (e) => {
     const [ tokenStart, token ] = textAtCursorMatchesToken(e.target.value, e.target.selectionStart);
@@ -193,96 +170,6 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     this.textarea = c;
   }
 
-  setRef = c => {
-    this.node = c;
-  }
-
-  dataTransferIsText = (dataTransfer) => {
-    return (dataTransfer && Array.from(dataTransfer.types).includes('text/plain') && dataTransfer.items.length === 1);
-  }
-
-  handleDragEnter = (e) => {
-    e.preventDefault();
-
-    if (!this.dragTargets) {
-      this.dragTargets = [];
-    }
-
-    if (this.dragTargets.indexOf(e.target) === -1) {
-      this.dragTargets.push(e.target);
-    }
-
-    if (e.dataTransfer && Array.from(e.dataTransfer.types).includes('Files')) {
-      this.setState({ draggingOver: true });
-    }
-  }
-
-  handleDragOver = (e) => {
-    if (this.dataTransferIsText(e.dataTransfer)) return false;
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      e.dataTransfer.dropEffect = 'copy';
-    } catch (err) {
-
-    }
-
-    return false;
-  }
-
-  handleAttachment = () => {
-    const { onAttachment } = this.props;
-    onAttachment(true);
-  }
-
-  handleFiles = (files) => {
-    const { dispatch } = this.props;
-
-    this.setState({ isUploading: true });
-
-    // const data = new FormData();
-    // data.append('file', files[0]);
-    dispatch(uploadCompose(files));
-    dispatch(this.handleAttachment());
-    // dispatch(uploadMedia(data, this.onUploadProgress)).then(response => {
-    //   this.setState({ attachment: response.data, isUploading: false });
-    //   this.handleAttachment();
-    // }).catch(() => {
-    //   this.setState({ isUploading: false });
-    // });
-  }
-
-  handleDrop = (e) => {
-    if (this.dataTransferIsText(e.dataTransfer)) return;
-    e.preventDefault();
-
-    this.setState({ draggingOver: false });
-    this.dragTargets = [];
-
-    if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      this.handleFiles(e.dataTransfer.files);
-      // this.props.dispatch(uploadCompose(e.dataTransfer.files));
-    }
-  }
-
-  handleDragLeave = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    this.dragTargets = this.dragTargets.filter(el => el !== e.target && this.node.contains(el));
-
-    if (this.dragTargets.length > 0) {
-      return;
-    }
-
-    this.setState({ draggingOver: false });
-  }
-
-  closeUploadModal = () => {
-    this.setState({ draggingOver: false });
-  }
-
   onPaste = (e) => {
     if (e.clipboardData && e.clipboardData.files.length === 1) {
       this.props.onPaste(e.clipboardData.files);
@@ -314,7 +201,7 @@ class AutosuggestTextarea extends ImmutablePureComponent {
 
   render() {
     const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, children } = this.props;
-    const { draggingOver, suggestionsHidden } = this.state;
+    const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };
 
     if (isRtl(value)) {
@@ -322,9 +209,8 @@ class AutosuggestTextarea extends ImmutablePureComponent {
     }
 
     return [
-      <div className='compose-form__autosuggest-wrapper' key='compose-form__autosuggest-wrapper' ref={this.setRef}>
+      <div className='compose-form__autosuggest-wrapper' key='compose-form__autosuggest-wrapper'>
         <div className='autosuggest-textarea'>
-          <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           <label>
             <span style={{ display: 'none' }}>{placeholder}</span>
 
