@@ -233,6 +233,7 @@ class ComposeForm extends ImmutablePureComponent {
 
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
       this.props.dispatch(uploadCompose(e.dataTransfer.files));
+      this.handleComposeFocus();
     }
   }
 
