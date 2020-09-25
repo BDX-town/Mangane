@@ -1,10 +1,11 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const merge = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
+const OfflinePlugin = require('offline-plugin');
 
 const watchOptions = {};
 
@@ -60,6 +61,24 @@ module.exports = merge(sharedConfig, {
   output: {
     pathinfo: true,
   },
+
+  plugins: [
+    new OfflinePlugin({
+      publicPath: output.publicPath,
+      caches: {
+        main: [],
+        additional: [],
+        optional: [],
+      },
+      ServiceWorker: {
+        entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
+        cacheName: 'soapbox-dev',
+        output: '../sw.js',
+        publicPath: '/sw.js',
+      },
+      AppCache: false,
+    }),
+  ],
 
   devServer: {
     clientLogLevel: 'none',
