@@ -187,7 +187,7 @@ class Preferences extends ImmutablePureComponent {
             </div>
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
-              hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Works best with dark mode.' />}
+              hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Supports light/dark toggle.' />}
               path={['halloween']}
             />
             <SettingsCheckbox
