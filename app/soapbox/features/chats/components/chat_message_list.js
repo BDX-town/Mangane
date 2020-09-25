@@ -5,16 +5,21 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { fetchChatMessages } from 'soapbox/actions/chats';
+import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
 import { openModal } from 'soapbox/actions/modal';
 import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { initReportById } from 'soapbox/actions/reports';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
+  more: { id: 'chats.actions.more', defaultMessage: 'More' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete message' },
+  report: { id: 'chats.actions.report', defaultMessage: 'Report user' },
 });
 
 const timeChange = (prev, curr) => {
@@ -198,7 +203,8 @@ class ChatMessageList extends ImmutablePureComponent {
   parseContent = chatMessage => {
     const content = chatMessage.get('content') || '';
     const pending = chatMessage.get('pending', false);
-    const formatted = pending ? this.parsePendingContent(content) : content;
+    const deleting = chatMessage.get('deleting', false);
+    const formatted = (pending && !deleting) ? this.parsePendingContent(content) : content;
     const emojiMap = makeEmojiMap(chatMessage);
     return emojify(formatted, emojiMap.toJS());
   }
@@ -211,8 +217,24 @@ class ChatMessageList extends ImmutablePureComponent {
     <div className='chat-messages__divider' key={key}>{text}</div>
   )
 
+  handleDeleteMessage = (chatId, messageId) => {
+    return () => {
+      this.props.dispatch(deleteChatMessage(chatId, messageId));
+    };
+  }
+
+  handleReportUser = (userId) => {
+    return () => {
+      this.props.dispatch(initReportById(userId));
+    };
+  }
+
   renderMessage = (chatMessage) => {
-    const { me } = this.props;
+    const { me, intl } = this.props;
+    const menu = [
+      { text: intl.formatMessage(messages.delete), action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')) },
+      { text: intl.formatMessage(messages.report), action: this.handleReportUser(chatMessage.get('account_id')) },
+    ];
 
     return (
       <div
@@ -226,12 +248,22 @@ class ChatMessageList extends ImmutablePureComponent {
           title={this.getFormattedTimestamp(chatMessage)}
           className='chat-message__bubble'
           ref={this.setBubbleRef}
+          tabIndex={0}
         >
           {this.maybeRenderMedia(chatMessage)}
           <span
             className='chat-message__content'
             dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
           />
+          <div className='chat-message__menu'>
+            <DropdownMenuContainer
+              items={menu}
+              icon='ellipsis-h'
+              size={18}
+              direction='top'
+              title={intl.formatMessage(messages.more)}
+            />
+          </div>
         </div>
       </div>
     );
