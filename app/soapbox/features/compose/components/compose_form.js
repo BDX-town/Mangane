@@ -54,6 +54,7 @@ class ComposeForm extends ImmutablePureComponent {
     text: PropTypes.string.isRequired,
     suggestions: ImmutablePropTypes.list,
     spoiler: PropTypes.bool,
+    sensitive: PropTypes.bool,
     privacy: PropTypes.string,
     spoilerText: PropTypes.string,
     focusDate: PropTypes.instanceOf(Date),
@@ -233,7 +234,6 @@ class ComposeForm extends ImmutablePureComponent {
 
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
       this.props.dispatch(uploadCompose(e.dataTransfer.files));
-      this.handleComposeFocus();
     }
   }
 
@@ -290,7 +290,9 @@ class ComposeForm extends ImmutablePureComponent {
 
   maybeUpdateFocus = prevProps => {
     const spoilerUpdated = this.props.spoiler !== prevProps.spoiler;
-    if (spoilerUpdated) {
+    const sensitiveUpdated = this.props.sensitive !== prevProps.sensitive;
+    const mediaUpdated = this.props.anyMedia !== prevProps.anyMedia;
+    if (spoilerUpdated || sensitiveUpdated || mediaUpdated) {
       switch (this.props.spoiler) {
       case true: this.focusSpoilerInput(); break;
       case false: this.focusTextarea(); break;
