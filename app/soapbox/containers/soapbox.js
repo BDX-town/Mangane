@@ -59,6 +59,7 @@ const mapStateToProps = (state) => {
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
     themeMode: settings.get('themeMode'),
+    halloween: settings.get('halloween'),
     customCss: soapboxConfig.get('customCss'),
   };
 };
@@ -77,6 +78,7 @@ class SoapboxMount extends React.PureComponent {
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
     customCss: ImmutablePropTypes.list,
+    halloween: PropTypes.bool,
     dispatch: PropTypes.func,
   };
 
@@ -122,6 +124,7 @@ class SoapboxMount extends React.PureComponent {
       'no-reduce-motion': !this.props.reduceMotion,
       'dyslexic': this.props.dyslexicFont,
       'demetricator': this.props.demetricator,
+      'halloween': this.props.halloween,
     });
 
     return (

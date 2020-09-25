@@ -186,6 +186,11 @@ class Preferences extends ImmutablePureComponent {
               />
             </div>
             <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.halloween_label' defaultMessage='Halloween mode' />}
+              hint={<FormattedMessage id='preferences.hints.halloween' defaultMessage='Beware: SPOOKY! Works best with dark mode.' />}
+              path={['halloween']}
+            />
+            <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.demetricator_label' defaultMessage='Use Demetricator' />}
               hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}
               path={['demetricator']}
