@@ -55,7 +55,17 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
+          dispatch((dispatch, getState) => {
+            const chat = JSON.parse(data.payload);
+            const messageOwned = !(chat.last_message && chat.last_message.account_id !== getState().get('me'));
+
+            dispatch({
+              type: STREAMING_CHAT_UPDATE,
+              chat,
+              // Only play sounds for recipient messages
+              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
+            });
+          });
           break;
         }
       },

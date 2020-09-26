@@ -4,6 +4,7 @@ import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ChatList from './components/chat_list';
+import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },
@@ -33,6 +34,7 @@ class ChatIndex extends React.PureComponent {
           icon='comment'
           title={intl.formatMessage(messages.title)}
         />
+        <div className='column__switch'><AudioToggle /></div>
 
         <ChatList
           onClickChat={this.handleClickChat}

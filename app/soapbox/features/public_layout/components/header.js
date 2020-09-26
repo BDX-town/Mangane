@@ -6,14 +6,18 @@ import { Link } from 'react-router-dom';
 import LoginForm from 'soapbox/features/auth_login/components/login_form';
 import SiteLogo from './site_logo';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { defineMessages, injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 import { logIn } from 'soapbox/actions/auth';
 import { fetchMe } from 'soapbox/actions/me';
-import PropTypes from 'prop-types';
 import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
 import IconButton from 'soapbox/components/icon_button';
-import { defineMessages, injectIntl } from 'react-intl';
 
 const messages = defineMessages({
+  home: { id: 'header.home.label', defaultMessage: 'Home' },
+  about: { id: 'header.about.label', defaultMessage: 'About' },
+  backTo: { id: 'header.back_to.label', defaultMessage: 'Back to {siteTitle}' },
+  login: { id: 'header.login.label', defaultMessage: 'Log in' },
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
@@ -32,48 +36,50 @@ class Header extends ImmutablePureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-    getFormData = (form) => {
-      return Object.fromEntries(
-        Array.from(form).map(i => [i.name, i.value])
-      );
-    }
-
-    static contextTypes = {
-      router: PropTypes.object,
-    };
-
-    handleSubmit = (event) => {
-      const { dispatch } = this.props;
-      const { username, password } = this.getFormData(event.target);
-      dispatch(logIn(username, password)).then(() => {
-        return dispatch(fetchMe());
-      }).catch(error => {
-        if (error.response.data.error === 'mfa_required') {
-          this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
-        }
-        this.setState({ isLoading: false });
-      });
-      this.setState({ isLoading: true });
-      event.preventDefault();
-    }
-
-    onClickClose = (event) => {
-      this.setState({ mfa_auth_needed: false, mfa_token: '' });
-    }
-
-  static propTypes = {
-    me: SoapboxPropTypes.me,
-    instance: ImmutablePropTypes.map,
-  }
-
   state = {
+    isLoading: false,
     mfa_auth_needed: false,
     mfa_token: '',
   }
 
+  getFormData = (form) => {
+    return Object.fromEntries(
+      Array.from(form).map(i => [i.name, i.value])
+    );
+  }
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
+  handleSubmit = (event) => {
+    const { dispatch } = this.props;
+    const { username, password } = this.getFormData(event.target);
+    dispatch(logIn(username, password)).then(() => {
+      return dispatch(fetchMe());
+    }).catch(error => {
+      if (error.response.data.error === 'mfa_required') {
+        this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
+      }
+      this.setState({ isLoading: false });
+    });
+    this.setState({ isLoading: true });
+    event.preventDefault();
+  }
+
+  onClickClose = (event) => {
+    this.setState({ mfa_auth_needed: false, mfa_token: '' });
+  }
+
+  static propTypes = {
+    me: SoapboxPropTypes.me,
+    instance: ImmutablePropTypes.map,
+    intl: PropTypes.object.isRequired,
+  }
+
   render() {
-    const { me, instance, isLoading, intl } = this.props;
-    const { mfa_auth_needed, mfa_token } = this.state;
+    const { me, instance, intl } = this.props;
+    const { isLoading, mfa_auth_needed, mfa_token } = this.state;
 
     return (
       <nav className='header'>
@@ -90,21 +96,21 @@ class Header extends ImmutablePureComponent {
             <Link className='brand' to='/'>
               <SiteLogo />
             </Link>
-            <Link className='nav-link optional' to='/'>Home</Link>
-            <Link className='nav-link' to='/about'>About</Link>
+            <Link className='nav-link optional' to='/'>{intl.formatMessage(messages.home)}</Link>
+            <Link className='nav-link' to='/about'>{intl.formatMessage(messages.about)}</Link>
           </div>
           <div className='nav-center' />
           <div className='nav-right'>
             <div className='hidden-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>Back to {instance.get('title')}</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
                 : <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />
               }
             </div>
             <div className='visible-sm'>
               {me
-                ? <Link className='nav-link nav-button webapp-btn' to='/'>Back to {instance.get('title')}</Link>
-                : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>Log in</Link>
+                ? <Link className='nav-link nav-button webapp-btn' to='/'>{intl.formatMessage(messages.backTo, { siteTitle: instance.get('title') })}</Link>
+                : <Link className='nav-link nav-button webapp-btn' to='/auth/sign_in'>{intl.formatMessage(messages.login)}</Link>
               }
             </div>
           </div>

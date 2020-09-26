@@ -2,16 +2,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
+import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { fetchChatMessages } from 'soapbox/actions/chats';
+import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
 import { openModal } from 'soapbox/actions/modal';
 import { escape, throttle } from 'lodash';
 import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { initReportById } from 'soapbox/actions/reports';
+
+const messages = defineMessages({
+  today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
+  more: { id: 'chats.actions.more', defaultMessage: 'More' },
+  delete: { id: 'chats.actions.delete', defaultMessage: 'Delete message' },
+  report: { id: 'chats.actions.report', defaultMessage: 'Report user' },
+});
+
+const timeChange = (prev, curr) => {
+  const prevDate = new Date(prev.get('created_at')).getDate();
+  const currDate = new Date(curr.get('created_at')).getDate();
+  const nowDate  = new Date().getDate();
+
+  if (prevDate !== currDate) {
+    return currDate === nowDate ? 'today' : 'date';
+  };
+
+  return null;
+};
 
 const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map, emoji) => {
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
@@ -89,11 +110,16 @@ class ChatMessageList extends ImmutablePureComponent {
     return scrollBottom < elem.offsetHeight * 1.5;
   }
 
+  handleResize = (e) => {
+    if (this.isNearBottom()) this.scrollToBottom();
+  }
+
   componentDidMount() {
     const { dispatch, chatId } = this.props;
     dispatch(fetchChatMessages(chatId));
 
     this.node.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize);
     this.scrollToBottom();
   }
 
@@ -125,6 +151,7 @@ class ChatMessageList extends ImmutablePureComponent {
 
   componentWillUnmount() {
     this.node.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
   }
 
   handleLoadMore = () => {
@@ -176,7 +203,8 @@ class ChatMessageList extends ImmutablePureComponent {
   parseContent = chatMessage => {
     const content = chatMessage.get('content') || '';
     const pending = chatMessage.get('pending', false);
-    const formatted = pending ? this.parsePendingContent(content) : content;
+    const deleting = chatMessage.get('deleting', false);
+    const formatted = (pending && !deleting) ? this.parsePendingContent(content) : content;
     const emojiMap = makeEmojiMap(chatMessage);
     return emojify(formatted, emojiMap.toJS());
   }
@@ -185,32 +213,85 @@ class ChatMessageList extends ImmutablePureComponent {
     this.node = c;
   }
 
+  renderDivider = (key, text) => (
+    <div className='chat-messages__divider' key={key}>{text}</div>
+  )
+
+  handleDeleteMessage = (chatId, messageId) => {
+    return () => {
+      this.props.dispatch(deleteChatMessage(chatId, messageId));
+    };
+  }
+
+  handleReportUser = (userId) => {
+    return () => {
+      this.props.dispatch(initReportById(userId));
+    };
+  }
+
+  renderMessage = (chatMessage) => {
+    const { me, intl } = this.props;
+    const menu = [
+      { text: intl.formatMessage(messages.delete), action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')) },
+      { text: intl.formatMessage(messages.report), action: this.handleReportUser(chatMessage.get('account_id')) },
+    ];
+
+    return (
+      <div
+        className={classNames('chat-message', {
+          'chat-message--me': chatMessage.get('account_id') === me,
+          'chat-message--pending': chatMessage.get('pending', false) === true,
+        })}
+        key={chatMessage.get('id')}
+      >
+        <div
+          title={this.getFormattedTimestamp(chatMessage)}
+          className='chat-message__bubble'
+          ref={this.setBubbleRef}
+          tabIndex={0}
+        >
+          {this.maybeRenderMedia(chatMessage)}
+          <span
+            className='chat-message__content'
+            dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
+          />
+          <div className='chat-message__menu'>
+            <DropdownMenuContainer
+              items={menu}
+              icon='ellipsis-h'
+              size={18}
+              direction='top'
+              title={intl.formatMessage(messages.more)}
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
-    const { chatMessages, me } = this.props;
+    const { chatMessages, intl } = this.props;
 
     return (
       <div className='chat-messages' ref={this.setRef}>
-        {chatMessages.map(chatMessage => (
-          <div
-            className={classNames('chat-message', {
-              'chat-message--me': chatMessage.get('account_id') === me,
-              'chat-message--pending': chatMessage.get('pending', false) === true,
-            })}
-            key={chatMessage.get('id')}
-          >
-            <div
-              title={this.getFormattedTimestamp(chatMessage)}
-              className='chat-message__bubble'
-              ref={this.setBubbleRef}
-            >
-              {this.maybeRenderMedia(chatMessage)}
-              <span
-                className='chat-message__content'
-                dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
-              />
-            </div>
-          </div>
-        ))}
+        {chatMessages.reduce((acc, curr, idx) => {
+          const lastMessage = chatMessages.get(idx-1);
+
+          if (lastMessage) {
+            const key = `${curr.get('id')}_divider`;
+            switch(timeChange(lastMessage, curr)) {
+            case 'today':
+              acc.push(this.renderDivider(key, intl.formatMessage(messages.today)));
+              break;
+            case 'date':
+              acc.push(this.renderDivider(key, new Date(curr.get('created_at')).toDateString()));
+              break;
+            }
+          }
+
+          acc.push(this.renderMessage(curr));
+          return acc;
+        }, [])}
         <div style={{ float: 'left', clear: 'both' }} ref={this.setMessageEndRef} />
       </div>
     );

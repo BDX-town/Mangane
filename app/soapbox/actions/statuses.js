@@ -219,7 +219,6 @@ export function fetchContextSuccess(id, ancestors, descendants) {
     id,
     ancestors,
     descendants,
-    statuses: ancestors.concat(descendants),
   };
 };
 
