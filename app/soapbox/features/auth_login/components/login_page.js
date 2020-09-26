@@ -20,15 +20,16 @@ class LoginPage extends ImmutablePureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  state = {
+    isLoading: false,
+    mfa_auth_needed: false,
+    mfa_token: '',
+  }
+
   getFormData = (form) => {
     return Object.fromEntries(
       Array.from(form).map(i => [i.name, i.value])
     );
-  }
-
-  state = {
-    mfa_auth_needed: false,
-    mfa_token: '',
   }
 
   handleSubmit = (event) => {
@@ -47,8 +48,8 @@ class LoginPage extends ImmutablePureComponent {
   }
 
   render() {
-    const { me, isLoading } = this.props;
-    const { mfa_auth_needed, mfa_token } = this.state;
+    const { me } = this.props;
+    const { isLoading, mfa_auth_needed, mfa_token } = this.state;
     if (me) return <Redirect to='/' />;
 
     if (mfa_auth_needed) return <OtpAuthForm mfa_token={mfa_token} />;
