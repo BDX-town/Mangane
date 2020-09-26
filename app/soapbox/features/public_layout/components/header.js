@@ -36,34 +36,40 @@ class Header extends ImmutablePureComponent {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-    getFormData = (form) => {
-      return Object.fromEntries(
-        Array.from(form).map(i => [i.name, i.value])
-      );
-    }
+  state = {
+    isLoading: false,
+    mfa_auth_needed: false,
+    mfa_token: '',
+  }
 
-    static contextTypes = {
-      router: PropTypes.object,
-    };
+  getFormData = (form) => {
+    return Object.fromEntries(
+      Array.from(form).map(i => [i.name, i.value])
+    );
+  }
 
-    handleSubmit = (event) => {
-      const { dispatch } = this.props;
-      const { username, password } = this.getFormData(event.target);
-      dispatch(logIn(username, password)).then(() => {
-        return dispatch(fetchMe());
-      }).catch(error => {
-        if (error.response.data.error === 'mfa_required') {
-          this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
-        }
-        this.setState({ isLoading: false });
-      });
-      this.setState({ isLoading: true });
-      event.preventDefault();
-    }
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
-    onClickClose = (event) => {
-      this.setState({ mfa_auth_needed: false, mfa_token: '' });
-    }
+  handleSubmit = (event) => {
+    const { dispatch } = this.props;
+    const { username, password } = this.getFormData(event.target);
+    dispatch(logIn(username, password)).then(() => {
+      return dispatch(fetchMe());
+    }).catch(error => {
+      if (error.response.data.error === 'mfa_required') {
+        this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
+      }
+      this.setState({ isLoading: false });
+    });
+    this.setState({ isLoading: true });
+    event.preventDefault();
+  }
+
+  onClickClose = (event) => {
+    this.setState({ mfa_auth_needed: false, mfa_token: '' });
+  }
 
   static propTypes = {
     me: SoapboxPropTypes.me,
@@ -71,14 +77,9 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   }
 
-  state = {
-    mfa_auth_needed: false,
-    mfa_token: '',
-  }
-
   render() {
-    const { me, instance, isLoading, intl } = this.props;
-    const { mfa_auth_needed, mfa_token } = this.state;
+    const { me, instance, intl } = this.props;
+    const { isLoading, mfa_auth_needed, mfa_token } = this.state;
 
     return (
       <nav className='header'>
