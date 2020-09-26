@@ -147,15 +147,30 @@ class Item extends React.PureComponent {
 
     if (attachment.get('type') === 'unknown') {
       const filename = truncateFilename(attachment.get('remote_url'), MAX_FILENAME_LENGTH);
-      return (
-        <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
-          <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
-            <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
-            <span className='media-gallery__item__icons'><Icon id='file' /></span>
-            <span className='media-gallery__filename__label'>{filename}</span>
-          </a>
-        </div>
-      );
+      var re = /(?:\.([^.]+))?$/;
+      const type = re.exec(filename)[1];   // e.g. "pdf"
+      if(type === 'pdf') {
+        return (
+          <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+            <iframe
+              title='my title'
+              src={attachment.get('remote_url')}
+              width='100%'
+              height='500px'
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+            <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
+              <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
+              <span className='media-gallery__item__icons'><Icon id='file' /></span>
+              <span className='media-gallery__filename__label'>{filename}</span>
+            </a>
+          </div>
+        );
+      }
     } else if (attachment.get('type') === 'image') {
       const previewUrl   = attachment.get('preview_url');
 

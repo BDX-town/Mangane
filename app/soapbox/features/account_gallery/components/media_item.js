@@ -9,11 +9,14 @@ import { decode } from 'blurhash';
 import { isIOS } from 'soapbox/is_mobile';
 import { getSettings } from 'soapbox/actions/settings';
 import StillImage from 'soapbox/components/still_image';
+import { truncateFilename } from 'soapbox/utils/media';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
   displayMedia: getSettings(state).get('displayMedia'),
 });
+
+const MAX_FILENAME_LENGTH = 45;
 
 export default @connect(mapStateToProps)
 class MediaItem extends ImmutablePureComponent {
@@ -104,9 +107,22 @@ class MediaItem extends ImmutablePureComponent {
 
     let thumbnail = '';
     let icon;
-
     if (attachment.get('type') === 'unknown') {
-      // Skip
+      const filename = truncateFilename(attachment.get('remote_url'), MAX_FILENAME_LENGTH);
+      var re = /(?:\.([^.]+))?$/;
+      const type = re.exec(filename)[1];   // e.g. "pdf"
+      if(type === 'pdf') {
+        thumbnail = (
+          <iframe
+            title='my title'
+            src={attachment.get('remote_url')}
+            width='100%'
+            height='500px'
+          />
+        );
+      } else {
+        // skip
+      }
     } else if (attachment.get('type') === 'image') {
       const focusX = attachment.getIn(['meta', 'focus', 'x']) || 0;
       const focusY = attachment.getIn(['meta', 'focus', 'y']) || 0;
@@ -155,6 +171,15 @@ class MediaItem extends ImmutablePureComponent {
           <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
           <span className='media-gallery__file-extension__label'>{fileExtension}</span>
         </div>
+      );
+    } else if (attachment.get('type') === 'pdf') {
+      thumbnail = (
+        <iframe
+          title='my title'
+          src='/uploads/media/default/0001/01/540cb75550adf33f281f29132dddd14fded85bfc.pdf'
+          width='100%'
+          height='500px'
+        />
       );
     }
 
