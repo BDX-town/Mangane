@@ -29,7 +29,7 @@ const messages = defineMessages({
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
-  import_follows: { id: 'navigation_bar.import_follows', defaultMessage: 'Import follows' },
+  import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -181,13 +181,13 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
               </NavLink>
+              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={onClose}>
+                <Icon id='cloud-upload' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+              </NavLink>
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={onClose}>
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={onClose}>
-                <Icon id='community' />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_follows)}</span>
               </NavLink>
             </div>
 

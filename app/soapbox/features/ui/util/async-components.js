@@ -186,8 +186,8 @@ export function SoapboxConfig() {
   return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
 }
 
-export function ImportFollows() {
-  return import(/* webpackChunkName: "features/import_follows" */'../../import_follows');
+export function ImportData() {
+  return import(/* webpackChunkName: "features/import_follows" */'../../import_data');
 }
 
 export function PasswordReset() {

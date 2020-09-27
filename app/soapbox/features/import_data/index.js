@@ -9,19 +9,14 @@ import {
   FieldsGroup,
   FileChooserCSV,
 } from 'soapbox/features/forms';
-import { importFollows } from 'soapbox/actions/import_follows';
+import { importFollows } from 'soapbox/actions/import_data';
 
 const messages = defineMessages({
-  heading: { id: 'column.import_follows', defaultMessage: 'Import follows' },
+  heading: { id: 'column.import_data', defaultMessage: 'Import data' },
 });
 
-const mapStateToProps = state => ({
-  follows: state.get('follows'),
-});
-
-export default @connect(mapStateToProps)
-@injectIntl
-class ImportFollows extends ImmutablePureComponent {
+export default @injectIntl
+class ImportData extends ImmutablePureComponent {
 
   constructor(props) {
     super(props);
@@ -71,16 +66,16 @@ class ImportFollows extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cloud-upload' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <div className='fields-row file-picker'>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooserCSV
-                    label={<FormattedMessage id='import_follows.follows_label' defaultMessage='Follows' />}
+                    label={<FormattedMessage id='import_data.follows_label' defaultMessage='Follows' />}
                     name='follows'
-                    hint={<FormattedMessage id='import_follows.hints.follows' defaultMessage='CSV file containing a list of followed accounts' />}
+                    hint={<FormattedMessage id='import_data.hints.follows' defaultMessage='CSV file containing a list of followed accounts' />}
                     onChange={this.handleFileChange('follows')}
                   />
                 </div>

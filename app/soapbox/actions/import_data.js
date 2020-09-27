@@ -11,7 +11,7 @@ export function importFollows(params) {
     return api(getState)
       .post('/api/pleroma/follow_import', params)
       .then(response => {
-        dispatch(showAlert('', 'Successful import'));
+        dispatch(showAlert('', 'Followers imported successfully'));
         dispatch({ type: IMPORT_FOLLOWS_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_FOLLOWS_FAIL, error });
