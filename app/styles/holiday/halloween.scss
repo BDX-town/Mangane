@@ -43,13 +43,13 @@ body.halloween {
   }
 
   .app-holder {
-    // Black vignette
+    // Vignette
     &::before {
       background-image: radial-gradient(
         circle,
         transparent 0%,
         transparent 60%,
-        #000 100%
+        var(--vignette-color) 100%
       );
     }
 
