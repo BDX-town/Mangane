@@ -51,6 +51,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
     clickableAreaRef: PropTypes.object,
+    getClickableArea: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -164,14 +165,9 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.textarea.focus();
   }
 
-  getClickableArea = () => {
-    const { clickableAreaRef } = this.props;
-    return clickableAreaRef ? clickableAreaRef.current : this.form;
-  }
-
   isClickInside = (e) => {
     return [
-      this.getClickableArea(),
+      this.props.getClickableArea(),
       document.querySelector('.autosuggest-textarea__textarea'),
     ].some(element => element && element.contains(e.target));
   }
