@@ -149,7 +149,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
 
   if (response.data.visibility !== 'direct') {
     insertIfOnline('home');
-  } else if (response.data.in_reply_to_id === null && response.data.visibility === 'public') {
+  } else if (response.data.visibility === 'public') {
     insertIfOnline('community');
     insertIfOnline('public');
   }
