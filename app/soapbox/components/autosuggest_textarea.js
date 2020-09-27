@@ -50,6 +50,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     autoFocus: PropTypes.bool,
     onFocus: PropTypes.func,
     onBlur: PropTypes.func,
+    clickableAreaRef: PropTypes.object,
+    getClickableArea: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -107,6 +109,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       if (suggestions.size > 0 && !suggestionsHidden) {
         e.preventDefault();
         this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, suggestions.size - 1) });
+      } else {
+        this.setState({ lastToken: null });
       }
 
       break;
@@ -114,6 +118,8 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       if (suggestions.size > 0 && !suggestionsHidden) {
         e.preventDefault();
         this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, 0) });
+      } else {
+        this.setState({ lastToken: null });
       }
 
       break;
@@ -157,6 +163,27 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     e.preventDefault();
     this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestion);
     this.textarea.focus();
+  }
+
+  isClickInside = (e) => {
+    return [
+      this.props.getClickableArea(),
+      document.querySelector('.autosuggest-textarea__textarea'),
+    ].some(element => element && element.contains(e.target));
+  }
+
+  handleClick = (e) => {
+    if (this.isClickInside(e)) {
+      this.setState({ lastToken: null });
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleClick, true);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClick, true);
   }
 
   componentDidUpdate(prevProps, prevState) {
