@@ -64,6 +64,7 @@ body.theme-mode-light {
     var(--brand-color_s),
     calc(var(--brand-color_l) - 8%)
   );
+  --vignette-color: transparent;
 
   // Meta-variables
   --primary-text-color_h: 0;
@@ -92,6 +93,7 @@ body.theme-mode-dark {
     var(--brand-color_s),
     calc(var(--brand-color_l) + 8%)
   );
+  --vignette-color: #000;
 
   // Meta-variables
   --primary-text-color_h: 0;
