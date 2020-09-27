@@ -5,7 +5,7 @@
   bottom: 0;
   right: 20px;
   width: 265px;
-  height: 265px;
+  height: 350px;
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
@@ -94,6 +94,41 @@
       overflow: hidden;
     }
   }
+
+  .audio-toggle .react-toggle-thumb {
+    height: 14px;
+    width: 14px;
+    border: 1px solid var(--brand-color--med);
+  }
+
+  .audio-toggle .react-toggle {
+    height: 16px;
+    top: 4px;
+  }
+
+  .audio-toggle .react-toggle-track {
+    height: 16px;
+    width: 34px;
+    background-color: var(--accent-color);
+  }
+
+  .audio-toggle .react-toggle-track-check {
+    left: 4px;
+    bottom: 4px;
+  }
+
+  .react-toggle--checked .react-toggle-thumb {
+    left: 19px;
+  }
+
+  .audio-toggle .react-toggle-track-x {
+    right: 4px;
+    bottom: 4px;
+  }
+
+  .fa {
+    font-size: 14px;
+  }
 }
 
 .chat-messages {
@@ -111,13 +146,22 @@
     max-width: 70%;
     border-radius: 10px;
     background-color: var(--background-color);
-    overflow: hidden;
     text-overflow: ellipsis;
     overflow-wrap: break-word;
     white-space: break-spaces;
+    position: relative;
 
     a {
       color: var(--brand-color--hicontrast);
+    }
+
+    &:hover,
+    &:focus,
+    &:active, {
+      .chat-message__menu {
+        opacity: 1;
+        pointer-events: all;
+      }
     }
   }
 
@@ -128,6 +172,17 @@
 
   &--pending .chat-message__bubble {
     opacity: 0.5;
+  }
+
+  &__menu {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--background-color);
+    border-radius: 999px;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s;
   }
 }
 
@@ -403,4 +458,12 @@
   &__item-thumbnail .still-image img {
     object-fit: contain;
   }
+}
+
+.chat-messages__divider {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 13px;
+  padding: 14px 0 2px;
+  opacity: 0.8;
 }

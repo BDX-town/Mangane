@@ -703,3 +703,16 @@
 .column-link--transparent .icon-with-badge__badge {
   border-color: var(--background-color);
 }
+
+.column__switch .audio-toggle {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: 14px;
+
+  .react-toggle-track-check,
+  .react-toggle-track-x {
+    height: 16px;
+    color: white;
+  }
+}
