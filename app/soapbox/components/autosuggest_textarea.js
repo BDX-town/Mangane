@@ -182,6 +182,10 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     document.addEventListener('click', this.handleClick, true);
   }
 
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClick, true);
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { suggestions } = this.props;
     if (suggestions !== prevProps.suggestions && suggestions.size > 0 && prevState.suggestionsHidden && prevState.focused) {
