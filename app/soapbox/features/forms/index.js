@@ -264,11 +264,3 @@ export const FileChooserLogo = props => (
 FileChooserLogo.defaultProps = {
   accept: ['image/svg', 'image/png'],
 };
-
-export const FileChooserCSV = props => (
-  <SimpleInput type='file' {...props} />
-);
-
-FileChooserCSV.defaultProps = {
-  accept: ['text/csv'],
-};

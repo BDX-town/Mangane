@@ -4,9 +4,9 @@ import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import {
+  SimpleInput,
   SimpleForm,
   FieldsGroup,
-  FileChooserCSV,
 } from 'soapbox/features/forms';
 
 export default @connect()
@@ -55,7 +55,9 @@ class CSVImporter extends ImmutablePureComponent {
           <FieldsGroup>
             <div className='fields-row file-picker'>
               <div className='fields-row__column fields-group fields-row__column-6'>
-                <FileChooserCSV
+                <SimpleInput
+                  type='file'
+                  accept={['.csv', 'text/csv']}
                   label={intl.formatMessage(messages.input_label)}
                   hint={intl.formatMessage(messages.input_hint)}
                   onChange={this.handleFileChange}
