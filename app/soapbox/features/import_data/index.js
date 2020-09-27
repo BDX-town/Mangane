@@ -1,82 +1,54 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import Column from '../ui/components/column';
 import {
-  SimpleForm,
-  FieldsGroup,
-  FileChooserCSV,
-} from 'soapbox/features/forms';
-import { importFollows } from 'soapbox/actions/import_data';
+  importFollows,
+  importBlocks,
+  // importMutes,
+} from 'soapbox/actions/import_data';
+import CSVImporter from './components/csv_importer';
 
 const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },
+  submit: { id: 'import_data.actions.import', defaultMessage: 'Import' },
 });
 
-export default @connect()
-@injectIntl
+const followMessages = defineMessages({
+  input_label: { id: 'import_data.follows_label', defaultMessage: 'Follows' },
+  input_hint: { id: 'import_data.hints.follows', defaultMessage: 'CSV file containing a list of followed accounts' },
+  submit: { id: 'import_data.actions.import_follows', defaultMessage: 'Import follows' },
+});
+
+const blockMessages = defineMessages({
+  input_label: { id: 'import_data.blocks_label', defaultMessage: 'Blocks' },
+  input_hint: { id: 'import_data.hints.blocks', defaultMessage: 'CSV file containing a list of blocked accounts' },
+  submit: { id: 'import_data.actions.import_blocks', defaultMessage: 'Import blocks' },
+});
+
+// Not yet supported by Pleroma stable, in develop branch
+// const muteMessages = defineMessages({
+//   input_label: { id: 'import_data.mutes_label', defaultMessage: 'Mutes' },
+//   input_hint: { id: 'import_data.hints.mutes', defaultMessage: 'CSV file containing a list of muted accounts' },
+//   submit: { id: 'import_data.actions.import_mutes', defaultMessage: 'Import mutes' },
+// });
+
+export default @injectIntl
 class ImportData extends ImmutablePureComponent {
 
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
-
-  state = {
-    followsCSV: null,
-    isLoading: false,
-  }
-
-  handleSubmit = (event) => {
-    const { dispatch } = this.props;
-
-    let params = new FormData();
-    params.append('list', this.state.followsCSV);
-
-    this.setState({ isLoading: true });
-    dispatch(importFollows(params)).then(() => {
-      this.setState({ isLoading: false });
-    }).catch((error) => {
-      this.setState({ isLoading: false });
-    });
-
-    event.preventDefault();
-  }
-
-  handleFileChange = e => {
-    const [followsCSV] = e.target.files || [];
-    this.setState({ followsCSV });
-  }
 
   render() {
     const { intl } = this.props;
 
     return (
       <Column icon='cloud-upload' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <SimpleForm onSubmit={this.handleSubmit}>
-          <fieldset disabled={this.state.isLoading}>
-            <FieldsGroup>
-              <div className='fields-row file-picker'>
-                <div className='fields-row__column fields-group fields-row__column-6'>
-                  <FileChooserCSV
-                    label={<FormattedMessage id='import_data.follows_label' defaultMessage='Follows' />}
-                    name='follows'
-                    hint={<FormattedMessage id='import_data.hints.follows' defaultMessage='CSV file containing a list of followed accounts' />}
-                    onChange={this.handleFileChange}
-                    required
-                  />
-                </div>
-              </div>
-            </FieldsGroup>
-          </fieldset>
-          <div className='actions'>
-            <button name='button' type='submit' className='btn button button-primary'>
-              <FormattedMessage id='import_data.actions.import' defaultMessage='Import' />
-            </button>
-          </div>
-        </SimpleForm>
+        <CSVImporter action={importFollows} messages={followMessages} />
+        <CSVImporter action={importBlocks} messages={blockMessages} />
+        {/* <CSVImporter action={importMutes} messages={muteMessages} /> */}
       </Column>
     );
   }
