@@ -65,6 +65,7 @@ class ImportData extends ImmutablePureComponent {
                     name='follows'
                     hint={<FormattedMessage id='import_data.hints.follows' defaultMessage='CSV file containing a list of followed accounts' />}
                     onChange={this.handleFileChange}
+                    required
                   />
                 </div>
               </div>
@@ -72,7 +73,7 @@ class ImportData extends ImmutablePureComponent {
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>
-              <FormattedMessage id='soapbox_config.save' defaultMessage='Save' />
+              <FormattedMessage id='import_data.actions.import' defaultMessage='Import' />
             </button>
           </div>
         </SimpleForm>
