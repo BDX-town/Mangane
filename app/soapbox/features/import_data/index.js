@@ -15,15 +15,9 @@ const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },
 });
 
-export default @injectIntl
+export default @connect()
+@injectIntl
 class ImportData extends ImmutablePureComponent {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      list: null,
-    };
-  }
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -31,36 +25,30 @@ class ImportData extends ImmutablePureComponent {
   };
 
   state = {
+    followsCSV: null,
     isLoading: false,
   }
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
+
     let params = new FormData();
-    params.append('list', this.state.list);
+    params.append('list', this.state.followsCSV);
+
+    this.setState({ isLoading: true });
     dispatch(importFollows(params)).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
-    this.setState({ isLoading: true });
+
     event.preventDefault();
   }
 
-  handleChange = (e) => {
-    const content = e.target.result;
-    this.setState({
-      list: content,
-    });
-  };
-
-  handleFileChange = path => {
-    return e => {
-      let fileData = new FileReader();
-      fileData.onloadend = this.handleChange;
-      fileData.readAsText(e.target.files[0]);
-    };
-  };
+  handleFileChange = e => {
+    const [followsCSV] = e.target.files || [];
+    this.setState({ followsCSV });
+  }
 
   render() {
     const { intl } = this.props;
@@ -76,7 +64,7 @@ class ImportData extends ImmutablePureComponent {
                     label={<FormattedMessage id='import_data.follows_label' defaultMessage='Follows' />}
                     name='follows'
                     hint={<FormattedMessage id='import_data.hints.follows' defaultMessage='CSV file containing a list of followed accounts' />}
-                    onChange={this.handleFileChange('follows')}
+                    onChange={this.handleFileChange}
                   />
                 </div>
               </div>

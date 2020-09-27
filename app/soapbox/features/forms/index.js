@@ -270,5 +270,5 @@ export const FileChooserCSV = props => (
 );
 
 FileChooserCSV.defaultProps = {
-  accept: ['.csv'],
+  accept: ['text/csv'],
 };
