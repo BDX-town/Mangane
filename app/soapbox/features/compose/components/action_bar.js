@@ -20,6 +20,7 @@ const messages = defineMessages({
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
+  import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   keyboard_shortcuts: { id: 'navigation_bar.keyboard_shortcuts', defaultMessage: 'Hotkeys' },
@@ -84,6 +85,7 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.soapbox_config), to: '/soapbox/config' });
     }
     menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
+    menu.push({ text: intl.formatMessage(messages.import_data), to: '/settings/import' });
     menu.push({ text: intl.formatMessage(messages.security), to: '/auth/edit' });
     menu.push({ text: intl.formatMessage(messages.logout), to: '/auth/sign_out', action: onClickLogOut });
 
