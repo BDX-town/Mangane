@@ -100,3 +100,20 @@ export const simulateEmojiReact = (emojiReacts, emoji) => {
     }));
   }
 };
+
+export const simulateUnEmojiReact = (emojiReacts, emoji) => {
+  const idx = emojiReacts.findIndex(e =>
+    e.get('name') === emoji && e.get('me') === true);
+
+  if (idx > -1) {
+    const emojiReact = emojiReacts.get(idx);
+    const newCount = emojiReact.get('count') - 1;
+    if (newCount < 1) return emojiReacts.delete(idx);
+    return emojiReacts.set(idx, emojiReact.merge({
+      count: emojiReact.get('count') - 1,
+      me: false,
+    }));
+  } else {
+    return emojiReacts;
+  }
+};
