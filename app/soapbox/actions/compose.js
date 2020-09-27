@@ -143,7 +143,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
       let dequeueArgs = {};
       if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
-      dispatch(updateTimeline(timelineId, { ...response.data }));
+      dispatch(updateTimeline(timelineId, response.data.id));
     }
   };
 
