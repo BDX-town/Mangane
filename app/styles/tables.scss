@@ -224,20 +224,4 @@ a.table-action-link {
       font-weight: 700;
     }
   }
-
-  .nothing-here {
-    border: 1px solid var(--background-color);
-    border-top: 0;
-    box-shadow: none;
-
-    @media screen and (max-width: $no-gap-breakpoint) {
-      border-top: 1px solid var(--background-color);
-    }
-  }
-
-  @media screen and (max-width: 870px) {
-    .accounts-table tbody td.optional {
-      display: none;
-    }
-  }
 }

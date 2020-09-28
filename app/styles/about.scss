@@ -532,10 +532,6 @@ $small-breakpoint: 960px;
         background: transparent;
         margin: 0 -5px;
 
-        .account__header__fields {
-          border-top: 1px solid var(--brand-color--med);
-        }
-
         .roles {
           display: none;
         }
@@ -590,23 +586,6 @@ $small-breakpoint: 960px;
       box-shadow: none;
       margin-bottom: 0;
       border-radius: 0;
-    }
-
-    .account__header__fields {
-      margin: 0;
-      border-top: 0;
-
-      a {
-        color: var(--brand-color);
-      }
-
-      dl:first-child .verified {
-        border-radius: 0 4px 0 0;
-      }
-
-      .verified a {
-        color: $valid-value-color;
-      }
     }
 
     .account__header__content {
@@ -855,11 +834,6 @@ $small-breakpoint: 960px;
 .information-board {
   background: var(--brand-color--med);
   padding: 20px 0;
-
-  .container-alt {
-    position: relative;
-    padding-right: 280px + 15px;
-  }
 
   &__sections {
     display: flex;
@@ -1300,10 +1274,6 @@ $small-breakpoint: 960px;
 
   @media screen and (max-width: 840px) {
     .information-board {
-      .container-alt {
-        padding-right: 20px;
-      }
-
       .panel {
         position: static;
         margin-top: 20px;
@@ -1328,11 +1298,6 @@ $small-breakpoint: 960px;
       &.compact .hero .heading {
         text-align: initial;
       }
-    }
-
-    .header .container-alt,
-    .features .container-alt {
-      display: block;
     }
   }
 
@@ -1491,67 +1456,6 @@ $small-breakpoint: 960px;
     border-radius: 0;
   }
 
-  .hero-widget {
-    margin-top: 30px;
-    margin-bottom: 0;
-
-    h4 {
-      padding: 10px;
-      text-transform: uppercase;
-      font-weight: 700;
-      font-size: 13px;
-      color: var(--primary-text-color--faint);
-    }
-
-    &__text {
-      border-radius: 0;
-      padding-bottom: 0;
-    }
-
-    &__footer {
-      background: var(--brand-color--med);
-      padding: 10px;
-      border-radius: 0 0 4px 4px;
-      display: flex;
-
-      &__column {
-        flex: 1 1 50%;
-      }
-    }
-
-    .account {
-      padding: 10px 0;
-      border-bottom: 0;
-
-      .account__display-name {
-        display: flex;
-        align-items: center;
-      }
-
-      .account__avatar {
-        width: 44px;
-        height: 44px;
-        background-size: 44px 44px;
-      }
-    }
-
-    &__counter {
-      padding: 10px;
-
-      strong {
-        font-family: var(--font-display), sans-serif;
-        font-size: 15px;
-        font-weight: 700;
-        display: block;
-      }
-
-      span {
-        font-size: 14px;
-        color: var(--primary-text-color--faint);
-      }
-    }
-  }
-
   .simple_form .user_agreement .label_input > label {
     font-weight: 400;
     color: var(--primary-text-color--faint);
@@ -1580,18 +1484,6 @@ $small-breakpoint: 960px;
         grid-row: 1;
         display: flex;
         flex-direction: column;
-
-        .box-widget {
-          order: 2;
-          flex: 0 0 auto;
-        }
-
-        .hero-widget {
-          margin-top: 0;
-          margin-bottom: 10px;
-          order: 1;
-          flex: 0 0 auto;
-        }
       }
 
       &__column-registration {
@@ -1605,42 +1497,6 @@ $small-breakpoint: 960px;
 
     @media screen and (max-width: $no-gap-breakpoint) {
       grid-gap: 0;
-
-      .hero-widget {
-        display: block;
-        margin-bottom: 0;
-        box-shadow: none;
-
-        &__img,
-        &__img img,
-        &__footer {
-          border-radius: 0;
-        }
-      }
-
-      .hero-widget,
-      .box-widget,
-      .directory__tag {
-        border-bottom: 1px solid var(--brand-color--med);
-      }
-
-      .directory {
-        margin-top: 0;
-
-        &__tag {
-          margin-bottom: 0;
-
-          & > a,
-          & > div {
-            border-radius: 0;
-            box-shadow: none;
-          }
-
-          &:last-child {
-            border-bottom: 0;
-          }
-        }
-      }
     }
   }
 }

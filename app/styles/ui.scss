@@ -219,12 +219,6 @@
   display: flex;
 }
 
-.domain_buttons {
-  height: 18px;
-  padding: 10px;
-  white-space: nowrap;
-}
-
 .muted {
   .status__content p,
   .status__content a {
@@ -668,52 +662,6 @@
   0% { opacity: 1; }
   30% { opacity: 0.75; }
   100% { opacity: 1; }
-}
-
-.layout-toggle {
-  display: flex;
-  padding: 5px;
-
-  button {
-    box-sizing: border-box;
-    flex: 0 0 50%;
-    background: transparent;
-    padding: 5px;
-    border: 0;
-    position: relative;
-
-    &:hover,
-    &:focus,
-    &:active {
-      svg path:first-child {
-        fill: var(--background-color);
-      }
-    }
-  }
-
-  svg {
-    width: 100%;
-    height: auto;
-
-    path:first-child {
-      fill: var(--brand-color--med);
-    }
-
-    path:last-child {
-      fill: var(--background-color);
-    }
-  }
-
-  &__active {
-    color: var(--brand-color);
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: var(--brand-color--med);
-    border-radius: 50%;
-    padding: 0.35rem;
-  }
 }
 
 .verified-icon {
