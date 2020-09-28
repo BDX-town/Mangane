@@ -114,6 +114,10 @@
     color: var(--primary-text-color);
   }
 
+  span.hover-ref-wrapper {
+    display: inline;
+  }
+
   .display-name__account {
     display: block;
     margin-top: -10px;
