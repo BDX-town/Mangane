@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import CharacterCounter from './character_counter';
 import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -33,12 +34,20 @@ const messages = defineMessages({
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
 });
 
-export default @injectIntl
+const mapStateToProps = state => {
+  return {
+    updatedCaretPosition: state.getIn(['compose', 'caretPosition']),
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
 class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
     caretPosition: 0,
+    needCaretUpdate: false,
   }
 
   static contextTypes = {
@@ -154,6 +163,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   onSuggestionSelected = (tokenStart, token, value) => {
     this.props.onSuggestionSelected(tokenStart, token, value, ['text']);
+    this.state.needCaretUpdate = true;
   }
 
   onSpoilerSuggestionSelected = (tokenStart, token, value) => {
@@ -223,12 +233,23 @@ class ComposeForm extends ImmutablePureComponent {
     }
   }
 
+  updateCursor = () => {
+    if (this.props.updatedCaretPosition !== null) {
+      this.state.caretPosition = this.props.updatedCaretPosition;
+      this.setCursor(this.state.caretPosition);
+    }
+    this.state.needCaretUpdate = false;
+  }
+
   componentDidUpdate(prevProps) {
     this.maybeUpdateFocus(prevProps);
     let selectionStart;
     if (typeof this.state.caretPosition === 'number') {
       selectionStart = this.state.caretPosition;
       this.setCursor(selectionStart);
+    }
+    if (this.state.needCaretUpdate) {
+      this.updateCursor();
     }
   }
 
