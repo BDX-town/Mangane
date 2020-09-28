@@ -1,6 +1,5 @@
 'use strict';
 
-import { STORE_HYDRATE } from '../actions/store';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
@@ -8,8 +7,6 @@ const initialState = ImmutableMap();
 
 export default function meta(state = initialState, action) {
   switch(action.type) {
-  case STORE_HYDRATE:
-    return state.merge(action.state.get('meta'));
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     const me = fromJS(action.me);
