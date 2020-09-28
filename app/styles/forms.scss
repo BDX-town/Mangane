@@ -13,7 +13,7 @@ code {
 
 .simple_form {
   .input {
-    margin-bottom: 15px;
+    margin-bottom: 8px;
     overflow: hidden;
 
     &.hidden {
@@ -43,7 +43,6 @@ code {
 
     &.boolean {
       position: relative;
-      margin-bottom: 0;
 
       .label_input > label {
         font-family: inherit;
@@ -111,7 +110,6 @@ code {
   span.hint {
     display: block;
     font-size: 12px;
-    margin-top: 4px;
   }
 
   p.hint {
@@ -172,13 +170,8 @@ code {
       font-size: 14px;
       color: var(--primary-text-color);
       display: block;
-      margin-bottom: 8px;
       word-wrap: break-word;
       font-weight: 500;
-    }
-
-    .hint {
-      margin-top: 6px;
     }
 
     ul {
