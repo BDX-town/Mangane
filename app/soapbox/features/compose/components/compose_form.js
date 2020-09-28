@@ -38,6 +38,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
+    caretPosition: 0,
   }
 
   static contextTypes = {
@@ -79,6 +80,9 @@ class ComposeForm extends ImmutablePureComponent {
 
   handleChange = (e) => {
     this.props.onChange(e.target.value);
+    this.setState({
+      caretPosition: e.target.selectionStart,
+    });
   }
 
   handleComposeFocus = () => {
@@ -221,6 +225,11 @@ class ComposeForm extends ImmutablePureComponent {
 
   componentDidUpdate(prevProps) {
     this.maybeUpdateFocus(prevProps);
+    let selectionStart;
+    if (typeof this.state.caretPosition === 'number') {
+      selectionStart = this.state.caretPosition;
+      this.setCursor(selectionStart);
+    }
   }
 
   render() {
@@ -287,6 +296,8 @@ class ComposeForm extends ImmutablePureComponent {
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
           getClickableArea={this.getClickableArea}
+          setCursor={this.setCursor}
+          caretPosition={this.props.caretPosition}
         >
           {
             !condensed &&
