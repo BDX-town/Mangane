@@ -236,7 +236,7 @@ export class SelectDropdown extends ImmutablePureComponent {
       <option key={item} value={item}>{items[item]}</option>
     ));
 
-    const selectElem = <select {...props}>{optionElems}</select>;
+    const selectElem = <div class='select-wrapper'><select {...props}>{optionElems}</select></div>;
 
     return label ? (
       <LabelInputContainer label={label} hint={hint}>{selectElem}</LabelInputContainer>
