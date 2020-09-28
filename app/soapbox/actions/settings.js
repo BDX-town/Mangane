@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import uuid from '../uuid';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -114,6 +115,12 @@ const defaultSettings = ImmutableMap({
   trends: ImmutableMap({
     show: true,
   }),
+
+  columns: ImmutableList([
+    ImmutableMap({ id: 'COMPOSE', uuid: uuid(), params: {} }),
+    ImmutableMap({ id: 'HOME', uuid: uuid(), params: {} }),
+    ImmutableMap({ id: 'NOTIFICATIONS', uuid: uuid(), params: {} }),
+  ]),
 });
 
 export function getSettings(state) {

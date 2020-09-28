@@ -440,17 +440,6 @@ export function updateTagHistory(tags) {
   };
 }
 
-export function hydrateCompose() {
-  return (dispatch, getState) => {
-    const me = getState().get('me');
-    const history = tagHistory.get(me);
-
-    if (history !== null) {
-      dispatch(updateTagHistory(history));
-    }
-  };
-}
-
 function insertIntoTagHistory(recognizedTags, text) {
   return (dispatch, getState) => {
     const state = getState();
