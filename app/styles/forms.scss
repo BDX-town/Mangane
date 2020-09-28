@@ -429,6 +429,7 @@ code {
   }
 
   select {
+    appearance: none;
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -444,6 +445,23 @@ code {
     padding-right: 30px;
     height: 41px;
     position: relative;
+    margin-top: 8px;
+    cursor: pointer;
+  }
+
+  .select-wrapper::after {
+    display: block;
+    font-family: 'ForkAwesome';
+    content: '';
+    width: 10px;
+    position: absolute;
+    right: 12px;
+    top: 1px;
+    border-left: 1px solid var(--highlight-text-color);
+    height: 39px;
+    padding: 12px;
+    box-sizing: border-box;
+    pointer-events: none;
   }
 
   .label_input {
