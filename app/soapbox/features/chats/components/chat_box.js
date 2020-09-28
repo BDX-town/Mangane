@@ -89,6 +89,13 @@ class ChatBox extends ImmutablePureComponent {
     }
   }
 
+  onPaste = (e) => {
+    if (e.clipboardData && e.clipboardData.files.length === 1) {
+      this.handleFiles(e.clipboardData.files);
+      e.preventDefault();
+    }
+  }
+
   insertLine = () => {
     const { content } = this.state;
     this.setState({ content: content + '\n' });
@@ -199,6 +206,7 @@ class ChatBox extends ImmutablePureComponent {
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
+            onPaste={this.onPaste}
             value={content}
             ref={this.setInputRef}
           />
