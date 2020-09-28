@@ -42,6 +42,7 @@ import { REDRAFT } from '../actions/statuses';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { tagHistory } from 'soapbox/settings';
 import uuid from '../uuid';
 import { unescapeHTML } from '../utils/html';
 
@@ -362,9 +363,12 @@ export default function compose(state = initialState, action) {
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case ME_FETCH_SUCCESS:
     me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
-    if (!defaultPrivacy) return state;
-    return state.set('default_privacy', defaultPrivacy).set('privacy', defaultPrivacy);
+    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy'], 'public');
+    return state.merge({
+      default_privacy: defaultPrivacy,
+      privacy: defaultPrivacy,
+      tagHistory: ImmutableList(tagHistory.get(action.me.id)),
+    });
   case ME_PATCH_SUCCESS:
     me = fromJS(action.me);
     defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
