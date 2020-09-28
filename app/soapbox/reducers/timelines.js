@@ -89,7 +89,7 @@ const updateTimelineQueue = (state, timeline, statusId) => {
   const listedStatuses = state.getIn([timeline, 'items'], ImmutableList());
   const totalQueuedItemsCount = state.getIn([timeline, 'totalQueuedItemsCount'], 0);
 
-  let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus.get('id') === statusId);
+  let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus === statusId);
   if (!alreadyExists) alreadyExists = listedStatuses.find(existingListedStatusId => existingListedStatusId === statusId);
 
   if (alreadyExists) {
