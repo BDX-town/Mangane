@@ -1,5 +1,5 @@
 import React from 'react';
-import { Sparklines, SparklinesCurve } from 'react-sparklines';
+// import { Sparklines, SparklinesCurve } from 'react-sparklines';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Permalink from './permalink';
@@ -17,11 +17,12 @@ const Hashtag = ({ hashtag }) => (
       </div>}
     </div>
 
-    {hashtag.get('history') && <div className='trends__item__sparkline'>
+    {/* Pleroma doesn't support tag history yet */}
+    {/* hashtag.get('history') && <div className='trends__item__sparkline'>
       <Sparklines width={50} height={28} data={hashtag.get('history').reverse().map(day => day.get('uses')).toArray()}>
         <SparklinesCurve style={{ fill: 'none' }} />
       </Sparklines>
-    </div>}
+    </div> */}
   </div>
 );
 
