@@ -1,7 +1,8 @@
 import loadPolyfills from './soapbox/load_polyfills';
-import { start } from './soapbox/common';
 
-start();
+require('fork-awesome/css/fork-awesome.css');
+
+require.context('./images/', true);
 
 loadPolyfills().then(() => {
   require('./soapbox/main').default();

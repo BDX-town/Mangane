@@ -18,6 +18,7 @@ import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
+  send: { id: 'chat_box.actions.send', defaultMessage: 'Send' },
 });
 
 const mapStateToProps = (state, { chatId }) => ({
@@ -164,11 +165,17 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   renderActionButton = () => {
+    const { intl } = this.props;
     const { resetFileKey } = this.state;
 
     return this.canSubmit() ? (
       <div className='chat-box__send'>
-        <IconButton icon='send' size={16} onClick={this.sendMessage} />
+        <IconButton
+          icon='send'
+          title={intl.formatMessage(messages.send)}
+          size={16}
+          onClick={this.sendMessage}
+        />
       </div>
     ) : (
       <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />

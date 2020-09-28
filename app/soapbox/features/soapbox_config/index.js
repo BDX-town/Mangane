@@ -12,14 +12,18 @@ import {
   Checkbox,
   FileChooser,
   SimpleTextarea,
-  ColorWithPicker,
   FileChooserLogo,
+  FormPropTypes,
 } from 'soapbox/features/forms';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { updateAdminConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
 import { defaultConfig } from 'soapbox/actions/soapbox';
 import { uploadMedia } from 'soapbox/actions/media';
+import { SketchPicker } from 'react-color';
+import Overlay from 'react-overlays/lib/Overlay';
+import { isMobile } from 'soapbox/is_mobile';
+import detectPassiveEvents from 'detect-passive-events';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -33,6 +37,8 @@ const messages = defineMessages({
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Raw JSON data' },
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly.' },
 });
+
+const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
 
 const templates = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
@@ -314,7 +320,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              <div className='input with_block_label'>
+              {/* <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_config.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_config.hints.custom_css_fields' defaultMessage='Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`' />
@@ -338,7 +344,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_config.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </FieldsGroup>
             <FieldsGroup>
               <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
@@ -359,6 +365,98 @@ class SoapboxConfig extends ImmutablePureComponent {
           </div>
         </SimpleForm>
       </Column>
+    );
+  }
+
+}
+
+class ColorPicker extends React.PureComponent {
+
+  static propTypes = {
+    style: PropTypes.object,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onClose: PropTypes.func,
+  }
+
+  handleDocumentClick = e => {
+    if (this.node && !this.node.contains(e.target)) {
+      this.props.onClose();
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('click', this.handleDocumentClick, false);
+    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick, false);
+    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
+  }
+
+  setRef = c => {
+    this.node = c;
+  }
+
+  render() {
+    const { style, value, onChange } = this.props;
+    let margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
+
+    return (
+      <div id='SketchPickerContainer' ref={this.setRef} style={{ ...style, marginLeft: margin_left_picker, position: 'absolute', zIndex: 1000 }}>
+        <SketchPicker color={value} disableAlpha onChange={onChange} />
+      </div>
+    );
+  }
+
+}
+
+class ColorWithPicker extends ImmutablePureComponent {
+
+  static propTypes = {
+    buttonId: PropTypes.string.isRequired,
+    label: FormPropTypes.label,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  onToggle = (e) => {
+    if (!e.key || e.key === 'Enter') {
+      if (this.state.active) {
+        this.onHidePicker();
+      } else {
+        this.onShowPicker(e);
+      }
+    }
+  }
+
+  state = {
+    active: false,
+    placement: null,
+  }
+
+  onHidePicker = () => {
+    this.setState({ active: false });
+  }
+
+  onShowPicker = ({ target }) => {
+    this.setState({ active: true });
+    this.setState({ placement: isMobile(window.innerWidth) ? 'bottom' : 'right' });
+  }
+
+  render() {
+    const { buttonId, label, value, onChange } = this.props;
+    const { active, placement } = this.state;
+
+    return (
+      <div className='label_input__color'>
+        <label>{label}</label>
+        <div id={buttonId} className='color-swatch' role='presentation' style={{ background: value }} title={value} value={value} onClick={this.onToggle} />
+        <Overlay show={active} placement={placement} target={this}>
+          <ColorPicker value={value} onChange={onChange} onClose={this.onHidePicker} />
+        </Overlay>
+      </div>
     );
   }
 

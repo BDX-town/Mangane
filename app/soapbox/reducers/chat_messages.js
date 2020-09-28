@@ -3,6 +3,8 @@ import {
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_REQUEST,
   CHAT_MESSAGE_SEND_SUCCESS,
+  CHAT_MESSAGE_DELETE_REQUEST,
+  CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { Map as ImmutableMap, fromJS } from 'immutable';
@@ -43,6 +45,11 @@ export default function chatMessages(state = initialState, action) {
     return importMessage(state, fromJS(action.chatMessage)).delete(action.uuid);
   case STREAMING_CHAT_UPDATE:
     return importLastMessages(state, fromJS([action.chat]));
+  case CHAT_MESSAGE_DELETE_REQUEST:
+    return state.update(action.messageId, chatMessage =>
+      chatMessage.set('pending', true).set('deleting', true));
+  case CHAT_MESSAGE_DELETE_SUCCESS:
+    return state.delete(action.messageId);
   default:
     return state;
   }

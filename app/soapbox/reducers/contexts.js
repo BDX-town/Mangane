@@ -3,7 +3,8 @@ import {
   ACCOUNT_MUTE_SUCCESS,
 } from '../actions/accounts';
 import { CONTEXT_FETCH_SUCCESS } from '../actions/statuses';
-import { TIMELINE_DELETE, TIMELINE_UPDATE } from '../actions/timelines';
+import { TIMELINE_DELETE } from '../actions/timelines';
+import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const initialState = ImmutableMap({
@@ -87,8 +88,12 @@ export default function replies(state = initialState, action) {
     return normalizeContext(state, action.id, action.ancestors, action.descendants);
   case TIMELINE_DELETE:
     return deleteFromContexts(state, [action.id]);
-  case TIMELINE_UPDATE:
+  case STATUS_IMPORT:
     return updateContext(state, action.status);
+  case STATUSES_IMPORT:
+    return state.withMutations(mutable =>
+      action.statuses.forEach(status => updateContext(mutable, status)));
+
   default:
     return state;
   }

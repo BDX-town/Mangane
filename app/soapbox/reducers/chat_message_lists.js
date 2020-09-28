@@ -3,6 +3,7 @@ import {
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_REQUEST,
   CHAT_MESSAGE_SEND_SUCCESS,
+  CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
@@ -59,6 +60,8 @@ export default function chatMessageLists(state = initialState, action) {
     return updateList(state, action.chatId, action.chatMessages.map(chat => chat.id));
   case CHAT_MESSAGE_SEND_SUCCESS:
     return replaceMessage(state, action.chatId, action.uuid, action.chatMessage.id);
+  case CHAT_MESSAGE_DELETE_SUCCESS:
+    return state.update(action.chatId, chat => chat.delete(action.messageId));
   default:
     return state;
   }

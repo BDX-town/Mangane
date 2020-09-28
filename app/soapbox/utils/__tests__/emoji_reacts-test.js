@@ -6,6 +6,7 @@ import {
   reduceEmoji,
   getReactForStatus,
   simulateEmojiReact,
+  simulateUnEmojiReact,
 } from '../emoji_reacts';
 import { fromJS } from 'immutable';
 
@@ -202,6 +203,31 @@ describe('simulateEmojiReact', () => {
       { 'count': 2, 'me': false, 'name': '👍' },
       { 'count': 2, 'me': false, 'name': '❤' },
       { 'count': 1, 'me': true,  'name': '😯' },
+    ]));
+  });
+});
+
+describe('simulateUnEmojiReact', () => {
+  it('removes the emoji from the list', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 3, 'me': true, 'name': '❤' },
+    ]);
+    expect(simulateUnEmojiReact(emojiReacts, '❤')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false,  'name': '❤' },
+    ]));
+  });
+
+  it('removes the emoji if it\'s the last one in the list', () => {
+    const emojiReacts = fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
+      { 'count': 1, 'me': true,  'name': '😯' },
+    ]);
+    expect(simulateUnEmojiReact(emojiReacts, '😯')).toEqual(fromJS([
+      { 'count': 2, 'me': false, 'name': '👍' },
+      { 'count': 2, 'me': false, 'name': '❤' },
     ]));
   });
 });

@@ -175,7 +175,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
               </NavLink>
               <DisplayName account={status.get('account')}>
                 <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
+                  <NavLink className='floating-link' to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
                 </HoverRefWrapper>
               </DisplayName>
             </div>

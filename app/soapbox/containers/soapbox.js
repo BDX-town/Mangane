@@ -14,8 +14,6 @@ import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
-import { hydrateStore } from '../actions/store';
-import initialState from '../initial_state';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
@@ -32,9 +30,6 @@ const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
 
-const hydrateAction = hydrateStore(initialState);
-
-store.dispatch(hydrateAction);
 store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
@@ -59,6 +54,7 @@ const mapStateToProps = (state) => {
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
     themeMode: settings.get('themeMode'),
+    halloween: settings.get('halloween'),
     customCss: soapboxConfig.get('customCss'),
   };
 };
@@ -77,6 +73,7 @@ class SoapboxMount extends React.PureComponent {
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
     customCss: ImmutablePropTypes.list,
+    halloween: PropTypes.bool,
     dispatch: PropTypes.func,
   };
 
@@ -122,6 +119,7 @@ class SoapboxMount extends React.PureComponent {
       'no-reduce-motion': !this.props.reduceMotion,
       'dyslexic': this.props.dyslexicFont,
       'demetricator': this.props.demetricator,
+      'halloween': this.props.halloween,
     });
 
     return (
