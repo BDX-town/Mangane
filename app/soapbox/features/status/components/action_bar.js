@@ -78,6 +78,7 @@ class ActionBar extends React.PureComponent {
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    depth: PropTypes.number,
   };
 
   static defaultProps = {
@@ -232,7 +233,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me, isStaff } = this.props;
+    const { status, intl, me, isStaff, depth } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -296,7 +297,7 @@ class ActionBar extends React.PureComponent {
     let reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
 
     return (
-      <div className='detailed-status__action-bar'>
+      <div className='detailed-status__action-bar' style={{ paddingLeft: `${depth * 30 + 15}px` }}>
         <div className='detailed-status__button'>
           <IconButton
             title={intl.formatMessage(messages.reply)}

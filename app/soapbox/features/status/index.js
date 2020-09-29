@@ -474,6 +474,7 @@ class Status extends ImmutablePureComponent {
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
     };
+    const depth = this.props.depths[status.get('id')];
 
     return (
       <Column label={intl.formatMessage(messages.detailedStatus)}>
@@ -509,6 +510,7 @@ class Status extends ImmutablePureComponent {
                 domain={domain}
                 showMedia={this.state.showMedia}
                 onToggleMediaVisibility={this.handleToggleMediaVisibility}
+                depth={depth}
               />
 
               <ActionBar
@@ -527,6 +529,7 @@ class Status extends ImmutablePureComponent {
                 onPin={this.handlePin}
                 onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
+                depth={depth}
               />
             </div>
           </HotKeys>

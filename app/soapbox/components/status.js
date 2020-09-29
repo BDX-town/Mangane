@@ -464,7 +464,7 @@ class Status extends ImmutablePureComponent {
                 </div>}
 
               <div className='status__profile'>
-                <div className='status__avatar' style={{ paddingLeft: `${(depth - 1) * 30}px` }}>
+                <div className='status__avatar' style={{ paddingLeft: `${depth * 30}px` }}>
                   <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
                     <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
                       {statusAvatar}
@@ -490,7 +490,7 @@ class Status extends ImmutablePureComponent {
               expanded={!status.get('hidden')}
               onExpandedToggle={this.handleExpandedToggle}
               collapsable
-              style={{ paddingLeft: `${(depth - 1) * 30}px` }}
+              style={{ paddingLeft: `${depth * 30}px` }}
             />
 
             {media}
@@ -502,7 +502,7 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
 
-            <StatusActionBar status={status} style={{ paddingLeft: `${(depth - 1) * 30}px` }} account={account} {...other} />
+            <StatusActionBar status={status} style={{ paddingLeft: `${depth * 30}px` }} account={account} {...other} />
           </div>
         </div>
       </HotKeys>

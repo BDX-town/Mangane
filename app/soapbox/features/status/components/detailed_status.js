@@ -36,6 +36,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     compact: PropTypes.bool,
     showMedia: PropTypes.bool,
     onToggleMediaVisibility: PropTypes.func,
+    depth: PropTypes.number,
   };
 
   state = {
@@ -86,7 +87,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
-    const { compact } = this.props;
+    const { compact, depth } = this.props;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
@@ -163,7 +164,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
     return (
       <div style={outerStyle}>
-        <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
+        <div ref={this.setRef} className={classNames('detailed-status', { compact })} style={{ paddingLeft: `${depth * 30 + 15}px` }}>
           <div className='detailed-status__profile'>
             <div className='detailed-status__display-name'>
               <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
