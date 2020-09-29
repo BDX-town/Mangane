@@ -1,7 +1,11 @@
 import loadPolyfills from './soapbox/load_polyfills';
-import { start } from './soapbox/common';
 
-start();
+require('fork-awesome/css/fork-awesome.css');
+
+require.context('./images/', true);
+
+require('@fonticonpicker/react-fonticonpicker/dist/fonticonpicker.base-theme.react.css');
+require('@fonticonpicker/react-fonticonpicker/dist/fonticonpicker.material-theme.react.css');
 
 loadPolyfills().then(() => {
   require('./soapbox/main').default();
