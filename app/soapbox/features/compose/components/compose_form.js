@@ -160,11 +160,6 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onChangeSpoilerText(e.target.value);
   }
 
-  doFocus = () => {
-    if (!this.autosuggestTextarea) return;
-    this.autosuggestTextarea.textarea.focus();
-  }
-
   setCursor = (start, end = start) => {
     if (!this.autosuggestTextarea) return;
     this.autosuggestTextarea.textarea.setSelectionRange(start, end);
@@ -219,8 +214,22 @@ class ComposeForm extends ImmutablePureComponent {
     }
   }
 
+  maybeUpdateCursor = prevProps => {
+    const shouldUpdate = [
+      // Autosuggest has been updated and
+      // the cursor position explicitly set
+      this.props.focusDate !== prevProps.focusDate,
+      typeof this.props.caretPosition === 'number',
+    ].every(Boolean);
+
+    if (shouldUpdate) {
+      this.setCursor(this.props.caretPosition);
+    }
+  }
+
   componentDidUpdate(prevProps) {
     this.maybeUpdateFocus(prevProps);
+    this.maybeUpdateCursor(prevProps);
   }
 
   render() {
@@ -286,7 +295,6 @@ class ComposeForm extends ImmutablePureComponent {
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
-          getClickableArea={this.getClickableArea}
         >
           {
             !condensed &&
