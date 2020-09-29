@@ -7,12 +7,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   sendChatMessage,
   markChatRead,
+  sendPing,
 } from 'soapbox/actions/chats';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
+import TypingIndicator from 'soapbox/features/chats/components/typing_indicator';
 import { truncateFilename } from 'soapbox/utils/media';
 import IconButton from 'soapbox/components/icon_button';
 
@@ -40,6 +42,7 @@ class ChatBox extends ImmutablePureComponent {
     chatMessageIds: ImmutablePropTypes.orderedSet,
     chat: ImmutablePropTypes.map,
     onSetInputRef: PropTypes.func,
+    isTyping: PropTypes.bool,
     me: PropTypes.node,
   }
 
@@ -47,6 +50,7 @@ class ChatBox extends ImmutablePureComponent {
     content: '',
     attachment: undefined,
     isUploading: false,
+    isTyping: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
   })
@@ -64,6 +68,15 @@ class ChatBox extends ImmutablePureComponent {
       content,
       media_id: attachment && attachment.id,
     };
+  }
+
+  sendPing = () => {
+    const { dispatch, chatId } = this.props;
+    const { isUploading } = this.state;
+    if (!isUploading) {
+      dispatch(sendPing(chatId, '*//ping//*'));
+      // this.clearState();
+    }
   }
 
   canSubmit = () => {
@@ -109,6 +122,8 @@ class ChatBox extends ImmutablePureComponent {
     } else if (e.key === 'Enter') {
       this.sendMessage();
       e.preventDefault();
+    } else {
+      this.sendPing();
     }
   }
 
@@ -190,7 +205,7 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, chatId, intl } = this.props;
+    const { chatMessageIds, chatId, intl, isTyping } = this.props;
     const { content, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
@@ -199,6 +214,7 @@ class ChatBox extends ImmutablePureComponent {
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
+        <TypingIndicator active={isTyping} />
         <div className='chat-box__actions simple_form'>
           {this.renderActionButton()}
           <textarea

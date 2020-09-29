@@ -13,6 +13,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+export const STREAMING_CHAT_TYPING = 'STREAMING_CHAT_TYPING';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -58,13 +59,21 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch((dispatch, getState) => {
             const chat = JSON.parse(data.payload);
             const messageOwned = !(chat.last_message && chat.last_message.account_id !== getState().get('me'));
-
-            dispatch({
-              type: STREAMING_CHAT_UPDATE,
-              chat,
-              // Only play sounds for recipient messages
-              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
-            });
+            if (chat.last_message.content === '*//ping//*') {
+              //activate isTyping effect;
+              console.log('ping');
+              dispatch({
+                type: STREAMING_CHAT_TYPING,
+                chat,
+              });
+            } else {
+              dispatch({
+                type: STREAMING_CHAT_UPDATE,
+                chat,
+                // Only play sounds for recipient messages
+                meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
+              });
+            }
           });
           break;
         }

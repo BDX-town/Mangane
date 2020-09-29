@@ -15,6 +15,10 @@ export const CHAT_MESSAGE_SEND_REQUEST = 'CHAT_MESSAGE_SEND_REQUEST';
 export const CHAT_MESSAGE_SEND_SUCCESS = 'CHAT_MESSAGE_SEND_SUCCESS';
 export const CHAT_MESSAGE_SEND_FAIL    = 'CHAT_MESSAGE_SEND_FAIL';
 
+export const CHAT_PING_SEND_REQUEST = 'CHAT_PING_SEND_REQUEST';
+export const CHAT_PING_SEND_SUCCESS = 'CHAT_PING_SEND_SUCCESS';
+export const CHAT_PING_SEND_FAIL    = 'CHAT_PING_SEND_FAIL';
+
 export const CHAT_FETCH_REQUEST = 'CHAT_FETCH_REQUEST';
 export const CHAT_FETCH_SUCCESS = 'CHAT_FETCH_SUCCESS';
 export const CHAT_FETCH_FAIL    = 'CHAT_FETCH_FAIL';
@@ -58,6 +62,19 @@ export function sendChatMessage(chatId, params) {
       dispatch({ type: CHAT_MESSAGE_SEND_SUCCESS, chatId, chatMessage: data, uuid });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGE_SEND_FAIL, chatId, error, uuid });
+    });
+  };
+}
+
+export function sendPing(chatId, params) {
+  return (dispatch, getState) => {
+    const uuid = `末_${Date.now()}_${uuidv4()}`;
+    const me = getState().get('me');
+    dispatch({ type: CHAT_PING_SEND_REQUEST, chatId, params, uuid, me });
+    return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
+      dispatch({ type: CHAT_PING_SEND_SUCCESS, chatId, chatMessage: data, uuid });
+    }).catch(error => {
+      dispatch({ type: CHAT_PING_SEND_FAIL, chatId, error, uuid });
     });
   };
 }
