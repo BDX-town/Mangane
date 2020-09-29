@@ -160,9 +160,12 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    // Skip updating when lastToken changes so the cursor doesn't jump around
-    // due to re-rendering unnecessarily
-    if (this.state.lastToken !== nextState.lastToken) {
+    // Skip updating when only the lastToken changes so the
+    // cursor doesn't jump around due to re-rendering unnecessarily
+    const lastTokenUpdated = this.state.lastToken !== nextState.lastToken;
+    const valueUpdated = this.props.value !== nextProps.value;
+
+    if (lastTokenUpdated && !valueUpdated) {
       return false;
     } else {
       return super.shouldComponentUpdate(nextProps, nextState);
