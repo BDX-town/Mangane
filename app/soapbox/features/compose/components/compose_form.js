@@ -316,9 +316,6 @@ class ComposeForm extends ImmutablePureComponent {
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
-          getClickableArea={this.getClickableArea}
-          setCursor={this.setCursor}
-          caretPosition={this.props.caretPosition}
         >
           {
             !condensed &&
