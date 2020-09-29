@@ -25,31 +25,31 @@ export function processTimelineUpdate(timeline, status, accept) {
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
     const shouldSkipQueue = shouldFilter(fromJS(status), columnSettings);
 
+    dispatch(importFetchedStatus(status));
+
     if (shouldSkipQueue) {
-      return dispatch(updateTimeline(timeline, status, accept));
+      return dispatch(updateTimeline(timeline, status.id, accept));
     } else {
-      return dispatch(updateTimelineQueue(timeline, status, accept));
+      return dispatch(updateTimelineQueue(timeline, status.id, accept));
     }
   };
 }
 
-export function updateTimeline(timeline, status, accept) {
+export function updateTimeline(timeline, statusId, accept) {
   return dispatch => {
     if (typeof accept === 'function' && !accept(status)) {
       return;
     }
 
-    dispatch(importFetchedStatus(status));
-
     dispatch({
       type: TIMELINE_UPDATE,
       timeline,
-      status,
+      statusId,
     });
   };
 };
 
-export function updateTimelineQueue(timeline, status, accept) {
+export function updateTimelineQueue(timeline, statusId, accept) {
   return dispatch => {
     if (typeof accept === 'function' && !accept(status)) {
       return;
@@ -58,7 +58,7 @@ export function updateTimelineQueue(timeline, status, accept) {
     dispatch({
       type: TIMELINE_UPDATE_QUEUE,
       timeline,
-      status,
+      statusId,
     });
   };
 };
@@ -73,8 +73,8 @@ export function dequeueTimeline(timeline, expandFunc, optionalExpandArgs) {
     if (totalQueuedItemsCount === 0) {
       return;
     } else if (totalQueuedItemsCount > 0 && totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
-      queuedItems.forEach(status => {
-        dispatch(updateTimeline(timeline, status.toJS(), null));
+      queuedItems.forEach(statusId => {
+        dispatch(updateTimeline(timeline, statusId, null));
       });
     } else {
       if (typeof expandFunc === 'function') {

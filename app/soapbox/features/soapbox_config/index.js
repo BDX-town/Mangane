@@ -321,7 +321,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              <div className='input with_block_label'>
+              {/* <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_config.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_config.hints.custom_css_fields' defaultMessage='Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`' />
@@ -345,7 +345,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     <FormattedMessage id='soapbox_config.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </FieldsGroup>
             <FieldsGroup>
               <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>

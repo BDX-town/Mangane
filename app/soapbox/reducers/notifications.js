@@ -32,8 +32,9 @@ const initialState = ImmutableMap({
 
 // For sorting the notifications
 const comparator = (a, b) => {
-  if (a.get('id') < b.get('id')) return 1;
-  if (a.get('id') > b.get('id')) return -1;
+  const parse = m => parseInt(m.get('id'), 10);
+  if (parse(a) < parse(b)) return 1;
+  if (parse(a) > parse(b)) return -1;
   return 0;
 };
 

@@ -143,13 +143,13 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
       let dequeueArgs = {};
       if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
-      dispatch(updateTimeline(timelineId, { ...response.data }));
+      dispatch(updateTimeline(timelineId, response.data.id));
     }
   };
 
   if (response.data.visibility !== 'direct') {
     insertIfOnline('home');
-  } else if (response.data.in_reply_to_id === null && response.data.visibility === 'public') {
+  } else if (response.data.visibility === 'public') {
     insertIfOnline('community');
     insertIfOnline('public');
   }
@@ -437,17 +437,6 @@ export function updateTagHistory(tags) {
   return {
     type: COMPOSE_TAG_HISTORY_UPDATE,
     tags,
-  };
-}
-
-export function hydrateCompose() {
-  return (dispatch, getState) => {
-    const me = getState().get('me');
-    const history = tagHistory.get(me);
-
-    if (history !== null) {
-      dispatch(updateTagHistory(history));
-    }
   };
 }
 

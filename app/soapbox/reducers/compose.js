@@ -38,21 +38,22 @@ import {
   COMPOSE_POLL_SETTINGS_CHANGE,
 } from '../actions/compose';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STORE_HYDRATE } from '../actions/store';
 import { REDRAFT } from '../actions/statuses';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { tagHistory } from 'soapbox/settings';
 import uuid from '../uuid';
 import { unescapeHTML } from '../utils/html';
 
 const initialState = ImmutableMap({
+  id: null,
   mounted: 0,
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
   content_type: 'text/markdown',
-  privacy: null,
+  privacy: 'public',
   text: '',
   focusDate: null,
   caretPosition: null,
@@ -69,7 +70,7 @@ const initialState = ImmutableMap({
   default_privacy: 'public',
   default_sensitive: false,
   resetFileKey: Math.floor((Math.random() * 0x10000)),
-  idempotencyKey: null,
+  idempotencyKey: uuid(),
   tagHistory: ImmutableList(),
 });
 
@@ -178,16 +179,6 @@ const privacyPreference = (a, b) => {
   return order[Math.max(order.indexOf(a), order.indexOf(b), 0)];
 };
 
-const hydrate = (state, hydratedState = ImmutableMap()) => {
-  state = clearAll(state.merge(hydratedState));
-
-  if (hydratedState.has('text')) {
-    state = state.set('text', hydratedState.get('text'));
-  }
-
-  return state;
-};
-
 const domParser = new DOMParser();
 
 const expandMentions = status => {
@@ -204,8 +195,6 @@ const expandMentions = status => {
 export default function compose(state = initialState, action) {
   let me, defaultPrivacy;
   switch(action.type) {
-  case STORE_HYDRATE:
-    return hydrate(state, action.state.get('compose'));
   case COMPOSE_MOUNT:
     return state.set('mounted', state.get('mounted') + 1);
   case COMPOSE_UNMOUNT:
@@ -374,9 +363,12 @@ export default function compose(state = initialState, action) {
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case ME_FETCH_SUCCESS:
     me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
-    if (!defaultPrivacy) return state;
-    return state.set('default_privacy', defaultPrivacy).set('privacy', defaultPrivacy);
+    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy'], 'public');
+    return state.merge({
+      default_privacy: defaultPrivacy,
+      privacy: defaultPrivacy,
+      tagHistory: ImmutableList(tagHistory.get(action.me.id)),
+    });
   case ME_PATCH_SUCCESS:
     me = fromJS(action.me);
     defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
