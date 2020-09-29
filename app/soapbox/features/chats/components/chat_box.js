@@ -27,6 +27,7 @@ const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
   chat: state.getIn(['chats', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
+  isTyping: state.getIn(['chats', chatId, 'typing']),
 });
 
 const fileKeyGen = () => Math.floor((Math.random() * 0x10000));
@@ -73,8 +74,12 @@ class ChatBox extends ImmutablePureComponent {
   sendPing = () => {
     const { dispatch, chatId } = this.props;
     const { isUploading } = this.state;
+    const params = {
+      content: '*//ping//*',
+      media_id: undefined,
+    };
     if (!isUploading) {
-      dispatch(sendPing(chatId, '*//ping//*'));
+      dispatch(sendPing(chatId, params));
       // this.clearState();
     }
   }
@@ -99,13 +104,6 @@ class ChatBox extends ImmutablePureComponent {
 
       dispatch(sendChatMessage(chatId, params));
       this.clearState();
-    }
-  }
-
-  onPaste = (e) => {
-    if (e.clipboardData && e.clipboardData.files.length === 1) {
-      this.handleFiles(e.clipboardData.files);
-      e.preventDefault();
     }
   }
 
@@ -222,7 +220,6 @@ class ChatBox extends ImmutablePureComponent {
             placeholder={intl.formatMessage(messages.placeholder)}
             onKeyDown={this.handleKeyDown}
             onChange={this.handleContentChange}
-            onPaste={this.onPaste}
             value={content}
             ref={this.setInputRef}
           />

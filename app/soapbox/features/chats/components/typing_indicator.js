@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
 
 export default class TypingIndicator extends React.PureComponent {
 
@@ -18,7 +17,7 @@ export default class TypingIndicator extends React.PureComponent {
     return (
       <div className='typing-indicator'>
         <div className='typing-indicator__message'>
-          <FormattedMessage id='typing-indicator.label' defaultMessage='Active typing...' />
+          <img src={'../images/activity.gif'} alt='' width='45' height='25' />
         </div>
       </div>
     );
