@@ -13,7 +13,7 @@
   }
 
   &--info {
-    background-color: blue !important;
+    background-color: #19759e !important;
 
     &::before {
         content: '';
@@ -29,7 +29,7 @@
   }
 
   &--error {
-    background-color: red !important;
+    background-color: #9e1919 !important;
 
     &::before {
         content: '';
