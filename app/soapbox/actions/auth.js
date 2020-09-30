@@ -176,7 +176,7 @@ export function register(params) {
       if (needsConfirmation) {
         return dispatch(snackbar.info('You must confirm your email.'));
       } else if (needsApproval) {
-        return dispatch(snackbar.info('Your account is being reviewed.'));
+        return dispatch(snackbar.info('Your account is pending review by an admin.'));
       } else {
         return dispatch(fetchMe());
       }
