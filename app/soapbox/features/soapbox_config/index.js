@@ -71,6 +71,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     const { soapbox } = this.state;
     const config = soapbox.setIn(path, value);
     this.setState({ soapbox: config, jsonValid: true });
+    this.checkIfUnsavedChanges(config);
   };
 
   putConfig = config => {
@@ -94,6 +95,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     const { dispatch } = this.props;
     dispatch(updateAdminConfig(this.getParams())).then(() => {
       this.setState({ isLoading: false });
+      this.setState({ hasUnsavedChanges: false });
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
@@ -101,14 +103,19 @@ class SoapboxConfig extends ImmutablePureComponent {
     event.preventDefault();
   }
 
-  checkIfUnsavedChanges = () => {
-    this.setState({ hasUnsavedChanges: true });
+  checkIfUnsavedChanges = (config) => {
+    if (this.props.soapbox !== config) {
+      this.setState({ hasUnsavedChanges: true });
+      console.log('changed to true');
+    } else {
+      this.setState({ hasUnsavedChanges: false });
+      console.log('changed to false');
+    }
   }
 
   handleChange = (path, getValue) => {
     return e => {
       this.setConfig(path, getValue(e));
-      this.checkIfUnsavedChanges();
     };
   };
 
