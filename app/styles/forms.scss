@@ -695,3 +695,27 @@ code {
   cursor: pointer;
   color: $error-red;
 }
+
+.unsaved-changes-warning {
+  display: none;
+  font-size: 16px !important;
+  padding: 10px 20px 10px 14px !important;
+  z-index: 9999 !important;
+  background-color: #9e1919 !important;
+  color: #fff;
+  border-radius: 4px;
+  width: 90%;
+  margin: 20px auto;
+  transition-duration: 0.2s;
+
+  &::before {
+    font-family: ForkAwesome;
+    font-size: 20px;
+    margin-right: 8px;
+    content: '';
+  }
+
+  &.visible {
+    display: block;
+  }
+}

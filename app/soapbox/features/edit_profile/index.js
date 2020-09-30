@@ -21,6 +21,7 @@ import {
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -64,6 +65,7 @@ class EditProfile extends ImmutablePureComponent {
 
   state = {
     isLoading: false,
+    hasUnsavedChanges: false,
   }
 
   constructor(props) {
@@ -132,12 +134,18 @@ class EditProfile extends ImmutablePureComponent {
     event.preventDefault();
   }
 
+  checkIfUnsavedChanges = () => {
+    this.setState({ hasUnsavedChanges: true });
+  }
+
   handleCheckboxChange = e => {
     this.setState({ [e.target.name]: e.target.checked });
+    this.checkIfUnsavedChanges();
   }
 
   handleTextChange = e => {
     this.setState({ [e.target.name]: e.target.value });
+    this.checkIfUnsavedChanges();
   }
 
   handleFieldChange = (i, key) => {
@@ -145,6 +153,7 @@ class EditProfile extends ImmutablePureComponent {
       this.setState({
         fields: this.state.fields.setIn([i, key], e.target.value),
       });
+      this.checkIfUnsavedChanges();
     };
   }
 
@@ -166,6 +175,13 @@ class EditProfile extends ImmutablePureComponent {
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
+          <div className={classNames(
+            'unsaved-changes-warning',
+            { 'visible' : this.state.hasUnsavedChanges },
+          )}
+          >
+            <FormattedMessage id='soapbox_config.hints.unsaved_changes' defaultMessage='You have unsaved changes!' />
+          </div>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput

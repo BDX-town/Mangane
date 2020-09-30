@@ -9,8 +9,6 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
-  Checkbox,
-  FileChooser,
   SimpleTextarea,
   FileChooserLogo,
   FormPropTypes,
@@ -25,6 +23,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
 import detectPassiveEvents from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -65,6 +64,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     soapbox: this.props.soapbox,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
+    hasUnsavedChanges: false,
   }
 
   setConfig = (path, value) => {
@@ -101,9 +101,14 @@ class SoapboxConfig extends ImmutablePureComponent {
     event.preventDefault();
   }
 
+  checkIfUnsavedChanges = () => {
+    this.setState({ hasUnsavedChanges: true });
+  }
+
   handleChange = (path, getValue) => {
     return e => {
       this.setConfig(path, getValue(e));
+      this.checkIfUnsavedChanges();
     };
   };
 
@@ -188,6 +193,13 @@ class SoapboxConfig extends ImmutablePureComponent {
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
+          <div className={classNames(
+            'unsaved-changes-warning',
+            { 'visible' : this.state.hasUnsavedChanges },
+          )}
+          >
+            <FormattedMessage id='soapbox_config.hints.unsaved_changes' defaultMessage='You have unsaved changes!' />
+          </div>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <div className='fields-row file-picker'>
