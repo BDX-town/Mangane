@@ -254,6 +254,12 @@
     }
   }
 
+  .typing-indicator {
+    height: 15px;
+    width: 40px;
+    margin: auto;
+  }
+
   &__attachment {
     display: flex;
     align-items: center;

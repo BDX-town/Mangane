@@ -31,6 +31,8 @@ export const CHAT_MESSAGE_DELETE_REQUEST = 'CHAT_MESSAGE_DELETE_REQUEST';
 export const CHAT_MESSAGE_DELETE_SUCCESS = 'CHAT_MESSAGE_DELETE_SUCCESS';
 export const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
 
+export const CHAT_IDLE = 'CHAT_IDLE';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -169,6 +171,12 @@ export function markChatRead(chatId, lastReadId) {
     }).catch(error => {
       dispatch({ type: CHAT_READ_FAIL, chatId, error, lastReadId });
     });
+  };
+}
+
+export function markIdle(chatId) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHAT_IDLE, chatId });
   };
 }
 

@@ -11,13 +11,14 @@ export default class TypingIndicator extends React.PureComponent {
     const { active } = this.props;
 
     if (!active) {
-      return null;
+      return (
+        <div className='typing-indicator' />
+      );
     }
-
     return (
       <div className='typing-indicator'>
         <div className='typing-indicator__message'>
-          <img src={'../images/activity.gif'} alt='' width='45' height='25' />
+          <img src={'http://support.wirelessmessaging.com/temp/ep/activity.gif'} alt='Typing...' width='40' height='25' />
         </div>
       </div>
     );

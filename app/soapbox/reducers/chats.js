@@ -3,6 +3,7 @@ import {
   CHAT_FETCH_SUCCESS,
   CHAT_READ_SUCCESS,
   CHAT_READ_REQUEST,
+  CHAT_IDLE,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE, STREAMING_CHAT_TYPING } from 'soapbox/actions/streaming';
 import { normalizeChat } from 'soapbox/actions/importer/normalizer';
@@ -23,6 +24,8 @@ export default function chats(state = initialState, action) {
     return importChats(state, [action.chat]);
   case STREAMING_CHAT_TYPING:
     return state.setIn([action.chat.id, 'typing'], true);
+  case CHAT_IDLE:
+    return state.setIn([action.chatId, 'typing'], false);
   case CHAT_FETCH_SUCCESS:
     return importChats(state, [action.chat]);
   case CHAT_READ_REQUEST:

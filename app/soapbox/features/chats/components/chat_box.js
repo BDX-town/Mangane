@@ -8,6 +8,7 @@ import {
   sendChatMessage,
   markChatRead,
   sendPing,
+  markIdle,
 } from 'soapbox/actions/chats';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ChatMessageList from './chat_message_list';
@@ -51,9 +52,9 @@ class ChatBox extends ImmutablePureComponent {
     content: '',
     attachment: undefined,
     isUploading: false,
-    isTyping: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
+    timerActive: false,
   })
 
   state = this.initialState()
@@ -71,17 +72,21 @@ class ChatBox extends ImmutablePureComponent {
     };
   }
 
-  sendPing = () => {
+  markIdle = () => {
     const { dispatch, chatId } = this.props;
     const { isUploading } = this.state;
+    if (!isUploading) {
+      dispatch(markIdle(chatId));
+    }
+  }
+
+  sendPing = () => {
+    const { dispatch, chatId } = this.props;
     const params = {
       content: '*//ping//*',
       media_id: undefined,
     };
-    if (!isUploading) {
-      dispatch(sendPing(chatId, params));
-      // this.clearState();
-    }
+    dispatch(sendPing(chatId, params));
   }
 
   canSubmit = () => {
@@ -114,6 +119,8 @@ class ChatBox extends ImmutablePureComponent {
 
   handleKeyDown = (e) => {
     this.markRead();
+    const { isTyping } = this.props;
+    const { timerActive } = this.state;
     if (e.key === 'Enter' && e.shiftKey) {
       this.insertLine();
       e.preventDefault();
@@ -121,7 +128,15 @@ class ChatBox extends ImmutablePureComponent {
       this.sendMessage();
       e.preventDefault();
     } else {
-      this.sendPing();
+      if(!isTyping && !timerActive) {
+        setTimeout(() => {
+          this.setState({
+            timerActive: false,
+          });
+          this.markIdle();
+        }, 5000);
+        this.sendPing();
+      }
     }
   }
 
