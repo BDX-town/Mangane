@@ -10,7 +10,7 @@ describe('logOut()', () => {
   it('creates expected actions', () => {
     const expectedActions = [
       { type: AUTH_LOGGED_OUT },
-      { type: ALERT_SHOW, title: 'Successfully logged out.', message: '' },
+      { type: ALERT_SHOW, message: 'Logged out.', severity: 'success' },
     ];
     const store = mockStore(ImmutableMap());
 

@@ -1,5 +1,5 @@
 import api from '../api';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 import { fetchMe } from 'soapbox/actions/me';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
@@ -136,7 +136,7 @@ export function logIn(username, password) {
       if (error.response.data.error === 'mfa_required') {
         throw error;
       } else {
-        dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+        dispatch(snackbar.error('Invalid username or password.'));
       }
       throw error;
     });
@@ -156,7 +156,7 @@ export function logOut() {
       token: state.getIn(['auth', 'user', 'access_token']),
     });
 
-    dispatch(showAlert('Successfully logged out.', ''));
+    dispatch(snackbar.success('Logged out.'));
   };
 }
 
@@ -172,9 +172,9 @@ export function register(params) {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
       if (needsConfirmation) {
-        return dispatch(showAlert('', 'Check your email for further instructions.'));
+        return dispatch(snackbar.info('You must confirm your email.'));
       } else if (needsApproval) {
-        return dispatch(showAlert('', 'Your account has been submitted for approval.'));
+        return dispatch(snackbar.info('Your account is being reviewed.'));
       } else {
         return dispatch(fetchMe());
       }
@@ -232,7 +232,7 @@ export function deleteAccount(password) {
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
       dispatch({ type: AUTH_LOGGED_OUT });
-      dispatch(showAlert('Successfully logged out.', ''));
+      dispatch(snackbar.success('Logged out.'));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;

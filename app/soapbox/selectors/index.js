@@ -124,10 +124,9 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
       message: item.get('message'),
       title: item.get('title'),
       key: item.get('key'),
+      className: `snackbar snackbar--${item.get('severity', 'info')}`,
+      activeClassName: 'snackbar--active',
       dismissAfter: 5000,
-      barStyle: {
-        zIndex: 200,
-      },
     });
   });
 

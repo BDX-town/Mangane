@@ -1,5 +1,5 @@
 import api from '../api';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 
 export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';
 export const IMPORT_FOLLOWS_SUCCESS = 'IMPORT_FOLLOWS_SUCCESS';
@@ -19,7 +19,7 @@ export function importFollows(params) {
     return api(getState)
       .post('/api/pleroma/follow_import', params)
       .then(response => {
-        dispatch(showAlert('', 'Followers imported successfully'));
+        dispatch(snackbar.success('Followers imported successfully'));
         dispatch({ type: IMPORT_FOLLOWS_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_FOLLOWS_FAIL, error });
@@ -33,7 +33,7 @@ export function importBlocks(params) {
     return api(getState)
       .post('/api/pleroma/blocks_import', params)
       .then(response => {
-        dispatch(showAlert('', 'Blocks imported successfully'));
+        dispatch(snackbar.success('Blocks imported successfully'));
         dispatch({ type: IMPORT_BLOCKS_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_BLOCKS_FAIL, error });
@@ -47,7 +47,7 @@ export function importMutes(params) {
     return api(getState)
       .post('/api/pleroma/mutes_import', params)
       .then(response => {
-        dispatch(showAlert('', 'Mutes imported successfully'));
+        dispatch(snackbar.success('Mutes imported successfully'));
         dispatch({ type: IMPORT_MUTES_SUCCESS, config: response.data });
       }).catch(error => {
         dispatch({ type: IMPORT_MUTES_FAIL, error });

@@ -1,4 +1,3 @@
-//test
 import { defineMessages } from 'react-intl';
 
 const messages = defineMessages({
@@ -23,11 +22,12 @@ export function clearAlert() {
   };
 };
 
-export function showAlert(title = messages.unexpectedTitle, message = messages.unexpectedMessage) {
+export function showAlert(title = messages.unexpectedTitle, message = messages.unexpectedMessage, severity = 'info') {
   return {
     type: ALERT_SHOW,
     title,
     message,
+    severity,
   };
 };
 
@@ -47,9 +47,9 @@ export function showAlertForError(error) {
       message = data.error;
     }
 
-    return showAlert(title, message);
+    return showAlert(title, message, 'error');
   } else {
     console.error(error);
-    return showAlert();
+    return showAlert(undefined, undefined, 'error');
   }
 }

@@ -4,7 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { resetPassword } from 'soapbox/actions/auth';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 import { Redirect } from 'react-router-dom';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 
 export default @connect()
 class PasswordReset extends ImmutablePureComponent {
@@ -20,7 +20,7 @@ class PasswordReset extends ImmutablePureComponent {
     this.setState({ isLoading: true });
     dispatch(resetPassword(nicknameOrEmail)).then(() => {
       this.setState({ isLoading: false, success: true });
-      dispatch(showAlert('Password reset received. Check your email for further instructions.', ''));
+      dispatch(snackbar.info('Check your email for confirmation.'));
     }).catch(error => {
       this.setState({ isLoading: false });
     });

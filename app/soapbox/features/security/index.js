@@ -20,7 +20,7 @@ import {
   deleteAccount,
 } from 'soapbox/actions/auth';
 import { fetchUserMfaSettings } from '../../actions/mfa';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
 
 /*
@@ -119,10 +119,10 @@ class ChangeEmailForm extends ImmutablePureComponent {
     this.setState({ isLoading: true });
     return dispatch(changeEmail(email, password)).then(() => {
       this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
-      dispatch(showAlert('', intl.formatMessage(messages.updateEmailSuccess)));
+      dispatch(snackbar.success(intl.formatMessage(messages.updateEmailSuccess)));
     }).catch(error => {
       this.setState({ password: '' });
-      dispatch(showAlert('', intl.formatMessage(messages.updateEmailFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.updateEmailFail)));
     }).then(() => {
       this.setState({ isLoading: false });
     });
@@ -193,10 +193,10 @@ class ChangePasswordForm extends ImmutablePureComponent {
     this.setState({ isLoading: true });
     return dispatch(changePassword(oldPassword, newPassword, confirmation)).then(() => {
       this.clearForm(); // TODO: Maybe redirect user
-      dispatch(showAlert('', intl.formatMessage(messages.updatePasswordSuccess)));
+      dispatch(snackbar.success(intl.formatMessage(messages.updatePasswordSuccess)));
     }).catch(error => {
       this.clearForm();
-      dispatch(showAlert('', intl.formatMessage(messages.updatePasswordFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.updatePasswordFail)));
     }).then(() => {
       this.setState({ isLoading: false });
     });
@@ -374,10 +374,10 @@ class DeactivateAccount extends ImmutablePureComponent {
     this.setState({ isLoading: true });
     return dispatch(deleteAccount(password)).then(() => {
       //this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
-      dispatch(showAlert('', intl.formatMessage(messages.deleteAccountSuccess)));
+      dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
     }).catch(error => {
       this.setState({ password: '' });
-      dispatch(showAlert('', intl.formatMessage(messages.deleteAccountFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.deleteAccountFail)));
     }).then(() => {
       this.setState({ isLoading: false });
     });
