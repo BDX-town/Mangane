@@ -136,7 +136,7 @@ export function logIn(username, password) {
       if (error.response.data.error === 'mfa_required') {
         throw error;
       } else {
-        dispatch(snackbar.error('Invalid username or password.'));
+        dispatch(snackbar.error('Wrong username or password'));
       }
       throw error;
     });
