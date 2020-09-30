@@ -224,7 +224,7 @@ export function uploadCompose(files) {
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
     if (files.length + media.size > uploadLimit) {
-      dispatch(showAlert(undefined, messages.uploadErrorLimit));
+      dispatch(showAlert(undefined, messages.uploadErrorLimit, 'error'));
       return;
     }
 
