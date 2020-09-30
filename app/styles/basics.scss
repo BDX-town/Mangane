@@ -159,7 +159,8 @@ body {
   color: #ffffff;
 }
 
-.explanation-box {
+.explanation-box,
+.accordion {
   color: var(--primary-text-color);
   padding: 15px 20px;
   font-size: 14px;
@@ -182,6 +183,22 @@ body {
 
     &:hover {
       text-decoration: none;
+    }
+  }
+}
+
+.accordion {
+  margin: 0;
+
+  .accordion_content {
+    transition-duration: 0.2s;
+
+    &.expanded {
+      display: block;
+    }
+
+    &.closed {
+      display: none;
     }
   }
 }
