@@ -135,8 +135,10 @@ export function logIn(username, password) {
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         throw error;
+      } else if(error.response.data.error) {
+        dispatch(snackbar.error(error.response.data.error));
       } else {
-        dispatch(snackbar.error('Invalid username or password.'));
+        dispatch(snackbar.error('Wrong username or password'));
       }
       throw error;
     });
@@ -174,7 +176,7 @@ export function register(params) {
       if (needsConfirmation) {
         return dispatch(snackbar.info('You must confirm your email.'));
       } else if (needsApproval) {
-        return dispatch(snackbar.info('Your account is being reviewed.'));
+        return dispatch(snackbar.info('Your account is pending review by an admin.'));
       } else {
         return dispatch(fetchMe());
       }

@@ -443,6 +443,22 @@ $fluid-breakpoint: $maximum-width + 20px;
       }
     }
 
+    .registrations-closed {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 18px;
+
+      h2 {
+        font-weight: bold;
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+    }
+
     @media (min-width: 767px) and (max-width: 1024px) {
       padding: 40px 20px 20px;
 

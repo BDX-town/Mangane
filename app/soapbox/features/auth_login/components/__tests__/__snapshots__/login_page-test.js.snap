@@ -13,24 +13,28 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
       className="fields-group"
     >
       <div
-        className="input email optional user_email"
+        className="input email user_email"
       >
         <input
           aria-label="Username"
-          className="string email optional"
+          autoComplete="off"
+          className="string email"
           name="username"
           placeholder="Username"
+          required={true}
           type="text"
         />
       </div>
       <div
-        className="input password optional user_password"
+        className="input password user_password"
       >
         <input
           aria-label="Password"
-          className="password optional"
+          autoComplete="off"
+          className="password"
           name="password"
           placeholder="Password"
+          required={true}
           type="password"
         />
       </div>

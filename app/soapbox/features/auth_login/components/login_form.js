@@ -20,11 +20,27 @@ class LoginForm extends ImmutablePureComponent {
       <form className='simple_form new_user' method='post' onSubmit={handleSubmit}>
         <fieldset disabled={isLoading}>
           <div className='fields-group'>
-            <div className='input email optional user_email'>
-              <input aria-label={intl.formatMessage(messages.username)} className='string email optional' placeholder={intl.formatMessage(messages.username)} type='text' name='username' />
+            <div className='input email user_email'>
+              <input
+                aria-label={intl.formatMessage(messages.username)}
+                className='string email'
+                placeholder={intl.formatMessage(messages.username)}
+                type='text'
+                name='username'
+                autoComplete='off'
+                required
+              />
             </div>
-            <div className='input password optional user_password'>
-              <input aria-label={intl.formatMessage(messages.password)} className='password optional' placeholder={intl.formatMessage(messages.password)} type='password' name='password' />
+            <div className='input password user_password'>
+              <input
+                aria-label={intl.formatMessage(messages.password)}
+                className='password'
+                placeholder={intl.formatMessage(messages.password)}
+                type='password'
+                name='password'
+                autoComplete='off'
+                required
+              />
             </div>
             <p className='hint subtle-hint'>
               <Link to='/auth/reset_password'>
