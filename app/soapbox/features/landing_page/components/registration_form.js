@@ -20,6 +20,7 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
+  username_hint: { id: 'registration.fields.username_hint', defaultMessage: 'Only letters, numbers, and underscores are allowed.' },
   email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
   password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
@@ -109,7 +110,9 @@ class RegistrationForm extends ImmutablePureComponent {
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}
                 name='username'
+                hint={intl.formatMessage(messages.username_hint)}
                 autoComplete='off'
+                pattern='^[a-zA-Z\d_-]+'
                 onChange={this.onInputChange}
                 required
               />

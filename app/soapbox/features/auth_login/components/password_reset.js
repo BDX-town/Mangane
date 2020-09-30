@@ -37,6 +37,7 @@ class PasswordReset extends ImmutablePureComponent {
               name='nickname_or_email'
               label='Email or username'
               placeholder='me@example.com'
+              required
             />
           </FieldsGroup>
         </fieldset>
