@@ -104,12 +104,10 @@ class SoapboxConfig extends ImmutablePureComponent {
   }
 
   checkIfUnsavedChanges = (config) => {
-    if (this.props.soapbox !== config) {
+    if (!this.props.soapbox.equals(config)) {
       this.setState({ hasUnsavedChanges: true });
-      console.log('changed to true');
     } else {
       this.setState({ hasUnsavedChanges: false });
-      console.log('changed to false');
     }
   }
 
