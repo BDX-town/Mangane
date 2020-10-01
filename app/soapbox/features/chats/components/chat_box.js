@@ -54,7 +54,7 @@ class ChatBox extends ImmutablePureComponent {
     isUploading: false,
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
-    timerActive: false,
+    pingTimerActive: false,
   })
 
   state = this.initialState()
@@ -100,6 +100,15 @@ class ChatBox extends ImmutablePureComponent {
     return conds.some(c => c);
   }
 
+  animationTimer = () => {
+    const { isTyping } = this.props;
+    if(isTyping) {
+      setTimeout(() => {
+        this.markIdle();
+      }, 5000);
+    }
+  }
+
   sendMessage = () => {
     const { dispatch, chatId } = this.props;
     const { isUploading } = this.state;
@@ -120,7 +129,7 @@ class ChatBox extends ImmutablePureComponent {
   handleKeyDown = (e) => {
     this.markRead();
     const { isTyping } = this.props;
-    const { timerActive } = this.state;
+    const { pingTimerActive } = this.state;
     if (e.key === 'Enter' && e.shiftKey) {
       this.insertLine();
       e.preventDefault();
@@ -128,12 +137,11 @@ class ChatBox extends ImmutablePureComponent {
       this.sendMessage();
       e.preventDefault();
     } else {
-      if(!isTyping && !timerActive) {
+      if(!isTyping && !pingTimerActive) {
         setTimeout(() => {
           this.setState({
-            timerActive: false,
+            pingTimerActive: false,
           });
-          this.markIdle();
         }, 5000);
         this.sendPing();
       }
@@ -218,14 +226,15 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, chatId, intl, isTyping } = this.props;
-    const { content, isUploading, uploadProgress } = this.state;
+    const { chatMessageIds, chatId, intl } = this.props;
+    const { content, isUploading, uploadProgress, isTyping } = this.state;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
+        {this.animationTimer()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <TypingIndicator active={isTyping} />
         <div className='chat-box__actions simple_form'>
