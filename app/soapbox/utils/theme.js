@@ -79,3 +79,5 @@ export const themeDataToCss = themeData => (
     .entrySeq()
     .reduce((acc, cur) => acc + `--${cur[0]}:${cur[1]};`, '')
 );
+
+export const brandColorToCSS = brandColor => themeDataToCss(brandColorToThemeData(brandColor));

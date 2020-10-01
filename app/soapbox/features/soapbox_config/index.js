@@ -23,6 +23,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
 import detectPassiveEvents from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
+import SitePreview from './components/site_preview';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -190,10 +191,16 @@ class SoapboxConfig extends ImmutablePureComponent {
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
+            <SitePreview soapbox={soapbox} />
             <FieldsGroup>
               <div className='fields-row file-picker'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <img src={soapbox.get('logo')} />
+                  <ColorWithPicker
+                    buttonId='brand_color'
+                    label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
+                    value={soapbox.get('brandColor')}
+                    onChange={this.handleChange(['brandColor'], (e) => e.hex)}
+                  />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooserLogo
@@ -204,41 +211,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   />
                 </div>
               </div>
-              {/*<div className='fields-row file-picker'>
-                <div className='fields-row__column fields-row__column-6'>
-                  <img src={soapbox.get('banner')} />
-                </div>
-                <div className='fields-row__column fields-group fields-row__column-6'>
-                  <FileChooser
-                    label={<FormattedMessage id='soapbox_config.fields.banner_label' defaultMessage='Banner' />}
-                    name='banner'
-                    hint={<FormattedMessage id='soapbox_config.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be displayed to 400x400px' />}
-                    onChange={this.handleFileChange(['banner'])}
-                  />
-                </div>
-              </div>*/}
             </FieldsGroup>
-            <FieldsGroup>
-              <div className='fields-row__column fields-group'>
-                <ColorWithPicker
-                  buttonId='brand_color'
-                  label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
-                  value={soapbox.get('brandColor')}
-                  onChange={this.handleChange(['brandColor'], (e) => e.hex)}
-                />
-              </div>
-            </FieldsGroup>
-            {/*<FieldsGroup>
-              <Checkbox
-                label={<FormattedMessage id='soapbox_config.fields.patron_enabled_label' defaultMessage='Patron module' />}
-                hint={<FormattedMessage id='soapbox_config.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
-                name='patron'
-                checked={soapbox.getIn(['extensions', 'patron', 'enabled'])}
-                onChange={this.handleChange(
-                  ['extensions', 'patron', 'enabled'], (e) => e.checked,
-                )}
-              />
-            </FieldsGroup>*/}
             <FieldsGroup>
               <TextInput
                 name='copyright'
@@ -322,31 +295,6 @@ class SoapboxConfig extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
-              {/* <div className='input with_block_label'>
-                <label><FormattedMessage id='soapbox_config.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
-                <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.custom_css_fields' defaultMessage='Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`' />
-                </span>
-                {
-                  soapbox.get('customCss').map((field, i) => (
-                    <div className='row' key={i}>
-                      <TextInput
-                        label={intl.formatMessage(messages.customCssLabel)}
-                        placeholder={intl.formatMessage(messages.customCssLabel)}
-                        value={field}
-                        onChange={this.handleChange(['customCss', i], (e) => e.target.value)}
-                      />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['customCss', i])} />
-                    </div>
-                  ))
-                }
-                <div className='actions'>
-                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['customCss'], '')}>
-                    <Icon id='plus-circle' />
-                    <FormattedMessage id='soapbox_config.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
-                  </div>
-                </div>
-              </div> */}
             </FieldsGroup>
             <Accordion
               headline={intl.formatMessage(messages.rawJSONLabel)}

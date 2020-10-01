@@ -9,7 +9,7 @@ export const SETTING_SAVE   = 'SETTING_SAVE';
 
 export const FE_NAME = 'soapbox_fe';
 
-const defaultSettings = ImmutableMap({
+export const defaultSettings = ImmutableMap({
   onboarded: false,
 
   skinTone: 1,
