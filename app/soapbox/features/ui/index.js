@@ -230,6 +230,10 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/home' to='/' />
 
+        {/* Soapbox Legacy redirects */}
+        <Redirect from='/canary' to='/about/canary' />
+        <Redirect from='/canary.txt' to='/about/canary' />
+
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
         <WrappedRoute path='/lists' layout={LAYOUT.DEFAULT} component={Lists} content={children} />
