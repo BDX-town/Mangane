@@ -54,6 +54,16 @@
     word-break: break-all;
     background-color: var(--background-color);
   }
+
+  img {
+    width: 100%;
+    height: 285.188px;
+    object-fit: contain;
+    background: var(--background-color);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
 }
 
 .status__content > ul,
