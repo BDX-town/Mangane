@@ -349,7 +349,7 @@ class SoapboxConfig extends ImmutablePureComponent {
             </FieldsGroup>
             <Accordion
               headline={intl.formatMessage(messages.rawJSONLabel)}
-              content={<FieldsGroup>
+              content={(
                 <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
                   <SimpleTextarea
                     hint={intl.formatMessage(messages.rawJSONHint)}
@@ -358,7 +358,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     rows={12}
                   />
                 </div>
-              </FieldsGroup>}
+              )}
             />
           </fieldset>
           <div className='actions'>

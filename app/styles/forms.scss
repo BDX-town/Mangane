@@ -679,14 +679,24 @@ code {
   max-height: 100px;
 }
 
-.code-editor textarea {
-  font-family: monospace;
-  white-space: pre;
-}
+.code-editor {
+  textarea {
+    font-family: monospace;
+    white-space: pre;
+  }
 
-.code-editor--invalid textarea {
-  border-color: $error-red !important;
-  color: $error-red;
+  &--invalid textarea {
+    border-color: $error-red !important;
+    color: $error-red;
+  }
+
+  .input {
+    margin-bottom: 0;
+  }
+
+  .hint {
+    margin-top: 10px;
+  }
 }
 
 .input .row .fa-times-circle {

@@ -159,50 +159,6 @@ body {
   color: #ffffff;
 }
 
-.explanation-box,
-.accordion {
-  color: var(--primary-text-color);
-  padding: 15px 20px;
-  font-size: 14px;
-  background-color: var(--brand-color--faint);
-  margin: 5px 20px;
-  border-radius: 8px;
-
-  &__title {
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  &__explanation {
-    margin-top: 1em;
-  }
-
-  a {
-    color: var(--brand-color--hicontrast);
-    text-decoration: underline;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-}
-
-.accordion {
-  margin: 0;
-
-  .accordion_content {
-    transition-duration: 0.2s;
-
-    &.expanded {
-      display: block;
-    }
-
-    &.closed {
-      display: none;
-    }
-  }
-}
-
 noscript {
   text-align: center;
 
