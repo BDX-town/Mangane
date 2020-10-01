@@ -9,8 +9,6 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
-  Checkbox,
-  FileChooser,
   SimpleTextarea,
   FileChooserLogo,
   FormPropTypes,
@@ -63,6 +61,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   state = {
     isLoading: false,
     soapbox: this.props.soapbox,
+    jsonEditorExpanded: false,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
   }
@@ -161,6 +160,8 @@ class SoapboxConfig extends ImmutablePureComponent {
   getSoapboxConfig = () => {
     return defaultConfig.mergeDeep(this.state.soapbox);
   }
+
+  toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.soapbox !== this.props.soapbox) {
@@ -359,6 +360,8 @@ class SoapboxConfig extends ImmutablePureComponent {
                   />
                 </div>
               )}
+              expanded={this.state.jsonEditorExpanded}
+              onToggle={this.toggleJSONEditor}
             />
           </fieldset>
           <div className='actions'>

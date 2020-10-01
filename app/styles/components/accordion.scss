@@ -2,7 +2,6 @@
   margin: 5px 20px;
 }
 
-.explanation-box,
 .accordion {
   color: var(--primary-text-color);
   padding: 15px 20px;
@@ -15,11 +14,15 @@
     font-weight: bold !important;
     font-size: 16px !important;
     background: transparent !important;
+    color: var(--primary-text-color) !important;
     padding: 0 !important;
     margin: 0 !important;
     text-transform: none !important;
     text-align: left !important;
     display: flex !important;
+    color: var(--primary-text-color);
+    border: 0;
+    width: 100%;
 
     &::after {
       content: '';
@@ -46,10 +49,6 @@
 
   &--expanded &__content {
     height: auto;
-  }
-
-  &__explanation {
-    margin-top: 1em;
   }
 
   a {

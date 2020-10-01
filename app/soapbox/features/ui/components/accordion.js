@@ -13,28 +13,30 @@ export default @injectIntl class Accordion extends React.PureComponent {
   static propTypes = {
     headline: PropTypes.string.isRequired,
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    expanded: PropTypes.bool,
+    onToggle: PropTypes.func,
     intl: PropTypes.object.isRequired,
   };
 
-  state = {
+  static defaultProps = {
     expanded: false,
+    onToggle: () => {},
   }
 
-  handleToggleAccordion = (e) => {
-    this.setState({ expanded: !this.state.expanded });
+  handleToggle = (e) => {
+    this.props.onToggle(!this.props.expanded);
     e.preventDefault();
   }
 
   render() {
-    const { headline, content, intl } = this.props;
-    const { expanded } = this.state;
+    const { headline, content, expanded, intl } = this.props;
 
     return (
       <div className={classNames('accordion', { 'accordion--expanded' : expanded })}>
         <button
           type='button'
           className='accordion__title'
-          onClick={this.handleToggleAccordion}
+          onClick={this.handleToggle}
           title={intl.formatMessage(expanded ? messages.collapse : messages.expand)}
         >
           {headline}
