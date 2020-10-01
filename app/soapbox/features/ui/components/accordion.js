@@ -11,7 +11,7 @@ const messages = defineMessages({
 export default @injectIntl class Accordion extends React.PureComponent {
 
   static propTypes = {
-    headline: PropTypes.string.isRequired,
+    headline: PropTypes.node.isRequired,
     content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     expanded: PropTypes.bool,
     onToggle: PropTypes.func,
