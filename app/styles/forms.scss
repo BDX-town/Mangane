@@ -426,6 +426,28 @@ code {
         background-color: darken($error-value-color, 5%);
       }
     }
+
+    &.accordion__toggle {
+      display: inline-block;
+      width: auto;
+      border: 0;
+      border-radius: 0;
+      background: none;
+      color: var(--primary-text-color--faint);
+      font-size: 18px;
+      line-height: inherit;
+      height: auto;
+      padding: 0 10px;
+      text-transform: none;
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-weight: 500;
+      outline: 0;
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
   }
 
   select {
@@ -657,14 +679,24 @@ code {
   max-height: 100px;
 }
 
-.code-editor textarea {
-  font-family: monospace;
-  white-space: pre;
-}
+.code-editor {
+  textarea {
+    font-family: monospace;
+    white-space: pre;
+  }
 
-.code-editor--invalid textarea {
-  border-color: $error-red !important;
-  color: $error-red;
+  &--invalid textarea {
+    border-color: $error-red !important;
+    color: $error-red;
+  }
+
+  .input {
+    margin-bottom: 0;
+  }
+
+  .hint {
+    margin-top: 10px;
+  }
 }
 
 .input .row .fa-times-circle {

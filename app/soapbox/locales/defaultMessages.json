@@ -2845,11 +2845,11 @@
         "id": "soapbox_config.custom_css.meta_fields.url_placeholder"
       },
       {
-        "defaultMessage": "Raw JSON data",
+        "defaultMessage": "Advanced: Edit raw JSON data",
         "id": "soapbox_config.raw_json_label"
       },
       {
-        "defaultMessage": "Advanced: Edit the settings data directly.",
+        "defaultMessage": "Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click Save to apply your changes.",
         "id": "soapbox_config.raw_json_hint"
       },
       {

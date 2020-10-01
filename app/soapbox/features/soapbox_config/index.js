@@ -9,8 +9,6 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
-  Checkbox,
-  FileChooser,
   SimpleTextarea,
   FileChooserLogo,
   FormPropTypes,
@@ -24,6 +22,7 @@ import { SketchPicker } from 'react-color';
 import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
 import detectPassiveEvents from 'detect-passive-events';
+import Accordion from '../ui/components/accordion';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -34,8 +33,8 @@ const messages = defineMessages({
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
-  rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Raw JSON data' },
-  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly.' },
+  rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
+  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
 });
 
 const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
@@ -62,6 +61,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   state = {
     isLoading: false,
     soapbox: this.props.soapbox,
+    jsonEditorExpanded: false,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
   }
@@ -161,6 +161,8 @@ class SoapboxConfig extends ImmutablePureComponent {
     return defaultConfig.mergeDeep(this.state.soapbox);
   }
 
+  toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });
+
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.soapbox !== this.props.soapbox) {
       this.putConfig(this.props.soapbox);
@@ -202,7 +204,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   />
                 </div>
               </div>
-              <div className='fields-row file-picker'>
+              {/*<div className='fields-row file-picker'>
                 <div className='fields-row__column fields-row__column-6'>
                   <img src={soapbox.get('banner')} />
                 </div>
@@ -214,7 +216,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     onChange={this.handleFileChange(['banner'])}
                   />
                 </div>
-              </div>
+              </div>*/}
             </FieldsGroup>
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
@@ -226,7 +228,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                 />
               </div>
             </FieldsGroup>
-            <FieldsGroup>
+            {/*<FieldsGroup>
               <Checkbox
                 label={<FormattedMessage id='soapbox_config.fields.patron_enabled_label' defaultMessage='Patron module' />}
                 hint={<FormattedMessage id='soapbox_config.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
@@ -236,7 +238,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   ['extensions', 'patron', 'enabled'], (e) => e.checked,
                 )}
               />
-            </FieldsGroup>
+            </FieldsGroup>*/}
             <FieldsGroup>
               <TextInput
                 name='copyright'
@@ -346,17 +348,21 @@ class SoapboxConfig extends ImmutablePureComponent {
                 </div>
               </div> */}
             </FieldsGroup>
-            <FieldsGroup>
-              <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
-                <SimpleTextarea
-                  label={intl.formatMessage(messages.rawJSONLabel)}
-                  hint={intl.formatMessage(messages.rawJSONHint)}
-                  value={this.state.rawJSON}
-                  onChange={this.handleEditJSON}
-                  rows={12}
-                />
-              </div>
-            </FieldsGroup>
+            <Accordion
+              headline={intl.formatMessage(messages.rawJSONLabel)}
+              content={(
+                <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
+                  <SimpleTextarea
+                    hint={intl.formatMessage(messages.rawJSONHint)}
+                    value={this.state.rawJSON}
+                    onChange={this.handleEditJSON}
+                    rows={12}
+                  />
+                </div>
+              )}
+              expanded={this.state.jsonEditorExpanded}
+              onToggle={this.toggleJSONEditor}
+            />
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>
