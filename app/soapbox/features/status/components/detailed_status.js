@@ -37,6 +37,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     showMedia: PropTypes.bool,
     onToggleMediaVisibility: PropTypes.func,
     depth: PropTypes.number,
+    hasDescendants: PropTypes.bool,
   };
 
   state = {
@@ -87,12 +88,19 @@ export default class DetailedStatus extends ImmutablePureComponent {
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
-    const { compact, depth } = this.props;
+    const { compact, depth, hasDescendants } = this.props;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
     if (!status) {
       return null;
+    }
+
+    let ancestorLine = depth ? <div className='status__expand__ancestor-line' /> : '';
+    let descendantLine = hasDescendants ? <div className='status__expand__descendant-line' /> : '';
+    let depthLines = [];
+    for (let i = 0; i < depth; i++) {
+      depthLines.push(<div className='status__depth-lines__line' key={i} style={{ left: `${i * 30}px` }} />);
     }
 
     let media           = '';
@@ -164,7 +172,14 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
     return (
       <div style={outerStyle}>
+        <div className='status__depth-lines'>
+          {depthLines}
+        </div>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })} style={{ paddingLeft: `${depth * 30 + 15}px` }}>
+          <div className='status__expand' style={{ paddingLeft: `${depth * 30}px` }}>
+            {ancestorLine}
+            {descendantLine}
+          </div>
           <div className='detailed-status__profile'>
             <div className='detailed-status__display-name'>
               <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>

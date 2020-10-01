@@ -43,6 +43,19 @@
   .audio-player {
     margin-top: 8px;
   }
+
+  .status__expand__ancestor-line {
+    height: 13px;
+  }
+
+  .status__expand__descendant-line {
+    top: 64px;
+  }
+
+  &__profile {
+    position: relative;
+    right: 5px;
+  }
 }
 
 .detailed-status__meta {

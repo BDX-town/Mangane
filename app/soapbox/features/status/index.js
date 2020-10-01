@@ -73,6 +73,7 @@ const makeMapStateToProps = () => {
     let ancestorsIds = Immutable.List();
     let descendantsIds = Immutable.List();
     let depths = {};
+    let hasDescendants = {};
 
     if (status) {
       depths[status.get('id')] = 0;
@@ -85,6 +86,12 @@ const makeMapStateToProps = () => {
           id = state.getIn(['contexts', 'inReplyTos', id]);
         }
       });
+      let currentDepth = 0;
+      ancestorsIds.forEach(ancestor => {
+        depths[ancestor] = currentDepth++;
+        hasDescendants[ancestor] = true;
+      });
+      depths[status.get('id')] = currentDepth;
 
       descendantsIds = descendantsIds.withMutations(mutable => {
         const ids = [status.get('id')];
@@ -100,10 +107,13 @@ const makeMapStateToProps = () => {
           }
 
           if (replies) {
+            hasDescendants[id] = true;
             replies.reverse().forEach(reply => {
               ids.unshift(reply);
               depths[reply] = depth + 1;
             });
+          } else {
+            hasDescendants[id] = false;
           }
         }
       });
@@ -117,6 +127,7 @@ const makeMapStateToProps = () => {
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
       depths,
+      hasDescendants,
     };
   };
 
@@ -400,6 +411,7 @@ class Status extends ImmutablePureComponent {
         onMoveDown={this.handleMoveDown}
         contextType='thread'
         depth={this.props.depths[id]}
+        hasDescendants={this.props.hasDescendants[id]}
       />
     ));
   }
@@ -511,6 +523,7 @@ class Status extends ImmutablePureComponent {
                 showMedia={this.state.showMedia}
                 onToggleMediaVisibility={this.handleToggleMediaVisibility}
                 depth={depth}
+                hasDescendants={this.props.hasDescendants[status.get('id')]}
               />
 
               <ActionBar

@@ -125,6 +125,14 @@
       .video-player {
         margin-top: 15px;
       }
+
+      &__profile {
+        position: inherit;
+      }
+
+      .status__expand__ancestor-line {
+        height: 14px;
+      }
     }
     .account__header__bar {padding: 5px 10px;}
 
@@ -136,6 +144,10 @@
     .status {
       padding: 15px 15px 15px (48px + 15px * 2);
       min-height: 48px + 2px;
+
+      &__depth-lines {
+        left: 38px;
+      }
 
       &__avatar {
         left: 15px;
@@ -159,6 +171,19 @@
       .video-player {
         margin-top: 10px;
       }
+
+      &__expand__ancestor-line {
+        height: 16px;
+      }
+    }
+
+    .status__expand__ancestor-line {
+      right: 28px;
+    }
+
+    .status__expand__descendant-line {
+      right: 28px;
+      top: 66px;
     }
 
     .account {
