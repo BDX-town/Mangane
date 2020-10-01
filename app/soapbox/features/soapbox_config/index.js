@@ -165,6 +165,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   };
 
   handleEditJSON = e => {
+    this.setState({ hasUnsavedChanges: true });
     this.setState({ rawJSON: e.target.value });
   }
 

@@ -135,6 +135,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   checkIfUnsavedChanges = () => {
+    // TODO: make this actually compare the states
     this.setState({ hasUnsavedChanges: true });
   }
 
