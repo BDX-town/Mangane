@@ -37,7 +37,14 @@ export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
     return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
-      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
+      var newData = [];
+      data.forEach(chat => {
+        if (chat.last_message.content !== '*//ping//*') {
+          //push to newData
+          newData.push(chat);
+        }
+      });
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: newData });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
@@ -48,7 +55,14 @@ export function fetchChatMessages(chatId, maxId = null) {
   return (dispatch, getState) => {
     dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId, maxId });
     return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`, { params: { max_id: maxId } }).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, maxId, chatMessages: data });
+      var newData = [];
+      data.forEach(chat => {
+        if (chat.content !== '*//ping//*') {
+          //push to newData
+          newData.push(chat);
+        }
+      });
+      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, maxId, chatMessages: newData });
     }).catch(error => {
       dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, maxId, error });
     });

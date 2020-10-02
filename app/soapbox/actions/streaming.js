@@ -65,6 +65,8 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
                 type: STREAMING_CHAT_TYPING,
                 chat,
               });
+            } else if (chat.last_message.content === '*//ping//*' && messageOwned) {
+              //do not process owned ping
             } else {
               dispatch({
                 type: STREAMING_CHAT_UPDATE,
