@@ -2963,16 +2963,20 @@
         "id": "soapbox_config.raw_json_hint"
       },
       {
+        "defaultMessage": "Brand color",
+        "id": "soapbox_config.fields.brand_color_label"
+      },
+      {
+        "defaultMessage": "Default theme",
+        "id": "soapbox_config.fields.theme_label"
+      },
+      {
         "defaultMessage": "Logo",
         "id": "soapbox_config.fields.logo_label"
       },
       {
         "defaultMessage": "SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio",
         "id": "soapbox_config.hints.logo"
-      },
-      {
-        "defaultMessage": "Brand color",
-        "id": "soapbox_config.fields.brand_color_label"
       },
       {
         "defaultMessage": "Promo panel items",

@@ -206,7 +206,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   />
                   <div className='input with_label toggle'>
                     <div className='label_input'>
-                      <label>Default theme</label>
+                      <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
                       <ThemeToggle
                         onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
                         settings={settings}
