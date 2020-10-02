@@ -267,7 +267,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     </div>
                   ))
                 }
-                <div className='actions'>
+                <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
                     <Icon id='plus-circle' />
                     <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
@@ -300,7 +300,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                     </div>
                   ))
                 }
-                <div className='actions'>
+                <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
                     <Icon id='plus-circle' />
                     <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />

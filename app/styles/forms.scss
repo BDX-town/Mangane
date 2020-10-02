@@ -750,3 +750,16 @@ code {
     margin-left: 10px;
   }
 }
+
+.actions.add-row {
+  margin: 10px 0 0;
+
+  .button {
+    border: 0;
+    background: transparent;
+
+    &:hover {
+      color: var(--primary-text-color);
+    }
+  }
+}
