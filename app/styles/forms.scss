@@ -471,19 +471,23 @@ code {
     cursor: pointer;
   }
 
-  .select-wrapper::after {
-    display: block;
-    font-family: 'ForkAwesome';
-    content: '';
-    width: 10px;
-    position: absolute;
-    right: 12px;
-    top: 1px;
-    border-left: 1px solid var(--highlight-text-color);
-    height: 39px;
-    padding: 12px;
-    box-sizing: border-box;
-    pointer-events: none;
+  .select-wrapper {
+    display: flex;
+    align-items: center;
+
+    &::after {
+      display: flex;
+      align-items: center;
+      font-family: "ForkAwesome";
+      content: "";
+      position: absolute;
+      right: 12px;
+      border-left: 1px solid var(--highlight-text-color);
+      height: calc(100% - 8px);
+      padding-left: 12px;
+      pointer-events: none;
+      margin-top: 8px;
+    }
   }
 
   .label_input {
