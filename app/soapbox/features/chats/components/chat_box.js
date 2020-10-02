@@ -28,7 +28,7 @@ const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
   chat: state.getIn(['chats', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
-  isTyping: state.getIn(['chats', chatId, 'typing']),
+  remoteTyping: state.getIn(['chats', chatId, 'typing']),
 });
 
 const fileKeyGen = () => Math.floor((Math.random() * 0x10000));
@@ -44,7 +44,7 @@ class ChatBox extends ImmutablePureComponent {
     chatMessageIds: ImmutablePropTypes.orderedSet,
     chat: ImmutablePropTypes.map,
     onSetInputRef: PropTypes.func,
-    isTyping: PropTypes.bool,
+    remoteTyping: PropTypes.bool,
     me: PropTypes.node,
   }
 
@@ -55,12 +55,17 @@ class ChatBox extends ImmutablePureComponent {
     uploadProgress: 0,
     resetFileKey: fileKeyGen(),
     pingTimerActive: false,
+    animationTimerActive: false,
   })
 
   state = this.initialState()
 
   clearState = () => {
     this.setState(this.initialState());
+  }
+
+  componentDidUpdate() {
+    this.animationTimer();
   }
 
   getParams = () => {
@@ -77,6 +82,9 @@ class ChatBox extends ImmutablePureComponent {
     const { isUploading } = this.state;
     if (!isUploading) {
       dispatch(markIdle(chatId));
+      this.setState({
+        animationTimerActive: false,
+      });
     }
   }
 
@@ -101,11 +109,15 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   animationTimer = () => {
-    const { isTyping } = this.props;
-    if(isTyping) {
+    const { remoteTyping } = this.props;
+    const { animationTimerActive } = this.state;
+    if(remoteTyping && !animationTimerActive) {
       setTimeout(() => {
         this.markIdle();
       }, 5000);
+      this.setState({
+        animationTimerActive: true,
+      });
     }
   }
 
@@ -128,7 +140,7 @@ class ChatBox extends ImmutablePureComponent {
 
   handleKeyDown = (e) => {
     this.markRead();
-    const { isTyping } = this.props;
+    const { remoteTyping } = this.props;
     const { pingTimerActive } = this.state;
     if (e.key === 'Enter' && e.shiftKey) {
       this.insertLine();
@@ -137,12 +149,15 @@ class ChatBox extends ImmutablePureComponent {
       this.sendMessage();
       e.preventDefault();
     } else {
-      if(!isTyping && !pingTimerActive) {
+      if(!remoteTyping && !pingTimerActive) {
         setTimeout(() => {
           this.setState({
             pingTimerActive: false,
           });
         }, 5000);
+        this.setState({
+          pingTimerActive: true,
+        });
         this.sendPing();
       }
     }
@@ -226,17 +241,16 @@ class ChatBox extends ImmutablePureComponent {
   }
 
   render() {
-    const { chatMessageIds, chatId, intl } = this.props;
-    const { content, isUploading, uploadProgress, isTyping } = this.state;
+    const { chatMessageIds, chatId, intl, remoteTyping } = this.props;
+    const { content, isUploading, uploadProgress } = this.state;
     if (!chatMessageIds) return null;
 
     return (
       <div className='chat-box' onMouseOver={this.handleHover}>
         <ChatMessageList chatMessageIds={chatMessageIds} chatId={chatId} />
         {this.renderAttachment()}
-        {this.animationTimer()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
-        <TypingIndicator active={isTyping} />
+        <TypingIndicator active={remoteTyping} />
         <div className='chat-box__actions simple_form'>
           {this.renderActionButton()}
           <textarea

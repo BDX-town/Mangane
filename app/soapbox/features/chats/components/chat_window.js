@@ -73,7 +73,7 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   render() {
-    const { pane, idx, chat, isTyping } = this.props;
+    const { pane, idx, chat } = this.props;
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
 
@@ -109,7 +109,6 @@ class ChatWindow extends ImmutablePureComponent {
           <ChatBox
             chatId={chat.get('id')}
             onSetInputRef={this.handleInputRef}
-            isTyping={isTyping}
           />
         </div>
       </div>

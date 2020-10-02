@@ -59,9 +59,8 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch((dispatch, getState) => {
             const chat = JSON.parse(data.payload);
             const messageOwned = !(chat.last_message && chat.last_message.account_id !== getState().get('me'));
-            if (chat.last_message.content === '*//ping//*') {
-              //activate isTyping effect;
-              console.log('ping');
+            if (chat.last_message.content === '*//ping//*' && !messageOwned) {
+              //activate remoteTyping effect;
               dispatch({
                 type: STREAMING_CHAT_TYPING,
                 chat,
