@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from '../../../components/icon';
-import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import SettingToggle from '../../notifications/components/setting_toggle';
 
 const messages = defineMessages({
@@ -12,31 +10,18 @@ const messages = defineMessages({
   switchToDark: { id: 'tabs_bar.theme_toggle_dark', defaultMessage: 'Switch to dark theme' },
 });
 
-const mapStateToProps = state => {
-  return {
-    settings: getSettings(state),
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  toggleTheme(setting) {
-    dispatch(changeSetting(['themeMode'], setting));
-  },
-});
-
-export default @connect(mapStateToProps, mapDispatchToProps)
-@injectIntl
+export default @injectIntl
 class ThemeToggle extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     settings: ImmutablePropTypes.map.isRequired,
-    toggleTheme: PropTypes.func,
+    onToggle: PropTypes.func.isRequired,
     showLabel: PropTypes.bool,
   };
 
   handleToggleTheme = () => {
-    this.props.toggleTheme(this.props.settings.get('themeMode') === 'light' ? 'dark' : 'light');
+    this.props.onToggle(this.props.settings.get('themeMode') === 'light' ? 'dark' : 'light');
   }
 
   render() {

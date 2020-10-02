@@ -24,6 +24,8 @@ import { isMobile } from 'soapbox/is_mobile';
 import detectPassiveEvents from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
+import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
+import { defaultSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -186,6 +188,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const soapbox = this.getSoapboxConfig();
+    const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -200,6 +203,10 @@ class SoapboxConfig extends ImmutablePureComponent {
                     label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
                     value={soapbox.get('brandColor')}
                     onChange={this.handleChange(['brandColor'], (e) => e.hex)}
+                  />
+                  <ThemeToggle
+                    onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
+                    settings={settings}
                   />
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
