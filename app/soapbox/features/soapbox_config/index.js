@@ -229,76 +229,74 @@ class SoapboxConfig extends ImmutablePureComponent {
               />
             </FieldsGroup>
             <FieldsGroup>
-              <div className='fields-row__column fields-group'>
-                <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
-                  </span>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
-                  </span>
-                  {
-                    soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
-                      <div className='row' key={i}>
-                        <TextInput
-                          label={intl.formatMessage(messages.promoItemIcon)}
-                          placeholder={intl.formatMessage(messages.promoItemIcon)}
-                          value={field.get('icon')}
-                          onChange={this.handlePromoItemChange(i, 'icon', field)}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.promoItemLabel)}
-                          placeholder={intl.formatMessage(messages.promoItemLabel)}
-                          value={field.get('text')}
-                          onChange={this.handlePromoItemChange(i, 'text', field)}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.promoItemURL)}
-                          placeholder={intl.formatMessage(messages.promoItemURL)}
-                          value={field.get('url')}
-                          onChange={this.handlePromoItemChange(i, 'url', field)}
-                        />
-                        <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
-                      </div>
-                    ))
-                  }
-                  <div className='actions'>
-                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                      <Icon id='plus-circle' />
-                      <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
+                </span>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
+                </span>
+                {
+                  soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
+                    <div className='row' key={i}>
+                      <TextInput
+                        label={intl.formatMessage(messages.promoItemIcon)}
+                        placeholder={intl.formatMessage(messages.promoItemIcon)}
+                        value={field.get('icon')}
+                        onChange={this.handlePromoItemChange(i, 'icon', field)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.promoItemLabel)}
+                        placeholder={intl.formatMessage(messages.promoItemLabel)}
+                        value={field.get('text')}
+                        onChange={this.handlePromoItemChange(i, 'text', field)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.promoItemURL)}
+                        placeholder={intl.formatMessage(messages.promoItemURL)}
+                        value={field.get('url')}
+                        onChange={this.handlePromoItemChange(i, 'url', field)}
+                      />
+                      <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                     </div>
+                  ))
+                }
+                <div className='actions'>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
+                    <Icon id='plus-circle' />
+                    <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                   </div>
                 </div>
-                <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
-                  </span>
-                  {
-                    soapbox.getIn(['navlinks', 'homeFooter']).map((field, i) => (
-                      <div className='row' key={i}>
-                        <TextInput
-                          label={intl.formatMessage(messages.homeFooterItemLabel)}
-                          placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
-                          value={field.get('title')}
-                          onChange={this.handleHomeFooterItemChange(i, 'title', field)}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.homeFooterItemURL)}
-                          placeholder={intl.formatMessage(messages.homeFooterItemURL)}
-                          value={field.get('url')}
-                          onChange={this.handleHomeFooterItemChange(i, 'url', field)}
-                        />
-                        <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
-                      </div>
-                    ))
-                  }
-                  <div className='actions'>
-                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                      <Icon id='plus-circle' />
-                      <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
+              </div>
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
+                </span>
+                {
+                  soapbox.getIn(['navlinks', 'homeFooter']).map((field, i) => (
+                    <div className='row' key={i}>
+                      <TextInput
+                        label={intl.formatMessage(messages.homeFooterItemLabel)}
+                        placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
+                        value={field.get('title')}
+                        onChange={this.handleHomeFooterItemChange(i, 'title', field)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.homeFooterItemURL)}
+                        placeholder={intl.formatMessage(messages.homeFooterItemURL)}
+                        value={field.get('url')}
+                        onChange={this.handleHomeFooterItemChange(i, 'url', field)}
+                      />
+                      <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
                     </div>
+                  ))
+                }
+                <div className='actions'>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
+                    <Icon id='plus-circle' />
+                    <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                   </div>
                 </div>
               </div>
