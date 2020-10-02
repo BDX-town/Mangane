@@ -204,10 +204,15 @@ class SoapboxConfig extends ImmutablePureComponent {
                     value={soapbox.get('brandColor')}
                     onChange={this.handleChange(['brandColor'], (e) => e.hex)}
                   />
-                  <ThemeToggle
-                    onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
-                    settings={settings}
-                  />
+                  <div className='input with_label toggle'>
+                    <div className='label_input'>
+                      <label>Default theme</label>
+                      <ThemeToggle
+                        onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
+                        settings={settings}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooserLogo
@@ -269,6 +274,8 @@ class SoapboxConfig extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
+            </FieldsGroup>
+            <FieldsGroup>
               <div className='input with_block_label'>
                 <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
                 <span className='hint'>

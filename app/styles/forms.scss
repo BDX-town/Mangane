@@ -704,6 +704,7 @@ code {
   right: 7px;
   cursor: pointer;
   color: $error-red;
+  transform: translateY(9px);
 }
 
 .site-preview {
@@ -733,5 +734,15 @@ code {
     align-items: center;
     justify-content: center;
     height: 100%;
+  }
+}
+
+.input.with_label.toggle .label_input {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+
+  .theme-toggle {
+    margin-left: 10px;
   }
 }
