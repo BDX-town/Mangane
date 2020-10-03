@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Helmet } from'react-helmet';
 
 const getNotifTotals = state => {
-  const normNotif = state.getIn(['notifications', 'unread']);
-  const chatNotif = state.get('chats').reduce((acc, curr) => acc + curr.get('unread'), 0);
-  const notifTotals = normNotif + chatNotif;
-  return notifTotals;
+  const notifications = state.getIn(['notifications', 'unread'], 0);
+  const chats = state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
+  const reports = state.getIn(['admin', 'open_report_count'], 0);
+  return notifications + chats + reports;
 };
 
 const mapStateToProps = state => ({
