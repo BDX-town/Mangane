@@ -29,7 +29,7 @@ const mapStateToProps = state => {
 
   return {
     panesData: addChatsToPanes(state, panesData),
-    unreadCount: state.get('chats').reduce((acc, curr) => acc + curr.get('unread'), 0),
+    unreadCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
   };
 };
 
