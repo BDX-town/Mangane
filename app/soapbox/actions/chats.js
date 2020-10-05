@@ -107,6 +107,22 @@ export function toggleChat(chatId) {
   };
 }
 
+export function removeChat(chatId) {
+  // This needs to be rewritten to remove a chat account from the chats list
+  return (dispatch, getState) => {
+    const panes = getSettings(getState()).getIn(['chats', 'panes']);
+    const [idx, pane] = panes.findEntry(pane => pane.get('chat_id') === chatId);
+
+    if (idx > -1) {
+      const state = pane.get('state') === 'minimized' ? 'open' : 'minimized';
+      if (state === 'open') dispatch(markChatRead(chatId));
+      return dispatch(changeSetting(['chats', 'panes', idx, 'state'], state));
+    } else {
+      return false;
+    }
+  };
+}
+
 export function toggleMainWindow() {
   return (dispatch, getState) => {
     const main = getSettings(getState()).getIn(['chats', 'mainWindow']);
