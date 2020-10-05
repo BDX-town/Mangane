@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - 2020-10-05
 ### Fixed
 - General user interface and ease-of-use improvements for both mobile and desktop
 - General loading and performance improvements, including shrinking bundle size
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Muted Users: posts of muted users now appear in profile view
 - Forms: security issue resolved with POST method on all forms
 - Internationalization: increased elements that are internationalizable
+- Composer: Forcing the scope to default after settings save.
 
 ### Added
 - Chats, currently one-to-one, evolving with Pleroma BE capabilities, including:
@@ -87,12 +88,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FontAwesome dependencies, with full switch to ForkAwesome
 - Requirement for use of soapbox.json for configuration
 - Direct Message links from menus, partial deprecation due to chats
-
-
-## [Unreleased patch]
-### Fixed
-- Composer: Forcing the scope to default after settings save.
-
 
 ## [1.0.0] - 2020-06-15
 ### Added
