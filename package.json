@@ -154,7 +154,7 @@
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^6.0.0",
     "eslint-plugin-import": "~2.22.0",
-    "eslint-plugin-jsx-a11y": "~6.2.3",
+    "eslint-plugin-jsx-a11y": "~6.3.0",
     "eslint-plugin-promise": "~4.2.0",
     "eslint-plugin-react": "~7.17.0",
     "eslint-plugin-react-hooks": "^4.0.4",
