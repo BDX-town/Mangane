@@ -45,7 +45,6 @@
     "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.3.4",
-    "@clusterws/cws": "^0.16.0",
     "@popperjs/core": "^2.4.4",
     "array-includes": "^3.0.3",
     "autoprefixer": "^9.5.1",
