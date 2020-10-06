@@ -156,7 +156,7 @@
     "eslint-plugin-import": "~2.22.0",
     "eslint-plugin-jsx-a11y": "~6.3.0",
     "eslint-plugin-promise": "~4.2.0",
-    "eslint-plugin-react": "~7.17.0",
+    "eslint-plugin-react": "~7.21.0",
     "eslint-plugin-react-hooks": "^4.0.4",
     "jest": "^26.0.1",
     "raf": "^3.4.1",
