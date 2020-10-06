@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -17,7 +18,7 @@ const messages = defineMessages({
   report: { id: 'chat_list.actions.report', defaultMessage: 'Report user' },
 });
 
-export default
+export default @connect()
 @injectIntl
 class Chat extends ImmutablePureComponent {
 
@@ -25,6 +26,7 @@ class Chat extends ImmutablePureComponent {
     chat: ImmutablePropTypes.map.isRequired,
     intl: PropTypes.object.isRequired,
     onClick: PropTypes.func,
+    dispatch: PropTypes.func.isRequired,
   };
 
   handleClick = () => {
@@ -47,12 +49,13 @@ class Chat extends ImmutablePureComponent {
     const { chat, intl } = this.props;
     if (!chat) return null;
     const account = chat.get('account');
+    const accountId = chat.getIn(['account', 'id']);
     const unreadCount = chat.get('unread');
     const content = chat.getIn(['last_message', 'content']);
     const parsedContent = content ? emojify(content) : '';
     const menu = [
-      { text: intl.formatMessage(messages.remove), action: this.handleRemoveChat(chat.get('chat_id')) },
-      { text: intl.formatMessage(messages.report), action: this.handleReportUser(account) },
+      { text: intl.formatMessage(messages.remove), action: this.handleRemoveChat(chat.get('id')) },
+      { text: intl.formatMessage(messages.report), action: this.handleReportUser(accountId) },
     ];
 
     return (

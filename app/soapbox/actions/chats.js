@@ -109,14 +109,15 @@ export function toggleChat(chatId) {
 
 export function removeChat(chatId) {
   // This needs to be rewritten to remove a chat account from the chats list
+  // Pleroma API doesn't support removal.  Perhaps we can mark as lower priority
+  // and store in DB
   return (dispatch, getState) => {
     const panes = getSettings(getState()).getIn(['chats', 'panes']);
-    const [idx, pane] = panes.findEntry(pane => pane.get('chat_id') === chatId);
+    const [idx] = panes.findEntry(pane => pane.get('chat_id') === chatId);
 
     if (idx > -1) {
-      const state = pane.get('state') === 'minimized' ? 'open' : 'minimized';
-      if (state === 'open') dispatch(markChatRead(chatId));
-      return dispatch(changeSetting(['chats', 'panes', idx, 'state'], state));
+      closeChat(chatId);
+      return dispatch(changeSetting(['chats', 'panes', idx, 'state'], 'removed'));
     } else {
       return false;
     }
