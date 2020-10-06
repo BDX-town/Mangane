@@ -68,7 +68,7 @@
     "escape-html": "^1.0.3",
     "exif-js": "^2.3.0",
     "express": "^4.17.1",
-    "file-loader": "^4.0.0",
+    "file-loader": "^6.0.0",
     "fork-awesome": "^1.1.7",
     "glob": "^7.1.1",
     "html-webpack-harddisk-plugin": "^1.0.1",
