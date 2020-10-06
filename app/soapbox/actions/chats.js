@@ -113,11 +113,17 @@ export function removeChat(chatId) {
   // and store in DB
   return (dispatch, getState) => {
     const panes = getSettings(getState()).getIn(['chats', 'panes']);
-    const [idx] = panes.findEntry(pane => pane.get('chat_id') === chatId);
-
+    // Following would generate an error when trying to find a pane for a chat when the pane did not exist, due to pane being closed
+    try {
+      var [idx] = panes.findEntry(pane => pane.get('chat_id') === chatId);
+    } catch (e) {}
+    // const [idx] = panes.findEntry(pane => pane.get('chat_id') === chatId);
     if (idx > -1) {
-      closeChat(chatId);
-      return dispatch(changeSetting(['chats', 'panes', idx, 'state'], 'removed'));
+      return dispatch(changeSetting(['chats', 'panes'], panes.delete(idx)));
+      // The following would mark a pane in settings as removed, so that the pane can be avoided when rendering and processing Chats
+      // Once the Plerma BE API for chat deletion is available, this feature may changed to simple deletion from getSettings
+      // The use cases of signaling deletion between both chat endpoints doesn't seem to be fully reviewed yet
+      // return dispatch(changeSetting(['chats', 'panes', idx, 'state'], 'removed'));
     } else {
       return false;
     }
