@@ -9725,16 +9725,16 @@ react-notification@^6.8.4:
   dependencies:
     prop-types "^15.6.2"
 
-react-overlays@^0.8.3:
-  version "0.8.3"
-  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.8.3.tgz#fad65eea5b24301cca192a169f5dddb0b20d3ac5"
-  integrity sha512-h6GT3jgy90PgctleP39Yu3eK1v9vaJAW73GOA/UbN9dJ7aAN4BTZD6793eI1D5U+ukMk17qiqN/wl3diK1Z5LA==
+react-overlays@^0.9.0:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/react-overlays/-/react-overlays-0.9.2.tgz#51ab1c62ded5af4d279bd3b943999531bbd648da"
+  integrity sha512-wOi+WqO0acnUAMCbTTW06/GRkYjHdlvIoyX4bYkLvxKrLgl2kX9WzFVyBdwukl2jvN7I7oX7ZXAz7MNOWYdgCA==
   dependencies:
     classnames "^2.2.5"
     dom-helpers "^3.2.1"
     prop-types "^15.5.10"
     prop-types-extra "^1.0.1"
-    react-transition-group "^2.2.0"
+    react-transition-group "^2.2.1"
     warning "^3.0.0"
 
 react-popper@^2.2.3:
@@ -9889,7 +9889,7 @@ react-toggle@^4.0.1:
   dependencies:
     classnames "^2.2.5"
 
-react-transition-group@^2.2.0, react-transition-group@^2.2.1:
+react-transition-group@^2.2.1:
   version "2.5.2"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-2.5.2.tgz#9457166a9ba6ce697a3e1b076b3c049b9fb2c408"
   integrity sha512-vwHP++S+f6KL7rg8V1mfs62+MBKtbMeZDR8KiNmD7v98Gs3UPGsDZDahPJH2PVprFW5YHJfh6cbNim3zPndaSQ==
