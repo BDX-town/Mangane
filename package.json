@@ -132,7 +132,6 @@
     "semver": "^7.3.2",
     "stringz": "^2.0.0",
     "substring-trie": "^1.0.2",
-    "throng": "^4.0.0",
     "tiny-queue": "^0.2.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "uuid": "^8.0.0",
