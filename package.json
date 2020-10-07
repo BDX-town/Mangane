@@ -160,6 +160,6 @@
     "redux-mock-store": "^1.5.4",
     "sass-lint": "^1.13.1",
     "webpack-dev-server": "^3.5.1",
-    "yargs": "^15.0.0"
+    "yargs": "^16.0.3"
   }
 }
