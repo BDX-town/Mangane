@@ -8,7 +8,7 @@ const defaultBarStyleFactory = (index, style, notification) => {
   return Object.assign(
     {},
     style,
-    { bottom: `${14 + index * 12 + index * 42}px` }
+    { bottom: `${14 + index * 12 + index * 42}px` },
   );
 };
 

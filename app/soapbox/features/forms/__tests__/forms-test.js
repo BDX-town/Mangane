@@ -15,7 +15,7 @@ import {
 describe('<InputContainer />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <InputContainer />
+      <InputContainer />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -23,7 +23,7 @@ describe('<InputContainer />', () => {
 describe('<SimpleInput />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <SimpleInput />
+      <SimpleInput />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -31,7 +31,7 @@ describe('<SimpleInput />', () => {
 describe('<SimpleForm />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <SimpleForm />
+      <SimpleForm />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -39,7 +39,7 @@ describe('<SimpleForm />', () => {
 describe('<FieldsGroup />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <FieldsGroup />
+      <FieldsGroup />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -47,7 +47,7 @@ describe('<FieldsGroup />', () => {
 describe('<Checkbox />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <Checkbox />
+      <Checkbox />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -55,7 +55,7 @@ describe('<Checkbox />', () => {
 describe('<RadioGroup />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <RadioGroup />
+      <RadioGroup />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -63,7 +63,7 @@ describe('<RadioGroup />', () => {
 describe('<SelectDropdown />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <SelectDropdown items={{ one: 'One', two: 'Two', three: 'Three' }} />
+      <SelectDropdown items={{ one: 'One', two: 'Two', three: 'Three' }} />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -71,7 +71,7 @@ describe('<SelectDropdown />', () => {
 describe('<TextInput />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <TextInput />
+      <TextInput />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -79,7 +79,7 @@ describe('<TextInput />', () => {
 describe('<FileChooser />', () => {
   it('renders correctly', () => {
     expect(renderer.create(
-      <FileChooser />
+      <FileChooser />,
     ).toJSON()).toMatchSnapshot();
   });
 });

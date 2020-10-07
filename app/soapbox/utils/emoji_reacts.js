@@ -39,8 +39,8 @@ export const mergeEmojiFavourites = (emojiReacts, favouritesCount, favourited) =
 const hasMultiReactions = (emojiReacts, account) => (
   emojiReacts.filter(
     e => e.get('accounts').filter(
-      a => a.get('id') === account.get('id')
-    ).count() > 0
+      a => a.get('id') === account.get('id'),
+    ).count() > 0,
   ).count() > 1
 );
 
@@ -72,14 +72,14 @@ export const filterEmoji = (emojiReacts, allowedEmoji=ALLOWED_EMOJI) => (
 
 export const reduceEmoji = (emojiReacts, favouritesCount, favourited, allowedEmoji=ALLOWED_EMOJI) => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount, favourited
+    emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
 export const getReactForStatus = status => {
   return reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
     status.get('favourites_count'),
-    status.get('favourited')
+    status.get('favourited'),
   ).filter(e => e.get('me') === true)
     .getIn([0, 'name']);
 };

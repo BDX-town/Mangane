@@ -130,7 +130,7 @@ class ColumnHeader extends React.PureComponent {
           }
         >
           {list.get('title')}
-        </Link>)
+        </Link>),
       );
     }
 

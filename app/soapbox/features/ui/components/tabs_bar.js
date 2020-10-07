@@ -94,7 +94,7 @@ class TabsBar extends React.PureComponent {
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
         <Icon id='search' />
         <span><FormattedMessage id='tabs_bar.search' defaultMessage='Search' /></span>
-      </NavLink>
+      </NavLink>,
     );
     return links.map((link) =>
       React.cloneElement(link, {
@@ -172,5 +172,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default injectIntl(
-  connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true }
+  connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
   )(TabsBar));

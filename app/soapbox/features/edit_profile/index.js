@@ -40,7 +40,7 @@ const mapStateToProps = state => {
 // Forces fields to be maxFields size, filling empty values
 const normalizeFields = (fields, maxFields) => (
   ImmutableList(fields).setSize(maxFields).map(field =>
-    field ? field : ImmutableMap({ name: '', value: '' })
+    field ? field : ImmutableMap({ name: '', value: '' }),
   )
 );
 
@@ -91,7 +91,7 @@ class EditProfile extends ImmutablePureComponent {
     this.state.fields.forEach((f, i) =>
       params = params
         .set(`fields_attributes[${i}][name]`,  f.get('name'))
-        .set(`fields_attributes[${i}][value]`, f.get('value'))
+        .set(`fields_attributes[${i}][value]`, f.get('value')),
     );
     return params;
   }

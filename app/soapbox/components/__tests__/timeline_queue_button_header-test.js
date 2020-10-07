@@ -15,7 +15,7 @@ describe('<TimelineQueueButtonHeader />', () => {
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={0}
         message={messages.queue}
-      />
+      />,
     ).toJSON()).toMatchSnapshot();
 
     expect(createComponent(
@@ -24,7 +24,7 @@ describe('<TimelineQueueButtonHeader />', () => {
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={1}
         message={messages.queue}
-      />
+      />,
     ).toJSON()).toMatchSnapshot();
 
     expect(createComponent(
@@ -33,7 +33,7 @@ describe('<TimelineQueueButtonHeader />', () => {
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={9999999}
         message={messages.queue}
-      />
+      />,
     ).toJSON()).toMatchSnapshot();
   });
 });

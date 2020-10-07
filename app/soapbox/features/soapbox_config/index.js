@@ -140,19 +140,19 @@ class SoapboxConfig extends ImmutablePureComponent {
       path, (e) =>
         template
           .merge(field)
-          .set(key, e.target.value)
+          .set(key, e.target.value),
     );
   };
 
   handlePromoItemChange = (index, key, field) => {
     return this.handleItemChange(
-      ['promoPanel', 'items', index], key, field, templates.promoPanelItem
+      ['promoPanel', 'items', index], key, field, templates.promoPanelItem,
     );
   };
 
   handleHomeFooterItemChange = (index, key, field) => {
     return this.handleItemChange(
-      ['navlinks', 'homeFooter', index], key, field, templates.footerItem
+      ['navlinks', 'homeFooter', index], key, field, templates.footerItem,
     );
   };
 
