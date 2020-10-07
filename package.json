@@ -144,7 +144,7 @@
   "devDependencies": {
     "axios-mock-adapter": "^1.18.1",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^24.8.0",
+    "babel-jest": "^26.5.2",
     "enzyme": "^3.8.0",
     "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^7.0.0",
