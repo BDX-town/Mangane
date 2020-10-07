@@ -114,7 +114,6 @@
     "react-redux-loading-bar": "^4.5.0",
     "react-router-dom": "^4.1.1",
     "react-router-scroll-4": "^1.0.0-beta.1",
-    "react-select": "^2.4.4",
     "react-sparklines": "^1.7.0",
     "react-swipeable-views": "^0.13.0",
     "react-textarea-autosize": "^8.0.0",
