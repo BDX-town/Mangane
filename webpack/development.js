@@ -2,7 +2,7 @@
 console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { resolve } = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
 
