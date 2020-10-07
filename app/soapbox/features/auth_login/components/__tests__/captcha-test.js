@@ -7,7 +7,7 @@ import { Map as ImmutableMap } from 'immutable';
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {
     expect(createComponent(
-      <CaptchaField />
+      <CaptchaField />,
     ).toJSON()).toMatchSnapshot();
   });
 });
@@ -25,7 +25,7 @@ describe('<NativeCaptchaField />', () => {
       <NativeCaptchaField
         captcha={captcha}
         onChange={() => {}} // eslint-disable-line react/jsx-no-bind
-      />
+      />,
     ).toJSON()).toMatchSnapshot();
   });
 });

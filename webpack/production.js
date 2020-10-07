@@ -1,7 +1,6 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in production mode'); // eslint-disable-line no-console
 
-const { URL } = require('url');
 const merge = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('offline-plugin');
@@ -9,22 +8,6 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { output } = require('./configuration');
 const sharedConfig = require('./shared');
-
-// eslint-disable-next-line no-unused-vars
-let attachmentHost;
-
-if (process.env.S3_ENABLED === 'true') {
-  if (process.env.S3_ALIAS_HOST || process.env.S3_CLOUDFRONT_HOST) {
-    attachmentHost = process.env.S3_ALIAS_HOST || process.env.S3_CLOUDFRONT_HOST;
-  } else {
-    attachmentHost = process.env.S3_HOSTNAME || `s3-${process.env.S3_REGION || 'us-east-1'}.amazonaws.com`;
-  }
-} else if (process.env.SWIFT_ENABLED === 'true') {
-  const { host } = new URL(process.env.SWIFT_OBJECT_URL);
-  attachmentHost = host;
-} else {
-  attachmentHost = null;
-}
 
 module.exports = merge(sharedConfig, {
   mode: 'production',

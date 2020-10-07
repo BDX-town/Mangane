@@ -323,7 +323,7 @@ class MediaGallery extends React.PureComponent {
     let itemsDimensions = [];
 
     const ratios = Array(size).fill().map((_, i) =>
-      media.getIn([i, 'meta', 'small', 'aspect'])
+      media.getIn([i, 'meta', 'small', 'aspect']),
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;

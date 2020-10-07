@@ -78,7 +78,7 @@ class ChatPanes extends ImmutablePureComponent {
       <div className='chat-panes'>
         {mainWindowPane}
         {panes.map((pane, i) =>
-          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />
+          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />,
         )}
       </div>
     );

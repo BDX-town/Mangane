@@ -55,13 +55,13 @@ export default function statuses(state = initialState, action) {
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji)
+        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji),
       );
   case UNEMOJI_REACT_REQUEST:
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji)
+        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji),
       );
   case FAVOURITE_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);

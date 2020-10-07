@@ -58,7 +58,7 @@ const expandNormalizedTimeline = (state, timeline, statuses, next, isPartial, is
 
         return oldIds.take(firstIndex + 1).concat(
           isPartial && oldIds.get(firstIndex) !== null ? newIds.unshift(null) : newIds,
-          oldIds.skip(lastIndex)
+          oldIds.skip(lastIndex),
         );
       });
     }
@@ -149,7 +149,7 @@ const updateTop = (state, timeline, top) => {
 const filterTimeline = (timeline, state, relationship, statuses) =>
   state.updateIn([timeline, 'items'], ImmutableList(), list =>
     list.filterNot(statusId =>
-      statuses.getIn([statusId, 'account']) === relationship.id
+      statuses.getIn([statusId, 'account']) === relationship.id,
     ));
 
 const removeStatusFromGroup = (state, groupId, statusId) => {
@@ -190,7 +190,7 @@ export default function timelines(state = initialState, action) {
     return state.update(
       action.timeline,
       initialTimeline,
-      map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items)
+      map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items),
     );
   case GROUP_REMOVE_STATUS_SUCCESS:
     return removeStatusFromGroup(state, action.groupId, action.id);

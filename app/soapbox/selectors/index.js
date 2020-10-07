@@ -110,7 +110,7 @@ export const makeGetStatus = () => {
         map.set('account', accountBase);
         map.set('filtered', filtered);
       });
-    }
+    },
   );
 };
 
@@ -172,6 +172,6 @@ export const makeGetChat = () => {
         map.set('account', account);
         map.set('last_message', lastMessage);
       });
-    }
+    },
   );
 };

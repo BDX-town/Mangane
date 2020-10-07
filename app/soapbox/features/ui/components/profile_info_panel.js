@@ -150,5 +150,5 @@ const mapStateToProps = (state, { account }) => {
 export default injectIntl(
   connect(mapStateToProps, null, null, {
     forwardRef: true,
-  }
+  },
   )(ProfileInfoPanel));

@@ -44,7 +44,7 @@ class Header extends ImmutablePureComponent {
 
   getFormData = (form) => {
     return Object.fromEntries(
-      Array.from(form).map(i => [i.name, i.value])
+      Array.from(form).map(i => [i.name, i.value]),
     );
   }
 

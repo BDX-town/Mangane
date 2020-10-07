@@ -62,7 +62,7 @@ class FollowRequests extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountAuthorizeContainer key={id} id={id} />
+            <AccountAuthorizeContainer key={id} id={id} />,
           )}
         </ScrollableList>
       </Column>

@@ -62,7 +62,7 @@ class Blocks extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} />
+            <AccountContainer key={id} id={id} />,
           )}
         </ScrollableList>
       </Column>

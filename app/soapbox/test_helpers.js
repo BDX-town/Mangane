@@ -28,6 +28,6 @@ export const createComponent = (children, props = {}) => {
           {children}
         </BrowserRouter>
       </IntlProvider>
-    </Provider>
+    </Provider>,
   );
 };
