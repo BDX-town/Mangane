@@ -356,6 +356,10 @@ $fluid-breakpoint: $maximum-width + 20px;
       border: 0;
     }
   }
+
+  pre {
+    white-space: pre-wrap;
+  }
 }
 
 .public-layout {
