@@ -2,7 +2,7 @@
 
 import classNames from 'classnames';
 import React from 'react';
-import { HotKeys } from 'react-hotkeys';
+import { GlobalHotKeys } from 'react-hotkeys';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router-dom';
@@ -521,13 +521,6 @@ class UI extends React.PureComponent {
     }
   }
 
-  setHotkeysRef = c => {
-    const { me } = this.props;
-    this.hotkeys = c;
-
-    if (!me || !this.hotkeys) return;
-  }
-
   handleHotkeyToggleHelp = () => {
     this.props.dispatch(openModal('HOTKEYS'));
   }
@@ -639,7 +632,8 @@ class UI extends React.PureComponent {
     };
 
     return (
-      <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
+      <div>
+        <GlobalHotKeys keyMap={keyMap} handlers={handlers} />
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
@@ -656,7 +650,7 @@ class UI extends React.PureComponent {
           {me && !mobile && <ChatPanes />}
           <ProfileHoverCard />
         </div>
-      </HotKeys>
+      </div>
     );
   }
 
