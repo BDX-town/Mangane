@@ -526,9 +526,6 @@ class UI extends React.PureComponent {
     this.hotkeys = c;
 
     if (!me || !this.hotkeys) return;
-    this.hotkeys.__mousetrap__.stopCallback = (e, element) => {
-      return ['TEXTAREA', 'SELECT', 'INPUT'].includes(element.tagName);
-    };
   }
 
   handleHotkeyToggleHelp = () => {
