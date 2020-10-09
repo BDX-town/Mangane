@@ -110,9 +110,9 @@ class ChatMessageList extends ImmutablePureComponent {
     return scrollBottom < elem.offsetHeight * 1.5;
   }
 
-  handleResize = (e) => {
-    if (this.isNearBottom() && !this.state.loading) this.scrollToBottom();
-  }
+  handleResize = throttle((e) => {
+    if (this.isNearBottom()) this.scrollToBottom();
+  }, 150);
 
   componentDidMount() {
     const { dispatch, chatId } = this.props;
@@ -137,7 +137,7 @@ class ChatMessageList extends ImmutablePureComponent {
     const { initialLoad } = this.state;
     const oldCount = prevProps.chatMessages.count();
     const newCount = this.props.chatMessages.count();
-    const isNearBottom = this.isNearBottom();
+    const isNearBottom = throttle(this.isNearBottom(), 150);
     const historyAdded = prevProps.chatMessages.getIn([0, 'id']) !== this.props.chatMessages.getIn([0, 'id']);
 
     // Retain scroll bar position when loading old messages
