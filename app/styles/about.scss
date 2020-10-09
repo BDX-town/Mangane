@@ -439,8 +439,10 @@ $fluid-breakpoint: $maximum-width + 20px;
       width: 395px;
       background-color: var(--foreground-color);
       border-radius: 6px;
+      height: 100%;
 
-      .simple_form {
+      .simple_form,
+      .registrations-closed {
         padding: 20px;
         background-color: var(--brand-color--faint);
         border-radius: inherit;
