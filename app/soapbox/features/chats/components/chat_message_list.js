@@ -111,7 +111,7 @@ class ChatMessageList extends ImmutablePureComponent {
   }
 
   handleResize = throttle((e) => {
-    if (this.isNearBottom()) this.scrollToBottom();
+    if (this.isNearBottom() && !this.state.loading) this.scrollToBottom();
   }, 150);
 
   componentDidMount() {
