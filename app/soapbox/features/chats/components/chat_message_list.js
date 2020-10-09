@@ -137,7 +137,7 @@ class ChatMessageList extends ImmutablePureComponent {
     const { initialLoad } = this.state;
     const oldCount = prevProps.chatMessages.count();
     const newCount = this.props.chatMessages.count();
-    const isNearBottom = throttle(this.isNearBottom(), 150);
+    const isNearBottom = this.isNearBottom();
     const historyAdded = prevProps.chatMessages.getIn([0, 'id']) !== this.props.chatMessages.getIn([0, 'id']);
 
     // Retain scroll bar position when loading old messages
