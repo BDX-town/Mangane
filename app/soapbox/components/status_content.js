@@ -58,7 +58,15 @@ export default class StatusContent extends React.PureComponent {
         link.setAttribute('title', link.href);
       }
     }
+  }
 
+  setCollapse() {
+    const node = this.node;
+
+    if (!node) {
+      return;
+    }
+    
     if (
       this.props.collapsable
       && this.props.onClick
@@ -71,10 +79,12 @@ export default class StatusContent extends React.PureComponent {
   }
 
   componentDidMount() {
+    this.setCollapse();
     this._updateStatusLinks();
   }
 
   componentDidUpdate() {
+    this.setCollapse();
     this._updateStatusLinks();
   }
 
