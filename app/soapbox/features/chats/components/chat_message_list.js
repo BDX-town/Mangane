@@ -110,9 +110,9 @@ class ChatMessageList extends ImmutablePureComponent {
     return scrollBottom < elem.offsetHeight * 1.5;
   }
 
-  handleResize = (e) => {
+  handleResize = throttle((e) => {
     if (this.isNearBottom()) this.scrollToBottom();
-  }
+  }, 150);
 
   componentDidMount() {
     const { dispatch, chatId } = this.props;
