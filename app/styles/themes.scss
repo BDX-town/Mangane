@@ -59,7 +59,7 @@ body,
 
 .theme-mode-light {
   // Primary variables
-  --foreground-color: #ffffff;
+  --foreground-color: #fff;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
@@ -88,7 +88,7 @@ body,
 
 .theme-mode-dark {
   // Primary variables
-  --foreground-color: #222222;
+  --foreground-color: #222;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),

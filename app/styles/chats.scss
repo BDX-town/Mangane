@@ -319,7 +319,7 @@
     box-sizing: border-box;
     overflow: hidden;
 
-    @media(max-width: 630px) {
+    @media (max-width: 630px) {
       height: calc(100vh - 50px);
     }
   }
@@ -338,7 +338,7 @@
     }
   }
 
-  @media(max-width: 630px) {
+  @media (max-width: 630px) {
     .columns-area__panels__main .columns-area {
       padding: 0;
     }
@@ -370,13 +370,13 @@
   }
 }
 
-@media(max-width: 630px) {
+@media (max-width: 630px) {
   .chat-panes {
     display: none;
   }
 }
 
-@media(min-width: 630px) {
+@media (min-width: 630px) {
   .tabs-bar .tabs-bar__link--chats {
     display: none;
   }

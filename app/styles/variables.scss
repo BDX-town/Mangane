@@ -19,12 +19,13 @@ $warning-red: #ff5050 !default;      // Sunset Orange
 $gold-star: #ca8f04 !default;        // Dark Goldenrod
 
 // Variables for defaults in UI
-$base-shadow-color: #000000 !default;
-$base-overlay-background: #000000 !default;
+$base-shadow-color: #000 !default;
+$base-overlay-background: #000 !default;
 $valid-value-color: $success-green !default;
 $error-value-color: $error-red !default;
 
 // Language codes that uses CJK fonts
+/* stylelint-disable-next-line value-keyword-case -- locale filenames */
 $cjk-langs: ja, ko, zh-CN, zh-HK, zh-TW;
 
 // Variables for components

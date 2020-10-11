@@ -14,10 +14,10 @@
 
 // SHORTCUTS
 @mixin input-placeholder($color) {
-  &::-webkit-input-placeholder {color: $color;}
-  &::-moz-placeholder {color: $color;}
-  &:-ms-input-placeholder {color: $color;}
-  &:-moz-placeholder {color: $color;}
+  &::-webkit-input-placeholder { color: $color; }
+  &::-moz-placeholder { color: $color; }
+  &:-ms-input-placeholder { color: $color; }
+  &:-moz-placeholder { color: $color; }
 }
 
 @mixin avatar-radius {
@@ -49,9 +49,9 @@
   padding-left: 15px;
 
   // Chrome does not like these concatinated together
-  &::placeholder {color: var(--primary-text-color--faint);}
-  &:-ms-input-placeholder {color: var(--primary-text-color--faint);}
-  &::-ms-input-placeholder {color: var(--primary-text-color--faint);}
+  &::placeholder { color: var(--primary-text-color--faint); }
+  &:-ms-input-placeholder { color: var(--primary-text-color--faint); }
+  &::-ms-input-placeholder { color: var(--primary-text-color--faint); }
 
   &::-moz-focus-inner {
     border: 0;
@@ -87,7 +87,7 @@
 
     li {
       margin: 0 0 2px;
-      em {color: var(--brand-color);}
+      em { color: var(--brand-color); }
     }
   }
 }

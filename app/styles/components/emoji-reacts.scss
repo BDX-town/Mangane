@@ -112,7 +112,7 @@
 .status__action-bar__counter--favourite {
   position: relative;
 
-  @media(max-width: 455px) {
+  @media (max-width: 455px) {
     position: static;
   }
 }
@@ -126,7 +126,7 @@
   bottom: 100%;
   left: -20px;
 
-  @media(max-width: 455px) {
+  @media (max-width: 455px) {
     bottom: 31px;
     right: 10px;
     left: auto;
