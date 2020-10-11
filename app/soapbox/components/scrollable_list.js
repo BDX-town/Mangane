@@ -33,6 +33,7 @@ export default class ScrollableList extends PureComponent {
 
   state = {
     cachedMediaWidth: 250, // Default media/card width using default theme
+    updatedScrollBottom: false, // Prevents getScrollPosition DOM calls if false
   };
 
   intersectionObserverWrapper = new IntersectionObserverWrapper();
@@ -92,8 +93,13 @@ export default class ScrollableList extends PureComponent {
   }
 
   getScrollPosition = () => {
-    if (this.documentElement && (this.documentElement.scrollTop > 0 || this.mouseMovedRecently)) {
-      return { height: this.documentElement.scrollHeight, top: this.documentElement.scrollTop };
+    if (this.state.updatedScrollBottom) {
+      this.setState({ updatedScrollBottom: false });
+      if (this.documentElement && (this.documentElement.scrollTop > 0 || this.mouseMovedRecently)) {
+        return { height: this.documentElement.scrollHeight, top: this.documentElement.scrollTop };
+      } else {
+        return null;
+      }
     } else {
       return null;
     }
@@ -101,7 +107,7 @@ export default class ScrollableList extends PureComponent {
 
   updateScrollBottom = (snapshot) => {
     const newScrollTop = this.documentElement.scrollHeight - snapshot;
-
+    this.setState({ updatedScrollBottom: true });
     this.setScrollTop(newScrollTop);
   }
 
@@ -253,8 +259,8 @@ export default class ScrollableList extends PureComponent {
                 saveHeightKey={trackScroll ? `${this.context.router.route.location.key}:${scrollKey}` : null}
               >
                 {React.cloneElement(child, {
-                  getScrollPosition: this.getScrollPosition,
                   updateScrollBottom: this.updateScrollBottom,
+                  getScrollPosition: this.getScrollPosition,
                   cachedMediaWidth: this.state.cachedMediaWidth,
                   cacheMediaWidth: this.cacheMediaWidth,
                 })}
