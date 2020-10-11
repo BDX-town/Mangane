@@ -20,8 +20,8 @@
     height: 350px;
     position: relative;
     background: var(--accent-color--faint);
-    @media screen and (max-width: 895px) {height: 225px;}
-    &--none {height: 125px;}
+    @media screen and (max-width: 895px) { height: 225px; }
+    &--none { height: 125px; }
 
     img {
       object-fit: cover;
@@ -59,7 +59,7 @@
     width: 100%;
     position: relative;
     background: var(--background-color);
-    @media (min-width: 895px) {height: 74px;}
+    @media (min-width: 895px) { height: 74px; }
   }
 
   &__avatar {
@@ -109,17 +109,16 @@
         background-size: 90px 90px;
       }
     }
-
   }
 
   &__extra {
-      display: flex;
-      flex-direction: row;
-      height: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
     margin: 0 auto;
-      padding-left: 310px;
-      width: 100%;
-      max-width: 1200px;
+    padding-left: 310px;
+    width: 100%;
+    max-width: 1200px;
     box-sizing: border-box;
     position: relative;
     @media (min-width: 895px) and (max-width: 1190px) {
@@ -166,7 +165,7 @@
         text-decoration: none;
         padding: 16px 22px;
         text-align: center;
-        @media screen and (max-width: 1190px) {padding: 16px;}
+        @media screen and (max-width: 1190px) { padding: 16px; }
 
         > span {
           display: block;
@@ -194,7 +193,7 @@
         &.active {
           border-bottom: 2px solid var(--primary-text-color);
         }
-        &.score {border-bottom: 0 !important;}
+        &.score { border-bottom: 0 !important; }
       }
     }
   } // end .account__header__extra
@@ -205,7 +204,7 @@
       margin-top: 10px;
       position: relative;
       padding: 10px 10px 0;
-      &--nonuser {padding: 10px 10px 15px;}
+      &--nonuser { padding: 10px 10px 15px; }
     }
 
     .account-mobile-container.deactivated {
@@ -225,7 +224,6 @@
     display: none;
   }
 }
-
 
 // end .account__header
 

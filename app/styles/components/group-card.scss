@@ -12,7 +12,7 @@
     float: right;
     padding: 15px;
     font-size: 17px;
-    a {color: #fff;}
+    a { color: #fff; }
   }
 }
 
@@ -28,7 +28,7 @@
 .group-card {
   @include standard-panel;
   display: block;
-  flex: 0 0 calc(50% - 20px/2);
+  flex: 0 0 calc(50% - 20px / 2);
   margin-bottom: 20px;
   text-decoration: none;
   overflow: hidden;

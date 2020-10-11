@@ -19,7 +19,7 @@ body {
   @include line-height(19);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility;
+  text-rendering: optimizeLegibility;
   font-feature-settings: "kern";
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
@@ -156,7 +156,7 @@ body {
 
 ::selection {
   background: var(--highlight-text-color);
-  color: #ffffff;
+  color: #fff;
 }
 
 noscript {

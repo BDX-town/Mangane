@@ -1,12 +1,11 @@
 .compose-form {
-
   &__sensitive-button {
     padding: 10px;
     padding-top: 0;
     font-size: 14px;
     font-weight: 500;
-    &.active {color: var(--highlight-text-color);}
-    input[type=checkbox] {display: none;}
+    &.active { color: var(--highlight-text-color); }
+    input[type=checkbox] { display: none; }
 
     .checkbox {
       display: inline-block;
@@ -29,7 +28,7 @@
   }
 
   .compose-form__warning {
-          color: var(--primary-text-color);
+    color: var(--primary-text-color);
     margin-bottom: 10px;
     background: var(--brand-color--faint);
     box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
@@ -113,7 +112,7 @@
       font-size: 16px;
     }
   }
-  .spoiler-input__input {border-radius: 4px;}
+  .spoiler-input__input { border-radius: 4px; }
 
   .autosuggest-textarea__textarea {
     min-height: 100px;
@@ -159,7 +158,7 @@
     border-radius: 0 0 4px 4px;
     font-size: 14px;
     padding: 6px;
-    &.autosuggest-textarea__suggestions--visible {display: block;}
+    &.autosuggest-textarea__suggestions--visible { display: block; }
   }
 
   .autosuggest-textarea__suggestions__item {
@@ -202,7 +201,7 @@
     font-family: inherit;
     font-size: 14px;
     background: var(--background-color);
-    .compose-form__upload-wrapper {overflow: hidden;}
+    .compose-form__upload-wrapper { overflow: hidden; }
 
     .compose-form__uploads-wrapper {
       display: flex;
@@ -226,7 +225,7 @@
         align-items: flex-start;
         justify-content: space-between;
         opacity: 0;
-        transition: opacity .1s ease;
+        transition: opacity 0.1s ease;
 
         .icon-button {
           flex: 0 1 auto;
@@ -242,7 +241,7 @@
             color: var(--highlight-text-color);
           }
         }
-        &.active {opacity: 1;}
+        &.active { opacity: 1; }
       }
 
       &-description {
@@ -255,12 +254,11 @@
         background: linear-gradient(0deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
         padding: 10px;
         opacity: 0;
-        transition: opacity .1s ease;
+        transition: opacity 0.1s ease;
 
         textarea {
-          background: rgba(0, 0, 0, 0.3);
-          box-sizing: border-box;
           background: transparent;
+          box-sizing: border-box;
           color: var(--primary-text-color--faint);
           border: 1px solid var(--primary-text-color--faint);
           outline: none;
@@ -271,13 +269,13 @@
           font-size: 14px;
           font-weight: 500;
 
-          &:focus {color: #fff;}
+          &:focus { color: #fff; }
 
           &::placeholder {
             color: var(--primary-text-color--faint);
           }
         }
-        &.active {opacity: 1;}
+        &.active { opacity: 1; }
       }
     }
 
@@ -319,12 +317,12 @@
         justify-content: center;
       }
 
-      .compose-form__upload-button-icon {line-height: 27px;}
+      .compose-form__upload-button-icon { line-height: 27px; }
 
       .compose-form__sensitive-button {
         display: none;
-        &.compose-form__sensitive-button--visible {display: block;}
-        .compose-form__sensitive-button__icon {line-height: 27px;}
+        &.compose-form__sensitive-button--visible { display: block; }
+        .compose-form__sensitive-button__icon { line-height: 27px; }
       }
     }
 
@@ -343,7 +341,7 @@
         font-size: 14px;
         font-weight: 600;
         color: var(--primary-text-color--faint);
-        &.character-counter--over {color: $warning-red;}
+        &.character-counter--over { color: $warning-red; }
       }
     }
   }

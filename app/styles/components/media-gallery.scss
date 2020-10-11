@@ -64,11 +64,11 @@
   }
 }
 
-.status__wrapper, .detailed-status__wrapper {
+.status__wrapper,
+.detailed-status__wrapper {
   .media-gallery__item-thumbnail {
     &,
     .still-image {
-
       img {
         object-fit: contain;
       }

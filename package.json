@@ -122,6 +122,7 @@
     "sass-loader": "^10.0.0",
     "semver": "^7.3.2",
     "stringz": "^2.0.0",
+    "stylelint-config-standard": "^20.0.0",
     "substring-trie": "^1.0.2",
     "tiny-queue": "^0.2.1",
     "uglifyjs-webpack-plugin": "^2.2.0",

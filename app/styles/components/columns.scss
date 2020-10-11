@@ -105,7 +105,7 @@
     padding: 0;
   }
 
-  .autosuggest-textarea__textarea {font-size: 16px;}
+  .autosuggest-textarea__textarea { font-size: 16px; }
 
   .search__input {
     line-height: 18px;
@@ -116,7 +116,7 @@
     background-color: var(--foreground-color);
   }
 
-  .search__icon .fa {top: 15px;}
+  .search__icon .fa { top: 15px; }
   @media screen and (min-width: 630px) {
     .detailed-status {
       padding: 15px;
@@ -126,7 +126,7 @@
         margin-top: 15px;
       }
     }
-    .account__header__bar {padding: 5px 10px;}
+    .account__header__bar { padding: 5px 10px; }
 
     .navigation-bar,
     .compose-form {
@@ -678,7 +678,7 @@
   justify-content: center;
   min-height: 160px;
 
-  @supports(display: grid) { // hack to fix Chrome <57
+  @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;
   }
 

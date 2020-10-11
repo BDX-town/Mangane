@@ -490,7 +490,6 @@ code {
   }
 
   .label_input {
-
     &__color {
       display: inline-flex;
       font-size: 14px;
@@ -639,7 +638,7 @@ code {
 }
 
 .captcha {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 4px;
 
   img {
