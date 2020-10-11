@@ -124,7 +124,7 @@ export default class ScrollableList extends PureComponent {
   }
 
   handleScroll = throttle(() => {
-    if (this.window) {
+    if (this.window && !this.props.isLoading) {
       const { scrollTop, scrollHeight } = this.documentElement;
       const { innerHeight } = this.window;
       const offset = scrollHeight - scrollTop - innerHeight;
