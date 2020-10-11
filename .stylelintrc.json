@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-recommended-scss",
+  "ignoreFiles": [ "app/styles/reset.scss" ],
+  "rules": {
+    "no-descending-specificity": null,
+    "declaration-block-no-duplicate-properties": null,
+    "no-duplicate-selectors": null,
+    "font-family-no-missing-generic-family-keyword": null,
+    "property-no-unknown": null,
+    "function-calc-no-unspaced-operator": null,
+    "scss/at-rule-no-unknown": null,
+    "declaration-block-no-shorthand-property-overrides": null
+  }
+}
