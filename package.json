@@ -122,7 +122,6 @@
     "sass-loader": "^10.0.0",
     "semver": "^7.3.2",
     "stringz": "^2.0.0",
-    "stylelint-config-standard": "^20.0.0",
     "substring-trie": "^1.0.2",
     "tiny-queue": "^0.2.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
@@ -152,7 +151,7 @@
     "react-test-renderer": "^16.13.1",
     "redux-mock-store": "^1.5.4",
     "stylelint": "^13.7.2",
-    "stylelint-config-recommended-scss": "^4.2.0",
+    "stylelint-config-standard": "^20.0.0",
     "stylelint-scss": "^3.18.0",
     "webpack-dev-server": "^3.5.1",
     "yargs": "^16.0.3"
