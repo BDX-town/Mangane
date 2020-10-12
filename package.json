@@ -124,6 +124,8 @@
     "stringz": "^2.0.0",
     "substring-trie": "^1.0.2",
     "tiny-queue": "^0.2.1",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "uuid": "^8.0.0",
     "webpack": "^4.41.2",
