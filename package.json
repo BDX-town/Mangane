@@ -103,7 +103,7 @@
     "react-intl": "^5.0.0",
     "react-motion": "^0.5.2",
     "react-notification": "^6.8.4",
-    "react-overlays": "^0.9.0",
+    "react-overlays": "^4.0.0",
     "react-popper": "^2.2.3",
     "react-redux": "^7.2.1",
     "react-redux-loading-bar": "^5.0.0",
