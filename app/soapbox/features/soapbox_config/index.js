@@ -11,7 +11,6 @@ import {
   TextInput,
   SimpleTextarea,
   FileChooserLogo,
-  IconPicker,
   FormPropTypes,
 } from 'soapbox/features/forms';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
@@ -27,6 +26,8 @@ import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { defaultSettings } from 'soapbox/actions/settings';
+import FontIconPicker from '@fonticonpicker/react-fonticonpicker';
+import forkAwesomeIcons from './forkawesome.json';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -141,13 +142,13 @@ class SoapboxConfig extends ImmutablePureComponent {
       path, (e) =>
         template
           .merge(field)
-          .set(key, getValue(e))
+          .set(key, getValue(e)),
     );
   };
 
   handlePromoItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
-      ['promoPanel', 'items', index], key, field, templates.promoPanelItem, getValue
+      ['promoPanel', 'items', index], key, field, templates.promoPanelItem, getValue,
     );
   };
 
@@ -235,7 +236,7 @@ class SoapboxConfig extends ImmutablePureComponent {
               />
             </FieldsGroup>
             <FieldsGroup>
-              <div className='input with_block_label'>
+              <div className='input with_block_label popup'>
                 <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
@@ -423,6 +424,38 @@ class ColorWithPicker extends ImmutablePureComponent {
         <Overlay show={active} placement={placement} target={this}>
           <ColorPicker value={value} onChange={onChange} onClose={this.onHidePicker} />
         </Overlay>
+      </div>
+    );
+  }
+
+}
+
+export class IconPicker extends ImmutablePureComponent {
+
+  static propTypes = {
+    icons: PropTypes.object,
+    label: FormPropTypes.label,
+    placeholder: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  static defaultProps = {
+    icons: forkAwesomeIcons,
+    placeholder: 'Select icon',
+  };
+
+  render() {
+    const { icons, onChange, value, label, placeholder } = this.props;
+
+    return (
+      <div className='input with_label popup'>
+        <div className='label_input__icon_picker'>
+          {label && (<label>{label}</label>)}
+          <div className='label_input__wrapper'>
+            <FontIconPicker icons={icons} onChange={onChange} value={value !== '' ? 'fa fa-' + value : value} noSelectedPlaceholder={placeholder} />
+          </div>
+        </div>
       </div>
     );
   }

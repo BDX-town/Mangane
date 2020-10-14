@@ -514,11 +514,6 @@ code {
     &__icon_picker {
       font-size: 14px;
 
-      label {
-        display: block;
-        margin-bottom: 8px;
-      }
-
       .rfipbtn {
         display: inline-flex;
         line-height: 19px;
@@ -560,7 +555,8 @@ code {
           flex: 0;
         }
 
-        &--default:active, &--default:focus {
+        &--default:active,
+        &--default:focus {
           box-shadow: none;
         }
 

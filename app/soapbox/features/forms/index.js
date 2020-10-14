@@ -3,8 +3,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
-import FontIconPicker from '@fonticonpicker/react-fonticonpicker';
-import forkAwesomeIcons from './forkawesome.json';
 
 export const FormPropTypes = {
   label: PropTypes.oneOfType([
@@ -181,38 +179,6 @@ export class RadioGroup extends ImmutablePureComponent {
         <div className='label_input'>
           <label>{label}</label>
           <ul>{childrenWithProps}</ul>
-        </div>
-      </div>
-    );
-  }
-
-}
-
-export class IconPicker extends ImmutablePureComponent {
-
-  static propTypes = {
-    icons: PropTypes.object,
-    label: FormPropTypes.label,
-    placeholder: PropTypes.string,
-    value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-  }
-
-  static defaultProps = {
-    icons: forkAwesomeIcons,
-    placeholder: 'Select icon',
-  };
-
-  render() {
-    const { icons, onChange, value, label, placeholder } = this.props;
-
-    return (
-      <div className='input with_label popup'>
-        <div className='label_input__icon_picker'>
-          {label && (<label>{label}</label>)}
-          <div className='label_input__wrapper'>
-            <FontIconPicker icons={icons} onChange={onChange} value={value !== '' ? 'fa fa-' + value : value} noSelectedPlaceholder={placeholder} />
-          </div>
         </div>
       </div>
     );
