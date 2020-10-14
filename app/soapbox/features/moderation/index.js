@@ -8,14 +8,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import LoadGap from '../../components/load_gap';
-import {
-  SimpleForm,
-  FieldsGroup,
-  TextInput,
-  Checkbox,
-  FileChooser,
-  SimpleTextarea,
-} from 'soapbox/features/forms';
+import Report from 'soapbox/features/moderation/components/report.js';
 import {
   fetchReports,
 } from '../../actions/admin';
@@ -87,12 +80,12 @@ class Moderation extends ImmutablePureComponent {
           onClick={this.handleLoadGap}
         />
       ) : (
-        <FormattedMessage id='empty_column.report_test' defaultMessage="Open Report Item" />
-        // <ReportContainer
-        //   key={item.get('id')}
-        //   report={item}
-        //   accountId={item.get('account')}
-        // />
+        // <FormattedMessage id='empty_column.report_test' defaultMessage="Open Report Item" />
+        <Report
+          key={item.get('id')}
+          report={item}
+          accountId={item.get('account')}
+        />
       ));
     } else {
       scrollableContent = null;
