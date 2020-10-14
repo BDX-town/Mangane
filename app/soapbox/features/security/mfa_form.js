@@ -10,7 +10,7 @@ import ColumnSubheading from '../ui/components/column_subheading';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import Button from 'soapbox/components/button';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 import {
   SimpleForm,
   SimpleInput,
@@ -129,7 +129,7 @@ class DisableOtpForm extends ImmutablePureComponent {
       this.context.router.history.push('../auth/edit');
       dispatch(changeSetting(['otpEnabled'], false));
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.disableFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
     });
   }
 
@@ -180,7 +180,7 @@ class EnableOtpForm extends ImmutablePureComponent {
     dispatch(fetchBackupCodes()).then(response => {
       this.setState({ backupCodes: response.data.codes });
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.codesFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.codesFail)));
     });
   }
 
@@ -261,7 +261,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
     dispatch(fetchToptSetup()).then(response => {
       this.setState({ qrCodeURI: response.data.provisioning_uri, confirm_key: response.data.key  });
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.qrFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.qrFail)));
     });
   }
 
@@ -276,7 +276,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
     dispatch(confirmToptSetup(code, password)).then(response => {
       dispatch(changeSetting(['otpEnabled'], true));
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.confirmFail)));
+      dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
     });
   }
 

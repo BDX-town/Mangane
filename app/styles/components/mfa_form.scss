@@ -9,12 +9,12 @@
   }
 
   h2.security-settings-panel__setup-otp {
-      display: block;
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--primary-text-color--faint);
-      font-weight: 400;
-    }
+    display: block;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--primary-text-color--faint);
+    font-weight: 400;
+  }
 
   div {
     display: block;
@@ -26,9 +26,8 @@
     padding: 15px 20px;
     font-size: 14px;
     background-color: var(--warning-color--faint);
-    margin: 5px 20px;
-    border-radius: 8px;
     margin: 20px auto;
+    border-radius: 8px;
   }
 
   .backup_codes {
@@ -38,7 +37,6 @@
     font-size: 14px;
     background-color: var(--brand-color--faint);
     border-radius: 8px;
-    margin: 20px;
     text-align: center;
     position: relative;
     min-height: 125px;

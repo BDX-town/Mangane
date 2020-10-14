@@ -1,0 +1,42 @@
+.snackbar {
+  font-size: 16px !important;
+  padding: 10px 20px 10px 14px !important;
+  z-index: 9999 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::before {
+    font-family: ForkAwesome;
+    font-size: 20px;
+    margin-right: 8px;
+  }
+
+  &--info {
+    background-color: #19759e !important;
+
+    &::before {
+      content: '';
+    }
+  }
+
+  &--success {
+    background-color: #199e5a !important;
+
+    &::before {
+      content: '';
+    }
+  }
+
+  &--error {
+    background-color: #9e1919 !important;
+
+    &::before {
+      content: '';
+    }
+  }
+
+  .notification-bar-wrapper {
+    transform: translateY(1px);
+  }
+}

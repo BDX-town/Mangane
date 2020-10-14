@@ -221,11 +221,10 @@
     height: 100%;
     box-sizing: border-box;
     padding: 25px;
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    display: flex;
     opacity: 0;
     user-select: text;
   }
@@ -482,10 +481,9 @@
     font-family: inherit;
     font-size: 14px;
     resize: vertical;
-    border: 0;
     outline: 0;
-    border-radius: 4px;
     border: 1px solid var(--background-color);
+    border-radius: 4px;
     margin-bottom: 20px;
 
     &:focus {
@@ -523,7 +521,7 @@
     max-height: 300px;
   }
 
-  .actions-modal__item-label {font-weight: 500;}
+  .actions-modal__item-label { font-weight: 500; }
 
   ul {
     overflow-y: auto;
@@ -531,19 +529,18 @@
     max-height: calc(100vh - 147px);
 
     // NOTE - not sure what this is yet, leaving alone for now until I find out.
-    &.with-status {max-height: calc(80vh - 75px);}
+    &.with-status { max-height: calc(80vh - 75px); }
 
-    li:empty {margin: 0;}
+    li:empty { margin: 0; }
 
     li:not(:empty) {
-      &:first-of-type {margin: 10px 0 0;}
-      &:last-of-type {margin: 0 0 10px;}
+      &:first-of-type { margin: 10px 0 0; }
+      &:last-of-type { margin: 0 0 10px; }
 
       a {
         display: flex;
         align-items: center;
         padding: 13px 10px 12px;
-        @inclide font-size(14);
         color: var(--primary-text-color--faint);
         text-decoration: none;
 
@@ -563,7 +560,7 @@
             box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
           }
         }
-        button:first-child {margin-right: 10px;}
+        button:first-child { margin-right: 10px; }
       }
     }
   }
@@ -641,11 +638,10 @@
   margin: 10px 0;
 
   &__header {
-    display: block;
+    display: flex;
     position: relative;
     padding: 10px 0;
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
-    display: flex;
     align-items: center;
     justify-content: center;
 

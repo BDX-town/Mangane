@@ -9,10 +9,10 @@
   padding: 4px 0;
   color: var(--primary-text-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  &.left {transform-origin: 100% 50%;}
-  &.top {transform-origin: 50% 100%;}
-  &.bottom {transform-origin: 50% 0;}
-  &.right {transform-origin: 0 50%;}
+  &.left { transform-origin: 100% 50%; }
+  &.top { transform-origin: 50% 100%; }
+  &.bottom { transform-origin: 50% 0; }
+  &.right { transform-origin: 0 50%; }
 
   &__arrow {
     position: absolute;
@@ -83,11 +83,7 @@
 }
 // end .dropdown-menu
 
-
-
-
 // NOTE - not sure what this relates to — but it doesn't involve the navbar dropdown
-
 
 .dropdown {
   display: inline-block;
@@ -97,7 +93,6 @@
   display: none;
   position: absolute;
 }
-
 
 .dropdown--active .dropdown__content {
   display: block;

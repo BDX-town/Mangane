@@ -436,6 +436,28 @@ code {
         background-color: darken($error-value-color, 5%);
       }
     }
+
+    &.accordion__toggle {
+      display: inline-block;
+      width: auto;
+      border: 0;
+      border-radius: 0;
+      background: none;
+      color: var(--primary-text-color--faint);
+      font-size: 18px;
+      line-height: inherit;
+      height: auto;
+      padding: 0 10px;
+      text-transform: none;
+      text-decoration: none;
+      text-align: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      font-weight: 500;
+      outline: 0;
+      margin-bottom: 0;
+      margin-right: 10px;
+    }
   }
 
   select {
@@ -459,23 +481,25 @@ code {
     cursor: pointer;
   }
 
-  .select-wrapper::after {
-    display: block;
-    font-family: 'ForkAwesome';
-    content: '';
-    width: 10px;
-    position: absolute;
-    right: 12px;
-    top: 1px;
-    border-left: 1px solid var(--highlight-text-color);
-    height: 39px;
-    padding: 12px;
-    box-sizing: border-box;
-    pointer-events: none;
+  .select-wrapper {
+    display: flex;
+    align-items: center;
+
+    &::after {
+      display: flex;
+      align-items: center;
+      font-family: "ForkAwesome";
+      content: "";
+      position: absolute;
+      right: 12px;
+      height: calc(100% - 8px);
+      padding-left: 12px;
+      pointer-events: none;
+      margin-top: 8px;
+    }
   }
 
   .label_input {
-
     &__color {
       display: inline-flex;
       font-size: 14px;
@@ -717,7 +741,7 @@ code {
 }
 
 .captcha {
-  background-color: #ffffff;
+  background-color: #fff;
   border-radius: 4px;
 
   img {
@@ -760,14 +784,24 @@ code {
   max-height: 100px;
 }
 
-.code-editor textarea {
-  font-family: monospace;
-  white-space: pre;
-}
+.code-editor {
+  textarea {
+    font-family: monospace;
+    white-space: pre;
+  }
 
-.code-editor--invalid textarea {
-  border-color: $error-red !important;
-  color: $error-red;
+  &--invalid textarea {
+    border-color: $error-red !important;
+    color: $error-red;
+  }
+
+  .input {
+    margin-bottom: 0;
+  }
+
+  .hint {
+    margin-top: 10px;
+  }
 }
 
 .input .row > .fa-times-circle {
@@ -775,4 +809,58 @@ code {
   right: 7px;
   cursor: pointer;
   color: $error-red;
+  transform: translateY(9px);
+}
+
+.site-preview {
+  border-radius: 4px;
+  overflow: hidden;
+  height: 164px;
+  border: 1px solid;
+  margin-bottom: 40px;
+  background: var(--background-color);
+
+  * {
+    z-index: 0;
+  }
+
+  a {
+    cursor: default;
+  }
+
+  .ui {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    height: 100%;
+  }
+
+  .page {
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+}
+
+.input.with_label.toggle .label_input {
+  display: flex;
+  font-size: 14px;
+  align-items: center;
+
+  .theme-toggle {
+    margin-left: 10px;
+  }
+}
+
+.actions.add-row {
+  margin: 10px 0 0;
+
+  .button {
+    border: 0;
+    background: transparent;
+
+    &:hover {
+      color: var(--primary-text-color);
+    }
+  }
 }

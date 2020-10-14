@@ -1,5 +1,5 @@
 import api from '../api';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 
 export const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
 export const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';
@@ -47,7 +47,7 @@ export function createFilter(phrase, expires_at, context, whole_word, irreversib
       expires_at,
     }).then(response => {
       dispatch({ type: FILTERS_CREATE_SUCCESS, filter: response.data });
-      dispatch(showAlert('', 'Filter added'));
+      dispatch(snackbar.success('Filter added.'));
     }).catch(error => {
       dispatch({ type: FILTERS_CREATE_FAIL, error });
     });
@@ -60,7 +60,7 @@ export function deleteFilter(id) {
     dispatch({ type: FILTERS_DELETE_REQUEST });
     return api(getState).delete('/api/v1/filters/'+id).then(response => {
       dispatch({ type: FILTERS_DELETE_SUCCESS, filter: response.data });
-      dispatch(showAlert('', 'Filter deleted'));
+      dispatch(snackbar.success('Filter deleted.'));
     }).catch(error => {
       dispatch({ type: FILTERS_DELETE_FAIL, error });
     });

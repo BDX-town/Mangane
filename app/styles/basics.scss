@@ -19,7 +19,7 @@ body {
   @include line-height(19);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizelegibility;
+  text-rendering: optimizeLegibility;
   font-feature-settings: "kern";
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
@@ -156,34 +156,7 @@ body {
 
 ::selection {
   background: var(--highlight-text-color);
-  color: #ffffff;
-}
-
-.explanation-box {
-  color: var(--primary-text-color);
-  padding: 15px 20px;
-  font-size: 14px;
-  background-color: var(--brand-color--faint);
-  margin: 5px 20px;
-  border-radius: 8px;
-
-  &__title {
-    font-weight: bold;
-    font-size: 16px;
-  }
-
-  &__explanation {
-    margin-top: 1em;
-  }
-
-  a {
-    color: var(--brand-color--hicontrast);
-    text-decoration: underline;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
+  color: #fff;
 }
 
 noscript {

@@ -11,7 +11,7 @@ textarea {
     color: var(--brand-color);
     border-color: var(--primary-text-color--faint);
     background: var(--foreground-color);
-    &:focus {outline: none;}
+    &:focus { outline: none; }
   }
 }
-textarea.standard {resize: vertical;}
+textarea.standard { resize: vertical; }

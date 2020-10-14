@@ -15,7 +15,7 @@ import { shortNumberFormat } from '../utils/numbers';
 import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
 import { logOut } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },

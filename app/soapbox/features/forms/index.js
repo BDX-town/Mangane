@@ -173,7 +173,7 @@ export class RadioGroup extends ImmutablePureComponent {
     const { label, children, onChange } = this.props;
 
     const childrenWithProps = React.Children.map(children, child =>
-      React.cloneElement(child, { onChange })
+      React.cloneElement(child, { onChange }),
     );
 
     return (

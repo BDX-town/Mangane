@@ -43,13 +43,13 @@
       opacity: 1;
     }
   }
-  .fa-search.active {pointer-events: none;}
+  .fa-search.active { pointer-events: none; }
 
   .fa-times-circle {
     @include font-size(17);
     cursor: pointer;
     color: var(--highlight-text-color);
-    &:hover {color: var(--brand-color);}
+    &:hover { color: var(--brand-color); }
   }
 }
 
@@ -154,7 +154,7 @@
 
 .search-popout-container {
   width: 251px;
-  @media screen and (max-width: $nav-breakpoint-2) {width: 100%;}
+  @media screen and (max-width: $nav-breakpoint-2) { width: 100%; }
 }
 
 .search-popout {

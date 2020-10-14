@@ -277,7 +277,6 @@ a .account__avatar {
   &-overlay {
     @include avatar-radius;
     @include avatar-size(24px);
-
     position: absolute;
     bottom: 0;
     right: 0;

@@ -102,7 +102,7 @@ class GettingStarted extends ImmutablePureComponent {
       height += 34 + 48*2;
 
       navItems.push(
-        <ColumnSubheading key={i++} text={intl.formatMessage(messages.personal)} />
+        <ColumnSubheading key={i++} text={intl.formatMessage(messages.personal)} />,
       );
 
       height += 34;
@@ -111,7 +111,7 @@ class GettingStarted extends ImmutablePureComponent {
     navItems.push(
       <ColumnLink key={i++} icon='envelope' text={intl.formatMessage(messages.direct)} to='/timelines/direct' />,
       <ColumnLink key={i++} icon='star' text={intl.formatMessage(messages.favourites)} to='/favorites' />,
-      <ColumnLink key={i++} icon='list-ul' text={intl.formatMessage(messages.lists)} to='/lists' />
+      <ColumnLink key={i++} icon='list-ul' text={intl.formatMessage(messages.lists)} to='/lists' />,
     );
 
     height += 48*3;

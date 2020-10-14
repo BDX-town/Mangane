@@ -104,4 +104,9 @@
       background: linear-gradient(0deg, var(--foreground-color) 0%, var(--foreground-color), 80%, transparent);
     }
   }
+
+  &[data-popper-reference-hidden="true"] {
+    visibility: hidden;
+    pointer-events: none;
+  }
 }

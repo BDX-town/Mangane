@@ -7,8 +7,8 @@
   overflow-y: auto;
   flex: 0 2 auto;
   max-height: 500px;
-  @media screen and (min-width: 320px) and (max-width: 375px) {max-height: 220px;}
-  @media screen and (max-width: 320px) {max-height: 130px;}
+  @media screen and (min-width: 320px) and (max-width: 375px) { max-height: 220px; }
+  @media screen and (max-width: 320px) { max-height: 130px; }
 }
 
 .reply-indicator__header {

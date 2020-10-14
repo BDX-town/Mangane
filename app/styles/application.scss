@@ -20,7 +20,6 @@
 @import 'donations';
 @import 'dyslexic';
 @import 'demetricator';
-@import 'pro';
 @import 'chats';
 
 // COMPONENTS
@@ -70,6 +69,8 @@
 @import 'components/profile_hover_card';
 @import 'components/filters';
 @import 'components/mfa_form';
+@import 'components/snackbar';
+@import 'components/accordion';
 
 // Holiday
 @import 'holiday/halloween';

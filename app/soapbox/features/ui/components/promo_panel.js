@@ -28,7 +28,7 @@ class PromoPanel extends React.PureComponent {
                 <Icon id={item.get('icon')} className='promo-panel-item__icon' fixedWidth />
                 {item.get('text')}
               </a>
-            </div>)
+            </div>),
           )}
         </div>
       </div>

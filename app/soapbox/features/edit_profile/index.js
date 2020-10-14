@@ -4,7 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -40,7 +40,7 @@ const mapStateToProps = state => {
 // Forces fields to be maxFields size, filling empty values
 const normalizeFields = (fields, maxFields) => (
   ImmutableList(fields).setSize(maxFields).map(field =>
-    field ? field : ImmutableMap({ name: '', value: '' })
+    field ? field : ImmutableMap({ name: '', value: '' }),
   )
 );
 
@@ -91,7 +91,7 @@ class EditProfile extends ImmutablePureComponent {
     this.state.fields.forEach((f, i) =>
       params = params
         .set(`fields_attributes[${i}][name]`,  f.get('name'))
-        .set(`fields_attributes[${i}][value]`, f.get('value'))
+        .set(`fields_attributes[${i}][value]`, f.get('value')),
     );
     return params;
   }
@@ -124,7 +124,7 @@ class EditProfile extends ImmutablePureComponent {
     const { dispatch } = this.props;
     dispatch(patchMe(this.getFormdata())).then(() => {
       this.setState({ isLoading: false });
-      dispatch(showAlert('', 'Profile saved!'));
+      dispatch(snackbar.success('Profile saved!'));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });

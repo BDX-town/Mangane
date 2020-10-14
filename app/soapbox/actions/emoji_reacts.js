@@ -29,7 +29,7 @@ export const simpleEmojiReact = (status, emoji) => {
       emojiReacts
         .filter(emojiReact => emojiReact.get('me') === true)
         .map(emojiReact => dispatch(unEmojiReact(status, emojiReact.get('name')))),
-      status.get('favourited') && dispatch(unfavourite(status))
+      status.get('favourited') && dispatch(unfavourite(status)),
     ).then(() => {
       if (emoji === '👍') {
         dispatch(favourite(status));

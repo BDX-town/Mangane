@@ -109,7 +109,7 @@ const logOut = (state = ImmutableMap()) => {
     whitelist.reduce((acc, curr) => {
       acc[curr] = state.get(curr);
       return acc;
-    }, {})
+    }, {}),
   );
 };
 

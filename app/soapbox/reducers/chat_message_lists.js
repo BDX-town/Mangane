@@ -39,9 +39,7 @@ const importLastMessages = (state, chats) =>
     }));
 
 const replaceMessage = (state, chatId, oldId, newId) => {
-  const ids = state.get(chatId, ImmutableOrderedSet());
-  const newIds = ids.delete(oldId).add(newId).sort(idComparator);
-  return state.set(chatId, newIds);
+  return state.update(chatId, chat => chat.delete(oldId).add(newId).sort(idComparator));
 };
 
 export default function chatMessageLists(state = initialState, action) {

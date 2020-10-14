@@ -68,12 +68,12 @@
   &--trialing,
   &--active {
     &::before {
-      background-color: #00ff00;
+      background-color: #0f0;
     }
   }
 
   &--cancelling::before {
-    background-color: #ffff00;
+    background-color: #ff0;
   }
 
   &--incomplete,
@@ -82,7 +82,7 @@
   &--canceled,
   &--unpaid {
     &::before {
-      background-color: #ff0000;
+      background-color: #f00;
     }
   }
 }

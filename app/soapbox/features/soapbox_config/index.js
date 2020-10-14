@@ -9,8 +9,6 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
-  Checkbox,
-  FileChooser,
   SimpleTextarea,
   FileChooserLogo,
   IconPicker,
@@ -25,6 +23,10 @@ import { SketchPicker } from 'react-color';
 import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
 import detectPassiveEvents from 'detect-passive-events';
+import Accordion from '../ui/components/accordion';
+import SitePreview from './components/site_preview';
+import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
+import { defaultSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -35,8 +37,8 @@ const messages = defineMessages({
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
-  rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Raw JSON data' },
-  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Advanced: Edit the settings data directly.' },
+  rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
+  rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
 });
 
 const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
@@ -63,6 +65,7 @@ class SoapboxConfig extends ImmutablePureComponent {
   state = {
     isLoading: false,
     soapbox: this.props.soapbox,
+    jsonEditorExpanded: false,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
   }
@@ -150,7 +153,7 @@ class SoapboxConfig extends ImmutablePureComponent {
 
   handleHomeFooterItemChange = (index, key, field) => {
     return this.handleItemChange(
-      ['navlinks', 'homeFooter', index], key, field, templates.footerItem
+      ['navlinks', 'homeFooter', index], key, field, templates.footerItem,
     );
   };
 
@@ -161,6 +164,8 @@ class SoapboxConfig extends ImmutablePureComponent {
   getSoapboxConfig = () => {
     return defaultConfig.mergeDeep(this.state.soapbox);
   }
+
+  toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.soapbox !== this.props.soapbox) {
@@ -184,15 +189,31 @@ class SoapboxConfig extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const soapbox = this.getSoapboxConfig();
+    const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
+            <SitePreview soapbox={soapbox} />
             <FieldsGroup>
               <div className='fields-row file-picker'>
                 <div className='fields-row__column fields-row__column-6'>
-                  <img src={soapbox.get('logo')} />
+                  <ColorWithPicker
+                    buttonId='brand_color'
+                    label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
+                    value={soapbox.get('brandColor')}
+                    onChange={this.handleChange(['brandColor'], (e) => e.hex)}
+                  />
+                  <div className='input with_label toggle'>
+                    <div className='label_input'>
+                      <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
+                      <ThemeToggle
+                        onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
+                        settings={settings}
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className='fields-row__column fields-group fields-row__column-6'>
                   <FileChooserLogo
@@ -203,40 +224,6 @@ class SoapboxConfig extends ImmutablePureComponent {
                   />
                 </div>
               </div>
-              <div className='fields-row file-picker'>
-                <div className='fields-row__column fields-row__column-6'>
-                  <img src={soapbox.get('banner')} />
-                </div>
-                <div className='fields-row__column fields-group fields-row__column-6'>
-                  <FileChooser
-                    label={<FormattedMessage id='soapbox_config.fields.banner_label' defaultMessage='Banner' />}
-                    name='banner'
-                    hint={<FormattedMessage id='soapbox_config.hints.banner' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be displayed to 400x400px' />}
-                    onChange={this.handleFileChange(['banner'])}
-                  />
-                </div>
-              </div>
-            </FieldsGroup>
-            <FieldsGroup>
-              <div className='fields-row__column fields-group'>
-                <ColorWithPicker
-                  buttonId='brand_color'
-                  label={<FormattedMessage id='soapbox_config.fields.brand_color_label' defaultMessage='Brand color' />}
-                  value={soapbox.get('brandColor')}
-                  onChange={this.handleChange(['brandColor'], (e) => e.hex)}
-                />
-              </div>
-            </FieldsGroup>
-            <FieldsGroup>
-              <Checkbox
-                label={<FormattedMessage id='soapbox_config.fields.patron_enabled_label' defaultMessage='Patron module' />}
-                hint={<FormattedMessage id='soapbox_config.hints.patron_enabled' defaultMessage='Enables display of Patron module.  Requires installation of Patron module.' />}
-                name='patron'
-                checked={soapbox.getIn(['extensions', 'patron', 'enabled'])}
-                onChange={this.handleChange(
-                  ['extensions', 'patron', 'enabled'], (e) => e.checked,
-                )}
-              />
             </FieldsGroup>
             <FieldsGroup>
               <TextInput
@@ -248,116 +235,95 @@ class SoapboxConfig extends ImmutablePureComponent {
               />
             </FieldsGroup>
             <FieldsGroup>
-              <div className='fields-row__column fields-group'>
-                <div className='input with_block_label popup'>
-                  <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
-                  </span>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
-                  </span>
-                  {
-                    soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
-                      <div className='row' key={i}>
-                        <IconPicker
-                          label={intl.formatMessage(messages.promoItemIcon)}
-                          placeholder={intl.formatMessage(messages.promoItemIcon)}
-                          value={field.get('icon')}
-                          onChange={this.handlePromoItemChange(i, 'icon', field, val => val.substring(6))}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.promoItemLabel)}
-                          placeholder={intl.formatMessage(messages.promoItemLabel)}
-                          value={field.get('text')}
-                          onChange={this.handlePromoItemChange(i, 'text', field, e => e.target.value)}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.promoItemURL)}
-                          placeholder={intl.formatMessage(messages.promoItemURL)}
-                          value={field.get('url')}
-                          onChange={this.handlePromoItemChange(i, 'url', field, e => e.target.value)}
-                        />
-                        <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
-                      </div>
-                    ))
-                  }
-                  <div className='actions'>
-                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                      <Icon id='plus-circle' />
-                      <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
-                    </div>
-                  </div>
-                </div>
-                <div className='input with_block_label'>
-                  <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
-                  <span className='hint'>
-                    <FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
-                  </span>
-                  {
-                    soapbox.getIn(['navlinks', 'homeFooter']).map((field, i) => (
-                      <div className='row' key={i}>
-                        <TextInput
-                          label={intl.formatMessage(messages.homeFooterItemLabel)}
-                          placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
-                          value={field.get('title')}
-                          onChange={this.handleHomeFooterItemChange(i, 'title', field)}
-                        />
-                        <TextInput
-                          label={intl.formatMessage(messages.homeFooterItemURL)}
-                          placeholder={intl.formatMessage(messages.homeFooterItemURL)}
-                          value={field.get('url')}
-                          onChange={this.handleHomeFooterItemChange(i, 'url', field)}
-                        />
-                        <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
-                      </div>
-                    ))
-                  }
-                  <div className='actions'>
-                    <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                      <Icon id='plus-circle' />
-                      <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              {/* <div className='input with_block_label'>
-                <label><FormattedMessage id='soapbox_config.fields.custom_css_fields_label' defaultMessage='Custom CSS' /></label>
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.custom_css_fields' defaultMessage='Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`' />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
+                </span>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>Soapbox Icons List</a> }} />
                 </span>
                 {
-                  soapbox.get('customCss').map((field, i) => (
+                  soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
                     <div className='row' key={i}>
-                      <TextInput
-                        label={intl.formatMessage(messages.customCssLabel)}
-                        placeholder={intl.formatMessage(messages.customCssLabel)}
-                        value={field}
-                        onChange={this.handleChange(['customCss', i], (e) => e.target.value)}
+                      <IconPicker
+                        label={intl.formatMessage(messages.promoItemIcon)}
+                        placeholder={intl.formatMessage(messages.promoItemIcon)}
+                        value={field.get('icon')}
+                        onChange={this.handlePromoItemChange(i, 'icon', field, val => val.substring(6))}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['customCss', i])} />
+                      <TextInput
+                        label={intl.formatMessage(messages.promoItemLabel)}
+                        placeholder={intl.formatMessage(messages.promoItemLabel)}
+                        value={field.get('text')}
+                        onChange={this.handlePromoItemChange(i, 'text', field)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.promoItemURL)}
+                        placeholder={intl.formatMessage(messages.promoItemURL)}
+                        value={field.get('url')}
+                        onChange={this.handlePromoItemChange(i, 'url', field)}
+                      />
+                      <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                     </div>
                   ))
                 }
-                <div className='actions'>
-                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['customCss'], '')}>
+                <div className='actions add-row'>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
                     <Icon id='plus-circle' />
-                    <FormattedMessage id='soapbox_config.fields.custom_css.add' defaultMessage='Add another custom CSS URL' />
+                    <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                   </div>
                 </div>
-              </div> */}
-            </FieldsGroup>
-            <FieldsGroup>
-              <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
-                <SimpleTextarea
-                  label={intl.formatMessage(messages.rawJSONLabel)}
-                  hint={intl.formatMessage(messages.rawJSONHint)}
-                  value={this.state.rawJSON}
-                  onChange={this.handleEditJSON}
-                  rows={12}
-                />
               </div>
             </FieldsGroup>
+            <FieldsGroup>
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_config.fields.home_footer_fields_label' defaultMessage='Home footer items' /></label>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.home_footer_fields' defaultMessage='You can have custom defined links displayed on the footer of your static pages' />
+                </span>
+                {
+                  soapbox.getIn(['navlinks', 'homeFooter']).map((field, i) => (
+                    <div className='row' key={i}>
+                      <TextInput
+                        label={intl.formatMessage(messages.homeFooterItemLabel)}
+                        placeholder={intl.formatMessage(messages.homeFooterItemLabel)}
+                        value={field.get('title')}
+                        onChange={this.handleHomeFooterItemChange(i, 'title', field)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.homeFooterItemURL)}
+                        placeholder={intl.formatMessage(messages.homeFooterItemURL)}
+                        value={field.get('url')}
+                        onChange={this.handleHomeFooterItemChange(i, 'url', field)}
+                      />
+                      <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
+                    </div>
+                  ))
+                }
+                <div className='actions add-row'>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
+                    <Icon id='plus-circle' />
+                    <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
+                  </div>
+                </div>
+              </div>
+            </FieldsGroup>
+            <Accordion
+              headline={intl.formatMessage(messages.rawJSONLabel)}
+              content={(
+                <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
+                  <SimpleTextarea
+                    hint={intl.formatMessage(messages.rawJSONHint)}
+                    value={this.state.rawJSON}
+                    onChange={this.handleEditJSON}
+                    rows={12}
+                  />
+                </div>
+              )}
+              expanded={this.state.jsonEditorExpanded}
+              onToggle={this.toggleJSONEditor}
+            />
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>

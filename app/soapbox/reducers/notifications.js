@@ -70,7 +70,7 @@ const processRawNotifications = notifications => (
   ImmutableOrderedMap(
     notifications
       .filter(isValid)
-      .map(n => [n.id, notificationToMap(n)])
+      .map(n => [n.id, notificationToMap(n)]),
   ));
 
 const expandNormalizedNotifications = (state, notifications, next) => {
