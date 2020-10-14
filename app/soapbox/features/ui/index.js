@@ -84,6 +84,7 @@ import {
   MfaForm,
   ChatIndex,
   ChatRoom,
+  Moderation,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -241,6 +242,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/bookmarks' layout={LAYOUT.DEFAULT} component={Bookmarks} content={children} />
 
         <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
+
+        <WrappedRoute path='/moderation' layout={LAYOUT.DEFAULT} component={Moderation} content={children} />
 
         <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
 

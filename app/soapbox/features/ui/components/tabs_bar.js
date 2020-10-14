@@ -84,11 +84,11 @@ class TabsBar extends React.PureComponent {
     }
     if (account && isStaff(account)) {
       links.push(
-        <a key='reports' className='tabs-bar__link' href='/pleroma/admin/#/reports/index' target='_blank' data-preview-title-id='tabs_bar.reports'>
+        <NavLink key='reports' className='tabs-bar__link' to='/moderation' data-preview-title-id='column.moderation'>
           <Icon id='gavel' />
           <ReportsCounterIcon />
           <span><FormattedMessage id='tabs_bar.reports' defaultMessage='Reports' /></span>
-        </a>);
+      </NavLink>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
