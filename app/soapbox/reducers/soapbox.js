@@ -3,6 +3,7 @@ import {
   SOAPBOX_CONFIG_REQUEST_SUCCESS,
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox';
+import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
@@ -25,8 +26,22 @@ const updateFromAdmin = (state, config) => {
   }
 };
 
+const preloadImport = (state, action) => {
+  const path = '/api/pleroma/frontend_configurations';
+  const feData = action.data[path];
+
+  if (feData) {
+    const soapbox = feData.soapbox_fe;
+    return soapbox ? fallbackState.mergeDeep(fromJS(soapbox)) : fallbackState;
+  } else {
+    return state;
+  }
+};
+
 export default function soapbox(state = initialState, action) {
   switch(action.type) {
+  case PRELOAD_IMPORT:
+    return preloadImport(state, action);
   case SOAPBOX_CONFIG_REQUEST_SUCCESS:
     return fromJS(action.soapboxConfig);
   case SOAPBOX_CONFIG_REQUEST_FAIL:
