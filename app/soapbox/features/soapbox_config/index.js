@@ -21,7 +21,7 @@ import { uploadMedia } from 'soapbox/actions/media';
 import { SketchPicker } from 'react-color';
 import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
@@ -40,7 +40,7 @@ const messages = defineMessages({
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
 });
 
-const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const templates = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
