@@ -20,7 +20,7 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
-  username_hint: { id: 'registration.fields.username_hint', defaultMessage: 'Only letters, numbers, and underscores are allowed.' },
+  username_hint: { id: 'registration.fields.username_hint', defaultMessage: 'Your username cannot be changed later. Only letters, numbers, and underscores are allowed.' },
   email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
   password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
