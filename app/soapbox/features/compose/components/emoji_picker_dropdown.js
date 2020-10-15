@@ -5,7 +5,7 @@ import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components'
 import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
@@ -29,7 +29,7 @@ const assetHost = process.env.CDN_HOST || '';
 let EmojiPicker, Emoji; // load asynchronously
 
 const backgroundImageFn = () => `${assetHost}/emoji/sheet_10.png`;
-const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const categoriesSort = [
   'recent',
