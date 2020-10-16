@@ -26,8 +26,8 @@ import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { defaultSettings } from 'soapbox/actions/settings';
-import FontIconPicker from '@fonticonpicker/react-fonticonpicker';
 import forkAwesomeIcons from './forkawesome.json';
+import IconPickerDropdown from './components/icon_picker_dropdown';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -249,9 +249,8 @@ class SoapboxConfig extends ImmutablePureComponent {
                     <div className='row' key={i}>
                       <IconPicker
                         label={intl.formatMessage(messages.promoItemIcon)}
-                        placeholder={intl.formatMessage(messages.promoItemIcon)}
                         value={field.get('icon')}
-                        onChange={this.handlePromoItemChange(i, 'icon', field, val => val.substring(6))}
+                        onChange={this.handlePromoItemChange(i, 'icon', field, val => val.id)}
                       />
                       <TextInput
                         label={intl.formatMessage(messages.promoItemLabel)}
@@ -435,25 +434,23 @@ export class IconPicker extends ImmutablePureComponent {
   static propTypes = {
     icons: PropTypes.object,
     label: FormPropTypes.label,
-    placeholder: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }
 
   static defaultProps = {
     icons: forkAwesomeIcons,
-    placeholder: 'Select icon',
   };
 
   render() {
-    const { icons, onChange, value, label, placeholder } = this.props;
+    const { onChange, value, label } = this.props;
 
     return (
-      <div className='input with_label popup'>
-        <div className='label_input__icon_picker'>
+      <div className='input with_label font_icon_picker'>
+        <div className='label_input__font_icon_picker'>
           {label && (<label>{label}</label>)}
-          <div className='label_input__wrapper'>
-            <FontIconPicker icons={icons} onChange={onChange} value={value !== '' ? 'fa fa-' + value : value} noSelectedPlaceholder={placeholder} />
+          <div className='label_input_wrapper'>
+            <IconPickerDropdown value={value} onPickEmoji={onChange} />
           </div>
         </div>
       </div>

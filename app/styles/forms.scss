@@ -179,6 +179,10 @@ code {
     }
   }
 
+  .input.font_icon_picker {
+    width: 52px;
+  }
+
   .input.with_block_label {
     max-width: none;
 
@@ -253,10 +257,6 @@ code {
         margin-bottom: 25px;
       }
     }
-  }
-
-  .input.popup {
-    overflow: visible;
   }
 
   .input.radio_buttons .radio label {
@@ -511,91 +511,17 @@ code {
       }
     }
 
-    &__icon_picker {
+    &__font_icon_picker {
       font-size: 14px;
 
-      .rfipbtn {
-        display: inline-flex;
-        line-height: 19px;
-        min-height: 19px;
-        padding: 0;
+      .font-icon-button {
+        padding: 9px;
+        border: 1px solid var(--highlight-text-color);
+        border-radius: 4px;
 
-        &__icon {
-          margin: 3.5px 0 3.5px 10px;
+        .fa {
+          font-size: 18px;
           color: var(--primary-text-color);
-        }
-
-        &--default {
-          .rfipbtn__icon {
-            border-color: var(--primary-text-color);
-          }
-
-          .rfipbtn__del {
-            background-color: var(--primary-text-color--faint);
-            color: var(--foreground-color);
-          }
-
-          .rfipbtn__button {
-            border-left: 1px solid var(--highlight-text-color);
-            background-color: var(--foreground-color);
-            color: var(--primary-text-color);
-          }
-        }
-
-        &__icon--empty {
-          text-transform: none;
-          font-style: normal;
-          color: var(--primary-text-color--faint);
-          font-size: 16px;
-          line-height: 15px;
-          padding: 10px;
-        }
-
-        &__current {
-          flex: 0;
-        }
-
-        &--default:active,
-        &--default:focus {
-          box-shadow: none;
-        }
-
-        &__button {
-          border-top-right-radius: inherit;
-          border-bottom-right-radius: inherit;
-        }
-      }
-
-      .rfipdropdown {
-        &--default {
-          background-color: var(--background-color);
-          border: none;
-          color: var(--primary-text-color);
-          width: 325px;
-
-          input,
-          select {
-            color: var(--primary-text-color);
-            background-color: var(--foreground-color);
-          }
-
-          .rfipsearch input:focus,
-          .rfipsearch input:active {
-            box-shadow: none;
-          }
-
-          .rfipicons__ibox,
-          .rfipicons__left,
-          .rfipicons__right {
-            border: none;
-            background-color: var(--foreground-color);
-            color: var(--primary-text-color);
-          }
-
-          .rfipicons__cp,
-          .rfipcategory select {
-            border-bottom: 1px solid var(--highlight-text-color);
-          }
         }
       }
     }
