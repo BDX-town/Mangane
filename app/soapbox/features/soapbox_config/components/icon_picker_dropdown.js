@@ -135,7 +135,6 @@ class IconPickerMenu extends React.PureComponent {
           onClick={this.handleClick}
           showPreview={false}
           backgroundImageFn={backgroundImageFn}
-          autoFocus
           emojiTooltip
           overwriteRender
           noShowAnchors
