@@ -11,7 +11,7 @@ import Icon from 'soapbox/components/icon';
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },
   emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search...' },
-  emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emojos!! (╯°□°）╯︵ ┻━┻' },
+  emoji_not_found: { id: 'icon_button.not_found', defaultMessage: 'No icons!! (╯°□°）╯︵ ┻━┻' },
   custom: { id: 'icon_button.icons', defaultMessage: 'Icons' },
   search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },
 });
@@ -101,7 +101,7 @@ class IconPickerMenu extends React.PureComponent {
           emoticons: [],
           keywords: [name],
           imageUrl: '',
-          custom: true,
+          render: <Icon id={name} />,
         });
       });
     });
@@ -124,12 +124,12 @@ class IconPickerMenu extends React.PureComponent {
         <IconPicker
           perLine={8}
           emojiSize={22}
+          include={categoriesSort}
           sheetSize={32}
           custom={this.buildIcons(custom_emojis)}
-          include={categoriesSort}
           color=''
           emoji=''
-          set='twitter'
+          set=''
           title={title}
           i18n={this.getI18n()}
           onClick={this.handleClick}
@@ -137,6 +137,8 @@ class IconPickerMenu extends React.PureComponent {
           backgroundImageFn={backgroundImageFn}
           autoFocus
           emojiTooltip
+          overwriteRender
+          noShowAnchors
         />
       </div>
     );

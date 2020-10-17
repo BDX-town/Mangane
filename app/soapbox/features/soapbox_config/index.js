@@ -26,7 +26,6 @@ import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { defaultSettings } from 'soapbox/actions/settings';
-import forkAwesomeIcons from './forkawesome.json';
 import IconPickerDropdown from './components/icon_picker_dropdown';
 
 const messages = defineMessages({
@@ -437,10 +436,6 @@ export class IconPicker extends ImmutablePureComponent {
     value: PropTypes.string,
     onChange: PropTypes.func.isRequired,
   }
-
-  static defaultProps = {
-    icons: forkAwesomeIcons,
-  };
 
   render() {
     const { onChange, value, label } = this.props;
