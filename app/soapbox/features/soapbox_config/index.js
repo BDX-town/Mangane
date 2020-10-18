@@ -136,7 +136,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     };
   };
 
-  handleItemChange = (path, key, field, template, getValue) => {
+  handleItemChange = (path, key, field, template, getValue = e => e.target.value) => {
     return this.handleChange(
       path, (e) =>
         template
@@ -151,9 +151,9 @@ class SoapboxConfig extends ImmutablePureComponent {
     );
   };
 
-  handleHomeFooterItemChange = (index, key, field) => {
+  handleHomeFooterItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
-      ['navlinks', 'homeFooter', index], key, field, templates.footerItem,
+      ['navlinks', 'homeFooter', index], key, field, templates.footerItem, getValue,
     );
   };
 
