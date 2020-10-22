@@ -4475,7 +4475,7 @@ elliptic@^6.0.0:
 
 "emoji-mart@https://gitlab.com/seanking2919/emoji-mart#build":
   version "2.6.3"
-  resolved "https://gitlab.com/seanking2919/emoji-mart#c2d4dc6232e1cb1fd9541a12d2748015cddb14b1"
+  resolved "https://gitlab.com/seanking2919/emoji-mart#4bdefa3d3ee7eb58716adc8727f688facc557291"
 
 emoji-regex@^7.0.1:
   version "7.0.3"

@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
-import { IconPicker as IconPickerAsync } from '../utils/async';
+import Picker from 'emoji-mart/dist-es/components/picker/picker';
 import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
 import detectPassiveEvents from 'detect-passive-events';
-import forkAwesomeIcons from '../forkawesome.json';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
@@ -16,12 +15,10 @@ const messages = defineMessages({
   search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },
 });
 
-let IconPicker; // load asynchronously
-
 const backgroundImageFn = () => '';
 const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
 
-const categoriesSort = 'custom';
+const categoriesSort = ['custom'];
 
 @injectIntl
 class IconPickerMenu extends React.PureComponent {
@@ -94,15 +91,17 @@ class IconPickerMenu extends React.PureComponent {
     Object.values(customEmojis).forEach(category => {
       category.forEach(function(icon) {
         const name = icon.replace('fa fa-', '');
-        emojis.push({
-          id: icon,
-          name,
-          short_names: [name],
-          emoticons: [],
-          keywords: [name],
-          imageUrl: '',
-          render: <Icon id={name} />,
-        });
+        if (icon !== 'email' && icon !== 'memo') {
+          emojis.push({
+            id: name,
+            name,
+            short_names: [name],
+            emoticons: [],
+            keywords: [name],
+            imageUrl: '',
+            render: <Icon id={name} />,
+          });
+        }
       });
     });
 
@@ -116,12 +115,13 @@ class IconPickerMenu extends React.PureComponent {
       return <div style={{ width: 299 }} />;
     }
 
+    let data = { compressed: true, categories: [], aliases: [], emojis: [] };
     const title = intl.formatMessage(messages.emoji);
     const { modifierOpen } = this.state;
 
     return (
       <div className={classNames('font-icon-picker emoji-picker-dropdown__menu', { selecting: modifierOpen })} style={style} ref={this.setRef}>
-        <IconPicker
+        <Picker
           perLine={8}
           emojiSize={22}
           include={categoriesSort}
@@ -136,8 +136,8 @@ class IconPickerMenu extends React.PureComponent {
           showPreview={false}
           backgroundImageFn={backgroundImageFn}
           emojiTooltip
-          overwriteRender
           noShowAnchors
+          data={data}
         />
       </div>
     );
@@ -156,7 +156,6 @@ class IconPickerDropdown extends React.PureComponent {
   };
 
   state = {
-    icons: forkAwesomeIcons,
     active: false,
     loading: false,
   };
@@ -167,18 +166,6 @@ class IconPickerDropdown extends React.PureComponent {
 
   onShowDropdown = ({ target }) => {
     this.setState({ active: true });
-
-    if (!IconPicker) {
-      this.setState({ loading: true });
-
-      IconPickerAsync().then(EmojiMart => {
-        IconPicker = EmojiMart.Picker;
-
-        this.setState({ loading: false });
-      }).catch(() => {
-        this.setState({ loading: false });
-      });
-    }
 
     const { top } = target.getBoundingClientRect();
     this.setState({ placement: top * 2 < innerHeight ? 'bottom' : 'top' });
@@ -215,7 +202,8 @@ class IconPickerDropdown extends React.PureComponent {
   render() {
     const { intl, onPickEmoji, value } = this.props;
     const title = intl.formatMessage(messages.emoji);
-    const { active, loading, placement, icons } = this.state;
+    const { active, loading, placement } = this.state;
+    let forkAwesomeIcons = require('../forkawesome.json');
 
     return (
       <div className='font-icon-picker-dropdown' onKeyDown={this.handleKeyDown}>
@@ -225,7 +213,7 @@ class IconPickerDropdown extends React.PureComponent {
 
         <Overlay show={active} placement={placement} target={this.findTarget}>
           <IconPickerMenu
-            custom_emojis={icons}
+            custom_emojis={forkAwesomeIcons}
             loading={loading}
             onClose={this.onHideDropdown}
             onPick={onPickEmoji}
