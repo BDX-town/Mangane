@@ -39,11 +39,12 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
   const path = withReplies ? `${accountId}:with_replies` : accountId;
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : true;
 
   return {
     accountId,
     unavailable,
+    isBlocked,
     accountUsername,
     accountApId,
     isAccount: !!state.getIn(['accounts', accountId]),
@@ -117,7 +118,7 @@ class AccountTimeline extends ImmutablePureComponent {
   }
 
   render() {
-    const { statusIds, featuredStatusIds, isLoading, hasMore, isAccount, accountId, unavailable, accountUsername } = this.props;
+    const { statusIds, featuredStatusIds, isLoading, hasMore, isAccount, accountId, isBlocked, unavailable, accountUsername } = this.props;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -131,6 +132,16 @@ class AccountTimeline extends ImmutablePureComponent {
       return (
         <Column>
           <LoadingIndicator />
+        </Column>
+      );
+    }
+
+    if (isBlocked) {
+      return (
+        <Column>
+          <div className='empty-column-indicator'>
+            <FormattedMessage id='empty_column.account_blocked' defaultMessage='You are blocked by @{accountUsername}.' values={{ accountUsername: accountUsername }} />
+          </div>
         </Column>
       );
     }
