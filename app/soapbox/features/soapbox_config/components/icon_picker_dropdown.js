@@ -4,7 +4,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import Picker from 'emoji-mart/dist-es/components/picker/picker';
 import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
@@ -16,7 +16,7 @@ const messages = defineMessages({
 });
 
 const backgroundImageFn = () => '';
-const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const categoriesSort = ['custom'];
 
