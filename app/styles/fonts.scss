@@ -163,12 +163,12 @@
   font-style: normal;
 }
 
-.fa-users::before {
-  font-family: 'ForkAwesome';
-  content: '\f0c0';
+.fa-fediverse::before {
+  font-family: 'soapbox';
+  content: "\e901";
 }
 
-.fa-fediverse::before {
-  font-family: 'soapbox' !important;
-  content: "\e901";
+.fa-spinster::before {
+  font-family: 'soapbox';
+  content: "\e900";
 }

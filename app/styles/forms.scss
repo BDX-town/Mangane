@@ -179,6 +179,10 @@ code {
     }
   }
 
+  .input.font_icon_picker {
+    width: 52px;
+  }
+
   .input.with_block_label {
     max-width: none;
 
@@ -302,7 +306,8 @@ code {
   input[type=number],
   input[type=email],
   input[type=password],
-  textarea {
+  textarea,
+  .rfipbtn {
     box-sizing: border-box;
     font-size: 16px;
     color: var(--primary-text-color);
@@ -333,6 +338,11 @@ code {
     &:focus {
       border-color: var(--brand-color--hicontrast);
     }
+  }
+
+  .rfip {
+    width: 100%;
+    margin: 0;
   }
 
   input[type=text][disabled],
@@ -498,6 +508,22 @@ code {
         width: 32px;
         height: 16px;
         margin-left: 12px;
+      }
+    }
+
+    &__font_icon_picker {
+      font-size: 14px;
+
+      .font-icon-button {
+        padding: 9px;
+        border: 1px solid var(--highlight-text-color);
+        border-radius: 4px;
+        cursor: pointer;
+
+        .fa {
+          font-size: 18px;
+          color: var(--primary-text-color);
+        }
       }
     }
 
@@ -701,7 +727,7 @@ code {
   }
 }
 
-.input .row .fa-times-circle {
+.input .row > .fa-times-circle {
   position: absolute;
   right: 7px;
   cursor: pointer;

@@ -26,6 +26,7 @@ import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { defaultSettings } from 'soapbox/actions/settings';
+import IconPickerDropdown from './components/icon_picker_dropdown';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -135,24 +136,24 @@ class SoapboxConfig extends ImmutablePureComponent {
     };
   };
 
-  handleItemChange = (path, key, field, template) => {
+  handleItemChange = (path, key, field, template, getValue = e => e.target.value) => {
     return this.handleChange(
       path, (e) =>
         template
           .merge(field)
-          .set(key, e.target.value),
+          .set(key, getValue(e)),
     );
   };
 
-  handlePromoItemChange = (index, key, field) => {
+  handlePromoItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
-      ['promoPanel', 'items', index], key, field, templates.promoPanelItem,
+      ['promoPanel', 'items', index], key, field, templates.promoPanelItem, getValue,
     );
   };
 
-  handleHomeFooterItemChange = (index, key, field) => {
+  handleHomeFooterItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
-      ['navlinks', 'homeFooter', index], key, field, templates.footerItem,
+      ['navlinks', 'homeFooter', index], key, field, templates.footerItem, getValue,
     );
   };
 
@@ -234,7 +235,7 @@ class SoapboxConfig extends ImmutablePureComponent {
               />
             </FieldsGroup>
             <FieldsGroup>
-              <div className='input with_block_label'>
+              <div className='input with_block_label popup'>
                 <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
@@ -245,11 +246,10 @@ class SoapboxConfig extends ImmutablePureComponent {
                 {
                   soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
                     <div className='row' key={i}>
-                      <TextInput
+                      <IconPicker
                         label={intl.formatMessage(messages.promoItemIcon)}
-                        placeholder={intl.formatMessage(messages.promoItemIcon)}
                         value={field.get('icon')}
-                        onChange={this.handlePromoItemChange(i, 'icon', field)}
+                        onChange={this.handlePromoItemChange(i, 'icon', field, val => val.id)}
                       />
                       <TextInput
                         label={intl.formatMessage(messages.promoItemLabel)}
@@ -422,6 +422,32 @@ class ColorWithPicker extends ImmutablePureComponent {
         <Overlay show={active} placement={placement} target={this}>
           <ColorPicker value={value} onChange={onChange} onClose={this.onHidePicker} />
         </Overlay>
+      </div>
+    );
+  }
+
+}
+
+export class IconPicker extends ImmutablePureComponent {
+
+  static propTypes = {
+    icons: PropTypes.object,
+    label: FormPropTypes.label,
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+  }
+
+  render() {
+    const { onChange, value, label } = this.props;
+
+    return (
+      <div className='input with_label font_icon_picker'>
+        <div className='label_input__font_icon_picker'>
+          {label && (<label>{label}</label>)}
+          <div className='label_input_wrapper'>
+            <IconPickerDropdown value={value} onPickEmoji={onChange} />
+          </div>
+        </div>
       </div>
     );
   }
