@@ -56,7 +56,7 @@ exports[`<RadioGroup /> renders correctly 1`] = `
 
 exports[`<SelectDropdown /> renders correctly 1`] = `
 <div
-  class="select-wrapper"
+  className="select-wrapper"
 >
   <select>
     <option
