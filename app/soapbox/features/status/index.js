@@ -146,7 +146,6 @@ class Status extends ImmutablePureComponent {
   componentDidMount() {
     this.props.dispatch(fetchStatus(this.props.params.statusId));
     attachFullscreenListener(this.onFullScreenChange);
-    this.setState({ showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia) });
   }
 
   handleToggleMediaVisibility = () => {

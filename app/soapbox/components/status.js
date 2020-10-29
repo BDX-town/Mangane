@@ -112,7 +112,6 @@ class Status extends ImmutablePureComponent {
   // Track height changes we know about to compensate scrolling
   componentDidMount() {
     this.didShowCard = !this.props.muted && !this.props.hidden && this.props.status && this.props.status.get('card');
-    this.setState({ showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia) });
   }
 
   getSnapshotBeforeUpdate() {
@@ -126,7 +125,7 @@ class Status extends ImmutablePureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.status && nextProps.status.get('id') !== prevState.statusId) {
       return {
-        showMedia: defaultMediaVisibility(nextProps.status),
+        showMedia: defaultMediaVisibility(nextProps.status, nextProps.displayMedia),
         statusId: nextProps.status.get('id'),
       };
     } else {
