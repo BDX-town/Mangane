@@ -37,6 +37,7 @@ const messages = defineMessages({
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
+  info: { id: 'column.info', defaultMessage: 'Server information' },
 });
 
 const mapStateToProps = state => {
@@ -189,6 +190,13 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
               </NavLink>
+            </div>
+
+            <div className='sidebar-menu__section'>
+              <Link className='sidebar-menu-item' to='/info' onClick={onClose}>
+                <Icon id='info' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
+              </Link>
             </div>
 
             <div className='sidebar-menu__section'>
