@@ -209,3 +209,7 @@ export function ChatIndex() {
 export function ChatRoom() {
   return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
 }
+
+export function ServerInfo() {
+  return import(/* webpackChunkName: "features/server_info" */'../../server_info');
+}
