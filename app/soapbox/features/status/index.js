@@ -110,6 +110,7 @@ const makeMapStateToProps = () => {
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
+      displayMedia: getSettings(state).get('displayMedia'),
     };
   };
 
@@ -133,11 +134,12 @@ class Status extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     domain: PropTypes.string,
+    displayMedia: PropTypes.string,
   };
 
   state = {
     fullscreen: false,
-    showMedia: defaultMediaVisibility(this.props.status),
+    showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     loadedStatusId: undefined,
   };
 

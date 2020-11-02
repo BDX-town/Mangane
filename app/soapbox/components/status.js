@@ -125,7 +125,7 @@ class Status extends ImmutablePureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.status && nextProps.status.get('id') !== prevState.statusId) {
       return {
-        showMedia: defaultMediaVisibility(nextProps.status),
+        showMedia: defaultMediaVisibility(nextProps.status, nextProps.displayMedia),
         statusId: nextProps.status.get('id'),
       };
     } else {
