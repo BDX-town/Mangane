@@ -467,6 +467,8 @@ a .account__avatar {
 
 .account__section-headline {
   background: var(--foreground-color);
+  width: 100%;
+  display: flex;
 
   button,
   a {
