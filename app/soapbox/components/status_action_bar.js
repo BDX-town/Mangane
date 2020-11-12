@@ -13,6 +13,7 @@ import { Link } from 'react-router-dom';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -322,7 +323,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const reblogCount = status.get('reblogs_count');
     const favouriteCount = status.get('favourites_count');
     const emojiReactCount = reduceEmoji(
-      status.getIn(['pleroma', 'emoji_reactions'], []),
+      status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
       favouriteCount,
       status.get('favourited'),
     ).reduce((acc, cur) => acc + cur.get('count'), 0);
