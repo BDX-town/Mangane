@@ -44,7 +44,7 @@ export default class StatusContent extends React.PureComponent {
         continue;
       }
       link.classList.add('status-link');
-      link.setAttribute('rel', 'nofollow noopener');
+      link.setAttribute('rel', 'nofollow noopener noreferrer');
       link.setAttribute('target', '_blank');
 
       let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);

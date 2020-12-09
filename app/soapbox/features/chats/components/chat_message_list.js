@@ -97,7 +97,7 @@ class ChatMessageList extends ImmutablePureComponent {
 
     links.forEach(link => {
       link.classList.add('chat-link');
-      link.setAttribute('rel', 'ugc nofollow noopener');
+      link.setAttribute('rel', 'ugc nofollow noopener noreferrer');
       link.setAttribute('target', '_blank');
     });
   }
