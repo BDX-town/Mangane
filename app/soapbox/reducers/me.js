@@ -16,6 +16,7 @@ export default function me(state = initialState, action) {
   case ME_FETCH_FAIL:
   case ME_FETCH_SKIP:
   case AUTH_LOGGED_OUT:
+    localStorage.removeItem('soapbox:auth:user');
     return false;
   default:
     return state;
