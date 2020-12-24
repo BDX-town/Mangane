@@ -4,7 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { changeSetting } from 'soapbox/actions/settings';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -85,7 +85,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
-  settings: state.get('settings'),
+  settings: getSettings(state),
 });
 
 export default @connect(mapStateToProps)
@@ -107,6 +107,11 @@ class Preferences extends ImmutablePureComponent {
   onDefaultPrivacyChange = e => {
     const { dispatch } = this.props;
     dispatch(changeSetting(['defaultPrivacy'], e.target.value));
+  }
+
+  onDefaultContentTypeChange = e => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(['defaultContentType'], e.target.value));
   }
 
   render() {
@@ -161,6 +166,24 @@ class Preferences extends ImmutablePureComponent {
                 hint={<FormattedMessage id='preferences.hints.privacy_followers_only' defaultMessage='Only show to followers' />}
                 checked={settings.get('defaultPrivacy') === 'private'}
                 value='private'
+              />
+            </RadioGroup>
+          </FieldsGroup>
+
+          <FieldsGroup>
+            <RadioGroup
+              label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
+              onChange={this.onDefaultContentTypeChange}
+            >
+              <RadioItem
+                label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
+                checked={settings.get('defaultContentType') === 'text/plain'}
+                value='text/plain'
+              />
+              <RadioItem
+                label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
+                checked={settings.get('defaultContentType') === 'text/markdown'}
+                value='text/markdown'
               />
             </RadioGroup>
           </FieldsGroup>

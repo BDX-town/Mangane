@@ -52,7 +52,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
-  content_type: 'text/markdown',
+  content_type: 'text/plain',
   privacy: 'public',
   text: '',
   focusDate: null,
@@ -69,6 +69,7 @@ const initialState = ImmutableMap({
   suggestions: ImmutableList(),
   default_privacy: 'public',
   default_sensitive: false,
+  default_content_type: 'text/plain',
   resetFileKey: Math.floor((Math.random() * 0x10000)),
   idempotencyKey: uuid(),
   tagHistory: ImmutableList(),
@@ -97,7 +98,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
-    map.set('content_type', 'text/markdown');
+    map.set('content_type', state.get('default_content_type'));
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -193,7 +194,7 @@ const expandMentions = status => {
 };
 
 export default function compose(state = initialState, action) {
-  let me, defaultPrivacy;
+  let me, defaultPrivacy, defaultContentType;
   switch(action.type) {
   case COMPOSE_MOUNT:
     return state.set('mounted', state.get('mounted') + 1);
@@ -246,7 +247,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
-      map.set('content_type', 'text/markdown');
+      map.set('content_type', state.get('default_content_type'));
 
       if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
@@ -331,7 +332,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
-      map.set('content_type', 'text/markdown');
+      map.set('content_type', action.status.get('content_type'));
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);
@@ -364,21 +365,31 @@ export default function compose(state = initialState, action) {
   case ME_FETCH_SUCCESS:
     me = fromJS(action.me);
     defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy'], 'public');
+    defaultContentType = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultContentType'], 'text/plain');
     return state.merge({
       default_privacy: defaultPrivacy,
       privacy: defaultPrivacy,
+      default_content_type: defaultContentType,
+      content_type: defaultContentType,
       tagHistory: ImmutableList(tagHistory.get(action.me.id)),
     });
   case ME_PATCH_SUCCESS:
     me = fromJS(action.me);
     defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
-    if (!defaultPrivacy) return state;
-    return state.set('default_privacy', defaultPrivacy);
+    defaultContentType = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultContentType']);
+    if (defaultPrivacy) state = state.set('default_privacy', defaultPrivacy);
+    if (defaultContentType) state = state.set('default_content_type', defaultContentType);
+    return state;
   case SETTING_CHANGE:
     const pathString = action.path.join(',');
-    if (pathString === 'defaultPrivacy')
+    switch (pathString) {
+    case 'defaultPrivacy':
       return state.set('default_privacy', action.value).set('privacy', action.value);
-    return state;
+    case 'defaultContentType':
+      return state.set('default_content_type', action.value).set('content_type', action.value);
+    default:
+      return state;
+    }
   default:
     return state;
   }
