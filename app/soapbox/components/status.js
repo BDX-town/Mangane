@@ -17,7 +17,7 @@ import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
@@ -459,7 +459,9 @@ class Status extends ImmutablePureComponent {
 
               {favicon &&
                 <div className='status__favicon'>
-                  <img src={favicon} alt='' title={domain} />
+                  <Link to={`/timeline/${domain}`}>
+                    <img src={favicon} alt='' title={domain} />
+                  </Link>
                 </div>}
 
               <div className='status__profile'>

@@ -5,7 +5,7 @@ import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import StatusContent from '../../../components/status_content';
 import MediaGallery from '../../../components/media_gallery';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { FormattedDate } from 'react-intl';
 import Card from './card';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -197,7 +197,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
             <div>
               {favicon &&
                 <div className='status__favicon'>
-                  <img src={favicon} alt='' title={domain} />
+                  <Link to={`/timeline/${domain}`}>
+                    <img src={favicon} alt='' title={domain} />
+                  </Link>
                 </div>}
 
               {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
