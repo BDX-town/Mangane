@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
-import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
 import IconButton from 'soapbox/components/icon_button';
 import { expandRemoteTimeline } from '../../actions/timelines';
@@ -84,9 +83,7 @@ class RemoteTimeline extends React.PureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='fediverse' active={hasUnread} >
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
+        <HomeColumnHeader activeItem='fediverse' active={hasUnread} />
         <div className='timeline-filter-message'>
           <IconButton icon='close' onClick={this.handleCloseClick} />
           <FormattedMessage
