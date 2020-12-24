@@ -716,3 +716,13 @@
     color: white;
   }
 }
+
+.timeline-filter-message {
+  background-color: var(--brand-color--faint);
+  color: var(--primary-text-color);
+  padding: 15px 20px;
+
+  .icon-button {
+    margin-right: 8px;
+  }
+}

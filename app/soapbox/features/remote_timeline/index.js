@@ -6,6 +6,7 @@ import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
+import IconButton from 'soapbox/components/icon_button';
 import { expandRemoteTimeline } from '../../actions/timelines';
 import { connectRemoteStream } from '../../actions/streaming';
 import { getSettings } from 'soapbox/actions/settings';
@@ -69,6 +70,10 @@ class RemoteTimeline extends React.PureComponent {
     }
   }
 
+  handleCloseClick = e => {
+    this.context.router.history.push('/timeline/fediverse');
+  }
+
   handleLoadMore = maxId => {
     const { dispatch, onlyMedia, instance } = this.props;
     dispatch(expandRemoteTimeline(instance, { maxId, onlyMedia }));
@@ -82,6 +87,14 @@ class RemoteTimeline extends React.PureComponent {
         <HomeColumnHeader activeItem='fediverse' active={hasUnread} >
           <ColumnSettingsContainer />
         </HomeColumnHeader>
+        <div className='timeline-filter-message'>
+          <IconButton icon='close' onClick={this.handleCloseClick} />
+          <FormattedMessage
+            id='remote_timeline.filter_message'
+            defaultMessage='You are viewing the timeline of {instance}.'
+            values={{ instance }}
+          />
+        </div>
         <StatusListContainer
           scrollKey={`${timelineId}_${instance}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}
@@ -89,7 +102,7 @@ class RemoteTimeline extends React.PureComponent {
           emptyMessage={
             <FormattedMessage
               id='empty_column.remote'
-              defaultMessage='There is nothing here! Manually follow users from {instance} to fill it up'
+              defaultMessage='There is nothing here! Manually follow users from {instance} to fill it up.'
               values={{ instance }}
             />
           }
