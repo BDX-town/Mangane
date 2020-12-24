@@ -31,7 +31,7 @@ describe('compose reducer', () => {
       default_privacy: 'public',
       default_sensitive: false,
       tagHistory: [],
-      content_type: 'text/markdown',
+      content_type: 'text/plain',
     });
     expect(state.get('idempotencyKey').length === 36);
   });

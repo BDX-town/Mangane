@@ -21,6 +21,7 @@ export const defaultSettings = ImmutableMap({
   boostModal: false,
   deleteModal: true,
   defaultPrivacy: 'public',
+  defaultContentType: 'text/plain',
   themeMode: 'light',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
   explanationBox: true,
