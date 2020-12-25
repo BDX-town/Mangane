@@ -15,7 +15,7 @@ import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
-import { StatusInteractionBar } from './status_interaction_bar';
+import StatusInteractionBar from './status_interaction_bar';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 

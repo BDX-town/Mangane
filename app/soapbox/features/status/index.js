@@ -46,6 +46,7 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -111,6 +112,7 @@ const makeMapStateToProps = () => {
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
       displayMedia: getSettings(state).get('displayMedia'),
+      allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
     };
   };
 
@@ -521,6 +523,7 @@ class Status extends ImmutablePureComponent {
                 onPin={this.handlePin}
                 onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
+                allowedEmoji={this.props.allowedEmoji}
               />
             </div>
           </HotKeys>

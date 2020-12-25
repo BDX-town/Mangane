@@ -78,6 +78,7 @@ class ActionBar extends React.PureComponent {
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    allowedEmoji: ImmutablePropTypes.list,
   };
 
   static defaultProps = {
@@ -130,7 +131,7 @@ class ActionBar extends React.PureComponent {
   }
 
   handleLikeButtonClick = e => {
-    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
+    const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
     if (this.isMobile()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
@@ -232,12 +233,12 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me, isStaff } = this.props;
+    const { status, intl, me, isStaff, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
-    const meEmojiReact = getReactForStatus(status);
+    const meEmojiReact = getReactForStatus(status, allowedEmoji);
 
     let menu = [];
 

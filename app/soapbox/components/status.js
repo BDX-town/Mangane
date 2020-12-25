@@ -93,6 +93,7 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
+    allowedEmoji: ImmutablePropTypes.list,
   };
 
   // Avoid checking props that are functions (and whose equality will always
