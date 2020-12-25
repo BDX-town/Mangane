@@ -1,10 +1,10 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { createComponent } from 'soapbox/test_helpers';
 import EmojiSelector from '../emoji_selector';
 
 describe('<EmojiSelector />', () => {
   it('renders correctly', () => {
-    const component = renderer.create(<EmojiSelector />);
+    const component = createComponent(<EmojiSelector />);
     const tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
