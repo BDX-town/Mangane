@@ -63,6 +63,7 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </a>
           </div>
+          {/* TODO: Awaiting approval users count */}
         </div>
         <div className='dashwidgets'>
           <div class='dashwidget'>
