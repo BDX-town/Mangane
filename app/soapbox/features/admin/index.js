@@ -13,6 +13,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
+  openReportCount: state.getIn(['admin', 'open_report_count']),
 });
 
 export default @connect(mapStateToProps)
@@ -22,6 +23,7 @@ class Dashboard extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     instance: ImmutablePropTypes.map.isRequired,
+    openReportCount: PropTypes.number,
   };
 
   render() {
@@ -32,7 +34,7 @@ class Dashboard extends ImmutablePureComponent {
       <Column icon='tachometer' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <div className='dashcounters'>
           <div className='dashcounter'>
-            <a href='/pleroma/admin/#/users/index'>
+            <a href='/pleroma/admin/#/users/index' target='_blank'>
               <div className='dashcounter__num'>
                 <FormattedNumber value={instance.getIn(['stats', 'user_count'])} />
               </div>
@@ -42,7 +44,7 @@ class Dashboard extends ImmutablePureComponent {
             </a>
           </div>
           <div className='dashcounter'>
-            <a href='/pleroma/admin/#/statuses/index'>
+            <a href='/pleroma/admin/#/statuses/index' target='_blank'>
               <div className='dashcounter__num'>
                 <FormattedNumber value={instance.getIn(['stats', 'status_count'])} />
               </div>
@@ -52,14 +54,14 @@ class Dashboard extends ImmutablePureComponent {
             </a>
           </div>
           <div className='dashcounter'>
-            <div>
+            <a href='/pleroma/admin/#/reports/index' target='_blank'>
               <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'domain_count'])} />
+                <FormattedNumber value={this.props.openReportCount} />
               </div>
               <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='known instances' />
+                <FormattedMessage id='admin.dashcounters.open_report_count_label' defaultMessage='open reports' />
               </div>
-            </div>
+            </a>
           </div>
         </div>
         <div className='dashwidgets'>

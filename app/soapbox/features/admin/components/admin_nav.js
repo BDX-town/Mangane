@@ -14,6 +14,10 @@ class AdminNav extends React.PureComponent {
             <Icon id='tachometer' className='promo-panel-item__icon' fixedWidth />
             <FormattedMessage id='admin_nav.dashboard' defaultMessage='Dashboard' />
           </NavLink>
+          <a className='promo-panel-item' href='/pleroma/admin/#/reports/index' target='_blank'>
+            <Icon id='gavel' className='promo-panel-item__icon' fixedWidth />
+            <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
+          </a>
         </div>
       </div>
     );
