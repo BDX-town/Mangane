@@ -37,13 +37,15 @@ class AdminNav extends React.PureComponent {
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
               </a>
             )}
+            {!instance.get('registrations') && (
+              <NavLink className='promo-panel-item' to='#'>
+                <Icon id='envelope' className='promo-panel-item__icon' fixedWidth />
+                <FormattedMessage id='admin_nav.invites' defaultMessage='Invites' />
+              </NavLink>
+            )}
             <NavLink className='promo-panel-item' to='#'>
               <Icon id='group' className='promo-panel-item__icon' fixedWidth />
               <FormattedMessage id='admin_nav.registration' defaultMessage='Registration' />
-            </NavLink>
-            <NavLink className='promo-panel-item' to='#'>
-              <Icon id='envelope' className='promo-panel-item__icon' fixedWidth />
-              <FormattedMessage id='admin_nav.invites' defaultMessage='Invites' />
             </NavLink>
           </div>
         </div>
