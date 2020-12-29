@@ -182,6 +182,7 @@ class Preferences extends ImmutablePureComponent {
               />
               <RadioItem
                 label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
+                hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
                 checked={settings.get('defaultContentType') === 'text/markdown'}
                 value='text/markdown'
               />
