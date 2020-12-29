@@ -88,6 +88,7 @@ import {
   ChatRoom,
   ServerInfo,
   Dashboard,
+  AwaitingApproval,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -286,6 +287,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
         <WrappedRoute path='/admin' layout={LAYOUT.ADMIN} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' layout={LAYOUT.ADMIN} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />

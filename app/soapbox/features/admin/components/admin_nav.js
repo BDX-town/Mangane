@@ -32,10 +32,10 @@ class AdminNav extends React.PureComponent {
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
             </a>
             {instance.get('approval_required') && (
-              <a className='promo-panel-item' href='/pleroma/admin/#/users/index' target='_blank'>
+              <NavLink className='promo-panel-item' to='/admin/approval'>
                 <Icon id='user' className='promo-panel-item__icon' fixedWidth />
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
-              </a>
+              </NavLink>
             )}
             {!instance.get('registrations') && (
               <NavLink className='promo-panel-item' to='#'>
