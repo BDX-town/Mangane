@@ -39,6 +39,7 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
+import AdminNav from 'soapbox/features/admin/components/admin_nav';
 
 import {
   Status,
@@ -86,6 +87,7 @@ import {
   ChatIndex,
   ChatRoom,
   ServerInfo,
+  Dashboard,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -152,6 +154,14 @@ const LAYOUT = {
     ],
     RIGHT: [
       <FeaturesPanel key='0' />,
+    ],
+  },
+  ADMIN: {
+    LEFT: [
+      <AdminNav key='0' />,
+    ],
+    RIGHT: [
+      <LinkFooter key='1' />,
     ],
   },
   STATUS: {
@@ -274,6 +284,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
         <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
 
+        <Redirect from='/admin/dashboard' to='/admin' exact />
+        <WrappedRoute path='/admin' layout={LAYOUT.ADMIN} component={Dashboard} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />

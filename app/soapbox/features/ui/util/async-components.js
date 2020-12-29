@@ -217,3 +217,7 @@ export function ChatRoom() {
 export function ServerInfo() {
   return import(/* webpackChunkName: "features/server_info" */'../../server_info');
 }
+
+export function Dashboard() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin');
+}
