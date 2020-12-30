@@ -1,5 +1,9 @@
 import api from '../api';
 
+export const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
+export const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
+export const ADMIN_CONFIG_FETCH_FAIL    = 'ADMIN_CONFIG_FETCH_FAIL';
+
 export const ADMIN_CONFIG_UPDATE_REQUEST = 'ADMIN_CONFIG_UPDATE_REQUEST';
 export const ADMIN_CONFIG_UPDATE_SUCCESS = 'ADMIN_CONFIG_UPDATE_SUCCESS';
 export const ADMIN_CONFIG_UPDATE_FAIL    = 'ADMIN_CONFIG_UPDATE_FAIL';
@@ -19,6 +23,19 @@ export const ADMIN_USERS_DELETE_FAIL    = 'ADMIN_USERS_DELETE_FAIL';
 export const ADMIN_USERS_APPROVE_REQUEST = 'ADMIN_USERS_APPROVE_REQUEST';
 export const ADMIN_USERS_APPROVE_SUCCESS = 'ADMIN_USERS_APPROVE_SUCCESS';
 export const ADMIN_USERS_APPROVE_FAIL    = 'ADMIN_USERS_APPROVE_FAIL';
+
+export function fetchConfig() {
+  return (dispatch, getState) => {
+    dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
+    return api(getState)
+      .get('/api/pleroma/admin/config')
+      .then(({ data }) => {
+        dispatch({ type: ADMIN_CONFIG_FETCH_SUCCESS, configs: data.configs, needsReboot: data.need_reboot });
+      }).catch(error => {
+        dispatch({ type: ADMIN_CONFIG_FETCH_FAIL, error });
+      });
+  };
+}
 
 export function updateAdminConfig(params) {
   return (dispatch, getState) => {

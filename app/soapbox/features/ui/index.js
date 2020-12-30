@@ -16,7 +16,7 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
-import { fetchReports, fetchUsers } from '../../actions/admin';
+import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
@@ -465,6 +465,7 @@ class UI extends React.PureComponent {
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
         this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+        this.props.dispatch(fetchConfig());
       }
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
