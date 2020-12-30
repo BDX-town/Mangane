@@ -1,7 +1,9 @@
 import {
   ADMIN_REPORTS_FETCH_SUCCESS,
   ADMIN_USERS_FETCH_SUCCESS,
+  ADMIN_USERS_DELETE_REQUEST,
   ADMIN_USERS_DELETE_SUCCESS,
+  ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
 } from '../actions/admin';
 import {
@@ -59,8 +61,10 @@ export default function admin(state = initialState, action) {
     }
   case ADMIN_USERS_FETCH_SUCCESS:
     return importUsers(state, action.data.users);
+  case ADMIN_USERS_DELETE_REQUEST:
   case ADMIN_USERS_DELETE_SUCCESS:
     return deleteUsers(state, action.nicknames);
+  case ADMIN_USERS_APPROVE_REQUEST:
   case ADMIN_USERS_APPROVE_SUCCESS:
     return approveUsers(state, action.users);
   default:

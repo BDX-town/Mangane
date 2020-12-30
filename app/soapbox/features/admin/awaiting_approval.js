@@ -11,6 +11,7 @@ import { fetchUsers, deleteUsers, approveUsers } from 'soapbox/actions/admin';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.awaiting_approval', defaultMessage: 'Awaiting Approval' },
+  emptyMessage: { id: 'admin.awaiting_approval.empty_message', defaultMessage: 'There is nobody waiting for approval. When a new user signs up, you can review them here.' },
 });
 
 const mapStateToProps = state => {
@@ -61,7 +62,7 @@ class AwaitingApproval extends ImmutablePureComponent {
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <ScrollableList isLoading={isLoading} showLoading={isLoading} scrollKey='awaiting-approval'>
+        <ScrollableList isLoading={isLoading} showLoading={isLoading} scrollKey='awaiting-approval' emptyMessage={intl.formatMessage(messages.emptyMessage)}>
           {users.map((user, i) => (
             <div className='unapproved-account' key={user.get('id')}>
               <div className='unapproved-account__bio'>
