@@ -65,6 +65,7 @@ export default function admin(state = initialState, action) {
   case ADMIN_USERS_DELETE_SUCCESS:
     return deleteUsers(state, action.nicknames);
   case ADMIN_USERS_APPROVE_REQUEST:
+    return state.update('awaitingApproval', set => set.subtract(action.nicknames));
   case ADMIN_USERS_APPROVE_SUCCESS:
     return approveUsers(state, action.users);
   default:
