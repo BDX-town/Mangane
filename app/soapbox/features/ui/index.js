@@ -40,7 +40,6 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
-import AdminNav from 'soapbox/features/admin/components/admin_nav';
 
 import {
   Status,
