@@ -1,0 +1,96 @@
+.dashcounters {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -5px 0;
+  padding: 20px;
+}
+
+.dashcounter {
+  box-sizing: border-box;
+  flex: 0 0 33.333%;
+  padding: 0 5px;
+  margin-bottom: 10px;
+
+  > a,
+  > div {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    padding: 20px;
+    background: var(--accent-color--faint);
+    border-radius: 4px;
+    transition: 0.2s;
+  }
+
+  > a:hover {
+    background: var(--accent-color--med);
+    transform: translateY(-2px);
+  }
+
+  &__num,
+  &__text {
+    text-align: center;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 30px;
+    color: var(--primary-text-color);
+    margin-bottom: 10px;
+  }
+
+  &__label {
+    font-size: 14px;
+    color: hsla(var(--primary-text-color_hsl), 0.6);
+    text-align: center;
+    font-weight: 500;
+  }
+}
+
+.dashwidgets {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -5px;
+  padding: 0 20px 20px 20px;
+}
+
+.dashwidget {
+  flex: 1;
+  margin-bottom: 20px;
+  padding: 0 5px;
+
+  h4 {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    color: hsla(var(--primary-text-color_hsl), 0.6);
+    padding-bottom: 8px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--accent-color--med);
+  }
+}
+
+.unapproved-account {
+  padding: 15px 20px;
+  font-size: 14px;
+  display: flex;
+
+  &__nickname {
+    font-weight: bold;
+  }
+
+  &__reason {
+    padding: 5px 0 5px 15px;
+    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
+    color: var(--primary-text-color--faint);
+  }
+
+  &__actions {
+    margin-left: auto;
+    padding-left: 20px;
+    display: flex;
+    flex-wrap: nowrap;
+  }
+}
+
+.slist .item-list article:nth-child(2n-1) .unapproved-account {
+  background-color: hsla(var(--accent-color_hsl), 0.07);
+}

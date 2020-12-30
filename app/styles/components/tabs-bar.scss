@@ -213,6 +213,12 @@
     }
   }
 
+  .icon-with-counter__counter {
+    @media screen and (min-width: 895px) {
+      left: 5px;
+    }
+  }
+
   &.optional {
     display: none;
     @media screen and (max-width: $nav-breakpoint-2) {

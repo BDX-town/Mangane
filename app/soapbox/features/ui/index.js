@@ -16,7 +16,7 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
-import { fetchReports } from '../../actions/admin';
+import { fetchReports, fetchUsers } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
@@ -39,6 +39,7 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
+import AdminNav from 'soapbox/features/admin/components/admin_nav';
 
 import {
   Status,
@@ -86,6 +87,8 @@ import {
   ChatIndex,
   ChatRoom,
   ServerInfo,
+  Dashboard,
+  AwaitingApproval,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -152,6 +155,14 @@ const LAYOUT = {
     ],
     RIGHT: [
       <FeaturesPanel key='0' />,
+    ],
+  },
+  ADMIN: {
+    LEFT: [
+      <AdminNav key='0' />,
+    ],
+    RIGHT: [
+      <LinkFooter key='1' />,
     ],
   },
   STATUS: {
@@ -274,6 +285,9 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
         <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
 
+        <Redirect from='/admin/dashboard' to='/admin' exact />
+        <WrappedRoute path='/admin' layout={LAYOUT.ADMIN} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' layout={LAYOUT.ADMIN} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
@@ -448,8 +462,10 @@ class UI extends React.PureComponent {
       this.props.dispatch(expandNotifications());
       this.props.dispatch(fetchChats());
       // this.props.dispatch(fetchGroups('member'));
-      if (isStaff(account))
+      if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
+        this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+      }
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
