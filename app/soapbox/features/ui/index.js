@@ -32,6 +32,7 @@ import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import SearchPage from 'soapbox/pages/search_page';
 import HomePage from 'soapbox/pages/home_page';
+import AdminPage from 'soapbox/pages/admin_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
@@ -157,14 +158,6 @@ const LAYOUT = {
       <FeaturesPanel key='0' />,
     ],
   },
-  ADMIN: {
-    LEFT: [
-      <AdminNav key='0' />,
-    ],
-    RIGHT: [
-      <LinkFooter key='1' />,
-    ],
-  },
   STATUS: {
     TOP: null,
     LEFT: null,
@@ -286,8 +279,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
-        <WrappedRoute path='/admin' layout={LAYOUT.ADMIN} component={Dashboard} content={children} exact />
-        <WrappedRoute path='/admin/approval' layout={LAYOUT.ADMIN} component={AwaitingApproval} content={children} exact />
+        <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
