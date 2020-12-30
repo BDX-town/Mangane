@@ -1,6 +1,6 @@
 .dashcounters {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
   margin: 0 -5px 0;
   padding: 20px;
 }
