@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
@@ -9,6 +9,11 @@ import {
   RadioItem,
 } from 'soapbox/features/forms';
 import { updateConfig } from 'soapbox/actions/admin';
+import snackbar from 'soapbox/actions/snackbar';
+
+const messages = defineMessages({
+  saved: { id: 'admin.dashboard.settings_saved', defaultMessage: 'Settings saved!' },
+});
 
 const mapStateToProps = (state, props) => ({
   mode: modeFromInstance(state.get('instance')),
@@ -35,12 +40,15 @@ const modeFromInstance = instance => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class RegistrationModePicker extends ImmutablePureComponent {
 
   onChange = e => {
-    const { dispatch } = this.props;
+    const { dispatch, intl } = this.props;
     const config = generateConfig(e.target.value);
-    dispatch(updateConfig(config));
+    dispatch(updateConfig(config)).then(() => {
+      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
+    }).catch(() => {});
   }
 
   render() {
