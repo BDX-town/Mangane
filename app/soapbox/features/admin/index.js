@@ -14,7 +14,6 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
-  openReportCount: state.getIn(['admin', 'open_report_count']),
 });
 
 export default @connect(mapStateToProps)
@@ -24,7 +23,6 @@ class Dashboard extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     instance: ImmutablePropTypes.map.isRequired,
-    openReportCount: PropTypes.number,
   };
 
   render() {
@@ -55,14 +53,14 @@ class Dashboard extends ImmutablePureComponent {
             </a>
           </div>
           <div className='dashcounter'>
-            <a href='/pleroma/admin/#/reports/index' target='_blank'>
+            <div>
               <div className='dashcounter__num'>
-                <FormattedNumber value={this.props.openReportCount} />
+                <FormattedNumber value={instance.getIn(['stats', 'domain_count'])} />
               </div>
               <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.open_report_count_label' defaultMessage='open reports' />
+                <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />
               </div>
-            </a>
+            </div>
           </div>
         </div>
         <RegistrationModePicker />
