@@ -1,4 +1,5 @@
 import {
+  ADMIN_CONFIG_FETCH_SUCCESS,
   ADMIN_REPORTS_FETCH_SUCCESS,
   ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_DELETE_REQUEST,
@@ -18,6 +19,8 @@ const initialState = ImmutableMap({
   users: ImmutableMap(),
   open_report_count: 0,
   awaitingApproval: ImmutableOrderedSet(),
+  configs: ImmutableList(),
+  needsReboot: false,
 });
 
 function importUsers(state, users) {
@@ -51,6 +54,8 @@ function approveUsers(state, users) {
 
 export default function admin(state = initialState, action) {
   switch(action.type) {
+  case ADMIN_CONFIG_FETCH_SUCCESS:
+    return state.set('configs', fromJS(action.configs));
   case ADMIN_REPORTS_FETCH_SUCCESS:
     if (action.params && action.params.state === 'open') {
       return state

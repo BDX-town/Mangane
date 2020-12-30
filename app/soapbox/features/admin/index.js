@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
+import RegistrationModePicker from './components/registration_mode_picker';
 import { parseVersion } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -63,14 +64,14 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </a>
           </div>
-          {/* TODO: Awaiting approval users count */}
         </div>
+        <RegistrationModePicker />
         <div className='dashwidgets'>
-          <div class='dashwidget'>
+          <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
             <ul>
-              <li>Soapbox FE <span class='pull-right'>1.1.0</span></li>
-              <li>{v.software} <span class='pull-right'>{v.version}</span></li>
+              <li>Soapbox FE <span className='pull-right'>1.1.0</span></li>
+              <li>{v.software} <span className='pull-right'>{v.version}</span></li>
             </ul>
           </div>
         </div>

@@ -4,7 +4,7 @@ import {
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox';
 import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
 const initialState = ImmutableMap();
@@ -13,9 +13,7 @@ const fallbackState = ImmutableMap({
   brandColor: '#0482d8', // Azure
 });
 
-const updateFromAdmin = (state, config) => {
-  const configs = config.get('configs', ImmutableList());
-
+const updateFromAdmin = (state, configs) => {
   try {
     return ConfigDB.find(configs, ':pleroma', ':frontend_configurations')
       .get('value')
@@ -47,7 +45,7 @@ export default function soapbox(state = initialState, action) {
   case SOAPBOX_CONFIG_REQUEST_FAIL:
     return fallbackState.mergeDeep(state);
   case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return updateFromAdmin(state, fromJS(action.config));
+    return updateFromAdmin(state, fromJS(action.configs));
   default:
     return state;
   }
