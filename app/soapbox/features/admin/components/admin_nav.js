@@ -44,18 +44,18 @@ class AdminNav extends React.PureComponent {
               </NavLink>
             )}
             {!instance.get('registrations') && (
-              <NavLink className='promo-panel-item' to='#'>
+              {/* <NavLink className='promo-panel-item' to='#'>
                 <Icon id='envelope' className='promo-panel-item__icon' fixedWidth />
                 <FormattedMessage id='admin_nav.invites' defaultMessage='Invites' />
-              </NavLink>
+              </NavLink> */}
             )}
-            <NavLink className='promo-panel-item' to='#'>
+            {/* <NavLink className='promo-panel-item' to='#'>
               <Icon id='group' className='promo-panel-item__icon' fixedWidth />
               <FormattedMessage id='admin_nav.registration' defaultMessage='Registration' />
-            </NavLink>
+            </NavLink> */}
           </div>
         </div>
-        <div className='wtf-panel promo-panel'>
+        {/* <div className='wtf-panel promo-panel'>
           <div className='promo-panel__container'>
             <NavLink className='promo-panel-item' to='#'>
               <Icon id='info-circle' className='promo-panel-item__icon' fixedWidth />
@@ -90,7 +90,7 @@ class AdminNav extends React.PureComponent {
               <FormattedMessage id='admin_nav.advanced' defaultMessage='Advanced' />
             </a>
           </div>
-        </div>
+        </div> */}
       </>
     );
   }
