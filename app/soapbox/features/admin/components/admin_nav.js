@@ -37,7 +37,7 @@ class AdminNav extends React.PureComponent {
               <IconWithCounter icon='gavel' count={reportsCount} fixedWidth />
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
             </a>
-            {instance.get('approval_required') || approvalCount > 0 && (
+            {(instance.get('approval_required') || approvalCount > 0) && (
               <NavLink className='promo-panel-item' to='/admin/approval'>
                 <IconWithCounter icon='user' count={approvalCount} fixedWidth />
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
