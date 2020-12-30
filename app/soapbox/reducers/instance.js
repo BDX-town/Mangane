@@ -3,7 +3,7 @@ import {
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
 import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
+import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
@@ -40,9 +40,10 @@ const preloadImport = (state, action, path) => {
 };
 
 const getConfigValue = (instanceConfig, key) => {
-  return instanceConfig
-    .find(value => value.getIn(['tuple', 0]) === key)
-    .getIn(['tuple', 1]);
+  const v = instanceConfig
+    .find(value => value.getIn(['tuple', 0]) === key);
+
+  return v ? v.getIn(['tuple', 1]) : undefined;
 };
 
 const importConfigs = (state, configs) => {
@@ -68,6 +69,7 @@ export default function instance(state = initialState, action) {
     return initialState.mergeDeep(fromJS(action.instance));
   case NODEINFO_FETCH_SUCCESS:
     return nodeinfoToInstance(fromJS(action.nodeinfo)).mergeDeep(state);
+  case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
     return importConfigs(state, fromJS(action.configs));
   default:
