@@ -37,13 +37,13 @@ export function fetchConfig() {
   };
 }
 
-export function updateAdminConfig(params) {
+export function updateConfig(configs) {
   return (dispatch, getState) => {
-    dispatch({ type: ADMIN_CONFIG_UPDATE_REQUEST });
+    dispatch({ type: ADMIN_CONFIG_UPDATE_REQUEST, configs });
     return api(getState)
-      .post('/api/pleroma/admin/config', params)
-      .then(response => {
-        dispatch({ type: ADMIN_CONFIG_UPDATE_SUCCESS, config: response.data });
+      .post('/api/pleroma/admin/config', { configs })
+      .then(({ data: { configs } }) => {
+        dispatch({ type: ADMIN_CONFIG_UPDATE_SUCCESS, configs });
       }).catch(error => {
         dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error });
       });

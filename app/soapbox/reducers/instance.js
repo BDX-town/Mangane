@@ -3,7 +3,9 @@ import {
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
 import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { ConfigDB } from 'soapbox/utils/config_db';
 
 const nodeinfoToInstance = nodeinfo => {
   // Match Pleroma's develop branch
@@ -37,6 +39,27 @@ const preloadImport = (state, action, path) => {
   return data ? initialState.mergeDeep(fromJS(data)) : state;
 };
 
+const getConfigValue = (instanceConfig, key) => {
+  return instanceConfig
+    .find(value => value.getIn(['tuple', 0]) === key)
+    .getIn(['tuple', 1]);
+};
+
+const importConfigs = (state, configs) => {
+  // FIXME: This is pretty hacked together. Need to make a cleaner map.
+  const config = ConfigDB.find(configs, ':pleroma', ':instance');
+  if (!config) return state;
+  const value = config.get('value', ImmutableList());
+
+  return state.withMutations(state => {
+    const registrationsOpen = getConfigValue(value, ':registrations_open');
+    const approvalRequired = getConfigValue(value, ':account_approval_required');
+
+    state.update('registrations', c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
+    state.update('approval_required', c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
+  });
+};
+
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case PRELOAD_IMPORT:
@@ -45,6 +68,8 @@ export default function instance(state = initialState, action) {
     return initialState.mergeDeep(fromJS(action.instance));
   case NODEINFO_FETCH_SUCCESS:
     return nodeinfoToInstance(fromJS(action.nodeinfo)).mergeDeep(state);
+  case ADMIN_CONFIG_UPDATE_SUCCESS:
+    return importConfigs(state, fromJS(action.configs));
   default:
     return state;
   }

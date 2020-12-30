@@ -67,11 +67,11 @@ class Dashboard extends ImmutablePureComponent {
         </div>
         <RegistrationModePicker />
         <div className='dashwidgets'>
-          <div class='dashwidget'>
+          <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
             <ul>
-              <li>Soapbox FE <span class='pull-right'>1.1.0</span></li>
-              <li>{v.software} <span class='pull-right'>{v.version}</span></li>
+              <li>Soapbox FE <span className='pull-right'>1.1.0</span></li>
+              <li>{v.software} <span className='pull-right'>{v.version}</span></li>
             </ul>
           </div>
         </div>
