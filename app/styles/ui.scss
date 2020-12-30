@@ -699,3 +699,29 @@
     text-align: center;
   }
 }
+
+.icon-with-counter {
+  position: relative;
+  display: inline;
+
+  &__counter {
+    @include font-montserrat;
+    @include font-size(14);
+    @include line-height(14);
+    position: absolute;
+    box-sizing: border-box;
+    left: 8px;
+    top: -12px;
+    min-width: 16px;
+    height: 16px;
+    padding: 1px 3px 0;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    background: var(--accent-color);
+
+    @media screen and (max-width: 895px) {
+      top: 0;
+    }
+  }
+}

@@ -1,12 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'soapbox/components/icon';
+import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
+  approvalCount: state.getIn(['admin', 'awaitingApproval']).count(),
+  reportsCount: state.getIn(['admin', 'open_report_count']),
 });
 
 export default @connect(mapStateToProps)
@@ -14,10 +18,12 @@ class AdminNav extends React.PureComponent {
 
   static propTypes = {
     instance: ImmutablePropTypes.map.isRequired,
+    approvalCount: PropTypes.number,
+    reportsCount: PropTypes.number,
   };
 
   render() {
-    const { instance } = this.props;
+    const { instance, approvalCount, reportsCount } = this.props;
 
     return (
       <>
@@ -28,12 +34,12 @@ class AdminNav extends React.PureComponent {
               <FormattedMessage id='admin_nav.dashboard' defaultMessage='Dashboard' />
             </NavLink>
             <a className='promo-panel-item' href='/pleroma/admin/#/reports/index' target='_blank'>
-              <Icon id='gavel' className='promo-panel-item__icon' fixedWidth />
+              <IconWithCounter icon='gavel' count={reportsCount} fixedWidth />
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
             </a>
             {instance.get('approval_required') && (
               <NavLink className='promo-panel-item' to='/admin/approval'>
-                <Icon id='user' className='promo-panel-item__icon' fixedWidth />
+                <IconWithCounter icon='user' count={approvalCount} fixedWidth />
                 <FormattedMessage id='admin_nav.awaiting_approval' defaultMessage='Awaiting Approval' />
               </NavLink>
             )}
