@@ -18,10 +18,18 @@ export const defaultConfig = ImmutableMap({
   navlinks: ImmutableMap({
     homeFooter: ImmutableList(),
   }),
+  allowedEmoji: ImmutableList([
+    '👍',
+    '❤️',
+    '😆',
+    '😮',
+    '😢',
+    '😩',
+  ]),
 });
 
 export function getSoapboxConfig(state) {
-  return defaultConfig.mergeDeep(state.get('soapbox'));
+  return defaultConfig.merge(state.get('soapbox'));
 }
 
 export function fetchSoapboxConfig() {

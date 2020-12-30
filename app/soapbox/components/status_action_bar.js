@@ -74,6 +74,7 @@ class StatusActionBar extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    allowedEmoji: ImmutablePropTypes.list,
   };
 
   static defaultProps = {
@@ -120,7 +121,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleLikeButtonClick = e => {
-    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
+    const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
     if (this.isMobile()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
@@ -314,7 +315,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, intl } = this.props;
+    const { status, intl, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -326,8 +327,9 @@ class StatusActionBar extends ImmutablePureComponent {
       status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
       favouriteCount,
       status.get('favourited'),
+      allowedEmoji,
     ).reduce((acc, cur) => acc + cur.get('count'), 0);
-    const meEmojiReact = getReactForStatus(status);
+    const meEmojiReact = getReactForStatus(status, allowedEmoji);
 
     let menu = this._makeMenu(publicStatus);
     let reblogIcon = 'retweet';

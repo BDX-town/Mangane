@@ -158,7 +158,7 @@ describe('getReactForStatus', () => {
         ],
       },
     });
-    expect(getReactForStatus(status)).toEqual('❤');
+    expect(getReactForStatus(status, ALLOWED_EMOJI)).toEqual('❤');
   });
 
   it('returns a thumbs-up for a favourite', () => {

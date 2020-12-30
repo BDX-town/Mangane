@@ -35,6 +35,7 @@ import {
   groupRemoveStatus,
 } from '../actions/groups';
 import { getSettings } from '../actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -53,6 +54,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
     displayMedia: getSettings(state).get('displayMedia'),
+    allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
   });
 
   return mapStateToProps;
