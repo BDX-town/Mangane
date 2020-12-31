@@ -68,10 +68,11 @@ class AwaitingApproval extends ImmutablePureComponent {
   render() {
     const { intl, users } = this.props;
     const { isLoading } = this.state;
+    const showLoading = isLoading && users.count() === 0;
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <ScrollableList isLoading={isLoading} showLoading={isLoading} scrollKey='awaiting-approval' emptyMessage={intl.formatMessage(messages.emptyMessage)}>
+        <ScrollableList isLoading={isLoading} showLoading={showLoading} scrollKey='awaiting-approval' emptyMessage={intl.formatMessage(messages.emptyMessage)}>
           {users.map((user, i) => (
             <div className='unapproved-account' key={user.get('id')}>
               <div className='unapproved-account__bio'>
