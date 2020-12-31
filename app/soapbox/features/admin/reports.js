@@ -7,6 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchReports } from 'soapbox/actions/admin';
+import Report from './components/report';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
@@ -47,13 +48,13 @@ class Reports extends ImmutablePureComponent {
 
     return (
       <Column icon='gavel' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <ScrollableList isLoading={isLoading} showLoading={showLoading} scrollKey='admin-reports' emptyMessage={intl.formatMessage(messages.emptyMessage)}>
-          {reports.map(report => (
-            <div className='admin-report' key={report.get('id')}>
-              <div>Report on @{report.getIn(['account', 'acct'])}</div>
-              <blockquote>{report.get('content')} &mdash; @{report.getIn(['actor', 'acct'])}</blockquote>
-            </div>
-          ))}
+        <ScrollableList
+          isLoading={isLoading}
+          showLoading={showLoading}
+          scrollKey='admin-reports'
+          emptyMessage={intl.formatMessage(messages.emptyMessage)}
+        >
+          {reports.map(report => <Report report={report} />)}
         </ScrollableList>
       </Column>
     );

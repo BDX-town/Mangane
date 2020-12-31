@@ -77,7 +77,7 @@ class AwaitingApproval extends ImmutablePureComponent {
             <div className='unapproved-account' key={user.get('id')}>
               <div className='unapproved-account__bio'>
                 <div className='unapproved-account__nickname'>@{user.get('nickname')}</div>
-                <blockquote className='unapproved-account__reason'>{user.get('registration_reason')}</blockquote>
+                <blockquote className='md'>{user.get('registration_reason')}</blockquote>
               </div>
               <div className='unapproved-account__actions'>
                 <IconButton icon='check' size={22} onClick={this.handleApprove(user.get('nickname'))} />

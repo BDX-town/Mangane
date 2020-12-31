@@ -77,12 +77,6 @@
     font-weight: bold;
   }
 
-  &__reason {
-    padding: 5px 0 5px 15px;
-    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
-    color: var(--primary-text-color--faint);
-  }
-
   &__actions {
     margin-left: auto;
     display: flex;
@@ -118,8 +112,32 @@
       }
     }
   }
+
+  blockquote.md {
+    padding: 5px 0 5px 15px;
+    border-left: 3px solid hsla(var(--primary-text-color_hsl), 0.4);
+    color: var(--primary-text-color--faint);
+  }
 }
 
 .admin-report {
-  padding: 20px;
+  padding: 15px;
+  display: flex;
+  border-bottom: 1px solid var(--brand-color--faint);
+
+  &__content {
+    padding-left: 16px;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__quote {
+    font-size: 14px;
+
+    .byline {
+      font-size: 12px;
+    }
+  }
 }
