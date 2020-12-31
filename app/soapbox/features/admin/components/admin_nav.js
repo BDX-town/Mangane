@@ -33,10 +33,10 @@ class AdminNav extends React.PureComponent {
               <Icon id='tachometer' className='promo-panel-item__icon' fixedWidth />
               <FormattedMessage id='admin_nav.dashboard' defaultMessage='Dashboard' />
             </NavLink>
-            <a className='promo-panel-item' href='/pleroma/admin/#/reports/index' target='_blank'>
+            <NavLink className='promo-panel-item' to='/admin/reports'>
               <IconWithCounter icon='gavel' count={reportsCount} fixedWidth />
               <FormattedMessage id='admin_nav.reports' defaultMessage='Reports' />
-            </a>
+            </NavLink>
             {((instance.get('registrations') && instance.get('approval_required')) || approvalCount > 0) && (
               <NavLink className='promo-panel-item' to='/admin/approval'>
                 <IconWithCounter icon='user' count={approvalCount} fixedWidth />
