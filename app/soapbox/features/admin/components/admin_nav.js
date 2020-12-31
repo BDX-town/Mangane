@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
   approvalCount: state.getIn(['admin', 'awaitingApproval']).count(),
-  reportsCount: state.getIn(['admin', 'open_report_count']),
+  reportsCount: state.getIn(['admin', 'openReports']).count(),
 });
 
 export default @connect(mapStateToProps)

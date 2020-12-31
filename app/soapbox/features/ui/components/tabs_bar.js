@@ -154,7 +154,7 @@ class TabsBar extends React.PureComponent {
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const reportsCount = state.getIn(['admin', 'open_report_count']);
+  const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   return {
     account: state.getIn(['accounts', me]),

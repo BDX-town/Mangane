@@ -17,7 +17,6 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, props) => ({
   mode: modeFromInstance(state.get('instance')),
-  openReportCount: state.getIn(['admin', 'open_report_count']),
 });
 
 const generateConfig = mode => {
