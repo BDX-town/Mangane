@@ -50,7 +50,8 @@ class Reports extends ImmutablePureComponent {
         <ScrollableList isLoading={isLoading} showLoading={showLoading} scrollKey='admin-reports' emptyMessage={intl.formatMessage(messages.emptyMessage)}>
           {reports.map(report => (
             <div className='admin-report' key={report.get('id')}>
-              {report.get('id')}
+              <div>Report on @{report.getIn(['account', 'acct'])}</div>
+              <blockquote>{report.get('content')} &mdash; @{report.getIn(['actor', 'acct'])}</blockquote>
             </div>
           ))}
         </ScrollableList>
