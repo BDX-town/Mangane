@@ -24,6 +24,10 @@ export const ADMIN_USERS_APPROVE_REQUEST = 'ADMIN_USERS_APPROVE_REQUEST';
 export const ADMIN_USERS_APPROVE_SUCCESS = 'ADMIN_USERS_APPROVE_SUCCESS';
 export const ADMIN_USERS_APPROVE_FAIL    = 'ADMIN_USERS_APPROVE_FAIL';
 
+export const ADMIN_USERS_DEACTIVATE_REQUEST = 'ADMIN_USERS_DEACTIVATE_REQUEST';
+export const ADMIN_USERS_DEACTIVATE_SUCCESS = 'ADMIN_USERS_DEACTIVATE_SUCCESS';
+export const ADMIN_USERS_DEACTIVATE_FAIL    = 'ADMIN_USERS_DEACTIVATE_FAIL';
+
 export function fetchConfig() {
   return (dispatch, getState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
@@ -72,6 +76,19 @@ export function fetchUsers(params) {
         dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, data, params });
       }).catch(error => {
         dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, params });
+      });
+  };
+}
+
+export function deactivateUsers(nicknames) {
+  return (dispatch, getState) => {
+    dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, nicknames });
+    return api(getState)
+      .patch('/api/pleroma/admin/users/deactivate', { nicknames })
+      .then(({ data: { users } }) => {
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, users, nicknames });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, nicknames });
       });
   };
 }
