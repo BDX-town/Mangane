@@ -85,9 +85,13 @@
 
   &__actions {
     margin-left: auto;
-    padding-left: 20px;
     display: flex;
     flex-wrap: nowrap;
+    padding-left: 20px;
+
+    button.icon-button:nth-child(n+2) {
+      padding-left: 10px;
+    }
   }
 }
 
