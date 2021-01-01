@@ -48,6 +48,7 @@ class Report extends ImmutablePureComponent {
       const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
       dispatch(snackbar.success(message));
     }).catch(() => {});
+    this.handleCloseReport();
   }
 
   render() {
