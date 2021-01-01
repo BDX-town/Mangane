@@ -89,8 +89,11 @@
   }
 }
 
-.slist .item-list article:nth-child(2n-1) .unapproved-account {
-  background-color: hsla(var(--accent-color_hsl), 0.07);
+.page--admin .slist .item-list article:nth-child(2n-1) {
+  .unapproved-account,
+  .logentry {
+    background-color: hsla(var(--accent-color_hsl), 0.07);
+  }
 }
 
 .page--admin {
@@ -196,4 +199,8 @@
       margin-left: auto;
     }
   }
+}
+
+.logentry {
+  padding: 15px;
 }

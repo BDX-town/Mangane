@@ -37,6 +37,10 @@ export const ADMIN_STATUS_DELETE_REQUEST = 'ADMIN_STATUS_DELETE_REQUEST';
 export const ADMIN_STATUS_DELETE_SUCCESS = 'ADMIN_STATUS_DELETE_SUCCESS';
 export const ADMIN_STATUS_DELETE_FAIL    = 'ADMIN_STATUS_DELETE_FAIL';
 
+export const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
+export const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
+export const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
+
 export function fetchConfig() {
   return (dispatch, getState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
@@ -155,6 +159,20 @@ export function deleteStatus(id) {
         dispatch({ type: ADMIN_STATUS_DELETE_SUCCESS, id });
       }).catch(error => {
         dispatch({ type: ADMIN_STATUS_DELETE_FAIL, error, id });
+      });
+  };
+}
+
+export function fetchModerationLog(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: ADMIN_LOG_FETCH_REQUEST });
+    return api(getState)
+      .get('/api/pleroma/admin/moderation_log', { params })
+      .then(({ data }) => {
+        dispatch({ type: ADMIN_LOG_FETCH_SUCCESS, items: data.items, total: data.total });
+        return data;
+      }).catch(error => {
+        dispatch({ type: ADMIN_LOG_FETCH_FAIL, error });
       });
   };
 }
