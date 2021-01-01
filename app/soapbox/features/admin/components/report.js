@@ -6,16 +6,20 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import Avatar from 'soapbox/components/avatar';
 import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
-import { deactivateUsers, closeReports } from 'soapbox/actions/admin';
+import { closeReports, deactivateUsers, deleteUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
-  deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
+  deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
   deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate {acct}. Deactivating a user is a reversible action.' },
   deactivateUserConfirm: { id: 'confirmations.admin.deactivate_user.confirm', defaultMessage: 'Deactivate {acct}' },
+  userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
+  deleteUser: { id: 'admin.reports.actions.delete_user', defaultMessage: 'Delete {acct}' },
+  deleteUserPrompt: { id: 'confirmations.admin.delete_user.message', defaultMessage: 'You are about to delete {acct}. THIS IS A DESTRUCTIVE ACTION THAT CANNOT BE UNDONE.' },
+  deleteUserConfirm: { id: 'confirmations.admin.delete_user.confirm', defaultMessage: 'Delete {acct}' },
+  userDeleted: { id: 'admin.reports.user_deleted_message', defaultMessage: '{acct} was deleted' },
 });
 
 export default @connect()
@@ -32,6 +36,9 @@ class Report extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { acct: `@${report.getIn(['account', 'acct'])}` }),
       action: this.handleDeactivateUser,
+    }, {
+      text: intl.formatMessage(messages.deleteUser, { acct: `@${report.getIn(['account', 'acct'])}` }),
+      action: this.handleDeleteUser,
     }];
   }
 
@@ -53,6 +60,22 @@ class Report extends ImmutablePureComponent {
       onConfirm: () => {
         dispatch(deactivateUsers([nickname])).then(() => {
           const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
+          dispatch(snackbar.success(message));
+        }).catch(() => {});
+        this.handleCloseReport();
+      },
+    }));
+  }
+
+  handleDeleteUser = () => {
+    const { intl, dispatch, report } = this.props;
+    const nickname = report.getIn(['account', 'acct']);
+    dispatch(openModal('CONFIRM', {
+      message: intl.formatMessage(messages.deleteUserPrompt, { acct: `@${nickname}` }),
+      confirm: intl.formatMessage(messages.deleteUserConfirm, { acct: `@${nickname}` }),
+      onConfirm: () => {
+        dispatch(deleteUsers([nickname])).then(() => {
+          const message = intl.formatMessage(messages.userDeleted, { acct: `@${nickname}` });
           dispatch(snackbar.success(message));
         }).catch(() => {});
         this.handleCloseReport();
