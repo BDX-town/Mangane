@@ -726,3 +726,44 @@
     margin-right: 8px;
   }
 }
+
+.column--better {
+  .column__top {
+    display: flex;
+    align-items: center;
+  }
+
+  .column-header {
+    margin-right: auto;
+  }
+
+  .column__menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &,
+    > div,
+    button {
+      height: 100%;
+    }
+
+    button {
+      padding: 0 15px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .column-back-button--slim {
+    &-button {
+      position: relative;
+      top: auto;
+      right: auto;
+    }
+  }
+}
