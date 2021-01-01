@@ -33,6 +33,10 @@ export const ADMIN_USERS_DEACTIVATE_REQUEST = 'ADMIN_USERS_DEACTIVATE_REQUEST';
 export const ADMIN_USERS_DEACTIVATE_SUCCESS = 'ADMIN_USERS_DEACTIVATE_SUCCESS';
 export const ADMIN_USERS_DEACTIVATE_FAIL    = 'ADMIN_USERS_DEACTIVATE_FAIL';
 
+export const ADMIN_STATUS_DELETE_REQUEST = 'ADMIN_STATUS_DELETE_REQUEST';
+export const ADMIN_STATUS_DELETE_SUCCESS = 'ADMIN_STATUS_DELETE_SUCCESS';
+export const ADMIN_STATUS_DELETE_FAIL    = 'ADMIN_STATUS_DELETE_FAIL';
+
 export function fetchConfig() {
   return (dispatch, getState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
@@ -138,6 +142,19 @@ export function approveUsers(nicknames) {
         dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, nicknames });
       }).catch(error => {
         dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, nicknames });
+      });
+  };
+}
+
+export function deleteStatus(id) {
+  return (dispatch, getState) => {
+    dispatch({ type: ADMIN_STATUS_DELETE_REQUEST, id });
+    return api(getState)
+      .delete(`/api/pleroma/admin/statuses/${id}`)
+      .then(() => {
+        dispatch({ type: ADMIN_STATUS_DELETE_SUCCESS, id });
+      }).catch(error => {
+        dispatch({ type: ADMIN_STATUS_DELETE_FAIL, error, id });
       });
   };
 }

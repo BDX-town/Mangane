@@ -5,9 +5,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import Avatar from 'soapbox/components/avatar';
 import Button from 'soapbox/components/button';
-import StatusContent from 'soapbox/components/status_content';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
+import ReportStatus from './report_status';
 import { closeReports, deactivateUsers, deleteUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import { openModal } from 'soapbox/actions/modal';
@@ -120,7 +120,7 @@ class Report extends ImmutablePureComponent {
                 expanded={accordionExpanded}
                 onToggle={this.handleAccordionToggle}
               >
-                {statuses.map(status => <StatusContent status={status} />)}
+                {statuses.map(status => <ReportStatus report={report} status={status} />)}
               </Accordion>
             )}
           </div>

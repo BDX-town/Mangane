@@ -177,11 +177,15 @@ export const makeGetChat = () => {
 };
 
 export const makeGetReport = () => {
+  const getStatus = makeGetStatus();
+
   return createSelector(
     [
       (state, id) => state.getIn(['admin', 'reports', id]),
       (state, id) => state.getIn(['admin', 'reports', id, 'statuses']).map(
-        statusId => state.getIn(['statuses', statusId])),
+        statusId => state.getIn(['statuses', statusId]))
+        .filter(s => s)
+        .map(s => getStatus(state, s.toJS())),
     ],
 
     (report, statuses) => {

@@ -166,14 +166,25 @@
       font-weight: normal !important;
       margin-bottom: 0 !important;
     }
+  }
+
+  &__status {
+    display: flex;
+    border-bottom: 1px solid var(--accent-color--med);
+    padding: 10px 0;
+
+    &:last-child {
+      border: 0;
+    }
 
     .status__content {
-      border-bottom: 1px solid var(--accent-color--med);
-      padding: 10px 0;
+      flex: 1;
+      padding: 0;
+    }
 
-      &:last-child {
-        border: 0;
-      }
+    &-actions {
+      padding: 3px 10px;
+      margin-left: auto;
     }
   }
 }
