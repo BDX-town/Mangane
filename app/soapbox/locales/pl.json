@@ -49,6 +49,7 @@
   "admin.awaiting_approval.approved_message": "Przyjęto {acct}!",
   "admin.awaiting_approval.empty_message": "Nikt nie oczekuje przyjęcia. Gdy zarejestruje się nowy użytkownik, możesz zatwierdzić go tutaj.",
   "admin.awaiting_approval.rejected_message": "Odrzucono {acct}!",
+  "admin.dashboard.registration_mode_label": "Rejestracje",
   "admin.dashboard.registration_mode.approval_hint": "Użytkownicy mogą zarejestrować się, ale ich konto aktywuje się dopiero gdy zostanie ono zatwierdzone przez administratora.",
   "admin.dashboard.registration_mode.approval_label": "Wymagane przyjęcie",
   "admin.dashboard.registration_mode.closed_hint": "Nikt nie może się zarejestrować. Wciąż możesz zapraszać ludzi.",
