@@ -10,6 +10,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
+  viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
   deleteStatus: { id: 'admin.reports.actions.delete_status', defaultMessage: 'Delete post' },
   deleteStatusPrompt: { id: 'confirmations.admin.delete_status.message', defaultMessage: 'You are about to delete a post by {acct}. This action cannot be undone.' },
   deleteStatusConfirm: { id: 'confirmations.admin.delete_status.confirm', defaultMessage: 'Delete post' },
@@ -27,9 +28,13 @@ class ReportStatus extends ImmutablePureComponent {
 
   makeMenu = () => {
     const { intl, status } = this.props;
+    const acct = status.getIn(['account', 'acct']);
 
     return [{
-      text: intl.formatMessage(messages.deleteStatus, { acct: `@${status.getIn(['account', 'acct'])}` }),
+      text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
+      to: `/@${acct}/posts/${status.get('id')}`,
+    }, {
+      text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: this.handleDeleteStatus,
     }];
   }
