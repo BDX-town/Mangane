@@ -7,13 +7,13 @@ import {
 
 describe('admin reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual({
+    expect(reducer(undefined, {})).toEqual(ImmutableMap({
       reports: ImmutableMap(),
       openReports: ImmutableOrderedSet(),
       users: ImmutableMap(),
       awaitingApproval: ImmutableOrderedSet(),
       configs: ImmutableList(),
       needsReboot: false,
-    });
+    }));
   });
 });
