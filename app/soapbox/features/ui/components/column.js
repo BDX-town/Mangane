@@ -16,7 +16,7 @@ export default class Column extends React.PureComponent {
 
   render() {
     const { heading, icon, children, active, backBtnSlim } = this.props;
-    const columnHeaderId = heading.replace(/ /g, '-');
+    const columnHeaderId = heading && heading.replace(/ /g, '-');
     const backBtn = backBtnSlim ? (<ColumnBackButtonSlim />) : (<ColumnBackButton />);
 
     return (

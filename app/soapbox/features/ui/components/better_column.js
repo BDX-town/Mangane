@@ -17,7 +17,7 @@ export default class Column extends React.PureComponent {
 
   render() {
     const { heading, icon, children, active, menu } = this.props;
-    const columnHeaderId = heading.replace(/ /g, '-');
+    const columnHeaderId = heading && heading.replace(/ /g, '-');
 
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column column--better'>
