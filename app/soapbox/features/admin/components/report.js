@@ -125,7 +125,7 @@ class Report extends ImmutablePureComponent {
                 expanded={accordionExpanded}
                 onToggle={this.handleAccordionToggle}
               >
-                {statuses.map(status => <ReportStatus report={report} status={status} />)}
+                {statuses.map(status => <ReportStatus report={report} status={status} key={status.get('id')} />)}
               </Accordion>
             )}
           </div>

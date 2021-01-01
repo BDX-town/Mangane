@@ -20,7 +20,7 @@ const mapStateToProps = state => {
   const ids = state.getIn(['admin', 'openReports']);
 
   return {
-    reports: ids.map(id => getReport(state, id)),
+    reports: ids.toList().map(id => getReport(state, id)),
   };
 };
 
@@ -57,7 +57,7 @@ class Reports extends ImmutablePureComponent {
           scrollKey='admin-reports'
           emptyMessage={intl.formatMessage(messages.emptyMessage)}
         >
-          {reports.map(report => <Report report={report} />)}
+          {reports.map(report => <Report report={report} key={report.get('id')} />)}
         </ScrollableList>
       </Column>
     );

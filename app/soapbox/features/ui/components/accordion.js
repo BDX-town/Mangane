@@ -12,7 +12,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
 
   static propTypes = {
     headline: PropTypes.node.isRequired,
-    children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.element, PropTypes.node]),
     expanded: PropTypes.bool,
     onToggle: PropTypes.func,
     intl: PropTypes.object.isRequired,
