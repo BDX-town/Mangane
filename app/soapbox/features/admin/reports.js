@@ -11,7 +11,7 @@ import Report from './components/report';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
-  emptyMessage: { id: 'admin.reports.empty_message', defaultMessage: 'There are no open reports. When a user reports a post, it will show up here.' },
+  emptyMessage: { id: 'admin.reports.empty_message', defaultMessage: 'There are no open reports. If a user gets reported, they will show up here.' },
 });
 
 const mapStateToProps = state => {
