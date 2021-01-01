@@ -125,7 +125,9 @@ class Report extends ImmutablePureComponent {
             )}
           </div>
           <div className='admin-report__quote'>
-            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
+            {report.get('content', '').length > 0 &&
+              <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
+            }
             <span className='byline'>&mdash; @{report.getIn(['actor', 'acct'])}</span>
           </div>
         </div>
