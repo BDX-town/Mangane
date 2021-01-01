@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
@@ -99,18 +100,22 @@ class Report extends ImmutablePureComponent {
     const menu = this.makeMenu();
     const statuses = report.get('statuses');
     const statusCount = statuses.count();
+    const acct = report.getIn(['account', 'acct']);
+    const reporterAcct = report.getIn(['actor', 'acct']);
 
     return (
       <div className='admin-report' key={report.get('id')}>
         <div className='admin-report__avatar'>
-          <Avatar account={report.get('account')} size={32} />
+          <Link to={`/@${acct}`} title={acct}>
+            <Avatar account={report.get('account')} size={32} />
+          </Link>
         </div>
         <div className='admin-report__content'>
           <h4 className='admin-report__title'>
             <FormattedMessage
               id='admin.reports.report_title'
               defaultMessage='Report on {acct}'
-              values={{ acct:  `@${report.getIn(['account', 'acct'])}` }}
+              values={{ acct: <Link to={`/@${acct}`} title={acct}>@{acct}</Link> }}
             />
           </h4>
           <div className='admin-report__statuses'>
@@ -128,7 +133,7 @@ class Report extends ImmutablePureComponent {
             {report.get('content', '').length > 0 &&
               <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
             }
-            <span className='byline'>&mdash; @{report.getIn(['actor', 'acct'])}</span>
+            <span className='byline'>&mdash; <Link to={`/@${reporterAcct}`} title={reporterAcct}>@{reporterAcct}</Link></span>
           </div>
         </div>
         <div className='admin-report__actions'>

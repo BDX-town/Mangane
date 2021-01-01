@@ -132,6 +132,10 @@
 
   &__title {
     font-weight: bold;
+
+    a {
+      color: var(--primary-text-color);
+    }
   }
 
   &__quote {
@@ -139,6 +143,11 @@
 
     .byline {
       font-size: 12px;
+
+      a {
+        color: var(--primary-text-color);
+        text-decoration: none;
+      }
     }
   }
 
