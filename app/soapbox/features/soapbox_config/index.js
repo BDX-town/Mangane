@@ -308,19 +308,18 @@ class SoapboxConfig extends ImmutablePureComponent {
             </FieldsGroup>
             <Accordion
               headline={intl.formatMessage(messages.rawJSONLabel)}
-              content={(
-                <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
-                  <SimpleTextarea
-                    hint={intl.formatMessage(messages.rawJSONHint)}
-                    value={this.state.rawJSON}
-                    onChange={this.handleEditJSON}
-                    rows={12}
-                  />
-                </div>
-              )}
               expanded={this.state.jsonEditorExpanded}
               onToggle={this.toggleJSONEditor}
-            />
+            >
+              <div className={this.state.jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
+                <SimpleTextarea
+                  hint={intl.formatMessage(messages.rawJSONHint)}
+                  value={this.state.rawJSON}
+                  onChange={this.handleEditJSON}
+                  rows={12}
+                />
+              </div>
+            </Accordion>
           </fieldset>
           <div className='actions'>
             <button name='button' type='submit' className='btn button button-primary'>

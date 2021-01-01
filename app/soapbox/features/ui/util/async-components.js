@@ -225,3 +225,7 @@ export function Dashboard() {
 export function AwaitingApproval() {
   return import(/* webpackChunkName: "features/admin/awaiting_approval" */'../../admin/awaiting_approval');
 }
+
+export function Reports() {
+  return import(/* webpackChunkName: "features/admin/reports" */'../../admin/reports');
+}

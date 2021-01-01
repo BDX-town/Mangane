@@ -24,6 +24,7 @@ export default class IntersectionObserverArticle extends React.Component {
 
   state = {
     isHidden: false, // set to true in requestIdleCallback to trigger un-render
+    isIntersecting: true,
   }
 
   shouldComponentUpdate(nextProps, nextState) {
