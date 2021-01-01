@@ -127,6 +127,7 @@
 
   &__content {
     padding: 0 16px;
+    flex: 1;
   }
 
   &__title {
@@ -152,6 +153,26 @@
         display: flex;
         align-items: center;
         justify-content: center;
+      }
+    }
+  }
+
+  &__statuses .accordion {
+    padding: 10px;
+    margin-bottom: 6px;
+
+    &__title {
+      font-size: 12px !important;
+      font-weight: normal !important;
+      margin-bottom: 0 !important;
+    }
+
+    .status__content {
+      border-bottom: 1px solid var(--accent-color--med);
+      padding: 10px 0;
+
+      &:last-child {
+        border: 0;
       }
     }
   }

@@ -5,7 +5,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import Avatar from 'soapbox/components/avatar';
 import Button from 'soapbox/components/button';
+import StatusContent from 'soapbox/components/status_content';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import Accordion from 'soapbox/features/ui/components/accordion';
 import { closeReports, deactivateUsers, deleteUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import { openModal } from 'soapbox/actions/modal';
@@ -28,6 +30,10 @@ class Report extends ImmutablePureComponent {
 
   static propTypes = {
     report: ImmutablePropTypes.map.isRequired,
+  };
+
+  state = {
+    accordionExpanded: false,
   };
 
   makeMenu = () => {
@@ -83,8 +89,13 @@ class Report extends ImmutablePureComponent {
     }));
   }
 
+  handleAccordionToggle = setting => {
+    this.setState({ accordionExpanded: setting });
+  }
+
   render() {
     const { report } = this.props;
+    const { accordionExpanded } = this.state;
     const menu = this.makeMenu();
 
     return (
@@ -100,7 +111,16 @@ class Report extends ImmutablePureComponent {
               values={{ acct:  `@${report.getIn(['account', 'acct'])}` }}
             />
           </h4>
-          <div class='admin-report__quote'>
+          <div className='admin-report__statuses'>
+            <Accordion
+              headline={`Reported posts (${report.get('statuses').count()})`}
+              expanded={accordionExpanded}
+              onToggle={this.handleAccordionToggle}
+            >
+              <div>{report.get('statuses').map(status => <StatusContent status={status} />)}</div>
+            </Accordion>
+          </div>
+          <div className='admin-report__quote'>
             <blockquote className='md'>{report.get('content')}</blockquote>
             <span className='byline'>&mdash; @{report.getIn(['actor', 'acct'])}</span>
           </div>
