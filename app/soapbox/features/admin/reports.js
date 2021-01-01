@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
+import Column from '../ui/components/better_column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchReports } from 'soapbox/actions/admin';
 import Report from './components/report';
@@ -12,6 +12,7 @@ import { makeGetReport } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
+  modlog: { id: 'column.admin.reports.menu.moderation_log', defaultMessage: 'Moderation Log' },
   emptyMessage: { id: 'admin.reports.empty_message', defaultMessage: 'There are no open reports. If a user gets reported, they will show up here.' },
 });
 
@@ -37,6 +38,15 @@ class Reports extends ImmutablePureComponent {
     isLoading: true,
   }
 
+  makeColumnMenu = () => {
+    const { intl } = this.props;
+
+    return [{
+      text: intl.formatMessage(messages.modlog),
+      to: '/admin/log',
+    }];
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchReports())
@@ -50,7 +60,7 @@ class Reports extends ImmutablePureComponent {
     const showLoading = isLoading && reports.count() === 0;
 
     return (
-      <Column icon='gavel' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='gavel' heading={intl.formatMessage(messages.heading)} menu={this.makeColumnMenu()}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

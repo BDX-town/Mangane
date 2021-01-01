@@ -229,3 +229,7 @@ export function AwaitingApproval() {
 export function Reports() {
   return import(/* webpackChunkName: "features/admin/reports" */'../../admin/reports');
 }
+
+export function ModerationLog() {
+  return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
+}
