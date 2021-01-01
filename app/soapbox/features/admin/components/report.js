@@ -97,6 +97,8 @@ class Report extends ImmutablePureComponent {
     const { report } = this.props;
     const { accordionExpanded } = this.state;
     const menu = this.makeMenu();
+    const statuses = report.get('statuses');
+    const statusCount = statuses.count();
 
     return (
       <div className='admin-report' key={report.get('id')}>
@@ -112,13 +114,15 @@ class Report extends ImmutablePureComponent {
             />
           </h4>
           <div className='admin-report__statuses'>
-            <Accordion
-              headline={`Reported posts (${report.get('statuses').count()})`}
-              expanded={accordionExpanded}
-              onToggle={this.handleAccordionToggle}
-            >
-              <div>{report.get('statuses').map(status => <StatusContent status={status} />)}</div>
-            </Accordion>
+            {statusCount > 0 && (
+              <Accordion
+                headline={`Reported posts (${statusCount})`}
+                expanded={accordionExpanded}
+                onToggle={this.handleAccordionToggle}
+              >
+                <div>{statuses.map(status => <StatusContent status={status} />)}</div>
+              </Accordion>
+            )}
           </div>
           <div className='admin-report__quote'>
             <blockquote className='md'>{report.get('content')}</blockquote>
