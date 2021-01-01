@@ -1,7 +1,6 @@
 import React from 'react';
 import ColumnHeader from './column_header';
 import PropTypes from 'prop-types';
-import { isMobile } from '../../../is_mobile';
 import ColumnBackButton from '../../../components/column_back_button';
 import ColumnBackButtonSlim from '../../../components/column_back_button_slim';
 
@@ -12,25 +11,17 @@ export default class Column extends React.PureComponent {
     icon: PropTypes.string,
     children: PropTypes.node,
     active: PropTypes.bool,
-    hideHeadingOnMobile: PropTypes.bool,
     backBtnSlim: PropTypes.bool,
   };
 
   render() {
-    const { heading, icon, children, active, hideHeadingOnMobile, backBtnSlim } = this.props;
-
-    const showHeading = heading && (!hideHeadingOnMobile || (hideHeadingOnMobile && !isMobile(window.innerWidth)));
-
-    const columnHeaderId = showHeading && heading.replace(/ /g, '-');
-    const header = showHeading && (
-      <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />
-    );
-
+    const { heading, icon, children, active, backBtnSlim } = this.props;
+    const columnHeaderId = heading.replace(/ /g, '-');
     const backBtn = backBtnSlim ? (<ColumnBackButtonSlim />) : (<ColumnBackButton />);
 
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column'>
-        {header}
+        <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />
         {backBtn}
         {children}
       </div>
