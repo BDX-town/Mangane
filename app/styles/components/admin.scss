@@ -143,5 +143,16 @@
 
   &__actions {
     margin-left: auto;
+    display: flex;
+
+    .icon-button {
+      padding-left: 10px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
   }
 }

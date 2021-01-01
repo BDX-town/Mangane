@@ -4,13 +4,15 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import Avatar from 'soapbox/components/avatar';
+import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
-import { deactivateUsers } from 'soapbox/actions/admin';
+import { deactivateUsers, closeReports } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  deactivated: { id: 'admin.reports.deactivated_message', defaultMessage: '{acct} was deactivated' },
+  userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
+  reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
 });
 
 export default @connect()
@@ -30,11 +32,20 @@ class Report extends ImmutablePureComponent {
     }];
   }
 
+  handleCloseReport = () => {
+    const { intl, dispatch, report } = this.props;
+    const nickname = report.getIn(['account', 'acct']);
+    dispatch(closeReports([report.get('id')])).then(() => {
+      const message = intl.formatMessage(messages.reportClosed, { acct: `@${nickname}` });
+      dispatch(snackbar.success(message));
+    }).catch(() => {});
+  }
+
   handleDeactivateUser = () => {
     const { intl, dispatch, report } = this.props;
     const nickname = report.getIn(['account', 'acct']);
     dispatch(deactivateUsers([nickname])).then(() => {
-      const message = intl.formatMessage(messages.deactivated, { acct: nickname });
+      const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
       dispatch(snackbar.success(message));
     }).catch(() => {});
   }
@@ -62,6 +73,9 @@ class Report extends ImmutablePureComponent {
           </div>
         </div>
         <div className='admin-report__actions'>
+          <Button className='button-alternative' size={30} onClick={this.handleCloseReport}>
+            <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
+          </Button>
           <DropdownMenu items={menu} icon='ellipsis-v' size={24} direction='right' />
         </div>
       </div>
