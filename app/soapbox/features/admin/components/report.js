@@ -8,11 +8,14 @@ import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import { deactivateUsers, closeReports } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
+import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
   deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
   userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
+  deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate {acct}. Deactivating a user is a reversible action.' },
+  deactivateUserConfirm: { id: 'confirmations.admin.deactivate_user.confirm', defaultMessage: 'Deactivate {acct}' },
 });
 
 export default @connect()
@@ -44,11 +47,17 @@ class Report extends ImmutablePureComponent {
   handleDeactivateUser = () => {
     const { intl, dispatch, report } = this.props;
     const nickname = report.getIn(['account', 'acct']);
-    dispatch(deactivateUsers([nickname])).then(() => {
-      const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
-      dispatch(snackbar.success(message));
-    }).catch(() => {});
-    this.handleCloseReport();
+    dispatch(openModal('CONFIRM', {
+      message: intl.formatMessage(messages.deactivateUserPrompt, { acct: `@${nickname}` }),
+      confirm: intl.formatMessage(messages.deactivateUserConfirm, { acct: `@${nickname}` }),
+      onConfirm: () => {
+        dispatch(deactivateUsers([nickname])).then(() => {
+          const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
+          dispatch(snackbar.success(message));
+        }).catch(() => {});
+        this.handleCloseReport();
+      },
+    }));
   }
 
   render() {
