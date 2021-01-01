@@ -92,27 +92,26 @@ class CommunityTimeline extends React.PureComponent {
         <div className='explanation-box'>
           <Accordion
             headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
-            content={(
-              <FormattedMessage
-                id='fediverse_tab.explanation_box.explanation'
-                defaultMessage='{site_title} is part of the Fediverse, a social network made up of thousands of independent social media sites (aka "servers"). The posts you see here are from 3rd-party servers. You have the freedom to engage with them, or to block any server you don&apos;t like. Pay attention to the full username after the second @ symbol to know which server a post is from. To see only {site_title} posts, visit {local}.'
-                values={{
-                  site_title: siteTitle,
-                  local: (
-                    <Link to='/timeline/local'>
-                      <FormattedMessage
-                        id='empty_column.home.local_tab'
-                        defaultMessage='the {site_title} tab'
-                        values={{ site_title: siteTitle }}
-                      />
-                    </Link>
-                  ),
-                }}
-              />
-            )}
             expanded={explanationBoxExpanded}
             onToggle={this.toggleExplanationBox}
-          />
+          >
+            <FormattedMessage
+              id='fediverse_tab.explanation_box.explanation'
+              defaultMessage='{site_title} is part of the Fediverse, a social network made up of thousands of independent social media sites (aka "servers"). The posts you see here are from 3rd-party servers. You have the freedom to engage with them, or to block any server you don&apos;t like. Pay attention to the full username after the second @ symbol to know which server a post is from. To see only {site_title} posts, visit {local}.'
+              values={{
+                site_title: siteTitle,
+                local: (
+                  <Link to='/timeline/local'>
+                    <FormattedMessage
+                      id='empty_column.home.local_tab'
+                      defaultMessage='the {site_title} tab'
+                      values={{ site_title: siteTitle }}
+                    />
+                  </Link>
+                ),
+              }}
+            />
+          </Accordion>
         </div>
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}

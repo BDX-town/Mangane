@@ -12,7 +12,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
 
   static propTypes = {
     headline: PropTypes.node.isRequired,
-    content: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
     expanded: PropTypes.bool,
     onToggle: PropTypes.func,
     intl: PropTypes.object.isRequired,
@@ -29,7 +29,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
   }
 
   render() {
-    const { headline, content, expanded, intl } = this.props;
+    const { headline, children, expanded, intl } = this.props;
 
     return (
       <div className={classNames('accordion', { 'accordion--expanded' : expanded })}>
@@ -42,7 +42,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
           {headline}
         </button>
         <div className='accordion__content'>
-          {content}
+          {children}
         </div>
       </div>
     );
