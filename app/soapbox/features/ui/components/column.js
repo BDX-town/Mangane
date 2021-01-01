@@ -21,7 +21,7 @@ export default class Column extends React.PureComponent {
 
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column'>
-        <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />
+        {heading && <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />}
         {backBtn}
         {children}
       </div>

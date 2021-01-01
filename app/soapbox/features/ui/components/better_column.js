@@ -22,7 +22,7 @@ export default class Column extends React.PureComponent {
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column column--better'>
         <div className='column__top'>
-          <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />
+          {heading && <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />}
           {menu && (
             <div className='column__menu'>
               <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
