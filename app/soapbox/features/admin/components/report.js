@@ -120,12 +120,12 @@ class Report extends ImmutablePureComponent {
                 expanded={accordionExpanded}
                 onToggle={this.handleAccordionToggle}
               >
-                <div>{statuses.map(status => <StatusContent status={status} />)}</div>
+                {statuses.map(status => <StatusContent status={status} />)}
               </Accordion>
             )}
           </div>
           <div className='admin-report__quote'>
-            <blockquote className='md'>{report.get('content')}</blockquote>
+            <blockquote className='md' dangerouslySetInnerHTML={{ __html: report.get('content') }} />
             <span className='byline'>&mdash; @{report.getIn(['actor', 'acct'])}</span>
           </div>
         </div>
