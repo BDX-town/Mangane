@@ -8,6 +8,7 @@ import Column from '../ui/components/column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchReports } from 'soapbox/actions/admin';
 import Report from './components/report';
+import { makeGetReport } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },
@@ -15,9 +16,11 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => {
+  const getReport = makeGetReport();
   const ids = state.getIn(['admin', 'openReports']);
+
   return {
-    reports: ids.toList().map(id => state.getIn(['admin', 'reports', id])),
+    reports: ids.map(id => getReport(state, id)),
   };
 };
 

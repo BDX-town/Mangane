@@ -57,6 +57,7 @@ function approveUsers(state, users) {
 function importReports(state, reports) {
   return state.withMutations(state => {
     reports.forEach(report => {
+      report.statuses = report.statuses.map(status => status.id);
       if (report.state === 'open') {
         state.update('openReports', orderedSet => orderedSet.add(report.id));
       }

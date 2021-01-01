@@ -175,3 +175,18 @@ export const makeGetChat = () => {
     },
   );
 };
+
+export const makeGetReport = () => {
+  return createSelector(
+    [
+      (state, id) => state.getIn(['admin', 'reports', id]),
+      (state, id) => state.getIn(['admin', 'reports', id, 'statuses']).map(
+        statusId => state.getIn(['statuses', statusId])),
+    ],
+
+    (report, statuses) => {
+      if (!report) return null;
+      return report.set('statuses', statuses);
+    },
+  );
+};
