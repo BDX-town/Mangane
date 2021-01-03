@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Switch, Route } from 'react-router-dom';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
+import ModalContainer from 'soapbox/features/ui/containers/modal_container';
 import Header from './components/header';
 import Footer from './components/footer';
 import LandingPage from '../landing_page';
@@ -40,6 +41,7 @@ class PublicLayout extends ImmutablePureComponent {
         </div>
         <Footer />
         <NotificationsContainer />
+        <ModalContainer />
       </div>
     );
   }

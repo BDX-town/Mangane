@@ -860,3 +860,16 @@
     margin: 0 5px;
   }
 }
+
+.confirmation-modal p {
+  margin-bottom: 20px;
+  text-align: left;
+
+  strong {
+    font-weight: bold;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
