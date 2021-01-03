@@ -1,6 +1,5 @@
 import api from '../api';
 import snackbar from 'soapbox/actions/snackbar';
-import { fetchMe } from 'soapbox/actions/me';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
@@ -164,8 +163,6 @@ export function logOut() {
 
 export function register(params) {
   return (dispatch, getState) => {
-    const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
-    const needsApproval = getState().getIn(['instance', 'approval_required']);
     params.fullname = params.username;
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
@@ -173,13 +170,6 @@ export function register(params) {
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      if (needsConfirmation) {
-        return dispatch(snackbar.info('You must confirm your email.'));
-      } else if (needsApproval) {
-        return dispatch(snackbar.info('Your account is pending review by an admin.'));
-      } else {
-        return dispatch(fetchMe());
-      }
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
       throw error;

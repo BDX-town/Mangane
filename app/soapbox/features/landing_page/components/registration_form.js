@@ -17,6 +17,8 @@ import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
 import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
+import { fetchMe } from 'soapbox/actions/me';
+import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
@@ -26,11 +28,14 @@ const messages = defineMessages({
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
+  close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
 });
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
   locale: getSettings(state).get('locale'),
+  needsConfirmation: state.getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']),
+  needsApproval: state.getIn(['instance', 'approval_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -62,10 +67,48 @@ class RegistrationForm extends ImmutablePureComponent {
     this.setParams({ [e.target.name]: e.target.checked });
   }
 
+  launchModal = () => {
+    const { dispatch, intl, needsConfirmation, needsApproval } = this.props;
+
+    const message = (<>
+      {needsConfirmation && <p>
+        <FormattedMessage
+          id='confirmations.register.needs_confirmation'
+          defaultMessage='Please check your inbox at {email} for confirmation instructions. You will need to verify your email address to continue.'
+          values={{ email: <strong>{this.state.params.get('email')}</strong> }}
+        /></p>}
+      {needsApproval && <p>
+        <FormattedMessage
+          id='confirmations.register.needs_approval'
+          defaultMessage='Your account will be manually approved by an admin. Please be patient while we review your details.'
+        /></p>}
+    </>);
+
+    dispatch(openModal('CONFIRM', {
+      message,
+      confirm: intl.formatMessage(messages.close),
+    }));
+  }
+
+  postRegisterAction = () => {
+    const { dispatch, needsConfirmation, needsApproval } = this.props;
+
+    if (needsConfirmation || needsApproval) {
+      return this.launchModal();
+    } else {
+      return dispatch(fetchMe());
+    }
+  }
+
   onSubmit = e => {
+    const { dispatch } = this.props;
     const params = this.state.params.set('locale', this.props.locale);
+
     this.setState({ submissionLoading: true });
-    this.props.dispatch(register(params.toJS())).catch(error => {
+
+    dispatch(register(params.toJS())).then(() => {
+      this.postRegisterAction();
+    }).catch(error => {
       this.setState({ submissionLoading: false });
       this.refreshCaptcha();
     });
