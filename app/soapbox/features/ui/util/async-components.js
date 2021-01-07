@@ -194,6 +194,10 @@ export function ImportData() {
   return import(/* webpackChunkName: "features/import_data" */'../../import_data');
 }
 
+export function Backups() {
+  return import(/* webpackChunkName: "features/backups" */'../../backups');
+}
+
 export function PasswordReset() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
 }

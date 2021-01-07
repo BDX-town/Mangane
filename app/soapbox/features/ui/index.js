@@ -81,6 +81,7 @@ import {
   EditProfile,
   SoapboxConfig,
   ImportData,
+  Backups,
   PasswordReset,
   SecurityForm,
   MfaForm,
@@ -277,6 +278,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
         <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
+        <WrappedRoute path='/backups' layout={LAYOUT.DEFAULT} component={Backups} content={children} />
         <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
