@@ -9,6 +9,7 @@ export const getFeatures = instance => {
     emojiReacts: v.software === 'Pleroma' && gte(v.version, '2.0.0'),
     attachmentLimit: v.software === 'Pleroma' ? Infinity : 4,
     focalPoint: v.software === 'Mastodon' && gte(v.compatVersion, '2.3.0'),
+    importMutes: v.software === 'Pleroma' && gte(v.version, '2.2.0'),
   };
 };
 
