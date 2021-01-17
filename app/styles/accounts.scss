@@ -185,20 +185,12 @@
   font-size: 12px;
   line-height: 12px;
   font-weight: 500;
-  color: var(--background-color);
-  background-color: hsla(var(--background-color_hsl), 0.1);
-  border: 1px solid hsla(var(--background-color_hsl), 0.5);
+  color: var(--primary-text-color);
+  background-color: hsla(var(--primary-text-color_hsl), 0.1);
+  border: 1px solid hsla(var(--primary-text-color_hsl), 0.5);
 
-  &.moderator {
-    color: $success-green;
-    background-color: rgba($success-green, 0.1);
-    border-color: rgba($success-green, 0.5);
-  }
-
-  &.admin {
-    color: lighten($error-red, 12%);
-    background-color: rgba(lighten($error-red, 12%), 0.1);
-    border-color: rgba(lighten($error-red, 12%), 0.5);
+  &.bot {
+    margin-left: 5px;
   }
 }
 
