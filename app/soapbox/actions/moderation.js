@@ -6,10 +6,10 @@ import snackbar from 'soapbox/actions/snackbar';
 const messages = defineMessages({
   deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate {acct}. Deactivating a user is a reversible action.' },
   deactivateUserConfirm: { id: 'confirmations.admin.deactivate_user.confirm', defaultMessage: 'Deactivate {acct}' },
-  userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
+  userDeactivated: { id: 'admin.users.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
   deleteUserPrompt: { id: 'confirmations.admin.delete_user.message', defaultMessage: 'You are about to delete {acct}. THIS IS A DESTRUCTIVE ACTION THAT CANNOT BE UNDONE.' },
   deleteUserConfirm: { id: 'confirmations.admin.delete_user.confirm', defaultMessage: 'Delete {acct}' },
-  userDeleted: { id: 'admin.reports.user_deleted_message', defaultMessage: '{acct} was deleted' },
+  userDeleted: { id: 'admin.users.user_deleted_message', defaultMessage: '{acct} was deleted' },
 });
 
 export function deactivateUserModal(intl, accountId, afterConfirm = () => {}) {

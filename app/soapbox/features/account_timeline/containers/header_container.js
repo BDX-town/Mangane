@@ -24,6 +24,7 @@ import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
 import { isMobile } from 'soapbox/is_mobile';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -144,6 +145,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
         dispatch(openChat(chat.id));
       }
     }).catch(() => {});
+  },
+
+  onDeactivateUser(account) {
+    dispatch(deactivateUserModal(intl, account.get('id')));
+  },
+
+  onDeleteUser(account) {
+    dispatch(deleteUserModal(intl, account.get('id')));
   },
 });
 

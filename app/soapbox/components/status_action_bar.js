@@ -45,6 +45,8 @@ const messages = defineMessages({
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   group_remove_account: { id: 'status.remove_account_from_group', defaultMessage: 'Remove account from group' },
   group_remove_post: { id: 'status.remove_post_from_group', defaultMessage: 'Remove post from group' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
 });
 
 class StatusActionBar extends ImmutablePureComponent {
@@ -67,6 +69,8 @@ class StatusActionBar extends ImmutablePureComponent {
     onBlock: PropTypes.func,
     onReport: PropTypes.func,
     onEmbed: PropTypes.func,
+    onDeactivateUser: PropTypes.func,
+    onDeleteUser: PropTypes.func,
     onMuteConversation: PropTypes.func,
     onPin: PropTypes.func,
     withDismiss: PropTypes.bool,
@@ -242,6 +246,14 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onGroupRemoveStatus(status.getIn(['group', 'id']), status.get('id'));
   }
 
+  handleDeactivateUser = () => {
+    this.props.onDeactivateUser(this.props.status);
+  }
+
+  handleDeleteUser = () => {
+    this.props.onDeleteUser(this.props.status);
+  }
+
   _makeMenu = (publicStatus) => {
     const { status, intl, withDismiss, withGroupAdmin, me, isStaff } = this.props;
     const mutingConversation = status.get('muted');
@@ -291,6 +303,8 @@ class StatusActionBar extends ImmutablePureComponent {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
         // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
+        menu.push({ text: intl.formatMessage(messages.deactivateUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeactivateUser });
+        menu.push({ text: intl.formatMessage(messages.deleteUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeleteUser });
       }
 
       if (withGroupAdmin) {

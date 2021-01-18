@@ -15,8 +15,8 @@ import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
-  deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  deleteUser: { id: 'admin.reports.actions.delete_user', defaultMessage: 'Delete {acct}' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
 });
 
 export default @connect()

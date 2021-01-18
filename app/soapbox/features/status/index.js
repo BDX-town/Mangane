@@ -47,6 +47,7 @@ import { textForScreenReader, defaultMediaVisibility } from '../../components/st
 import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -302,6 +303,16 @@ class Status extends ImmutablePureComponent {
     this.props.dispatch(openModal('EMBED', { url: status.get('url') }));
   }
 
+  handleDeactivateUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
+  handleDeleteUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
   handleHotkeyMoveUp = () => {
     this.handleMoveUp(this.props.status.get('id'));
   }
@@ -523,6 +534,8 @@ class Status extends ImmutablePureComponent {
                 onPin={this.handlePin}
                 onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
+                onDeactivateUser={this.handleDeactivateUser}
+                onDeleteUser={this.handleDeleteUser}
                 allowedEmoji={this.props.allowedEmoji}
               />
             </div>

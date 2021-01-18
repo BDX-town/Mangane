@@ -84,6 +84,14 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToList(this.props.account);
   }
 
+  handleDeactivateUser = () => {
+    this.props.onDeactivateUser(this.props.account);
+  }
+
+  handleDeleteUser = () => {
+    this.props.onDeleteUser(this.props.account);
+  }
+
   render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -107,6 +115,8 @@ export default class Header extends ImmutablePureComponent {
           onUnblockDomain={this.handleUnblockDomain}
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
+          onDeactivateUser={this.handleDeactivateUser}
+          onDeleteUser={this.handleDeleteUser}
           username={this.props.username}
         />
       </div>
