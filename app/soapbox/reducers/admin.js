@@ -15,6 +15,7 @@ import {
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
+import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 
 const initialState = ImmutableMap({
   reports: ImmutableMap(),
@@ -28,7 +29,8 @@ const initialState = ImmutableMap({
 function importUsers(state, users) {
   return state.withMutations(state => {
     users.forEach(user => {
-      if (user.approval_pending) {
+      user = normalizePleromaUserFields(user);
+      if (!user.is_approved) {
         state.update('awaitingApproval', orderedSet => orderedSet.add(user.nickname));
       }
       state.setIn(['users', user.nickname], fromJS(user));

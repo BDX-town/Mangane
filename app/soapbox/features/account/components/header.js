@@ -224,7 +224,7 @@ class Header extends ImmutablePureComponent {
 
     const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
     const avatarSize = isSmallScreen ? 90 : 200;
-    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
+    const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>

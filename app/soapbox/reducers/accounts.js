@@ -7,11 +7,18 @@ import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 
 const initialState = ImmutableMap();
 
+const normalizePleroma = account => {
+  if (!account.pleroma) return account;
+  account.pleroma = normalizePleromaUserFields(account.pleroma);
+  return account;
+};
+
 const normalizeAccount = (state, account) => {
-  const normalized = fromJS(account).deleteAll([
+  const normalized = fromJS(normalizePleroma(account)).deleteAll([
     'followers_count',
     'following_count',
     'statuses_count',
