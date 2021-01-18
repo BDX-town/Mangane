@@ -1,8 +1,28 @@
 import api from '../api';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { getFeatures } from 'soapbox/utils/features';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
+
+const allowedEmoji = ImmutableList([
+  '👍',
+  '❤',
+  '😆',
+  '😮',
+  '😢',
+  '😩',
+]);
+
+// https://git.pleroma.social/pleroma/pleroma/-/issues/2355
+const allowedEmojiRGI = ImmutableList([
+  '👍',
+  '❤️',
+  '😆',
+  '😮',
+  '😢',
+  '😩',
+]);
 
 export const defaultConfig = ImmutableMap({
   logo: '',
@@ -18,18 +38,22 @@ export const defaultConfig = ImmutableMap({
   navlinks: ImmutableMap({
     homeFooter: ImmutableList(),
   }),
-  allowedEmoji: ImmutableList([
-    '👍',
-    '❤️',
-    '😆',
-    '😮',
-    '😢',
-    '😩',
-  ]),
+  allowedEmoji: allowedEmoji,
 });
 
 export function getSoapboxConfig(state) {
-  return defaultConfig.merge(state.get('soapbox'));
+  const instance = state.get('instance');
+  const soapbox = state.get('soapbox');
+  const features = getFeatures(instance);
+
+  // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
+  if (features.emojiReactsRGI) {
+    return defaultConfig
+      .set('allowedEmoji', allowedEmojiRGI)
+      .merge(soapbox);
+  } else {
+    return defaultConfig.merge(soapbox);
+  }
 }
 
 export function fetchSoapboxConfig() {
