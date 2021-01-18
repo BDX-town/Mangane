@@ -187,6 +187,10 @@
     }
   }
 
+  &__status-content {
+    overflow: hidden;
+  }
+
   &__status {
     display: flex;
     border-bottom: 1px solid var(--accent-color--med);
