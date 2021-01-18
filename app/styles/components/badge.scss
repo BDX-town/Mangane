@@ -22,4 +22,16 @@
     background-color: #048ba8;
     color: #fff;
   }
+
+  &--bot {
+    margin-left: 5px;
+    color: var(--primary-text-color);
+    background-color: hsla(var(--primary-text-color_hsl), 0.1);
+    border: 1px solid hsla(var(--primary-text-color_hsl), 0.5);
+    text-transform: none;
+    padding: 4px 6px;
+    vertical-align: top;
+    display: inline-block;
+    line-height: 12px;
+  }
 }

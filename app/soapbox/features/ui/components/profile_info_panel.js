@@ -17,6 +17,7 @@ const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
 const dateFormatOptions = {
@@ -56,7 +57,6 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     }
 
     const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
-    const badge = account.get('bot') ? (<div className='account-role bot'><FormattedMessage id='account.badges.bot' defaultMessage='Bot' /></div>) : null;
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
     const deactivated = account.getIn(['pleroma', 'deactivated'], false);
@@ -72,7 +72,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             <h1>
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
-              {badge}
+              {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
               { <small>@{acctFull(account)} {lockedIcon}</small> }
             </h1>
           </div>
