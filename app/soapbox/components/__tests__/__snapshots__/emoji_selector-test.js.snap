@@ -16,7 +16,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
     className="emoji-react-selector__emoji"
     dangerouslySetInnerHTML={
       Object {
-        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"❤️\\" title=\\":heart:\\" src=\\"/emoji/2764.svg\\" />",
+        "__html": "<img draggable=\\"false\\" class=\\"emojione\\" alt=\\"❤\\" title=\\":heart:\\" src=\\"/emoji/2764.svg\\" />",
       }
     }
   />

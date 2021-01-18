@@ -11,6 +11,7 @@ describe('instance reducer', () => {
         max_options: 4,
         min_expiration: 300,
       }),
+      version: '0.0.0',
     }));
   });
 });
