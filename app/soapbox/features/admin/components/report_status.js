@@ -5,19 +5,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages } from 'react-intl';
 import StatusContent from 'soapbox/components/status_content';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
-import { deleteStatus } from 'soapbox/actions/admin';
-import snackbar from 'soapbox/actions/snackbar';
 import { openModal } from 'soapbox/actions/modal';
 import noop from 'lodash/noop';
 import { MediaGallery, Video, Audio } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
+import { deleteStatusModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   viewStatus: { id: 'admin.reports.actions.view_status', defaultMessage: 'View post' },
-  deleteStatus: { id: 'admin.reports.actions.delete_status', defaultMessage: 'Delete post' },
-  deleteStatusPrompt: { id: 'confirmations.admin.delete_status.message', defaultMessage: 'You are about to delete a post by {acct}. This action cannot be undone.' },
-  deleteStatusConfirm: { id: 'confirmations.admin.delete_status.confirm', defaultMessage: 'Delete post' },
-  statusDeleted: { id: 'admin.reports.status_deleted_message', defaultMessage: 'Post by {acct} was deleted' },
+  deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
 });
 
 export default @connect()
@@ -104,19 +100,8 @@ class ReportStatus extends ImmutablePureComponent {
 
   handleDeleteStatus = () => {
     const { intl, dispatch, status } = this.props;
-    const nickname = status.getIn(['account', 'acct']);
     const statusId = status.get('id');
-    dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(messages.deleteStatusPrompt, { acct: `@${nickname}` }),
-      confirm: intl.formatMessage(messages.deleteStatusConfirm),
-      onConfirm: () => {
-        dispatch(deleteStatus(statusId)).then(() => {
-          const message = intl.formatMessage(messages.statusDeleted, { acct: `@${nickname}` });
-          dispatch(snackbar.success(message));
-        }).catch(() => {});
-        this.handleCloseReport();
-      },
-    }));
+    dispatch(deleteStatusModal(intl, statusId));
   }
 
   render() {
