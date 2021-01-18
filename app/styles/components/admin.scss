@@ -131,10 +131,13 @@
   &__content {
     padding: 0 16px;
     flex: 1;
+    overflow: hidden;
   }
 
   &__title {
     font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     a {
       color: var(--primary-text-color);
@@ -143,6 +146,10 @@
 
   &__quote {
     font-size: 14px;
+
+    a {
+      color: var(--brand-color--hicontrast);
+    }
 
     .byline {
       font-size: 12px;
@@ -178,6 +185,10 @@
       font-weight: normal !important;
       margin-bottom: 0 !important;
     }
+  }
+
+  &__status-content {
+    overflow: hidden;
   }
 
   &__status {

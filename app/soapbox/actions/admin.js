@@ -1,5 +1,5 @@
 import api from '../api';
-import { importFetchedStatuses } from 'soapbox/actions/importer';
+import { importFetchedAccount, importFetchedStatuses } from 'soapbox/actions/importer';
 
 export const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 export const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
@@ -73,7 +73,11 @@ export function fetchReports(params) {
     return api(getState)
       .get('/api/pleroma/admin/reports', { params })
       .then(({ data: { reports } }) => {
-        reports.forEach(report => dispatch(importFetchedStatuses(report.statuses)));
+        reports.forEach(report => {
+          dispatch(importFetchedAccount(report.account));
+          dispatch(importFetchedAccount(report.actor));
+          dispatch(importFetchedStatuses(report.statuses));
+        });
         dispatch({ type: ADMIN_REPORTS_FETCH_SUCCESS, reports, params });
       }).catch(error => {
         dispatch({ type: ADMIN_REPORTS_FETCH_FAIL, error, params });

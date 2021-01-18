@@ -36,6 +36,9 @@ const messages = defineMessages({
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
+  deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
 });
 
 const mapStateToProps = state => {
@@ -74,6 +77,9 @@ class ActionBar extends React.PureComponent {
     onReport: PropTypes.func,
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
+    onDeactivateUser: PropTypes.func,
+    onDeleteUser: PropTypes.func,
+    onDeleteStatus: PropTypes.func,
     intl: PropTypes.object.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: SoapboxPropTypes.me,
@@ -221,6 +227,18 @@ class ActionBar extends React.PureComponent {
     }
   }
 
+  handleDeactivateUser = () => {
+    this.props.onDeactivateUser(this.props.status);
+  }
+
+  handleDeleteUser = () => {
+    this.props.onDeleteUser(this.props.status);
+  }
+
+  handleDeleteStatus = () => {
+    this.props.onDeleteStatus(this.props.status);
+  }
+
   setRef = c => {
     this.node = c;
   }
@@ -276,6 +294,9 @@ class ActionBar extends React.PureComponent {
         menu.push(null);
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
         // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
+        menu.push({ text: intl.formatMessage(messages.deactivateUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeactivateUser });
+        menu.push({ text: intl.formatMessage(messages.deleteUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeleteUser });
+        menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
     }
 

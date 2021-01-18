@@ -9,20 +9,14 @@ import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import ReportStatus from './report_status';
-import { closeReports, deactivateUsers, deleteUsers } from 'soapbox/actions/admin';
+import { closeReports } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
-import { openModal } from 'soapbox/actions/modal';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
-  deactivateUser: { id: 'admin.reports.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate {acct}. Deactivating a user is a reversible action.' },
-  deactivateUserConfirm: { id: 'confirmations.admin.deactivate_user.confirm', defaultMessage: 'Deactivate {acct}' },
-  userDeactivated: { id: 'admin.reports.user_deactivated_message', defaultMessage: '{acct} was deactivated' },
-  deleteUser: { id: 'admin.reports.actions.delete_user', defaultMessage: 'Delete {acct}' },
-  deleteUserPrompt: { id: 'confirmations.admin.delete_user.message', defaultMessage: 'You are about to delete {acct}. THIS IS A DESTRUCTIVE ACTION THAT CANNOT BE UNDONE.' },
-  deleteUserConfirm: { id: 'confirmations.admin.delete_user.confirm', defaultMessage: 'Delete {acct}' },
-  userDeleted: { id: 'admin.reports.user_deleted_message', defaultMessage: '{acct} was deleted' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
 });
 
 export default @connect()
@@ -60,34 +54,14 @@ class Report extends ImmutablePureComponent {
 
   handleDeactivateUser = () => {
     const { intl, dispatch, report } = this.props;
-    const nickname = report.getIn(['account', 'acct']);
-    dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(messages.deactivateUserPrompt, { acct: `@${nickname}` }),
-      confirm: intl.formatMessage(messages.deactivateUserConfirm, { acct: `@${nickname}` }),
-      onConfirm: () => {
-        dispatch(deactivateUsers([nickname])).then(() => {
-          const message = intl.formatMessage(messages.userDeactivated, { acct: `@${nickname}` });
-          dispatch(snackbar.success(message));
-        }).catch(() => {});
-        this.handleCloseReport();
-      },
-    }));
+    const accountId = report.getIn(['account', 'id']);
+    dispatch(deactivateUserModal(intl, accountId, () => this.handleCloseReport()));
   }
 
   handleDeleteUser = () => {
     const { intl, dispatch, report } = this.props;
-    const nickname = report.getIn(['account', 'acct']);
-    dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(messages.deleteUserPrompt, { acct: `@${nickname}` }),
-      confirm: intl.formatMessage(messages.deleteUserConfirm, { acct: `@${nickname}` }),
-      onConfirm: () => {
-        dispatch(deleteUsers([nickname])).then(() => {
-          const message = intl.formatMessage(messages.userDeleted, { acct: `@${nickname}` });
-          dispatch(snackbar.success(message));
-        }).catch(() => {});
-        this.handleCloseReport();
-      },
-    }));
+    const accountId = report.getIn(['account', 'id']);
+    dispatch(deleteUserModal(intl, accountId, () => this.handleCloseReport()));
   }
 
   handleAccordionToggle = setting => {

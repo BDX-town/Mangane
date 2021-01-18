@@ -31,6 +31,7 @@ import { openModal } from '../../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../../../actions/alerts';
 import { getSettings } from 'soapbox/actions/settings';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -188,6 +189,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     } else {
       dispatch(hideStatus(status.get('id')));
     }
+  },
+
+  onDeactivateUser(status) {
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+  },
+
+  onDeleteUser(status) {
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+  },
+
+  onDeleteStatus(status) {
+    dispatch(deleteStatusModal(intl, status.get('id')));
   },
 
 });
