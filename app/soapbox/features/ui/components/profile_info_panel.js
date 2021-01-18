@@ -59,7 +59,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
-    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
+    const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
