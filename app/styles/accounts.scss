@@ -177,23 +177,6 @@
   }
 }
 
-.account-role {
-  display: inline-block;
-  padding: 4px 6px;
-  cursor: default;
-  border-radius: 3px;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 500;
-  color: var(--primary-text-color);
-  background-color: hsla(var(--primary-text-color_hsl), 0.1);
-  border: 1px solid hsla(var(--primary-text-color_hsl), 0.5);
-
-  &.bot {
-    margin-left: 5px;
-  }
-}
-
 .account {
   padding: 10px;
   position: relative;
