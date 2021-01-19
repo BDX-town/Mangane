@@ -14,9 +14,9 @@ import snackbar from 'soapbox/actions/snackbar';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
-  reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on {acct} was closed' },
-  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
+  reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
 });
 
 export default @connect()
@@ -35,19 +35,18 @@ class Report extends ImmutablePureComponent {
     const { intl, report } = this.props;
 
     return [{
-      text: intl.formatMessage(messages.deactivateUser, { acct: `@${report.getIn(['account', 'acct'])}` }),
+      text: intl.formatMessage(messages.deactivateUser, { name: report.getIn(['account', 'username']) }),
       action: this.handleDeactivateUser,
     }, {
-      text: intl.formatMessage(messages.deleteUser, { acct: `@${report.getIn(['account', 'acct'])}` }),
+      text: intl.formatMessage(messages.deleteUser, { name: report.getIn(['account', 'username']) }),
       action: this.handleDeleteUser,
     }];
   }
 
   handleCloseReport = () => {
     const { intl, dispatch, report } = this.props;
-    const nickname = report.getIn(['account', 'acct']);
     dispatch(closeReports([report.get('id')])).then(() => {
-      const message = intl.formatMessage(messages.reportClosed, { acct: `@${nickname}` });
+      const message = intl.formatMessage(messages.reportClosed, { name: report.getIn(['account', 'username']) });
       dispatch(snackbar.success(message));
     }).catch(() => {});
   }
