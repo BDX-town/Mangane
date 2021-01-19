@@ -48,6 +48,8 @@ const messages = defineMessages({
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
+  markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
+  markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
 });
 
 class StatusActionBar extends ImmutablePureComponent {
@@ -72,6 +74,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onEmbed: PropTypes.func,
     onDeactivateUser: PropTypes.func,
     onDeleteUser: PropTypes.func,
+    onToggleStatusSensitivity: PropTypes.func,
     onDeleteStatus: PropTypes.func,
     onMuteConversation: PropTypes.func,
     onPin: PropTypes.func,
@@ -260,6 +263,10 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onDeleteStatus(this.props.status);
   }
 
+  handleToggleStatusSensitivity = () => {
+    this.props.onToggleStatusSensitivity(this.props.status);
+  }
+
   _makeMenu = (publicStatus) => {
     const { status, intl, withDismiss, withGroupAdmin, me, isStaff } = this.props;
     const mutingConversation = status.get('muted');
@@ -311,6 +318,7 @@ class StatusActionBar extends ImmutablePureComponent {
         // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { acct: `@${status.getIn(['account', 'acct'])}` }), action: this.handleDeleteUser });
+        menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
 

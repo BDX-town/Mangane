@@ -37,6 +37,10 @@ export const ADMIN_STATUS_DELETE_REQUEST = 'ADMIN_STATUS_DELETE_REQUEST';
 export const ADMIN_STATUS_DELETE_SUCCESS = 'ADMIN_STATUS_DELETE_SUCCESS';
 export const ADMIN_STATUS_DELETE_FAIL    = 'ADMIN_STATUS_DELETE_FAIL';
 
+export const ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST';
+export const ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS';
+export const ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL    = 'ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL';
+
 export const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
 export const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
 export const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
@@ -163,6 +167,19 @@ export function deleteStatus(id) {
         dispatch({ type: ADMIN_STATUS_DELETE_SUCCESS, id });
       }).catch(error => {
         dispatch({ type: ADMIN_STATUS_DELETE_FAIL, error, id });
+      });
+  };
+}
+
+export function toggleStatusSensitivity(id, sensitive) {
+  return (dispatch, getState) => {
+    dispatch({ type: ADMIN_STATUS_TOGGLE_SENSITIVITY_REQUEST, id });
+    return api(getState)
+      .put(`/api/pleroma/admin/statuses/${id}`, { sensitive: !sensitive })
+      .then(() => {
+        dispatch({ type: ADMIN_STATUS_TOGGLE_SENSITIVITY_SUCCESS, id });
+      }).catch(error => {
+        dispatch({ type: ADMIN_STATUS_TOGGLE_SENSITIVITY_FAIL, error, id });
       });
   };
 }
