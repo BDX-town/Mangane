@@ -36,7 +36,7 @@ import {
 } from '../actions/groups';
 import { getSettings } from '../actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal } from 'soapbox/actions/moderation';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -219,6 +219,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDeleteStatus(status) {
     dispatch(deleteStatusModal(intl, status.get('id')));
+  },
+
+  onToggleStatusSensitivity(status) {
+    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
   },
 
 });
