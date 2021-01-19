@@ -68,11 +68,11 @@ export function toggleStatusSensitivityModal(intl, statusId, sensitive, afterCon
     const acct = state.getIn(['accounts', accountId, 'acct']);
 
     dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(sensitive === false ? messages.markStatusSensitivePrompt : messages.markStatusNotSensitivePrompt, { acct: `@${acct}` }),
+      message: intl.formatMessage(sensitive === false ? messages.markStatusSensitivePrompt : messages.markStatusNotSensitivePrompt, { acct }),
       confirm: intl.formatMessage(sensitive === false ? messages.markStatusSensitiveConfirm : messages.markStatusNotSensitiveConfirm),
       onConfirm: () => {
         dispatch(toggleStatusSensitivity(statusId, sensitive)).then(() => {
-          const message = intl.formatMessage(sensitive === false ? messages.statusMarkedSensitive : messages.statusMarkedNotSensitive, { acct: `@${acct}` });
+          const message = intl.formatMessage(sensitive === false ? messages.statusMarkedSensitive : messages.statusMarkedNotSensitive, { acct });
           dispatch(snackbar.success(message));
         }).catch(() => {});
         afterConfirm();
