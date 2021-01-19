@@ -46,8 +46,8 @@ const messages = defineMessages({
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
-  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate {acct}' },
-  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete {acct}' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
 });
 
 const mapStateToProps = state => {
@@ -171,8 +171,8 @@ class Header extends ImmutablePureComponent {
     if (account.get('id') !== me && isStaff) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
-      menu.push({ text: intl.formatMessage(messages.deactivateUser, { acct: `@${account.get('acct')}` }), action: this.props.onDeactivateUser });
-      menu.push({ text: intl.formatMessage(messages.deleteUser, { acct: `@${account.get('acct')}` }), action: this.props.onDeleteUser });
+      menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
+      menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
     }
 
     return menu;
