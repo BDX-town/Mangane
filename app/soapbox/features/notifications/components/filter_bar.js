@@ -9,6 +9,7 @@ const tooltips = defineMessages({
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Reposts' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
+  emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts:' },
 });
 
 export default @injectIntl
@@ -69,6 +70,13 @@ class FilterBar extends React.PureComponent {
         <button
           className={selectedFilter === 'favourite' ? 'active' : ''}
           onClick={this.onClick('favourite')}
+          title={intl.formatMessage(tooltips.favourites)}
+        >
+          <Icon id='star' fixedWidth />
+        </button>
+        <button
+          className={selectedFilter === 'pleroma:emoji_reaction' ? 'active' : ''}
+          onClick={this.onClick('pleroma:emoji_reaction')}
           title={intl.formatMessage(tooltips.favourites)}
         >
           <Icon id='star' fixedWidth />
