@@ -148,7 +148,7 @@ export function dequeueNotifications() {
 const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
 
 const excludeTypesFromFilter = filter => {
-  const allTypes = ImmutableList(['follow', 'favourite', 'reblog', 'mention', 'poll']);
+  const allTypes = ImmutableList(['follow', 'favourite', 'reblog', 'mention', 'poll', 'pleroma:emoji_reaction']);
   return allTypes.filterNot(item => item === filter).toJS();
 };
 

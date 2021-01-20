@@ -56,6 +56,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      'pleroma:emoji_reaction': true,
     }),
 
     quickFilter: ImmutableMap({
@@ -70,6 +71,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      'pleroma:emoji_reaction': true,
     }),
 
     sounds: ImmutableMap({
@@ -78,6 +80,7 @@ export const defaultSettings = ImmutableMap({
       reblog: false,
       mention: false,
       poll: false,
+      'pleroma:emoji_reaction': false,
     }),
   }),
 
