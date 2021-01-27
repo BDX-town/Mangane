@@ -406,7 +406,7 @@
   "poll_button.add_poll": "Adicionar sondagem",
   "poll_button.remove_poll": "Remover sondagem",
   "preferences.fields.auto_play_gif_label": "Reproduzir automaticamente GIFs animados",
-  "preferences.fields.boost_modal_label": "Exibir caixa de diálogo de confirmação antes de voltar a publicar",
+  "preferences.fields.boost_modal_label": "Exibir caixa de diálogo de confirmação antes de partilhar um post",
   "preferences.fields.delete_modal_label": "Exibir caixa de diálogo de confirmação antes de apagar um post",
   "preferences.fields.demetricator_label": "Usar o Demetricator",
   "preferences.fields.dyslexic_font_label": "Modo Disléxico",
