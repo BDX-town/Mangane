@@ -13,6 +13,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+export const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -20,6 +21,17 @@ const getLocale = state => {
   const locale = getSettings(state).get('locale');
   return validLocale(locale) ? locale : 'en';
 };
+
+function updateFollowRelationships(relationships) {
+  return (dispatch, getState) => {
+    const me = getState().get('me');
+    return dispatch({
+      type: STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
+      me,
+      ...relationships,
+    });
+  };
+}
 
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
@@ -68,6 +80,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
               meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
             });
           });
+          break;
+        case 'pleroma:follow_relationships_update':
+          dispatch(updateFollowRelationships(JSON.parse(data.payload)));
           break;
         }
       },
