@@ -14,6 +14,7 @@ export default function alerts(state = initialState, action) {
       key: state.size > 0 ? state.last().get('key') + 1 : 0,
       title: action.title,
       message: action.message,
+      severity: action.severity || 'info',
     }));
   case ALERT_DISMISS:
     return state.filterNot(item => item.get('key') === action.alert.key);

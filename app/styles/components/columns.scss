@@ -105,7 +105,7 @@
     padding: 0;
   }
 
-  .autosuggest-textarea__textarea {font-size: 16px;}
+  .autosuggest-textarea__textarea { font-size: 16px; }
 
   .search__input {
     line-height: 18px;
@@ -116,7 +116,7 @@
     background-color: var(--foreground-color);
   }
 
-  .search__icon .fa {top: 15px;}
+  .search__icon .fa { top: 15px; }
   @media screen and (min-width: 630px) {
     .detailed-status {
       padding: 15px;
@@ -126,7 +126,7 @@
         margin-top: 15px;
       }
     }
-    .account__header__bar {padding: 5px 10px;}
+    .account__header__bar { padding: 5px 10px; }
 
     .navigation-bar,
     .compose-form {
@@ -212,7 +212,6 @@
   font-size: 16px;
   line-height: inherit;
   border: 0;
-  border-radius: 10px 10px 0 0;
   text-align: unset;
   padding: 15px;
   margin: 0;
@@ -679,7 +678,7 @@
   justify-content: center;
   min-height: 160px;
 
-  @supports(display: grid) { // hack to fix Chrome <57
+  @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;
   }
 
@@ -703,4 +702,68 @@
 
 .column-link--transparent .icon-with-badge__badge {
   border-color: var(--background-color);
+}
+
+.column__switch .audio-toggle {
+  position: absolute;
+  z-index: 4;
+  top: 12px;
+  right: 14px;
+
+  .react-toggle-track-check,
+  .react-toggle-track-x {
+    height: 16px;
+    color: white;
+  }
+}
+
+.timeline-filter-message {
+  background-color: var(--brand-color--faint);
+  color: var(--primary-text-color);
+  padding: 15px 20px;
+
+  .icon-button {
+    margin-right: 8px;
+  }
+}
+
+.column--better {
+  .column__top {
+    display: flex;
+    align-items: center;
+  }
+
+  .column-header {
+    margin-right: auto;
+  }
+
+  .column__menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &,
+    > div,
+    button {
+      height: 100%;
+    }
+
+    button {
+      padding: 0 15px;
+
+      > div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  .column-back-button--slim {
+    &-button {
+      position: relative;
+      top: auto;
+      right: auto;
+    }
+  }
 }

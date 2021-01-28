@@ -14,6 +14,8 @@ import {
   unfavourite,
   reblog,
   unreblog,
+  bookmark,
+  unbookmark,
   pin,
   unpin,
 } from '../../actions/interactions';
@@ -44,6 +46,8 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -108,6 +112,8 @@ const makeMapStateToProps = () => {
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
+      displayMedia: getSettings(state).get('displayMedia'),
+      allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
     };
   };
 
@@ -131,11 +137,12 @@ class Status extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     domain: PropTypes.string,
+    displayMedia: PropTypes.string,
   };
 
   state = {
     fullscreen: false,
-    showMedia: defaultMediaVisibility(this.props.status),
+    showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     loadedStatusId: undefined,
   };
 
@@ -165,6 +172,14 @@ class Status extends ImmutablePureComponent {
       this.props.dispatch(unpin(status));
     } else {
       this.props.dispatch(pin(status));
+    }
+  }
+
+  handleBookmark = (status) => {
+    if (status.get('bookmarked')) {
+      this.props.dispatch(unbookmark(status));
+    } else {
+      this.props.dispatch(bookmark(status));
     }
   }
 
@@ -288,6 +303,26 @@ class Status extends ImmutablePureComponent {
     this.props.dispatch(openModal('EMBED', { url: status.get('url') }));
   }
 
+  handleDeactivateUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
+  handleDeleteUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
+  handleToggleStatusSensitivity = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
+  }
+
+  handleDeleteStatus = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deleteStatusModal(intl, status.get('id')));
+  }
+
   handleHotkeyMoveUp = () => {
     this.handleMoveUp(this.props.status.get('id'));
   }
@@ -408,7 +443,7 @@ class Status extends ImmutablePureComponent {
     }
 
     if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
-      const element = this.node.querySelectorAll('.focusable')[ancestorsIds.size - 1];
+      const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
         element.scrollIntoView(true);
@@ -507,7 +542,13 @@ class Status extends ImmutablePureComponent {
                 onBlock={this.handleBlockClick}
                 onReport={this.handleReport}
                 onPin={this.handlePin}
+                onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
+                onDeactivateUser={this.handleDeactivateUser}
+                onDeleteUser={this.handleDeleteUser}
+                onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                onDeleteStatus={this.handleDeleteStatus}
+                allowedEmoji={this.props.allowedEmoji}
               />
             </div>
           </HotKeys>

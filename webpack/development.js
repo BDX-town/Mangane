@@ -2,7 +2,7 @@
 console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { resolve } = require('path');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const sharedConfig = require('./shared');
 const { settings, output } = require('./configuration');
 
@@ -65,23 +65,25 @@ module.exports = merge(sharedConfig, {
 
   devServer: {
     clientLogLevel: 'none',
-    compress: settings.dev_server.compress,
-    quiet: settings.dev_server.quiet,
-    disableHostCheck: settings.dev_server.disable_host_check,
-    host: settings.dev_server.host,
-    port: settings.dev_server.port,
-    https: settings.dev_server.https,
-    hot: settings.dev_server.hmr,
+    compress: true,
+    quiet: false,
+    disableHostCheck: true,
+    host: 'localhost',
+    port: 3036,
+    https: false,
+    hot: false,
     contentBase: resolve(__dirname, '..', settings.public_root_path),
-    inline: settings.dev_server.inline,
-    useLocalIp: settings.dev_server.use_local_ip,
-    public: settings.dev_server.public,
+    inline: true,
+    useLocalIp: false,
+    public: 'localhost:3036',
     publicPath: output.publicPath,
     historyApiFallback: {
       disableDotRule: true,
     },
-    headers: settings.dev_server.headers,
-    overlay: settings.dev_server.overlay,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
+    overlay: true,
     stats: {
       entrypoints: false,
       errorDetails: false,
@@ -90,8 +92,8 @@ module.exports = merge(sharedConfig, {
     },
     watchOptions: Object.assign(
       {},
-      settings.dev_server.watch_options,
-      watchOptions
+      { ignored: '**/node_modules/**' },
+      watchOptions,
     ),
     serveIndex: true,
     proxy: makeProxyConfig(),

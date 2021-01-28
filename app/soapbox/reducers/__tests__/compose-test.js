@@ -3,18 +3,18 @@ import { Map as ImmutableMap } from 'immutable';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
 import { SETTING_CHANGE } from 'soapbox/actions/settings';
 import * as actions from 'soapbox/actions/compose';
-//import { STORE_HYDRATE } from 'soapbox/actions/store';
 //import { REDRAFT } from 'soapbox/actions/statuses';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
 describe('compose reducer', () => {
   it('returns the initial state by default', () => {
-    expect(reducer(undefined, {}).toJS()).toMatchObject({
+    const state = reducer(undefined, {});
+    expect(state.toJS()).toMatchObject({
       mounted: 0,
       sensitive: false,
       spoiler: false,
       spoiler_text: '',
-      privacy: null,
+      privacy: 'public',
       text: '',
       focusDate: null,
       caretPosition: null,
@@ -30,10 +30,10 @@ describe('compose reducer', () => {
       suggestions: [],
       default_privacy: 'public',
       default_sensitive: false,
-      idempotencyKey: null,
       tagHistory: [],
-      content_type: 'text/markdown',
+      content_type: 'text/plain',
     });
+    expect(state.get('idempotencyKey').length === 36);
   });
 
   it('uses \'public\' scope as default', () => {
@@ -131,23 +131,6 @@ describe('compose reducer', () => {
       privacy: 'public',
     });
   });
-
-  // it('should handle STORE_HYDRATE', () => {
-  //   const state = ImmutableMap({ });
-  //   const action = {
-  //     type: STORE_HYDRATE,
-  //     state: ImmutableMap({
-  //       compose: true,
-  //       text: 'newtext',
-  //     }),
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     state: ImmutableMap({
-  //       compose: true,
-  //       text: 'newtext',
-  //     }),
-  //   }));
-  // });
 
   it('should handle COMPOSE_MOUNT', () => {
     const state = ImmutableMap({ mounted: 1 });

@@ -45,7 +45,7 @@
   text-align: center;
   padding: 12px 4px;
   overflow: hidden;
-  transition: color .1s ease-out;
+  transition: color 0.1s ease-out;
   cursor: pointer;
 
   &:hover {
@@ -173,6 +173,13 @@
   display: inline-block;
   font-size: 0;
 
+  .fa {
+    font-size: 18px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+  }
+
   span {
     width: 22px;
     height: 22px;
@@ -190,7 +197,7 @@
   }
 
   .emoji-mart-no-results-label {
-    margin-top: .2em;
+    margin-top: 0.2em;
   }
 
   .emoji-mart-emoji:hover::before {

@@ -63,7 +63,7 @@ class Blocks extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {domains.map(domain =>
-            <DomainContainer key={domain} domain={domain} />
+            <DomainContainer key={domain} domain={domain} />,
           )}
         </ScrollableList>
       </Column>

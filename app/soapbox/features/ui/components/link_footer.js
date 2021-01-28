@@ -12,7 +12,7 @@ const sourceCode = {
   name: 'soapbox-fe',
   url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
   repository: 'soapbox-pub/soapbox-fe',
-  version: '1.0.0',
+  version: '1.1.0',
 };
 
 const mapStateToProps = state => {

@@ -11,6 +11,7 @@ import { makeGetChat } from 'soapbox/selectors';
 import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
 import ChatWindow from './chat_window';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
@@ -28,7 +29,7 @@ const mapStateToProps = state => {
 
   return {
     panesData: addChatsToPanes(state, panesData),
-    unreadCount: state.get('chats').reduce((acc, curr) => acc + curr.get('unread'), 0),
+    unreadCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
   };
 };
 
@@ -62,6 +63,7 @@ class ChatPanes extends ImmutablePureComponent {
           <button className='pane__title' onClick={this.handleMainWindowToggle}>
             <FormattedMessage id='chat_panels.main_window.title' defaultMessage='Chats' />
           </button>
+          <AudioToggle />
         </div>
         <div className='pane__content'>
           <ChatList
@@ -76,7 +78,7 @@ class ChatPanes extends ImmutablePureComponent {
       <div className='chat-panes'>
         {mainWindowPane}
         {panes.map((pane, i) =>
-          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />
+          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />,
         )}
       </div>
     );

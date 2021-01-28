@@ -1,4 +1,6 @@
 import { combineReducers } from 'redux-immutable';
+import { Map as ImmutableMap } from 'immutable';
+import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 import dropdown_menu from './dropdown_menu';
 import timelines from './timelines';
 import meta from './meta';
@@ -46,8 +48,10 @@ import admin from './admin';
 import chats from './chats';
 import chat_messages from './chat_messages';
 import chat_message_lists from './chat_message_lists';
+import profile_hover_card from './profile_hover_card';
+import backups from './backups';
 
-const reducers = {
+const appReducer = combineReducers({
   dropdown_menu,
   timelines,
   meta,
@@ -95,6 +99,29 @@ const reducers = {
   chats,
   chat_messages,
   chat_message_lists,
+  profile_hover_card,
+  backups,
+});
+
+// Clear the state (mostly) when the user logs out
+const logOut = (state = ImmutableMap()) => {
+  const whitelist = ['instance', 'soapbox', 'custom_emojis'];
+
+  return ImmutableMap(
+    whitelist.reduce((acc, curr) => {
+      acc[curr] = state.get(curr);
+      return acc;
+    }, {}),
+  );
 };
 
-export default combineReducers(reducers);
+const rootReducer = (state, action) => {
+  switch(action.type) {
+  case AUTH_LOGGED_OUT:
+    return appReducer(logOut(state), action);
+  default:
+    return appReducer(state, action);
+  }
+};
+
+export default rootReducer;

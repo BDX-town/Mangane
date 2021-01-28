@@ -35,6 +35,8 @@ import {
   groupRemoveStatus,
 } from '../actions/groups';
 import { getSettings } from '../actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -53,6 +55,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
     displayMedia: getSettings(state).get('displayMedia'),
+    allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
   });
 
   return mapStateToProps;
@@ -204,6 +207,22 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onGroupRemoveStatus(groupId, statusId) {
     dispatch(groupRemoveStatus(groupId, statusId));
+  },
+
+  onDeactivateUser(status) {
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+  },
+
+  onDeleteUser(status) {
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+  },
+
+  onDeleteStatus(status) {
+    dispatch(deleteStatusModal(intl, status.get('id')));
+  },
+
+  onToggleStatusSensitivity(status) {
+    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
   },
 
 });

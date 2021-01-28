@@ -14,7 +14,7 @@ import {
   SelectDropdown,
   Checkbox,
 } from 'soapbox/features/forms';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
 import ColumnSubheading from '../ui/components/column_subheading';
 
@@ -114,7 +114,7 @@ class Filters extends ImmutablePureComponent {
     dispatch(createFilter(phrase, expires_at, context, whole_word, irreversible)).then(response => {
       return dispatch(fetchFilters());
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.create_error)));
+      dispatch(snackbar.error(intl.formatMessage(messages.create_error)));
     });
   }
 
@@ -123,7 +123,7 @@ class Filters extends ImmutablePureComponent {
     dispatch(deleteFilter(e.currentTarget.dataset.value)).then(response => {
       return dispatch(fetchFilters());
     }).catch(error => {
-      dispatch(showAlert('', intl.formatMessage(messages.delete_error)));
+      dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));
     });
   }
 

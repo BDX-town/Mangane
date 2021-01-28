@@ -1,6 +1,5 @@
 import api from '../api';
-import { showAlert } from 'soapbox/actions/alerts';
-import { fetchMe } from 'soapbox/actions/me';
+import snackbar from 'soapbox/actions/snackbar';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
@@ -135,8 +134,10 @@ export function logIn(username, password) {
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         throw error;
+      } else if(error.response.data.error) {
+        dispatch(snackbar.error(error.response.data.error));
       } else {
-        dispatch(showAlert('Login failed.', 'Invalid username or password.'));
+        dispatch(snackbar.error('Wrong username or password'));
       }
       throw error;
     });
@@ -145,15 +146,23 @@ export function logIn(username, password) {
 
 export function logOut() {
   return (dispatch, getState) => {
+    const state = getState();
+
     dispatch({ type: AUTH_LOGGED_OUT });
-    dispatch(showAlert('Successfully logged out.', ''));
+
+    // Attempt to destroy OAuth token on logout
+    api(getState).post('/oauth/revoke', {
+      client_id: state.getIn(['auth', 'app', 'client_id']),
+      client_secret: state.getIn(['auth', 'app', 'client_secret']),
+      token: state.getIn(['auth', 'user', 'access_token']),
+    });
+
+    dispatch(snackbar.success('Logged out.'));
   };
 }
 
 export function register(params) {
   return (dispatch, getState) => {
-    const needsConfirmation = getState().getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']);
-    const needsApproval = getState().getIn(['instance', 'approval_required']);
     params.fullname = params.username;
     dispatch({ type: AUTH_REGISTER_REQUEST });
     return dispatch(createAppAndToken()).then(() => {
@@ -161,13 +170,6 @@ export function register(params) {
     }).then(response => {
       dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
       dispatch(authLoggedIn(response.data));
-      if (needsConfirmation) {
-        return dispatch(showAlert('', 'Check your email for further instructions.'));
-      } else if (needsApproval) {
-        return dispatch(showAlert('', 'Your account has been submitted for approval.'));
-      } else {
-        return dispatch(fetchMe());
-      }
     }).catch(error => {
       dispatch({ type: AUTH_REGISTER_FAIL, error });
       throw error;
@@ -222,7 +224,7 @@ export function deleteAccount(password) {
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
       dispatch({ type: AUTH_LOGGED_OUT });
-      dispatch(showAlert('Successfully logged out.', ''));
+      dispatch(snackbar.success('Logged out.'));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;

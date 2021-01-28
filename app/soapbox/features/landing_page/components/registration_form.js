@@ -17,19 +17,25 @@ import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
 import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
+import { fetchMe } from 'soapbox/actions/me';
+import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
+  username_hint: { id: 'registration.fields.username_hint', defaultMessage: 'Only letters, numbers, and underscores are allowed.' },
   email: { id: 'registration.fields.email_placeholder', defaultMessage: 'E-Mail address' },
   password: { id: 'registration.fields.password_placeholder', defaultMessage: 'Password' },
   confirm: { id: 'registration.fields.confirm_placeholder', defaultMessage: 'Password (again)' },
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
+  close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
 });
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),
   locale: getSettings(state).get('locale'),
+  needsConfirmation: state.getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']),
+  needsApproval: state.getIn(['instance', 'approval_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -61,10 +67,48 @@ class RegistrationForm extends ImmutablePureComponent {
     this.setParams({ [e.target.name]: e.target.checked });
   }
 
+  launchModal = () => {
+    const { dispatch, intl, needsConfirmation, needsApproval } = this.props;
+
+    const message = (<>
+      {needsConfirmation && <p>
+        <FormattedMessage
+          id='confirmations.register.needs_confirmation'
+          defaultMessage='Please check your inbox at {email} for confirmation instructions. You will need to verify your email address to continue.'
+          values={{ email: <strong>{this.state.params.get('email')}</strong> }}
+        /></p>}
+      {needsApproval && <p>
+        <FormattedMessage
+          id='confirmations.register.needs_approval'
+          defaultMessage='Your account will be manually approved by an admin. Please be patient while we review your details.'
+        /></p>}
+    </>);
+
+    dispatch(openModal('CONFIRM', {
+      message,
+      confirm: intl.formatMessage(messages.close),
+    }));
+  }
+
+  postRegisterAction = () => {
+    const { dispatch, needsConfirmation, needsApproval } = this.props;
+
+    if (needsConfirmation || needsApproval) {
+      return this.launchModal();
+    } else {
+      return dispatch(fetchMe());
+    }
+  }
+
   onSubmit = e => {
+    const { dispatch } = this.props;
     const params = this.state.params.set('locale', this.props.locale);
+
     this.setState({ submissionLoading: true });
-    this.props.dispatch(register(params.toJS())).catch(error => {
+
+    dispatch(register(params.toJS())).then(() => {
+      this.postRegisterAction();
+    }).catch(error => {
       this.setState({ submissionLoading: false });
       this.refreshCaptcha();
     });
@@ -92,11 +136,32 @@ class RegistrationForm extends ImmutablePureComponent {
 
   render() {
     const { instance, intl } = this.props;
+    const isOpen = instance.get('registrations');
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
+
+    if (isOpen === false) {
+      return (
+        <div className='registrations-closed'>
+          <h2>
+            <FormattedMessage
+              id='registration.closed_title'
+              defaultMessage='Registrations Closed'
+            />
+          </h2>
+          <div className='registrations-closed__message'>
+            <FormattedMessage
+              id='registration.closed_message'
+              defaultMessage='{instance} is not accepting new members'
+              values={{ instance: <strong>{instance.get('title')}</strong> }}
+            />
+          </div>
+        </div>
+      );
+    }
 
     return (
       <SimpleForm onSubmit={this.onSubmit}>
-        <fieldset disabled={isLoading}>
+        <fieldset disabled={isLoading || !isOpen}>
           <div className='simple_form__overlay-area'>
             <p className='lead'>
               <FormattedMessage
@@ -109,7 +174,9 @@ class RegistrationForm extends ImmutablePureComponent {
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}
                 name='username'
+                hint={intl.formatMessage(messages.username_hint)}
                 autoComplete='off'
+                pattern='^[a-zA-Z\d_-]+'
                 onChange={this.onInputChange}
                 required
               />

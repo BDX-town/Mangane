@@ -23,6 +23,10 @@ export const CHAT_READ_REQUEST = 'CHAT_READ_REQUEST';
 export const CHAT_READ_SUCCESS = 'CHAT_READ_SUCCESS';
 export const CHAT_READ_FAIL    = 'CHAT_READ_FAIL';
 
+export const CHAT_MESSAGE_DELETE_REQUEST = 'CHAT_MESSAGE_DELETE_REQUEST';
+export const CHAT_MESSAGE_DELETE_SUCCESS = 'CHAT_MESSAGE_DELETE_SUCCESS';
+export const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
+
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
@@ -34,20 +38,20 @@ export function fetchChats() {
   };
 }
 
-export function fetchChatMessages(chatId) {
+export function fetchChatMessages(chatId, maxId = null) {
   return (dispatch, getState) => {
-    dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId });
-    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`).then(({ data }) => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, chatMessages: data });
+    dispatch({ type: CHAT_MESSAGES_FETCH_REQUEST, chatId, maxId });
+    return api(getState).get(`/api/v1/pleroma/chats/${chatId}/messages`, { params: { max_id: maxId } }).then(({ data }) => {
+      dispatch({ type: CHAT_MESSAGES_FETCH_SUCCESS, chatId, maxId, chatMessages: data });
     }).catch(error => {
-      dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, error });
+      dispatch({ type: CHAT_MESSAGES_FETCH_FAIL, chatId, maxId, error });
     });
   };
 }
 
 export function sendChatMessage(chatId, params) {
   return (dispatch, getState) => {
-    const uuid = uuidv4();
+    const uuid = `末_${Date.now()}_${uuidv4()}`;
     const me = getState().get('me');
     dispatch({ type: CHAT_MESSAGE_SEND_REQUEST, chatId, params, uuid, me });
     return api(getState).post(`/api/v1/pleroma/chats/${chatId}/messages`, params).then(({ data }) => {
@@ -147,6 +151,17 @@ export function markChatRead(chatId, lastReadId) {
       dispatch({ type: CHAT_READ_SUCCESS, chat: data, lastReadId });
     }).catch(error => {
       dispatch({ type: CHAT_READ_FAIL, chatId, error, lastReadId });
+    });
+  };
+}
+
+export function deleteChatMessage(chatId, messageId) {
+  return (dispatch, getState) => {
+    dispatch({ type: CHAT_MESSAGE_DELETE_REQUEST, chatId, messageId });
+    api(getState).delete(`/api/v1/pleroma/chats/${chatId}/messages/${messageId}`).then(({ data }) => {
+      dispatch({ type: CHAT_MESSAGE_DELETE_SUCCESS, chatId, messageId, chatMessage: data });
+    }).catch(error => {
+      dispatch({ type: CHAT_MESSAGE_DELETE_FAIL, chatId, messageId, error });
     });
   };
 }

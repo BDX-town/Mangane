@@ -5,6 +5,7 @@
   flex: 0 0 auto;
   overflow-y: auto;
   height: 50px;
+  width: 100%;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -26,7 +27,7 @@
     padding: 0 15px;
 
     // NOTE - might need to adjust this based on column sizing
-    @media screen and (max-width: $nav-breakpoint-4) {padding: 0 10px;}
+    @media screen and (max-width: $nav-breakpoint-4) { padding: 0 10px; }
   }
 
   &__split {
@@ -113,7 +114,7 @@
 
   &__button-compose {
     display: block;
-    @media screen and (max-width: $nav-breakpoint-3) {display: none;}
+    @media screen and (max-width: $nav-breakpoint-3) { display: none; }
     height: 34px;
     margin-left: 20px;
     border-radius: 6px;
@@ -129,7 +130,6 @@
     &:hover {
       background-color: var(--accent-color--bright);
     }
-
   }
 
   &__button {
@@ -138,10 +138,14 @@
   }
 
   .theme-toggle {
-    @media screen and (max-width: $nav-breakpoint-3) {display: none;}
+    @media screen and (max-width: $nav-breakpoint-3) { display: none; }
 
     .setting-toggle {
       margin-left: 10px;
+
+      .react-toggle-track {
+        background-color: var(--foreground-color);
+      }
 
       .react-toggle--checked {
         .react-toggle-track {
@@ -175,7 +179,7 @@
     margin: 4px 4px 0 0;
     justify-content: center;
 
-    & > span {display: none;}
+    & > span { display: none; }
   }
 
   > span {
@@ -201,11 +205,17 @@
 
     &.fa-home {
       font-size: 18px;
-      transform: translate(-1px , -2px);
+      transform: translate(-1px, -2px);
 
       @media screen and (max-width: 895px) {
         font-size: 26px;
       }
+    }
+  }
+
+  .icon-with-counter__counter {
+    @media screen and (min-width: 895px) {
+      left: 5px;
     }
   }
 
@@ -260,7 +270,7 @@
     padding: 13px 0 0;
     box-sizing: border-box;
     filter: brightness(0%) grayscale(100%) invert(100%);
-    & span {display: none !important;}
+    & span { display: none !important; }
 
     img {
       height: 100%;

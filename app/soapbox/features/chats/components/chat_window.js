@@ -14,6 +14,7 @@ import {
 } from 'soapbox/actions/chats';
 import ChatBox from './chat_box';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
@@ -79,13 +80,24 @@ class ChatWindow extends ImmutablePureComponent {
     const right = (285 * (idx + 1)) + 20;
     const unreadCount = chat.get('unread');
 
+    const unreadIcon = (
+      <i className='icon-with-badge__badge'>
+        {shortNumberFormat(unreadCount)}
+      </i>
+    );
+
+    const avatar = (
+      <HoverRefWrapper accountId={account.get('id')}>
+        <Link to={`/@${account.get('acct')}`}>
+          <Avatar account={account} size={18} />
+        </Link>
+      </HoverRefWrapper>
+    );
+
     return (
       <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
         <div className='pane__header'>
-          {unreadCount > 0
-            ? <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>
-            : <Link to={`/@${account.get('acct')}`}><Avatar account={account} size={18} /></Link>
-          }
+          {unreadCount > 0 ? unreadIcon : avatar }
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
             @{acctFull(account)}
           </button>

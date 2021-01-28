@@ -51,7 +51,7 @@ class Followers extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
     diffCount: PropTypes.number,
     isAccount: PropTypes.bool,
@@ -122,7 +122,7 @@ class Followers extends ImmutablePureComponent {
           emptyMessage={<FormattedMessage id='account.followers.empty' defaultMessage='No one follows this user yet.' />}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />
+            <AccountContainer key={id} id={id} withNote={false} />,
           )}
         </ScrollableList>
       </Column>

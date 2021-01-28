@@ -24,7 +24,8 @@ Examples:
   --primary-text-color--faint
 */
 
-body {
+body,
+.site-preview {
   // Primary variables
   --brand-color: hsl(var(--brand-color_hsl));
   --accent-color: hsl(var(--accent-color_hsl));
@@ -56,14 +57,15 @@ body {
   --warning-color--faint: hsla(var(--warning-color_hsl), 0.5);
 }
 
-body.theme-mode-light {
+.theme-mode-light {
   // Primary variables
-  --foreground-color: #ffffff;
+  --foreground-color: #fff;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
     calc(var(--brand-color_l) - 8%)
   );
+  --vignette-color: transparent;
 
   // Meta-variables
   --primary-text-color_h: 0;
@@ -84,14 +86,15 @@ body.theme-mode-light {
   );
 }
 
-body.theme-mode-dark {
+.theme-mode-dark {
   // Primary variables
-  --foreground-color: #222222;
+  --foreground-color: #222;
   --highlight-text-color: hsl(
     var(--brand-color_h),
     var(--brand-color_s),
     calc(var(--brand-color_l) + 8%)
   );
+  --vignette-color: #000;
 
   // Meta-variables
   --primary-text-color_h: 0;

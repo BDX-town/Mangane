@@ -159,6 +159,19 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
     this.textarea.focus();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // Skip updating when only the lastToken changes so the
+    // cursor doesn't jump around due to re-rendering unnecessarily
+    const lastTokenUpdated = this.state.lastToken !== nextState.lastToken;
+    const valueUpdated = this.props.value !== nextProps.value;
+
+    if (lastTokenUpdated && !valueUpdated) {
+      return false;
+    } else {
+      return super.shouldComponentUpdate(nextProps, nextState);
+    }
+  }
+
   componentDidUpdate(prevProps, prevState) {
     const { suggestions } = this.props;
     if (suggestions !== prevProps.suggestions && suggestions.size > 0 && prevState.suggestionsHidden && prevState.focused) {
@@ -215,7 +228,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
             <span style={{ display: 'none' }}>{placeholder}</span>
 
             <Textarea
-              inputRef={this.setTextarea}
+              ref={this.setTextarea}
               className='autosuggest-textarea__textarea'
               disabled={disabled}
               placeholder={placeholder}

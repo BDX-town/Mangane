@@ -71,5 +71,5 @@ const mapStateToProps = state => {
 export default injectIntl(
   connect(mapStateToProps, null, null, {
     forwardRef: true,
-  }
+  },
   )(FundingPanel));

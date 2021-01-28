@@ -11,7 +11,7 @@ Installing Soapbox FE on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.0.0/download?job=build-production -o soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.1.0/download?job=build-production -o soapbox-fe.zip
 ```
 
 Then unpack it into Pleroma's `instance` directory:
@@ -25,7 +25,7 @@ busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance
 The change will take effect immediately, just refresh your browser tab.
 It's not necessary to restart the Pleroma service.
 
-To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
+To remove Soapbox FE and revert to the default pleroma-fe, simply `rm /opt/pleroma/instance/static/index.html` (you can delete other stuff in there too, but be careful not to delete your own HTML files).
 
 ## How does it work?
 
@@ -187,6 +187,8 @@ Customization details can be found in the [Customization doc](docs/customization
 # License & Credits
 
 Soapbox FE is based on [Gab Social](https://code.gab.com/gab/social/gab-social)'s frontend which is in turn based on [Mastodon](https://github.com/tootsuite/mastodon/)'s frontend.
+
+- `static/sounds/chat.mp3` and `static/sounds/chat.oga` are from [notificationsounds.com](https://notificationsounds.com/notification-sounds/intuition-561) licensed under CC BY 4.0.
 
 Soapbox FE is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by

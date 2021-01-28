@@ -1,6 +1,5 @@
 .theme-toggle {
   .setting-toggle {
-
     &__label {
       margin-bottom: 0;
       vertical-align: middle;
@@ -8,10 +7,6 @@
 
     .react-toggle {
       vertical-align: middle;
-
-      &-track {
-        background-color: var(--foreground-color);
-      }
 
       &-track-check,
       &-track-x {

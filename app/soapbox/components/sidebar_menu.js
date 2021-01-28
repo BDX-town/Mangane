@@ -15,7 +15,7 @@ import { shortNumberFormat } from '../utils/numbers';
 import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
 import { logOut } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -29,6 +29,7 @@ const messages = defineMessages({
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
+  import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -36,6 +37,7 @@ const messages = defineMessages({
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
+  info: { id: 'column.info', defaultMessage: 'Server information' },
 });
 
 const mapStateToProps = state => {
@@ -180,10 +182,21 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
               </NavLink>
+              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={onClose}>
+                <Icon id='cloud-upload' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+              </NavLink>
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={onClose}>
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
               </NavLink>
+            </div>
+
+            <div className='sidebar-menu__section'>
+              <Link className='sidebar-menu-item' to='/info' onClick={onClose}>
+                <Icon id='info' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
+              </Link>
             </div>
 
             <div className='sidebar-menu__section'>

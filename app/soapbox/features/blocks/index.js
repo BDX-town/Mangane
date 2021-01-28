@@ -27,7 +27,7 @@ class Blocks extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     hasMore: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
@@ -62,7 +62,7 @@ class Blocks extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} />
+            <AccountContainer key={id} id={id} />,
           )}
         </ScrollableList>
       </Column>

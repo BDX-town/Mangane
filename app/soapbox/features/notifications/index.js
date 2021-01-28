@@ -30,7 +30,7 @@ const getNotifications = createSelector([
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'active']),
   state => ImmutableList(getSettings(state).getIn(['notifications', 'shows']).filter(item => !item).keys()),
-  state => state.getIn(['notifications', 'items']),
+  state => state.getIn(['notifications', 'items']).toList(),
 ], (showFilterBar, allowedType, excludedTypes, notifications) => {
   if (!showFilterBar || allowedType === 'all') {
     // used if user changed the notification settings after loading the notifications from the server

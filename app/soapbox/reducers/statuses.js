@@ -2,6 +2,7 @@ import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
   FAVOURITE_REQUEST,
+  UNFAVOURITE_REQUEST,
   FAVOURITE_FAIL,
 } from '../actions/interactions';
 import {
@@ -12,11 +13,12 @@ import {
 } from '../actions/statuses';
 import {
   EMOJI_REACT_REQUEST,
+  UNEMOJI_REACT_REQUEST,
 } from '../actions/emoji_reacts';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
-import { simulateEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
 const importStatus = (state, status) => state.set(status.id, fromJS(status));
 
@@ -40,11 +42,27 @@ export default function statuses(state = initialState, action) {
   case STATUSES_IMPORT:
     return importStatuses(state, action.statuses);
   case FAVOURITE_REQUEST:
-    return state.setIn([action.status.get('id'), 'favourited'], true);
+    return state.update(action.status.get('id'), status =>
+      status
+        .set('favourited', true)
+        .update('favourites_count', count => count + 1));
+  case UNFAVOURITE_REQUEST:
+    return state.update(action.status.get('id'), status =>
+      status
+        .set('favourited', false)
+        .update('favourites_count', count => Math.max(0, count - 1)));
   case EMOJI_REACT_REQUEST:
-    const path = [action.status.get('id'), 'pleroma', 'emoji_reactions'];
-    const emojiReacts = state.getIn(path);
-    return state.setIn(path, simulateEmojiReact(emojiReacts, action.emoji));
+    return state
+      .updateIn(
+        [action.status.get('id'), 'pleroma', 'emoji_reactions'],
+        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji),
+      );
+  case UNEMOJI_REACT_REQUEST:
+    return state
+      .updateIn(
+        [action.status.get('id'), 'pleroma', 'emoji_reactions'],
+        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji),
+      );
   case FAVOURITE_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);
   case REBLOG_REQUEST:

@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "ignoreFiles": ["app/styles/reset.scss"],
+  "plugins": ["stylelint-scss"],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "at-rule-empty-line-before": ["always", { "ignore": ["after-comment", "first-nested", "inside-block", "blockless-after-same-name-blockless", "blockless-after-blockless"] }],
+    "declaration-colon-newline-after": null,
+    "declaration-empty-line-before": "never",
+    "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["ForkAwesome", "OpenDyslexic", "soapbox"] }],
+    "no-descending-specificity": null,
+    "no-duplicate-selectors": null,
+    "scss/at-rule-no-unknown": true
+  }
+}

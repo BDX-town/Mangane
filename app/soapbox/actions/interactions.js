@@ -1,6 +1,6 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
-import { showAlert } from 'soapbox/actions/alerts';
+import snackbar from 'soapbox/actions/snackbar';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -211,7 +211,7 @@ export function bookmark(status) {
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
-      dispatch(showAlert('', 'Bookmark added'));
+      dispatch(snackbar.success('Bookmark added'));
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
@@ -225,7 +225,7 @@ export function unbookmark(status) {
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
-      dispatch(showAlert('', 'Bookmark removed'));
+      dispatch(snackbar.success('Bookmark removed'));
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });

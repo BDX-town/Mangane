@@ -7,7 +7,7 @@ import {
 // I've customized them.
 export const ALLOWED_EMOJI = [
   '👍',
-  '❤',
+  '❤️',
   '😆',
   '😮',
   '😢',
@@ -39,8 +39,8 @@ export const mergeEmojiFavourites = (emojiReacts, favouritesCount, favourited) =
 const hasMultiReactions = (emojiReacts, account) => (
   emojiReacts.filter(
     e => e.get('accounts').filter(
-      a => a.get('id') === account.get('id')
-    ).count() > 0
+      a => a.get('id') === account.get('id'),
+    ).count() > 0,
   ).count() > 1
 );
 
@@ -72,14 +72,15 @@ export const filterEmoji = (emojiReacts, allowedEmoji=ALLOWED_EMOJI) => (
 
 export const reduceEmoji = (emojiReacts, favouritesCount, favourited, allowedEmoji=ALLOWED_EMOJI) => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
-    emojiReacts, favouritesCount, favourited
+    emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
-export const getReactForStatus = status => {
+export const getReactForStatus = (status, allowedEmoji=ALLOWED_EMOJI) => {
   return reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
-    status.get('favourites_count'),
-    status.get('favourited')
+    status.get('favourites_count', 0),
+    status.get('favourited'),
+    allowedEmoji,
   ).filter(e => e.get('me') === true)
     .getIn([0, 'name']);
 };
@@ -98,5 +99,22 @@ export const simulateEmojiReact = (emojiReacts, emoji) => {
       me: true,
       name: emoji,
     }));
+  }
+};
+
+export const simulateUnEmojiReact = (emojiReacts, emoji) => {
+  const idx = emojiReacts.findIndex(e =>
+    e.get('name') === emoji && e.get('me') === true);
+
+  if (idx > -1) {
+    const emojiReact = emojiReacts.get(idx);
+    const newCount = emojiReact.get('count') - 1;
+    if (newCount < 1) return emojiReacts.delete(idx);
+    return emojiReacts.set(idx, emojiReact.merge({
+      count: emojiReact.get('count') - 1,
+      me: false,
+    }));
+  } else {
+    return emojiReacts;
   }
 };

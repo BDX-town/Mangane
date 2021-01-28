@@ -36,6 +36,16 @@ export default function soundsMiddleware() {
         type: 'audio/mpeg',
       },
     ]),
+    chat: createAudio([
+      {
+        src: '/sounds/chat.oga',
+        type: 'audio/ogg',
+      },
+      {
+        src: '/sounds/chat.mp3',
+        type: 'audio/mpeg',
+      },
+    ]),
   };
 
   return () => next => action => {

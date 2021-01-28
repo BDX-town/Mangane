@@ -64,11 +64,11 @@
   }
 }
 
-.status__wrapper, .detailed-status__wrapper {
+.status__wrapper,
+.detailed-status__wrapper {
   .media-gallery__item-thumbnail {
     &,
     .still-image {
-
       img {
         object-fit: contain;
       }
@@ -134,6 +134,7 @@
 }
 
 .media-gallery__gifv__label,
+.media-gallery__filename__label,
 .media-gallery__file-extension__label {
   display: block;
   position: absolute;

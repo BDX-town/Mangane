@@ -28,7 +28,7 @@ class Mutes extends ImmutablePureComponent {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     hasMore: PropTypes.bool,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     intl: PropTypes.object.isRequired,
   };
 
@@ -62,7 +62,7 @@ class Mutes extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} />
+            <AccountContainer key={id} id={id} />,
           )}
         </ScrollableList>
       </Column>

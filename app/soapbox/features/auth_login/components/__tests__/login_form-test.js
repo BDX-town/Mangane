@@ -5,7 +5,7 @@ import { createComponent } from 'soapbox/test_helpers';
 describe('<LoginForm />', () => {
   it('renders correctly', () => {
     expect(createComponent(
-      <LoginForm />
+      <LoginForm />,
     ).toJSON()).toMatchSnapshot();
   });
 });

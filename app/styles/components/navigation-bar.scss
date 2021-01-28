@@ -86,13 +86,13 @@
       & > .icon-button.close {
         will-change: opacity transform;
         transition: opacity $duration * 0.5 $delay,
-                    transform $duration $delay;
+          transform $duration $delay;
       }
 
       & > .compose__action-bar .icon-button {
         will-change: opacity transform;
         transition: opacity $duration * 0.5 $delay + $duration * 0.5,
-                    transform $duration $delay;
+          transform $duration $delay;
       }
     }
   }

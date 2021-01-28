@@ -58,17 +58,17 @@ const expandNormalizedTimeline = (state, timeline, statuses, next, isPartial, is
 
         return oldIds.take(firstIndex + 1).concat(
           isPartial && oldIds.get(firstIndex) !== null ? newIds.unshift(null) : newIds,
-          oldIds.skip(lastIndex)
+          oldIds.skip(lastIndex),
         );
       });
     }
   }));
 };
 
-const updateTimeline = (state, timeline, status) => {
+const updateTimeline = (state, timeline, statusId) => {
   const top        = state.getIn([timeline, 'top']);
   const ids        = state.getIn([timeline, 'items'], ImmutableList());
-  const includesId = ids.includes(status.get('id'));
+  const includesId = ids.includes(statusId);
   const unread     = state.getIn([timeline, 'unread'], 0);
 
   if (includesId) {
@@ -80,17 +80,17 @@ const updateTimeline = (state, timeline, status) => {
   return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
     if (!top) mMap.set('unread', unread + 1);
     if (top && ids.size > 40) newIds = newIds.take(20);
-    mMap.set('items', newIds.unshift(status.get('id')));
+    mMap.set('items', newIds.unshift(statusId));
   }));
 };
 
-const updateTimelineQueue = (state, timeline, status) => {
+const updateTimelineQueue = (state, timeline, statusId) => {
   const queuedStatuses = state.getIn([timeline, 'queuedItems'], ImmutableList());
   const listedStatuses = state.getIn([timeline, 'items'], ImmutableList());
   const totalQueuedItemsCount = state.getIn([timeline, 'totalQueuedItemsCount'], 0);
 
-  let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus.get('id') === status.get('id'));
-  if (!alreadyExists) alreadyExists = listedStatuses.find(existingListedStatusId => existingListedStatusId === status.get('id'));
+  let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus === statusId);
+  if (!alreadyExists) alreadyExists = listedStatuses.find(existingListedStatusId => existingListedStatusId === statusId);
 
   if (alreadyExists) {
     return state;
@@ -100,7 +100,7 @@ const updateTimelineQueue = (state, timeline, status) => {
 
   return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
     if (totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
-      mMap.set('queuedItems', newQueuedStatuses.push(status));
+      mMap.set('queuedItems', newQueuedStatuses.push(statusId));
     }
     mMap.set('totalQueuedItemsCount', totalQueuedItemsCount + 1);
   }));
@@ -149,7 +149,7 @@ const updateTop = (state, timeline, top) => {
 const filterTimeline = (timeline, state, relationship, statuses) =>
   state.updateIn([timeline, 'items'], ImmutableList(), list =>
     list.filterNot(statusId =>
-      statuses.getIn([statusId, 'account']) === relationship.id
+      statuses.getIn([statusId, 'account']) === relationship.id,
     ));
 
 const removeStatusFromGroup = (state, groupId, statusId) => {
@@ -165,9 +165,9 @@ export default function timelines(state = initialState, action) {
   case TIMELINE_EXPAND_SUCCESS:
     return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
   case TIMELINE_UPDATE:
-    return updateTimeline(state, action.timeline, fromJS(action.status));
+    return updateTimeline(state, action.timeline, action.statusId);
   case TIMELINE_UPDATE_QUEUE:
-    return updateTimelineQueue(state, action.timeline, fromJS(action.status));
+    return updateTimelineQueue(state, action.timeline, action.statusId);
   case TIMELINE_DEQUEUE:
     return state.update(action.timeline, initialTimeline, map => map.withMutations(mMap => {
       mMap.set('queuedItems', ImmutableList());
@@ -190,7 +190,7 @@ export default function timelines(state = initialState, action) {
     return state.update(
       action.timeline,
       initialTimeline,
-      map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items)
+      map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items),
     );
   case GROUP_REMOVE_STATUS_SUCCESS:
     return removeStatusFromGroup(state, action.groupId, action.id);

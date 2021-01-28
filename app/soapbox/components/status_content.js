@@ -58,23 +58,34 @@ export default class StatusContent extends React.PureComponent {
         link.setAttribute('title', link.href);
       }
     }
+  }
+
+  setCollapse() {
+    const node = this.node;
+
+    if (!node) {
+      return;
+    }
 
     if (
       this.props.collapsable
       && this.props.onClick
       && this.state.collapsed === null
-      && node.clientHeight > MAX_HEIGHT
       && this.props.status.get('spoiler_text').length === 0
     ) {
-      this.setState({ collapsed: true });
+      if (node.clientHeight > MAX_HEIGHT){
+        this.setState({ collapsed: true });
+      }
     }
   }
 
   componentDidMount() {
+    this.setCollapse();
     this._updateStatusLinks();
   }
 
   componentDidUpdate() {
+    this.setCollapse();
     this._updateStatusLinks();
   }
 

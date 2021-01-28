@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { fetchChats } from 'soapbox/actions/chats';
 import Chat from './chat';
 import { makeGetChat } from 'soapbox/selectors';
 
@@ -41,10 +40,6 @@ class ChatList extends ImmutablePureComponent {
     onClickChat: PropTypes.func,
     emptyMessage: PropTypes.node,
   };
-
-  componentDidMount() {
-    this.props.dispatch(fetchChats());
-  }
 
   render() {
     const { chats, emptyMessage } = this.props;

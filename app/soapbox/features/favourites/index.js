@@ -20,7 +20,7 @@ class Favourites extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
   };
 
   componentDidMount() {
@@ -56,7 +56,7 @@ class Favourites extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />
+            <AccountContainer key={id} id={id} withNote={false} />,
           )}
         </ScrollableList>
       </Column>

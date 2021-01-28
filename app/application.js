@@ -1,7 +1,6 @@
 import loadPolyfills from './soapbox/load_polyfills';
-import { start } from './soapbox/common';
 
-start();
+require.context('./images/', true);
 
 loadPolyfills().then(() => {
   require('./soapbox/main').default();

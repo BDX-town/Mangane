@@ -17,10 +17,9 @@ import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
-import { NavLink } from 'react-router-dom';
-import ProfileHoverCardContainer from '../features/profile_hover_card/profile_hover_card_container';
-import { isMobile } from '../../../app/soapbox/is_mobile';
-import { debounce } from 'lodash';
+import { Link, NavLink } from 'react-router-dom';
+import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -81,6 +80,7 @@ class Status extends ImmutablePureComponent {
     onEmbed: PropTypes.func,
     onHeightChange: PropTypes.func,
     onToggleHidden: PropTypes.func,
+    onShowHoverProfileCard: PropTypes.func,
     muted: PropTypes.bool,
     hidden: PropTypes.bool,
     unread: PropTypes.bool,
@@ -93,6 +93,7 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
+    allowedEmoji: ImmutablePropTypes.list,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -107,7 +108,6 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
-    profileCardVisible: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -126,7 +126,7 @@ class Status extends ImmutablePureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.status && nextProps.status.get('id') !== prevState.statusId) {
       return {
-        showMedia: defaultMediaVisibility(nextProps.status),
+        showMedia: defaultMediaVisibility(nextProps.status, nextProps.displayMedia),
         statusId: nextProps.status.get('id'),
       };
     } else {
@@ -150,14 +150,16 @@ class Status extends ImmutablePureComponent {
   }
 
   componentWillUnmount() {
-    if (this.node && this.props.getScrollPosition) {
-      const position = this.props.getScrollPosition();
-      if (position !== null && this.node.offsetTop < position.top) {
-        requestAnimationFrame(() => {
-          this.props.updateScrollBottom(position.height - position.top);
-        });
-      }
-    }
+    // FIXME: Run this code only when a status is being deleted.
+    //
+    // if (this.node && this.props.getScrollPosition) {
+    //   const position = this.props.getScrollPosition();
+    //   if (position !== null && this.node.offsetTop < position.top) {
+    //     requestAnimationFrame(() => {
+    //       this.props.updateScrollBottom(position.height - position.top);
+    //     });
+    //   }
+    // }
   }
 
   handleToggleMediaVisibility = () => {
@@ -251,19 +253,6 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyToggleSensitive = () => {
     this.handleToggleMediaVisibility();
-  }
-
-  showProfileCard = debounce(() => {
-    this.setState({ profileCardVisible: true });
-  }, 1200);
-
-  handleProfileHover = e => {
-    if (!isMobile(window.innerWidth)) this.showProfileCard();
-  }
-
-  handleProfileLeave = e => {
-    this.showProfileCard.cancel();
-    this.setState({ profileCardVisible: false });
   }
 
   _properStatus() {
@@ -454,7 +443,8 @@ class Status extends ImmutablePureComponent {
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
-    const { profileCardVisible } = this.state;
+    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
+    const domain = getDomain(status.get('account'));
 
     return (
       <HotKeys handlers={handlers}>
@@ -468,17 +458,24 @@ class Status extends ImmutablePureComponent {
                 <RelativeTimestamp timestamp={status.get('created_at')} />
               </NavLink>
 
-              <div className='status__profile' onMouseEnter={this.handleProfileHover} onMouseLeave={this.handleProfileLeave}>
+              {favicon &&
+                <div className='status__favicon'>
+                  <Link to={`/timeline/${domain}`}>
+                    <img src={favicon} alt='' title={domain} />
+                  </Link>
+                </div>}
+
+              <div className='status__profile'>
                 <div className='status__avatar'>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='floating-link' />
-                  {statusAvatar}
+                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
+                      {statusAvatar}
+                    </NavLink>
+                  </HoverRefWrapper>
                 </div>
                 <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
                   <DisplayName account={status.get('account')} others={otherAccounts} />
                 </NavLink>
-                { profileCardVisible &&
-                  <ProfileHoverCardContainer accountId={status.getIn(['account', 'id'])} visible={!isMobile(window.innerWidth)} />
-                }
               </div>
             </div>
 

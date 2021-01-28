@@ -13,13 +13,13 @@ describe('<LoginPage />', () => {
 
   it('renders correctly on load', () => {
     expect(createComponent(
-      <LoginPage />
+      <LoginPage />,
     ).toJSON()).toMatchSnapshot();
 
     const store = mockStore(ImmutableMap({ me: '1234' }));
     expect(createComponent(
       <LoginPage />,
-      { store }
+      { store },
     ).toJSON()).toMatchSnapshot();
   });
 

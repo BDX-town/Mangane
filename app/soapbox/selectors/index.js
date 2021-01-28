@@ -110,7 +110,7 @@ export const makeGetStatus = () => {
         map.set('account', accountBase);
         map.set('filtered', filtered);
       });
-    }
+    },
   );
 };
 
@@ -124,10 +124,9 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
       message: item.get('message'),
       title: item.get('title'),
       key: item.get('key'),
-      dismissAfter: 5000,
-      barStyle: {
-        zIndex: 200,
-      },
+      className: `snackbar snackbar--${item.get('severity', 'info')}`,
+      activeClassName: 'snackbar--active',
+      dismissAfter: 6000,
     });
   });
 
@@ -173,6 +172,25 @@ export const makeGetChat = () => {
         map.set('account', account);
         map.set('last_message', lastMessage);
       });
-    }
+    },
+  );
+};
+
+export const makeGetReport = () => {
+  const getStatus = makeGetStatus();
+
+  return createSelector(
+    [
+      (state, id) => state.getIn(['admin', 'reports', id]),
+      (state, id) => state.getIn(['admin', 'reports', id, 'statuses']).map(
+        statusId => state.getIn(['statuses', statusId]))
+        .filter(s => s)
+        .map(s => getStatus(state, s.toJS())),
+    ],
+
+    (report, statuses) => {
+      if (!report) return null;
+      return report.set('statuses', statuses);
+    },
   );
 };

@@ -4,6 +4,14 @@ import { NotificationStack } from 'react-notification';
 import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
+const defaultBarStyleFactory = (index, style, notification) => {
+  return Object.assign(
+    {},
+    style,
+    { bottom: `${14 + index * 12 + index * 42}px` },
+  );
+};
+
 const mapStateToProps = (state, { intl }) => {
   const notifications = getAlerts(state);
 
@@ -23,6 +31,8 @@ const mapDispatchToProps = (dispatch) => {
     onDismiss: alert => {
       dispatch(dismissAlert(alert));
     },
+    barStyleFactory: defaultBarStyleFactory,
+    activeBarStyleFactory: defaultBarStyleFactory,
   };
 };
 

@@ -5,7 +5,7 @@ import IconButton from '../../../components/icon_button';
 import Overlay from 'react-overlays/lib/Overlay';
 import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
-import detectPassiveEvents from 'detect-passive-events';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 
@@ -21,7 +21,7 @@ const messages = defineMessages({
   change_privacy: { id: 'privacy.change', defaultMessage: 'Adjust post privacy' },
 });
 
-const listenerOptions = detectPassiveEvents.hasSupport ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 class PrivacyDropdownMenu extends React.PureComponent {
 
@@ -173,7 +173,7 @@ class PrivacyDropdown extends React.PureComponent {
     const { intl: { formatMessage } } = props;
 
     this.options = [
-      { icon: 'globe', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
+      { icon: 'globe-w', value: 'public', text: formatMessage(messages.public_short), meta: formatMessage(messages.public_long) },
       { icon: 'unlock', value: 'unlisted', text: formatMessage(messages.unlisted_short), meta: formatMessage(messages.unlisted_long) },
       { icon: 'lock', value: 'private', text: formatMessage(messages.private_short), meta: formatMessage(messages.private_long) },
       { icon: 'envelope', value: 'direct', text: formatMessage(messages.direct_short), meta: formatMessage(messages.direct_long) },

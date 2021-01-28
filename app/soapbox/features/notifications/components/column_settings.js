@@ -20,7 +20,7 @@ export default class ColumnSettings extends React.PureComponent {
   }
 
   onAllSoundsChange = (path, checked) => {
-    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
 
     for (var i = 0; i < soundSettings.length; i++) {
       this.props.onChange(soundSettings[i], checked);
@@ -36,7 +36,7 @@ export default class ColumnSettings extends React.PureComponent {
     const allSoundsStr  = <FormattedMessage id='notifications.column_settings.sounds.all_sounds' defaultMessage='Play sound for all notifications' />;
     const showStr   = <FormattedMessage id='notifications.column_settings.show' defaultMessage='Show in column' />;
     const soundStr  = <FormattedMessage id='notifications.column_settings.sound' defaultMessage='Play sound' />;
-    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
     const showPushSettings = pushSettings.get('browserSupport') && pushSettings.get('isSubscribed');
     const pushStr = showPushSettings && <FormattedMessage id='notifications.column_settings.push' defaultMessage='Push notifications' />;
 
@@ -82,6 +82,17 @@ export default class ColumnSettings extends React.PureComponent {
             {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'favourite']} onChange={this.onPushChange} label={pushStr} />}
             <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'favourite']} onChange={onChange} label={showStr} />
             <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'favourite']} onChange={onChange} label={soundStr} />
+          </div>
+        </div>
+
+        <div role='group' aria-labelledby='notifications-emoji-react'>
+          <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.emoji_react' defaultMessage='Emoji reacts:' /></span>
+
+          <div className='column-settings__row'>
+            <SettingToggle prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'pleroma:emoji_reaction']} onChange={onChange} label={alertStr} />
+            {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'pleroma:emoji_reaction']} onChange={this.onPushChange} label={pushStr} />}
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'pleroma:emoji_reaction']} onChange={onChange} label={showStr} />
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'pleroma:emoji_reaction']} onChange={onChange} label={soundStr} />
           </div>
         </div>
 

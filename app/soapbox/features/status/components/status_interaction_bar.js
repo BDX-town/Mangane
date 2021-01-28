@@ -1,17 +1,26 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { FormattedNumber } from 'react-intl';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
-export class StatusInteractionBar extends React.Component {
+const mapStateToProps = state => ({
+  allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
+});
+
+export default @connect(mapStateToProps)
+class StatusInteractionBar extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map,
     me: SoapboxPropTypes.me,
+    allowedEmoji: ImmutablePropTypes.list,
   }
 
   getNormalizedReacts = () => {
@@ -20,6 +29,7 @@ export class StatusInteractionBar extends React.Component {
       status.getIn(['pleroma', 'emoji_reactions']),
       status.get('favourites_count'),
       status.get('favourited'),
+      this.props.allowedEmoji,
     ).reverse();
   }
 

@@ -3,6 +3,7 @@
   display: flex;
   width: 265px;
   flex-direction: column;
+  overflow: hidden;
 
   .user-panel__account__name {
     display: inline;

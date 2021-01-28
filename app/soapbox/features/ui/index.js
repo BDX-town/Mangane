@@ -16,8 +16,9 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
-import { fetchReports } from '../../actions/admin';
+import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
+import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
 import { WrappedRoute } from './util/react_router_helpers';
@@ -31,18 +32,21 @@ import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import SearchPage from 'soapbox/pages/search_page';
 import HomePage from 'soapbox/pages/home_page';
+import AdminPage from 'soapbox/pages/admin_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
+import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 
 import {
   Status,
   // GettingStarted,
   CommunityTimeline,
   PublicTimeline,
+  RemoteTimeline,
   AccountTimeline,
   AccountGallery,
   HomeTimeline,
@@ -76,11 +80,18 @@ import {
   Preferences,
   EditProfile,
   SoapboxConfig,
+  ImportData,
+  Backups,
   PasswordReset,
   SecurityForm,
   MfaForm,
   ChatIndex,
   ChatRoom,
+  ServerInfo,
+  Dashboard,
+  AwaitingApproval,
+  Reports,
+  ModerationLog,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -204,6 +215,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
+        <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />
         <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
@@ -226,6 +238,10 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/notice/:statusId' publicRoute exact layout={LAYOUT.STATUS} component={Status} content={children} />
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/home' to='/' />
+
+        {/* Soapbox Legacy redirects */}
+        <Redirect from='/canary' to='/about/canary' />
+        <Redirect from='/canary.txt' to='/about/canary' />
 
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
@@ -261,7 +277,16 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
+        <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
+        <WrappedRoute path='/backups' layout={LAYOUT.DEFAULT} component={Backups} content={children} />
         <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
+
+        <Redirect from='/admin/dashboard' to='/admin' exact />
+        <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
+        <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
+        <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
+        <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
       </Switch>
@@ -433,9 +458,13 @@ class UI extends React.PureComponent {
     if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
+      this.props.dispatch(fetchChats());
       // this.props.dispatch(fetchGroups('member'));
-      if (isStaff(account))
+      if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
+        this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+        this.props.dispatch(fetchConfig());
+      }
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
     }
@@ -648,6 +677,7 @@ class UI extends React.PureComponent {
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
           {me && !mobile && <ChatPanes />}
+          <ProfileHoverCard />
         </div>
       </HotKeys>
     );

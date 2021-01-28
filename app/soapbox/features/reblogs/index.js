@@ -32,7 +32,7 @@ class Reblogs extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    accountIds: ImmutablePropTypes.list,
+    accountIds: ImmutablePropTypes.orderedSet,
     status: ImmutablePropTypes.map,
   };
 
@@ -77,7 +77,7 @@ class Reblogs extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />
+            <AccountContainer key={id} id={id} withNote={false} />,
           )}
         </ScrollableList>
       </Column>

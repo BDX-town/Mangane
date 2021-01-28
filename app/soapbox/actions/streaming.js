@@ -55,7 +55,19 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
           dispatch(fetchFilters());
           break;
         case 'pleroma:chat_update':
-          dispatch({ type: STREAMING_CHAT_UPDATE, chat: JSON.parse(data.payload), me: getState().get('me') });
+          dispatch((dispatch, getState) => {
+            const chat = JSON.parse(data.payload);
+            const me = getState().get('me');
+            const messageOwned = !(chat.last_message && chat.last_message.account_id !== me);
+
+            dispatch({
+              type: STREAMING_CHAT_UPDATE,
+              chat,
+              me,
+              // Only play sounds for recipient messages
+              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
+            });
+          });
           break;
         }
       },
@@ -70,7 +82,8 @@ const refreshHomeTimelineAndNotification = (dispatch, done) => {
 export const connectUserStream      = () => connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);
 export const connectCommunityStream = ({ onlyMedia } = {}) => connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
 export const connectPublicStream    = ({ onlyMedia } = {}) => connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
+export const connectRemoteStream    = (instance, { onlyMedia } = {}) => connectTimelineStream(`remote${onlyMedia ? ':media' : ''}:${instance}`, `public:remote${onlyMedia ? ':media' : ''}&instance=${instance}`);
 export const connectHashtagStream   = (id, tag, accept) => connectTimelineStream(`hashtag:${id}`, `hashtag&tag=${tag}`, null, accept);
 export const connectDirectStream    = () => connectTimelineStream('direct', 'direct');
 export const connectListStream      = id => connectTimelineStream(`list:${id}`, `list&list=${id}`);
-export const connectGroupStream      = id => connectTimelineStream(`group:${id}`, `group&group=${id}`);
+export const connectGroupStream     = id => connectTimelineStream(`group:${id}`, `group&group=${id}`);

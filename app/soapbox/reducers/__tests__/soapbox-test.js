@@ -37,7 +37,7 @@ describe('soapbox reducer', () => {
     const state = ImmutableMap({ brandColor: '#354e91' });
     const action = {
       type: ADMIN_CONFIG_UPDATE_SUCCESS,
-      config: soapboxConfig,
+      configs: soapboxConfig.configs,
     };
     expect(reducer(state, action).toJS()).toMatchObject({
       brandColor: '#254f92',

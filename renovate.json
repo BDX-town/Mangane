@@ -1,0 +1,7 @@
+{
+  "extends": [
+    "config:base",
+    ":preserveSemverRanges",
+    ":githubComToken(fJRNKBmV/ypoAx23PI8I+uTGJ22iSA6DERwiz1WGtXHC/imZV0mOyLfNOfVznOq3QbU9FTbuilgq3XfRQzRVMXx2eTe3ZkzzdH3loqfr2m/mt+9/PQygfkcAOJCQ4BE5Mlhfzxt9miBeG9jvm546oBXNjP39W+j4cdOnppBSMrhh2iofEOjXR41GCPDxCcdnr7RGDtWUCtrIYGyoJm2ypUrkRTUFexVAJy8Q7knX2ACZfzP9j+Uol22SEsU/WRZkvIEp60TqPlgvCFld7LECk2BYnDz9qTcSKF1GhfAsgGleSog9Tyfxow+rH1tB4cMxI5qZP0DTmAf+8fNYSgiKDA==)"
+  ]
+}

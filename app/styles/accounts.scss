@@ -177,154 +177,6 @@
   }
 }
 
-.nothing-here {
-  background: var(--brand-color--med);
-  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  color: var(--primary-text-color--faint);
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: default;
-  border-radius: 4px;
-  padding: 20px;
-  min-height: 30vh;
-
-  &--under-tabs {
-    border-radius: 0 0 4px 4px;
-  }
-
-  &--flexible {
-    box-sizing: border-box;
-    min-height: 100%;
-  }
-}
-
-.account-role {
-  display: inline-block;
-  padding: 4px 6px;
-  cursor: default;
-  border-radius: 3px;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 500;
-  color: var(--background-color);
-  background-color: hsla(var(--background-color_hsl), 0.1);
-  border: 1px solid hsla(var(--background-color_hsl), 0.5);
-
-  &.moderator {
-    color: $success-green;
-    background-color: rgba($success-green, 0.1);
-    border-color: rgba($success-green, 0.5);
-  }
-
-  &.admin {
-    color: lighten($error-red, 12%);
-    background-color: rgba(lighten($error-red, 12%), 0.1);
-    border-color: rgba(lighten($error-red, 12%), 0.5);
-  }
-}
-
-.account__header__fields {
-  padding: 0;
-  margin: 15px -15px -15px;
-  border: 0 none;
-  border-top: 1px solid var(--brand-color--med);
-  border-bottom: 1px solid var(--brand-color--med);
-  font-size: 14px;
-  line-height: 20px;
-
-  dl {
-    display: flex;
-    border-bottom: 1px solid var(--brand-color--med);
-  }
-
-  dt,
-  dd {
-    box-sizing: border-box;
-    padding: 14px;
-    text-align: center;
-    max-height: 48px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  dt {
-    font-weight: 500;
-    width: 120px;
-    flex: 0 0 auto;
-    color: var(--primary-text-color--faint);
-    background: hsla(var(--background-color_hsl), 0.5);
-  }
-
-  dd {
-    flex: 1 1 auto;
-    color: var(--primary-text-color--faint);
-  }
-
-  a {
-    color: var(--highlight-text-color);
-    text-decoration: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      text-decoration: underline;
-    }
-  }
-
-  .verified {
-    border: 1px solid rgba($valid-value-color, 0.5);
-    background: rgba($valid-value-color, 0.25);
-
-    a {
-      color: $valid-value-color;
-      font-weight: 500;
-    }
-
-    &__mark {
-      color: $valid-value-color;
-    }
-  }
-
-  dl:last-child {
-    border-bottom: 0;
-  }
-}
-
-.directory__tag .trends__item__current {
-  width: auto;
-}
-
-.pending-account {
-  &__header {
-    color: var(--primary-text-color--faint);
-
-    a {
-      color: var(--background-color);
-      text-decoration: none;
-
-      &:hover,
-      &:active,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-
-    strong {
-      color: var(--primary-text-color);
-      font-weight: 700;
-    }
-  }
-
-  &__body {
-    margin-top: 10px;
-  }
-}
-
 .account {
   padding: 10px;
   position: relative;
@@ -400,7 +252,6 @@ a .account__avatar {
   &-overlay {
     @include avatar-radius;
     @include avatar-size(24px);
-
     position: absolute;
     bottom: 0;
     right: 0;
@@ -591,6 +442,8 @@ a .account__avatar {
 
 .account__section-headline {
   background: var(--foreground-color);
+  width: 100%;
+  display: flex;
 
   button,
   a {

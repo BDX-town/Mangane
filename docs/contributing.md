@@ -37,3 +37,19 @@ It is recommended that you use the following guidelines to contribute to the Soa
    Pull Request would represent. The versioning scheme we use is [SemVer](http://semver.org/).
 4. You may merge the Pull Request in once you have the sign-off of two other developers, or if you
    do not have permission to do that, you may request the second reviewer to merge it for you.
+
+## Text Editor Tools
+
+If you're using a text editor like [Atom](https://atom.io/) or [Visual Studio Code](https://code.visualstudio.com/), you can install tools to help you get linter feedback while you write code for the Soapbox project.
+
+For Atom, you can install the following packages:
+
+* [linter](https://atom.io/packages/linter)
+* [linter-ui-default](https://atom.io/packages/linter-ui-default)
+* [linter-eslint](https://atom.io/packages/linter-eslint)
+* [linter-stylelint](https://atom.io/packages/linter-stylelint)
+
+For Visual Studio Code, you can install the following extensions:
+
+* [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+* [vscode-stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)

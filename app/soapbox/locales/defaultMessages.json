@@ -265,6 +265,15 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Follows you",
+        "id": "account.follows_you"
+      }
+    ],
+    "path": "app/soapbox/components/profile_hover_card.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "now",
         "id": "relative_time.just_now"
       },
@@ -322,10 +331,6 @@
         "id": "account.profile"
       },
       {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
-      },
-      {
         "defaultMessage": "Preferences",
         "id": "navigation_bar.preferences"
       },
@@ -356,6 +361,10 @@
       {
         "defaultMessage": "Soapbox config",
         "id": "navigation_bar.soapbox_config"
+      },
+      {
+        "defaultMessage": "Import data",
+        "id": "navigation_bar.import_data"
       },
       {
         "defaultMessage": "Security",
@@ -993,6 +1002,79 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Audio notification on",
+        "id": "chats.audio_toggle_on"
+      },
+      {
+        "defaultMessage": "Audio notification off",
+        "id": "chats.audio_toggle_off"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/audio_toggle.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Send a message…",
+        "id": "chat_box.input.placeholder"
+      },
+      {
+        "defaultMessage": "Send",
+        "id": "chat_box.actions.send"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_box.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Today",
+        "id": "chats.dividers.today"
+      },
+      {
+        "defaultMessage": "More",
+        "id": "chats.actions.more"
+      },
+      {
+        "defaultMessage": "Delete message",
+        "id": "chats.actions.delete"
+      },
+      {
+        "defaultMessage": "Report user",
+        "id": "chats.actions.report"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_message_list.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "chat_panels.main_window.title"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/components/chat_panes.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Chats",
+        "id": "column.chats"
+      },
+      {
+        "defaultMessage": "No chats found. To start a chat, visit a user's profile.",
+        "id": "chat_panels.main_window.empty"
+      }
+    ],
+    "path": "app/soapbox/features/chats/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Show reposts",
         "id": "home.column_settings.show_reblogs"
       },
@@ -1069,6 +1151,10 @@
       {
         "defaultMessage": "Soapbox config",
         "id": "navigation_bar.soapbox_config"
+      },
+      {
+        "defaultMessage": "Import data",
+        "id": "navigation_bar.import_data"
       },
       {
         "defaultMessage": "Security",
@@ -2014,8 +2100,49 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Import data",
+        "id": "column.import_data"
+      },
+      {
+        "defaultMessage": "Import",
+        "id": "import_data.actions.import"
+      },
+      {
+        "defaultMessage": "Follows",
+        "id": "import_data.follows_label"
+      },
+      {
+        "defaultMessage": "CSV file containing a list of followed accounts",
+        "id": "import_data.hints.follows"
+      },
+      {
+        "defaultMessage": "Import follows",
+        "id": "import_data.actions.import_follows"
+      },
+      {
+        "defaultMessage": "Blocks",
+        "id": "import_data.blocks_label"
+      },
+      {
+        "defaultMessage": "CSV file containing a list of blocked accounts",
+        "id": "import_data.hints.blocks"
+      },
+      {
+        "defaultMessage": "Import blocks",
+        "id": "import_data.actions.import_blocks"
+      }
+    ],
+    "path": "app/soapbox/features/import_data/index.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Username",
         "id": "registration.fields.username_placeholder"
+      },
+      {
+        "defaultMessage": "Only letters, numbers, and underscores are allowed.",
+        "id": "registration.fields.username_hint"
       },
       {
         "defaultMessage": "E-Mail address",
@@ -2036,6 +2163,14 @@
       {
         "defaultMessage": "Terms of Service",
         "id": "registration.tos"
+      },
+      {
+        "defaultMessage": "Registrations Closed",
+        "id": "registration.closed_title"
+      },
+      {
+        "defaultMessage": "{instance} is not accepting new members",
+        "id": "registration.closed_message"
       },
       {
         "defaultMessage": "With an account on {instance} you'll be able to follow people on any server in the fediverse.",
@@ -2344,6 +2479,10 @@
         "id": "notification.follow"
       },
       {
+        "defaultMessage": "{name} sent you a message",
+        "id": "notification.chat_mention"
+      },
+      {
         "defaultMessage": "{name} reacted to your post",
         "id": "notification.emoji_react"
       },
@@ -2472,6 +2611,14 @@
         "id": "preferences.fields.dyslexic_font_label"
       },
       {
+        "defaultMessage": "Halloween mode",
+        "id": "preferences.fields.halloween_label"
+      },
+      {
+        "defaultMessage": "Beware: SPOOKY! Supports light/dark toggle.",
+        "id": "preferences.hints.halloween"
+      },
+      {
         "defaultMessage": "Use Demetricator",
         "id": "preferences.fields.demetricator_label"
       },
@@ -2485,14 +2632,21 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Follows you",
-        "id": "account.follows_you"
-      }
-    ],
-    "path": "app/soapbox/features/profile_hover_card/profile_hover_card_container.json"
-  },
-  {
-    "descriptors": [
+        "defaultMessage": "Home",
+        "id": "header.home.label"
+      },
+      {
+        "defaultMessage": "About",
+        "id": "header.about.label"
+      },
+      {
+        "defaultMessage": "Back to {siteTitle}",
+        "id": "header.back_to.label"
+      },
+      {
+        "defaultMessage": "Log in",
+        "id": "header.login.label"
+      },
       {
         "defaultMessage": "Close",
         "id": "lightbox.close"
@@ -2801,12 +2955,20 @@
         "id": "soapbox_config.custom_css.meta_fields.url_placeholder"
       },
       {
-        "defaultMessage": "Raw JSON data",
+        "defaultMessage": "Advanced: Edit raw JSON data",
         "id": "soapbox_config.raw_json_label"
       },
       {
-        "defaultMessage": "Advanced: Edit the settings data directly.",
+        "defaultMessage": "Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click \"Save\" to apply your changes.",
         "id": "soapbox_config.raw_json_hint"
+      },
+      {
+        "defaultMessage": "Brand color",
+        "id": "soapbox_config.fields.brand_color_label"
+      },
+      {
+        "defaultMessage": "Default theme",
+        "id": "soapbox_config.fields.theme_label"
       },
       {
         "defaultMessage": "Logo",
@@ -2815,26 +2977,6 @@
       {
         "defaultMessage": "SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio",
         "id": "soapbox_config.hints.logo"
-      },
-      {
-        "defaultMessage": "Banner",
-        "id": "soapbox_config.fields.banner_label"
-      },
-      {
-        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be displayed to 400x400px",
-        "id": "soapbox_config.hints.banner"
-      },
-      {
-        "defaultMessage": "Brand color",
-        "id": "soapbox_config.fields.brand_color_label"
-      },
-      {
-        "defaultMessage": "Patron module",
-        "id": "soapbox_config.fields.patron_enabled_label"
-      },
-      {
-        "defaultMessage": "Enables display of Patron module.  Requires installation of Patron module.",
-        "id": "soapbox_config.hints.patron_enabled"
       },
       {
         "defaultMessage": "Promo panel items",
@@ -2863,18 +3005,6 @@
       {
         "defaultMessage": "Add new Home Footer Item",
         "id": "soapbox_config.fields.home_footer.add"
-      },
-      {
-        "defaultMessage": "Custom CSS",
-        "id": "soapbox_config.fields.custom_css_fields_label"
-      },
-      {
-        "defaultMessage": "Insert a URL to a CSS file like `https://mysite.com/instance/custom.css`, or simply `/instance/custom.css`",
-        "id": "soapbox_config.hints.custom_css_fields"
-      },
-      {
-        "defaultMessage": "Add another custom CSS URL",
-        "id": "soapbox_config.fields.custom_css.add"
       },
       {
         "defaultMessage": "Save",
@@ -2972,6 +3102,14 @@
       {
         "defaultMessage": "Copy link to post",
         "id": "status.copy"
+      },
+      {
+        "defaultMessage": "Bookmark",
+        "id": "status.bookmark"
+      },
+      {
+        "defaultMessage": "Remove bookmark",
+        "id": "status.unbookmark"
       }
     ],
     "path": "app/soapbox/features/status/components/action_bar.json"
@@ -3028,6 +3166,19 @@
       }
     ],
     "path": "app/soapbox/features/status/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Collapse",
+        "id": "accordion.collapse"
+      },
+      {
+        "defaultMessage": "Expand",
+        "id": "accordion.expand"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/accordion.json"
   },
   {
     "descriptors": [
@@ -3159,25 +3310,8 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Collapse explanation box",
-        "id": "explanation_box.collapse"
-      },
-      {
-        "defaultMessage": "Expand explanation box",
-        "id": "explanation_box.expand"
-      }
-    ],
-    "path": "app/soapbox/features/ui/components/explanation_box.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Edit Profile",
         "id": "account.edit_profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
       },
       {
         "defaultMessage": "Preferences",
@@ -3495,6 +3629,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Chats",
+        "id": "tabs_bar.chats"
       },
       {
         "defaultMessage": "Reports",

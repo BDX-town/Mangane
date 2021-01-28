@@ -148,17 +148,15 @@ class AccountTimeline extends ImmutablePureComponent {
     return (
       <Column>
         <div className='account__section-headline'>
-          <div style={{ width: '100%', display: 'flex' }}>
-            <NavLink exact to={`/@${accountUsername}`}>
-              <FormattedMessage id='account.posts' defaultMessage='Posts' />
-            </NavLink>
-            <NavLink exact to={`/@${accountUsername}/with_replies`}>
-              <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />
-            </NavLink>
-            <NavLink exact to={`/@${accountUsername}/media`}>
-              <FormattedMessage id='account.media' defaultMessage='Media' />
-            </NavLink>
-          </div>
+          <NavLink exact to={`/@${accountUsername}`}>
+            <FormattedMessage id='account.posts' defaultMessage='Posts' />
+          </NavLink>
+          <NavLink exact to={`/@${accountUsername}/with_replies`}>
+            <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />
+          </NavLink>
+          <NavLink exact to={`/@${accountUsername}/media`}>
+            <FormattedMessage id='account.media' defaultMessage='Media' />
+          </NavLink>
         </div>
         <StatusList
           scrollKey='account_timeline'

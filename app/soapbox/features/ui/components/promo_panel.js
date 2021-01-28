@@ -23,12 +23,10 @@ class PromoPanel extends React.PureComponent {
       <div className='wtf-panel promo-panel'>
         <div className='promo-panel__container'>
           {promoItems.map((item, i) =>
-            (<div className='promo-panel-item' key={i}>
-              <a className='promo-panel-item__btn' href={item.get('url')} target='_blank'>
-                <Icon id={item.get('icon')} className='promo-panel-item__icon' fixedWidth />
-                {item.get('text')}
-              </a>
-            </div>)
+            (<a className='promo-panel-item' href={item.get('url')} target='_blank' key={i}>
+              <Icon id={item.get('icon')} className='promo-panel-item__icon' fixedWidth />
+              {item.get('text')}
+            </a>),
           )}
         </div>
       </div>

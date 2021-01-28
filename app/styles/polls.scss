@@ -14,8 +14,8 @@
     height: 100%;
     display: inline-block;
     border-radius: 4px;
-    background: hsla(var(--primary-text-color_hsl), .3);
-    &.leading {background: hsla(var(--primary-text-color_hsl), .6);}
+    background: hsla(var(--primary-text-color_hsl), 0.3);
+    &.leading { background: hsla(var(--primary-text-color_hsl), 0.6); }
   }
 
   &__text {
@@ -48,7 +48,6 @@
       width: 100%;
       font-size: 14px;
       color: var(--primary-text-color);
-      display: block;
       outline: 0;
       font-family: inherit;
       background: var(--foreground-color);
@@ -129,7 +128,7 @@
 
     &:active,
     &:focus {
-      background-color: hsla(var(--primary-text-color_hsl), .1);
+      background-color: hsla(var(--primary-text-color_hsl), 0.1);
     }
   }
 

@@ -12,7 +12,7 @@ describe('<OtpAuthForm />', () => {
       <OtpAuthForm
         mfa_token={'12345'}
       />,
-      { store }
+      { store },
     ).toJSON();
 
     expect(wrapper).toEqual(expect.objectContaining({

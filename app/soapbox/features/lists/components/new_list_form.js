@@ -53,7 +53,7 @@ class NewListForm extends React.PureComponent {
     const create = intl.formatMessage(messages.create);
 
     return (
-      <form className='column-inline-form' onSubmit={this.handleSubmit}>
+      <form className='column-inline-form' method='post' onSubmit={this.handleSubmit}>
         <label>
           <span style={{ display: 'none' }}>{label}</span>
 
