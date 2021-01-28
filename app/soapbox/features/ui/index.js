@@ -213,8 +213,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/auth/mfa' layout={LAYOUT.DEFAULT} component={MfaForm} exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
-        <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
-        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
+        <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
+        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />
         <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 

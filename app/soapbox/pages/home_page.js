@@ -49,7 +49,7 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__main'>
               <div className='columns-area columns-area--mobile'>
-                <div className='timeline-compose-block' ref={this.composeBlock}>
+                {me && <div className='timeline-compose-block' ref={this.composeBlock}>
                   <div className='timeline-compose-block__avatar'>
                     <Avatar account={account} size={46} />
                   </div>
@@ -58,7 +58,7 @@ class HomePage extends ImmutablePureComponent {
                     autoFocus={false}
                     clickableAreaRef={this.composeBlock}
                   />
-                </div>
+                </div>}
 
                 {children}
               </div>
