@@ -82,26 +82,42 @@ class ActionButton extends ImmutablePureComponent {
 
   render() {
     const { account, intl, me, small } = this.props;
-    let actionBtn = null;
+    const empty = <></>;
 
     if (!me) {
-      actionBtn = <form method='POST' action='/main/ostatus'><input type='hidden' name='nickname' value={account.get('username')} /><input type='hidden' name='profile' value='' /><Button className='logo-button' text={intl.formatMessage(messages.remote_follow)} click='submit' /></form>;
+      // Remote follow
+      return (<form method='POST' action='/main/ostatus'>
+        <input type='hidden' name='nickname' value={account.get('username')} />
+        <input type='hidden' name='profile' value='' />
+        <Button className='logo-button' text={intl.formatMessage(messages.remote_follow)} click='submit' />
+      </form>);
     }
 
     if (me !== account.get('id')) {
       if (!account.get('relationship')) { // Wait until the relationship is loaded
-        //
+        return empty;
       } else if (account.getIn(['relationship', 'requested'])) {
-        actionBtn = <Button className='logo-button' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
+        // Awaiting acceptance
+        return <Button className='logo-button' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
       } else if (!account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button disabled={account.getIn(['relationship', 'blocked_by'])} className={classNames('logo-button', { 'button--destructive': account.getIn(['relationship', 'following']) })} text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)} onClick={this.handleFollow} />;
+        // Follow & Unfollow
+        return (<Button
+          disabled={account.getIn(['relationship', 'blocked_by'])}
+          className={classNames('logo-button', {
+            'button--destructive': account.getIn(['relationship', 'following']),
+          })}
+          text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)}
+          onClick={this.handleFollow}
+        />);
       } else if (account.getIn(['relationship', 'blocking'])) {
-        actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
+        // Unblock
+        return <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
       }
     } else {
-      actionBtn = <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
+      // Edit profile
+      return <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
     }
-    return actionBtn;
+    return empty;
   }
 
 }
