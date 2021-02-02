@@ -206,6 +206,10 @@ class Preferences extends ImmutablePureComponent {
 
           <FieldsGroup>
             <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.tag_misleading_links' defaultMessage='Tag misleading links' />}
+              path={['tagMisleadingLinks']}
+            />
+            <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.auto_play_gif_label' defaultMessage='Auto-play animated GIFs' />}
               path={['autoPlayGif']}
             />

@@ -6,8 +6,63 @@ import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import { decode as decodeIDNA } from 'soapbox/utils/idna';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
+
+const textMatchesTarget = (text, origin, host) => {
+  return (text === origin || text === host
+          || text.startsWith(origin + '/') || text.startsWith(host + '/')
+          || 'www.' + text === host || ('www.' + text).startsWith(host + '/'));
+};
+
+const isLinkMisleading = (link) => {
+  let linkTextParts = [];
+
+  // Reconstruct visible text, as we do not have much control over how links
+  // from remote software look, and we can't rely on `innerText` because the
+  // `invisible` class does not set `display` to `none`.
+
+  const walk = (node) => {
+    switch (node.nodeType) {
+    case Node.TEXT_NODE:
+      linkTextParts.push(node.textContent);
+      break;
+    case Node.ELEMENT_NODE:
+      if (node.classList.contains('invisible')) return;
+      const children = node.childNodes;
+      for (let i = 0; i < children.length; i++) {
+        walk(children[i]);
+      }
+      break;
+    }
+  };
+
+  walk(link);
+
+  const linkText = linkTextParts.join('');
+  const targetURL = new URL(link.href);
+
+  if (targetURL.protocol === 'magnet:') {
+    return !linkText.startsWith('magnet:');
+  }
+
+  if (targetURL.protocol === 'xmpp:') {
+    return !(linkText === targetURL.href || 'xmpp:' + linkText === targetURL.href);
+  }
+
+  // The following may not work with international domain names
+  if (textMatchesTarget(linkText, targetURL.origin, targetURL.host) || textMatchesTarget(linkText.toLowerCase(), targetURL.origin, targetURL.host)) {
+    return false;
+  }
+
+  // The link hasn't been recognized, maybe it features an international domain name
+  const hostname = decodeIDNA(targetURL.hostname).normalize('NFKC');
+  const host = targetURL.host.replace(targetURL.hostname, hostname);
+  const origin = targetURL.origin.replace(targetURL.host, host);
+  const text = linkText.normalize('NFKC');
+  return !(textMatchesTarget(text, origin, host) || textMatchesTarget(text.toLowerCase(), origin, host));
+};
 
 export default class StatusContent extends React.PureComponent {
 
@@ -22,6 +77,7 @@ export default class StatusContent extends React.PureComponent {
     onExpandedToggle: PropTypes.func,
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
+    tagLinks: PropTypes.bool,
   };
 
   state = {
@@ -31,6 +87,7 @@ export default class StatusContent extends React.PureComponent {
 
   _updateStatusLinks() {
     const node = this.node;
+    const { tagLinks } = this.props;
 
     if (!node) {
       return;
@@ -47,7 +104,7 @@ export default class StatusContent extends React.PureComponent {
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
-      let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
+      let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}` || link.className.includes('mention'));
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);
@@ -56,6 +113,20 @@ export default class StatusContent extends React.PureComponent {
         link.addEventListener('click', this.onHashtagClick.bind(this, link.text), false);
       } else {
         link.setAttribute('title', link.href);
+
+        try {
+          if (tagLinks && isLinkMisleading(link)) {
+            // Add a tag besides the link to display its origin
+            const icon = document.createElement('i');
+            icon.classList.add('fa', 'fa-exclamation-triangle', 'fa-fw');
+            icon.setAttribute('role', 'img');
+            icon.setAttribute('aria-hidden', 'true');
+            link.insertAdjacentElement('afterbegin', icon);
+          }
+        } catch (e) {
+          // The URL is invalid, remove the href just to be safe
+          if (tagLinks && e instanceof TypeError) link.removeAttribute('href');
+        }
       }
     }
   }

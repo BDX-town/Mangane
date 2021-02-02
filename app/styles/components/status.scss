@@ -399,10 +399,6 @@
 
     &:hover {
       text-decoration: underline;
-
-      .fa {
-        color: var(--primary-text-color);
-      }
     }
 
     &.mention {
@@ -416,7 +412,7 @@
     }
 
     .fa {
-      color: var(--primary-text-color);
+      margin-right: 2px;
     }
   }
 

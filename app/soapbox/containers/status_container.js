@@ -55,6 +55,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
     displayMedia: getSettings(state).get('displayMedia'),
+    tagLinks: getSettings(state).get('tagMisleadingLinks'),
     allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
   });
 

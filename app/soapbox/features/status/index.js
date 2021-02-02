@@ -113,6 +113,7 @@ const makeMapStateToProps = () => {
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
       displayMedia: getSettings(state).get('displayMedia'),
+      tagLinks: getSettings(state).get('tagMisleadingLinks'),
       allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
     };
   };
@@ -524,6 +525,7 @@ class Status extends ImmutablePureComponent {
                 onOpenMedia={this.handleOpenMedia}
                 onToggleHidden={this.handleToggleHidden}
                 domain={domain}
+                tagLinks={this.props.tagLinks}
                 showMedia={this.state.showMedia}
                 onToggleMediaVisibility={this.handleToggleMediaVisibility}
               />

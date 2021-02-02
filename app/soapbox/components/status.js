@@ -93,6 +93,7 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
+    tagLinks: PropTypes.bool,
     allowedEmoji: ImmutablePropTypes.list,
   };
 
@@ -491,6 +492,7 @@ class Status extends ImmutablePureComponent {
               onClick={this.handleClick}
               expanded={!status.get('hidden')}
               onExpandedToggle={this.handleExpandedToggle}
+              tagLinks={this.props.tagLinks}
               collapsable
             />
 

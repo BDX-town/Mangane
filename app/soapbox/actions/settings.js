@@ -16,6 +16,7 @@ export const defaultSettings = ImmutableMap({
   reduceMotion: false,
   autoPlayGif: true,
   displayMedia: 'default',
+  tagMisleadingLinks: true,
   expandSpoilers: false,
   unfollowModal: false,
   boostModal: false,
