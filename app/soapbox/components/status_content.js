@@ -43,25 +43,33 @@ const isLinkMisleading = (link) => {
   const linkText = linkTextParts.join('');
   const targetURL = new URL(link.href);
 
-  if (targetURL.protocol === 'magnet:') {
-    return !linkText.startsWith('magnet:');
-  }
+  // URL RegEx pattern from here: https://stackoverflow.com/questions/3809401/what-is-a-good-regular-expression-to-match-a-url
+  var urlExpression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+  var urlRegex = new RegExp(urlExpression);
 
-  if (targetURL.protocol === 'xmpp:') {
-    return !(linkText === targetURL.href || 'xmpp:' + linkText === targetURL.href);
-  }
+  if (linkText.match(urlRegex)) {
+    if (targetURL.protocol === 'magnet:') {
+      return !linkText.startsWith('magnet:');
+    }
 
-  // The following may not work with international domain names
-  if (textMatchesTarget(linkText, targetURL.origin, targetURL.host) || textMatchesTarget(linkText.toLowerCase(), targetURL.origin, targetURL.host)) {
+    if (targetURL.protocol === 'xmpp:') {
+      return !(linkText === targetURL.href || 'xmpp:' + linkText === targetURL.href);
+    }
+
+    // The following may not work with international domain names
+    if (textMatchesTarget(linkText, targetURL.origin, targetURL.host) || textMatchesTarget(linkText.toLowerCase(), targetURL.origin, targetURL.host)) {
+      return false;
+    }
+
+    // The link hasn't been recognized, maybe it features an international domain name
+    const hostname = decodeIDNA(targetURL.hostname).normalize('NFKC');
+    const host = targetURL.host.replace(targetURL.hostname, hostname);
+    const origin = targetURL.origin.replace(targetURL.host, host);
+    const text = linkText.normalize('NFKC');
+    return !(textMatchesTarget(text, origin, host) || textMatchesTarget(text.toLowerCase(), origin, host));
+  } else {
     return false;
   }
-
-  // The link hasn't been recognized, maybe it features an international domain name
-  const hostname = decodeIDNA(targetURL.hostname).normalize('NFKC');
-  const host = targetURL.host.replace(targetURL.hostname, hostname);
-  const origin = targetURL.origin.replace(targetURL.host, host);
-  const text = linkText.normalize('NFKC');
-  return !(textMatchesTarget(text, origin, host) || textMatchesTarget(text.toLowerCase(), origin, host));
 };
 
 export default class StatusContent extends React.PureComponent {
