@@ -490,7 +490,7 @@
     align-items: center;
 
     & > div {
-      background: rgba($base-shadow-color, 0.6);
+      background: var(--background-color);
       border-radius: 8px;
       padding: 12px 9px;
       flex: 0 0 auto;
