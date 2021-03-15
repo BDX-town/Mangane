@@ -48,15 +48,24 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
     const state = getState();
     const acct = state.getIn(['accounts', accountId, 'acct']);
     const name = state.getIn(['accounts', accountId, 'username']);
+    const favicon = state.getIn(['accounts', accountId, 'pleroma', 'favicon']);
 
     const message = (<>
       <AccountContainer id={accountId} />
       {intl.formatMessage(messages.deleteUserPrompt, { acct })}
     </>);
 
+    const confirm = (<>
+      {favicon &&
+        <div className='submit__favicon'>
+          <img src={favicon} alt='' />
+        </div>}
+      {intl.formatMessage(messages.deleteUserConfirm, { name })}
+    </>);
+
     dispatch(openModal('CONFIRM', {
       message,
-      confirm: intl.formatMessage(messages.deleteUserConfirm, { name }),
+      confirm,
       onConfirm: () => {
         dispatch(deleteUsers([acct])).then(() => {
           const message = intl.formatMessage(messages.userDeleted, { acct });
