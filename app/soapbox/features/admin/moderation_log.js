@@ -1,41 +1,49 @@
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import Column from '../ui/components/column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchModerationLog } from 'soapbox/actions/admin';
-import { List as ImmutableList, fromJS } from 'immutable';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },
   emptyMessage: { id: 'admin.moderation_log.empty_message', defaultMessage: 'You have not performed any moderation actions yet. When you do, a history will be shown here.' },
 });
 
-export default @connect()
+const mapStateToProps = state => ({
+  items: state.getIn(['admin_log', 'index']).map(i => state.getIn(['admin_log', 'items', String(i)])),
+});
+
+export default @connect(mapStateToProps)
 @injectIntl
 class ModerationLog extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    list: ImmutablePropTypes.list,
   };
 
   state = {
     isLoading: true,
-    items: ImmutableList(),
+    lastPage: 0,
   }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch(fetchModerationLog())
-      .then(data => this.setState({ isLoading: false, items: fromJS(data.items) }))
+      .then(data => this.setState({
+        isLoading: false,
+        lastPage: 1,
+      }))
       .catch(() => {});
   }
 
   render() {
-    const { intl } = this.props;
-    const { isLoading, items } = this.state;
+    const { intl, items } = this.props;
+    const { isLoading } = this.state;
     const showLoading = isLoading && items.count() === 0;
 
     return (
