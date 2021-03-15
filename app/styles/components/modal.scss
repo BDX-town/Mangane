@@ -604,6 +604,13 @@
       }
     }
   }
+
+  .account {
+    text-align: left;
+    background-color: var(--background-color);
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
 }
 
 .report-modal__target {

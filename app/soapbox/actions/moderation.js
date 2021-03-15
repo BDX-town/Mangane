@@ -1,7 +1,9 @@
+import React from 'react';
 import { defineMessages } from 'react-intl';
 import { openModal } from 'soapbox/actions/modal';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
+import AccountContainer from 'soapbox/containers/account_container';
 
 const messages = defineMessages({
   deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate @{acct}. Deactivating a user is a reversible action.' },
@@ -47,8 +49,13 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
     const acct = state.getIn(['accounts', accountId, 'acct']);
     const name = state.getIn(['accounts', accountId, 'username']);
 
+    const message = (<>
+      <AccountContainer id={accountId} />
+      {intl.formatMessage(messages.deleteUserPrompt, { acct })}
+    </>);
+
     dispatch(openModal('CONFIRM', {
-      message: intl.formatMessage(messages.deleteUserPrompt, { acct }),
+      message,
       confirm: intl.formatMessage(messages.deleteUserConfirm, { name }),
       onConfirm: () => {
         dispatch(deleteUsers([acct])).then(() => {
