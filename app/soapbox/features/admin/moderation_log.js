@@ -15,6 +15,7 @@ const messages = defineMessages({
 
 const mapStateToProps = state => ({
   items: state.getIn(['admin_log', 'index']).map(i => state.getIn(['admin_log', 'items', String(i)])),
+  hasMore: state.getIn(['admin_log', 'total'], 0) - state.getIn(['admin_log', 'index']).count() > 0,
 });
 
 export default @connect(mapStateToProps)
@@ -41,8 +42,20 @@ class ModerationLog extends ImmutablePureComponent {
       .catch(() => {});
   }
 
+  handleLoadMore = () => {
+    const page = this.state.lastPage + 1;
+
+    this.setState({ isLoading: true });
+    this.props.dispatch(fetchModerationLog({ page }))
+      .then(data => this.setState({
+        isLoading: false,
+        lastPage: page,
+      }))
+      .catch(() => {});
+  }
+
   render() {
-    const { intl, items } = this.props;
+    const { intl, items, hasMore } = this.props;
     const { isLoading } = this.state;
     const showLoading = isLoading && items.count() === 0;
 
@@ -53,6 +66,8 @@ class ModerationLog extends ImmutablePureComponent {
           showLoading={showLoading}
           scrollKey='moderation-log'
           emptyMessage={intl.formatMessage(messages.emptyMessage)}
+          hasMore={hasMore}
+          onLoadMore={this.handleLoadMore}
         >
           {items.map((item, i) => (
             <div className='logentry' key={i}>
