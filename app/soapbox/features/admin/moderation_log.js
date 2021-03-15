@@ -1,5 +1,5 @@
 import React from 'react';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -71,7 +71,18 @@ class ModerationLog extends ImmutablePureComponent {
         >
           {items.map((item, i) => (
             <div className='logentry' key={i}>
-              {item.get('message')}
+              <div className='logentry__message'>{item.get('message')}</div>
+              <div className='logentry__timestamp'>
+                <FormattedDate
+                  value={new Date(item.get('time') * 1000)}
+                  hour12={false}
+                  year='numeric'
+                  month='short'
+                  day='2-digit'
+                  hour='2-digit'
+                  minute='2-digit'
+                />
+              </div>
             </div>
           ))}
         </ScrollableList>
