@@ -22,6 +22,7 @@ import {
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -32,9 +33,11 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const soapbox = getSoapboxConfig(state);
   return {
     account: state.getIn(['accounts', me]),
     maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+    verifiedCanEditName: soapbox.get('verifiedCanEditName'),
   };
 };
 
@@ -61,6 +64,7 @@ class EditProfile extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map,
     maxFields: PropTypes.number,
+    verifiedCanEditName: PropTypes.bool,
   };
 
   state = {
@@ -161,8 +165,9 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields, account } = this.props;
+    const { intl, maxFields, account, verifiedCanEditName } = this.props;
     const verified = isVerified(account);
+    const canEditName = verifiedCanEditName || !verified;
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -170,13 +175,13 @@ class EditProfile extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
-                className={verified ? 'disabled' : ''}
+                className={canEditName ? '' : 'disabled'}
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
                 name='display_name'
                 value={this.state.display_name}
                 onChange={this.handleTextChange}
-                disabled={verified}
-                hint={verified && intl.formatMessage(messages.verified)}
+                disabled={!canEditName}
+                hint={!canEditName && intl.formatMessage(messages.verified)}
               />
               <SimpleTextarea
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
