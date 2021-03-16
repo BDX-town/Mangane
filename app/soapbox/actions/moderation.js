@@ -4,6 +4,7 @@ import { openModal } from 'soapbox/actions/modal';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import AccountContainer from 'soapbox/containers/account_container';
+import { isLocal } from 'soapbox/utils/accounts';
 
 const messages = defineMessages({
   deactivateUserPrompt: { id: 'confirmations.admin.deactivate_user.message', defaultMessage: 'You are about to deactivate @{acct}. Deactivating a user is a reversible action.' },
@@ -11,6 +12,7 @@ const messages = defineMessages({
   userDeactivated: { id: 'admin.users.user_deactivated_message', defaultMessage: '@{acct} was deactivated' },
   deleteUserPrompt: { id: 'confirmations.admin.delete_user.message', defaultMessage: 'You are about to delete @{acct}. THIS IS A DESTRUCTIVE ACTION THAT CANNOT BE UNDONE.' },
   deleteUserConfirm: { id: 'confirmations.admin.delete_user.confirm', defaultMessage: 'Delete @{name}' },
+  deleteLocalUserCheckbox: { id: 'confirmations.admin.delete_local_user.checkbox', defaultMessage: 'I understand that I am about to delete a local user.' },
   userDeleted: { id: 'admin.users.user_deleted_message', defaultMessage: '@{acct} was deleted' },
   deleteStatusPrompt: { id: 'confirmations.admin.delete_status.message', defaultMessage: 'You are about to delete a post by @{acct}. This action cannot be undone.' },
   deleteStatusConfirm: { id: 'confirmations.admin.delete_status.confirm', defaultMessage: 'Delete post' },
@@ -49,6 +51,7 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
     const acct = state.getIn(['accounts', accountId, 'acct']);
     const name = state.getIn(['accounts', accountId, 'username']);
     const favicon = state.getIn(['accounts', accountId, 'pleroma', 'favicon']);
+    const local = isLocal(state.getIn(['accounts', accountId]));
 
     const message = (<>
       <AccountContainer id={accountId} />
@@ -63,9 +66,12 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
       {intl.formatMessage(messages.deleteUserConfirm, { name })}
     </>);
 
+    const checkbox = local ? intl.formatMessage(messages.deleteLocalUserCheckbox) : false;
+
     dispatch(openModal('CONFIRM', {
       message,
       confirm,
+      checkbox,
       onConfirm: () => {
         dispatch(deleteUsers([acct])).then(() => {
           const message = intl.formatMessage(messages.userDeleted, { acct });
