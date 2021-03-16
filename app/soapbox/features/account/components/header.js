@@ -171,7 +171,7 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (account.get('id') !== me && isStaff) {
+    if (isStaff) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
 
@@ -181,8 +181,10 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }), action: this.props.onVerifyUser });
       }
 
-      menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
-      menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
+      if (account.get('id') !== me) {
+        menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
+        menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
+      }
     }
 
     return menu;
