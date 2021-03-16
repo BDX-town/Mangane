@@ -25,12 +25,16 @@ import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
 import { isMobile } from 'soapbox/is_mobile';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import { tagUsers, untagUsers } from 'soapbox/actions/admin';
+import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
+  userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
+  userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
 });
 
 const makeMapStateToProps = () => {
@@ -153,6 +157,20 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDeleteUser(account) {
     dispatch(deleteUserModal(intl, account.get('id')));
+  },
+
+  onVerifyUser(account) {
+    const message = intl.formatMessage(messages.userVerified, { acct: account.get('acct') });
+    dispatch(tagUsers([account.get('id')], ['verified'])).then(() => {
+      dispatch(snackbar.success(message));
+    }).catch(() => {});
+  },
+
+  onUnverifyUser(account) {
+    const message = intl.formatMessage(messages.userUnverified, { acct: account.get('acct') });
+    dispatch(untagUsers([account.get('id')], ['verified'])).then(() => {
+      dispatch(snackbar.info(message));
+    }).catch(() => {});
   },
 });
 

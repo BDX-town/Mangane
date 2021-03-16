@@ -39,6 +39,7 @@ export const defaultConfig = ImmutableMap({
     homeFooter: ImmutableList(),
   }),
   allowedEmoji: allowedEmoji,
+  verifiedCanEditName: false,
 });
 
 export function getSoapboxConfig(state) {

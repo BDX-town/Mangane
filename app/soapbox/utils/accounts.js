@@ -45,3 +45,7 @@ export const isLocal = account => {
   let domain = account.get('acct').split('@')[1];
   return domain === undefined ? true : false;
 };
+
+export const isVerified = account => (
+  account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified')
+);
