@@ -40,3 +40,8 @@ export const getFollowDifference = (state, accountId, type) => {
   const counter = state.getIn(['accounts_counters', accountId, `${type}_count`], 0);
   return Math.max(counter - listSize, 0);
 };
+
+export const isLocal = account => {
+  let domain = account.get('acct').split('@')[1];
+  return domain === undefined ? true : false;
+};
