@@ -19,6 +19,7 @@ import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+import { isVerified } from 'soapbox/utils/accounts';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -48,6 +49,8 @@ const messages = defineMessages({
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
+  verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
+  unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
 });
 
 const mapStateToProps = state => {
@@ -171,6 +174,13 @@ class Header extends ImmutablePureComponent {
     if (account.get('id') !== me && isStaff) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+
+      if (isVerified(account)) {
+        menu.push({ text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }), action: this.props.onUnverifyUser });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }), action: this.props.onVerifyUser });
+      }
+
       menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
       menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
     }

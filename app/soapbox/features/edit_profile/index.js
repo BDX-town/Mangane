@@ -21,6 +21,7 @@ import {
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 import { unescape } from 'lodash';
+import { isVerified } from 'soapbox/utils/accounts';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -161,7 +162,7 @@ class EditProfile extends ImmutablePureComponent {
 
   render() {
     const { intl, maxFields, account } = this.props;
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const verified = isVerified(account);
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>

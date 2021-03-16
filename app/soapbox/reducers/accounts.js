@@ -6,8 +6,18 @@ import {
 import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  fromJS,
+} from 'immutable';
 import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
+import {
+  ADMIN_USERS_TAG_REQUEST,
+  ADMIN_USERS_TAG_FAIL,
+  ADMIN_USERS_UNTAG_REQUEST,
+  ADMIN_USERS_UNTAG_FAIL,
+} from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap();
 
@@ -43,6 +53,26 @@ const importAccountsFromChats = (state, chats) =>
   state.withMutations(mutable =>
     chats.forEach(chat => importAccountFromChat(mutable, chat)));
 
+const addTags = (state, accountIds, tags) => {
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        v.toOrderedSet().union(tags).toList(),
+      );
+    });
+  });
+};
+
+const removeTags = (state, accountIds, tags) => {
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        v.toOrderedSet().subtract(tags).toList(),
+      );
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -58,6 +88,12 @@ export default function accounts(state = initialState, action) {
   case CHAT_FETCH_SUCCESS:
   case STREAMING_CHAT_UPDATE:
     return importAccountsFromChats(state, [action.chat]);
+  case ADMIN_USERS_TAG_REQUEST:
+  case ADMIN_USERS_UNTAG_FAIL:
+    return addTags(state, action.accountIds, action.tags);
+  case ADMIN_USERS_UNTAG_REQUEST:
+  case ADMIN_USERS_TAG_FAIL:
+    return removeTags(state, action.accountIds, action.tags);
   default:
     return state;
   }

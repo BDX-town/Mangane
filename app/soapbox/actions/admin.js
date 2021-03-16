@@ -45,6 +45,14 @@ export const ADMIN_LOG_FETCH_REQUEST = 'ADMIN_LOG_FETCH_REQUEST';
 export const ADMIN_LOG_FETCH_SUCCESS = 'ADMIN_LOG_FETCH_SUCCESS';
 export const ADMIN_LOG_FETCH_FAIL    = 'ADMIN_LOG_FETCH_FAIL';
 
+export const ADMIN_USERS_TAG_REQUEST = 'ADMIN_USERS_TAG_REQUEST';
+export const ADMIN_USERS_TAG_SUCCESS = 'ADMIN_USERS_TAG_SUCCESS';
+export const ADMIN_USERS_TAG_FAIL    = 'ADMIN_USERS_TAG_FAIL';
+
+export const ADMIN_USERS_UNTAG_REQUEST = 'ADMIN_USERS_UNTAG_REQUEST';
+export const ADMIN_USERS_UNTAG_SUCCESS = 'ADMIN_USERS_UNTAG_SUCCESS';
+export const ADMIN_USERS_UNTAG_FAIL    = 'ADMIN_USERS_UNTAG_FAIL';
+
 export function fetchConfig() {
   return (dispatch, getState) => {
     dispatch({ type: ADMIN_CONFIG_FETCH_REQUEST });
@@ -194,6 +202,34 @@ export function fetchModerationLog(params) {
         return data;
       }).catch(error => {
         dispatch({ type: ADMIN_LOG_FETCH_FAIL, error });
+      });
+  };
+}
+
+export function tagUsers(accountIds, tags) {
+  return (dispatch, getState) => {
+    const nicknames = accountIds.map(id => getState().getIn(['accounts', id, 'acct']));
+    dispatch({ type: ADMIN_USERS_TAG_REQUEST, accountIds, tags });
+    return api(getState)
+      .put('/api/v1/pleroma/admin/users/tag', { nicknames, tags })
+      .then(() => {
+        dispatch({ type: ADMIN_USERS_TAG_SUCCESS, accountIds, tags });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_TAG_FAIL, error, accountIds, tags });
+      });
+  };
+}
+
+export function untagUsers(accountIds, tags) {
+  return (dispatch, getState) => {
+    const nicknames = accountIds.map(id => getState().getIn(['accounts', id, 'acct']));
+    dispatch({ type: ADMIN_USERS_UNTAG_REQUEST, accountIds, tags });
+    return api(getState)
+      .delete('/api/v1/pleroma/admin/users/tag', { data: { nicknames, tags } })
+      .then(() => {
+        dispatch({ type: ADMIN_USERS_UNTAG_SUCCESS, accountIds, tags });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_UNTAG_FAIL, error, accountIds, tags });
       });
   };
 }
