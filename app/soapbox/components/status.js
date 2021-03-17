@@ -349,6 +349,8 @@ class Status extends ImmutablePureComponent {
             media={status.get('media_attachments')}
           />
         );
+      } else if (status.getIn(['media_attachments', 0, 'pleroma', 'mime_type']) === 'application/x-nes-rom') {
+        media = 'NES';
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 

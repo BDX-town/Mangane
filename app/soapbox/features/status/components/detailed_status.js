@@ -18,6 +18,7 @@ import PollContainer from 'soapbox/containers/poll_container';
 import StatusInteractionBar from './status_interaction_bar';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import JSNES from 'soapbox/features/jsnes';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -138,6 +139,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
             onToggleVisibility={this.props.onToggleMediaVisibility}
           />
         );
+      } else if (status.getIn(['media_attachments', 0, 'pleroma', 'mime_type']) === 'application/x-nes-rom') {
+        const rom = status.getIn(['media_attachments', 0]);
+        media = <JSNES url={rom.get('preview_url')} />;
       } else {
         media = (
           <MediaGallery
