@@ -5,6 +5,7 @@ import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestion
 const mapStateToProps = state => ({
   results: state.getIn(['search', 'results']),
   suggestions: state.getIn(['suggestions', 'items']),
+  submitted: state.getIn(['search', 'submitted']),
 });
 
 const mapDispatchToProps = dispatch => ({

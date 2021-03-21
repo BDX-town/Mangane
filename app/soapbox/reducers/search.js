@@ -1,6 +1,7 @@
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
+  SEARCH_FETCH_REQUEST,
   SEARCH_FETCH_SUCCESS,
   SEARCH_SHOW,
 } from '../actions/search';
@@ -38,6 +39,11 @@ export default function search(state = initialState, action) {
   case COMPOSE_MENTION:
   case COMPOSE_DIRECT:
     return state.set('hidden', true);
+  case SEARCH_FETCH_REQUEST:
+    return state.withMutations(map => {
+      map.set('results', ImmutableMap());
+      map.set('submitted', true);
+    });
   case SEARCH_FETCH_SUCCESS:
     return state.set('results', ImmutableMap({
       accounts: ImmutableList(action.results.accounts.map(item => item.id)),

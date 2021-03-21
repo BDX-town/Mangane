@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
@@ -8,35 +7,24 @@ import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Hashtag from '../../../components/hashtag';
 import Icon from 'soapbox/components/icon';
-import WhoToFollowPanel from '../../ui/components/who_to_follow_panel';
-import { getFeatures } from 'soapbox/utils/features';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
 
-const mapStateToProps = state => ({
-  features: getFeatures(state.get('instance')),
-});
-
-export default @connect(mapStateToProps)
-@injectIntl
+export default @injectIntl
 class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
     results: ImmutablePropTypes.map.isRequired,
-    features: PropTypes.object,
+    submitted: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
-  state = {
-    isSmallScreen: (window.innerWidth <= 895),
-  }
-
   render() {
-    const { results, features } = this.props;
-    const { isSmallScreen } = this.state;
+    const { results, submitted } = this.props;
 
-    if (results.isEmpty() && isSmallScreen) {
+    if (submitted && results.isEmpty()) {
       return (
         <div className='search-results'>
-          {features.suggestions && <WhoToFollowPanel />}
+          <LoadingIndicator />
         </div>
       );
     }
