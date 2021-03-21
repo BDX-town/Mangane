@@ -347,7 +347,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const { status, intl, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
 
-    const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
+    const publicStatus = ['public', 'local', 'unlisted'].includes(status.get('visibility'));
 
     const replyCount = status.get('replies_count');
     const reblogCount = status.get('reblogs_count');
