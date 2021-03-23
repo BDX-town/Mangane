@@ -2778,6 +2778,14 @@ babel-runtime@^6.26.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
+babel-runtime@^7.0.0-beta.3:
+  version "7.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-7.0.0-beta.3.tgz#7c750de5514452c27612172506b49085a4a630f2"
+  integrity sha512-jlzZ8RACjt0QGxq+wqsw5bCQE9RcUyWpw987mDY3GYxTpOQT2xoyNoG++oVCHzr/nACLBIprfVBNvv/If1ZYcg==
+  dependencies:
+    core-js "^2.4.0"
+    regenerator-runtime "^0.11.0"
+
 backoff@^2.4.1:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/backoff/-/backoff-2.5.0.tgz#f616eda9d3e4b66b8ca7fca79f695722c5f8e26f"
@@ -5569,6 +5577,14 @@ getpass@^0.1.1:
   integrity sha1-Xv+OPmhNVprkyysSgmBOi6YhSfo=
   dependencies:
     assert-plus "^1.0.0"
+
+glob-all@^3.1.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/glob-all/-/glob-all-3.2.1.tgz#082ca81afd2247cbd3ed2149bb2630f4dc877d95"
+  integrity sha512-x877rVkzB3ipid577QOp+eQCR6M5ZyiwrtaYgrX/z3EThaSPFtLDwBXFHc3sH1cG0R0vFYI5SRYeWMMSEyXkUw==
+  dependencies:
+    glob "^7.1.2"
+    yargs "^15.3.1"
 
 glob-parent@^3.1.0:
   version "3.1.0"
@@ -12210,6 +12226,17 @@ unset-value@^1.0.0:
   dependencies:
     has-value "^0.3.1"
     isobject "^3.0.0"
+
+unused-files-webpack-plugin@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/unused-files-webpack-plugin/-/unused-files-webpack-plugin-3.4.0.tgz#adc67a3b5549d028818d3119cbf2b5c88aea8670"
+  integrity sha512-cmukKOBdIqaM1pqThY0+jp+mYgCVyzrD8uRbKEucQwIGZcLIRn+gSRiQ7uLjcDd3Zba9NUxVGyYa7lWM4UCGeg==
+  dependencies:
+    babel-runtime "^7.0.0-beta.3"
+    glob-all "^3.1.0"
+    semver "^5.5.0"
+    util.promisify "^1.0.0"
+    warning "^3.0.0"
 
 upath@^1.1.1:
   version "1.1.2"

@@ -2,10 +2,6 @@ export function EmojiPicker() {
   return import(/* webpackChunkName: "emoji_picker" */'../../emoji/emoji_picker');
 }
 
-export function Compose() {
-  return import(/* webpackChunkName: "features/compose" */'../../compose');
-}
-
 export function Notifications() {
   return import(/* webpackChunkName: "features/notifications" */'../../notifications');
 }
@@ -72,10 +68,6 @@ export function Bookmarks() {
 
 export function Status() {
   return import(/* webpackChunkName: "features/status" */'../../status');
-}
-
-export function GettingStarted() {
-  return import(/* webpackChunkName: "features/getting_started" */'../../getting_started');
 }
 
 export function PinnedStatuses() {
