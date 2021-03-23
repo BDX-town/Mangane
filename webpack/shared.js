@@ -6,6 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
@@ -65,6 +66,13 @@ module.exports = {
       entrypoints: true,
       writeToDisk: true,
       publicPath: true,
+    }),
+    // https://www.npmjs.com/package/unused-files-webpack-plugin#options
+    new UnusedFilesWebpackPlugin({
+      patterns: ['app/**/*.*'],
+      globOptions: {
+        ignore: ['node_modules/**/*', '**/__*__/**/*'],
+      },
     }),
     // https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
