@@ -43,7 +43,6 @@ import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 
 import {
   Status,
-  // GettingStarted,
   CommunityTimeline,
   PublicTimeline,
   RemoteTimeline,
