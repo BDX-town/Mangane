@@ -95,6 +95,30 @@ describe('auth reducer', () => {
       const result = reducer(state, action);
       expect(result.get('tokens')).toEqual(expected);
     });
+
+    it('sets `me` to the account if unset', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234' },
+      };
+
+      const result = reducer(undefined, action);
+      expect(result.get('me')).toEqual('1234');
+    });
+
+    it('leaves `me` alone if already set', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234' },
+      };
+
+      const state = fromJS({ me: '5678' });
+
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('5678');
+    });
   });
 
   describe('VERIFY_CREDENTIALS_FAIL', () => {
