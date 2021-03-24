@@ -331,9 +331,9 @@ export function authAppAuthorized(app) {
   };
 }
 
-export function authLoggedIn(user) {
+export function authLoggedIn(token) {
   return {
     type: AUTH_LOGGED_IN,
-    user,
+    token,
   };
 }

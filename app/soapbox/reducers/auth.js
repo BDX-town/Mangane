@@ -7,31 +7,40 @@ import {
 } from '../actions/auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
-const initialState = ImmutableMap({
-  app: ImmutableMap(JSON.parse(localStorage.getItem('soapbox:auth:app'))),
-  users: fromJS(JSON.parse(localStorage.getItem('soapbox:auth:users'))),
-  me: localStorage.getItem('soapbox:auth:me'),
+const defaultState = ImmutableMap({
+  app: ImmutableMap(),
+  user: ImmutableMap(),
+  users: ImmutableMap(),
+  me: null,
 });
 
-export default function auth(state = initialState, action) {
+const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
+const initialState = defaultState.merge(localState);
+
+const reducer = (state, action) => {
   switch(action.type) {
   case AUTH_APP_CREATED:
-    localStorage.setItem('soapbox:auth:app', JSON.stringify(action.app)); // TODO: Better persistence
-    return state.set('app', ImmutableMap(action.app));
+    return state.set('app', fromJS(action.app));
   case AUTH_APP_AUTHORIZED:
-    const merged = state.get('app').merge(ImmutableMap(action.app));
-    localStorage.setItem('soapbox:auth:app', JSON.stringify(merged)); // TODO: Better persistence
-    return state.set('app', merged);
+    return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.app)));
   case AUTH_LOGGED_IN:
-    return state.set('user', ImmutableMap(action.user));
+    return state.set('user', fromJS(action.token));
   case AUTH_LOGGED_OUT:
-    localStorage.removeItem('soapbox:auth:user');
     return state.set('user', ImmutableMap());
   case SWITCH_ACCOUNT:
-    localStorage.setItem('soapbox:auth:me', action.accountId);
-    location.reload();
-    return state;
+    return state.set('me', action.accountId);
   default:
     return state;
   }
+};
+
+export default function auth(state = initialState, action) {
+  state = reducer(state, action);
+  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+
+  if (action.type === SWITCH_ACCOUNT) {
+    location.reload();
+  }
+
+  return state;
 };
