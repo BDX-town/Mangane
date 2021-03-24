@@ -116,13 +116,28 @@ const reducer = (state, action) => {
   }
 };
 
-export default function auth(oldState = initialState, action) {
-  const state = reducer(oldState, action);
-  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+const maybeReload = (oldState, state, action) => {
+  const conds = [
+    action.type === SWITCH_ACCOUNT,
+    action.type === VERIFY_CREDENTIALS_FAIL && state.get('me') !== oldState.get('me'),
+  ];
 
-  if (action.type === SWITCH_ACCOUNT) {
+  // Reload if any of these conditions are true
+  const shouldReload = conds.some(cond => cond);
+
+  if (shouldReload) {
     location.reload();
   }
+};
+
+export default function auth(oldState = initialState, action) {
+  const state = reducer(oldState, action);
+
+  // Persist the state in localStorage
+  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+
+  // Reload the page under some conditions
+  maybeReload(oldState, state, action);
 
   return state;
 };
