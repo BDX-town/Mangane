@@ -3,7 +3,6 @@ import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { EMOJI_USE } from '../actions/emojis';
 import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
-import { VERIFY_CREDENTIALS_SUCCESS } from 'soapbox/actions/auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 // Default settings are in action/settings.js
@@ -28,8 +27,6 @@ export default function settings(state = initialState, action) {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
     return importSettings(state, action.me);
-  case VERIFY_CREDENTIALS_SUCCESS:
-    return importSettings(state, action.account);
   case NOTIFICATIONS_FILTER_SET:
   case SETTING_CHANGE:
     return state
