@@ -120,8 +120,7 @@ export default function auth(oldState = initialState, action) {
   const state = reducer(oldState, action);
   localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
 
-  // Reload the page when the current user changes.
-  if (state.get('me') !== oldState.get('me')) {
+  if (action.type === SWITCH_ACCOUNT) {
     location.reload();
   }
 
