@@ -40,6 +40,7 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
+import { getAccessToken } from 'soapbox/utils/auth';
 
 import {
   Status,
@@ -111,7 +112,7 @@ const mapStateToProps = state => {
     hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
     hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
-    accessToken: state.getIn(['auth', 'user', 'access_token']),
+    accessToken: getAccessToken(state),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
     account,
