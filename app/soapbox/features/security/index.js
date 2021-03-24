@@ -63,9 +63,8 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
-  backup_codes: state.getIn(['auth', 'backup_codes', 'codes']),
   settings: getSettings(state),
-  tokens: state.getIn(['auth', 'tokens']),
+  tokens: state.getIn(['security', 'tokens']),
 });
 
 export default @connect(mapStateToProps)
