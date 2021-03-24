@@ -18,6 +18,22 @@ describe('auth reducer', () => {
     }));
   });
 
+  describe('@@INIT', () => {
+    it('sets `me` to the next available user if blank', () => {
+      const state = fromJS({
+        me: null,
+        users: {
+          '1234': { id: '1234', access_token: 'ABCDEFG' },
+          '5678': { id: '5678', access_token: 'HIJKLMN' },
+        },
+      });
+
+      const action = { type: '@@INIT' };
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('1234');
+    });
+  });
+
   describe('AUTH_APP_CREATED', () => {
     it('should copy in the app', () => {
       const token = { token_type: 'Bearer', access_token: 'ABCDEFG' };

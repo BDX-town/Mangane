@@ -31,6 +31,7 @@ const importCredentials = (state, token, account) => {
     }));
     state.setIn(['tokens', token, 'account'], account.id);
     state.update('me', null, me => me || account.id);
+    upgradeLegacyId(state, account);
   });
 };
 
@@ -54,8 +55,48 @@ const importFailedToken = (state, token) => {
   });
 };
 
+// Upgrade the initial state
+const migrateLegacy = state => {
+  if (localState) return state;
+  return state.withMutations(state => {
+    const app = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:app')));
+    const user = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:user')));
+    state.set('me', '_legacy'); // Placeholder account ID
+    state.set('app', app);
+    state.set('tokens', ImmutableMap({
+      [user.get('access_token')]: user.set('account', '_legacy'),
+    }));
+    state.set('users', ImmutableMap({
+      '_legacy': ImmutableMap({
+        id: '_legacy',
+        access_token: user.get('access_token'),
+      }),
+    }));
+  });
+};
+
+// Upgrade the `_legacy` placeholder ID with a real account
+const upgradeLegacyId = (state, account) => {
+  if (localState) return state;
+  return state.withMutations(state => {
+    state.update('me', null, me => me === '_legacy' ? account.id : me);
+    state.deleteIn(['users', '_legacy']);
+  });
+  // TODO: Delete `soapbox:auth:app` and `soapbox:auth:user` localStorage?
+  // By this point it's probably safe, but we'll leave it just in case.
+};
+
+const initialize = state => {
+  return state.withMutations(state => {
+    maybeShiftMe(state);
+    migrateLegacy(state);
+  });
+};
+
 const reducer = (state, action) => {
   switch(action.type) {
+  case '@@INIT':
+    return initialize(state);
   case AUTH_APP_CREATED:
     return state.set('app', fromJS(action.app));
   case AUTH_APP_AUTHORIZED:
