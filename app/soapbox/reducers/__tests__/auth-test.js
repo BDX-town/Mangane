@@ -3,6 +3,7 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
+  VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
 } from 'soapbox/actions/auth';
 
@@ -53,6 +54,42 @@ describe('auth reducer', () => {
         type: AUTH_LOGGED_IN,
         token: { token_type: 'Bearer', access_token: 'HIJKLMN' },
       };
+
+      const result = reducer(state, action);
+      expect(result.get('tokens')).toEqual(expected);
+    });
+  });
+
+  describe('VERIFY_CREDENTIALS_SUCCESS', () => {
+    it('should import the user', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234' },
+      };
+
+      const expected = fromJS({
+        '1234': { id: '1234', access_token: 'ABCDEFG' },
+      });
+
+      const result = reducer(undefined, action);
+      expect(result.get('users')).toEqual(expected);
+    });
+
+    it('should set the account in the token', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234' },
+      };
+
+      const state = fromJS({
+        tokens: { 'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' } },
+      });
+
+      const expected = fromJS({
+        'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG', account: '1234' },
+      });
 
       const result = reducer(state, action);
       expect(result.get('tokens')).toEqual(expected);
