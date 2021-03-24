@@ -13,6 +13,7 @@ import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from './media';
+import { isLoggedIn } from 'soapbox/utils/accounts';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -157,7 +158,7 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
 
 export function submitCompose(routerHistory, group) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const status = getState().getIn(['compose', 'text'], '');
     const media  = getState().getIn(['compose', 'media_attachments']);
@@ -216,7 +217,7 @@ export function submitComposeFail(error) {
 
 export function uploadCompose(files) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
     const uploadLimit = getFeatures(getState().get('instance')).attachmentLimit;
 
     const media  = getState().getIn(['compose', 'media_attachments']);
@@ -254,7 +255,7 @@ export function uploadCompose(files) {
 
 export function changeUploadCompose(id, params) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(changeUploadComposeRequest());
 

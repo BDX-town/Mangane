@@ -2,6 +2,7 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 import { openModal } from './modal';
+import { isLoggedIn } from 'soapbox/utils/accounts';
 
 export const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 export const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';
@@ -16,7 +17,7 @@ export const MUTES_TOGGLE_HIDE_NOTIFICATIONS = 'MUTES_TOGGLE_HIDE_NOTIFICATIONS'
 
 export function fetchMutes() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchMutesRequest());
 
@@ -52,7 +53,7 @@ export function fetchMutesFail(error) {
 
 export function expandMutes() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['user_lists', 'mutes', 'next']);
 

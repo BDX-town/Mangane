@@ -1,4 +1,5 @@
 import api, { getLinks } from '../api';
+import { isLoggedIn } from 'soapbox/utils/accounts';
 
 export const DOMAIN_BLOCK_REQUEST = 'DOMAIN_BLOCK_REQUEST';
 export const DOMAIN_BLOCK_SUCCESS = 'DOMAIN_BLOCK_SUCCESS';
@@ -18,7 +19,7 @@ export const DOMAIN_BLOCKS_EXPAND_FAIL    = 'DOMAIN_BLOCKS_EXPAND_FAIL';
 
 export function blockDomain(domain) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(blockDomainRequest(domain));
 
@@ -57,7 +58,7 @@ export function blockDomainFail(domain, error) {
 
 export function unblockDomain(domain) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(unblockDomainRequest(domain));
 
@@ -102,7 +103,7 @@ export function unblockDomainFail(domain, error) {
 
 export function fetchDomainBlocks() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchDomainBlocksRequest());
 
@@ -138,7 +139,7 @@ export function fetchDomainBlocksFail(error) {
 
 export function expandDomainBlocks() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['domain_lists', 'blocks', 'next']);
 

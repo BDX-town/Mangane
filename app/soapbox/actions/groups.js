@@ -1,6 +1,7 @@
 import api, { getLinks } from '../api';
 import { importFetchedAccounts } from './importer';
 import { fetchRelationships } from './accounts';
+import { isLoggedIn } from 'soapbox/utils/accounts';
 
 export const GROUP_FETCH_REQUEST = 'GROUP_FETCH_REQUEST';
 export const GROUP_FETCH_SUCCESS = 'GROUP_FETCH_SUCCESS';
@@ -51,7 +52,7 @@ export const GROUP_REMOVE_STATUS_SUCCESS = 'GROUP_REMOVE_STATUS_SUCCESS';
 export const GROUP_REMOVE_STATUS_FAIL    = 'GROUP_REMOVE_STATUS_FAIL';
 
 export const fetchGroup = id => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch(fetchGroupRelationships([id]));
 
@@ -84,7 +85,7 @@ export const fetchGroupFail = (id, error) => ({
 
 export function fetchGroupRelationships(groupIds) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const loadedRelationships = getState().get('group_relationships');
     const newGroupIds = groupIds.filter(id => loadedRelationships.get(id, null) === null);
@@ -128,7 +129,7 @@ export function fetchGroupRelationshipsFail(error) {
 };
 
 export const fetchGroups = (tab) => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch(fetchGroupsRequest());
 
@@ -157,7 +158,7 @@ export const fetchGroupsFail = error => ({
 
 export function joinGroup(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(joinGroupRequest(id));
 
@@ -171,7 +172,7 @@ export function joinGroup(id) {
 
 export function leaveGroup(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(leaveGroupRequest(id));
 
@@ -227,7 +228,7 @@ export function leaveGroupFail(error) {
 
 export function fetchMembers(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchMembersRequest(id));
 
@@ -269,7 +270,7 @@ export function fetchMembersFail(id, error) {
 
 export function expandMembers(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['user_lists', 'groups', id, 'next']);
 
@@ -317,7 +318,7 @@ export function expandMembersFail(id, error) {
 
 export function fetchRemovedAccounts(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchRemovedAccountsRequest(id));
 
@@ -359,7 +360,7 @@ export function fetchRemovedAccountsFail(id, error) {
 
 export function expandRemovedAccounts(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['user_lists', 'groups_removed_accounts', id, 'next']);
 
@@ -407,7 +408,7 @@ export function expandRemovedAccountsFail(id, error) {
 
 export function removeRemovedAccount(groupId, id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(removeRemovedAccountRequest(groupId, id));
 
@@ -446,7 +447,7 @@ export function removeRemovedAccountFail(groupId, id, error) {
 
 export function createRemovedAccount(groupId, id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(createRemovedAccountRequest(groupId, id));
 
@@ -485,7 +486,7 @@ export function createRemovedAccountFail(groupId, id, error) {
 
 export function groupRemoveStatus(groupId, id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(groupRemoveStatusRequest(groupId, id));
 
