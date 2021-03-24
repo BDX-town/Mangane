@@ -1,6 +1,5 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
-import { List as ImmutableList } from 'immutable';
 import { verifyCredentials } from './auth';
 
 export const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';

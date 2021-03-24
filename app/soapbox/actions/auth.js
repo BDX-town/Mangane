@@ -1,4 +1,6 @@
 import api from '../api';
+import { importFetchedAccount } from './importer';
+import { throttle } from 'lodash';
 import snackbar from 'soapbox/actions/snackbar';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -146,6 +148,7 @@ export function verifyCredentials(token) {
     };
 
     return api(getState).request(request).then(({ data: account }) => {
+      dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       return account;
     }).catch(error => {
@@ -190,6 +193,18 @@ export function logOut() {
 
 export function switchAccount(accountId) {
   return { type: SWITCH_ACCOUNT, accountId };
+}
+
+export function fetchOwnAccounts() {
+  return throttle((dispatch, getState) => {
+    const state = getState();
+    state.getIn(['auth', 'users']).forEach((token, id) => {
+      const account = state.getIn(['accounts', id]);
+      if (!account) {
+        dispatch(verifyCredentials(token));
+      }
+    });
+  }, 2000);
 }
 
 export function register(params) {
