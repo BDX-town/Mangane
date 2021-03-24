@@ -1,6 +1,7 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
+import { isLoggedIn } from 'soapbox/utils/accounts';
 
 export const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 export const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';
@@ -44,7 +45,7 @@ export const simpleEmojiReact = (status, emoji) => {
 
 export function fetchEmojiReacts(id, emoji) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return dispatch(noOp());
+    if (!isLoggedIn(getState)) return dispatch(noOp());
 
     dispatch(fetchEmojiReactsRequest(id, emoji));
 
@@ -65,7 +66,7 @@ export function fetchEmojiReacts(id, emoji) {
 
 export function emojiReact(status, emoji) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return dispatch(noOp());
+    if (!isLoggedIn(getState)) return dispatch(noOp());
 
     dispatch(emojiReactRequest(status, emoji));
 
@@ -82,7 +83,7 @@ export function emojiReact(status, emoji) {
 
 export function unEmojiReact(status, emoji) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return dispatch(noOp());
+    if (!isLoggedIn(getState)) return dispatch(noOp());
 
     dispatch(unEmojiReactRequest(status, emoji));
 

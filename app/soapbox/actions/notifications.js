@@ -257,9 +257,9 @@ export function setFilter(filterType) {
 
 export function markReadNotifications() {
   return (dispatch, getState) => {
-    const state = getState();
-    if (!state.get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
+    const state = getState();
     const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
     const lastRead = state.getIn(['notifications', 'lastRead']);
 
