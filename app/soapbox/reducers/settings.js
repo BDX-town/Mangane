@@ -3,6 +3,7 @@ import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { EMOJI_USE } from '../actions/emojis';
 import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+import { VERIFY_CREDENTIALS_SUCCESS } from 'soapbox/actions/auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 // Default settings are in action/settings.js
@@ -17,12 +18,18 @@ const updateFrequentEmojis = (state, emoji) => state.update('frequentlyUsedEmoji
 
 const filterDeadListColumns = (state, listId) => state.update('columns', columns => columns.filterNot(column => column.get('id') === 'LIST' && column.get('params').get('id') === listId));
 
+const importSettings = (state, account) => {
+  account = fromJS(account);
+  const prefs = account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
+  return state.merge(prefs);
+};
+
 export default function settings(state = initialState, action) {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
-    const me = fromJS(action.me);
-    let fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
-    return state.merge(fePrefs);
+    return importSettings(state, action.me);
+  case VERIFY_CREDENTIALS_SUCCESS:
+    return importSettings(state, action.account);
   case NOTIFICATIONS_FILTER_SET:
   case SETTING_CHANGE:
     return state

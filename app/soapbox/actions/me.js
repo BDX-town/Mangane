@@ -18,7 +18,7 @@ export function fetchMe() {
     const state = getState();
 
     const me = state.getIn(['auth', 'me']);
-    const token = state.getIn(['auth', 'users', me]);
+    const token = state.getIn(['auth', 'users', me, 'access_token']);
 
     if (!token) {
       dispatch({ type: ME_FETCH_SKIP }); return noOp();

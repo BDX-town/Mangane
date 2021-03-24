@@ -4,8 +4,7 @@ import { Redirect } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
-import { logIn } from 'soapbox/actions/auth';
-import { fetchMe } from 'soapbox/actions/me';
+import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 
 const mapStateToProps = state => ({
   me: state.get('me'),
@@ -35,8 +34,8 @@ class LoginPage extends ImmutablePureComponent {
   handleSubmit = (event) => {
     const { dispatch } = this.props;
     const { username, password } = this.getFormData(event.target);
-    dispatch(logIn(username, password)).then(() => {
-      return dispatch(fetchMe());
+    dispatch(logIn(username, password)).then(({ access_token }) => {
+      return dispatch(verifyCredentials(access_token));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });

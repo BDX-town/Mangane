@@ -94,8 +94,9 @@ function createUserToken(username, password) {
       grant_type:    'password',
       username:      username,
       password:      password,
-    }).then(response => {
-      dispatch(authLoggedIn(response.data));
+    }).then(({ data: token }) => {
+      dispatch(authLoggedIn(token));
+      return token;
     });
   };
 }
@@ -143,7 +144,7 @@ export function verifyCredentials(token) {
       method: 'get',
       url: '/api/v1/accounts/verify_credentials',
       headers: {
-        'Authorization': `Bearer ${token.get('access_token')}`,
+        'Authorization': `Bearer ${token}`,
       },
     };
 
@@ -198,10 +199,10 @@ export function switchAccount(accountId) {
 export function fetchOwnAccounts() {
   return throttle((dispatch, getState) => {
     const state = getState();
-    state.getIn(['auth', 'users']).forEach((token, id) => {
-      const account = state.getIn(['accounts', id]);
+    state.getIn(['auth', 'users']).forEach(user => {
+      const account = state.getIn(['accounts', user.get('id')]);
       if (!account) {
-        dispatch(verifyCredentials(token));
+        dispatch(verifyCredentials(user.get('access_token')));
       }
     });
   }, 2000);

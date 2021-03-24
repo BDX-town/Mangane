@@ -8,8 +8,7 @@ import SiteLogo from './site_logo';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
-import { logIn } from 'soapbox/actions/auth';
-import { fetchMe } from 'soapbox/actions/me';
+import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
 import IconButton from 'soapbox/components/icon_button';
 
@@ -55,8 +54,8 @@ class Header extends ImmutablePureComponent {
   handleSubmit = (event) => {
     const { dispatch } = this.props;
     const { username, password } = this.getFormData(event.target);
-    dispatch(logIn(username, password)).then(() => {
-      return dispatch(fetchMe());
+    dispatch(logIn(username, password)).then(({ access_token }) => {
+      return dispatch(verifyCredentials(access_token));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
