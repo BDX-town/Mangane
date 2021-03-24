@@ -5,6 +5,7 @@ import {
   AUTH_LOGGED_IN,
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
+  SWITCH_ACCOUNT,
 } from 'soapbox/actions/auth';
 
 describe('auth reducer', () => {
@@ -142,6 +143,14 @@ describe('auth reducer', () => {
 
       const action = { type: VERIFY_CREDENTIALS_FAIL, token: 'ABCDEFG' };
       const result = reducer(state, action);
+      expect(result.get('me')).toEqual('5678');
+    });
+  });
+
+  describe('SWITCH_ACCOUNT', () => {
+    it('sets the value of `me`', () => {
+      const action = { type: SWITCH_ACCOUNT, accountId: '5678' };
+      const result = reducer(undefined, action);
       expect(result.get('me')).toEqual('5678');
     });
   });
