@@ -1,10 +1,16 @@
 import api from '../api';
 import snackbar from 'soapbox/actions/snackbar';
 
+export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
+
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
 export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
 export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
+
+export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
+export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
+export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
 
 export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
 export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
@@ -127,6 +133,27 @@ export function otpVerify(code, mfa_token) {
   };
 }
 
+export function verifyCredentials(token) {
+  return (dispatch, getState) => {
+    dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
+
+    const request = {
+      method: 'get',
+      url: '/api/v1/accounts/verify_credentials',
+      headers: {
+        'Authorization': `Bearer ${token.get('access_token')}`,
+      },
+    };
+
+    return api(getState).request(request).then(({ data: account }) => {
+      dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
+      return account;
+    }).catch(error => {
+      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
+    });
+  };
+}
+
 export function logIn(username, password) {
   return (dispatch, getState) => {
     return dispatch(createAppAndToken()).then(() => {
@@ -159,6 +186,10 @@ export function logOut() {
 
     dispatch(snackbar.success('Logged out.'));
   };
+}
+
+export function switchAccount(accountId) {
+  return { type: SWITCH_ACCOUNT, accountId };
 }
 
 export function register(params) {

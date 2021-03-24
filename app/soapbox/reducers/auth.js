@@ -5,12 +5,14 @@ import {
   AUTH_LOGGED_OUT,
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
+  SWITCH_ACCOUNT,
 } from '../actions/auth';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   app: ImmutableMap(JSON.parse(localStorage.getItem('soapbox:auth:app'))),
-  user: ImmutableMap(JSON.parse(localStorage.getItem('soapbox:auth:user'))),
+  users: fromJS(JSON.parse(localStorage.getItem('soapbox:auth:users'))),
+  me: localStorage.getItem('soapbox:auth:me'),
   tokens: ImmutableList(),
 });
 
@@ -24,7 +26,6 @@ export default function auth(state = initialState, action) {
     localStorage.setItem('soapbox:auth:app', JSON.stringify(merged)); // TODO: Better persistence
     return state.set('app', merged);
   case AUTH_LOGGED_IN:
-    localStorage.setItem('soapbox:auth:user', JSON.stringify(action.user)); // TODO: Better persistence
     return state.set('user', ImmutableMap(action.user));
   case AUTH_LOGGED_OUT:
     localStorage.removeItem('soapbox:auth:user');
@@ -34,6 +35,10 @@ export default function auth(state = initialState, action) {
   case REVOKE_TOKEN_SUCCESS:
     const idx = state.get('tokens').findIndex(t => t.get('id') === action.id);
     return state.deleteIn(['tokens', idx]);
+  case SWITCH_ACCOUNT:
+    localStorage.setItem('soapbox:auth:me', action.accountId);
+    location.reload();
+    return state;
   default:
     return state;
   }
