@@ -11,6 +11,7 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
+  users: ImmutableMap(),
   tokens: ImmutableMap(),
   me: null,
 });
