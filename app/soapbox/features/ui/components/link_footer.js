@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
+import { isStaff } from 'soapbox/utils/accounts';
 
 // FIXME: Let this be configured
 const sourceCode = {
@@ -35,10 +36,19 @@ const mapDispatchToProps = (dispatch) => ({
 const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
   <div className='getting-started__footer'>
     <ul>
-      {account && <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>}
-      {/* {account && <li><a href='/auth/edit'><FormattedMessage id='getting_started.security' defaultMessage='Security' /></a> · </li>} */}
-      <li><a href='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></a></li>
-      {/* <li><a href='/settings/applications'><FormattedMessage id='getting_started.developers' defaultMessage='Developers' /></a> · </li> */}
+      {account && <>
+        <li><Link to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocked users' /></Link></li>
+        <li><Link to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Muted users' /></Link></li>
+        <li><Link to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Muted words' /></Link></li>
+        <li><Link to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Hidden domains' /></Link></li>
+        {isStaff(account) && <>
+          <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='Admin settings' /></a></li>
+          <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>
+        </>}
+        <li><Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link></li>
+        <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>
+      </>}
+      <li><Link to='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></Link></li>
       {account && <li><Link to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
     </ul>
 
