@@ -109,7 +109,7 @@ const appReducer = combineReducers({
 
 // Clear the state (mostly) when the user logs out
 const logOut = (state = ImmutableMap()) => {
-  const whitelist = ['instance', 'soapbox', 'custom_emojis'];
+  const whitelist = ['instance', 'soapbox', 'custom_emojis', 'auth'];
 
   return ImmutableMap(
     whitelist.reduce((acc, curr) => {

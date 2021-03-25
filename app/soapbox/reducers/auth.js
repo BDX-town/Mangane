@@ -124,17 +124,36 @@ const reducer = (state, action) => {
   }
 };
 
-const maybeReload = (oldState, state, action) => {
-  if (action.type === SWITCH_ACCOUNT) {
-    if (location.pathname === '/auth/sign_in') {
-      location.replace('/');
-    } else {
-      location.reload();
-    }
-  }
+// The user has a token stored in their browser
+const canAuth = state => {
+  state = maybeShiftMe(state);
+  const me = state.get('me');
+  const token = state.getIn(['users', me, 'access_token']);
+  return typeof token === 'string';
+};
 
-  if (action.type === VERIFY_CREDENTIALS_FAIL && state.get('me') !== oldState.get('me')) {
-    location.reload();
+// Reload, but redirect home if the user is already logged in
+const reload = state => {
+  if (location.pathname === '/auth/sign_in' && canAuth(state)) {
+    return location.replace('/');
+  } else {
+    return location.reload();
+  }
+};
+
+// `me` has changed from one valid ID to another
+const userSwitched = (oldState, state) => {
+  const validMe = state => typeof state.get('me') === 'string';
+
+  const stillValid = validMe(oldState) && validMe(state);
+  const didChange = oldState.get('me') !== state.get('me');
+
+  return stillValid && didChange;
+};
+
+const maybeReload = (oldState, state, action) => {
+  if (userSwitched(oldState, state)) {
+    reload(state);
   }
 };
 
