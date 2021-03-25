@@ -179,7 +179,7 @@ export function logIn(username, password) {
 export function logOut() {
   return (dispatch, getState) => {
     const state = getState();
-    const me = state.getIn(['auth', 'me']);
+    const me = state.get('me');
 
     return api(getState).post('/oauth/revoke', {
       client_id: state.getIn(['auth', 'app', 'client_id']),
