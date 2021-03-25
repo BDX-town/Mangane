@@ -1,6 +1,7 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
+import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -150,6 +151,7 @@ export function verifyCredentials(token) {
     return api(getState).request(request).then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
+      if (account.id === getState().get('me')) dispatch({ type: ME_FETCH_SUCCESS, me: account });
       return account;
     }).catch(error => {
       dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
