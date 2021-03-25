@@ -4,7 +4,7 @@ import { evictStatus } from '../storage/modifier';
 import { deleteFromTimelines } from './timelines';
 import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus } from './importer';
 import { openModal } from './modal';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';

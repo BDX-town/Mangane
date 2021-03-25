@@ -1,5 +1,5 @@
 import api from '../api';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const GROUP_CREATE_REQUEST      = 'GROUP_CREATE_REQUEST';
 export const GROUP_CREATE_SUCCESS      = 'GROUP_CREATE_SUCCESS';

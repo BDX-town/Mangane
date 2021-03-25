@@ -1,7 +1,7 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';

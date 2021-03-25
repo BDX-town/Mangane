@@ -1,7 +1,7 @@
 import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 export const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';

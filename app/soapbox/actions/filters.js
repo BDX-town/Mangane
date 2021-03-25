@@ -1,6 +1,6 @@
 import api from '../api';
 import snackbar from 'soapbox/actions/snackbar';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
 export const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';

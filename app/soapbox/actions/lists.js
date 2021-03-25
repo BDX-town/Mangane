@@ -1,7 +1,7 @@
 import api from '../api';
 import { importFetchedAccounts } from './importer';
 import { showAlertForError } from './alerts';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const LIST_FETCH_REQUEST = 'LIST_FETCH_REQUEST';
 export const LIST_FETCH_SUCCESS = 'LIST_FETCH_SUCCESS';

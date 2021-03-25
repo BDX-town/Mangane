@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';

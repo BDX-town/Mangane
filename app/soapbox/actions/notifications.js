@@ -17,7 +17,7 @@ import {
 } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';

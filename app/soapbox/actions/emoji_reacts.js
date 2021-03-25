@@ -1,7 +1,7 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 export const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';

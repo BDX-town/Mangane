@@ -13,7 +13,7 @@ import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from './media';
-import { isLoggedIn } from 'soapbox/utils/accounts';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 let cancelFetchComposeSuggestionsAccounts;
 

@@ -49,5 +49,3 @@ export const isLocal = account => {
 export const isVerified = account => (
   account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified')
 );
-
-export const isLoggedIn = getState => typeof getState().get('me') === 'string';
