@@ -117,15 +117,15 @@ const reducer = (state, action) => {
 };
 
 const maybeReload = (oldState, state, action) => {
-  const conds = [
-    action.type === SWITCH_ACCOUNT,
-    action.type === VERIFY_CREDENTIALS_FAIL && state.get('me') !== oldState.get('me'),
-  ];
+  if (action.type === SWITCH_ACCOUNT) {
+    if (location.pathname === '/auth/sign_in') {
+      location.replace('/');
+    } else {
+      location.reload();
+    }
+  }
 
-  // Reload if any of these conditions are true
-  const shouldReload = conds.some(cond => cond);
-
-  if (shouldReload) {
+  if (action.type === VERIFY_CREDENTIALS_FAIL && state.get('me') !== oldState.get('me')) {
     location.reload();
   }
 };
