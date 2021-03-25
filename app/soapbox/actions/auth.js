@@ -191,7 +191,7 @@ export function logOut() {
   };
 }
 
-export function switchAccount(accountId,) {
+export function switchAccount(accountId) {
   return { type: SWITCH_ACCOUNT, accountId };
 }
 
