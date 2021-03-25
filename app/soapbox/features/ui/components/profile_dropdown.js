@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { openModal } from '../../../actions/modal';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
@@ -63,11 +62,6 @@ class ProfileDropdown extends React.PureComponent {
       this.props.dispatch(switchAccount(account.get('id')));
       e.preventDefault();
     };
-  }
-
-  handleAddAccount = e => {
-    this.props.dispatch(openModal('LOGIN'));
-    e.preventDefault();
   }
 
   fetchOwnAccounts = throttle(() => {

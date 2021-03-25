@@ -177,17 +177,16 @@ export function logIn(username, password) {
 export function logOut() {
   return (dispatch, getState) => {
     const state = getState();
+    const me = state.getIn(['auth', 'me']);
 
-    dispatch({ type: AUTH_LOGGED_OUT });
-
-    // Attempt to destroy OAuth token on logout
-    api(getState).post('/oauth/revoke', {
+    return api(getState).post('/oauth/revoke', {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'user', 'access_token']),
+      token: state.getIn(['auth', 'users', me, 'access_token']),
+    }).finally(() => {
+      dispatch({ type: AUTH_LOGGED_OUT, accountId: me });
+      dispatch(snackbar.success('Logged out.'));
     });
-
-    dispatch(snackbar.success('Logged out.'));
   };
 }
 

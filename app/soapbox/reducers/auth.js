@@ -47,10 +47,18 @@ const maybeShiftMe = state => {
   }
 };
 
-const importFailedToken = (state, token) => {
+const deleteToken = (state, token) => {
   return state.withMutations(state => {
     state.update('tokens', ImmutableMap(), tokens => tokens.delete(token));
     state.update('users', ImmutableMap(), users => users.filterNot(user => user.get('access_token') === token));
+    maybeShiftMe(state);
+  });
+};
+
+const deleteUser = (state, accountId) => {
+  return state.withMutations(state => {
+    state.update('users', ImmutableMap(), users => users.delete(accountId));
+    state.update('tokens', ImmutableMap(), tokens => tokens.filterNot(token => token.get('account') === accountId));
     maybeShiftMe(state);
   });
 };
@@ -104,11 +112,11 @@ const reducer = (state, action) => {
   case AUTH_LOGGED_IN:
     return importToken(state, action.token);
   case AUTH_LOGGED_OUT:
-    return state.set('user', ImmutableMap());
+    return deleteUser(state, action.accountId);
   case VERIFY_CREDENTIALS_SUCCESS:
     return importCredentials(state, action.token, action.account);
   case VERIFY_CREDENTIALS_FAIL:
-    return importFailedToken(state, action.token);
+    return deleteToken(state, action.token);
   case SWITCH_ACCOUNT:
     return state.set('me', action.accountId);
   default:
