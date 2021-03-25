@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
@@ -69,12 +70,16 @@ class ProfileDropdown extends React.PureComponent {
     e.preventDefault();
   }
 
-  componentDidMount() {
+  fetchOwnAccounts = throttle(() => {
     this.props.dispatch(fetchOwnAccounts());
+  }, 2000);
+
+  componentDidMount() {
+    this.fetchOwnAccounts();
   }
 
   componentDidUpdate() {
-    this.props.dispatch(fetchOwnAccounts());
+    this.fetchOwnAccounts();
   }
 
   renderAccount = account => {
@@ -104,7 +109,7 @@ class ProfileDropdown extends React.PureComponent {
       menu.push(null);
     }
 
-    menu.push({ text: intl.formatMessage(messages.add), action: this.handleAddAccount });
+    menu.push({ text: intl.formatMessage(messages.add), to: '/auth/sign_in' });
     menu.push({ text: intl.formatMessage(messages.logout, { acct: account.get('acct') }), to: '/auth/sign_out', action: this.handleLogOut });
 
     return (

@@ -1,6 +1,5 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
-import { throttle } from 'lodash';
 import snackbar from 'soapbox/actions/snackbar';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -197,7 +196,7 @@ export function switchAccount(accountId) {
 }
 
 export function fetchOwnAccounts() {
-  return throttle((dispatch, getState) => {
+  return (dispatch, getState) => {
     const state = getState();
     state.getIn(['auth', 'users']).forEach(user => {
       const account = state.getIn(['accounts', user.get('id')]);
@@ -205,7 +204,7 @@ export function fetchOwnAccounts() {
         dispatch(verifyCredentials(user.get('access_token')));
       }
     });
-  }, 2000);
+  };
 }
 
 export function register(params) {
