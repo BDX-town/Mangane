@@ -13,6 +13,7 @@ import FocalPointModal from './focal_point_modal';
 import HotkeysModal from './hotkeys_modal';
 import ComposeModal from './compose_modal';
 import UnauthorizedModal from './unauthorized_modal';
+import LoginModal from './login_modal';
 
 import {
   MuteModal,
@@ -37,6 +38,7 @@ const MODAL_COMPONENTS = {
   'HOTKEYS': () => Promise.resolve({ default: HotkeysModal }),
   'COMPOSE': () => Promise.resolve({ default: ComposeModal }),
   'UNAUTHORIZED': () => Promise.resolve({ default: UnauthorizedModal }),
+  'LOGIN': () => Promise.resolve({ default: LoginModal }),
 };
 
 export default class ModalRoot extends React.PureComponent {

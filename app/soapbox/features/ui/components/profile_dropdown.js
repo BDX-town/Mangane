@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-// import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modal';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -11,6 +11,7 @@ import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
+  add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   switch: { id: 'profile_dropdown.switch_account', defaultMessage: 'Switch to @{acct}' },
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
@@ -62,6 +63,11 @@ class ProfileDropdown extends React.PureComponent {
     };
   }
 
+  handleAddAccount = e => {
+    this.props.dispatch(openModal('LOGIN'));
+    e.preventDefault();
+  }
+
   componentDidMount() {
     this.props.dispatch(fetchOwnAccounts());
   }
@@ -84,6 +90,7 @@ class ProfileDropdown extends React.PureComponent {
       menu.push(null);
     }
 
+    menu.push({ text: intl.formatMessage(messages.add), action: this.handleAddAccount });
     menu.push({ text: intl.formatMessage(messages.logout, { acct: account.get('acct') }), to: '/auth/sign_out', action: this.handleLogOut });
 
     return (
