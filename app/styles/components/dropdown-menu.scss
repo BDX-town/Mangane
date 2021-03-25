@@ -70,6 +70,10 @@
       outline: 0;
       color: #fff;
       background: var(--brand-color) !important;
+
+      * {
+        color: #fff;
+      }
     }
   }
 
@@ -78,6 +82,10 @@
     margin: 10px !important;
     height: 1px;
     background: var(--foreground-color);
+  }
+
+  &__item .account {
+    line-height: normal;
   }
 }
 // end .dropdown-menu

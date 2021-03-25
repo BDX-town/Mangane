@@ -9,10 +9,11 @@ import { isStaff } from 'soapbox/utils/accounts';
 import { defineMessages, injectIntl } from 'react-intl';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { List as ImmutableList } from 'immutable';
+import Avatar from 'soapbox/components/avatar';
+import DisplayName from 'soapbox/components/display_name';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
-  switch: { id: 'profile_dropdown.switch_account', defaultMessage: 'Switch to @{acct}' },
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
 
@@ -76,6 +77,19 @@ class ProfileDropdown extends React.PureComponent {
     this.props.dispatch(fetchOwnAccounts());
   }
 
+  renderAccount = account => {
+    return (
+      <div className='account'>
+        <div className='account__wrapper'>
+          <div className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
+            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
+            <DisplayName account={account} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { intl, account, otherAccounts } = this.props;
     const size = this.props.size || 16;
@@ -83,7 +97,7 @@ class ProfileDropdown extends React.PureComponent {
     let menu = [];
 
     otherAccounts.forEach(account => {
-      menu.push({ text: intl.formatMessage(messages.switch, { acct: account.get('acct') }), action: this.handleSwitchAccount(account) });
+      menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account) });
     });
 
     if (otherAccounts.size > 0) {
