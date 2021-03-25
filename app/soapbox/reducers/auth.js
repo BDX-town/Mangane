@@ -69,6 +69,7 @@ const migrateLegacy = state => {
   return state.withMutations(state => {
     const app = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:app')));
     const user = fromJS(JSON.parse(localStorage.getItem('soapbox:auth:user')));
+    if (!user) return;
     state.set('me', '_legacy'); // Placeholder account ID
     state.set('app', app);
     state.set('tokens', ImmutableMap({
