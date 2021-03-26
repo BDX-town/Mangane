@@ -8,6 +8,10 @@ import {
 } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
+export const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
+export const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';
+export const ACCOUNT_CREATE_FAIL    = 'ACCOUNT_CREATE_FAIL';
+
 export const ACCOUNT_FETCH_REQUEST = 'ACCOUNT_FETCH_REQUEST';
 export const ACCOUNT_FETCH_SUCCESS = 'ACCOUNT_FETCH_SUCCESS';
 export const ACCOUNT_FETCH_FAIL    = 'ACCOUNT_FETCH_FAIL';
@@ -96,6 +100,18 @@ function getFromDB(dispatch, getState, index, id) {
       resolve(request.result.moved && getFromDB(dispatch, getState, index, request.result.moved));
     };
   });
+}
+
+export function createAccount(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
+    return api(getState, 'app').post('/api/v1/accounts', params).then(({ data: token }) => {
+      dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token });
+    }).catch(error => {
+      dispatch({ type: ACCOUNT_CREATE_FAIL, error, params });
+      throw error;
+    });
+  };
 }
 
 export function fetchAccount(id) {

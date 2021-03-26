@@ -1,6 +1,7 @@
 import api from '../api';
 import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
+import { createAccount } from 'soapbox/actions/accounts';
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
@@ -13,10 +14,6 @@ export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
 export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
 export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
-
-export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
-export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
-export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
 
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
@@ -211,15 +208,11 @@ export function fetchOwnAccounts() {
 export function register(params) {
   return (dispatch, getState) => {
     params.fullname = params.username;
-    dispatch({ type: AUTH_REGISTER_REQUEST });
+
     return dispatch(createAppAndToken()).then(() => {
-      return api(getState, 'app').post('/api/v1/accounts', params);
-    }).then(response => {
-      dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
-      dispatch(authLoggedIn(response.data));
-    }).catch(error => {
-      dispatch({ type: AUTH_REGISTER_FAIL, error });
-      throw error;
+      return dispatch(createAccount(params));
+    }).then(token => {
+      dispatch(authLoggedIn(token));
     });
   };
 }
