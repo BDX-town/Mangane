@@ -143,10 +143,14 @@ const reload = state => {
   }
 };
 
+// `me` is a user ID string
+const validMe = state => {
+  const me = state.get('me');
+  return typeof me === 'string' && me !== '_legacy';
+};
+
 // `me` has changed from one valid ID to another
 const userSwitched = (oldState, state) => {
-  const validMe = state => typeof state.get('me') === 'string';
-
   const stillValid = validMe(oldState) && validMe(state);
   const didChange = oldState.get('me') !== state.get('me');
 
