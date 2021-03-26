@@ -212,7 +212,7 @@ export function register(params) {
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createAccount(params));
     }).then(token => {
-      dispatch(authLoggedIn(token));
+      return dispatch(authLoggedIn(token));
     });
   };
 }

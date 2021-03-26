@@ -106,7 +106,7 @@ export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
     return api(getState, 'app').post('/api/v1/accounts', params).then(({ data: token }) => {
-      dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token });
+      return dispatch({ type: ACCOUNT_CREATE_SUCCESS, params, token });
     }).catch(error => {
       dispatch({ type: ACCOUNT_CREATE_FAIL, error, params });
       throw error;
