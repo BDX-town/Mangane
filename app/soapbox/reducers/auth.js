@@ -162,10 +162,12 @@ export default function auth(oldState = initialState, action) {
   const state = reducer(oldState, action);
 
   // Persist the state in localStorage
-  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+  if (!state.equals(oldState)) {
+    localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
 
-  // Reload the page under some conditions
-  maybeReload(oldState, state, action);
+    // Reload the page under some conditions
+    maybeReload(oldState, state, action);
+  }
 
   return state;
 };
