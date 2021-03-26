@@ -9,6 +9,7 @@
   padding: 4px 0;
   color: var(--primary-text-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  max-width: 300px;
   &.left { transform-origin: 100% 50%; }
   &.top { transform-origin: 50% 100%; }
   &.bottom { transform-origin: 50% 0; }
