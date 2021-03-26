@@ -15,7 +15,6 @@ exports[`<NativeCaptchaField /> renders correctly 1`] = `
   >
     <input
       autoComplete="off"
-      name="captcha_solution"
       onChange={[Function]}
       placeholder="Enter the pictured text"
       required={true}
