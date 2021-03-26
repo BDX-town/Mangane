@@ -1,5 +1,6 @@
 import reducer from '../auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+import { INIT_STORE } from 'soapbox/actions/store';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -18,7 +19,7 @@ describe('auth reducer', () => {
     }));
   });
 
-  describe('@@INIT', () => {
+  describe('INIT_STORE', () => {
     it('sets `me` to the next available user if blank', () => {
       const state = fromJS({
         me: null,
@@ -28,7 +29,7 @@ describe('auth reducer', () => {
         },
       });
 
-      const action = { type: '@@INIT' };
+      const action = { type: INIT_STORE };
       const result = reducer(state, action);
       expect(result.get('me')).toEqual('1234');
     });

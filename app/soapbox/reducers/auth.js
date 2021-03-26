@@ -1,3 +1,4 @@
+import { INIT_STORE } from '../actions/store';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -104,7 +105,7 @@ const initialize = state => {
 
 const reducer = (state, action) => {
   switch(action.type) {
-  case '@@INIT':
+  case INIT_STORE:
     return initialize(state);
   case AUTH_APP_CREATED:
     return state.set('app', fromJS(action.app));
