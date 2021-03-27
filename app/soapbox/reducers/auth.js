@@ -126,22 +126,7 @@ const reducer = (state, action) => {
   }
 };
 
-// The user has a token stored in their browser
-const canAuth = state => {
-  state = maybeShiftMe(state);
-  const me = state.get('me');
-  const token = state.getIn(['users', me, 'access_token']);
-  return typeof token === 'string';
-};
-
-// Reload, but redirect home if the user is already logged in
-const reload = state => {
-  if (location.pathname === '/auth/sign_in' && canAuth(state)) {
-    return location.replace('/');
-  } else {
-    return location.reload();
-  }
-};
+const reload = () => location.replace('/');
 
 // `me` is a user ID string
 const validMe = state => {
