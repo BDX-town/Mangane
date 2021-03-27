@@ -41,6 +41,7 @@ const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
         <li><Link to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Muted users' /></Link></li>
         <li><Link to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Muted words' /></Link></li>
         <li><Link to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Hidden domains' /></Link></li>
+        <li><Link to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></Link></li>
         {isStaff(account) && <>
           <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='Admin settings' /></a></li>
           <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>

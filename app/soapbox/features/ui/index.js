@@ -21,6 +21,7 @@ import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
+import { fetchFollowRequests } from '../../actions/accounts';
 import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
@@ -459,7 +460,7 @@ class UI extends React.PureComponent {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
       this.props.dispatch(fetchChats());
-      // this.props.dispatch(fetchGroups('member'));
+
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
         this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
@@ -467,6 +468,10 @@ class UI extends React.PureComponent {
       }
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
+
+      if (account.get('locked')) {
+        setTimeout(() => this.props.dispatch(fetchFollowRequests()), 700);
+      }
     }
     this.connectStreaming();
   }
