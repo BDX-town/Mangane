@@ -17,12 +17,16 @@ const updateFrequentEmojis = (state, emoji) => state.update('frequentlyUsedEmoji
 
 const filterDeadListColumns = (state, listId) => state.update('columns', columns => columns.filterNot(column => column.get('id') === 'LIST' && column.get('params').get('id') === listId));
 
+const importSettings = (state, account) => {
+  account = fromJS(account);
+  const prefs = account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
+  return state.merge(prefs);
+};
+
 export default function settings(state = initialState, action) {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
-    const me = fromJS(action.me);
-    let fePrefs = me.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
-    return state.merge(fePrefs);
+    return importSettings(state, action.me);
   case NOTIFICATIONS_FILTER_SET:
   case SETTING_CHANGE:
     return state

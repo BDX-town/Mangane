@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
-import ActionBar from 'soapbox/features/compose/components/action_bar';
+import ProfileDropdown from './profile_dropdown';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
@@ -126,7 +126,7 @@ class TabsBar extends React.PureComponent {
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
-                  <ActionBar account={account} size={34} />
+                  <ProfileDropdown account={account} size={34} />
                 </div>
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
                   <span>{intl.formatMessage(messages.post)}</span>

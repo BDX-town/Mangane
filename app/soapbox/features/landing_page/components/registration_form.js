@@ -132,10 +132,12 @@ class RegistrationForm extends ImmutablePureComponent {
 
   refreshCaptcha = () => {
     this.setState({ captchaIdempotencyKey: uuidv4() });
+    this.setParams({ captcha_solution: '' });
   }
 
   render() {
     const { instance, intl } = this.props;
+    const { params } = this.state;
     const isOpen = instance.get('registrations');
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
@@ -221,6 +223,8 @@ class RegistrationForm extends ImmutablePureComponent {
               onChange={this.onInputChange}
               onClick={this.onCaptchaClick}
               idempotencyKey={this.state.captchaIdempotencyKey}
+              name='captcha_solution'
+              value={params.get('captcha_solution', '')}
             />
             <div className='fields-group'>
               <Checkbox

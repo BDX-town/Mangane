@@ -9,6 +9,7 @@
   padding: 4px 0;
   color: var(--primary-text-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+  max-width: 300px;
   &.left { transform-origin: 100% 50%; }
   &.top { transform-origin: 50% 100%; }
   &.bottom { transform-origin: 50% 0; }
@@ -62,7 +63,6 @@
     text-decoration: none;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-transform: capitalize;
     color: var(--primary-text-color);
 
     &:focus,
@@ -71,6 +71,10 @@
       outline: 0;
       color: #fff;
       background: var(--brand-color) !important;
+
+      * {
+        color: #fff;
+      }
     }
   }
 
@@ -79,6 +83,10 @@
     margin: 10px !important;
     height: 1px;
     background: var(--foreground-color);
+  }
+
+  &__item .account {
+    line-height: normal;
   }
 }
 // end .dropdown-menu

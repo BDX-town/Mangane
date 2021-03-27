@@ -1,5 +1,6 @@
 import api from '../api';
 import snackbar from 'soapbox/actions/snackbar';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
 export const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';
@@ -14,7 +15,7 @@ export const FILTERS_DELETE_SUCCESS = 'FILTERS_DELETE_SUCCESS';
 export const FILTERS_DELETE_FAIL    = 'FILTERS_DELETE_FAIL';
 
 export const fetchFilters = () => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch({
     type: FILTERS_FETCH_REQUEST,

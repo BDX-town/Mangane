@@ -14,6 +14,7 @@ import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
+import { initStore } from '../actions/store';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
@@ -30,6 +31,7 @@ const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
 
+store.dispatch(initStore());
 store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
@@ -149,6 +151,30 @@ class SoapboxMount extends React.PureComponent {
 }
 
 export default class Soapbox extends React.PureComponent {
+
+  printConsoleWarning = () => {
+    /* eslint-disable no-console */
+    console.log('%cStop!', [
+      'color: #ff0000',
+      'display: block',
+      'font-family: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Ubuntu, "Helvetica Neue", sans-serif',
+      'font-size: 50px',
+      'font-weight: 800',
+      'padding: 4px 0',
+    ].join(';'));
+    console.log('%cThis is a browser feature intended for developers. If someone told you to copy-paste something here it is a scam and will give them access to your account.', [
+      'color: #111111',
+      'display: block',
+      'font-family: system-ui, -apple-system, BlinkMacSystemFont, Roboto, Ubuntu, "Helvetica Neue", sans-serif',
+      'font-size: 18px',
+      'padding: 4px 0 16px',
+    ].join(';'));
+    /* eslint-enable no-console */
+  }
+
+  componentDidMount() {
+    this.printConsoleWarning();
+  }
 
   render() {
     return (

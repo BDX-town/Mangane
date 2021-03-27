@@ -1,4 +1,5 @@
 import api from '../api';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const GROUP_CREATE_REQUEST      = 'GROUP_CREATE_REQUEST';
 export const GROUP_CREATE_SUCCESS      = 'GROUP_CREATE_SUCCESS';
@@ -27,7 +28,7 @@ export const submit = (routerHistory) => (dispatch, getState) => {
 
 
 export const create = (title, description, coverImage, routerHistory) => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch(createRequest());
 
@@ -62,7 +63,7 @@ export const createFail = error => ({
 });
 
 export const update = (groupId, title, description, coverImage, routerHistory) => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch(updateRequest());
 

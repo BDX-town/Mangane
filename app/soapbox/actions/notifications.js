@@ -17,6 +17,7 @@ import {
 } from 'immutable';
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -156,7 +157,7 @@ const noOp = () => {};
 
 export function expandNotifications({ maxId } = {}, done = noOp) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
@@ -222,7 +223,7 @@ export function expandNotificationsFail(error, isLoadingMore) {
 
 export function clearNotifications() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch({
       type: NOTIFICATIONS_CLEAR,
@@ -256,9 +257,9 @@ export function setFilter(filterType) {
 
 export function markReadNotifications() {
   return (dispatch, getState) => {
-    const state = getState();
-    if (!state.get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
+    const state = getState();
     const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
     const lastRead = state.getIn(['notifications', 'lastRead']);
 

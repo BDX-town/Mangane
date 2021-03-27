@@ -1,6 +1,7 @@
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -44,7 +45,7 @@ export const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
 
 export function reblog(status) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(reblogRequest(status));
 
@@ -61,7 +62,7 @@ export function reblog(status) {
 
 export function unreblog(status) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(unreblogRequest(status));
 
@@ -126,7 +127,7 @@ export function unreblogFail(status, error) {
 
 export function favourite(status) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(favouriteRequest(status));
 
@@ -141,7 +142,7 @@ export function favourite(status) {
 
 export function unfavourite(status) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(unfavouriteRequest(status));
 
@@ -280,7 +281,7 @@ export function unbookmarkFail(status, error) {
 
 export function fetchReblogs(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchReblogsRequest(id));
 
@@ -317,7 +318,7 @@ export function fetchReblogsFail(id, error) {
 
 export function fetchFavourites(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(fetchFavouritesRequest(id));
 
@@ -354,7 +355,7 @@ export function fetchFavouritesFail(id, error) {
 
 export function pin(status) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(pinRequest(status));
 
@@ -394,7 +395,7 @@ export function pinFail(status, error) {
 
 export function unpin(status) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(unpinRequest(status));
 

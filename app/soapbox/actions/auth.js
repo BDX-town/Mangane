@@ -1,14 +1,19 @@
 import api from '../api';
+import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
+import { createAccount } from 'soapbox/actions/accounts';
+import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+
+export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
 export const AUTH_APP_CREATED    = 'AUTH_APP_CREATED';
 export const AUTH_APP_AUTHORIZED = 'AUTH_APP_AUTHORIZED';
 export const AUTH_LOGGED_IN      = 'AUTH_LOGGED_IN';
 export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 
-export const AUTH_REGISTER_REQUEST = 'AUTH_REGISTER_REQUEST';
-export const AUTH_REGISTER_SUCCESS = 'AUTH_REGISTER_SUCCESS';
-export const AUTH_REGISTER_FAIL    = 'AUTH_REGISTER_FAIL';
+export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
+export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
+export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
 
 export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
@@ -86,8 +91,9 @@ function createUserToken(username, password) {
       grant_type:    'password',
       username:      username,
       password:      password,
-    }).then(response => {
-      dispatch(authLoggedIn(response.data));
+    }).then(({ data: token }) => {
+      dispatch(authLoggedIn(token));
+      return token;
     });
   };
 }
@@ -121,8 +127,32 @@ export function otpVerify(code, mfa_token) {
       code: code,
       challenge_type: 'totp',
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-    }).then(response => {
-      dispatch(authLoggedIn(response.data));
+    }).then(({ data: token }) => {
+      dispatch(authLoggedIn(token));
+      return token;
+    });
+  };
+}
+
+export function verifyCredentials(token) {
+  return (dispatch, getState) => {
+    dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
+
+    const request = {
+      method: 'get',
+      url: '/api/v1/accounts/verify_credentials',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+
+    return api(getState).request(request).then(({ data: account }) => {
+      dispatch(importFetchedAccount(account));
+      dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
+      if (account.id === getState().get('me')) dispatch({ type: ME_FETCH_SUCCESS, me: account });
+      return account;
+    }).catch(error => {
+      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
     });
   };
 }
@@ -147,32 +177,43 @@ export function logIn(username, password) {
 export function logOut() {
   return (dispatch, getState) => {
     const state = getState();
+    const me = state.get('me');
 
-    dispatch({ type: AUTH_LOGGED_OUT });
-
-    // Attempt to destroy OAuth token on logout
-    api(getState).post('/oauth/revoke', {
+    return api(getState).post('/oauth/revoke', {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'user', 'access_token']),
+      token: state.getIn(['auth', 'users', me, 'access_token']),
+    }).finally(() => {
+      dispatch({ type: AUTH_LOGGED_OUT, accountId: me });
+      dispatch(snackbar.success('Logged out.'));
     });
+  };
+}
 
-    dispatch(snackbar.success('Logged out.'));
+export function switchAccount(accountId) {
+  return { type: SWITCH_ACCOUNT, accountId };
+}
+
+export function fetchOwnAccounts() {
+  return (dispatch, getState) => {
+    const state = getState();
+    state.getIn(['auth', 'users']).forEach(user => {
+      const account = state.getIn(['accounts', user.get('id')]);
+      if (!account) {
+        dispatch(verifyCredentials(user.get('access_token')));
+      }
+    });
   };
 }
 
 export function register(params) {
   return (dispatch, getState) => {
     params.fullname = params.username;
-    dispatch({ type: AUTH_REGISTER_REQUEST });
+
     return dispatch(createAppAndToken()).then(() => {
-      return api(getState, 'app').post('/api/v1/accounts', params);
-    }).then(response => {
-      dispatch({ type: AUTH_REGISTER_SUCCESS, token: response.data });
-      dispatch(authLoggedIn(response.data));
-    }).catch(error => {
-      dispatch({ type: AUTH_REGISTER_FAIL, error });
-      throw error;
+      return dispatch(createAccount(params));
+    }).then(token => {
+      return dispatch(authLoggedIn(token));
     });
   };
 }
@@ -285,9 +326,9 @@ export function authAppAuthorized(app) {
   };
 }
 
-export function authLoggedIn(user) {
+export function authLoggedIn(token) {
   return {
     type: AUTH_LOGGED_IN,
-    user,
+    token,
   };
 }

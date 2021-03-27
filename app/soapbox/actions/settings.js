@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 import { showAlertForError } from './alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
@@ -147,8 +148,9 @@ export function changeSetting(path, value) {
 };
 
 const debouncedSave = debounce((dispatch, getState) => {
+  if (!isLoggedIn(getState)) return;
+
   const state = getState();
-  if (!state.get('me')) return;
   if (getSettings(state).getIn(['saved'])) return;
 
   const data = state.get('settings').delete('saved').toJS();

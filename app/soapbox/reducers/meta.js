@@ -10,11 +10,12 @@ export default function meta(state = initialState, action) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     const me = fromJS(action.me);
-    if (me.has('pleroma')) {
-      const pleroPrefs = me.get('pleroma').delete('settings_store');
-      return state.mergeIn(['pleroma'], pleroPrefs);
-    }
-    return state;
+    return state.withMutations(state => {
+      if (me.has('pleroma')) {
+        const pleroPrefs = me.get('pleroma').delete('settings_store');
+        state.mergeIn(['pleroma'], pleroPrefs);
+      }
+    });
   default:
     return state;
   }

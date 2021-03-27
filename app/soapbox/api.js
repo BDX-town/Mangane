@@ -9,8 +9,15 @@ export const getLinks = response => {
   return LinkHeader.parse(value);
 };
 
-const getToken = (getState, authType) =>
-  getState().getIn(['auth', authType, 'access_token']);
+const getToken = (getState, authType) => {
+  const state = getState();
+  if (authType === 'app') {
+    return state.getIn(['auth', 'app', 'access_token']);
+  } else {
+    const me = state.get('me');
+    return state.getIn(['auth', 'users', me, 'access_token']);
+  }
+};
 
 export default (getState, authType = 'user') => {
   const accessToken = getToken(getState, authType);

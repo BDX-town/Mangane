@@ -1,11 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
-import { logIn } from 'soapbox/actions/auth';
-import { fetchMe } from 'soapbox/actions/me';
+import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 
 const mapStateToProps = state => ({
   me: state.get('me'),
@@ -33,10 +31,14 @@ class LoginPage extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch } = this.props;
+    const { dispatch, me } = this.props;
     const { username, password } = this.getFormData(event.target);
-    dispatch(logIn(username, password)).then(() => {
-      return dispatch(fetchMe());
+    dispatch(logIn(username, password)).then(({ access_token }) => {
+      return dispatch(verifyCredentials(access_token));
+    }).then(account => {
+      if (typeof me === 'string') {
+        dispatch(switchAccount(account.id));
+      }
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
         this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
@@ -48,9 +50,7 @@ class LoginPage extends ImmutablePureComponent {
   }
 
   render() {
-    const { me } = this.props;
     const { isLoading, mfa_auth_needed, mfa_token } = this.state;
-    if (me) return <Redirect to='/' />;
 
     if (mfa_auth_needed) return <OtpAuthForm mfa_token={mfa_token} />;
 

@@ -51,6 +51,7 @@ import chat_message_lists from './chat_message_lists';
 import profile_hover_card from './profile_hover_card';
 import backups from './backups';
 import admin_log from './admin_log';
+import security from './security';
 
 const appReducer = combineReducers({
   dropdown_menu,
@@ -103,11 +104,12 @@ const appReducer = combineReducers({
   profile_hover_card,
   backups,
   admin_log,
+  security,
 });
 
 // Clear the state (mostly) when the user logs out
 const logOut = (state = ImmutableMap()) => {
-  const whitelist = ['instance', 'soapbox', 'custom_emojis'];
+  const whitelist = ['instance', 'soapbox', 'custom_emojis', 'auth'];
 
   return ImmutableMap(
     whitelist.reduce((acc, curr) => {

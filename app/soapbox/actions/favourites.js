@@ -1,5 +1,6 @@
 import api, { getLinks } from '../api';
 import { importFetchedStatuses } from './importer';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const FAVOURITED_STATUSES_FETCH_REQUEST = 'FAVOURITED_STATUSES_FETCH_REQUEST';
 export const FAVOURITED_STATUSES_FETCH_SUCCESS = 'FAVOURITED_STATUSES_FETCH_SUCCESS';
@@ -11,7 +12,7 @@ export const FAVOURITED_STATUSES_EXPAND_FAIL    = 'FAVOURITED_STATUSES_EXPAND_FA
 
 export function fetchFavouritedStatuses() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     if (getState().getIn(['status_lists', 'favourites', 'isLoading'])) {
       return;
@@ -55,7 +56,7 @@ export function fetchFavouritedStatusesFail(error) {
 
 export function expandFavouritedStatuses() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     const url = getState().getIn(['status_lists', 'favourites', 'next'], null);
 
