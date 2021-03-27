@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { otpVerify, verifyCredentials } from 'soapbox/actions/auth';
+import { otpVerify, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { SimpleInput } from 'soapbox/features/forms';
 import PropTypes from 'prop-types';
 
@@ -38,6 +38,8 @@ class OtpAuthForm extends ImmutablePureComponent {
     dispatch(otpVerify(code, mfa_token)).then(({ access_token }) => {
       this.setState({ code_error: false });
       return dispatch(verifyCredentials(access_token));
+    }).then(account => {
+      return dispatch(switchAccount(account.id));
     }).catch(error => {
       this.setState({ isLoading: false });
       if (error.response.data.error === 'Invalid code') {
