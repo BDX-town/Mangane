@@ -103,6 +103,11 @@ class SidebarMenu extends ImmutablePureComponent {
     switcher: false,
   }
 
+  handleClose = () => {
+    this.setState({ switcher: false });
+    this.props.onClose();
+  }
+
   handleSwitchAccount = account => {
     return e => {
       this.props.switchAccount(account);
@@ -143,7 +148,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, onClose, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -154,19 +159,19 @@ class SidebarMenu extends ImmutablePureComponent {
 
     return (
       <div className={classes}>
-        <div className='sidebar-menu__wrapper' role='button' onClick={onClose} />
+        <div className='sidebar-menu__wrapper' role='button' onClick={this.handleClose} />
         <div className='sidebar-menu'>
 
           <div className='sidebar-menu-header'>
             <span className='sidebar-menu-header__title'>Account Info</span>
-            <IconButton title='close' onClick={onClose} icon='close' className='sidebar-menu-header__btn' />
+            <IconButton title='close' onClick={this.handleClose} icon='close' className='sidebar-menu-header__btn' />
           </div>
 
           <div className='sidebar-menu__content'>
 
             <div className='sidebar-menu-profile'>
               <div className='sidebar-menu-profile__avatar'>
-                <Link to={`/@${acct}`} title={acct} onClick={onClose}>
+                <Link to={`/@${acct}`} title={acct} onClick={this.handleClose}>
                   <Avatar account={account} />
                 </Link>
               </div>
@@ -179,7 +184,7 @@ class SidebarMenu extends ImmutablePureComponent {
             {switcher && <div className='sidebar-menu__section'>
               {otherAccounts.map(account => this.renderAccount(account))}
 
-              <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={this.handleClose}>
                 <Icon id='plus' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.add_account)}</span>
               </NavLink>
@@ -192,71 +197,71 @@ class SidebarMenu extends ImmutablePureComponent {
             </div>
 
             <div className='sidebar-menu__section sidebar-menu__section'>
-              <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={this.handleClose}>
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
               {donateUrl ?
-                <a className='sidebar-menu-item' href={donateUrl} onClick={onClose}>
+                <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
                   <Icon id='dollar' />
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
                 </a>
                 : ''}
-              <NavLink className='sidebar-menu-item' to='/lists' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
                 <Icon id='bookmark' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
               </NavLink>
             </div>
 
             <div className='sidebar-menu__section'>
-              <NavLink className='sidebar-menu-item' to='/follow_requests' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/follow_requests' onClick={this.handleClose}>
                 <Icon id='user-plus' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.follow_requests)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/blocks' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/blocks' onClick={this.handleClose}>
                 <Icon id='ban' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.blocks)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
                 <Icon id='ban' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.domain_blocks)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/mutes' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/mutes' onClick={this.handleClose}>
                 <Icon id='times-circle' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/filters' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/filters' onClick={this.handleClose}>
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink>
-              { isStaff && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={onClose}>
+              { isStaff && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={this.handleClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a> }
-              { isStaff && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={onClose}>
+              { isStaff && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={this.handleClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
               </NavLink> }
-              <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
                 <Icon id='cloud-upload' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={onClose}>
+              <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
               </NavLink>
             </div>
 
             <div className='sidebar-menu__section'>
-              <Link className='sidebar-menu-item' to='/info' onClick={onClose}>
+              <Link className='sidebar-menu-item' to='/info' onClick={this.handleClose}>
                 <Icon id='info' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
               </Link>
