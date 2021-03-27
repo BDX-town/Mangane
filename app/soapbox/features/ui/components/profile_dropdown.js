@@ -95,13 +95,13 @@ class ProfileDropdown extends React.PureComponent {
 
     let menu = [];
 
+    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
+
     otherAccounts.forEach(account => {
       menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account) });
     });
 
-    if (otherAccounts.size > 0) {
-      menu.push(null);
-    }
+    menu.push(null);
 
     menu.push({ text: intl.formatMessage(messages.add), to: '/auth/sign_in' });
     menu.push({ text: intl.formatMessage(messages.logout, { acct: account.get('acct') }), to: '/auth/sign_out', action: this.handleLogOut });
