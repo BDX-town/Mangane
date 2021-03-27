@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { throttle } from 'lodash';
 import { Link, NavLink } from 'react-router-dom';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -14,8 +15,10 @@ import { closeSidebar } from '../actions/sidebar';
 import { shortNumberFormat } from '../utils/numbers';
 import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
-import { logOut } from 'soapbox/actions/auth';
+import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
+import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { List as ImmutableList } from 'immutable';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -38,17 +41,30 @@ const messages = defineMessages({
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
   info: { id: 'column.info', defaultMessage: 'Server information' },
+  add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
 const mapStateToProps = state => {
   const me = state.get('me');
   const getAccount = makeGetAccount();
 
+  const otherAccounts =
+    state
+      .getIn(['auth', 'users'])
+      .keySeq()
+      .reduce((list, id) => {
+        if (id === me) return list;
+        const account = state.getIn(['accounts', id]);
+        return account ? list.push(account) : list;
+      }, ImmutableList());
+
   return {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
     donateUrl: state.getIn(['patron', 'instance', 'url']),
     isStaff: isStaff(state.getIn(['accounts', me])),
+    otherAccounts,
+
   };
 };
 
@@ -59,6 +75,12 @@ const mapDispatchToProps = (dispatch) => ({
   onClickLogOut(e) {
     dispatch(logOut());
     e.preventDefault();
+  },
+  fetchOwnAccounts() {
+    dispatch(fetchOwnAccounts());
+  },
+  switchAccount(account) {
+    dispatch(switchAccount(account.get('id')));
   },
 });
 
@@ -78,8 +100,52 @@ class SidebarMenu extends ImmutablePureComponent {
     isStaff: false,
   }
 
+  state = {
+    switcher: false,
+  }
+
+  handleSwitchAccount = account => {
+    return e => {
+      this.props.switchAccount(account);
+      e.preventDefault();
+    };
+  }
+
+  handleSwitcherClick = e => {
+    this.setState({ switcher: !this.state.switcher });
+    e.preventDefault();
+  }
+
+  fetchOwnAccounts = throttle(() => {
+    this.props.fetchOwnAccounts();
+  }, 2000);
+
+  componentDidMount() {
+    this.fetchOwnAccounts();
+  }
+
+  componentDidUpdate() {
+    this.fetchOwnAccounts();
+  }
+
+  renderAccount = account => {
+    return (
+      <a href='#' className='sidebar-account' onClick={this.handleSwitchAccount(account)} key={account.get('id')}>
+        <div className='account'>
+          <div className='account__wrapper'>
+            <div className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
+              <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
+              <DisplayName account={account} />
+            </div>
+          </div>
+        </div>
+      </a>
+    );
+  }
+
   render() {
-    const { sidebarOpen, onClose, intl, account, onClickLogOut, donateUrl, isStaff } = this.props;
+    const { sidebarOpen, onClose, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts } = this.props;
+    const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
 
@@ -105,24 +171,22 @@ class SidebarMenu extends ImmutablePureComponent {
                   <Avatar account={account} />
                 </Link>
               </div>
-              <div className='sidebar-menu-profile__name'>
+              <a href='#' className='sidebar-menu-profile__name' onClick={this.handleSwitcherClick}>
                 <DisplayName account={account} />
-              </div>
-
-              <div className='sidebar-menu-profile__stats'>
-                <NavLink className='sidebar-menu-profile-stat' to={`/@${acct}/followers`} onClick={onClose} title={intl.formatNumber(account.get('followers_count'))}>
-                  <strong className='sidebar-menu-profile-stat__value'>{shortNumberFormat(account.get('followers_count'))}</strong>
-                  <span className='sidebar-menu-profile-stat__label'>{intl.formatMessage(messages.followers)}</span>
-                </NavLink>
-                <NavLink className='sidebar-menu-profile-stat' to={`/@${acct}/following`} onClick={onClose} title={intl.formatNumber(account.get('following_count'))}>
-                  <strong className='sidebar-menu-profile-stat__value'>{shortNumberFormat(account.get('following_count'))}</strong>
-                  <span className='sidebar-menu-profile-stat__label'>{intl.formatMessage(messages.follows)}</span>
-                </NavLink>
-              </div>
-
+                <Icon id={switcher ? 'caret-up' : 'caret-down'} />
+              </a>
             </div>
 
-            <div className='sidebar-menu__section sidebar-menu__section--borderless'>
+            {switcher && <div className='sidebar-menu__section'>
+              {otherAccounts.map(account => this.renderAccount(account))}
+
+              <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={onClose}>
+                <Icon id='plus' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.add_account)}</span>
+              </NavLink>
+            </div>}
+
+            <div className='sidebar-menu__section'>
               <div className='sidebar-menu-item theme-toggle'>
                 <ThemeToggle showLabel />
               </div>
