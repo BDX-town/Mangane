@@ -12,7 +12,6 @@ import IconButton from './icon_button';
 import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
-import { shortNumberFormat } from '../utils/numbers';
 import { isStaff } from '../utils/accounts';
 import { makeGetAccount } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
