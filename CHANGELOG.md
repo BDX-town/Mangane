@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - Unreleased
+### Added
+- Remote follow button
+- Display "Bot" tag for bot users
+- Ability to view remote timelines
+- Admin interface
+- Integrated moderation features
+- Multiple account support
+- Verification (blue checkmark)
+- Better support for follow requests
+- Improve feedback when registering a new account
+- Ability to import Mutes from CSV
+- Add server information page
+- "Follow" button is more responsive
+
+### Fixed
+- Heart reaction works on Pleroma >= 2.3.0
+
 ## [1.1.0] - 2020-10-05
 ### Fixed
 - General user interface and ease-of-use improvements for both mobile and desktop
