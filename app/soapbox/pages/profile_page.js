@@ -13,6 +13,7 @@ import ProfileMediaPanel from '../features/ui/components/profile_media_panel';
 import { acctFull } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
+import { Redirect } from 'react-router-dom';
 
 const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
   const accounts = state.getIn(['accounts']);
@@ -32,11 +33,20 @@ const mapStateToProps = (state, { params: { username }, withReplies = false }) =
 
   //Children components fetch information
 
+  let realAccount;
+  if (!account) {
+    const maybeAccount = accounts.get(username);
+    if (maybeAccount) {
+      realAccount = maybeAccount;
+    }
+  }
+
   return {
     account: accountId ? getAccount(state, accountId) : account,
     accountId,
     accountUsername,
     features: getFeatures(state.get('instance')),
+    realAccount,
   };
 };
 
@@ -50,8 +60,12 @@ class ProfilePage extends ImmutablePureComponent {
   };
 
   render() {
-    const { children, accountId, account, accountUsername, features } = this.props;
+    const { children, accountId, account, accountUsername, features, realAccount } = this.props;
     const bg = account ? account.getIn(['customizations', 'background']) : undefined;
+
+    if (realAccount) {
+      return <Redirect to={`/@${realAccount.get('acct')}`} />;
+    }
 
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
