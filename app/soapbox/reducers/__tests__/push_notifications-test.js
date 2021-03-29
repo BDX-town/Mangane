@@ -7,6 +7,7 @@ describe('push_notifications reducer', () => {
       subscription: null,
       alerts: new ImmutableMap({
         follow: false,
+        follow_request: false,
         favourite: false,
         reblog: false,
         mention: false,
