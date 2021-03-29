@@ -7,8 +7,10 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import Permalink from '../../../components/permalink';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
+import FollowRequestContainer from '../containers/follow_request_container';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+import classNames from 'classnames';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -120,6 +122,28 @@ class Notification extends ImmutablePureComponent {
           </div>
 
           <AccountContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
+  renderFollowRequest(notification, account, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-follow-request focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow_request', defaultMessage: '{name} has requested to follow you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='user' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.follow_request' defaultMessage='{name} has requested to follow you' values={{ name: link }} />
+            </span>
+          </div>
+
+          <FollowRequestContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
         </div>
       </HotKeys>
     );
@@ -306,6 +330,8 @@ class Notification extends ImmutablePureComponent {
     switch(notification.get('type')) {
     case 'follow':
       return this.renderFollow(notification, account, link);
+    case 'follow_request':
+      return this.renderFollowRequest(notification, account, link);
     case 'mention':
       return this.renderMention(notification);
     case 'favourite':

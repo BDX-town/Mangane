@@ -14,6 +14,8 @@ import {
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
+  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
+  FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
@@ -88,6 +90,11 @@ const filterNotifications = (state, relationship) => {
   return state.update('items', map => map.filterNot(item => item !== null && item.get('account') === relationship.id));
 };
 
+const filterNotificationIds = (state, accountIds, type) => {
+  const helper = list => list.filterNot(item => item !== null && accountIds.includes(item.get('account')) && (type === undefined || type === item.get('type')));
+  return state.update('items', helper);
+};
+
 const updateTop = (state, top) => {
   if (top) state = state.set('unread', 0);
   return state.set('top', top);
@@ -149,6 +156,9 @@ export default function notifications(state = initialState, action) {
     return filterNotifications(state, action.relationship);
   case ACCOUNT_MUTE_SUCCESS:
     return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
+  case FOLLOW_REQUEST_AUTHORIZE_SUCCESS:
+  case FOLLOW_REQUEST_REJECT_SUCCESS:
+    return filterNotificationIds(state, [action.id], 'follow_request');
   case NOTIFICATIONS_CLEAR:
     return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
