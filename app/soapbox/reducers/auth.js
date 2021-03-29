@@ -96,8 +96,19 @@ const upgradeLegacyId = (state, account) => {
   // By this point it's probably safe, but we'll leave it just in case.
 };
 
+const setSessionUser = state => {
+  const sessionUser = sessionStorage.getItem('soapbox:auth:me');
+  if (sessionUser) {
+    return state.set('me', sessionUser);
+  } else {
+    sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+    return state;
+  }
+};
+
 const initialize = state => {
   return state.withMutations(state => {
+    setSessionUser(state);
     maybeShiftMe(state);
     migrateLegacy(state);
   });
@@ -154,6 +165,7 @@ export default function auth(oldState = initialState, action) {
   // Persist the state in localStorage
   if (!state.equals(oldState)) {
     localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+    sessionStorage.setItem('soapbox:auth:me', state.get('me'));
 
     // Reload the page under some conditions
     maybeReload(oldState, state, action);
