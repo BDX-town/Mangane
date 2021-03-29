@@ -53,6 +53,7 @@ export const defaultSettings = ImmutableMap({
   notifications: ImmutableMap({
     alerts: ImmutableMap({
       follow: true,
+      follow_request: false,
       favourite: true,
       reblog: true,
       mention: true,
@@ -68,6 +69,7 @@ export const defaultSettings = ImmutableMap({
 
     shows: ImmutableMap({
       follow: true,
+      follow_request: false,
       favourite: true,
       reblog: true,
       mention: true,
@@ -77,6 +79,7 @@ export const defaultSettings = ImmutableMap({
 
     sounds: ImmutableMap({
       follow: false,
+      follow_request: false,
       favourite: false,
       reblog: false,
       mention: false,
