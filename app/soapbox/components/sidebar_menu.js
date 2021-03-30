@@ -134,10 +134,10 @@ class SidebarMenu extends ImmutablePureComponent {
 
   renderAccount = account => {
     return (
-      <a href='#' className='sidebar-account' onClick={this.handleSwitchAccount(account)} key={account.get('id')}>
+      <a href='/' className='sidebar-account' onClick={this.handleSwitchAccount(account)} key={account.get('id')}>
         <div className='account'>
           <div className='account__wrapper'>
-            <div className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
+            <div className='account__display-name'>
               <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
               <DisplayName account={account} />
             </div>
