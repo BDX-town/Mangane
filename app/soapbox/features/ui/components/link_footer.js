@@ -7,16 +7,7 @@ import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
 import { isStaff } from 'soapbox/utils/accounts';
-import pkg from '../../../../../package.json';
-
-const shortRepoName = url => new URL(url).pathname.substring(1);
-
-const sourceCode = {
-  name: pkg.name,
-  url: pkg.repository.url,
-  repository: shortRepoName(pkg.repository.url),
-  version: pkg.version,
-};
+import sourceCode from 'soapbox/utils/code';
 
 const mapStateToProps = state => {
   const me = state.get('me');
