@@ -167,10 +167,12 @@ export default function auth(oldState = initialState, action) {
     // Persist the state in localStorage
     persistAuth(state);
 
-    // Persist the session
-    if (action.reload !== false) {
-      persistSession(state);
+    if (action.reload === false) {
+      return oldState;
     }
+
+    // Persist the session
+    persistSession(state);
 
     // Reload the page under some conditions
     maybeReload(oldState, state, action);
