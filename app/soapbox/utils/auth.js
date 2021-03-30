@@ -3,6 +3,6 @@ export const isLoggedIn = getState => {
 };
 
 export const getAccessToken = state => {
-  const me = state.getIn(['auth', 'me']);
+  const me = state.get('me');
   return state.getIn(['auth', 'users', me, 'access_token']);
 };

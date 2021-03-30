@@ -17,7 +17,7 @@ export function fetchMe() {
   return (dispatch, getState) => {
     const state = getState();
 
-    const me = state.getIn(['auth', 'me']);
+    const me = state.get('me') || state.getIn(['auth', 'me']);
     const token = state.getIn(['auth', 'users', me, 'access_token']);
 
     if (!token) {
