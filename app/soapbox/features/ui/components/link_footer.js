@@ -7,13 +7,15 @@ import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
 import { isStaff } from 'soapbox/utils/accounts';
+import pkg from '../../../../../package.json';
 
-// FIXME: Let this be configured
+const shortRepoName = url => new URL(url).pathname.substring(1);
+
 const sourceCode = {
-  name: 'soapbox-fe',
-  url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
-  repository: 'soapbox-pub/soapbox-fe',
-  version: '1.1.0',
+  name: pkg.name,
+  url: pkg.repository.url,
+  repository: shortRepoName(pkg.repository.url),
+  version: pkg.version,
 };
 
 const mapStateToProps = state => {

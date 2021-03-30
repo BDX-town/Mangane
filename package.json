@@ -5,7 +5,7 @@
   "homepage": "https://soapbox.pub/",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/soapbox-pub/soapbox-fe.git"
+    "url": "https://gitlab.com/soapbox-pub/soapbox-fe"
   },
   "keywords": [
     "fediverse",
