@@ -103,7 +103,7 @@ class ProfileDropdown extends React.PureComponent {
 
     let menu = [];
 
-    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}`, href: '/', middleClick: this.handleMiddleClick(account) });
+    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
 
     otherAccounts.forEach(account => {
       menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account), href: '/', middleClick: this.handleMiddleClick(account) });

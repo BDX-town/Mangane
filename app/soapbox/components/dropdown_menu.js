@@ -140,12 +140,12 @@ class DropdownMenu extends React.PureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href = '#', newTab, isLogout } = option;
+    const { text, href, to, newTab, isLogout } = option;
 
     return (
       <li className='dropdown-menu__item' key={`${text}-${i}`}>
         <a
-          href={href}
+          href={href || to || '#'}
           role='button'
           tabIndex='0'
           ref={i === 0 ? this.setFocusRef : null}
