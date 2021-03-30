@@ -54,9 +54,12 @@ const migrateLegacy = state => {
   });
 };
 
+const persistAuth = state => localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+const persistSession = state => sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+
 const persistState = state => {
-  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
-  sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+  persistAuth(state);
+  persistSession(state);
 };
 
 const initialize = state => {
@@ -151,6 +154,7 @@ const userSwitched = (oldState, state) => {
 };
 
 const maybeReload = (oldState, state, action) => {
+  if (action.reload === false) return;
   if (userSwitched(oldState, state)) {
     reload(state);
   }
@@ -159,9 +163,14 @@ const maybeReload = (oldState, state, action) => {
 export default function auth(oldState = initialState, action) {
   const state = reducer(oldState, action);
 
-  // Persist the state in localStorage
   if (!state.equals(oldState)) {
-    persistState(state);
+    // Persist the state in localStorage
+    persistAuth(state);
+
+    // Persist the session
+    if (action.reload !== false) {
+      persistSession(state);
+    }
 
     // Reload the page under some conditions
     maybeReload(oldState, state, action);
