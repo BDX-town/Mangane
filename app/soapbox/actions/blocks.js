@@ -2,6 +2,7 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getNextLinkName } from 'soapbox/utils/quirks';
 
 export const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 export const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';
@@ -14,11 +15,12 @@ export const BLOCKS_EXPAND_FAIL    = 'BLOCKS_EXPAND_FAIL';
 export function fetchBlocks() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
+    const nextLinkName = getNextLinkName(getState);
 
     dispatch(fetchBlocksRequest());
 
     api(getState).get('/api/v1/blocks').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
@@ -50,6 +52,7 @@ export function fetchBlocksFail(error) {
 export function expandBlocks() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
+    const nextLinkName = getNextLinkName(getState);
 
     const url = getState().getIn(['user_lists', 'blocks', 'next']);
 
@@ -60,7 +63,7 @@ export function expandBlocks() {
     dispatch(expandBlocksRequest());
 
     api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(expandBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
