@@ -64,6 +64,14 @@ class ProfileDropdown extends React.PureComponent {
     };
   }
 
+  handleMiddleClick = account => {
+    return e => {
+      this.props.dispatch(switchAccount(account.get('id'), false));
+      window.open('/', '_blank', 'noopener,noreferrer');
+      e.preventDefault();
+    };
+  }
+
   fetchOwnAccounts = throttle(() => {
     this.props.dispatch(fetchOwnAccounts());
   }, 2000);
@@ -80,7 +88,7 @@ class ProfileDropdown extends React.PureComponent {
     return (
       <div className='account'>
         <div className='account__wrapper'>
-          <div className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
+          <div className='account__display-name'>
             <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
             <DisplayName account={account} />
           </div>
@@ -95,10 +103,10 @@ class ProfileDropdown extends React.PureComponent {
 
     let menu = [];
 
-    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
+    menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}`, href: '/', middleClick: this.handleMiddleClick(account) });
 
     otherAccounts.forEach(account => {
-      menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account) });
+      menu.push({ text: this.renderAccount(account), action: this.handleSwitchAccount(account), href: '/', middleClick: this.handleMiddleClick(account) });
     });
 
     menu.push(null);

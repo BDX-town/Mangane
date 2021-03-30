@@ -117,6 +117,24 @@ class DropdownMenu extends React.PureComponent {
     }
   }
 
+  handleMiddleClick = e => {
+    const i = Number(e.currentTarget.getAttribute('data-index'));
+    const { middleClick } = this.props.items[i];
+
+    this.props.onClose();
+
+    if (e.button === 1 && typeof middleClick === 'function') {
+      e.preventDefault();
+      middleClick(e);
+    }
+  }
+
+  handleAuxClick = e => {
+    if (e.button === 1) {
+      this.handleMiddleClick(e);
+    }
+  }
+
   renderItem(option, i) {
     if (option === null) {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
@@ -132,6 +150,7 @@ class DropdownMenu extends React.PureComponent {
           tabIndex='0'
           ref={i === 0 ? this.setFocusRef : null}
           onClick={this.handleClick}
+          onAuxClick={this.handleAuxClick}
           onKeyDown={this.handleItemKeyDown}
           data-index={i}
           target={newTab ? '_blank' : null}
