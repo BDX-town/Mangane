@@ -1,9 +1,9 @@
 import reducer from '../auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
-import { INIT_STORE } from 'soapbox/actions/store';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
+  AUTH_LOGGED_OUT,
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
   SWITCH_ACCOUNT,
@@ -17,22 +17,6 @@ describe('auth reducer', () => {
       tokens: ImmutableMap(),
       me: null,
     }));
-  });
-
-  describe('INIT_STORE', () => {
-    it('sets `me` to the next available user if blank', () => {
-      const state = fromJS({
-        me: null,
-        users: {
-          '1234': { id: '1234', access_token: 'ABCDEFG' },
-          '5678': { id: '5678', access_token: 'HIJKLMN' },
-        },
-      });
-
-      const action = { type: INIT_STORE };
-      const result = reducer(state, action);
-      expect(result.get('me')).toEqual('1234');
-    });
   });
 
   describe('AUTH_APP_CREATED', () => {
@@ -75,6 +59,40 @@ describe('auth reducer', () => {
 
       const result = reducer(state, action);
       expect(result.get('tokens')).toEqual(expected);
+    });
+  });
+
+  describe('AUTH_LOGGED_OUT', () => {
+    it('deletes the user', () => {
+      const action = { type: AUTH_LOGGED_OUT, accountId: '1234' };
+
+      const state = fromJS({
+        users: {
+          '1234': { id: '1234', access_token: 'ABCDEFG' },
+          '5678': { id: '5678', access_token: 'HIJKLMN' },
+        },
+      });
+
+      const expected = fromJS({
+        '5678': { id: '5678', access_token: 'HIJKLMN' },
+      });
+
+      const result = reducer(state, action);
+      expect(result.get('users')).toEqual(expected);
+    });
+
+    it('sets `me` to the next available user', () => {
+      const state = fromJS({
+        me: '1234',
+        users: {
+          '1234': { id: '1234', access_token: 'ABCDEFG' },
+          '5678': { id: '5678', access_token: 'HIJKLMN' },
+        },
+      });
+
+      const action = { type: AUTH_LOGGED_OUT, accountId: '1234' };
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('5678');
     });
   });
 
