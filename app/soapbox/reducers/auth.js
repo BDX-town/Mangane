@@ -16,6 +16,7 @@ const defaultState = ImmutableMap({
   me: null,
 });
 
+const sessionUser = sessionStorage.getItem('soapbox:auth:me');
 const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
 
 // If `me` doesn't match an existing user, attempt to shift it.
@@ -30,15 +31,7 @@ const maybeShiftMe = state => {
   }
 };
 
-const setSessionUser = state => {
-  const sessionUser = sessionStorage.getItem('soapbox:auth:me');
-  if (sessionUser) {
-    return state.set('me', sessionUser);
-  } else {
-    sessionStorage.setItem('soapbox:auth:me', state.get('me', null));
-    return state;
-  }
-};
+const setSessionUser = state => state.update('me', null, me => sessionUser || me);
 
 // Upgrade the initial state
 const migrateLegacy = state => {
@@ -61,15 +54,21 @@ const migrateLegacy = state => {
   });
 };
 
+const persistState = state => {
+  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+  sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+};
+
 const initialize = state => {
   return state.withMutations(state => {
     maybeShiftMe(state);
     setSessionUser(state);
     migrateLegacy(state);
+    persistState(state);
   });
 };
 
-const initialState = defaultState.merge(localState).withMutations(initialize);
+const initialState = initialize(defaultState.merge(localState));
 
 const importToken = (state, token) => {
   return state.setIn(['tokens', token.access_token], fromJS(token));
@@ -162,8 +161,7 @@ export default function auth(oldState = initialState, action) {
 
   // Persist the state in localStorage
   if (!state.equals(oldState)) {
-    localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
-    sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+    persistState(state);
 
     // Reload the page under some conditions
     maybeReload(oldState, state, action);
