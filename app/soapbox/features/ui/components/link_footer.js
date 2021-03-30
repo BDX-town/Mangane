@@ -7,14 +7,7 @@ import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
 import { isStaff } from 'soapbox/utils/accounts';
-
-// FIXME: Let this be configured
-const sourceCode = {
-  name: 'soapbox-fe',
-  url: 'https://gitlab.com/soapbox-pub/soapbox-fe',
-  repository: 'soapbox-pub/soapbox-fe',
-  version: '1.1.0',
-};
+import sourceCode from 'soapbox/utils/code';
 
 const mapStateToProps = state => {
   const me = state.get('me');
