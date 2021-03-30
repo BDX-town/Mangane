@@ -154,11 +154,10 @@ const LAYOUT = {
     RIGHT: null,
   },
   DEFAULT: {
-    LEFT: [
-      <LinkFooter key='1' />,
-    ],
+    LEFT: null,
     RIGHT: [
       <FeaturesPanel key='0' />,
+      <LinkFooter key='1' />,
     ],
   },
   STATUS: {
