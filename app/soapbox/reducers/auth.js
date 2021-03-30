@@ -1,4 +1,3 @@
-import { INIT_STORE } from '../actions/store';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -17,24 +16,8 @@ const defaultState = ImmutableMap({
   me: null,
 });
 
+const sessionUser = sessionStorage.getItem('soapbox:auth:me');
 const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
-const initialState = defaultState.merge(localState);
-
-const importToken = (state, token) => {
-  return state.setIn(['tokens', token.access_token], fromJS(token));
-};
-
-const importCredentials = (state, token, account) => {
-  return state.withMutations(state => {
-    state.setIn(['users', account.id], ImmutableMap({
-      id: account.id,
-      access_token: token,
-    }));
-    state.setIn(['tokens', token, 'account'], account.id);
-    state.update('me', null, me => me || account.id);
-    upgradeLegacyId(state, account);
-  });
-};
 
 // If `me` doesn't match an existing user, attempt to shift it.
 const maybeShiftMe = state => {
@@ -42,27 +25,13 @@ const maybeShiftMe = state => {
   const me = state.get('me');
 
   if (!users.get(me)) {
-    return state.set('me', users.first(ImmutableMap()).get('id'));
+    return state.set('me', users.first(ImmutableMap()).get('id', null));
   } else {
     return state;
   }
 };
 
-const deleteToken = (state, token) => {
-  return state.withMutations(state => {
-    state.update('tokens', ImmutableMap(), tokens => tokens.delete(token));
-    state.update('users', ImmutableMap(), users => users.filterNot(user => user.get('access_token') === token));
-    maybeShiftMe(state);
-  });
-};
-
-const deleteUser = (state, accountId) => {
-  return state.withMutations(state => {
-    state.update('users', ImmutableMap(), users => users.delete(accountId));
-    state.update('tokens', ImmutableMap(), tokens => tokens.filterNot(token => token.get('account') === accountId));
-    maybeShiftMe(state);
-  });
-};
+const setSessionUser = state => state.update('me', null, me => sessionUser || me);
 
 // Upgrade the initial state
 const migrateLegacy = state => {
@@ -85,6 +54,26 @@ const migrateLegacy = state => {
   });
 };
 
+const persistState = state => {
+  localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+  sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+};
+
+const initialize = state => {
+  return state.withMutations(state => {
+    maybeShiftMe(state);
+    setSessionUser(state);
+    migrateLegacy(state);
+    persistState(state);
+  });
+};
+
+const initialState = initialize(defaultState.merge(localState));
+
+const importToken = (state, token) => {
+  return state.setIn(['tokens', token.access_token], fromJS(token));
+};
+
 // Upgrade the `_legacy` placeholder ID with a real account
 const upgradeLegacyId = (state, account) => {
   if (localState) return state;
@@ -96,28 +85,36 @@ const upgradeLegacyId = (state, account) => {
   // By this point it's probably safe, but we'll leave it just in case.
 };
 
-const setSessionUser = state => {
-  const sessionUser = sessionStorage.getItem('soapbox:auth:me');
-  if (sessionUser) {
-    return state.set('me', sessionUser);
-  } else {
-    sessionStorage.setItem('soapbox:auth:me', state.get('me'));
-    return state;
-  }
+const importCredentials = (state, token, account) => {
+  return state.withMutations(state => {
+    state.setIn(['users', account.id], ImmutableMap({
+      id: account.id,
+      access_token: token,
+    }));
+    state.setIn(['tokens', token, 'account'], account.id);
+    state.update('me', null, me => me || account.id);
+    upgradeLegacyId(state, account);
+  });
 };
 
-const initialize = state => {
+const deleteToken = (state, token) => {
   return state.withMutations(state => {
-    setSessionUser(state);
+    state.update('tokens', ImmutableMap(), tokens => tokens.delete(token));
+    state.update('users', ImmutableMap(), users => users.filterNot(user => user.get('access_token') === token));
     maybeShiftMe(state);
-    migrateLegacy(state);
+  });
+};
+
+const deleteUser = (state, accountId) => {
+  return state.withMutations(state => {
+    state.update('users', ImmutableMap(), users => users.delete(accountId));
+    state.update('tokens', ImmutableMap(), tokens => tokens.filterNot(token => token.get('account') === accountId));
+    maybeShiftMe(state);
   });
 };
 
 const reducer = (state, action) => {
   switch(action.type) {
-  case INIT_STORE:
-    return initialize(state);
   case AUTH_APP_CREATED:
     return state.set('app', fromJS(action.app));
   case AUTH_APP_AUTHORIZED:
@@ -164,8 +161,7 @@ export default function auth(oldState = initialState, action) {
 
   // Persist the state in localStorage
   if (!state.equals(oldState)) {
-    localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
-    sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+    persistState(state);
 
     // Reload the page under some conditions
     maybeReload(oldState, state, action);

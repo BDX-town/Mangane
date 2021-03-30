@@ -14,7 +14,6 @@ import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { fetchCustomEmojis } from '../actions/custom_emojis';
-import { initStore } from '../actions/store';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
@@ -31,7 +30,6 @@ const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
 
-store.dispatch(initStore());
 store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
