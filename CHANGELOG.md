@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Heart reaction works on Pleroma >= 2.3.0
+- Pagination of Blocks and Mutes
 
 ## [1.1.0] - 2020-10-05
 ### Fixed
