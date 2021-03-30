@@ -1,4 +1,5 @@
 const babel = require('./babel');
+const git = require('./babel-git');
 const css = require('./css');
 const file = require('./file');
 const nodeModules = require('./node_modules');
@@ -11,4 +12,5 @@ module.exports = [
   css,
   nodeModules,
   babel,
+  git,
 ];
