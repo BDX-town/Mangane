@@ -66,7 +66,7 @@ class ProfileDropdown extends React.PureComponent {
 
   handleMiddleClick = account => {
     return e => {
-      this.props.dispatch(switchAccount(account.get('id'), false));
+      this.props.dispatch(switchAccount(account.get('id'), true));
       window.open('/', '_blank', 'noopener,noreferrer');
       e.preventDefault();
     };

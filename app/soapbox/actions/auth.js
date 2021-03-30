@@ -190,8 +190,8 @@ export function logOut() {
   };
 }
 
-export function switchAccount(accountId, reload = true) {
-  return { type: SWITCH_ACCOUNT, accountId, reload };
+export function switchAccount(accountId, background = false) {
+  return { type: SWITCH_ACCOUNT, accountId, background };
 }
 
 export function fetchOwnAccounts() {

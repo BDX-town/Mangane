@@ -154,7 +154,6 @@ const userSwitched = (oldState, state) => {
 };
 
 const maybeReload = (oldState, state, action) => {
-  if (action.reload === false) return;
   if (userSwitched(oldState, state)) {
     reload(state);
   }
@@ -167,7 +166,9 @@ export default function auth(oldState = initialState, action) {
     // Persist the state in localStorage
     persistAuth(state);
 
-    if (action.reload === false) {
+    // When middle-clicking a profile, we want to save the
+    // user in localStorage, but not update the reducer
+    if (action.background === true) {
       return oldState;
     }
 
