@@ -193,8 +193,52 @@ const expandMentions = status => {
   return fragment.innerHTML;
 };
 
+const getAccountSettings = account => {
+  return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
+};
+
+const importAccount = (state, account) => {
+  account = fromJS(account);
+  const settings = getAccountSettings(account);
+
+  const defaultPrivacy = settings.get('defaultPrivacy', 'public');
+  const defaultContentType = settings.get('defaultContentType', 'text/plain');
+
+  return state.merge({
+    default_privacy: defaultPrivacy,
+    privacy: defaultPrivacy,
+    default_content_type: defaultContentType,
+    content_type: defaultContentType,
+    tagHistory: ImmutableList(tagHistory.get(account.get('id'))),
+  });
+};
+
+const updateAccount = (state, account) => {
+  account = fromJS(account);
+  const settings = getAccountSettings(account);
+
+  const defaultPrivacy = settings.get('defaultPrivacy');
+  const defaultContentType = settings.get('defaultContentType');
+
+  return state.withMutations(state => {
+    if (defaultPrivacy) state.set('default_privacy', defaultPrivacy);
+    if (defaultContentType) state.set('default_content_type', defaultContentType);
+  });
+};
+
+const updateSetting = (state, path, value) => {
+  const pathString = path.join(',');
+  switch (pathString) {
+  case 'defaultPrivacy':
+    return state.set('default_privacy', value).set('privacy', value);
+  case 'defaultContentType':
+    return state.set('default_content_type', value).set('content_type', value);
+  default:
+    return state;
+  }
+};
+
 export default function compose(state = initialState, action) {
-  let me, defaultPrivacy, defaultContentType;
   switch(action.type) {
   case COMPOSE_MOUNT:
     return state.set('mounted', state.get('mounted') + 1);
@@ -363,33 +407,11 @@ export default function compose(state = initialState, action) {
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case ME_FETCH_SUCCESS:
-    me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy'], 'public');
-    defaultContentType = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultContentType'], 'text/plain');
-    return state.merge({
-      default_privacy: defaultPrivacy,
-      privacy: defaultPrivacy,
-      default_content_type: defaultContentType,
-      content_type: defaultContentType,
-      tagHistory: ImmutableList(tagHistory.get(action.me.id)),
-    });
+    return importAccount(state, action.me);
   case ME_PATCH_SUCCESS:
-    me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
-    defaultContentType = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultContentType']);
-    if (defaultPrivacy) state = state.set('default_privacy', defaultPrivacy);
-    if (defaultContentType) state = state.set('default_content_type', defaultContentType);
-    return state;
+    return updateAccount(state, action.me);
   case SETTING_CHANGE:
-    const pathString = action.path.join(',');
-    switch (pathString) {
-    case 'defaultPrivacy':
-      return state.set('default_privacy', action.value).set('privacy', action.value);
-    case 'defaultContentType':
-      return state.set('default_content_type', action.value).set('content_type', action.value);
-    default:
-      return state;
-    }
+    return updateSetting(state, action.path, action.value);
   default:
     return state;
   }
