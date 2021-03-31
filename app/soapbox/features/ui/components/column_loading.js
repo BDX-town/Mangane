@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Column from '../../../components/column';
 import ColumnHeader from '../../../components/column_header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
 
 export default class ColumnLoading extends ImmutablePureComponent {
 
@@ -22,7 +23,7 @@ export default class ColumnLoading extends ImmutablePureComponent {
     return (
       <Column>
         <ColumnHeader icon={icon} title={title} focusable={false} />
-        <div />
+        <LoadingIndicator />
       </Column>
     );
   }

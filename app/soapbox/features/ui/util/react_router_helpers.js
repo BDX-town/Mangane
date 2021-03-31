@@ -65,11 +65,19 @@ class WrappedRoute extends React.Component {
   }
 
   renderLoading = () => {
-    return <ColumnLoading />;
+    return (
+      <ColumnsAreaContainer layout={this.props.layout}>
+        <ColumnLoading />
+      </ColumnsAreaContainer>
+    );
   }
 
   renderError = (props) => {
-    return <BundleColumnError {...props} />;
+    return (
+      <ColumnsAreaContainer layout={this.props.layout}>
+        <BundleColumnError {...props} />
+      </ColumnsAreaContainer>
+    );
   }
 
   render() {
