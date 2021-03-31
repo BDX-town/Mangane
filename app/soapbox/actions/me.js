@@ -25,9 +25,7 @@ export function fetchMe() {
     };
 
     dispatch(fetchMeRequest());
-    return dispatch(verifyCredentials(token)).then(account => {
-      dispatch(fetchMeSuccess(account));
-    }).catch(error => {
+    return dispatch(verifyCredentials(token)).catch(error => {
       dispatch(fetchMeFail(error));
     });;
   };
