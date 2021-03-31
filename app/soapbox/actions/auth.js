@@ -1,4 +1,4 @@
-import api from '../api';
+import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
@@ -138,15 +138,7 @@ export function verifyCredentials(token) {
   return (dispatch, getState) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
 
-    const request = {
-      method: 'get',
-      url: '/api/v1/accounts/verify_credentials',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    };
-
-    return api(getState).request(request).then(({ data: account }) => {
+    return baseClient(token).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
