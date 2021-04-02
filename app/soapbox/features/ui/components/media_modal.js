@@ -120,7 +120,7 @@ class MediaModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { media, status, intl, onClose } = this.props;
+    const { media, status, account, intl, onClose } = this.props;
     const { navigationHidden } = this.state;
 
     const index = this.getIndex();
@@ -150,7 +150,7 @@ class MediaModal extends ImmutablePureComponent {
     const content = media.map((image) => {
       const width  = image.getIn(['meta', 'original', 'width']) || null;
       const height = image.getIn(['meta', 'original', 'height']) || null;
-      const link = (status && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
+      const link = (status && account && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
 
       if (image.get('type') === 'image') {
         return (
