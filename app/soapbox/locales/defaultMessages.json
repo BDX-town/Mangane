@@ -3924,7 +3924,7 @@
         "id": "report.hint"
       },
       {
-        "defaultMessage": "The account is from another server. Send an anonymized copy of the report there as well?",
+        "defaultMessage": "The account is from another server. Send a copy of the report there as well?",
         "id": "report.forward_hint"
       },
       {

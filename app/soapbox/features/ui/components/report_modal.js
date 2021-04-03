@@ -122,7 +122,7 @@ class ReportModal extends ImmutablePureComponent {
 
             {domain && (
               <div>
-                <p><FormattedMessage id='report.forward_hint' defaultMessage='The account is from another server. Send an anonymized copy of the report there as well?' /></p>
+                <p><FormattedMessage id='report.forward_hint' defaultMessage='The account is from another server. Send a copy of the report there as well?' /></p>
 
                 <div className='setting-toggle'>
                   <Toggle id='report-forward' checked={forward} disabled={isSubmitting} onChange={this.handleForwardChange} />
