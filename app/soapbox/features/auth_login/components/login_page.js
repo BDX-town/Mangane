@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
@@ -22,6 +23,7 @@ class LoginPage extends ImmutablePureComponent {
     isLoading: false,
     mfa_auth_needed: false,
     mfa_token: '',
+    shouldRedirect: false,
   }
 
   getFormData = (form) => {
@@ -36,6 +38,7 @@ class LoginPage extends ImmutablePureComponent {
     dispatch(logIn(username, password)).then(({ access_token }) => {
       return dispatch(verifyCredentials(access_token));
     }).then(account => {
+      this.setState({ shouldRedirect: true });
       if (typeof me === 'string') {
         dispatch(switchAccount(account.id));
       }
@@ -50,7 +53,9 @@ class LoginPage extends ImmutablePureComponent {
   }
 
   render() {
-    const { isLoading, mfa_auth_needed, mfa_token } = this.state;
+    const { isLoading, mfa_auth_needed, mfa_token, shouldRedirect } = this.state;
+
+    if (shouldRedirect) return <Redirect to='/' />;
 
     if (mfa_auth_needed) return <OtpAuthForm mfa_token={mfa_token} />;
 
