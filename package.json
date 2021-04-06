@@ -1,6 +1,6 @@
 {
   "name": "soapbox-fe",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Soapbox frontend for Pleroma.",
   "homepage": "https://soapbox.pub/",
   "repository": {
