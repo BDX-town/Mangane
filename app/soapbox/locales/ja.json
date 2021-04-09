@@ -428,7 +428,7 @@
   "navigation_bar.security": "セキュリティ",
   "navigation_bar.soapbox_config": "Soapbox設定",
   "notification.chat_mention": "{name}さんがあなたにメッセージを送りました",
-  "notification.emoji_react": "{name}さんがあなたの投稿に反応しました",
+  "notification.pleroma:emoji_reaction": "{name}さんがあなたの投稿に反応しました",
   "notification.favourite": "{name}さんがあなたの投稿をお気に入りに登録しました",
   "notification.follow": "{name}さんにフォローされました",
   "notification.follow_request": "{name} has requested to follow you",

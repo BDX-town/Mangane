@@ -58,7 +58,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
         case 'notification':
           messages[locale]().then(messages => {
             dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
-          }).catch(() => {});
+          }).catch(error => {
+            console.error(error);
+          });
           break;
         case 'conversation':
           dispatch(updateConversations(JSON.parse(data.payload)));

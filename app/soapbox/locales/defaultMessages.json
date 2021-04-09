@@ -2667,7 +2667,7 @@
       },
       {
         "defaultMessage": "{name} reacted to your post",
-        "id": "notification.emoji_react"
+        "id": "notification.pleroma:emoji_reaction"
       },
       {
         "defaultMessage": "{name} liked your post",

@@ -428,7 +428,7 @@
   "navigation_bar.security": "Seguretat",
   "navigation_bar.soapbox_config": "Soapbox config",
   "notification.chat_mention": "{name} sent you a message",
-  "notification.emoji_react": "{name} reacted to your post",
+  "notification.pleroma:emoji_reaction": "{name} reacted to your post",
   "notification.favourite": "{name} ha afavorit el teu estat",
   "notification.follow": "{name} et segueix",
   "notification.follow_request": "{name} has requested to follow you",

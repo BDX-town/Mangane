@@ -428,7 +428,7 @@
   "navigation_bar.security": "Zabezpečení",
   "navigation_bar.soapbox_config": "Soapbox nastavení",
   "notification.chat_mention": "{name} Vám poslal/a zprávu",
-  "notification.emoji_react": "{name} reagoval/a na Váš příspěvek",
+  "notification.pleroma:emoji_reaction": "{name} reagoval/a na Váš příspěvek",
   "notification.favourite": "{name} si oblíbil/a váš příspěvek",
   "notification.follow": "{name} vás začal/a sledovat",
   "notification.follow_request": "{name} has requested to follow you",
