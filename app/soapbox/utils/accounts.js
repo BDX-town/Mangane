@@ -16,11 +16,15 @@ export const getDomain = account => {
   return domain;
 };
 
-// user@domain even for local users
-export const acctFull = account => {
+export const guessFqn = account => {
   const [user, domain] = account.get('acct').split('@');
   if (!domain) return [user, guessDomain(account)].join('@');
   return account.get('acct');
+};
+
+// user@domain even for local users
+export const acctFull = account => {
+  return account.get('fqn') || guessFqn(account);
 };
 
 export const isStaff = (account = ImmutableMap()) => (
