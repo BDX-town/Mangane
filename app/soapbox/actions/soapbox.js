@@ -24,6 +24,8 @@ const allowedEmojiRGI = ImmutableList([
   '😩',
 ]);
 
+const year = new Date().getFullYear();
+
 export const defaultConfig = ImmutableMap({
   logo: '',
   banner: '',
@@ -34,12 +36,13 @@ export const defaultConfig = ImmutableMap({
   }),
   extensions: ImmutableMap(),
   defaultSettings: ImmutableMap(),
-  copyright: '♥2020. Copying is an act of love. Please copy and share.',
+  copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
   navlinks: ImmutableMap({
     homeFooter: ImmutableList(),
   }),
   allowedEmoji: allowedEmoji,
   verifiedCanEditName: false,
+  displayFqn: false,
 });
 
 export function getSoapboxConfig(state) {

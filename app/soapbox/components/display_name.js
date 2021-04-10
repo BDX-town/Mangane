@@ -1,21 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import VerificationBadge from './verification_badge';
-import { acctFull } from '../utils/accounts';
+import { getAcct } from '../utils/accounts';
 import { List as ImmutableList } from 'immutable';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import { displayFqn } from 'soapbox/utils/state';
 
-export default class DisplayName extends React.PureComponent {
+const mapStateToProps = state => {
+  return {
+    displayFqn: displayFqn(state),
+  };
+};
+
+export default @connect(mapStateToProps)
+class DisplayName extends React.PureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map.isRequired,
+    displayFqn: PropTypes.bool,
     others: ImmutablePropTypes.list,
     children: PropTypes.node,
   };
 
   render() {
-    const { account, others, children } = this.props;
+    const { account, displayFqn, others, children } = this.props;
 
     let displayName, suffix;
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
@@ -38,7 +48,7 @@ export default class DisplayName extends React.PureComponent {
           {verified && <VerificationBadge />}
         </>
       );
-      suffix = <span className='display-name__account'>@{acctFull(account)}</span>;
+      suffix = <span className='display-name__account'>@{getAcct(account, displayFqn)}</span>;
     }
 
     return (

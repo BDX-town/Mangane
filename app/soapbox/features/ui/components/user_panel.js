@@ -8,7 +8,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
-import { acctFull } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { List as ImmutableList } from 'immutable';
@@ -17,12 +18,13 @@ class UserPanel extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
+    displayFqn: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string,
   }
 
   render() {
-    const { account, intl, domain } = this.props;
+    const { account, displayFqn, intl, domain } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
@@ -49,7 +51,7 @@ class UserPanel extends ImmutablePureComponent {
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
                   {verified && <VerificationBadge />}
-                  <small className='user-panel__account__username'>@{acctFull(account)}</small>
+                  <small className='user-panel__account__username'>@{getAcct(account, displayFqn)}</small>
                 </Link>
               </h1>
             </div>
@@ -93,6 +95,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, { accountId }) => ({
     account: getAccount(state, accountId),
+    displayFqn: displayFqn(state),
   });
 
   return mapStateToProps;

@@ -10,7 +10,8 @@ import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
 import { List as ImmutableList } from 'immutable';
-import { acctFull, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import { getAcct, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
 
 const messages = defineMessages({
@@ -36,10 +37,11 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     identity_proofs: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
+    displayFqn: PropTypes.bool,
   };
 
   render() {
-    const { account, intl, identity_proofs, username } = this.props;
+    const { account, displayFqn, intl, identity_proofs, username } = this.props;
 
     if (!account) {
       return (
@@ -73,7 +75,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-              { <small>@{acctFull(account)} {lockedIcon}</small> }
+              { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
             </h1>
           </div>
 
@@ -144,6 +146,7 @@ const mapStateToProps = (state, { account }) => {
   return {
     identity_proofs,
     domain: state.getIn(['meta', 'domain']),
+    displayFqn: displayFqn(state),
   };
 };
 
