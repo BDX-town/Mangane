@@ -24,6 +24,7 @@ const initialState = ImmutableMap();
 const normalizePleroma = account => {
   if (!account.pleroma) return account;
   account.pleroma = normalizePleromaUserFields(account.pleroma);
+  delete account.pleroma.chat_token;
   return account;
 };
 

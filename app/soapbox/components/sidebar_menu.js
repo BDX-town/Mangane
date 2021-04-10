@@ -17,7 +17,7 @@ import { makeGetAccount } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, is as ImmutableIs } from 'immutable';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -63,7 +63,6 @@ const mapStateToProps = state => {
     donateUrl: state.getIn(['patron', 'instance', 'url']),
     isStaff: isStaff(state.getIn(['accounts', me])),
     otherAccounts,
-
   };
 };
 
@@ -90,6 +89,7 @@ class SidebarMenu extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map,
+    otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     isStaff: PropTypes.bool.isRequired,
@@ -128,8 +128,13 @@ class SidebarMenu extends ImmutablePureComponent {
     this.fetchOwnAccounts();
   }
 
-  componentDidUpdate() {
-    this.fetchOwnAccounts();
+  componentDidUpdate(prevProps) {
+    const accountChanged = !ImmutableIs(prevProps.account, this.props.account);
+    const otherAccountsChanged = !ImmutableIs(prevProps.otherAccounts, this.props.otherAccounts);
+
+    if (accountChanged || otherAccountsChanged) {
+      this.fetchOwnAccounts();
+    }
   }
 
   renderAccount = account => {
