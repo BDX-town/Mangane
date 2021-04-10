@@ -8,7 +8,7 @@ import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { isStaff } from 'soapbox/utils/accounts';
 import { defineMessages, injectIntl } from 'react-intl';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { List as ImmutableList } from 'immutable';
+import { List as ImmutableList, is as ImmutableIs } from 'immutable';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 
@@ -80,8 +80,13 @@ class ProfileDropdown extends React.PureComponent {
     this.fetchOwnAccounts();
   }
 
-  componentDidUpdate() {
-    this.fetchOwnAccounts();
+  componentDidUpdate(prevProps) {
+    const accountChanged = !ImmutableIs(prevProps.account, this.props.account);
+    const otherAccountsChanged = !ImmutableIs(prevProps.otherAccounts, this.props.otherAccounts);
+
+    if (accountChanged || otherAccountsChanged) {
+      this.fetchOwnAccounts();
+    }
   }
 
   renderAccount = account => {
