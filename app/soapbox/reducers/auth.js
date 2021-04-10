@@ -16,7 +16,16 @@ const defaultState = ImmutableMap({
   me: null,
 });
 
-const sessionUser = sessionStorage.getItem('soapbox:auth:me');
+const getSessionUser = () => {
+  const id = sessionStorage.getItem('soapbox:auth:me');
+  if (id && typeof id === 'string' && id !== 'null' && id !== 'undefined') {
+    return id;
+  } else {
+    return undefined;
+  }
+};
+
+const sessionUser = getSessionUser();
 const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
 
 // If `me` doesn't match an existing user, attempt to shift it.
@@ -55,7 +64,13 @@ const migrateLegacy = state => {
 };
 
 const persistAuth = state => localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
-const persistSession = state => sessionStorage.setItem('soapbox:auth:me', state.get('me'));
+
+const persistSession = state => {
+  const me = state.get('me');
+  if (me && typeof me === 'string') {
+    sessionStorage.setItem('soapbox:auth:me', me);
+  }
+};
 
 const persistState = state => {
   persistAuth(state);
