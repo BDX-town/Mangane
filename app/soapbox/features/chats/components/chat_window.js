@@ -6,7 +6,7 @@ import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
-import { acctFull } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
 import IconButton from 'soapbox/components/icon_button';
 import {
   closeChat,
@@ -14,11 +14,13 @@ import {
 } from 'soapbox/actions/chats';
 import ChatBox from './chat_box';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { displayFqn } from 'soapbox/utils/state';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 const mapStateToProps = (state, { pane }) => ({
   me: state.get('me'),
   chat: state.getIn(['chats', pane.get('chat_id')]),
+  displayFqn: displayFqn(state),
 });
 
 export default @connect(mapStateToProps)
@@ -32,6 +34,7 @@ class ChatWindow extends ImmutablePureComponent {
     idx: PropTypes.number,
     chat: ImmutablePropTypes.map,
     me: PropTypes.node,
+    displayFqn: PropTypes.bool,
   }
 
   state = {
@@ -73,7 +76,7 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   render() {
-    const { pane, idx, chat } = this.props;
+    const { pane, idx, chat, displayFqn } = this.props;
     const account = pane.getIn(['chat', 'account']);
     if (!chat || !account) return null;
 
@@ -99,7 +102,7 @@ class ChatWindow extends ImmutablePureComponent {
         <div className='pane__header'>
           {unreadCount > 0 ? unreadIcon : avatar }
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>
-            @{acctFull(account)}
+            @{getAcct(account, displayFqn)}
           </button>
           <div className='pane__close'>
             <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />

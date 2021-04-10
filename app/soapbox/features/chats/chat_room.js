@@ -6,13 +6,14 @@ import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
-import { acctFull } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
 import { fetchChat, markChatRead } from 'soapbox/actions/chats';
 import ChatBox from './components/chat_box';
 import Column from 'soapbox/components/column';
 import ColumnBackButton from 'soapbox/components/column_back_button';
 import { Map as ImmutableMap } from 'immutable';
 import { makeGetChat } from 'soapbox/selectors';
+import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = (state, { params }) => {
   const getChat = makeGetChat();
@@ -21,6 +22,7 @@ const mapStateToProps = (state, { params }) => {
   return {
     me: state.get('me'),
     chat: getChat(state, chat),
+    displayFqn: displayFqn(state),
   };
 };
 
@@ -32,6 +34,7 @@ class ChatRoom extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     chat: ImmutablePropTypes.map,
+    displayFqn: PropTypes.bool,
     me: PropTypes.node,
   }
 
@@ -68,7 +71,7 @@ class ChatRoom extends ImmutablePureComponent {
   }
 
   render() {
-    const { chat } = this.props;
+    const { chat, displayFqn } = this.props;
     if (!chat) return null;
     const account = chat.get('account');
 
@@ -79,7 +82,7 @@ class ChatRoom extends ImmutablePureComponent {
           <Link to={`/@${account.get('acct')}`} className='chatroom__header'>
             <Avatar account={account} size={18} />
             <div className='chatroom__title'>
-              @{acctFull(account)}
+              @{getAcct(account, displayFqn)}
             </div>
           </Link>
         </div>
