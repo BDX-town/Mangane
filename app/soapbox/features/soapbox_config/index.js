@@ -41,6 +41,7 @@ const messages = defineMessages({
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
   verifiedCanEditNameLabel: { id: 'soapbox_config.verified_can_edit_name_label', defaultMessage: 'Allow verified users to edit their own display name.' },
+  displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain even for local accounts.' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -240,6 +241,12 @@ class SoapboxConfig extends ImmutablePureComponent {
                 label={intl.formatMessage(messages.verifiedCanEditNameLabel)}
                 checked={soapbox.get('verifiedCanEditName') === true}
                 onChange={this.handleChange(['verifiedCanEditName'], (e) => e.target.checked)}
+              />
+              <Checkbox
+                name='verifiedCanEditName'
+                label={intl.formatMessage(messages.displayFqnLabel)}
+                checked={soapbox.get('displayFqn') === true}
+                onChange={this.handleChange(['displayFqn'], (e) => e.target.checked)}
               />
             </FieldsGroup>
             <FieldsGroup>
