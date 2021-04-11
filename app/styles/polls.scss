@@ -14,8 +14,8 @@
     height: 100%;
     display: inline-block;
     border-radius: 4px;
-    background: hsla(var(--primary-text-color_hsl), 0.3);
-    &.leading { background: hsla(var(--primary-text-color_hsl), 0.6); }
+    background: hsla(var(--primary-text-color_hsl), 0.1);
+    &.leading { background: hsla(var(--primary-text-color_hsl), 0.15); }
   }
 
   &__text {
