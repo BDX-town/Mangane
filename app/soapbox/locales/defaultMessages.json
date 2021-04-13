@@ -3233,6 +3233,10 @@
         "id": "soapbox_config.verified_can_edit_name_label"
       },
       {
+        "defaultMessage": "Display domain (eg @user@domain) for local accounts.",
+        "id": "soapbox_config.display_fqn_label"
+      },
+      {
         "defaultMessage": "Brand color",
         "id": "soapbox_config.fields.brand_color_label"
       },
@@ -3758,19 +3762,19 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Blocked users",
+        "defaultMessage": "Blocks",
         "id": "navigation_bar.blocks"
       },
       {
-        "defaultMessage": "Muted users",
+        "defaultMessage": "Mutes",
         "id": "navigation_bar.mutes"
       },
       {
-        "defaultMessage": "Muted words",
+        "defaultMessage": "Filters",
         "id": "navigation_bar.filters"
       },
       {
-        "defaultMessage": "Hidden domains",
+        "defaultMessage": "Domain blocks",
         "id": "navigation_bar.domain_blocks"
       },
       {
@@ -3778,7 +3782,7 @@
         "id": "navigation_bar.follow_requests"
       },
       {
-        "defaultMessage": "Admin settings",
+        "defaultMessage": "AdminFE",
         "id": "navigation_bar.admin_settings"
       },
       {
