@@ -103,6 +103,16 @@ const upgradeLegacyId = (state, account) => {
   // By this point it's probably safe, but we'll leave it just in case.
 };
 
+// Returns a predicate function for filtering a mismatched user/token
+const userMismatch = (token, account) => {
+  return (user, id) => {
+    const sameToken = user.get('access_token') === token;
+    const differentId = id !== account.id || user.get('id') !== account.id;
+
+    return sameToken && differentId;
+  };
+};
+
 const importCredentials = (state, token, account) => {
   return state.withMutations(state => {
     state.setIn(['users', account.id], ImmutableMap({
@@ -110,6 +120,7 @@ const importCredentials = (state, token, account) => {
       access_token: token,
     }));
     state.setIn(['tokens', token, 'account'], account.id);
+    state.update('users', ImmutableMap(), users => users.filterNot(userMismatch(token, account)));
     state.update('me', null, me => me || account.id);
     upgradeLegacyId(state, account);
   });
