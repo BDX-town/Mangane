@@ -154,6 +154,28 @@ describe('auth reducer', () => {
       const result = reducer(state, action);
       expect(result.get('me')).toEqual('5678');
     });
+
+    it('deletes mismatched users', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234' },
+      };
+
+      const state = fromJS({
+        users: { '4567': { id: '4567', access_token: 'ABCDEFG' } },
+        users: { '8901': { id: '1234', access_token: 'ABCDEFG' } },
+        users: { '5432': { id: '5432', access_token: 'HIJKLMN' } },
+      });
+
+      const expected = fromJS({
+        '1234': { id: '1234', access_token: 'ABCDEFG' },
+        '5432': { id: '5432', access_token: 'HIJKLMN' },
+      });
+
+      const result = reducer(state, action);
+      expect(result.get('users')).toEqual(expected);
+    });
   });
 
   describe('VERIFY_CREDENTIALS_FAIL', () => {
