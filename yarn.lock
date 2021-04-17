@@ -4537,6 +4537,11 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
+emoji-datasource@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-6.0.1.tgz#0fd25101104cf16ddf36819237f4f174ec85a01f"
+  integrity sha512-kvkqTjdeXhVKwT2242jGhK18EpevORCTTBETDhByWOEVGwn5X+W5jvBioo+wrAnR7inUzydJ4gKUU5SQGjUG6A==
+
 "emoji-mart@https://gitlab.com/seanking2919/emoji-mart#build":
   version "2.6.3"
   resolved "https://gitlab.com/seanking2919/emoji-mart#4bdefa3d3ee7eb58716adc8727f688facc557291"

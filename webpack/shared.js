@@ -97,6 +97,9 @@ module.exports = {
       patterns: [{
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),
         to: join(__dirname, '../static/emoji'),
+      }, {
+        from: join(__dirname, '../node_modules/emoji-datasource/img/twitter/sheets/32.png'),
+        to: join(__dirname, '../static/emoji/sheet_10.png'),
       }],
       options: {
         concurrency: 100,
