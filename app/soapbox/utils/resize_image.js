@@ -42,7 +42,7 @@ const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
   });
 });
 
-const processImage = (img, { width, height, orientation, type = 'image/png' }) => new Promise(resolve => {
+const processImage = (img, { width, height, orientation, type = 'image/png', name = 'resized.png' }) => new Promise(resolve => {
   const canvas  = document.createElement('canvas');
 
   if (4 < orientation && orientation < 9) {
@@ -67,11 +67,14 @@ const processImage = (img, { width, height, orientation, type = 'image/png' }) =
 
   context.drawImage(img, 0, 0, width, height);
 
-  canvas.toBlob(resolve, type);
+  canvas.toBlob((blob) => {
+    resolve(new File([blob], name));
+  }, type);
 });
 
-const resizeImage = (img, type = 'image/png') => new Promise((resolve, reject) => {
+const resizeImage = (img, inputFile) => new Promise((resolve, reject) => {
   const { width, height } = img;
+  const type = inputFile.type || 'image/png';
 
   const newWidth  = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (width / height)));
   const newHeight = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (height / width)));
@@ -80,6 +83,7 @@ const resizeImage = (img, type = 'image/png') => new Promise((resolve, reject) =
     .then(orientation => processImage(img, {
       width: newWidth,
       height: newHeight,
+      name: inputFile.name,
       orientation,
       type,
     }))
@@ -99,7 +103,7 @@ export default inputFile => new Promise((resolve, reject) => {
       return;
     }
 
-    resizeImage(img, inputFile.type)
+    resizeImage(img, inputFile)
       .then(resolve)
       .catch(() => resolve(inputFile));
   }).catch(reject);
