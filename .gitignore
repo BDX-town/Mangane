@@ -1,5 +1,4 @@
 /node_modules/
-/static/
 /tmp/
 /build/
 /coverage/
@@ -8,3 +7,11 @@
 /deploy.sh
 /.vs/
 yarn-error.log*
+
+/static/packs
+/static/emoji
+/static/index.html
+/static/instance/**
+!/static/instance/**.example
+!/static/instance/**.example.*
+!/static/instance/**.example/**
