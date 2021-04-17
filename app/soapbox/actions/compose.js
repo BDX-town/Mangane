@@ -4,7 +4,6 @@ import { throttle } from 'lodash';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
 import { tagHistory } from '../settings';
 import { useEmoji } from './emojis';
-import resizeImage from '../utils/resize_image';
 import { importFetchedAccounts } from './importer';
 import { updateTimeline, dequeueTimeline } from './timelines';
 import { showAlert, showAlertForError } from './alerts';
@@ -231,24 +230,20 @@ export function uploadCompose(files) {
 
     dispatch(uploadComposeRequest());
 
-    for (const [i, f] of Array.from(files).entries()) {
+    for (const [i, file] of Array.from(files).entries()) {
       if (media.size + i > uploadLimit - 1) break;
 
-      resizeImage(f).then(file => {
-        const data = new FormData();
-        data.append('file', file);
-        // Account for disparity in size of original image and resized data
-        total += file.size - f.size;
+      const data = new FormData();
+      data.append('file', file);
 
-        const onUploadProgress = function({ loaded }) {
-          progress[i] = loaded;
-          dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
-        };
+      const onUploadProgress = function({ loaded }) {
+        progress[i] = loaded;
+        dispatch(uploadComposeProgress(progress.reduce((a, v) => a + v, 0), total));
+      };
 
-        return dispatch(uploadMedia(data, onUploadProgress))
-          .then(({ data }) => dispatch(uploadComposeSuccess(data)));
-
-      }).catch(error => dispatch(uploadComposeFail(error)));
+      dispatch(uploadMedia(data, onUploadProgress))
+        .then(({ data }) => dispatch(uploadComposeSuccess(data)))
+        .catch(error => dispatch(uploadComposeFail(error)));
     };
   };
 };
