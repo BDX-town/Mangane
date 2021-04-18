@@ -68,7 +68,7 @@ const processImage = (img, { width, height, orientation, type = 'image/png', nam
   context.drawImage(img, 0, 0, width, height);
 
   canvas.toBlob((blob) => {
-    resolve(new File([blob], name));
+    resolve(new File([blob], name, { type, lastModified: new Date().getTime() }));
   }, type);
 });
 
