@@ -12,12 +12,11 @@ import {
   SimpleTextarea,
   Checkbox,
 } from 'soapbox/features/forms';
-import { register } from 'soapbox/actions/auth';
+import { register, verifyCredentials } from 'soapbox/actions/auth';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import { Map as ImmutableMap } from 'immutable';
 import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
-import { fetchMe } from 'soapbox/actions/me';
 import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
@@ -90,13 +89,13 @@ class RegistrationForm extends ImmutablePureComponent {
     }));
   }
 
-  postRegisterAction = () => {
+  postRegisterAction = ({ access_token }) => {
     const { dispatch, needsConfirmation, needsApproval } = this.props;
 
     if (needsConfirmation || needsApproval) {
       return this.launchModal();
     } else {
-      return dispatch(fetchMe());
+      return dispatch(verifyCredentials(access_token));
     }
   }
 
@@ -106,12 +105,12 @@ class RegistrationForm extends ImmutablePureComponent {
 
     this.setState({ submissionLoading: true });
 
-    dispatch(register(params.toJS())).then(() => {
-      this.postRegisterAction();
-    }).catch(error => {
-      this.setState({ submissionLoading: false });
-      this.refreshCaptcha();
-    });
+    dispatch(register(params.toJS()))
+      .then(this.postRegisterAction)
+      .catch(error => {
+        this.setState({ submissionLoading: false });
+        this.refreshCaptcha();
+      });
   }
 
   onCaptchaClick = e => {

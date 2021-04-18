@@ -204,8 +204,9 @@ export function register(params) {
 
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createAccount(params));
-    }).then(token => {
-      return dispatch(authLoggedIn(token));
+    }).then(({ token }) => {
+      dispatch(authLoggedIn(token));
+      return token;
     });
   };
 }
