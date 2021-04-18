@@ -10,7 +10,7 @@ First, follow the instructions to [install Pleroma](https://docs-develop.pleroma
 
 The Soapbox frontend is the main component of Soapbox. Once you've installed Pleroma, installing Soapbox FE is a breeze.
 
-First, ssh into the server and download a .zip of the latest build: ``curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.2.2/download?job=build-production -o soapbox-fe.zip``
+First, ssh into the server and download a .zip of the latest build: ``curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.2.3/download?job=build-production -o soapbox-fe.zip``
 
 Then unpack it into Pleroma's ``instance`` directory: ``busybox unzip soapbox-fe.zip -o -d /opt/pleroma/instance``
 

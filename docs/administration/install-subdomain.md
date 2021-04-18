@@ -13,7 +13,7 @@ mkdir -p /opt/soapbox
 Fetch the build.
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.2.2/download?job=build-production -o /tmp/soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.2.3/download?job=build-production -o /tmp/soapbox-fe.zip
 ```
 
 Unzip the build.
