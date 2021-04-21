@@ -660,12 +660,15 @@ a.status-card.compact:hover {
 }
 
 .tombstone {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 10px;
   text-align: center;
   font-size: 14px;
   border-bottom: 1px solid var(--brand-color--faint);
   color: var(--primary-text-color--faint);
+
+  p {
+    padding: 10px;
+    background: var(--background-color);
+    border-radius: 4px;
+  }
 }
