@@ -658,3 +658,14 @@ a.status-card.compact:hover {
     max-height: 100%;
   }
 }
+
+.tombstone {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid var(--brand-color--faint);
+  color: var(--primary-text-color--faint);
+}
