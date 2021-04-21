@@ -431,7 +431,7 @@ class Status extends ImmutablePureComponent {
 
   renderChildren(list) {
     return list.map(id => {
-      if (id.startsWith('tombstone-')) {
+      if (id.endsWith('-tombstone')) {
         return this.renderTombstone(id);
       } else {
         return this.renderStatus(id);

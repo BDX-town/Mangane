@@ -31,7 +31,7 @@ const importStatuses = (state, statuses) => {
 };
 
 const insertTombstone = (state, ancestorId, descendantId) => {
-  const tombstoneId = `tombstone-${descendantId}`;
+  const tombstoneId = `${descendantId}-tombstone`;
   return state.withMutations(state => {
     importStatus(state, { id: tombstoneId, in_reply_to_id: ancestorId });
     importStatus(state, { id: descendantId, in_reply_to_id: tombstoneId });
