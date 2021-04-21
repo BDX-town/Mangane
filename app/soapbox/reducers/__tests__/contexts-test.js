@@ -25,6 +25,7 @@ describe('contexts reducer', () => {
         '9zIH9GTCDWEFSRt2um': '9zIH7PUdhK3Ircg4hM',
         '9zIH9fhaP9atiJoOJc': '9zIH8WYwtnUx4yDzUm',
         '9zIH8WYwtnUx4yDzUm': '9zIH7PUdhK3Ircg4hM',
+        'tombstone-9zIH8WYwtnUx4yDzUm': '9zIH7mMGgc1RmJwDLM',
       }),
       replies: ImmutableMap({
         '9zIH6kDXA10YqhMKqO': ImmutableOrderedSet([
@@ -37,6 +38,12 @@ describe('contexts reducer', () => {
         ]),
         '9zIH8WYwtnUx4yDzUm': ImmutableOrderedSet([
           '9zIH9fhaP9atiJoOJc',
+        ]),
+        'tombstone-9zIH8WYwtnUx4yDzUm': ImmutableOrderedSet([
+          '9zIH8WYwtnUx4yDzUm',
+        ]),
+        '9zIH7mMGgc1RmJwDLM': ImmutableOrderedSet([
+          'tombstone-9zIH8WYwtnUx4yDzUm',
         ]),
       }),
     }));
