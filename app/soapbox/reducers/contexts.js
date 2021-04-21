@@ -15,8 +15,8 @@ const initialState = ImmutableMap({
 const importStatus = (state, { id, in_reply_to_id }) => {
   if (!in_reply_to_id) return state;
 
-  return state.withMutation(state => {
-    state.setIn(['inReplyTos', id, in_reply_to_id]);
+  return state.withMutations(state => {
+    state.setIn(['inReplyTos', id], in_reply_to_id);
 
     state.updateIn(['replies', in_reply_to_id], ImmutableOrderedSet(), ids => {
       return ids.add(id).sort();
@@ -30,61 +30,58 @@ const importStatuses = (state, statuses) => {
   });
 };
 
-const normalizeContext = (immutableState, id, ancestors, descendants) => immutableState.withMutations(state => {
-  state.update('inReplyTos', immutableAncestors => immutableAncestors.withMutations(inReplyTos => {
-    state.update('replies', immutableDescendants => immutableDescendants.withMutations(replies => {
-      ancestors.forEach(status => importStatus(state, status));
+const insertTombstone = (state, ancestorId, descendantId) => {
+  const tombstoneId = `tombstone-${descendantId}`;
+  return state.withMutations(state => {
+    importStatus(state, { id: tombstoneId, in_reply_to_id: ancestorId });
+    importStatus(state, { id: descendantId, in_reply_to_id: tombstoneId });
+  });
+};
 
-      descendants.forEach(status => {
-        if (status.in_reply_to_id) {
-          importStatus(state, status);
-        } else {
-          importStatus(state, { id: `tombstone-${status.id}`, in_reply_to_id: id });
-          importStatus(state, { id: status.id, in_reply_to_id: `tombstone-${status.id}` });
-        }
-      });
+const normalizeContext = (state, id, ancestors, descendants) => state.withMutations(state => {
+  importStatuses(state, ancestors);
 
-      if (ancestors.length > 0 && !inReplyTos.get(id)) {
-        const { id: lastId } = ancestors[ancestors.length - 1];
-        replies.update(`tombstone-${id}`, ImmutableOrderedSet(), siblings => siblings.add(id).sort());
-        replies.update(lastId, ImmutableOrderedSet(), siblings => siblings.add(`tombstone-${id}`).sort());
-        inReplyTos.set(id, `tombstone-${id}`);
-        inReplyTos.set(`tombstone-${id}`, lastId);
-      }
-    }));
-  }));
+  descendants.forEach(status => {
+    if (status.in_reply_to_id) {
+      importStatus(state, status);
+    } else {
+      insertTombstone(state, id, status.id);
+    }
+  });
+
+  if (ancestors.length > 0 && !state.getIn(['inReplyTos', id])) {
+    insertTombstone(state, ancestors[ancestors.length - 1].id, id);
+  }
 });
 
-const deleteFromContexts = (immutableState, ids) => immutableState.withMutations(state => {
-  state.update('inReplyTos', immutableAncestors => immutableAncestors.withMutations(inReplyTos => {
-    state.update('replies', immutableDescendants => immutableDescendants.withMutations(replies => {
-      ids.forEach(id => {
-        const inReplyToIdOfId = inReplyTos.get(id);
-        const repliesOfId = replies.get(id);
-        const siblings = replies.get(inReplyToIdOfId);
+const deleteStatus = (state, id) => {
+  return state.withMutations(state => {
+    const parentId = state.getIn(['inReplyTos', id]);
+    const replies = state.getIn(['replies', id], ImmutableOrderedSet());
 
-        if (siblings) {
-          replies.set(inReplyToIdOfId, siblings.filterNot(sibling => sibling === id));
-        }
+    // Delete from its parent's tree
+    state.updateIn(['replies', parentId], ImmutableOrderedSet(), ids => ids.delete(id));
 
+    // Dereference children
+    replies.forEach(reply => state.deleteIn(['inReplyTos', reply]));
 
-        if (repliesOfId) {
-          repliesOfId.forEach(reply => inReplyTos.delete(reply));
-        }
+    state.deleteIn(['inReplyTos', id]);
+    state.deleteIn(['replies', id]);
+  });
+};
 
-        inReplyTos.delete(id);
-        replies.delete(id);
-      });
-    }));
-  }));
-});
+const deleteStatuses = (state, ids) => {
+  return state.withMutations(state => {
+    ids.forEach(id => deleteStatus(state, id));
+  });
+};
 
 const filterContexts = (state, relationship, statuses) => {
   const ownedStatusIds = statuses
     .filter(status => status.get('account') === relationship.id)
     .map(status => status.get('id'));
 
-  return deleteFromContexts(state, ownedStatusIds);
+  return deleteStatuses(state, ownedStatusIds);
 };
 
 export default function replies(state = initialState, action) {
@@ -95,7 +92,7 @@ export default function replies(state = initialState, action) {
   case CONTEXT_FETCH_SUCCESS:
     return normalizeContext(state, action.id, action.ancestors, action.descendants);
   case TIMELINE_DELETE:
-    return deleteFromContexts(state, [action.id]);
+    return deleteStatuses(state, [action.id]);
   case STATUS_IMPORT:
     return importStatus(state, action.status);
   case STATUSES_IMPORT:
