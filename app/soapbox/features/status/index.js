@@ -77,7 +77,7 @@ const makeMapStateToProps = () => {
 
     if (status) {
       ancestorsIds = ancestorsIds.withMutations(mutable => {
-        let id = status.get('in_reply_to_id');
+        let id = state.getIn(['contexts', 'inReplyTos', status.get('id')]);
 
         while (id) {
           mutable.unshift(id);
@@ -409,8 +409,16 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  renderChildren(list) {
-    return list.map(id => (
+  renderTombstone(id) {
+    return (
+      <div className='tombstone' key={id}>
+        <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is unavailable.' /></p>
+      </div>
+    );
+  }
+
+  renderStatus(id) {
+    return (
       <StatusContainer
         key={id}
         id={id}
@@ -418,7 +426,17 @@ class Status extends ImmutablePureComponent {
         onMoveDown={this.handleMoveDown}
         contextType='thread'
       />
-    ));
+    );
+  }
+
+  renderChildren(list) {
+    return list.map(id => {
+      if (id.endsWith('-tombstone')) {
+        return this.renderTombstone(id);
+      } else {
+        return this.renderStatus(id);
+      }
+    });
   }
 
   setRef = c => {
