@@ -411,7 +411,7 @@ class Status extends ImmutablePureComponent {
 
   renderTombstone(id) {
     return (
-      <div className='tombstone'>
+      <div className='tombstone' key={id}>
         <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is no longer available.' /></p>
       </div>
     );

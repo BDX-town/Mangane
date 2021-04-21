@@ -26,15 +26,22 @@ const normalizeContext = (immutableState, id, ancestors, descendants) => immutab
       }
 
       ancestors.forEach(addReply);
-      descendants.forEach(addReply);
+
+      descendants.forEach(status => {
+        if (status.in_reply_to_id) {
+          addReply(status);
+        } else {
+          addReply({ id: `tombstone-${status.id}`, in_reply_to_id: id });
+          addReply({ id: status.id, in_reply_to_id: `tombstone-${status.id}` });
+        }
+      });
 
       if (ancestors.length > 0 && !inReplyTos.get(id)) {
-        const tombstoneId = `tombstone-${id}`;
         const { id: lastId } = ancestors[ancestors.length - 1];
-        replies.update(tombstoneId, ImmutableOrderedSet(), siblings => siblings.add(id).sort());
-        replies.update(lastId, ImmutableOrderedSet(), siblings => siblings.add(tombstoneId).sort());
-        inReplyTos.set(id, tombstoneId);
-        inReplyTos.set(tombstoneId, lastId);
+        replies.update(`tombstone-${id}`, ImmutableOrderedSet(), siblings => siblings.add(id).sort());
+        replies.update(lastId, ImmutableOrderedSet(), siblings => siblings.add(`tombstone-${id}`).sort());
+        inReplyTos.set(id, `tombstone-${id}`);
+        inReplyTos.set(`tombstone-${id}`, lastId);
       }
     }));
   }));
