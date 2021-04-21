@@ -38,16 +38,23 @@ const insertTombstone = (state, ancestorId, descendantId) => {
   });
 };
 
-const normalizeContext = (state, id, ancestors, descendants) => state.withMutations(state => {
-  importStatuses(state, ancestors);
+const importBranch = (state, statuses, rootId) => {
+  return state.withMutations(state => {
+    statuses.forEach((status, i) => {
+      const lastId = rootId && i === 0 ? rootId : (statuses[i - 1] || {}).id;
 
-  descendants.forEach(status => {
-    if (status.in_reply_to_id) {
-      importStatus(state, status);
-    } else {
-      insertTombstone(state, id, status.id);
-    }
+      if (status.in_reply_to_id) {
+        importStatus(state, status);
+      } else if (lastId) {
+        insertTombstone(state, lastId, status.id);
+      }
+    });
   });
+};
+
+const normalizeContext = (state, id, ancestors, descendants) => state.withMutations(state => {
+  importBranch(state, ancestors);
+  importBranch(state, descendants, id);
 
   if (ancestors.length > 0 && !state.getIn(['inReplyTos', id])) {
     insertTombstone(state, ancestors[ancestors.length - 1].id, id);
