@@ -12,27 +12,35 @@ const initialState = ImmutableMap({
   replies: ImmutableMap(),
 });
 
+const importStatus = (state, { id, in_reply_to_id }) => {
+  if (!in_reply_to_id) return state;
+
+  return state.withMutation(state => {
+    state.setIn(['inReplyTos', id, in_reply_to_id]);
+
+    state.updateIn(['replies', in_reply_to_id], ImmutableOrderedSet(), ids => {
+      return ids.add(id).sort();
+    });
+  });
+};
+
+const importStatuses = (state, statuses) => {
+  return state.withMutations(state => {
+    statuses.forEach(status => importStatus(state, status));
+  });
+};
+
 const normalizeContext = (immutableState, id, ancestors, descendants) => immutableState.withMutations(state => {
   state.update('inReplyTos', immutableAncestors => immutableAncestors.withMutations(inReplyTos => {
     state.update('replies', immutableDescendants => immutableDescendants.withMutations(replies => {
-      function addReply({ id, in_reply_to_id }) {
-        if (in_reply_to_id) {
-          replies.update(in_reply_to_id, ImmutableOrderedSet(), siblings => {
-            return siblings.add(id).sort();
-          });
-
-          inReplyTos.set(id, in_reply_to_id);
-        }
-      }
-
-      ancestors.forEach(addReply);
+      ancestors.forEach(status => importStatus(state, status));
 
       descendants.forEach(status => {
         if (status.in_reply_to_id) {
-          addReply(status);
+          importStatus(state, status);
         } else {
-          addReply({ id: `tombstone-${status.id}`, in_reply_to_id: id });
-          addReply({ id: status.id, in_reply_to_id: `tombstone-${status.id}` });
+          importStatus(state, { id: `tombstone-${status.id}`, in_reply_to_id: id });
+          importStatus(state, { id: status.id, in_reply_to_id: `tombstone-${status.id}` });
         }
       });
 
@@ -79,22 +87,6 @@ const filterContexts = (state, relationship, statuses) => {
   return deleteFromContexts(state, ownedStatusIds);
 };
 
-const updateContext = (state, status) => {
-  if (status.in_reply_to_id) {
-    return state.withMutations(mutable => {
-      const replies = mutable.getIn(['replies', status.in_reply_to_id], ImmutableOrderedSet());
-
-      mutable.setIn(['inReplyTos', status.id], status.in_reply_to_id);
-
-      if (!replies.includes(status.id)) {
-        mutable.setIn(['replies', status.in_reply_to_id], replies.add(status.id).sort());
-      }
-    });
-  }
-
-  return state;
-};
-
 export default function replies(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_BLOCK_SUCCESS:
@@ -105,11 +97,9 @@ export default function replies(state = initialState, action) {
   case TIMELINE_DELETE:
     return deleteFromContexts(state, [action.id]);
   case STATUS_IMPORT:
-    return updateContext(state, action.status);
+    return importStatus(state, action.status);
   case STATUSES_IMPORT:
-    return state.withMutations(mutable =>
-      action.statuses.forEach(status => updateContext(mutable, status)));
-
+    return importStatuses(state, action.statuses);
   default:
     return state;
   }
