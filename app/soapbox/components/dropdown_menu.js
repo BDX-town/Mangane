@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import IconButton from './icon_button';
 import Overlay from 'react-overlays/lib/Overlay';
-import Motion from '../features/ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
-import { supportsPassiveEvents } from 'detect-passive-events';
+import DropdownElement from './dropdown_element';
 
-const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
 
 class DropdownMenu extends React.PureComponent {
@@ -31,28 +28,13 @@ class DropdownMenu extends React.PureComponent {
     placement: 'bottom',
   };
 
-  state = {
-    mounted: false,
-  };
-
-  handleDocumentClick = e => {
-    if (this.node && !this.node.contains(e.target)) {
-      this.props.onClose();
-    }
-  }
-
   componentDidMount() {
-    document.addEventListener('click', this.handleDocumentClick, false);
     document.addEventListener('keydown', this.handleKeyDown, false);
-    document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
     if (this.focusedItem && this.props.openedViaKeyboard) this.focusedItem.focus();
-    this.setState({ mounted: true });
   }
 
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleDocumentClick, false);
     document.removeEventListener('keydown', this.handleKeyDown, false);
-    document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
   }
 
   setRef = c => {
@@ -163,22 +145,13 @@ class DropdownMenu extends React.PureComponent {
   }
 
   render() {
-    const { items, style, placement, arrowOffsetLeft, arrowOffsetTop } = this.props;
-    const { mounted } = this.state;
+    const { items, ...props } = this.props;
     return (
-      <Motion defaultStyle={{ opacity: 0, scaleX: 1, scaleY: 1 }} style={{ opacity: spring(1, { damping: 35, stiffness: 400 }), scaleX: spring(1, { damping: 35, stiffness: 400 }), scaleY: spring(1, { damping: 35, stiffness: 400 }) }}>
-        {({ opacity, scaleX, scaleY }) => (
-          // It should not be transformed when mounting because the resulting
-          // size will be used to determine the coordinate of the menu by
-          // react-overlays
-          <div className={`dropdown-menu ${placement}`} style={{ ...style, opacity: opacity, transform: mounted ? `scale(${scaleX}, ${scaleY})` : null }} ref={this.setRef}>
-            <div className={`dropdown-menu__arrow ${placement}`} style={{ left: arrowOffsetLeft, top: arrowOffsetTop }} />
-            <ul>
-              {items.map((option, i) => this.renderItem(option, i))}
-            </ul>
-          </div>
-        )}
-      </Motion>
+      <DropdownElement {...props}>
+        <ul>
+          {items.map((option, i) => this.renderItem(option, i))}
+        </ul>
+      </DropdownElement>
     );
   }
 

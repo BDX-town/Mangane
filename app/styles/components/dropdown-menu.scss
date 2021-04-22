@@ -157,3 +157,26 @@
 .dropdown__icon {
   vertical-align: middle;
 }
+
+.dropdown-menu__notifications {
+  overflow: hidden;
+
+  .column {
+    padding: 4px !important;
+    max-width: 100%;
+  }
+
+  .notification__filter-bar button {
+    padding: 8px 0;
+  }
+
+  .column-header__wrapper {
+    display: none;
+  }
+
+  .slist {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 200px;
+  }
+}

@@ -15,6 +15,9 @@ import Icon from '../../../components/icon';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
+import Overlay from 'react-overlays/lib/Overlay';
+import DropdownElement from 'soapbox/components/dropdown_element';
+import Notifications from 'soapbox/features/notifications';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -37,6 +40,7 @@ class TabsBar extends React.PureComponent {
 
   state = {
     collapsed: false,
+    notificationsOpen: false,
   }
 
   static contextTypes = {
@@ -50,6 +54,24 @@ class TabsBar extends React.PureComponent {
   isHomeActive = (match, location) => {
     const { pathname } = location;
     return pathname === '/' || pathname.startsWith('/timeline/');
+  }
+
+  setNotifBtnRef = c => {
+    this.notifBtn = c;
+  }
+
+  getNotifBtn = () => {
+    return this.notifBtn;
+  };
+
+  handleNotificationsClick = e => {
+    if (window.innerWidth <= 1190) return;
+    this.setState({ notificationsOpen: !this.state.notificationsOpen });
+    e.preventDefault();
+  }
+
+  handleCloseNotifications = e => {
+    this.setState({ notificationsOpen: false });
   }
 
   getNavLinks() {
@@ -69,7 +91,14 @@ class TabsBar extends React.PureComponent {
       </NavLink>);
     if (account) {
       links.push(
-        <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
+        <NavLink
+          key='notifications'
+          className='tabs-bar__link'
+          to='/notifications'
+          data-preview-title-id='column.notifications'
+          onClick={this.handleNotificationsClick}
+          innerRef={this.setNotifBtnRef}
+        >
           <IconWithCounter icon='bell' count={notificationCount} />
           <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
         </NavLink>);
@@ -115,6 +144,14 @@ class TabsBar extends React.PureComponent {
         <div className='tabs-bar__container'>
           <div className='tabs-bar__split tabs-bar__split--left'>
             {this.getNavLinks()}
+
+            <Overlay show={this.state.notificationsOpen} placement='bottom' target={this.getNotifBtn}>
+              <DropdownElement onClose={this.handleCloseNotifications}>
+                <div className='dropdown-menu__notifications'>
+                  <Notifications />
+                </div>
+              </DropdownElement>
+            </Overlay>
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
             <div className='tabs-bar__search-container'>
