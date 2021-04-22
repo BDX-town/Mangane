@@ -124,7 +124,7 @@ class SoapboxMount extends React.PureComponent {
 
     return (
       <IntlProvider locale={locale} messages={this.state.messages}>
-        <>
+        <ErrorBoundary>
           <Helmet>
             <body className={bodyClass} />
             {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
@@ -141,7 +141,7 @@ class SoapboxMount extends React.PureComponent {
               </Switch>
             </ScrollContext>
           </BrowserRouter>
-        </>
+        </ErrorBoundary>
       </IntlProvider>
     );
   }
@@ -177,9 +177,7 @@ export default class Soapbox extends React.PureComponent {
   render() {
     return (
       <Provider store={store}>
-        <ErrorBoundary>
-          <SoapboxMount />
-        </ErrorBoundary>
+        <SoapboxMount />
       </Provider>
     );
   }
