@@ -13,6 +13,7 @@
 
   > a,
   > div {
+    box-sizing: border-box;
     text-decoration: none;
     color: inherit;
     display: block;
@@ -20,6 +21,7 @@
     background: var(--accent-color--faint);
     border-radius: 4px;
     transition: 0.2s;
+    height: 100%;
   }
 
   > a:hover {
