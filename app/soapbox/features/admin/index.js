@@ -29,6 +29,7 @@ class Dashboard extends ImmutablePureComponent {
   render() {
     const { intl, instance } = this.props;
     const v = parseVersion(instance.get('version'));
+    const mau = instance.getIn(['pleroma', 'stats', 'mau']);
 
     return (
       <Column icon='tachometer' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -63,6 +64,16 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </div>
           </div>
+          {mau && <div className='dashcounter'>
+            <div>
+              <div className='dashcounter__num'>
+                <FormattedNumber value={mau} />
+              </div>
+              <div className='dashcounter__label'>
+                <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users (MAU)' />
+              </div>
+            </div>
+          </div>}
         </div>
         <RegistrationModePicker />
         <div className='dashwidgets'>
