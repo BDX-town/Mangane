@@ -60,7 +60,7 @@
   "admin.dashboard.settings_saved": "Settings saved!",
   "admin.dashcounters.domain_count_label": "peers",
   "admin.dashcounters.status_count_label": "posts",
-  "admin.dashcounters.user_count_label": "users",
+  "admin.dashcounters.user_count_label": "total users",
   "admin.dashwidgets.software_header": "Software",
   "admin.moderation_log.empty_message": "You have not performed any moderation actions yet. When you do, a history will be shown here.",
   "admin.reports.actions.close": "Close",

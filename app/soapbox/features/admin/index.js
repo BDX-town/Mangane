@@ -29,21 +29,43 @@ class Dashboard extends ImmutablePureComponent {
   render() {
     const { intl, instance } = this.props;
     const v = parseVersion(instance.get('version'));
+    const userCount = instance.getIn(['stats', 'user_count']);
     const mau = instance.getIn(['pleroma', 'stats', 'mau']);
+    const retention = (userCount && mau) ? Math.round(mau / userCount * 100) : null;
 
     return (
       <Column icon='tachometer' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <div className='dashcounters'>
+          {mau && <div className='dashcounter'>
+            <div>
+              <div className='dashcounter__num'>
+                <FormattedNumber value={mau} />
+              </div>
+              <div className='dashcounter__label'>
+                <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />
+              </div>
+            </div>
+          </div>}
           <div className='dashcounter'>
             <a href='/pleroma/admin/#/users/index' target='_blank'>
               <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'user_count'])} />
+                <FormattedNumber value={userCount} />
               </div>
               <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='users' />
+                <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
               </div>
             </a>
           </div>
+          {retention && <div className='dashcounter'>
+            <div>
+              <div className='dashcounter__num'>
+                {retention}%
+              </div>
+              <div className='dashcounter__label'>
+                <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+              </div>
+            </div>
+          </div>}
           <div className='dashcounter'>
             <a href='/pleroma/admin/#/statuses/index' target='_blank'>
               <div className='dashcounter__num'>
@@ -64,16 +86,6 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </div>
           </div>
-          {mau && <div className='dashcounter'>
-            <div>
-              <div className='dashcounter__num'>
-                <FormattedNumber value={mau} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users (MAU)' />
-              </div>
-            </div>
-          </div>}
         </div>
         <RegistrationModePicker />
         <div className='dashwidgets'>
