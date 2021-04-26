@@ -14,6 +14,7 @@ import { changeSetting, getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Federated timeline' },
+  dismiss: { id: 'fediverse_tab.explanation_box.dismiss', defaultMessage: 'Don\'t show again' },
 });
 
 const mapStateToProps = state => {
@@ -28,6 +29,7 @@ const mapStateToProps = state => {
     hasUnread: state.getIn(['timelines', `${timelineId}${onlyMedia ? ':media' : ''}`, 'unread']) > 0,
     siteTitle: state.getIn(['instance', 'title']),
     explanationBoxExpanded: settings.get('explanationBox'),
+    showExplanationBox: settings.get('showExplanationBox'),
   };
 };
 
@@ -46,6 +48,7 @@ class CommunityTimeline extends React.PureComponent {
     onlyMedia: PropTypes.bool,
     timelineId: PropTypes.string,
     siteTitle: PropTypes.string,
+    showExplanationBox: PropTypes.bool,
     explanationBoxExpanded: PropTypes.bool,
   };
 
@@ -72,6 +75,15 @@ class CommunityTimeline extends React.PureComponent {
     }
   }
 
+  explanationBoxMenu = () => {
+    const { intl } = this.props;
+    return [{ text: intl.formatMessage(messages.dismiss), action: this.dismissExplanationBox }];
+  }
+
+  dismissExplanationBox = () => {
+    this.props.dispatch(changeSetting(['showExplanationBox'], false));
+  }
+
   toggleExplanationBox = (setting) => {
     this.props.dispatch(changeSetting(['explanationBox'], setting));
   }
@@ -82,16 +94,17 @@ class CommunityTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, onlyMedia, timelineId, siteTitle, explanationBoxExpanded } = this.props;
+    const { intl, hasUnread, onlyMedia, timelineId, siteTitle, showExplanationBox, explanationBoxExpanded } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
         <HomeColumnHeader activeItem='fediverse' active={hasUnread} >
           <ColumnSettingsContainer />
         </HomeColumnHeader>
-        <div className='explanation-box'>
+        {showExplanationBox && <div className='explanation-box'>
           <Accordion
             headline={<FormattedMessage id='fediverse_tab.explanation_box.title' defaultMessage='What is the Fediverse?' />}
+            menu={this.explanationBoxMenu()}
             expanded={explanationBoxExpanded}
             onToggle={this.toggleExplanationBox}
           >
@@ -112,7 +125,7 @@ class CommunityTimeline extends React.PureComponent {
               }}
             />
           </Accordion>
-        </div>
+        </div>}
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
