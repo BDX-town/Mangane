@@ -25,6 +25,7 @@ export const defaultSettings = ImmutableMap({
   defaultContentType: 'text/plain',
   themeMode: 'light',
   locale: navigator.language.split(/[-_]/)[0] || 'en',
+  showExplanationBox: true,
   explanationBox: true,
   otpEnabled: false,
 
