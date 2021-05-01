@@ -20,6 +20,8 @@ import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import { isVerified } from 'soapbox/utils/accounts';
+import { openModal } from 'soapbox/actions/modal';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -104,6 +106,24 @@ class Header extends ImmutablePureComponent {
   }, 5, {
     trailing: true,
   });
+
+  onAvatarClick = () => {
+    const avatar_url = this.props.account.get('avatar');
+    const avatar = ImmutableMap({
+      type: 'image',
+      preview_url: avatar_url,
+      url: avatar_url,
+      description: '',
+    });
+    this.props.dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
+  }
+
+  handleAvatarClick = (e) => {
+    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.onAvatarClick();
+    }
+  }
 
   makeMenu() {
     const { account, intl, me, isStaff, version } = this.props;
@@ -255,9 +275,9 @@ class Header extends ImmutablePureComponent {
         <div className='account__header__bar'>
           <div className='account__header__extra'>
 
-            <div className='account__header__avatar'>
+            <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
               <Avatar account={account} size={avatarSize} />
-            </div>
+            </a>
 
             <div className='account__header__extra__links'>
 
