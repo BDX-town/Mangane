@@ -8,6 +8,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import { isStaff } from 'soapbox/utils/accounts';
+import { isUserTouching } from 'soapbox/is_mobile';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 
@@ -129,19 +130,17 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleLikeButtonHover = e => {
-    if (!this.isMobile()) this.setState({ emojiSelectorVisible: true });
+    if (!isUserTouching()) this.setState({ emojiSelectorVisible: true });
   }
 
   handleLikeButtonLeave = e => {
-    if (!this.isMobile()) this.setState({ emojiSelectorVisible: false });
+    if (!isUserTouching()) this.setState({ emojiSelectorVisible: false });
   }
 
   handleLikeButtonClick = e => {
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
-    if (this.isMobile()) {
+    if (isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
       } else {
