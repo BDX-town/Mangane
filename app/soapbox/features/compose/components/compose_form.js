@@ -166,8 +166,12 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   componentDidMount() {
+    const length = this.props.text.length;
     document.addEventListener('click', this.handleClick, true);
-    this.setCursor(this.props.text.length); // Set cursor at end
+
+    if (length > 0) {
+      this.setCursor(length); // Set cursor at end
+    }
   }
 
   componentWillUnmount() {
