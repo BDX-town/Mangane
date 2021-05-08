@@ -2,7 +2,7 @@ import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
-import { fetchMeSuccess } from 'soapbox/actions/me';
+import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -136,14 +136,16 @@ export function otpVerify(code, mfa_token) {
 
 export function verifyCredentials(token) {
   return (dispatch, getState) => {
+    const me = getState().get('me');
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
 
     return baseClient(token).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
-      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+      if (account.id === me) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
+      if (me === null) dispatch(fetchMeFail(error));
       dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
     });
   };
