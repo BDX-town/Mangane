@@ -179,7 +179,7 @@ describe('auth reducer', () => {
   });
 
   describe('VERIFY_CREDENTIALS_FAIL', () => {
-    it('should delete the failed token', () => {
+    it('should delete the failed token if it 403\'d', () => {
       const state = fromJS({
         tokens: {
           'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' },
@@ -191,7 +191,12 @@ describe('auth reducer', () => {
         'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
       });
 
-      const action = { type: VERIFY_CREDENTIALS_FAIL, token: 'ABCDEFG' };
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
       const result = reducer(state, action);
       expect(result.get('tokens')).toEqual(expected);
     });
@@ -208,7 +213,12 @@ describe('auth reducer', () => {
         '5678': { id: '5678', access_token: 'HIJKLMN' },
       });
 
-      const action = { type: VERIFY_CREDENTIALS_FAIL, token: 'ABCDEFG' };
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
       const result = reducer(state, action);
       expect(result.get('users')).toEqual(expected);
     });
@@ -222,7 +232,12 @@ describe('auth reducer', () => {
         },
       });
 
-      const action = { type: VERIFY_CREDENTIALS_FAIL, token: 'ABCDEFG' };
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
       const result = reducer(state, action);
       expect(result.get('me')).toEqual('5678');
     });
