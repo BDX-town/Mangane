@@ -136,16 +136,15 @@ export function otpVerify(code, mfa_token) {
 
 export function verifyCredentials(token) {
   return (dispatch, getState) => {
-    const me = getState().get('me');
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
 
     return baseClient(token).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
-      if (account.id === me) dispatch(fetchMeSuccess(account));
+      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
-      if (me === null) dispatch(fetchMeFail(error));
+      if (getState().get('me') === null) dispatch(fetchMeFail(error));
       dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
     });
   };
