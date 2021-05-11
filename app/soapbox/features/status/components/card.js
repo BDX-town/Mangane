@@ -67,7 +67,7 @@ export default class Card extends React.PureComponent {
   };
 
   static defaultProps = {
-    maxDescription: 50,
+    maxDescription: 200,
     compact: false,
   };
 
@@ -174,8 +174,8 @@ export default class Card extends React.PureComponent {
     const description = (
       <div className='status-card__content'>
         {title}
-        {!(horizontal || compact) && <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>}
-        <span className='status-card__host'>{provider}</span>
+        <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
+        <span className='status-card__host'><Icon id='link' /> {provider}</span>
       </div>
     );
 
@@ -221,7 +221,7 @@ export default class Card extends React.PureComponent {
       );
     } else {
       embed = (
-        <div className='status-card__image'>
+        <div className='status-card__image status-card__image--empty'>
           <Icon id='file-text' />
         </div>
       );
