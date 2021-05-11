@@ -45,6 +45,7 @@ const addAutoPlay = html => {
     }
 
     iframe.src += 'autoplay=1&auto_play=1';
+    iframe.allow = 'autoplay';
 
     // DOM parser creates html/body elements around original HTML fragment,
     // so we need to get innerHTML out of the body and not the entire document
@@ -71,7 +72,7 @@ export default class Card extends React.PureComponent {
   };
 
   state = {
-    width: this.props.defaultWidth || 280,
+    width: this.props.defaultWidth || 467,
     embedded: false,
   };
 
@@ -121,12 +122,10 @@ export default class Card extends React.PureComponent {
 
   renderVideo() {
     const { card }  = this.props;
-    const cardWidth  = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
-    const cardHeight = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
     const html      = card.get('html', card.getIn(['pleroma', 'opengraph', 'html']));
     const content   = { __html: addAutoPlay(html) };
     const { width } = this.state;
-    const ratio     = cardWidth / cardHeight;
+    const ratio     = this.getRatio(card);
     const height    = width / ratio;
 
     return (
@@ -137,6 +136,21 @@ export default class Card extends React.PureComponent {
         style={{ height }}
       />
     );
+  }
+
+  getRatio = card => {
+    const width  = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
+    const height = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
+    const ratio  = width / height;
+
+    // Invalid dimensions, fall back to 16:9
+    if (typeof width !== 'number' || typeof height !== 'number') {
+      return 16 / 9;
+    }
+
+    // Constrain to a sane limit
+    // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
+    return Math.min(Math.max(9 / 16, ratio), 4);
   }
 
   render() {
@@ -154,7 +168,7 @@ export default class Card extends React.PureComponent {
     const horizontal  = (!compact && cardWidth > cardHeight && (cardWidth + 100 >= width)) || interactive || embedded;
     const className   = classnames('status-card', { horizontal, compact, interactive });
     const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
-    const ratio       = cardWidth / cardHeight;
+    const ratio       = this.getRatio(card);
     const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
     const description = (
