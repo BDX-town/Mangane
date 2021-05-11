@@ -476,6 +476,7 @@
   border-radius: 4px;
   color: var(--primary-text-color);
   margin-top: 14px;
+  min-height: 150px;
   text-decoration: none;
   overflow: hidden;
 
@@ -552,19 +553,17 @@ a.status-card {
 
 .status-card__title {
   display: block;
+  font-size: 16px;
   font-weight: 500;
-  margin-bottom: 5px;
-  color: var(--primary-text-color--faint);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 10px;
+  color: var(--primary-text-color);
   text-decoration: none;
 }
 
 .status-card__content {
   flex: 1 1 auto;
   overflow: hidden;
-  padding: 14px 14px 14px 8px;
+  padding: 16px;
 }
 
 .status-card__description {
@@ -573,7 +572,7 @@ a.status-card {
 
 .status-card__host {
   display: block;
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -581,7 +580,7 @@ a.status-card {
 }
 
 .status-card__image {
-  flex: 0 0 100px;
+  flex: 0 0 40%;
   background: var(--brand-color--med);
   position: relative;
 
@@ -592,6 +591,10 @@ a.status-card {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  &--empty {
+    flex: 0 0 80px;
   }
 }
 
@@ -616,19 +619,6 @@ a.status-card {
 
   &.interactive {
     border: 0;
-  }
-
-  .status-card__content {
-    padding: 8px;
-    padding-top: 10px;
-  }
-
-  .status-card__title {
-    white-space: nowrap;
-  }
-
-  .status-card__image {
-    flex: 0 0 60px;
   }
 }
 
