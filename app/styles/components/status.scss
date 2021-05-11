@@ -56,7 +56,7 @@
   }
 
   /* Markdown images */
-  img:not(.emojione) {
+  img:not(.emojione):not([width][height]) {
     width: 100%;
     height: 285.188px;
     object-fit: contain;
