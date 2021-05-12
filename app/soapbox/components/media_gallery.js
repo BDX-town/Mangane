@@ -296,7 +296,7 @@ class MediaGallery extends React.PureComponent {
   getSizeDataSingle = () => {
     const { media, defaultWidth } = this.props;
     const width = this.state.width || defaultWidth;
-    const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
+    const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']);
 
     const getHeight = () => {
       if (!aspectRatio) return width*9/16;
@@ -323,7 +323,7 @@ class MediaGallery extends React.PureComponent {
     let itemsDimensions = [];
 
     const ratios = Array(size).fill().map((_, i) =>
-      media.getIn([i, 'meta', 'small', 'aspect']),
+      media.getIn([i, 'meta', 'original', 'aspect']),
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;
