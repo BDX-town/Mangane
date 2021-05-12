@@ -166,7 +166,7 @@ export default class Card extends React.PureComponent {
     const provider    = card.get('provider_name').length === 0 ? decodeIDNA(getHostname(card.get('url'))) : card.get('provider_name');
     const interactive = card.get('type') !== 'link';
     const horizontal  = (!compact && cardWidth > cardHeight && (cardWidth + 100 >= width)) || interactive || embedded;
-    const className   = classnames('status-card', { horizontal, compact, interactive });
+    const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.get('type')}`);
     const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
     const ratio       = this.getRatio(card);
     const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
