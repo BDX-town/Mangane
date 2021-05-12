@@ -637,6 +637,18 @@ a.status-card.compact:hover {
   background-position: center center;
 }
 
+@media (max-width: 600px) {
+  .status-card--link {
+    flex-direction: column;
+
+    .status-card__image {
+      width: 100%;
+      height: 200px;
+      flex: none;
+    }
+  }
+}
+
 .status__favicon {
   width: 16px;
   height: 16px;
