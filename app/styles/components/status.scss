@@ -612,10 +612,6 @@ a.status-card {
 
 .status-card.compact {
   border-color: var(--brand-color--faint);
-
-  &.interactive {
-    border: 0;
-  }
 }
 
 a.status-card.compact:hover {

@@ -210,7 +210,7 @@ export default class Card extends React.PureComponent {
       return (
         <div className={className} ref={this.setRef}>
           {embed}
-          {!compact && description}
+          {description}
         </div>
       );
     } else if (card.get('image')) {
