@@ -161,11 +161,9 @@ export default class Card extends React.PureComponent {
       return null;
     }
 
-    const cardWidth   = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
-    const cardHeight  = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
     const provider    = card.get('provider_name').length === 0 ? decodeIDNA(getHostname(card.get('url'))) : card.get('provider_name');
     const interactive = card.get('type') !== 'link';
-    const horizontal  = (!compact && cardWidth > cardHeight && (cardWidth + 100 >= width)) || interactive || embedded;
+    const horizontal  = interactive || embedded;
     const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.get('type')}`);
     const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
     const ratio       = this.getRatio(card);
