@@ -157,13 +157,14 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'image') {
-      const previewUrl   = attachment.get('preview_url');
+      const previewUrl = attachment.get('preview_url');
 
-      const originalUrl   = attachment.get('url');
+      const originalUrl = attachment.get('url');
+      const letterboxed = !attachment.getIn(['meta', 'original', 'aspect']);
 
       thumbnail = (
         <a
-          className='media-gallery__item-thumbnail'
+          className={classNames('media-gallery__item-thumbnail', { letterboxed })}
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
