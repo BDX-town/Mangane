@@ -109,16 +109,18 @@
         flex: 1 1;
 
         * {
-          font-size: 15px;
           line-height: 24px;
         }
 
         dt {
           min-width: 26px;
+          font-weight: 900;
+          font-size: 17px;
         }
 
         dd {
-          padding-left: 4px;
+          padding-left: 8px;
+          font-size: 15px;
         }
       }
     }
