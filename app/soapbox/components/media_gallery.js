@@ -15,6 +15,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
 
+const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 const messages = defineMessages({
@@ -38,6 +39,8 @@ class Item extends React.PureComponent {
     visible: PropTypes.bool.isRequired,
     dimensions: PropTypes.object,
     autoPlayGif: PropTypes.bool,
+    last: PropTypes.bool,
+    total: PropTypes.number,
   };
 
   static defaultProps = {
@@ -121,7 +124,7 @@ class Item extends React.PureComponent {
   }
 
   render() {
-    const { attachment, standalone, visible, dimensions, autoPlayGif } = this.props;
+    const { attachment, standalone, visible, dimensions, autoPlayGif, last, total } = this.props;
 
     let width  = 100;
     let height = '100%';
@@ -222,6 +225,11 @@ class Item extends React.PureComponent {
 
     return (
       <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.get('type')}`, { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
+        {last && total > ATTACHMENT_LIMIT && (
+          <div className='media-gallery__item-overflow'>
+            +{total - ATTACHMENT_LIMIT + 1}
+          </div>
+        )}
         <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && this.state.loaded })} />
         {visible && thumbnail}
       </div>
@@ -537,7 +545,7 @@ class MediaGallery extends React.PureComponent {
     const sizeData = this.getSizeData(media.size);
     let children, spoilerButton;
 
-    children = media.take(4).map((attachment, i) => (
+    children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
       <Item
         key={attachment.get('id')}
         onClick={this.handleClick}
@@ -547,6 +555,8 @@ class MediaGallery extends React.PureComponent {
         displayWidth={sizeData.get('width')}
         visible={visible}
         dimensions={sizeData.get('itemsDimensions')[i]}
+        last={i === ATTACHMENT_LIMIT - 1}
+        total={media.size}
       />
     ));
 
