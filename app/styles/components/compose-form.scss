@@ -277,16 +277,33 @@
         }
         &.active { opacity: 1; }
       }
+
+      &-preview {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+
+        video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
     .compose-form__upload-thumbnail {
       border-radius: 4px;
       background-position: center;
-      background-size: contain;
       background-repeat: no-repeat;
-      height: 140px;
+      height: 160px;
       width: 100%;
       overflow: hidden;
+      position: relative;
 
       &.video {
         background-image: url('../images/video-placeholder.png');
