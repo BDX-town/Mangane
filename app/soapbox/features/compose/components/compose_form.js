@@ -99,6 +99,11 @@ class ComposeForm extends ImmutablePureComponent {
     return clickableAreaRef ? clickableAreaRef.current : this.form;
   }
 
+  isEmpty = () => {
+    const { text, spoilerText, anyMedia } = this.props;
+    return !(text || spoilerText || anyMedia);
+  }
+
   isClickOutside = (e) => {
     return ![
       // List of elements that shouldn't collapse the composer when clicked
@@ -111,7 +116,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   handleClick = (e) => {
-    if (this.isClickOutside(e)) {
+    if (this.isEmpty() && this.isClickOutside(e)) {
       this.handleClickOutside();
     }
   }
@@ -238,7 +243,7 @@ class ComposeForm extends ImmutablePureComponent {
 
   render() {
     const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
-    const condensed = shouldCondense && !this.props.text && !this.state.composeFocused;
+    const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
     const disabledButton = disabled || this.props.isUploading || this.props.isChangingUpload || length(text) > maxTootChars || (text.length !== 0 && text.trim().length === 0 && !anyMedia);
