@@ -108,7 +108,7 @@ class Upload extends ImmutablePureComponent {
               className={classNames('compose-form__upload-thumbnail',  `${mediaType}`)}
               style={{
                 transform: `scale(${scale})`,
-                backgroundImage: (mediaType !== 'video' && mediaType !== 'audio' ? `url(${media.get('preview_url')})` : null),
+                backgroundImage: mediaType === 'image' ? `url(${media.get('preview_url')})`: null,
                 backgroundPosition: `${x}% ${y}%` }}
             >
               <div className={classNames('compose-form__upload__actions', { active })}>
@@ -130,6 +130,14 @@ class Upload extends ImmutablePureComponent {
                     onKeyDown={this.handleKeyDown}
                   />
                 </label>
+              </div>
+
+              <div className='compose-form__upload-preview'>
+                {mediaType === 'video' && (
+                  <video autoPlay playsInline muted loop>
+                    <source src={media.get('preview_url')} />
+                  </video>
+                )}
               </div>
             </div>
           )}
