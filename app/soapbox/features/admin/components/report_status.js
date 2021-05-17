@@ -55,7 +55,7 @@ class ReportStatus extends ImmutablePureComponent {
                 blurhash={video.get('blurhash')}
                 src={video.get('url')}
                 alt={video.get('description')}
-                aspectRatio={video.getIn(['meta', 'small', 'aspect'])}
+                aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
                 width={239}
                 height={110}
                 inline
