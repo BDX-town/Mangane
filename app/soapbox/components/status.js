@@ -20,6 +20,7 @@ import PollContainer from 'soapbox/containers/poll_container';
 import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import PictureInPicturePlaceholder from 'soapbox/components/picture_in_picture_placeholder';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -94,6 +95,8 @@ class Status extends ImmutablePureComponent {
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
+    deployPictureInPicture: PropTypes.func,
+    usingPiP: PropTypes.bool,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -103,6 +106,7 @@ class Status extends ImmutablePureComponent {
     'account',
     'muted',
     'hidden',
+    'usingPiP',
   ];
 
   state = {
@@ -213,6 +217,13 @@ class Status extends ImmutablePureComponent {
     this.props.OnOpenAudio(media, startTime);
   }
 
+  handleDeployPictureInPicture = (type, mediaProps) => {
+    const { deployPictureInPicture } = this.props;
+    const status = this._properStatus();
+
+    deployPictureInPicture(status, type, mediaProps);
+  }
+
   handleHotkeyReply = e => {
     e.preventDefault();
     this.props.onReply(this._properStatus(), this.context.router.history);
@@ -274,7 +285,7 @@ class Status extends ImmutablePureComponent {
     let poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, showThread, group, usingPiP } = this.props;
 
     let { status, account, ...other } = this.props;
 
@@ -341,7 +352,9 @@ class Status extends ImmutablePureComponent {
     if (status.get('poll')) {
       poll = <PollContainer pollId={status.get('poll')} />;
     }
-    if (status.get('media_attachments').size > 0) {
+    if (usingPiP) {
+      media = <PictureInPicturePlaceholder width={this.props.cachedMediaWidth} />;
+    } else if (status.get('media_attachments').size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -369,6 +382,7 @@ class Status extends ImmutablePureComponent {
                 cacheWidth={this.props.cacheMediaWidth}
                 visible={this.state.showMedia}
                 onToggleVisibility={this.handleToggleMediaVisibility}
+                deployPictureInPicture={this.handleDeployPictureInPicture}
               />
             )}
           </Bundle>
@@ -387,6 +401,7 @@ class Status extends ImmutablePureComponent {
                 cacheWidth={this.props.cacheMediaWidth}
                 visible={this.state.showMedia}
                 onOpenAudio={this.handleOpenAudio}
+                deployPictureInPicture={this.handleDeployPictureInPicture}
               />
             )}
           </Bundle>

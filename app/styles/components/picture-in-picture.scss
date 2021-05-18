@@ -1,0 +1,132 @@
+.picture-in-picture {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+
+  &__footer {
+    border-radius: 0 0 4px 4px;
+    background: var(--brand-color--faint);
+    padding: 10px;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__header {
+    border-radius: 4px 4px 0 0;
+    background: var(--brand-color--faint);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    &__account {
+      display: flex;
+      text-decoration: none;
+    }
+
+    .account__avatar {
+      margin-right: 10px;
+    }
+
+    .display-name {
+      color: var(--primary-text-color);
+      text-decoration: none;
+
+      strong,
+      span {
+        display: block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+
+      span {
+        color: var(--primary-text-color--faint);
+      }
+    }
+  }
+
+  .video-player,
+  .audio-player {
+    border-radius: 0;
+  }
+}
+
+.picture-in-picture-placeholder {
+  box-sizing: border-box;
+  border: 2px dashed var(--brand-color--med);
+  background: $base-shadow-color;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--primary-text-color--faint);
+
+  i {
+    display: block;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: var(--brand-color--faint);
+  }
+}
+
+.media-modal__overlay {
+  .picture-in-picture__footer {
+    border-radius: 0;
+    background: transparent;
+    padding: 20px 0;
+
+    .icon-button {
+      color: #fff;
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: #fff;
+        background-color: rgba(#fff, 0.15);
+      }
+
+      &:focus {
+        background-color: rgba(#fff, 0.3);
+      }
+
+      &.active {
+        color: var(--brand-color--hicontrast);
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: var(--brand-color);
+        }
+
+        &:focus {
+          background: var(--brand-color);
+        }
+      }
+
+      &.star-icon.active {
+        color: $gold-star;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: rgba($gold-star, 0.15);
+        }
+
+        &:focus {
+          background: rgba($gold-star, 0.3);
+        }
+      }
+    }
+  }
+}

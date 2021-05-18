@@ -18,6 +18,7 @@ import PollContainer from 'soapbox/containers/poll_container';
 import StatusInteractionBar from './status_interaction_bar';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import PictureInPicturePlaceholder from 'soapbox/components/picture_in_picture_placeholder';
 
 export default class DetailedStatus extends ImmutablePureComponent {
 
@@ -35,6 +36,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     domain: PropTypes.string,
     compact: PropTypes.bool,
     showMedia: PropTypes.bool,
+    usingPiP: PropTypes.bool,
     onToggleMediaVisibility: PropTypes.func,
   };
 
@@ -86,7 +88,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
     const outerStyle = { boxSizing: 'border-box' };
-    const { compact } = this.props;
+    const { compact, usingPiP } = this.props;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
@@ -105,7 +107,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     if (status.get('poll')) {
       poll = <PollContainer pollId={status.get('poll')} />;
     }
-    if (status.get('media_attachments').size > 0) {
+    if (usingPiP) {
+      media = <PictureInPicturePlaceholder />;
+    } else if (status.get('media_attachments').size > 0) {
       if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 

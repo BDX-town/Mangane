@@ -1,5 +1,6 @@
 .icon-button {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding: 0;
   color: hsla(var(--primary-text-color_hsl), 0.4);
   border: 0;
@@ -69,6 +70,14 @@
     &:hover {
       background: var(--background-color);
     }
+  }
+
+  &__counter {
+    display: inline-block;
+    width: 14px;
+    margin-left: 4px;
+    font-size: 12px;
+    font-weight: 500;
   }
 }
 

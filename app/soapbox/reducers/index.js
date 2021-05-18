@@ -52,6 +52,7 @@ import profile_hover_card from './profile_hover_card';
 import backups from './backups';
 import admin_log from './admin_log';
 import security from './security';
+import picture_in_picture from './picture_in_picture';
 
 const appReducer = combineReducers({
   dropdown_menu,
@@ -105,6 +106,7 @@ const appReducer = combineReducers({
   backups,
   admin_log,
   security,
+  picture_in_picture,
 });
 
 // Clear the state (mostly) when the user logs out

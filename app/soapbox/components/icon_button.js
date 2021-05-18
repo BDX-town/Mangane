@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+import AnimatedNumber from 'soapbox/components/animated_number';
 
 export default class IconButton extends React.PureComponent {
 
@@ -28,6 +29,8 @@ export default class IconButton extends React.PureComponent {
     tabIndex: PropTypes.string,
     text: PropTypes.string,
     emoji: PropTypes.string,
+    counter: PropTypes.number,
+    obfuscateCount: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -74,6 +77,8 @@ export default class IconButton extends React.PureComponent {
       title,
       text,
       emoji,
+      counter,
+      obfuscateCount,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -82,6 +87,10 @@ export default class IconButton extends React.PureComponent {
       inverted,
       overlayed: overlay,
     });
+
+    if (typeof counter !== 'undefined') {
+      style.width = 'auto';
+    }
 
     if (!animate) {
       // Perf optimization: avoid unnecessary <Motion> components unless
@@ -128,6 +137,7 @@ export default class IconButton extends React.PureComponent {
               {emoji
                 ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
                 : <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
+              {typeof counter !== 'undefined' && <span className='icon-button__counter'><AnimatedNumber value={counter} obfuscate={obfuscateCount} /></span>}
             </div>
             {text && <span className='icon_button__text'>{text}</span>}
           </button>

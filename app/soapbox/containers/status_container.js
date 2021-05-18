@@ -28,6 +28,7 @@ import {
 import { initMuteModal } from '../actions/mutes';
 import { initReport } from '../actions/reports';
 import { openModal } from '../actions/modal';
+import { deployPictureInPicture } from '../actions/picture_in_picture';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../actions/alerts';
 import {
@@ -56,6 +57,7 @@ const makeMapStateToProps = () => {
     status: getStatus(state, props),
     displayMedia: getSettings(state).get('displayMedia'),
     allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
+    usingPiP: state.get('picture_in_picture').statusId === props.id,
   });
 
   return mapStateToProps;
@@ -225,6 +227,9 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
   },
 
+  deployPictureInPicture(status, type, mediaProps) {
+    dispatch(deployPictureInPicture(status.get('id'), status.getIn(['account', 'id']), type, mediaProps));
+  },
 });
 
 export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));

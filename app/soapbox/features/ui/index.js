@@ -41,6 +41,7 @@ import { isStaff } from 'soapbox/utils/accounts';
 import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
+import PictureInPicture from 'soapbox/features/picture_in_picture';
 
 import {
   Status,
@@ -676,6 +677,7 @@ class UI extends React.PureComponent {
 
           {me && floatingActionButton}
 
+          <PictureInPicture />
           <NotificationsContainer />
           <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
