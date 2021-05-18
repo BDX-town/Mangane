@@ -65,312 +65,60 @@
 
 .audio-player {
   overflow: hidden;
+  box-sizing: border-box;
   position: relative;
-  background: $base-shadow-color;
-  max-width: 100%;
+  background: var(--foreground-color);
   border-radius: 4px;
-  height: 57px;
+  padding-bottom: 44px;
+  direction: ltr;
 
-  &.warning_visible {
-    height: 92px;
-  }
-
-  &:focus {
-    outline: 0;
-  }
-
-  audio {
-    max-width: 100vw;
-    max-height: 80vh;
-    min-height: 120px;
-    object-fit: contain;
-    z-index: 1;
-  }
-
-  &.fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    margin: 0;
-
-    audio {
-      max-width: 100% !important;
-      max-height: 100% !important;
-      width: 100% !important;
-      height: 100% !important;
-    }
-  }
-
-  &.inline {
-    audio {
-      object-fit: contain;
-      position: relative;
-    }
-  }
-
-  &__controls {
-    position: absolute;
-    z-index: 2;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-sizing: border-box;
-    background: linear-gradient(0deg, rgba($base-shadow-color, 0.85) 0, rgba($base-shadow-color, 0.45) 60%, transparent);
-    padding: 0 15px;
-    opacity: 1;
-    transition: opacity 0.1s ease;
-  }
-
-  &.inactive {
-    min-height: 57px;
-
-    audio,
-    .audio-player__controls {
-      visibility: hidden;
-    }
-  }
-
-  &__spoiler {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
+  &.editable {
+    border-radius: 0;
     height: 100%;
-    z-index: 4;
-    border: 0;
-    background: var(--background-color);
-    color: var(--primary-text-color--faint);
-    transition: none;
-    pointer-events: auto;
+  }
 
-    &:hover,
+  .video-player__volume::before,
+  .video-player__seek::before {
+    background: currentColor;
+    opacity: 0.15;
+  }
+
+  .video-player__seek__buffer {
+    background: currentColor;
+    opacity: 0.2;
+  }
+
+  .video-player__buttons button {
+    color: currentColor;
+    opacity: 0.75;
+
     &:active,
+    &:hover,
     &:focus {
-      color: var(--primary-text-color);
-    }
-
-    &__title {
-      display: block;
-      font-size: 14px;
-    }
-
-    &__subtitle {
-      display: block;
-      font-size: 11px;
-      font-weight: 500;
-    }
-  }
-
-  &__buttons-bar {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 10px;
-  }
-
-  &__spoiler-warning {
-    font-size: 16px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    background: hsl(var(--brand-color_h), var(--brand-color_s), 20%);
-    padding: 5px;
-
-    &__label {
-      color: #fff;
-    }
-
-    button {
-      background: transparent;
-      font-size: 16px;
-      border: 0;
-      color: rgba(#fff, 0.75);
-      position: absolute;
-      right: 0;
-      padding-right: 5px;
-
-      i {
-        margin-right: 0;
-      }
-
-      &:active,
-      &:hover,
-      &:focus {
-        color: #fff;
-      }
-    }
-  }
-
-  &__buttons {
-    font-size: 16px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-
-    &.left {
-      button {
-        padding-left: 0;
-      }
-    }
-
-    button {
-      background: transparent;
-      padding: 2px 10px;
-      font-size: 16px;
-      border: 0;
-      color: rgba(#fff, 0.75);
-
-      &:active,
-      &:hover,
-      &:focus {
-        color: #fff;
-      }
-    }
-  }
-
-  &__time-sep,
-  &__time-total,
-  &__time-current {
-    font-size: 14px;
-    font-weight: 500;
-  }
-
-  &__time-current {
-    color: #fff;
-    margin-left: 60px;
-  }
-
-  &__time-sep {
-    display: inline-block;
-    margin: 0 6px;
-  }
-
-  &__time-sep,
-  &__time-total {
-    color: #fff;
-  }
-
-  &__volume {
-    cursor: pointer;
-    height: 24px;
-    display: inline;
-
-    &::before {
-      content: "";
-      width: 50px;
-      background: rgba(#fff, 0.35);
-      border-radius: 4px;
-      display: block;
-      position: absolute;
-      height: 4px;
-      left: 85px;
-      bottom: 20px;
-    }
-
-    &__current {
-      display: block;
-      position: absolute;
-      height: 4px;
-      border-radius: 4px;
-      left: 85px;
-      bottom: 20px;
-      background: var(--brand-color);
-    }
-
-    &__handle {
-      position: absolute;
-      z-index: 3;
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      bottom: 16px;
-      left: 70px;
-      transition: opacity 0.1s ease;
-      background: var(--brand-color);
-      box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
-      pointer-events: none;
-    }
-  }
-
-  &__link {
-    padding: 2px 10px;
-
-    a {
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      color: #fff;
-
-      &:hover,
-      &:active,
-      &:focus {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  &__seek {
-    cursor: pointer;
-    height: 24px;
-    position: relative;
-
-    &::before {
-      content: "";
-      width: 100%;
-      background: rgba(#fff, 0.35);
-      border-radius: 4px;
-      display: block;
-      position: absolute;
-      height: 4px;
-      top: 10px;
-    }
-
-    &__progress,
-    &__buffer {
-      display: block;
-      position: absolute;
-      height: 4px;
-      border-radius: 4px;
-      top: 10px;
-      background: var(--brand-color);
-    }
-
-    &__buffer {
-      background: rgba(#fff, 0.2);
-    }
-
-    &__handle {
-      position: absolute;
-      z-index: 3;
+      color: currentColor;
       opacity: 1;
-      border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      top: 6px;
-      margin-left: -6px;
-      transition: opacity 0.1s ease;
-      background: var(--brand-color);
-      box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
-      pointer-events: none;
-    }
-
-    &:hover {
-      .audio-player__seek__handle {
-        opacity: 1;
-      }
     }
   }
 
-  &.detailed {
-    width: 100vmin;
-    height: 80px;
+  .video-player__time-sep,
+  .video-player__time-total,
+  .video-player__time-current {
+    color: currentColor;
+  }
 
-    @media screen and (max-width: 790px) { width: 80vmin; }
+  .video-player__seek::before,
+  .video-player__seek__buffer,
+  .video-player__seek__progress {
+    top: 0;
+  }
 
-    .audio-player__buttons {
-      button {
-        padding-top: 10px;
-        padding-bottom: 10px;
-      }
-    }
+  .video-player__seek__handle {
+    top: -4px;
+  }
+
+  .video-player__controls {
+    padding-top: 10px;
+    background: transparent;
   }
 }
 
