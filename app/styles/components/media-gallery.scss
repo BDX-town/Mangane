@@ -82,6 +82,12 @@
     transition: opacity 0.1s ease;
     line-height: 18px;
   }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .status__wrapper,

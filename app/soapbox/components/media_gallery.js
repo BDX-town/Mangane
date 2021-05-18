@@ -123,6 +123,16 @@ class Item extends React.PureComponent {
     this.setState({ loaded: true });
   }
 
+  handleVideoHover = ({ target: video }) => {
+    video.playbackRate = 3.0;
+    video.play();
+  }
+
+  handleVideoLeave = ({ target: video }) => {
+    video.pause();
+    video.currentTime = 0;
+  }
+
   render() {
     const { attachment, standalone, visible, dimensions, autoPlayGif, last, total } = this.props;
 
@@ -219,6 +229,28 @@ class Item extends React.PureComponent {
         >
           <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
           <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+        </a>
+      );
+    } else if (attachment.get('type') === 'video') {
+      const ext = attachment.get('url').split('.').pop().toUpperCase();
+      thumbnail = (
+        <a
+          className={classNames('media-gallery__item-thumbnail')}
+          href={attachment.get('url')}
+          onClick={this.handleClick}
+          target='_blank'
+          alt={attachment.get('description')}
+          title={attachment.get('description')}
+        >
+          <video
+            muted
+            loop
+            onMouseOver={this.handleVideoHover}
+            onMouseOut={this.handleVideoLeave}
+          >
+            <source src={attachment.get('url')} />
+          </video>
+          <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
     }
