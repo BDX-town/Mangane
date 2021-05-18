@@ -119,9 +119,14 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
-  handleCloserClick = e => {
+  handleCloserClick = ({ target }) => {
+    const whitelist = ['zoomable-image'];
     const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
-    if (e.target === activeSlide || !activeSlide.contains(e.target)) {
+
+    const isClickOutside = target === activeSlide || !activeSlide.contains(target);
+    const isWhitelisted = whitelist.some(w => target.classList.contains(w));
+
+    if (isClickOutside || isWhitelisted) {
       this.props.onClose();
     }
   }
