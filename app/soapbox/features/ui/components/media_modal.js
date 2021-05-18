@@ -119,6 +119,13 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
+  handleCloserClick = e => {
+    const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
+    if (e.target === activeSlide || !activeSlide.contains(e.target)) {
+      this.props.onClose();
+    }
+  }
+
   render() {
     const { media, status, account, intl, onClose } = this.props;
     const { navigationHidden } = this.state;
@@ -236,7 +243,7 @@ class MediaModal extends ImmutablePureComponent {
         <div
           className='media-modal__closer'
           role='presentation'
-          onClick={onClose}
+          onClick={this.handleCloserClick}
         >
           <ReactSwipeableViews
             style={swipeableViewsStyle}
