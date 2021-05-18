@@ -399,9 +399,6 @@ class Video extends React.PureComponent {
     const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
-
-    const volumeWidth = (muted) ? 0 : volume * this.volWidth;
-    const volumeHandleLoc = (muted) ? this.volHandleOffset(0) : this.volHandleOffset(volume);
     const playerStyle = {};
 
     let { width, height } = this.props;
@@ -486,12 +483,12 @@ class Video extends React.PureComponent {
               <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
               <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
 
-              <div className='video-player__volume' onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
-                <div className='video-player__volume__current' style={{ width: `${volumeWidth}px` }} />
+              <div className={classNames('video-player__volume', { active: this.state.hovered })} onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
+                <div className='video-player__volume__current' style={{ width: `${volume * 100}%` }} />
                 <span
                   className={classNames('video-player__volume__handle')}
                   tabIndex='0'
-                  style={{ left: `${volumeHandleLoc}px` }}
+                  style={{ left: `${volume * 100}%` }}
                 />
               </div>
 

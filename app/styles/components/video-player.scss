@@ -121,8 +121,6 @@
     video {
       object-fit: contain;
       position: relative;
-      top: 50%;
-      transform: translateY(-50%);
     }
   }
 
@@ -144,6 +142,8 @@
   }
 
   &.inactive {
+    min-height: 300px;
+
     video,
     .video-player__controls {
       visibility: hidden;

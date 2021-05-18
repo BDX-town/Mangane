@@ -67,7 +67,7 @@
   overflow: hidden;
   box-sizing: border-box;
   position: relative;
-  background: var(--foreground-color);
+  background: $base-shadow-color;
   border-radius: 4px;
   padding-bottom: 44px;
   direction: ltr;
