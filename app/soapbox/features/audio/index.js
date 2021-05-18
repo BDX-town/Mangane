@@ -1,147 +1,95 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { throttle } from 'lodash';
-import classNames from 'classnames';
+import { defineMessages, injectIntl } from 'react-intl';
+import { formatTime } from 'soapbox/features/video';
 import Icon from 'soapbox/components/icon';
-import { getSettings } from 'soapbox/actions/settings';
+import classNames from 'classnames';
+import { throttle } from 'lodash';
+import { getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
+import { debounce } from 'lodash';
+import Visualizer from './visualizer';
 
 const messages = defineMessages({
-  play: { id: 'audio.play', defaultMessage: 'Play' },
-  pause: { id: 'audio.pause', defaultMessage: 'Pause' },
-  mute: { id: 'audio.mute', defaultMessage: 'Mute' },
-  unmute: { id: 'audio.unmute', defaultMessage: 'Unmute' },
-  hide: { id: 'audio.hide', defaultMessage: 'Hide audio' },
-  expand: { id: 'audio.expand', defaultMessage: 'Expand audio' },
-  close: { id: 'audio.close', defaultMessage: 'Close audio' },
+  play: { id: 'video.play', defaultMessage: 'Play' },
+  pause: { id: 'video.pause', defaultMessage: 'Pause' },
+  mute: { id: 'video.mute', defaultMessage: 'Mute sound' },
+  unmute: { id: 'video.unmute', defaultMessage: 'Unmute sound' },
+  download: { id: 'video.download', defaultMessage: 'Download file' },
 });
 
-const formatTime = secondsNum => {
-  let hours   = Math.floor(secondsNum / 3600);
-  let minutes = Math.floor((secondsNum - (hours * 3600)) / 60);
-  let seconds = secondsNum - (hours * 3600) - (minutes * 60);
+const TICK_SIZE = 10;
+const PADDING   = 180;
 
-  if (hours   < 10) hours   = '0' + hours;
-  if (minutes < 10 && hours >= 1) minutes = '0' + minutes;
-  if (seconds < 10) seconds = '0' + seconds;
-
-  return (hours === '00' ? '' : `${hours}:`) + `${minutes}:${seconds}`;
-};
-
-export const findElementPosition = el => {
-  let box;
-
-  if (el.getBoundingClientRect && el.parentNode) {
-    box = el.getBoundingClientRect();
-  }
-
-  if (!box) {
-    return {
-      left: 0,
-      top: 0,
-    };
-  }
-
-  const docEl = document.documentElement;
-  const body  = document.body;
-
-  const clientLeft = docEl.clientLeft || body.clientLeft || 0;
-  const scrollLeft = window.pageXOffset || body.scrollLeft;
-  const left       = (box.left + scrollLeft) - clientLeft;
-
-  const clientTop = docEl.clientTop || body.clientTop || 0;
-  const scrollTop = window.pageYOffset || body.scrollTop;
-  const top       = (box.top + scrollTop) - clientTop;
-
-  return {
-    left: Math.round(left),
-    top: Math.round(top),
-  };
-};
-
-export const getPointerPosition = (el, event) => {
-  const position = {};
-  const box = findElementPosition(el);
-  const boxW = el.offsetWidth;
-  const boxH = el.offsetHeight;
-  const boxY = box.top;
-  const boxX = box.left;
-
-  let pageY = event.pageY;
-  let pageX = event.pageX;
-
-  if (event.changedTouches) {
-    pageX = event.changedTouches[0].pageX;
-    pageY = event.changedTouches[0].pageY;
-  }
-
-  position.y = Math.max(0, Math.min(1, (pageY - boxY) / boxH));
-  position.x = Math.max(0, Math.min(1, (pageX - boxX) / boxW));
-
-  return position;
-};
-
-const mapStateToProps = state => ({
-  displayMedia: getSettings(state).get('displayMedia'),
-});
-
-export default @connect(mapStateToProps)
-@injectIntl
+export default @injectIntl
 class Audio extends React.PureComponent {
 
   static propTypes = {
     src: PropTypes.string.isRequired,
     alt: PropTypes.string,
-    sensitive: PropTypes.bool,
-    startTime: PropTypes.number,
-    detailed: PropTypes.bool,
-    inline: PropTypes.bool,
-    cacheWidth: PropTypes.func,
-    visible: PropTypes.bool,
-    onToggleVisibility: PropTypes.func,
+    poster: PropTypes.string,
+    duration: PropTypes.number,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    editable: PropTypes.bool,
+    fullscreen: PropTypes.bool,
     intl: PropTypes.object.isRequired,
-    link: PropTypes.node,
-    displayMedia: PropTypes.string,
-    expandSpoilers: PropTypes.bool,
+    cacheWidth: PropTypes.func,
+    backgroundColor: PropTypes.string,
+    foregroundColor: PropTypes.string,
+    accentColor: PropTypes.string,
+    currentTime: PropTypes.number,
+    autoPlay: PropTypes.bool,
+    volume: PropTypes.number,
+    muted: PropTypes.bool,
+    deployPictureInPicture: PropTypes.func,
   };
 
   state = {
+    width: this.props.width,
     currentTime: 0,
-    duration: 0,
-    volume: 0.5,
+    buffer: 0,
+    duration: null,
     paused: true,
-    dragging: false,
     muted: false,
-    revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
+    volume: 0.5,
+    dragging: false,
   };
 
-  // hard coded in components.scss
-  // any way to get ::before values programatically?
-  volWidth = 50;
-  volOffset = 85;
-  volHandleOffset = v => {
-    const offset = v * this.volWidth + this.volOffset;
-    return (offset > 125) ? 125 : offset;
+  constructor(props) {
+    super(props);
+    this.visualizer = new Visualizer(TICK_SIZE);
   }
 
   setPlayerRef = c => {
     this.player = c;
 
-    if (c) {
-      if (this.props.cacheWidth) this.props.cacheWidth(this.player.offsetWidth);
-      this.setState({
-        containerWidth: c.offsetWidth,
-      });
+    if (this.player) {
+      this._setDimensions();
     }
   }
 
-  setAudioRef = c => {
-    this.audio = c;
+  _pack() {
+    return {
+      src: this.props.src,
+      volume: this.audio.volume,
+      muted: this.audio.muted,
+      currentTime: this.audio.currentTime,
+      poster: this.props.poster,
+      backgroundColor: this.props.backgroundColor,
+      foregroundColor: this.props.foregroundColor,
+      accentColor: this.props.accentColor,
+    };
+  }
 
-    if (this.audio) {
-      this.setState({ volume: this.audio.volume, muted: this.audio.muted });
+  _setDimensions() {
+    const width  = this.player.offsetWidth;
+    const height = this.props.fullscreen ? this.player.offsetHeight : (width / (16/9));
+
+    if (this.props.cacheWidth) {
+      this.props.cacheWidth(width);
     }
+
+    this.setState({ width, height });
   }
 
   setSeekRef = c => {
@@ -152,20 +100,92 @@ class Audio extends React.PureComponent {
     this.volume = c;
   }
 
-  handleClickRoot = e => e.stopPropagation();
+  setAudioRef = c => {
+    this.audio = c;
+
+    if (this.audio) {
+      this.setState({ volume: this.audio.volume, muted: this.audio.muted });
+    }
+  }
+
+  setCanvasRef = c => {
+    this.canvas = c;
+
+    this.visualizer.setCanvas(c);
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize, { passive: true });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.src !== this.props.src || this.state.width !== prevState.width || this.state.height !== prevState.height || prevProps.accentColor !== this.props.accentColor) {
+      this._clear();
+      this._draw();
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
+
+    if (!this.state.paused && this.audio && this.props.deployPictureInPicture) {
+      this.props.deployPictureInPicture('audio', this._pack());
+    }
+  }
+
+  togglePlay = () => {
+    if (!this.audioContext) {
+      this._initAudioContext();
+    }
+
+    if (this.state.paused) {
+      this.setState({ paused: false }, () => this.audio.play());
+    } else {
+      this.setState({ paused: true }, () => this.audio.pause());
+    }
+  }
+
+  handleResize = debounce(() => {
+    if (this.player) {
+      this._setDimensions();
+    }
+  }, 250, {
+    trailing: true,
+  });
 
   handlePlay = () => {
     this.setState({ paused: false });
+
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
+    this._renderCanvas();
   }
 
   handlePause = () => {
     this.setState({ paused: true });
+
+    if (this.audioContext) {
+      this.audioContext.suspend();
+    }
   }
 
-  handleTimeUpdate = () => {
-    this.setState({
-      currentTime: Math.floor(this.audio.currentTime),
-      duration: Math.floor(this.audio.duration),
+  handleProgress = () => {
+    const lastTimeRange = this.audio.buffered.length - 1;
+
+    if (lastTimeRange > -1) {
+      this.setState({ buffer: Math.ceil(this.audio.buffered.end(lastTimeRange) / this.audio.duration * 100) });
+    }
+  }
+
+  toggleMute = () => {
+    const muted = !this.state.muted;
+
+    this.setState({ muted }, () => {
+      this.audio.muted = muted;
     });
   }
 
@@ -187,22 +207,6 @@ class Audio extends React.PureComponent {
     document.removeEventListener('touchmove', this.handleMouseVolSlide, true);
     document.removeEventListener('touchend', this.handleVolumeMouseUp, true);
   }
-
-  handleMouseVolSlide = throttle(e => {
-    const rect = this.volume.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / this.volWidth; //x position within the element.
-
-    if(!isNaN(x)) {
-      var slideamt = x;
-      if(x > 1) {
-        slideamt = 1;
-      } else if(x < 0) {
-        slideamt = 0;
-      }
-      this.audio.volume = slideamt;
-      this.setState({ volume: slideamt });
-    }
-  }, 60);
 
   handleMouseDown = e => {
     document.addEventListener('mousemove', this.handleMouseMove, true);
@@ -230,146 +234,295 @@ class Audio extends React.PureComponent {
 
   handleMouseMove = throttle(e => {
     const { x } = getPointerPosition(this.seek, e);
-    const currentTime = Math.floor(this.audio.duration * x);
+    const currentTime = this.audio.duration * x;
 
     if (!isNaN(currentTime)) {
-      this.audio.currentTime = currentTime;
-      this.setState({ currentTime });
+      this.setState({ currentTime }, () => {
+        this.audio.currentTime = currentTime;
+      });
     }
-  }, 60);
+  }, 15);
 
-  togglePlay = () => {
-    if (this.state.paused) {
-      this.audio.play();
-    } else {
+  handleTimeUpdate = () => {
+    this.setState({
+      currentTime: this.audio.currentTime,
+      duration: this.audio.duration,
+    });
+  }
+
+  handleMouseVolSlide = throttle(e => {
+    const { x } = getPointerPosition(this.volume, e);
+
+    if(!isNaN(x)) {
+      this.setState({ volume: x }, () => {
+        this.audio.volume = x;
+      });
+    }
+  }, 15);
+
+  handleScroll = throttle(() => {
+    if (!this.canvas || !this.audio) {
+      return;
+    }
+
+    const { top, height } = this.canvas.getBoundingClientRect();
+    const inView = (top <= (window.innerHeight || document.documentElement.clientHeight)) && (top + height >= 0);
+
+    if (!this.state.paused && !inView) {
       this.audio.pause();
+
+      if (this.props.deployPictureInPicture) {
+        this.props.deployPictureInPicture('audio', this._pack());
+      }
+
+      this.setState({ paused: true });
     }
+  }, 150, { trailing: true });
+
+  handleMouseEnter = () => {
+    this.setState({ hovered: true });
   }
 
-  toggleMute = () => {
-    this.audio.muted = !this.audio.muted;
-    this.setState({ muted: this.audio.muted });
-  }
-
-  toggleWarning = () => {
-    this.setState({ revealed: !this.state.revealed });
+  handleMouseLeave = () => {
+    this.setState({ hovered: false });
   }
 
   handleLoadedData = () => {
-    if (this.props.startTime) {
-      this.audio.currentTime = this.props.startTime;
-      this.audio.play();
+    const { autoPlay, currentTime, volume, muted } = this.props;
+
+    this.setState({ duration: this.audio.duration });
+
+    if (currentTime) {
+      this.audio.currentTime = currentTime;
+    }
+
+    if (volume !== undefined) {
+      this.audio.volume = volume;
+    }
+
+    if (muted !== undefined) {
+      this.audio.muted = muted;
+    }
+
+    if (autoPlay) {
+      this.togglePlay();
     }
   }
 
-  handleProgress = () => {
-    if (this.audio.buffered.length > 0) {
-      this.setState({ buffer: this.audio.buffered.end(0) / this.audio.duration * 100 });
+  _initAudioContext() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const context      = new AudioContext();
+    const source       = context.createMediaElementSource(this.audio);
+
+    this.visualizer.setAudioContext(context, source);
+    source.connect(context.destination);
+
+    this.audioContext = context;
+  }
+
+  handleDownload = () => {
+    fetch(this.props.src).then(res => res.blob()).then(blob => {
+      const element   = document.createElement('a');
+      const objectURL = URL.createObjectURL(blob);
+
+      element.setAttribute('href', objectURL);
+      element.setAttribute('download', fileNameFromURL(this.props.src));
+
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+
+      URL.revokeObjectURL(objectURL);
+    }).catch(err => {
+      console.error(err);
+    });
+  }
+
+  _renderCanvas() {
+    requestAnimationFrame(() => {
+      if (!this.audio) return;
+
+      this.handleTimeUpdate();
+      this._clear();
+      this._draw();
+
+      if (!this.state.paused) {
+        this._renderCanvas();
+      }
+    });
+  }
+
+  _clear() {
+    this.visualizer.clear(this.state.width, this.state.height);
+  }
+
+  _draw() {
+    this.visualizer.draw(this._getCX(), this._getCY(), this._getAccentColor(), this._getRadius(), this._getScaleCoefficient());
+  }
+
+  _getRadius() {
+    return parseInt(((this.state.height || this.props.height) - (PADDING * this._getScaleCoefficient()) * 2) / 2);
+  }
+
+  _getScaleCoefficient() {
+    return (this.state.height || this.props.height) / 982;
+  }
+
+  _getCX() {
+    return Math.floor(this.state.width / 2) || null;
+  }
+
+  _getCY() {
+    return Math.floor(this._getRadius() + (PADDING * this._getScaleCoefficient())) || null;
+  }
+
+  _getAccentColor() {
+    return this.props.accentColor || '#ffffff';
+  }
+
+  _getBackgroundColor() {
+    return this.props.backgroundColor || '#000000';
+  }
+
+  _getForegroundColor() {
+    return this.props.foregroundColor || '#ffffff';
+  }
+
+  seekBy(time) {
+    const currentTime = this.audio.currentTime + time;
+
+    if (!isNaN(currentTime)) {
+      this.setState({ currentTime }, () => {
+        this.audio.currentTime = currentTime;
+      });
     }
   }
 
-  handleVolumeChange = () => {
-    this.setState({ volume: this.audio.volume, muted: this.audio.muted });
+  handleAudioKeyDown = e => {
+    // On the audio element or the seek bar, we can safely use the space bar
+    // for playback control because there are no buttons to press
+
+    if (e.key === ' ') {
+      e.preventDefault();
+      e.stopPropagation();
+      this.togglePlay();
+    }
   }
 
-  getPreload = () => {
-    const { startTime, detailed } = this.props;
-    const { dragging } = this.state;
-
-    if (startTime || dragging) {
-      return 'auto';
-    } else if (detailed) {
-      return 'metadata';
-    } else {
-      return 'none';
+  handleKeyDown = e => {
+    switch(e.key) {
+    case 'k':
+      e.preventDefault();
+      e.stopPropagation();
+      this.togglePlay();
+      break;
+    case 'm':
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleMute();
+      break;
+    case 'j':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(-10);
+      break;
+    case 'l':
+      e.preventDefault();
+      e.stopPropagation();
+      this.seekBy(10);
+      break;
     }
   }
 
   render() {
-    const { src, inline, intl, alt, detailed, sensitive, link } = this.props;
-    const { currentTime, duration, volume, buffer, dragging, paused, muted, revealed } = this.state;
-    const progress = (currentTime / duration) * 100;
-
-    const volumeWidth = (muted) ? 0 : volume * this.volWidth;
-    const volumeHandleLoc = (muted) ? this.volHandleOffset(0) : this.volHandleOffset(volume);
-    const playerStyle = {};
-
-    let warning;
-
-    if (sensitive) {
-      warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
-    } else {
-      warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
-    }
+    const { src, intl, alt, editable } = this.props;
+    const { paused, muted, volume, currentTime, buffer, dragging } = this.state;
+    const duration = this.state.duration || this.props.duration;
+    const progress = Math.min((currentTime / duration) * 100, 100);
 
     return (
-      <div
-        role='menuitem'
-        className={classNames('audio-player', { detailed: detailed, inline: inline, warning_visible: !revealed })}
-        style={playerStyle}
-        ref={this.setPlayerRef}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        onClick={this.handleClickRoot}
-        tabIndex={0}
-      >
-
+      <div className={classNames('audio-player', { editable })} ref={this.setPlayerRef} style={{ backgroundColor: this._getBackgroundColor(), color: this._getForegroundColor(), width: '100%', height: this.props.fullscreen ? '100%' : (this.state.height || this.props.height) }} onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} tabIndex='0' onKeyDown={this.handleKeyDown}>
         <audio
-          ref={this.setAudioRef}
           src={src}
-          // preload={this.getPreload()}
-          role='button'
-          tabIndex='0'
-          aria-label={alt}
-          title={alt}
-          volume={volume}
-          onClick={this.togglePlay}
+          ref={this.setAudioRef}
+          preload='auto'
           onPlay={this.handlePlay}
           onPause={this.handlePause}
-          onTimeUpdate={this.handleTimeUpdate}
-          onLoadedData={this.handleLoadedData}
           onProgress={this.handleProgress}
-          onVolumeChange={this.handleVolumeChange}
+          onLoadedData={this.handleLoadedData}
+          crossOrigin='anonymous'
         />
 
-        <div className={classNames('audio-player__spoiler-warning', { 'spoiler-button--hidden': revealed })}>
-          <span className='audio-player__spoiler-warning__label'><Icon id='warning' fixedWidth /> {warning}</span>
-          <button aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleWarning}><Icon id='times' fixedWidth /></button>
+        <canvas
+          role='button'
+          tabIndex='0'
+          className='audio-player__canvas'
+          width={this.state.width}
+          height={this.state.height}
+          style={{ width: '100%', position: 'absolute', top: 0, left: 0 }}
+          ref={this.setCanvasRef}
+          onClick={this.togglePlay}
+          onKeyDown={this.handleAudioKeyDown}
+          title={alt}
+          aria-label={alt}
+        />
+
+        <img
+          src={this.props.poster}
+          alt=''
+          width={(this._getRadius() - TICK_SIZE) * 2 || null}
+          height={(this._getRadius() - TICK_SIZE) * 2 || null}
+          style={{ position: 'absolute', left: this._getCX(), top: this._getCY(), transform: 'translate(-50%, -50%)', borderRadius: '50%', pointerEvents: 'none' }}
+        />
+
+        <div className='video-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
+          <div className='video-player__seek__buffer' style={{ width: `${buffer}%` }} />
+          <div className='video-player__seek__progress' style={{ width: `${progress}%`, backgroundColor: this._getAccentColor() }} />
+
+          <span
+            className={classNames('video-player__seek__handle', { active: dragging })}
+            tabIndex='0'
+            style={{ left: `${progress}%`, backgroundColor: this._getAccentColor() }}
+            onKeyDown={this.handleAudioKeyDown}
+          />
         </div>
 
-        <div className={classNames('audio-player__controls')}>
-          <div className='audio-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
-            <div className='audio-player__seek__buffer' style={{ width: `${buffer}%` }} />
-            <div className='audio-player__seek__progress' style={{ width: `${progress}%` }} />
+        <div className='video-player__controls active'>
+          <div className='video-player__buttons-bar'>
+            <div className='video-player__buttons left'>
+              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
+              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
 
-            <span
-              className={classNames('audio-player__seek__handle', { active: dragging })}
-              tabIndex='0'
-              style={{ left: `${progress}%` }}
-            />
-          </div>
+              <div className={classNames('video-player__volume', { active: this.state.hovered })} ref={this.setVolumeRef} onMouseDown={this.handleVolumeMouseDown}>
+                <div className='video-player__volume__current' style={{ width: `${volume * 100}%`, backgroundColor: this._getAccentColor() }} />
 
-          <div className='audio-player__buttons-bar'>
-            <div className='audio-player__buttons left'>
-              <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
-              <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
-
-              <div className='audio-player__volume' onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
-                <div className='audio-player__volume__current' style={{ width: `${volumeWidth}px` }} />
                 <span
-                  className={classNames('audio-player__volume__handle')}
+                  className='video-player__volume__handle'
                   tabIndex='0'
-                  style={{ left: `${volumeHandleLoc}px` }}
+                  style={{ left: `${volume * 100}%`, backgroundColor: this._getAccentColor() }}
                 />
               </div>
 
-              <span>
-                <span className='audio-player__time-current'>{formatTime(currentTime)}</span>
-                <span className='audio-player__time-sep'>/</span>
-                <span className='audio-player__time-total'>{formatTime(duration)}</span>
+              <span className='video-player__time'>
+                <span className='video-player__time-current'>{formatTime(Math.floor(currentTime))}</span>
+                {duration && (<>
+                  <span className='video-player__time-sep'>/</span>
+                  <span className='video-player__time-total'>{formatTime(Math.floor(duration))}</span>
+                </>)}
               </span>
+            </div>
 
-              {link && <span className='audio-player__link'>{link}</span>}
+            <div className='video-player__buttons right'>
+              <a
+                title={intl.formatMessage(messages.download)}
+                aria-label={intl.formatMessage(messages.download)}
+                className='video-player__download__icon player-button'
+                href={this.props.src}
+                download
+                target='_blank'
+              >
+                <Icon id={'download'} fixedWidth />
+              </a>
             </div>
           </div>
         </div>
