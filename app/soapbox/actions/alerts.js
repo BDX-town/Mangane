@@ -35,6 +35,10 @@ export function showAlertForError(error) {
   if (error.response) {
     const { data, status, statusText } = error.response;
 
+    if (status === 502) {
+      return showAlert('', 'The server is down', 'error');
+    }
+
     if (status === 404 || status === 410) {
       // Skip these errors as they are reflected in the UI
       return {};
