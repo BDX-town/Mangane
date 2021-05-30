@@ -26,6 +26,17 @@ const mapStateToItemProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
 });
 
+const withinLimits = aspectRatio => {
+  return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
+};
+
+const shouldLetterbox = attachment => {
+  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']);
+  if (!aspectRatio) return true;
+
+  return !withinLimits(aspectRatio);
+};
+
 @connect(mapStateToItemProps)
 class Item extends React.PureComponent {
 
@@ -173,7 +184,7 @@ class Item extends React.PureComponent {
       const previewUrl = attachment.get('preview_url');
 
       const originalUrl = attachment.get('url');
-      const letterboxed = !attachment.getIn(['meta', 'original', 'aspect']);
+      const letterboxed = shouldLetterbox(attachment);
 
       thumbnail = (
         <a
