@@ -1,5 +1,5 @@
-export const minimumAspectRatio = .8;
-export const maximumAspectRatio = 2.8;
+export const minimumAspectRatio = 9 / 16; // Portrait phone
+export const maximumAspectRatio = 10; // Generous min-height
 
 export const isPanoramic = ar => {
   if (isNaN(ar)) return false;
