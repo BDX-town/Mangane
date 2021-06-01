@@ -23,7 +23,6 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
-import { isMobile } from 'soapbox/is_mobile';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import { tagUsers, untagUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
@@ -36,6 +35,8 @@ const messages = defineMessages({
   userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
   userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
 });
+
+const isMobile = width => width <= 1190;
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
