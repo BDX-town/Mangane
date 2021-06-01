@@ -12,14 +12,16 @@ import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
 import ChatWindow from './chat_window';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import { List as ImmutableList } from 'immutable';
 
 const addChatsToPanes = (state, panesData) => {
   const getChat = makeGetChat();
 
-  const newPanes = panesData.get('panes').map(pane => {
+  const newPanes = panesData.get('panes').reduce((acc, pane) => {
     const chat = getChat(state, { id: pane.get('chat_id') });
-    return pane.set('chat', chat);
-  });
+    if (!chat) return acc;
+    return acc.push(pane.set('chat', chat));
+  }, ImmutableList());
 
   return panesData.set('panes', newPanes);
 };
