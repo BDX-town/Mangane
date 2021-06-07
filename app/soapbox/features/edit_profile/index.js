@@ -20,6 +20,7 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
+import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -34,8 +35,10 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const soapbox = getSoapboxConfig(state);
+  const meta = state.getIn(['meta', 'pleroma']);
+  const account = state.getIn(['accounts', me]).set('pleroma', meta);
   return {
-    account: state.getIn(['accounts', me]),
+    account,
     maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
     verifiedCanEditName: soapbox.get('verifiedCanEditName'),
   };
@@ -73,10 +76,13 @@ class EditProfile extends ImmutablePureComponent {
 
   constructor(props) {
     super(props);
-    const initialState = props.account.withMutations(map => {
+    const { account } = this.props;
+    const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
+    const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
+      map.set('stranger_notifications', strangerNotifications);
       unescapeParams(map, ['display_name', 'bio']);
     });
     this.state = initialState.toObject();
@@ -127,13 +133,21 @@ class EditProfile extends ImmutablePureComponent {
 
   handleSubmit = (event) => {
     const { dispatch } = this.props;
-    dispatch(patchMe(this.getFormdata())).then(() => {
+
+    const credentials = dispatch(patchMe(this.getFormdata()));
+    const notifications = dispatch(updateNotificationSettings({
+      block_from_strangers: this.state.stranger_notifications || false,
+    }));
+
+    this.setState({ isLoading: true });
+
+    Promise.all([credentials, notifications]).then(() => {
       this.setState({ isLoading: false });
       dispatch(snackbar.success('Profile saved!'));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
-    this.setState({ isLoading: true });
+
     event.preventDefault();
   }
 
@@ -223,6 +237,13 @@ class EditProfile extends ImmutablePureComponent {
                 hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
                 name='bot'
                 checked={this.state.bot}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
+                hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
+                name='stranger_notifications'
+                checked={this.state.stranger_notifications}
                 onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
