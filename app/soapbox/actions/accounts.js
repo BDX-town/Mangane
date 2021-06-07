@@ -84,6 +84,10 @@ export const FOLLOW_REQUEST_REJECT_REQUEST = 'FOLLOW_REQUEST_REJECT_REQUEST';
 export const FOLLOW_REQUEST_REJECT_SUCCESS = 'FOLLOW_REQUEST_REJECT_SUCCESS';
 export const FOLLOW_REQUEST_REJECT_FAIL    = 'FOLLOW_REQUEST_REJECT_FAIL';
 
+export const NOTIFICATION_SETTINGS_REQUEST = 'NOTIFICATION_SETTINGS_REQUEST';
+export const NOTIFICATION_SETTINGS_SUCCESS = 'NOTIFICATION_SETTINGS_SUCCESS';
+export const NOTIFICATION_SETTINGS_FAIL    = 'NOTIFICATION_SETTINGS_FAIL';
+
 function getFromDB(dispatch, getState, index, id) {
   return new Promise((resolve, reject) => {
     const request = index.get(id);
@@ -802,6 +806,17 @@ export function unpinAccount(id) {
       dispatch(unpinAccountSuccess(response.data));
     }).catch(error => {
       dispatch(unpinAccountFail(error));
+    });
+  };
+};
+
+export function updateNotificationSettings(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: NOTIFICATION_SETTINGS_REQUEST, params });
+    return api(getState).put('/api/pleroma/notification_settings', params).then(({ data }) => {
+      dispatch({ type: NOTIFICATION_SETTINGS_SUCCESS, params, data });
+    }).catch(error => {
+      dispatch({ type: NOTIFICATION_SETTINGS_FAIL, params, error });
     });
   };
 };
