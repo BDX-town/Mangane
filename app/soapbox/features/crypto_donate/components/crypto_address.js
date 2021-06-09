@@ -53,7 +53,7 @@ export default class CryptoAddress extends ImmutablePureComponent {
           </div>
         </div>
         {note && <div className='crypto-address__note'>{note}</div>}
-        <div className='crypto-address__address'>
+        <div className='crypto-address__address simple_form'>
           <input ref={this.setInputRef} type='text' value={address} />
           <button className='crypto-address__copy' onClick={this.handleCopyClick}>
             <FormattedMessage id='crypto_donate.copy' defaultMessage='Copy' />
