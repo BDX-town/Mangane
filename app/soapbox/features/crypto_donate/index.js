@@ -3,15 +3,15 @@ import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Column from '../ui/components/column';
-import CoinList from './coin_list';
+import SiteWallet from './components/site_wallet';
 
 const messages = defineMessages({
-  heading: { id: 'column.cryptocoin', defaultMessage: 'Donate Cryptocurrency' },
+  heading: { id: 'column.crypto_donate', defaultMessage: 'Donate Cryptocurrency' },
 });
 
 export default
 @injectIntl
-class Cryptocoin extends ImmutablePureComponent {
+class CryptoDonate extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -22,8 +22,8 @@ class Cryptocoin extends ImmutablePureComponent {
 
     return (
       <Column icon='bitcoin' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <div className='cryptocoin'>
-          <CoinList />
+        <div className='crypto-donate'>
+          <SiteWallet />
         </div>
       </Column>
     );

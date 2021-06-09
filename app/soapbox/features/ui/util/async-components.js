@@ -230,6 +230,6 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
 
-export function Cryptocoin() {
-  return import(/* webpackChunkName: "features/cryptocoin" */'../../cryptocoin');
+export function CryptoDonate() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
