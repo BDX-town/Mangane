@@ -32,10 +32,12 @@ export default class CryptoAddress extends ImmutablePureComponent {
 
     return (
       <div className='crypto-address'>
-        <div className='crypto-address__icon'>
-          <img src={getCoinIcon(ticker)} alt={title} />
+        <div className='crypto-address__head'>
+          <div className='crypto-address__icon'>
+            <img src={getCoinIcon(ticker)} alt={title} />
+          </div>
+          <div className='crypto-address__title'>{title}</div>
         </div>
-        <div className='crypto-address__title'>{title}</div>
         {note && <div className='crypto-address__note'>{note}</div>}
         <div className='crypto-address__address'>
           <input ref={this.setInputRef} type='text' value={address} />

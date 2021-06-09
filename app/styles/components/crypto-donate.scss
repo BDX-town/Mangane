@@ -1,5 +1,37 @@
 .crypto-address {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 24px;
+    margin-right: 10px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__note {
+    margin-bottom: 10px;
+  }
+
+  &__address {
+    margin-top: auto;
+  }
 }
 
 .site-wallet {
