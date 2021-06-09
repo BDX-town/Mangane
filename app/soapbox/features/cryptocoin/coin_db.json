@@ -1,0 +1,17 @@
+{
+  "supportedCoins": [
+    "btc",
+    "eth",
+    "ltc",
+    "doge",
+    "ubq",
+    "xmr"
+  ],
+  "coinData": {
+    "btc": { "title": "Bitcoin" },
+    "eth": { "title": "Etherium" },
+    "ltc": { "title": "Litecoin" },
+    "doge": { "title": "Dogecoin" },
+    "xmr": { "title": "Monero" }
+  }
+}

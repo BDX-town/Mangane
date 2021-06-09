@@ -92,6 +92,7 @@ import {
   AwaitingApproval,
   Reports,
   ModerationLog,
+  Cryptocoin,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -288,6 +289,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
         <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
+
+        <WrappedRoute path='/donate/crypto' layout={LAYOUT.DEFAULT} component={Cryptocoin} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
       </Switch>

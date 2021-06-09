@@ -229,3 +229,7 @@ export function Reports() {
 export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
+
+export function Cryptocoin() {
+  return import(/* webpackChunkName: "features/cryptocoin" */'../../cryptocoin');
+}
