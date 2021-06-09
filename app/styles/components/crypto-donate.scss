@@ -25,12 +25,26 @@
     }
   }
 
+  &__actions {
+    margin-left: auto;
+    padding-left: 10px;
+
+    a {
+      color: var(--primary-text-color--faint);
+    }
+  }
+
   &__note {
     margin-bottom: 10px;
   }
 
   &__address {
     margin-top: auto;
+    display: flex;
+
+    input {
+      flex: 1;
+    }
   }
 }
 

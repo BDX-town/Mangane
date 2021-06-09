@@ -1,0 +1,8 @@
+{
+  "bch": "https://explorer.bitcoin.com/bch/address/{address}",
+  "btc": "https://explorer.bitcoin.com/btc/address/{address}",
+  "doge": "https://dogechain.info/address/{address}",
+  "eth": "https://etherscan.io/address/{address}",
+  "ubq": "https://ubiqscan.io/address/{address}",
+  "xmr": "https://monerohash.com/explorer/search?value={address}"
+}

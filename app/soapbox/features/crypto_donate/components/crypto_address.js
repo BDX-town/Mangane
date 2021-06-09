@@ -2,8 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
+import blockExplorers from '../utils/block_explorers.json';
 import CoinDB from '../utils/coin_db';
 import { getCoinIcon } from '../utils/coin_icons';
+
+const getExplorerUrl = (ticker, address) => {
+  const template = blockExplorers[ticker];
+  if (!template) return false;
+  return template.replace('{address}', address);
+};
 
 export default class CryptoAddress extends ImmutablePureComponent {
 
@@ -29,6 +37,7 @@ export default class CryptoAddress extends ImmutablePureComponent {
   render() {
     const { address, ticker, note } = this.props;
     const title = CoinDB.getIn([ticker, 'name']);
+    const explorerUrl = getExplorerUrl(ticker, address);
 
     return (
       <div className='crypto-address'>
@@ -37,6 +46,11 @@ export default class CryptoAddress extends ImmutablePureComponent {
             <img src={getCoinIcon(ticker)} alt={title} />
           </div>
           <div className='crypto-address__title'>{title}</div>
+          <div className='crypto-address__actions'>
+            <a href={explorerUrl} target='_blank'>
+              <Icon id='external-link' />
+            </a>
+          </div>
         </div>
         {note && <div className='crypto-address__note'>{note}</div>}
         <div className='crypto-address__address'>
