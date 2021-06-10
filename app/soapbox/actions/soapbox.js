@@ -45,7 +45,7 @@ export const defaultConfig = ImmutableMap({
   displayFqn: true,
   cryptoAddresses: ImmutableList(),
   cryptoDonatePanel: ImmutableMap({
-    limit: 3,
+    limit: 1,
   }),
 });
 
