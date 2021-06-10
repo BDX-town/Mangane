@@ -27,15 +27,23 @@
 
   &__actions {
     margin-left: auto;
-    padding-left: 10px;
 
     a {
       color: var(--primary-text-color--faint);
+      margin-left: 10px;
     }
   }
 
   &__note {
     margin-bottom: 10px;
+  }
+
+  &__qrcode {
+    margin-bottom: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   &__address {
@@ -63,4 +71,10 @@
 .site-wallet {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.crypto-donate-modal {
+  background: var(--foreground-color);
+  border-radius: 8px;
+  padding-bottom: 13px;
 }

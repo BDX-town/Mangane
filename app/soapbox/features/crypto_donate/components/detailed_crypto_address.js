@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import Icon from 'soapbox/components/icon';
+import QRCode from 'qrcode.react';
 import blockExplorers from '../utils/block_explorers.json';
 import CoinDB from '../utils/coin_db';
 import { getCoinIcon } from '../utils/coin_icons';
-import { openModal } from 'soapbox/actions/modal';
 
 const getExplorerUrl = (ticker, address) => {
   const template = blockExplorers[ticker];
@@ -16,7 +16,7 @@ const getExplorerUrl = (ticker, address) => {
 };
 
 export default @connect()
-class CryptoAddress extends ImmutablePureComponent {
+class DetailedCryptoAddress extends ImmutablePureComponent {
 
   static propTypes = {
     address: PropTypes.string.isRequired,
@@ -37,11 +37,6 @@ class CryptoAddress extends ImmutablePureComponent {
     document.execCommand('copy');
   }
 
-  handleModalClick = e => {
-    this.props.dispatch(openModal('CRYPTO_DONATE', this.props));
-    e.preventDefault();
-  }
-
   render() {
     const { address, ticker, note } = this.props;
     const title = CoinDB.getIn([ticker, 'name']);
@@ -55,15 +50,15 @@ class CryptoAddress extends ImmutablePureComponent {
           </div>
           <div className='crypto-address__title'>{title}</div>
           <div className='crypto-address__actions'>
-            <a href='' onClick={this.handleModalClick}>
-              <Icon id='qrcode' />
-            </a>
             <a href={explorerUrl} target='_blank'>
               <Icon id='external-link' />
             </a>
           </div>
         </div>
         {note && <div className='crypto-address__note'>{note}</div>}
+        <div className='crypto-address__qrcode'>
+          <QRCode value={address} />
+        </div>
         <div className='crypto-address__address simple_form'>
           <input ref={this.setInputRef} type='text' value={address} />
           <button className='crypto-address__copy' onClick={this.handleCopyClick}>
