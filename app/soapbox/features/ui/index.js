@@ -290,7 +290,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
         <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
 
-        <WrappedRoute path='/donate/crypto' layout={LAYOUT.DEFAULT} component={CryptoDonate} content={children} />
+        <WrappedRoute path='/donate/crypto' publicRoute layout={LAYOUT.DEFAULT} component={CryptoDonate} content={children} />
 
         <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
       </Switch>
