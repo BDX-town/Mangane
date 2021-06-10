@@ -13,6 +13,12 @@ import { List as ImmutableList } from 'immutable';
 import { getAcct, isAdmin, isModerator } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
+import CryptoAddress from 'soapbox/features/crypto_donate/components/crypto_address';
+
+const TICKER_REGEX = /\$([a-zA-Z]*)/i;
+
+const getTicker = value => (value.match(TICKER_REGEX) || [])[1];
+const isTicker = value => Boolean(getTicker(value));
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
@@ -123,15 +129,19 @@ class ProfileInfoPanel extends ImmutablePureComponent {
                 </dl>
               ))}
 
-              {fields.map((pair, i) => (
-                <dl className='profile-info-panel-content__fields__item' key={i}>
-                  <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
+              {fields.map((pair, i) =>
+                isTicker(pair.get('name', '')) ? (
+                  <CryptoAddress ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
+                ) : (
+                  <dl className='profile-info-panel-content__fields__item' key={i}>
+                    <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
 
-                  <dd className={pair.get('verified_at') && 'verified'} title={pair.get('value_plain')}>
-                    {pair.get('verified_at') && <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(pair.get('verified_at'), dateFormatOptions) })}><Icon id='check' className='verified__mark' /></span>} <span dangerouslySetInnerHTML={{ __html: pair.get('value_emojified') }} />
-                  </dd>
-                </dl>
-              ))}
+                    <dd className={pair.get('verified_at') && 'verified'} title={pair.get('value_plain')}>
+                      {pair.get('verified_at') && <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(pair.get('verified_at'), dateFormatOptions) })}><Icon id='check' className='verified__mark' /></span>} <span dangerouslySetInnerHTML={{ __html: pair.get('value_emojified') }} />
+                    </dd>
+                  </dl>
+                ),
+              )}
             </div>
           )}
         </div>
