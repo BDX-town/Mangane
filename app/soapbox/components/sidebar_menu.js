@@ -18,6 +18,7 @@ import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { List as ImmutableList, is as ImmutableIs } from 'immutable';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -39,6 +40,7 @@ const messages = defineMessages({
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
+  donate_crypto: { id: 'donate_crypto', defaultMessage: 'Donate cryptocurrency' },
   info: { id: 'column.info', defaultMessage: 'Server information' },
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
@@ -46,6 +48,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const getAccount = makeGetAccount();
+  const soapbox = getSoapboxConfig(state);
 
   const otherAccounts =
     state
@@ -61,6 +64,7 @@ const mapStateToProps = state => {
     account: getAccount(state, me),
     sidebarOpen: state.get('sidebar').sidebarOpen,
     donateUrl: state.getIn(['patron', 'instance', 'url']),
+    hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
     isStaff: isStaff(state.getIn(['accounts', me])),
     otherAccounts,
   };
@@ -153,7 +157,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts, hasCrypto } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -206,12 +210,14 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='user' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
-              {donateUrl ?
-                <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
-                  <Icon id='dollar' />
-                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
-                </a>
-                : ''}
+              {donateUrl && <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
+                <Icon id='dollar' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
+              </a>}
+              {hasCrypto && <NavLink className='sidebar-menu-item' to='/donate/crypto' onClick={this.handleClose}>
+                <Icon id='bitcoin' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate_crypto)}</span>
+              </NavLink>}
               <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
