@@ -29,11 +29,11 @@ class DetailedCryptoAddress extends ImmutablePureComponent {
           <div className='crypto-address__icon'>
             <img src={getCoinIcon(ticker)} alt={title} />
           </div>
-          <div className='crypto-address__title'>{title}</div>
+          <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
           <div className='crypto-address__actions'>
-            <a href={explorerUrl} target='_blank'>
+            {explorerUrl && <a href={explorerUrl} target='_blank'>
               <Icon id='external-link' />
-            </a>
+            </a>}
           </div>
         </div>
         {note && <div className='crypto-address__note'>{note}</div>}
