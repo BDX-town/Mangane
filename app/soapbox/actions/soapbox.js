@@ -43,6 +43,9 @@ export const defaultConfig = ImmutableMap({
   allowedEmoji: allowedEmoji,
   verifiedCanEditName: false,
   displayFqn: true,
+  cryptoDonatePanel: ImmutableMap({
+    limit: 3,
+  }),
 });
 
 export function getSoapboxConfig(state) {

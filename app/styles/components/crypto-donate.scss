@@ -67,3 +67,35 @@
     padding: 10px 0;
   }
 }
+
+.crypto-donate-panel {
+  &__message {
+    margin: 20px 0;
+    margin-top: -12px;
+    font-size: 14px;
+  }
+
+  .site-wallet {
+    display: block;
+    padding-bottom: 10px;
+  }
+
+  .crypto-address {
+    padding: 0;
+    margin: 20px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &--has-more {
+    .site-wallet {
+      padding-bottom: 0;
+    }
+  }
+}

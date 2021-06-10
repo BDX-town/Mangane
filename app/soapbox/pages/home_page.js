@@ -8,6 +8,7 @@ import FeaturesPanel from '../features/ui/components/features_panel';
 import PromoPanel from '../features/ui/components/promo_panel';
 import UserPanel from '../features/ui/components/user_panel';
 import FundingPanel from '../features/ui/components/funding_panel';
+import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
 import { getFeatures } from 'soapbox/utils/features';
@@ -16,10 +17,13 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const soapbox = getSoapboxConfig(state);
   return {
     me,
     account: state.getIn(['accounts', me]),
-    hasPatron: getSoapboxConfig(state).getIn(['extensions', 'patron', 'enabled']),
+    hasPatron: soapbox.getIn(['extensions', 'patron', 'enabled']),
+    hasCrypto: typeof soapbox.getIn(['crypto_addresses', 0, 'ticker']) === 'string',
+    cryptoLimit: soapbox.getIn(['cryptoDonatePanel', 'limit']),
     features: getFeatures(state.get('instance')),
   };
 };
@@ -33,7 +37,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { me, children, account, hasPatron, features } = this.props;
+    const { me, children, account, hasPatron, features, hasCrypto, cryptoLimit } = this.props;
 
     return (
       <div className='page'>
@@ -44,6 +48,7 @@ class HomePage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel accountId={me} />
                 {hasPatron && <FundingPanel />}
+                {hasCrypto && <CryptoDonatePanel limit={cryptoLimit} />}
               </div>
             </div>
 
