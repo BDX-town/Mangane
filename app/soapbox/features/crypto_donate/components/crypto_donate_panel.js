@@ -28,10 +28,18 @@ class CryptoDonatePanel extends ImmutablePureComponent {
     limit: 3,
   }
 
+  shouldDisplay = () => {
+    const { limit, total } = this.props;
+    if (limit === 0 || total === 0) return false;
+    return true;
+  }
+
   render() {
     const { limit, total, siteTitle } = this.props;
     const more = total - limit;
     const hasMore = more > 0;
+
+    if (!this.shouldDisplay()) return null;
 
     return (
       <div className={classNames('wtf-panel funding-panel crypto-donate-panel', { 'crypto-donate-panel--has-more': hasMore })}>

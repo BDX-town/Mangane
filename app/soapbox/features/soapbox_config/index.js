@@ -9,6 +9,7 @@ import {
   SimpleForm,
   FieldsGroup,
   TextInput,
+  SimpleInput,
   SimpleTextarea,
   FileChooserLogo,
   FormPropTypes,
@@ -28,15 +29,21 @@ import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { defaultSettings } from 'soapbox/actions/settings';
 import IconPickerDropdown from './components/icon_picker_dropdown';
+import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
+  saved: { id: 'soapbox_config.saved', defaultMessage: 'Soapbox config saved!' },
   copyrightFooterLabel: { id: 'soapbox_config.copyright_footer.meta_fields.label_placeholder', defaultMessage: 'Copyright footer' },
   promoItemIcon: { id: 'soapbox_config.promo_panel.meta_fields.icon_placeholder', defaultMessage: 'Icon' },
   promoItemLabel: { id: 'soapbox_config.promo_panel.meta_fields.label_placeholder', defaultMessage: 'Label' },
   promoItemURL: { id: 'soapbox_config.promo_panel.meta_fields.url_placeholder', defaultMessage: 'URL' },
   homeFooterItemLabel: { id: 'soapbox_config.home_footer.meta_fields.label_placeholder', defaultMessage: 'Label' },
   homeFooterItemURL: { id: 'soapbox_config.home_footer.meta_fields.url_placeholder', defaultMessage: 'URL' },
+  cryptoAdressItemTicker: { id: 'soapbox_config.crypto_address.meta_fields.ticker_placeholder', defaultMessage: 'Ticker' },
+  cryptoAdressItemAddress: { id: 'soapbox_config.crypto_address.meta_fields.address_placeholder', defaultMessage: 'Address' },
+  cryptoAdressItemNote: { id: 'soapbox_config.crypto_address.meta_fields.note_placeholder', defaultMessage: 'Note (optional)' },
+  cryptoDonatePanelLimitLabel: { id: 'soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder', defaultMessage: 'Number of items to display in the crypto homepage widget' },
   customCssLabel: { id: 'soapbox_config.custom_css.meta_fields.url_placeholder', defaultMessage: 'URL' },
   rawJSONLabel: { id: 'soapbox_config.raw_json_label', defaultMessage: 'Advanced: Edit raw JSON data' },
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
@@ -49,6 +56,7 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 const templates = {
   promoPanelItem: ImmutableMap({ icon: '', text: '', url: '' }),
   footerItem: ImmutableMap({ title: '', url: '' }),
+  cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
 };
 
 const mapStateToProps = state => ({
@@ -95,9 +103,10 @@ class SoapboxConfig extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch } = this.props;
+    const { dispatch, intl } = this.props;
     dispatch(updateConfig(this.getParams())).then(() => {
       this.setState({ isLoading: false });
+      dispatch(snackbar.success(intl.formatMessage(messages.saved)));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
@@ -155,6 +164,12 @@ class SoapboxConfig extends ImmutablePureComponent {
   handleHomeFooterItemChange = (index, key, field, getValue) => {
     return this.handleItemChange(
       ['navlinks', 'homeFooter', index], key, field, templates.footerItem, getValue,
+    );
+  };
+
+  handleCryptoAdressItemChange = (index, key, field, getValue) => {
+    return this.handleItemChange(
+      ['cryptoAddresses', index], key, field, templates.cryptoAddress, getValue,
     );
   };
 
@@ -322,6 +337,57 @@ class SoapboxConfig extends ImmutablePureComponent {
                   </div>
                 </div>
               </div>
+            </FieldsGroup>
+            <FieldsGroup>
+              <div className='input with_block_label'>
+                <label><FormattedMessage id='soapbox_config.fields.crypto_addresses_label' defaultMessage='Cryptocurrency addresses' /></label>
+                <span className='hint'>
+                  <FormattedMessage id='soapbox_config.hints.crypto_addresses' defaultMessage='Add cryptocurrency addresses so users of your site can donate to you. Order matters, and you must use lowercase ticker values.' />
+                </span>
+                {
+                  soapbox.get('cryptoAddresses').map((address, i) => (
+                    <div className='row' key={i}>
+                      <TextInput
+                        label={intl.formatMessage(messages.cryptoAdressItemTicker)}
+                        placeholder={intl.formatMessage(messages.cryptoAdressItemTicker)}
+                        value={address.get('ticker')}
+                        onChange={this.handleCryptoAdressItemChange(i, 'ticker', address)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.cryptoAdressItemAddress)}
+                        placeholder={intl.formatMessage(messages.cryptoAdressItemAddress)}
+                        value={address.get('address')}
+                        onChange={this.handleCryptoAdressItemChange(i, 'address', address)}
+                      />
+                      <TextInput
+                        label={intl.formatMessage(messages.cryptoAdressItemNote)}
+                        placeholder={intl.formatMessage(messages.cryptoAdressItemNote)}
+                        value={address.get('note')}
+                        onChange={this.handleCryptoAdressItemChange(i, 'note', address)}
+                      />
+                      <Icon id='times-circle' onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
+                    </div>
+                  ))
+                }
+                <div className='actions add-row'>
+                  <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['cryptoAddresses'], templates.cryptoAddress)}>
+                    <Icon id='plus-circle' />
+                    <FormattedMessage id='soapbox_config.fields.crypto_address.add' defaultMessage='Add new crypto address' />
+                  </div>
+                </div>
+              </div>
+            </FieldsGroup>
+            <FieldsGroup>
+              <SimpleInput
+                type='number'
+                min={0}
+                pattern='[0-9]+'
+                name='cryptoDonatePanelLimit'
+                label={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
+                placeholder={intl.formatMessage(messages.cryptoDonatePanelLimitLabel)}
+                value={soapbox.getIn(['cryptoDonatePanel', 'limit'])}
+                onChange={this.handleChange(['cryptoDonatePanel', 'limit'], (e) => Number(e.target.value))}
+              />
             </FieldsGroup>
             <Accordion
               headline={intl.formatMessage(messages.rawJSONLabel)}

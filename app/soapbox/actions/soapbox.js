@@ -43,6 +43,7 @@ export const defaultConfig = ImmutableMap({
   allowedEmoji: allowedEmoji,
   verifiedCanEditName: false,
   displayFqn: true,
+  cryptoAddresses: ImmutableList(),
   cryptoDonatePanel: ImmutableMap({
     limit: 3,
   }),
