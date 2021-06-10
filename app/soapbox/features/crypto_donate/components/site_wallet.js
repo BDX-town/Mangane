@@ -8,7 +8,7 @@ import CryptoAddress from './crypto_address';
 const mapStateToProps = (state, ownProps) => {
   // Address example:
   // {"ticker": "btc", "address": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n", "note": "This is our main address"}
-  const addresses = state.getIn(['soapbox', 'crypto_addresses']);
+  const addresses = state.getIn(['soapbox', 'cryptoAddresses']);
   const { limit } = ownProps;
 
   return {

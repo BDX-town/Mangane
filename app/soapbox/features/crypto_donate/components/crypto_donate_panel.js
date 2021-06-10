@@ -9,7 +9,7 @@ import { List as ImmutableList } from 'immutable';
 import classNames from 'classnames';
 
 const mapStateToProps = state => {
-  const addresses = state.getIn(['soapbox', 'crypto_addresses'], ImmutableList());
+  const addresses = state.getIn(['soapbox', 'cryptoAddresses'], ImmutableList());
   return {
     total: addresses.size,
     siteTitle: state.getIn(['instance', 'title']),

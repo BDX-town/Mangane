@@ -22,7 +22,7 @@ const mapStateToProps = state => {
     me,
     account: state.getIn(['accounts', me]),
     hasPatron: soapbox.getIn(['extensions', 'patron', 'enabled']),
-    hasCrypto: typeof soapbox.getIn(['crypto_addresses', 0, 'ticker']) === 'string',
+    hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
     cryptoLimit: soapbox.getIn(['cryptoDonatePanel', 'limit']),
     features: getFeatures(state.get('instance')),
   };
