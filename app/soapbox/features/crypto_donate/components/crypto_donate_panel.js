@@ -53,7 +53,7 @@ class CryptoDonatePanel extends ImmutablePureComponent {
           <div className='crypto-donate-panel__message'>
             <FormattedMessage
               id='crypto_donate_panel.intro.message'
-              defaultMessage='{siteTitle} accepts cryptocurrency donations to fund the service. Thank you for your support!'
+              defaultMessage='{siteTitle} accepts cryptocurrency donations to fund our service. Thank you for your support!'
               values={{ siteTitle }}
             />
           </div>
