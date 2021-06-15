@@ -18,6 +18,7 @@ import { Map as ImmutableMap } from 'immutable';
 import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
 import { openModal } from 'soapbox/actions/modal';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
@@ -28,6 +29,7 @@ const messages = defineMessages({
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
   close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
+  newsletter: { id: 'registration.newsletter', defaultMessage: 'Subscribe to newsletter.' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -35,6 +37,7 @@ const mapStateToProps = (state, props) => ({
   locale: getSettings(state).get('locale'),
   needsConfirmation: state.getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']),
   needsApproval: state.getIn(['instance', 'approval_required']),
+  supportsEmailList: getFeatures(state.get('instance')).emailList,
 });
 
 export default @connect(mapStateToProps)
@@ -135,7 +138,7 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance, intl } = this.props;
+    const { instance, intl, supportsEmailList } = this.props;
     const { params } = this.state;
     const isOpen = instance.get('registrations');
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
@@ -232,6 +235,11 @@ class RegistrationForm extends ImmutablePureComponent {
                 onChange={this.onCheckboxChange}
                 required
               />
+              {supportsEmailList && <Checkbox
+                label={intl.formatMessage(messages.newsletter)}
+                name='accepts_email_list'
+                onChange={this.onCheckboxChange}
+              />}
             </div>
             <div className='actions'>
               <button name='button' type='submit' className='btn button button-primary'>
