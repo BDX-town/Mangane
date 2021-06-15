@@ -24,6 +24,7 @@ import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
@@ -41,6 +42,7 @@ const mapStateToProps = state => {
     account,
     maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
     verifiedCanEditName: soapbox.get('verifiedCanEditName'),
+    supportsEmailList: getFeatures(state.get('instance')).emailList,
   };
 };
 
@@ -182,7 +184,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields, account, verifiedCanEditName } = this.props;
+    const { intl, maxFields, account, verifiedCanEditName, supportsEmailList } = this.props;
     const verified = isVerified(account);
     const canEditName = verifiedCanEditName || !verified;
 
@@ -249,13 +251,13 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.stranger_notifications}
                 onChange={this.handleCheckboxChange}
               />
-              <Checkbox
+              {supportsEmailList && <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
                 hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
                 name='accepts_email_list'
                 checked={this.state.accepts_email_list}
                 onChange={this.handleCheckboxChange}
-              />
+              />}
             </FieldsGroup>
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
