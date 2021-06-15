@@ -28,6 +28,7 @@ const messages = defineMessages({
   agreement: { id: 'registration.agreement', defaultMessage: 'I agree to the {tos}.' },
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
   close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
+  newsletter: { id: 'registration.newsletter', defaultMessage: 'Subscribe to newsletter.' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -231,6 +232,11 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='agreement'
                 onChange={this.onCheckboxChange}
                 required
+              />
+              <Checkbox
+                label={intl.formatMessage(messages.newsletter)}
+                name='accepts_email_list'
+                onChange={this.onCheckboxChange}
               />
             </div>
             <div className='actions'>

@@ -78,11 +78,13 @@ class EditProfile extends ImmutablePureComponent {
     super(props);
     const { account } = this.props;
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
+    const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
       map.set('stranger_notifications', strangerNotifications);
+      map.set('accepts_email_list', acceptsEmailList);
       unescapeParams(map, ['display_name', 'bio']);
     });
     this.state = initialState.toObject();
@@ -117,6 +119,7 @@ class EditProfile extends ImmutablePureComponent {
       avatar: state.avatar_file,
       header: state.header_file,
       locked: state.locked,
+      accepts_email_list: state.accepts_email_list,
     }, this.getFieldParams().toJS());
   }
 
@@ -244,6 +247,13 @@ class EditProfile extends ImmutablePureComponent {
                 hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
                 name='stranger_notifications'
                 checked={this.state.stranger_notifications}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
+                hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
+                name='accepts_email_list'
+                checked={this.state.accepts_email_list}
                 onChange={this.handleCheckboxChange}
               />
             </FieldsGroup>
