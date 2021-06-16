@@ -341,7 +341,10 @@ class Status extends ImmutablePureComponent {
     if (status.get('poll')) {
       poll = <PollContainer pollId={status.get('poll')} />;
     }
-    if (status.get('media_attachments').size > 0) {
+
+    const size = status.get('media_attachments').size;
+
+    if (size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -349,7 +352,7 @@ class Status extends ImmutablePureComponent {
             media={status.get('media_attachments')}
           />
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
         media = (
@@ -373,7 +376,7 @@ class Status extends ImmutablePureComponent {
             )}
           </Bundle>
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const audio = status.getIn(['media_attachments', 0]);
 
         media = (
