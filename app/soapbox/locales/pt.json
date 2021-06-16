@@ -222,6 +222,7 @@
   "confirmations.unfollow.confirm": "Deixar de seguir",
   "confirmations.unfollow.message": "De certeza que queres deixar de seguir {name}?",
   "donate": "Doar",
+  "donate_crypto": "Doar Cryptomoedas",
   "crypto_donate_panel.heading": "Donate Cryptocurrency",
   "crypto_donate_panel.intro.message": "{siteTitle} aceita doações em cryptomoedas para financiar o nosso serviço. Obrigado pelo vosso apoio!",
   "crypto_donate_panel.actions.more": "Clique para ver {count} ou mais carteiras",
