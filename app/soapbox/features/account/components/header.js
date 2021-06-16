@@ -255,6 +255,7 @@ class Header extends ImmutablePureComponent {
       );
     }
 
+    const self = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
@@ -286,18 +287,18 @@ class Header extends ImmutablePureComponent {
                 <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
               </NavLink>
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                <span>{shortNumberFormat(account.get('following_count'))}</span>
+              {(self || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
                 <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
-              </NavLink>
+              </NavLink>}
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                <span>{shortNumberFormat(account.get('followers_count'))}</span>
+              {(self || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
                 <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
-              </NavLink>
+              </NavLink>}
 
               {
-                account.get('id') === me &&
+                self &&
                 <div>
                   <NavLink
                     exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
