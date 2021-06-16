@@ -89,6 +89,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     const { compact } = this.props;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
+    const size = status.get('media_attachments').size;
 
     if (!status) {
       return null;
@@ -105,8 +106,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
     if (status.get('poll')) {
       poll = <PollContainer pollId={status.get('poll')} />;
     }
-    if (status.get('media_attachments').size > 0) {
-      if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+    if (size > 0) {
+      if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
         media = (
@@ -125,7 +126,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
             onToggleVisibility={this.props.onToggleMediaVisibility}
           />
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const audio = status.getIn(['media_attachments', 0]);
 
         media = (
