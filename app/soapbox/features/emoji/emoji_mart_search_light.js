@@ -38,7 +38,7 @@ function clearCustomEmojis(pool) {
   });
 }
 
-function addCustomToPool(custom, pool) {
+export function addCustomToPool(custom, pool = originalPool) {
   if (customEmojisList.length) clearCustomEmojis(pool);
 
   custom.forEach((emoji) => {
@@ -54,7 +54,7 @@ function addCustomToPool(custom, pool) {
   index = {};
 }
 
-function search(value, { emojisToShowFilter, maxResults, include, exclude, custom } = {}) {
+export function search(value, { emojisToShowFilter, maxResults, include, exclude, custom } = {}) {
   if (custom !== undefined) {
     if (customEmojisList !== custom)
       addCustomToPool(custom, originalPool);
@@ -181,5 +181,3 @@ function search(value, { emojisToShowFilter, maxResults, include, exclude, custo
 
   return results;
 }
-
-export { search };
