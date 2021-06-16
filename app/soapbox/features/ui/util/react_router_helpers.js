@@ -38,7 +38,7 @@ class WrappedRoute extends React.Component {
         <BundleContainer fetchComponent={component} loading={this.renderLoading} error={this.renderError}>
           {Component =>
             (
-              <Page params={match.params} {...componentParams}>
+              <Page params={match.params} layout={layout} {...componentParams}>
                 <Component params={match.params} {...componentParams}>
                   {content}
                 </Component>

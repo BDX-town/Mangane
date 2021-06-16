@@ -1,30 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
-import TrendsPanel from '../features/ui/components/trends_panel';
-import LinkFooter from '../features/ui/components/link_footer';
-import FeaturesPanel from '../features/ui/components/features_panel';
-import PromoPanel from '../features/ui/components/promo_panel';
-import UserPanel from '../features/ui/components/user_panel';
-import FundingPanel from '../features/ui/components/funding_panel';
-import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
-import { getFeatures } from 'soapbox/utils/features';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const soapbox = getSoapboxConfig(state);
   return {
     me,
     account: state.getIn(['accounts', me]),
-    hasPatron: soapbox.getIn(['extensions', 'patron', 'enabled']),
-    hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
-    cryptoLimit: soapbox.getIn(['cryptoDonatePanel', 'limit']),
-    features: getFeatures(state.get('instance')),
   };
 };
 
@@ -36,8 +21,13 @@ class HomePage extends ImmutablePureComponent {
     this.composeBlock = React.createRef();
   }
 
+  static defaultProps = {
+    layout: { LEFT: null, RIGHT: null },
+  }
+
   render() {
-    const { me, children, account, hasPatron, features, hasCrypto, cryptoLimit } = this.props;
+    const { me, children, account } = this.props;
+    const LAYOUT = this.props.layout || this.defaultProps.layout;
 
     return (
       <div className='page'>
@@ -46,9 +36,7 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <UserPanel accountId={me} />
-                {hasPatron && <FundingPanel />}
-                {hasCrypto && <CryptoDonatePanel limit={cryptoLimit} />}
+                {LAYOUT.LEFT}
               </div>
             </div>
 
@@ -71,12 +59,7 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {/* <GroupSidebarPanel /> */}
-                {features.trends && <TrendsPanel limit={3} />}
-                {features.suggestions && <WhoToFollowPanel limit={5} />}
-                <FeaturesPanel />
-                <PromoPanel />
-                <LinkFooter />
+                {LAYOUT.RIGHT}
               </div>
             </div>
           </div>
