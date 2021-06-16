@@ -26,6 +26,14 @@ import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
 
+const hidesNetwork = account => {
+  const pleroma = account.get('pleroma');
+  if (!pleroma) return false;
+
+  const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = pleroma.toJS();
+  return hide_followers && hide_follows && hide_followers_count && hide_follows_count;
+};
+
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
@@ -87,6 +95,7 @@ class EditProfile extends ImmutablePureComponent {
       map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
       map.set('stranger_notifications', strangerNotifications);
       map.set('accepts_email_list', acceptsEmailList);
+      map.set('hide_network', hidesNetwork(account));
       unescapeParams(map, ['display_name', 'bio']);
     });
     this.state = initialState.toObject();
@@ -122,6 +131,10 @@ class EditProfile extends ImmutablePureComponent {
       header: state.header_file,
       locked: state.locked,
       accepts_email_list: state.accepts_email_list,
+      hide_followers: state.hide_network,
+      hide_follows: state.hide_network,
+      hide_followers_count: state.hide_network,
+      hide_follows_count: state.hide_network,
     }, this.getFieldParams().toJS());
   }
 
@@ -235,6 +248,13 @@ class EditProfile extends ImmutablePureComponent {
                 hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
                 name='locked'
                 checked={this.state.locked}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
+                hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
+                name='hide_network'
+                checked={this.state.hide_network}
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
