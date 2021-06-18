@@ -32,6 +32,9 @@ import {
   COMPOSE_RESET,
   COMPOSE_POLL_ADD,
   COMPOSE_POLL_REMOVE,
+  COMPOSE_SCHEDULE_ADD,
+  COMPOSE_SCHEDULE_SET,
+  COMPOSE_SCHEDULE_REMOVE,
   COMPOSE_POLL_OPTION_ADD,
   COMPOSE_POLL_OPTION_CHANGE,
   COMPOSE_POLL_OPTION_REMOVE,
@@ -81,6 +84,10 @@ const initialPoll = ImmutableMap({
   multiple: false,
 });
 
+const initialSchedule = new Date();
+initialSchedule.setDate(initialSchedule.getDate() - 1);
+
+
 function statusToTextMentions(state, status, account) {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
@@ -107,6 +114,7 @@ function clearAll(state) {
     map.set('media_attachments', ImmutableList());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
+    map.set('schedule', null);
   });
 };
 
@@ -398,6 +406,12 @@ export default function compose(state = initialState, action) {
     return state.set('poll', initialPoll);
   case COMPOSE_POLL_REMOVE:
     return state.set('poll', null);
+  case COMPOSE_SCHEDULE_ADD:
+    return state.set('schedule', initialSchedule);
+  case COMPOSE_SCHEDULE_SET:
+    return state.set('schedule', action.date);
+  case COMPOSE_SCHEDULE_REMOVE:
+    return state.set('schedule', null);
   case COMPOSE_POLL_OPTION_ADD:
     return state.updateIn(['poll', 'options'], options => options.push(action.title));
   case COMPOSE_POLL_OPTION_CHANGE:

@@ -26,6 +26,7 @@ const mapStateToProps = state => ({
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
   isModalOpen: state.get('modal').modalType === 'COMPOSE',
   maxTootChars: state.getIn(['instance', 'max_toot_chars']),
+  schedule: state.getIn(['instance', 'schedule']),
 });
 
 const mapDispatchToProps = (dispatch) => ({
