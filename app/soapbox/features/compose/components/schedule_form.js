@@ -50,7 +50,7 @@ class ScheduleForm extends React.Component {
 
   isCurrentOrFutureDate(date)
   {
-    return date && new Date().setHours(0, 0, 0, 0) <= date.setHours(0, 0, 0, 0);
+    return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
   }
 
   isFiveMinutesFromNow(time)
@@ -75,8 +75,6 @@ class ScheduleForm extends React.Component {
         showTimeSelect
         dateFormat='MMMM d, yyyy h:mm aa'
         timeIntervals={15}
-        timeFormat='HH:mm'
-        timeInputLabel='Time:'
         wrapperClassName='react-datepicker-wrapper'
         onChange={this.setSchedule}
         placeholderText={this.props.intl.formatMessage(messages.schedule)}
