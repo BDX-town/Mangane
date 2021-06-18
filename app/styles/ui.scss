@@ -129,6 +129,10 @@
   }
 }
 
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
 .ellipsis::after { content: "…"; }
 
 .timeline-compose-block {

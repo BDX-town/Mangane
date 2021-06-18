@@ -90,7 +90,8 @@
   }
 
   .autosuggest-textarea__textarea,
-  .spoiler-input__input {
+  .spoiler-input__input,
+  .react-datepicker__input-container input {
     display: block;
     box-sizing: border-box;
     width: 100%;
@@ -375,6 +376,16 @@
     }
   }
 } // end .compose-form
+
+.react-datepicker-wrapper {
+  margin-left: 10px;
+  background: var(--background-color);
+  border: 2px solid var(--brand-color);
+}
+
+.react-datepicker-popper {
+  background: var(--background-color) !important;
+}
 
 .upload-area {
   align-items: center;
