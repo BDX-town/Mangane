@@ -118,6 +118,7 @@ server {
 
 Replace `soapbox.example.com` with your desired subdomain and save the file.
 You should also adjust `client_max_body_size` to your instance file size limit.
+Replace `example.com` to your original domain.
 
 Additionally, activate the vhost file:
 
