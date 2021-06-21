@@ -203,7 +203,6 @@ export function submitCompose(routerHistory, group) {
 
     if (missingDescriptionModal && media.filter(item => !item.get('description')).size) {
       dispatch(openModal('MISSING_DESCRIPTION', {
-        some: media.filter(item => !item.get('description')).size !== media.size,
         onContinue: () => onModalSubmitCompose(),
       }));
     } else onModalSubmitCompose();

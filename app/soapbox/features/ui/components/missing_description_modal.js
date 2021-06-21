@@ -7,7 +7,6 @@ export default @injectIntl
 class MissingDescriptionModal extends React.PureComponent {
 
   static propTypes = {
-    some: PropTypes.bool,
     onClose: PropTypes.func,
     onContinue: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -31,14 +30,10 @@ class MissingDescriptionModal extends React.PureComponent {
   }
 
   render() {
-    const { some } = this.props;
-
     return (
       <div className='modal-root__modal confirmation-modal'>
         <div className='confirmation-modal__container'>
-          {some
-            ? <FormattedMessage id='missing_description_modal.some' defaultMessage='Some of media you are going to post lacks media description. Are you sure you want to continue?' />
-            : <FormattedMessage id='missing_description_modal.all' defaultMessage='You are about to post undescribed media. Are you sure you want to continue?' />}
+          <FormattedMessage id='missing_description_modal.text' defaultMessage='You have not entered a description for all attachments. Continue anyway?' />
         </div>
 
         <div className='confirmation-modal__action-bar'>
@@ -46,7 +41,7 @@ class MissingDescriptionModal extends React.PureComponent {
             <FormattedMessage id='missing_description_modal.cancel' defaultMessage='Cancel' />
           </Button>
           <Button onClick={this.handleContinue}>
-            <FormattedMessage id='missing_description_modal.continue' defaultMessage='Continue' />
+            <FormattedMessage id='missing_description_modal.continue' defaultMessage='Post' />
           </Button>
         </div>
       </div>
