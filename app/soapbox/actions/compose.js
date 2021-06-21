@@ -164,6 +164,34 @@ export function submitCompose(routerHistory, group) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
 
+    function onModalSubmitCompose () {
+      dispatch(submitComposeRequest());
+      dispatch(closeModal());
+  
+      api(getState).post('/api/v1/statuses', {
+        status,
+        in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
+        media_ids: media.map(item => item.get('id')),
+        sensitive: getState().getIn(['compose', 'sensitive']),
+        spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
+        visibility: getState().getIn(['compose', 'privacy']),
+        content_type: getState().getIn(['compose', 'content_type']),
+        poll: getState().getIn(['compose', 'poll'], null),
+        scheduled_at: getState().getIn(['compose', 'schedule'], null),
+      }, {
+        headers: {
+          'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
+        },
+      }).then(function(response) {
+        if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+          routerHistory.push('/messages');
+        }
+        handleComposeSubmit(dispatch, getState, response, status);
+      }).catch(function(error) {
+        dispatch(submitComposeFail(error));
+      });
+    }
+
     const status = getState().getIn(['compose', 'text'], '');
     const media  = getState().getIn(['compose', 'media_attachments']);
 
@@ -171,31 +199,14 @@ export function submitCompose(routerHistory, group) {
       return;
     }
 
-    dispatch(submitComposeRequest());
-    dispatch(closeModal());
+    const missingDescriptionModal = getSettings(getState()).get('missingDescriptionModal');
 
-    api(getState).post('/api/v1/statuses', {
-      status,
-      in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
-      media_ids: media.map(item => item.get('id')),
-      sensitive: getState().getIn(['compose', 'sensitive']),
-      spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
-      visibility: getState().getIn(['compose', 'privacy']),
-      content_type: getState().getIn(['compose', 'content_type']),
-      poll: getState().getIn(['compose', 'poll'], null),
-      scheduled_at: getState().getIn(['compose', 'schedule'], null),
-    }, {
-      headers: {
-        'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
-      },
-    }).then(function(response) {
-      if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
-        routerHistory.push('/messages');
-      }
-      handleComposeSubmit(dispatch, getState, response, status);
-    }).catch(function(error) {
-      dispatch(submitComposeFail(error));
-    });
+    if (missingDescriptionModal && media.filter(item => !item.get('description')).size) {
+      dispatch(openModal('MISSING_DESCRIPTION', {
+        some: media.filter(item => !item.get('description')).size !== media.size,
+        onContinue: () => onModalSubmitCompose(),
+      }));
+    } else onModalSubmitCompose();
   };
 };
 

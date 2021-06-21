@@ -202,6 +202,10 @@ class Preferences extends ImmutablePureComponent {
               label={<FormattedMessage id='preferences.fields.delete_modal_label' defaultMessage='Show confirmation dialog before deleting a post' />}
               path={['deleteModal']}
             />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media description' />}
+              path={['missingDescriptionModal']}
+            />
           </FieldsGroup>
 
           <FieldsGroup>
