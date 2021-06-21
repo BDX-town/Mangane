@@ -164,10 +164,10 @@ export function submitCompose(routerHistory, group) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
 
-    function onModalSubmitCompose () {
+    function onModalSubmitCompose() {
       dispatch(submitComposeRequest());
       dispatch(closeModal());
-  
+
       api(getState).post('/api/v1/statuses', {
         status,
         in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
