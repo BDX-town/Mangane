@@ -21,6 +21,7 @@ export const defaultSettings = ImmutableMap({
   unfollowModal: false,
   boostModal: false,
   deleteModal: true,
+  missingDescriptionModal: false,
   defaultPrivacy: 'public',
   defaultContentType: 'text/plain',
   themeMode: 'light',

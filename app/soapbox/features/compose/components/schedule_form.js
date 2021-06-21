@@ -20,41 +20,34 @@ class ScheduleForm extends React.Component {
     active: PropTypes.bool,
   };
 
-  setSchedule(date)
-  {
+  setSchedule(date) {
     this.setState({ schedule: date });
     this.props.onSchedule(date);
   }
 
-  openDatePicker(datePicker)
-  {
-    if (!datePicker)
-    {
+  openDatePicker(datePicker) {
+    if (!datePicker) {
       return;
     }
 
     datePicker.setOpen(true);
   }
 
-  componentDidMount()
-  {
+  componentDidMount() {
     this.setState({ schedule: this.props.schedule });
   }
 
-  constructor(props)
-  {
+  constructor(props) {
     super(props);
 
     this.setSchedule = this.setSchedule.bind(this);
   }
 
-  isCurrentOrFutureDate(date)
-  {
+  isCurrentOrFutureDate(date) {
     return date && new Date().setHours(0, 0, 0, 0) <= new Date(date).setHours(0, 0, 0, 0);
   }
 
-  isFiveMinutesFromNow(time)
-  {
+  isFiveMinutesFromNow(time) {
     const fiveMinutesFromNow = new Date(new Date().getTime() + 300000); // now, plus five minutes (Pleroma won't schedule posts )
     const selectedDate = new Date(time);
 
@@ -62,8 +55,7 @@ class ScheduleForm extends React.Component {
   };
 
   render() {
-    if (!this.props.active || !this.state)
-    {
+    if (!this.props.active || !this.state) {
       return null;
     }
 

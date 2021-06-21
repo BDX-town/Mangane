@@ -9,6 +9,7 @@ import MediaModal from './media_modal';
 import VideoModal from './video_modal';
 import BoostModal from './boost_modal';
 import ConfirmationModal from './confirmation_modal';
+import MissingDescriptionModal from './missing_description_modal';
 import FocalPointModal from './focal_point_modal';
 import HotkeysModal from './hotkeys_modal';
 import ComposeModal from './compose_modal';
@@ -28,6 +29,7 @@ const MODAL_COMPONENTS = {
   'VIDEO': () => Promise.resolve({ default: VideoModal }),
   'BOOST': () => Promise.resolve({ default: BoostModal }),
   'CONFIRM': () => Promise.resolve({ default: ConfirmationModal }),
+  'MISSING_DESCRIPTION': () => Promise.resolve({ default: MissingDescriptionModal }),
   'MUTE': MuteModal,
   'REPORT': ReportModal,
   'ACTIONS': () => Promise.resolve({ default: ActionsModal }),
