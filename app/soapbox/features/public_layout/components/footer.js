@@ -23,6 +23,7 @@ class Footer extends ImmutablePureComponent {
 
   static propTypes = {
     copyright: PropTypes.string,
+    locale: PropTypes.string,
     navlinks: ImmutablePropTypes.list,
   }
 
@@ -38,7 +39,9 @@ class Footer extends ImmutablePureComponent {
           <ul>
             {navlinks.map((link, i) => (
               <li key={i}>
-                <Link to={link.get('url')}>{link.getIn(['titleLocales', locale]) || link.get('title')}</Link>
+                <Link to={link.get('url')}>
+                  {link.getIn(['titleLocales', locale]) || link.get('title')}
+                </Link>
               </li>
             ))}
           </ul>
