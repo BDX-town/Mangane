@@ -37,21 +37,21 @@ class AboutPage extends ImmutablePureComponent {
 
   setLocale = (locale) => () => {
     this.setState({ locale });
+    this.loadPageHtml();
   };
 
   componentDidMount() {
     this.loadPageHtml();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { locale, match, aboutPages } = this.props;
     const { locale: prevLocale, aboutPages: prevAboutPages } = prevProps;
-    const { locale: stateLocale } = this.props;
-    const { locale: prevStateLocale } = prevState;
     const { slug } = match.params;
     const { slug: prevSlug } = prevProps.match.params;
+
     if (locale !== prevLocale) this.setState({ locale });
-    if (slug !== prevSlug || stateLocale !== prevStateLocale || (!prevAboutPages.get(slug || 'about') && aboutPages.get(slug || 'about')))
+    if (slug !== prevSlug || (!prevAboutPages.get(slug || 'about') && aboutPages.get(slug || 'about')))
       this.loadPageHtml();
   }
 
