@@ -1,3 +1,4 @@
+import { defineMessages } from 'react-intl';
 import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
@@ -42,6 +43,11 @@ export const BOOKMARK_FAIL    = 'BOOKMARKED_FAIL';
 export const UNBOOKMARK_REQUEST = 'UNBOOKMARKED_REQUEST';
 export const UNBOOKMARK_SUCCESS = 'UNBOOKMARKED_SUCCESS';
 export const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
+
+const messages = defineMessages({
+  bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
+  bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
+});
 
 export function reblog(status) {
   return function(dispatch, getState) {
@@ -205,28 +211,28 @@ export function unfavouriteFail(status, error) {
   };
 };
 
-export function bookmark(status) {
+export function bookmark(intl, status) {
   return function(dispatch, getState) {
     dispatch(bookmarkRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
-      dispatch(snackbar.success('Bookmark added'));
+      dispatch(snackbar.success(intl.formatMessage(messages.bookmarkAdded)));
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
   };
 };
 
-export function unbookmark(status) {
+export function unbookmark(intl, status) {
   return (dispatch, getState) => {
     dispatch(unbookmarkRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
-      dispatch(snackbar.success('Bookmark removed'));
+      dispatch(snackbar.success(intl.formatMessage(messages.bookmarkRemoved)));
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });
