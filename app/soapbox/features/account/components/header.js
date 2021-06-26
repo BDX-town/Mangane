@@ -19,6 +19,7 @@ import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
 import { isVerified } from 'soapbox/utils/accounts';
 import { openModal } from 'soapbox/actions/modal';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
@@ -326,6 +327,7 @@ class Header extends ImmutablePureComponent {
             }
 
             <div className='account__header__extra__buttons'>
+              <SubscriptionButton account={account} />
               <ActionButton account={account} />
               {me && account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
                 <Button className='button-alternative-2' onClick={this.props.onChat}>

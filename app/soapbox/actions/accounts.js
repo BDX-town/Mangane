@@ -40,6 +40,14 @@ export const ACCOUNT_UNMUTE_REQUEST = 'ACCOUNT_UNMUTE_REQUEST';
 export const ACCOUNT_UNMUTE_SUCCESS = 'ACCOUNT_UNMUTE_SUCCESS';
 export const ACCOUNT_UNMUTE_FAIL    = 'ACCOUNT_UNMUTE_FAIL';
 
+export const ACCOUNT_SUBSCRIBE_REQUEST = 'ACCOUNT_SUBSCRIBE_REQUEST';
+export const ACCOUNT_SUBSCRIBE_SUCCESS = 'ACCOUNT_SUBSCRIBE_SUCCESS';
+export const ACCOUNT_SUBSCRIBE_FAIL    = 'ACCOUNT_SUBSCRIBE_FAIL';
+
+export const ACCOUNT_UNSUBSCRIBE_REQUEST = 'ACCOUNT_UNSUBSCRIBE_REQUEST';
+export const ACCOUNT_UNSUBSCRIBE_SUCCESS = 'ACCOUNT_UNSUBSCRIBE_SUCCESS';
+export const ACCOUNT_UNSUBSCRIBE_FAIL    = 'ACCOUNT_UNSUBSCRIBE_FAIL';
+
 export const ACCOUNT_PIN_REQUEST = 'ACCOUNT_PIN_REQUEST';
 export const ACCOUNT_PIN_SUCCESS = 'ACCOUNT_PIN_SUCCESS';
 export const ACCOUNT_PIN_FAIL    = 'ACCOUNT_PIN_FAIL';
@@ -409,6 +417,76 @@ export function unmuteAccountFail(error) {
   };
 };
 
+
+export function subscribeAccount(id, notifications) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(subscribeAccountRequest(id));
+
+    api(getState).post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications }).then(response => {
+      dispatch(subscribeAccountSuccess(response.data));
+    }).catch(error => {
+      dispatch(subscribeAccountFail(id, error));
+    });
+  };
+};
+
+export function unsubscribeAccount(id) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    dispatch(unsubscribeAccountRequest(id));
+
+    api(getState).post(`/api/v1/pleroma/accounts/${id}/unsubscribe`).then(response => {
+      dispatch(unsubscribeAccountSuccess(response.data));
+    }).catch(error => {
+      dispatch(unsubscribeAccountFail(id, error));
+    });
+  };
+};
+
+export function subscribeAccountRequest(id) {
+  return {
+    type: ACCOUNT_SUBSCRIBE_REQUEST,
+    id,
+  };
+};
+
+export function subscribeAccountSuccess(relationship) {
+  return {
+    type: ACCOUNT_SUBSCRIBE_SUCCESS,
+    relationship,
+  };
+};
+
+export function subscribeAccountFail(error) {
+  return {
+    type: ACCOUNT_SUBSCRIBE_FAIL,
+    error,
+  };
+};
+
+export function unsubscribeAccountRequest(id) {
+  return {
+    type: ACCOUNT_UNSUBSCRIBE_REQUEST,
+    id,
+  };
+};
+
+export function unsubscribeAccountSuccess(relationship) {
+  return {
+    type: ACCOUNT_UNSUBSCRIBE_SUCCESS,
+    relationship,
+  };
+};
+
+export function unsubscribeAccountFail(error) {
+  return {
+    type: ACCOUNT_UNSUBSCRIBE_FAIL,
+    error,
+  };
+};
 
 export function fetchFollowers(id) {
   return (dispatch, getState) => {
