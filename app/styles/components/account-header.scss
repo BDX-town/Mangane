@@ -149,6 +149,32 @@
       }
 
       .button { margin-right: 10px; }
+
+      .subscription-button {
+        padding: 0px;
+        height: 36px;
+        line-height: 36px;
+        width: 36px;
+        margin-right: 10px;
+        font-size: 20px;
+        text-align: center;
+        border: 1px solid var(--brand-color);
+        background: transparent;
+        color: var(--primary-text-color);
+
+        &:hover,
+        &.active {
+          border-color: $error-red;
+          background: $error-red;
+          color: #fff;
+        }
+      }
+
+      .button-active {
+        border-color: #008000;
+        background: #008000;
+        color: #fff;
+      }
     }
 
     &__links {
