@@ -359,6 +359,10 @@ $fluid-breakpoint: $maximum-width + 20px;
   }
 }
 
+.also-available {
+  margin-top: 0;
+}
+
 .public-layout {
   position: relative;
   background-color: var(--brand-color);

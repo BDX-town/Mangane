@@ -47,6 +47,7 @@ export const defaultConfig = ImmutableMap({
   cryptoDonatePanel: ImmutableMap({
     limit: 1,
   }),
+  aboutPages: ImmutableMap(),
 });
 
 export function getSoapboxConfig(state) {
