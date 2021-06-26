@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { fetchAboutPage } from 'soapbox/actions/about';
 import { getSettings } from 'soapbox/actions/settings';
