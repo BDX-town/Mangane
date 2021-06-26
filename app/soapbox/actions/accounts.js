@@ -425,8 +425,7 @@ export function subscribeAccount(id, notifications) {
     dispatch(subscribeAccountRequest(id));
 
     api(getState).post(`/api/v1/pleroma/accounts/${id}/subscribe`, { notifications }).then(response => {
-      // Pass in entire statuses map so we can use it to filter stuff in different parts of the reducers
-      dispatch(subscribeAccountSuccess(response.data, getState().get('statuses')));
+      dispatch(subscribeAccountSuccess(response.data));
     }).catch(error => {
       dispatch(subscribeAccountFail(id, error));
     });
@@ -454,11 +453,10 @@ export function subscribeAccountRequest(id) {
   };
 };
 
-export function subscribeAccountSuccess(relationship, statuses) {
+export function subscribeAccountSuccess(relationship) {
   return {
     type: ACCOUNT_SUBSCRIBE_SUCCESS,
     relationship,
-    statuses,
   };
 };
 
