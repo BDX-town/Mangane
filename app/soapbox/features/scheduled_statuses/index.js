@@ -5,8 +5,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusList from '../../components/status_list';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchScheduledStatuses, expandScheduledStatuses } from '../../actions/scheduled_statuses';
+import ScheduledStatus from './components/scheduled_status';
 import { debounce } from 'lodash';
 
 const messages = defineMessages({
@@ -29,11 +30,8 @@ class ScheduledStatuses extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    shouldUpdateScroll: PropTypes.func,
     statusIds: ImmutablePropTypes.list.isRequired,
     intl: PropTypes.object.isRequired,
-    columnId: PropTypes.string,
-    multiColumn: PropTypes.bool,
     hasMore: PropTypes.bool,
     isLoading: PropTypes.bool,
   };
@@ -49,24 +47,19 @@ class ScheduledStatuses extends ImmutablePureComponent {
 
 
   render() {
-    const { intl, shouldUpdateScroll, statusIds, columnId, multiColumn, hasMore, isLoading } = this.props;
-    const pinned = !!columnId;
-
+    const { intl, statusIds, hasMore, isLoading } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.scheduled_statuses' defaultMessage="You don't have any scheduled statuses yet. When you add one, it will show up here." />;
 
     return (
       <Column icon='edit' heading={intl.formatMessage(messages.heading)} backBtnSlim>
-        <StatusList
-          trackScroll={!pinned}
-          statusIds={statusIds}
-          scrollKey={`scheduled_statuses-${columnId}`}
-          hasMore={hasMore}
-          isLoading={isLoading}
-          onLoadMore={this.handleLoadMore}
-          shouldUpdateScroll={shouldUpdateScroll}
+        <ScrollableList
+          scrollKey='scheduled_statuses'
           emptyMessage={emptyMessage}
-          bindToDocument={!multiColumn}
-        />
+          isLoading={isLoading}
+          hasMore={hasMore}
+        >
+          {statusIds.map(id => <ScheduledStatus key={id} statusId={id} />)}
+        </ScrollableList>
       </Column>
     );
   }

@@ -8,6 +8,10 @@ export const SCHEDULED_STATUSES_EXPAND_REQUEST = 'SCHEDULED_STATUSES_EXPAND_REQU
 export const SCHEDULED_STATUSES_EXPAND_SUCCESS = 'SCHEDULED_STATUSES_EXPAND_SUCCESS';
 export const SCHEDULED_STATUSES_EXPAND_FAIL    = 'SCHEDULED_STATUSES_EXPAND_FAIL';
 
+export const SCHEDULED_STATUS_CANCEL_REQUEST = 'SCHEDULED_STATUS_CANCEL_REQUEST';
+export const SCHEDULED_STATUS_CANCEL_SUCCESS = 'SCHEDULED_STATUS_CANCEL_SUCCESS';
+export const SCHEDULED_STATUS_CANCEL_FAIL    = 'SCHEDULED_STATUS_CANCEL_FAIL';
+
 export function fetchScheduledStatuses() {
   return (dispatch, getState) => {
     if (getState().getIn(['status_lists', 'scheduled_statuses', 'isLoading'])) {
@@ -24,6 +28,17 @@ export function fetchScheduledStatuses() {
     });
   };
 };
+
+export function cancelScheduledStatus(id) {
+  return (dispatch, getState) => {
+    dispatch({ type: SCHEDULED_STATUS_CANCEL_REQUEST, id });
+    api(getState).delete(`/api/v1/scheduled_statuses/${id}`).then(({ data }) => {
+      dispatch({ type: SCHEDULED_STATUS_CANCEL_SUCCESS, id, data });
+    }).catch(error => {
+      dispatch({ type: SCHEDULED_STATUS_CANCEL_FAIL, id, error });
+    });
+  };
+}
 
 export function fetchScheduledStatusesRequest() {
   return {

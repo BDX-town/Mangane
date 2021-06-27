@@ -73,7 +73,10 @@
 
 .detailed-status__button {
   padding: 10px 0;
+}
 
+.status__button,
+.detailed-status__button {
   .icon-button {
     display: inline-flex;
     align-items: center;

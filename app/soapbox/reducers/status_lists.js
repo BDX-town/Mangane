@@ -33,6 +33,8 @@ import {
   SCHEDULED_STATUSES_EXPAND_REQUEST,
   SCHEDULED_STATUSES_EXPAND_SUCCESS,
   SCHEDULED_STATUSES_EXPAND_FAIL,
+  SCHEDULED_STATUS_CANCEL_REQUEST,
+  SCHEDULED_STATUS_CANCEL_SUCCESS,
 } from '../actions/scheduled_statuses';
 
 const initialState = ImmutableMap({
@@ -81,9 +83,9 @@ const prependOneToList = (state, listType, status) => {
   }));
 };
 
-const removeOneFromList = (state, listType, status) => {
+const removeOneFromList = (state, listType, statusId) => {
   return state.update(listType, listMap => listMap.withMutations(map => {
-    map.set('items', map.get('items').filter(item => item !== status.get('id')));
+    map.set('items', map.get('items').filter(item => item !== statusId));
   }));
 };
 
@@ -133,6 +135,9 @@ export default function statusLists(state = initialState, action) {
     return normalizeList(state, 'scheduled_statuses', action.statuses, action.next);
   case SCHEDULED_STATUSES_EXPAND_SUCCESS:
     return appendToList(state, 'scheduled_statuses', action.statuses, action.next);
+  case SCHEDULED_STATUS_CANCEL_REQUEST:
+  case SCHEDULED_STATUS_CANCEL_SUCCESS:
+    return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.get('id'));
   default:
     return state;
   }
