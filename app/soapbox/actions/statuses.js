@@ -6,6 +6,10 @@ import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus
 import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
+export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
+export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
+export const STATUS_CREATE_FAIL    = 'STATUS_CREATE_FAIL';
+
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
 export const STATUS_FETCH_FAIL    = 'STATUS_FETCH_FAIL';
@@ -36,6 +40,22 @@ export function fetchStatusRequest(id, skipLoading) {
     type: STATUS_FETCH_REQUEST,
     id,
     skipLoading,
+  };
+};
+
+export function createStatus(params, idempotencyKey) {
+  return (dispatch, getState) => {
+    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
+
+    return api(getState).post('/api/v1/statuses', params, {
+      headers: { 'Idempotency-Key': idempotencyKey },
+    }).then(({ data: status }) => {
+      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+      return status;
+    }).catch(error => {
+      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
+      throw error;
+    });
   };
 };
 

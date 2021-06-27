@@ -14,6 +14,7 @@ import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from './media';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { createStatus } from './statuses';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -134,11 +135,11 @@ export function directCompose(account, routerHistory) {
   };
 };
 
-export function handleComposeSubmit(dispatch, getState, response, status) {
+export function handleComposeSubmit(dispatch, getState, data, status) {
   if (!dispatch || !getState) return;
 
-  dispatch(insertIntoTagHistory(response.data.tags || [], status));
-  dispatch(submitComposeSuccess({ ...response.data }));
+  dispatch(insertIntoTagHistory(data.tags || [], status));
+  dispatch(submitComposeSuccess({ ...data }));
 
   // To make the app more responsive, immediately push the status into the columns
   const insertIfOnline = timelineId => {
@@ -148,13 +149,13 @@ export function handleComposeSubmit(dispatch, getState, response, status) {
       let dequeueArgs = {};
       if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
-      dispatch(updateTimeline(timelineId, response.data.id));
+      dispatch(updateTimeline(timelineId, data.id));
     }
   };
 
-  if (response.data.visibility !== 'direct') {
+  if (data.visibility !== 'direct') {
     insertIfOnline('home');
-  } else if (response.data.visibility === 'public') {
+  } else if (data.visibility === 'public') {
     insertIfOnline('community');
     insertIfOnline('public');
   }
@@ -168,7 +169,9 @@ export function submitCompose(routerHistory, group) {
       dispatch(submitComposeRequest());
       dispatch(closeModal());
 
-      api(getState).post('/api/v1/statuses', {
+      const idempotencyKey = getState().getIn(['compose', 'idempotencyKey']);
+
+      const params = {
         status,
         in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
         media_ids: media.map(item => item.get('id')),
@@ -178,15 +181,13 @@ export function submitCompose(routerHistory, group) {
         content_type: getState().getIn(['compose', 'content_type']),
         poll: getState().getIn(['compose', 'poll'], null),
         scheduled_at: getState().getIn(['compose', 'schedule'], null),
-      }, {
-        headers: {
-          'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
-        },
-      }).then(function(response) {
-        if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+      };
+
+      dispatch(createStatus(params, idempotencyKey)).then(function(data) {
+        if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
           routerHistory.push('/messages');
         }
-        handleComposeSubmit(dispatch, getState, response, status);
+        handleComposeSubmit(dispatch, getState, data, status);
       }).catch(function(error) {
         dispatch(submitComposeFail(error));
       });
