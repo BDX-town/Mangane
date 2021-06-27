@@ -52,9 +52,9 @@ class Header extends ImmutablePureComponent {
   };
 
   handleSubmit = (event) => {
-    const { dispatch } = this.props;
+    const { dispatch, intl } = this.props;
     const { username, password } = this.getFormData(event.target);
-    dispatch(logIn(username, password)).then(({ access_token }) => {
+    dispatch(logIn(intl, username, password)).then(({ access_token }) => {
       return dispatch(verifyCredentials(access_token));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {

@@ -39,6 +39,7 @@ const messages = defineMessages({
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
   verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
+  success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
 });
 
 const mapStateToProps = state => {
@@ -150,7 +151,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch } = this.props;
+    const { dispatch, intl } = this.props;
 
     const credentials = dispatch(patchMe(this.getFormdata()));
     const notifications = dispatch(updateNotificationSettings({
@@ -161,7 +162,7 @@ class EditProfile extends ImmutablePureComponent {
 
     Promise.all([credentials, notifications]).then(() => {
       this.setState({ isLoading: false });
-      dispatch(snackbar.success('Profile saved!'));
+      dispatch(snackbar.success(intl.formatMessage(messages.success)));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });

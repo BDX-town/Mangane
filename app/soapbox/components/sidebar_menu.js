@@ -70,12 +70,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
   onClose() {
     dispatch(closeSidebar());
   },
   onClickLogOut(e) {
-    dispatch(logOut());
+    dispatch(logOut(intl));
     e.preventDefault();
   },
   fetchOwnAccounts() {

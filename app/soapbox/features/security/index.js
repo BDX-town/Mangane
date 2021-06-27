@@ -371,7 +371,7 @@ class DeactivateAccount extends ImmutablePureComponent {
     const { password } = this.state;
     const { dispatch, intl } = this.props;
     this.setState({ isLoading: true });
-    return dispatch(deleteAccount(password)).then(() => {
+    return dispatch(deleteAccount(intl, password)).then(() => {
       //this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
       dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
     }).catch(error => {

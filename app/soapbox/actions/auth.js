@@ -1,3 +1,4 @@
+import { defineMessages } from 'react-intl';
 import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
@@ -38,6 +39,11 @@ export const FETCH_TOKENS_FAIL    = 'FETCH_TOKENS_FAIL';
 export const REVOKE_TOKEN_REQUEST = 'REVOKE_TOKEN_REQUEST';
 export const REVOKE_TOKEN_SUCCESS = 'REVOKE_TOKEN_SUCCESS';
 export const REVOKE_TOKEN_FAIL    = 'REVOKE_TOKEN_FAIL';
+
+const messages = defineMessages({
+  loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
+  invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
+});
 
 const noOp = () => () => new Promise(f => f());
 
@@ -150,7 +156,7 @@ export function verifyCredentials(token) {
   };
 }
 
-export function logIn(username, password) {
+export function logIn(intl, username, password) {
   return (dispatch, getState) => {
     return dispatch(createAppAndToken()).then(() => {
       return dispatch(createUserToken(username, password));
@@ -160,14 +166,14 @@ export function logIn(username, password) {
       } else if(error.response.data.error) {
         dispatch(snackbar.error(error.response.data.error));
       } else {
-        dispatch(snackbar.error('Wrong username or password'));
+        dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
       }
       throw error;
     });
   };
 }
 
-export function logOut() {
+export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
     const me = state.get('me');
@@ -178,7 +184,7 @@ export function logOut() {
       token: state.getIn(['auth', 'users', me, 'access_token']),
     }).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, accountId: me });
-      dispatch(snackbar.success('Logged out.'));
+      dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
   };
 }
@@ -250,7 +256,7 @@ export function changeEmail(email, password) {
   };
 }
 
-export function deleteAccount(password) {
+export function deleteAccount(intl, password) {
   return (dispatch, getState) => {
     dispatch({ type: DELETE_ACCOUNT_REQUEST });
     return api(getState).post('/api/pleroma/delete_account', {
@@ -259,7 +265,7 @@ export function deleteAccount(password) {
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
       dispatch({ type: AUTH_LOGGED_OUT });
-      dispatch(snackbar.success('Logged out.'));
+      dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;

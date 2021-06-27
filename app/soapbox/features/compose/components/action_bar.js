@@ -34,12 +34,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
   onOpenHotkeys() {
     dispatch(openModal('HOTKEYS'));
   },
   onClickLogOut(e) {
-    dispatch(logOut());
+    dispatch(logOut(intl));
     e.preventDefault();
   },
 });

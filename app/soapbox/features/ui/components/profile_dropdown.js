@@ -53,7 +53,7 @@ class ProfileDropdown extends React.PureComponent {
   }
 
   handleLogOut = e => {
-    this.props.dispatch(logOut());
+    this.props.dispatch(logOut(this.props.intl));
     e.preventDefault();
   };
 
