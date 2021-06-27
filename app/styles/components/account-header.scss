@@ -168,6 +168,10 @@
           background: $error-red;
           color: #fff;
         }
+
+        @media (max-width: 430px) {
+          display: none;
+        }
       }
 
       .button-active {

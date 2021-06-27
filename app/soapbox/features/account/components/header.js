@@ -54,6 +54,8 @@ const messages = defineMessages({
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
   unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
+  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
+  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
 });
 
 const mapStateToProps = state => {
@@ -156,6 +158,12 @@ class Header extends ImmutablePureComponent {
           menu.push({ text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
         } else {
           menu.push({ text: intl.formatMessage(messages.showReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
+        }
+
+        if (account.getIn(['relationship', 'subscribing'])) {
+          menu.push({ text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+        } else {
+          menu.push({ text: intl.formatMessage(messages.subscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
         }
 
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
