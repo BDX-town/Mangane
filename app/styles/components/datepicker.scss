@@ -1,0 +1,123 @@
+.ui .react-datepicker {
+  box-shadow: 0 0 6px 0 rgb(0 0 0 / 30%);
+  font-size: 12px;
+  border: 0;
+  border-radius: 10px;
+  background-color: var(--foreground-color);
+  color: var(--primary-text-color);
+
+  &-wrapper {
+    margin-left: 10px;
+    background: var(--foreground-color);
+    border: 2px solid var(--brand-color);
+  }
+
+  &__current-month,
+  &-time__header,
+  &-year-header {
+    font-size: 14px;
+    color: var(--primary-text-color);
+  }
+
+  &__day--keyboard-selected,
+  &__month-text--keyboard-selected,
+  &__quarter-text--keyboard-selected,
+  &__year-text--keyboard-selected {
+    background-color: var(--brand-color);
+    color: white !important;
+  }
+
+  &__day,
+  &__day-name,
+  &__time-name {
+    width: 22px;
+    line-height: 21px;
+    color: var(--primary-text-color);
+  }
+
+  &__day,
+  &__month-text,
+  &__quarter-text,
+  &__year-text {
+    transition: 0.2s;
+
+    &:hover {
+      background-color: var(--background-color);
+      color: var(--primary-text-color) !important;
+    }
+
+    &--disabled {
+      color: hsla(var(--primary-text-color_hsl), 0.4);
+    }
+
+    &--selected {
+      background-color: var(--brand-color);
+      color: white;
+    }
+  }
+
+  &__day-names {
+    padding-top: 8px;
+  }
+
+  &__time {
+    background-color: var(--foreground-color);
+  }
+
+  &__header {
+    background-color: var(--background-color);
+    border: 0;
+    border-top-left-radius: 10px;
+    padding: 8px 0 14px;
+  }
+
+  &__triangle::before,
+  &__triangle::after {
+    border-bottom-color: var(--background-color) !important;
+  }
+
+  &__navigation-icon::before,
+  &__year-read-view--down-arrow,
+  &__month-read-view--down-arrow,
+  &__month-year-read-view--down-arrow {
+    border-color: hsla(var(--primary-text-color_hsl), 0.4);
+    transition: 0.2s;
+  }
+
+  &__navigation-icon:hover::before {
+    border-color: var(--primary-text-color--faint);
+  }
+
+  &__time-list-item {
+    display: flex !important;
+    align-items: center !important;
+    transition: 0.2s !important;
+
+    &:hover {
+      background-color: var(--background-color) !important;
+      color: var(--primary-text-color) !important;
+    }
+
+    &--disabled {
+      color: hsla(var(--primary-text-color_hsl), 0.4) !important;
+    }
+
+    &--selected {
+      background-color: var(--brand-color) !important;
+      color: white;
+    }
+  }
+
+  &__header:not(.react-datepicker__header--has-time-select) {
+    border-top-left-radius: 0;
+    border-top-right-radius: 10px;
+  }
+
+  &__month {
+    margin: 8px 14px 16px;
+  }
+
+  &__time-container {
+    border-color: var(--background-color);
+  }
+}
