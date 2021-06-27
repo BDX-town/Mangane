@@ -161,52 +161,59 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
   }
 }
 
-export function submitCompose(routerHistory, group) {
+const needsDescriptions = state => {
+  const media  = state.getIn(['compose', 'media_attachments']);
+  const missingDescriptionModal = getSettings(state).get('missingDescriptionModal');
+
+  const hasMissing = media.filter(item => !item.get('description')).size > 0;
+
+  return missingDescriptionModal && hasMissing;
+};
+
+export function submitCompose(routerHistory, force = false) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
+    const state = getState();
 
-    function onModalSubmitCompose() {
-      dispatch(submitComposeRequest());
-      dispatch(closeModal());
-
-      const idempotencyKey = getState().getIn(['compose', 'idempotencyKey']);
-
-      const params = {
-        status,
-        in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
-        media_ids: media.map(item => item.get('id')),
-        sensitive: getState().getIn(['compose', 'sensitive']),
-        spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
-        visibility: getState().getIn(['compose', 'privacy']),
-        content_type: getState().getIn(['compose', 'content_type']),
-        poll: getState().getIn(['compose', 'poll'], null),
-        scheduled_at: getState().getIn(['compose', 'schedule'], null),
-      };
-
-      dispatch(createStatus(params, idempotencyKey)).then(function(data) {
-        if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
-          routerHistory.push('/messages');
-        }
-        handleComposeSubmit(dispatch, getState, data, status);
-      }).catch(function(error) {
-        dispatch(submitComposeFail(error));
-      });
-    }
-
-    const status = getState().getIn(['compose', 'text'], '');
-    const media  = getState().getIn(['compose', 'media_attachments']);
+    const status = state.getIn(['compose', 'text'], '');
+    const media  = state.getIn(['compose', 'media_attachments']);
 
     if ((!status || !status.length) && media.size === 0) {
       return;
     }
 
-    const missingDescriptionModal = getSettings(getState()).get('missingDescriptionModal');
-
-    if (missingDescriptionModal && media.filter(item => !item.get('description')).size) {
+    if (!force && needsDescriptions(state)) {
       dispatch(openModal('MISSING_DESCRIPTION', {
-        onContinue: () => onModalSubmitCompose(),
+        onContinue: () => dispatch(submitCompose(routerHistory, true)),
       }));
-    } else onModalSubmitCompose();
+      return;
+    }
+
+    dispatch(submitComposeRequest());
+    dispatch(closeModal());
+
+    const idempotencyKey = state.getIn(['compose', 'idempotencyKey']);
+
+    const params = {
+      status,
+      in_reply_to_id: state.getIn(['compose', 'in_reply_to'], null),
+      media_ids: media.map(item => item.get('id')),
+      sensitive: state.getIn(['compose', 'sensitive']),
+      spoiler_text: state.getIn(['compose', 'spoiler_text'], ''),
+      visibility: state.getIn(['compose', 'privacy']),
+      content_type: state.getIn(['compose', 'content_type']),
+      poll: state.getIn(['compose', 'poll'], null),
+      scheduled_at: state.getIn(['compose', 'schedule'], null),
+    };
+
+    dispatch(createStatus(params, idempotencyKey)).then(function(data) {
+      if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+        routerHistory.push('/messages');
+      }
+      handleComposeSubmit(dispatch, getState, data, status);
+    }).catch(function(error) {
+      dispatch(submitComposeFail(error));
+    });
   };
 };
 
