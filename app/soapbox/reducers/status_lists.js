@@ -51,6 +51,11 @@ const initialState = ImmutableMap({
     loaded: false,
     items: ImmutableList(),
   }),
+  scheduled_statuses: ImmutableMap({
+    next: null,
+    loaded: false,
+    items: ImmutableList(),
+  }),
 });
 
 const normalizeList = (state, listType, statuses, next) => {
