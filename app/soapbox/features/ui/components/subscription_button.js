@@ -53,7 +53,7 @@ class SubscriptionButton extends ImmutablePureComponent {
 
     if (account.getIn(['relationship', 'requested']) || account.getIn(['relationship', 'following'])) {
       subscriptionButton = (<Button className={classNames('subscription-button', subscribing && 'button-active')} style={{ padding: 0, lineHeight: '18px' }} title={intl.formatMessage(account.getIn(['relationship', 'subscribing']) ? messages.unsubscribe : messages.subscribe, { name: account.get('username') })} onClick={this.handleSubscriptionToggle}>
-        <Icon id={account.getIn(['relationship', 'subscribing']) ? 'bell' : 'bell-slash'} style={{ margin: 0, fontSize: 18 }} />
+        <Icon id={account.getIn(['relationship', 'subscribing']) ? 'bell-ringing' : 'bell'} style={{ margin: 0, fontSize: 18 }} />
       </Button>);
     }
 
