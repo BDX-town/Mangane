@@ -21,6 +21,7 @@ import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
 import { fetchFollowRequests } from '../../actions/accounts';
+import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { WrappedRoute } from './util/react_router_helpers';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
@@ -503,6 +504,8 @@ class UI extends React.PureComponent {
       if (account.get('locked')) {
         setTimeout(() => this.props.dispatch(fetchFollowRequests()), 700);
       }
+
+      setTimeout(() => this.props.dispatch(fetchScheduledStatuses()), 900);
     }
     this.connectStreaming();
   }

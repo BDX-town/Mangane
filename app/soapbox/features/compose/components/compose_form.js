@@ -4,12 +4,13 @@ import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Link } from 'react-router-dom';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';
@@ -25,6 +26,7 @@ import { length } from 'stringz';
 import { countableText } from '../util/counter';
 import Icon from 'soapbox/components/icon';
 import { get } from 'lodash';
+import Warning from '../components/warning';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
 
@@ -245,7 +247,7 @@ class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount } = this.props;
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -267,6 +269,25 @@ class ComposeForm extends ImmutablePureComponent {
 
     return (
       <div className={composeClassNames} ref={this.setForm} onClick={this.handleClick}>
+        {scheduledStatusCount > 0 && (
+          <Warning
+            message={(
+              <FormattedMessage
+                id='compose_form.scheduled_statuses.message'
+                defaultMessage='You have scheduled statuses. {click_here} to see them.'
+                values={{ click_here: (
+                  <Link to='/scheduled_statuses'>
+                    <FormattedMessage
+                      id='compose_form.scheduled_statuses.click_here'
+                      defaultMessage='Click here'
+                    />
+                  </Link>
+                ) }}
+              />)
+            }
+          />
+        )}
+
         <WarningContainer />
 
         { !shouldCondense && <ReplyIndicatorContainer /> }

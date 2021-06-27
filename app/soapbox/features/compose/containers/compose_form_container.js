@@ -27,6 +27,7 @@ const mapStateToProps = state => ({
   isModalOpen: state.get('modal').modalType === 'COMPOSE',
   maxTootChars: state.getIn(['instance', 'max_toot_chars']),
   schedule: state.getIn(['instance', 'schedule']),
+  scheduledStatusCount: state.get('scheduled_statuses').size,
 });
 
 const mapDispatchToProps = (dispatch) => ({
