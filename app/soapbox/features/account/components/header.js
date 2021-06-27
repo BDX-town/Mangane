@@ -279,6 +279,10 @@ class Header extends ImmutablePureComponent {
             {info}
           </div>
 
+          <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} />
+          </div>
+
           <StillImage src={account.get('header')} alt='' className='parallax' />
         </div>
 
@@ -335,7 +339,6 @@ class Header extends ImmutablePureComponent {
             }
 
             <div className='account__header__extra__buttons'>
-              <SubscriptionButton account={account} />
               <ActionButton account={account} />
               {me && account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
                 <Button className='button-alternative-2' onClick={this.props.onChat}>

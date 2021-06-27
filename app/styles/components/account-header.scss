@@ -15,6 +15,31 @@
     z-index: 1;
   }
 
+  &__subscribe {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+
+    .subscription-button {
+      color: var(--primary-text-color);
+      margin-bottom: 4px;
+      display: block;
+      vertical-align: top;
+      background-color: var(--background-color);
+      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 4px;
+      border-radius: 4px;
+      opacity: 0.7;
+
+      &:not(.button-active) i.fa {
+        margin: 0;
+      }
+    }
+  }
+
   &__image {
     overflow: hidden;
     height: 350px;
@@ -149,30 +174,6 @@
       }
 
       .button { margin-right: 10px; }
-
-      .subscription-button {
-        padding: 0;
-        height: 36px;
-        line-height: 36px;
-        width: 36px;
-        margin-right: 10px;
-        font-size: 20px;
-        text-align: center;
-        border: 1px solid var(--brand-color);
-        background: transparent;
-        color: var(--primary-text-color);
-
-        &:hover,
-        &.active {
-          border-color: $error-red;
-          background: $error-red;
-          color: #fff;
-        }
-
-        @media (max-width: 430px) {
-          display: none;
-        }
-      }
 
       .button-active {
         border-color: #008000;
