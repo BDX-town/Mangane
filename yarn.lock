@@ -5480,9 +5480,9 @@ forever-agent@~0.6.1:
   resolved "https://registry.yarnpkg.com/forever-agent/-/forever-agent-0.6.1.tgz#fbc71f0c41adeb37f96c577ad1ed42d8fdacca91"
   integrity sha1-+8cfDEGt6zf5bFd60e1C2P2sypE=
 
-"fork-awesome@https://github.com/ForkAwesome/Fork-Awesome#964d92e199856be623ccf4c31ffd27603ecb2944":
+"fork-awesome@https://github.com/alexgleason/Fork-Awesome#c23fd34246a9f33c4bf24ea095a4cf26e7abe265":
   version "1.2.0"
-  resolved "https://github.com/ForkAwesome/Fork-Awesome#964d92e199856be623ccf4c31ffd27603ecb2944"
+  resolved "https://github.com/alexgleason/Fork-Awesome#c23fd34246a9f33c4bf24ea095a4cf26e7abe265"
 
 form-data@~2.3.2:
   version "2.3.3"

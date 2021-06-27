@@ -72,7 +72,7 @@
     "file-loader": "^6.0.0",
     "fontsource-montserrat": "^3.0.9",
     "fontsource-roboto": "^3.0.3",
-    "fork-awesome": "https://github.com/ForkAwesome/Fork-Awesome#964d92e199856be623ccf4c31ffd27603ecb2944",
+    "fork-awesome": "https://github.com/alexgleason/Fork-Awesome#c23fd34246a9f33c4bf24ea095a4cf26e7abe265",
     "html-webpack-harddisk-plugin": "^1.0.1",
     "html-webpack-plugin": "^4.3.0",
     "http-link-header": "^1.0.2",
