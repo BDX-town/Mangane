@@ -10,6 +10,9 @@ import {
   unmuteAccount,
   // pinAccount,
   // unpinAccount,
+  subscribeAccount,
+  unsubscribeAccount,
+
 } from '../../../actions/accounts';
 import {
   mentionCompose,
@@ -100,6 +103,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       dispatch(followAccount(account.get('id'), false));
     } else {
       dispatch(followAccount(account.get('id'), true));
+    }
+  },
+
+  onSubscriptionToggle(account) {
+    if (account.getIn(['relationship', 'subscribing'])) {
+      dispatch(unsubscribeAccount(account.get('id')));
+    } else {
+      dispatch(subscribeAccount(account.get('id')));
     }
   },
 

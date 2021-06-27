@@ -12,8 +12,8 @@ import {
 } from 'soapbox/actions/accounts';
 
 const messages = defineMessages({
-  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to @{name} posts' },
-  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe @{name} posts' },
+  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
+  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
 });
 
 const mapStateToProps = state => {
