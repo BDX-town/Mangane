@@ -26,6 +26,14 @@ import {
   PIN_SUCCESS,
   UNPIN_SUCCESS,
 } from '../actions/interactions';
+import {
+  SCHEDULED_STATUSES_FETCH_REQUEST,
+  SCHEDULED_STATUSES_FETCH_SUCCESS,
+  SCHEDULED_STATUSES_FETCH_FAIL,
+  SCHEDULED_STATUSES_EXPAND_REQUEST,
+  SCHEDULED_STATUSES_EXPAND_SUCCESS,
+  SCHEDULED_STATUSES_EXPAND_FAIL,
+} from '../actions/scheduled_statuses';
 
 const initialState = ImmutableMap({
   favourites: ImmutableMap({
@@ -110,6 +118,16 @@ export default function statusLists(state = initialState, action) {
     return prependOneToList(state, 'pins', action.status);
   case UNPIN_SUCCESS:
     return removeOneFromList(state, 'pins', action.status);
+  case SCHEDULED_STATUSES_FETCH_REQUEST:
+  case SCHEDULED_STATUSES_EXPAND_REQUEST:
+    return state.setIn(['scheduled_statuses', 'isLoading'], true);
+  case SCHEDULED_STATUSES_FETCH_FAIL:
+  case SCHEDULED_STATUSES_EXPAND_FAIL:
+    return state.setIn(['scheduled_statuses', 'isLoading'], false);
+  case SCHEDULED_STATUSES_FETCH_SUCCESS:
+    return normalizeList(state, 'scheduled_statuses', action.statuses, action.next);
+  case SCHEDULED_STATUSES_EXPAND_SUCCESS:
+    return appendToList(state, 'scheduled_statuses', action.statuses, action.next);
   default:
     return state;
   }

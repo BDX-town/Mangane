@@ -100,6 +100,7 @@ import {
   Reports,
   ModerationLog,
   CryptoDonate,
+  ScheduledStatuses,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -300,6 +301,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' layout={LAYOUT.DEFAULT} component={Reblogs} content={children} />
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/scheduled_statuses' layout={LAYOUT.DEFAULT} component={ScheduledStatuses} content={children} />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
