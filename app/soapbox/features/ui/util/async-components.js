@@ -233,3 +233,7 @@ export function ModerationLog() {
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
+
+export function ScheduledStatuses() {
+  return import(/* webpackChunkName: "features/scheduled_statuses" */'../../scheduled_statuses');
+}

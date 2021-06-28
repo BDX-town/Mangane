@@ -26,6 +26,16 @@ import {
   PIN_SUCCESS,
   UNPIN_SUCCESS,
 } from '../actions/interactions';
+import {
+  SCHEDULED_STATUSES_FETCH_REQUEST,
+  SCHEDULED_STATUSES_FETCH_SUCCESS,
+  SCHEDULED_STATUSES_FETCH_FAIL,
+  SCHEDULED_STATUSES_EXPAND_REQUEST,
+  SCHEDULED_STATUSES_EXPAND_SUCCESS,
+  SCHEDULED_STATUSES_EXPAND_FAIL,
+  SCHEDULED_STATUS_CANCEL_REQUEST,
+  SCHEDULED_STATUS_CANCEL_SUCCESS,
+} from '../actions/scheduled_statuses';
 
 const initialState = ImmutableMap({
   favourites: ImmutableMap({
@@ -39,6 +49,11 @@ const initialState = ImmutableMap({
     items: ImmutableList(),
   }),
   pins: ImmutableMap({
+    next: null,
+    loaded: false,
+    items: ImmutableList(),
+  }),
+  scheduled_statuses: ImmutableMap({
     next: null,
     loaded: false,
     items: ImmutableList(),
@@ -68,9 +83,9 @@ const prependOneToList = (state, listType, status) => {
   }));
 };
 
-const removeOneFromList = (state, listType, status) => {
+const removeOneFromList = (state, listType, statusId) => {
   return state.update(listType, listMap => listMap.withMutations(map => {
-    map.set('items', map.get('items').filter(item => item !== status.get('id')));
+    map.set('items', map.get('items').filter(item => item !== statusId));
   }));
 };
 
@@ -110,6 +125,19 @@ export default function statusLists(state = initialState, action) {
     return prependOneToList(state, 'pins', action.status);
   case UNPIN_SUCCESS:
     return removeOneFromList(state, 'pins', action.status);
+  case SCHEDULED_STATUSES_FETCH_REQUEST:
+  case SCHEDULED_STATUSES_EXPAND_REQUEST:
+    return state.setIn(['scheduled_statuses', 'isLoading'], true);
+  case SCHEDULED_STATUSES_FETCH_FAIL:
+  case SCHEDULED_STATUSES_EXPAND_FAIL:
+    return state.setIn(['scheduled_statuses', 'isLoading'], false);
+  case SCHEDULED_STATUSES_FETCH_SUCCESS:
+    return normalizeList(state, 'scheduled_statuses', action.statuses, action.next);
+  case SCHEDULED_STATUSES_EXPAND_SUCCESS:
+    return appendToList(state, 'scheduled_statuses', action.statuses, action.next);
+  case SCHEDULED_STATUS_CANCEL_REQUEST:
+  case SCHEDULED_STATUS_CANCEL_SUCCESS:
+    return removeOneFromList(state, 'scheduled_statuses', action.id || action.status.get('id'));
   default:
     return state;
   }

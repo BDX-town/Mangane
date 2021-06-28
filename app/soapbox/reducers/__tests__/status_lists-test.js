@@ -19,6 +19,11 @@ describe('status_lists reducer', () => {
         loaded: false,
         items: ImmutableList(),
       }),
+      scheduled_statuses: ImmutableMap({
+        next: null,
+        loaded: false,
+        items: ImmutableList(),
+      }),
     }));
   });
 });
