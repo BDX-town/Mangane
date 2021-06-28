@@ -23,13 +23,13 @@ class GroupPanel extends ImmutablePureComponent {
       return (
         <div className='group__panel'>
           <h1 className='group__panel__title'>
-            {group.get('title')}
+            {group.get('display_name')}
             {group.get('archived') && <Icon id='lock' title={intl.formatMessage(messages.group_archived)} />}
           </h1>
 
-          {relationships.get('admin') && <span className='group__panel__label'>{intl.formatMessage(messages.group_admin)}</span>}
+          {relationships && relationships.get('admin') && <span className='group__panel__label'>{intl.formatMessage(messages.group_admin)}</span>}
 
-          <div className='group__panel__description'>{group.get('description')}</div>
+          <div className='group__panel__description'>{group.get('note')}</div>
         </div>
       );
     }

@@ -34,9 +34,8 @@ import TrendsPanel from './components/trends_panel';
 import PromoPanel from './components/promo_panel';
 import FundingPanel from './components/funding_panel';
 import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
-// import GroupsPage from 'soapbox/pages/groups_page';
-// import GroupPage from 'soapbox/pages/group_page';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
+import GroupsPage from 'soapbox/pages/groups_page';
+import GroupPage from 'soapbox/pages/group_page';
 import HomePage from 'soapbox/pages/home_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import SidebarMenu from '../../components/sidebar_menu';
@@ -75,15 +74,15 @@ import {
   PinnedStatuses,
   Search,
   // Explore,
-  // Groups,
-  // GroupTimeline,
+  Groups,
+  GroupTimeline,
   ListTimeline,
   Lists,
   Bookmarks,
-  // GroupMembers,
-  // GroupRemovedAccounts,
+  GroupMembers,
+  GroupRemovedAccounts,
   // GroupCreate,
-  // GroupEdit,
+  GroupEdit,
   LoginPage,
   Preferences,
   EditProfile,
@@ -247,7 +246,6 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/timeline/:instance' exact page={HomePage} layout={LAYOUT.HOME} component={RemoteTimeline} content={children} />
         <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
-        {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
         <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
         <WrappedRoute path='/groups/browse/member' page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'member' }} />
@@ -256,7 +254,6 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/groups/:id/removed_accounts' page={GroupPage} component={GroupRemovedAccounts} content={children} />
         <WrappedRoute path='/groups/:id/edit' page={GroupPage} component={GroupEdit} content={children} />
         <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
-        */}
 
         {/* Redirects from Pleroma FE, etc. to fix old bookmarks */}
         <Redirect from='/main/all' to='/timeline/fediverse' />

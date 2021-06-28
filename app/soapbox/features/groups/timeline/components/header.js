@@ -68,7 +68,7 @@ class Header extends ImmutablePureComponent {
       <div className='group__header-container'>
         <div className='group__header'>
           <div className='group__cover'>
-            <img src={group.get('cover_image_url')} alt='' className='parallax' />
+            <img src={group.get('header')} alt='' className='parallax' />
           </div>
 
           <div className='group__tabs'>

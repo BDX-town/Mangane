@@ -11,13 +11,14 @@ import MissingIndicator from '../../../components/missing_indicator';
 import LoadingIndicator from '../../../components/loading_indicator';
 import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import Avatar from '../../../components/avatar';
+import { Map as ImmutableMap } from 'immutable';
 
 const mapStateToProps = (state, props) => {
   const me = state.get('me');
   return {
     account: state.getIn(['accounts', me]),
     group: state.getIn(['groups', props.params.id]),
-    relationships: state.getIn(['group_relationships', props.params.id]),
+    relationships: state.getIn(['group_relationships', props.params.id], ImmutableMap()),
     hasUnread: state.getIn(['timelines', `group:${props.params.id}`, 'unread']) > 0,
   };
 };

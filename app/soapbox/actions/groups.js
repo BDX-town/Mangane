@@ -62,7 +62,7 @@ export const fetchGroup = id => (dispatch, getState) => {
 
   dispatch(fetchGroupRequest(id));
 
-  api(getState).get(`/api/v1/groups/${id}`)
+  api(getState).get(`/api/v1/pleroma/groups/${id}`)
     .then(({ data }) => dispatch(fetchGroupSuccess(data)))
     .catch(err => dispatch(fetchGroupFail(id, err)));
 };
