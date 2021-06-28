@@ -72,14 +72,14 @@ class AboutPage extends ImmutablePureComponent {
         {' '}
         <ul>
           <li>
-            <a href='#' className='sidebar-menu-profile__name' onClick={this.setLocale(defaultLocale)}>
+            <a href='#' onClick={this.setLocale(defaultLocale)}>
               {languages[defaultLocale] || defaultLocale}
             </a>
           </li>
           {
             page.get('locales').map(locale => (
               <li key={locale}>
-                <a href='#' className='sidebar-menu-profile__name' onClick={this.setLocale(locale)}>
+                <a href='#' onClick={this.setLocale(locale)}>
                   {languages[locale] || locale}
                 </a>
               </li>
@@ -88,6 +88,7 @@ class AboutPage extends ImmutablePureComponent {
         </ul>
       </div>
     );
+    console.log(slug, page);
 
     return (
       <div className='content'>
