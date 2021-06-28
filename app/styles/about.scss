@@ -369,6 +369,7 @@ $fluid-breakpoint: $maximum-width + 20px;
 
     li {
       display: inline;
+
       &::after {
         content: ' · ';
       }
