@@ -274,7 +274,7 @@ class ComposeForm extends ImmutablePureComponent {
             message={(
               <FormattedMessage
                 id='compose_form.scheduled_statuses.message'
-                defaultMessage='You have scheduled statuses. {click_here} to see them.'
+                defaultMessage='You have scheduled posts. {click_here} to see them.'
                 values={{ click_here: (
                   <Link to='/scheduled_statuses'>
                     <FormattedMessage
