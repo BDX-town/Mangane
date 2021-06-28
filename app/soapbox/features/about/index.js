@@ -46,12 +46,14 @@ class AboutPage extends ImmutablePureComponent {
   componentDidUpdate(prevProps, prevState) {
     const { locale, match, aboutPages } = this.props;
     const { locale: prevLocale, aboutPages: prevAboutPages } = prevProps;
-    const { locale: stateLocale } = this.props;
+    const { locale: stateLocale } = this.state;
     const { locale: prevStateLocale } = prevState;
+
     const { slug } = match.params;
     const { slug: prevSlug } = prevProps.match.params;
 
     if (locale !== prevLocale) this.setState({ locale });
+
     if (
       slug !== prevSlug ||
       stateLocale !== prevStateLocale ||
@@ -88,7 +90,6 @@ class AboutPage extends ImmutablePureComponent {
         </ul>
       </div>
     );
-    console.log(slug, page);
 
     return (
       <div className='content'>
