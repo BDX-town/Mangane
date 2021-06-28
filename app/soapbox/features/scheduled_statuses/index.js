@@ -11,7 +11,7 @@ import ScheduledStatus from './components/scheduled_status';
 import { debounce } from 'lodash';
 
 const messages = defineMessages({
-  heading: { id: 'column.scheduled_statuses', defaultMessage: 'Scheduled Statuses' },
+  heading: { id: 'column.scheduled_statuses', defaultMessage: 'Scheduled Posts' },
 });
 
 const mapStateToProps = state => ({
