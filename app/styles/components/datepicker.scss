@@ -1,4 +1,28 @@
-.ui .react-datepicker {
+.datepicker {
+  margin: 0;
+  box-sizing: border-box;
+  padding: 10px 10px 0;
+  width: 100%;
+  border-top: 1px solid var(--foreground-color);
+
+  &__hint {
+    font-style: italic;
+    color: var(--primary-text-color--faint);
+    padding-bottom: 10px;
+  }
+
+  &__input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__cancel {
+    padding-left: 10px;
+  }
+}
+
+.datepicker .react-datepicker {
   box-shadow: 0 0 6px 0 rgb(0 0 0 / 30%);
   font-size: 12px;
   border: 0;
@@ -7,9 +31,45 @@
   color: var(--primary-text-color);
 
   &-wrapper {
-    margin-left: 10px;
-    background: var(--foreground-color);
+    width: 100%;
+  }
+
+  &__input-container {
     border: 2px solid var(--brand-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    background: var(--background-color);
+    color: var(--primary-text-color);
+    padding: 10px;
+    font-family: inherit;
+    font-size: 16px;
+    resize: vertical;
+    outline: 0;
+
+    &:focus {
+      outline: 0;
+    }
+
+    @media screen and (max-width: 600px) {
+      font-size: 16px;
+    }
+
+    input {
+      padding: 0 0 0 10px;
+    }
+
+    &::before {
+      content: '\f073';
+      display: inline-block;
+      font: normal normal normal 14px/1 ForkAwesome;
+      font-size: 14px;
+      color: var(--primary-text-color--faint);
+    }
   }
 
   &__current-month,
