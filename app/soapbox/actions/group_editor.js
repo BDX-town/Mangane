@@ -15,32 +15,34 @@ export const GROUP_EDITOR_SETUP        = 'GROUP_EDITOR_SETUP';
 
 export const submit = (routerHistory) => (dispatch, getState) => {
   const groupId = getState().getIn(['group_editor', 'groupId']);
+  const slug = getState().getIn(['group_editor', 'slug']);
   const title = getState().getIn(['group_editor', 'title']);
   const description = getState().getIn(['group_editor', 'description']);
   const coverImage = getState().getIn(['group_editor', 'coverImage']);
 
   if (groupId === null) {
-    dispatch(create(title, description, coverImage, routerHistory));
+    dispatch(create(slug, title, description, coverImage, routerHistory));
   } else {
-    dispatch(update(groupId, title, description, coverImage, routerHistory));
+    dispatch(update(groupId, slug, title, description, coverImage, routerHistory));
   }
 };
 
 
-export const create = (title, description, coverImage, routerHistory) => (dispatch, getState) => {
+export const create = (slug, title, description, coverImage, routerHistory) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
 
   dispatch(createRequest());
 
   const formData = new FormData();
-  formData.append('title', title);
-  formData.append('description', description);
+  formData.append('slug', slug);
+  formData.append('display_name', title);
+  formData.append('note', description);
 
   if (coverImage !== null) {
-    formData.append('cover_image', coverImage);
+    formData.append('header', coverImage);
   }
 
-  api(getState).post('/api/v1/groups', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(({ data }) => {
+  api(getState).post('/api/v1/pleroma/groups', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(({ data }) => {
     dispatch(createSuccess(data));
     routerHistory.push(`/groups/${data.id}`);
   }).catch(err => dispatch(createFail(err)));
@@ -62,7 +64,7 @@ export const createFail = error => ({
   error,
 });
 
-export const update = (groupId, title, description, coverImage, routerHistory) => (dispatch, getState) => {
+export const update = (groupId, slug, title, description, coverImage, routerHistory) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
 
   dispatch(updateRequest());

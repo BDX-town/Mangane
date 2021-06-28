@@ -6,6 +6,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
 
 const messages = defineMessages({
+  slug: { id: 'groups.form.slug', defaultMessage: 'Enter a new group slug' },
   title: { id: 'groups.form.title', defaultMessage: 'Enter a new group title' },
   description: { id: 'groups.form.description', defaultMessage: 'Enter the group description' },
   coverImage: { id: 'groups.form.coverImage', defaultMessage: 'Upload a banner image' },
@@ -14,6 +15,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
+  slug: state.getIn(['group_editor', 'slug']),
   title: state.getIn(['group_editor', 'title']),
   description: state.getIn(['group_editor', 'description']),
   coverImage: state.getIn(['group_editor', 'coverImage']),
@@ -21,6 +23,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  onSlugChange: value => dispatch(changeValue('slug', value)),
   onTitleChange: value => dispatch(changeValue('title', value)),
   onDescriptionChange: value => dispatch(changeValue('description', value)),
   onCoverImageChange: value => dispatch(changeValue('coverImage', value)),
@@ -37,11 +40,13 @@ class Create extends React.PureComponent {
   }
 
   static propTypes = {
+    slug: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
     coverImage: PropTypes.object,
     disabled: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    onSlugChange: PropTypes.func.isRequired,
     onTitleChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired,
@@ -52,6 +57,10 @@ class Create extends React.PureComponent {
   constructor(props) {
     super(props);
     props.reset();
+  }
+
+  handleSlugChange = e => {
+    this.props.onSlugChange(e.target.value);
   }
 
   handleTitleChange = e => {
@@ -72,11 +81,19 @@ class Create extends React.PureComponent {
   }
 
   render() {
-    const { title, description, coverImage, disabled, intl } = this.props;
+    const { slug, title, description, coverImage, disabled, intl } = this.props;
 
     return (
       <form className='group-form' method='post' onSubmit={this.handleSubmit}>
         <div>
+          <input
+            className='standard'
+            type='text'
+            value={slug}
+            disabled={disabled}
+            onChange={this.handleSlugChange}
+            placeholder={intl.formatMessage(messages.slug)}
+          />
           <input
             className='standard'
             type='text'
