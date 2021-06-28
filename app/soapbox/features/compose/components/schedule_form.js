@@ -15,7 +15,7 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = (state, ownProps) => ({
-  schedule: state.getIn(['compose', 'schedule']),
+  scheduledAt: state.getIn(['compose', 'schedule']),
 });
 
 export default @connect(mapStateToProps)
@@ -23,15 +23,14 @@ export default @connect(mapStateToProps)
 class ScheduleForm extends React.Component {
 
   static propTypes = {
-    schedule: PropTypes.instanceOf(Date),
+    scheduledAt: PropTypes.instanceOf(Date),
     intl: PropTypes.object.isRequired,
     onSchedule: PropTypes.func.isRequired,
     dispatch: PropTypes.func,
     active: PropTypes.bool,
   };
 
-  setSchedule(date) {
-    this.setState({ schedule: date });
+  setSchedule = date => {
     this.props.onSchedule(date);
   }
 
@@ -41,16 +40,6 @@ class ScheduleForm extends React.Component {
     }
 
     datePicker.setOpen(true);
-  }
-
-  componentDidMount() {
-    this.setState({ schedule: this.props.schedule });
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.setSchedule = this.setSchedule.bind(this);
   }
 
   isCurrentOrFutureDate(date) {
@@ -70,12 +59,11 @@ class ScheduleForm extends React.Component {
   }
 
   render() {
-    if (!this.props.active || !this.state) {
+    if (!this.props.active) {
       return null;
     }
 
-    const { intl } = this.props;
-    const { schedule } = this.state;
+    const { intl, scheduledAt } = this.props;
 
     return (
       <div className='datepicker'>
@@ -84,7 +72,7 @@ class ScheduleForm extends React.Component {
         </div>
         <div className='datepicker__input'>
           <DatePicker
-            selected={schedule}
+            selected={scheduledAt}
             showTimeSelect
             dateFormat='MMMM d, yyyy h:mm aa'
             timeIntervals={15}
@@ -93,7 +81,7 @@ class ScheduleForm extends React.Component {
             placeholderText={this.props.intl.formatMessage(messages.schedule)}
             filterDate={this.isCurrentOrFutureDate}
             filterTime={this.isFiveMinutesFromNow}
-            ref={this.isCurrentOrFutureDate(schedule) ? null : this.openDatePicker}
+            ref={this.isCurrentOrFutureDate(scheduledAt) ? null : this.openDatePicker}
           />
           <div className='datepicker__cancel'>
             <IconButton size={20} title={intl.formatMessage(messages.remove)} icon='times' onClick={this.handleRemove} />
