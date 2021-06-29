@@ -172,7 +172,6 @@ const keyMap = {
   new: 'n',
   search: 's',
   forceNew: 'option+n',
-  focusColumn: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
   reply: 'r',
   favourite: 'f',
   boost: 'b',
@@ -184,7 +183,6 @@ const keyMap = {
   back: 'backspace',
   goToHome: 'g h',
   goToNotifications: 'g n',
-  goToStart: 'g s',
   goToFavourites: 'g f',
   goToPinned: 'g p',
   goToProfile: 'g u',
@@ -549,24 +547,6 @@ class UI extends React.PureComponent {
     this.props.dispatch(resetCompose());
   }
 
-  handleHotkeyFocusColumn = e => {
-    const index  = (e.key * 1) + 1; // First child is drawer, skip that
-    const column = this.node.querySelector(`.column:nth-child(${index})`);
-    if (!column) return;
-    const container = column.querySelector('.scrollable');
-
-    if (container) {
-      const status = container.querySelector('.focusable');
-
-      if (status) {
-        if (container.scrollTop > status.offsetTop) {
-          status.scrollIntoView(true);
-        }
-        status.focus();
-      }
-    }
-  }
-
   handleHotkeyBack = () => {
     if (window.history && window.history.length === 1) {
       this.context.router.history.push('/');
@@ -597,29 +577,25 @@ class UI extends React.PureComponent {
     this.context.router.history.push('/notifications');
   }
 
-  handleHotkeyGoToStart = () => {
-    this.context.router.history.push('/getting-started');
-  }
-
   handleHotkeyGoToFavourites = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}/favorites`);
+    this.context.router.history.push(`/@${account.get('username')}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}/pins`);
+    this.context.router.history.push(`/@${account.get('username')}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}`);
+    this.context.router.history.push(`/@${account.get('username')}`);
   }
 
   handleHotkeyGoToBlocked = () => {
@@ -660,11 +636,9 @@ class UI extends React.PureComponent {
       new: this.handleHotkeyNew,
       search: this.handleHotkeySearch,
       forceNew: this.handleHotkeyForceNew,
-      focusColumn: this.handleHotkeyFocusColumn,
       back: this.handleHotkeyBack,
       goToHome: this.handleHotkeyGoToHome,
       goToNotifications: this.handleHotkeyGoToNotifications,
-      goToStart: this.handleHotkeyGoToStart,
       goToFavourites: this.handleHotkeyGoToFavourites,
       goToPinned: this.handleHotkeyGoToPinned,
       goToProfile: this.handleHotkeyGoToProfile,
