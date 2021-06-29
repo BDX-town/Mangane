@@ -96,7 +96,7 @@ export function fetchGroupRelationships(groupIds) {
 
     dispatch(fetchGroupRelationshipsRequest(newGroupIds));
 
-    api(getState).get(`/api/v1/groups/${newGroupIds[0]}/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
+    api(getState).get(`/api/v1/pleroma/groups/relationships?${newGroupIds.map(id => `id[]=${id}`).join('&')}`).then(response => {
       dispatch(fetchGroupRelationshipsSuccess(response.data));
     }).catch(error => {
       dispatch(fetchGroupRelationshipsFail(error));
@@ -162,7 +162,7 @@ export function joinGroup(id) {
 
     dispatch(joinGroupRequest(id));
 
-    api(getState).post(`/api/v1/groups/${id}/accounts`).then(response => {
+    api(getState).post(`/api/v1/pleroma/groups/${id}/join`).then(response => {
       dispatch(joinGroupSuccess(response.data));
     }).catch(error => {
       dispatch(joinGroupFail(id, error));
@@ -176,7 +176,7 @@ export function leaveGroup(id) {
 
     dispatch(leaveGroupRequest(id));
 
-    api(getState).delete(`/api/v1/groups/${id}/accounts`).then(response => {
+    api(getState).post(`/api/v1/pleroma/groups/${id}/leave`).then(response => {
       dispatch(leaveGroupSuccess(response.data));
     }).catch(error => {
       dispatch(leaveGroupFail(id, error));

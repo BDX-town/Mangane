@@ -10,7 +10,7 @@ const mapStateToProps = (state, { groupId }) => ({
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
   toggleMembership(group, relationships) {
-    if (relationships.get('member')) {
+    if (relationships.get('member') || relationships.get('requested')) {
       dispatch(leaveGroup(group.get('id')));
     } else {
       dispatch(joinGroup(group.get('id')));

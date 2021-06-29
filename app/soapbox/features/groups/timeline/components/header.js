@@ -10,6 +10,7 @@ import DropdownMenuContainer from '../../../../containers/dropdown_menu_containe
 const messages = defineMessages({
   join: { id: 'groups.join', defaultMessage: 'Join group' },
   leave: { id: 'groups.leave', defaultMessage: 'Leave group' },
+  requested: { id: 'groups.requested', defaultMessage: 'Awaiting approval. Click to cancel join request' },
   removed_accounts: { id: 'groups.removed_accounts', defaultMessage: 'Removed Accounts' },
   edit: { id: 'groups.edit', defaultMessage: 'Edit' },
 });
@@ -33,17 +34,17 @@ class Header extends ImmutablePureComponent {
   }
 
   getActionButton() {
-    const { group, relationships, intl } = this.props;
+    const { relationships, intl } = this.props;
+    if (!relationships) return null;
 
-    if (!relationships) {
-      return '';
-    } else if (!relationships.get('member')) {
-      return <Button className='logo-button' text={intl.formatMessage(messages.join)} onClick={this.toggle} />;
-    } else if (relationships.get('member')) {
-      return <Button className='logo-button' text={intl.formatMessage(messages.leave, { name: group.get('title') })} onClick={this.toggle} />;
-    }
+    const getMessage = (messages, relationships) => {
+      if (relationships.get('requested')) return messages.requested;
+      return relationships.get('member') ? messages.leave : messages.join;
+    };
 
-    return '';
+    const message = getMessage(messages, relationships);
+
+    return <Button className='logo-button' text={intl.formatMessage(message)} onClick={this.toggle} />;
   }
 
   getAdminMenu() {
