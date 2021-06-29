@@ -180,7 +180,7 @@ export const expandAccountMediaTimeline    = (accountId, { maxId } = {}) => expa
 
 export const expandListTimeline            = (id, { maxId } = {}, done = noOp) => expandTimeline(`list:${id}`, `/api/v1/timelines/list/${id}`, { max_id: maxId }, done);
 
-export const expandGroupTimeline           = (id, { maxId } = {}, done = noOp) => expandTimeline(`group:${id}`, `/api/v1/timelines/group/${id}`, { max_id: maxId }, done);
+export const expandGroupTimeline           = (id, { maxId } = {}, done = noOp) => expandTimeline(`group:${id}`, `/api/v1/pleroma/groups/${id}/statuses`, { max_id: maxId }, done);
 
 export const expandHashtagTimeline         = (hashtag, { maxId, tags } = {}, done = noOp) => {
   return expandTimeline(`hashtag:${hashtag}`, `/api/v1/timelines/tag/${hashtag}`, {

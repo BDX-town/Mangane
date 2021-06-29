@@ -232,7 +232,7 @@ export function fetchMembers(id) {
 
     dispatch(fetchMembersRequest(id));
 
-    api(getState).get(`/api/v1/groups/${id}/accounts`).then(response => {
+    api(getState).get(`/api/v1/pleroma/groups/${id}/members`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       dispatch(importFetchedAccounts(response.data));
