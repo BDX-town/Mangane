@@ -60,6 +60,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      move: true,
       'pleroma:emoji_reaction': true,
     }),
 
@@ -76,6 +77,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      move: true,
       'pleroma:emoji_reaction': true,
     }),
 
@@ -86,6 +88,7 @@ export const defaultSettings = ImmutableMap({
       reblog: false,
       mention: false,
       poll: false,
+      move: false,
       'pleroma:emoji_reaction': false,
     }),
   }),

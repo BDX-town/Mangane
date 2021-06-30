@@ -321,9 +321,34 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderMove(notification, account, targetAccount, link) {
+    const { intl } = this.props;
+
+    const targetLink = <bdi><Permalink className='notification__display-name' href={`/@${targetAccount.get('acct')}`} to={`/@${targetAccount.get('acct')}`}>{targetAccount.get('acct')}</Permalink></bdi>;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: account.get('acct'), targetName: targetAccount.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='suitcase' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.move' defaultMessage='{name} moved to {targetName}' values={{ name: link, targetName: targetLink }} />
+            </span>
+          </div>
+
+          <AccountContainer id={targetAccount.get('id')} withNote={false} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
   render() {
     const { notification } = this.props;
     const account          = notification.get('account');
+    const targetAccount    = notification.get('target');
     const displayNameHtml  = { __html: account.get('display_name_html') };
     const link             = <bdi><Permalink className='notification__display-name' href={`/@${account.get('acct')}`} title={account.get('acct')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
 
@@ -340,6 +365,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderReblog(notification, link);
     case 'poll':
       return this.renderPoll(notification);
+    case 'move':
+      return this.renderMove(notification, account, targetAccount, link);
     case 'pleroma:emoji_reaction':
       return this.renderEmojiReact(notification, link);
     case 'pleroma:chat_mention':

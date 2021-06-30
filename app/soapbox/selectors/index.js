@@ -137,8 +137,9 @@ export const makeGetNotification = () => {
   return createSelector([
     (_, base)             => base,
     (state, _, accountId) => state.getIn(['accounts', accountId]),
-  ], (base, account) => {
-    return base.set('account', account);
+    (state, _, __, targetId) => state.getIn(['accounts', targetId]),
+  ], (base, account, target) => {
+    return base.set('account', account).set('target', target);
   });
 };
 
