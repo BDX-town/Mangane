@@ -2,6 +2,7 @@ import React from 'react';
 import { defineMessages } from 'react-intl';
 import { openModal } from 'soapbox/actions/modal';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
+import { fetchAccountByUsername } from 'soapbox/actions/accounts';
 import snackbar from 'soapbox/actions/snackbar';
 import AccountContainer from 'soapbox/containers/account_container';
 import { isLocal } from 'soapbox/utils/accounts';
@@ -75,6 +76,7 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
       onConfirm: () => {
         dispatch(deleteUsers([acct])).then(() => {
           const message = intl.formatMessage(messages.userDeleted, { acct });
+          dispatch(fetchAccountByUsername(acct));
           dispatch(snackbar.success(message));
           afterConfirm();
         }).catch(() => {});
