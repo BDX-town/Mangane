@@ -35,6 +35,7 @@ const messages = defineMessages({
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
+  schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
 export default @injectIntl
@@ -260,6 +261,10 @@ class ComposeForm extends ImmutablePureComponent {
       publishText = <span className='compose-form__publish-private'><Icon id='lock' /> {intl.formatMessage(messages.publish)}</span>;
     } else {
       publishText = this.props.privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
+    }
+
+    if (this.props.scheduledAt) {
+      publishText = intl.formatMessage(messages.schedule);
     }
 
     const composeClassNames = classNames({
