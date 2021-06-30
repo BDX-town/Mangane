@@ -30,7 +30,7 @@ const messages = defineMessages({
   reblog_private: { id: 'status.reblog_private', defaultMessage: 'Repost to original audience' },
   cancel_reblog_private: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
   cannot_reblog: { id: 'status.cannot_reblog', defaultMessage: 'This post cannot be reposted' },
-  favourite: { id: 'status.favourite', defaultMessage: 'Favorite' },
+  favourite: { id: 'status.favourite', defaultMessage: 'React' },
   open: { id: 'status.open', defaultMessage: 'Expand this post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
@@ -50,6 +50,12 @@ const messages = defineMessages({
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
   markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
   markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
+  reactionLike: { id: 'status.reactions.like', defaultMessage: 'Like' },
+  reactionHeart: { id: 'status.reactions.heart', defaultMessage: 'Love' },
+  reactionLaughing: { id: 'status.reactions.laughing', defaultMessage: 'Haha' },
+  reactionOpenMouth: { id: 'status.reactions.open_mouth', defaultMessage: 'Wow' },
+  reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
+  reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
 });
 
 class StatusActionBar extends ImmutablePureComponent {
@@ -359,6 +365,14 @@ class StatusActionBar extends ImmutablePureComponent {
       allowedEmoji,
     ).reduce((acc, cur) => acc + cur.get('count'), 0);
     const meEmojiReact = getReactForStatus(status, allowedEmoji);
+    const meEmojiTitle = intl.formatMessage({
+      '👍': messages.reactionLike,
+      '❤️': messages.reactionHeart,
+      '😆': messages.reactionLaughing,
+      '😮': messages.reactionOpenMouth,
+      '😢': messages.reactionCry,
+      '😩': messages.reactionWeary,
+    }[meEmojiReact] || messages.favourite);
 
     let menu = this._makeMenu(publicStatus);
     let reblogIcon = 'retweet';
@@ -404,7 +418,7 @@ class StatusActionBar extends ImmutablePureComponent {
             className='status__action-bar-button star-icon'
             animate
             active={Boolean(meEmojiReact)}
-            title={intl.formatMessage(messages.favourite)}
+            title={meEmojiTitle}
             icon='thumbs-up'
             emoji={meEmojiReact}
             onClick={this.handleLikeButtonClick}
