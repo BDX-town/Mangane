@@ -618,7 +618,7 @@
   "status.detailed_status": "Detailed conversation view",
   "status.direct": "Direct message @{name}",
   "status.embed": "Embed",
-  "status.favourite": "React",
+  "status.favourite": "Favorite",
   "status.filtered": "Filtered",
   "status.load_more": "Load more",
   "status.media_hidden": "Media hidden",
