@@ -15,6 +15,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from './media';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { createStatus } from './statuses';
+import snackbar from 'soapbox/actions/snackbar';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -71,6 +72,7 @@ export const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE';
 const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
+  scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.'  },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -170,6 +172,15 @@ const needsDescriptions = state => {
   return missingDescriptionModal && hasMissing;
 };
 
+const validateSchedule = state => {
+  const schedule = state.getIn(['compose', 'schedule']);
+  if (!schedule) return true;
+
+  const fiveMinutesFromNow = new Date(new Date().getTime() + 300000);
+
+  return schedule.getTime() > fiveMinutesFromNow.getTime();
+};
+
 export function submitCompose(routerHistory, force = false) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
@@ -177,6 +188,11 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
+
+    if (!validateSchedule(state)) {
+      dispatch(snackbar.error(messages.scheduleError));
+      return;
+    }
 
     if ((!status || !status.length) && media.size === 0) {
       return;
