@@ -730,9 +730,14 @@ code {
 
 .input .row > .fa-times-circle {
   position: absolute;
-  right: 7px;
+  right: 15px;
   cursor: pointer;
   color: $error-red;
+  transform: translateY(-9px);
+}
+
+.input .row > .input.with_label + .fa-times-circle {
+  right: 7px;
   transform: translateY(9px);
 }
 
