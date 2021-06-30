@@ -20,6 +20,10 @@
   &__cancel {
     padding-left: 10px;
   }
+
+  &--error .react-datepicker__input-container {
+    border-color: $error-red !important;
+  }
 }
 
 .datepicker .react-datepicker {

@@ -8,6 +8,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
 import { removeSchedule } from 'soapbox/actions/compose';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },
@@ -66,7 +67,7 @@ class ScheduleForm extends React.Component {
     const { intl, scheduledAt } = this.props;
 
     return (
-      <div className='datepicker'>
+      <div className={classNames('datepicker', { 'datepicker--error': !this.isFiveMinutesFromNow(scheduledAt) })}>
         <div className='datepicker__hint'>
           <FormattedMessage id='datepicker.hint' defaultMessage='Scheduled to post at…' />
         </div>
