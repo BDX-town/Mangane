@@ -42,6 +42,12 @@ const messages = defineMessages({
   deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
   markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
   markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
+  reactionLike: { id: 'status.reactions.like', defaultMessage: 'Like' },
+  reactionHeart: { id: 'status.reactions.heart', defaultMessage: 'Love' },
+  reactionLaughing: { id: 'status.reactions.laughing', defaultMessage: 'Haha' },
+  reactionOpenMouth: { id: 'status.reactions.open_mouth', defaultMessage: 'Wow' },
+  reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
+  reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
 });
 
 const mapStateToProps = state => {
@@ -263,6 +269,14 @@ class ActionBar extends React.PureComponent {
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
     const meEmojiReact = getReactForStatus(status, allowedEmoji);
+    const meEmojiTitle = intl.formatMessage({
+      '👍': messages.reactionLike,
+      '❤️': messages.reactionHeart,
+      '😆': messages.reactionLaughing,
+      '😮': messages.reactionOpenMouth,
+      '😢': messages.reactionCry,
+      '😩': messages.reactionWeary,
+    }[meEmojiReact] || messages.favourite);
 
     let menu = [];
 
@@ -355,10 +369,10 @@ class ActionBar extends React.PureComponent {
             className='star-icon'
             animate
             active={Boolean(meEmojiReact)}
-            title={intl.formatMessage(messages.favourite)}
+            title={meEmojiTitle}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            text={intl.formatMessage(messages.favourite)}
+            text={meEmojiTitle}
             onClick={this.handleLikeButtonClick}
           />
         </div>

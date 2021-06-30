@@ -9,7 +9,7 @@ import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   emoji: { id: 'icon_button.label', defaultMessage: 'Select icon' },
-  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search...' },
+  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
   emoji_not_found: { id: 'icon_button.not_found', defaultMessage: 'No icons!! (╯°□°）╯︵ ┻━┻' },
   custom: { id: 'icon_button.icons', defaultMessage: 'Icons' },
   search_results: { id: 'emoji_button.search_results', defaultMessage: 'Search results' },

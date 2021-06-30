@@ -10,7 +10,7 @@ import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
-  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search...' },
+  emoji_search: { id: 'emoji_button.search', defaultMessage: 'Search…' },
   emoji_not_found: { id: 'emoji_button.not_found', defaultMessage: 'No emojos!! (╯°□°）╯︵ ┻━┻' },
   custom: { id: 'emoji_button.custom', defaultMessage: 'Custom' },
   recent: { id: 'emoji_button.recent', defaultMessage: 'Frequently used' },
