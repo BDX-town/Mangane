@@ -1,4 +1,9 @@
-import { GROUP_RELATIONSHIPS_FETCH_SUCCESS, GROUP_JOIN_SUCCESS, GROUP_LEAVE_SUCCESS } from '../actions/groups';
+import {
+  GROUP_RELATIONSHIPS_FETCH_SUCCESS,
+  GROUP_JOIN_REQUEST,
+  GROUP_JOIN_SUCCESS,
+  GROUP_LEAVE_SUCCESS,
+} from '../actions/groups';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
@@ -11,10 +16,16 @@ const normalizeRelationships = (state, relationships) => {
   return state;
 };
 
+const setRequested = (state, id) => {
+  return state.update(id, ImmutableMap(), relationship => relationship.set('requested', true));
+};
+
 const initialState = ImmutableMap();
 
 export default function group_relationships(state = initialState, action) {
   switch(action.type) {
+  case GROUP_JOIN_REQUEST:
+    return setRequested(state, action.id);
   case GROUP_JOIN_SUCCESS:
   case GROUP_LEAVE_SUCCESS:
     return normalizeRelationship(state, action.relationship);
