@@ -9,6 +9,7 @@ const tooltips = defineMessages({
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Reposts' },
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
+  moves: { id: 'notifications.filter.moves', defaultMessage: 'Moves' },
   emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts:' },
 });
 
@@ -99,6 +100,13 @@ class FilterBar extends React.PureComponent {
           className={selectedFilter === 'follow' ? 'active' : ''}
           onClick={this.onClick('follow')}
           title={intl.formatMessage(tooltips.follows)}
+        >
+          <Icon id='user-plus' fixedWidth />
+        </button>
+        <button
+          className={selectedFilter === 'move' ? 'active' : ''}
+          onClick={this.onClick('move')}
+          title={intl.formatMessage(tooltips.moves)}
         >
           <Icon id='user-plus' fixedWidth />
         </button>
