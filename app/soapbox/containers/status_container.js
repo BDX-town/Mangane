@@ -52,11 +52,16 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
-  const mapStateToProps = (state, props) => ({
-    status: getStatus(state, props),
-    displayMedia: getSettings(state).get('displayMedia'),
-    allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
-  });
+  const mapStateToProps = (state, props) => {
+    const soapbox = getSoapboxConfig(state);
+
+    return {
+      status: getStatus(state, props),
+      displayMedia: getSettings(state).get('displayMedia'),
+      allowedEmoji: soapbox.get('allowedEmoji'),
+      greentext: soapbox.get('greentext'),
+    };
+  };
 
   return mapStateToProps;
 };

@@ -31,6 +31,7 @@ import { openModal } from '../../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../../../actions/alerts';
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
@@ -50,6 +51,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, props) => ({
     status: getStatus(state, props),
     domain: state.getIn(['meta', 'domain']),
+    greentext: getSoapboxConfig(state).get('greentext'),
   });
 
   return mapStateToProps;
