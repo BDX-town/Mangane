@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
@@ -36,12 +35,10 @@ const mapStateToProps = state => {
 };
 
 export default @connect(mapStateToProps)
-@injectIntl
 class ChatPanes extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
     panesData: ImmutablePropTypes.map,
   }
 
