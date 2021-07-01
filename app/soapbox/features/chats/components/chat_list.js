@@ -5,6 +5,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Chat from './chat';
+import { createSelector } from 'reselect';
+
+const getSortedChatIds = chats => (
+  chats
+    .toList()
+    .sort(chatDateComparator)
+    .map(chat => chat.get('id'))
+);
 
 const chatDateComparator = (chatA, chatB) => {
   // Sort most recently updated chats at the top
@@ -17,18 +25,20 @@ const chatDateComparator = (chatA, chatB) => {
   return 0;
 };
 
-const mapStateToProps = state => {
-  const chatIds = state.get('chats')
-    .toList()
-    .sort(chatDateComparator)
-    .map(chat => chat.get('id'));
+const makeMapStateToProps = () => {
+  const sortedChatIdsSelector = createSelector(
+    [getSortedChatIds],
+    chats => chats,
+  );
 
-  return {
-    chatIds,
-  };
+  const mapStateToProps = state => ({
+    chatIds: sortedChatIdsSelector(state.get('chats')),
+  });
+
+  return mapStateToProps;
 };
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 @injectIntl
 class ChatList extends ImmutablePureComponent {
 
