@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import { processHtml } from 'soapbox/utils/tiny_post_html_processor';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
@@ -157,25 +158,27 @@ export default class StatusContent extends React.PureComponent {
     return this.greentext(properContent);
   }
 
-  greentext = string => {
-    if (!this.props.greentext) return string;
+  greentext = html => {
+    if (!this.props.greentext) return html;
 
     // Copied from Pleroma FE
     // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/19475ba356c3fd6c54ca0306d3ae392358c212d1/src/components/status_content/status_content.js#L132
-    try {
-      if (string.includes('&gt;') &&
-          string
-            .replace(/<[^>]+?>/gi, '') // remove all tags
-            .replace(/@\w+/gi, '') // remove mentions (even failed ones)
-            .trim()
-            .startsWith('&gt;')) {
-        return `<span class='greentext'>${string}</span>`;
-      } else {
+    return processHtml(html, (string) => {
+      try {
+        if (string.includes('&gt;') &&
+            string
+              .replace(/<[^>]+?>/gi, '') // remove all tags
+              .replace(/@\w+/gi, '') // remove mentions (even failed ones)
+              .trim()
+              .startsWith('&gt;')) {
+          return `<span class='greentext'>${string}</span>`;
+        } else {
+          return string;
+        }
+      } catch(e) {
         return string;
       }
-    } catch(e) {
-      return string;
-    }
+    });
   }
 
   render() {
