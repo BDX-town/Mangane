@@ -16,21 +16,33 @@ import ChatBox from './chat_box';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import { makeGetChat } from 'soapbox/selectors';
 
-const mapStateToProps = (state, { pane }) => ({
-  me: state.get('me'),
-  chat: state.getIn(['chats', pane.get('chat_id')]),
-  displayFqn: displayFqn(state),
-});
+const makeMapStateToProps = () => {
+  const getChat = makeGetChat();
 
-export default @connect(mapStateToProps)
+  const mapStateToProps = (state, { chatId }) => {
+    const chat = state.getIn(['chats', chatId]);
+
+    return {
+      me: state.get('me'),
+      chat: chat ? getChat(state, chat.toJS()) : undefined,
+      displayFqn: displayFqn(state),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 @injectIntl
 class ChatWindow extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    pane: ImmutablePropTypes.map.isRequired,
+    chatId: PropTypes.string.isRequired,
+    windowState: PropTypes.string.isRequired,
     idx: PropTypes.number,
     chat: ImmutablePropTypes.map,
     me: PropTypes.node,
@@ -68,17 +80,17 @@ class ChatWindow extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps) {
-    const oldState = prevProps.pane.get('state');
-    const newState = this.props.pane.get('state');
+    const oldState = prevProps.windowState;
+    const newState = this.props.windowState;
 
     if (oldState !== newState && newState === 'open')
       this.focusInput();
   }
 
   render() {
-    const { pane, idx, chat, displayFqn } = this.props;
-    const account = pane.getIn(['chat', 'account']);
-    if (!chat || !account) return null;
+    const { windowState, idx, chat, displayFqn } = this.props;
+    if (!chat) return null;
+    const account = chat.get('account');
 
     const right = (285 * (idx + 1)) + 20;
     const unreadCount = chat.get('unread');
@@ -98,7 +110,7 @@ class ChatWindow extends ImmutablePureComponent {
     );
 
     return (
-      <div className={`pane pane--${pane.get('state')}`} style={{ right: `${right}px` }}>
+      <div className={`pane pane--${windowState}`} style={{ right: `${right}px` }}>
         <div className='pane__header'>
           {unreadCount > 0 ? unreadIcon : avatar }
           <button className='pane__title' onClick={this.handleChatToggle(chat.get('id'))}>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import Avatar from '../../../components/avatar';
@@ -6,11 +7,29 @@ import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import emojify from 'soapbox/features/emoji/emoji';
+import { makeGetChat } from 'soapbox/selectors';
 
-export default class Chat extends ImmutablePureComponent {
+
+const makeMapStateToProps = () => {
+  const getChat = makeGetChat();
+
+  const mapStateToProps = (state, { chatId }) => {
+    const chat = state.getIn(['chats', chatId]);
+
+    return {
+      chat: chat ? getChat(state, chat.toJS()) : undefined,
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
+class Chat extends ImmutablePureComponent {
 
   static propTypes = {
-    chat: ImmutablePropTypes.map.isRequired,
+    chatId: PropTypes.string.isRequired,
+    chat: ImmutablePropTypes.map,
     onClick: PropTypes.func,
   };
 
