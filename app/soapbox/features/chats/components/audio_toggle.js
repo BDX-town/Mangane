@@ -2,19 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'soapbox/components/icon';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
-import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import Toggle from 'react-toggle';
 
 const messages = defineMessages({
-  switchToOn: { id: 'chats.audio_toggle_on', defaultMessage: 'Audio notification on' },
-  switchToOff: { id: 'chats.audio_toggle_off', defaultMessage: 'Audio notification off' },
+  switchOn: { id: 'chats.audio_toggle_on', defaultMessage: 'Audio notification on' },
+  switchOff: { id: 'chats.audio_toggle_off', defaultMessage: 'Audio notification off' },
 });
 
 const mapStateToProps = state => {
   return {
-    settings: getSettings(state),
+    checked: getSettings(state).getIn(['chats', 'sound'], false),
   };
 };
 
@@ -30,30 +29,32 @@ class AudioToggle extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    settings: ImmutablePropTypes.map.isRequired,
+    checked: PropTypes.bool.isRequired,
     toggleAudio: PropTypes.func,
     showLabel: PropTypes.bool,
   };
 
   handleToggleAudio = () => {
-    this.props.toggleAudio(this.props.settings.getIn(['chats', 'sound']) === true ? false : true);
+    this.props.toggleAudio(!this.props.checked);
   }
 
   render() {
-    const { intl, settings, showLabel } = this.props;
-    let toggle = (
-      <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} ariaLabel={settings.get('chats', 'sound') === true ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
-    );
-
-    if (showLabel) {
-      toggle = (
-        <SettingToggle settings={settings} settingPath={['chats', 'sound']} onChange={this.handleToggleAudio} icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }} label={settings.get('chats', 'sound') === true ? intl.formatMessage(messages.switchToOff) : intl.formatMessage(messages.switchToOn)} />
-      );
-    }
+    const { intl, checked, showLabel } = this.props;
+    const id ='chats-audio-toggle';
+    const label = intl.formatMessage(checked ? messages.switchOff : messages.switchOn);
 
     return (
       <div className='audio-toggle react-toggle--mini'>
-        {toggle}
+        <div className='setting-toggle' aria-label={label}>
+          <Toggle
+            id={id}
+            checked={checked}
+            onChange={this.handleToggleAudio}
+            icons={{ checked: <Icon id='volume-up' />, unchecked: <Icon id='volume-off' /> }}
+            onKeyDown={this.onKeyDown}
+          />
+          {showLabel && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}
+        </div>
       </div>
     );
   }
