@@ -23,6 +23,7 @@ import { openModal } from '../../actions/modal';
 import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { WrappedRoute } from './util/react_router_helpers';
+import BundleContainer from './containers/bundle_container';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
 import LinkFooter from './components/link_footer';
@@ -44,7 +45,6 @@ import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
-import ChatPanes from 'soapbox/features/chats/components/chat_panes';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -95,6 +95,7 @@ import {
   MfaForm,
   ChatIndex,
   ChatRoom,
+  ChatPanes,
   ServerInfo,
   Dashboard,
   AwaitingApproval,
@@ -695,7 +696,11 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
-          {me && !mobile && <ChatPanes />}
+          {me && !mobile && (
+            <BundleContainer fetchComponent={ChatPanes}>
+              {Component => <Component />}
+            </BundleContainer>
+          )}
           <ProfileHoverCard />
         </div>
       </HotKeys>
