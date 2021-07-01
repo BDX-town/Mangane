@@ -31,16 +31,21 @@ class ScheduleForm extends React.Component {
     active: PropTypes.bool,
   };
 
+  state = {
+    initialized: false,
+  }
+
   setSchedule = date => {
     this.props.onSchedule(date);
   }
 
-  openDatePicker(datePicker) {
-    if (!datePicker) {
-      return;
-    }
+  setRef = c => {
+    this.datePicker = c;
+  }
 
-    datePicker.setOpen(true);
+  openDatePicker = () => {
+    if (!this.datePicker) return;
+    this.datePicker.setOpen(true);
   }
 
   isCurrentOrFutureDate(date) {
@@ -57,6 +62,19 @@ class ScheduleForm extends React.Component {
   handleRemove = e => {
     this.props.dispatch(removeSchedule());
     e.preventDefault();
+  }
+
+  initialize = () => {
+    const { initialized } = this.state;
+
+    if (!initialized && this.datePicker) {
+      this.openDatePicker();
+      this.setState({ initialized: true });
+    }
+  }
+
+  componentDidUpdate() {
+    this.initialize();
   }
 
   render() {
@@ -82,7 +100,7 @@ class ScheduleForm extends React.Component {
             placeholderText={this.props.intl.formatMessage(messages.schedule)}
             filterDate={this.isCurrentOrFutureDate}
             filterTime={this.isFiveMinutesFromNow}
-            ref={this.isCurrentOrFutureDate(scheduledAt) ? null : this.openDatePicker}
+            ref={this.setRef}
           />
           <div className='datepicker__cancel'>
             <IconButton size={20} title={intl.formatMessage(messages.remove)} icon='times' onClick={this.handleRemove} />
