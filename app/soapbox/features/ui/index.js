@@ -656,7 +656,7 @@ class UI extends React.PureComponent {
   render() {
     const { streamingUrl } = this.props;
     const { draggingOver, mobile } = this.state;
-    const { intl, children, isComposing, location, dropdownMenuIsOpen, me, layouts } = this.props;
+    const { intl, children, location, dropdownMenuIsOpen, me, layouts } = this.props;
 
     if (me === null || !streamingUrl) return null;
 
@@ -692,7 +692,6 @@ class UI extends React.PureComponent {
     const floatingActionButton = this.shouldHideFAB() ? null : fabElem;
 
     const classnames = classNames('ui', {
-      'is-composing': isComposing,
       'ui--chatroom': this.isChatRoomLocation(),
     });
 
