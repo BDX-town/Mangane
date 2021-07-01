@@ -42,7 +42,8 @@ class NewListForm extends React.PureComponent {
     this.props.onSubmit();
   }
 
-  handleClick = () => {
+  handleClick = e => {
+    e.preventDefault();
     this.props.onSubmit();
   }
 

@@ -1,7 +1,6 @@
 import { SETTING_CHANGE, SETTING_SAVE, FE_NAME } from '../actions/settings';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { EMOJI_USE } from '../actions/emojis';
-import { LIST_DELETE_SUCCESS, LIST_FETCH_FAIL } from '../actions/lists';
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
@@ -14,8 +13,6 @@ const initialState = ImmutableMap({
 });
 
 const updateFrequentEmojis = (state, emoji) => state.update('frequentlyUsedEmojis', ImmutableMap(), map => map.update(emoji.id, 0, count => count + 1)).set('saved', false);
-
-const filterDeadListColumns = (state, listId) => state.update('columns', columns => columns.filterNot(column => column.get('id') === 'LIST' && column.get('params').get('id') === listId));
 
 const importSettings = (state, account) => {
   account = fromJS(account);
@@ -36,10 +33,6 @@ export default function settings(state = initialState, action) {
     return updateFrequentEmojis(state, action.emoji);
   case SETTING_SAVE:
     return state.set('saved', true);
-  case LIST_FETCH_FAIL:
-    return action.error.response.status === 404 ? filterDeadListColumns(state, action.id) : state;
-  case LIST_DELETE_SUCCESS:
-    return filterDeadListColumns(state, action.id);
   default:
     return state;
   }
