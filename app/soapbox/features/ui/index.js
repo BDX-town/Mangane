@@ -29,16 +29,15 @@ import TabsBar from './components/tabs_bar';
 import LinkFooter from './components/link_footer';
 import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
-import UserPanel from './components/user_panel';
 import WhoToFollowPanel from './components/who_to_follow_panel';
 import TrendsPanel from './components/trends_panel';
 import PromoPanel from './components/promo_panel';
-import FundingPanel from './components/funding_panel';
-import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import HomePage from 'soapbox/pages/home_page';
+import DefaultPage from 'soapbox/pages/default_page';
+import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
@@ -47,7 +46,6 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
 
 import {
@@ -111,43 +109,6 @@ import '../../components/status';
 
 const isMobile = width => width <= 1190;
 
-const makeLayouts = state => {
-  const me = state.get('me');
-  const soapbox = getSoapboxConfig(state);
-
-  const hasPatron = soapbox.getIn(['extensions', 'patron', 'enabled']);
-  const hasCrypto = typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string';
-  const cryptoLimit = soapbox.getIn(['cryptoDonatePanel', 'limit']);
-  const features = getFeatures(state.get('instance'));
-
-  const EMPTY = {
-    LEFT: null,
-    RIGHT: null,
-  };
-
-  const DEFAULT = {
-    LEFT: EMPTY.LEFT,
-    RIGHT: [
-      features.trends && <TrendsPanel limit={3} key='trends-panel' />,
-      features.suggestions && <WhoToFollowPanel limit={5} key='wtf-panel' />,
-      <FeaturesPanel key='features-panel' />,
-      <PromoPanel key='promo-panel' />,
-      <LinkFooter key='link-footer' />,
-    ],
-  };
-
-  const HOME = {
-    LEFT: [
-      <UserPanel accountId={me} key='user-panel' />,
-      hasPatron && <FundingPanel key='funding-panel' />,
-      hasCrypto && <CryptoDonatePanel limit={cryptoLimit} key='crypto-panel' />,
-    ],
-    RIGHT: DEFAULT.RIGHT,
-  };
-
-  return { EMPTY, DEFAULT, HOME };
-};
-
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
@@ -163,7 +124,6 @@ const mapStateToProps = state => {
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
     account,
-    layouts: makeLayouts(state),
   };
 };
 
@@ -201,7 +161,6 @@ class SwitchingColumnsArea extends React.PureComponent {
     children: PropTypes.node,
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
-    layouts: PropTypes.object.isRequired,
   };
 
   state = {
@@ -230,20 +189,20 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render() {
-    const { children, layouts: LAYOUT } = this.props;
+    const { children } = this.props;
 
     return (
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
-        <WrappedRoute path='/auth/edit' layout={LAYOUT.DEFAULT} component={SecurityForm} exact />
-        <WrappedRoute path='/auth/mfa' layout={LAYOUT.DEFAULT} component={MfaForm} exact />
+        <WrappedRoute path='/auth/edit' page={DefaultPage} component={SecurityForm} exact />
+        <WrappedRoute path='/auth/mfa' page={DefaultPage} component={MfaForm} exact />
 
-        <WrappedRoute path='/' exact page={HomePage} layout={LAYOUT.HOME} component={HomeTimeline} content={children} />
-        <WrappedRoute path='/timeline/local' exact page={HomePage} layout={LAYOUT.HOME} component={CommunityTimeline} content={children} publicRoute />
-        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} layout={LAYOUT.HOME} component={PublicTimeline} content={children} publicRoute />
-        <WrappedRoute path='/timeline/:instance' exact page={HomePage} layout={LAYOUT.HOME} component={RemoteTimeline} content={children} />
-        <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
+        <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
+        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
+        <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />
+        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
@@ -262,7 +221,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/main/friends' to='/' />
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
-        <WrappedRoute path='/notice/:statusId' publicRoute exact layout={LAYOUT.DEFAULT} component={Status} content={children} />
+        <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/home' to='/' />
 
@@ -272,22 +231,22 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
-        <WrappedRoute path='/lists' layout={LAYOUT.DEFAULT} component={Lists} content={children} />
-        <WrappedRoute path='/list/:id' page={HomePage} layout={LAYOUT.DEFAULT} component={ListTimeline} content={children} />
-        <WrappedRoute path='/bookmarks' layout={LAYOUT.DEFAULT} component={Bookmarks} content={children} />
+        <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
+        <WrappedRoute path='/list/:id' page={HomePage} page={DefaultPage} component={ListTimeline} content={children} />
+        <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />
 
-        <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
+        <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-        <WrappedRoute path='/search' publicRoute layout={LAYOUT.DEFAULT} component={Search} content={children} />
+        <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
 
-        <WrappedRoute path='/chats' exact layout={LAYOUT.DEFAULT} component={ChatIndex} content={children} />
-        <WrappedRoute path='/chats/:chatId' layout={LAYOUT.DEFAULT} component={ChatRoom} content={children} />
+        <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
+        <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
 
-        <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
-        <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
-        <WrappedRoute path='/domain_blocks' layout={LAYOUT.DEFAULT} component={DomainBlocks} content={children} />
-        <WrappedRoute path='/mutes' layout={LAYOUT.DEFAULT} component={Mutes} content={children} />
-        <WrappedRoute path='/filters' layout={LAYOUT.DEFAULT} component={Filters} content={children} />
+        <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
+        <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
+        <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />
+        <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
+        <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />
         <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/with_replies' component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
         <WrappedRoute path='/@:username/followers' component={Followers} page={ProfilePage} content={children} />
@@ -296,29 +255,29 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact layout={LAYOUT.DEFAULT} component={Status} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId/reblogs' layout={LAYOUT.DEFAULT} component={Reblogs} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
-        <WrappedRoute path='/scheduled_statuses' layout={LAYOUT.DEFAULT} component={ScheduledStatuses} content={children} />
+        <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
-        <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
-        <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
-        <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
-        <WrappedRoute path='/backups' layout={LAYOUT.DEFAULT} component={Backups} content={children} />
-        <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
+        <WrappedRoute path='/settings/preferences' page={DefaultPage} component={Preferences} content={children} />
+        <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
+        <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
+        <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
+        <WrappedRoute path='/soapbox/config' page={DefaultPage} component={SoapboxConfig} content={children} />
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
         <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
         <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
         <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
-        <WrappedRoute path='/info' layout={LAYOUT.EMPTY} component={ServerInfo} content={children} />
+        <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
-        <WrappedRoute path='/donate/crypto' publicRoute layout={LAYOUT.DEFAULT} component={CryptoDonate} content={children} />
+        <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
 
-        <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
+        <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
       </Switch>
     );
   }
@@ -343,7 +302,6 @@ class UI extends React.PureComponent {
     me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
     account: PropTypes.object,
-    layouts: PropTypes.object.isRequired,
   };
 
   state = {
@@ -638,7 +596,7 @@ class UI extends React.PureComponent {
   render() {
     const { streamingUrl } = this.props;
     const { draggingOver, mobile } = this.state;
-    const { intl, children, location, dropdownMenuIsOpen, me, layouts } = this.props;
+    const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
     if (me === null || !streamingUrl) return null;
 
@@ -685,7 +643,7 @@ class UI extends React.PureComponent {
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
-          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} layouts={layouts}>
+          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
             {children}
           </SwitchingColumnsArea>
 
