@@ -46,6 +46,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.3.4",
     "@popperjs/core": "^2.4.4",
+    "@welldone-software/why-did-you-render": "^6.2.0",
     "array-includes": "^3.0.3",
     "autoprefixer": "^10.0.0",
     "axios": "^0.21.0",

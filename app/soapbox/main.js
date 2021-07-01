@@ -1,5 +1,6 @@
 'use strict';
 
+import './wdyr';
 import * as registerPushNotifications from './actions/push_notifications';
 import { default as Soapbox, store } from './containers/soapbox';
 import React from 'react';
