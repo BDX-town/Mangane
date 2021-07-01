@@ -157,9 +157,6 @@ const mapStateToProps = state => {
   const account = state.getIn(['accounts', me]);
 
   return {
-    isComposing: state.getIn(['compose', 'is_composing']),
-    hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
-    hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
     accessToken: getAccessToken(state),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
@@ -339,9 +336,6 @@ class UI extends React.PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
-    isComposing: PropTypes.bool,
-    hasComposingText: PropTypes.bool,
-    hasMediaAttachments: PropTypes.bool,
     location: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
@@ -355,17 +349,6 @@ class UI extends React.PureComponent {
     draggingOver: false,
     mobile: isMobile(window.innerWidth),
   };
-
-  handleBeforeUnload = (e) => {
-    const { intl, isComposing, hasComposingText, hasMediaAttachments } = this.props;
-
-    if (isComposing && (hasComposingText || hasMediaAttachments)) {
-      // Setting returnValue to any string causes confirmation dialog.
-      // Many browsers no longer display this text to users,
-      // but we set user-friendly message for other browsers, e.g. Edge.
-      e.returnValue = intl.formatMessage(messages.beforeUnload);
-    }
-  }
 
   handleLayoutChange = () => {
     // The cached heights are no longer accurate, invalidate
@@ -471,9 +454,8 @@ class UI extends React.PureComponent {
   componentDidMount() {
     const { account } = this.props;
     if (!account) return;
-    window.addEventListener('beforeunload', this.handleBeforeUnload, false);
-    window.addEventListener('resize', this.handleResize, { passive: true });
 
+    window.addEventListener('resize', this.handleResize, { passive: true });
     document.addEventListener('dragenter', this.handleDragEnter, false);
     document.addEventListener('dragover', this.handleDragOver, false);
     document.addEventListener('drop', this.handleDrop, false);
@@ -515,7 +497,6 @@ class UI extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.handleBeforeUnload);
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
