@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import { injectIntl } from 'react-intl';
 import ThemeToggle from './theme_toggle';
 
 const mapStateToProps = state => {
   return {
-    settings: getSettings(state),
+    themeMode: getSettings(state).get('themeMode'),
   };
 };
 
@@ -14,4 +15,4 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ThemeToggle);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ThemeToggle));

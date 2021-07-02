@@ -4,19 +4,33 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import CryptoAddress from './crypto_address';
+import { createSelector } from 'reselect';
 
-const mapStateToProps = (state, ownProps) => {
-  // Address example:
-  // {"ticker": "btc", "address": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n", "note": "This is our main address"}
-  const addresses = state.getIn(['soapbox', 'cryptoAddresses']);
-  const { limit } = ownProps;
-
-  return {
-    coinList: typeof limit === 'number' ? addresses.take(limit) : addresses,
-  };
+const makeGetCoinList = () => {
+  return createSelector(
+    [(addresses, limit) => typeof limit === 'number' ? addresses.take(limit) : addresses],
+    addresses => addresses,
+  );
 };
 
-export default @connect(mapStateToProps)
+const makeMapStateToProps = () => {
+  const getCoinList = makeGetCoinList();
+
+  const mapStateToProps = (state, ownProps) => {
+    // Address example:
+    // {"ticker": "btc", "address": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n", "note": "This is our main address"}
+    const addresses = state.getIn(['soapbox', 'cryptoAddresses']);
+    const { limit } = ownProps;
+
+    return {
+      coinList: getCoinList(addresses, limit),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 class CoinList extends ImmutablePureComponent {
 
   static propTypes = {

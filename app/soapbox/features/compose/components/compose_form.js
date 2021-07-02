@@ -10,7 +10,7 @@ import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';
@@ -38,8 +38,7 @@ const messages = defineMessages({
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
-export default @injectIntl
-class ComposeForm extends ImmutablePureComponent {
+export default class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,

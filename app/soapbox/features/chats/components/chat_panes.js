@@ -2,47 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { getSettings } from 'soapbox/actions/settings';
 import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
-import { makeGetChat } from 'soapbox/selectors';
 import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
 import ChatWindow from './chat_window';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
-import { List as ImmutableList } from 'immutable';
-
-const addChatsToPanes = (state, panesData) => {
-  const getChat = makeGetChat();
-
-  const newPanes = panesData.get('panes').reduce((acc, pane) => {
-    const chat = getChat(state, { id: pane.get('chat_id') });
-    if (!chat) return acc;
-    return acc.push(pane.set('chat', chat));
-  }, ImmutableList());
-
-  return panesData.set('panes', newPanes);
-};
 
 const mapStateToProps = state => {
-  const panesData = getSettings(state).get('chats');
+  const settings = getSettings(state);
 
   return {
-    panesData: addChatsToPanes(state, panesData),
+    panes: settings.getIn(['chats', 'panes']),
+    mainWindowState: settings.getIn(['chats', 'mainWindow']),
     unreadCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
   };
 };
 
 export default @connect(mapStateToProps)
-@injectIntl
 class ChatPanes extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
-    panesData: ImmutablePropTypes.map,
+    mainWindowState: PropTypes.string,
+    panes: ImmutablePropTypes.list,
   }
 
   handleClickChat = (chat) => {
@@ -54,12 +39,11 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   render() {
-    const { panesData, unreadCount } = this.props;
-    const panes = panesData.get('panes');
-    const mainWindow = panesData.get('mainWindow');
+    const { panes, mainWindowState, unreadCount } = this.props;
+    const open = mainWindowState === 'open';
 
     const mainWindowPane = (
-      <div className={`pane pane--main pane--${mainWindow}`}>
+      <div className={`pane pane--main pane--${mainWindowState}`}>
         <div className='pane__header'>
           {unreadCount > 0 && <i className='icon-with-badge__badge'>{shortNumberFormat(unreadCount)}</i>}
           <button className='pane__title' onClick={this.handleMainWindowToggle}>
@@ -68,10 +52,10 @@ class ChatPanes extends ImmutablePureComponent {
           <AudioToggle />
         </div>
         <div className='pane__content'>
-          <ChatList
+          {open && <ChatList
             onClickChat={this.handleClickChat}
             emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
-          />
+          />}
         </div>
       </div>
     );
@@ -79,9 +63,14 @@ class ChatPanes extends ImmutablePureComponent {
     return (
       <div className='chat-panes'>
         {mainWindowPane}
-        {panes.map((pane, i) =>
-          <ChatWindow idx={i} pane={pane} key={pane.get('chat_id')} />,
-        )}
+        {panes.map((pane, i) => (
+          <ChatWindow
+            idx={i}
+            key={pane.get('chat_id')}
+            chatId={pane.get('chat_id')}
+            windowState={pane.get('state')}
+          />
+        ))}
       </div>
     );
   }

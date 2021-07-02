@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import ComposeForm from '../components/compose_form';
 import {
   changeCompose,
@@ -73,4 +74,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   });
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm));
