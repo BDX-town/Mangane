@@ -219,6 +219,9 @@
       flex: 1 1 0;
       min-width: 40%;
       margin: 5px;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
 
       &__actions {
         background: linear-gradient(180deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
@@ -298,7 +301,6 @@
     }
 
     .compose-form__upload-thumbnail {
-      border-radius: 4px;
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;
