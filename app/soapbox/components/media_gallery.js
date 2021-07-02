@@ -8,12 +8,12 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
 import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
-import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
+import Blurhash from 'soapbox/components/blurhash';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -102,34 +102,6 @@ class Item extends React.PureComponent {
     e.stopPropagation();
   }
 
-  componentDidMount() {
-    if (this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.attachment.get('blurhash') !== this.props.attachment.get('blurhash') && this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.attachment.get('blurhash');
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
-    }
-  }
-
-  setCanvasRef = c => {
-    this.canvas = c;
-  }
-
   handleImageLoad = () => {
     this.setState({ loaded: true });
   }
@@ -174,7 +146,7 @@ class Item extends React.PureComponent {
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
-            <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
+            <Blurhash hash={attachment.get('blurhash')} className='media-gallery__preview' />
             <span className='media-gallery__item__icons'><Icon id='file' /></span>
             <span className='media-gallery__filename__label'>{filename}</span>
           </a>
@@ -273,7 +245,12 @@ class Item extends React.PureComponent {
             +{total - ATTACHMENT_LIMIT + 1}
           </div>
         )}
-        <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && this.state.loaded })} />
+        <Blurhash
+          hash={attachment.get('blurhash')}
+          className={classNames('media-gallery__preview', {
+            'media-gallery__preview--hidden': visible && this.state.loaded,
+          })}
+        />
         {visible && thumbnail}
       </div>
     );
