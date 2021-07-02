@@ -233,7 +233,7 @@
 
         .icon-button {
           flex: 0 1 auto;
-          color: var(--primary-text-color--faint);
+          color: #fff;
           font-size: 14px;
           font-weight: 500;
           padding: 10px;
@@ -242,7 +242,7 @@
           &:hover,
           &:focus,
           &:active {
-            color: var(--highlight-text-color);
+            color: var(--accent-color);
           }
         }
         &.active { opacity: 1; }
@@ -263,8 +263,8 @@
         textarea {
           background: transparent;
           box-sizing: border-box;
-          color: var(--primary-text-color--faint);
-          border: 1px solid var(--primary-text-color--faint);
+          color: #fff;
+          border: 1px solid #fff;
           outline: none;
           padding: 10px;
           margin: 0;
@@ -276,7 +276,7 @@
           &:focus { color: #fff; }
 
           &::placeholder {
-            color: var(--primary-text-color--faint);
+            color: rgba(255, 255, 255, 0.6);
           }
         }
         &.active { opacity: 1; }
