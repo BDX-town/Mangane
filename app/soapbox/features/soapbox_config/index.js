@@ -27,7 +27,6 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
-import { defaultSettings } from 'soapbox/actions/settings';
 import IconPickerDropdown from './components/icon_picker_dropdown';
 import snackbar from 'soapbox/actions/snackbar';
 
