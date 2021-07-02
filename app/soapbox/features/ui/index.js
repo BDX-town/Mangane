@@ -26,12 +26,7 @@ import { WrappedRoute } from './util/react_router_helpers';
 import BundleContainer from './containers/bundle_container';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
-import LinkFooter from './components/link_footer';
-import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
-import WhoToFollowPanel from './components/who_to_follow_panel';
-import TrendsPanel from './components/trends_panel';
-import PromoPanel from './components/promo_panel';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
@@ -46,7 +41,6 @@ import Icon from 'soapbox/components/icon';
 import { isStaff } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
 
 import {
   Status,
@@ -232,7 +226,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
         <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
-        <WrappedRoute path='/list/:id' page={HomePage} page={DefaultPage} component={ListTimeline} content={children} />
+        <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
         <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />
 
         <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
