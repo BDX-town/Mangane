@@ -13,13 +13,12 @@ import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
 import { isStaff } from '../utils/accounts';
-import { makeGetAccount } from '../selectors';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { List as ImmutableList, is as ImmutableIs } from 'immutable';
+import { is as ImmutableIs } from 'immutable';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { createSelector } from 'reselect';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -45,21 +44,6 @@ const messages = defineMessages({
   info: { id: 'column.info', defaultMessage: 'Server information' },
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
-
-const makeGetOtherAccounts = () => {
-  return createSelector(
-    [(accounts, authUsers, me) => {
-      return authUsers
-        .keySeq()
-        .reduce((list, id) => {
-          if (id === me) return list;
-          const account = accounts.get(id);
-          return account ? list.push(account) : list;
-        }, ImmutableList());
-    }],
-    otherAccounts => otherAccounts,
-  );
-};
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
