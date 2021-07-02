@@ -7,7 +7,7 @@ import { throttle } from 'lodash';
 import classNames from 'classnames';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 import Icon from 'soapbox/components/icon';
-import { decode } from 'blurhash';
+import Blurhash from 'soapbox/components/blurhash';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { getSettings } from 'soapbox/actions/settings';
 
@@ -167,10 +167,6 @@ class Video extends React.PureComponent {
     this.volume = c;
   }
 
-  setCanvasRef = c => {
-    this.canvas = c;
-  }
-
   handleClickRoot = e => e.stopPropagation();
 
   handlePlay = () => {
@@ -278,10 +274,6 @@ class Video extends React.PureComponent {
     document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
-
-    if (this.props.blurhash) {
-      this._decode();
-    }
   }
 
   componentWillUnmount() {
@@ -292,7 +284,7 @@ class Video extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { visible, blurhash } = this.props;
+    const { visible } = this.props;
 
     if (!is(visible, prevProps.visible) && visible !== undefined) {
       this.setState({ revealed: visible });
@@ -300,22 +292,6 @@ class Video extends React.PureComponent {
 
     if (prevState.revealed && !this.state.revealed && this.video) {
       this.video.pause();
-    }
-
-    if (prevProps.blurhash !== blurhash && blurhash) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.blurhash;
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
     }
   }
 
@@ -396,7 +372,7 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
+    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio, blurhash } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
     const playerStyle = {};
@@ -437,7 +413,12 @@ class Video extends React.PureComponent {
         onClick={this.handleClickRoot}
         tabIndex={0}
       >
-        <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': revealed })} />
+        <Blurhash
+          hash={blurhash}
+          className={classNames('media-gallery__preview', {
+            'media-gallery__preview--hidden': revealed,
+          })}
+        />
 
         {revealed && <video
           ref={this.setVideoRef}
