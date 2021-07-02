@@ -18,7 +18,8 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const emptyList = ImmutableList();
 
-const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+const mapStateToProps = (state, { params, withReplies = false }) => {
+  const username = params.username || '';
   const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());

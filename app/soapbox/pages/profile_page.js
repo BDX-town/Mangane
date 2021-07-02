@@ -16,7 +16,8 @@ import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
 import { Redirect } from 'react-router-dom';
 
-const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+const mapStateToProps = (state, { params, withReplies = false }) => {
+  const username = params.username || '';
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
   const getAccount = makeGetAccount();
