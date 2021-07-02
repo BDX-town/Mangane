@@ -206,7 +206,6 @@ class SoapboxConfig extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const soapbox = this.getSoapboxConfig();
-    const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
