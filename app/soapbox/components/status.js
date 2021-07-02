@@ -94,7 +94,6 @@ class Status extends ImmutablePureComponent {
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
-    greentext: PropTypes.bool,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -495,7 +494,6 @@ class Status extends ImmutablePureComponent {
               onClick={this.handleClick}
               expanded={!status.get('hidden')}
               onExpandedToggle={this.handleExpandedToggle}
-              greentext={this.props.greentext}
               collapsable
             />
 

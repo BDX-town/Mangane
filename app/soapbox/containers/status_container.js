@@ -59,7 +59,6 @@ const makeMapStateToProps = () => {
       status: getStatus(state, props),
       displayMedia: getSettings(state).get('displayMedia'),
       allowedEmoji: soapbox.get('allowedEmoji'),
-      greentext: soapbox.get('greentext'),
     };
   };
 

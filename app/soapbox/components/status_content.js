@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { isRtl } from '../rtl';
@@ -6,11 +7,17 @@ import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
-import { processHtml } from 'soapbox/utils/tiny_post_html_processor';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { addGreentext } from 'soapbox/utils/greentext';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
-export default class StatusContent extends React.PureComponent {
+const mapStateToProps = state => ({
+  greentext: getSoapboxConfig(state).get('greentext'),
+});
+
+export default @connect(mapStateToProps)
+class StatusContent extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -150,35 +157,16 @@ export default class StatusContent extends React.PureComponent {
     this.node = c;
   }
 
-  getHtmlContent = () => {
-    const { status } = this.props;
-
-    const properContent = status.get('contentHtml');
-
-    return this.greentext(properContent);
+  parseHtml = html => {
+    const { greentext } = this.props;
+    if (greentext) return addGreentext(html);
+    return html;
   }
 
-  greentext = html => {
-    if (!this.props.greentext) return html;
-
-    // Copied from Pleroma FE
-    // https://git.pleroma.social/pleroma/pleroma-fe/-/blob/19475ba356c3fd6c54ca0306d3ae392358c212d1/src/components/status_content/status_content.js#L132
-    return processHtml(html, (string) => {
-      try {
-        if (string.includes('&gt;') &&
-            string
-              .replace(/<[^>]+?>/gi, '') // remove all tags
-              .replace(/@\w+/gi, '') // remove mentions (even failed ones)
-              .trim()
-              .startsWith('&gt;')) {
-          return `<span class='greentext'>${string}</span>`;
-        } else {
-          return string;
-        }
-      } catch(e) {
-        return string;
-      }
-    });
+  getHtmlContent = () => {
+    const { status } = this.props;
+    const html = status.get('contentHtml');
+    return this.parseHtml(html);
   }
 
   render() {
