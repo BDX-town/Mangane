@@ -40,6 +40,7 @@ class ChatPanes extends ImmutablePureComponent {
 
   render() {
     const { panes, mainWindowState, unreadCount } = this.props;
+    const open = mainWindowState === 'open';
 
     const mainWindowPane = (
       <div className={`pane pane--main pane--${mainWindowState}`}>
@@ -51,10 +52,10 @@ class ChatPanes extends ImmutablePureComponent {
           <AudioToggle />
         </div>
         <div className='pane__content'>
-          <ChatList
+          {open && <ChatList
             onClickChat={this.handleClickChat}
             emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
-          />
+          />}
         </div>
       </div>
     );
