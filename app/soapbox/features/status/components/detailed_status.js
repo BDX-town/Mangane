@@ -36,7 +36,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
     compact: PropTypes.bool,
     showMedia: PropTypes.bool,
     onToggleMediaVisibility: PropTypes.func,
-    greentext: PropTypes.bool,
   };
 
   state = {
@@ -192,7 +191,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
           <StatusContent
             status={status}
             expanded={!status.get('hidden')}
-            greentext={this.props.greentext}
             onExpandedToggle={this.handleExpandedToggle}
           />
 

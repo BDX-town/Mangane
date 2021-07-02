@@ -116,7 +116,6 @@ const makeMapStateToProps = () => {
       me: state.get('me'),
       displayMedia: getSettings(state).get('displayMedia'),
       allowedEmoji: soapbox.get('allowedEmoji'),
-      greentext: soapbox.get('greentext'),
     };
   };
 
@@ -546,7 +545,6 @@ class Status extends ImmutablePureComponent {
                 onToggleHidden={this.handleToggleHidden}
                 domain={domain}
                 showMedia={this.state.showMedia}
-                greentext={this.props.greentext}
                 onToggleMediaVisibility={this.handleToggleMediaVisibility}
               />
 
