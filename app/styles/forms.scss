@@ -479,6 +479,10 @@ code {
     position: relative;
     margin-top: 8px;
     cursor: pointer;
+
+    &:focus {
+      background: var(--accent-color--faint);
+    }
   }
 
   .select-wrapper {

@@ -152,7 +152,8 @@
           background-color: var(--accent-color);
         }
 
-        &:hover:not(.react-toggle--disabled) .react-toggle-track {
+        &:hover:not(.react-toggle--disabled) .react-toggle-track,
+        &.react-toggle--focus .react-toggle-track {
           background-color: var(--accent-color--bright);
         }
       }
@@ -250,7 +251,8 @@
   }
 
   &.active::before,
-  &:hover::before {
+  &:hover::before,
+  &:focus::before {
     height: 30px;
     opacity: 1;
 
