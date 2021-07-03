@@ -5,11 +5,20 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import CryptoAddress from './crypto_address';
 import { createSelector } from 'reselect';
+import { trimStart } from 'lodash';
+
+const normalizeAddress = address => {
+  return address.update('ticker', '', ticker => {
+    return trimStart(ticker, '$').toLowerCase();
+  });
+};
+
+const normalizeAddresses = addresses => addresses.map(normalizeAddress);
 
 const makeGetCoinList = () => {
   return createSelector(
     [(addresses, limit) => typeof limit === 'number' ? addresses.take(limit) : addresses],
-    addresses => addresses,
+    addresses => normalizeAddresses(addresses),
   );
 };
 
