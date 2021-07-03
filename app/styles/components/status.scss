@@ -424,7 +424,8 @@
     background: var(--brand-color--med);
     transition: 0.2s;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: hsla(var(--brand-color_hsl), 0.5);
       text-decoration: none;
     }
@@ -667,7 +668,8 @@ a.status-card.compact:hover {
   }
 }
 
-.status__action-bar, .detailed-status__action-bar {
+.status__action-bar,
+.detailed-status__action-bar {
   .emoji-picker-expand {
     display: none;
   }
