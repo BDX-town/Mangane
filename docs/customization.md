@@ -36,6 +36,9 @@ For example:
     "themeMode": "light"
   },
   "copyright": "♡2020. Copying is an act of love. Please copy and share.",
+  "customCss": [
+    "/instance/static/your_file_here.css"
+  ],
   "navlinks": {
     "homeFooter": [
       { "title": "About", "url": "/about" },
@@ -56,6 +59,7 @@ Customizable features include:
 * Favicon
 * About pages
 * Default user settings
+* Cascadomg Style Sheets (CSS)
 
 ## Instance Name
 Instance name is edited during the Pleroma installation step or via AdminFE.
