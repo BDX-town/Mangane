@@ -10,16 +10,33 @@ export default class ErrorBoundary extends React.PureComponent {
 
   state = {
     hasError: false,
-    stackTrace: undefined,
     componentStack: undefined,
   }
 
   componentDidCatch(error, info) {
     this.setState({
       hasError: true,
-      stackTrace: error.stack,
+      error,
       componentStack: info && info.componentStack,
     });
+  }
+
+  setTextareaRef = c => {
+    this.textarea = c;
+  }
+
+  handleCopy = e => {
+    if (!this.textarea) return;
+
+    this.textarea.select();
+    this.textarea.setSelectionRange(0, 99999);
+
+    document.execCommand('copy');
+  }
+
+  getErrorText = () => {
+    const { error, componentStack } = this.state;
+    return error + componentStack;
   }
 
   clearCookies = e => {
@@ -34,6 +51,8 @@ export default class ErrorBoundary extends React.PureComponent {
       return this.props.children;
     }
 
+    const errorText = this.getErrorText();
+
     return (
       <div className='error-boundary'>
         <div>
@@ -43,6 +62,13 @@ export default class ErrorBoundary extends React.PureComponent {
             <i className='fa fa-reply' aria-hidden='true' />&nbsp;
             <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
           </a>
+          {errorText && <textarea
+            ref={this.setTextareaRef}
+            className='error-boundary__component-stack'
+            value={errorText}
+            onClick={this.handleCopy}
+            readOnly
+          />}
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'
