@@ -9,7 +9,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled_statuses';
 
 const messages = defineMessages({
-  cancel: { id: 'schedled_status.cancel', defaultMessage: 'Cancel' },
+  cancel: { id: 'scheduled_status.cancel', defaultMessage: 'Cancel' },
 });
 
 const mapStateToProps = state => {

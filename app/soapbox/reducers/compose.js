@@ -84,10 +84,6 @@ const initialPoll = ImmutableMap({
   multiple: false,
 });
 
-const initialSchedule = new Date();
-initialSchedule.setDate(initialSchedule.getDate() - 1);
-
-
 function statusToTextMentions(state, status, account) {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
@@ -407,7 +403,7 @@ export default function compose(state = initialState, action) {
   case COMPOSE_POLL_REMOVE:
     return state.set('poll', null);
   case COMPOSE_SCHEDULE_ADD:
-    return state.set('schedule', initialSchedule);
+    return state.set('schedule', new Date());
   case COMPOSE_SCHEDULE_SET:
     return state.set('schedule', action.date);
   case COMPOSE_SCHEDULE_REMOVE:

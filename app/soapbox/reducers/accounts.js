@@ -18,6 +18,7 @@ import {
   ADMIN_USERS_UNTAG_REQUEST,
   ADMIN_USERS_UNTAG_FAIL,
 } from 'soapbox/actions/admin';
+import { ADMIN_USERS_DELETE_REQUEST } from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap();
 
@@ -74,6 +75,21 @@ const removeTags = (state, accountIds, tags) => {
   });
 };
 
+const nicknamesToIds = (state, nicknames) => {
+  return nicknames.map(nickname => {
+    return state.find(account => account.get('acct') === nickname, null, ImmutableMap()).get('id');
+  });
+};
+
+const setDeactivated = (state, nicknames) => {
+  const ids = nicknamesToIds(state, nicknames);
+  return state.withMutations(state => {
+    ids.forEach(id => {
+      state.setIn([id, 'pleroma', 'is_active'], false);
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -95,6 +111,8 @@ export default function accounts(state = initialState, action) {
   case ADMIN_USERS_UNTAG_REQUEST:
   case ADMIN_USERS_TAG_FAIL:
     return removeTags(state, action.accountIds, action.tags);
+  case ADMIN_USERS_DELETE_REQUEST:
+    return setDeactivated(state, action.nicknames);
   default:
     return state;
   }

@@ -137,8 +137,9 @@ export const makeGetNotification = () => {
   return createSelector([
     (_, base)             => base,
     (state, _, accountId) => state.getIn(['accounts', accountId]),
-  ], (base, account) => {
-    return base.set('account', account);
+    (state, _, __, targetId) => state.getIn(['accounts', targetId]),
+  ], (base, account, target) => {
+    return base.set('account', account).set('target', target);
   });
 };
 
@@ -192,5 +193,20 @@ export const makeGetReport = () => {
       if (!report) return null;
       return report.set('statuses', statuses);
     },
+  );
+};
+
+export const makeGetOtherAccounts = () => {
+  return createSelector(
+    [(accounts, authUsers, me) => {
+      return authUsers
+        .keySeq()
+        .reduce((list, id) => {
+          if (id === me) return list;
+          const account = accounts.get(id);
+          return account ? list.push(account) : list;
+        }, ImmutableList());
+    }],
+    otherAccounts => otherAccounts,
   );
 };

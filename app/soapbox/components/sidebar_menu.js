@@ -13,11 +13,11 @@ import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
 import { isStaff } from '../utils/accounts';
-import { makeGetAccount } from '../selectors';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { List as ImmutableList, is as ImmutableIs } from 'immutable';
+import { is as ImmutableIs } from 'immutable';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const messages = defineMessages({
@@ -45,29 +45,29 @@ const messages = defineMessages({
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
-const mapStateToProps = state => {
-  const me = state.get('me');
+const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
-  const soapbox = getSoapboxConfig(state);
+  const getOtherAccounts = makeGetOtherAccounts();
 
-  const otherAccounts =
-    state
-      .getIn(['auth', 'users'])
-      .keySeq()
-      .reduce((list, id) => {
-        if (id === me) return list;
-        const account = state.getIn(['accounts', id]);
-        return account ? list.push(account) : list;
-      }, ImmutableList());
+  const mapStateToProps = state => {
+    const me = state.get('me');
+    const soapbox = getSoapboxConfig(state);
 
-  return {
-    account: getAccount(state, me),
-    sidebarOpen: state.get('sidebar').sidebarOpen,
-    donateUrl: state.getIn(['patron', 'instance', 'url']),
-    hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
-    isStaff: isStaff(state.getIn(['accounts', me])),
-    otherAccounts,
+    const accounts = state.get('accounts');
+    const authUsers = state.getIn(['auth', 'users']);
+    const otherAccounts = getOtherAccounts(accounts, authUsers, me);
+
+    return {
+      account: getAccount(state, me),
+      sidebarOpen: state.get('sidebar').sidebarOpen,
+      donateUrl: state.getIn(['patron', 'instance', 'url']),
+      hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
+      isStaff: isStaff(state.getIn(['accounts', me])),
+      otherAccounts,
+    };
   };
+
+  return mapStateToProps;
 };
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
@@ -86,7 +86,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-export default @connect(mapStateToProps, mapDispatchToProps)
+export default @connect(makeMapStateToProps, mapDispatchToProps)
 @injectIntl
 class SidebarMenu extends ImmutablePureComponent {
 

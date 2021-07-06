@@ -18,7 +18,8 @@ import ScrollableList from '../../components/scrollable_list';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { getFollowDifference } from 'soapbox/utils/accounts';
 
-const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
+const mapStateToProps = (state, { params, withReplies = false }) => {
+  const username = params.username || '';
   const me = state.get('me');
   const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());

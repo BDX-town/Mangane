@@ -188,7 +188,11 @@ export default class DetailedStatus extends ImmutablePureComponent {
             </div>
           )}
 
-          <StatusContent status={status} expanded={!status.get('hidden')} onExpandedToggle={this.handleExpandedToggle} />
+          <StatusContent
+            status={status}
+            expanded={!status.get('hidden')}
+            onExpandedToggle={this.handleExpandedToggle}
+          />
 
           {media}
           {poll}

@@ -359,6 +359,28 @@ $fluid-breakpoint: $maximum-width + 20px;
   }
 }
 
+.also-available {
+  padding-top: 0;
+
+  ul {
+    display: inline;
+    padding-left: 0;
+    list-style: none;
+
+    li {
+      display: inline;
+
+      &::after {
+        content: ' · ';
+      }
+    }
+
+    li:last-child::after {
+      content: '';
+    }
+  }
+}
+
 .public-layout {
   position: relative;
   background-color: var(--brand-color);

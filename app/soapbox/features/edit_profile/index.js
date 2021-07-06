@@ -21,6 +21,7 @@ import {
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
+import Icon from 'soapbox/components/icon';
 import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -57,7 +58,7 @@ const mapStateToProps = state => {
 
 // Forces fields to be maxFields size, filling empty values
 const normalizeFields = (fields, maxFields) => (
-  ImmutableList(fields).setSize(maxFields).map(field =>
+  ImmutableList(fields).setSize(Math.max(fields.size, maxFields)).map(field =>
     field ? field : ImmutableMap({ name: '', value: '' }),
   )
 );
@@ -93,7 +94,7 @@ class EditProfile extends ImmutablePureComponent {
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
+      map.set('fields', normalizeFields(map.get('fields'), Math.min(props.maxFields, 4)));
       map.set('stranger_notifications', strangerNotifications);
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
@@ -195,6 +196,20 @@ class EditProfile extends ImmutablePureComponent {
       [name]: url,
       [`${name}_file`]: file,
     });
+  }
+
+  handleAddField = () => {
+    this.setState({
+      fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
+    });
+  }
+
+  handleDeleteField = i => {
+    return () => {
+      this.setState({
+        fields: normalizeFields(this.state.fields.delete(i), Math.min(this.props.maxFields, 4)),
+      });
+    };
   }
 
   render() {
@@ -300,8 +315,21 @@ class EditProfile extends ImmutablePureComponent {
                           value={field.get('value')}
                           onChange={this.handleFieldChange(i, 'value')}
                         />
+                        {
+                          this.state.fields.size > 4 && <Icon id='times-circle' onClick={this.handleDeleteField(i)} />
+                        }
                       </div>
                     ))
+                  }
+                  {
+                    this.state.fields.size < maxFields && (
+                      <div className='actions add-row'>
+                        <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddField}>
+                          <Icon id='plus-circle' />
+                          <FormattedMessage id='edit_profile.meta_fields.add' defaultMessage='Add new item' />
+                        </div>
+                      </div>
+                    )
                   }
                 </div>
               </div>

@@ -27,7 +27,6 @@ import { supportsPassiveEvents } from 'detect-passive-events';
 import Accordion from '../ui/components/accordion';
 import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
-import { defaultSettings } from 'soapbox/actions/settings';
 import IconPickerDropdown from './components/icon_picker_dropdown';
 import snackbar from 'soapbox/actions/snackbar';
 
@@ -49,6 +48,7 @@ const messages = defineMessages({
   rawJSONHint: { id: 'soapbox_config.raw_json_hint', defaultMessage: 'Edit the settings data directly. Changes made directly to the JSON file will override the form fields above. Click "Save" to apply your changes.' },
   verifiedCanEditNameLabel: { id: 'soapbox_config.verified_can_edit_name_label', defaultMessage: 'Allow verified users to edit their own display name.' },
   displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain (eg @user@domain) for local accounts.' },
+  greentextLabel: { id: 'soapbox_config.greentext_label', defaultMessage: 'Enable greentext support' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -205,7 +205,6 @@ class SoapboxConfig extends ImmutablePureComponent {
   render() {
     const { intl } = this.props;
     const soapbox = this.getSoapboxConfig();
-    const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -226,7 +225,8 @@ class SoapboxConfig extends ImmutablePureComponent {
                       <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
                       <ThemeToggle
                         onToggle={this.handleChange(['defaultSettings', 'themeMode'], value => value)}
-                        settings={settings}
+                        themeMode={soapbox.getIn(['defaultSettings', 'themeMode'])}
+                        intl={intl}
                       />
                     </div>
                   </div>
@@ -258,10 +258,16 @@ class SoapboxConfig extends ImmutablePureComponent {
                 onChange={this.handleChange(['verifiedCanEditName'], (e) => e.target.checked)}
               />
               <Checkbox
-                name='verifiedCanEditName'
+                name='displayFqn'
                 label={intl.formatMessage(messages.displayFqnLabel)}
                 checked={soapbox.get('displayFqn') === true}
                 onChange={this.handleChange(['displayFqn'], (e) => e.target.checked)}
+              />
+              <Checkbox
+                name='greentext'
+                label={intl.formatMessage(messages.greentextLabel)}
+                checked={soapbox.get('greentext') === true}
+                onChange={this.handleChange(['greentext'], (e) => e.target.checked)}
               />
             </FieldsGroup>
             <FieldsGroup>

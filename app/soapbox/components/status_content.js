@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { isRtl } from '../rtl';
@@ -6,10 +7,17 @@ import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { addGreentext } from 'soapbox/utils/greentext';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
-export default class StatusContent extends React.PureComponent {
+const mapStateToProps = state => ({
+  greentext: getSoapboxConfig(state).get('greentext'),
+});
+
+export default @connect(mapStateToProps)
+class StatusContent extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -22,6 +30,7 @@ export default class StatusContent extends React.PureComponent {
     onExpandedToggle: PropTypes.func,
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
+    greentext: PropTypes.bool,
   };
 
   state = {
@@ -148,12 +157,16 @@ export default class StatusContent extends React.PureComponent {
     this.node = c;
   }
 
+  parseHtml = html => {
+    const { greentext } = this.props;
+    if (greentext) return addGreentext(html);
+    return html;
+  }
+
   getHtmlContent = () => {
     const { status } = this.props;
-
-    const properContent = status.get('contentHtml');
-
-    return properContent;
+    const html = status.get('contentHtml');
+    return this.parseHtml(html);
   }
 
   render() {

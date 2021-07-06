@@ -20,7 +20,7 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const mapStateToProps = (state, props) => {
-    const notification = getNotification(state, props.notification, props.accountId);
+    const notification = getNotification(state, props.notification, props.accountId, props.targetId);
     return {
       notification: notification,
       status: notification.get('status') ? getStatus(state, { id: notification.get('status') }) : null,

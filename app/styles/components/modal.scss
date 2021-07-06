@@ -771,7 +771,7 @@
     &__text {
       display: block;
       margin-bottom: 18px;
-      color: #fff;
+      color: var(--primary-text-color);
       font-size: 14px;
     }
 
@@ -781,19 +781,14 @@
   }
 
   &__footer {
-    display: flex;
     border-top: 1px solid #666;
     padding: 10px;
-    justify-content: center;
-    align-items: center;
+    font-size: 14px;
+    text-align: center;
+    color: var(--primary-text-color--faint);
 
-    > span {
-      font-size: 14px;
-      color: var(--primary-text-color--faint);
-
-      a {
-        color: var(--brand-color) !important;
-      }
+    a {
+      color: var(--brand-color) !important;
     }
   }
 

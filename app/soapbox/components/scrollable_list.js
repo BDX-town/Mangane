@@ -217,6 +217,10 @@ export default class ScrollableList extends PureComponent {
     );
   }
 
+  setRef = c => {
+    this.node = c;
+  }
+
   render() {
     const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
     const childrenCount = React.Children.count(children);

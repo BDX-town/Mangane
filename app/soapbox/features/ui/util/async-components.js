@@ -210,6 +210,10 @@ export function ChatRoom() {
   return import(/* webpackChunkName: "features/chats/chat_room" */'../../chats/chat_room');
 }
 
+export function ChatPanes() {
+  return import(/* webpackChunkName: "features/chats/components/chat_panes" */'../../chats/components/chat_panes');
+}
+
 export function ServerInfo() {
   return import(/* webpackChunkName: "features/server_info" */'../../server_info');
 }

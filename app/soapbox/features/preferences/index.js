@@ -15,7 +15,7 @@ import {
 } from 'soapbox/features/forms';
 import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 
-const languages = {
+export const languages = {
   en: 'English',
   ar: 'العربية',
   ast: 'Asturianu',

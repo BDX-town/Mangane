@@ -4,6 +4,7 @@ import { patchMe } from 'soapbox/actions/me';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
+import { createSelector } from 'reselect';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -60,6 +61,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      move: true,
       'pleroma:emoji_reaction': true,
     }),
 
@@ -76,6 +78,7 @@ export const defaultSettings = ImmutableMap({
       reblog: true,
       mention: true,
       poll: true,
+      move: true,
       'pleroma:emoji_reaction': true,
     }),
 
@@ -86,6 +89,7 @@ export const defaultSettings = ImmutableMap({
       reblog: false,
       mention: false,
       poll: false,
+      move: false,
       'pleroma:emoji_reaction': false,
     }),
   }),
@@ -133,12 +137,14 @@ export const defaultSettings = ImmutableMap({
   ]),
 });
 
-export function getSettings(state) {
-  const soapboxSettings = state.getIn(['soapbox', 'defaultSettings']);
+export const getSettings = createSelector([
+  state => state.getIn(['soapbox', 'defaultSettings']),
+  state => state.get('settings'),
+], (soapboxSettings, settings) => {
   return defaultSettings
     .mergeDeep(soapboxSettings)
-    .mergeDeep(state.get('settings'));
-}
+    .mergeDeep(settings);
+});
 
 export function changeSetting(path, value) {
   return dispatch => {

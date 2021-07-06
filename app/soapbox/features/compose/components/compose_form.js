@@ -10,7 +10,7 @@ import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, FormattedMessage } from 'react-intl';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';
@@ -35,10 +35,10 @@ const messages = defineMessages({
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
+  schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
-export default @injectIntl
-class ComposeForm extends ImmutablePureComponent {
+export default class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
@@ -260,6 +260,10 @@ class ComposeForm extends ImmutablePureComponent {
       publishText = <span className='compose-form__publish-private'><Icon id='lock' /> {intl.formatMessage(messages.publish)}</span>;
     } else {
       publishText = this.props.privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
+    }
+
+    if (this.props.scheduledAt) {
+      publishText = intl.formatMessage(messages.schedule);
     }
 
     const composeClassNames = classNames({

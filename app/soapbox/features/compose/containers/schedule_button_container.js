@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 
   onClick() {
-    dispatch((_, getState) => {
+    dispatch((dispatch, getState) => {
       if (getState().getIn(['compose', 'schedule'])) {
         dispatch(removeSchedule());
       } else {

@@ -44,6 +44,7 @@ const notificationToMap = notification => ImmutableMap({
   id: notification.id,
   type: notification.type,
   account: notification.account.id,
+  target: notification.target ? notification.target.id : null,
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,

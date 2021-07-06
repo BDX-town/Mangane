@@ -219,6 +219,9 @@
       flex: 1 1 0;
       min-width: 40%;
       margin: 5px;
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
 
       &__actions {
         background: linear-gradient(180deg, rgba($base-shadow-color, 0.8) 0, rgba($base-shadow-color, 0.35) 80%, transparent);
@@ -230,7 +233,7 @@
 
         .icon-button {
           flex: 0 1 auto;
-          color: var(--primary-text-color--faint);
+          color: #fff;
           font-size: 14px;
           font-weight: 500;
           padding: 10px;
@@ -239,7 +242,7 @@
           &:hover,
           &:focus,
           &:active {
-            color: var(--highlight-text-color);
+            color: var(--accent-color);
           }
         }
         &.active { opacity: 1; }
@@ -260,8 +263,8 @@
         textarea {
           background: transparent;
           box-sizing: border-box;
-          color: var(--primary-text-color--faint);
-          border: 1px solid var(--primary-text-color--faint);
+          color: #fff;
+          border: 1px solid #fff;
           outline: none;
           padding: 10px;
           margin: 0;
@@ -273,7 +276,7 @@
           &:focus { color: #fff; }
 
           &::placeholder {
-            color: var(--primary-text-color--faint);
+            color: rgba(255, 255, 255, 0.6);
           }
         }
         &.active { opacity: 1; }
@@ -298,7 +301,6 @@
     }
 
     .compose-form__upload-thumbnail {
-      border-radius: 4px;
       background-position: center;
       background-size: contain;
       background-repeat: no-repeat;

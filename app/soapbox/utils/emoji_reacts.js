@@ -22,7 +22,7 @@ export const mergeEmoji = emojiReacts => (
   emojiReacts // TODO: Merge similar emoji
 );
 
-export const mergeEmojiFavourites = (emojiReacts, favouritesCount, favourited) => {
+export const mergeEmojiFavourites = (emojiReacts = ImmutableList(), favouritesCount, favourited) => {
   if (!favouritesCount) return emojiReacts;
   const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '👍');
   if (likeIndex > -1) {

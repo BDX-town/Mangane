@@ -105,6 +105,8 @@ const makeMapStateToProps = () => {
       });
     }
 
+    const soapbox = getSoapboxConfig(state);
+
     return {
       status,
       ancestorsIds,
@@ -113,7 +115,7 @@ const makeMapStateToProps = () => {
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
       displayMedia: getSettings(state).get('displayMedia'),
-      allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
+      allowedEmoji: soapbox.get('allowedEmoji'),
     };
   };
 

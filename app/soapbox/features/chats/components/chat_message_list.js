@@ -14,6 +14,7 @@ import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { initReportById } from 'soapbox/actions/reports';
+import { createSelector } from 'reselect';
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -38,15 +39,34 @@ const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
 }, ImmutableMap());
 
-const mapStateToProps = (state, { chatMessageIds }) => ({
-  me: state.get('me'),
-  chatMessages: chatMessageIds.reduce((acc, curr) => {
-    const chatMessage = state.getIn(['chat_messages', curr]);
-    return chatMessage ? acc.push(chatMessage) : acc;
-  }, ImmutableList()),
-});
+const makeGetChatMessages = () => {
+  return createSelector(
+    [(chatMessages, chatMessageIds) => (
+      chatMessageIds.reduce((acc, curr) => {
+        const chatMessage = chatMessages.get(curr);
+        return chatMessage ? acc.push(chatMessage) : acc;
+      }, ImmutableList())
+    )],
+    chatMessages => chatMessages,
+  );
+};
 
-export default @connect(mapStateToProps)
+const makeMapStateToProps = () => {
+  const getChatMessages = makeGetChatMessages();
+
+  const mapStateToProps = (state, { chatMessageIds }) => {
+    const chatMessages = state.get('chat_messages');
+
+    return {
+      me: state.get('me'),
+      chatMessages: getChatMessages(chatMessages, chatMessageIds),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 @injectIntl
 class ChatMessageList extends ImmutablePureComponent {
 

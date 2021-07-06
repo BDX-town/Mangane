@@ -7,6 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import Blurhash from 'soapbox/components/blurhash';
 
 const messages = defineMessages({
   description: { id: 'upload_form.description', defaultMessage: 'Describe for the visually impaired' },
@@ -102,6 +103,7 @@ class Upload extends ImmutablePureComponent {
 
     return (
       <div className='compose-form__upload' tabIndex='0' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} onClick={this.handleClick} role='button'>
+        <Blurhash hash={media.get('blurhash')} className='media-gallery__preview' />
         <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
           {({ scale }) => (
             <div
