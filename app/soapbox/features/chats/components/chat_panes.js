@@ -10,18 +10,39 @@ import { openChat, toggleMainWindow } from 'soapbox/actions/chats';
 import ChatWindow from './chat_window';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import { List as ImmutableList } from 'immutable';
+import { createSelector } from 'reselect';
 
-const mapStateToProps = state => {
-  const settings = getSettings(state);
-
-  return {
-    panes: settings.getIn(['chats', 'panes']),
-    mainWindowState: settings.getIn(['chats', 'mainWindow']),
-    unreadCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
-  };
+const getChatsUnreadCount = state => {
+  const chats = state.get('chats');
+  return chats.reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
 };
 
-export default @connect(mapStateToProps)
+// Filter out invalid chats
+const normalizePanes = (chats, panes = ImmutableList()) => (
+  panes.filter(pane => chats.get(pane.get('chat_id')))
+);
+
+const makeNormalizeChatPanes = () => createSelector([
+  state => state.get('chats'),
+  state => getSettings(state).getIn(['chats', 'panes']),
+], normalizePanes);
+
+const makeMapStateToProps = () => {
+  const mapStateToProps = state => {
+    const normalizeChatPanes = makeNormalizeChatPanes();
+
+    return {
+      panes: normalizeChatPanes(state),
+      mainWindowState: getSettings(state).getIn(['chats', 'mainWindow']),
+      unreadCount: getChatsUnreadCount(state),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 class ChatPanes extends ImmutablePureComponent {
 
   static propTypes = {

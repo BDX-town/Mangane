@@ -1,6 +1,7 @@
 import api from '../api';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
+import { createSelector } from 'reselect';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
@@ -50,20 +51,19 @@ export const defaultConfig = ImmutableMap({
   aboutPages: ImmutableMap(),
 });
 
-export function getSoapboxConfig(state) {
-  const instance = state.get('instance');
-  const soapbox = state.get('soapbox');
-  const features = getFeatures(instance);
-
+export const getSoapboxConfig = createSelector([
+  state => state.get('soapbox'),
+  state => getFeatures(state.get('instance')).emojiReactsRGI,
+], (soapbox, emojiReactsRGI) => {
   // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-  if (features.emojiReactsRGI) {
+  if (emojiReactsRGI) {
     return defaultConfig
       .set('allowedEmoji', allowedEmojiRGI)
       .merge(soapbox);
   } else {
     return defaultConfig.merge(soapbox);
   }
-}
+});
 
 export function fetchSoapboxConfig() {
   return (dispatch, getState) => {
