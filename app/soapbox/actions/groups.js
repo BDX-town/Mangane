@@ -490,15 +490,16 @@ export function createRemovedAccountFail(groupId, id, error) {
 
 export function groupPostStatus(groupId, params, idempotencyKey) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
     dispatch({ type: GROUP_POST_STATUS_REQUEST, groupId, params, idempotencyKey });
 
-    api(getState).post(`/api/v1/pleroma/groups/${groupId}/statuses`, params, {
+    return api(getState).post(`/api/v1/pleroma/groups/${groupId}/statuses`, params, {
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
       dispatch({ type: GROUP_POST_STATUS_SUCCESS, groupId, params, status, idempotencyKey });
+      return status;
     }).catch(error => {
       dispatch({ type: GROUP_POST_STATUS_FAIL, groupId, params, error, idempotencyKey });
+      throw error;
     });
   };
 }
