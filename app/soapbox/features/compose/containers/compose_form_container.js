@@ -4,6 +4,7 @@ import ComposeForm from '../components/compose_form';
 import {
   changeCompose,
   submitCompose,
+  submitGroupCompose,
   clearComposeSuggestions,
   fetchComposeSuggestions,
   selectComposeSuggestion,
@@ -12,7 +13,7 @@ import {
   uploadCompose,
 } from '../../../actions/compose';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, ownProps) => ({
   text: state.getIn(['compose', 'text']),
   suggestions: state.getIn(['compose', 'suggestions']),
   spoiler: state.getIn(['compose', 'spoiler']),
@@ -29,6 +30,7 @@ const mapStateToProps = state => ({
   maxTootChars: state.getIn(['instance', 'max_toot_chars']),
   scheduledAt: state.getIn(['compose', 'schedule']),
   scheduledStatusCount: state.get('scheduled_statuses').size,
+  group: state.getIn(['groups', ownProps.groupId]),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -37,8 +39,12 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(changeCompose(text));
   },
 
-  onSubmit(router, group) {
-    dispatch(submitCompose(router, group));
+  onSubmit(router, groupId) {
+    if (groupId) {
+      dispatch(submitGroupCompose(router, groupId));
+    } else {
+      dispatch(submitCompose(router));
+    }
   },
 
   onClearSuggestions() {

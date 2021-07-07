@@ -16,6 +16,7 @@ import { uploadMedia } from './media';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { createStatus } from './statuses';
 import snackbar from 'soapbox/actions/snackbar';
+import { groupPostStatus } from 'soapbox/actions/groups';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -226,6 +227,51 @@ export function submitCompose(routerHistory, force = false) {
       if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
+      handleComposeSubmit(dispatch, getState, data, status);
+    }).catch(function(error) {
+      dispatch(submitComposeFail(error));
+    });
+  };
+};
+
+export function submitGroupCompose(routerHistory, groupId, force = false) {
+  return function(dispatch, getState) {
+    if (!isLoggedIn(getState)) return;
+    const state = getState();
+
+    const status = state.getIn(['compose', 'text'], '');
+    const media  = state.getIn(['compose', 'media_attachments']);
+    const group  = state.getIn(['groups', groupId]);
+
+    if (!group) return;
+
+    if ((!status || !status.length) && media.size === 0) {
+      return;
+    }
+
+    if (!force && needsDescriptions(state)) {
+      dispatch(openModal('MISSING_DESCRIPTION', {
+        onContinue: () => dispatch(submitGroupCompose(routerHistory, groupId, true)),
+      }));
+      return;
+    }
+
+    dispatch(submitComposeRequest());
+    dispatch(closeModal());
+
+    const idempotencyKey = state.getIn(['compose', 'idempotencyKey']);
+
+    const params = {
+      status,
+      in_reply_to_id: state.getIn(['compose', 'in_reply_to'], null),
+      media_ids: media.map(item => item.get('id')),
+      sensitive: state.getIn(['compose', 'sensitive']),
+      spoiler_text: state.getIn(['compose', 'spoiler_text'], ''),
+      content_type: state.getIn(['compose', 'content_type']),
+      poll: state.getIn(['compose', 'poll'], null),
+    };
+
+    dispatch(groupPostStatus(groupId, params, idempotencyKey)).then(function(data) {
       handleComposeSubmit(dispatch, getState, data, status);
     }).catch(function(error) {
       dispatch(submitComposeFail(error));

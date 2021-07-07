@@ -47,6 +47,10 @@ export const GROUP_REMOVED_ACCOUNTS_CREATE_REQUEST = 'GROUP_REMOVED_ACCOUNTS_CRE
 export const GROUP_REMOVED_ACCOUNTS_CREATE_SUCCESS = 'GROUP_REMOVED_ACCOUNTS_CREATE_SUCCESS';
 export const GROUP_REMOVED_ACCOUNTS_CREATE_FAIL    = 'GROUP_REMOVED_ACCOUNTS_CREATE_FAIL';
 
+export const GROUP_POST_STATUS_REQUEST = 'GROUP_POST_STATUS_REQUEST';
+export const GROUP_POST_STATUS_SUCCESS = 'GROUP_POST_STATUS_SUCCESS';
+export const GROUP_POST_STATUS_FAIL    = 'GROUP_POST_STATUS_FAIL';
+
 export const GROUP_REMOVE_STATUS_REQUEST = 'GROUP_REMOVE_STATUS_REQUEST';
 export const GROUP_REMOVE_STATUS_SUCCESS = 'GROUP_REMOVE_STATUS_SUCCESS';
 export const GROUP_REMOVE_STATUS_FAIL    = 'GROUP_REMOVE_STATUS_FAIL';
@@ -483,6 +487,21 @@ export function createRemovedAccountFail(groupId, id, error) {
     error,
   };
 };
+
+export function groupPostStatus(groupId, params, idempotencyKey) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+    dispatch({ type: GROUP_POST_STATUS_REQUEST, groupId, params, idempotencyKey });
+
+    api(getState).post(`/api/v1/pleroma/groups/${groupId}/statuses`, params, {
+      headers: { 'Idempotency-Key': idempotencyKey },
+    }).then(({ data: status }) => {
+      dispatch({ type: GROUP_POST_STATUS_SUCCESS, groupId, params, status, idempotencyKey });
+    }).catch(error => {
+      dispatch({ type: GROUP_POST_STATUS_FAIL, groupId, params, error, idempotencyKey });
+    });
+  };
+}
 
 export function groupRemoveStatus(groupId, id) {
   return (dispatch, getState) => {

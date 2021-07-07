@@ -345,6 +345,16 @@
         &.compose-form__sensitive-button--visible { display: block; }
         .compose-form__sensitive-button__icon { line-height: 27px; }
       }
+
+      .compose-form__group-privacy-button-icon {
+        cursor: not-allowed;
+
+        div {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
     }
 
     .icon-button {

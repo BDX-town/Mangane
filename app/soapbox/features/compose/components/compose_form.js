@@ -25,6 +25,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { length } from 'stringz';
 import { countableText } from '../util/counter';
 import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
 import { get } from 'lodash';
 import Warning from '../components/warning';
 
@@ -36,6 +37,7 @@ const messages = defineMessages({
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
+  group_privacy: { id: 'compose_form.group_privacy', defaultMessage: 'This privacy setting is set by the group and cannot be changed' },
 });
 
 export default class ComposeForm extends ImmutablePureComponent {
@@ -147,7 +149,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       return;
     }
 
-    this.props.onSubmit(this.context.router ? this.context.router.history : null, this.props.group);
+    this.props.onSubmit(this.context.router ? this.context.router.history : null, this.props.groupId);
   }
 
   onSuggestionsClearRequested = () => {
@@ -247,7 +249,7 @@ export default class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, group } = this.props;
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -349,8 +351,17 @@ export default class ComposeForm extends ImmutablePureComponent {
             <div className='compose-form__buttons'>
               <UploadButtonContainer />
               <PollButtonContainer />
-              <PrivacyDropdownContainer />
-              <ScheduleButtonContainer />
+              {group ? (
+                <IconButton
+                  className='compose-form__group-privacy-button-icon  icon-button inverted'
+                  disabled
+                  title={intl.formatMessage(messages.group_privacy)}
+                  icon={group.getIn(['source', 'privacy']) === 'public' ? 'globe-w' : 'lock'}
+                />
+              ) : (
+                <PrivacyDropdownContainer />
+              )}
+              {!group && <ScheduleButtonContainer />}
               <SpoilerButtonContainer />
               <MarkdownButtonContainer />
             </div>
