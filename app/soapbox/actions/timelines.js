@@ -1,6 +1,6 @@
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import api, { getLinks } from '../api';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
@@ -65,7 +65,7 @@ export function updateTimelineQueue(timeline, statusId, accept) {
 
 export function dequeueTimeline(timeline, expandFunc, optionalExpandArgs) {
   return (dispatch, getState) => {
-    const queuedItems = getState().getIn(['timelines', timeline, 'queuedItems'], ImmutableList());
+    const queuedItems = getState().getIn(['timelines', timeline, 'queuedItems'], ImmutableOrderedSet());
     const totalQueuedItemsCount = getState().getIn(['timelines', timeline, 'totalQueuedItemsCount'], 0);
 
     let shouldDispatchDequeue = true;
@@ -142,7 +142,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
       return;
     }
 
-    if (!params.max_id && !params.pinned && timeline.get('items', ImmutableList()).size > 0) {
+    if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
       params.since_id = timeline.getIn(['items', 0]);
     }
 

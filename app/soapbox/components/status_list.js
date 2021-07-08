@@ -17,7 +17,7 @@ export default class StatusList extends ImmutablePureComponent {
 
   static propTypes = {
     scrollKey: PropTypes.string.isRequired,
-    statusIds: ImmutablePropTypes.list.isRequired,
+    statusIds: ImmutablePropTypes.orderedSet.isRequired,
     lastStatusId: PropTypes.string,
     featuredStatusIds: ImmutablePropTypes.list,
     onLoadMore: PropTypes.func,
