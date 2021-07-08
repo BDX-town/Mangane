@@ -56,7 +56,7 @@ function Blurhash({
 }
 
 Blurhash.propTypes = {
-  hash: PropTypes.string.isRequired,
+  hash: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
   dummy: PropTypes.bool,

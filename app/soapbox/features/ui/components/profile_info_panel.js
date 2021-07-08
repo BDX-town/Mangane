@@ -131,7 +131,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {fields.map((pair, i) =>
                 isTicker(pair.get('name', '')) ? (
-                  <CryptoAddress ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
+                  <CryptoAddress key={i} ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
                 ) : (
                   <dl className='profile-info-panel-content__fields__item' key={i}>
                     <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
