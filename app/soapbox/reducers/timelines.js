@@ -43,7 +43,7 @@ const getStatusIds = (statuses = ImmutableList()) => (
 );
 
 const mergeStatusIds = (oldIds = ImmutableOrderedSet(), newIds = ImmutableOrderedSet()) => (
-  newIds.first() > oldIds.first() ? newIds.union(oldIds) : oldIds.union(newIds)
+  newIds.union(oldIds)
 );
 
 const addStatusId = (oldIds = ImmutableOrderedSet(), newId) => (
@@ -75,7 +75,13 @@ const expandNormalizedTimeline = (state, timelineId, statuses, next, isPartial, 
     }
 
     if (!newIds.isEmpty()) {
-      timeline.update('items', ImmutableOrderedSet(), oldIds => mergeStatusIds(oldIds, newIds));
+      timeline.update('items', ImmutableOrderedSet(), oldIds => {
+        if (newIds.first() > oldIds.first()) {
+          return mergeStatusIds(oldIds, newIds);
+        } else {
+          return mergeStatusIds(newIds, oldIds);
+        }
+      });
     }
   }));
 };
