@@ -25,6 +25,9 @@ import {
 } from 'immutable';
 import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 
+const TRUNCATE_LIMIT = 40;
+const TRUNCATE_SIZE  = 20;
+
 const initialState = ImmutableMap();
 
 const initialTimeline = ImmutableMap({
@@ -54,6 +57,8 @@ const addStatusId = (oldIds = ImmutableOrderedSet(), newId) => (
 const truncate = (items, truncateLimit, newSize) => (
   items.size > truncateLimit ? items.take(newSize) : items
 );
+
+const truncateIds = items => truncate(items, TRUNCATE_LIMIT, TRUNCATE_SIZE);
 
 const setLoading = (state, timelineId, loading) => {
   return state.update(timelineId, initialTimeline, timeline => timeline.set('isLoading', loading));
@@ -98,7 +103,7 @@ const updateTimeline = (state, timelineId, statusId) => {
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
     if (top) {
       // For performance, truncate items if user is scrolled to the top
-      timeline.set('items', truncate(newIds, 40, 20));
+      timeline.set('items', truncateIds(newIds));
     } else {
       timeline.set('unread', unread + 1);
       timeline.set('items', newIds);
@@ -184,9 +189,16 @@ const removeStatusFromGroup = (state, groupId, statusId) => {
 };
 
 const timelineDequeue = (state, timelineId) => {
+  const top = state.getIn([timelineId, 'top']);
+
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
     const queuedIds = timeline.get('queuedItems');
-    timeline.update('items', ids => mergeStatusIds(ids, queuedIds));
+
+    timeline.update('items', ids => {
+      const newIds = mergeStatusIds(ids, queuedIds);
+      return top ? truncateIds(newIds) : newIds;
+    });
+
     timeline.set('queuedItems', ImmutableOrderedSet());
     timeline.set('totalQueuedItemsCount', 0);
   }));
