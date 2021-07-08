@@ -63,42 +63,30 @@ export function updateTimelineQueue(timeline, statusId, accept) {
   };
 };
 
-export function dequeueTimeline(timeline, expandFunc, optionalExpandArgs) {
+export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
   return (dispatch, getState) => {
-    const queuedItems = getState().getIn(['timelines', timeline, 'queuedItems'], ImmutableOrderedSet());
-    const totalQueuedItemsCount = getState().getIn(['timelines', timeline, 'totalQueuedItemsCount'], 0);
+    const state = getState();
+    const queuedCount = state.getIn(['timelines', timelineId, 'totalQueuedItemsCount'], 0);
 
-    let shouldDispatchDequeue = true;
+    if (queuedCount <= 0) return;
 
-    if (totalQueuedItemsCount === 0) {
+    if (queuedCount <= MAX_QUEUED_ITEMS) {
+      dispatch({ type: TIMELINE_DEQUEUE, timeline: timelineId });
       return;
-    } else if (totalQueuedItemsCount > 0 && totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
-      queuedItems.forEach(statusId => {
-        dispatch(updateTimeline(timeline, statusId, null));
-      });
-    } else {
-      if (typeof expandFunc === 'function') {
-        dispatch(clearTimeline(timeline));
-        expandFunc();
-      } else {
-        if (timeline === 'home') {
-          dispatch(clearTimeline(timeline));
-          dispatch(expandHomeTimeline(optionalExpandArgs));
-        } else if (timeline === 'community') {
-          dispatch(clearTimeline(timeline));
-          dispatch(expandCommunityTimeline(optionalExpandArgs));
-        } else {
-          shouldDispatchDequeue = false;
-        }
-      }
     }
 
-    if (!shouldDispatchDequeue) return;
-
-    dispatch({
-      type: TIMELINE_DEQUEUE,
-      timeline,
-    });
+    if (typeof expandFunc === 'function') {
+      dispatch(clearTimeline(timelineId));
+      expandFunc();
+    } else {
+      if (timelineId === 'home') {
+        dispatch(clearTimeline(timelineId));
+        dispatch(expandHomeTimeline(optionalExpandArgs));
+      } else if (timelineId === 'community') {
+        dispatch(clearTimeline(timelineId));
+        dispatch(expandCommunityTimeline(optionalExpandArgs));
+      }
+    }
   };
 };
 

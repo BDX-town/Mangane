@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import StatusList from '../../../components/status_list';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { createSelector } from 'reselect';
 import { debounce } from 'lodash';
 import { dequeueTimeline } from 'soapbox/actions/timelines';
@@ -10,7 +10,7 @@ import { shouldFilter } from 'soapbox/utils/timelines';
 
 const makeGetStatusIds = () => createSelector([
   (state, { type }) => getSettings(state).get(type, ImmutableMap()),
-  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableList()),
+  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableOrderedSet()),
   (state)           => state.get('statuses'),
   (state)           => state.get('me'),
 ], (columnSettings, statusIds, statuses, me) => {
@@ -25,7 +25,7 @@ const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
 
   const mapStateToProps = (state, { timelineId }) => {
-    const lastStatusId = state.getIn(['timelines', timelineId, 'items'], ImmutableList()).last();
+    const lastStatusId = state.getIn(['timelines', timelineId, 'items'], ImmutableOrderedSet()).last();
 
     return {
       statusIds: getStatusIds(state, { type: timelineId }),

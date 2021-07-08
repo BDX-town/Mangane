@@ -110,10 +110,7 @@ const updateTimelineQueue = (state, timelineId, statusId) => {
 
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
     timeline.set('totalQueuedItemsCount', queuedCount + 1);
-
-    if (queuedCount < MAX_QUEUED_ITEMS) {
-      timeline.set('queuedItems', addStatusId(queuedIds, statusId));
-    }
+    timeline.set('queuedItems', addStatusId(queuedIds, statusId).take(MAX_QUEUED_ITEMS));
   }));
 };
 
@@ -182,6 +179,8 @@ const removeStatusFromGroup = (state, groupId, statusId) => {
 
 const timelineDequeue = (state, timelineId) => {
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    const queuedIds = timeline.get('queuedItems');
+    timeline.update('items', ids => mergeStatusIds(ids, queuedIds));
     timeline.set('queuedItems', ImmutableOrderedSet());
     timeline.set('totalQueuedItemsCount', 0);
   }));
