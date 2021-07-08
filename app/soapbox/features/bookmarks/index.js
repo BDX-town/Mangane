@@ -30,7 +30,7 @@ class Bookmarks extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     shouldUpdateScroll: PropTypes.func,
-    statusIds: ImmutablePropTypes.list.isRequired,
+    statusIds: ImmutablePropTypes.orderedSet.isRequired,
     intl: PropTypes.object.isRequired,
     columnId: PropTypes.string,
     multiColumn: PropTypes.bool,

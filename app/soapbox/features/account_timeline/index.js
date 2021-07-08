@@ -7,7 +7,7 @@ import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../acti
 import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
-import { List as ImmutableList } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
@@ -15,8 +15,6 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-
-const emptyList = ImmutableList();
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
@@ -48,8 +46,8 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
     accountUsername,
     accountApId,
     isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.getIn(['timelines', `account:${path}`, 'items'], emptyList),
-    featuredStatusIds: withReplies ? ImmutableList() : state.getIn(['timelines', `account:${accountId}:pinned`, 'items'], emptyList),
+    statusIds: state.getIn(['timelines', `account:${path}`, 'items'], ImmutableOrderedSet()),
+    featuredStatusIds: withReplies ? ImmutableOrderedSet() : state.getIn(['timelines', `account:${accountId}:pinned`, 'items'], ImmutableOrderedSet()),
     isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
     hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
     me,
@@ -63,8 +61,8 @@ class AccountTimeline extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    statusIds: ImmutablePropTypes.list,
-    featuredStatusIds: ImmutablePropTypes.list,
+    statusIds: ImmutablePropTypes.orderedSet,
+    featuredStatusIds: ImmutablePropTypes.orderedSet,
     isLoading: PropTypes.bool,
     hasMore: PropTypes.bool,
     withReplies: PropTypes.bool,
