@@ -124,7 +124,7 @@ class ChatMessageList extends ImmutablePureComponent {
       link.setAttribute('target', '_blank');
     });
 
-    if (onlyEmoji(c, BIG_EMOJI_LIMIT)) {
+    if (onlyEmoji(c, BIG_EMOJI_LIMIT, false)) {
       c.classList.add('chat-message__bubble--onlyEmoji');
     } else {
       c.classList.remove('chat-message__bubble--onlyEmoji');
