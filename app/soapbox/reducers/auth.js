@@ -7,6 +7,7 @@ import {
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
+import { ME_FETCH_SKIP } from '../actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const defaultState = ImmutableMap({
@@ -158,6 +159,8 @@ const reducer = (state, action) => {
     return action.error.response.status === 403 ? deleteToken(state, action.token) : state;
   case SWITCH_ACCOUNT:
     return state.set('me', action.accountId);
+  case ME_FETCH_SKIP:
+    return state.set('me', null);
   default:
     return state;
   }
