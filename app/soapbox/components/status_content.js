@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { addGreentext } from 'soapbox/utils/greentext';
-import { justEmojis } from 'soapbox/utils/rich_content';
+import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;
@@ -90,16 +90,16 @@ class StatusContent extends React.PureComponent {
     }
   }
 
-  setJustEmojis = () => {
-    if (this.node && this.state.justEmojis === undefined) {
-      this.setState({ justEmojis: justEmojis(this.node, BIG_EMOJI_LIMIT) });
+  setOnlyEmoji = () => {
+    if (this.node && this.state.onlyEmoji === undefined) {
+      this.setState({ onlyEmoji: onlyEmoji(this.node, BIG_EMOJI_LIMIT) });
     }
   }
 
   refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
-    this.setJustEmojis();
+    this.setOnlyEmoji();
   }
 
   componentDidMount() {
@@ -183,7 +183,7 @@ class StatusContent extends React.PureComponent {
 
   render() {
     const { status } = this.props;
-    const { justEmojis } = this.state;
+    const { onlyEmoji } = this.state;
 
     if (status.get('content').length === 0) {
       return null;
@@ -198,7 +198,7 @@ class StatusContent extends React.PureComponent {
       'status__content--with-action': this.props.onClick && this.context.router,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
-      'status__content--big': justEmojis,
+      'status__content--big': onlyEmoji,
     });
 
     if (isRtl(status.get('search_index'))) {
@@ -265,7 +265,7 @@ class StatusContent extends React.PureComponent {
           tabIndex='0'
           ref={this.setRef}
           className={classnames('status__content', {
-            'status__content--big': justEmojis,
+            'status__content--big': onlyEmoji,
           })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
