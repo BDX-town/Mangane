@@ -83,6 +83,24 @@ const migrateLegacy = state => {
   });
 };
 
+// Checks the state and makes it valid
+const sanitizeState = state => {
+  return state.withMutations(state => {
+    // Remove invalid users, ensure ID match
+    state.update('users', ImmutableMap(), users => (
+      users.filter((user, id) => (
+        validUser(user) && user.get('id') === id
+      ))
+    ));
+    // Remove mismatched tokens
+    state.update('tokens', ImmutableMap(), tokens => (
+      tokens.filter((token, id) => (
+        validId(id) && token.get('access_token') === id
+      ))
+    ));
+  });
+};
+
 const persistAuth = state => localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
 
 const persistSession = state => {
@@ -102,6 +120,7 @@ const initialize = state => {
     maybeShiftMe(state);
     setSessionUser(state);
     migrateLegacy(state);
+    sanitizeState(state);
     persistState(state);
   });
 };
