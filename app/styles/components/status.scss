@@ -68,12 +68,12 @@
   }
 
   &--big {
-    font-size: 32px !important;
     line-height: normal !important;
 
     img.emojione {
       width: 36px;
       height: 36px;
+      padding: 5px;
     }
   }
 }

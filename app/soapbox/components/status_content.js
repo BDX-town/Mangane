@@ -92,7 +92,7 @@ class StatusContent extends React.PureComponent {
 
   setOnlyEmoji = () => {
     if (this.node && this.state.onlyEmoji === undefined) {
-      this.setState({ onlyEmoji: onlyEmoji(this.node, BIG_EMOJI_LIMIT) });
+      this.setState({ onlyEmoji: onlyEmoji(this.node, BIG_EMOJI_LIMIT, true) });
     }
   }
 
