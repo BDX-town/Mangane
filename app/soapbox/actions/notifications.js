@@ -188,7 +188,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
     api(getState).get('/api/v1/notifications', { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      const entries = response.data.reverse().reduce((acc, item) => {
+      const entries = response.data.reduce((acc, item) => {
         if (item.account && item.account.id) {
           acc.accounts[item.account.id] = item.account;
         }
