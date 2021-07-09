@@ -12,6 +12,16 @@ import { addGreentext } from 'soapbox/utils/greentext';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 
+const justEmojis = (node, limit = 10) => {
+  if (!node) return false;
+  if (node.textContent.replaceAll(' ', '') !== '') return false;
+  const emojis = [...node.querySelectorAll('img.emojione')];
+  if (emojis.length > limit) return false;
+  const images = [...node.querySelectorAll('img')];
+  if (images.length > emojis.length) return false;
+  return true;
+};
+
 const mapStateToProps = state => ({
   greentext: getSoapboxConfig(state).get('greentext'),
 });
@@ -88,14 +98,18 @@ class StatusContent extends React.PureComponent {
     }
   }
 
-  componentDidMount() {
+  refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
+    this.setState({ justEmojis: justEmojis(this.node) });
+  }
+
+  componentDidMount() {
+    this.refresh();
   }
 
   componentDidUpdate() {
-    this.setCollapse();
-    this._updateStatusLinks();
+    this.refresh();
   }
 
   onMentionClick = (mention, e) => {
@@ -171,6 +185,7 @@ class StatusContent extends React.PureComponent {
 
   render() {
     const { status } = this.props;
+    const { justEmojis } = this.state;
 
     if (status.get('content').length === 0) {
       return null;
@@ -185,6 +200,7 @@ class StatusContent extends React.PureComponent {
       'status__content--with-action': this.props.onClick && this.context.router,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
+      'status__content--big': justEmojis,
     });
 
     if (isRtl(status.get('search_index'))) {
@@ -250,7 +266,9 @@ class StatusContent extends React.PureComponent {
         <div
           tabIndex='0'
           ref={this.setRef}
-          className='status__content'
+          className={classnames('status__content', {
+            'status__content--big': justEmojis,
+          })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}
