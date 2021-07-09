@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Všetky",
   "notifications.filter.boosts": "Vyzdvihnutia",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Obľúbené",
   "notifications.filter.follows": "Sledovania",
   "notifications.filter.mentions": "Iba spomenutia",

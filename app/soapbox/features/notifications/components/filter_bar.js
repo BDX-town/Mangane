@@ -10,7 +10,7 @@ const tooltips = defineMessages({
   polls: { id: 'notifications.filter.polls', defaultMessage: 'Poll results' },
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
   moves: { id: 'notifications.filter.moves', defaultMessage: 'Moves' },
-  emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts:' },
+  emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts' },
 });
 
 export default @injectIntl
@@ -73,14 +73,14 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('favourite')}
           title={intl.formatMessage(tooltips.favourites)}
         >
-          <Icon id='star' fixedWidth />
+          <Icon id='thumbs-up' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'pleroma:emoji_reaction' ? 'active' : ''}
           onClick={this.onClick('pleroma:emoji_reaction')}
-          title={intl.formatMessage(tooltips.favourites)}
+          title={intl.formatMessage(tooltips.emoji_reacts)}
         >
-          <Icon id='star' fixedWidth />
+          <Icon id='smile-o' fixedWidth />
         </button>
         <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
@@ -108,7 +108,7 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('move')}
           title={intl.formatMessage(tooltips.moves)}
         >
-          <Icon id='user-plus' fixedWidth />
+          <Icon id='suitcase' fixedWidth />
         </button>
       </div>
     );

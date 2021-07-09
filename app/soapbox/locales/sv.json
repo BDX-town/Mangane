@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Alla",
   "notifications.filter.boosts": "Knuffar",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Favoriter",
   "notifications.filter.follows": "Följer",
   "notifications.filter.mentions": "Omnämningar",

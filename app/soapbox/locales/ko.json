@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "모두",
   "notifications.filter.boosts": "부스트",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "즐겨찾기",
   "notifications.filter.follows": "팔로우",
   "notifications.filter.mentions": "멘션",

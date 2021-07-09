@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "全ての通知で音声を再生する",
   "notifications.filter.all": "すべて",
   "notifications.filter.boosts": "リピート",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "お気に入り",
   "notifications.filter.follows": "フォロー",
   "notifications.filter.mentions": "返信",

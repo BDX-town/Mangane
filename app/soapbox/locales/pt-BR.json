@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Tudo",
   "notifications.filter.boosts": "Compartilhamentos",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Favoritos",
   "notifications.filter.follows": "Seguidores",
   "notifications.filter.mentions": "Menções",
