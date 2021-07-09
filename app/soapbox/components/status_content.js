@@ -9,8 +9,10 @@ import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { addGreentext } from 'soapbox/utils/greentext';
+import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
+const BIG_EMOJI_LIMIT = 10;
 
 const mapStateToProps = state => ({
   greentext: getSoapboxConfig(state).get('greentext'),
@@ -88,14 +90,24 @@ class StatusContent extends React.PureComponent {
     }
   }
 
-  componentDidMount() {
+  setOnlyEmoji = () => {
+    if (this.node && this.state.onlyEmoji === undefined) {
+      this.setState({ onlyEmoji: onlyEmoji(this.node, BIG_EMOJI_LIMIT) });
+    }
+  }
+
+  refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
+    this.setOnlyEmoji();
+  }
+
+  componentDidMount() {
+    this.refresh();
   }
 
   componentDidUpdate() {
-    this.setCollapse();
-    this._updateStatusLinks();
+    this.refresh();
   }
 
   onMentionClick = (mention, e) => {
@@ -171,6 +183,7 @@ class StatusContent extends React.PureComponent {
 
   render() {
     const { status } = this.props;
+    const { onlyEmoji } = this.state;
 
     if (status.get('content').length === 0) {
       return null;
@@ -185,6 +198,7 @@ class StatusContent extends React.PureComponent {
       'status__content--with-action': this.props.onClick && this.context.router,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
+      'status__content--big': onlyEmoji,
     });
 
     if (isRtl(status.get('search_index'))) {
@@ -250,7 +264,9 @@ class StatusContent extends React.PureComponent {
         <div
           tabIndex='0'
           ref={this.setRef}
-          className='status__content'
+          className={classnames('status__content', {
+            'status__content--big': onlyEmoji,
+          })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}

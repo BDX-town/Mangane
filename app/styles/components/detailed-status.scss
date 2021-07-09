@@ -36,6 +36,13 @@
       line-height: 24px;
       margin: -1px 0 0;
     }
+
+    &--big {
+      img.emojione {
+        width: 56px;
+        height: 56px;
+      }
+    }
   }
 
   .video-player,

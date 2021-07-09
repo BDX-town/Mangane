@@ -66,6 +66,16 @@
     margin: 20px 0;
     display: block;
   }
+
+  &--big {
+    font-size: 32px !important;
+    line-height: normal !important;
+
+    img.emojione {
+      width: 36px;
+      height: 36px;
+    }
+  }
 }
 
 .status__content > ul,
