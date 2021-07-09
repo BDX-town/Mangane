@@ -163,6 +163,15 @@
         pointer-events: all;
       }
     }
+
+    &--onlyEmoji {
+      background: transparent;
+
+      img.emojione {
+        width: 36px !important;
+        height: 36px !important;
+      }
+    }
   }
 
   &--me .chat-message__bubble {

@@ -15,6 +15,9 @@ import Bundle from 'soapbox/features/ui/components/bundle';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { initReportById } from 'soapbox/actions/reports';
 import { createSelector } from 'reselect';
+import { justEmojis } from 'soapbox/utils/rich_content';
+
+const BIG_EMOJI_LIMIT = 1;
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -120,6 +123,10 @@ class ChatMessageList extends ImmutablePureComponent {
       link.setAttribute('rel', 'ugc nofollow noopener');
       link.setAttribute('target', '_blank');
     });
+
+    if (justEmojis(c, BIG_EMOJI_LIMIT)) {
+      c.classList.add('chat-message__bubble--onlyEmoji');
+    }
   }
 
   isNearBottom = () => {

@@ -9,18 +9,10 @@ import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { addGreentext } from 'soapbox/utils/greentext';
+import { justEmojis } from 'soapbox/utils/rich_content';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
-
-const justEmojis = (node, limit = 10) => {
-  if (!node) return false;
-  if (node.textContent.replaceAll(' ', '') !== '') return false;
-  const emojis = [...node.querySelectorAll('img.emojione')];
-  if (emojis.length > limit) return false;
-  const images = [...node.querySelectorAll('img')];
-  if (images.length > emojis.length) return false;
-  return true;
-};
+const BIG_EMOJI_LIMIT = 10;
 
 const mapStateToProps = state => ({
   greentext: getSoapboxConfig(state).get('greentext'),
@@ -98,10 +90,16 @@ class StatusContent extends React.PureComponent {
     }
   }
 
+  setJustEmojis = () => {
+    if (this.node && this.state.justEmojis === undefined) {
+      this.setState({ justEmojis: justEmojis(this.node, BIG_EMOJI_LIMIT) });
+    }
+  }
+
   refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
-    this.setState({ justEmojis: justEmojis(this.node) });
+    this.setJustEmojis();
   }
 
   componentDidMount() {
