@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "ทั้งหมด",
   "notifications.filter.boosts": "การดัน",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "รายการโปรด",
   "notifications.filter.follows": "การติดตาม",
   "notifications.filter.mentions": "การกล่าวถึง",

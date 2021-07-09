@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Kõik",
   "notifications.filter.boosts": "Upitused",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Lemmikud",
   "notifications.filter.follows": "Jälgib",
   "notifications.filter.mentions": "Mainimised",

@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Krejt",
   "notifications.filter.boosts": "Përforcime",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Të parapëlqyer",
   "notifications.filter.follows": "Ndjekje",
   "notifications.filter.mentions": "Përmendje",

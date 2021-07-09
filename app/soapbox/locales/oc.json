@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Totas",
   "notifications.filter.boosts": "Partages",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Favorits",
   "notifications.filter.follows": "Seguiments",
   "notifications.filter.mentions": "Mencions",

@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Denak",
   "notifications.filter.boosts": "Bultzadak",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Gogokoak",
   "notifications.filter.follows": "Jarraipenak",
   "notifications.filter.mentions": "Aipamenak",

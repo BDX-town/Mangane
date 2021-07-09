@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Όλες",
   "notifications.filter.boosts": "Προωθήσεις",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Αγαπημένα",
   "notifications.filter.follows": "Ακόλουθοι",
   "notifications.filter.mentions": "Αναφορές",

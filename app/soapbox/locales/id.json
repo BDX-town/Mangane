@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Semua",
   "notifications.filter.boosts": "Reposts",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Favorit",
   "notifications.filter.follows": "Diikuti",
   "notifications.filter.mentions": "Sebutan",
