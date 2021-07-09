@@ -8,7 +8,7 @@ import {
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
@@ -17,31 +17,50 @@ const defaultState = ImmutableMap({
   me: null,
 });
 
+const validId = id => typeof id === 'string' && id !== 'null' && id !== 'undefined';
+
 const getSessionUser = () => {
   const id = sessionStorage.getItem('soapbox:auth:me');
-  if (id && typeof id === 'string' && id !== 'null' && id !== 'undefined') {
-    return id;
-  } else {
-    return undefined;
-  }
+  return validId(id) ? id : undefined;
 };
 
 const sessionUser = getSessionUser();
 const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
+
+// Checks if the user has an ID and access token
+const validUser = user => {
+  try {
+    return validId(user.get('id')) && validId(user.get('access_token'));
+  } catch(e) {
+    return false;
+  }
+};
+
+// Finds the first valid user in the state
+const firstValidUser = state => state.get('users', ImmutableMap()).find(validUser);
 
 // If `me` doesn't match an existing user, attempt to shift it.
 const maybeShiftMe = state => {
   const users = state.get('users', ImmutableMap());
   const me = state.get('me');
 
-  if (!users.get(me)) {
-    return state.set('me', users.first(ImmutableMap()).get('id', null));
+  if (!validUser(users.get(me))) {
+    const nextUser = firstValidUser(state);
+    return state.set('me', nextUser ? nextUser.get('id') : null);
   } else {
     return state;
   }
 };
 
-const setSessionUser = state => state.update('me', null, me => sessionUser || me);
+// Set the user from the session or localStorage, whichever is valid first
+const setSessionUser = state => state.update('me', null, me => {
+  const user = ImmutableList([
+    state.getIn(['users', sessionUser]),
+    state.getIn(['users', me]),
+  ]).find(validUser);
+
+  return user ? user.get('id') : null;
+});
 
 // Upgrade the initial state
 const migrateLegacy = state => {
