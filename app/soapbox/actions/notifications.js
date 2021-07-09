@@ -188,8 +188,25 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
     api(getState).get('/api/v1/notifications', { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data.map(item => item.account)));
-      dispatch(importFetchedStatuses(response.data.map(item => item.status).filter(status => !!status)));
+      const entries = response.data.reverse().reduce((acc, item) => {
+        if (item.account && item.account.id) {
+          acc.accounts[item.account.id] = item.account;
+        }
+
+        // Used by Move notification
+        if (item.target && item.target.id) {
+          acc.accounts[item.target.id] = item.target;
+        }
+
+        if (item.status && item.status.id) {
+          acc.statuses[item.status.id] = item.status;
+        }
+
+        return acc;
+      }, { accounts: {}, statuses: {} });
+
+      dispatch(importFetchedAccounts(Object.values(entries.accounts)));
+      dispatch(importFetchedStatuses(Object.values(entries.statuses)));
 
       dispatch(expandNotificationsSuccess(response.data, next ? next.uri : null, isLoadingMore));
       fetchRelatedRelationships(dispatch, response.data);
