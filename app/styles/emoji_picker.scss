@@ -1,12 +1,12 @@
 .emoji-mart {
   font-size: 13px;
   display: inline-block;
-  color: var(--primary-text-color);
 
   &,
   * {
     box-sizing: border-box;
     line-height: 1.15;
+    color: var(--primary-text-color);
   }
 
   .emoji-mart-emoji {
@@ -155,7 +155,7 @@
   }
 
   svg {
-    fill: var(--brand-color);
+    fill: var(--primary-text-color);
   }
 }
 
@@ -228,13 +228,6 @@
   border: 0;
   padding: 0;
   font-size: 0;
-
-  .fa {
-    font-size: 18px;
-    width: 22px;
-    height: 22px;
-    text-align: center;
-  }
 
   span {
     width: 22px;
@@ -318,5 +311,36 @@
 .emoji-mart-emoji {
   span {
     background-repeat: no-repeat;
+  }
+}
+
+.font-icon-picker {
+  .emoji-mart-search {
+    // Search doesn't work. Hide it for now.
+    display: none;
+    padding: 10px !important;
+  }
+
+  .emoji-mart-category-label > span {
+    padding: 9px 6px 5px;
+  }
+
+  .emoji-mart-scroll {
+    border-radius: 4px;
+  }
+
+  .emoji-mart-search-icon {
+    right: 18px;
+  }
+
+  .emoji-mart-bar {
+    display: none;
+  }
+
+  .fa {
+    font-size: 18px;
+    width: 22px;
+    height: 22px;
+    text-align: center;
   }
 }

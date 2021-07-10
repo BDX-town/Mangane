@@ -520,6 +520,11 @@ code {
         border-radius: 4px;
         cursor: pointer;
         outline: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 41px;
+        box-sizing: border-box;
 
         .fa {
           font-size: 18px;
