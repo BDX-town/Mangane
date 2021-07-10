@@ -3,7 +3,6 @@ module.exports = (api) => {
 
   const envOptions = {
     debug: false,
-    loose: true,
     modules: false,
   };
 
