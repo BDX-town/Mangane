@@ -8,34 +8,33 @@ import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { isStaff } from 'soapbox/utils/accounts';
 import { defineMessages, injectIntl } from 'react-intl';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
+import { List as ImmutableList, is as ImmutableIs } from 'immutable';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import { makeGetOtherAccounts } from 'soapbox/selectors';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
   logout: { id: 'profile_dropdown.logout', defaultMessage: 'Log out @{acct}' },
 });
 
-const makeMapStateToProps = () => {
-  const getOtherAccounts = makeGetOtherAccounts();
+const mapStateToProps = state => {
+  const me = state.get('me');
 
-  const mapStateToProps = state => {
-    const me = state.get('me');
+  const otherAccounts =
+    state
+      .getIn(['auth', 'users'])
+      .keySeq()
+      .reduce((list, id) => {
+        if (id === me) return list;
+        const account = state.getIn(['accounts', id]);
+        return account ? list.push(account) : list;
+      }, ImmutableList());
 
-    const accounts = state.get('accounts');
-    const authUsers = state.getIn(['auth', 'users']);
-    const otherAccounts = getOtherAccounts(accounts, authUsers, me);
-
-    return {
-      account: state.getIn(['accounts', me]),
-      otherAccounts,
-      isStaff: isStaff(state.getIn(['accounts', me])),
-    };
+  return {
+    account: state.getIn(['accounts', me]),
+    otherAccounts,
+    isStaff: isStaff(state.getIn(['accounts', me])),
   };
-
-  return mapStateToProps;
 };
 
 class ProfileDropdown extends React.PureComponent {
@@ -131,4 +130,4 @@ class ProfileDropdown extends React.PureComponent {
 
 }
 
-export default injectIntl(connect(makeMapStateToProps)(ProfileDropdown));
+export default injectIntl(connect(mapStateToProps)(ProfileDropdown));
