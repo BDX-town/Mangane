@@ -53,17 +53,13 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const soapbox = getSoapboxConfig(state);
 
-    const accounts = state.get('accounts');
-    const authUsers = state.getIn(['auth', 'users']);
-    const otherAccounts = getOtherAccounts(accounts, authUsers, me);
-
     return {
       account: getAccount(state, me),
       sidebarOpen: state.get('sidebar').sidebarOpen,
       donateUrl: state.getIn(['patron', 'instance', 'url']),
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       isStaff: isStaff(state.getIn(['accounts', me])),
-      otherAccounts,
+      otherAccounts: getOtherAccounts(state),
     };
   };
 

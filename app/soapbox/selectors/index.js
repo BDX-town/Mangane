@@ -197,16 +197,18 @@ export const makeGetReport = () => {
 };
 
 export const makeGetOtherAccounts = () => {
-  return createSelector(
-    [(accounts, authUsers, me) => {
-      return authUsers
-        .keySeq()
-        .reduce((list, id) => {
-          if (id === me) return list;
-          const account = accounts.get(id);
-          return account ? list.push(account) : list;
-        }, ImmutableList());
-    }],
-    otherAccounts => otherAccounts,
-  );
+  return createSelector([
+    state => state.get('accounts'),
+    state => state.getIn(['auth', 'users']),
+    state => state.get('me'),
+  ],
+  (accounts, authUsers, me) => {
+    return authUsers
+      .keySeq()
+      .reduce((list, id) => {
+        if (id === me) return list;
+        const account = accounts.get(id);
+        return account ? list.push(account) : list;
+      }, ImmutableList());
+  });
 };
