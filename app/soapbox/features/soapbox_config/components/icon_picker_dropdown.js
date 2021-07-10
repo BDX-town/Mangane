@@ -63,6 +63,13 @@ class IconPickerMenu extends React.PureComponent {
 
   setRef = c => {
     this.node = c;
+
+    if (!c) return;
+
+    // Nice and dirty hack to display the icons
+    c.querySelectorAll('button.emoji-mart-emoji > span').forEach(elem => {
+      elem.innerHTML = `<i class="fa fa-${elem.parentNode.getAttribute('title')}"></i>`;
+    });
   }
 
   getI18n = () => {
@@ -99,7 +106,6 @@ class IconPickerMenu extends React.PureComponent {
             emoticons: [],
             keywords: [name],
             imageUrl: '',
-            render: <Icon id={name} />,
           });
         }
       });

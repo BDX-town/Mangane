@@ -21,7 +21,6 @@ const backendEndpoints = [
   '/auth/password',
   '/.well-known/webfinger',
   '/static',
-  '/emoji',
   '/main/ostatus',
   '/ostatus_subscribe',
 ];
