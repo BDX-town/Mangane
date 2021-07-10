@@ -27,9 +27,9 @@
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
+    "> 0.5%",
     "last 2 versions",
-    "IE >= 11",
-    "iOS >= 9",
+    "Firefox ESR",
     "not dead"
   ],
   "dependencies": {
