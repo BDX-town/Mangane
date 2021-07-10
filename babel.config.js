@@ -4,6 +4,8 @@ module.exports = (api) => {
   const envOptions = {
     debug: false,
     modules: false,
+    useBuiltIns: 'usage',
+    corejs: '3.15',
   };
 
   const config = {
