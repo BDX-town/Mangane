@@ -162,6 +162,10 @@ const mapStateToProps = state => {
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
+
+    // HACK: We made things too efficient and now the tabs bar doesn't work right
+    // ¯\_(ツ)_/¯
+    forceRerender: Math.random(),
   };
 };
 
