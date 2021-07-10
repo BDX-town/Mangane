@@ -4973,10 +4973,10 @@ elliptic@^6.0.0:
     minimalistic-assert "^1.0.0"
     minimalistic-crypto-utils "^1.0.0"
 
-emoji-datasource@4.0.4:
-  version "4.0.4"
-  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-4.0.4.tgz#516b9ab2f34569e468e4e3753a34a47a0b2b5aa3"
-  integrity sha1-UWuasvNFaeRo5ON1OjSkegsrWqM=
+emoji-datasource@5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/emoji-datasource/-/emoji-datasource-5.0.0.tgz#1522fdba3c52223a1cf5a1c1fc282935400eaa06"
+  integrity sha512-LuvLWFnxznTH++GytEzpzOPUo1SB+6CUFqIlVETJJ3x9fpyMCKFfyqberbhMLOpT1qcNe+km+zoyBeUSC3u5Rw==
 
 emoji-mart@^3.0.1:
   version "3.0.1"
