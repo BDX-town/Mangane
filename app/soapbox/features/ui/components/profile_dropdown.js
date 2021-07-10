@@ -24,13 +24,9 @@ const makeMapStateToProps = () => {
   const mapStateToProps = state => {
     const me = state.get('me');
 
-    const accounts = state.get('accounts');
-    const authUsers = state.getIn(['auth', 'users']);
-    const otherAccounts = getOtherAccounts(accounts, authUsers, me);
-
     return {
       account: state.getIn(['accounts', me]),
-      otherAccounts,
+      otherAccounts: getOtherAccounts(state),
       isStaff: isStaff(state.getIn(['accounts', me])),
     };
   };
