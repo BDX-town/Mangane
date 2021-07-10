@@ -206,11 +206,7 @@
 
 .account__wrapper {
   display: flex;
-
-  & > .relationship-tag,
-  & > .account__relationship {
-    align-self: center;
-  }
+  align-items: center;
 }
 
 .account__avatar-wrapper {
