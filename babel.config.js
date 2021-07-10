@@ -5,7 +5,7 @@ module.exports = (api) => {
     debug: false,
     modules: false,
     useBuiltIns: 'usage',
-    corejs: '3.15',
+    corejs: '2.6',
   };
 
   const config = {
@@ -46,6 +46,7 @@ module.exports = (api) => {
           helpers: true,
           regenerator: false,
           useESModules: true,
+          corejs: 2,
         },
       ],
     ]);
