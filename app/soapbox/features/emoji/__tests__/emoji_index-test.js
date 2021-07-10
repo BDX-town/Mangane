@@ -52,12 +52,12 @@ describe('emoji_index', () => {
   it('(different behavior from emoji-mart) do not erases custom emoji if not passed again', () => {
     const custom = [
       {
-        id: 'soapbox',
-        name: 'soapbox',
-        short_names: ['soapbox'],
+        id: 'mastodon',
+        name: 'mastodon',
+        short_names: ['mastodon'],
         text: '',
         emoticons: [],
-        keywords: ['soapbox'],
+        keywords: ['mastodon'],
         imageUrl: 'http://example.com',
         custom: true,
       },
@@ -67,23 +67,23 @@ describe('emoji_index', () => {
     const expected = [];
     const lightExpected = [
       {
-        id: 'soapbox',
+        id: 'mastodon',
         custom: true,
       },
     ];
-    expect(search('soap').map(trimEmojis)).toEqual(lightExpected);
-    expect(emojiIndex.search('soap').map(trimEmojis)).toEqual(expected);
+    expect(search('masto').map(trimEmojis)).toEqual(lightExpected);
+    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
   });
 
   it('(different behavior from emoji-mart) erases custom emoji if another is passed', () => {
     const custom = [
       {
-        id: 'soapbox',
-        name: 'soapbox',
-        short_names: ['soapbox'],
+        id: 'mastodon',
+        name: 'mastodon',
+        short_names: ['mastodon'],
         text: '',
         emoticons: [],
-        keywords: ['soapbox'],
+        keywords: ['mastodon'],
         imageUrl: 'http://example.com',
         custom: true,
       },
@@ -91,19 +91,19 @@ describe('emoji_index', () => {
     search('', { custom });
     emojiIndex.search('', { custom });
     const expected = [];
-    expect(search('soap', { custom: [] }).map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('soap').map(trimEmojis)).toEqual(expected);
+    expect(search('masto', { custom: [] }).map(trimEmojis)).toEqual(expected);
+    expect(emojiIndex.search('masto').map(trimEmojis)).toEqual(expected);
   });
 
   it('handles custom emoji', () => {
     const custom = [
       {
-        id: 'soapbox',
-        name: 'soapbox',
-        short_names: ['soapbox'],
+        id: 'mastodon',
+        name: 'mastodon',
+        short_names: ['mastodon'],
         text: '',
         emoticons: [],
-        keywords: ['soapbox'],
+        keywords: ['mastodon'],
         imageUrl: 'http://example.com',
         custom: true,
       },
@@ -112,12 +112,12 @@ describe('emoji_index', () => {
     emojiIndex.search('', { custom });
     const expected = [
       {
-        id: 'soapbox',
+        id: 'mastodon',
         custom: true,
       },
     ];
-    expect(search('soap', { custom }).map(trimEmojis)).toEqual(expected);
-    expect(emojiIndex.search('soap', { custom }).map(trimEmojis)).toEqual(expected);
+    expect(search('masto', { custom }).map(trimEmojis)).toEqual(expected);
+    expect(emojiIndex.search('masto', { custom }).map(trimEmojis)).toEqual(expected);
   });
 
   it('should filter only emojis we care about, exclude pineapple', () => {
