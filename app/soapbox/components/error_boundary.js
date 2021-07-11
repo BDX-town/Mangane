@@ -69,6 +69,9 @@ export default class ErrorBoundary extends React.PureComponent {
             onClick={this.handleCopy}
             readOnly
           />}
+          <p className='error-boundary__user-agent'>
+            {window.navigator.userAgent}
+          </p>
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'
