@@ -462,7 +462,7 @@ class Status extends ImmutablePureComponent {
       return;
     }
 
-    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
+    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0 && this.node) {
       const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
