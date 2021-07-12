@@ -24,6 +24,7 @@ module.exports = merge(sharedConfig, {
 
         terserOptions: {
           warnings: false,
+          mangle: false,
 
           output: {
             comments: false,
