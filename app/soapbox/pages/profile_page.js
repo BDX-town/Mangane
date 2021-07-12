@@ -33,8 +33,6 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }
 
-  //Children components fetch information
-
   let realAccount;
   if (!account) {
     const maybeAccount = accounts.get(username);
@@ -66,7 +64,14 @@ class ProfilePage extends ImmutablePureComponent {
   render() {
     const { children, accountId, account, displayFqn, accountUsername, features, realAccount } = this.props;
     const bg = account ? account.getIn(['customizations', 'background']) : undefined;
+    const groupId = account ? account.getIn(['pleroma', 'group', 'id']) : undefined;
 
+    // This account is actually a group, so redirect to group page
+    if (groupId) {
+      return <Redirect to={`/groups/${groupId}`} />;
+    }
+
+    // Redirect URLs where the user's ID (instead of acct) is after the @ sign
     if (realAccount) {
       return <Redirect to={`/@${realAccount.get('acct')}`} />;
     }
