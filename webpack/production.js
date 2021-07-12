@@ -4,7 +4,6 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('offline-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { output } = require('./configuration');
 const sharedConfig = require('./shared');
@@ -15,22 +14,7 @@ module.exports = merge(sharedConfig, {
   stats: 'normal',
   bail: true,
   optimization: {
-    minimize: true,
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-
-        uglifyOptions: {
-          warnings: false,
-
-          output: {
-            comments: false,
-          },
-        },
-      }),
-    ],
+    minimize: false,
   },
 
   plugins: [
