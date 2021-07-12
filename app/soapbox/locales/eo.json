@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Ĉiuj",
   "notifications.filter.boosts": "Diskonigoj",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Stelumoj",
   "notifications.filter.follows": "Sekvoj",
   "notifications.filter.mentions": "Mencioj",

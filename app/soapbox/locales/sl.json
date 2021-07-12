@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "Vse",
   "notifications.filter.boosts": "Spodbude",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Priljubljeni",
   "notifications.filter.follows": "Sledi",
   "notifications.filter.mentions": "Omembe",

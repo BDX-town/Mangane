@@ -4,7 +4,7 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('offline-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const { output } = require('./configuration');
 const sharedConfig = require('./shared');
@@ -17,13 +17,14 @@ module.exports = merge(sharedConfig, {
   optimization: {
     minimize: true,
     minimizer: [
-      new UglifyJsPlugin({
+      new TerserPlugin({
         cache: true,
         parallel: true,
         sourceMap: true,
 
-        uglifyOptions: {
+        terserOptions: {
           warnings: false,
+          mangle: false,
 
           output: {
             comments: false,
@@ -62,7 +63,7 @@ module.exports = merge(sharedConfig, {
       },
       externals: [
         '/emoji/1f602.svg', // used for emoji picker dropdown
-        '/emoji/sheet_10.png', // used in emoji-mart
+        '/emoji/sheet_13.png', // used in emoji-mart
       ],
       excludes: [
         '**/*.gz',

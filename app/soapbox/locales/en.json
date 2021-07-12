@@ -458,7 +458,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "All",
   "notifications.filter.boosts": "Reposts",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "Likes",
   "notifications.filter.follows": "Follows",
   "notifications.filter.mentions": "Mentions",

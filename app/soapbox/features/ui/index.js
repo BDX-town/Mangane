@@ -460,6 +460,7 @@ class UI extends React.PureComponent {
 
   handleHotkeyNew = e => {
     e.preventDefault();
+    if (!this.node) return;
 
     const element = this.node.querySelector('.compose-form__autosuggest-wrapper textarea');
 
@@ -470,6 +471,7 @@ class UI extends React.PureComponent {
 
   handleHotkeySearch = e => {
     e.preventDefault();
+    if (!this.node) return;
 
     const element = this.node.querySelector('.search__input');
 

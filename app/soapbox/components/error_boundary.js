@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import Bowser from 'bowser';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -45,6 +46,8 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   render() {
+    const browser = Bowser.getParser(window.navigator.userAgent);
+
     const { hasError } = this.state;
 
     if (!hasError) {
@@ -69,6 +72,9 @@ export default class ErrorBoundary extends React.PureComponent {
             onClick={this.handleCopy}
             readOnly
           />}
+          <p className='error-boundary__browser'>
+            {browser.getBrowserName()} {browser.getBrowserVersion()}
+          </p>
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'

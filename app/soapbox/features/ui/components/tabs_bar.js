@@ -20,7 +20,6 @@ const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
 });
 
-@withRouter
 class TabsBar extends React.PureComponent {
 
   static propTypes = {
@@ -174,6 +173,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default injectIntl(
+export default withRouter(injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
-  )(TabsBar));
+  )(TabsBar)));

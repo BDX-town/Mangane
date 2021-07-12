@@ -18,7 +18,7 @@ class WrappedRoute extends React.Component {
 
   static propTypes = {
     component: PropTypes.func.isRequired,
-    page: PropTypes.object,
+    page: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     content: PropTypes.node,
     componentParams: PropTypes.object,
     layout: PropTypes.object,

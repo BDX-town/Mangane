@@ -455,7 +455,7 @@
   "notifications.column_settings.sounds.all_sounds": "Play sound for all notifications",
   "notifications.filter.all": "全部",
   "notifications.filter.boosts": "转嘟",
-  "notifications.filter.emoji_reacts": "Emoji reacts:",
+  "notifications.filter.emoji_reacts": "Emoji reacts",
   "notifications.filter.favourites": "收藏",
   "notifications.filter.follows": "关注",
   "notifications.filter.mentions": "提及",

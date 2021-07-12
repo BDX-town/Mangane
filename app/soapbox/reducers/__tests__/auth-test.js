@@ -8,6 +8,7 @@ import {
   VERIFY_CREDENTIALS_FAIL,
   SWITCH_ACCOUNT,
 } from 'soapbox/actions/auth';
+import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
@@ -248,6 +249,15 @@ describe('auth reducer', () => {
       const action = { type: SWITCH_ACCOUNT, accountId: '5678' };
       const result = reducer(undefined, action);
       expect(result.get('me')).toEqual('5678');
+    });
+  });
+
+  describe('ME_FETCH_SKIP', () => {
+    it('sets `me` to null', () => {
+      const state = fromJS({ me: '1234' });
+      const action = { type: ME_FETCH_SKIP };
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual(null);
     });
   });
 });
