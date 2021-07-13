@@ -214,7 +214,7 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
       }
 
-      if (isLocal(account)) {
+      if (account.get('id') !== me && isLocal(account)) {
         if (isAdmin(account)) {
           menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
           menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
