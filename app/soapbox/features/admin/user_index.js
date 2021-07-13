@@ -22,6 +22,7 @@ class UserIndex extends ImmutablePureComponent {
     filters: ImmutableSet(['local', 'active']),
     accountIds: ImmutableOrderedSet(),
     total: Infinity,
+    pageSize: 50,
     page: 0,
   }
 
@@ -33,10 +34,10 @@ class UserIndex extends ImmutablePureComponent {
   }
 
   fetchNextPage = () => {
-    const { filters, page } = this.state;
+    const { filters, page, pageSize } = this.state;
     const nextPage = page + 1;
 
-    this.props.dispatch(fetchUsers(filters, nextPage))
+    this.props.dispatch(fetchUsers(filters, nextPage, pageSize))
       .then(({ users, count }) => {
         const newIds = users.map(user => user.id);
 
@@ -55,7 +56,9 @@ class UserIndex extends ImmutablePureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!is(this.state.filters, prevState.filters) || !is(this.state.q, prevState.q)) {
+    const { filters, q } = this.state;
+
+    if (!is(filters, prevState.filters) || !is(q, prevState.q)) {
       this.clearState();
       this.fetchNextPage();
     }
