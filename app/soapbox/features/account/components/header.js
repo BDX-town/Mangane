@@ -291,7 +291,8 @@ class Header extends ImmutablePureComponent {
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
-    const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
+    const header = account.get('header', '');
+    const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
@@ -306,7 +307,7 @@ class Header extends ImmutablePureComponent {
             <SubscriptionButton account={account} />
           </div>
 
-          <StillImage src={account.get('header')} alt='' className='parallax' />
+          {header && <StillImage src={account.get('header')} alt='' className='parallax' />}
         </div>
 
         <div className='account__header__bar'>
