@@ -38,7 +38,7 @@ import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
-import { isStaff } from 'soapbox/utils/accounts';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 
@@ -429,6 +429,9 @@ class UI extends React.PureComponent {
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
         this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+      }
+
+      if (isAdmin(account)) {
         this.props.dispatch(fetchConfig());
       }
 
