@@ -145,7 +145,7 @@ const buildAccount = adminUser => fromJS({
       actor_type: adminUser.get('actor_type'),
     },
   },
-  dirty: true,
+  should_refetch: true,
 });
 
 const mergeAdminUser = (account, adminUser) => {
@@ -157,7 +157,6 @@ const mergeAdminUser = (account, adminUser) => {
     account.setIn(['pleroma', 'is_admin'], adminUser.getIn(['roles', 'admin']));
     account.setIn(['pleroma', 'is_moderator'], adminUser.getIn(['roles', 'moderator']));
     account.setIn(['pleroma', 'is_confirmed'], adminUser.get('is_confirmed'));
-    account.set('dirty', true);
   });
 };
 

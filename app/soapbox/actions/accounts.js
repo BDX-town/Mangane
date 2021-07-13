@@ -132,7 +132,7 @@ export function fetchAccount(id) {
 
     const account = getState().getIn(['accounts', id]);
 
-    if (account && !account.get('dirty')) {
+    if (account && !account.get('should_refetch')) {
       return;
     }
 
