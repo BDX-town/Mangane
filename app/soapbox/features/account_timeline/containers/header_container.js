@@ -27,8 +27,8 @@ import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import {
-  tagUsers,
-  untagUsers,
+  verifyUser,
+  unverifyUser,
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
@@ -184,16 +184,18 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onVerifyUser(account) {
     const message = intl.formatMessage(messages.userVerified, { acct: account.get('acct') });
-    dispatch(tagUsers([account.get('id')], ['verified'])).then(() => {
-      dispatch(snackbar.success(message));
-    }).catch(() => {});
+
+    dispatch(verifyUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
   },
 
   onUnverifyUser(account) {
     const message = intl.formatMessage(messages.userUnverified, { acct: account.get('acct') });
-    dispatch(untagUsers([account.get('id')], ['verified'])).then(() => {
-      dispatch(snackbar.info(message));
-    }).catch(() => {});
+
+    dispatch(unverifyUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
   },
 
   onPromoteToAdmin(account) {

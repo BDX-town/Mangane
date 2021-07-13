@@ -244,6 +244,18 @@ export function untagUsers(accountIds, tags) {
   };
 }
 
+export function verifyUser(accountId) {
+  return (dispatch, getState) => {
+    return dispatch(tagUsers([accountId], ['verified']));
+  };
+}
+
+export function unverifyUser(accountId) {
+  return (dispatch, getState) => {
+    return dispatch(untagUsers([accountId], ['verified']));
+  };
+}
+
 export function addPermission(accountIds, permissionGroup) {
   return (dispatch, getState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
