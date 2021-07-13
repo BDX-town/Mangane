@@ -12,7 +12,6 @@ import {
   // unpinAccount,
   subscribeAccount,
   unsubscribeAccount,
-
 } from '../../../actions/accounts';
 import {
   mentionCompose,
@@ -27,7 +26,14 @@ import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import { tagUsers, untagUsers } from 'soapbox/actions/admin';
+import {
+  tagUsers,
+  untagUsers,
+  promoteToAdmin,
+  promoteToModerator,
+  demoteToUser,
+} from 'soapbox/actions/admin';
+import { isAdmin } from 'soapbox/utils/accounts';
 import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
@@ -37,6 +43,11 @@ const messages = defineMessages({
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
   userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
   userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
+  promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
+  promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
+  demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
+  demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
+
 });
 
 const isMobile = width => width <= 1190;
@@ -183,6 +194,31 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(untagUsers([account.get('id')], ['verified'])).then(() => {
       dispatch(snackbar.info(message));
     }).catch(() => {});
+  },
+
+  onPromoteToAdmin(account) {
+    const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.get('acct') });
+
+    dispatch(promoteToAdmin(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onPromoteToModerator(account) {
+    const messageType = isAdmin(account) ? messages.demotedToModerator : messages.promotedToModerator;
+    const message = intl.formatMessage(messageType, { acct: account.get('acct') });
+
+    dispatch(promoteToModerator(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onDemoteToUser(account) {
+    const message = intl.formatMessage(messages.demotedToUser, { acct: account.get('acct') });
+
+    dispatch(demoteToUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
   },
 });
 
