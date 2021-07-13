@@ -17,6 +17,10 @@ import {
   ADMIN_USERS_TAG_FAIL,
   ADMIN_USERS_UNTAG_REQUEST,
   ADMIN_USERS_UNTAG_FAIL,
+  ADMIN_ADD_PERMISSION_GROUP_REQUEST,
+  ADMIN_ADD_PERMISSION_GROUP_FAIL,
+  ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
+  ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
 } from 'soapbox/actions/admin';
 import { ADMIN_USERS_DELETE_REQUEST } from 'soapbox/actions/admin';
 
@@ -90,6 +94,33 @@ const setDeactivated = (state, nicknames) => {
   });
 };
 
+const permissionGroupFields = {
+  admin: 'is_admin',
+  moderator: 'is_moderator',
+};
+
+const addPermission = (state, accountIds, permissionGroup) => {
+  const field = permissionGroupFields[permissionGroup];
+  if (!field) return state;
+
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', field], true);
+    });
+  });
+};
+
+const removePermission = (state, accountIds, permissionGroup) => {
+  const field = permissionGroupFields[permissionGroup];
+  if (!field) return state;
+
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', field], false);
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -111,6 +142,12 @@ export default function accounts(state = initialState, action) {
   case ADMIN_USERS_UNTAG_REQUEST:
   case ADMIN_USERS_TAG_FAIL:
     return removeTags(state, action.accountIds, action.tags);
+  case ADMIN_ADD_PERMISSION_GROUP_REQUEST:
+  case ADMIN_REMOVE_PERMISSION_GROUP_FAIL:
+    return addPermission(state, action.accountIds, action.permissionGroup);
+  case ADMIN_REMOVE_PERMISSION_GROUP_REQUEST:
+  case ADMIN_ADD_PERMISSION_GROUP_FAIL:
+    return removePermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_USERS_DELETE_REQUEST:
     return setDeactivated(state, action.nicknames);
   default:

@@ -8,7 +8,13 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff } from 'soapbox/utils/accounts';
+import {
+  isStaff,
+  isAdmin,
+  isModerator,
+  isVerified,
+  isLocal,
+} from 'soapbox/utils/accounts';
 import { parseVersion } from 'soapbox/utils/features';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
@@ -20,7 +26,6 @@ import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import { isVerified } from 'soapbox/utils/accounts';
 import { openModal } from 'soapbox/actions/modal';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -54,15 +59,21 @@ const messages = defineMessages({
   deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
   verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
   unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
+  promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
+  promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
+  demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
+  demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
 });
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+
   return {
     me,
-    isStaff: isStaff(state.getIn(['accounts', me])),
+    meAccount: account,
     version: parseVersion(state.getIn(['instance', 'version'])),
   };
 };
@@ -73,16 +84,12 @@ class Header extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
+    meAccount: ImmutablePropTypes.map,
     identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
-    isStaff: PropTypes.bool.isRequired,
     version: PropTypes.object,
   };
-
-  static defaultProps = {
-    isStaff: false,
-  }
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
@@ -129,7 +136,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeMenu() {
-    const { account, intl, me, isStaff, version } = this.props;
+    const { account, intl, me, meAccount, version } = this.props;
 
     let menu = [];
 
@@ -200,9 +207,25 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (isStaff) {
+    if (isStaff(meAccount)) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+
+      if (isAdmin(meAccount)) {
+        menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+      }
+
+      if (account.get('id') !== me && isLocal(account)) {
+        if (isAdmin(account)) {
+          menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else if (isModerator(account)) {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+        }
+      }
 
       if (isVerified(account)) {
         menu.push({ text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }), action: this.props.onUnverifyUser });
