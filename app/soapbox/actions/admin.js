@@ -53,13 +53,13 @@ export const ADMIN_USERS_UNTAG_REQUEST = 'ADMIN_USERS_UNTAG_REQUEST';
 export const ADMIN_USERS_UNTAG_SUCCESS = 'ADMIN_USERS_UNTAG_SUCCESS';
 export const ADMIN_USERS_UNTAG_FAIL    = 'ADMIN_USERS_UNTAG_FAIL';
 
-export const ADMIN_ADD_PERMISSION_REQUEST = 'ADMIN_ADD_PERMISSION_REQUEST';
-export const ADMIN_ADD_PERMISSION_SUCCESS = 'ADMIN_ADD_PERMISSION_SUCCESS';
-export const ADMIN_ADD_PERMISSION_FAIL    = 'ADMIN_ADD_PERMISSION_FAIL';
+export const ADMIN_ADD_PERMISSION_GROUP_REQUEST = 'ADMIN_ADD_PERMISSION_GROUP_REQUEST';
+export const ADMIN_ADD_PERMISSION_GROUP_SUCCESS = 'ADMIN_ADD_PERMISSION_GROUP_SUCCESS';
+export const ADMIN_ADD_PERMISSION_GROUP_FAIL    = 'ADMIN_ADD_PERMISSION_GROUP_FAIL';
 
-export const ADMIN_REMOVE_PERMISSION_REQUEST = 'ADMIN_REMOVE_PERMISSION_REQUEST';
-export const ADMIN_REMOVE_PERMISSION_SUCCESS = 'ADMIN_REMOVE_PERMISSION_SUCCESS';
-export const ADMIN_REMOVE_PERMISSION_FAIL    = 'ADMIN_REMOVE_PERMISSION_FAIL';
+export const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GROUP_REQUEST';
+export const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
+export const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
 const nicknamesFromIds = (getState, ids) => ids.map(id => getState().getIn(['accounts', id, 'acct']));
 
@@ -259,13 +259,13 @@ export function unverifyUser(accountId) {
 export function addPermission(accountIds, permissionGroup) {
   return (dispatch, getState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_ADD_PERMISSION_REQUEST, accountIds, permissionGroup });
+    dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
       .post(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { nicknames })
       .then(({ data }) => {
-        dispatch({ type: ADMIN_ADD_PERMISSION_SUCCESS, accountIds, permissionGroup, data });
+        dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_SUCCESS, accountIds, permissionGroup, data });
       }).catch(error => {
-        dispatch({ type: ADMIN_ADD_PERMISSION_FAIL, error, accountIds, permissionGroup });
+        dispatch({ type: ADMIN_ADD_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });
       });
   };
 }
@@ -273,13 +273,13 @@ export function addPermission(accountIds, permissionGroup) {
 export function removePermission(accountIds, permissionGroup) {
   return (dispatch, getState) => {
     const nicknames = nicknamesFromIds(getState, accountIds);
-    dispatch({ type: ADMIN_REMOVE_PERMISSION_REQUEST, accountIds, permissionGroup });
+    dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_REQUEST, accountIds, permissionGroup });
     return api(getState)
       .delete(`/api/v1/pleroma/admin/users/permission_group/${permissionGroup}`, { data: { nicknames } })
       .then(({ data }) => {
-        dispatch({ type: ADMIN_REMOVE_PERMISSION_SUCCESS, accountIds, permissionGroup, data });
+        dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS, accountIds, permissionGroup, data });
       }).catch(error => {
-        dispatch({ type: ADMIN_REMOVE_PERMISSION_FAIL, error, accountIds, permissionGroup });
+        dispatch({ type: ADMIN_REMOVE_PERMISSION_GROUP_FAIL, error, accountIds, permissionGroup });
       });
   };
 }
