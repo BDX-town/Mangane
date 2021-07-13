@@ -113,14 +113,14 @@ class Dashboard extends ImmutablePureComponent {
             </div>
           </div>}
           <div className='dashcounter'>
-            <a href='/pleroma/admin/#/statuses/index' target='_blank'>
+            <Link to='/timeline/local'>
               <div className='dashcounter__num'>
                 <FormattedNumber value={instance.getIn(['stats', 'status_count'])} />
               </div>
               <div className='dashcounter__label'>
                 <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
               </div>
-            </a>
+            </Link>
           </div>
           <div className='dashcounter'>
             <div>
