@@ -8,7 +8,13 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import {
+  isStaff,
+  isAdmin,
+  isModerator,
+  isVerified,
+  isLocal,
+} from 'soapbox/utils/accounts';
 import { parseVersion } from 'soapbox/utils/features';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
@@ -20,7 +26,6 @@ import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import { isVerified } from 'soapbox/utils/accounts';
 import { openModal } from 'soapbox/actions/modal';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
@@ -209,15 +214,17 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
       }
 
-      if (isAdmin(account)) {
-        menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
-        menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
-      } else if (isModerator(account)) {
-        menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
-        menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
-      } else {
-        menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
-        menu.push({ text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+      if (isLocal(account)) {
+        if (isAdmin(account)) {
+          menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else if (isModerator(account)) {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+        }
       }
 
       if (isVerified(account)) {
