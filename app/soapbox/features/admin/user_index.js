@@ -33,8 +33,8 @@ class UserIndex extends ImmutablePureComponent {
   }
 
   fetchNextPage = () => {
-    const nextPage = this.state.page + 1;
-    const filters = this.state.filters.toJS();
+    const { filters, page } = this.state;
+    const nextPage = page + 1;
 
     this.props.dispatch(fetchUsers(filters, nextPage))
       .then(({ users, count }) => {

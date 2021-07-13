@@ -31,9 +31,12 @@ function importUsers(state, users) {
     users.forEach(user => {
       user = normalizePleromaUserFields(user);
       if (!user.is_approved) {
-        state.update('awaitingApproval', orderedSet => orderedSet.add(user.nickname));
+        state.update('awaitingApproval', orderedSet => orderedSet.add(user.id));
       }
-      state.setIn(['users', user.nickname], fromJS(user));
+      state.setIn(['users', user.id], ImmutableMap({
+        email: user.email,
+        registration_reason: user.registration_reason,
+      }));
     });
   });
 }
