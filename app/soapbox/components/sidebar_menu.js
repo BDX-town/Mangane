@@ -12,7 +12,7 @@ import IconButton from './icon_button';
 import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
-import { isStaff } from '../utils/accounts';
+import { isStaff, isAdmin } from '../utils/accounts';
 import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
@@ -58,7 +58,6 @@ const makeMapStateToProps = () => {
       sidebarOpen: state.get('sidebar').sidebarOpen,
       donateUrl: state.getIn(['patron', 'instance', 'url']),
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
-      isStaff: isStaff(state.getIn(['accounts', me])),
       otherAccounts: getOtherAccounts(state),
     };
   };
@@ -92,12 +91,7 @@ class SidebarMenu extends ImmutablePureComponent {
     otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
-    isStaff: PropTypes.bool.isRequired,
   };
-
-  static defaultProps = {
-    isStaff: false,
-  }
 
   state = {
     switcher: false,
@@ -153,7 +147,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, isStaff, otherAccounts, hasCrypto } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -245,14 +239,14 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='filter' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink>
-              { isStaff && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={this.handleClose}>
+              {isStaff(account) && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={this.handleClose}>
                 <Icon id='shield' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
-              </a> }
-              { isStaff && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={this.handleClose}>
+              </a>}
+              {isAdmin(account) && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={this.handleClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
-              </NavLink> }
+              </NavLink>}
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
                 <Icon id='cog' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
