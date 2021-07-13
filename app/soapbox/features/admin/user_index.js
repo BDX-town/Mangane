@@ -34,9 +34,9 @@ class UserIndex extends ImmutablePureComponent {
 
   fetchNextPage = () => {
     const nextPage = this.state.page + 1;
-    const filters = this.state.filters.toJS().join();
+    const filters = this.state.filters.toJS();
 
-    this.props.dispatch(fetchUsers({ filters, page: nextPage }))
+    this.props.dispatch(fetchUsers(filters, nextPage))
       .then(({ users, count }) => {
         const newIds = users.map(user => user.id);
 

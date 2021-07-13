@@ -430,7 +430,7 @@ class UI extends React.PureComponent {
 
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
-        this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+        this.props.dispatch(fetchUsers(['local', 'need_approval']));
       }
 
       if (isAdmin(account)) {

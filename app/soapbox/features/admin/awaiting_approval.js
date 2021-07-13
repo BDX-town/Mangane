@@ -39,8 +39,7 @@ class AwaitingApproval extends ImmutablePureComponent {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    const params = { page: 1, filters: 'local,need_approval' };
-    dispatch(fetchUsers(params))
+    dispatch(fetchUsers(['local', 'need_approval']))
       .then(() => this.setState({ isLoading: false }))
       .catch(() => {});
   }

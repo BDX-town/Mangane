@@ -125,17 +125,19 @@ export function closeReports(ids) {
   return patchReports(ids, 'closed');
 }
 
-export function fetchUsers(params) {
+export function fetchUsers(filters = [], page = 1, pageSize = 50) {
   return (dispatch, getState) => {
-    dispatch({ type: ADMIN_USERS_FETCH_REQUEST, params });
+    const params = { filters: filters.join(), page, page_size: pageSize };
+
+    dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
     return api(getState)
       .get('/api/pleroma/admin/users', { params })
       .then(({ data: { users, count, page_size: pageSize } }) => {
         dispatch(fetchRelationships(users.map(user => user.id)));
-        dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users, count, pageSize, params });
+        dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users, count, pageSize, filters, page });
         return { users, count, pageSize };
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, params });
+        dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, filters, page, pageSize });
       });
   };
 }
