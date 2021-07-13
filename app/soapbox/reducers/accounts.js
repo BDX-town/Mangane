@@ -23,7 +23,12 @@ import {
   ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
   ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
 } from 'soapbox/actions/admin';
-import { ADMIN_USERS_DELETE_REQUEST } from 'soapbox/actions/admin';
+import {
+  ADMIN_USERS_DELETE_REQUEST,
+  ADMIN_USERS_DELETE_FAIL,
+  ADMIN_USERS_DEACTIVATE_REQUEST,
+  ADMIN_USERS_DEACTIVATE_FAIL,
+} from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap();
 
@@ -80,17 +85,10 @@ const removeTags = (state, accountIds, tags) => {
   });
 };
 
-const nicknamesToIds = (state, nicknames) => {
-  return nicknames.map(nickname => {
-    return state.find(account => account.get('acct') === nickname, null, ImmutableMap()).get('id');
-  });
-};
-
-const setDeactivated = (state, nicknames) => {
-  const ids = nicknamesToIds(state, nicknames);
+const setActive = (state, accountIds, active) => {
   return state.withMutations(state => {
-    ids.forEach(id => {
-      state.setIn([id, 'pleroma', 'is_active'], false);
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', 'is_active'], active);
     });
   });
 };
@@ -210,7 +208,11 @@ export default function accounts(state = initialState, action) {
   case ADMIN_ADD_PERMISSION_GROUP_FAIL:
     return removePermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_USERS_DELETE_REQUEST:
-    return setDeactivated(state, action.nicknames);
+  case ADMIN_USERS_DEACTIVATE_REQUEST:
+    return setActive(state, action.accountIds, false);
+  case ADMIN_USERS_DELETE_FAIL:
+  case ADMIN_USERS_DEACTIVATE_FAIL:
+    return setActive(state, action.accountIds, true);
   case ADMIN_USERS_FETCH_SUCCESS:
     return importAdminUsers(state, action.users);
   default:

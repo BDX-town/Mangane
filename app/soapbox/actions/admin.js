@@ -142,41 +142,44 @@ export function fetchUsers(filters = [], page = 1, pageSize = 50) {
   };
 }
 
-export function deactivateUsers(nicknames) {
+export function deactivateUsers(accountIds) {
   return (dispatch, getState) => {
-    dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, nicknames });
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    dispatch({ type: ADMIN_USERS_DEACTIVATE_REQUEST, accountIds });
     return api(getState)
       .patch('/api/pleroma/admin/users/deactivate', { nicknames })
       .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, users, nicknames });
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_SUCCESS, users, accountIds });
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, nicknames });
+        dispatch({ type: ADMIN_USERS_DEACTIVATE_FAIL, error, accountIds });
       });
   };
 }
 
-export function deleteUsers(nicknames) {
+export function deleteUsers(accountIds) {
   return (dispatch, getState) => {
-    dispatch({ type: ADMIN_USERS_DELETE_REQUEST, nicknames });
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    dispatch({ type: ADMIN_USERS_DELETE_REQUEST, accountIds });
     return api(getState)
       .delete('/api/pleroma/admin/users', { data: { nicknames } })
       .then(({ data: nicknames }) => {
-        dispatch({ type: ADMIN_USERS_DELETE_SUCCESS, nicknames });
+        dispatch({ type: ADMIN_USERS_DELETE_SUCCESS, nicknames, accountIds });
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, nicknames });
+        dispatch({ type: ADMIN_USERS_DELETE_FAIL, error, accountIds });
       });
   };
 }
 
-export function approveUsers(nicknames) {
+export function approveUsers(accountIds) {
   return (dispatch, getState) => {
-    dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, nicknames });
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    dispatch({ type: ADMIN_USERS_APPROVE_REQUEST, accountIds });
     return api(getState)
       .patch('/api/pleroma/admin/users/approve', { nicknames })
       .then(({ data: { users } }) => {
-        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, nicknames });
+        dispatch({ type: ADMIN_USERS_APPROVE_SUCCESS, users, accountIds });
       }).catch(error => {
-        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, nicknames });
+        dispatch({ type: ADMIN_USERS_APPROVE_FAIL, error, accountIds });
       });
   };
 }

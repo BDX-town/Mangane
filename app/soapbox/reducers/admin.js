@@ -41,11 +41,11 @@ function importUsers(state, users) {
   });
 }
 
-function deleteUsers(state, nicknames) {
+function deleteUsers(state, accountIds) {
   return state.withMutations(state => {
-    nicknames.forEach(nickname => {
-      state.update('awaitingApproval', orderedSet => orderedSet.delete(nickname));
-      state.deleteIn(['users', nickname]);
+    accountIds.forEach(id => {
+      state.update('awaitingApproval', orderedSet => orderedSet.delete(id));
+      state.deleteIn(['users', id]);
     });
   });
 }
@@ -100,9 +100,9 @@ export default function admin(state = initialState, action) {
     return importUsers(state, action.users);
   case ADMIN_USERS_DELETE_REQUEST:
   case ADMIN_USERS_DELETE_SUCCESS:
-    return deleteUsers(state, action.nicknames);
+    return deleteUsers(state, action.accountIds);
   case ADMIN_USERS_APPROVE_REQUEST:
-    return state.update('awaitingApproval', set => set.subtract(action.nicknames));
+    return state.update('awaitingApproval', set => set.subtract(action.accountIds));
   case ADMIN_USERS_APPROVE_SUCCESS:
     return approveUsers(state, action.users);
   default:
