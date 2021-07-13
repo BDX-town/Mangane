@@ -130,7 +130,9 @@ export function fetchAccount(id) {
   return (dispatch, getState) => {
     dispatch(fetchRelationships([id]));
 
-    if (getState().getIn(['accounts', id], null) !== null) {
+    const account = getState().getIn(['accounts', id]);
+
+    if (account && !account.get('dirty')) {
       return;
     }
 
@@ -156,7 +158,15 @@ export function fetchAccount(id) {
 
 export function fetchAccountByUsername(username) {
   return (dispatch, getState) => {
+    const account = getState().get('accounts').find(account => account.get('acct') === username);
+
+    if (account) {
+      dispatch(fetchAccount(account.get('id')));
+      return;
+    }
+
     api(getState).get(`/api/v1/accounts/${username}`).then(response => {
+      dispatch(fetchRelationships([response.data.id]));
       dispatch(importFetchedAccount(response.data));
     }).then(() => {
       dispatch(fetchAccountSuccess());

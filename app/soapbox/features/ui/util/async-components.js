@@ -241,3 +241,7 @@ export function CryptoDonate() {
 export function ScheduledStatuses() {
   return import(/* webpackChunkName: "features/scheduled_statuses" */'../../scheduled_statuses');
 }
+
+export function UserIndex() {
+  return import(/* webpackChunkName: "features/admin/user_index" */'../../admin/user_index');
+}

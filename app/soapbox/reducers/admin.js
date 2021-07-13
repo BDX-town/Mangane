@@ -21,6 +21,7 @@ const initialState = ImmutableMap({
   reports: ImmutableMap(),
   openReports: ImmutableOrderedSet(),
   users: ImmutableMap(),
+  usersList: ImmutableOrderedSet(),
   awaitingApproval: ImmutableOrderedSet(),
   configs: ImmutableList(),
   needsReboot: false,
@@ -28,6 +29,8 @@ const initialState = ImmutableMap({
 
 function importUsers(state, users) {
   return state.withMutations(state => {
+    const ids = users.map(user => user.id);
+    state.update('usersList', ImmutableOrderedSet(), items => items.union(ids));
     users.forEach(user => {
       user = normalizePleromaUserFields(user);
       if (!user.is_approved) {
@@ -94,7 +97,7 @@ export default function admin(state = initialState, action) {
   case ADMIN_REPORTS_PATCH_SUCCESS:
     return handleReportDiffs(state, action.reports);
   case ADMIN_USERS_FETCH_SUCCESS:
-    return importUsers(state, action.data.users);
+    return importUsers(state, action.users);
   case ADMIN_USERS_DELETE_REQUEST:
   case ADMIN_USERS_DELETE_SUCCESS:
     return deleteUsers(state, action.nicknames);

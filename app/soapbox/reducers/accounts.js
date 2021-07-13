@@ -13,6 +13,7 @@ import {
 } from 'immutable';
 import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 import {
+  ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_TAG_REQUEST,
   ADMIN_USERS_TAG_FAIL,
   ADMIN_USERS_UNTAG_REQUEST,
@@ -121,6 +122,66 @@ const removePermission = (state, accountIds, permissionGroup) => {
   });
 };
 
+const buildAccount = adminUser => fromJS({
+  id: adminUser.get('id'),
+  username: adminUser.get('nickname').split('@')[0],
+  acct: adminUser.get('nickname'),
+  display_name: adminUser.get('display_name'),
+  display_name_html: adminUser.get('display_name'),
+  note: '',
+  url: adminUser.get('url'),
+  avatar: adminUser.get('avatar'),
+  avatar_static: adminUser.get('avatar'),
+  header: '',
+  header_static: '',
+  emojis: [],
+  fields: [],
+  pleroma: {
+    is_active: adminUser.get('is_active'),
+    is_confirmed: adminUser.get('is_confirmed'),
+    is_admin: adminUser.getIn(['roles', 'admin']),
+    is_moderator: adminUser.getIn(['roles', 'moderator']),
+  },
+  source: {
+    pleroma: {
+      actor_type: adminUser.get('actor_type'),
+    },
+  },
+  dirty: true,
+});
+
+const mergeAdminUser = (account, adminUser) => {
+  return account.withMutations(account => {
+    account.set('display_name', adminUser.get('display_name'));
+    account.set('avatar', adminUser.get('avatar'));
+    account.set('avatar_static', adminUser.get('avatar'));
+    account.setIn(['pleroma', 'is_active'], adminUser.get('is_active'));
+    account.setIn(['pleroma', 'is_admin'], adminUser.getIn(['roles', 'admin']));
+    account.setIn(['pleroma', 'is_moderator'], adminUser.getIn(['roles', 'moderator']));
+    account.setIn(['pleroma', 'is_confirmed'], adminUser.get('is_confirmed'));
+    account.set('dirty', true);
+  });
+};
+
+const importAdminUser = (state, adminUser) => {
+  const id = adminUser.get('id');
+  const account = state.get(id);
+
+  if (!account) {
+    return state.set(id, buildAccount(adminUser));
+  } else {
+    return state.set(id, mergeAdminUser(account, adminUser));
+  }
+};
+
+const importAdminUsers = (state, adminUsers) => {
+  return state.withMutations(state => {
+    fromJS(adminUsers).forEach(adminUser => {
+      importAdminUser(state, adminUser);
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -150,6 +211,8 @@ export default function accounts(state = initialState, action) {
     return removePermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_USERS_DELETE_REQUEST:
     return setDeactivated(state, action.nicknames);
+  case ADMIN_USERS_FETCH_SUCCESS:
+    return importAdminUsers(state, action.users);
   default:
     return state;
   }

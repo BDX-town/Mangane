@@ -1,5 +1,6 @@
 import api from '../api';
 import { importFetchedAccount, importFetchedStatuses } from 'soapbox/actions/importer';
+import { fetchRelationships } from 'soapbox/actions/accounts';
 
 export const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 export const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
@@ -129,8 +130,9 @@ export function fetchUsers(params) {
     dispatch({ type: ADMIN_USERS_FETCH_REQUEST, params });
     return api(getState)
       .get('/api/pleroma/admin/users', { params })
-      .then(({ data }) => {
-        dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, data, params });
+      .then(({ data: { users, count, page_size: pageSize } }) => {
+        dispatch(fetchRelationships(users.map(user => user.id)));
+        dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users, count, pageSize, params });
       }).catch(error => {
         dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, params });
       });
