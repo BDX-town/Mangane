@@ -133,6 +133,7 @@ export function fetchUsers(params) {
       .then(({ data: { users, count, page_size: pageSize } }) => {
         dispatch(fetchRelationships(users.map(user => user.id)));
         dispatch({ type: ADMIN_USERS_FETCH_SUCCESS, users, count, pageSize, params });
+        return { users, count, pageSize };
       }).catch(error => {
         dispatch({ type: ADMIN_USERS_FETCH_FAIL, error, params });
       });

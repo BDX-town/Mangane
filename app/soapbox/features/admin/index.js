@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage, FormattedNumber } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
@@ -92,14 +93,14 @@ class Dashboard extends ImmutablePureComponent {
             </div>
           </div>}
           <div className='dashcounter'>
-            <a href='/pleroma/admin/#/users/index' target='_blank'>
+            <Link to='/admin/users'>
               <div className='dashcounter__num'>
                 <FormattedNumber value={userCount} />
               </div>
               <div className='dashcounter__label'>
                 <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
               </div>
-            </a>
+            </Link>
           </div>
           {retention && <div className='dashcounter'>
             <div>

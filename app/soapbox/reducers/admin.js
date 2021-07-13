@@ -21,7 +21,6 @@ const initialState = ImmutableMap({
   reports: ImmutableMap(),
   openReports: ImmutableOrderedSet(),
   users: ImmutableMap(),
-  usersList: ImmutableOrderedSet(),
   awaitingApproval: ImmutableOrderedSet(),
   configs: ImmutableList(),
   needsReboot: false,
@@ -29,8 +28,6 @@ const initialState = ImmutableMap({
 
 function importUsers(state, users) {
   return state.withMutations(state => {
-    const ids = users.map(user => user.id);
-    state.update('usersList', ImmutableOrderedSet(), items => items.union(ids));
     users.forEach(user => {
       user = normalizePleromaUserFields(user);
       if (!user.is_approved) {
