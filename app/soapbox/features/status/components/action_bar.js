@@ -7,7 +7,7 @@ import IconButton from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { isStaff } from 'soapbox/utils/accounts';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { isUserTouching } from 'soapbox/is_mobile';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
@@ -52,9 +52,12 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+
   return {
     me,
-    isStaff: isStaff(state.getIn(['accounts', me])),
+    isStaff: account ? isStaff(account) : false,
+    isAdmin: account ? isAdmin(account) : false,
   };
 };
 
@@ -94,6 +97,7 @@ class ActionBar extends React.PureComponent {
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     allowedEmoji: ImmutablePropTypes.list,
   };
 
@@ -263,7 +267,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me, isStaff, allowedEmoji } = this.props;
+    const { status, intl, me, isStaff, isAdmin, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -312,8 +316,10 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
       if (isStaff) {
         menu.push(null);
-        menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-        // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
+        if (isAdmin) {
+          menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
+          menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+        }
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
         menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
