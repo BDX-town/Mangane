@@ -139,6 +139,7 @@ const buildAccount = adminUser => fromJS({
     is_confirmed: adminUser.get('is_confirmed'),
     is_admin: adminUser.getIn(['roles', 'admin']),
     is_moderator: adminUser.getIn(['roles', 'moderator']),
+    tags: adminUser.get('tags'),
   },
   source: {
     pleroma: {
@@ -157,6 +158,7 @@ const mergeAdminUser = (account, adminUser) => {
     account.setIn(['pleroma', 'is_admin'], adminUser.getIn(['roles', 'admin']));
     account.setIn(['pleroma', 'is_moderator'], adminUser.getIn(['roles', 'moderator']));
     account.setIn(['pleroma', 'is_confirmed'], adminUser.get('is_confirmed'));
+    account.setIn(['pleroma', 'tags'], adminUser.get('tags'));
   });
 };
 
