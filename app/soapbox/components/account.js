@@ -11,6 +11,7 @@ import IconButton from './icon_button';
 import RelativeTimestamp from './relative_timestamp';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
@@ -44,7 +45,13 @@ class Account extends ImmutablePureComponent {
     actionTitle: PropTypes.string,
     onActionClick: PropTypes.func,
     withDate: PropTypes.bool,
+    withRelationship: PropTypes.bool,
   };
+
+  static defaultProps = {
+    withDate: false,
+    withRelationship: true,
+  }
 
   handleFollow = () => {
     this.props.onFollow(this.props.account);
@@ -71,7 +78,7 @@ class Account extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship } = this.props;
 
     if (!account) {
       return <div />;
@@ -87,7 +94,7 @@ class Account extends ImmutablePureComponent {
     }
 
     let buttons;
-    let followed_by;
+    let followedBy;
 
     if (onActionClick && actionIcon) {
       buttons = <IconButton icon={actionIcon} title={actionTitle} onClick={this.handleAction} />;
@@ -97,7 +104,7 @@ class Account extends ImmutablePureComponent {
       const blocking  = account.getIn(['relationship', 'blocking']);
       const muting  = account.getIn(['relationship', 'muting']);
 
-      followed_by  = account.getIn(['relationship', 'followed_by']);
+      followedBy  = account.getIn(['relationship', 'followed_by']);
 
       if (requested) {
         buttons = <IconButton disabled icon='hourglass' title={intl.formatMessage(messages.requested)} />;
@@ -121,29 +128,36 @@ class Account extends ImmutablePureComponent {
       }
     }
 
+    const createdAt = account.get('created_at');
+
+    const joinedAt = createdAt ? (
+      <div className='account__joined-at'>
+        <Icon id='calendar' />
+        <RelativeTimestamp timestamp={createdAt} />
+      </div>
+    ) : null;
+
     return (
-      <div className='account'>
+      <div className={classNames('account', { 'account--with-relationship': withRelationship, 'account--with-date': withDate })}>
         <div className='account__wrapper'>
           <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
             <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
             <DisplayName account={account} />
           </Permalink>
 
-          { followed_by ?
-            <span className='relationship-tag'>
-              <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
-            </span>
-            : '' }
+          {withRelationship ? (<>
+            {followedBy &&
+              <span className='relationship-tag'>
+                <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
+              </span>}
 
-          <div className='account__relationship'>
-            {buttons}
-          </div>
+            <div className='account__relationship'>
+              {buttons}
+            </div>
+          </>) : withDate && joinedAt}
         </div>
 
-        {withDate && (<div className='account__joined-at'>
-          <Icon id='calendar' />
-          <RelativeTimestamp timestamp={account.get('created_at')} />
-        </div>)}
+        {(withDate && withRelationship) && joinedAt}
       </div>
     );
   }

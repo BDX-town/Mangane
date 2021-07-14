@@ -11,6 +11,7 @@ describe('admin reducer', () => {
       reports: ImmutableMap(),
       openReports: ImmutableOrderedSet(),
       users: ImmutableMap(),
+      latestUsers: ImmutableOrderedSet(),
       awaitingApproval: ImmutableOrderedSet(),
       configs: ImmutableList(),
       needsReboot: false,
