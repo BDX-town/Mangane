@@ -42,6 +42,10 @@ a.account__display-name {
   text-overflow: ellipsis;
   white-space: nowrap;
   position: relative;
+
+  bdi {
+    min-width: 0;
+  }
 }
 
 .display-name__html {

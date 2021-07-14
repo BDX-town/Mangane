@@ -201,6 +201,10 @@
     overflow: hidden;
     text-decoration: none;
     font-size: 14px;
+
+    .display-name__name {
+      display: flex;
+    }
   }
 }
 
@@ -502,6 +506,7 @@ a .account__avatar {
 .relationship-tag {
   color: var(--primary-text-color);
   margin-bottom: 4px;
+  margin-left: 4px;
   display: block;
   vertical-align: top;
   background-color: var(--background-color);
@@ -511,6 +516,7 @@ a .account__avatar {
   padding: 4px;
   border-radius: 4px;
   opacity: 0.7;
+  white-space: nowrap;
 
   &:hover {
     opacity: 1;
@@ -518,18 +524,14 @@ a .account__avatar {
 }
 
 .account__joined-at {
-  padding: 3px 2px 0 5px;
+  padding-left: 3px;
   font-size: 14px;
   display: flex;
   white-space: nowrap;
+  flex-shrink: 0;
+  color: var(--primary-text-color--faint);
 
   i.fa-calendar {
     padding-right: 5px;
-  }
-}
-
-.account--with-date.account--with-relationship {
-  .account__joined-at {
-    padding-left: 48px;
   }
 }

@@ -114,7 +114,6 @@
 
   strong,
   span {
-    display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
   }
@@ -130,7 +129,7 @@
 
   .display-name__account {
     display: block;
-    margin-top: -10px;
+    margin-top: -5px;
   }
 }
 
