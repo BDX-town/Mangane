@@ -95,6 +95,7 @@ import {
   ModerationLog,
   CryptoDonate,
   ScheduledStatuses,
+  UserIndex,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -265,6 +266,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
         <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
+        <WrappedRoute path='/admin/users' page={AdminPage} component={UserIndex} content={children} exact />
         <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
@@ -428,7 +430,7 @@ class UI extends React.PureComponent {
 
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
-        this.props.dispatch(fetchUsers({ page: 1, filters: 'local,need_approval' }));
+        this.props.dispatch(fetchUsers(['local', 'need_approval']));
       }
 
       if (isAdmin(account)) {
