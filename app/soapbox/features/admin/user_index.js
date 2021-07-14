@@ -117,7 +117,7 @@ class UserIndex extends ImmutablePureComponent {
           emptyMessage={intl.formatMessage(messages.empty)}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />,
+            <AccountContainer key={id} id={id} withDate />,
           )}
         </ScrollableList>
       </Column>

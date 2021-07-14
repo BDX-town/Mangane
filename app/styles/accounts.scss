@@ -516,3 +516,12 @@ a .account__avatar {
     opacity: 1;
   }
 }
+
+.account__joined-at {
+  padding: 3px 2px 0 48px;
+  font-size: 14px;
+
+  i.fa-calendar {
+    padding-right: 5px;
+  }
+}
