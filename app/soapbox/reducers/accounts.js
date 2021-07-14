@@ -138,6 +138,7 @@ const buildAccount = adminUser => fromJS({
   header_static: '',
   emojis: [],
   fields: [],
+  created_at: adminUser.get('created_at'),
   pleroma: {
     is_active: adminUser.get('is_active'),
     is_confirmed: adminUser.get('is_confirmed'),

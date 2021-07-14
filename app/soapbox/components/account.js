@@ -6,7 +6,9 @@ import { FormattedMessage } from 'react-intl';
 import Avatar from './avatar';
 import DisplayName from './display_name';
 import Permalink from './permalink';
+import Icon from './icon';
 import IconButton from './icon_button';
+import RelativeTimestamp from './relative_timestamp';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 
@@ -41,6 +43,7 @@ class Account extends ImmutablePureComponent {
     actionIcon: PropTypes.string,
     actionTitle: PropTypes.string,
     onActionClick: PropTypes.func,
+    withDate: PropTypes.bool,
   };
 
   handleFollow = () => {
@@ -68,7 +71,7 @@ class Account extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate } = this.props;
 
     if (!account) {
       return <div />;
@@ -136,6 +139,11 @@ class Account extends ImmutablePureComponent {
             {buttons}
           </div>
         </div>
+
+        {withDate && (<div className='account__joined-at'>
+          <Icon id='calendar' />
+          <RelativeTimestamp timestamp={account.get('created_at')} />
+        </div>)}
       </div>
     );
   }
