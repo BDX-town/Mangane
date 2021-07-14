@@ -142,7 +142,7 @@ class Account extends ImmutablePureComponent {
         <div className='account__wrapper'>
           <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
             <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
-            <DisplayName account={account} />
+            <DisplayName account={account} withDate={Boolean(withDate && withRelationship)} />
           </Permalink>
 
           {withRelationship ? (<>
@@ -156,8 +156,6 @@ class Account extends ImmutablePureComponent {
             </div>
           </>) : withDate && joinedAt}
         </div>
-
-        {(withDate && withRelationship) && joinedAt}
       </div>
     );
   }

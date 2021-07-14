@@ -10,16 +10,20 @@ exports[`<DisplayName /> renders display name + account name 1`] = `
     onMouseEnter={[Function]}
     onMouseLeave={[Function]}
   >
-    <bdi>
-      <strong
-        className="display-name__html"
-        dangerouslySetInnerHTML={
-          Object {
-            "__html": "<p>Foo</p>",
+    <span
+      className="display-name__name"
+    >
+      <bdi>
+        <strong
+          className="display-name__html"
+          dangerouslySetInnerHTML={
+            Object {
+              "__html": "<p>Foo</p>",
+            }
           }
-        }
-      />
-    </bdi>
+        />
+      </bdi>
+    </span>
   </span>
   <span
     className="display-name__account"
