@@ -51,6 +51,8 @@ class LatestAccountsPanel extends ImmutablePureComponent {
       return null;
     }
 
+    const expandCount = total - accountIds.size;
+
     return (
       <AccountListPanel
         icon='users'
@@ -58,7 +60,7 @@ class LatestAccountsPanel extends ImmutablePureComponent {
         accountIds={accountIds}
         limit={limit}
         total={total}
-        expandMessage={intl.formatMessage(messages.expand, { count: total })}
+        expandMessage={intl.formatMessage(messages.expand, { count: expandCount })}
         expandRoute='/admin/users'
         withDate
         withRelationship={false}
