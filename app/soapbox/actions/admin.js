@@ -1,6 +1,7 @@
 import api from '../api';
 import { importFetchedAccount, importFetchedStatuses } from 'soapbox/actions/importer';
 import { fetchRelationships } from 'soapbox/actions/accounts';
+import { Set as ImmutableSet } from 'immutable';
 
 export const ADMIN_CONFIG_FETCH_REQUEST = 'ADMIN_CONFIG_FETCH_REQUEST';
 export const ADMIN_CONFIG_FETCH_SUCCESS = 'ADMIN_CONFIG_FETCH_SUCCESS';
