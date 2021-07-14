@@ -24,20 +24,22 @@ class UserIndex extends ImmutablePureComponent {
     total: Infinity,
     pageSize: 50,
     page: 0,
+    query: '',
   }
 
-  clearState = () => {
+  clearState = callback => {
     this.setState({
       isLoading: true,
+      accountIds: ImmutableOrderedSet(),
       page: 0,
-    });
+    }, callback);
   }
 
   fetchNextPage = () => {
-    const { filters, page, pageSize } = this.state;
+    const { filters, page, query, pageSize } = this.state;
     const nextPage = page + 1;
 
-    this.props.dispatch(fetchUsers(filters, nextPage, pageSize))
+    this.props.dispatch(fetchUsers(filters, nextPage, query, pageSize))
       .then(({ users, count }) => {
         const newIds = users.map(user => user.id);
 
@@ -55,18 +57,35 @@ class UserIndex extends ImmutablePureComponent {
     this.fetchNextPage();
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { filters, q } = this.state;
-
-    if (!is(filters, prevState.filters) || !is(q, prevState.q)) {
-      this.clearState();
+  refresh = () => {
+    this.clearState(() => {
       this.fetchNextPage();
+    });
+  }
+
+  refreshDebounced = debounce(() => {
+    this.refresh();
+  }, 1000)
+
+  componentDidUpdate(prevProps, prevState) {
+    const { filters, query } = this.state;
+    const filtersChanged = !is(filters, prevState.filters);
+    const queryChanged = query !== prevState.query;
+
+    if (filtersChanged) {
+      this.refresh();
+    } else if (queryChanged) {
+      this.refreshDebounced();
     }
   }
 
   handleLoadMore = debounce(() => {
     this.fetchNextPage();
   }, 2000, { leading: true });
+
+  handleQueryChange = e => {
+    this.setState({ query: e.target.value });
+  }
 
   render() {
     const { accountIds, isLoading } = this.state;
@@ -76,6 +95,7 @@ class UserIndex extends ImmutablePureComponent {
 
     return (
       <Column>
+        <input value={this.state.q} onChange={this.handleQueryChange} />
         <ScrollableList
           scrollKey='user-index'
           hasMore={hasMore}

@@ -125,9 +125,10 @@ export function closeReports(ids) {
   return patchReports(ids, 'closed');
 }
 
-export function fetchUsers(filters = [], page = 1, pageSize = 50) {
+export function fetchUsers(filters = [], page = 1, query, pageSize = 50) {
   return (dispatch, getState) => {
     const params = { filters: filters.join(), page, page_size: pageSize };
+    if (query) params.query = query;
 
     dispatch({ type: ADMIN_USERS_FETCH_REQUEST, filters, page, pageSize });
     return api(getState)
