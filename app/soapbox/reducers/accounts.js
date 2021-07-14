@@ -15,12 +15,16 @@ import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 import {
   ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_TAG_REQUEST,
+  ADMIN_USERS_TAG_SUCCESS,
   ADMIN_USERS_TAG_FAIL,
   ADMIN_USERS_UNTAG_REQUEST,
+  ADMIN_USERS_UNTAG_SUCCESS,
   ADMIN_USERS_UNTAG_FAIL,
   ADMIN_ADD_PERMISSION_GROUP_REQUEST,
+  ADMIN_ADD_PERMISSION_GROUP_SUCCESS,
   ADMIN_ADD_PERMISSION_GROUP_FAIL,
   ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
+  ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
   ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
 } from 'soapbox/actions/admin';
 import {
@@ -197,15 +201,19 @@ export default function accounts(state = initialState, action) {
   case STREAMING_CHAT_UPDATE:
     return importAccountsFromChats(state, [action.chat]);
   case ADMIN_USERS_TAG_REQUEST:
+  case ADMIN_USERS_TAG_SUCCESS:
   case ADMIN_USERS_UNTAG_FAIL:
     return addTags(state, action.accountIds, action.tags);
   case ADMIN_USERS_UNTAG_REQUEST:
+  case ADMIN_USERS_UNTAG_SUCCESS:
   case ADMIN_USERS_TAG_FAIL:
     return removeTags(state, action.accountIds, action.tags);
   case ADMIN_ADD_PERMISSION_GROUP_REQUEST:
+  case ADMIN_ADD_PERMISSION_GROUP_SUCCESS:
   case ADMIN_REMOVE_PERMISSION_GROUP_FAIL:
     return addPermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_REMOVE_PERMISSION_GROUP_REQUEST:
+  case ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS:
   case ADMIN_ADD_PERMISSION_GROUP_FAIL:
     return removePermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_USERS_DELETE_REQUEST:
