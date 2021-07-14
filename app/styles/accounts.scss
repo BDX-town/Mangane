@@ -518,10 +518,18 @@ a .account__avatar {
 }
 
 .account__joined-at {
-  padding: 3px 2px 0 48px;
+  padding: 3px 2px 0 5px;
   font-size: 14px;
+  display: flex;
+  white-space: nowrap;
 
   i.fa-calendar {
     padding-right: 5px;
+  }
+}
+
+.account--with-date.account--with-relationship {
+  .account__joined-at {
+    padding-left: 48px;
   }
 }

@@ -29,7 +29,7 @@ class AdminPage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                <LatestAccountsPanel limit={5} withDate />
+                <LatestAccountsPanel limit={5} />
                 <LinkFooter />
               </div>
             </div>

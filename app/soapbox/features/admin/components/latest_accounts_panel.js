@@ -9,6 +9,7 @@ import { fetchUsers } from 'soapbox/actions/admin';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },
+  expand: { id: 'admin.latest_accounts_panel.expand_message', defaultMessage: 'Click to see {count} more {count, plural, one {account} other {accounts}}' },
 });
 
 const mapStateToProps = state => ({
@@ -28,13 +29,23 @@ class LatestAccountsPanel extends ImmutablePureComponent {
     limit: 5,
   }
 
+  state = {
+    total: 0,
+  }
+
   componentDidMount() {
     const { dispatch, limit } = this.props;
-    dispatch(fetchUsers(['local', 'active'], 1, null, limit));
+
+    dispatch(fetchUsers(['local', 'active'], 1, null, limit))
+      .then(({ count }) => {
+        this.setState({ total: count });
+      })
+      .catch(() => {});
   }
 
   render() {
     const { intl, accountIds, limit, ...props } = this.props;
+    const { total } = this.state;
 
     if (!accountIds || accountIds.isEmpty()) {
       return null;
@@ -46,6 +57,11 @@ class LatestAccountsPanel extends ImmutablePureComponent {
         title={intl.formatMessage(messages.title)}
         accountIds={accountIds}
         limit={limit}
+        total={total}
+        expandMessage={intl.formatMessage(messages.expand, { count: total })}
+        expandRoute='/admin/users'
+        withDate
+        withRelationship={false}
         {...props}
       />
     );

@@ -4,6 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from '../../../containers/account_container';
+import { Link } from 'react-router-dom';
 
 export default class AccountListPanel extends ImmutablePureComponent {
 
@@ -12,6 +13,9 @@ export default class AccountListPanel extends ImmutablePureComponent {
     accountIds: ImmutablePropTypes.orderedSet.isRequired,
     icon: PropTypes.string.isRequired,
     limit: PropTypes.number,
+    total: PropTypes.number,
+    expandMessage: PropTypes.string,
+    expandRoute: PropTypes.string,
   };
 
   static defaultProps = {
@@ -19,11 +23,13 @@ export default class AccountListPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { title, icon, accountIds, limit, ...props } = this.props;
+    const { title, icon, accountIds, limit, total, expandMessage, expandRoute, ...props } = this.props;
 
     if (!accountIds || accountIds.isEmpty()) {
       return null;
     }
+
+    const canExpand = expandMessage && expandRoute && (accountIds.size < total);
 
     return (
       <div className='wtf-panel'>
@@ -40,6 +46,9 @@ export default class AccountListPanel extends ImmutablePureComponent {
             ))}
           </div>
         </div>
+        {canExpand && <Link className='wtf-panel__expand-btn' to={expandRoute}>
+          {expandMessage}
+        </Link>}
       </div>
     );
   };
