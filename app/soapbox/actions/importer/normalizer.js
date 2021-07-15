@@ -1,6 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
 import emojify from '../../features/emoji/emoji';
-import { unescapeHTML } from '../../utils/html';
 
 const domParser = new DOMParser();
 
@@ -8,31 +7,6 @@ const makeEmojiMap = record => record.emojis.reduce((obj, emoji) => {
   obj[`:${emoji.shortcode}:`] = emoji;
   return obj;
 }, {});
-
-export function normalizeAccount(account) {
-  account = { ...account };
-
-  const emojiMap = makeEmojiMap(account);
-  const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;
-
-  account.display_name_html = emojify(escapeTextContentForBrowser(displayName), emojiMap);
-  account.note_emojified = emojify(account.note, emojiMap);
-
-  if (account.fields) {
-    account.fields = account.fields.map(pair => ({
-      ...pair,
-      name_emojified: emojify(escapeTextContentForBrowser(pair.name)),
-      value_emojified: emojify(pair.value, emojiMap),
-      value_plain: unescapeHTML(pair.value),
-    }));
-  }
-
-  if (account.moved) {
-    account.moved = account.moved.id;
-  }
-
-  return account;
-}
 
 export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
   const normalStatus   = { ...status };

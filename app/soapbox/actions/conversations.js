@@ -1,6 +1,5 @@
 import api, { getLinks } from '../api';
 import {
-  importFetchedAccounts,
   importFetchedStatuses,
   importFetchedStatus,
 } from './importer';
@@ -52,7 +51,6 @@ export const expandConversations = ({ maxId } = {}) => (dispatch, getState) => {
     .then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data.reduce((aggr, item) => aggr.concat(item.accounts), [])));
       dispatch(importFetchedStatuses(response.data.map(item => item.last_status).filter(x => !!x)));
       dispatch(expandConversationsSuccess(response.data, next ? next.uri : null, isLoadingRecent));
     })
@@ -76,8 +74,6 @@ export const expandConversationsFail = error => ({
 });
 
 export const updateConversations = conversation => dispatch => {
-  dispatch(importFetchedAccounts(conversation.accounts));
-
   if (conversation.last_status) {
     dispatch(importFetchedStatus(conversation.last_status));
   }

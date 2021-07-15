@@ -14,6 +14,8 @@ import messages from 'soapbox/locales/messages';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 export const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
+export const STREAMING_NOTIFICATION_UPDATE = 'STREAMING_NOTIFICATION_UPDATE';
+export const STREAMING_TIMELINE_UPDATE = 'STREAMING_TIMELINE_UPDATE';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -33,10 +35,81 @@ function updateFollowRelationships(relationships) {
   };
 }
 
+function updateChat(chat) {
+  return (dispatch, getState) => {
+    const me = getState().get('me');
+    const messageOwned = !(chat.last_message && chat.last_message.account_id !== me);
+
+    dispatch({
+      type: STREAMING_CHAT_UPDATE,
+      chat,
+      me,
+      // Only play sounds for recipient messages
+      meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
+    });
+  };
+};
+
+function updateNotification(notification) {
+  return (dispatch, getState) => {
+    const locale = getLocale(getState());
+
+    dispatch({
+      type: STREAMING_NOTIFICATION_UPDATE,
+      notification,
+    });
+
+    messages[locale]().then(messages => {
+      dispatch(updateNotificationsQueue(notification, messages, locale, window.location.pathname));
+    }).catch(error => {
+      console.error(error);
+    });
+  };
+};
+
+function updateTimeline(timelineId, status, accept) {
+  return (dispatch, getState) => {
+    dispatch({
+      type: STREAMING_TIMELINE_UPDATE,
+      timelineId,
+      status,
+    });
+
+    dispatch(processTimelineUpdate(timelineId, status, accept));
+  };
+};
+
+function handleEvent(timelineId, { event, payload }, accept) {
+  return (dispatch, getState) => {
+    switch(event) {
+    case 'update':
+      dispatch(updateTimeline(timelineId, JSON.parse(payload), accept));
+      break;
+    case 'delete':
+      dispatch(deleteFromTimelines(payload));
+      break;
+    case 'notification':
+      dispatch(updateNotification(JSON.parse(payload)));
+      break;
+    case 'conversation':
+      dispatch(updateConversations(JSON.parse(payload)));
+      break;
+    case 'filters_changed':
+      dispatch(fetchFilters());
+      break;
+    case 'pleroma:chat_update':
+      dispatch(updateChat(JSON.parse(payload)));
+      break;
+    case 'pleroma:follow_relationships_update':
+      dispatch(updateFollowRelationships(JSON.parse(payload)));
+      break;
+    }
+  };
+};
+
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
   return connectStream (path, pollingRefresh, (dispatch, getState) => {
-    const locale = getLocale(getState());
 
     return {
       onConnect() {
@@ -48,45 +121,7 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
       },
 
       onReceive(data) {
-        switch(data.event) {
-        case 'update':
-          dispatch(processTimelineUpdate(timelineId, JSON.parse(data.payload), accept));
-          break;
-        case 'delete':
-          dispatch(deleteFromTimelines(data.payload));
-          break;
-        case 'notification':
-          messages[locale]().then(messages => {
-            dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
-          }).catch(error => {
-            console.error(error);
-          });
-          break;
-        case 'conversation':
-          dispatch(updateConversations(JSON.parse(data.payload)));
-          break;
-        case 'filters_changed':
-          dispatch(fetchFilters());
-          break;
-        case 'pleroma:chat_update':
-          dispatch((dispatch, getState) => {
-            const chat = JSON.parse(data.payload);
-            const me = getState().get('me');
-            const messageOwned = !(chat.last_message && chat.last_message.account_id !== me);
-
-            dispatch({
-              type: STREAMING_CHAT_UPDATE,
-              chat,
-              me,
-              // Only play sounds for recipient messages
-              meta: !messageOwned && getSettings(getState()).getIn(['chats', 'sound']) && { sound: 'chat' },
-            });
-          });
-          break;
-        case 'pleroma:follow_relationships_update':
-          dispatch(updateFollowRelationships(JSON.parse(data.payload)));
-          break;
-        }
+        dispatch(handleEvent(timelineId, data, accept));
       },
     };
   });

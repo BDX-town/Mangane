@@ -1,5 +1,4 @@
 import api from '../api';
-import { importFetchedAccount } from './importer';
 import { verifyCredentials } from './auth';
 
 export const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';
@@ -52,7 +51,6 @@ export function fetchMeRequest() {
 
 export function fetchMeSuccess(me) {
   return (dispatch, getState) => {
-    dispatch(importFetchedAccount(me));
     dispatch({
       type: ME_FETCH_SUCCESS,
       me,
@@ -76,7 +74,6 @@ export function patchMeRequest() {
 
 export function patchMeSuccess(me) {
   return (dispatch, getState) => {
-    dispatch(importFetchedAccount(me));
     dispatch({
       type: ME_PATCH_SUCCESS,
       me,

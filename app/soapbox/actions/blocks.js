@@ -1,6 +1,5 @@
 import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getNextLinkName } from 'soapbox/utils/quirks';
 
@@ -21,7 +20,6 @@ export function fetchBlocks() {
 
     api(getState).get('/api/v1/blocks').then(response => {
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(fetchBlocksFail(error)));
@@ -64,7 +62,6 @@ export function expandBlocks() {
 
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandBlocksSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(expandBlocksFail(error)));

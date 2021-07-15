@@ -1,12 +1,9 @@
 import { getSettings } from '../settings';
 import {
-  normalizeAccount,
   normalizeStatus,
   normalizePoll,
 } from './normalizer';
 
-export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
-export const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
 export const STATUS_IMPORT   = 'STATUS_IMPORT';
 export const STATUSES_IMPORT = 'STATUSES_IMPORT';
 export const POLLS_IMPORT    = 'POLLS_IMPORT';
@@ -16,14 +13,6 @@ function pushUnique(array, object) {
   if (array.every(element => element.id !== object.id)) {
     array.push(object);
   }
-}
-
-export function importAccount(account) {
-  return { type: ACCOUNT_IMPORT, account };
-}
-
-export function importAccounts(accounts) {
-  return { type: ACCOUNTS_IMPORT, accounts };
 }
 
 export function importStatus(status) {
@@ -36,28 +25,6 @@ export function importStatuses(statuses) {
 
 export function importPolls(polls) {
   return { type: POLLS_IMPORT, polls };
-}
-
-export function importFetchedAccount(account) {
-  return importFetchedAccounts([account]);
-}
-
-export function importFetchedAccounts(accounts) {
-  const normalAccounts = [];
-
-  function processAccount(account) {
-    if (!account.id) return;
-
-    pushUnique(normalAccounts, normalizeAccount(account));
-
-    if (account.moved) {
-      processAccount(account.moved);
-    }
-  }
-
-  accounts.forEach(processAccount);
-
-  return importAccounts(normalAccounts);
 }
 
 export function importFetchedStatus(status) {
@@ -108,7 +75,6 @@ export function importFetchedStatuses(statuses) {
     statuses.forEach(processStatus);
 
     dispatch(importPolls(polls));
-    dispatch(importFetchedAccounts(accounts));
     dispatch(importStatuses(normalStatuses));
   };
 }

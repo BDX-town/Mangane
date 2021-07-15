@@ -5,7 +5,6 @@ import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light
 import { tagHistory } from '../settings';
 import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
-import { importFetchedAccounts } from './importer';
 import { updateTimeline, dequeueTimeline } from './timelines';
 import { showAlert, showAlertForError } from './alerts';
 import { defineMessages } from 'react-intl';
@@ -388,7 +387,6 @@ const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => 
       limit: 4,
     },
   }).then(response => {
-    dispatch(importFetchedAccounts(response.data));
     dispatch(readyComposeSuggestionsAccounts(token, response.data));
   }).catch(error => {
     if (!isCancel(error)) {

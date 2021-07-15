@@ -1,5 +1,5 @@
 import api from '../api';
-import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -54,9 +54,6 @@ export function fetchEmojiReacts(id, emoji) {
       : `/api/v1/pleroma/statuses/${id}/reactions`;
 
     return api(getState).get(url).then(response => {
-      response.data.forEach(emojiReact => {
-        dispatch(importFetchedAccounts(emojiReact.accounts));
-      });
       dispatch(fetchEmojiReactsSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchEmojiReactsFail(id, error));

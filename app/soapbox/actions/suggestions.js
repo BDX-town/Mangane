@@ -1,5 +1,4 @@
 import api from '../api';
-import { importFetchedAccounts } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';
@@ -13,7 +12,6 @@ export function fetchSuggestions() {
     dispatch(fetchSuggestionsRequest());
 
     api(getState).get('/api/v1/suggestions').then(response => {
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchSuggestionsSuccess(response.data));
     }).catch(error => dispatch(fetchSuggestionsFail(error)));
   };

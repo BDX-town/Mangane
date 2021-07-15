@@ -1,5 +1,4 @@
 import api, { getLinks } from '../api';
-import { importFetchedAccounts } from './importer';
 import { fetchRelationships } from './accounts';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -235,7 +234,6 @@ export function fetchMembers(id) {
     api(getState).get(`/api/v1/groups/${id}/accounts`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchMembersSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -283,7 +281,6 @@ export function expandMembers(id) {
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandMembersSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -325,7 +322,6 @@ export function fetchRemovedAccounts(id) {
     api(getState).get(`/api/v1/groups/${id}/removed_accounts`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchRemovedAccountsSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -373,7 +369,6 @@ export function expandRemovedAccounts(id) {
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandRemovedAccountsSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {

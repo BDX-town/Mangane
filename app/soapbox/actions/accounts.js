@@ -1,10 +1,5 @@
 import api, { getLinks } from '../api';
-import {
-  importAccount,
-  importFetchedAccount,
-  importFetchedAccounts,
-  importErrorWhileFetchingAccountByUsername,
-} from './importer';
+import { importErrorWhileFetchingAccountByUsername } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
@@ -120,7 +115,6 @@ export function fetchAccount(id) {
     dispatch(fetchAccountRequest(id));
 
     api(getState).get(`/api/v1/accounts/${id}`).then(response => {
-      dispatch(importFetchedAccount(response.data));
       dispatch(fetchAccountSuccess(response.data));
     }).catch(error => {
       dispatch(fetchAccountFail(id, error));
@@ -139,7 +133,6 @@ export function fetchAccountByUsername(username) {
 
     api(getState).get(`/api/v1/accounts/${username}`).then(response => {
       dispatch(fetchRelationships([response.data.id]));
-      dispatch(importFetchedAccount(response.data));
       dispatch(fetchAccountSuccess(response.data));
     }).catch(error => {
       dispatch(fetchAccountFail(null, error));
@@ -479,7 +472,6 @@ export function fetchFollowers(id) {
     api(getState).get(`/api/v1/accounts/${id}/followers`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchFollowersSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -527,7 +519,6 @@ export function expandFollowers(id) {
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandFollowersSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -569,7 +560,6 @@ export function fetchFollowing(id) {
     api(getState).get(`/api/v1/accounts/${id}/following`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchFollowingSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -617,7 +607,6 @@ export function expandFollowing(id) {
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandFollowingSuccess(id, response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => {
@@ -703,7 +692,6 @@ export function fetchFollowRequests() {
 
     api(getState).get('/api/v1/follow_requests').then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchFollowRequestsSuccess(response.data, next ? next.uri : null));
     }).catch(error => dispatch(fetchFollowRequestsFail(error)));
   };
@@ -744,7 +732,6 @@ export function expandFollowRequests() {
 
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
-      dispatch(importFetchedAccounts(response.data));
       dispatch(expandFollowRequestsSuccess(response.data, next ? next.uri : null));
     }).catch(error => dispatch(expandFollowRequestsFail(error)));
   };

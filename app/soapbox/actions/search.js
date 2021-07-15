@@ -1,6 +1,6 @@
 import api from '../api';
 import { fetchRelationships } from './accounts';
-import { importFetchedAccounts, importFetchedStatuses } from './importer';
+import { importFetchedStatuses } from './importer';
 
 export const SEARCH_CHANGE = 'SEARCH_CHANGE';
 export const SEARCH_CLEAR  = 'SEARCH_CLEAR';
@@ -40,10 +40,6 @@ export function submitSearch() {
         limit: 20,
       },
     }).then(response => {
-      if (response.data.accounts) {
-        dispatch(importFetchedAccounts(response.data.accounts));
-      }
-
       if (response.data.statuses) {
         dispatch(importFetchedStatuses(response.data.statuses));
       }

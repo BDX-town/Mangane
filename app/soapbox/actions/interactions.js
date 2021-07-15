@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 import api from '../api';
-import { importFetchedAccounts, importFetchedStatus } from './importer';
+import { importFetchedStatus } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -139,7 +139,7 @@ export function favourite(status) {
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/favourite`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
-      dispatch(favouriteSuccess(status));
+      dispatch(favouriteSuccess(response.data));
     }).catch(function(error) {
       dispatch(favouriteFail(status, error));
     });
@@ -154,7 +154,7 @@ export function unfavourite(status) {
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unfavourite`).then(response => {
       dispatch(importFetchedStatus(response.data));
-      dispatch(unfavouriteSuccess(status));
+      dispatch(unfavouriteSuccess(response.data));
     }).catch(error => {
       dispatch(unfavouriteFail(status, error));
     });
@@ -217,7 +217,7 @@ export function bookmark(intl, status) {
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
-      dispatch(bookmarkSuccess(status, response.data));
+      dispatch(bookmarkSuccess(response.data));
       dispatch(snackbar.success(intl.formatMessage(messages.bookmarkAdded)));
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
@@ -231,7 +231,7 @@ export function unbookmark(intl, status) {
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
-      dispatch(unbookmarkSuccess(status, response.data));
+      dispatch(unbookmarkSuccess(response.data));
       dispatch(snackbar.success(intl.formatMessage(messages.bookmarkRemoved)));
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
@@ -246,11 +246,10 @@ export function bookmarkRequest(status) {
   };
 };
 
-export function bookmarkSuccess(status, response) {
+export function bookmarkSuccess(status) {
   return {
     type: BOOKMARK_SUCCESS,
     status: status,
-    response: response,
   };
 };
 
@@ -269,11 +268,10 @@ export function unbookmarkRequest(status) {
   };
 };
 
-export function unbookmarkSuccess(status, response) {
+export function unbookmarkSuccess(status) {
   return {
     type: UNBOOKMARK_SUCCESS,
     status: status,
-    response: response,
   };
 };
 
@@ -292,7 +290,6 @@ export function fetchReblogs(id) {
     dispatch(fetchReblogsRequest(id));
 
     api(getState).get(`/api/v1/statuses/${id}/reblogged_by`).then(response => {
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchReblogsSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchReblogsFail(id, error));
@@ -329,7 +326,6 @@ export function fetchFavourites(id) {
     dispatch(fetchFavouritesRequest(id));
 
     api(getState).get(`/api/v1/statuses/${id}/favourited_by`).then(response => {
-      dispatch(importFetchedAccounts(response.data));
       dispatch(fetchFavouritesSuccess(id, response.data));
     }).catch(error => {
       dispatch(fetchFavouritesFail(id, error));

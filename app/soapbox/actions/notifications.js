@@ -3,8 +3,6 @@ import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { fetchRelationships } from './accounts';
 import {
-  importFetchedAccount,
-  importFetchedAccounts,
   importFetchedStatus,
   importFetchedStatuses,
 } from './importer';
@@ -52,18 +50,9 @@ const fetchRelatedRelationships = (dispatch, notifications) => {
   }
 };
 
-export function updateNotifications(notification, intlMessages, intlLocale) {
+function updateNotifications(notification, intlMessages, intlLocale) {
   return (dispatch, getState) => {
     const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
-
-    if (notification.account) {
-      dispatch(importFetchedAccount(notification.account));
-    }
-
-    // Used by Move notification
-    if (notification.target) {
-      dispatch(importFetchedAccount(notification.target));
-    }
 
     if (notification.status) {
       dispatch(importFetchedStatus(notification.status));
@@ -196,15 +185,6 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       const entries = response.data.reduce((acc, item) => {
-        if (item.account && item.account.id) {
-          acc.accounts[item.account.id] = item.account;
-        }
-
-        // Used by Move notification
-        if (item.target && item.target.id) {
-          acc.accounts[item.target.id] = item.target;
-        }
-
         if (item.status && item.status.id) {
           acc.statuses[item.status.id] = item.status;
         }
@@ -212,7 +192,6 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
         return acc;
       }, { accounts: {}, statuses: {} });
 
-      dispatch(importFetchedAccounts(Object.values(entries.accounts)));
       dispatch(importFetchedStatuses(Object.values(entries.statuses)));
 
       dispatch(expandNotificationsSuccess(response.data, next ? next.uri : null, isLoadingMore));

@@ -1,5 +1,4 @@
 import api from '../api';
-import { importFetchedAccounts } from './importer';
 import { showAlertForError } from './alerts';
 import { isLoggedIn } from 'soapbox/utils/auth';
 
@@ -223,7 +222,6 @@ export const fetchListAccounts = listId => (dispatch, getState) => {
   dispatch(fetchListAccountsRequest(listId));
 
   api(getState).get(`/api/v1/lists/${listId}/accounts`, { params: { limit: 0 } }).then(({ data }) => {
-    dispatch(importFetchedAccounts(data));
     dispatch(fetchListAccountsSuccess(listId, data));
   }).catch(err => dispatch(fetchListAccountsFail(listId, err)));
 };
@@ -257,7 +255,6 @@ export const fetchListSuggestions = q => (dispatch, getState) => {
   };
 
   api(getState).get('/api/v1/accounts/search', { params }).then(({ data }) => {
-    dispatch(importFetchedAccounts(data));
     dispatch(fetchListSuggestionsReady(q, data));
   }).catch(error => dispatch(showAlertForError(error)));
 };
