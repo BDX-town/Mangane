@@ -7,7 +7,7 @@ import IconButton from './icon_button';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff } from 'soapbox/utils/accounts';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
 import EmojiSelector from 'soapbox/components/emoji_selector';
@@ -89,6 +89,7 @@ class StatusActionBar extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
     allowedEmoji: ImmutablePropTypes.list,
   };
 
@@ -274,8 +275,9 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin, me, isStaff } = this.props;
+    const { status, intl, withDismiss, withGroupAdmin, me, isStaff, isAdmin } = this.props;
     const mutingConversation = status.get('muted');
+    const ownAccount = status.getIn(['account', 'id']) === me;
 
     let menu = [];
 
@@ -294,12 +296,12 @@ class StatusActionBar extends ImmutablePureComponent {
 
     menu.push(null);
 
-    if (status.getIn(['account', 'id']) === me || withDismiss) {
+    if (ownAccount || withDismiss) {
       menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
       menu.push(null);
     }
 
-    if (status.getIn(['account', 'id']) === me) {
+    if (ownAccount) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -317,22 +319,29 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
+    }
 
-      if (isStaff) {
-        menu.push(null);
+    if (isStaff) {
+      menu.push(null);
+
+      if (isAdmin) {
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-        // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
+        menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+      }
+
+      menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
+
+      if (!ownAccount) {
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
-        menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
+    }
 
-      if (withGroupAdmin) {
-        menu.push(null);
-        menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
-        menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
-      }
+    if (!ownAccount && withGroupAdmin) {
+      menu.push(null);
+      menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
+      menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
     }
 
     return menu;
@@ -438,9 +447,12 @@ class StatusActionBar extends ImmutablePureComponent {
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+
   return {
     me,
-    isStaff: isStaff(state.getIn(['accounts', me])),
+    isStaff: account ? isStaff(account) : false,
+    isAdmin: account ? isAdmin(account) : false,
   };
 };
 

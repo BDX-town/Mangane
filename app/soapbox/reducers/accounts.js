@@ -13,12 +13,26 @@ import {
 } from 'immutable';
 import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 import {
+  ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_TAG_REQUEST,
+  ADMIN_USERS_TAG_SUCCESS,
   ADMIN_USERS_TAG_FAIL,
   ADMIN_USERS_UNTAG_REQUEST,
+  ADMIN_USERS_UNTAG_SUCCESS,
   ADMIN_USERS_UNTAG_FAIL,
+  ADMIN_ADD_PERMISSION_GROUP_REQUEST,
+  ADMIN_ADD_PERMISSION_GROUP_SUCCESS,
+  ADMIN_ADD_PERMISSION_GROUP_FAIL,
+  ADMIN_REMOVE_PERMISSION_GROUP_REQUEST,
+  ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS,
+  ADMIN_REMOVE_PERMISSION_GROUP_FAIL,
 } from 'soapbox/actions/admin';
-import { ADMIN_USERS_DELETE_REQUEST } from 'soapbox/actions/admin';
+import {
+  ADMIN_USERS_DELETE_REQUEST,
+  ADMIN_USERS_DELETE_FAIL,
+  ADMIN_USERS_DEACTIVATE_REQUEST,
+  ADMIN_USERS_DEACTIVATE_FAIL,
+} from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap();
 
@@ -75,17 +89,99 @@ const removeTags = (state, accountIds, tags) => {
   });
 };
 
-const nicknamesToIds = (state, nicknames) => {
-  return nicknames.map(nickname => {
-    return state.find(account => account.get('acct') === nickname, null, ImmutableMap()).get('id');
+const setActive = (state, accountIds, active) => {
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', 'is_active'], active);
+    });
   });
 };
 
-const setDeactivated = (state, nicknames) => {
-  const ids = nicknamesToIds(state, nicknames);
+const permissionGroupFields = {
+  admin: 'is_admin',
+  moderator: 'is_moderator',
+};
+
+const addPermission = (state, accountIds, permissionGroup) => {
+  const field = permissionGroupFields[permissionGroup];
+  if (!field) return state;
+
   return state.withMutations(state => {
-    ids.forEach(id => {
-      state.setIn([id, 'pleroma', 'is_active'], false);
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', field], true);
+    });
+  });
+};
+
+const removePermission = (state, accountIds, permissionGroup) => {
+  const field = permissionGroupFields[permissionGroup];
+  if (!field) return state;
+
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', field], false);
+    });
+  });
+};
+
+const buildAccount = adminUser => fromJS({
+  id: adminUser.get('id'),
+  username: adminUser.get('nickname').split('@')[0],
+  acct: adminUser.get('nickname'),
+  display_name: adminUser.get('display_name'),
+  display_name_html: adminUser.get('display_name'),
+  note: '',
+  url: adminUser.get('url'),
+  avatar: adminUser.get('avatar'),
+  avatar_static: adminUser.get('avatar'),
+  header: '',
+  header_static: '',
+  emojis: [],
+  fields: [],
+  created_at: adminUser.get('created_at'),
+  pleroma: {
+    is_active: adminUser.get('is_active'),
+    is_confirmed: adminUser.get('is_confirmed'),
+    is_admin: adminUser.getIn(['roles', 'admin']),
+    is_moderator: adminUser.getIn(['roles', 'moderator']),
+    tags: adminUser.get('tags'),
+  },
+  source: {
+    pleroma: {
+      actor_type: adminUser.get('actor_type'),
+    },
+  },
+  should_refetch: true,
+});
+
+const mergeAdminUser = (account, adminUser) => {
+  return account.withMutations(account => {
+    account.set('display_name', adminUser.get('display_name'));
+    account.set('avatar', adminUser.get('avatar'));
+    account.set('avatar_static', adminUser.get('avatar'));
+    account.setIn(['pleroma', 'is_active'], adminUser.get('is_active'));
+    account.setIn(['pleroma', 'is_admin'], adminUser.getIn(['roles', 'admin']));
+    account.setIn(['pleroma', 'is_moderator'], adminUser.getIn(['roles', 'moderator']));
+    account.setIn(['pleroma', 'is_confirmed'], adminUser.get('is_confirmed'));
+    account.setIn(['pleroma', 'tags'], adminUser.get('tags'));
+  });
+};
+
+const importAdminUser = (state, adminUser) => {
+  const id = adminUser.get('id');
+  const account = state.get(id);
+
+  if (!account) {
+    return state.set(id, buildAccount(adminUser));
+  } else {
+    return state.set(id, mergeAdminUser(account, adminUser));
+  }
+};
+
+const importAdminUsers = (state, adminUsers) => {
+  return state.withMutations(state => {
+    fromJS(adminUsers).forEach(adminUser => {
+      importAdminUser(state, adminUser);
     });
   });
 };
@@ -106,13 +202,29 @@ export default function accounts(state = initialState, action) {
   case STREAMING_CHAT_UPDATE:
     return importAccountsFromChats(state, [action.chat]);
   case ADMIN_USERS_TAG_REQUEST:
+  case ADMIN_USERS_TAG_SUCCESS:
   case ADMIN_USERS_UNTAG_FAIL:
     return addTags(state, action.accountIds, action.tags);
   case ADMIN_USERS_UNTAG_REQUEST:
+  case ADMIN_USERS_UNTAG_SUCCESS:
   case ADMIN_USERS_TAG_FAIL:
     return removeTags(state, action.accountIds, action.tags);
+  case ADMIN_ADD_PERMISSION_GROUP_REQUEST:
+  case ADMIN_ADD_PERMISSION_GROUP_SUCCESS:
+  case ADMIN_REMOVE_PERMISSION_GROUP_FAIL:
+    return addPermission(state, action.accountIds, action.permissionGroup);
+  case ADMIN_REMOVE_PERMISSION_GROUP_REQUEST:
+  case ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS:
+  case ADMIN_ADD_PERMISSION_GROUP_FAIL:
+    return removePermission(state, action.accountIds, action.permissionGroup);
   case ADMIN_USERS_DELETE_REQUEST:
-    return setDeactivated(state, action.nicknames);
+  case ADMIN_USERS_DEACTIVATE_REQUEST:
+    return setActive(state, action.accountIds, false);
+  case ADMIN_USERS_DELETE_FAIL:
+  case ADMIN_USERS_DEACTIVATE_FAIL:
+    return setActive(state, action.accountIds, true);
+  case ADMIN_USERS_FETCH_SUCCESS:
+    return importAdminUsers(state, action.users);
   default:
     return state;
   }

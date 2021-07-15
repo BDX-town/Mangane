@@ -46,6 +46,18 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     displayFqn: PropTypes.bool,
   };
 
+  getStaffBadge = () => {
+    const { account } = this.props;
+
+    if (isAdmin(account)) {
+      return <Badge slug='admin' title='Admin' />;
+    } else if (isModerator(account)) {
+      return <Badge slug='moderator' title='Moderator' />;
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const { account, displayFqn, intl, identity_proofs, username } = this.props;
 
@@ -86,8 +98,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           </div>
 
           <div className='profile-info-panel-content__badges'>
-            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
-            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
+            {this.getStaffBadge()}
             {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
             {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
               <Icon id='calendar' />

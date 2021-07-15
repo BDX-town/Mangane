@@ -36,7 +36,7 @@ export function deactivateUserModal(intl, accountId, afterConfirm = () => {}) {
       message: intl.formatMessage(messages.deactivateUserPrompt, { acct }),
       confirm: intl.formatMessage(messages.deactivateUserConfirm, { name }),
       onConfirm: () => {
-        dispatch(deactivateUsers([acct])).then(() => {
+        dispatch(deactivateUsers([accountId])).then(() => {
           const message = intl.formatMessage(messages.userDeactivated, { acct });
           dispatch(snackbar.success(message));
           afterConfirm();
@@ -74,7 +74,7 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
       confirm,
       checkbox,
       onConfirm: () => {
-        dispatch(deleteUsers([acct])).then(() => {
+        dispatch(deleteUsers([accountId])).then(() => {
           const message = intl.formatMessage(messages.userDeleted, { acct });
           dispatch(fetchAccountByUsername(acct));
           dispatch(snackbar.success(message));

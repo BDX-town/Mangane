@@ -675,6 +675,7 @@
   position: relative;
   width: 15px;
   height: 15px;
+  flex-shrink: 0;
 
   &::before {
     display: block;

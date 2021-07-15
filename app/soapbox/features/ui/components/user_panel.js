@@ -29,13 +29,14 @@ class UserPanel extends ImmutablePureComponent {
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const header = account.get('header');
 
     return (
       <div className='user-panel'>
         <div className='user-panel__container'>
 
           <div className='user-panel__header'>
-            <StillImage src={account.get('header')} alt='' />
+            {header && <StillImage src={account.get('header')} alt='' />}
           </div>
 
           <div className='user-panel__profile'>
