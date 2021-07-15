@@ -10,7 +10,6 @@ import modal from './modal';
 import user_lists from './user_lists';
 import domain_lists from './domain_lists';
 import accounts from './accounts';
-import accounts_counters from './accounts_counters';
 import statuses from './statuses';
 import relationships from './relationships';
 import settings from './settings';
@@ -65,7 +64,6 @@ const appReducer = combineReducers({
   domain_lists,
   status_lists,
   accounts,
-  accounts_counters,
   statuses,
   relationships,
   settings,

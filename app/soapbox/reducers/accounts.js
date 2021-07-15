@@ -3,8 +3,15 @@ import {
   ACCOUNTS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from '../actions/importer';
+import {
+  ACCOUNT_FOLLOW_SUCCESS,
+  ACCOUNT_UNFOLLOW_SUCCESS,
+} from 'soapbox/actions/accounts';
 import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+import {
+  STREAMING_CHAT_UPDATE,
+  STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
+} from 'soapbox/actions/streaming';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import {
   Map as ImmutableMap,
@@ -44,11 +51,7 @@ const normalizePleroma = account => {
 };
 
 const normalizeAccount = (state, account) => {
-  const normalized = fromJS(normalizePleroma(account)).deleteAll([
-    'followers_count',
-    'following_count',
-    'statuses_count',
-  ]);
+  const normalized = fromJS(normalizePleroma(account));
 
   return state.set(account.id, normalized);
 };
@@ -186,6 +189,17 @@ const importAdminUsers = (state, adminUsers) => {
   });
 };
 
+const updateFollowCounters = (state, counterUpdates) => {
+  return state.withMutations(state => {
+    counterUpdates.forEach(counterUpdate => {
+      state.update(counterUpdate.id, ImmutableMap(), counters => counters.merge({
+        followers_count: counterUpdate.follower_count,
+        following_count: counterUpdate.following_count,
+      }));
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -196,6 +210,13 @@ export default function accounts(state = initialState, action) {
     return state.set(-1, ImmutableMap({
       username: action.username,
     }));
+  case ACCOUNT_FOLLOW_SUCCESS:
+    return action.alreadyFollowing ? state :
+      state.updateIn([action.relationship.id, 'followers_count'], num => num + 1);
+  case ACCOUNT_UNFOLLOW_SUCCESS:
+    return state.updateIn([action.relationship.id, 'followers_count'], num => Math.max(0, num - 1));
+  case STREAMING_FOLLOW_RELATIONSHIPS_UPDATE:
+    return updateFollowCounters(state, [action.follower, action.following]);
   case CHATS_FETCH_SUCCESS:
     return importAccountsFromChats(state, action.chats);
   case CHAT_FETCH_SUCCESS:
