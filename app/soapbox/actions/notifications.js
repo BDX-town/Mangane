@@ -56,13 +56,20 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
   return (dispatch, getState) => {
     const showInColumn = getSettings(getState()).getIn(['notifications', 'shows', notification.type], true);
 
-    if (showInColumn) {
+    if (notification.account) {
       dispatch(importFetchedAccount(notification.account));
+    }
 
-      if (notification.status) {
-        dispatch(importFetchedStatus(notification.status));
-      }
+    // Used by Move notification
+    if (notification.target) {
+      dispatch(importFetchedAccount(notification.target));
+    }
 
+    if (notification.status) {
+      dispatch(importFetchedStatus(notification.status));
+    }
+
+    if (showInColumn) {
       dispatch({
         type: NOTIFICATIONS_UPDATE,
         notification,
