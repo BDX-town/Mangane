@@ -277,6 +277,7 @@ class StatusActionBar extends ImmutablePureComponent {
   _makeMenu = (publicStatus) => {
     const { status, intl, withDismiss, withGroupAdmin, me, isStaff, isAdmin } = this.props;
     const mutingConversation = status.get('muted');
+    const self = status.getIn(['account', 'id']) === me;
 
     let menu = [];
 
@@ -295,12 +296,12 @@ class StatusActionBar extends ImmutablePureComponent {
 
     menu.push(null);
 
-    if (status.getIn(['account', 'id']) === me || withDismiss) {
+    if (self || withDismiss) {
       menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
       menu.push(null);
     }
 
-    if (status.getIn(['account', 'id']) === me) {
+    if (self) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -318,24 +319,29 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
+    }
 
-      if (isStaff) {
-        menu.push(null);
-        if (isAdmin) {
-          menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-          menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
-        }
+    if (isStaff) {
+      menu.push(null);
+
+      if (isAdmin) {
+        menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
+        menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+      }
+
+      menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
+
+      if (!self) {
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
-        menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
+    }
 
-      if (withGroupAdmin) {
-        menu.push(null);
-        menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
-        menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
-      }
+    if (!self && withGroupAdmin) {
+      menu.push(null);
+      menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
+      menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
     }
 
     return menu;
