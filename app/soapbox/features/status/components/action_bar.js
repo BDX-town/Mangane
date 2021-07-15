@@ -269,7 +269,7 @@ class ActionBar extends React.PureComponent {
   render() {
     const { status, intl, me, isStaff, isAdmin, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
-    const self = status.getIn(['account', 'id']) === me;
+    const ownAccount = status.getIn(['account', 'id']) === me;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -294,7 +294,7 @@ class ActionBar extends React.PureComponent {
 
     menu.push(null);
 
-    if (self) {
+    if (ownAccount) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -327,7 +327,7 @@ class ActionBar extends React.PureComponent {
 
       menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
 
-      if (!self) {
+      if (!ownAccount) {
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });

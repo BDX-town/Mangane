@@ -287,7 +287,7 @@ class Header extends ImmutablePureComponent {
       );
     }
 
-    const self = account.get('id') === me;
+    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
@@ -324,18 +324,18 @@ class Header extends ImmutablePureComponent {
                 <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
               </NavLink>
 
-              {(self || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+              {(ownAccount || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
                 {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
                 <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
               </NavLink>}
 
-              {(self || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+              {(ownAccount || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
                 {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
                 <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
               </NavLink>}
 
               {
-                self &&
+                ownAccount &&
                 <div>
                   <NavLink
                     exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}

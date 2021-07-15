@@ -277,7 +277,7 @@ class StatusActionBar extends ImmutablePureComponent {
   _makeMenu = (publicStatus) => {
     const { status, intl, withDismiss, withGroupAdmin, me, isStaff, isAdmin } = this.props;
     const mutingConversation = status.get('muted');
-    const self = status.getIn(['account', 'id']) === me;
+    const ownAccount = status.getIn(['account', 'id']) === me;
 
     let menu = [];
 
@@ -296,12 +296,12 @@ class StatusActionBar extends ImmutablePureComponent {
 
     menu.push(null);
 
-    if (self || withDismiss) {
+    if (ownAccount || withDismiss) {
       menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
       menu.push(null);
     }
 
-    if (self) {
+    if (ownAccount) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -331,14 +331,14 @@ class StatusActionBar extends ImmutablePureComponent {
 
       menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
 
-      if (!self) {
+      if (!ownAccount) {
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
     }
 
-    if (!self && withGroupAdmin) {
+    if (!ownAccount && withGroupAdmin) {
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
       menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
