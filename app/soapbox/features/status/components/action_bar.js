@@ -269,6 +269,7 @@ class ActionBar extends React.PureComponent {
   render() {
     const { status, intl, me, isStaff, isAdmin, allowedEmoji } = this.props;
     const { emojiSelectorVisible } = this.state;
+    const ownAccount = status.getIn(['account', 'id']) === me;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
@@ -293,7 +294,7 @@ class ActionBar extends React.PureComponent {
 
     menu.push(null);
 
-    if (me === status.getIn(['account', 'id'])) {
+    if (ownAccount) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -314,15 +315,21 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
-      if (isStaff) {
-        menu.push(null);
-        if (isAdmin) {
-          menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-          menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
-        }
+    }
+
+    if (isStaff) {
+      menu.push(null);
+
+      if (isAdmin) {
+        menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
+        menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+      }
+
+      menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
+
+      if (!ownAccount) {
         menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
         menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
-        menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
         menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
     }
