@@ -4,12 +4,14 @@ import {
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
 } from 'soapbox/actions/scheduled_statuses';
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const importStatus = (state, status) => {
-  if (!status.scheduled_at) return state;
-  return state.set(status.id, fromJS(status));
+  if (status.scheduled_at) {
+    return state.set(status.id, fromJS(status));
+  } else {
+    return state;
+  }
 };
 
 const importStatuses = (state, statuses) =>
@@ -21,10 +23,8 @@ const initialState = ImmutableMap();
 
 export default function statuses(state = initialState, action) {
   switch(action.type) {
-  case STATUS_IMPORT:
   case STATUS_CREATE_SUCCESS:
     return importStatus(state, action.status);
-  case STATUSES_IMPORT:
   case SCHEDULED_STATUSES_FETCH_SUCCESS:
     return importStatuses(state, action.statuses);
   case SCHEDULED_STATUS_CANCEL_REQUEST:

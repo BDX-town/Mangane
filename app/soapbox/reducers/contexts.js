@@ -4,7 +4,7 @@ import {
 } from '../actions/accounts';
 import { CONTEXT_FETCH_SUCCESS } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
+import { STREAMING_TIMELINE_UPDATE } from 'soapbox/actions/streaming';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const initialState = ImmutableMap({
@@ -21,12 +21,6 @@ const importStatus = (state, { id, in_reply_to_id }) => {
     state.updateIn(['replies', in_reply_to_id], ImmutableOrderedSet(), ids => {
       return ids.add(id).sort();
     });
-  });
-};
-
-const importStatuses = (state, statuses) => {
-  return state.withMutations(state => {
-    statuses.forEach(status => importStatus(state, status));
   });
 };
 
@@ -100,10 +94,8 @@ export default function replies(state = initialState, action) {
     return normalizeContext(state, action.id, action.ancestors, action.descendants);
   case TIMELINE_DELETE:
     return deleteStatuses(state, [action.id]);
-  case STATUS_IMPORT:
+  case STREAMING_TIMELINE_UPDATE:
     return importStatus(state, action.status);
-  case STATUSES_IMPORT:
-    return importStatuses(state, action.statuses);
   default:
     return state;
   }
