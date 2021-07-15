@@ -1,7 +1,5 @@
 import api, { getLinks } from '../api';
-import openDB from '../storage/db';
 import {
-  importAccount,
   importFetchedAccount,
   importFetchedAccounts,
   importErrorWhileFetchingAccountByUsername,
@@ -96,24 +94,6 @@ export const NOTIFICATION_SETTINGS_REQUEST = 'NOTIFICATION_SETTINGS_REQUEST';
 export const NOTIFICATION_SETTINGS_SUCCESS = 'NOTIFICATION_SETTINGS_SUCCESS';
 export const NOTIFICATION_SETTINGS_FAIL    = 'NOTIFICATION_SETTINGS_FAIL';
 
-function getFromDB(dispatch, getState, index, id) {
-  return new Promise((resolve, reject) => {
-    const request = index.get(id);
-
-    request.onerror = reject;
-
-    request.onsuccess = () => {
-      if (!request.result) {
-        reject();
-        return;
-      }
-
-      dispatch(importAccount(request.result));
-      resolve(request.result.moved && getFromDB(dispatch, getState, index, request.result.moved));
-    };
-  });
-}
-
 export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -138,18 +118,9 @@ export function fetchAccount(id) {
 
     dispatch(fetchAccountRequest(id));
 
-    openDB().then(db => getFromDB(
-      dispatch,
-      getState,
-      db.transaction('accounts', 'read').objectStore('accounts').index('id'),
-      id,
-    ).then(() => db.close(), error => {
-      db.close();
-      throw error;
-    })).catch(() => api(getState).get(`/api/v1/accounts/${id}`).then(response => {
+    api(getState).get(`/api/v1/accounts/${id}`).then(response => {
       dispatch(importFetchedAccount(response.data));
-    })).then(() => {
-      dispatch(fetchAccountSuccess());
+      dispatch(fetchAccountSuccess(response.data));
     }).catch(error => {
       dispatch(fetchAccountFail(id, error));
     });
@@ -168,8 +139,7 @@ export function fetchAccountByUsername(username) {
     api(getState).get(`/api/v1/accounts/${username}`).then(response => {
       dispatch(fetchRelationships([response.data.id]));
       dispatch(importFetchedAccount(response.data));
-    }).then(() => {
-      dispatch(fetchAccountSuccess());
+      dispatch(fetchAccountSuccess(response.data));
     }).catch(error => {
       dispatch(fetchAccountFail(null, error));
       dispatch(importErrorWhileFetchingAccountByUsername(username));
@@ -184,9 +154,10 @@ export function fetchAccountRequest(id) {
   };
 };
 
-export function fetchAccountSuccess() {
+export function fetchAccountSuccess(account) {
   return {
     type: ACCOUNT_FETCH_SUCCESS,
+    account,
   };
 };
 
