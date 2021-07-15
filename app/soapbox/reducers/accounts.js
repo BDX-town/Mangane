@@ -156,10 +156,6 @@ const normalizeAccount = account => {
     account.moved = account.moved.id;
   }
 
-  delete account.followers_count;
-  delete account.following_count;
-  delete account.statuses_count;
-
   account = normalizePleroma(account);
 
   return fromJS(account);
