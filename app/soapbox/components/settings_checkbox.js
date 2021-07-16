@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { changeSetting } from 'soapbox/actions/settings';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { Checkbox } from 'soapbox/features/forms';
 
 const mapStateToProps = state => ({
-  settings: state.get('settings'),
+  settings: getSettings(state),
 });
 
 export default @connect(mapStateToProps)
