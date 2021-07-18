@@ -434,7 +434,8 @@
     background: var(--brand-color--med);
     transition: 0.2s;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background: hsla(var(--brand-color_hsl), 0.5);
       text-decoration: none;
     }
@@ -674,5 +675,24 @@ a.status-card.compact:hover {
     padding: 10px;
     background: var(--background-color);
     border-radius: 4px;
+  }
+}
+
+.status__action-bar,
+.detailed-status__action-bar {
+  .emoji-picker-expand {
+    display: none;
+  }
+
+  &:focus-within {
+    .emoji-picker-expand {
+      display: inline-flex;
+      width: 0;
+      overflow: hidden;
+
+      &:focus-within {
+        width: unset;
+      }
+    }
   }
 }

@@ -48,6 +48,7 @@ const messages = defineMessages({
   reactionOpenMouth: { id: 'status.reactions.open_mouth', defaultMessage: 'Wow' },
   reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
   reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
+  emojiPickerExpand: { id: 'status.reactions_expand', defaultMessage: 'Select emoji' },
 });
 
 const mapStateToProps = state => {
@@ -107,6 +108,7 @@ class ActionBar extends React.PureComponent {
 
   state = {
     emojiSelectorVisible: false,
+    emojiSelectorFocused: false,
   }
 
   handleReplyClick = () => {
@@ -169,8 +171,27 @@ class ActionBar extends React.PureComponent {
       } else {
         this.props.onOpenUnauthorizedModal();
       }
-      this.setState({ emojiSelectorVisible: false });
+      this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     };
+  }
+
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this.setState({ emojiSelectorFocused: true });
+      const firstEmoji = this.node.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+      firstEmoji.focus();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  handleHotkeyEmoji = () => {
+    const { emojiSelectorVisible } = this.state;
+
+    this.setState({ emojiSelectorVisible: !emojiSelectorVisible });
   }
 
   handleDeleteClick = () => {
@@ -262,13 +283,13 @@ class ActionBar extends React.PureComponent {
   componentDidMount() {
     document.addEventListener('click', e => {
       if (this.node && !this.node.contains(e.target))
-        this.setState({ emojiSelectorVisible: false });
+      this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     });
   }
 
   render() {
     const { status, intl, me, isStaff, isAdmin, allowedEmoji } = this.props;
-    const { emojiSelectorVisible } = this.state;
+    const { emojiSelectorVisible, emojiSelectorFocused } = this.state;
     const ownAccount = status.getIn(['account', 'id']) === me;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -351,6 +372,7 @@ class ActionBar extends React.PureComponent {
 
     let reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
 
+
     return (
       <div className='detailed-status__action-bar'>
         <div className='detailed-status__button'>
@@ -377,7 +399,12 @@ class ActionBar extends React.PureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
           ref={this.setRef}
         >
-          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          <EmojiSelector
+            onReact={this.handleReactClick}
+            visible={emojiSelectorVisible}
+            focused={emojiSelectorFocused}
+            onUnfocus={this.handleEmojiSelectorUnfocus}
+          />
           <IconButton
             className='star-icon'
             animate
@@ -387,6 +414,14 @@ class ActionBar extends React.PureComponent {
             emoji={meEmojiReact}
             text={meEmojiTitle}
             onClick={this.handleLikeButtonClick}
+          />
+          <IconButton
+            className='emoji-picker-expand'
+            animate
+            title={intl.formatMessage(messages.emojiPickerExpand)}
+            icon='caret-down'
+            onKeyUp={this.handleEmojiSelectorExpand}
+            onHover
           />
         </div>
         {shareButton}
