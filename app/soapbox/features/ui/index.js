@@ -34,6 +34,7 @@ import HomePage from 'soapbox/pages/home_page';
 import DefaultPage from 'soapbox/pages/default_page';
 import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
+import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
@@ -194,7 +195,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
-        <WrappedRoute path='/timeline/:instance' exact page={HomePage} component={RemoteTimeline} content={children} />
+        <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />
         <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*

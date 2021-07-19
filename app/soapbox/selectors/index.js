@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
-import { List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { getDomain } from 'soapbox/utils/accounts';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -213,5 +214,28 @@ export const makeGetOtherAccounts = () => {
         const account = accounts.get(id);
         return account ? list.push(account) : list;
       }, ImmutableList());
+  });
+};
+
+const getRemoteInstanceFavicon = (state, host) => (
+  state.get('accounts')
+    .find(account => getDomain(account) === host, null, ImmutableMap())
+    .getIn(['pleroma', 'favicon'])
+);
+
+const getSimplePolicy = (state, host) => (
+  state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap())
+    .map(hosts => hosts.includes(host))
+);
+
+export const makeGetRemoteInstance = () => {
+  return createSelector([
+    getRemoteInstanceFavicon,
+    getSimplePolicy,
+  ], (favicon, federation) => {
+    return ImmutableMap({
+      favicon,
+      federation,
+    });
   });
 };
