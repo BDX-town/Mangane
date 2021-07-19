@@ -26,6 +26,7 @@ const nodeinfoToInstance = nodeinfo => {
 // Set Mastodon defaults, overridden by Pleroma servers
 const initialState = ImmutableMap({
   max_toot_chars: 500,
+  description_limit: 1500,
   poll_limits: ImmutableMap({
     max_expiration: 2629746,
     max_option_chars: 25,
