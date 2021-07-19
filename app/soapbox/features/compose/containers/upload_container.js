@@ -7,6 +7,7 @@ import { List as ImmutableList } from 'immutable';
 
 const mapStateToProps = (state, { id }) => ({
   media: state.getIn(['compose', 'media_attachments']).find(item => item.get('id') === id),
+  descriptionLimit: state.getIn(['instance', 'description_limit']),
 });
 
 const mapDispatchToProps = dispatch => ({

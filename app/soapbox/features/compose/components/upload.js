@@ -92,7 +92,7 @@ class Upload extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, media } = this.props;
+    const { intl, media, descriptionLimit } = this.props;
     const active          = this.state.hovered || this.state.focused;
     const description     = this.state.dirtyDescription || (this.state.dirtyDescription !== '' && media.get('description')) || '';
     const focusX = media.getIn(['meta', 'focus', 'x']);
@@ -125,7 +125,7 @@ class Upload extends ImmutablePureComponent {
                   <textarea
                     placeholder={intl.formatMessage(messages.description)}
                     value={description}
-                    maxLength={420}
+                    maxLength={descriptionLimit}
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
