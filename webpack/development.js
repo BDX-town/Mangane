@@ -23,6 +23,7 @@ const backendEndpoints = [
   '/static',
   '/main/ostatus',
   '/ostatus_subscribe',
+  '/favicon.png',
 ];
 
 const makeProxyConfig = () => {
