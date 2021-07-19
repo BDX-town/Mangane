@@ -1,0 +1,27 @@
+.instance-federation-panel {
+  &__message {
+    margin-bottom: 15px;
+
+    i.fa {
+      padding-right: 10px;
+    }
+  }
+
+  .wtf-panel__content {
+    box-sizing: border-box;
+    padding: 15px;
+  }
+}
+
+.federation-restriction {
+  display: flex;
+  padding: 15px 0;
+
+  &__icon {
+    width: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-right: 10px;
+  }
+}
