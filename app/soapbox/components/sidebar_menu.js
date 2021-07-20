@@ -5,7 +5,7 @@ import { throttle } from 'lodash';
 import { Link, NavLink } from 'react-router-dom';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, defineMessages } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Avatar from './avatar';
 import IconButton from './icon_button';
@@ -37,6 +37,7 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  header: { id: 'tabs_bar.header', defaultMessage: 'Account Info' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
@@ -162,7 +163,9 @@ class SidebarMenu extends ImmutablePureComponent {
         <div className='sidebar-menu'>
 
           <div className='sidebar-menu-header'>
-            <span className='sidebar-menu-header__title'>Account Info</span>
+            <span className='sidebar-menu-header__title'>
+              <FormattedMessage id='tabs_bar.header' defaultMessage='Account Info' />
+            </span>
             <IconButton title='close' onClick={this.handleClose} icon='close' className='sidebar-menu-header__btn' />
           </div>
 
