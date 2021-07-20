@@ -17,9 +17,15 @@ export default class ColumnBackButton extends React.PureComponent {
     }
   }
 
+  handleKeyUp = (e) => {
+    if (e.key === 'Enter') {
+      this.handleClick();
+    }
+  }
+
   render() {
     return (
-      <button onClick={this.handleClick} className='column-back-button'>
+      <button onClick={this.handleClick} onKeyUp={this.handleKeyUp} className='column-back-button'>
         <Icon id='chevron-left' className='column-back-button__icon' fixedWidth />
         <FormattedMessage id='column_back_button.label' defaultMessage='Back' />
       </button>

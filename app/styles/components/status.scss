@@ -434,7 +434,8 @@
     background: var(--brand-color--med);
     transition: 0.2s;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background: hsla(var(--brand-color_hsl), 0.5);
       text-decoration: none;
     }

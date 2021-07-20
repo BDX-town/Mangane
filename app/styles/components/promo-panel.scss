@@ -20,7 +20,8 @@
     border-bottom: 0;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: var(--primary-text-color--faint);
 
     span {

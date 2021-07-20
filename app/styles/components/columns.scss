@@ -217,7 +217,8 @@
   z-index: 3;
   outline: 0;
 
-  &:hover {
+  &:hover,
+  &:focus {
     text-decoration: underline;
   }
 }

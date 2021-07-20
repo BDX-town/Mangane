@@ -36,16 +36,14 @@
   transition: background-color 0.2s ease;
 }
 
-.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track,
+.react-toggle.react-toggle--focus:not(.react-toggle--disabled) .react-toggle-track,
+.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
   background-color: var(--brand-color--hicontrast);
 }
 
 .react-toggle--checked .react-toggle-track {
   background-color: var(--brand-color);
-}
-
-.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
-  background-color: var(--brand-color--hicontrast);
 }
 
 .react-toggle-track-check {

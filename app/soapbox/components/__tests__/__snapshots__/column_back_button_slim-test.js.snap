@@ -7,6 +7,7 @@ exports[`<ColumnBackButtonSlim /> renders correctly 1`] = `
   <div
     className="column-back-button column-back-button--slim-button"
     onClick={[Function]}
+    onKeyUp={[Function]}
     role="button"
     tabIndex="0"
   >
