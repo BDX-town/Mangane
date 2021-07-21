@@ -9,9 +9,16 @@
 yarn-error.log*
 
 /static/packs
+/static/packs-test
 /static/emoji
 /static/index.html
+/static/index.html.gz
+/static/manifest.json
+/static/manifest.json.gz
+/static/report.html
+/static/sw.js
 /static/instance/**
 !/static/instance/**.example
 !/static/instance/**.example.*
 !/static/instance/**.example/**
+/static-test

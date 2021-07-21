@@ -18,11 +18,11 @@ module.exports = {
   ),
 
   output: {
-    filename: 'js/[name]-[chunkhash].js',
-    chunkFilename: 'js/[name]-[chunkhash].chunk.js',
-    hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
+    filename: 'packs/js/[name]-[chunkhash].js',
+    chunkFilename: 'packs/js/[name]-[chunkhash].chunk.js',
+    hotUpdateChunkFilename: 'packs/js/[id]-[hash].hot-update.js',
     path: output.path,
-    publicPath: output.publicPath,
+    publicPath: '/',
   },
 
   optimization: {
@@ -59,8 +59,8 @@ module.exports = {
       },
     ),
     new MiniCssExtractPlugin({
-      filename: 'css/[name]-[contenthash:8].css',
-      chunkFilename: 'css/[name]-[contenthash:8].chunk.css',
+      filename: 'packs/css/[name]-[contenthash:8].css',
+      chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
     }),
     new AssetsManifestPlugin({
       integrity: false,
@@ -90,16 +90,14 @@ module.exports = {
         useShortDoctype: true,
       },
     }),
-    new HtmlWebpackHarddiskPlugin({
-      outputPath: join(__dirname, '..', 'static'),
-    }),
+    new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),
-        to: join(__dirname, '../static/emoji'),
+        to: join(output.path, 'emoji'),
       }, {
         from: join(__dirname, '../node_modules/emoji-datasource/img/twitter/sheets/32.png'),
-        to: join(__dirname, '../static/emoji/sheet_13.png'),
+        to: join(output.path, 'emoji/sheet_13.png'),
       }],
       options: {
         concurrency: 100,
