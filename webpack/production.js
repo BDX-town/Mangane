@@ -6,7 +6,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('offline-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const { output } = require('./configuration');
+
 const sharedConfig = require('./shared');
 
 module.exports = merge(sharedConfig, {
@@ -44,7 +44,6 @@ module.exports = merge(sharedConfig, {
       logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
     }),
     new OfflinePlugin({
-      publicPath: output.publicPath, // sw.js must be served from the root to avoid scope issues
       caches: {
         main: [':rest:'],
         additional: [':externals:'],
@@ -64,6 +63,15 @@ module.exports = merge(sharedConfig, {
       externals: [
         '/emoji/1f602.svg', // used for emoji picker dropdown
         '/emoji/sheet_13.png', // used in emoji-mart
+
+        // Default emoji reacts
+        '/emoji/1f44d.svg', // Thumbs up
+        '/emoji/2764.svg',  // Heart
+        '/emoji/1f606.svg', // Laughing
+        '/emoji/1f62e.svg', // Surprised
+        '/emoji/1f622.svg', // Crying
+        '/emoji/1f629.svg', // Weary
+        '/emoji/1f621.svg', // Angry (Spinster)
       ],
       excludes: [
         '**/*.gz',
@@ -77,10 +85,8 @@ module.exports = merge(sharedConfig, {
         '**/*.woff',
       ],
       // ServiceWorker: {
-      //   entry: `imports-loader?ATTACHMENT_HOST=>${encodeURIComponent(JSON.stringify(attachmentHost))}!${encodeURI(path.join(__dirname, '../app/soapbox/service_worker/entry.js'))}`,
+      //   entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
       //   cacheName: 'soapbox',
-      //   output: '../assets/sw.js',
-      //   publicPath: '/sw.js',
       //   minify: true,
       // },
     }),

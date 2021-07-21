@@ -1,10 +1,8 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
-const { resolve } = require('path');
 const { merge } = require('webpack-merge');
 const sharedConfig = require('./shared');
-const { settings, output } = require('./configuration');
 
 const watchOptions = {};
 
@@ -72,11 +70,9 @@ module.exports = merge(sharedConfig, {
     port: 3036,
     https: false,
     hot: false,
-    contentBase: resolve(__dirname, '..', settings.public_root_path),
     inline: true,
     useLocalIp: false,
     public: 'localhost:3036',
-    publicPath: output.publicPath,
     historyApiFallback: {
       disableDotRule: true,
     },

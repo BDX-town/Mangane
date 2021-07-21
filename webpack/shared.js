@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
-const { env, settings, output } = require('./configuration');
+const { env, settings, packsPath } = require('./configuration');
 const rules = require('./rules');
 
 module.exports = {
@@ -18,11 +18,11 @@ module.exports = {
   ),
 
   output: {
-    filename: 'js/[name]-[chunkhash].js',
-    chunkFilename: 'js/[name]-[chunkhash].chunk.js',
-    hotUpdateChunkFilename: 'js/[id]-[hash].hot-update.js',
-    path: output.path,
-    publicPath: output.publicPath,
+    filename: packsPath('js/[name]-[chunkhash].js'),
+    chunkFilename: packsPath('js/[name]-[chunkhash].chunk.js'),
+    hotUpdateChunkFilename: packsPath('js/[id]-[hash].hot-update.js'),
+    path: join(__dirname, '..', 'static'),
+    publicPath: '/',
   },
 
   optimization: {
@@ -59,8 +59,8 @@ module.exports = {
       },
     ),
     new MiniCssExtractPlugin({
-      filename: 'css/[name]-[contenthash:8].css',
-      chunkFilename: 'css/[name]-[contenthash:8].chunk.css',
+      filename: packsPath('css/[name]-[contenthash:8].css'),
+      chunkFilename: packsPath('css/[name]-[contenthash:8].chunk.css'),
     }),
     new AssetsManifestPlugin({
       integrity: false,
@@ -90,9 +90,7 @@ module.exports = {
         useShortDoctype: true,
       },
     }),
-    new HtmlWebpackHarddiskPlugin({
-      outputPath: join(__dirname, '..', 'static'),
-    }),
+    new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),

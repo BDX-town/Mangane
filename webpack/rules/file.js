@@ -1,5 +1,5 @@
 const { join } = require('path');
-const { settings } = require('../configuration');
+const { settings, packsPath } = require('../configuration');
 
 module.exports = {
   test: new RegExp(`(${settings.static_assets_extensions.join('|')})$`, 'i'),
@@ -9,9 +9,9 @@ module.exports = {
       options: {
         name(file) {
           if (file.includes(settings.source_path)) {
-            return 'media/[path][name]-[hash].[ext]';
+            return packsPath('media/[path][name]-[hash].[ext]');
           }
-          return 'media/[folder]/[name]-[hash:8].[ext]';
+          return packsPath('media/[folder]/[name]-[hash:8].[ext]');
         },
         context: join(settings.source_path),
       },
