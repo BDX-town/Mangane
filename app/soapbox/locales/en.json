@@ -596,7 +596,7 @@
   "soapbox_config.fields.theme_label": "Default theme",
   "soapbox_config.hints.home_footer_fields": "You can have custom defined links displayed on the footer of your static pages",
   "soapbox_config.hints.logo": "SVG. At most 2 MB. Will be displayed to 50px height, maintaining aspect ratio",
-  "soapbox_config.hints.promo_panel_fields": "You can have custom defined links displayed on the left panel of the timelines page.",
+  "soapbox_config.hints.promo_panel_fields": "You can have custom defined links displayed on the right panel of the timelines page.",
   "soapbox_config.hints.promo_panel_icons": "{ link }",
   "soapbox_config.home_footer.meta_fields.label_placeholder": "Label",
   "soapbox_config.home_footer.meta_fields.url_placeholder": "URL",
