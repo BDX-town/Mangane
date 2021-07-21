@@ -46,9 +46,9 @@ export default class StatusList extends ImmutablePureComponent {
 
   getCurrentStatusIndex = (id, featured) => {
     if (featured) {
-      return this.props.featuredStatusIds.indexOf(id);
+      return this.props.featuredStatusIds.keySeq().findIndex(key => key === id);
     } else {
-      return this.props.statusIds.indexOf(id) + this.getFeaturedStatusCount();
+      return this.props.statusIds.keySeq().findIndex(key => key === id) + this.getFeaturedStatusCount();
     }
   }
 

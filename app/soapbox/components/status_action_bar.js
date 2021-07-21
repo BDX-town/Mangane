@@ -91,6 +91,10 @@ class StatusActionBar extends ImmutablePureComponent {
     isStaff: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     allowedEmoji: ImmutablePropTypes.list,
+    emojiSelectorFocused: PropTypes.bool,
+    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
+    emojiSelectorFocused: PropTypes.bool,
+    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -106,6 +110,7 @@ class StatusActionBar extends ImmutablePureComponent {
   updateOnProps = [
     'status',
     'withDismiss',
+    'emojiSelectorFocused',
   ]
 
   handleReplyClick = () => {
@@ -359,7 +364,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, intl, allowedEmoji } = this.props;
+    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -422,7 +427,12 @@ class StatusActionBar extends ImmutablePureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
           ref={this.setRef}
         >
-          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          <EmojiSelector
+            onReact={this.handleReactClick}
+            visible={emojiSelectorVisible}
+            focused={emojiSelectorFocused}
+            onUnfocus={handleEmojiSelectorUnfocus}
+          />
           <IconButton
             className='status__action-bar-button star-icon'
             animate

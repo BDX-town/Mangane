@@ -677,3 +677,22 @@ a.status-card.compact:hover {
     border-radius: 4px;
   }
 }
+
+.status__action-bar,
+.detailed-status__action-bar {
+  .emoji-picker-expand {
+    display: none;
+  }
+
+  &:focus-within {
+    .emoji-picker-expand {
+      display: inline-flex;
+      width: 0;
+      overflow: hidden;
+
+      &:focus-within {
+        width: unset;
+      }
+    }
+  }
+}

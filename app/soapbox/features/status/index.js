@@ -146,6 +146,7 @@ class Status extends ImmutablePureComponent {
     fullscreen: false,
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     loadedStatusId: undefined,
+    emojiSelectorFocused: false,
   };
 
   componentDidMount() {
@@ -363,6 +364,10 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  handleHotkeyReact = () => {
+    this._expandEmojiSelector();
+  }
+
   handleMoveUp = id => {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
@@ -396,6 +401,23 @@ class Status extends ImmutablePureComponent {
       }
     }
   }
+
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this._expandEmojiSelector();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  _expandEmojiSelector = () => {
+    this.setState({ emojiSelectorFocused: true });
+    const firstEmoji = this.status.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji.focus();
+  };
 
   _selectChild(index, align_top) {
     const container = this.node;
@@ -443,6 +465,10 @@ class Status extends ImmutablePureComponent {
 
   setRef = c => {
     this.node = c;
+  }
+
+  setStatusRef = c => {
+    this.status = c;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -510,6 +536,7 @@ class Status extends ImmutablePureComponent {
       openProfile: this.handleHotkeyOpenProfile,
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
+      react: this.handleHotkeyReact,
     };
 
     return (
@@ -537,7 +564,7 @@ class Status extends ImmutablePureComponent {
           {ancestors}
 
           <HotKeys handlers={handlers}>
-            <div className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+            <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
               <DetailedStatus
                 status={status}
                 onOpenVideo={this.handleOpenVideo}
@@ -569,6 +596,9 @@ class Status extends ImmutablePureComponent {
                 onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
                 onDeleteStatus={this.handleDeleteStatus}
                 allowedEmoji={this.props.allowedEmoji}
+                emojiSelectorFocused={this.state.emojiSelectorFocused}
+                handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
               />
             </div>
           </HotKeys>

@@ -130,6 +130,7 @@ const keyMap = {
   forceNew: 'option+n',
   reply: 'r',
   favourite: 'f',
+  react: 'e',
   boost: 'b',
   mention: 'm',
   open: ['enter', 'o'],
