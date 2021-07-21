@@ -3257,7 +3257,7 @@
         "id": "soapbox_config.fields.promo_panel_fields_label"
       },
       {
-        "defaultMessage": "You can have custom defined links displayed on the left panel of the timelines page.",
+        "defaultMessage": "You can have custom defined links displayed on the right panel of the timelines page.",
         "id": "soapbox_config.hints.promo_panel_fields"
       },
       {

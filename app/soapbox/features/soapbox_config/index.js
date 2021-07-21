@@ -275,7 +275,7 @@ class SoapboxConfig extends ImmutablePureComponent {
               <div className='input with_block_label popup'>
                 <label><FormattedMessage id='soapbox_config.fields.promo_panel_fields_label' defaultMessage='Promo panel items' /></label>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the left panel of the timelines page.' />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />
                 </span>
                 <span className='hint'>
                   <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
