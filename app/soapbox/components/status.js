@@ -108,6 +108,7 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
+    emojiSelectorFocused: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -255,6 +256,27 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  handleHotkeyReact = () => {
+    this._expandEmojiSelector();
+  }
+
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this._expandEmojiSelector();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  _expandEmojiSelector = () => {
+    this.setState({ emojiSelectorFocused: true });
+    const firstEmoji = this.node.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji.focus();
+  };
+
   _properStatus() {
     const { status } = this.props;
 
@@ -277,6 +299,7 @@ class Status extends ImmutablePureComponent {
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
 
     let { status, account, ...other } = this.props;
+
 
     if (status === null) {
       return null;
@@ -443,6 +466,7 @@ class Status extends ImmutablePureComponent {
       moveDown: this.handleHotkeyMoveDown,
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
+      react: this.handleHotkeyReact,
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
@@ -506,7 +530,13 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
 
-            <StatusActionBar status={status} account={account} {...other} />
+            <StatusActionBar
+              status={status}
+              account={account}
+              emojiSelectorFocused={this.state.emojiSelectorFocused}
+              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+              {...other}
+            />
           </div>
         </div>
       </HotKeys>

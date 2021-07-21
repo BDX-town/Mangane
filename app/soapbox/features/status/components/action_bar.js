@@ -100,6 +100,9 @@ class ActionBar extends React.PureComponent {
     isStaff: PropTypes.bool.isRequired,
     isAdmin: PropTypes.bool.isRequired,
     allowedEmoji: ImmutablePropTypes.list,
+    emojiSelectorFocused: PropTypes.bool,
+    handleEmojiSelectorExpand: PropTypes.func.isRequired,
+    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -173,19 +176,6 @@ class ActionBar extends React.PureComponent {
       }
       this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     };
-  }
-
-  handleEmojiSelectorExpand = e => {
-    if (e.key === 'Enter') {
-      this.setState({ emojiSelectorFocused: true });
-      const firstEmoji = this.node.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
-      firstEmoji.focus();
-    }
-    e.preventDefault();
-  }
-
-  handleEmojiSelectorUnfocus = () => {
-    this.setState({ emojiSelectorFocused: false });
   }
 
   handleHotkeyEmoji = () => {
@@ -283,13 +273,13 @@ class ActionBar extends React.PureComponent {
   componentDidMount() {
     document.addEventListener('click', e => {
       if (this.node && !this.node.contains(e.target))
-      this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
+        this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     });
   }
 
   render() {
-    const { status, intl, me, isStaff, isAdmin, allowedEmoji } = this.props;
-    const { emojiSelectorVisible, emojiSelectorFocused } = this.state;
+    const { status, intl, me, isStaff, isAdmin, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorExpand, handleEmojiSelectorUnfocus } = this.props;
+    const { emojiSelectorVisible } = this.state;
     const ownAccount = status.getIn(['account', 'id']) === me;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -403,7 +393,7 @@ class ActionBar extends React.PureComponent {
             onReact={this.handleReactClick}
             visible={emojiSelectorVisible}
             focused={emojiSelectorFocused}
-            onUnfocus={this.handleEmojiSelectorUnfocus}
+            onUnfocus={handleEmojiSelectorUnfocus}
           />
           <IconButton
             className='star-icon'
@@ -420,7 +410,7 @@ class ActionBar extends React.PureComponent {
             animate
             title={intl.formatMessage(messages.emojiPickerExpand)}
             icon='caret-down'
-            onKeyUp={this.handleEmojiSelectorExpand}
+            onKeyUp={handleEmojiSelectorExpand}
             onHover
           />
         </div>
@@ -435,4 +425,5 @@ class ActionBar extends React.PureComponent {
 
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionBar));
+export default injectIntl(
+  connect(mapStateToProps, mapDispatchToProps)(ActionBar));

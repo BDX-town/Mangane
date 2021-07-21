@@ -50,6 +50,10 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></td>
               </tr>
               <tr>
+                <td><kbd>e</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.react' defaultMessage='to react' /></td>
+              </tr>
+              <tr>
                 <td><kbd>b</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.boost' defaultMessage='to repost' /></td>
               </tr>
