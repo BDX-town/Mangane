@@ -21,3 +21,4 @@ yarn-error.log*
 !/static/instance/**.example
 !/static/instance/**.example.*
 !/static/instance/**.example/**
+/static-test
