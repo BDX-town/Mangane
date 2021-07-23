@@ -14,7 +14,7 @@ export const buildStatus = (state, scheduledStatus) => {
     application: null,
     bookmarked: false,
     card: null,
-    content: params.get('text'),
+    content: params.get('text', '').replaceAll('\n', '<br>'),
     created_at: params.get('scheduled_at'),
     emojis: [],
     favourited: false,
