@@ -50,6 +50,7 @@ module.exports = merge(sharedConfig, {
         optional: [
           '**/locale_*.js', // don't fetch every locale; the user only needs one
           '**/*_polyfills-*.js', // the user may not need polyfills
+          '**/*.chunk.js', // only cache chunks when needed
           '**/*.woff2', // the user may have system-fonts enabled
           // images/audio can be cached on-demand
           '**/*.png',
@@ -83,6 +84,8 @@ module.exports = merge(sharedConfig, {
         '**/*.ttf',
         '**/*-webfont-*.svg',
         '**/*.woff',
+        // Don't cache index.html
+        'index.html',
       ],
       // ServiceWorker: {
       //   entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
