@@ -245,3 +245,7 @@ export function ScheduledStatuses() {
 export function UserIndex() {
   return import(/* webpackChunkName: "features/admin/user_index" */'../../admin/user_index');
 }
+
+export function FederationRestrictions() {
+  return import(/* webpackChunkName: "features/federation_restrictions" */'../../federation_restrictions');
+}
