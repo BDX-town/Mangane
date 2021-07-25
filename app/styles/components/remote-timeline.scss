@@ -1,15 +1,17 @@
 .instance-federation-panel {
-  &__message {
-    margin-bottom: 15px;
-
-    i.fa {
-      padding-right: 10px;
-    }
-  }
-
   .wtf-panel__content {
     box-sizing: border-box;
     padding: 15px;
+  }
+
+  .instance-restrictions {
+    &__message {
+      margin-bottom: 15px;
+
+      i.fa {
+        padding-right: 10px;
+      }
+    }
   }
 }
 
