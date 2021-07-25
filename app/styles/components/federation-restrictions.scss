@@ -1,0 +1,11 @@
+.federation-restrictions {
+  padding: 15px;
+}
+
+.restricted-instance {
+  padding: 10px 0;
+
+  &--reject {
+    text-decoration: line-through;
+  }
+}

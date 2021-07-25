@@ -230,10 +230,12 @@ const getSimplePolicy = (state, host) => (
 
 export const makeGetRemoteInstance = () => {
   return createSelector([
+    (state, host) => host,
     getRemoteInstanceFavicon,
     getSimplePolicy,
-  ], (favicon, federation) => {
+  ], (host, favicon, federation) => {
     return ImmutableMap({
+      host,
       favicon,
       federation,
     });

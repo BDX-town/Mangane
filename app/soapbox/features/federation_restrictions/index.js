@@ -6,6 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Column from '../ui/components/column';
 import { createSelector } from 'reselect';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import RestrictedInstance from './components/restricted_instance';
 
 const getHosts = createSelector([
   state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
@@ -39,9 +40,7 @@ class FederationRestrictions extends ImmutablePureComponent {
     return (
       <Column icon='gavel' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <div className='federation-restrictions'>
-          <ul>
-            {hosts.map(host => <li key={host}>{host}</li>)}
-          </ul>
+          {hosts.map(host => <RestrictedInstance key={host} host={host} />)}
         </div>
       </Column>
     );
