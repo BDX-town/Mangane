@@ -15,7 +15,7 @@
     "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues"
   },
   "scripts": {
-    "start": "npx webpack-dev-server --config webpack",
+    "start": "npx webpack-dev-server --config webpack --host 0.0.0.0",
     "dev": "${npm_execpath} run start",
     "build": "npx webpack --config webpack",
     "manage:translations": "node ./webpack/translationRunner.js",
