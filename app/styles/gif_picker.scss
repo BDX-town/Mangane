@@ -1,0 +1,35 @@
+.gif-picker-dropdown__menu {
+  position: absolute;
+  display: inline-block;
+
+  @include standard-panel;
+  background: var(--foreground-color);
+  position: absolute;
+  margin-top: 5px;
+  z-index: 20000;
+
+  padding: 10px;
+
+
+  .gif-picker-dropdown__menu__search {
+    display: flex;
+
+    input {
+      font-size: 14px;
+      font-weight: 400;
+      padding: 7px 9px;
+      display: block;
+      background: var(--background-color);
+      color: var(--primary-text-color);
+      border: 1px solid var(--brand-color--faint);
+      border-radius: 999999px;
+    }
+
+    .button {
+      margin-left: 10px;
+      .fa {
+        margin-right: 0;
+      }
+    }
+  }
+}
