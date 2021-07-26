@@ -8,6 +8,8 @@ import { createSelector } from 'reselect';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import RestrictedInstance from './components/restricted_instance';
 import Accordion from 'soapbox/features/ui/components/accordion';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 
 const getHosts = createSelector([
   state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
@@ -22,11 +24,14 @@ const messages = defineMessages({
   heading: { id: 'column.federation_restrictions', defaultMessage: 'Federation Restrictions' },
   boxTitle: { id: 'federation_restrictions.explanation_box.title', defaultMessage: 'Instance-specific policies' },
   boxMessage: { id: 'federation_restrictions.explanation_box.message', defaultMessage: 'Normally servers on the Fediverse can communicate freely. {siteTitle} has imposed restrictions on the following servers.' },
+  emptyMessage: { id: 'federation_restrictions.empty_message', defaultMessage: '{siteTitle} has not restricted any instances.' },
+  notDisclosed: { id: 'federation_restrictions.not_disclosed_message', defaultMessage: '{siteTitle} does not disclose federation restrictions through the API.' },
 });
 
 const mapStateToProps = state => ({
   siteTitle: state.getIn(['instance', 'title']),
   hosts: getHosts(state),
+  disclosed: federationRestrictionsDisclosed(state),
 });
 
 export default @connect(mapStateToProps)
@@ -35,6 +40,7 @@ class FederationRestrictions extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    disclosed: PropTypes.bool,
   };
 
   state = {
@@ -46,8 +52,10 @@ class FederationRestrictions extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, hosts, siteTitle } = this.props;
+    const { intl, hosts, siteTitle, disclosed } = this.props;
     const { explanationBoxExpanded } = this.state;
+
+    const emptyMessage = disclosed ? messages.emptyMessage : messages.notDisclosed;
 
     return (
       <Column icon='gavel' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -59,11 +67,12 @@ class FederationRestrictions extends ImmutablePureComponent {
           >
             {intl.formatMessage(messages.boxMessage, { siteTitle })}
           </Accordion>
-
         </div>
 
         <div className='federation-restrictions'>
-          {hosts.map(host => <RestrictedInstance key={host} host={host} />)}
+          <ScrollableList emptyMessage={intl.formatMessage(emptyMessage, { siteTitle })}>
+            {hosts.map(host => <RestrictedInstance key={host} host={host} />)}
+          </ScrollableList>
         </div>
       </Column>
     );
