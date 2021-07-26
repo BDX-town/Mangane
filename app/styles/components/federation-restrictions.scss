@@ -1,5 +1,13 @@
 .federation-restrictions {
-  padding: 15px;
+  padding-top: 15px;
+
+  .slist .item-list > article {
+    padding: 0 20px;
+
+    &:last-child {
+      padding-bottom: 15px;
+    }
+  }
 }
 
 .restricted-instance {

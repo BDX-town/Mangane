@@ -8,6 +8,7 @@ import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
 import InstanceInfoPanel from 'soapbox/features/ui/components/instance_info_panel';
+import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 
 const mapStateToProps = state => {
   const features = getFeatures(state.get('instance'));
@@ -15,6 +16,7 @@ const mapStateToProps = state => {
   return {
     showTrendsPanel: features.trends,
     showWhoToFollowPanel: features.suggestions,
+    disclosed: federationRestrictionsDisclosed(state),
   };
 };
 
@@ -22,7 +24,7 @@ export default @connect(mapStateToProps)
 class RemoteInstancePage extends ImmutablePureComponent {
 
   render() {
-    const { children, showTrendsPanel, showWhoToFollowPanel, params: { instance: host } } = this.props;
+    const { children, showTrendsPanel, showWhoToFollowPanel, params: { instance: host }, disclosed } = this.props;
 
     return (
       <div className='page'>
@@ -31,7 +33,7 @@ class RemoteInstancePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <InstanceInfoPanel host={host} />
+                {disclosed && <InstanceInfoPanel host={host} />}
               </div>
             </div>
 
