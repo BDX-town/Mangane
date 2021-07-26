@@ -5,13 +5,16 @@ import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel
 import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
 import PromoPanel from 'soapbox/features/ui/components/promo_panel';
 import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
+import SignUpPanel from 'soapbox/features/ui/components/sign_up_panel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const features = getFeatures(state.get('instance'));
 
   return {
+    me,
     showTrendsPanel: features.trends,
     showWhoToFollowPanel: features.suggestions,
   };
@@ -21,7 +24,7 @@ export default @connect(mapStateToProps)
 class DefaultPage extends ImmutablePureComponent {
 
   render() {
-    const { children, showTrendsPanel, showWhoToFollowPanel } = this.props;
+    const { me, children, showTrendsPanel, showWhoToFollowPanel } = this.props;
 
     return (
       <div className='page'>
@@ -42,7 +45,7 @@ class DefaultPage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
                 {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                <FeaturesPanel key='features-panel' />
+                {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 <PromoPanel key='promo-panel' />
                 <LinkFooter key='link-footer' />
               </div>

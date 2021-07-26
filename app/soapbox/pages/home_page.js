@@ -11,6 +11,7 @@ import FundingPanel from 'soapbox/features/ui/components/funding_panel';
 import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
+import SignUpPanel from 'soapbox/features/ui/components/sign_up_panel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
@@ -79,7 +80,7 @@ class HomePage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
                 {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                <FeaturesPanel key='features-panel' />
+                {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 <PromoPanel key='promo-panel' />
                 <LinkFooter key='link-footer' />
               </div>
