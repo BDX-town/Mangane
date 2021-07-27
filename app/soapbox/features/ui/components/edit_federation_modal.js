@@ -7,6 +7,8 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { SimpleForm, Checkbox } from 'soapbox/features/forms';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
 import { Map as ImmutableMap } from 'immutable';
+import { updateMrf } from 'soapbox/actions/mrf';
+import snackbar from 'soapbox/actions/snackbar';
 
 const getRemoteInstance = makeGetRemoteInstance();
 
@@ -17,6 +19,7 @@ const messages = defineMessages({
   unlisted: { id: 'edit_federation.unlisted', defaultMessage: 'Force posts unlisted' },
   followersOnly: { id: 'edit_federation.followers_only', defaultMessage: 'Hide posts except to followers' },
   save: { id: 'edit_federation.save', defaultMessage: 'Save' },
+  success: { id: 'edit_federation.success', defaultMessage: '{host} federation was updated' },
 });
 
 const mapStateToProps = (state, { host }) => {
@@ -61,7 +64,14 @@ class EditFederationModal extends ImmutablePureComponent {
   }
 
   handleSubmit = e => {
-    // TODO
+    const { intl, dispatch, host, onClose } = this.props;
+    const { data } = this.state;
+
+    dispatch(updateMrf(host, data))
+      .then(() => dispatch(snackbar.success(intl.formatMessage(messages.success, { host }))))
+      .catch(() => {});
+
+    onClose();
   }
 
   render() {
