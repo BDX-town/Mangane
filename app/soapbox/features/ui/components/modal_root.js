@@ -15,6 +15,7 @@ import HotkeysModal from './hotkeys_modal';
 import ComposeModal from './compose_modal';
 import UnauthorizedModal from './unauthorized_modal';
 import CryptoDonateModal from './crypto_donate_modal';
+import EditFederationModal from './edit_federation_modal';
 
 import {
   MuteModal,
@@ -41,6 +42,7 @@ const MODAL_COMPONENTS = {
   'COMPOSE': () => Promise.resolve({ default: ComposeModal }),
   'UNAUTHORIZED': () => Promise.resolve({ default: UnauthorizedModal }),
   'CRYPTO_DONATE': () => Promise.resolve({ default: CryptoDonateModal }),
+  'EDIT_FEDERATION': () => Promise.resolve({ default: EditFederationModal }),
 };
 
 export default class ModalRoot extends React.PureComponent {
