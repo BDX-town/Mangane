@@ -450,6 +450,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
        }
      ],
      systemFont: false,
+     underlineLinks: false,
      home: {
        regex: {
          body: ''

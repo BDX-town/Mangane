@@ -460,6 +460,15 @@
   }
 }
 
+.underline-links {
+  .status__content,
+  .reply-indicator__content {
+    a {
+      text-decoration: underline;
+    }
+  }
+}
+
 .focusable {
   &:focus {
     outline: 0;

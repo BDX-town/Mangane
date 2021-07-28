@@ -222,6 +222,10 @@ class Preferences extends ImmutablePureComponent {
               path={['reduceMotion']}
             />
             <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}
+              path={['underlineLinks']}
+            />
+            <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}
               path={['systemFont']}
             />
