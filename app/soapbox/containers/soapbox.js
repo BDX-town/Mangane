@@ -48,6 +48,7 @@ const mapStateToProps = (state) => {
     showIntroduction,
     me,
     reduceMotion: settings.get('reduceMotion'),
+    underlineLinks: settings.get('underlineLinks'),
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
@@ -66,6 +67,7 @@ class SoapboxMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
     reduceMotion: PropTypes.bool,
+    underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
@@ -117,6 +119,7 @@ class SoapboxMount extends React.PureComponent {
     const bodyClass = classNames('app-body', `theme-mode-${this.props.themeMode}`, {
       'system-font': this.props.systemFont,
       'no-reduce-motion': !this.props.reduceMotion,
+      'underline-links': this.props.underlineLinks,
       'dyslexic': this.props.dyslexicFont,
       'demetricator': this.props.demetricator,
       'halloween': this.props.halloween,

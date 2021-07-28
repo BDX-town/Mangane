@@ -544,6 +544,7 @@
   "preferences.fields.privacy_label": "Prywatność wpisów",
   "preferences.fields.reduce_motion_label": "Ogranicz ruch w animacjach",
   "preferences.fields.system_font_label": "Używaj domyślnej czcionki systemu",
+  "preferences.fields.underline_links_label": "Zawsze podkreślaj odnośniki we wpisach",
   "preferences.fields.unfollow_modal_label": "Pokazuj prośbę o potwierdzenie przed cofnięciem obserwacji",
   "preferences.hints.content_type_markdown": "Ostrzeżenie: eksperymentalne!",
   "preferences.hints.demetricator": "Ogranicz uzależnienie od mediów społecznościowych ukrywając wszystkie liczby ze strony.",
