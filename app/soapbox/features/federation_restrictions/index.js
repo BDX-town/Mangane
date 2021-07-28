@@ -4,21 +4,11 @@ import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Column from '../ui/components/column';
-import { createSelector } from 'reselect';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import RestrictedInstance from './components/restricted_instance';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
-
-const getHosts = createSelector([
-  state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
-], (simplePolicy) => {
-  return simplePolicy
-    .deleteAll(['accept', 'reject_deletes', 'report_removal'])
-    .reduce((acc, hosts) => acc.union(hosts), ImmutableOrderedSet())
-    .sort();
-});
+import { makeGetHosts } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.federation_restrictions', defaultMessage: 'Federation Restrictions' },
@@ -27,6 +17,8 @@ const messages = defineMessages({
   emptyMessage: { id: 'federation_restrictions.empty_message', defaultMessage: '{siteTitle} has not restricted any instances.' },
   notDisclosed: { id: 'federation_restrictions.not_disclosed_message', defaultMessage: '{siteTitle} does not disclose federation restrictions through the API.' },
 });
+
+const getHosts = makeGetHosts();
 
 const mapStateToProps = state => ({
   siteTitle: state.getIn(['instance', 'title']),

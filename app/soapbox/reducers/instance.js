@@ -51,15 +51,23 @@ const getConfigValue = (instanceConfig, key) => {
 const importConfigs = (state, configs) => {
   // FIXME: This is pretty hacked together. Need to make a cleaner map.
   const config = ConfigDB.find(configs, ':pleroma', ':instance');
-  if (!config) return state;
-  const value = config.get('value', ImmutableList());
+  const simplePolicy = ConfigDB.toSimplePolicy(configs);
+
+  if (!config && !simplePolicy) return state;
 
   return state.withMutations(state => {
-    const registrationsOpen = getConfigValue(value, ':registrations_open');
-    const approvalRequired = getConfigValue(value, ':account_approval_required');
+    if (config) {
+      const value = config.get('value', ImmutableList());
+      const registrationsOpen = getConfigValue(value, ':registrations_open');
+      const approvalRequired = getConfigValue(value, ':account_approval_required');
 
-    state.update('registrations', c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
-    state.update('approval_required', c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
+      state.update('registrations', c => typeof registrationsOpen === 'boolean' ? registrationsOpen : c);
+      state.update('approval_required', c => typeof approvalRequired === 'boolean' ? approvalRequired : c);
+    }
+
+    if (simplePolicy) {
+      state.setIn(['pleroma', 'metadata', 'federation', 'mrf_simple'], simplePolicy);
+    }
   });
 };
 

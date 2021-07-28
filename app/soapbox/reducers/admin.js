@@ -1,5 +1,6 @@
 import {
   ADMIN_CONFIG_FETCH_SUCCESS,
+  ADMIN_CONFIG_UPDATE_SUCCESS,
   ADMIN_REPORTS_FETCH_SUCCESS,
   ADMIN_REPORTS_PATCH_REQUEST,
   ADMIN_REPORTS_PATCH_SUCCESS,
@@ -127,6 +128,7 @@ function handleReportDiffs(state, reports) {
 export default function admin(state = initialState, action) {
   switch(action.type) {
   case ADMIN_CONFIG_FETCH_SUCCESS:
+  case ADMIN_CONFIG_UPDATE_SUCCESS:
     return state.set('configs', fromJS(action.configs));
   case ADMIN_REPORTS_FETCH_SUCCESS:
     return importReports(state, action.reports);

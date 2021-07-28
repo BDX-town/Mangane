@@ -1,6 +1,11 @@
 import { createSelector } from 'reselect';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+} from 'immutable';
 import { getDomain } from 'soapbox/utils/accounts';
+import ConfigDB from 'soapbox/utils/config_db';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -217,22 +222,38 @@ export const makeGetOtherAccounts = () => {
   });
 };
 
+const getSimplePolicy = createSelector([
+  state => state.getIn(['admin', 'configs'], ImmutableMap()),
+  state => state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap()),
+], (configs, instancePolicy) => {
+  return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
+});
+
 const getRemoteInstanceFavicon = (state, host) => (
   state.get('accounts')
     .find(account => getDomain(account) === host, null, ImmutableMap())
     .getIn(['pleroma', 'favicon'])
 );
 
-const getSimplePolicy = (state, host) => (
-  state.getIn(['instance', 'pleroma', 'metadata', 'federation', 'mrf_simple'], ImmutableMap())
+const getRemoteInstanceFederation = (state, host) => (
+  getSimplePolicy(state)
     .map(hosts => hosts.includes(host))
 );
+
+export const makeGetHosts = () => {
+  return createSelector([getSimplePolicy], (simplePolicy) => {
+    return simplePolicy
+      .deleteAll(['accept', 'reject_deletes', 'report_removal'])
+      .reduce((acc, hosts) => acc.union(hosts), ImmutableOrderedSet())
+      .sort();
+  });
+};
 
 export const makeGetRemoteInstance = () => {
   return createSelector([
     (state, host) => host,
     getRemoteInstanceFavicon,
-    getSimplePolicy,
+    getRemoteInstanceFederation,
   ], (host, favicon, federation) => {
     return ImmutableMap({
       host,
