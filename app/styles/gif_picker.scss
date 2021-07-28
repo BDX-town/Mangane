@@ -1,4 +1,5 @@
 .gif-picker-dropdown__menu {
+  width: 270px;
   position: absolute;
   display: inline-block;
 
@@ -15,6 +16,7 @@
     display: flex;
 
     input {
+      width: 100%;
       font-size: 14px;
       font-weight: 400;
       padding: 7px 9px;
@@ -31,5 +33,26 @@
         margin-right: 0;
       }
     }
+  }
+
+  .gif-picker-dropdown__menu__gif {
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: auto;
+  }
+
+  .gif-picker-dropdown__menu__actions {
+    display: flex;
+    .button:not(:last-of-type) {
+      margin-right: 5px;
+    }
+
+    .gif-picker-dropdown__menu__actions__choose {
+      width: 100%;
+    }
+
   }
 }

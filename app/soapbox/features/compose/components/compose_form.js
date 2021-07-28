@@ -118,6 +118,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
       document.querySelector('.modal-root__overlay'),
+      document.querySelector('.gif-picker-dropdown__menu'),
     ].some(element => element && element.contains(e.target));
   }
 
@@ -207,6 +208,11 @@ export default class ComposeForm extends ImmutablePureComponent {
     const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
+  }
+
+  handleGIFPick = (url) => {
+    const { text } = this.props;
+    this.props.onChange(`${text} ${url} `);
   }
 
   focusSpoilerInput = () => {
@@ -350,7 +356,7 @@ export default class ComposeForm extends ImmutablePureComponent {
             <div className='compose-form__buttons'>
               <UploadButtonContainer />
               <PollButtonContainer />
-              <GIFPickerDropdownContainer />
+              <GIFPickerDropdownContainer handleGIFPick={this.handleGIFPick} />
               <PrivacyDropdownContainer />
               <ScheduleButtonContainer />
               <SpoilerButtonContainer />
