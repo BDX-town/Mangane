@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import { SimpleForm, Checkbox } from 'soapbox/features/forms';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, is } from 'immutable';
 import { updateMrf } from 'soapbox/actions/mrf';
 import snackbar from 'soapbox/actions/snackbar';
 
@@ -41,9 +41,21 @@ class EditFederationModal extends ImmutablePureComponent {
     data: ImmutableMap(),
   }
 
-  componentDidMount() {
+  hydrateState = () => {
     const { remoteInstance } = this.props;
     this.setState({ data: remoteInstance.get('federation') });
+  }
+
+  componentDidMount() {
+    this.hydrateState();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { remoteInstance } = this.props;
+
+    if (!is(prevProps.remoteInstance, remoteInstance)) {
+      this.hydrateState();
+    }
   }
 
   handleDataChange = key => {

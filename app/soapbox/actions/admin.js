@@ -82,10 +82,10 @@ export function updateConfig(configs) {
     dispatch({ type: ADMIN_CONFIG_UPDATE_REQUEST, configs });
     return api(getState)
       .post('/api/pleroma/admin/config', { configs })
-      .then(({ data: { configs } }) => {
-        dispatch({ type: ADMIN_CONFIG_UPDATE_SUCCESS, configs });
+      .then(({ data }) => {
+        dispatch({ type: ADMIN_CONFIG_UPDATE_SUCCESS, configs: data.configs, needsReboot: data.need_reboot });
       }).catch(error => {
-        dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error });
+        dispatch({ type: ADMIN_CONFIG_UPDATE_FAIL, error, configs });
       });
   };
 }
