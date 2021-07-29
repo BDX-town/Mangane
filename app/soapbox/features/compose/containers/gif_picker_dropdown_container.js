@@ -1,16 +1,18 @@
 import { connect } from 'react-redux';
 import GIFPickerDropdown from '../components/gif_picker_dropdown';
-import { useGIF } from './../../../actions/Gifs';
+import { List as ImmutableList } from 'immutable';
+import { favGIF, unfavGIF } from '../../../actions/gifs';
+
+const getFavGIFs = state => state.getIn(['settings', 'favGIFs'], ImmutableList()).toArray();;
 
 const mapStateToProps = state => ({
+  favGIFs: getFavGIFs(state),
 });
 
 const mapDispatchToProps = (dispatch, { handleGIFPick }) => ({
-  handleGIFPick: (url) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    dispatch(useGIF(url));
-    handleGIFPick(url);
-  },
+  handleGIFPick,
+  handleGIFfav: (gif) => dispatch(favGIF(gif)),
+  handleGIFunfav: (gif) => dispatch(unfavGIF(gif)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GIFPickerDropdown);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Overlay from 'react-overlays/lib/Overlay';
 
 import TextIconButton from '../components/text_icon_button';
+import IconButton from '../../../components/icon_button';
 
 
 class Provider {
@@ -30,7 +31,7 @@ class Provider {
       this.previous = [];
     }
     const index = Math.floor(Math.random() * this.nexts.length);
-    const gif = this.nexts.splice(index, 1);
+    const gif = (this.nexts.splice(index, 1))[0];
     this.previous.splice(0, 0, gif);
     if(last !== null) {
       this.nexts.push(last);
@@ -44,8 +45,11 @@ class Provider {
 class GIFPicker extends React.Component {
 
   static propTypes = {
-    style: PropTypes.object.isRequired,
+    favGIFs: PropTypes.arrayOf(PropTypes.string).isRequired,
+    style: PropTypes.object,
     handleGIFPick: PropTypes.func.isRequired,
+    handleGIFfav: PropTypes.func.isRequired,
+    handleGIFunfav: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
   }
 
@@ -80,8 +84,8 @@ class GIFPicker extends React.Component {
     this.onShuffle();
   }
 
-  onSelect = () => {
-    this.props.handleGIFPick(this.state.current);
+  onSelect = (gif) => {
+    this.props.handleGIFPick(gif);
     this.props.onClose();
   }
 
@@ -89,6 +93,14 @@ class GIFPicker extends React.Component {
     this.setState({
       current: this.provider.shuffle(),
     });
+  }
+
+  onFav = (gif) => {
+    if(this.props.favGIFs.includes(gif)) {
+      this.props.handleGIFunfav(gif);
+    } else {
+      this.props.handleGIFfav(gif);
+    }
   }
 
   render() {
@@ -99,10 +111,28 @@ class GIFPicker extends React.Component {
           <button type='submit' className='button'><i className='fa fa-search' /></button>
         </form>
         {
+          // favoris
+          this.state.current === null && <>
+            <div className='gif-picker-dropdown__menu__list'>
+              {
+                this.props.favGIFs
+                .map((gif) => <div className='gif-picker-dropdown__menu__entry' style={{backgroundImage: `url(${gif})`}}>
+                  <IconButton icon='star' title="Fav" onClick={() => this.onFav(gif)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: 'var(--accent-color)' }} />
+                  <img className='gif-picker-dropdown__menu__entry__gif' src={gif} onClick={() => this.onSelect(gif)} />
+                </div>)
+              }
+            </div>
+          </>
+        }
+        {
+          // résultats de recherche
           this.state.current !== null && <>
-            <img className='gif-picker-dropdown__menu__gif' src={this.state.current} />
+            <div className='gif-picker-dropdown__menu__entry' style={{backgroundImage: `url(${this.state.current})`}}>
+              <IconButton icon='star' title="Fav" onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.props.favGIFs.includes(this.state.current) ? 'var(--accent-color)' : null }} />
+              <img className='gif-picker-dropdown__menu__entry__gif' src={this.state.current} />
+            </div>
             <div className='gif-picker-dropdown__menu__actions'>
-              <button className='button gif-picker-dropdown__menu__actions__choose' onClick={this.onSelect}>
+              <button className='button gif-picker-dropdown__menu__actions__choose' onClick={() => this.onSelect(this.state.current)}>
                 <i className='fa fa-check' />
                 Choisir
               </button>
@@ -121,7 +151,11 @@ class GIFPicker extends React.Component {
 export default class GIFPickerDropdown extends React.PureComponent {
 
     static propTypes = {
+      favGIFs: PropTypes.arrayOf(PropTypes.string).isRequired,
+
       handleGIFPick: PropTypes.func.isRequired,
+      handleGIFfav: PropTypes.func.isRequired,
+      handleGIFunfav: PropTypes.func.isRequired,
     }
 
 
@@ -131,7 +165,6 @@ export default class GIFPickerDropdown extends React.PureComponent {
     }
 
     componentDidMount() {
-
     }
 
     open = () => this.setState({ active: true });
@@ -163,7 +196,7 @@ export default class GIFPickerDropdown extends React.PureComponent {
             </label>
           </div>
           <Overlay show={active} placement={'bottom'} target={this.findTarget}>
-            <GIFPicker onClose={this.close} handleGIFPick={this.props.handleGIFPick} />
+            <GIFPicker  favGIFs={this.props.favGIFs} onClose={this.close} handleGIFPick={this.props.handleGIFPick} handleGIFfav={this.props.handleGIFfav} handleGIFunfav={this.props.handleGIFunfav} />
           </Overlay>
         </>
       );
