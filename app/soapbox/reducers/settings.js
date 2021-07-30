@@ -15,7 +15,7 @@ const initialState = ImmutableMap({
 
 const updateFrequentEmojis = (state, emoji) => state.update('frequentlyUsedEmojis', ImmutableMap(), map => map.update(emoji.id, 0, count => count + 1)).set('saved', false);
 const favGIFs = (state, gif) => state.update('favGIFs', ImmutableList(), list => list.push(gif)).set('saved', false);
-const unfavGIFs = (state, gif) => state.update('favGIFs', ImmutableList(), list => list.filter((g) => g != gif)).set('saved', false);
+const unfavGIFs = (state, gif) => state.update('favGIFs', ImmutableList(), list => list.filter((g) => g.url != gif.url)).set('saved', false);
 
 const importSettings = (state, account) => {
   account = fromJS(account);
