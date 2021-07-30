@@ -86,7 +86,11 @@ class SearchResults extends ImmutablePureComponent {
       <div className='search-results'>
         <div className='search-results__header'>
           <Icon id='search' fixedWidth />
-          <FormattedMessage id='search_results.total' defaultMessage='{count, number} {count, plural, one {result} other {results}}' values={{ count }} />
+          {
+            hasMore
+              ? <FormattedMessage id='search_results.total.has_more' defaultMessage='Over {count, number} {count, plural, one {result} other {results}}' values={{ count }} />
+              : <FormattedMessage id='search_results.total' defaultMessage='{count, number} {count, plural, one {result} other {results}}' values={{ count }} />
+          }
         </div>
 
         <FilterBar selectedFilter={selectedFilter} selectFilter={this.handleSelectFilter} />
