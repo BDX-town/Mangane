@@ -50,13 +50,13 @@ export default function search(state = initialState, action) {
       accounts: ImmutableList(action.results.accounts.map(item => item.id)),
       statuses: ImmutableList(action.results.statuses.map(item => item.id)),
       hashtags: fromJS(action.results.hashtags),
-      accountsHasMore: action.results.accounts.length > 0,
-      statusesHasMore: action.results.statuses.length > 0,
-      hashtagsHasMore: action.results.hashtags.length > 0,
+      accountsHasMore: action.results.accounts.length >= 20,
+      statusesHasMore: action.results.statuses.length >= 20,
+      hashtagsHasMore: action.results.hashtags.length >= 20,
     })).set('submitted', true);
   case SEARCH_EXPAND_SUCCESS:
     return state.withMutations((state) => {
-      state.setIn(['results', `${action.searchType}HasMore`], action.results[action.searchType].length > 0);
+      state.setIn(['results', `${action.searchType}HasMore`], action.results[action.searchType].length >= 20);
       state.updateIn(['results', action.searchType], list => list.concat(action.results[action.searchType].map(item => item.id)));
     });
   default:
