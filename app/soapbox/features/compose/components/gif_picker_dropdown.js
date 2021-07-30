@@ -7,20 +7,22 @@ import IconButton from '../../../components/icon_button';
 
 
 class Provider {
+  // static BASE_URL = "https://omg.phie.ovh"
+  static BASE_URL = "http://localhost:8010/proxy"
+
 
   nexts = [];
   previous = [];
 
-  search = (txt) => {
+  search = async (txt) => {
     this.nexts = [];
     this.previous = [];
 
-    this.nexts = [
-      'https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif',
-      'https://media.giphy.com/media/W3a0zO282fuBpsqqyD/giphy.gif',
-      'https://media.giphy.com/media/W35DnRbN4oDHIAApdk/giphy.gif',
-    ];
-    // récupération
+    const res = await (await fetch(`${Provider.BASE_URL}/get.php?start=0&query=${txt}`)).json();
+    this.nexts = res.map((r) => ({
+      url: `${Provider.BASE_URL}/${r.video}`,
+      description: r.description
+    }));
   }
 
   shuffle = () => {
@@ -39,6 +41,38 @@ class Provider {
     return gif;
   }
 
+}
+
+class GIF extends React.Component {
+  static propTypes = {
+    url: PropTypes.string.isRequired,
+    onClick: PropTypes.func,
+  }
+
+  static defaultProps = {
+    onClick: null,
+  }
+
+  state = {
+    blur: null,
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.url !== prevProps.url) this.setState({ blur: null});
+  }
+
+  onLoad = (e) => {
+    this.setState({ blur: this.props.url });
+  }
+
+  render() {
+    return (
+      <>
+        <video className='gif-picker-dropdown__menu__entry__gif' src={this.props.url} onClick={this.props.onClick} autoPlay loop onCanPlay={this.state.blur == null ? this.onLoad : null} />
+        { this.state.blur && <video className='gif-picker-dropdown__menu__entry__blur' src={this.state.blur} autoPlay loop /> }
+      </>
+    );
+  }
 }
 
 
@@ -76,10 +110,29 @@ class GIFPicker extends React.Component {
     if(this.node.current.contains(e.target) === false) this.props.onClose();
   }
 
-  onSearch = (e) => {
+  isFav = (gif) => {
+    return !!this.props.favGIFs.find((g) => g.url === gif.url);
+  }
+
+  onLoading = (value) => {
+    console.log('loading');
+    console.log(value);
+  }
+
+  onSearch = async (e) => {
     e.preventDefault();
-    console.log(e);
-    this.provider.search('dummy');
+
+    const txt = e.target[0].value;
+    if(txt == '') {
+      this.setState({
+        current: null,
+      });
+      return;
+    }
+
+    this.onLoading(true);
+    await this.provider.search(txt);
+    this.onLoading(false);
 
     this.onShuffle();
   }
@@ -96,7 +149,7 @@ class GIFPicker extends React.Component {
   }
 
   onFav = (gif) => {
-    if(this.props.favGIFs.includes(gif)) {
+    if(this.isFav(gif)) {
       this.props.handleGIFunfav(gif);
     } else {
       this.props.handleGIFfav(gif);
@@ -112,13 +165,13 @@ class GIFPicker extends React.Component {
         </form>
         {
           // favoris
-          this.state.current === null && <>
+          this.state.current == null && <>
             <div className='gif-picker-dropdown__menu__list'>
               {
                 this.props.favGIFs
-                .map((gif) => <div className='gif-picker-dropdown__menu__entry' style={{backgroundImage: `url(${gif})`}}>
+                .map((gif) => <div className='gif-picker-dropdown__menu__entry'>
                   <IconButton icon='star' title="Fav" onClick={() => this.onFav(gif)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: 'var(--accent-color)' }} />
-                  <img className='gif-picker-dropdown__menu__entry__gif' src={gif} onClick={() => this.onSelect(gif)} />
+                  <GIF onClick={() => this.onSelect(gif)} url={gif.url} />
                 </div>)
               }
             </div>
@@ -126,10 +179,10 @@ class GIFPicker extends React.Component {
         }
         {
           // résultats de recherche
-          this.state.current !== null && <>
-            <div className='gif-picker-dropdown__menu__entry' style={{backgroundImage: `url(${this.state.current})`}}>
-              <IconButton icon='star' title="Fav" onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.props.favGIFs.includes(this.state.current) ? 'var(--accent-color)' : null }} />
-              <img className='gif-picker-dropdown__menu__entry__gif' src={this.state.current} />
+          this.state.current != null && <>
+            <div className='gif-picker-dropdown__menu__entry'>
+              <IconButton icon='star' title="Fav" onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.isFav(this.state.current) ? 'var(--accent-color)' : null }} />
+              <GIF url={this.state.current.url} />
             </div>
             <div className='gif-picker-dropdown__menu__actions'>
               <button className='button gif-picker-dropdown__menu__actions__choose' onClick={() => this.onSelect(this.state.current)}>
