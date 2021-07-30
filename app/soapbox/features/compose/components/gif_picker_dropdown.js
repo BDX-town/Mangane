@@ -162,7 +162,8 @@ class GIFPicker extends React.Component {
   }
 
   onSelect = async (gif) => {
-    let generated = `![${gif.description}](${gif.url})`;
+    let generated = `[${gif.description}](${gif.url})\n\n${gif.url}`;
+    //let generated = `![${gif.description}](${gif.url})`;
     // inutile en webm
     // const size = await Provider.GetSize(gif.url);
     // if(size > 1000000) generated = `[${gif.description}](${gif.url})`
