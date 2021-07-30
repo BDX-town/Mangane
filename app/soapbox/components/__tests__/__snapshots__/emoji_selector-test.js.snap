@@ -2,6 +2,7 @@
 
 exports[`<EmojiSelector /> renders correctly 1`] = `
 <div
+  className="emoji-react-selector-container"
   onBlur={[Function]}
   onFocus={[Function]}
   tabIndex="-1"
