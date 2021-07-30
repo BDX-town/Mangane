@@ -1,5 +1,15 @@
+.search-page {
+  min-height: 97px;
+}
+
 @media screen and (min-width: 600px + (285px * 1) + (10px * 1)) {
   .search-page .search {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px + (285px * 1) + (10px * 1) - 1px) {
+  .search-page .column-header__wrapper {
     display: none;
   }
 }
@@ -157,4 +167,9 @@
 
 .search-popout {
   @include search-popout;
+}
+
+
+.search__filter-bar:last-child {
+  border-bottom: none;
 }
