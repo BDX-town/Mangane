@@ -81,6 +81,7 @@ class EmojiSelector extends ImmutablePureComponent {
     return (
       <HotKeys
         handlers={this.handlers}
+        className='emoji-react-selector-container'
       >
         <div
           className={classNames('emoji-react-selector', { 'emoji-react-selector--visible': visible, 'emoji-react-selector--focused': focused })}
