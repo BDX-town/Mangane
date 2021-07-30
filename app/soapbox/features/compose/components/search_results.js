@@ -1,25 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Hashtag from '../../../components/hashtag';
-import Icon from 'soapbox/components/icon';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+import FilterBar from '../../search/components/filter_bar';
+import LoadMore from '../../../components/load_more';
+import classNames from 'classnames';
 
-export default @injectIntl
-class SearchResults extends ImmutablePureComponent {
+export default class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
     results: ImmutablePropTypes.map.isRequired,
     submitted: PropTypes.bool,
-    intl: PropTypes.object.isRequired,
+    expandSearch: PropTypes.func.isRequired,
+  };
+
+  state = {
+    selectedFilter: 'accounts',
+  };
+
+  handleLoadMore = () => this.props.expandSearch(this.state.selectedFilter);
+
+  handleSelectFilter = newActiveFilter => {
+    this.setState({ selectedFilter: newActiveFilter });
   };
 
   render() {
     const { results, submitted } = this.props;
+    const { selectedFilter } = this.state;
 
     if (submitted && results.isEmpty()) {
       return (
@@ -29,53 +40,47 @@ class SearchResults extends ImmutablePureComponent {
       );
     }
 
-    let accounts, statuses, hashtags;
-    let count = 0;
+    let searchResults;
+    let hasMore = false;
 
-    if (results.get('accounts') && results.get('accounts').size > 0) {
-      count   += results.get('accounts').size;
-      accounts = (
-        <div className='search-results__section'>
-          <h5><Icon id='users' fixedWidth /><FormattedMessage id='search_results.accounts' defaultMessage='People' /></h5>
+    if (selectedFilter === 'accounts' && results.get('accounts') && results.get('accounts').size > 0) {
+      hasMore = results.get('accountsHasMore');
 
+      searchResults = (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
           {results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />)}
         </div>
       );
     }
 
-    if (results.get('statuses') && results.get('statuses').size > 0) {
-      count   += results.get('statuses').size;
-      statuses = (
-        <div className='search-results__section'>
-          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Posts' /></h5>
+    if (selectedFilter === 'statuses' && results.get('statuses') && results.get('statuses').size > 0) {
+      hasMore = results.get('statusesHasMore');
 
+      searchResults = (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
           {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
         </div>
       );
     }
 
-    if (results.get('hashtags') && results.get('hashtags').size > 0) {
-      count += results.get('hashtags').size;
-      hashtags = (
-        <div className='search-results__section'>
-          <h5><Icon id='hashtag' fixedWidth /><FormattedMessage id='search_results.hashtags' defaultMessage='Hashtags' /></h5>
+    if (selectedFilter === 'hashtags' && results.get('hashtags') && results.get('hashtags').size > 0) {
+      hasMore = results.get('hashtagsHasMore');
 
+      searchResults = (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
           {results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />)}
         </div>
       );
     }
 
     return (
-      <div className='search-results'>
-        <div className='search-results__header'>
-          <Icon id='search' fixedWidth />
-          <FormattedMessage id='search_results.total' defaultMessage='{count, number} {count, plural, one {result} other {results}}' values={{ count }} />
-        </div>
+      <>
+        <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />
 
-        {accounts}
-        {statuses}
-        {hashtags}
-      </div>
+        {searchResults}
+
+        {hasMore && <LoadMore visible onClick={this.handleLoadMore} />}
+      </>
     );
   }
 

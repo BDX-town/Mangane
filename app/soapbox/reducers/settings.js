@@ -1,5 +1,6 @@
 import { SETTING_CHANGE, SETTING_SAVE, FE_NAME } from '../actions/settings';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
+import { SEARCH_FILTER_SET } from '../actions/search';
 import { EMOJI_USE } from '../actions/emojis';
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 import { Map as ImmutableMap, fromJS } from 'immutable';
@@ -25,6 +26,7 @@ export default function settings(state = initialState, action) {
   case ME_FETCH_SUCCESS:
     return importSettings(state, action.me);
   case NOTIFICATIONS_FILTER_SET:
+  case SEARCH_FILTER_SET:
   case SETTING_CHANGE:
     return state
       .setIn(action.path, action.value)

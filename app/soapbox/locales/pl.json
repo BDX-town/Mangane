@@ -636,6 +636,7 @@
   "search_results.statuses": "Wpisy",
   "search_results.top": "Góra",
   "search_results.total": "{count, number} {count, plural, one {wynik} few {wyniki} many {wyników} more {wyników}}",
+  "search_results.total.has_more": "{count, number} Ponad {count, plural, one {wynik} few {wyniki} many {wyników} more {wyników}}",
   "security.codes.fail": "Nie udało się uzyskać zapasowych kodów",
   "security.confirm.fail": "Nieprawidłowy kod lub hasło. Spróbuj ponownie.",
   "security.delete_account.fail": "Nie udało się usunąć konta.",
