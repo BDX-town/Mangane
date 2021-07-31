@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 
 import Card from './card';
 
-export const REGEX = /https?:\/\/omg\.phie\.ovh\/.+\.(webm|gif)/g;
+export const REGEX = /https?:\/\/localhost:8010\/.+\.(webm|gif)/g;
+export const DESCRIPTION = '<a.*href="?\'?{url}"?\'?.*>(.+)<\/a>';
+// export const REGEX = /https?:\/\/omg\.phie\.ovh\/.+\.(webm|gif)/g;
 
 export default class CardGIF extends React.PureComponent {
 
@@ -19,25 +21,23 @@ export default class CardGIF extends React.PureComponent {
     }
 
     render() {
-        const gif = this.props.content.match(REGEX);
-        return null;
-        if(gif.length <= 0) return null;
+      const gif = this.props.content.match(REGEX);
+      if(gif.length <= 0) return null;
+      const descriptionReg = new RegExp(DESCRIPTION.replace('{url}', gif[0]), 'g');
+      const descriptionMatch = [...this.props.content.matchAll(descriptionReg)];
+      const description = descriptionMatch.length > 0 ? descriptionMatch[0][1] : null;
       const card = new ImmutableMap({
         url: gif[0],
-        title: gif[0],
+        title: description || gif[0],
+        description: description || 'GIF proposé par Oh My GIF',
+        type: 'video',
+        provider_name: 'Oh My GIF',
+        html: `<video src=${gif[0]} muted autoplay loop style="width: 100%; height: 100%; object-fit: contain;" />`,
       });
-      /*
-
-       "url": "https://www.theguardian.com/money/2019/dec/07/i-lost-my-193000-inheritance-with-one-wrong-digit-on-my-sort-code",
-  "title": "‘I lost my £193,000 inheritance – with one wrong digit on my sort code’",
-  "description": "When Peter Teich’s money went to another Barclays customer, the bank offered £25 as a token gesture",
-  "type": "link",
-
-  */
-        return null;
       return (
         <Card
           card={card}
+          defaultEmbedded
           {...this.props}
         />
       );

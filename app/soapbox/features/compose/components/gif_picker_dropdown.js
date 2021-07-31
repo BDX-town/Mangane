@@ -9,8 +9,9 @@ import IconButton from '../../../components/icon_button';
 
 
 class Provider {
+
   // static BASE_URL = "https://omg.phie.ovh"
-  static BASE_URL = "http://localhost:8010/proxy"
+  static BASE_URL = 'http://localhost:8010/proxy'
 
   static async GetSize(url) {
     const response = await (await fetch(url)).blob();
@@ -22,7 +23,7 @@ class Provider {
 
   request = new Date().getTime();
 
-  search = async (txt) => {
+  search = async(txt) => {
     this.nexts = [];
     this.previous = [];
     const request = new Date().getTime();
@@ -59,10 +60,11 @@ class Provider {
 }
 
 /**
- * Affiche un gif ainsi qu'une version floutée, 
+ * Affiche un gif ainsi qu'une version floutée,
  * gère les délais de manière à ce qu'une seule requête réseau soit effectuée
  */
 class GIF extends React.Component {
+
   static propTypes = {
     url: PropTypes.string.isRequired,
     onClick: PropTypes.func,
@@ -77,7 +79,7 @@ class GIF extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.url !== prevProps.url) this.setState({ blur: null});
+    if(this.props.url !== prevProps.url) this.setState({ blur: null });
   }
 
   onLoad = () => {
@@ -92,6 +94,7 @@ class GIF extends React.Component {
       </>
     );
   }
+
 }
 
 
@@ -143,7 +146,7 @@ class GIFPicker extends React.Component {
     this.setState({ loading: value });
   }
 
-  doSearch = debounce(async (txt) => {
+  doSearch = debounce(async(txt) => {
     this.onLoading(true);
     if(await this.provider.search(txt) == false) return;
     this.onLoading(false);
@@ -161,8 +164,8 @@ class GIFPicker extends React.Component {
     this.doSearch(txt);
   }
 
-  onSelect = async (gif) => {
-    let generated = `[${gif.description}](${gif.url})\n\n${gif.url}`;
+  onSelect = async(gif) => {
+    let generated = `[${gif.description}](${gif.url})`;
     //let generated = `![${gif.description}](${gif.url})`;
     // inutile en webm
     // const size = await Provider.GetSize(gif.url);
@@ -192,7 +195,7 @@ class GIFPicker extends React.Component {
           <input ref={this.search} type='text' placeholder='Rechercher un gif...' onChange={this.onSearch} />
         </form>
         {
-          this.state.loading && <div className="gif-picker-dropdown__loading"><LoadingIndicator /></div>
+          this.state.loading && <div className='gif-picker-dropdown__loading'><LoadingIndicator /></div>
         }
         {
           // favoris
@@ -200,19 +203,20 @@ class GIFPicker extends React.Component {
             <div className='gif-picker-dropdown__menu__list'>
               {
                 this.props.favGIFs
-                .map((gif, index) => <div key={index} className='gif-picker-dropdown__menu__entry'>
-                  <IconButton icon='star' title="Fav" onClick={() => this.onFav(gif)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: 'var(--accent-color)' }} />
-                  <GIF onClick={() => this.onSelect(gif)} url={gif.url} />
-                </div>)
+                  .map((gif, index) => (<div key={index} className='gif-picker-dropdown__menu__entry'>
+                    <IconButton icon='star' title='Fav' onClick={() => this.onFav(gif)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: 'var(--accent-color)' }} />
+                    <GIF onClick={() => this.onSelect(gif)} url={gif.url} />
+                  </div>))
               }
             </div>
           </>
         }
         {
           // résultats de recherche
+          // eslint-disable-next-line eqeqeq
           this.state.loading == false && this.state.current != null && <>
             <div className='gif-picker-dropdown__menu__entry'>
-              <IconButton icon='star' title="Fav" onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.isFav(this.state.current) ? 'var(--accent-color)' : null }} />
+              <IconButton icon='star' title='Fav' onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.isFav(this.state.current) ? 'var(--accent-color)' : null }} />
               <GIF url={this.state.current.url} />
             </div>
             <div className='gif-picker-dropdown__menu__actions'>
@@ -226,6 +230,9 @@ class GIFPicker extends React.Component {
             </div>
           </>
         }
+        <small>
+          Proposé par <a href='https://omg.phie.ovh' target='_blank'>Oh My GIF</a>
+        </small>
       </div>
     );
   }
