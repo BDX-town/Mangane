@@ -31,7 +31,7 @@ class CardGIF extends React.PureComponent {
       const gif = this.props.content.match(REGEX);
       if(gif.length <= 0) return null;
       const descriptionReg = new RegExp(DESCRIPTION.replace('{url}', gif[0]), 'g');
-      const descriptionMatch = [...this.props.content.matchAll(descriptionReg)];
+      const descriptionMatch = Array.from(this.props.content.matchAll(descriptionReg));
       const description = descriptionMatch.length > 0 ? descriptionMatch[0][1] : null;
       const card = new ImmutableMap({
         url: gif[0],
