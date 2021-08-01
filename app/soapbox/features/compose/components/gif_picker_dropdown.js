@@ -1,17 +1,24 @@
+/* eslint-disable react/jsx-no-bind */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Overlay from 'react-overlays/lib/Overlay';
 import { debounce } from 'lodash';
+import { defineMessages, injectIntl } from 'react-intl';
 
 import LoadingIndicator from './../../../components/loading_indicator';
 import TextIconButton from '../components/text_icon_button';
 import IconButton from '../../../components/icon_button';
 
+const messages = defineMessages({
+  gif: { id: 'gif_picker.gif', defaultMessage: 'GIF' },
+  search: { id: 'gif_picker.search', defaultMessage: 'Rechercher un gif...' },
+  choose: { id: 'gif_picker.choose', defaultMessage: 'Choisir' },
+  proposed: { id: 'gif_picker.proposed', defaultMessage: 'Proposé par' },
+});
 
 class Provider {
 
-  // static BASE_URL = "https://omg.phie.ovh"
-  static BASE_URL = 'http://localhost:8010/proxy'
+  static BASE_URL = 'https://omg.phie.ovh';
 
   static async GetSize(url) {
     const response = await (await fetch(url)).blob();
@@ -89,7 +96,10 @@ class GIF extends React.Component {
   render() {
     return (
       <>
-        <video muted className='gif-picker-dropdown__menu__entry__gif' src={this.props.url} onClick={this.props.onClick} autoPlay loop onCanPlay={this.state.blur == null ? this.onLoad : null} />
+        {
+          // eslint-disable-next-line eqeqeq
+          <video muted className='gif-picker-dropdown__menu__entry__gif' src={this.props.url} onClick={this.props.onClick} autoPlay loop onCanPlay={this.state.blur == null ? this.onLoad : null} />
+        }
         { this.state.blur && <video muted className='gif-picker-dropdown__menu__entry__blur' src={this.state.blur} autoPlay loop /> }
       </>
     );
@@ -97,7 +107,7 @@ class GIF extends React.Component {
 
 }
 
-
+@injectIntl
 class GIFPicker extends React.Component {
 
   static propTypes = {
@@ -110,6 +120,7 @@ class GIFPicker extends React.Component {
     handleGIFfav: PropTypes.func.isRequired,
     handleGIFunfav: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
+    intl: PropTypes.object.isRequired,
   }
 
   state = {
@@ -148,14 +159,14 @@ class GIFPicker extends React.Component {
 
   doSearch = debounce(async(txt) => {
     this.onLoading(true);
-    if(await this.provider.search(txt) == false) return;
+    if(await this.provider.search(txt) === false) return;
     this.onLoading(false);
     this.onShuffle();
   }, 1000);
 
   onSearch = (e) => {
     const txt = e.target.value;
-    if(txt == '') {
+    if(txt === '') {
       this.setState({
         current: null,
       });
@@ -188,17 +199,27 @@ class GIFPicker extends React.Component {
     }
   }
 
+  onFavCurrent = () => {
+    this.onFav(this.state.current);
+  }
+
+  onSelectCurrent = () => {
+    this.onSelect(this.state.current);
+  }
+
   render() {
+    const { intl } = this.props;
     return (
       <div ref={this.node} style={this.props.style} className='gif-picker-dropdown__menu'>
         <form className='gif-picker-dropdown__menu__search'>
-          <input ref={this.search} type='text' placeholder='Rechercher un gif...' onChange={this.onSearch} />
+          <input ref={this.search} type='text' placeholder={intl.formatMessage(messages.search)} onChange={this.onSearch} />
         </form>
         {
           this.state.loading && <div className='gif-picker-dropdown__loading'><LoadingIndicator /></div>
         }
         {
           // favoris
+          // eslint-disable-next-line eqeqeq
           this.state.loading == false && this.state.current == null && <>
             <div className='gif-picker-dropdown__menu__list'>
               {
@@ -216,13 +237,13 @@ class GIFPicker extends React.Component {
           // eslint-disable-next-line eqeqeq
           this.state.loading == false && this.state.current != null && <>
             <div className='gif-picker-dropdown__menu__entry'>
-              <IconButton icon='star' title='Fav' onClick={() => this.onFav(this.state.current)} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.isFav(this.state.current) ? 'var(--accent-color)' : null }} />
+              <IconButton icon='star' title='Fav' onClick={this.onFavCurrent} className='gif-picker-dropdown__menu__entry__icon' size={22} inverted  style={{ color: this.isFav(this.state.current) ? 'var(--accent-color)' : null }} />
               <GIF url={this.state.current.url} />
             </div>
             <div className='gif-picker-dropdown__menu__actions'>
-              <button className='button gif-picker-dropdown__menu__actions__choose' onClick={() => this.onSelect(this.state.current)}>
+              <button className='button gif-picker-dropdown__menu__actions__choose' onClick={this.onSelectCurrent}>
                 <i className='fa fa-check' />
-                Choisir
+                { intl.formatMessage(messages.choose) }
               </button>
               <button className='button gif-picker-dropdown__menu__another' onClick={this.onShuffle}>
                 <i className='fa fa-random' />
@@ -231,7 +252,7 @@ class GIFPicker extends React.Component {
           </>
         }
         <small>
-          Proposé par <a href='https://omg.phie.ovh' target='_blank'>Oh My GIF</a>
+          { intl.formatMessage(messages.proposed) } <a href='https://omg.phie.ovh' target='_blank'>Oh My GIF</a>
         </small>
       </div>
     );
@@ -239,7 +260,8 @@ class GIFPicker extends React.Component {
 
 }
 
-export default class GIFPickerDropdown extends React.PureComponent {
+export default @injectIntl
+class GIFPickerDropdown extends React.PureComponent {
 
     static propTypes = {
       favGIFs: PropTypes.arrayOf(PropTypes.shape({
@@ -250,6 +272,7 @@ export default class GIFPickerDropdown extends React.PureComponent {
       handleGIFPick: PropTypes.func.isRequired,
       handleGIFfav: PropTypes.func.isRequired,
       handleGIFunfav: PropTypes.func.isRequired,
+      intl: PropTypes.object.isRequired,
     }
 
 
@@ -281,12 +304,13 @@ export default class GIFPickerDropdown extends React.PureComponent {
 
     render() {
       const { active } = this.state;
+      const { intl } = this.props;
       return (
         <>
           <div className='gif-picker-dropdown' ref={this.container}>
             <TextIconButton active={this.state.active} label='GIF' title='GIF' ref={this.setTargetRef} onClick={this.handleActive} ariaControls='GIF' />
             <label>
-              <span style={{ display: 'none' }}>GIF</span>
+              <span style={{ display: 'none' }}>{ intl.formatMessage(messages.gif) }</span>
             </label>
           </div>
           <Overlay show={active} placement={'bottom'} target={this.findTarget}>
