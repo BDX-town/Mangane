@@ -11,7 +11,7 @@ import { getDomain } from 'soapbox/utils/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import AttachmentList from 'soapbox/components/attachment_list';
-import PollContainer from 'soapbox/containers/poll_container';
+import PollPreview from './poll_preview';
 import ScheduledStatusActionBar from './scheduled_status_action_bar';
 
 const mapStateToProps = (state, props) => {
@@ -72,7 +72,7 @@ class ScheduledStatus extends ImmutablePureComponent {
               media={status.get('media_attachments')}
             />
 
-            {status.get('poll') && <PollContainer pollId={status.get('poll')} />}
+            {status.get('poll') && <PollPreview poll={status.get('poll')} />}
 
             {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
               <button className='status__content__read-more-button' onClick={this.handleClick}>
