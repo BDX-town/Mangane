@@ -7,6 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 
+
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
@@ -14,6 +15,7 @@ import QuotedStatus from 'soapbox/features/status/containers/quoted_status_conta
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Card from '../features/status/components/card';
+import CardGIF, { REGEX as REGEX_GIF } from '../features/status/components/card_gif';
 import Bundle from '../features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 
@@ -464,6 +466,16 @@ class Status extends ImmutablePureComponent {
         <Card
           onOpenMedia={this.props.onOpenMedia}
           card={status.get('card')}
+          compact
+          cacheWidth={this.props.cacheMediaWidth}
+          defaultWidth={this.props.cachedMediaWidth}
+        />
+      );
+    } else if(status.get('contentHtml').match(REGEX_GIF)) { // gif oh my gif
+      media = (
+        <CardGIF
+          onOpenMedia={this.props.onOpenMedia}
+          content={status.get('contentHtml')}
           compact
           cacheWidth={this.props.cacheMediaWidth}
           defaultWidth={this.props.cachedMediaWidth}

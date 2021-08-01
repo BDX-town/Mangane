@@ -1,9 +1,10 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
+import { GIF_FAV, GIF_UNFAV } from '../actions/gifs';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 
 import { EMOJI_USE } from '../actions/emojis';
-import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
 import {
   SETTING_CHANGE,
@@ -21,6 +22,8 @@ const initialState = ImmutableMap({
 });
 
 const updateFrequentEmojis = (state, emoji) => state.update('frequentlyUsedEmojis', ImmutableMap(), map => map.update(emoji.id, 0, count => count + 1)).set('saved', false);
+const favGIFs = (state, gif) => state.update('favGIFs', ImmutableList(), list => list.push(gif)).set('saved', false);
+const unfavGIFs = (state, gif) => state.update('favGIFs', ImmutableList(), list => list.filter((g) => g.url != gif.url)).set('saved', false);
 
 const importSettings = (state, account) => {
   account = fromJS(account);
@@ -40,6 +43,10 @@ export default function settings(state = initialState, action) {
       .set('saved', false);
   case EMOJI_USE:
     return updateFrequentEmojis(state, action.emoji);
+  case GIF_FAV:
+    return favGIFs(state, action.gif);
+  case GIF_UNFAV:
+    return unfavGIFs(state, action.gif);
   case SETTING_SAVE:
     return state.set('saved', true);
   case SETTINGS_UPDATE:

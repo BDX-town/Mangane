@@ -66,16 +66,18 @@ export default class Card extends React.PureComponent {
     compact: PropTypes.bool,
     defaultWidth: PropTypes.number,
     cacheWidth: PropTypes.func,
+    defaultEmbedded: PropTypes.bool,
   };
 
   static defaultProps = {
     maxDescription: 200,
     compact: false,
+    defaultEmbedded: false,
   };
 
   state = {
     width: this.props.defaultWidth || 467,
-    embedded: false,
+    embedded: this.props.defaultEmbedded,
   };
 
   componentDidUpdate(prevProps) {

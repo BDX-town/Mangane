@@ -109,6 +109,7 @@ module.exports = {
         concurrency: 100,
       },
     }),
+    */
   ],
 
   resolve: {

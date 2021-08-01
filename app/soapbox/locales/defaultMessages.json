@@ -2227,6 +2227,27 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "GIF",
+        "id": "gif_picker.gif"
+      },
+      {
+        "defaultMessage": "Rechercher un gif...",
+        "id": "gif_picker.search"
+      },
+      {
+        "defaultMessage": "Choisir",
+        "id": "gif_picker.choose"
+      },
+      {
+        "defaultMessage": "Proposé par",
+        "id": "gif_picker.proposed"
+      }
+    ],
+    "path": "app/soapbox/features/compose/components/gif_picker_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Post markdown enabled",
         "id": "compose_form.markdown.marked"
       },
@@ -2659,6 +2680,40 @@
       }
     ],
     "path": "app/soapbox/features/developers/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Donate Cryptocurrency",
+        "id": "crypto_donate_panel.heading"
+      },
+      {
+        "defaultMessage": "{siteTitle} accepts cryptocurrency donations to fund our service. Thank you for your support!",
+        "id": "crypto_donate_panel.intro.message"
+      },
+      {
+        "defaultMessage": "Click to see {count} more {count, plural, one {wallet} other {wallets}}",
+        "id": "crypto_donate_panel.actions.more"
+      }
+    ],
+    "path": "app/soapbox/features/crypto_donate/components/crypto_donate_panel.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Donate Cryptocurrency",
+        "id": "column.crypto_donate"
+      },
+      {
+        "defaultMessage": "Sending cryptocurrency donations",
+        "id": "crypto_donate.explanation_box.title"
+      },
+      {
+        "defaultMessage": "{siteTitle} accepts cryptocurrency donations. You may send a donation to any of the addresses below. Thank you for your support!",
+        "id": "crypto_donate.explanation_box.message"
+      }
+    ],
+    "path": "app/soapbox/features/crypto_donate/index.json"
   },
   {
     "descriptors": [
@@ -4465,7 +4520,7 @@
         "id": "search_results.top"
       }
     ],
-    "path": "app/soapbox/features/search/components/header.json"
+    "path": "app/soapbox/features/scheduled_statuses/index.json"
   },
   {
     "descriptors": [

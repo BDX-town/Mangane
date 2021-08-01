@@ -17,6 +17,7 @@ import Button from '../../../components/button';
 import { isMobile } from '../../../is_mobile';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
+import GIFPickerDropdownContainer from '../containers/gif_picker_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PollFormContainer from '../containers/poll_form_container';
@@ -122,6 +123,7 @@ class ComposeForm extends ImmutablePureComponent {
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
       document.querySelector('.modal-root__overlay'),
+      document.querySelector('.gif-picker-dropdown__menu'),
     ].some(element => element?.contains(e.target));
   }
 
@@ -211,6 +213,11 @@ class ComposeForm extends ImmutablePureComponent {
     const needsSpace   = data.custom && position > 0 && !allowedAroundShortCode.includes(text[position - 1]);
 
     this.props.onPickEmoji(position, data, needsSpace);
+  }
+
+  handleGIFPick = (url) => {
+    const { text } = this.props;
+    this.props.onChange(`${text} ${url} `);
   }
 
   focusSpoilerInput = () => {
@@ -366,6 +373,7 @@ class ComposeForm extends ImmutablePureComponent {
           <div className='compose-form__buttons'>
             {features.media && <UploadButtonContainer />}
             {features.polls && <PollButtonContainer />}
+            <GIFPickerDropdownContainer handleGIFPick={this.handleGIFPick} />
             {features.privacyScopes && <PrivacyDropdownContainer />}
             {features.scheduledStatuses && <ScheduleButtonContainer />}
             {features.spoilers && <SpoilerButtonContainer />}
