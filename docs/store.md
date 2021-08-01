@@ -370,6 +370,7 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
        grinning: 1,
        'star-struck': 1
      },
+     favGIFs: ['url1', 'url2'],
      onboarded: false,
      defaultPrivacy: 'private',
      demetricator: false,
