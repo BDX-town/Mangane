@@ -10,6 +10,7 @@ import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
 import AttachmentList from './attachment_list';
 import Card from '../features/status/components/card';
+import CardGIF, { REGEX as REGEX_GIF} from '../features/status/components/card_gif';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
@@ -417,6 +418,16 @@ class Status extends ImmutablePureComponent {
         <Card
           onOpenMedia={this.props.onOpenMedia}
           card={status.get('card')}
+          compact
+          cacheWidth={this.props.cacheMediaWidth}
+          defaultWidth={this.props.cachedMediaWidth}
+        />
+      );
+    } else if(status.get('contentHtml').match(REGEX_GIF)) { // gif oh my gif
+      media = (
+        <CardGIF
+          onOpenMedia={this.props.onOpenMedia}
+          content={status.get('contentHtml')}
           compact
           cacheWidth={this.props.cacheMediaWidth}
           defaultWidth={this.props.cachedMediaWidth}

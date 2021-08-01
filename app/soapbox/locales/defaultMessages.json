@@ -1156,6 +1156,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Latest Accounts",
+        "id": "admin.latest_accounts_panel.title"
+      },
+      {
+        "defaultMessage": "Click to see {count} more {count, plural, one {account} other {accounts}}",
+        "id": "admin.latest_accounts_panel.expand_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/latest_accounts_panel.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Settings saved!",
         "id": "admin.dashboard.settings_saved"
       },
@@ -1231,6 +1244,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "{acct} was approved!",
+        "id": "admin.awaiting_approval.approved_message"
+      },
+      {
+        "defaultMessage": "{acct} was rejected.",
+        "id": "admin.awaiting_approval.rejected_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/unapproved_account.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Dashboard",
         "id": "column.admin.dashboard"
       },
@@ -1294,6 +1320,19 @@
       }
     ],
     "path": "app/soapbox/features/admin/reports.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "No users found.",
+        "id": "admin.user_index.empty"
+      },
+      {
+        "defaultMessage": "Who are you looking for?",
+        "id": "admin.user_index.search_input_placeholder"
+      }
+    ],
+    "path": "app/soapbox/features/admin/user_index.json"
   },
   {
     "descriptors": [
@@ -1639,6 +1678,27 @@
       }
     ],
     "path": "app/soapbox/features/compose/components/emoji_picker_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "GIF",
+        "id": "gif_picker.gif"
+      },
+      {
+        "defaultMessage": "Rechercher un gif...",
+        "id": "gif_picker.search"
+      },
+      {
+        "defaultMessage": "Choisir",
+        "id": "gif_picker.choose"
+      },
+      {
+        "defaultMessage": "Proposé par",
+        "id": "gif_picker.proposed"
+      }
+    ],
+    "path": "app/soapbox/features/compose/components/gif_picker_dropdown.json"
   },
   {
     "descriptors": [
@@ -3760,6 +3820,15 @@
       }
     ],
     "path": "app/soapbox/features/status/components/action_bar.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "GIF proposé par Oh My GIF",
+        "id": "card_gif.proposed"
+      }
+    ],
+    "path": "app/soapbox/features/status/components/card_gif.json"
   },
   {
     "descriptors": [

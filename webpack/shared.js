@@ -93,6 +93,7 @@ module.exports = {
     new HtmlWebpackHarddiskPlugin({
       outputPath: join(__dirname, '..', 'static'),
     }),
+    /*
     new CopyPlugin({
       patterns: [{
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),
@@ -105,6 +106,7 @@ module.exports = {
         concurrency: 100,
       },
     }),
+    */
   ],
 
   resolve: {
