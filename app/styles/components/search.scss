@@ -1,5 +1,7 @@
 .search-page {
-  min-height: 97px;
+  .drawer__inner:not(:empty) {
+    min-height: 48px;
+  }
 }
 
 @media screen and (min-width: 600px + (285px * 1) + (10px * 1)) {

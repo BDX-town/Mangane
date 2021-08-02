@@ -75,7 +75,7 @@ export default class SearchResults extends ImmutablePureComponent {
 
     return (
       <>
-        <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />
+        {submitted && <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />}
 
         {searchResults}
 
