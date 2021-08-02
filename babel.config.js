@@ -43,7 +43,7 @@ module.exports = (api) => {
         '@babel/transform-runtime',
         {
           helpers: true,
-          regenerator: false,
+          regenerator: true,
           useESModules: true,
         },
       ],
@@ -54,6 +54,14 @@ module.exports = (api) => {
     config.plugins.push(...[
       '@babel/transform-react-jsx-source',
       '@babel/transform-react-jsx-self',
+      [
+        '@babel/transform-runtime',
+        {
+          helpers: true,
+          regenerator: true,
+          useESModules: true,
+        },
+      ],
     ]);
     break;
   case 'test':
