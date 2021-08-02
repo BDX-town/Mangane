@@ -6,6 +6,7 @@ import { isRtl } from '../rtl';
 import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
+import PollContainer from 'soapbox/containers/poll_container';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { addGreentext } from 'soapbox/utils/greentext';
@@ -240,6 +241,8 @@ class StatusContent extends React.PureComponent {
           {mentionsPlaceholder}
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''}`} style={directionStyle} dangerouslySetInnerHTML={content} lang={status.get('language')} />
+
+          {!hidden && !!status.get('poll') && <PollContainer pollId={status.get('poll')} />}
         </div>
       );
     } else if (this.props.onClick) {
@@ -261,9 +264,13 @@ class StatusContent extends React.PureComponent {
         output.push(readMoreButton);
       }
 
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} />);
+      }
+
       return output;
     } else {
-      return (
+      const output = [
         <div
           tabIndex='0'
           ref={this.setRef}
@@ -273,8 +280,14 @@ class StatusContent extends React.PureComponent {
           style={directionStyle}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}
-        />
-      );
+        />,
+      ];
+
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} />);
+      }
+
+      return output;
     }
   }
 

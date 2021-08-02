@@ -14,7 +14,6 @@ import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
-import PollContainer from 'soapbox/containers/poll_container';
 import StatusInteractionBar from './status_interaction_bar';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
@@ -103,9 +102,6 @@ export default class DetailedStatus extends ImmutablePureComponent {
       outerStyle.height = `${this.state.height}px`;
     }
 
-    if (status.get('poll')) {
-      poll = <PollContainer pollId={status.get('poll')} />;
-    }
     if (size > 0) {
       if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
