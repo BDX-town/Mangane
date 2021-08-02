@@ -8,6 +8,7 @@ describe('search reducer', () => {
       submitted: false,
       hidden: false,
       results: ImmutableMap(),
+      filter: 'accounts',
     }));
   });
 });
