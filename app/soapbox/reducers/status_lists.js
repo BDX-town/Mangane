@@ -141,4 +141,4 @@ export default function statusLists(state = initialState, action) {
   default:
     return state;
   }
-};
+}

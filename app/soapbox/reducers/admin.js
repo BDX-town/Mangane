@@ -147,4 +147,4 @@ export default function admin(state = initialState, action) {
   default:
     return state;
   }
-};
+}

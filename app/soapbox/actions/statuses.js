@@ -39,7 +39,7 @@ export function fetchStatusRequest(id, skipLoading) {
     id,
     skipLoading,
   };
-};
+}
 
 export function createStatus(params, idempotencyKey) {
   return (dispatch, getState) => {
@@ -55,7 +55,7 @@ export function createStatus(params, idempotencyKey) {
       throw error;
     });
   };
-};
+}
 
 export function fetchStatus(id) {
   return (dispatch, getState) => {
@@ -76,7 +76,7 @@ export function fetchStatus(id) {
       dispatch(fetchStatusFail(id, error, skipLoading));
     });
   };
-};
+}
 
 export function fetchStatusSuccess(status, skipLoading) {
   return {
@@ -84,7 +84,7 @@ export function fetchStatusSuccess(status, skipLoading) {
     status,
     skipLoading,
   };
-};
+}
 
 export function fetchStatusFail(id, error, skipLoading) {
   return {
@@ -94,7 +94,7 @@ export function fetchStatusFail(id, error, skipLoading) {
     skipLoading,
     skipAlert: true,
   };
-};
+}
 
 export function redraft(status, raw_text) {
   return {
@@ -102,7 +102,7 @@ export function redraft(status, raw_text) {
     status,
     raw_text,
   };
-};
+}
 
 export function deleteStatus(id, routerHistory, withRedraft = false) {
   return (dispatch, getState) => {
@@ -128,21 +128,21 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       dispatch(deleteStatusFail(id, error));
     });
   };
-};
+}
 
 export function deleteStatusRequest(id) {
   return {
     type: STATUS_DELETE_REQUEST,
     id: id,
   };
-};
+}
 
 export function deleteStatusSuccess(id) {
   return {
     type: STATUS_DELETE_SUCCESS,
     id: id,
   };
-};
+}
 
 export function deleteStatusFail(id, error) {
   return {
@@ -150,7 +150,7 @@ export function deleteStatusFail(id, error) {
     id: id,
     error: error,
   };
-};
+}
 
 export function fetchContext(id) {
   return (dispatch, getState) => {
@@ -168,14 +168,14 @@ export function fetchContext(id) {
       dispatch(fetchContextFail(id, error));
     });
   };
-};
+}
 
 export function fetchContextRequest(id) {
   return {
     type: CONTEXT_FETCH_REQUEST,
     id,
   };
-};
+}
 
 export function fetchContextSuccess(id, ancestors, descendants) {
   return {
@@ -184,7 +184,7 @@ export function fetchContextSuccess(id, ancestors, descendants) {
     ancestors,
     descendants,
   };
-};
+}
 
 export function fetchContextFail(id, error) {
   return {
@@ -193,7 +193,7 @@ export function fetchContextFail(id, error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 export function muteStatus(id) {
   return (dispatch, getState) => {
@@ -207,21 +207,21 @@ export function muteStatus(id) {
       dispatch(muteStatusFail(id, error));
     });
   };
-};
+}
 
 export function muteStatusRequest(id) {
   return {
     type: STATUS_MUTE_REQUEST,
     id,
   };
-};
+}
 
 export function muteStatusSuccess(id) {
   return {
     type: STATUS_MUTE_SUCCESS,
     id,
   };
-};
+}
 
 export function muteStatusFail(id, error) {
   return {
@@ -229,7 +229,7 @@ export function muteStatusFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function unmuteStatus(id) {
   return (dispatch, getState) => {
@@ -243,21 +243,21 @@ export function unmuteStatus(id) {
       dispatch(unmuteStatusFail(id, error));
     });
   };
-};
+}
 
 export function unmuteStatusRequest(id) {
   return {
     type: STATUS_UNMUTE_REQUEST,
     id,
   };
-};
+}
 
 export function unmuteStatusSuccess(id) {
   return {
     type: STATUS_UNMUTE_SUCCESS,
     id,
   };
-};
+}
 
 export function unmuteStatusFail(id, error) {
   return {
@@ -265,7 +265,7 @@ export function unmuteStatusFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function hideStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -276,7 +276,7 @@ export function hideStatus(ids) {
     type: STATUS_HIDE,
     ids,
   };
-};
+}
 
 export function revealStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -287,4 +287,4 @@ export function revealStatus(ids) {
     type: STATUS_REVEAL,
     ids,
   };
-};
+}

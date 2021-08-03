@@ -26,13 +26,13 @@ export function fetchBlocks() {
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(fetchBlocksFail(error)));
   };
-};
+}
 
 export function fetchBlocksRequest() {
   return {
     type: BLOCKS_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchBlocksSuccess(accounts, next) {
   return {
@@ -40,14 +40,14 @@ export function fetchBlocksSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function fetchBlocksFail(error) {
   return {
     type: BLOCKS_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function expandBlocks() {
   return (dispatch, getState) => {
@@ -69,13 +69,13 @@ export function expandBlocks() {
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(expandBlocksFail(error)));
   };
-};
+}
 
 export function expandBlocksRequest() {
   return {
     type: BLOCKS_EXPAND_REQUEST,
   };
-};
+}
 
 export function expandBlocksSuccess(accounts, next) {
   return {
@@ -83,11 +83,11 @@ export function expandBlocksSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function expandBlocksFail(error) {
   return {
     type: BLOCKS_EXPAND_FAIL,
     error,
   };
-};
+}

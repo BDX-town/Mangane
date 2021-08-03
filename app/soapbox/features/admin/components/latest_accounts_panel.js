@@ -81,6 +81,6 @@ class LatestAccountsPanel extends ImmutablePureComponent {
         {...props}
       />
     );
-  };
+  }
 
-};
+}

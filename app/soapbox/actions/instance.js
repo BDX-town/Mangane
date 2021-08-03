@@ -44,7 +44,7 @@ export function instanceFail(error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 export function importNodeinfo(nodeinfo) {
   return {
@@ -59,4 +59,4 @@ export function nodeinfoFail(error) {
     error,
     skipAlert: true,
   };
-};
+}

@@ -65,4 +65,4 @@ export default function reports(state = initialState, action) {
   default:
     return state;
   }
-};
+}

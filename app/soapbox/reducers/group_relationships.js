@@ -23,4 +23,4 @@ export default function group_relationships(state = initialState, action) {
   default:
     return state;
   }
-};
+}

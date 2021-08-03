@@ -63,4 +63,4 @@ export default function chatMessageLists(state = initialState, action) {
   default:
     return state;
   }
-};
+}

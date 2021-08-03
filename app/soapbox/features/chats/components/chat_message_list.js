@@ -33,7 +33,7 @@ const timeChange = (prev, curr) => {
 
   if (prevDate !== currDate) {
     return currDate === nowDate ? 'today' : 'date';
-  };
+  }
 
   return null;
 };

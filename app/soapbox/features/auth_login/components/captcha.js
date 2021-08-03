@@ -40,7 +40,7 @@ class CaptchaField extends React.Component {
     if (refreshInterval) {
       const refresh = setInterval(this.fetchCaptcha, refreshInterval);
       this.setState({ refresh });
-    };
+    }
   }
 
   endRefresh = () => {

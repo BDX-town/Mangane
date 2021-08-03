@@ -30,4 +30,4 @@ export default function custom_emojis(state = initialState, action) {
   }
 
   return state;
-};
+}

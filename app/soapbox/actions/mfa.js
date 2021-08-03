@@ -36,19 +36,19 @@ export function fetchUserMfaSettingsRequest() {
   return {
     type: TOTP_SETTINGS_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchUserMfaSettingsSuccess() {
   return {
     type: TOTP_SETTINGS_FETCH_SUCCESS,
   };
-};
+}
 
 export function fetchUserMfaSettingsFail() {
   return {
     type: TOTP_SETTINGS_FETCH_FAIL,
   };
-};
+}
 
 export function fetchBackupCodes() {
   return (dispatch, getState) => {
@@ -66,21 +66,21 @@ export function fetchBackupCodesRequest() {
   return {
     type: BACKUP_CODES_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchBackupCodesSuccess(backup_codes, response) {
   return {
     type: BACKUP_CODES_FETCH_SUCCESS,
     backup_codes: response.data,
   };
-};
+}
 
 export function fetchBackupCodesFail(error) {
   return {
     type: BACKUP_CODES_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function fetchToptSetup() {
   return (dispatch, getState) => {
@@ -98,21 +98,21 @@ export function fetchToptSetupRequest() {
   return {
     type: TOTP_SETUP_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchToptSetupSuccess(totp_setup, response) {
   return {
     type: TOTP_SETUP_FETCH_SUCCESS,
     totp_setup: response.data,
   };
-};
+}
 
 export function fetchToptSetupFail(error) {
   return {
     type: TOTP_SETUP_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function confirmToptSetup(code, password) {
   return (dispatch, getState) => {
@@ -133,20 +133,20 @@ export function confirmToptRequest() {
   return {
     type: CONFIRM_TOTP_REQUEST,
   };
-};
+}
 
 export function confirmToptSuccess(backup_codes, response) {
   return {
     type: CONFIRM_TOTP_SUCCESS,
   };
-};
+}
 
 export function confirmToptFail(error) {
   return {
     type: CONFIRM_TOTP_FAIL,
     error,
   };
-};
+}
 
 export function disableToptSetup(password) {
   return (dispatch, getState) => {
@@ -164,17 +164,17 @@ export function disableToptRequest() {
   return {
     type: DISABLE_TOTP_REQUEST,
   };
-};
+}
 
 export function disableToptSuccess(backup_codes, response) {
   return {
     type: DISABLE_TOTP_SUCCESS,
   };
-};
+}
 
 export function disableToptFail(error) {
   return {
     type: DISABLE_TOTP_FAIL,
     error,
   };
-};
+}

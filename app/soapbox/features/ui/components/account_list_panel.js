@@ -51,6 +51,6 @@ export default class AccountListPanel extends ImmutablePureComponent {
         </Link>}
       </div>
     );
-  };
+  }
 
-};
+}

@@ -89,7 +89,7 @@ class UserPanel extends ImmutablePureComponent {
     );
   }
 
-};
+}
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();

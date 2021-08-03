@@ -93,7 +93,7 @@ function statusToTextMentions(state, status, account) {
     .delete(account.get('acct'))
     .map(m => `@${m} `)
     .join('');
-};
+}
 
 function clearAll(state) {
   return state.withMutations(map => {
@@ -112,7 +112,7 @@ function clearAll(state) {
     map.set('idempotencyKey', uuid());
     map.set('schedule', null);
   });
-};
+}
 
 function appendMedia(state, media) {
   const prevSize = state.get('media_attachments').size;
@@ -127,7 +127,7 @@ function appendMedia(state, media) {
       map.set('sensitive', true);
     }
   });
-};
+}
 
 function removeMedia(state, mediaId) {
   const prevSize = state.get('media_attachments').size;
@@ -140,7 +140,7 @@ function removeMedia(state, mediaId) {
       map.set('sensitive', false);
     }
   });
-};
+}
 
 const insertSuggestion = (state, position, token, completion, path) => {
   return state.withMutations(map => {
@@ -425,4 +425,4 @@ export default function compose(state = initialState, action) {
   default:
     return state;
   }
-};
+}

@@ -27,7 +27,7 @@ export function fetchScheduledStatuses() {
       dispatch(fetchScheduledStatusesFail(error));
     });
   };
-};
+}
 
 export function cancelScheduledStatus(id) {
   return (dispatch, getState) => {
@@ -44,7 +44,7 @@ export function fetchScheduledStatusesRequest() {
   return {
     type: SCHEDULED_STATUSES_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchScheduledStatusesSuccess(statuses, next) {
   return {
@@ -52,14 +52,14 @@ export function fetchScheduledStatusesSuccess(statuses, next) {
     statuses,
     next,
   };
-};
+}
 
 export function fetchScheduledStatusesFail(error) {
   return {
     type: SCHEDULED_STATUSES_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function expandScheduledStatuses() {
   return (dispatch, getState) => {
@@ -78,13 +78,13 @@ export function expandScheduledStatuses() {
       dispatch(expandScheduledStatusesFail(error));
     });
   };
-};
+}
 
 export function expandScheduledStatusesRequest() {
   return {
     type: SCHEDULED_STATUSES_EXPAND_REQUEST,
   };
-};
+}
 
 export function expandScheduledStatusesSuccess(statuses, next) {
   return {
@@ -92,11 +92,11 @@ export function expandScheduledStatusesSuccess(statuses, next) {
     statuses,
     next,
   };
-};
+}
 
 export function expandScheduledStatusesFail(error) {
   return {
     type: SCHEDULED_STATUSES_EXPAND_FAIL,
     error,
   };
-};
+}
