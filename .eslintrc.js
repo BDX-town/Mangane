@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
 
+  extends: 'eslint:recommended',
+
   env: {
     browser: true,
     node: true,
@@ -79,8 +81,10 @@ module.exports = {
       },
     ],
     'no-extra-semi': 'error',
+    'no-const-assign': 'error',
     'no-fallthrough': 'error',
     'no-irregular-whitespace': 'error',
+    'no-loop-func': 'error',
     'no-mixed-spaces-and-tabs': 'error',
     'no-nested-ternary': 'warn',
     'no-trailing-spaces': 'warn',
@@ -95,6 +99,8 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    'no-useless-escape': 'warn',
+    'no-var': 'error',
     'object-curly-spacing': ['error', 'always'],
     'padded-blocks': [
       'error',
@@ -102,14 +108,11 @@ module.exports = {
         classes: 'always',
       },
     ],
+    'prefer-const': 'error',
     quotes: ['error', 'single'],
     semi: 'error',
     strict: 'off',
     'valid-typeof': 'error',
-    'prefer-const': 'error',
-    'no-loop-func': 'error',
-    'no-const-assign': 'error',
-    'no-var': 'error',
 
     'react/jsx-boolean-value': 'error',
     'react/jsx-closing-bracket-location': ['error', 'line-aligned'],

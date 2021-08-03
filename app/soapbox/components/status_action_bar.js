@@ -93,8 +93,6 @@ class StatusActionBar extends ImmutablePureComponent {
     allowedEmoji: ImmutablePropTypes.list,
     emojiSelectorFocused: PropTypes.bool,
     handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
-    emojiSelectorFocused: PropTypes.bool,
-    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -245,7 +243,7 @@ class StatusActionBar extends ImmutablePureComponent {
       textarea.select();
       document.execCommand('copy');
     } catch (e) {
-
+      // Do nothing
     } finally {
       document.body.removeChild(textarea);
     }

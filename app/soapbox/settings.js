@@ -38,6 +38,7 @@ export default class Settings {
       try {
         localStorage.removeItem(key);
       } catch (e) {
+        // Do nothing
       }
     }
     return data;
