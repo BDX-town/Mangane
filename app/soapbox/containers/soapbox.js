@@ -93,7 +93,7 @@ class SoapboxMount extends React.PureComponent {
   maybeUpdateMessages = prevProps => {
     if (this.props.locale !== prevProps.locale) {
       this.setMessages();
-    };
+    }
   }
 
   componentDidMount() {

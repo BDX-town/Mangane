@@ -100,16 +100,16 @@ class Filters extends ImmutablePureComponent {
 
     if (home_timeline) {
       context.push('home');
-    };
+    }
     if (public_timeline) {
       context.push('public');
-    };
+    }
     if (notifications) {
       context.push('notifications');
-    };
+    }
     if (conversations) {
       context.push('thread');
-    };
+    }
 
     dispatch(createFilter(intl, phrase, expires_at, context, whole_word, irreversible)).then(response => {
       return dispatch(fetchFilters());

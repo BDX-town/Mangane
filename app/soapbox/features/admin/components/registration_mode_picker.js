@@ -82,6 +82,6 @@ class RegistrationModePicker extends ImmutablePureComponent {
         </FieldsGroup>
       </SimpleForm>
     );
-  };
+  }
 
 }

@@ -91,4 +91,4 @@ export default function getStream(streamingAPIBaseURL, accessToken, stream, { co
   };
 
   return ws;
-};
+}

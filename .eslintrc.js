@@ -78,6 +78,7 @@ module.exports = {
         ],
       },
     ],
+    'no-extra-semi': 'error',
     'no-fallthrough': 'error',
     'no-irregular-whitespace': 'error',
     'no-mixed-spaces-and-tabs': 'error',

@@ -30,13 +30,13 @@ export function fetchMutes() {
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(fetchMutesFail(error)));
   };
-};
+}
 
 export function fetchMutesRequest() {
   return {
     type: MUTES_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchMutesSuccess(accounts, next) {
   return {
@@ -44,14 +44,14 @@ export function fetchMutesSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function fetchMutesFail(error) {
   return {
     type: MUTES_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function expandMutes() {
   return (dispatch, getState) => {
@@ -73,13 +73,13 @@ export function expandMutes() {
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(expandMutesFail(error)));
   };
-};
+}
 
 export function expandMutesRequest() {
   return {
     type: MUTES_EXPAND_REQUEST,
   };
-};
+}
 
 export function expandMutesSuccess(accounts, next) {
   return {
@@ -87,14 +87,14 @@ export function expandMutesSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function expandMutesFail(error) {
   return {
     type: MUTES_EXPAND_FAIL,
     error,
   };
-};
+}
 
 export function initMuteModal(account) {
   return dispatch => {

@@ -215,4 +215,4 @@ if (problems.length > 0) {
   })) {
     process.exit(1);
   }
-};
+}

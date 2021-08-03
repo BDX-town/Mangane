@@ -87,4 +87,4 @@ class ScheduledStatus extends ImmutablePureComponent {
     );
   }
 
-};
+}

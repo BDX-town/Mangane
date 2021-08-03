@@ -121,4 +121,4 @@ export function importFetchedPoll(poll) {
 
 export function importErrorWhileFetchingAccountByUsername(username) {
   return { type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username };
-};
+}

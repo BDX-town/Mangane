@@ -6,7 +6,7 @@ const LAYOUT_BREAKPOINT = 630;
 
 export function isMobile(width) {
   return width <= LAYOUT_BREAKPOINT;
-};
+}
 
 const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
@@ -26,4 +26,4 @@ export function isUserTouching() {
 
 export function isIOS() {
   return iOS;
-};
+}

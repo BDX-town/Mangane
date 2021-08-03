@@ -18,7 +18,7 @@ const mapStateToProps = (state, { params }) => {
     statusIds: state.getIn(['status_lists', 'pins', 'items']),
     hasMore: !!state.getIn(['status_lists', 'pins', 'next']),
   };
-};;
+};
 
 export default @connect(mapStateToProps)
 @injectIntl

@@ -47,7 +47,7 @@ export function updateTimeline(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
 export function updateTimelineQueue(timeline, statusId, accept) {
   return dispatch => {
@@ -61,7 +61,7 @@ export function updateTimelineQueue(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
 export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
   return (dispatch, getState) => {
@@ -88,7 +88,7 @@ export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
       }
     }
   };
-};
+}
 
 export function deleteFromTimelines(id) {
   return (dispatch, getState) => {
@@ -104,13 +104,13 @@ export function deleteFromTimelines(id) {
       reblogOf,
     });
   };
-};
+}
 
 export function clearTimeline(timeline) {
   return (dispatch) => {
     dispatch({ type: TIMELINE_CLEAR, timeline });
   };
-};
+}
 
 const noOp = () => {};
 
@@ -148,7 +148,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
       done();
     });
   };
-};
+}
 
 export const expandHomeTimeline            = ({ maxId } = {}, done = noOp) => expandTimeline('home', '/api/v1/timelines/home', { max_id: maxId }, done);
 
@@ -185,7 +185,7 @@ export function expandTimelineRequest(timeline, isLoadingMore) {
     timeline,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadingRecent, isLoadingMore) {
   return {
@@ -197,7 +197,7 @@ export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadi
     isLoadingRecent,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineFail(timeline, error, isLoadingMore) {
   return {
@@ -206,21 +206,21 @@ export function expandTimelineFail(timeline, error, isLoadingMore) {
     error,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function connectTimeline(timeline) {
   return {
     type: TIMELINE_CONNECT,
     timeline,
   };
-};
+}
 
 export function disconnectTimeline(timeline) {
   return {
     type: TIMELINE_DISCONNECT,
     timeline,
   };
-};
+}
 
 export function scrollTopTimeline(timeline, top) {
   return {
@@ -228,4 +228,4 @@ export function scrollTopTimeline(timeline, top) {
     timeline,
     top,
   };
-};
+}

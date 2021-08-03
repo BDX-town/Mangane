@@ -262,7 +262,7 @@ class Header extends ImmutablePureComponent {
     }
 
     return info;
-  };
+  }
 
   render() {
     const { account, intl, username, me } = this.props;

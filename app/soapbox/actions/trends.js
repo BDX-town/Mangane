@@ -12,14 +12,14 @@ export function fetchTrends() {
       dispatch(fetchTrendsSuccess(response.data));
     }).catch(error => dispatch(fetchTrendsFail(error)));
   };
-};
+}
 
 export function fetchTrendsRequest() {
   return {
     type: TRENDS_FETCH_REQUEST,
     skipLoading: true,
   };
-};
+}
 
 export function fetchTrendsSuccess(tags) {
   return {
@@ -27,7 +27,7 @@ export function fetchTrendsSuccess(tags) {
     tags,
     skipLoading: true,
   };
-};
+}
 
 export function fetchTrendsFail(error) {
   return {
@@ -36,4 +36,4 @@ export function fetchTrendsFail(error) {
     skipLoading: true,
     skipAlert: true,
   };
-};
+}

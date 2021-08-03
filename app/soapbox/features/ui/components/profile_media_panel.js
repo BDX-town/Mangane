@@ -64,9 +64,9 @@ class ProfileMediaPanel extends ImmutablePureComponent {
         }
       </div>
     );
-  };
+  }
 
-};
+}
 
 const mapStateToProps = (state, { account }) => ({
   attachments: getAccountGallery(state, account.get('id')),

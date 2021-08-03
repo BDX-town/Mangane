@@ -17,14 +17,14 @@ export function fetchSuggestions() {
       dispatch(fetchSuggestionsSuccess(response.data));
     }).catch(error => dispatch(fetchSuggestionsFail(error)));
   };
-};
+}
 
 export function fetchSuggestionsRequest() {
   return {
     type: SUGGESTIONS_FETCH_REQUEST,
     skipLoading: true,
   };
-};
+}
 
 export function fetchSuggestionsSuccess(accounts) {
   return {
@@ -32,7 +32,7 @@ export function fetchSuggestionsSuccess(accounts) {
     accounts,
     skipLoading: true,
   };
-};
+}
 
 export function fetchSuggestionsFail(error) {
   return {
@@ -41,7 +41,7 @@ export function fetchSuggestionsFail(error) {
     skipLoading: true,
     skipAlert: true,
   };
-};
+}
 
 export const dismissSuggestion = accountId => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;

@@ -49,4 +49,4 @@ export default function soapbox(state = initialState, action) {
   default:
     return state;
   }
-};
+}

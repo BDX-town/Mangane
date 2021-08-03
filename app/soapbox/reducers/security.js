@@ -18,4 +18,4 @@ export default function security(state = initialState, action) {
   default:
     return state;
   }
-};
+}

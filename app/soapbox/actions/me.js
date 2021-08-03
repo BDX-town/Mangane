@@ -22,12 +22,12 @@ export function fetchMe() {
 
     if (!token) {
       dispatch({ type: ME_FETCH_SKIP }); return noOp();
-    };
+    }
 
     dispatch(fetchMeRequest());
     return dispatch(verifyCredentials(token)).catch(error => {
       dispatch(fetchMeFail(error));
-    });;
+    });
   };
 }
 
@@ -66,7 +66,7 @@ export function fetchMeFail(error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 export function patchMeRequest() {
   return {
@@ -89,4 +89,4 @@ export function patchMeFail(error) {
     type: ME_PATCH_FAIL,
     error,
   };
-};
+}

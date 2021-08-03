@@ -40,4 +40,4 @@ export default function admin_log(state = initialState, action) {
   default:
     return state;
   }
-};
+}

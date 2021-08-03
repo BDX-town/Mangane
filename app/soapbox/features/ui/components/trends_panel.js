@@ -48,9 +48,9 @@ class TrendsPanel extends ImmutablePureComponent {
         </div>
       </div>
     );
-  };
+  }
 
-};
+}
 
 
 const mapStateToProps = state => ({

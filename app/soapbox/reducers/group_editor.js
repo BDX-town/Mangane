@@ -54,4 +54,4 @@ export default function groupEditorReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}

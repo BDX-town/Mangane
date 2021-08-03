@@ -85,4 +85,4 @@ export default function instance(state = initialState, action) {
   default:
     return state;
   }
-};
+}

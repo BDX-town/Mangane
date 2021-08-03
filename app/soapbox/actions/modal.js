@@ -7,10 +7,10 @@ export function openModal(type, props) {
     modalType: type,
     modalProps: props,
   };
-};
+}
 
 export function closeModal() {
   return {
     type: MODAL_CLOSE,
   };
-};
+}
