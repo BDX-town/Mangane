@@ -71,15 +71,13 @@ const makeMapStateToProps = () => {
     (_, { id }) => id,
     state => state.getIn(['contexts', 'inReplyTos']),
   ], (statusId, inReplyTos) => {
-    let ancestorsIds = Immutable.List();
-    ancestorsIds = ancestorsIds.withMutations(mutable => {
-      let id = statusId;
+    let ancestorsIds = Immutable.OrderedSet();
+    let id = statusId;
 
-      while (id) {
-        mutable.unshift(id);
-        id = inReplyTos.get(id);
-      }
-    });
+    while (id) {
+      ancestorsIds = Immutable.OrderedSet([id]).union(ancestorsIds);
+      id = inReplyTos.get(id);
+    }
 
     return ancestorsIds;
   });
@@ -88,25 +86,23 @@ const makeMapStateToProps = () => {
     (_, { id }) => id,
     state => state.getIn(['contexts', 'replies']),
   ], (statusId, contextReplies) => {
-    let descendantsIds = Immutable.List();
-    descendantsIds = descendantsIds.withMutations(mutable => {
-      const ids = [statusId];
+    let descendantsIds = Immutable.OrderedSet();
+    const ids = [statusId];
 
-      while (ids.length > 0) {
-        let id        = ids.shift();
-        const replies = contextReplies.get(id);
+    while (ids.length > 0) {
+      let id        = ids.shift();
+      const replies = contextReplies.get(id);
 
-        if (statusId !== id) {
-          mutable.push(id);
-        }
-
-        if (replies) {
-          replies.reverse().forEach(reply => {
-            ids.unshift(reply);
-          });
-        }
+      if (statusId !== id) {
+        descendantsIds = descendantsIds.union([id]);
       }
-    });
+
+      if (replies) {
+        replies.reverse().forEach(reply => {
+          ids.unshift(reply);
+        });
+      }
+    }
 
     return descendantsIds;
   });
