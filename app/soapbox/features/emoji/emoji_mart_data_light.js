@@ -8,28 +8,22 @@ const emojis = {};
 
 // decompress
 Object.keys(shortCodesToEmojiData).forEach((shortCode) => {
-  let [
+  const [
     filenameData, // eslint-disable-line no-unused-vars
     searchData,
   ] = shortCodesToEmojiData[shortCode];
-  let [
+  const [
     native,
     short_names,
     search,
     unified,
   ] = searchData;
 
-  if (!unified) {
-    // unified name can be derived from unicodeToUnifiedName
-    unified = unicodeToUnifiedName(native);
-  }
-
-  short_names = [shortCode].concat(short_names);
   emojis[shortCode] = {
     native,
     search,
-    short_names,
-    unified,
+    short_names: [shortCode].concat(short_names),
+    unified: unified || unicodeToUnifiedName(native),
   };
 });
 

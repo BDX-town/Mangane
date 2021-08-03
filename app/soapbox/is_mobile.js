@@ -11,7 +11,7 @@ export function isMobile(width) {
 const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
 let userTouching = false;
-let listenerOptions = supportsPassiveEvents ? { passive: true } : false;
+const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 function touchListener() {
   userTouching = true;

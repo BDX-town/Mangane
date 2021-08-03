@@ -148,7 +148,7 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
     const timeline = getState().getIn(['timelines', timelineId]);
 
     if (timeline && timeline.get('items').size > 0 && timeline.getIn(['items', 0]) !== null && timeline.get('online')) {
-      let dequeueArgs = {};
+      const dequeueArgs = {};
       if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
       dispatch(updateTimeline(timelineId, data.id));
@@ -272,6 +272,8 @@ export function uploadCompose(files) {
     for (const [i, f] of Array.from(files).entries()) {
       if (media.size + i > uploadLimit - 1) break;
 
+      // FIXME: Don't define function in loop
+      /* eslint-disable no-loop-func */
       resizeImage(f).then(file => {
         const data = new FormData();
         data.append('file', file);
@@ -287,6 +289,7 @@ export function uploadCompose(files) {
           .then(({ data }) => dispatch(uploadComposeSuccess(data)));
 
       }).catch(error => dispatch(uploadComposeFail(error)));
+      /* eslint-enable no-loop-func */
     };
   };
 };

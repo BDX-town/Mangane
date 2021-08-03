@@ -284,7 +284,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const mutingConversation = status.get('muted');
     const ownAccount = status.getIn(['account', 'id']) === me;
 
-    let menu = [];
+    const menu = [];
 
     menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
 
@@ -388,7 +388,7 @@ class StatusActionBar extends ImmutablePureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
-    let menu = this._makeMenu(publicStatus);
+    const menu = this._makeMenu(publicStatus);
     let reblogIcon = 'retweet';
     let replyIcon;
     let replyTitle;

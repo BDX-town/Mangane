@@ -126,7 +126,7 @@ export const makeGetStatus = () => {
 const getAlertsBase = state => state.get('alerts');
 
 export const getAlerts = createSelector([getAlertsBase], (base) => {
-  let arr = [];
+  const arr = [];
 
   base.forEach(item => {
     arr.push({

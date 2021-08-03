@@ -16,7 +16,7 @@ const regexSupplant = function(regex, flags) {
     regex = regex.source;
   }
   return new RegExp(regex.replace(/#\{(\w+)\}/g, function(match, name) {
-    var newRegex = regexen[name] || '';
+    let newRegex = regexen[name] || '';
     if (typeof newRegex !== 'string') {
       newRegex = newRegex.source;
     }

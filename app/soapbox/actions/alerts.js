@@ -45,7 +45,7 @@ export function showAlertForError(error) {
     }
 
     let message = statusText;
-    let title   = `${status}`;
+    const title = `${status}`;
 
     if (data.error) {
       message = data.error;

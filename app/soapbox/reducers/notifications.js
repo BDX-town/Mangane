@@ -113,7 +113,7 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   const alreadyExists = queuedNotifications.has(notification.id) || listedNotifications.has(notification.id);
   if (alreadyExists) return state;
 
-  let newQueuedNotifications = queuedNotifications;
+  const newQueuedNotifications = queuedNotifications;
 
   return state.withMutations(mutable => {
     if (totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {

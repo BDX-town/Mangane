@@ -179,7 +179,7 @@ export default class Card extends React.PureComponent {
 
     let embed     = '';
     const imageUrl = card.get('image') || card.getIn(['pleroma', 'opengraph', 'thumbnail_url']);
-    let thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
+    const thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
 
     if (interactive) {
       if (embedded) {

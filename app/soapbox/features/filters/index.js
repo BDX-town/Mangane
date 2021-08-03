@@ -96,7 +96,7 @@ class Filters extends ImmutablePureComponent {
     const { intl, dispatch } = this.props;
     const { phrase, whole_word, expires_at, irreversible } = this.state;
     const { home_timeline, public_timeline, notifications, conversations } = this.state;
-    let context = [];
+    const context = [];
 
     if (home_timeline) {
       context.push('home');

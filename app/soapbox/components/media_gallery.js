@@ -169,7 +169,7 @@ class Item extends React.PureComponent {
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
-      let conditionalAttributes = {};
+      const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';
       }
@@ -563,9 +563,8 @@ class MediaGallery extends React.PureComponent {
     const { media, intl, sensitive } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
-    let children, spoilerButton;
 
-    children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
+    const children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
       <Item
         key={attachment.get('id')}
         onClick={this.handleClick}
@@ -579,6 +578,8 @@ class MediaGallery extends React.PureComponent {
         total={media.size}
       />
     ));
+
+    let spoilerButton;
 
     if (visible) {
       spoilerButton = <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='eye-slash' overlay onClick={this.handleOpen} />;
