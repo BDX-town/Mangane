@@ -35,7 +35,9 @@ function Blurhash({
 
   useEffect(() => {
     const { current: canvas } = canvasRef;
-    canvas.width = canvas.width; // resets canvas
+
+    // resets canvas
+    canvas.width = canvas.width; // eslint-disable-line no-self-assign
 
     if (dummy || !hash) return;
 

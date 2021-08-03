@@ -244,7 +244,7 @@ class ActionBar extends React.PureComponent {
       textarea.select();
       document.execCommand('copy');
     } catch (e) {
-
+      // Do nothing
     } finally {
       document.body.removeChild(textarea);
     }

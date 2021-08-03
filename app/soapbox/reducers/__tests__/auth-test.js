@@ -164,9 +164,11 @@ describe('auth reducer', () => {
       };
 
       const state = fromJS({
-        users: { '4567': { id: '4567', access_token: 'ABCDEFG' } },
-        users: { '8901': { id: '1234', access_token: 'ABCDEFG' } },
-        users: { '5432': { id: '5432', access_token: 'HIJKLMN' } },
+        users: {
+          '4567': { id: '4567', access_token: 'ABCDEFG' },
+          '8901': { id: '1234', access_token: 'ABCDEFG' },
+          '5432': { id: '5432', access_token: 'HIJKLMN' },
+        },
       });
 
       const expected = fromJS({

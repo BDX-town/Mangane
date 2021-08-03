@@ -1,7 +1,7 @@
 import React from 'react';
 import { FormattedNumber } from 'react-intl';
 
-const isNumber = number => typeof number === 'number' && number !== NaN;
+const isNumber = number => typeof number === 'number' && !isNaN(number);
 
 export const shortNumberFormat = number => {
   if (!isNumber(number)) return '•';

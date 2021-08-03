@@ -114,12 +114,11 @@ function findVariablesinAST(tree) {
       break;
     case parser.TYPE.plural:
       result.add(element.value);
-      const subTrees = Object.values(element.options).map((option) => option.value);
-      subTrees.forEach((subtree) => {
-        findVariablesinAST(subtree).forEach((variable) => {
-          result.add(variable);
-        });
-      });
+      Object.values(element.options)
+        .map(option => option.value)
+        .forEach(subtree =>
+          findVariablesinAST(subtree)
+            .forEach(variable => result.add(variable)));
       break;
     case parser.TYPE.literal:
       break;
