@@ -292,13 +292,13 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
-    let poll = null;
+    const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
 
-    let { status, account, ...other } = this.props;
-
+    // FIXME: why does this need to reassign status and account??
+    let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
 
     if (status === null) {
       return null;

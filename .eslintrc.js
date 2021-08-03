@@ -105,6 +105,10 @@ module.exports = {
     semi: 'error',
     strict: 'off',
     'valid-typeof': 'error',
+    'prefer-const': 'error',
+    'no-loop-func': 'error',
+    'no-const-assign': 'error',
+    'no-var': 'error',
 
     'react/jsx-boolean-value': 'error',
     'react/jsx-closing-bracket-location': ['error', 'line-aligned'],

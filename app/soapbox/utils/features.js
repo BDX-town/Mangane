@@ -20,8 +20,8 @@ export const getFeatures = createSelector([
 });
 
 export const parseVersion = version => {
-  let regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
-  let match = regex.exec(version);
+  const regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
+  const match = regex.exec(version);
   return {
     software: match[2] || 'Mastodon',
     version: match[3] || match[1],

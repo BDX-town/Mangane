@@ -208,7 +208,7 @@ class Video extends React.PureComponent {
     const x = (e.clientX - rect.left) / this.volWidth; //x position within the element.
 
     if(!isNaN(x)) {
-      var slideamt = x;
+      let slideamt = x;
       if(x > 1) {
         slideamt = 1;
       } else if(x < 0) {

@@ -50,8 +50,8 @@ class StatusContent extends React.PureComponent {
 
     const links = node.querySelectorAll('a');
 
-    for (var i = 0; i < links.length; ++i) {
-      let link = links[i];
+    for (let i = 0; i < links.length; ++i) {
+      const link = links[i];
       if (link.classList.contains('status-link')) {
         continue;
       }
@@ -59,7 +59,7 @@ class StatusContent extends React.PureComponent {
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
-      let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
+      const mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);

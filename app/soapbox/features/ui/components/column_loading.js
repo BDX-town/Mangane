@@ -19,7 +19,7 @@ export default class ColumnLoading extends ImmutablePureComponent {
   };
 
   render() {
-    let { title, icon } = this.props;
+    const { title, icon } = this.props;
     return (
       <Column>
         <ColumnHeader icon={icon} title={title} focusable={false} />

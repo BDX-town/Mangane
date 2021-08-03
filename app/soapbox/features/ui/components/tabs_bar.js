@@ -53,7 +53,7 @@ class TabsBar extends React.PureComponent {
 
   getNavLinks() {
     const { intl: { formatMessage }, logo, account, dashboardCount, notificationCount, chatsCount } = this.props;
-    let links = [];
+    const links = [];
     if (logo) {
       links.push(
         <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>

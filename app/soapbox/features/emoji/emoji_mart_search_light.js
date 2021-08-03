@@ -4,16 +4,16 @@
 import data from './emoji_mart_data_light';
 import { getData, getSanitizedData, uniq, intersect } from './emoji_utils';
 
-let originalPool = {};
+const originalPool = {};
 let index = {};
-let emojisList = {};
-let emoticonsList = {};
+const emojisList = {};
+const emoticonsList = {};
 let customEmojisList = [];
 
-for (let emoji in data.emojis) {
-  let emojiData = data.emojis[emoji];
-  let { short_names, emoticons } = emojiData;
-  let id = short_names[0];
+for (const emoji in data.emojis) {
+  const emojiData = data.emojis[emoji];
+  const { short_names, emoticons } = emojiData;
+  const id = short_names[0];
 
   if (emoticons) {
     emoticons.forEach(emoticon => {
@@ -31,7 +31,7 @@ for (let emoji in data.emojis) {
 
 function clearCustomEmojis(pool) {
   customEmojisList.forEach((emoji) => {
-    let emojiId = emoji.id || emoji.short_names[0];
+    const emojiId = emoji.id || emoji.short_names[0];
 
     delete pool[emojiId];
     delete emojisList[emojiId];
@@ -42,7 +42,7 @@ export function addCustomToPool(custom, pool = originalPool) {
   if (customEmojisList.length) clearCustomEmojis(pool);
 
   custom.forEach((emoji) => {
-    let emojiId = emoji.id || emoji.short_names[0];
+    const emojiId = emoji.id || emoji.short_names[0];
 
     if (emojiId && !pool[emojiId]) {
       pool[emojiId] = getData(emoji);
@@ -85,8 +85,8 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
       pool = {};
 
       data.categories.forEach(category => {
-        let isIncluded = include && include.length ? include.indexOf(category.name.toLowerCase()) > -1 : true;
-        let isExcluded = exclude && exclude.length ? exclude.indexOf(category.name.toLowerCase()) > -1 : false;
+        const isIncluded = include && include.length ? include.indexOf(category.name.toLowerCase()) > -1 : true;
+        const isExcluded = exclude && exclude.length ? exclude.indexOf(category.name.toLowerCase()) > -1 : false;
         if (!isIncluded || isExcluded) {
           return;
         }
@@ -95,8 +95,8 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
       });
 
       if (custom.length) {
-        let customIsIncluded = include && include.length ? include.indexOf('custom') > -1 : true;
-        let customIsExcluded = exclude && exclude.length ? exclude.indexOf('custom') > -1 : false;
+        const customIsIncluded = include && include.length ? include.indexOf('custom') > -1 : true;
+        const customIsExcluded = exclude && exclude.length ? exclude.indexOf('custom') > -1 : false;
         if (customIsIncluded && !customIsExcluded) {
           addCustomToPool(custom, pool);
         }
@@ -116,13 +116,13 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
         aIndex = aIndex[char];
 
         if (!aIndex.results) {
-          let scores = {};
+          const scores = {};
 
           aIndex.results = [];
           aIndex.pool = {};
 
-          for (let id in aPool) {
-            let emoji = aPool[id],
+          for (const id in aPool) {
+            const emoji = aPool[id],
               { search } = emoji,
               sub = value.substr(0, length),
               subIndex = search.indexOf(sub);
@@ -139,7 +139,7 @@ export function search(value, { emojisToShowFilter, maxResults, include, exclude
           }
 
           aIndex.results.sort((a, b) => {
-            let aScore = scores[a.id],
+            const aScore = scores[a.id],
               bScore = scores[b.id];
 
             return aScore - bScore;

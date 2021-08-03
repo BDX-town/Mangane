@@ -22,7 +22,7 @@ export default class ColumnSettings extends React.PureComponent {
   onAllSoundsChange = (path, checked) => {
     const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll'], ['sounds', 'move']];
 
-    for (var i = 0; i < soundSettings.length; i++) {
+    for (let i = 0; i < soundSettings.length; i++) {
       this.props.onChange(soundSettings[i], checked);
     }
   }

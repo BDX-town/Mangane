@@ -121,7 +121,7 @@ class IconPickerMenu extends React.PureComponent {
       return <div style={{ width: 299 }} />;
     }
 
-    let data = { compressed: true, categories: [], aliases: [], emojis: [] };
+    const data = { compressed: true, categories: [], aliases: [], emojis: [] };
     const title = intl.formatMessage(messages.emoji);
     const { modifierOpen } = this.state;
 
@@ -209,7 +209,7 @@ class IconPickerDropdown extends React.PureComponent {
     const { intl, onPickEmoji, value } = this.props;
     const title = intl.formatMessage(messages.emoji);
     const { active, loading, placement } = this.state;
-    let forkAwesomeIcons = require('../forkawesome.json');
+    const forkAwesomeIcons = require('../forkawesome.json');
 
     return (
       <div className='font-icon-picker-dropdown' onKeyDown={this.handleKeyDown}>

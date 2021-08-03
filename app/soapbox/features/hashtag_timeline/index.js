@@ -26,7 +26,7 @@ class HashtagTimeline extends React.PureComponent {
   };
 
   title = () => {
-    let title = [this.props.params.id];
+    const title = [this.props.params.id];
 
     if (this.additionalFor('any')) {
       title.push(' ', <FormattedMessage key='any' id='hashtag.column_header.tag_mode.any'  values={{ additional: this.additionalFor('any') }} defaultMessage='or {additional}' />);
@@ -54,13 +54,13 @@ class HashtagTimeline extends React.PureComponent {
   }
 
   _subscribe(dispatch, id, tags = {}) {
-    let any  = (tags.any || []).map(tag => tag.value);
-    let all  = (tags.all || []).map(tag => tag.value);
-    let none = (tags.none || []).map(tag => tag.value);
+    const any  = (tags.any || []).map(tag => tag.value);
+    const all  = (tags.all || []).map(tag => tag.value);
+    const none = (tags.none || []).map(tag => tag.value);
 
     [id, ...any].map(tag => {
       this.disconnects.push(dispatch(connectHashtagStream(id, tag, status => {
-        let tags = status.tags.map(tag => tag.name);
+        const tags = status.tags.map(tag => tag.name);
 
         return all.filter(tag => tags.includes(tag)).length === all.length &&
                none.filter(tag => tags.includes(tag)).length === 0;

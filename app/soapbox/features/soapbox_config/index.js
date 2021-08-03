@@ -454,7 +454,7 @@ class ColorPicker extends React.PureComponent {
 
   render() {
     const { style, value, onChange } = this.props;
-    let margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
+    const margin_left_picker = isMobile(window.innerWidth) ? '20px' : '12px';
 
     return (
       <div id='SketchPickerContainer' ref={this.setRef} style={{ ...style, marginLeft: margin_left_picker, position: 'absolute', zIndex: 1000 }}>

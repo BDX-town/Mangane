@@ -90,7 +90,7 @@ const makeMapStateToProps = () => {
     const ids = [statusId];
 
     while (ids.length > 0) {
-      let id        = ids.shift();
+      const id      = ids.shift();
       const replies = contextReplies.get(id);
 
       if (statusId !== id) {
@@ -199,7 +199,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleReplyClick = (status) => {
-    let { askReplyConfirmation, dispatch, intl } = this.props;
+    const { askReplyConfirmation, dispatch, intl } = this.props;
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),

@@ -103,7 +103,7 @@ class ProfileDropdown extends React.PureComponent {
     const { intl, account, otherAccounts } = this.props;
     const size = this.props.size || 16;
 
-    let menu = [];
+    const menu = [];
 
     menu.push({ text: this.renderAccount(account), to: `/@${account.get('acct')}` });
 

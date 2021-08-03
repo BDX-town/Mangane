@@ -93,7 +93,7 @@ class MediaItem extends ImmutablePureComponent {
         />
       );
     } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {
-      let conditionalAttributes = {};
+      const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';
       }

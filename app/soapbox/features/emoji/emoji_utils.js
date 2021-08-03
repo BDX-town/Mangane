@@ -6,7 +6,7 @@ import data from './emoji_mart_data_light';
 const buildSearch = (data) => {
   const search = [];
 
-  let addToSearch = (strings, split) => {
+  const addToSearch = (strings, split) => {
     if (!strings) {
       return;
     }
@@ -33,12 +33,12 @@ const buildSearch = (data) => {
 const _String = String;
 
 const stringFromCodePoint = _String.fromCodePoint || function() {
-  let MAX_SIZE = 0x4000;
-  let codeUnits = [];
+  const MAX_SIZE = 0x4000;
+  const codeUnits = [];
   let highSurrogate;
   let lowSurrogate;
   let index = -1;
-  let length = arguments.length;
+  const length = arguments.length;
   if (!length) {
     return '';
   }
@@ -80,16 +80,16 @@ const SKINS = [
 ];
 
 function unifiedToNative(unified) {
-  let unicodes = unified.split('-'),
+  const unicodes = unified.split('-'),
     codePoints = unicodes.map((u) => `0x${u}`);
 
   return stringFromCodePoint.apply(null, codePoints);
 }
 
 function sanitize(emoji) {
-  let { name, short_names, skin_tone, skin_variations, emoticons, unified, custom, imageUrl } = emoji,
-    id = emoji.id || short_names[0],
-    colons = `:${id}:`;
+  const { name, short_names, skin_tone, skin_variations, emoticons, unified, custom, imageUrl } = emoji;
+  const id = emoji.id || short_names[0];
+  const colons = `:${id}:`;
 
   if (custom) {
     return {
@@ -102,14 +102,10 @@ function sanitize(emoji) {
     };
   }
 
-  if (skin_tone) {
-    colons += `:skin-tone-${skin_tone}:`;
-  }
-
   return {
     id,
     name,
-    colons,
+    colons: skin_tone ? `${colons}:skin-tone-${skin_tone}:` : colons,
     emoticons,
     unified: unified.toLowerCase(),
     skin: skin_tone || (skin_variations ? 1 : null),
@@ -125,7 +121,7 @@ function getData(emoji, skin, set) {
   let emojiData = {};
 
   if (typeof emoji === 'string') {
-    let matches = emoji.match(COLONS_REGEX);
+    const matches = emoji.match(COLONS_REGEX);
 
     if (matches) {
       emoji = matches[1];
@@ -168,7 +164,7 @@ function getData(emoji, skin, set) {
   if (emojiData.skin_variations && skin > 1 && set) {
     emojiData = JSON.parse(_JSON.stringify(emojiData));
 
-    let skinKey = SKINS[skin - 1],
+    const skinKey = SKINS[skin - 1],
       variationData = emojiData.skin_variations[skinKey];
 
     if (!variationData.variations && emojiData.variations) {
@@ -178,8 +174,8 @@ function getData(emoji, skin, set) {
     if (variationData[`has_img_${set}`]) {
       emojiData.skin_tone = skin;
 
-      for (let k in variationData) {
-        let v = variationData[k];
+      for (const k in variationData) {
+        const v = variationData[k];
         emojiData[k] = v;
       }
     }
@@ -210,11 +206,11 @@ function intersect(a, b) {
 }
 
 function deepMerge(a, b) {
-  let o = {};
+  const o = {};
 
-  for (let key in a) {
-    let originalValue = a[key],
-      value = originalValue;
+  for (const key in a) {
+    const originalValue = a[key];
+    let value = originalValue;
 
     if (b.hasOwnProperty(key)) {
       value = b[key];

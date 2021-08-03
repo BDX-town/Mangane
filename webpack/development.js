@@ -25,7 +25,7 @@ const backendEndpoints = [
 ];
 
 const makeProxyConfig = () => {
-  let proxyConfig = {};
+  const proxyConfig = {};
   proxyConfig['/api/patron'] = {
     target: patronUrl,
     secure: secureProxy,
