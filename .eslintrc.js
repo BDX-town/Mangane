@@ -52,7 +52,7 @@ module.exports = {
   },
 
   rules: {
-    'brace-style': 'warn',
+    'brace-style': 'error',
     'comma-dangle': ['error', 'always-multiline'],
     'comma-spacing': [
       'warn',
