@@ -4,6 +4,7 @@ import {
   SEARCH_FETCH_REQUEST,
   SEARCH_FETCH_SUCCESS,
   SEARCH_SHOW,
+  SEARCH_FILTER_SET,
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
 import {
@@ -18,6 +19,7 @@ const initialState = ImmutableMap({
   submitted: false,
   hidden: false,
   results: ImmutableMap(),
+  filter: 'accounts',
 });
 
 export default function search(state = initialState, action) {
@@ -33,6 +35,7 @@ export default function search(state = initialState, action) {
       map.set('results', ImmutableMap());
       map.set('submitted', false);
       map.set('hidden', false);
+      map.set('filter', 'accounts');
     });
   case SEARCH_SHOW:
     return state.set('hidden', false);
@@ -53,7 +56,9 @@ export default function search(state = initialState, action) {
       accountsHasMore: action.results.accounts.length >= 20,
       statusesHasMore: action.results.statuses.length >= 20,
       hashtagsHasMore: action.results.hashtags.length >= 20,
-    })).set('submitted', true);
+    })).set('submitted', true).set('filter', 'accounts');
+  case SEARCH_FILTER_SET:
+    return state.set('filter', action.value);
   case SEARCH_EXPAND_SUCCESS:
     return state.withMutations((state) => {
       state.setIn(['results', `${action.searchType}HasMore`], action.results[action.searchType].length >= 20);
