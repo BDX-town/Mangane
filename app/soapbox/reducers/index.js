@@ -53,6 +53,7 @@ import backups from './backups';
 import admin_log from './admin_log';
 import security from './security';
 import scheduled_statuses from './scheduled_statuses';
+import aliases from './aliases';
 
 const appReducer = combineReducers({
   dropdown_menu,
@@ -107,6 +108,7 @@ const appReducer = combineReducers({
   admin_log,
   security,
   scheduled_statuses,
+  aliases,
 });
 
 // Clear the state (mostly) when the user logs out

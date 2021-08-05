@@ -33,6 +33,7 @@ const messages = defineMessages({
   admin_settings: { id: 'navigation_bar.admin_settings', defaultMessage: 'Admin settings' },
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
+  account_aliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -257,6 +258,10 @@ class SidebarMenu extends ImmutablePureComponent {
               <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
                 <Icon id='cloud-upload' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+              </NavLink>
+              <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
+                <Icon id='suitcase' />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
                 <Icon id='lock' />
