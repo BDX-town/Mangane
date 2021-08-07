@@ -5,6 +5,7 @@ import { expandSearch, setFilter } from '../../../actions/search';
 
 const mapStateToProps = state => {
   return {
+    value: state.getIn(['search', 'submittedValue']),
     results: state.getIn(['search', 'results']),
     suggestions: state.getIn(['suggestions', 'items']),
     submitted: state.getIn(['search', 'submitted']),

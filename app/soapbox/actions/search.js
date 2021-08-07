@@ -37,7 +37,7 @@ export function submitSearch() {
       return;
     }
 
-    dispatch(fetchSearchRequest());
+    dispatch(fetchSearchRequest(value));
 
     api(getState).get('/api/v2/search', {
       params: {
@@ -62,9 +62,10 @@ export function submitSearch() {
   };
 }
 
-export function fetchSearchRequest() {
+export function fetchSearchRequest(value) {
   return {
     type: SEARCH_FETCH_REQUEST,
+    value,
   };
 }
 

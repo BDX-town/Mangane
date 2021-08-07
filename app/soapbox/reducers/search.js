@@ -17,6 +17,7 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 const initialState = ImmutableMap({
   value: '',
   submitted: false,
+  submittedValue: '',
   hidden: false,
   results: ImmutableMap(),
   filter: 'accounts',
@@ -47,6 +48,7 @@ export default function search(state = initialState, action) {
     return state.withMutations(map => {
       map.set('results', ImmutableMap());
       map.set('submitted', true);
+      map.set('submittedValue', action.value);
     });
   case SEARCH_FETCH_SUCCESS:
     return state.set('results', ImmutableMap({
@@ -56,7 +58,13 @@ export default function search(state = initialState, action) {
       accountsHasMore: action.results.accounts.length >= 20,
       statusesHasMore: action.results.statuses.length >= 20,
       hashtagsHasMore: action.results.hashtags.length >= 20,
-    })).set('submitted', true).set('filter', 'accounts');
+    })).set('submitted', true).set('filter', action.results.accounts.length > 0
+      ? 'accounts'
+      : action.results.statuses.length > 0
+        ? 'statuses'
+        : action.results.hashtags.length > 0
+          ? 'hashtags'
+          : 'accounts');
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
   case SEARCH_EXPAND_SUCCESS:
