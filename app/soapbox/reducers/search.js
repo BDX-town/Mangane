@@ -16,6 +16,7 @@ import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 const initialState = ImmutableMap({
   value: '',
   submitted: false,
+  submittedValue: '',
   hidden: false,
   results: ImmutableMap(),
 });
@@ -44,6 +45,7 @@ export default function search(state = initialState, action) {
     return state.withMutations(map => {
       map.set('results', ImmutableMap());
       map.set('submitted', true);
+      map.set('submittedValue', action.value);
     });
   case SEARCH_FETCH_SUCCESS:
     return state.set('results', ImmutableMap({
