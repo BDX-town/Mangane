@@ -22,4 +22,4 @@ export default function me(state = initialState, action) {
   default:
     return state;
   }
-};
+}

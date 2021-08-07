@@ -19,7 +19,7 @@ export default class MultiSettingToggle extends React.PureComponent {
   }
 
   onChange = ({ target }) => {
-    for (var i = 0; i < this.props.settingPaths.length; i++) {
+    for (let i = 0; i < this.props.settingPaths.length; i++) {
       this.props.onChange(this.props.settingPaths[i], target.checked);
     }
   }

@@ -11,8 +11,8 @@ import { List as ImmutableList } from 'immutable';
 const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
   let word;
 
-  let left  = str.slice(0, caretPosition).search(/\S+$/);
-  let right = str.slice(caretPosition).search(/\s/);
+  const left  = str.slice(0, caretPosition).search(/\S+$/);
+  const right = str.slice(caretPosition).search(/\s/);
 
   if (right < 0) {
     word = str.slice(left);

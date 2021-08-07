@@ -18,21 +18,15 @@ export default class SearchResults extends ImmutablePureComponent {
     results: ImmutablePropTypes.map.isRequired,
     submitted: PropTypes.bool,
     expandSearch: PropTypes.func.isRequired,
-  };
-
-  state = {
-    selectedFilter: 'accounts',
+    selectedFilter: PropTypes.string.isRequired,
   };
 
   handleLoadMore = () => this.props.expandSearch(this.state.selectedFilter);
 
-  handleSelectFilter = newActiveFilter => {
-    this.setState({ selectedFilter: newActiveFilter });
-  };
+  handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
   render() {
-    const { value, results, submitted } = this.props;
-    const { selectedFilter } = this.state;
+    const { value, results, submitted, selectedFilter } = this.props;
 
     if (submitted && results.isEmpty()) {
       return (
@@ -101,7 +95,7 @@ export default class SearchResults extends ImmutablePureComponent {
 
     return (
       <>
-        <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />
+        {submitted && <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />}
 
         {searchResults}
 

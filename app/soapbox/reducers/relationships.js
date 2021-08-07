@@ -120,4 +120,4 @@ export default function relationships(state = initialState, action) {
   default:
     return state;
   }
-};
+}

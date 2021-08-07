@@ -87,7 +87,7 @@ Object.keys(emojiIndex.emojis).forEach(key => {
   }
 
   const { native } = emoji;
-  let { short_names, search, unified } = emojiMartData.emojis[key];
+  const { short_names, search, unified } = emojiMartData.emojis[key];
 
   if (short_names[0] !== key) {
     throw new Error('The compresser expects the first short_code to be the ' +
@@ -95,9 +95,11 @@ Object.keys(emojiIndex.emojis).forEach(key => {
       'is no longer the case.');
   }
 
-  short_names = short_names.slice(1); // first short name can be inferred from the key
-
-  const searchData = [native, short_names, search];
+  const searchData = [
+    native,
+    short_names.slice(1), // first short name can be inferred from the key
+    search,
+  ];
 
   if (unicodeToUnifiedName(native) !== unified) {
     // unified name can't be derived from unicodeToUnifiedName

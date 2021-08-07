@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import EXIF from 'exif-js';
 
 const MAX_IMAGE_PIXELS = 2073600; // 1920x1080px

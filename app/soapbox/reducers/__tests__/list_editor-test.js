@@ -137,7 +137,6 @@ describe('list_editor reducer', () => {
   });
 
   it('should handle LIST_UPDATE_FAIL', () => {
-    debugger;
     const state = ImmutableMap({
       isSubmitting: true,
     });

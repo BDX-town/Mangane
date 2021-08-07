@@ -12,8 +12,8 @@ const initialState = ImmutableMap({
 });
 
 const parseItems = items => {
-  let ids = [];
-  let map = {};
+  const ids = [];
+  const map = {};
 
   items.forEach(item => {
     ids.push(item.id);
@@ -40,4 +40,4 @@ export default function admin_log(state = initialState, action) {
   default:
     return state;
   }
-};
+}

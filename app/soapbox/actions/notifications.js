@@ -78,7 +78,7 @@ export function updateNotifications(notification, intlMessages, intlLocale) {
       fetchRelatedRelationships(dispatch, [notification]);
     }
   };
-};
+}
 
 export function updateNotificationsQueue(notification, intlMessages, intlLocale, curPath) {
   return (dispatch, getState) => {
@@ -133,7 +133,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
       dispatch(updateNotifications(notification, intlMessages, intlLocale));
     }
   };
-};
+}
 
 export function dequeueNotifications() {
   return (dispatch, getState) => {
@@ -155,7 +155,7 @@ export function dequeueNotifications() {
     });
     dispatch(markReadNotifications());
   };
-};
+}
 
 const excludeTypesFromSettings = getState => getSettings(getState()).getIn(['notifications', 'shows']).filter(enabled => !enabled).keySeq().toJS();
 
@@ -223,14 +223,14 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       done();
     });
   };
-};
+}
 
 export function expandNotificationsRequest(isLoadingMore) {
   return {
     type: NOTIFICATIONS_EXPAND_REQUEST,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandNotificationsSuccess(notifications, next, isLoadingMore) {
   return {
@@ -239,7 +239,7 @@ export function expandNotificationsSuccess(notifications, next, isLoadingMore) {
     next,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandNotificationsFail(error, isLoadingMore) {
   return {
@@ -247,7 +247,7 @@ export function expandNotificationsFail(error, isLoadingMore) {
     error,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function clearNotifications() {
   return (dispatch, getState) => {
@@ -259,7 +259,7 @@ export function clearNotifications() {
 
     api(getState).post('/api/v1/notifications/clear');
   };
-};
+}
 
 export function scrollTopNotifications(top) {
   return (dispatch, getState) => {

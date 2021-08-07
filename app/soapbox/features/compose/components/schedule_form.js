@@ -57,7 +57,7 @@ class ScheduleForm extends React.Component {
     const selectedDate = new Date(time);
 
     return fiveMinutesFromNow.getTime() < selectedDate.getTime();
-  };
+  }
 
   handleRemove = e => {
     this.props.dispatch(removeSchedule());

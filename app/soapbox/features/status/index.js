@@ -41,6 +41,7 @@ import StatusContainer from '../../containers/status_container';
 import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { createSelector } from 'reselect';
 import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
@@ -66,43 +67,54 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
-  const mapStateToProps = (state, props) => {
-    const status = getStatus(state, {
-      id: props.params.statusId,
-      username: props.params.username,
-    });
+  const getAncestorsIds = createSelector([
+    (_, { id }) => id,
+    state => state.getIn(['contexts', 'inReplyTos']),
+  ], (statusId, inReplyTos) => {
+    let ancestorsIds = Immutable.OrderedSet();
+    let id = statusId;
 
+    while (id) {
+      ancestorsIds = Immutable.OrderedSet([id]).union(ancestorsIds);
+      id = inReplyTos.get(id);
+    }
+
+    return ancestorsIds;
+  });
+
+  const getDescendantsIds = createSelector([
+    (_, { id }) => id,
+    state => state.getIn(['contexts', 'replies']),
+  ], (statusId, contextReplies) => {
+    let descendantsIds = Immutable.OrderedSet();
+    const ids = [statusId];
+
+    while (ids.length > 0) {
+      const id      = ids.shift();
+      const replies = contextReplies.get(id);
+
+      if (statusId !== id) {
+        descendantsIds = descendantsIds.union([id]);
+      }
+
+      if (replies) {
+        replies.reverse().forEach(reply => {
+          ids.unshift(reply);
+        });
+      }
+    }
+
+    return descendantsIds;
+  });
+
+  const mapStateToProps = (state, props) => {
+    const status = getStatus(state, { id: props.params.statusId });
     let ancestorsIds = Immutable.List();
     let descendantsIds = Immutable.List();
 
     if (status) {
-      ancestorsIds = ancestorsIds.withMutations(mutable => {
-        let id = state.getIn(['contexts', 'inReplyTos', status.get('id')]);
-
-        while (id) {
-          mutable.unshift(id);
-          id = state.getIn(['contexts', 'inReplyTos', id]);
-        }
-      });
-
-      descendantsIds = descendantsIds.withMutations(mutable => {
-        const ids = [status.get('id')];
-
-        while (ids.length > 0) {
-          let id        = ids.shift();
-          const replies = state.getIn(['contexts', 'replies', id]);
-
-          if (status.get('id') !== id) {
-            mutable.push(id);
-          }
-
-          if (replies) {
-            replies.reverse().forEach(reply => {
-              ids.unshift(reply);
-            });
-          }
-        }
-      });
+      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
+      descendantsIds = getDescendantsIds(state, { id: status.get('id') });
     }
 
     const soapbox = getSoapboxConfig(state);
@@ -187,7 +199,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleReplyClick = (status) => {
-    let { askReplyConfirmation, dispatch, intl } = this.props;
+    const { askReplyConfirmation, dispatch, intl } = this.props;
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),

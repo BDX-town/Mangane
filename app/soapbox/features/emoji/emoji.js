@@ -18,6 +18,8 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
     if (i === str.length) {
       break;
     } else if (str[i] === ':') {
+      // FIXME: This is insane.
+      /* eslint-disable no-loop-func */
       if (!(() => {
         rend = str.indexOf(':', i + 1) + 1;
         if (!rend) return false; // no pair of ':'
@@ -33,6 +35,7 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
         }
         return false;
       })()) rend = ++i;
+      /* eslint-enable no-loop-func */
     } else if (tag >= 0) { // <, &
       rend = str.indexOf('>;'[tag], i + 1) + 1;
       if (!rend) {

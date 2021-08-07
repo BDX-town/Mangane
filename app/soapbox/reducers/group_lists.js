@@ -18,4 +18,4 @@ export default function groupLists(state = initialState, action) {
   default:
     return state;
   }
-};
+}

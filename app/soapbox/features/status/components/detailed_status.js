@@ -95,7 +95,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     let media           = '';
-    let poll = '';
+    const poll = '';
     let statusTypeIcon = '';
 
     if (this.props.measureHeight) {

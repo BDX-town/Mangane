@@ -10,24 +10,24 @@ export const SEARCH_FETCH_REQUEST = 'SEARCH_FETCH_REQUEST';
 export const SEARCH_FETCH_SUCCESS = 'SEARCH_FETCH_SUCCESS';
 export const SEARCH_FETCH_FAIL    = 'SEARCH_FETCH_FAIL';
 
+export const SEARCH_FILTER_SET = 'SEARCH_FILTER_SET';
+
 export const SEARCH_EXPAND_REQUEST = 'SEARCH_EXPAND_REQUEST';
 export const SEARCH_EXPAND_SUCCESS = 'SEARCH_EXPAND_SUCCESS';
 export const SEARCH_EXPAND_FAIL    = 'SEARCH_EXPAND_FAIL';
-
-export const SEARCH_FILTER_SET = 'SEARCH_FILTER_SET';
 
 export function changeSearch(value) {
   return {
     type: SEARCH_CHANGE,
     value,
   };
-};
+}
 
 export function clearSearch() {
   return {
     type: SEARCH_CLEAR,
   };
-};
+}
 
 export function submitSearch() {
   return (dispatch, getState) => {
@@ -60,27 +60,35 @@ export function submitSearch() {
       dispatch(fetchSearchFail(error));
     });
   };
-};
+}
 
 export function fetchSearchRequest(value) {
   return {
     type: SEARCH_FETCH_REQUEST,
     value,
   };
-};
+}
 
 export function fetchSearchSuccess(results) {
   return {
     type: SEARCH_FETCH_SUCCESS,
     results,
   };
-};
+}
 
 export function fetchSearchFail(error) {
   return {
     type: SEARCH_FETCH_FAIL,
     error,
   };
+}
+
+export const setFilter = filterType => dispatch => {
+  dispatch({
+    type: SEARCH_FILTER_SET,
+    path: ['search', 'filter'],
+    value: filterType,
+  });
 };
 
 export const expandSearch = type => (dispatch, getState) => {

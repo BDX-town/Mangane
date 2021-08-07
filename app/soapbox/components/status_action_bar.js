@@ -93,8 +93,6 @@ class StatusActionBar extends ImmutablePureComponent {
     allowedEmoji: ImmutablePropTypes.list,
     emojiSelectorFocused: PropTypes.bool,
     handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
-    emojiSelectorFocused: PropTypes.bool,
-    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
   };
 
   static defaultProps = {
@@ -245,7 +243,7 @@ class StatusActionBar extends ImmutablePureComponent {
       textarea.select();
       document.execCommand('copy');
     } catch (e) {
-
+      // Do nothing
     } finally {
       document.body.removeChild(textarea);
     }
@@ -284,7 +282,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const mutingConversation = status.get('muted');
     const ownAccount = status.getIn(['account', 'id']) === me;
 
-    let menu = [];
+    const menu = [];
 
     menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
 
@@ -388,7 +386,7 @@ class StatusActionBar extends ImmutablePureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
-    let menu = this._makeMenu(publicStatus);
+    const menu = this._makeMenu(publicStatus);
     let reblogIcon = 'retweet';
     let replyIcon;
     let replyTitle;

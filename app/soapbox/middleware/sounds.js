@@ -55,4 +55,4 @@ export default function soundsMiddleware() {
 
     return next(action);
   };
-};
+}

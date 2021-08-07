@@ -244,7 +244,7 @@ class ActionBar extends React.PureComponent {
       textarea.select();
       document.execCommand('copy');
     } catch (e) {
-
+      // Do nothing
     } finally {
       document.body.removeChild(textarea);
     }
@@ -294,7 +294,7 @@ class ActionBar extends React.PureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
-    let menu = [];
+    const menu = [];
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
@@ -360,7 +360,7 @@ class ActionBar extends React.PureComponent {
     if (status.get('visibility') === 'direct') reblogIcon = 'envelope';
     else if (status.get('visibility') === 'private') reblogIcon = 'lock';
 
-    let reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+    const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
 
 
     return (

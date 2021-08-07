@@ -49,4 +49,4 @@ export default function accountsCounters(state = initialState, action) {
   default:
     return state;
   }
-};
+}

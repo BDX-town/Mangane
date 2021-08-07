@@ -3,7 +3,7 @@ import { List as ImmutableList } from 'immutable';
 
 const guessDomain = account => {
   try {
-    let re = /https?:\/\/(.*?)\//i;
+    const re = /https?:\/\/(.*?)\//i;
     return re.exec(account.get('url'))[1];
   } catch(e) {
     return null;
@@ -50,7 +50,7 @@ export const getFollowDifference = (state, accountId, type) => {
 };
 
 export const isLocal = account => {
-  let domain = account.get('acct').split('@')[1];
+  const domain = account.get('acct').split('@')[1];
   return domain === undefined ? true : false;
 };
 

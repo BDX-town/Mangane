@@ -93,7 +93,7 @@ export function fetchSoapboxJson() {
 export function importSoapboxConfig(soapboxConfig) {
   if (!soapboxConfig.brandColor) {
     soapboxConfig.brandColor = '#0482d8';
-  };
+  }
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,

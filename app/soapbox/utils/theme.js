@@ -29,12 +29,12 @@ function hexToRgb(hex) {
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js
 const rgbToHsl = value => {
-  var r = value.r / 255;
-  var g = value.g / 255;
-  var b = value.b / 255;
-  var rgbOrdered = [ r, g, b ].sort();
-  var l = ((rgbOrdered[0] + rgbOrdered[2]) / 2) * 100;
-  var s, h;
+  const r = value.r / 255;
+  const g = value.g / 255;
+  const b = value.b / 255;
+  const rgbOrdered = [ r, g, b ].sort();
+  const l = ((rgbOrdered[0] + rgbOrdered[2]) / 2) * 100;
+  let s, h;
   if (rgbOrdered[0] === rgbOrdered[2]) {
     s = 0;
     h = 0;

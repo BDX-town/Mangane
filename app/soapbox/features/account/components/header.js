@@ -138,7 +138,7 @@ class Header extends ImmutablePureComponent {
   makeMenu() {
     const { account, intl, me, meAccount, version } = this.props;
 
-    let menu = [];
+    const menu = [];
 
     if (!account || !me) {
       return [];
@@ -245,7 +245,7 @@ class Header extends ImmutablePureComponent {
   makeInfo() {
     const { account, me } = this.props;
 
-    let info = [];
+    const info = [];
 
     if (!account || !me) return info;
 
@@ -262,7 +262,7 @@ class Header extends ImmutablePureComponent {
     }
 
     return info;
-  };
+  }
 
   render() {
     const { account, intl, username, me } = this.props;

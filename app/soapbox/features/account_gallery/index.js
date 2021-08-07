@@ -29,7 +29,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   if (accountFetchError) {
     accountId = null;
   } else {
-    let account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }

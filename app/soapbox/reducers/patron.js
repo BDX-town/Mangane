@@ -20,4 +20,4 @@ export default function patron(state = initialState, action) {
   default:
     return state;
   }
-};
+}

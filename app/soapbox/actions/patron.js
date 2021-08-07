@@ -17,7 +17,7 @@ export function fetchPatronInstance() {
       dispatch(fetchInstanceFail(error));
     });
   };
-};
+}
 
 export function fetchPatronAccount(apId) {
   return (dispatch, getState) => {
@@ -44,7 +44,7 @@ function fetchInstanceFail(error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 function importFetchedAccount(account) {
   return {

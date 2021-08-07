@@ -23,7 +23,7 @@ export function initReport(account, status) {
 
     dispatch(openModal('REPORT'));
   };
-};
+}
 
 export function initReportById(accountId) {
   return (dispatch, getState) => {
@@ -34,13 +34,13 @@ export function initReportById(accountId) {
 
     dispatch(openModal('REPORT'));
   };
-};
+}
 
 export function cancelReport() {
   return {
     type: REPORT_CANCEL,
   };
-};
+}
 
 export function toggleStatusReport(statusId, checked) {
   return {
@@ -48,7 +48,7 @@ export function toggleStatusReport(statusId, checked) {
     statusId,
     checked,
   };
-};
+}
 
 export function submitReport() {
   return (dispatch, getState) => {
@@ -64,45 +64,45 @@ export function submitReport() {
       dispatch(submitReportSuccess(response.data));
     }).catch(error => dispatch(submitReportFail(error)));
   };
-};
+}
 
 export function submitReportRequest() {
   return {
     type: REPORT_SUBMIT_REQUEST,
   };
-};
+}
 
 export function submitReportSuccess(report) {
   return {
     type: REPORT_SUBMIT_SUCCESS,
     report,
   };
-};
+}
 
 export function submitReportFail(error) {
   return {
     type: REPORT_SUBMIT_FAIL,
     error,
   };
-};
+}
 
 export function changeReportComment(comment) {
   return {
     type: REPORT_COMMENT_CHANGE,
     comment,
   };
-};
+}
 
 export function changeReportForward(forward) {
   return {
     type: REPORT_FORWARD_CHANGE,
     forward,
   };
-};
+}
 
 export function changeReportBlock(block) {
   return {
     type: REPORT_BLOCK_CHANGE,
     block,
   };
-};
+}

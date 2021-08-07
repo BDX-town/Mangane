@@ -24,4 +24,4 @@ export default function backups(state = initialState, action) {
   default:
     return state;
   }
-};
+}

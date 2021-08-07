@@ -1,6 +1,8 @@
 module.exports = {
   root: true,
 
+  extends: 'eslint:recommended',
+
   env: {
     browser: true,
     node: true,
@@ -50,7 +52,7 @@ module.exports = {
   },
 
   rules: {
-    'brace-style': 'warn',
+    'brace-style': 'error',
     'comma-dangle': ['error', 'always-multiline'],
     'comma-spacing': [
       'warn',
@@ -78,8 +80,11 @@ module.exports = {
         ],
       },
     ],
+    'no-extra-semi': 'error',
+    'no-const-assign': 'error',
     'no-fallthrough': 'error',
     'no-irregular-whitespace': 'error',
+    'no-loop-func': 'error',
     'no-mixed-spaces-and-tabs': 'error',
     'no-nested-ternary': 'warn',
     'no-trailing-spaces': 'warn',
@@ -94,6 +99,8 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    'no-useless-escape': 'warn',
+    'no-var': 'error',
     'object-curly-spacing': ['error', 'always'],
     'padded-blocks': [
       'error',
@@ -101,6 +108,7 @@ module.exports = {
         classes: 'always',
       },
     ],
+    'prefer-const': 'error',
     quotes: ['error', 'single'],
     semi: 'error',
     strict: 'off',

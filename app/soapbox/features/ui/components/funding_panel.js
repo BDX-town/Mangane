@@ -60,7 +60,7 @@ class FundingPanel extends ImmutablePureComponent {
     );
   }
 
-};
+}
 
 const mapStateToProps = state => {
   return {

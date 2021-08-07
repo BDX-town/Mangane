@@ -9,6 +9,7 @@ describe('search reducer', () => {
       submittedValue: '',
       hidden: false,
       results: ImmutableMap(),
+      filter: 'accounts',
     }));
   });
 });

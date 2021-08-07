@@ -15,19 +15,16 @@ const { unicodeToFilename } = require('./unicode_to_filename');
 const unicodeMapping = {};
 
 function processEmojiMapData(emojiMapData, shortCode) {
-  let [ native, filename ] = emojiMapData;
-  if (!filename) {
-    // filename name can be derived from unicodeToFilename
-    filename = unicodeToFilename(native);
-  }
+  const [ native, filename ] = emojiMapData;
+
   unicodeMapping[native] = {
-    shortCode: shortCode,
-    filename: filename,
+    shortCode,
+    filename: filename || unicodeToFilename(native),
   };
 }
 
 Object.keys(shortCodesToEmojiData).forEach((shortCode) => {
-  let [ filenameData ] = shortCodesToEmojiData[shortCode];
+  const [ filenameData ] = shortCodesToEmojiData[shortCode];
   filenameData.forEach(emojiMapData => processEmojiMapData(emojiMapData, shortCode));
 });
 emojisWithoutShortCodes.forEach(emojiMapData => processEmojiMapData(emojiMapData));

@@ -53,4 +53,4 @@ export default function chatMessages(state = initialState, action) {
   default:
     return state;
   }
-};
+}

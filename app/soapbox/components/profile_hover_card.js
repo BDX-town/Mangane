@@ -19,7 +19,7 @@ import {
 const getAccount = makeGetAccount();
 
 const getBadges = (account) => {
-  let badges = [];
+  const badges = [];
 
   if (isAdmin(account)) {
     badges.push(<Badge key='admin' slug='admin' title='Admin' />);
