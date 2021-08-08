@@ -22,6 +22,7 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   aliases: state.getIn(['meta', 'pleroma', 'also_known_as']),
   searchAccountIds: state.getIn(['aliases', 'suggestions', 'items']),
+  loaded: state.getIn(['aliases', 'suggestions', 'loaded']),
 });
 
 export default @connect(mapStateToProps)
@@ -34,7 +35,7 @@ class Aliases extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, aliases, searchAccountIds } = this.props;
+    const { intl, aliases, searchAccountIds, loaded } = this.props;
 
     const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;
 
@@ -42,9 +43,17 @@ class Aliases extends ImmutablePureComponent {
       <Column className='aliases-settings-panel' icon='suitcase' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <ColumnSubheading text={intl.formatMessage(messages.subheading_add_new)} />
         <Search />
-        <div className='aliases__accounts'>
-          {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} />)}
-        </div>
+        {
+          loaded && searchAccountIds.size === 0 ? (
+            <div className='aliases__accounts empty-column-indicator'>
+              <FormattedMessage id='empty_column.aliases.suggestions' defaultMessage='There are no account suggestions available for the provided term.' />
+            </div>
+          ) : (
+            <div className='aliases__accounts'>
+              {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} />)}
+            </div>
+          )
+        }
         <ColumnSubheading text={intl.formatMessage(messages.subheading_aliases)} />
         <div className='aliases-settings-panel'>
           <ScrollableList

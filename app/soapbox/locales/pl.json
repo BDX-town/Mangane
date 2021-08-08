@@ -318,6 +318,7 @@
   "empty_column.account_timeline": "Brak wpisów tutaj!",
   "empty_column.account_unavailable": "Profil niedostępny",
   "empty_column.aliases": "Nie utworzyłeś(-aś) jeszcze żadnego aliasu konta.",
+  "empty_column.aliases.suggestions": "Brak propozycji kont dla podanej frazy.",
   "empty_column.blocks": "Nie zablokowałeś(-aś) jeszcze żadnego użytkownika.",
   "empty_column.bookmarks": "Nie masz jeszcze żadnej zakładki. Kiedy dodasz jakąś, pojawi się ona tutaj.",
   "empty_column.community": "Lokalna oś czasu jest pusta. Napisz coś publicznie, aby zagaić!",
