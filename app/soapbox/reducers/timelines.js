@@ -215,7 +215,9 @@ const timelineDisconnect = (state, timelineId) => {
     const items = timeline.get('items', ImmutableOrderedSet());
     if (items.isEmpty()) return;
 
-    timeline.set('items', addStatusId(items, null));
+    // This is causing problems. Disable for now.
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/716
+    // timeline.set('items', addStatusId(items, null));
   }));
 };
 
