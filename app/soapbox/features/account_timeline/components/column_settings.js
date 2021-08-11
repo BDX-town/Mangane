@@ -19,11 +19,20 @@ class ColumnSettings extends React.PureComponent {
     return (
       <div>
         <div className='column-settings__row'>
-          <SettingToggle prefix='community_timeline' settings={settings} settingPath={['shows', 'reply']} onChange={onChange} label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />} />
-        </div>
-
-        <div className='column-settings__row'>
-          <SettingToggle settings={settings} settingPath={['other', 'onlyMedia']} onChange={onChange} label={<FormattedMessage id='community.column_settings.media_only' defaultMessage='Media Only' />} />
+          <SettingToggle
+            prefix='account_timeline'
+            settings={settings}
+            settingPath={['shows', 'pinned']}
+            onChange={onChange}
+            label={<FormattedMessage id='account_timeline.column_settings.show_pinned' defaultMessage='Show pinned posts' />}
+          />
+          <SettingToggle
+            prefix='account_timeline'
+            settings={settings}
+            settingPath={['shows', 'reblog']}
+            onChange={onChange}
+            label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />}
+          />
         </div>
       </div>
     );
