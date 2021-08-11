@@ -249,3 +249,7 @@ export function UserIndex() {
 export function FederationRestrictions() {
   return import(/* webpackChunkName: "features/federation_restrictions" */'../../federation_restrictions');
 }
+
+export function Aliases() {
+  return import(/* webpackChunkName: "features/aliases" */'../../aliases');
+}

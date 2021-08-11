@@ -98,6 +98,7 @@ import {
   ScheduledStatuses,
   UserIndex,
   FederationRestrictions,
+  Aliases,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -261,6 +262,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/preferences' page={DefaultPage} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
+        <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
         <WrappedRoute path='/soapbox/config' page={DefaultPage} component={SoapboxConfig} content={children} />
 
