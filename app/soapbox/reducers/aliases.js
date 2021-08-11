@@ -32,4 +32,4 @@ export default function aliasesReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}
