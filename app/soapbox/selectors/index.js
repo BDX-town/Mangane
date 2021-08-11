@@ -6,6 +6,8 @@ import {
 } from 'immutable';
 import { getDomain } from 'soapbox/utils/accounts';
 import ConfigDB from 'soapbox/utils/config_db';
+import { getSettings } from 'soapbox/actions/settings';
+import { shouldFilter } from 'soapbox/utils/timelines';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -262,3 +264,16 @@ export const makeGetRemoteInstance = () => {
     });
   });
 };
+
+export const makeGetStatusIds = () => createSelector([
+  (state, { type, prefix }) => getSettings(state).get(prefix || type, ImmutableMap()),
+  (state, { type }) => state.getIn(['timelines', type, 'items'], ImmutableOrderedSet()),
+  (state)           => state.get('statuses'),
+  (state)           => state.get('me'),
+], (columnSettings, statusIds, statuses, me) => {
+  return statusIds.filter(id => {
+    const status = statuses.get(id);
+    if (!status) return true;
+    return !shouldFilter(status, columnSettings);
+  });
+});

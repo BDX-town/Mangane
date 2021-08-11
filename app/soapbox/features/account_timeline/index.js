@@ -15,47 +15,54 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { makeGetStatusIds } from 'soapbox/selectors';
 
-const mapStateToProps = (state, { params, withReplies = false }) => {
-  const username = params.username || '';
-  const me = state.get('me');
-  const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
-  const soapboxConfig = getSoapboxConfig(state);
+const makeMapStateToProps = () => {
+  const getStatusIds = makeGetStatusIds();
 
-  let accountId = -1;
-  let accountUsername = username;
-  let accountApId = null;
-  if (accountFetchError) {
-    accountId = null;
-  } else {
-    const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
-    accountId = account ? account.getIn(['id'], null) : -1;
-    accountUsername = account ? account.getIn(['acct'], '') : '';
-    accountApId = account ? account.get('url') : '';
-  }
+  const mapStateToProps = (state, { params, withReplies = false }) => {
+    const username = params.username || '';
+    const me = state.get('me');
+    const accounts = state.getIn(['accounts']);
+    const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+    const soapboxConfig = getSoapboxConfig(state);
 
-  const path = withReplies ? `${accountId}:with_replies` : accountId;
+    let accountId = -1;
+    let accountUsername = username;
+    let accountApId = null;
+    if (accountFetchError) {
+      accountId = null;
+    } else {
+      const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+      accountId = account ? account.getIn(['id'], null) : -1;
+      accountUsername = account ? account.getIn(['acct'], '') : '';
+      accountApId = account ? account.get('url') : '';
+    }
 
-  const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+    const path = withReplies ? `${accountId}:with_replies` : accountId;
 
-  return {
-    accountId,
-    unavailable,
-    accountUsername,
-    accountApId,
-    isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.getIn(['timelines', `account:${path}`, 'items'], ImmutableOrderedSet()),
-    featuredStatusIds: withReplies ? ImmutableOrderedSet() : state.getIn(['timelines', `account:${accountId}:pinned`, 'items'], ImmutableOrderedSet()),
-    isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
-    hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
-    me,
-    patronEnabled: soapboxConfig.getIn(['extensions', 'patron', 'enabled']),
+    const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
+    const unavailable = (me === accountId) ? false : isBlocked;
+
+    return {
+      accountId,
+      unavailable,
+      accountUsername,
+      accountApId,
+      isAccount: !!state.getIn(['accounts', accountId]),
+      statusIds: getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }),
+      featuredStatusIds: withReplies ? ImmutableOrderedSet() : getStatusIds(state, { type: `account:${accountId}:pinned`, prefix: 'account_timeline' }),
+      isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
+      hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
+      me,
+      patronEnabled: soapboxConfig.getIn(['extensions', 'patron', 'enabled']),
+    };
   };
+
+  return mapStateToProps;
 };
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 class AccountTimeline extends ImmutablePureComponent {
 
   static propTypes = {
