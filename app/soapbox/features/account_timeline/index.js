@@ -17,6 +17,7 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getSettings } from 'soapbox/actions/settings';
 import { makeGetStatusIds } from 'soapbox/selectors';
 import classNames from 'classnames';
 
@@ -46,6 +47,7 @@ const makeMapStateToProps = () => {
 
     const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
     const unavailable = (me === accountId) ? false : isBlocked;
+    const showPins = getSettings(state).getIn(['account_timeline', 'shows', 'pinned']) && !withReplies;
 
     return {
       accountId,
@@ -54,7 +56,7 @@ const makeMapStateToProps = () => {
       accountApId,
       isAccount: !!state.getIn(['accounts', accountId]),
       statusIds: getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }),
-      featuredStatusIds: withReplies ? ImmutableOrderedSet() : getStatusIds(state, { type: `account:${accountId}:pinned`, prefix: 'account_timeline' }),
+      featuredStatusIds: showPins ? getStatusIds(state, { type: `account:${accountId}:pinned`, prefix: 'account_timeline' }) : ImmutableOrderedSet(),
       isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
       hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
       me,

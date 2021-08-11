@@ -130,6 +130,7 @@ export const defaultSettings = ImmutableMap({
   account_timeline: ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
+      pinned: true,
     }),
   }),
 
