@@ -27,6 +27,7 @@ const mapStateToProps = (state, props) => {
     onlyMedia,
     hasUnread: state.getIn(['timelines', `${timelineId}${onlyMedia ? ':media' : ''}:${instance}`, 'unread']) > 0,
     instance,
+    pinned: settings.getIn(['remote_timeline', 'pinnedHosts']).includes(instance),
   };
 };
 
@@ -45,6 +46,7 @@ class RemoteTimeline extends React.PureComponent {
     onlyMedia: PropTypes.bool,
     timelineId: PropTypes.string,
     instance: PropTypes.string.isRequired,
+    pinned: PropTypes.bool,
   };
 
   componentDidMount() {
@@ -80,20 +82,20 @@ class RemoteTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, onlyMedia, timelineId, instance } = this.props;
+    const { intl, hasUnread, onlyMedia, timelineId, instance, pinned } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
         <HomeColumnHeader activeItem='fediverse' active={hasUnread} />
         <PinnedHostsPicker host={instance} />
-        <div className='timeline-filter-message'>
+        {!pinned && <div className='timeline-filter-message'>
           <IconButton icon='close' onClick={this.handleCloseClick} />
           <FormattedMessage
             id='remote_timeline.filter_message'
             defaultMessage='You are viewing the timeline of {instance}.'
             values={{ instance }}
           />
-        </div>
+        </div>}
         <StatusListContainer
           scrollKey={`${timelineId}_${instance}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}:${instance}`}
