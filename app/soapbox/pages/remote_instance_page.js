@@ -8,6 +8,7 @@ import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
 import InstanceInfoPanel from 'soapbox/features/ui/components/instance_info_panel';
+import InstanceModerationPanel from 'soapbox/features/ui/components/instance_moderation_panel';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 import { isAdmin } from 'soapbox/utils/accounts';
 
@@ -38,7 +39,8 @@ class RemoteInstancePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                {(disclosed || isAdmin) && <InstanceInfoPanel host={host} />}
+                <InstanceInfoPanel host={host} />
+                {(disclosed || isAdmin) && <InstanceModerationPanel host={host} />}
               </div>
             </div>
 
