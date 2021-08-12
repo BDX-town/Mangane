@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import HomeColumnHeader from '../../components/home_column_header';
+import PinnedHostsPicker from './components/pinned_hosts_picker';
 import IconButton from 'soapbox/components/icon_button';
 import { expandRemoteTimeline } from '../../actions/timelines';
 import { connectRemoteStream } from '../../actions/streaming';
@@ -84,6 +85,7 @@ class RemoteTimeline extends React.PureComponent {
     return (
       <Column label={intl.formatMessage(messages.title)}>
         <HomeColumnHeader activeItem='fediverse' active={hasUnread} />
+        <PinnedHostsPicker host={instance} />
         <div className='timeline-filter-message'>
           <IconButton icon='close' onClick={this.handleCloseClick} />
           <FormattedMessage

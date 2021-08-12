@@ -27,3 +27,48 @@
     padding-right: 10px;
   }
 }
+
+.pinned-hosts-picker {
+  margin-left: 10px;
+  display: inline-flex;
+  flex-wrap: wrap;
+
+  .pinned-host {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    .pinned-host {
+      background: var(--background-color);
+
+      &:hover {
+        background: var(--brand-color--faint);
+      }
+    }
+  }
+}
+
+.pinned-host {
+  background: var(--background-color);
+  border-radius: 999px;
+  transition: 0.2s;
+
+  &.active {
+    background: var(--brand-color--faint);
+
+    a {
+      color: #fff;
+    }
+  }
+
+  a {
+    display: block;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    padding: 5px 11px;
+    max-width: 115px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
