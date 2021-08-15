@@ -136,7 +136,7 @@ class SoapboxMount extends React.PureComponent {
             {customCss && customCss.map(css => (
               <link rel='stylesheet' href={css} key={css} />
             ))}
-            <meta name="theme-color" content={this.props.brandColor} />
+            <meta name='theme-color' content={this.props.brandColor} />
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
