@@ -54,6 +54,7 @@ const mapStateToProps = (state) => {
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
+    brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     halloween: settings.get('halloween'),
     customCss: soapboxConfig.get('customCss'),
@@ -74,6 +75,7 @@ class SoapboxMount extends React.PureComponent {
     locale: PropTypes.string.isRequired,
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
+    brandColor: PropTypes.string,
     customCss: ImmutablePropTypes.list,
     halloween: PropTypes.bool,
     dispatch: PropTypes.func,
@@ -134,6 +136,7 @@ class SoapboxMount extends React.PureComponent {
             {customCss && customCss.map(css => (
               <link rel='stylesheet' href={css} key={css} />
             ))}
+            <meta name='theme-color' content={this.props.brandColor} />
           </Helmet>
           <BrowserRouter>
             <ScrollContext>
