@@ -19,9 +19,10 @@ export default class SearchResults extends ImmutablePureComponent {
     submitted: PropTypes.bool,
     expandSearch: PropTypes.func.isRequired,
     selectedFilter: PropTypes.string.isRequired,
+    selectFilter: PropTypes.func.isRequired,
   };
 
-  handleLoadMore = () => this.props.expandSearch(this.state.selectedFilter);
+  handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
 
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
