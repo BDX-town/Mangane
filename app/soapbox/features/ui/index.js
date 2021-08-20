@@ -161,7 +161,6 @@ class SwitchingColumnsArea extends React.PureComponent {
     children: PropTypes.node,
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
-    features: PropTypes.object.isRequired,
   };
 
   state = {
@@ -190,7 +189,7 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render() {
-    const { children, features } = this.props;
+    const { children } = this.props;
 
     return (
       <Switch>
@@ -240,10 +239,8 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
 
-        {features.chats && <>
-          <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
-          <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
-        </>}
+        <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
+        <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
 
         <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
         <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
@@ -634,7 +631,7 @@ class UI extends React.PureComponent {
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
-          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} features={features}>
+          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
             {children}
           </SwitchingColumnsArea>
 
