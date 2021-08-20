@@ -2,6 +2,7 @@ import api from '../api';
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { List as ImmutableList } from 'immutable';
 
 export const EMOJI_REACT_REQUEST = 'EMOJI_REACT_REQUEST';
 export const EMOJI_REACT_SUCCESS = 'EMOJI_REACT_SUCCESS';
@@ -19,7 +20,7 @@ const noOp = () => () => new Promise(f => f());
 
 export const simpleEmojiReact = (status, emoji) => {
   return (dispatch, getState) => {
-    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions']);
+    const emojiReacts = status.getIn(['pleroma', 'emoji_reactions'], ImmutableList());
 
     if (emoji === '👍' && status.get('favourited')) return dispatch(unfavourite(status));
 

@@ -11,6 +11,7 @@ import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { isUserTouching } from 'soapbox/is_mobile';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -54,11 +55,13 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
+  const instance = state.get('instance');
 
   return {
     me,
     isStaff: account ? isStaff(account) : false,
     isAdmin: account ? isAdmin(account) : false,
+    features: getFeatures(instance),
   };
 };
 
@@ -103,6 +106,7 @@ class ActionBar extends React.PureComponent {
     emojiSelectorFocused: PropTypes.bool,
     handleEmojiSelectorExpand: PropTypes.func.isRequired,
     handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -146,16 +150,26 @@ class ActionBar extends React.PureComponent {
   }
 
   handleLikeButtonHover = e => {
-    if (!isUserTouching()) this.setState({ emojiSelectorVisible: true });
+    const { features } = this.props;
+
+    if (features.emojiReacts && !isUserTouching()) {
+      this.setState({ emojiSelectorVisible: true });
+    }
   }
 
   handleLikeButtonLeave = e => {
-    if (!isUserTouching()) this.setState({ emojiSelectorVisible: false });
+    const { features } = this.props;
+
+    if (features.emojiReacts && !isUserTouching()) {
+      this.setState({ emojiSelectorVisible: false });
+    }
   }
 
   handleLikeButtonClick = e => {
+    const { features } = this.props;
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
-    if (isUserTouching()) {
+
+    if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
       } else {
@@ -278,7 +292,7 @@ class ActionBar extends React.PureComponent {
   }
 
   render() {
-    const { status, intl, me, isStaff, isAdmin, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorExpand, handleEmojiSelectorUnfocus } = this.props;
+    const { status, intl, me, isStaff, isAdmin, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorExpand, handleEmojiSelectorUnfocus, features } = this.props;
     const { emojiSelectorVisible } = this.state;
     const ownAccount = status.getIn(['account', 'id']) === me;
 
@@ -391,7 +405,7 @@ class ActionBar extends React.PureComponent {
         >
           <EmojiSelector
             onReact={this.handleReactClick}
-            visible={emojiSelectorVisible}
+            visible={features.emojiReacts && emojiSelectorVisible}
             focused={emojiSelectorFocused}
             onUnfocus={handleEmojiSelectorUnfocus}
           />

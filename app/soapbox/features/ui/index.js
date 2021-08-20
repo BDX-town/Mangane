@@ -42,6 +42,7 @@ import Icon from 'soapbox/components/icon';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
 
 import {
   Status,
@@ -115,6 +116,7 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
+  const instance = state.get('instance');
 
   return {
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
@@ -122,6 +124,7 @@ const mapStateToProps = state => {
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
     account,
+    features: getFeatures(instance),
   };
 };
 
@@ -302,6 +305,7 @@ class UI extends React.PureComponent {
     me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
     account: PropTypes.object,
+    features: PropTypes.object.isRequired,
   };
 
   state = {
@@ -411,7 +415,7 @@ class UI extends React.PureComponent {
   });
 
   componentDidMount() {
-    const { account } = this.props;
+    const { account, features } = this.props;
     if (!account) return;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
@@ -432,7 +436,10 @@ class UI extends React.PureComponent {
     if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
-      this.props.dispatch(fetchChats());
+
+      if (features.chats) {
+        this.props.dispatch(fetchChats());
+      }
 
       if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
@@ -577,7 +584,7 @@ class UI extends React.PureComponent {
   }
 
   render() {
-    const { streamingUrl } = this.props;
+    const { streamingUrl, features } = this.props;
     const { draggingOver, mobile } = this.state;
     const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
@@ -635,7 +642,7 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
-          {me && !mobile && (
+          {me && features.chats && !mobile && (
             <BundleContainer fetchComponent={ChatPanes}>
               {Component => <Component />}
             </BundleContainer>

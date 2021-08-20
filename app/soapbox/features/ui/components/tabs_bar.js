@@ -15,6 +15,7 @@ import Icon from '../../../components/icon';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -32,6 +33,7 @@ class TabsBar extends React.PureComponent {
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
+    features: PropTypes.object.isRequired,
   }
 
   state = {
@@ -52,7 +54,7 @@ class TabsBar extends React.PureComponent {
   }
 
   getNavLinks() {
-    const { intl: { formatMessage }, logo, account, dashboardCount, notificationCount, chatsCount } = this.props;
+    const { intl: { formatMessage }, logo, account, dashboardCount, notificationCount, chatsCount, features } = this.props;
     const links = [];
     if (logo) {
       links.push(
@@ -73,7 +75,7 @@ class TabsBar extends React.PureComponent {
           <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
         </NavLink>);
     }
-    if (account) {
+    if (features.chats && account) {
       links.push(
         <NavLink key='chats' className='tabs-bar__link tabs-bar__link--chats' to='/chats' data-preview-title-id='column.chats'>
           <IconWithCounter icon='comment' count={chatsCount} />
@@ -155,12 +157,15 @@ const mapStateToProps = state => {
   const me = state.get('me');
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
+  const instance = state.get('instance');
+
   return {
     account: state.getIn(['accounts', me]),
     logo: getSoapboxConfig(state).get('logo'),
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
+    features: getFeatures(instance),
   };
 };
 
