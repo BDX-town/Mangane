@@ -16,6 +16,7 @@ export const getFeatures = createSelector([
     focalPoint: v.software === 'Mastodon' && gte(v.compatVersion, '2.3.0'),
     importMutes: v.software === 'Pleroma' && gte(v.version, '2.2.0'),
     emailList: f.includes('email_list'),
+    chats: v.software === 'Pleroma' && gte(v.version, '2.1.0'),
   };
 });
 
