@@ -4,6 +4,7 @@ import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
+import { getLoggedInAccount } from 'soapbox/utils/auth';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -176,21 +177,24 @@ export function logIn(intl, username, password) {
 export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
-    const me = state.get('me');
+    const account = getLoggedInAccount(state);
 
     return api(getState).post('/oauth/revoke', {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', me, 'access_token']),
+      token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
     }).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, accountId: me });
+      dispatch({ type: AUTH_LOGGED_OUT, account });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
   };
 }
 
 export function switchAccount(accountId, background = false) {
-  return { type: SWITCH_ACCOUNT, accountId, background };
+  return (dispatch, getState) => {
+    const account = getState().getIn(['accounts', accountId]);
+    dispatch({ type: SWITCH_ACCOUNT, account, background });
+  };
 }
 
 export function fetchOwnAccounts() {
@@ -258,13 +262,15 @@ export function changeEmail(email, password) {
 
 export function deleteAccount(intl, password) {
   return (dispatch, getState) => {
+    const account = getLoggedInAccount(getState());
+
     dispatch({ type: DELETE_ACCOUNT_REQUEST });
     return api(getState).post('/api/pleroma/delete_account', {
       password,
     }).then(response => {
       if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
       dispatch({ type: DELETE_ACCOUNT_SUCCESS, response });
-      dispatch({ type: AUTH_LOGGED_OUT });
+      dispatch({ type: AUTH_LOGGED_OUT, account });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
