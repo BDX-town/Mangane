@@ -297,6 +297,14 @@
           height: 100%;
           object-fit: cover;
         }
+
+        > i.fa {
+          width: 100%;
+          color: hsla(var(--primary-text-color_hsl), 0.4);
+          font-size: 64px;
+          text-align: center;
+          line-height: 160px;
+        }
       }
     }
 
