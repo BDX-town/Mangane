@@ -1,3 +1,11 @@
+/**
+ * OAuth: create and revoke tokens.
+ * Tokens can be used by users and apps.
+ * https://docs.joinmastodon.org/methods/apps/oauth/
+ * @module soapbox/actions/oauth
+ * @see module:soapbox/actions/auth
+ */
+
 import { baseClient } from '../api';
 
 export const OAUTH_TOKEN_CREATE_REQUEST = 'OAUTH_TOKEN_CREATE_REQUEST';

@@ -16,7 +16,7 @@ import {
   changeEmail,
   changePassword,
   deleteAccount,
-} from 'soapbox/actions/auth';
+} from 'soapbox/actions/security';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
 import { fetchUserMfaSettings } from '../../actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
