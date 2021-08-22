@@ -1,3 +1,11 @@
+/**
+ * Apps: manage OAuth applications.
+ * Particularly useful for auth.
+ * https://docs.joinmastodon.org/methods/apps/
+ * @module soapbox/actions/apps
+ * @see module:soapbox/actions/auth
+ */
+
 import { baseClient } from '../api';
 
 export const APP_CREATE_REQUEST = 'APP_CREATE_REQUEST';
