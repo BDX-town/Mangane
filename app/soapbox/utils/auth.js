@@ -11,6 +11,14 @@ export const isURL = url => {
   }
 };
 
+export const parseBaseURL = url => {
+  try {
+    return new URL(url).origin;
+  } catch {
+    return '';
+  }
+};
+
 export const getLoggedInAccount = state => {
   const me = state.get('me');
   return state.getIn(['accounts', me]);
