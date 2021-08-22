@@ -4,7 +4,7 @@ import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
-import { getLoggedInAccount } from 'soapbox/utils/auth';
+import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 
@@ -144,11 +144,13 @@ export function otpVerify(code, mfa_token) {
   };
 }
 
-export function verifyCredentials(token) {
+export function verifyCredentials(token, accountUrl) {
+  const baseURL = parseBaseURL(accountUrl);
+
   return (dispatch, getState) => {
     dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
 
-    return baseClient(token).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
+    return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
       dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
       if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
@@ -208,7 +210,7 @@ export function fetchOwnAccounts() {
     state.getIn(['auth', 'users']).forEach(user => {
       const account = state.getIn(['accounts', user.get('id')]);
       if (!account) {
-        dispatch(verifyCredentials(user.get('access_token')));
+        dispatch(verifyCredentials(user.get('access_token'), user.get('url')));
       }
     });
   };

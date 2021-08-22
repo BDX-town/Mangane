@@ -29,14 +29,16 @@ const getMeToken = state => {
 
 export function fetchMe() {
   return (dispatch, getState) => {
-    const token = getMeToken(getState());
+    const state = getState();
+    const token = getMeToken(state);
+    const accountUrl = getMeUrl(state);
 
     if (!token) {
       dispatch({ type: ME_FETCH_SKIP }); return noOp();
     }
 
     dispatch(fetchMeRequest());
-    return dispatch(verifyCredentials(token)).catch(error => {
+    return dispatch(verifyCredentials(token, accountUrl)).catch(error => {
       dispatch(fetchMeFail(error));
     });
   };
