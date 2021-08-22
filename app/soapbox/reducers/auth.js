@@ -222,7 +222,7 @@ const reducer = (state, action) => {
   case AUTH_APP_CREATED:
     return state.set('app', fromJS(action.app));
   case AUTH_APP_AUTHORIZED:
-    return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.app)));
+    return state.update('app', ImmutableMap(), app => app.merge(fromJS(action.token)));
   case AUTH_LOGGED_IN:
     return importToken(state, action.token);
   case AUTH_LOGGED_OUT:
