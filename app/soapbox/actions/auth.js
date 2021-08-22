@@ -5,6 +5,7 @@ import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
+import { createApp } from 'soapbox/actions/apps';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -50,7 +51,7 @@ const noOp = () => () => new Promise(f => f());
 
 function createAppAndToken() {
   return (dispatch, getState) => {
-    return dispatch(createApp()).then(() => {
+    return dispatch(createAuthApp()).then(() => {
       return dispatch(createAppToken());
     });
   };
@@ -61,14 +62,16 @@ const appName = () => {
   return `SoapboxFE_${timestamp}`; // TODO: Add commit hash
 };
 
-function createApp() {
+function createAuthApp() {
   return (dispatch, getState) => {
-    return api(getState, 'app').post('/api/v1/apps', {
+    const params = {
       client_name:   appName(),
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
-    }).then(response => {
-      return dispatch(authAppCreated(response.data));
+    };
+
+    return dispatch(createApp(params)).then(app => {
+      return dispatch({ type: AUTH_APP_CREATED, app });
     });
   };
 }
@@ -315,13 +318,6 @@ export function revokeOAuthToken(id) {
     }).catch(error => {
       dispatch({ type: REVOKE_TOKEN_FAIL, id });
     });
-  };
-}
-
-export function authAppCreated(app) {
-  return {
-    type: AUTH_APP_CREATED,
-    app,
   };
 }
 
