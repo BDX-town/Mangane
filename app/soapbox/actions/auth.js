@@ -7,6 +7,7 @@ import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import sourceCode from 'soapbox/utils/code';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -50,15 +51,10 @@ function createAppAndToken() {
   };
 }
 
-const appName = () => {
-  const timestamp = (new Date()).toISOString();
-  return `SoapboxFE_${timestamp}`; // TODO: Add commit hash
-};
-
 function createAuthApp() {
   return (dispatch, getState) => {
     const params = {
-      client_name:   appName(),
+      client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
     };
