@@ -1,7 +1,7 @@
 import {
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
-} from '../actions/auth';
+} from '../actions/security';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({

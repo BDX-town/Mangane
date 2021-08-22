@@ -5,6 +5,8 @@ import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
+import { createApp } from 'soapbox/actions/apps';
+import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -33,14 +35,6 @@ export const CHANGE_PASSWORD_REQUEST = 'CHANGE_PASSWORD_REQUEST';
 export const CHANGE_PASSWORD_SUCCESS = 'CHANGE_PASSWORD_SUCCESS';
 export const CHANGE_PASSWORD_FAIL    = 'CHANGE_PASSWORD_FAIL';
 
-export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
-export const FETCH_TOKENS_SUCCESS = 'FETCH_TOKENS_SUCCESS';
-export const FETCH_TOKENS_FAIL    = 'FETCH_TOKENS_FAIL';
-
-export const REVOKE_TOKEN_REQUEST = 'REVOKE_TOKEN_REQUEST';
-export const REVOKE_TOKEN_SUCCESS = 'REVOKE_TOKEN_SUCCESS';
-export const REVOKE_TOKEN_FAIL    = 'REVOKE_TOKEN_FAIL';
-
 const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
   invalidCredentials: { id: 'auth.invalid_credentials', defaultMessage: 'Wrong username or password' },
@@ -50,7 +44,7 @@ const noOp = () => () => new Promise(f => f());
 
 function createAppAndToken() {
   return (dispatch, getState) => {
-    return dispatch(createApp()).then(() => {
+    return dispatch(createAuthApp()).then(() => {
       return dispatch(createAppToken());
     });
   };
@@ -61,14 +55,16 @@ const appName = () => {
   return `SoapboxFE_${timestamp}`; // TODO: Add commit hash
 };
 
-function createApp() {
+function createAuthApp() {
   return (dispatch, getState) => {
-    return api(getState, 'app').post('/api/v1/apps', {
+    const params = {
       client_name:   appName(),
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
-    }).then(response => {
-      return dispatch(authAppCreated(response.data));
+    };
+
+    return dispatch(createApp(params)).then(app => {
+      return dispatch({ type: AUTH_APP_CREATED, app });
     });
   };
 }
@@ -77,13 +73,15 @@ function createAppToken() {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
 
-    return api(getState, 'app').post('/oauth/token', {
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
-    }).then(response => {
-      return dispatch(authAppAuthorized(response.data));
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
+      return dispatch({ type: AUTH_APP_AUTHORIZED, app, token });
     });
   };
 }
@@ -91,14 +89,17 @@ function createAppToken() {
 function createUserToken(username, password) {
   return (dispatch, getState) => {
     const app = getState().getIn(['auth', 'app']);
-    return api(getState, 'app').post('/oauth/token', {
+
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'password',
       username:      username,
       password:      password,
-    }).then(({ data: token }) => {
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
       dispatch(authLoggedIn(token));
       return token;
     });
@@ -112,14 +113,16 @@ export function refreshUserToken() {
 
     if (!refreshToken) return dispatch(noOp());
 
-    return api(getState, 'app').post('/oauth/token', {
+    const params = {
       client_id:     app.get('client_id'),
       client_secret: app.get('client_secret'),
       refresh_token: refreshToken,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'refresh_token',
-    }).then(response => {
-      dispatch(authLoggedIn(response.data));
+    };
+
+    return dispatch(obtainOAuthToken(params)).then(token => {
+      dispatch(authLoggedIn(token));
     });
   };
 }
@@ -179,11 +182,13 @@ export function logOut(intl) {
     const state = getState();
     const account = getLoggedInAccount(state);
 
-    return api(getState).post('/oauth/revoke', {
+    const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
       token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
-    }).finally(() => {
+    };
+
+    return dispatch(revokeOAuthToken(params)).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
@@ -293,42 +298,6 @@ export function changePassword(oldPassword, newPassword, confirmation) {
       dispatch({ type: CHANGE_PASSWORD_FAIL, error, skipAlert: true });
       throw error;
     });
-  };
-}
-
-export function fetchOAuthTokens() {
-  return (dispatch, getState) => {
-    dispatch({ type: FETCH_TOKENS_REQUEST });
-    return api(getState).get('/api/oauth_tokens.json').then(response => {
-      dispatch({ type: FETCH_TOKENS_SUCCESS, tokens: response.data });
-    }).catch(error => {
-      dispatch({ type: FETCH_TOKENS_FAIL });
-    });
-  };
-}
-
-export function revokeOAuthToken(id) {
-  return (dispatch, getState) => {
-    dispatch({ type: REVOKE_TOKEN_REQUEST, id });
-    return api(getState).delete(`/api/oauth_tokens/${id}`).then(response => {
-      dispatch({ type: REVOKE_TOKEN_SUCCESS, id });
-    }).catch(error => {
-      dispatch({ type: REVOKE_TOKEN_FAIL, id });
-    });
-  };
-}
-
-export function authAppCreated(app) {
-  return {
-    type: AUTH_APP_CREATED,
-    app,
-  };
-}
-
-export function authAppAuthorized(app) {
-  return {
-    type: AUTH_APP_AUTHORIZED,
-    app,
   };
 }
 
