@@ -12,7 +12,7 @@ import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 
-const scopes = 'read write follow push';
+const scope = 'read write follow push';
 
 export function createAppAndRedirect(host) {
   return (dispatch, getState) => {
@@ -22,7 +22,7 @@ export function createAppAndRedirect(host) {
       client_name:   sourceCode.displayName,
       redirect_uris: `${window.location.origin}/auth/external`,
       website:       sourceCode.homepage,
-      scopes,
+      scopes:        scope,
     };
 
     return dispatch(createApp(params, baseURL)).then(app => {
@@ -32,7 +32,7 @@ export function createAppAndRedirect(host) {
         client_id,
         redirect_uri,
         response_type: 'code',
-        scopes,
+        scope,
       });
 
       localStorage.setItem('soapbox:external:app', JSON.stringify(app));
@@ -53,7 +53,7 @@ export function loginWithCode(code) {
       client_secret,
       redirect_uri,
       grant_type: 'authorization_code',
-      scope: scopes,
+      scope,
       code,
     };
 
