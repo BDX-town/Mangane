@@ -60,3 +60,16 @@ docs-deploy:
 #   before_script:
 #     - yarn
 #     - yarn build
+
+pages:
+  stage: deploy
+  script:
+    - yarn build
+    - mv static public
+  variables:
+    NODE_ENV: production
+  artifacts:
+    paths:
+    - public
+  only:
+  - develop
