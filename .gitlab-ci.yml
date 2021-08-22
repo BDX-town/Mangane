@@ -4,11 +4,14 @@ variables:
   NODE_ENV: test
 
 cache:
-  key:
-    files:
-      - yarn.lock
-  paths:
-    - node_modules
+  - key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+  - key: $CI_COMMIT_REF_NAME
+    paths:
+      - static
 
 stages:
   - lint
@@ -88,8 +91,8 @@ docs-deploy:
 
 pages:
   stage: deploy
+  before_script: []
   script:
-    - yarn build
     - mv static public
     - cp public/{index.html,404.html}
   variables:
