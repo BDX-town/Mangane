@@ -4,11 +4,14 @@ variables:
   NODE_ENV: test
 
 cache:
-  key:
-    files:
-      - yarn.lock
-  paths:
-    - node_modules
+  - key:
+      files:
+        - yarn.lock
+    paths:
+      - node_modules
+  - key: $CI_COMMIT_REF_NAME
+    paths:
+      - static
 
 stages:
   - lint
@@ -22,14 +25,33 @@ before_script:
 lint-js:
   stage: lint
   script: yarn test:lint:js
+  only:
+    changes:
+      - "**/*.js"
+      - ".eslintignore"
+      - ".eslintrc.js"
 
 lint-sass:
   stage: lint
   script: yarn test:lint:sass
+  only:
+    changes:
+      - "**/*.scss"
+      - "**/*.css"
+      - ".stylelintrc.json"
 
 jest:
   stage: test
   script: yarn test:jest
+  only:
+    changes:
+      - "**/*.js"
+      - "**/*.json"
+      - "app/soapbox/**/*"
+      - "webpack/**/*"
+      - "jest.config.js"
+      - "package.json"
+      - "yarn.lock"
 
 build-production:
   stage: build
@@ -39,6 +61,9 @@ build-production:
   artifacts:
     paths:
     - static
+  only:
+    changes:
+      - "!docs/**/*"
 
 docs-deploy:
   stage: deploy
@@ -48,7 +73,10 @@ docs-deploy:
   script:
     - curl -X POST -F"token=$CI_JOB_TOKEN" -F'ref=master' https://gitlab.com/api/v4/projects/15685485/trigger/pipeline
   only:
-    - develop
+    refs:
+      - develop
+    changes:
+      - "docs/**/*"
 
 # Supposed to fail when translations are outdated, instead always passes
 #
@@ -63,8 +91,8 @@ docs-deploy:
 
 pages:
   stage: deploy
+  before_script: []
   script:
-    - yarn build
     - mv static public
     - cp public/{index.html,404.html}
   variables:
@@ -73,4 +101,7 @@ pages:
     paths:
     - public
   only:
-  - develop
+    refs:
+      - develop
+    changes:
+      - "!docs/**/*"
