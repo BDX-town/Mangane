@@ -45,13 +45,13 @@ export function createAppAndRedirect(host) {
 
 export function loginWithCode(code) {
   return (dispatch, getState) => {
-    const { client_id, client_secret } = JSON.parse(localStorage.getItem('soapbox:external:app'));
+    const { client_id, client_secret, redirect_uri } = JSON.parse(localStorage.getItem('soapbox:external:app'));
     const baseURL = localStorage.getItem('soapbox:external:baseurl');
 
     const params = {
       client_id,
       client_secret,
-      redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+      redirect_uri,
       grant_type: 'authorization_code',
       scope: scopes,
       code,
