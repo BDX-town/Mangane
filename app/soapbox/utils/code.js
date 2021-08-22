@@ -33,6 +33,7 @@ const version = pkg => {
 
 module.exports = {
   name: pkg.name,
+  displayName: pkg.displayName,
   url: pkg.repository.url,
   repository: shortRepoName(pkg.repository.url),
   version: version(pkg),

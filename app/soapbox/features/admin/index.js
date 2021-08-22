@@ -138,7 +138,7 @@ class Dashboard extends ImmutablePureComponent {
           <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
             <ul>
-              <li>Soapbox FE <span className='pull-right'>{sourceCode.version}</span></li>
+              <li>{sourceCode.displayName} <span className='pull-right'>{sourceCode.version}</span></li>
               <li>{v.software} <span className='pull-right'>{v.version}</span></li>
             </ul>
           </div>
