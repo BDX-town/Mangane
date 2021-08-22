@@ -16,10 +16,10 @@ export const APP_VERIFY_CREDENTIALS_REQUEST = 'APP_VERIFY_CREDENTIALS_REQUEST';
 export const APP_VERIFY_CREDENTIALS_SUCCESS = 'APP_VERIFY_CREDENTIALS_SUCCESS';
 export const APP_VERIFY_CREDENTIALS_FAIL    = 'APP_VERIFY_CREDENTIALS_FAIL';
 
-export function createApp(params) {
+export function createApp(params, baseURL) {
   return (dispatch, getState) => {
     dispatch({ type: APP_CREATE_REQUEST, params });
-    return baseClient().post('/api/v1/apps', params).then(({ data: app }) => {
+    return baseClient(null, baseURL).post('/api/v1/apps', params).then(({ data: app }) => {
       dispatch({ type: APP_CREATE_SUCCESS, params, app });
       return app;
     }).catch(error => {

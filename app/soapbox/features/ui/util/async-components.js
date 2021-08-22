@@ -170,6 +170,10 @@ export function LoginPage() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/login_page');
 }
 
+export function ExternalLogin() {
+  return import(/* webpackChunkName: "features/external_login" */'../../external_login');
+}
+
 export function Preferences() {
   return import(/* webpackChunkName: "features/preferences" */'../../preferences');
 }

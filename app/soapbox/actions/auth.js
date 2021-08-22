@@ -50,6 +50,7 @@ function createAuthApp() {
       client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
       scopes:        'read write follow push admin',
+      website:       sourceCode.homepage,
     };
 
     return dispatch(createApp(params)).then(app => {
@@ -88,10 +89,8 @@ function createUserToken(username, password) {
       password:      password,
     };
 
-    return dispatch(obtainOAuthToken(params)).then(token => {
-      dispatch(authLoggedIn(token));
-      return token;
-    });
+    return dispatch(obtainOAuthToken(params))
+      .then(token => dispatch(authLoggedIn(token)));
   };
 }
 
@@ -110,9 +109,8 @@ export function refreshUserToken() {
       grant_type:    'refresh_token',
     };
 
-    return dispatch(obtainOAuthToken(params)).then(token => {
-      dispatch(authLoggedIn(token));
-    });
+    return dispatch(obtainOAuthToken(params))
+      .then(token => dispatch(authLoggedIn(token)));
   };
 }
 
@@ -126,10 +124,7 @@ export function otpVerify(code, mfa_token) {
       code: code,
       challenge_type: 'totp',
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-    }).then(({ data: token }) => {
-      dispatch(authLoggedIn(token));
-      return token;
-    });
+    }).then(({ data: token }) => dispatch(authLoggedIn(token)));
   };
 }
 
@@ -209,12 +204,9 @@ export function register(params) {
   return (dispatch, getState) => {
     params.fullname = params.username;
 
-    return dispatch(createAppAndToken()).then(() => {
-      return dispatch(createAccount(params));
-    }).then(({ token }) => {
-      dispatch(authLoggedIn(token));
-      return token;
-    });
+    return dispatch(createAppAndToken())
+      .then(() => dispatch(createAccount(params)))
+      .then(({ token }) => dispatch(authLoggedIn(token)));
   };
 }
 
@@ -225,8 +217,8 @@ export function fetchCaptcha() {
 }
 
 export function authLoggedIn(token) {
-  return {
-    type: AUTH_LOGGED_IN,
-    token,
+  return (dispatch, getState) => {
+    dispatch({ type: AUTH_LOGGED_IN, token });
+    return token;
   };
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import ModalContainer from 'soapbox/features/ui/containers/modal_container';
 import Header from './components/header';
@@ -9,10 +9,23 @@ import Footer from './components/footer';
 import LandingPage from '../landing_page';
 import AboutPage from '../about';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { isPrerendered } from 'soapbox/precheck';
+
+const validInstance = state => {
+  const v = state.getIn(['instance', 'version']);
+  return v && typeof v === 'string' && v !== '0.0.0';
+};
+
+const isStandalone = state => {
+  const hasInstance = validInstance(state);
+  const instanceFetchFailed = state.getIn(['meta', 'instance_fetch_failed']);
+
+  return !isPrerendered && !hasInstance && instanceFetchFailed;
+};
 
 const mapStateToProps = (state, props) => ({
-  instance: state.get('instance'),
   soapbox: getSoapboxConfig(state),
+  standalone: isStandalone(state),
 });
 
 const wave = (
@@ -24,8 +37,11 @@ const wave = (
 class PublicLayout extends ImmutablePureComponent {
 
   render() {
-    const { instance } = this.props;
-    if (instance.isEmpty()) return null;
+    const { standalone } = this.props;
+
+    if (standalone) {
+      return <Redirect to='/auth/external' />;
+    }
 
     return (
       <div className='public-layout'>

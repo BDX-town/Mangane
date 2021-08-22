@@ -37,4 +37,5 @@ module.exports = {
   url: pkg.repository.url,
   repository: shortRepoName(pkg.repository.url),
   version: version(pkg),
+  homepage: pkg.homepage,
 };
