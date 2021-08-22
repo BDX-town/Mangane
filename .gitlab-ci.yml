@@ -66,6 +66,7 @@ pages:
   script:
     - yarn build
     - mv static public
+    - cp public/{index.html,404.html}
   variables:
     NODE_ENV: production
   artifacts:

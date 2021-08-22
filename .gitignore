@@ -13,6 +13,8 @@ yarn-error.log*
 /static/emoji
 /static/index.html
 /static/index.html.gz
+/static/404.html
+/static/404.html.gz
 /static/manifest.json
 /static/manifest.json.gz
 /static/report.html
@@ -22,3 +24,4 @@ yarn-error.log*
 !/static/instance/**.example.*
 !/static/instance/**.example/**
 /static-test
+/public
