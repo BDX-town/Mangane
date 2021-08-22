@@ -61,9 +61,6 @@ build-production:
   artifacts:
     paths:
     - static
-  only:
-    changes:
-      - "!docs/**/*"
 
 docs-deploy:
   stage: deploy
@@ -103,5 +100,3 @@ pages:
   only:
     refs:
       - develop
-    changes:
-      - "!docs/**/*"
