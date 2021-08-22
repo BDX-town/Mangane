@@ -13,7 +13,6 @@ import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 import UI from '../features/ui';
 // import Introduction from '../features/introduction';
-import { fetchCustomEmojis } from '../actions/custom_emojis';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
@@ -34,7 +33,6 @@ store.dispatch(preload());
 store.dispatch(fetchMe());
 store.dispatch(fetchInstance());
 store.dispatch(fetchSoapboxConfig());
-store.dispatch(fetchCustomEmojis());
 
 const mapStateToProps = (state) => {
   const me = state.get('me');

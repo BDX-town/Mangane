@@ -1,6 +1,7 @@
 'use strict';
 
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
+import { INSTANCE_FETCH_FAIL } from 'soapbox/actions/instance';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
@@ -19,6 +20,8 @@ export default function meta(state = initialState, action) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     return importAccount(state, fromJS(action.me));
+  case INSTANCE_FETCH_FAIL:
+    return state.set('instance_fetch_failed', true);
   default:
     return state;
   }

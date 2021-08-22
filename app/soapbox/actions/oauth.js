@@ -16,10 +16,10 @@ export const OAUTH_TOKEN_REVOKE_REQUEST = 'OAUTH_TOKEN_REVOKE_REQUEST';
 export const OAUTH_TOKEN_REVOKE_SUCCESS = 'OAUTH_TOKEN_REVOKE_SUCCESS';
 export const OAUTH_TOKEN_REVOKE_FAIL    = 'OAUTH_TOKEN_REVOKE_FAIL';
 
-export function obtainOAuthToken(params) {
+export function obtainOAuthToken(params, baseURL) {
   return (dispatch, getState) => {
     dispatch({ type: OAUTH_TOKEN_CREATE_REQUEST, params });
-    return baseClient().post('/oauth/token', params).then(({ data: token }) => {
+    return baseClient(null, baseURL).post('/oauth/token', params).then(({ data: token }) => {
       dispatch({ type: OAUTH_TOKEN_CREATE_SUCCESS, params, token });
       return token;
     }).catch(error => {

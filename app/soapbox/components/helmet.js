@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Helmet } from'react-helmet';
 import { getSettings } from 'soapbox/actions/settings';
+import sourceCode from 'soapbox/utils/code';
 
 const getNotifTotals = state => {
   const notifications = state.getIn(['notifications', 'unread'], 0);
@@ -16,7 +17,7 @@ const mapStateToProps = state => {
   const settings = getSettings(state);
 
   return {
-    siteTitle: state.getIn(['instance', 'title']),
+    siteTitle: state.getIn(['instance', 'title'], sourceCode.displayName),
     unreadCount: getNotifTotals(state),
     demetricator: settings.get('demetricator'),
   };

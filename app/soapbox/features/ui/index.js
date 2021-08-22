@@ -43,6 +43,7 @@ import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
+import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 
 import {
   Status,
@@ -79,6 +80,7 @@ import {
   // GroupCreate,
   // GroupEdit,
   LoginPage,
+  ExternalLogin,
   Preferences,
   EditProfile,
   SoapboxConfig,
@@ -195,6 +197,7 @@ class SwitchingColumnsArea extends React.PureComponent {
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
+        <WrappedRoute path='/auth/external' component={ExternalLogin} publicRoute exact />
         <WrappedRoute path='/auth/edit' page={DefaultPage} component={SecurityForm} exact />
         <WrappedRoute path='/auth/mfa' page={DefaultPage} component={MfaForm} exact />
 
@@ -458,6 +461,8 @@ class UI extends React.PureComponent {
 
       setTimeout(() => this.props.dispatch(fetchScheduledStatuses()), 900);
     }
+
+    this.props.dispatch(fetchCustomEmojis());
     this.connectStreaming();
   }
 
@@ -588,7 +593,10 @@ class UI extends React.PureComponent {
     const { draggingOver, mobile } = this.state;
     const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
-    if (me === null || !streamingUrl) return null;
+    // Wait for login to succeed or fail
+    if (me === null) return null;
+    // If login didn't fail, wait for streaming to become available
+    if (me !== false && !streamingUrl) return null;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,
