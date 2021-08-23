@@ -17,6 +17,7 @@ export const getFeatures = createSelector([
     importMutes: v.software === 'Pleroma' && gte(v.version, '2.2.0'),
     emailList: f.includes('email_list'),
     chats: v.software === 'Pleroma' && gte(v.version, '2.1.0'),
+    scopes: v.software === 'Pleroma' ? 'read write follow push admin' : 'read write follow push',
   };
 });
 
