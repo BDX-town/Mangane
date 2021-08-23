@@ -21,6 +21,15 @@ export const guessFqn = account => {
   return account.get('acct');
 };
 
+export const getBaseURL = account => {
+  try {
+    const url = account.get('url');
+    return new URL(url).origin;
+  } catch {
+    return '';
+  }
+};
+
 // user@domain even for local users
 export const acctFull = account => (
   account.get('fqn') || guessFqn(account)

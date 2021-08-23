@@ -20,6 +20,7 @@ class FilterBar extends React.PureComponent {
     selectFilter: PropTypes.func.isRequired,
     selectedFilter: PropTypes.string.isRequired,
     advancedMode: PropTypes.bool.isRequired,
+    supportsEmojiReacts: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
@@ -28,7 +29,7 @@ class FilterBar extends React.PureComponent {
   }
 
   render() {
-    const { selectedFilter, advancedMode, intl } = this.props;
+    const { selectedFilter, advancedMode, supportsEmojiReacts, intl } = this.props;
     const renderedElement = !advancedMode ? (
       <div className='notification__filter-bar'>
         <button
@@ -75,13 +76,13 @@ class FilterBar extends React.PureComponent {
         >
           <Icon id='thumbs-up' fixedWidth />
         </button>
-        <button
+        {supportsEmojiReacts && <button
           className={selectedFilter === 'pleroma:emoji_reaction' ? 'active' : ''}
           onClick={this.onClick('pleroma:emoji_reaction')}
           title={intl.formatMessage(tooltips.emoji_reacts)}
         >
           <Icon id='smile-o' fixedWidth />
-        </button>
+        </button>}
         <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
           onClick={this.onClick('reblog')}

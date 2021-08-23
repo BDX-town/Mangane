@@ -9,6 +9,7 @@ export default class TextIconButton extends React.PureComponent {
     active: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     ariaControls: PropTypes.string,
+    unavailable: PropTypes.bool,
   };
 
   handleClick = (e) => {
@@ -17,7 +18,11 @@ export default class TextIconButton extends React.PureComponent {
   }
 
   render() {
-    const { label, title, active, ariaControls } = this.props;
+    const { label, title, active, ariaControls, unavailable } = this.props;
+
+    if (unavailable) {
+      return null;
+    }
 
     return (
       <button title={title} aria-label={title} className={`text-icon-button ${active ? 'active' : ''}`} aria-expanded={active} onClick={this.handleClick} aria-controls={ariaControls}>

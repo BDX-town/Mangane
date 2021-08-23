@@ -20,6 +20,10 @@ export const getFeatures = createSelector([
     chats: v.software === 'Pleroma' && gte(v.version, '2.1.0'),
     scopes: v.software === 'Pleroma' ? 'read write follow push admin' : 'read write follow push',
     federating: federation.get('enabled', true), // Assume true unless explicitly false
+    richText: v.software === 'Pleroma',
+    securityAPI: v.software === 'Pleroma',
+    settingsStore: v.software === 'Pleroma',
+    accountAliasesAPI: v.software === 'Pleroma',
   };
 });
 

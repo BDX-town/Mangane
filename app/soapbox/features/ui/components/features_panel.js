@@ -6,6 +6,8 @@ import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { NavLink } from 'react-router-dom';
 import { injectIntl, defineMessages } from 'react-intl';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { getFeatures } from 'soapbox/utils/features';
+import { getBaseURL } from 'soapbox/utils/accounts';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit Profile' },
@@ -18,9 +20,16 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
   return {
     isLocked: state.getIn(['accounts', me, 'locked']),
     followRequestsCount: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableOrderedSet()).count(),
+    baseURL: getBaseURL(account),
+    features,
   };
 };
 
@@ -32,10 +41,12 @@ class FeaturesPanel extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     isLocked: PropTypes.bool,
     followRequestsCount: PropTypes.number,
+    baseURL: PropTypes.string,
+    features: PropTypes.object.isRequired,
   };
 
   render() {
-    const { intl, isLocked, followRequestsCount } = this.props;
+    const { intl, isLocked, followRequestsCount, baseURL, features } = this.props;
 
     return (
       <div className='wtf-panel promo-panel'>
@@ -61,15 +72,29 @@ class FeaturesPanel extends React.PureComponent {
             {intl.formatMessage(messages.lists)}
           </NavLink>
 
-          <NavLink className='promo-panel-item' to='/auth/edit'>
-            <Icon id='lock' className='promo-panel-item__icon' fixedWidth />
-            {intl.formatMessage(messages.security)}
-          </NavLink>
+          {features.securityAPI ? (
+            <NavLink className='promo-panel-item' to='/auth/edit'>
+              <Icon id='lock' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.security)}
+            </NavLink>
+          ) : (
+            <a className='promo-panel-item' href={`${baseURL}/auth/edit`}>
+              <Icon id='lock' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.security)}
+            </a>
+          )}
 
-          <NavLink className='promo-panel-item' to='/settings/preferences'>
-            <Icon id='cog' className='promo-panel-item__icon' fixedWidth />
-            {intl.formatMessage(messages.preferences)}
-          </NavLink>
+          {features.settingsStore ? (
+            <NavLink className='promo-panel-item' to='/settings/preferences'>
+              <Icon id='cog' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.preferences)}
+            </NavLink>
+          ) : (
+            <a className='promo-panel-item' href={`${baseURL}/settings/preferences`}>
+              <Icon id='cog' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.preferences)}
+            </a>
+          )}
 
         </div>
       </div>

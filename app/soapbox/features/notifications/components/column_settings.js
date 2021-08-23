@@ -13,6 +13,7 @@ export default class ColumnSettings extends React.PureComponent {
     pushSettings: ImmutablePropTypes.map.isRequired,
     onChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
+    supportsEmojiReacts: PropTypes.bool,
   };
 
   onPushChange = (path, checked) => {
@@ -28,7 +29,7 @@ export default class ColumnSettings extends React.PureComponent {
   }
 
   render() {
-    const { settings, pushSettings, onChange, onClear } = this.props;
+    const { settings, pushSettings, onChange, onClear, supportsEmojiReacts } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;
     const filterAdvancedStr = <FormattedMessage id='notifications.column_settings.filter_bar.advanced' defaultMessage='Display all categories' />;
@@ -96,7 +97,7 @@ export default class ColumnSettings extends React.PureComponent {
           </div>
         </div>
 
-        <div role='group' aria-labelledby='notifications-emoji-react'>
+        {supportsEmojiReacts && <div role='group' aria-labelledby='notifications-emoji-react'>
           <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.emoji_react' defaultMessage='Emoji reacts:' /></span>
 
           <div className='column-settings__row'>
@@ -105,7 +106,7 @@ export default class ColumnSettings extends React.PureComponent {
             <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'pleroma:emoji_reaction']} onChange={onChange} label={showStr} />
             <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'pleroma:emoji_reaction']} onChange={onChange} label={soundStr} />
           </div>
-        </div>
+        </div>}
 
         <div role='group' aria-labelledby='notifications-mention'>
           <span id='notifications-mention' className='column-settings__section'><FormattedMessage id='notifications.column_settings.mention' defaultMessage='Mentions:' /></span>
