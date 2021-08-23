@@ -4,14 +4,11 @@ variables:
   NODE_ENV: test
 
 cache:
-  - key:
-      files:
-        - yarn.lock
-    paths:
-      - node_modules
-  - key: $CI_COMMIT_REF_NAME
-    paths:
-      - static
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules
 
 stages:
   - lint
