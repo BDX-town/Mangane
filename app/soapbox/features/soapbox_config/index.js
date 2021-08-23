@@ -18,7 +18,8 @@ import {
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { updateConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
-import { defaultConfig } from 'soapbox/actions/soapbox';
+import { makeDefaultConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from 'soapbox/actions/media';
 import { SketchPicker } from 'react-color';
 import Overlay from 'react-overlays/lib/Overlay';
@@ -60,9 +61,14 @@ const templates = {
   cryptoAddress: ImmutableMap({ ticker: '', address: '', note: '' }),
 };
 
-const mapStateToProps = state => ({
-  soapbox: state.get('soapbox'),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+
+  return {
+    soapbox: state.get('soapbox'),
+    features: getFeatures(instance),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -70,6 +76,7 @@ class SoapboxConfig extends ImmutablePureComponent {
 
   static propTypes = {
     soapbox: ImmutablePropTypes.map.isRequired,
+    features: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
@@ -179,7 +186,9 @@ class SoapboxConfig extends ImmutablePureComponent {
   }
 
   getSoapboxConfig = () => {
-    return defaultConfig.mergeDeep(this.state.soapbox);
+    const { features } = this.props;
+    const { soapbox } = this.state;
+    return makeDefaultConfig(features).mergeDeep(soapbox);
   }
 
   toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });

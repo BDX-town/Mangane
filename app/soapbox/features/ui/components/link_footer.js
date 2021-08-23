@@ -8,11 +8,16 @@ import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
 import { isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
+import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
   return {
     account: state.getIn(['accounts', me]),
+    federating: features.federating,
   };
 };
 
@@ -26,19 +31,19 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
+const LinkFooter = ({ onOpenHotkeys, account, federating, onClickLogOut }) => (
   <div className='getting-started__footer'>
     <ul>
       {account && <>
         <li><Link to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></Link></li>
         <li><Link to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></Link></li>
         <li><Link to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></Link></li>
-        <li><Link to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></Link></li>
+        {federating && <li><Link to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></Link></li>}
         <li><Link to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></Link></li>
         {isAdmin(account) && <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='AdminFE' /></a></li>}
         {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>}
         <li><Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link></li>
-        <li><Link to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>
+        {federating && <li><Link to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>}
         <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>
       </>}
       <li><Link to='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></Link></li>
@@ -61,6 +66,7 @@ const LinkFooter = ({ onOpenHotkeys, account, onClickLogOut }) => (
 
 LinkFooter.propTypes = {
   account: ImmutablePropTypes.map,
+  federating: PropTypes.bool,
   onOpenHotkeys: PropTypes.func.isRequired,
   onClickLogOut: PropTypes.func.isRequired,
 };
