@@ -55,8 +55,10 @@ export const changeAliasesSuggestions = value => ({
 
 export const addToAliases = (intl, apId) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
+  const state = getState();
 
-  const alsoKnownAs = getState().getIn(['meta', 'pleroma', 'also_known_as']);
+  const me = state.get('me');
+  const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
 
   dispatch(addToAliasesRequest(apId));
 
@@ -92,8 +94,10 @@ export const addToAliasesFail = (apId, error) => ({
 
 export const removeFromAliases = (intl, apId) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
+  const state = getState();
 
-  const alsoKnownAs = getState().getIn(['meta', 'pleroma', 'also_known_as']);
+  const me = state.get('me');
+  const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
 
   dispatch(removeFromAliasesRequest(apId));
 

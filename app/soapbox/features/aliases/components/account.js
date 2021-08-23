@@ -18,14 +18,17 @@ const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
   const mapStateToProps = (state, { accountId, added }) => {
+    const me = state.get('me');
+    const ownAccount = getAccount(state, me);
+
     const account = getAccount(state, accountId);
     const apId = account.getIn(['pleroma', 'ap_id']);
 
     return {
       account,
       apId,
-      added: typeof added === 'undefined' ? state.getIn(['meta', 'pleroma', 'also_known_as']).includes(apId) : added,
-      me: state.get('me'),
+      added: typeof added === 'undefined' ? ownAccount.getIn(['pleroma', 'also_known_as']).includes(apId) : added,
+      me,
     };
   };
 

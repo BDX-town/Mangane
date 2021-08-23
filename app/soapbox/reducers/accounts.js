@@ -46,6 +46,7 @@ const normalizeAccount = (state, account) => {
     'followers_count',
     'following_count',
     'statuses_count',
+    'source',
   ]);
 
   return state.set(account.id, normalized);

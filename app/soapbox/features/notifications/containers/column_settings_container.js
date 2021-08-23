@@ -6,16 +6,23 @@ import { setFilter } from '../../../actions/notifications';
 import { clearNotifications } from '../../../actions/notifications';
 import { changeAlerts as changePushNotifications } from '../../../actions/push_notifications';
 import { openModal } from '../../../actions/modal';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   clearMessage: { id: 'notifications.clear_confirmation', defaultMessage: 'Are you sure you want to permanently clear all your notifications?' },
   clearConfirm: { id: 'notifications.clear', defaultMessage: 'Clear notifications' },
 });
 
-const mapStateToProps = state => ({
-  settings: getSettings(state).get('notifications'),
-  pushSettings: state.get('push_notifications'),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
+  return {
+    settings: getSettings(state).get('notifications'),
+    pushSettings: state.get('push_notifications'),
+    supportsEmojiReacts: features.emojiReacts,
+  };
+};
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
 

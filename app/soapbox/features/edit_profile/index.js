@@ -26,6 +26,7 @@ import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+import { makeGetAccount } from 'soapbox/selectors';
 
 const hidesNetwork = account => {
   const pleroma = account.get('pleroma');
@@ -41,19 +42,27 @@ const messages = defineMessages({
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
   verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
   success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
+  bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
+  displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
 });
 
-const mapStateToProps = state => {
-  const me = state.get('me');
-  const soapbox = getSoapboxConfig(state);
-  const meta = state.getIn(['meta', 'pleroma']);
-  const account = state.getIn(['accounts', me]).set('pleroma', meta);
-  return {
-    account,
-    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
-    verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-    supportsEmailList: getFeatures(state.get('instance')).emailList,
+const makeMapStateToProps = () => {
+  const getAccount = makeGetAccount();
+
+  const mapStateToProps = state => {
+    const me = state.get('me');
+    const account = getAccount(state, me);
+    const soapbox = getSoapboxConfig(state);
+
+    return {
+      account,
+      maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+      verifiedCanEditName: soapbox.get('verifiedCanEditName'),
+      supportsEmailList: getFeatures(state.get('instance')).emailList,
+    };
   };
+
+  return mapStateToProps;
 };
 
 // Forces fields to be maxFields size, filling empty values
@@ -70,7 +79,7 @@ const unescapeParams = (map, params) => (
   ), map)
 );
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 @injectIntl
 class EditProfile extends ImmutablePureComponent {
 
@@ -88,18 +97,21 @@ class EditProfile extends ImmutablePureComponent {
 
   constructor(props) {
     super(props);
-    const { account } = this.props;
+    const { account, maxFields } = this.props;
+
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
+
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields'), Math.min(props.maxFields, 4)));
+      map.set('fields', normalizeFields(map.get('fields'), Math.min(maxFields, 4)));
       map.set('stranger_notifications', strangerNotifications);
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       unescapeParams(map, ['display_name', 'bio']);
     });
+
     this.state = initialState.toObject();
   }
 
@@ -108,7 +120,7 @@ class EditProfile extends ImmutablePureComponent {
     return account.merge(ImmutableMap({
       header: this.state.header,
       avatar: this.state.avatar,
-      display_name: this.state.display_name,
+      display_name: this.state.display_name || account.get('username'),
     }));
   }
 
@@ -225,6 +237,7 @@ class EditProfile extends ImmutablePureComponent {
               <TextInput
                 className={canEditName ? '' : 'disabled'}
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
+                placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
                 name='display_name'
                 value={this.state.display_name}
                 onChange={this.handleTextChange}
@@ -233,6 +246,7 @@ class EditProfile extends ImmutablePureComponent {
               />
               <SimpleTextarea
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
+                placeholder={intl.formatMessage(messages.bioPlaceholder)}
                 name='note'
                 autoComplete='off'
                 value={this.state.note}
