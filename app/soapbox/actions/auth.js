@@ -17,6 +17,7 @@ import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import sourceCode from 'soapbox/utils/code';
+import { getFeatures } from 'soapbox/utils/features';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -36,6 +37,12 @@ export const messages = defineMessages({
 
 const noOp = () => () => new Promise(f => f());
 
+const getScopes = state => {
+  const instance = state.get('instance');
+  const { scopes } = getFeatures(instance);
+  return scopes;
+};
+
 function createAppAndToken() {
   return (dispatch, getState) => {
     return dispatch(createAuthApp()).then(() => {
@@ -49,7 +56,7 @@ function createAuthApp() {
     const params = {
       client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
-      scopes:        'read write follow push admin',
+      scopes:        getScopes(getState()),
       website:       sourceCode.homepage,
     };
 
@@ -68,6 +75,7 @@ function createAppToken() {
       client_secret: app.get('client_secret'),
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'client_credentials',
+      scope:         getScopes(getState()),
     };
 
     return dispatch(obtainOAuthToken(params)).then(token => {
@@ -87,6 +95,7 @@ function createUserToken(username, password) {
       grant_type:    'password',
       username:      username,
       password:      password,
+      scope:         getScopes(getState()),
     };
 
     return dispatch(obtainOAuthToken(params))
@@ -107,6 +116,7 @@ export function refreshUserToken() {
       refresh_token: refreshToken,
       redirect_uri:  'urn:ietf:wg:oauth:2.0:oob',
       grant_type:    'refresh_token',
+      scope:         getScopes(getState()),
     };
 
     return dispatch(obtainOAuthToken(params))
