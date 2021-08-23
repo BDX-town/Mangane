@@ -8,9 +8,15 @@ const initialState = ImmutableMap();
 
 const importAccount = (state, account) => {
   return state.withMutations(state => {
+    const accountId = account.get('id');
+
     if (account.has('pleroma')) {
       const pleroPrefs = account.get('pleroma').delete('settings_store');
-      state.mergeIn(['pleroma'], pleroPrefs);
+      state.setIn(['pleroma', accountId], pleroPrefs);
+    }
+
+    if (account.has('source')) {
+      state.setIn(['source', accountId], account.get('source'));
     }
   });
 };
