@@ -9,6 +9,7 @@ import Icon from 'soapbox/components/icon';
 import Search from './components/search';
 import Account from './components/account';
 import { removeFromAliases } from '../../actions/aliases';
+import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   heading: { id: 'column.aliases', defaultMessage: 'Account aliases' },
@@ -19,13 +20,24 @@ const messages = defineMessages({
   delete: { id: 'column.aliases.delete', defaultMessage: 'Delete' },
 });
 
-const mapStateToProps = state => ({
-  aliases: state.getIn(['meta', 'pleroma', 'also_known_as']),
-  searchAccountIds: state.getIn(['aliases', 'suggestions', 'items']),
-  loaded: state.getIn(['aliases', 'suggestions', 'loaded']),
-});
+const makeMapStateToProps = () => {
+  const getAccount = makeGetAccount();
 
-export default @connect(mapStateToProps)
+  const mapStateToProps = state => {
+    const me = state.get('me');
+    const account = getAccount(state, me);
+
+    return {
+      aliases: account.getIn(['pleroma', 'also_known_as']),
+      searchAccountIds: state.getIn(['aliases', 'suggestions', 'items']),
+      loaded: state.getIn(['aliases', 'suggestions', 'loaded']),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 @injectIntl
 class Aliases extends ImmutablePureComponent {
 

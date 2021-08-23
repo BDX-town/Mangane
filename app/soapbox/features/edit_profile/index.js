@@ -26,6 +26,7 @@ import { unescape } from 'lodash';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+import { makeGetAccount } from 'soapbox/selectors';
 
 const hidesNetwork = account => {
   const pleroma = account.get('pleroma');
@@ -45,22 +46,23 @@ const messages = defineMessages({
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
 });
 
-const mapStateToProps = state => {
-  const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
-  const soapbox = getSoapboxConfig(state);
+const makeMapStateToProps = () => {
+  const getAccount = makeGetAccount();
 
-  const baseProfile = ImmutableMap({
-    pleroma: state.getIn(['meta', 'pleroma', me]),
-    source: state.getIn(['meta', 'source', me]),
-  });
+  const mapStateToProps = state => {
+    const me = state.get('me');
+    const account = getAccount(state, me);
+    const soapbox = getSoapboxConfig(state);
 
-  return {
-    account: baseProfile.merge(account),
-    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
-    verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-    supportsEmailList: getFeatures(state.get('instance')).emailList,
+    return {
+      account,
+      maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+      verifiedCanEditName: soapbox.get('verifiedCanEditName'),
+      supportsEmailList: getFeatures(state.get('instance')).emailList,
+    };
   };
+
+  return mapStateToProps;
 };
 
 // Forces fields to be maxFields size, filling empty values
@@ -77,7 +79,7 @@ const unescapeParams = (map, params) => (
   ), map)
 );
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 @injectIntl
 class EditProfile extends ImmutablePureComponent {
 
