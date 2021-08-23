@@ -14,6 +14,8 @@ import {
   isModerator,
   isVerified,
   isLocal,
+  isRemote,
+  getDomain,
 } from 'soapbox/utils/accounts';
 import { parseVersion } from 'soapbox/utils/features';
 import classNames from 'classnames';
@@ -195,8 +197,8 @@ class Header extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.report, { name: account.get('username') }), action: this.props.onReport });
     }
 
-    if (account.get('acct') !== account.get('username')) {
-      const domain = account.get('acct').split('@')[1];
+    if (isRemote(account)) {
+      const domain = getDomain(account);
 
       menu.push(null);
 

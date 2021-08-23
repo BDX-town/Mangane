@@ -27,42 +27,37 @@ const allowedEmojiRGI = ImmutableList([
 
 const year = new Date().getFullYear();
 
-export const defaultConfig = ImmutableMap({
-  logo: '',
-  banner: '',
-  brandColor: '', // Empty
-  customCss: ImmutableList(),
-  promoPanel: ImmutableMap({
-    items: ImmutableList(),
-  }),
-  extensions: ImmutableMap(),
-  defaultSettings: ImmutableMap(),
-  copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
-  navlinks: ImmutableMap({
-    homeFooter: ImmutableList(),
-  }),
-  allowedEmoji: allowedEmoji,
-  verifiedCanEditName: false,
-  displayFqn: true,
-  cryptoAddresses: ImmutableList(),
-  cryptoDonatePanel: ImmutableMap({
-    limit: 1,
-  }),
-  aboutPages: ImmutableMap(),
-});
+export const makeDefaultConfig = features => {
+  return ImmutableMap({
+    logo: '',
+    banner: '',
+    brandColor: '', // Empty
+    customCss: ImmutableList(),
+    promoPanel: ImmutableMap({
+      items: ImmutableList(),
+    }),
+    extensions: ImmutableMap(),
+    defaultSettings: ImmutableMap(),
+    copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
+    navlinks: ImmutableMap({
+      homeFooter: ImmutableList(),
+    }),
+    allowedEmoji: features.emojiReactsRGI ? allowedEmojiRGI : allowedEmoji,
+    verifiedCanEditName: false,
+    displayFqn: Boolean(features.federating),
+    cryptoAddresses: ImmutableList(),
+    cryptoDonatePanel: ImmutableMap({
+      limit: 1,
+    }),
+    aboutPages: ImmutableMap(),
+  });
+};
 
 export const getSoapboxConfig = createSelector([
   state => state.get('soapbox'),
-  state => getFeatures(state.get('instance')).emojiReactsRGI,
-], (soapbox, emojiReactsRGI) => {
-  // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-  if (emojiReactsRGI) {
-    return defaultConfig
-      .set('allowedEmoji', allowedEmojiRGI)
-      .merge(soapbox);
-  } else {
-    return defaultConfig.merge(soapbox);
-  }
+  state => getFeatures(state.get('instance')),
+], (soapbox, features) => {
+  return makeDefaultConfig(features).merge(soapbox);
 });
 
 export function fetchSoapboxConfig() {

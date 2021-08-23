@@ -10,11 +10,13 @@ import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { fetchLists } from 'soapbox/actions/lists';
 import { createSelector } from 'reselect';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   show: { id: 'column_header.show_settings', defaultMessage: 'Show settings' },
   hide: { id: 'column_header.hide_settings', defaultMessage: 'Hide settings' },
   homeTitle: { id: 'home_column_header.home', defaultMessage: 'Home' },
+  allTitle: { id: 'home_column_header.all', defaultMessage: 'All' },
   fediverseTitle: { id: 'home_column_header.fediverse', defaultMessage: 'Fediverse' },
   listTitle: { id: 'home_column.lists', defaultMessage: 'Lists' },
 });
@@ -28,9 +30,13 @@ const getOrderedLists = createSelector([state => state.get('lists')], lists => {
 });
 
 const mapStateToProps = state => {
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
   return {
     lists: getOrderedLists(state),
     siteTitle: state.getIn(['instance', 'title']),
+    federating: features.federating,
   };
 };
 
@@ -49,6 +55,7 @@ class ColumnHeader extends React.PureComponent {
     activeSubItem: PropTypes.string,
     lists: ImmutablePropTypes.list,
     siteTitle: PropTypes.string,
+    federating: PropTypes.bool,
   };
 
   state = {
@@ -77,7 +84,7 @@ class ColumnHeader extends React.PureComponent {
   }
 
   render() {
-    const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists, siteTitle } = this.props;
+    const { active, children, intl: { formatMessage }, activeItem, activeSubItem, lists, siteTitle, federating } = this.props;
     const { collapsed, animating, expandedFor } = this.state;
 
     const wrapperClassName = classNames('column-header__wrapper', {
@@ -143,14 +150,14 @@ class ColumnHeader extends React.PureComponent {
           </Link>
 
           <Link to='/timeline/local' className={classNames('btn grouped', { 'active': 'local' === activeItem })}>
-            <Icon id='users' fixedWidth className='column-header__icon' />
-            {siteTitle}
+            <Icon id={federating ? 'users' : 'globe-w'} fixedWidth className='column-header__icon' />
+            {federating ? siteTitle : formatMessage(messages.allTitle)}
           </Link>
 
-          <Link to='/timeline/fediverse' className={classNames('btn grouped', { 'active': 'fediverse' === activeItem })}>
+          {federating && <Link to='/timeline/fediverse' className={classNames('btn grouped', { 'active': 'fediverse' === activeItem })}>
             <Icon id='fediverse' fixedWidth className='column-header__icon' />
             {formatMessage(messages.fediverseTitle)}
-          </Link>
+          </Link>}
 
           <div className='column-header__buttons'>
             {collapseButton}
