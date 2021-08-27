@@ -10,7 +10,7 @@ import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
 import { List as ImmutableList } from 'immutable';
-import { getAcct, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
 import CryptoAddress from 'soapbox/features/crypto_donate/components/crypto_address';
@@ -100,15 +100,16 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           <div className='profile-info-panel-content__badges'>
             {this.getStaffBadge()}
             {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-            {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-              <Icon id='calendar' />
-              <FormattedMessage
-                id='account.member_since' defaultMessage='Member since {date}' values={{
-                  date: memberSinceDate,
-                }}
-              />
-            </div>}
           </div>
+
+          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
+            <Icon id='calendar' />
+            <FormattedMessage
+              id='account.member_since' defaultMessage='Member since {date}' values={{
+                date: memberSinceDate,
+              }}
+            />
+          </div>}
 
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
