@@ -137,6 +137,24 @@ class Header extends ImmutablePureComponent {
     }
   }
 
+  onHeaderClick = () => {
+    const header_url = this.props.account.get('header');
+    const header = ImmutableMap({
+      type: 'image',
+      preview_url: header_url,
+      url: header_url,
+      description: '',
+    });
+    this.props.dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
+  }
+
+  handleHeaderClick = (e) => {
+    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.onHeaderClick();
+    }
+  }
+
   makeMenu() {
     const { account, intl, me, meAccount, version } = this.props;
 
@@ -309,7 +327,9 @@ class Header extends ImmutablePureComponent {
             <SubscriptionButton account={account} />
           </div>
 
-          {header && <StillImage src={account.get('header')} alt='' className='parallax' />}
+          {header && <a className='account__header__header' href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
+            <StillImage src={account.get('header')} alt='' className='parallax' />
+          </a>}
         </div>
 
         <div className='account__header__bar'>
