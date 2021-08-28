@@ -43,7 +43,7 @@
     &:hover,
     &:active,
     &:focus {
-      color: var(--primary-text-color--faint);
+      color: var(--primary-text-color);
     }
 
     &.disabled {
@@ -93,7 +93,7 @@
   &:hover,
   &:active,
   &:focus {
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
     transition: color 200ms ease-out;
   }
 
