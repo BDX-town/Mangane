@@ -16,6 +16,7 @@ export default class IconButton extends React.PureComponent {
     onMouseDown: PropTypes.func,
     onKeyUp: PropTypes.func,
     onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     size: PropTypes.number,
@@ -73,6 +74,12 @@ export default class IconButton extends React.PureComponent {
     }
   }
 
+  handleKeyPress = (e) => {
+    if (this.props.onKeyPress && !this.props.disabled) {
+      this.props.onKeyPress(e);
+    }
+  }
+
   render() {
     const style = {
       fontSize: `${this.props.size}px`,
@@ -120,6 +127,7 @@ export default class IconButton extends React.PureComponent {
           onMouseDown={this.handleMouseDown}
           onKeyDown={this.handleKeyDown}
           onKeyUp={this.handleKeyUp}
+          onKeyPress={this.handleKeyPress}
           onMouseEnter={this.props.onMouseEnter}
           onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
@@ -148,6 +156,7 @@ export default class IconButton extends React.PureComponent {
             onMouseDown={this.handleMouseDown}
             onKeyDown={this.handleKeyDown}
             onKeyUp={this.handleKeyUp}
+            onKeyPress={this.handleKeyPress}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}
