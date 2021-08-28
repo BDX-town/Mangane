@@ -66,7 +66,7 @@ export default class Button extends React.PureComponent {
 
     if (this.props.to) {
       return (
-        <Link to={this.props.to}>
+        <Link to={this.props.to} tabIndex={-1}>
           {btn}
         </Link>
       );

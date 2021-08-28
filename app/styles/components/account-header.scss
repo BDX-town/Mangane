@@ -221,6 +221,7 @@
         }
 
         &:hover,
+        &:focus,
         &.active {
           border-bottom: 2px solid var(--primary-text-color);
         }
