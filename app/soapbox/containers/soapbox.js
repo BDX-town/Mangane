@@ -15,6 +15,8 @@ import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
+import { previewState as previewMediaState } from 'soapbox/features/ui/components/media_modal';
+import { previewState as previewVideoState } from 'soapbox/features/ui/components/video_modal';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -104,6 +106,10 @@ class SoapboxMount extends React.PureComponent {
     this.maybeUpdateMessages(prevProps);
   }
 
+  shouldUpdateScroll(_, { location }) {
+    return location.state !== previewMediaState && location.state !== previewVideoState;
+  }
+
   render() {
     const { me, themeCss, locale, customCss } = this.props;
     if (me === null) return null;
@@ -137,7 +143,7 @@ class SoapboxMount extends React.PureComponent {
             <meta name='theme-color' content={this.props.brandColor} />
           </Helmet>
           <BrowserRouter>
-            <ScrollContext>
+            <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
               <Switch>
                 {!me && <Route exact path='/' component={PublicLayout} />}
                 <Route exact path='/about/:slug?' component={PublicLayout} />

@@ -480,7 +480,8 @@
   color: var(--primary-text-color--faint);
   background: transparent;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: hsla(var(--primary-text-color_hsl), 0.8);
   }
 

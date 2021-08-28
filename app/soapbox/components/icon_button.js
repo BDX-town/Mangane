@@ -13,8 +13,10 @@ export default class IconButton extends React.PureComponent {
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
     onClick: PropTypes.func,
+    onMouseDown: PropTypes.func,
     onKeyUp: PropTypes.func,
     onKeyDown: PropTypes.func,
+    onKeyPress: PropTypes.func,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     size: PropTypes.number,
@@ -51,6 +53,30 @@ export default class IconButton extends React.PureComponent {
 
     if (!this.props.disabled) {
       this.props.onClick(e);
+    }
+  }
+
+  handleMouseDown = (e) => {
+    if (!this.props.disabled && this.props.onMouseDown) {
+      this.props.onMouseDown(e);
+    }
+  }
+
+  handleKeyDown = (e) => {
+    if (!this.props.disabled && this.props.onKeyDown) {
+      this.props.onKeyDown(e);
+    }
+  }
+
+  handleKeyUp = (e) => {
+    if (!this.props.disabled && this.props.onKeyUp) {
+      this.props.onKeyUp(e);
+    }
+  }
+
+  handleKeyPress = (e) => {
+    if (this.props.onKeyPress && !this.props.disabled) {
+      this.props.onKeyPress(e);
     }
   }
 
@@ -98,8 +124,10 @@ export default class IconButton extends React.PureComponent {
           title={title}
           className={classes}
           onClick={this.handleClick}
-          onKeyUp={this.props.onKeyUp}
-          onKeyDown={this.props.onKeyDown}
+          onMouseDown={this.handleMouseDown}
+          onKeyDown={this.handleKeyDown}
+          onKeyUp={this.handleKeyUp}
+          onKeyPress={this.handleKeyPress}
           onMouseEnter={this.props.onMouseEnter}
           onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
@@ -125,8 +153,10 @@ export default class IconButton extends React.PureComponent {
             title={title}
             className={classes}
             onClick={this.handleClick}
-            onKeyUp={this.props.onKeyUp}
-            onKeyDown={this.props.onKeyDown}
+            onMouseDown={this.handleMouseDown}
+            onKeyDown={this.handleKeyDown}
+            onKeyUp={this.handleKeyUp}
+            onKeyPress={this.handleKeyPress}
             onMouseEnter={this.props.onMouseEnter}
             onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}

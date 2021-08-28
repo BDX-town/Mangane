@@ -43,7 +43,7 @@
     &:hover,
     &:active,
     &:focus {
-      color: var(--primary-text-color--faint);
+      color: var(--primary-text-color);
     }
 
     &.disabled {
@@ -93,7 +93,7 @@
   &:hover,
   &:active,
   &:focus {
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
     transition: color 200ms ease-out;
   }
 
@@ -147,10 +147,6 @@
   align-items: flex-start;
   padding: 20px;
   margin-bottom: 20px;
-
-  .emoji-picker-wrapper {
-    .emoji-picker-dropdown { top: 10px; }
-  }
 
   .compose-form {
     flex: 1 1;

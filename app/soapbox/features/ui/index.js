@@ -155,6 +155,7 @@ const keyMap = {
   goToRequests: 'g r',
   toggleHidden: 'x',
   toggleSensitive: 'h',
+  openMedia: 'a',
 };
 
 class SwitchingColumnsArea extends React.PureComponent {

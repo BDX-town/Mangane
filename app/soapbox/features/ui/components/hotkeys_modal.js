@@ -62,12 +62,8 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><FormattedMessage id='keyboard_shortcuts.enter' defaultMessage='to open post' /></td>
               </tr>
               <tr>
-                <td><kbd>x</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
-              </tr>
-              <tr>
-                <td><kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+                <td><kbd>a</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.open_media' defaultMessage='to open media' /></td>
               </tr>
             </tbody>
           </table>
@@ -78,6 +74,14 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><kbd>x</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
+              </tr>
+              <tr>
+                <td><kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+              </tr>
               <tr>
                 <td><kbd>up</kbd>, <kbd>k</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></td>
@@ -106,10 +110,6 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><kbd>esc</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.unfocus' defaultMessage='to un-focus compose textarea/search' /></td>
               </tr>
-              <tr>
-                <td><kbd>g</kbd> + <kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
-              </tr>
             </tbody>
           </table>
           <table>
@@ -119,6 +119,10 @@ class HotkeysModal extends ImmutablePureComponent {
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <td><kbd>g</kbd> + <kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
+              </tr>
               <tr>
                 <td><kbd>g</kbd> + <kbd>n</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></td>
