@@ -314,10 +314,6 @@ export default class ComposeForm extends ImmutablePureComponent {
           />
         </div>
 
-        <div className='emoji-picker-wrapper'>
-          <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
-        </div>
-
         <AutosuggestTextarea
           ref={(isModalOpen && shouldCondense) ? null : this.setAutosuggestTextarea}
           placeholder={intl.formatMessage(messages.placeholder)}
@@ -333,6 +329,7 @@ export default class ComposeForm extends ImmutablePureComponent {
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
         >
+          <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           {
             !condensed &&
             <div className='compose-form__modifiers'>
