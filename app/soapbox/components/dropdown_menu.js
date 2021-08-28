@@ -46,6 +46,10 @@ class DropdownMenu extends React.PureComponent {
     document.addEventListener('keydown', this.handleKeyDown, false);
     document.addEventListener('touchend', this.handleDocumentClick, listenerOptions);
     if (this.focusedItem && this.props.openedViaKeyboard) this.focusedItem.focus();
+    this.activeElement = document.activeElement;
+    if (this.focusedItem && this.props.openedViaKeyboard) {
+      this.focusedItem.focus();
+    }
     this.setState({ mounted: true });
   }
 
@@ -53,6 +57,9 @@ class DropdownMenu extends React.PureComponent {
     document.removeEventListener('click', this.handleDocumentClick, false);
     document.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('touchend', this.handleDocumentClick, listenerOptions);
+    if (this.activeElement) {
+      this.activeElement.focus();
+    }
   }
 
   setRef = c => {
@@ -81,6 +88,18 @@ class DropdownMenu extends React.PureComponent {
         element.focus();
       }
       break;
+    case 'Tab':
+      if (e.shiftKey) {
+        element = items[index-1] || items[items.length-1];
+      } else {
+        element = items[index+1] || items[0];
+      }
+      if (element) {
+        element.focus();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+      break;
     case 'Home':
       element = items[0];
       if (element) {
@@ -93,11 +112,14 @@ class DropdownMenu extends React.PureComponent {
         element.focus();
       }
       break;
+    case 'Escape':
+      this.props.onClose();
+      break;
     }
   }
 
-  handleItemKeyDown = e => {
-    if (e.key === 'Enter') {
+  handleItemKeyUp = e => {
+    if (e.key === 'Enter' || e.key === ' ') {
       this.handleClick(e);
     }
   }
@@ -151,7 +173,7 @@ class DropdownMenu extends React.PureComponent {
           ref={i === 0 ? this.setFocusRef : null}
           onClick={this.handleClick}
           onAuxClick={this.handleAuxClick}
-          onKeyDown={this.handleItemKeyDown}
+          onKeyUp={this.handleItemKeyUp}
           data-index={i}
           target={newTab ? '_blank' : null}
           data-method={isLogout ? 'delete' : null}
@@ -229,19 +251,6 @@ export default class Dropdown extends React.PureComponent {
     this.props.onClose(this.state.id);
   }
 
-  handleKeyDown = e => {
-    switch(e.key) {
-    case ' ':
-    case 'Enter':
-      this.handleClick(e);
-      e.preventDefault();
-      break;
-    case 'Escape':
-      this.handleClose();
-      break;
-    }
-  }
-
   handleItemClick = e => {
     const i = Number(e.currentTarget.getAttribute('data-index'));
     const { action, to } = this.props.items[i];
@@ -276,7 +285,7 @@ export default class Dropdown extends React.PureComponent {
     const open = this.state.id === openDropdownId;
 
     return (
-      <div onKeyDown={this.handleKeyDown}>
+      <div>
         <IconButton
           icon={icon}
           title={title}
