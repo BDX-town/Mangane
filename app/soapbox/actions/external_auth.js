@@ -9,7 +9,7 @@
 import { baseClient } from '../api';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth';
+import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import sourceCode from 'soapbox/utils/code';
@@ -73,6 +73,7 @@ export function loginWithCode(code) {
     return dispatch(obtainOAuthToken(params, baseURL))
       .then(token => dispatch(authLoggedIn(token)))
       .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)))
+      .then(account => dispatch(switchAccount(account.id)))
       .then(() => window.location.href = '/');
   };
 }

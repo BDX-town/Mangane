@@ -6,10 +6,12 @@ import { injectIntl } from 'react-intl';
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
+import { isStandalone } from 'soapbox/utils/state';
 
 const mapStateToProps = state => ({
   me: state.get('me'),
   isLoading: false,
+  standalone: isStandalone(state),
 });
 
 export default @connect(mapStateToProps)
@@ -55,7 +57,10 @@ class LoginPage extends ImmutablePureComponent {
   }
 
   render() {
+    const { standalone } = this.props;
     const { isLoading, mfa_auth_needed, mfa_token, shouldRedirect } = this.state;
+
+    if (standalone) return <Redirect to='/auth/external' />;
 
     if (shouldRedirect) return <Redirect to='/' />;
 

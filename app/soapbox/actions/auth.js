@@ -18,6 +18,7 @@ import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
+import { isStandalone } from 'soapbox/utils/state';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -177,6 +178,7 @@ export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
+    const standalone = isStandalone(state);
 
     const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
@@ -185,7 +187,7 @@ export function logOut(intl) {
     };
 
     return dispatch(revokeOAuthToken(params)).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, account });
+      dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
   };
