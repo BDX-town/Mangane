@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
@@ -47,7 +47,7 @@ class HomePage extends ImmutablePureComponent {
   render() {
     const { me, children, account, showFundingPanel, showCryptoDonatePanel, cryptoLimit, showTrendsPanel, showWhoToFollowPanel } = this.props;
 
-    const acct = account.get('acct');
+    const acct = account ? account.get('acct') : '';
 
     return (
       <div className='page'>
@@ -65,9 +65,9 @@ class HomePage extends ImmutablePureComponent {
             <div className='columns-area__panels__main'>
               <div className='columns-area columns-area--mobile'>
                 {me && <div className='timeline-compose-block' ref={this.composeBlock}>
-                  <NavLink className='timeline-compose-block__avatar' to={`/@${acct}`}>
+                  <Link className='timeline-compose-block__avatar' to={`/@${acct}`}>
                     <Avatar account={account} size={46} />
-                  </NavLink>
+                  </Link>
                   <ComposeFormContainer
                     shouldCondense
                     autoFocus={false}

@@ -180,6 +180,7 @@
 
   &__avatar {
     display: block;
+    border-radius: 50%;
     @media (max-width: 405px) { display: none; }
   }
 }
