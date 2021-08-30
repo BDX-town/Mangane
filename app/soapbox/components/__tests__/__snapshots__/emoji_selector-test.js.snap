@@ -19,7 +19,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
     <button
@@ -30,7 +30,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
     <button
@@ -41,7 +41,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
     <button
@@ -52,7 +52,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
     <button
@@ -63,7 +63,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
     <button
@@ -74,7 +74,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
         }
       }
       onClick={[Function]}
-      onKeyUp={[Function]}
+      onKeyDown={[Function]}
       tabIndex={-1}
     />
   </div>
