@@ -179,6 +179,7 @@
   }
 
   &__avatar {
+    display: block;
     @media (max-width: 405px) { display: none; }
   }
 }
