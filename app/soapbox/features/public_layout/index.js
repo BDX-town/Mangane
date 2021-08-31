@@ -9,19 +9,7 @@ import Footer from './components/footer';
 import LandingPage from '../landing_page';
 import AboutPage from '../about';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { isPrerendered } from 'soapbox/precheck';
-
-const validInstance = state => {
-  const v = state.getIn(['instance', 'version']);
-  return v && typeof v === 'string' && v !== '0.0.0';
-};
-
-const isStandalone = state => {
-  const hasInstance = validInstance(state);
-  const instanceFetchFailed = state.getIn(['meta', 'instance_fetch_failed']);
-
-  return !isPrerendered && !hasInstance && instanceFetchFailed;
-};
+import { isStandalone } from 'soapbox/utils/state';
 
 const mapStateToProps = (state, props) => ({
   soapbox: getSoapboxConfig(state),
