@@ -11,6 +11,21 @@ const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
+const htmlWebpackPluginConfig = {
+  template: 'app/index.ejs',
+  chunksSortMode: 'manual',
+  chunks: ['common', 'locale_en', 'application', 'styles'],
+  alwaysWriteToDisk: true,
+  minify: {
+    collapseWhitespace: true,
+    removeComments: false,
+    removeRedundantAttributes: true,
+    removeScriptTypeAttributes: true,
+    removeStyleLinkTypeAttributes: true,
+    useShortDoctype: true,
+  },
+};
+
 module.exports = {
   entry: Object.assign(
     { application: resolve('app/application.js') },
@@ -75,21 +90,9 @@ module.exports = {
         ignore: ['node_modules/**/*', '**/__*__/**/*'],
       },
     }),
-    // https://github.com/ampedandwired/html-webpack-plugin
-    new HtmlWebpackPlugin({
-      template: 'app/index.ejs',
-      chunksSortMode: 'manual',
-      chunks: ['common', 'locale_en', 'application', 'styles'],
-      alwaysWriteToDisk: true,
-      minify: {
-        collapseWhitespace: true,
-        removeComments: false,
-        removeRedundantAttributes: true,
-        removeScriptTypeAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        useShortDoctype: true,
-      },
-    }),
+    // https://github.com/jantimon/html-webpack-plugin#options
+    new HtmlWebpackPlugin(htmlWebpackPluginConfig),
+    new HtmlWebpackPlugin(Object.assign(htmlWebpackPluginConfig, { filename: '404.html' })),
     new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
