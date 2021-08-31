@@ -4,7 +4,6 @@
  */
 
 import { getSoapboxConfig } from'soapbox/actions/soapbox';
-import { createSelector } from 'reselect';
 import { isPrerendered } from 'soapbox/precheck';
 import { isURL } from 'soapbox/utils/auth';
 import { BACKEND_URL } from 'soapbox/build_config';
@@ -24,8 +23,7 @@ export const federationRestrictionsDisclosed = state => {
  * @param {object} state
  * @returns {boolean}
  */
-export const isStandalone = state => createSelector([
-  state => state.getIn(['meta', 'instance_fetch_failed'], false),
-], instanceFetchFailed => {
+export const isStandalone = state => {
+  const instanceFetchFailed = state.getIn(['meta', 'instance_fetch_failed'], false);
   return isURL(BACKEND_URL) ? false : (!isPrerendered && instanceFetchFailed);
-});
+};
