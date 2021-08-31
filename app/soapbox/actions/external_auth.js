@@ -13,12 +13,21 @@ import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/
 import { parseBaseURL } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import sourceCode from 'soapbox/utils/code';
-import { fromJS } from 'immutable';
+import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const fetchExternalInstance = baseURL => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => fromJS(instance));
+    .then(({ data: instance }) => fromJS(instance))
+    .catch(error => {
+      if (error.response.status === 401) {
+        // Authenticated fetch is enabled.
+        // Continue with a limited featureset.
+        return ImmutableMap({ version: '0.0.0' });
+      } else {
+        throw error;
+      }
+    });
 };
 
 export function createAppAndRedirect(host) {
