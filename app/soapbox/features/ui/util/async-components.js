@@ -186,6 +186,10 @@ export function SoapboxConfig() {
   return import(/* webpackChunkName: "features/soapbox_config" */'../../soapbox_config');
 }
 
+export function ExportData() {
+  return import(/* webpackChunkName: "features/export_data" */ '../../export_data');
+}
+
 export function ImportData() {
   return import(/* webpackChunkName: "features/import_data" */'../../import_data');
 }
