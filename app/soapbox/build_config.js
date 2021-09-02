@@ -4,7 +4,7 @@
  * @module soapbox/build_config
  */
 
-const { trimEnd } = require('lodash');
+const { trim } = require('lodash');
 
 const {
   BACKEND_URL,
@@ -21,7 +21,7 @@ const sanitizeURL = url => {
 
 // Run Soapbox FE from a subdirectory.
 const getFeBasePath = () => {
-  return trimEnd(FE_BASE_PATH, '/') || '/';
+  return `/${trim(FE_BASE_PATH, '/')}`;
 };
 
 // JSON.parse/stringify is to emulate what @preval is doing and avoid any
