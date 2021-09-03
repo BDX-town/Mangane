@@ -22,6 +22,17 @@ Default: `"development"`
 
 It's recommended to always build in `"production"` mode for live sites.
 
+### `BACKEND_URL`
+
+The base URL for API calls.
+You only need to set this if Soapbox FE is hosted in a different place than the backend.
+
+Options:
+- A relative URL, eg `"/"`
+- An absolute URL, eg `"https://gleasonator.com"`
+
+Default: `"/"`
+
 ### `FE_BUILD_DIR`
 
 The folder to put build files in. This is mostly useful for CI tasks like GitLab Pages.
