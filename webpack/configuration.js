@@ -1,6 +1,8 @@
 const { join } = require('path');
 const { env } = require('process');
 
+const { FE_BASE_PATH } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+
 const settings = {
   source_path: 'app',
   public_root_path: 'static',
@@ -14,7 +16,7 @@ const settings = {
 const outputDir = env.NODE_ENV === 'test' ? settings.test_root_path : settings.public_root_path;
 
 const output = {
-  path: join(__dirname, '..', outputDir),
+  path: join(__dirname, '..', outputDir, FE_BASE_PATH),
 };
 
 module.exports = {

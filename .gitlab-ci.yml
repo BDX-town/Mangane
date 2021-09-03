@@ -17,6 +17,7 @@ stages:
   - deploy
 
 before_script:
+  - env
   - yarn
 
 lint-js:

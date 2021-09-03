@@ -11,6 +11,8 @@ const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
+const { FE_BASE_PATH } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+
 const htmlWebpackPluginConfig = {
   template: 'app/index.ejs',
   chunksSortMode: 'manual',
@@ -37,7 +39,7 @@ module.exports = {
     chunkFilename: 'packs/js/[name]-[chunkhash].chunk.js',
     hotUpdateChunkFilename: 'packs/js/[id]-[hash].hot-update.js',
     path: output.path,
-    publicPath: '/',
+    publicPath: FE_BASE_PATH,
   },
 
   optimization: {
