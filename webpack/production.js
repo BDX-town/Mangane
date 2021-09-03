@@ -36,7 +36,10 @@ module.exports = merge(sharedConfig, {
 
   plugins: [
     new CompressionPlugin({
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map)$/,
+      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map|mp3|ogg|oga)$/,
+      exclude: [
+        'instance',
+      ],
     }),
     new BundleAnalyzerPlugin({ // generates report.html
       analyzerMode: 'static',
