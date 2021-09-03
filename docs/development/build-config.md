@@ -7,8 +7,6 @@ For example:
 NODE_ENV="production" FE_BUILD_DIR="public" FE_BASE_PATH="/soapbox" yarn build
 ```
 
-The following build variables are available:
-
 ### `NODE_ENV`
 
 The environment to build Soapbox FE for.
@@ -30,10 +28,10 @@ You only need to set this if Soapbox FE is hosted in a different place than the 
 
 Options:
 
-- A relative URL, eg `"/"`
 - An absolute URL, eg `"https://gleasonator.com"`
+- Empty string (`""`)`
 
-Default: `"/"`
+Default: `""`
 
 ### `FE_BUILD_DIR`
 
