@@ -1,12 +1,15 @@
 const { join } = require('path');
 const { env } = require('process');
 
-const { FE_BASE_PATH } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const {
+  FE_BASE_PATH,
+  FE_BUILD_DIR,
+} = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
 const settings = {
   source_path: 'app',
-  public_root_path: 'static',
-  test_root_path: 'static-test',
+  public_root_path: FE_BUILD_DIR,
+  test_root_path: `${FE_BUILD_DIR}-test`,
   cache_path: 'tmp/cache/webpacker',
   resolved_paths: [],
   static_assets_extensions: [ '.jpg', '.jpeg', '.png', '.tiff', '.ico', '.svg', '.gif', '.eot', '.otf', '.ttf', '.woff', '.woff2', '.mp3', '.ogg', '.oga' ],

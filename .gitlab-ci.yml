@@ -88,9 +88,9 @@ pages:
   stage: deploy
   script:
     - yarn build
-    - mv static public
   variables:
     NODE_ENV: production
+    FE_BUILD_DIR: public
   artifacts:
     paths:
     - public

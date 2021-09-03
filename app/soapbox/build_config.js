@@ -9,6 +9,7 @@ const { trim } = require('lodash');
 const {
   BACKEND_URL,
   FE_BASE_PATH,
+  FE_BUILD_DIR,
 } = process.env;
 
 const sanitizeURL = url => {
@@ -19,9 +20,12 @@ const sanitizeURL = url => {
   }
 };
 
-// Run Soapbox FE from a subdirectory.
-const getFeBasePath = () => {
-  return `/${trim(FE_BASE_PATH, '/')}`;
+const sanitizeBasename = path => {
+  return `/${trim(path, '/')}`;
+};
+
+const sanitizePath = path => {
+  return trim(path, '/');
 };
 
 // JSON.parse/stringify is to emulate what @preval is doing and avoid any
@@ -30,5 +34,6 @@ const sanitize = obj => JSON.parse(JSON.stringify(obj));
 
 module.exports = sanitize({
   BACKEND_URL: sanitizeURL(BACKEND_URL),
-  FE_BASE_PATH: getFeBasePath(),
+  FE_BASE_PATH: sanitizeBasename(FE_BASE_PATH),
+  FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'static',
 });
