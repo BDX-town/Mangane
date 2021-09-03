@@ -101,6 +101,12 @@ module.exports = {
       }, {
         from: join(__dirname, '../node_modules/emoji-datasource/img/twitter/sheets/32.png'),
         to: join(output.path, 'emoji/sheet_13.png'),
+      }, {
+        from: join(__dirname, '../app/sounds'),
+        to: join(output.path, 'sounds'),
+      }, {
+        from: join(__dirname, '../app/instance'),
+        to: join(output.path, 'instance'),
       }],
       options: {
         concurrency: 100,
