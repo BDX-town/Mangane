@@ -14,6 +14,7 @@ The following build variables are available:
 The environment to build Soapbox FE for.
 
 Options:
+
 - `"production"` - For live sites
 - `"development"` - For local development
 - `"test"` - Bootstraps test environment
@@ -28,6 +29,7 @@ The base URL for API calls.
 You only need to set this if Soapbox FE is hosted in a different place than the backend.
 
 Options:
+
 - A relative URL, eg `"/"`
 - An absolute URL, eg `"https://gleasonator.com"`
 
@@ -38,6 +40,7 @@ Default: `"/"`
 The folder to put build files in. This is mostly useful for CI tasks like GitLab Pages.
 
 Options:
+
 - Any directory name, eg `"public"`
 
 Default: `"static"`
@@ -49,6 +52,7 @@ When hosting on a subdirectory, you must create a custom build for it.
 This option will set the imports in `index.html`, and the basename for routes in React.
 
 Options:
+
 - Any path, eg `"/soapbox"` or `"/fe/soapbox"`
 
 Default: `"/"`
