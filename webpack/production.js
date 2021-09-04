@@ -6,10 +6,12 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('offline-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const sharedConfig = require('./shared');
 
-module.exports = merge(sharedConfig, {
+const smp = new SpeedMeasurePlugin();
+
+module.exports = smp.wrap(merge(sharedConfig, {
   mode: 'production',
   devtool: 'source-map',
   stats: 'normal',
@@ -97,4 +99,4 @@ module.exports = merge(sharedConfig, {
       // },
     }),
   ],
-});
+}));
