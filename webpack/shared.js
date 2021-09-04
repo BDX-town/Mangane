@@ -68,13 +68,6 @@ module.exports = {
 
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    new webpack.NormalModuleReplacementPlugin(
-      /^history\//, (resource) => {
-        // temporary fix for https://github.com/ReactTraining/react-router/issues/5576
-        // to reduce bundle size
-        resource.request = resource.request.replace(/^history/, 'history/es');
-      },
-    ),
     new MiniCssExtractPlugin({
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
@@ -89,7 +82,12 @@ module.exports = {
     new UnusedFilesWebpackPlugin({
       patterns: ['app/**/*.*'],
       globOptions: {
-        ignore: ['node_modules/**/*', '**/__*__/**/*'],
+        ignore: [
+          'node_modules/**/*',
+          '**/__*__/**/*',
+          'app/instance/about.example',
+          'app/soapbox/locales/whitelist_*.json',
+        ],
       },
     }),
     // https://github.com/jantimon/html-webpack-plugin#options

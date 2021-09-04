@@ -2,7 +2,10 @@
 console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { merge } = require('webpack-merge');
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const sharedConfig = require('./shared');
+
+const smp = new SpeedMeasurePlugin();
 
 const watchOptions = {};
 
@@ -48,7 +51,7 @@ if (process.env.VAGRANT) {
   watchOptions.poll = 1000;
 }
 
-module.exports = merge(sharedConfig, {
+module.exports = smp.wrap(merge(sharedConfig, {
   mode: 'development',
   cache: true,
   devtool: 'source-map',
@@ -80,12 +83,7 @@ module.exports = merge(sharedConfig, {
       'Access-Control-Allow-Origin': '*',
     },
     overlay: true,
-    stats: {
-      entrypoints: false,
-      errorDetails: false,
-      modules: false,
-      moduleTrace: false,
-    },
+    stats: 'errors-warnings',
     watchOptions: Object.assign(
       {},
       { ignored: '**/node_modules/**' },
@@ -94,4 +92,4 @@ module.exports = merge(sharedConfig, {
     serveIndex: true,
     proxy: makeProxyConfig(),
   },
-});
+}));
