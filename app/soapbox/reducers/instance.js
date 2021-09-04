@@ -1,5 +1,6 @@
 import {
   INSTANCE_FETCH_SUCCESS,
+  INSTANCE_FETCH_FAIL,
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
 import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
@@ -71,12 +72,22 @@ const importConfigs = (state, configs) => {
   });
 };
 
+const handleAuthFetch = state => {
+  // Authenticated fetch is enabled, so make the instance appear censored
+  return ImmutableMap({
+    title: '██████',
+    description: '████████████',
+  }).merge(state);
+};
+
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
   case INSTANCE_FETCH_SUCCESS:
     return initialState.mergeDeep(fromJS(action.instance));
+  case INSTANCE_FETCH_FAIL:
+    return action.error.response.status === 401 ? handleAuthFetch(state) : state;
   case NODEINFO_FETCH_SUCCESS:
     return nodeinfoToInstance(fromJS(action.nodeinfo)).mergeDeep(state);
   case ADMIN_CONFIG_UPDATE_REQUEST:
