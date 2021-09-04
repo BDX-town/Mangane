@@ -10,6 +10,8 @@ import {
 import { ME_FETCH_SKIP } from '../actions/me';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { validId, isURL } from 'soapbox/utils/auth';
+import { trim } from 'lodash';
+import { FE_BASE_PATH } from 'soapbox/build_config';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
@@ -18,13 +20,21 @@ const defaultState = ImmutableMap({
   me: null,
 });
 
+const buildKey = parts => parts.join(':');
+
+// For subdirectory support
+const NAMESPACE = trim(FE_BASE_PATH, '/') ? `soapbox@${FE_BASE_PATH}` : 'soapbox';
+
+const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);
+const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);
+
 const getSessionUser = () => {
-  const id = sessionStorage.getItem('soapbox:auth:me');
+  const id = sessionStorage.getItem(SESSION_KEY);
   return validId(id) ? id : undefined;
 };
 
 const sessionUser = getSessionUser();
-const localState = fromJS(JSON.parse(localStorage.getItem('soapbox:auth')));
+const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
 
 // Checks if the user has an ID and access token
 const validUser = user => {
@@ -119,12 +129,12 @@ const sanitizeState = state => {
   });
 };
 
-const persistAuth = state => localStorage.setItem('soapbox:auth', JSON.stringify(state.toJS()));
+const persistAuth = state => localStorage.setItem(STORAGE_KEY, JSON.stringify(state.toJS()));
 
 const persistSession = state => {
   const me = state.get('me');
   if (me && typeof me === 'string') {
-    sessionStorage.setItem('soapbox:auth:me', me);
+    sessionStorage.setItem(SESSION_KEY, me);
   }
 };
 
