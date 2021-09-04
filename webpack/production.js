@@ -14,7 +14,7 @@ const smp = new SpeedMeasurePlugin();
 module.exports = smp.wrap(merge(sharedConfig, {
   mode: 'production',
   devtool: 'source-map',
-  stats: 'normal',
+  stats: 'errors-warnings',
   bail: true,
   optimization: {
     minimize: true,

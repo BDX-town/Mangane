@@ -83,12 +83,7 @@ module.exports = smp.wrap(merge(sharedConfig, {
       'Access-Control-Allow-Origin': '*',
     },
     overlay: true,
-    stats: {
-      entrypoints: false,
-      errorDetails: false,
-      modules: false,
-      moduleTrace: false,
-    },
+    stats: 'errors-warnings',
     watchOptions: Object.assign(
       {},
       { ignored: '**/node_modules/**' },
