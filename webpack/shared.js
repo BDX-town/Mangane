@@ -82,7 +82,12 @@ module.exports = {
     new UnusedFilesWebpackPlugin({
       patterns: ['app/**/*.*'],
       globOptions: {
-        ignore: ['node_modules/**/*', '**/__*__/**/*'],
+        ignore: [
+          'node_modules/**/*',
+          '**/__*__/**/*',
+          'app/instance/about.example',
+          'app/soapbox/locales/whitelist_*.json',
+        ],
       },
     }),
     // https://github.com/jantimon/html-webpack-plugin#options
