@@ -7,25 +7,26 @@ const AssetsManifestPlugin = require('webpack-assets-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const { UnusedFilesWebpackPlugin } = require('unused-files-webpack-plugin');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
 const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
-const htmlWebpackPluginConfig = {
-  template: 'app/index.ejs',
-  chunksSortMode: 'manual',
-  chunks: ['common', 'locale_en', 'application', 'styles'],
-  alwaysWriteToDisk: true,
-  minify: {
-    collapseWhitespace: true,
-    removeComments: false,
-    removeRedundantAttributes: true,
-    removeScriptTypeAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    useShortDoctype: true,
-  },
+const makeHtmlConfig = (params = {}) => {
+  return Object.assign({
+    template: 'app/index.ejs',
+    chunksSortMode: 'manual',
+    chunks: ['common', 'locale_en', 'application', 'styles'],
+    alwaysWriteToDisk: true,
+    minify: {
+      collapseWhitespace: true,
+      removeComments: false,
+      removeRedundantAttributes: true,
+      removeScriptTypeAttributes: true,
+      removeStyleLinkTypeAttributes: true,
+      useShortDoctype: true,
+    },
+  }, params);
 };
 
 module.exports = {
@@ -37,19 +38,21 @@ module.exports = {
   output: {
     filename: 'packs/js/[name]-[chunkhash].js',
     chunkFilename: 'packs/js/[name]-[chunkhash].chunk.js',
-    hotUpdateChunkFilename: 'packs/js/[id]-[hash].hot-update.js',
+    hotUpdateChunkFilename: 'packs/js/[id]-[contenthash].hot-update.js',
     path: output.path,
     publicPath: join(FE_SUBDIRECTORY, '/'),
   },
 
   optimization: {
+    chunkIds: 'total-size',
+    moduleIds: 'size',
     runtimeChunk: {
       name: 'common',
     },
     splitChunks: {
       cacheGroups: {
         default: false,
-        vendors: false,
+        defaultVendors: false,
         common: {
           name: 'common',
           chunks: 'all',
@@ -59,7 +62,6 @@ module.exports = {
         },
       },
     },
-    occurrenceOrder: true,
   },
 
   module: {
@@ -68,6 +70,9 @@ module.exports = {
 
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
     new MiniCssExtractPlugin({
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
@@ -78,21 +83,9 @@ module.exports = {
       writeToDisk: true,
       publicPath: true,
     }),
-    // https://www.npmjs.com/package/unused-files-webpack-plugin#options
-    new UnusedFilesWebpackPlugin({
-      patterns: ['app/**/*.*'],
-      globOptions: {
-        ignore: [
-          'node_modules/**/*',
-          '**/__*__/**/*',
-          'app/instance/about.example',
-          'app/soapbox/locales/whitelist_*.json',
-        ],
-      },
-    }),
     // https://github.com/jantimon/html-webpack-plugin#options
-    new HtmlWebpackPlugin(htmlWebpackPluginConfig),
-    new HtmlWebpackPlugin(Object.assign(htmlWebpackPluginConfig, { filename: '404.html' })),
+    new HtmlWebpackPlugin(makeHtmlConfig()),
+    new HtmlWebpackPlugin(makeHtmlConfig({ filename: '404.html' })),
     new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
@@ -120,15 +113,13 @@ module.exports = {
       resolve(settings.source_path),
       'node_modules',
     ],
+    fallback: {
+      path: require.resolve('path-browserify'),
+      util: require.resolve('util'),
+    },
   },
 
   resolveLoader: {
     modules: ['node_modules'],
-  },
-
-  node: {
-    // Called by http-link-header in an API we never use, increases
-    // bundle size unnecessarily
-    Buffer: false,
   },
 };
