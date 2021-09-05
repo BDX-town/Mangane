@@ -1,4 +1,4 @@
-import api from '../api';
+import api, { staticClient } from '../api';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
 import { createSelector } from 'reselect';
@@ -76,7 +76,7 @@ export function fetchSoapboxConfig() {
 
 export function fetchSoapboxJson() {
   return (dispatch, getState) => {
-    api(getState).get('/instance/soapbox.json').then(({ data }) => {
+    staticClient.get('/instance/soapbox.json').then(({ data }) => {
       if (!isObject(data)) throw 'soapbox.json failed';
       dispatch(importSoapboxConfig(data));
     }).catch(error => {
