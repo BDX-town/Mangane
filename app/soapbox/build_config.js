@@ -8,7 +8,7 @@ const { trim } = require('lodash');
 
 const {
   BACKEND_URL,
-  FE_BASE_PATH,
+  FE_SUBDIRECTORY,
   FE_BUILD_DIR,
 } = process.env;
 
@@ -34,6 +34,6 @@ const sanitize = obj => JSON.parse(JSON.stringify(obj));
 
 module.exports = sanitize({
   BACKEND_URL: sanitizeURL(BACKEND_URL),
-  FE_BASE_PATH: sanitizeBasename(FE_BASE_PATH),
+  FE_SUBDIRECTORY: sanitizeBasename(FE_SUBDIRECTORY),
   FE_BUILD_DIR: sanitizePath(FE_BUILD_DIR) || 'static',
 });

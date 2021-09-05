@@ -1,7 +1,7 @@
 'use strict';
 
 import { join } from 'path';
-import { FE_BASE_PATH } from 'soapbox/build_config';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const createAudio = sources => {
   const audio = new Audio();
@@ -31,21 +31,21 @@ export default function soundsMiddleware() {
   const soundCache = {
     boop: createAudio([
       {
-        src: join(FE_BASE_PATH, '/sounds/boop.ogg'),
+        src: join(FE_SUBDIRECTORY, '/sounds/boop.ogg'),
         type: 'audio/ogg',
       },
       {
-        src: join(FE_BASE_PATH, '/sounds/boop.mp3'),
+        src: join(FE_SUBDIRECTORY, '/sounds/boop.mp3'),
         type: 'audio/mpeg',
       },
     ]),
     chat: createAudio([
       {
-        src: join(FE_BASE_PATH, '/sounds/chat.oga'),
+        src: join(FE_SUBDIRECTORY, '/sounds/chat.oga'),
         type: 'audio/ogg',
       },
       {
-        src: join(FE_BASE_PATH, '/sounds/chat.mp3'),
+        src: join(FE_SUBDIRECTORY, '/sounds/chat.mp3'),
         type: 'audio/mpeg',
       },
     ]),
