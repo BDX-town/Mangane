@@ -9,7 +9,7 @@ import axios from 'axios';
 import LinkHeader from 'http-link-header';
 import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
 import { createSelector } from 'reselect';
-import { BACKEND_URL, FE_BASE_PATH } from 'soapbox/build_config';
+import { BACKEND_URL, FE_SUBDIRECTORY } from 'soapbox/build_config';
 import { isURL } from 'soapbox/utils/auth';
 
 /**
@@ -64,11 +64,11 @@ export const baseClient = (accessToken, baseURL = '') => {
 
 /**
  * Dumb client for grabbing static files.
- * It uses FE_BASE_PATH and parses JSON if possible.
+ * It uses FE_SUBDIRECTORY and parses JSON if possible.
  * No authorization is needed.
  */
 export const staticClient = axios.create({
-  baseURL: FE_BASE_PATH,
+  baseURL: FE_SUBDIRECTORY,
   transformResponse: [maybeParseJSON],
 });
 

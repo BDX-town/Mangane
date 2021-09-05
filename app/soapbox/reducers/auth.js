@@ -11,7 +11,7 @@ import { ME_FETCH_SKIP } from '../actions/me';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { validId, isURL } from 'soapbox/utils/auth';
 import { trim } from 'lodash';
-import { FE_BASE_PATH } from 'soapbox/build_config';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
@@ -23,7 +23,7 @@ const defaultState = ImmutableMap({
 const buildKey = parts => parts.join(':');
 
 // For subdirectory support
-const NAMESPACE = trim(FE_BASE_PATH, '/') ? `soapbox@${FE_BASE_PATH}` : 'soapbox';
+const NAMESPACE = trim(FE_SUBDIRECTORY, '/') ? `soapbox@${FE_SUBDIRECTORY}` : 'soapbox';
 
 const STORAGE_KEY = buildKey([NAMESPACE, 'auth']);
 const SESSION_KEY = buildKey([NAMESPACE, 'auth', 'me']);

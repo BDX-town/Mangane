@@ -1,7 +1,7 @@
 import unicodeMapping from './emoji_unicode_mapping_light';
 import Trie from 'substring-trie';
 import { join } from 'path';
-import { FE_BASE_PATH } from 'soapbox/build_config';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const trie = new Trie(Object.keys(unicodeMapping));
 
@@ -62,7 +62,7 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
     } else { // matched to unicode emoji
       const { filename, shortCode } = unicodeMapping[match];
       const title = shortCode ? `:${shortCode}:` : '';
-      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${join(FE_BASE_PATH, 'emoji', `${filename}.svg`)}" />`;
+      replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${join(FE_SUBDIRECTORY, 'emoji', `${filename}.svg`)}" />`;
       rend = i + match.length;
       // If the matched character was followed by VS15 (for selecting text presentation), skip it.
       if (str.codePointAt(rend) === 65038) {

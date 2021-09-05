@@ -4,7 +4,7 @@ When compiling Soapbox FE, environment variables may be passed to change the bui
 For example:
 
 ```sh
-NODE_ENV="production" FE_BUILD_DIR="public" FE_BASE_PATH="/soapbox" yarn build
+NODE_ENV="production" FE_BUILD_DIR="public" FE_SUBDIRECTORY="/soapbox" yarn build
 ```
 
 ### `NODE_ENV`
@@ -43,7 +43,7 @@ Options:
 
 Default: `"static"`
 
-### `FE_BASE_PATH`
+### `FE_SUBDIRECTORY`
 
 Subdirectory to host Soapbox FE out of.
 When hosting on a subdirectory, you must create a custom build for it.
@@ -58,5 +58,5 @@ Default: `"/"`
 For example, if you want to host the build on `https://gleasonator.com/soapbox`, you can compile it like this:
 
 ```sh
-NODE_ENV="production" FE_BASE_PATH="/soapbox" yarn build
+NODE_ENV="production" FE_SUBDIRECTORY="/soapbox" yarn build
 ```
