@@ -4,7 +4,6 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('@lcdp/offline-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const sharedConfig = require('./shared');
 
@@ -15,23 +14,6 @@ module.exports = merge(sharedConfig, {
   bail: true,
   optimization: {
     minimize: true,
-    minimizer: [
-      // This doesn't work unless I pass a function... wut
-      compiler => {
-        new TerserPlugin({
-          parallel: true,
-
-          terserOptions: {
-            warnings: false,
-            mangle: false,
-
-            output: {
-              comments: false,
-            },
-          },
-        }).apply(compiler);
-      },
-    ],
   },
 
   plugins: [
