@@ -4,7 +4,6 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const OfflinePlugin = require('@lcdp/offline-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
 const sharedConfig = require('./shared');
 
 module.exports = merge(sharedConfig, {
@@ -17,12 +16,6 @@ module.exports = merge(sharedConfig, {
   },
 
   plugins: [
-    new CompressionPlugin({
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map|mp3|ogg|oga)$/,
-      exclude: [
-        'instance',
-      ],
-    }),
     // Generates report.html
     new BundleAnalyzerPlugin({
       analyzerMode: 'static',
@@ -65,6 +58,7 @@ module.exports = merge(sharedConfig, {
         '**/*.map',
         'stats.json',
         'report.html',
+        'instance',
         // any browser that supports ServiceWorker will support woff2
         '**/*.eot',
         '**/*.ttf',
