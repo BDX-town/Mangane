@@ -94,6 +94,10 @@ export function Reblogs() {
   return import(/* webpackChunkName: "features/reblogs" */'../../reblogs');
 }
 
+export function Reactions() {
+  return import(/* webpackChunkName: "features/reblogs" */'../../reactions');
+}
+
 export function Favourites() {
   return import(/* webpackChunkName: "features/favourites" */'../../favourites');
 }

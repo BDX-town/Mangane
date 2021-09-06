@@ -56,6 +56,7 @@ import {
   Followers,
   Following,
   Reblogs,
+  Reactions,
   // Favourites,
   DirectTimeline,
   HashtagTimeline,
@@ -261,6 +262,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />

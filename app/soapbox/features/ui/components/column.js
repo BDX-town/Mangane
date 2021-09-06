@@ -12,12 +12,13 @@ export default class Column extends React.PureComponent {
     children: PropTypes.node,
     active: PropTypes.bool,
     backBtnSlim: PropTypes.bool,
+    back: PropTypes.string,
   };
 
   render() {
-    const { heading, icon, children, active, backBtnSlim } = this.props;
+    const { heading, icon, children, active, backBtnSlim, back } = this.props;
     const columnHeaderId = heading && heading.replace(/ /g, '-');
-    const backBtn = backBtnSlim ? (<ColumnBackButtonSlim />) : (<ColumnBackButton />);
+    const backBtn = backBtnSlim ? (<ColumnBackButtonSlim to={back} />) : (<ColumnBackButton to={back} />);
 
     return (
       <div role='region' aria-labelledby={columnHeaderId} className='column'>

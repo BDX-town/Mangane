@@ -49,35 +49,45 @@ class StatusInteractionBar extends ImmutablePureComponent {
     return '';
   }
 
-  render() {
+  getEmojiReacts = () => {
+    const { status } = this.props;
+
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
       acc + cur.get('count')
     ), 0);
-    const repost = this.getRepost();
 
-    const EmojiReactsContainer = () => (
-      <div className='emoji-reacts-container'>
-        <div className='emoji-reacts'>
-          {emojiReacts.map((e, i) => (
-            <span className='emoji-react' key={i}>
-              <span
-                className='emoji-react__emoji'
-                dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
-              />
-              <span className='emoji-react__count'>{e.get('count')}</span>
-            </span>
-          ))}
+    if (count > 0) {
+      return (
+        <div className='emoji-reacts-container'>
+          <div className='emoji-reacts'>
+            {emojiReacts.map((e, i) => (
+              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reactions/${e.get('name')}`} className='emoji-react' key={i}>
+                <span
+                  className='emoji-react__emoji'
+                  dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
+                />
+                <span className='emoji-react__count'>{e.get('count')}</span>
+              </Link>
+            ))}
+          </div>
+          <div className='emoji-reacts__count'>
+            {count}
+          </div>
         </div>
-        <div className='emoji-reacts__count'>
-          {count}
-        </div>
-      </div>
-    );
+      );
+    }
+
+    return '';
+  };
+
+  render() {
+    const emojiReacts = this.getEmojiReacts();
+    const repost = this.getRepost();
 
     return (
       <div className='status-interaction-bar'>
-        {count > 0 && <EmojiReactsContainer />}
+        {emojiReacts}
         {repost}
       </div>
     );

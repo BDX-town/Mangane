@@ -28,6 +28,10 @@ export const FAVOURITES_FETCH_REQUEST = 'FAVOURITES_FETCH_REQUEST';
 export const FAVOURITES_FETCH_SUCCESS = 'FAVOURITES_FETCH_SUCCESS';
 export const FAVOURITES_FETCH_FAIL    = 'FAVOURITES_FETCH_FAIL';
 
+export const REACTIONS_FETCH_REQUEST = 'REACTIONS_FETCH_REQUEST';
+export const REACTIONS_FETCH_SUCCESS = 'REACTIONS_FETCH_SUCCESS';
+export const REACTIONS_FETCH_FAIL    = 'REACTIONS_FETCH_FAIL';
+
 export const PIN_REQUEST = 'PIN_REQUEST';
 export const PIN_SUCCESS = 'PIN_SUCCESS';
 export const PIN_FAIL    = 'PIN_FAIL';
@@ -355,6 +359,41 @@ export function fetchFavouritesSuccess(id, accounts) {
 export function fetchFavouritesFail(id, error) {
   return {
     type: FAVOURITES_FETCH_FAIL,
+    error,
+  };
+}
+
+export function fetchReactions(id) {
+  return (dispatch, getState) => {
+    dispatch(fetchReactionsRequest(id));
+
+    api(getState).get(`/api/v1/pleroma/statuses/${id}/reactions`).then(response => {
+      dispatch(importFetchedAccounts(response.data.map(({ accounts }) => accounts).flat()));
+      dispatch(fetchReactionsSuccess(id, response.data));
+    }).catch(error => {
+      dispatch(fetchReactionsFail(id, error));
+    });
+  };
+}
+
+export function fetchReactionsRequest(id) {
+  return {
+    type: REACTIONS_FETCH_REQUEST,
+    id,
+  };
+}
+
+export function fetchReactionsSuccess(id, reactions) {
+  return {
+    type: REACTIONS_FETCH_SUCCESS,
+    id,
+    reactions,
+  };
+}
+
+export function fetchReactionsFail(id, error) {
+  return {
+    type: REACTIONS_FETCH_FAIL,
     error,
   };
 }

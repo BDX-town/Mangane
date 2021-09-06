@@ -5,12 +5,20 @@ import Icon from 'soapbox/components/icon';
 
 export default class ColumnBackButton extends React.PureComponent {
 
+  static propTypes = {
+    to: PropTypes.string,
+  };
+
   static contextTypes = {
     router: PropTypes.object,
   };
 
   handleClick = () => {
-    if (window.history && window.history.length === 1) {
+    const { to } = this.props;
+
+    if (to) {
+      this.context.router.history.push(to);
+    } else if (window.history && window.history.length === 1) {
       this.context.router.history.push('/');
     } else {
       this.context.router.history.goBack();
