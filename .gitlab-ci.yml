@@ -1,4 +1,4 @@
-image: node:12
+image: node:14
 
 variables:
   NODE_ENV: test
