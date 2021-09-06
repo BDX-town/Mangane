@@ -3,15 +3,12 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const OfflinePlugin = require('offline-plugin');
+const OfflinePlugin = require('@lcdp/offline-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const sharedConfig = require('./shared');
 
-const smp = new SpeedMeasurePlugin();
-
-module.exports = smp.wrap(merge(sharedConfig, {
+module.exports = merge(sharedConfig, {
   mode: 'production',
   devtool: 'source-map',
   stats: 'errors-warnings',
@@ -19,20 +16,21 @@ module.exports = smp.wrap(merge(sharedConfig, {
   optimization: {
     minimize: true,
     minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
+      // This doesn't work unless I pass a function... wut
+      compiler => {
+        new TerserPlugin({
+          parallel: true,
 
-        terserOptions: {
-          warnings: false,
-          mangle: false,
+          terserOptions: {
+            warnings: false,
+            mangle: false,
 
-          output: {
-            comments: false,
+            output: {
+              comments: false,
+            },
           },
-        },
-      }),
+        }).apply(compiler);
+      },
     ],
   },
 
@@ -43,10 +41,11 @@ module.exports = smp.wrap(merge(sharedConfig, {
         'instance',
       ],
     }),
-    new BundleAnalyzerPlugin({ // generates report.html
+    // Generates report.html
+    new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
+      logLevel: 'silent',
     }),
     new OfflinePlugin({
       caches: {
@@ -99,4 +98,4 @@ module.exports = smp.wrap(merge(sharedConfig, {
       // },
     }),
   ],
-}));
+});

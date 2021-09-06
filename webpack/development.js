@@ -2,10 +2,7 @@
 console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { merge } = require('webpack-merge');
-const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 const sharedConfig = require('./shared');
-
-const smp = new SpeedMeasurePlugin();
 
 const watchOptions = {};
 
@@ -51,12 +48,13 @@ if (process.env.VAGRANT) {
   watchOptions.poll = 1000;
 }
 
-module.exports = smp.wrap(merge(sharedConfig, {
+module.exports = merge(sharedConfig, {
   mode: 'development',
   cache: true,
   devtool: 'source-map',
 
   stats: {
+    preset: 'errors-warnings',
     errorDetails: true,
   },
 
@@ -64,32 +62,30 @@ module.exports = smp.wrap(merge(sharedConfig, {
     pathinfo: true,
   },
 
+  watchOptions: Object.assign(
+    {},
+    { ignored: '**/node_modules/**' },
+    watchOptions,
+  ),
+
   devServer: {
-    clientLogLevel: 'none',
     compress: true,
-    quiet: false,
-    disableHostCheck: true,
     host: 'localhost',
     port: 3036,
     https: false,
     hot: false,
-    inline: true,
-    useLocalIp: false,
-    public: 'localhost:3036',
     historyApiFallback: {
       disableDotRule: true,
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    overlay: true,
-    stats: 'errors-warnings',
-    watchOptions: Object.assign(
-      {},
-      { ignored: '**/node_modules/**' },
-      watchOptions,
-    ),
-    serveIndex: true,
+    client: {
+      overlay: true,
+    },
+    static: {
+      serveIndex: true,
+    },
     proxy: makeProxyConfig(),
   },
-}));
+});
