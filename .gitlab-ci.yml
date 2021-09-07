@@ -86,8 +86,9 @@ docs-deploy:
 
 pages:
   stage: deploy
-  before_script: ""
+  before_script: []
   script:
+    # artifacts are kept between jobs
     - mv static public
   variables:
     NODE_ENV: production
