@@ -64,6 +64,9 @@ module.exports = merge(sharedConfig, {
         '**/*.ttf',
         '**/*-webfont-*.svg',
         '**/*.woff',
+        // Sounds return a 206 causing sw.js to crash
+        // https://stackoverflow.com/a/66335638
+        'sounds/**/*',
         // Don't cache index.html
         'index.html',
       ],
