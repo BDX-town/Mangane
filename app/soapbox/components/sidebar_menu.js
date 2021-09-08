@@ -19,6 +19,7 @@ import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { is as ImmutableIs } from 'immutable';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -53,6 +54,9 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = state => {
     const me = state.get('me');
+    const instance = state.get('instance');
+
+    const features = getFeatures(instance);
     const soapbox = getSoapboxConfig(state);
 
     return {
@@ -61,6 +65,7 @@ const makeMapStateToProps = () => {
       donateUrl: state.getIn(['patron', 'instance', 'url']),
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
+      features,
     };
   };
 
@@ -93,6 +98,7 @@ class SidebarMenu extends ImmutablePureComponent {
     otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   state = {
@@ -149,7 +155,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -231,10 +237,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='ban' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.blocks)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
+              {features.federating && <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
                 <Icon id='ban' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.domain_blocks)}</span>
-              </NavLink>
+              </NavLink>}
               <NavLink className='sidebar-menu-item' to='/mutes' onClick={this.handleClose}>
                 <Icon id='times-circle' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
@@ -259,10 +265,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='cloud-upload' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
               </NavLink>
-              <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
+              {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
                 <Icon id='suitcase' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
-              </NavLink>
+              </NavLink>}
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
                 <Icon id='lock' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
