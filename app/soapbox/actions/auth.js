@@ -163,10 +163,18 @@ export function logIn(intl, username, password) {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
+        // If MFA is required, throw the error and handle it in the component.
         throw error;
-      } else if(error.response.data.error) {
+      } else if (error.response.data.error === 'invalid_grant') {
+        // Mastodon returns this user-unfriendly error as a catch-all
+        // for everything from "bad request" to "wrong password".
+        // Assume our code is correct and it's a wrong password.
+        dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
+      } else if (error.response.data.error) {
+        // If the backend returns an error, display it.
         dispatch(snackbar.error(error.response.data.error));
       } else {
+        // Return "wrong password" message.
         dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
       }
       throw error;
