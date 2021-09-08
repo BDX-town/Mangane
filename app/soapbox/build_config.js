@@ -4,7 +4,7 @@
  * @module soapbox/build_config
  */
 
-const { trim } = require('lodash');
+const { trim, trimEnd } = require('lodash');
 
 const {
   NODE_ENV,
@@ -15,7 +15,7 @@ const {
 
 const sanitizeURL = url => {
   try {
-    return new URL(url).toString();
+    return trimEnd(new URL(url).toString(), '/');
   } catch {
     return '';
   }
