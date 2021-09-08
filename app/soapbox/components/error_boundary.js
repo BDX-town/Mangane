@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import Bowser from 'bowser';
+import * as Sentry from '@sentry/browser';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -15,6 +16,8 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   componentDidCatch(error, info) {
+    Sentry.captureException(error);
+
     this.setState({
       hasError: true,
       error,
