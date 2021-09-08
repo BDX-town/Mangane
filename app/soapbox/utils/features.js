@@ -24,6 +24,7 @@ export const getFeatures = createSelector([
     securityAPI: v.software === 'Pleroma',
     settingsStore: v.software === 'Pleroma',
     accountAliasesAPI: v.software === 'Pleroma',
+    resetPasswordAPI: v.software === 'Pleroma',
   };
 });
 
