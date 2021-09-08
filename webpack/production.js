@@ -58,7 +58,7 @@ module.exports = merge(sharedConfig, {
         '**/*.map',
         'stats.json',
         'report.html',
-        'instance',
+        'instance/**/*',
         // any browser that supports ServiceWorker will support woff2
         '**/*.eot',
         '**/*.ttf',
