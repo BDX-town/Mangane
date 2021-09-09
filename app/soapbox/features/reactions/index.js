@@ -43,9 +43,9 @@ class Reactions extends ImmutablePureComponent {
 
   static propTypes = {
     params: PropTypes.object.isRequired,
-    dispatch: PropTypes.array.isRequired,
-    reactions: PropTypes.array,
-    accounts: PropTypes.array,
+    dispatch: PropTypes.func.isRequired,
+    reactions: ImmutablePropTypes.orderedSet,
+    accounts: ImmutablePropTypes.orderedSet,
     status: ImmutablePropTypes.map,
   };
 
@@ -101,7 +101,7 @@ class Reactions extends ImmutablePureComponent {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>
               <button onClick={this.handleFilterChange('')}>All</button>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <button onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
+              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
             </div>
           )
         }
