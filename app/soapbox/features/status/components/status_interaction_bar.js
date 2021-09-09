@@ -1,18 +1,26 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { FormattedNumber } from 'react-intl';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { getFeatures } from 'soapbox/utils/features';
 import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
-const mapStateToProps = state => ({
-  allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
+  return {
+    allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
+    reactionList: features.exposableReactions,
+  };
+};
 
 export default @connect(mapStateToProps)
 class StatusInteractionBar extends ImmutablePureComponent {
@@ -21,6 +29,7 @@ class StatusInteractionBar extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
     me: SoapboxPropTypes.me,
     allowedEmoji: ImmutablePropTypes.list,
+    reactionList: PropTypes.bool,
   }
 
   getNormalizedReacts = () => {
@@ -49,35 +58,53 @@ class StatusInteractionBar extends ImmutablePureComponent {
     return '';
   }
 
-  render() {
+  getEmojiReacts = () => {
+    const { status, reactionList } = this.props;
+
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
       acc + cur.get('count')
     ), 0);
-    const repost = this.getRepost();
 
-    const EmojiReactsContainer = () => (
-      <div className='emoji-reacts-container'>
-        <div className='emoji-reacts'>
-          {emojiReacts.map((e, i) => (
-            <span className='emoji-react' key={i}>
-              <span
-                className='emoji-react__emoji'
-                dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
-              />
-              <span className='emoji-react__count'>{e.get('count')}</span>
-            </span>
-          ))}
+    if (count > 0) {
+      return (
+        <div className='emoji-reacts-container'>
+          <div className='emoji-reacts'>
+            {emojiReacts.map((e, i) => {
+              const emojiReact = (
+                <>
+                  <span
+                    className='emoji-react__emoji'
+                    dangerouslySetInnerHTML={{ __html: emojify(e.get('name')) }}
+                  />
+                  <span className='emoji-react__count'>{e.get('count')}</span>
+                </>
+              );
+
+              if (reactionList) {
+                return <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reactions/${e.get('name')}`} className='emoji-react' key={i}>{emojiReact}</Link>;
+              }
+
+              return <span className='emoji-react' key={i}>{emojiReact}</span>;
+            })}
+          </div>
+          <div className='emoji-reacts__count'>
+            {count}
+          </div>
         </div>
-        <div className='emoji-reacts__count'>
-          {count}
-        </div>
-      </div>
-    );
+      );
+    }
+
+    return '';
+  };
+
+  render() {
+    const emojiReacts = this.getEmojiReacts();
+    const repost = this.getRepost();
 
     return (
       <div className='status-interaction-bar'>
-        {count > 0 && <EmojiReactsContainer />}
+        {emojiReacts}
         {repost}
       </div>
     );
