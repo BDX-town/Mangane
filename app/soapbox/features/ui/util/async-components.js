@@ -95,7 +95,7 @@ export function Reblogs() {
 }
 
 export function Reactions() {
-  return import(/* webpackChunkName: "features/reblogs" */'../../reactions');
+  return import(/* webpackChunkName: "features/reactions" */'../../reactions');
 }
 
 export function Favourites() {
