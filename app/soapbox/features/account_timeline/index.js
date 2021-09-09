@@ -54,6 +54,7 @@ const makeMapStateToProps = () => {
       unavailable,
       accountUsername,
       accountApId,
+      isBlocked,
       isAccount: !!state.getIn(['accounts', accountId]),
       statusIds: getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }),
       featuredStatusIds: showPins ? getStatusIds(state, { type: `account:${accountId}:pinned`, prefix: 'account_timeline' }) : ImmutableOrderedSet(),
@@ -142,7 +143,7 @@ class AccountTimeline extends ImmutablePureComponent {
   }
 
   render() {
-    const { statusIds, featuredStatusIds, isLoading, hasMore, isAccount, accountId, unavailable, accountUsername } = this.props;
+    const { statusIds, featuredStatusIds, isLoading, hasMore, isBlocked, isAccount, accountId, unavailable, accountUsername } = this.props;
     const { collapsed, animating } = this.state;
 
     if (!isAccount && accountId !== -1) {
@@ -165,7 +166,8 @@ class AccountTimeline extends ImmutablePureComponent {
       return (
         <Column>
           <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
+            {isBlocked ? <FormattedMessage id='empty_column.account_blocked' defaultMessage='You are blocked by @{accountUsername}.' values={{ accountUsername: accountUsername }} />
+              : <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />}
           </div>
         </Column>
       );

@@ -9,9 +9,9 @@ module.exports = {
       options: {
         name(file) {
           if (file.includes(settings.source_path)) {
-            return 'packs/media/[path][name]-[hash].[ext]';
+            return 'packs/media/[path][name]-[contenthash].[ext]';
           }
-          return 'packs/media/[folder]/[name]-[hash:8].[ext]';
+          return 'packs/media/[folder]/[name]-[contenthash:8].[ext]';
         },
         context: join(settings.source_path),
       },

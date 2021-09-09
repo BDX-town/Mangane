@@ -26,15 +26,21 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
 export const store = configureStore();
 
 store.dispatch(preload());
-store.dispatch(fetchMe());
-store.dispatch(fetchInstance());
-store.dispatch(fetchSoapboxConfig());
+
+store.dispatch(fetchMe())
+  .then(() => {
+    // Postpone for authenticated fetch
+    store.dispatch(fetchInstance());
+    store.dispatch(fetchSoapboxConfig());
+  })
+  .catch(() => {});
 
 const mapStateToProps = (state) => {
   const me = state.get('me');
@@ -142,7 +148,7 @@ class SoapboxMount extends React.PureComponent {
             ))}
             <meta name='theme-color' content={this.props.brandColor} />
           </Helmet>
-          <BrowserRouter>
+          <BrowserRouter basename={FE_SUBDIRECTORY}>
             <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
               <Switch>
                 {!me && <Route exact path='/' component={PublicLayout} />}

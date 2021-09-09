@@ -3,45 +3,24 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const OfflinePlugin = require('offline-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-
+const OfflinePlugin = require('@lcdp/offline-plugin');
 const sharedConfig = require('./shared');
 
 module.exports = merge(sharedConfig, {
   mode: 'production',
   devtool: 'source-map',
-  stats: 'normal',
+  stats: 'errors-warnings',
   bail: true,
   optimization: {
     minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-
-        terserOptions: {
-          warnings: false,
-          mangle: false,
-
-          output: {
-            comments: false,
-          },
-        },
-      }),
-    ],
   },
 
   plugins: [
-    new CompressionPlugin({
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map)$/,
-    }),
-    new BundleAnalyzerPlugin({ // generates report.html
+    // Generates report.html
+    new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
+      logLevel: 'silent',
     }),
     new OfflinePlugin({
       caches: {
@@ -79,11 +58,15 @@ module.exports = merge(sharedConfig, {
         '**/*.map',
         'stats.json',
         'report.html',
+        'instance/**/*',
         // any browser that supports ServiceWorker will support woff2
         '**/*.eot',
         '**/*.ttf',
         '**/*-webfont-*.svg',
         '**/*.woff',
+        // Sounds return a 206 causing sw.js to crash
+        // https://stackoverflow.com/a/66335638
+        'sounds/**/*',
         // Don't cache index.html
         'index.html',
       ],

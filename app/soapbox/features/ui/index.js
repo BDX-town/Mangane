@@ -85,6 +85,7 @@ import {
   Preferences,
   EditProfile,
   SoapboxConfig,
+  ExportData,
   ImportData,
   Backups,
   PasswordReset,
@@ -270,6 +271,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' page={DefaultPage} component={Preferences} content={children} />
         <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
+        <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />

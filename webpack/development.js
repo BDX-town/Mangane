@@ -1,6 +1,7 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
+const { join } = require('path');
 const { merge } = require('webpack-merge');
 const sharedConfig = require('./shared');
 
@@ -9,6 +10,8 @@ const watchOptions = {};
 const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
 const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
 const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
+
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
 const backendEndpoints = [
   '/api',
@@ -54,6 +57,7 @@ module.exports = merge(sharedConfig, {
   devtool: 'source-map',
 
   stats: {
+    preset: 'errors-warnings',
     errorDetails: true,
   },
 
@@ -61,37 +65,31 @@ module.exports = merge(sharedConfig, {
     pathinfo: true,
   },
 
+  watchOptions: Object.assign(
+    {},
+    { ignored: '**/node_modules/**' },
+    watchOptions,
+  ),
+
   devServer: {
-    clientLogLevel: 'none',
     compress: true,
-    quiet: false,
-    disableHostCheck: true,
     host: 'localhost',
     port: 3036,
     https: false,
     hot: false,
-    inline: true,
-    useLocalIp: false,
-    public: 'localhost:3036',
     historyApiFallback: {
       disableDotRule: true,
+      index: join(FE_SUBDIRECTORY, '/'),
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
-    overlay: true,
-    stats: {
-      entrypoints: false,
-      errorDetails: false,
-      modules: false,
-      moduleTrace: false,
+    client: {
+      overlay: true,
     },
-    watchOptions: Object.assign(
-      {},
-      { ignored: '**/node_modules/**' },
-      watchOptions,
-    ),
-    serveIndex: true,
+    static: {
+      serveIndex: true,
+    },
     proxy: makeProxyConfig(),
   },
 });

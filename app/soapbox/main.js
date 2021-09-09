@@ -8,9 +8,10 @@ import './precheck';
 import { default as Soapbox } from './containers/soapbox';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
+import * as perf from './performance';
 import ready from './ready';
-
-const perf = require('./performance');
+import { NODE_ENV } from 'soapbox/build_config';
 
 function main() {
   perf.start('main()');
@@ -19,9 +20,10 @@ function main() {
     const mountNode = document.getElementById('soapbox');
 
     ReactDOM.render(<Soapbox />, mountNode);
-    if (process.env.NODE_ENV === 'production') {
+
+    if (NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
-      require('offline-plugin/runtime').install();
+      OfflinePluginRuntime.install();
       // FIXME: Push notifications are temporarily removed
       // store.dispatch(registerPushNotifications.register());
     }
