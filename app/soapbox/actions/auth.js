@@ -18,6 +18,7 @@ import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
+import { isStandalone } from 'soapbox/utils/state';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -162,10 +163,18 @@ export function logIn(intl, username, password) {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {
+        // If MFA is required, throw the error and handle it in the component.
         throw error;
-      } else if(error.response.data.error) {
+      } else if (error.response.data.error === 'invalid_grant') {
+        // Mastodon returns this user-unfriendly error as a catch-all
+        // for everything from "bad request" to "wrong password".
+        // Assume our code is correct and it's a wrong password.
+        dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
+      } else if (error.response.data.error) {
+        // If the backend returns an error, display it.
         dispatch(snackbar.error(error.response.data.error));
       } else {
+        // Return "wrong password" message.
         dispatch(snackbar.error(intl.formatMessage(messages.invalidCredentials)));
       }
       throw error;
@@ -177,6 +186,7 @@ export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
     const account = getLoggedInAccount(state);
+    const standalone = isStandalone(state);
 
     const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
@@ -185,7 +195,7 @@ export function logOut(intl) {
     };
 
     return dispatch(revokeOAuthToken(params)).finally(() => {
-      dispatch({ type: AUTH_LOGGED_OUT, account });
+      dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });
   };

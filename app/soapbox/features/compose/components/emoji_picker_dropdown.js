@@ -7,6 +7,8 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { buildCustomEmojis } from '../../emoji/emoji';
+import { join } from 'path';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -25,10 +27,9 @@ const messages = defineMessages({
   flags: { id: 'emoji_button.flags', defaultMessage: 'Flags' },
 });
 
-const assetHost = process.env.CDN_HOST || '';
 let EmojiPicker, Emoji; // load asynchronously
 
-const backgroundImageFn = () => `${assetHost}/emoji/sheet_13.png`;
+const backgroundImageFn = () => join(FE_SUBDIRECTORY, 'emoji', 'sheet_13.png');
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 
 const categoriesSort = [
@@ -358,7 +359,7 @@ class EmojiPickerDropdown extends React.PureComponent {
           <img
             className={classNames('emojione', { 'pulse-loading': active && loading })}
             alt='🙂'
-            src={`${assetHost}/emoji/1f602.svg`}
+            src={join(FE_SUBDIRECTORY, 'emoji', '1f602.svg')}
           />
         </div>
 

@@ -23,7 +23,7 @@ export function obtainOAuthToken(params, baseURL) {
       dispatch({ type: OAUTH_TOKEN_CREATE_SUCCESS, params, token });
       return token;
     }).catch(error => {
-      dispatch({ type: OAUTH_TOKEN_CREATE_FAIL, params, error });
+      dispatch({ type: OAUTH_TOKEN_CREATE_FAIL, params, error, skipAlert: true });
       throw error;
     });
   };

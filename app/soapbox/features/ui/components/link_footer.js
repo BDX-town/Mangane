@@ -43,6 +43,7 @@ const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLo
         <li><Link to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></Link></li>
         {isAdmin(account) && <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='AdminFE' /></a></li>}
         {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>}
+        <li><Link to='/settings/export'><FormattedMessage id='navigation_bar.export_data' defaultMessage='Export data' /></Link></li>
         <li><Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link></li>
         {(federating && showAliases) && <li><Link to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>}
         <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>

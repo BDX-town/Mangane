@@ -9,16 +9,25 @@
 import { baseClient } from '../api';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { authLoggedIn, verifyCredentials } from 'soapbox/actions/auth';
+import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import sourceCode from 'soapbox/utils/code';
-import { fromJS } from 'immutable';
+import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const fetchExternalInstance = baseURL => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => fromJS(instance));
+    .then(({ data: instance }) => fromJS(instance))
+    .catch(error => {
+      if (error.response.status === 401) {
+        // Authenticated fetch is enabled.
+        // Continue with a limited featureset.
+        return ImmutableMap({ version: '0.0.0' });
+      } else {
+        throw error;
+      }
+    });
 };
 
 export function createAppAndRedirect(host) {
@@ -73,6 +82,7 @@ export function loginWithCode(code) {
     return dispatch(obtainOAuthToken(params, baseURL))
       .then(token => dispatch(authLoggedIn(token)))
       .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)))
+      .then(account => dispatch(switchAccount(account.id)))
       .then(() => window.location.href = '/');
   };
 }

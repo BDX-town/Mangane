@@ -1,6 +1,66 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<LoginForm /> renders correctly 1`] = `
+exports[`<LoginForm /> renders for Mastodon 1`] = `
+<form
+  className="simple_form new_user"
+  method="post"
+>
+  <fieldset>
+    <div
+      className="fields-group"
+    >
+      <div
+        className="input email user_email"
+      >
+        <input
+          aria-label="Username"
+          autoComplete="off"
+          className="string email"
+          name="username"
+          placeholder="Username"
+          required={true}
+          type="text"
+        />
+      </div>
+      <div
+        className="input password user_password"
+      >
+        <input
+          aria-label="Password"
+          autoComplete="off"
+          className="password"
+          name="password"
+          placeholder="Password"
+          required={true}
+          type="password"
+        />
+      </div>
+      <p
+        className="hint subtle-hint"
+      >
+        <a
+          href="/auth/password/new"
+        >
+          Trouble logging in?
+        </a>
+      </p>
+    </div>
+  </fieldset>
+  <div
+    className="actions"
+  >
+    <button
+      className="btn button button-primary"
+      name="button"
+      type="submit"
+    >
+      Log in
+    </button>
+  </div>
+</form>
+`;
+
+exports[`<LoginForm /> renders for Pleroma 1`] = `
 <form
   className="simple_form new_user"
   method="post"

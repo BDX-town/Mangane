@@ -1,5 +1,7 @@
 'use strict';
 
+import { NODE_ENV } from 'soapbox/build_config';
+
 //
 // Tools for performance debugging, only enabled in development mode.
 // Open up Chrome Dev Tools, then Timeline, then User Timing to see output.
@@ -8,7 +10,7 @@
 
 let marky;
 
-if (process.env.NODE_ENV === 'development') {
+if (NODE_ENV === 'development') {
   if (typeof performance !== 'undefined' && performance.setResourceTimingBufferSize) {
     // Increase Firefox's performance entry limit; otherwise it's capped to 150.
     // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1331135
@@ -21,13 +23,13 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 export function start(name) {
-  if (process.env.NODE_ENV === 'development') {
+  if (NODE_ENV === 'development') {
     marky.mark(name);
   }
 }
 
 export function stop(name) {
-  if (process.env.NODE_ENV === 'development') {
+  if (NODE_ENV === 'development') {
     marky.stop(name);
   }
 }

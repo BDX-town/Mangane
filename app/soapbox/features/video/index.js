@@ -88,6 +88,14 @@ export const getPointerPosition = (el, event) => {
   return position;
 };
 
+export const fileNameFromURL = str => {
+  const url      = new URL(str);
+  const pathname = url.pathname;
+  const index    = pathname.lastIndexOf('/');
+
+  return pathname.substring(index + 1);
+};
+
 const mapStateToProps = state => ({
   displayMedia: getSettings(state).get('displayMedia'),
 });

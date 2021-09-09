@@ -35,21 +35,38 @@ class EmojiSelector extends ImmutablePureComponent {
     }
   }
 
-  handleKeyUp = i => e => {
+  _selectPreviousEmoji = i => {
+    if (i !== 0) {
+      this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i})`).focus();
+    } else {
+      this.node.querySelector('.emoji-react-selector__emoji:last-child').focus();
+    }
+  };
+
+  _selectNextEmoji = i => {
+    if (i !== this.props.allowedEmoji.size - 1) {
+      this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i + 2})`).focus();
+    } else {
+      this.node.querySelector('.emoji-react-selector__emoji:first-child').focus();
+    }
+  };
+
+  handleKeyDown = i => e => {
     const { onUnfocus } = this.props;
 
     switch (e.key) {
+    case 'Tab':
+      e.preventDefault();
+      if (e.shiftKey) this._selectPreviousEmoji(i);
+      else this._selectNextEmoji(i);
+      break;
     case 'Left':
     case 'ArrowLeft':
-      if (i !== 0) {
-        this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i})`).focus();
-      }
+      this._selectPreviousEmoji(i);
       break;
     case 'Right':
     case 'ArrowRight':
-      if (i !== this.props.allowedEmoji.size - 1) {
-        this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i + 2})`).focus();
-      }
+      this._selectNextEmoji(i);
       break;
     case 'Escape':
       onUnfocus();
@@ -94,7 +111,7 @@ class EmojiSelector extends ImmutablePureComponent {
               className='emoji-react-selector__emoji'
               dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
               onClick={this.handleReact(emoji)}
-              onKeyUp={this.handleKeyUp(i, emoji)}
+              onKeyDown={this.handleKeyDown(i, emoji)}
               tabIndex={(visible || focused) ? 0 : -1}
             />
           ))}
