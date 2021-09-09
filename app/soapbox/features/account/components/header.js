@@ -356,24 +356,20 @@ class Header extends ImmutablePureComponent {
                 <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
               </NavLink>}
 
-              {
-                ownAccount &&
-                <div>
-                  <NavLink
-                    exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
-                  >
-                    { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
-                    <span>•</span>
-                    <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
-                  </NavLink>
-                  <NavLink
-                    exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
-                  >
-                    { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
-                    <span>•</span>
-                    <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
-                  </NavLink>
-                </div>
+              {(ownAccount || !account.getIn(['pleroma', 'hide_favorites'], true)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}>
+                { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
+                <span>•</span>
+                <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
+              </NavLink>}
+
+              {ownAccount &&
+                <NavLink
+                  exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
+                >
+                  { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
+                  <span>•</span>
+                  <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
+                </NavLink>
               }
             </div>
 
