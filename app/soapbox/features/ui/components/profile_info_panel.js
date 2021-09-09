@@ -10,13 +10,21 @@ import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
 import { List as ImmutableList } from 'immutable';
-import { acctFull, isAdmin, isModerator } from 'soapbox/utils/accounts';
+import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
+import CryptoAddress from 'soapbox/features/crypto_donate/components/crypto_address';
+
+const TICKER_REGEX = /\$([a-zA-Z]*)/i;
+
+const getTicker = value => (value.match(TICKER_REGEX) || [])[1];
+const isTicker = value => Boolean(getTicker(value));
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
 const dateFormatOptions = {
@@ -35,10 +43,23 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     identity_proofs: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
+    displayFqn: PropTypes.bool,
   };
 
+  getStaffBadge = () => {
+    const { account } = this.props;
+
+    if (isAdmin(account)) {
+      return <Badge slug='admin' title='Admin' />;
+    } else if (isModerator(account)) {
+      return <Badge slug='moderator' title='Moderator' />;
+    } else {
+      return null;
+    }
+  }
+
   render() {
-    const { account, intl, identity_proofs, username } = this.props;
+    const { account, displayFqn, intl, identity_proofs, username } = this.props;
 
     if (!account) {
       return (
@@ -56,10 +77,9 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     }
 
     const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
-    const badge = account.get('bot') ? (<div className='account-role bot'><FormattedMessage id='account.badges.bot' defaultMessage='Bot' /></div>) : null;
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
-    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
+    const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
@@ -72,24 +92,24 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             <h1>
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
-              {badge}
-              { <small>@{acctFull(account)} {lockedIcon}</small> }
+              {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+              { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
             </h1>
           </div>
 
           <div className='profile-info-panel-content__badges'>
-            {isAdmin(account) && <Badge slug='admin' title='Admin' />}
-            {isModerator(account) && <Badge slug='moderator' title='Moderator' />}
+            {this.getStaffBadge()}
             {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-            {account.get('acct').includes('@') || <div className='profile-info-panel-content__badges__join-date'>
-              <Icon id='calendar' />
-              <FormattedMessage
-                id='account.member_since' defaultMessage='Member since {date}' values={{
-                  date: memberSinceDate,
-                }}
-              />
-            </div>}
           </div>
+
+          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
+            <Icon id='calendar' />
+            <FormattedMessage
+              id='account.member_since' defaultMessage='Member since {date}' values={{
+                date: memberSinceDate,
+              }}
+            />
+          </div>}
 
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
@@ -121,15 +141,19 @@ class ProfileInfoPanel extends ImmutablePureComponent {
                 </dl>
               ))}
 
-              {fields.map((pair, i) => (
-                <dl className='profile-info-panel-content__fields__item' key={i}>
-                  <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
+              {fields.map((pair, i) =>
+                isTicker(pair.get('name', '')) ? (
+                  <CryptoAddress key={i} ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
+                ) : (
+                  <dl className='profile-info-panel-content__fields__item' key={i}>
+                    <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
 
-                  <dd className={pair.get('verified_at') && 'verified'} title={pair.get('value_plain')}>
-                    {pair.get('verified_at') && <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(pair.get('verified_at'), dateFormatOptions) })}><Icon id='check' className='verified__mark' /></span>} <span dangerouslySetInnerHTML={{ __html: pair.get('value_emojified') }} />
-                  </dd>
-                </dl>
-              ))}
+                    <dd className={pair.get('verified_at') && 'verified'} title={pair.get('value_plain')}>
+                      {pair.get('verified_at') && <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(pair.get('verified_at'), dateFormatOptions) })}><Icon id='check' className='verified__mark' /></span>} <span dangerouslySetInnerHTML={{ __html: pair.get('value_emojified') }} />
+                    </dd>
+                  </dl>
+                ),
+              )}
             </div>
           )}
         </div>
@@ -144,6 +168,7 @@ const mapStateToProps = (state, { account }) => {
   return {
     identity_proofs,
     domain: state.getIn(['meta', 'domain']),
+    displayFqn: displayFqn(state),
   };
 };
 

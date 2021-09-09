@@ -177,31 +177,6 @@
   }
 }
 
-.account-role {
-  display: inline-block;
-  padding: 4px 6px;
-  cursor: default;
-  border-radius: 3px;
-  font-size: 12px;
-  line-height: 12px;
-  font-weight: 500;
-  color: var(--background-color);
-  background-color: hsla(var(--background-color_hsl), 0.1);
-  border: 1px solid hsla(var(--background-color_hsl), 0.5);
-
-  &.moderator {
-    color: $success-green;
-    background-color: rgba($success-green, 0.1);
-    border-color: rgba($success-green, 0.5);
-  }
-
-  &.admin {
-    color: lighten($error-red, 12%);
-    background-color: rgba(lighten($error-red, 12%), 0.1);
-    border-color: rgba(lighten($error-red, 12%), 0.5);
-  }
-}
-
 .account {
   padding: 10px;
   position: relative;
@@ -226,11 +201,16 @@
     overflow: hidden;
     text-decoration: none;
     font-size: 14px;
+
+    .display-name__name {
+      display: flex;
+    }
   }
 }
 
 .account__wrapper {
   display: flex;
+  align-items: center;
 }
 
 .account__avatar-wrapper {
@@ -467,6 +447,8 @@ a .account__avatar {
 
 .account__section-headline {
   background: var(--foreground-color);
+  width: 100%;
+  display: flex;
 
   button,
   a {
@@ -524,6 +506,7 @@ a .account__avatar {
 .relationship-tag {
   color: var(--primary-text-color);
   margin-bottom: 4px;
+  margin-left: 4px;
   display: block;
   vertical-align: top;
   background-color: var(--background-color);
@@ -533,8 +516,22 @@ a .account__avatar {
   padding: 4px;
   border-radius: 4px;
   opacity: 0.7;
+  white-space: nowrap;
 
   &:hover {
     opacity: 1;
+  }
+}
+
+.account__joined-at {
+  padding-left: 3px;
+  font-size: 14px;
+  display: flex;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: var(--primary-text-color--faint);
+
+  i.fa-calendar {
+    padding-right: 5px;
   }
 }

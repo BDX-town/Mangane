@@ -1,0 +1,22 @@
+.columns-area {
+  .info_column_area {
+    padding: 15px;
+
+    .wtf-panel {
+      border: 1px solid var(--brand-color--med);
+    }
+  }
+}
+
+.info__brand {
+  .brand h1 {
+    color: var(--primary-text-color);
+    font-size: 26px;
+  }
+
+  .brand__tagline {
+    font-size: 20px;
+    line-height: 1.15;
+    margin-top: 15px;
+  }
+}

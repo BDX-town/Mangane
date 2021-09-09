@@ -13,6 +13,7 @@ export default class ColumnSettings extends React.PureComponent {
     pushSettings: ImmutablePropTypes.map.isRequired,
     onChange: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
+    supportsEmojiReacts: PropTypes.bool,
   };
 
   onPushChange = (path, checked) => {
@@ -20,15 +21,15 @@ export default class ColumnSettings extends React.PureComponent {
   }
 
   onAllSoundsChange = (path, checked) => {
-    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll'], ['sounds', 'move']];
 
-    for (var i = 0; i < soundSettings.length; i++) {
+    for (let i = 0; i < soundSettings.length; i++) {
       this.props.onChange(soundSettings[i], checked);
     }
   }
 
   render() {
-    const { settings, pushSettings, onChange, onClear } = this.props;
+    const { settings, pushSettings, onChange, onClear, supportsEmojiReacts } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;
     const filterAdvancedStr = <FormattedMessage id='notifications.column_settings.filter_bar.advanced' defaultMessage='Display all categories' />;
@@ -36,7 +37,7 @@ export default class ColumnSettings extends React.PureComponent {
     const allSoundsStr  = <FormattedMessage id='notifications.column_settings.sounds.all_sounds' defaultMessage='Play sound for all notifications' />;
     const showStr   = <FormattedMessage id='notifications.column_settings.show' defaultMessage='Show in column' />;
     const soundStr  = <FormattedMessage id='notifications.column_settings.sound' defaultMessage='Play sound' />;
-    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll']];
+    const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll'], ['sounds', 'move']];
     const showPushSettings = pushSettings.get('browserSupport') && pushSettings.get('isSubscribed');
     const pushStr = showPushSettings && <FormattedMessage id='notifications.column_settings.push' defaultMessage='Push notifications' />;
 
@@ -74,6 +75,17 @@ export default class ColumnSettings extends React.PureComponent {
           </div>
         </div>
 
+        <div role='group' aria-labelledby='notifications-follow-request'>
+          <span id='notifications-follow-request' className='column-settings__section'><FormattedMessage id='notifications.column_settings.follow_request' defaultMessage='New follow requests:' /></span>
+
+          <div className='column-settings__row'>
+            <SettingToggle prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'follow_request']} onChange={onChange} label={alertStr} />
+            {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'follow_request']} onChange={this.onPushChange} label={pushStr} />}
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'follow_request']} onChange={onChange} label={showStr} />
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'follow_request']} onChange={onChange} label={soundStr} />
+          </div>
+        </div>
+
         <div role='group' aria-labelledby='notifications-favourite'>
           <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.favourite' defaultMessage='Likes:' /></span>
 
@@ -84,6 +96,17 @@ export default class ColumnSettings extends React.PureComponent {
             <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'favourite']} onChange={onChange} label={soundStr} />
           </div>
         </div>
+
+        {supportsEmojiReacts && <div role='group' aria-labelledby='notifications-emoji-react'>
+          <span id='notifications-favourite' className='column-settings__section'><FormattedMessage id='notifications.column_settings.emoji_react' defaultMessage='Emoji reacts:' /></span>
+
+          <div className='column-settings__row'>
+            <SettingToggle prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'pleroma:emoji_reaction']} onChange={onChange} label={alertStr} />
+            {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'pleroma:emoji_reaction']} onChange={this.onPushChange} label={pushStr} />}
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'pleroma:emoji_reaction']} onChange={onChange} label={showStr} />
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'pleroma:emoji_reaction']} onChange={onChange} label={soundStr} />
+          </div>
+        </div>}
 
         <div role='group' aria-labelledby='notifications-mention'>
           <span id='notifications-mention' className='column-settings__section'><FormattedMessage id='notifications.column_settings.mention' defaultMessage='Mentions:' /></span>
@@ -115,6 +138,17 @@ export default class ColumnSettings extends React.PureComponent {
             {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'poll']} onChange={this.onPushChange} label={pushStr} />}
             <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'poll']} onChange={onChange} label={showStr} />
             <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'poll']} onChange={onChange} label={soundStr} />
+          </div>
+        </div>
+
+        <div role='group' aria-labelledby='notifications-move'>
+          <span id='notifications-move' className='column-settings__section'><FormattedMessage id='notifications.column_settings.move' defaultMessage='Moves:' /></span>
+
+          <div className='column-settings__row'>
+            <SettingToggle prefix='notifications_desktop' settings={settings} settingPath={['alerts', 'move']} onChange={onChange} label={alertStr} />
+            {showPushSettings && <SettingToggle prefix='notifications_push' settings={pushSettings} settingPath={['alerts', 'move']} onChange={this.onPushChange} label={pushStr} />}
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['shows', 'move']} onChange={onChange} label={showStr} />
+            <SettingToggle prefix='notifications' settings={settings} settingPath={['sounds', 'move']} onChange={onChange} label={soundStr} />
           </div>
         </div>
       </div>

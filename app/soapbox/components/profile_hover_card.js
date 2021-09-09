@@ -19,10 +19,18 @@ import {
 const getAccount = makeGetAccount();
 
 const getBadges = (account) => {
-  let badges = [];
-  if (isAdmin(account)) badges.push(<Badge key='admin' slug='admin' title='Admin' />);
-  if (isModerator(account)) badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
-  if (account.getIn(['patron', 'is_patron'])) badges.push(<Badge key='patron' slug='patron' title='Patron' />);
+  const badges = [];
+
+  if (isAdmin(account)) {
+    badges.push(<Badge key='admin' slug='admin' title='Admin' />);
+  } else if (isModerator(account)) {
+    badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
+  }
+
+  if (account.getIn(['patron', 'is_patron'])) {
+    badges.push(<Badge key='patron' slug='patron' title='Patron' />);
+  }
+
   return badges;
 };
 

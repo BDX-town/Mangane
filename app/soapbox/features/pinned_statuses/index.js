@@ -9,7 +9,8 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 
-const mapStateToProps = (state, { params: { username } }) => {
+const mapStateToProps = (state, { params }) => {
+  const username = params.username || '';
   const me = state.get('me');
   const meUsername = state.getIn(['accounts', me, 'username']);
   return {
@@ -17,7 +18,7 @@ const mapStateToProps = (state, { params: { username } }) => {
     statusIds: state.getIn(['status_lists', 'pins', 'items']),
     hasMore: !!state.getIn(['status_lists', 'pins', 'next']),
   };
-};;
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -25,7 +26,7 @@ class PinnedStatuses extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    statusIds: ImmutablePropTypes.list.isRequired,
+    statusIds: ImmutablePropTypes.orderedSet.isRequired,
     intl: PropTypes.object.isRequired,
     hasMore: PropTypes.bool.isRequired,
     isMyAccount: PropTypes.bool.isRequired,

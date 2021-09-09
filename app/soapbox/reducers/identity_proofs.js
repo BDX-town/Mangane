@@ -22,4 +22,4 @@ export default function identityProofsReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}

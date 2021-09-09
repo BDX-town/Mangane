@@ -36,6 +36,13 @@
       line-height: 24px;
       margin: -1px 0 0;
     }
+
+    &--big {
+      img.emojione {
+        width: 56px;
+        height: 56px;
+      }
+    }
   }
 
   .video-player,
@@ -73,7 +80,10 @@
 
 .detailed-status__button {
   padding: 10px 0;
+}
 
+.status__button,
+.detailed-status__button {
   .icon-button {
     display: inline-flex;
     align-items: center;
@@ -82,6 +92,22 @@
       font-size: 14px;
       padding-left: 3px;
       transform: translateY(-1px);
+    }
+  }
+
+  .emoji-picker-expand {
+    display: none;
+  }
+
+  &:focus-within {
+    .emoji-picker-expand {
+      display: inline-flex;
+      width: 0;
+      overflow: hidden;
+
+      &:focus-within {
+        width: unset;
+      }
     }
   }
 }
@@ -104,7 +130,6 @@
 
   strong,
   span {
-    display: inline-block;
     text-overflow: ellipsis;
     overflow: hidden;
   }
@@ -120,7 +145,7 @@
 
   .display-name__account {
     display: block;
-    margin-top: -10px;
+    margin-top: -5px;
   }
 }
 

@@ -8,4 +8,4 @@ export default function filters(state = ImmutableList(), action) {
   default:
     return state;
   }
-};
+}

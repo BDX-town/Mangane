@@ -3,6 +3,7 @@ import {
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
 import { ACCOUNT_IMPORT, ACCOUNTS_IMPORT } from '../actions/importer';
+import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const normalizeAccount = (state, account) => state.set(account.id, fromJS({
@@ -19,6 +20,17 @@ const normalizeAccounts = (state, accounts) => {
   return state;
 };
 
+const updateFollowCounters = (state, counterUpdates) => {
+  return state.withMutations(state => {
+    counterUpdates.forEach(counterUpdate => {
+      state.update(counterUpdate.id, ImmutableMap(), counters => counters.merge({
+        followers_count: counterUpdate.follower_count,
+        following_count: counterUpdate.following_count,
+      }));
+    });
+  });
+};
+
 const initialState = ImmutableMap();
 
 export default function accountsCounters(state = initialState, action) {
@@ -32,7 +44,9 @@ export default function accountsCounters(state = initialState, action) {
       state.updateIn([action.relationship.id, 'followers_count'], num => num + 1);
   case ACCOUNT_UNFOLLOW_SUCCESS:
     return state.updateIn([action.relationship.id, 'followers_count'], num => Math.max(0, num - 1));
+  case STREAMING_FOLLOW_RELATIONSHIPS_UPDATE:
+    return updateFollowCounters(state, [action.follower, action.following]);
   default:
     return state;
   }
-};
+}

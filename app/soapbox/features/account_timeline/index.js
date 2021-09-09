@@ -4,10 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
+import Icon from 'soapbox/components/icon';
 import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
-import { List as ImmutableList } from 'immutable';
+import ColumnSettingsContainer from './containers/column_settings_container';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
@@ -15,62 +17,76 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getSettings } from 'soapbox/actions/settings';
+import { makeGetStatusIds } from 'soapbox/selectors';
+import classNames from 'classnames';
 
-const emptyList = ImmutableList();
+const makeMapStateToProps = () => {
+  const getStatusIds = makeGetStatusIds();
 
-const mapStateToProps = (state, { params: { username }, withReplies = false }) => {
-  const me = state.get('me');
-  const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
-  const soapboxConfig = getSoapboxConfig(state);
+  const mapStateToProps = (state, { params, withReplies = false }) => {
+    const username = params.username || '';
+    const me = state.get('me');
+    const accounts = state.getIn(['accounts']);
+    const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+    const soapboxConfig = getSoapboxConfig(state);
 
-  let accountId = -1;
-  let accountUsername = username;
-  let accountApId = null;
-  if (accountFetchError) {
-    accountId = null;
-  } else {
-    let account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
-    accountId = account ? account.getIn(['id'], null) : -1;
-    accountUsername = account ? account.getIn(['acct'], '') : '';
-    accountApId = account ? account.get('url') : '';
-  }
+    let accountId = -1;
+    let accountUsername = username;
+    let accountApId = null;
+    if (accountFetchError) {
+      accountId = null;
+    } else {
+      const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+      accountId = account ? account.getIn(['id'], null) : -1;
+      accountUsername = account ? account.getIn(['acct'], '') : '';
+      accountApId = account ? account.get('url') : '';
+    }
 
-  const path = withReplies ? `${accountId}:with_replies` : accountId;
+    const path = withReplies ? `${accountId}:with_replies` : accountId;
 
-  const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+    const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
+    const unavailable = (me === accountId) ? false : isBlocked;
+    const showPins = getSettings(state).getIn(['account_timeline', 'shows', 'pinned']) && !withReplies;
 
-  return {
-    accountId,
-    unavailable,
-    isBlocked,
-    accountUsername,
-    accountApId,
-    isAccount: !!state.getIn(['accounts', accountId]),
-    statusIds: state.getIn(['timelines', `account:${path}`, 'items'], emptyList),
-    featuredStatusIds: withReplies ? ImmutableList() : state.getIn(['timelines', `account:${accountId}:pinned`, 'items'], emptyList),
-    isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
-    hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
-    me,
-    patronEnabled: soapboxConfig.getIn(['extensions', 'patron', 'enabled']),
+    return {
+      accountId,
+      unavailable,
+      accountUsername,
+      accountApId,
+      isBlocked,
+      isAccount: !!state.getIn(['accounts', accountId]),
+      statusIds: getStatusIds(state, { type: `account:${path}`, prefix: 'account_timeline' }),
+      featuredStatusIds: showPins ? getStatusIds(state, { type: `account:${accountId}:pinned`, prefix: 'account_timeline' }) : ImmutableOrderedSet(),
+      isLoading: state.getIn(['timelines', `account:${path}`, 'isLoading']),
+      hasMore: state.getIn(['timelines', `account:${path}`, 'hasMore']),
+      me,
+      patronEnabled: soapboxConfig.getIn(['extensions', 'patron', 'enabled']),
+    };
   };
+
+  return mapStateToProps;
 };
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 class AccountTimeline extends ImmutablePureComponent {
 
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    statusIds: ImmutablePropTypes.list,
-    featuredStatusIds: ImmutablePropTypes.list,
+    statusIds: ImmutablePropTypes.orderedSet,
+    featuredStatusIds: ImmutablePropTypes.orderedSet,
     isLoading: PropTypes.bool,
     hasMore: PropTypes.bool,
     withReplies: PropTypes.bool,
     isAccount: PropTypes.bool,
     unavailable: PropTypes.bool,
   };
+
+  state = {
+    collapsed: true,
+    animating: false,
+  }
 
   componentDidMount() {
     const { params: { username }, accountId, accountApId, withReplies, me, patronEnabled } = this.props;
@@ -117,8 +133,18 @@ class AccountTimeline extends ImmutablePureComponent {
     }
   }
 
+  handleToggleClick = (e) => {
+    e.stopPropagation();
+    this.setState({ collapsed: !this.state.collapsed, animating: true });
+  }
+
+  handleTransitionEnd = () => {
+    this.setState({ animating: false });
+  }
+
   render() {
-    const { statusIds, featuredStatusIds, isLoading, hasMore, isAccount, accountId, isBlocked, unavailable, accountUsername } = this.props;
+    const { statusIds, featuredStatusIds, isLoading, hasMore, isBlocked, isAccount, accountId, unavailable, accountUsername } = this.props;
+    const { collapsed, animating } = this.state;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -150,16 +176,24 @@ class AccountTimeline extends ImmutablePureComponent {
     return (
       <Column>
         <div className='account__section-headline'>
-          <div style={{ width: '100%', display: 'flex' }}>
-            <NavLink exact to={`/@${accountUsername}`}>
-              <FormattedMessage id='account.posts' defaultMessage='Posts' />
-            </NavLink>
-            <NavLink exact to={`/@${accountUsername}/with_replies`}>
-              <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />
-            </NavLink>
-            <NavLink exact to={`/@${accountUsername}/media`}>
-              <FormattedMessage id='account.media' defaultMessage='Media' />
-            </NavLink>
+          <NavLink exact to={`/@${accountUsername}`}>
+            <FormattedMessage id='account.posts' defaultMessage='Posts' />
+          </NavLink>
+          <NavLink exact to={`/@${accountUsername}/with_replies`}>
+            <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />
+          </NavLink>
+          <NavLink exact to={`/@${accountUsername}/media`}>
+            <FormattedMessage id='account.media' defaultMessage='Media' />
+          </NavLink>
+          <div className='column-header__buttons'>
+            <button onClick={this.handleToggleClick}>
+              <Icon id='sliders' />
+            </button>
+          </div>
+        </div>
+        <div className={classNames('column-header__collapsible', { collapsed, animating })} onTransitionEnd={this.handleTransitionEnd}>
+          <div className='column-header__collapsible-inner'>
+            <ColumnSettingsContainer />
           </div>
         </div>
         <StatusList

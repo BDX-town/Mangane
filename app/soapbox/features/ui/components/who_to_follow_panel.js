@@ -56,9 +56,9 @@ class WhoToFollowPanel extends ImmutablePureComponent {
         </div>
       </div>
     );
-  };
+  }
 
-};
+}
 
 const mapStateToProps = state => ({
   suggestions: state.getIn(['suggestions', 'items']),

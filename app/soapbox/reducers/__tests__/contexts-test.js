@@ -1,6 +1,11 @@
 import reducer from '../contexts';
 import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import {
+  Map as ImmutableMap,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
 import context1 from 'soapbox/__fixtures__/context_1.json';
 import context2 from 'soapbox/__fixtures__/context_2.json';
 
@@ -25,6 +30,7 @@ describe('contexts reducer', () => {
         '9zIH9GTCDWEFSRt2um': '9zIH7PUdhK3Ircg4hM',
         '9zIH9fhaP9atiJoOJc': '9zIH8WYwtnUx4yDzUm',
         '9zIH8WYwtnUx4yDzUm': '9zIH7PUdhK3Ircg4hM',
+        '9zIH8WYwtnUx4yDzUm-tombstone': '9zIH7mMGgc1RmJwDLM',
       }),
       replies: ImmutableMap({
         '9zIH6kDXA10YqhMKqO': ImmutableOrderedSet([
@@ -38,7 +44,39 @@ describe('contexts reducer', () => {
         '9zIH8WYwtnUx4yDzUm': ImmutableOrderedSet([
           '9zIH9fhaP9atiJoOJc',
         ]),
+        '9zIH8WYwtnUx4yDzUm-tombstone': ImmutableOrderedSet([
+          '9zIH8WYwtnUx4yDzUm',
+        ]),
+        '9zIH7mMGgc1RmJwDLM': ImmutableOrderedSet([
+          '9zIH8WYwtnUx4yDzUm-tombstone',
+        ]),
       }),
     }));
+  });
+
+  describe(TIMELINE_DELETE, () => {
+    it('deletes the status', () => {
+      const action = { type: TIMELINE_DELETE, id: 'B' };
+
+      const state = fromJS({
+        inReplyTos: {
+          B: 'A',
+          C: 'B',
+        },
+        replies: {
+          A: ImmutableOrderedSet(['B']),
+          B: ImmutableOrderedSet(['C']),
+        },
+      });
+
+      const expected = fromJS({
+        inReplyTos: {},
+        replies: {
+          A: ImmutableOrderedSet(),
+        },
+      });
+
+      expect(reducer(state, action)).toEqual(expected);
+    });
   });
 });

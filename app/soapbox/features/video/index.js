@@ -7,7 +7,7 @@ import { throttle } from 'lodash';
 import classNames from 'classnames';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 import Icon from 'soapbox/components/icon';
-import { decode } from 'blurhash';
+import Blurhash from 'soapbox/components/blurhash';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { getSettings } from 'soapbox/actions/settings';
 
@@ -23,7 +23,7 @@ const messages = defineMessages({
   exit_fullscreen: { id: 'video.exit_fullscreen', defaultMessage: 'Exit full screen' },
 });
 
-const formatTime = secondsNum => {
+export const formatTime = secondsNum => {
   let hours   = Math.floor(secondsNum / 3600);
   let minutes = Math.floor((secondsNum - (hours * 3600)) / 60);
   let seconds = secondsNum - (hours * 3600) - (minutes * 60);
@@ -86,6 +86,14 @@ export const getPointerPosition = (el, event) => {
   position.x = Math.max(0, Math.min(1, (pageX - boxX) / boxW));
 
   return position;
+};
+
+export const fileNameFromURL = str => {
+  const url      = new URL(str);
+  const pathname = url.pathname;
+  const index    = pathname.lastIndexOf('/');
+
+  return pathname.substring(index + 1);
 };
 
 const mapStateToProps = state => ({
@@ -167,10 +175,6 @@ class Video extends React.PureComponent {
     this.volume = c;
   }
 
-  setCanvasRef = c => {
-    this.canvas = c;
-  }
-
   handleClickRoot = e => e.stopPropagation();
 
   handlePlay = () => {
@@ -212,7 +216,7 @@ class Video extends React.PureComponent {
     const x = (e.clientX - rect.left) / this.volWidth; //x position within the element.
 
     if(!isNaN(x)) {
-      var slideamt = x;
+      let slideamt = x;
       if(x > 1) {
         slideamt = 1;
       } else if(x < 0) {
@@ -278,10 +282,6 @@ class Video extends React.PureComponent {
     document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
-
-    if (this.props.blurhash) {
-      this._decode();
-    }
   }
 
   componentWillUnmount() {
@@ -292,7 +292,7 @@ class Video extends React.PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { visible, blurhash } = this.props;
+    const { visible } = this.props;
 
     if (!is(visible, prevProps.visible) && visible !== undefined) {
       this.setState({ revealed: visible });
@@ -300,22 +300,6 @@ class Video extends React.PureComponent {
 
     if (prevState.revealed && !this.state.revealed && this.video) {
       this.video.pause();
-    }
-
-    if (prevProps.blurhash !== blurhash && blurhash) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.blurhash;
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
     }
   }
 
@@ -396,12 +380,9 @@ class Video extends React.PureComponent {
   }
 
   render() {
-    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio } = this.props;
+    const { src, inline, onOpenVideo, onCloseVideo, intl, alt, detailed, sensitive, link, aspectRatio, blurhash } = this.props;
     const { containerWidth, currentTime, duration, volume, buffer, dragging, paused, fullscreen, hovered, muted, revealed } = this.state;
     const progress = (currentTime / duration) * 100;
-
-    const volumeWidth = (muted) ? 0 : volume * this.volWidth;
-    const volumeHandleLoc = (muted) ? this.volHandleOffset(0) : this.volHandleOffset(volume);
     const playerStyle = {};
 
     let { width, height } = this.props;
@@ -440,7 +421,12 @@ class Video extends React.PureComponent {
         onClick={this.handleClickRoot}
         tabIndex={0}
       >
-        <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': revealed })} />
+        <Blurhash
+          hash={blurhash}
+          className={classNames('media-gallery__preview', {
+            'media-gallery__preview--hidden': revealed,
+          })}
+        />
 
         {revealed && <video
           ref={this.setVideoRef}
@@ -483,15 +469,15 @@ class Video extends React.PureComponent {
 
           <div className='video-player__buttons-bar'>
             <div className='video-player__buttons left'>
-              <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
-              <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
+              <button type='button' aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay} autoFocus={detailed}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
+              <button type='button' aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
 
-              <div className='video-player__volume' onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
-                <div className='video-player__volume__current' style={{ width: `${volumeWidth}px` }} />
+              <div className={classNames('video-player__volume', { active: this.state.hovered })} onMouseDown={this.handleVolumeMouseDown} ref={this.setVolumeRef}>
+                <div className='video-player__volume__current' style={{ width: `${volume * 100}%` }} />
                 <span
                   className={classNames('video-player__volume__handle')}
                   tabIndex='0'
-                  style={{ left: `${volumeHandleLoc}px` }}
+                  style={{ left: `${volume * 100}%` }}
                 />
               </div>
 
@@ -507,10 +493,10 @@ class Video extends React.PureComponent {
             </div>
 
             <div className='video-player__buttons right'>
-              {!onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.hide)} onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
-              {(!fullscreen && onOpenVideo) && <button type='button' aria-label={intl.formatMessage(messages.expand)} onClick={this.handleOpenVideo}><Icon id='expand' fixedWidth /></button>}
-              {onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.close)} onClick={this.handleCloseVideo}><Icon id='compress' fixedWidth /></button>}
-              <button type='button' aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} onClick={this.toggleFullscreen}><Icon id={fullscreen ? 'compress' : 'arrows-alt'} fixedWidth /></button>
+              {!onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon id='eye-slash' fixedWidth /></button>}
+              {(!fullscreen && onOpenVideo) && <button type='button' aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon id='expand' fixedWidth /></button>}
+              {onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon id='compress' fixedWidth /></button>}
+              <button type='button' aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon id={fullscreen ? 'compress' : 'arrows-alt'} fixedWidth /></button>
             </div>
           </div>
         </div>

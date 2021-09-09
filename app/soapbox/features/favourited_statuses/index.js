@@ -10,7 +10,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { debounce } from 'lodash';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 
-const mapStateToProps = (state, { params: { username } }) => {
+const mapStateToProps = (state, { params }) => {
+  const username = params.username || '';
   const me = state.get('me');
   const meUsername = state.getIn(['accounts', me, 'username']);
   return {
@@ -27,7 +28,7 @@ class Favourites extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    statusIds: ImmutablePropTypes.list.isRequired,
+    statusIds: ImmutablePropTypes.orderedSet.isRequired,
     intl: PropTypes.object.isRequired,
     hasMore: PropTypes.bool,
     isLoading: PropTypes.bool,

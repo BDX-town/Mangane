@@ -3,11 +3,7 @@
   width: 100%;
   overflow: hidden;
   height: 100%;
-  overflow-y: scroll;
-
-  @media screen and (max-width: 420px) {
-    width: 90%;
-  }
+  overflow-y: auto;
 
   h4 {
     padding: 15px 0;
@@ -69,11 +65,7 @@
   width: 100%;
   overflow: hidden;
   height: 100%;
-  overflow-y: scroll;
-
-  @media screen and (max-width: 420px) {
-    width: 90%;
-  }
+  overflow-y: auto;
 
   &__account {
     background: var(--background-color);

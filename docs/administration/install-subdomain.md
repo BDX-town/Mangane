@@ -13,7 +13,7 @@ mkdir -p /opt/soapbox
 Fetch the build.
 
 ```sh
-curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.1.0/download?job=build-production -o /tmp/soapbox-fe.zip
+curl -L https://gitlab.com/soapbox-pub/soapbox-fe/-/jobs/artifacts/v1.3.0/download?job=build-production -o /tmp/soapbox-fe.zip
 ```
 
 Unzip the build.
@@ -118,6 +118,7 @@ server {
 
 Replace `soapbox.example.com` with your desired subdomain and save the file.
 You should also adjust `client_max_body_size` to your instance file size limit.
+Replace `example.com` to your original domain.
 
 Additionally, activate the vhost file:
 

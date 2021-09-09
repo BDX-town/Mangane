@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter';
 
-const api = jest.requireActual('../api').default;
+const api = jest.requireActual('../api');
 let mocks = [];
 
 export const __stub = func => mocks.push(func);
@@ -11,8 +11,10 @@ const setupMock = axios => {
   mocks.map(func => func(mock));
 };
 
+export const staticClient = api.staticClient;
+
 export default (...params) => {
-  const axios = api(...params);
+  const axios = api.default(...params);
   setupMock(axios);
   return axios;
 };

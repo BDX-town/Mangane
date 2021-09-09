@@ -1,5 +1,7 @@
+import { defineMessages } from 'react-intl';
 import api from '../api';
 import snackbar from 'soapbox/actions/snackbar';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';
 export const FILTERS_FETCH_SUCCESS = 'FILTERS_FETCH_SUCCESS';
@@ -13,8 +15,13 @@ export const FILTERS_DELETE_REQUEST = 'FILTERS_DELETE_REQUEST';
 export const FILTERS_DELETE_SUCCESS = 'FILTERS_DELETE_SUCCESS';
 export const FILTERS_DELETE_FAIL    = 'FILTERS_DELETE_FAIL';
 
+const messages = defineMessages({
+  added: { id: 'filters.added', defaultMessage: 'Filter added.' },
+  removed: { id: 'filters.removed', defaultMessage: 'Filter deleted.' },
+});
+
 export const fetchFilters = () => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch({
     type: FILTERS_FETCH_REQUEST,
@@ -36,7 +43,7 @@ export const fetchFilters = () => (dispatch, getState) => {
     }));
 };
 
-export function createFilter(phrase, expires_at, context, whole_word, irreversible) {
+export function createFilter(intl, phrase, expires_at, context, whole_word, irreversible) {
   return (dispatch, getState) => {
     dispatch({ type: FILTERS_CREATE_REQUEST });
     return api(getState).post('/api/v1/filters', {
@@ -47,7 +54,7 @@ export function createFilter(phrase, expires_at, context, whole_word, irreversib
       expires_at,
     }).then(response => {
       dispatch({ type: FILTERS_CREATE_SUCCESS, filter: response.data });
-      dispatch(snackbar.success('Filter added.'));
+      dispatch(snackbar.success(intl.formatMessage(messages.added)));
     }).catch(error => {
       dispatch({ type: FILTERS_CREATE_FAIL, error });
     });
@@ -55,12 +62,12 @@ export function createFilter(phrase, expires_at, context, whole_word, irreversib
 }
 
 
-export function deleteFilter(id) {
+export function deleteFilter(intl, id) {
   return (dispatch, getState) => {
     dispatch({ type: FILTERS_DELETE_REQUEST });
     return api(getState).delete('/api/v1/filters/'+id).then(response => {
       dispatch({ type: FILTERS_DELETE_SUCCESS, filter: response.data });
-      dispatch(snackbar.success('Filter deleted.'));
+      dispatch(snackbar.success(intl.formatMessage(messages.removed)));
     }).catch(error => {
       dispatch({ type: FILTERS_DELETE_FAIL, error });
     });

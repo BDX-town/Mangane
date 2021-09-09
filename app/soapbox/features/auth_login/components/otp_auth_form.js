@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { otpVerify } from 'soapbox/actions/auth';
-import { fetchMe } from 'soapbox/actions/me';
+import { otpVerify, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { SimpleInput } from 'soapbox/features/forms';
 import PropTypes from 'prop-types';
 
@@ -19,6 +19,7 @@ class OtpAuthForm extends ImmutablePureComponent {
   state = {
     isLoading: false,
     code_error: '',
+    shouldRedirect: false,
   }
 
   static propTypes = {
@@ -36,9 +37,12 @@ class OtpAuthForm extends ImmutablePureComponent {
   handleSubmit = (event) => {
     const { dispatch, mfa_token } = this.props;
     const { code } = this.getFormData(event.target);
-    dispatch(otpVerify(code, mfa_token)).then(() => {
+    dispatch(otpVerify(code, mfa_token)).then(({ access_token }) => {
       this.setState({ code_error: false });
-      return dispatch(fetchMe());
+      return dispatch(verifyCredentials(access_token));
+    }).then(account => {
+      this.setState({ shouldRedirect: true });
+      return dispatch(switchAccount(account.id));
     }).catch(error => {
       this.setState({ isLoading: false });
       if (error.response.data.error === 'Invalid code') {
@@ -51,7 +55,9 @@ class OtpAuthForm extends ImmutablePureComponent {
 
   render() {
     const { intl } = this.props;
-    const { code_error } = this.state;
+    const { code_error, shouldRedirect } = this.state;
+
+    if (shouldRedirect) return <Redirect to='/' />;
 
     return (
       <form className='simple_form new_user otp-auth' method='post' onSubmit={this.handleSubmit}>

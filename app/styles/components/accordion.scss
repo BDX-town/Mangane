@@ -9,6 +9,7 @@
   background-color: var(--brand-color--faint);
   border-radius: 8px;
   margin: 0;
+  position: relative;
 
   &__title {
     font-weight: bold !important;
@@ -20,6 +21,7 @@
     text-transform: none !important;
     text-align: left !important;
     display: flex !important;
+    align-items: center;
     border: 0;
     width: 100%;
 
@@ -31,6 +33,12 @@
       padding-left: 10px;
       margin-left: auto;
     }
+  }
+
+  &__menu {
+    position: absolute;
+    top: 17px;
+    right: 40px;
   }
 
   &__content {

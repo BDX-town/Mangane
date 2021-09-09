@@ -9,7 +9,7 @@ export const NODEINFO_FETCH_FAIL    = 'NODEINFO_FETCH_FAIL';
 
 export function fetchInstance() {
   return (dispatch, getState) => {
-    api(getState).get('/api/v1/instance').then(response => {
+    return api(getState).get('/api/v1/instance').then(response => {
       dispatch(importInstance(response.data));
       const v = parseVersion(get(response.data, 'version'));
       if (v.software === 'Pleroma' && !get(response.data, ['pleroma', 'metadata'])) {
@@ -44,7 +44,7 @@ export function instanceFail(error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 export function importNodeinfo(nodeinfo) {
   return {
@@ -59,4 +59,4 @@ export function nodeinfoFail(error) {
     error,
     skipAlert: true,
   };
-};
+}

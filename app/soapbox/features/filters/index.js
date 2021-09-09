@@ -96,22 +96,22 @@ class Filters extends ImmutablePureComponent {
     const { intl, dispatch } = this.props;
     const { phrase, whole_word, expires_at, irreversible } = this.state;
     const { home_timeline, public_timeline, notifications, conversations } = this.state;
-    let context = [];
+    const context = [];
 
     if (home_timeline) {
       context.push('home');
-    };
+    }
     if (public_timeline) {
       context.push('public');
-    };
+    }
     if (notifications) {
       context.push('notifications');
-    };
+    }
     if (conversations) {
       context.push('thread');
-    };
+    }
 
-    dispatch(createFilter(phrase, expires_at, context, whole_word, irreversible)).then(response => {
+    dispatch(createFilter(intl, phrase, expires_at, context, whole_word, irreversible)).then(response => {
       return dispatch(fetchFilters());
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.create_error)));
@@ -120,7 +120,7 @@ class Filters extends ImmutablePureComponent {
 
   handleFilterDelete = e => {
     const { intl, dispatch } = this.props;
-    dispatch(deleteFilter(e.currentTarget.dataset.value)).then(response => {
+    dispatch(deleteFilter(intl, e.currentTarget.dataset.value)).then(response => {
       return dispatch(fetchFilters());
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.delete_error)));

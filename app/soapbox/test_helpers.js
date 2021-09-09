@@ -8,6 +8,7 @@ import { IntlProvider } from 'react-intl';
 import { BrowserRouter } from 'react-router-dom';
 import configureMockStore from 'redux-mock-store';
 import { Map as ImmutableMap } from 'immutable';
+import rootReducer from 'soapbox/reducers';
 
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
@@ -18,7 +19,7 @@ export const mockStore = configureMockStore(middlewares);
 export const createComponent = (children, props = {}) => {
   props = ImmutableMap({
     locale: 'en',
-    store: mockStore(ImmutableMap()),
+    store: mockStore(rootReducer(ImmutableMap(), {})),
   }).merge(props);
 
   return renderer.create(

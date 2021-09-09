@@ -63,5 +63,3 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
   </div>
 </form>
 `;
-
-exports[`<LoginPage /> renders correctly on load 2`] = `null`;

@@ -14,6 +14,8 @@ import {
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
+  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
+  FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
@@ -42,6 +44,7 @@ const notificationToMap = notification => ImmutableMap({
   id: notification.id,
   type: notification.type,
   account: notification.account.id,
+  target: notification.target ? notification.target.id : null,
   created_at: notification.created_at,
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,
@@ -51,6 +54,9 @@ const notificationToMap = notification => ImmutableMap({
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
 const isValid = notification => Boolean(notification.account.id);
+
+const countUnseen = notifications => notifications.reduce((acc, cur) =>
+  get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
 
 const normalizeNotification = (state, notification) => {
   const top = state.get('top');
@@ -75,17 +81,26 @@ const processRawNotifications = notifications => (
 
 const expandNormalizedNotifications = (state, notifications, next) => {
   const items = processRawNotifications(notifications);
+  const unread = state.get('unread');
+  const legacyUnread = countUnseen(notifications);
 
   return state.withMutations(mutable => {
     mutable.update('items', map => map.merge(items).sort(comparator));
 
     if (!next) mutable.set('hasMore', false);
     mutable.set('isLoading', false);
+
+    mutable.set('unread', Math.max(legacyUnread, unread));
   });
 };
 
 const filterNotifications = (state, relationship) => {
   return state.update('items', map => map.filterNot(item => item !== null && item.get('account') === relationship.id));
+};
+
+const filterNotificationIds = (state, accountIds, type) => {
+  const helper = list => list.filterNot(item => item !== null && accountIds.includes(item.get('account')) && (type === undefined || type === item.get('type')));
+  return state.update('items', helper);
 };
 
 const updateTop = (state, top) => {
@@ -105,7 +120,7 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   const alreadyExists = queuedNotifications.has(notification.id) || listedNotifications.has(notification.id);
   if (alreadyExists) return state;
 
-  let newQueuedNotifications = queuedNotifications;
+  const newQueuedNotifications = queuedNotifications;
 
   return state.withMutations(mutable => {
     if (totalQueuedNotificationsCount <= MAX_QUEUED_NOTIFICATIONS) {
@@ -118,9 +133,6 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
     mutable.set('totalQueuedNotificationsCount', totalQueuedNotificationsCount + 1);
   });
 };
-
-const countUnseen = notifications => notifications.reduce((acc, cur) =>
-  get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
 
 export default function notifications(state = initialState, action) {
   switch(action.type) {
@@ -142,13 +154,14 @@ export default function notifications(state = initialState, action) {
       mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
-    const legacyUnread = countUnseen(action.notifications);
-    return expandNormalizedNotifications(state, action.notifications, action.next)
-      .merge({ unread: Math.max(legacyUnread, state.get('unread')) });
+    return expandNormalizedNotifications(state, action.notifications, action.next);
   case ACCOUNT_BLOCK_SUCCESS:
     return filterNotifications(state, action.relationship);
   case ACCOUNT_MUTE_SUCCESS:
     return action.relationship.muting_notifications ? filterNotifications(state, action.relationship) : state;
+  case FOLLOW_REQUEST_AUTHORIZE_SUCCESS:
+  case FOLLOW_REQUEST_REJECT_SUCCESS:
+    return filterNotificationIds(state, [action.id], 'follow_request');
   case NOTIFICATIONS_CLEAR:
     return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
@@ -168,4 +181,4 @@ export default function notifications(state = initialState, action) {
   default:
     return state;
   }
-};
+}

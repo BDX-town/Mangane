@@ -8,7 +8,15 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff } from 'soapbox/utils/accounts';
+import {
+  isStaff,
+  isAdmin,
+  isModerator,
+  isVerified,
+  isLocal,
+  isRemote,
+  getDomain,
+} from 'soapbox/utils/accounts';
 import { parseVersion } from 'soapbox/utils/features';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
@@ -19,6 +27,9 @@ import ProfileInfoPanel from '../../ui/components/profile_info_panel';
 import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
+import { openModal } from 'soapbox/actions/modal';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -46,13 +57,25 @@ const messages = defineMessages({
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
+  verifyUser: { id: 'admin.users.actions.verify_user', defaultMessage: 'Verify @{name}' },
+  unverifyUser: { id: 'admin.users.actions.unverify_user', defaultMessage: 'Unverify @{name}' },
+  promoteToAdmin: { id: 'admin.users.actions.promote_to_admin', defaultMessage: 'Promote @{name} to an admin' },
+  promoteToModerator: { id: 'admin.users.actions.promote_to_moderator', defaultMessage: 'Promote @{name} to a moderator' },
+  demoteToModerator: { id: 'admin.users.actions.demote_to_moderator', defaultMessage: 'Demote @{name} to a moderator' },
+  demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
+  subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
+  unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
 });
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+
   return {
     me,
-    isStaff: isStaff(state.getIn(['accounts', me])),
+    meAccount: account,
     version: parseVersion(state.getIn(['instance', 'version'])),
   };
 };
@@ -63,16 +86,12 @@ class Header extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
+    meAccount: ImmutablePropTypes.map,
     identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
-    isStaff: PropTypes.bool.isRequired,
     version: PropTypes.object,
   };
-
-  static defaultProps = {
-    isStaff: false,
-  }
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
@@ -100,10 +119,46 @@ class Header extends ImmutablePureComponent {
     trailing: true,
   });
 
-  makeMenu() {
-    const { account, intl, me, isStaff, version } = this.props;
+  onAvatarClick = () => {
+    const avatar_url = this.props.account.get('avatar');
+    const avatar = ImmutableMap({
+      type: 'image',
+      preview_url: avatar_url,
+      url: avatar_url,
+      description: '',
+    });
+    this.props.dispatch(openModal('MEDIA', { media: ImmutableList.of(avatar), index: 0 }));
+  }
 
-    let menu = [];
+  handleAvatarClick = (e) => {
+    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.onAvatarClick();
+    }
+  }
+
+  onHeaderClick = () => {
+    const header_url = this.props.account.get('header');
+    const header = ImmutableMap({
+      type: 'image',
+      preview_url: header_url,
+      url: header_url,
+      description: '',
+    });
+    this.props.dispatch(openModal('MEDIA', { media: ImmutableList.of(header), index: 0 }));
+  }
+
+  handleHeaderClick = (e) => {
+    if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      this.onHeaderClick();
+    }
+  }
+
+  makeMenu() {
+    const { account, intl, me, meAccount, version } = this.props;
+
+    const menu = [];
 
     if (!account || !me) {
       return [];
@@ -132,6 +187,12 @@ class Header extends ImmutablePureComponent {
           menu.push({ text: intl.formatMessage(messages.showReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
         }
 
+        if (account.getIn(['relationship', 'subscribing'])) {
+          menu.push({ text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+        } else {
+          menu.push({ text: intl.formatMessage(messages.subscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+        }
+
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
         // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
@@ -154,8 +215,8 @@ class Header extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.report, { name: account.get('username') }), action: this.props.onReport });
     }
 
-    if (account.get('acct') !== account.get('username')) {
-      const domain = account.get('acct').split('@')[1];
+    if (isRemote(account)) {
+      const domain = getDomain(account);
 
       menu.push(null);
 
@@ -166,9 +227,36 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (account.get('id') !== me && isStaff) {
+    if (isStaff(meAccount)) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+
+      if (isAdmin(meAccount)) {
+        menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+      }
+
+      if (account.get('id') !== me && isLocal(account)) {
+        if (isAdmin(account)) {
+          menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else if (isModerator(account)) {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+        } else {
+          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
+          menu.push({ text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+        }
+      }
+
+      if (isVerified(account)) {
+        menu.push({ text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }), action: this.props.onUnverifyUser });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }), action: this.props.onVerifyUser });
+      }
+
+      if (account.get('id') !== me) {
+        menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
+        menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
+      }
     }
 
     return menu;
@@ -177,7 +265,7 @@ class Header extends ImmutablePureComponent {
   makeInfo() {
     const { account, me } = this.props;
 
-    let info = [];
+    const info = [];
 
     if (!account || !me) return info;
 
@@ -194,7 +282,7 @@ class Header extends ImmutablePureComponent {
     }
 
     return info;
-  };
+  }
 
   render() {
     const { account, intl, username, me } = this.props;
@@ -219,12 +307,14 @@ class Header extends ImmutablePureComponent {
       );
     }
 
+    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
-    const headerMissing = (account.get('header').indexOf('/headers/original/missing.png') > -1);
+    const header = account.get('header', '');
+    const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
     const avatarSize = isSmallScreen ? 90 : 200;
-    const deactivated = account.getIn(['pleroma', 'deactivated'], false);
+    const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
@@ -233,15 +323,21 @@ class Header extends ImmutablePureComponent {
             {info}
           </div>
 
-          <StillImage src={account.get('header')} alt='' className='parallax' />
+          <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} />
+          </div>
+
+          {header && <a className='account__header__header' href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
+            <StillImage src={account.get('header')} alt='' className='parallax' />
+          </a>}
         </div>
 
         <div className='account__header__bar'>
           <div className='account__header__extra'>
 
-            <div className='account__header__avatar'>
+            <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
               <Avatar account={account} size={avatarSize} />
-            </div>
+            </a>
 
             <div className='account__header__extra__links'>
 
@@ -250,18 +346,18 @@ class Header extends ImmutablePureComponent {
                 <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
               </NavLink>
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                <span>{shortNumberFormat(account.get('following_count'))}</span>
+              {(ownAccount || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
                 <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
-              </NavLink>
+              </NavLink>}
 
-              <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                <span>{shortNumberFormat(account.get('followers_count'))}</span>
+              {(ownAccount || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
                 <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
-              </NavLink>
+              </NavLink>}
 
               {
-                account.get('id') === me &&
+                ownAccount &&
                 <div>
                   <NavLink
                     exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}
@@ -288,19 +384,16 @@ class Header extends ImmutablePureComponent {
               </div>
             }
 
-            {
-              me &&
-              <div className='account__header__extra__buttons'>
-                <ActionButton account={account} />
-                {account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
-                  <Button className='button-alternative-2' onClick={this.props.onChat}>
-                    <Icon id='comment' />
-                    <FormattedMessage id='account.message' defaultMessage='Message' />
-                  </Button>
-                }
-                <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />
-              </div>
-            }
+            <div className='account__header__extra__buttons'>
+              <ActionButton account={account} />
+              {me && account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
+                <Button className='button-alternative-2' onClick={this.props.onChat}>
+                  <Icon id='comment' />
+                  <FormattedMessage id='account.message' defaultMessage='Message' />
+                </Button>
+              }
+              {me && <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />}
+            </div>
 
           </div>
         </div>

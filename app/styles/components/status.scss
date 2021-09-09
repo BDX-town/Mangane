@@ -56,7 +56,7 @@
   }
 
   /* Markdown images */
-  img:not(.emojione) {
+  img:not(.emojione):not([width][height]) {
     width: 100%;
     height: 285.188px;
     object-fit: contain;
@@ -65,6 +65,16 @@
     overflow: hidden;
     margin: 20px 0;
     display: block;
+  }
+
+  &--big {
+    line-height: normal !important;
+
+    img.emojione {
+      width: 36px;
+      height: 36px;
+      padding: 5px;
+    }
   }
 }
 
@@ -424,7 +434,8 @@
     background: var(--brand-color--med);
     transition: 0.2s;
 
-    &:hover {
+    &:hover,
+    &:focus {
       background: hsla(var(--brand-color_hsl), 0.5);
       text-decoration: none;
     }
@@ -445,6 +456,15 @@
 
     &.status__content__text--visible {
       display: block;
+    }
+  }
+}
+
+.underline-links {
+  .status__content,
+  .reply-indicator__content {
+    a {
+      text-decoration: underline;
     }
   }
 }
@@ -476,6 +496,7 @@
   border-radius: 4px;
   color: var(--primary-text-color);
   margin-top: 14px;
+  min-height: 150px;
   text-decoration: none;
   overflow: hidden;
 
@@ -490,7 +511,7 @@
     align-items: center;
 
     & > div {
-      background: rgba($base-shadow-color, 0.6);
+      background: var(--background-color);
       border-radius: 8px;
       padding: 12px 9px;
       flex: 0 0 auto;
@@ -545,26 +566,24 @@ a.status-card {
 .status-card-video,
 .status-card-audio {
   iframe {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
   }
 }
 
 .status-card__title {
   display: block;
+  font-size: 16px;
   font-weight: 500;
-  margin-bottom: 5px;
-  color: var(--primary-text-color--faint);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 10px;
+  color: var(--primary-text-color);
   text-decoration: none;
 }
 
 .status-card__content {
   flex: 1 1 auto;
   overflow: hidden;
-  padding: 14px 14px 14px 8px;
+  padding: 16px;
 }
 
 .status-card__description {
@@ -573,7 +592,7 @@ a.status-card {
 
 .status-card__host {
   display: block;
-  margin-top: 5px;
+  margin-top: 10px;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -581,7 +600,7 @@ a.status-card {
 }
 
 .status-card__image {
-  flex: 0 0 100px;
+  flex: 0 0 40%;
   background: var(--brand-color--med);
   position: relative;
 
@@ -593,6 +612,10 @@ a.status-card {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  &--empty {
+    flex: 0 0 80px;
+  }
 }
 
 .status-card.horizontal {
@@ -602,10 +625,6 @@ a.status-card {
     width: 100%;
   }
 
-  .status-card__image-image {
-    border-radius: 4px 4px 0 0;
-  }
-
   .status-card__title {
     white-space: inherit;
   }
@@ -613,23 +632,6 @@ a.status-card {
 
 .status-card.compact {
   border-color: var(--brand-color--faint);
-
-  &.interactive {
-    border: 0;
-  }
-
-  .status-card__content {
-    padding: 8px;
-    padding-top: 10px;
-  }
-
-  .status-card__title {
-    white-space: nowrap;
-  }
-
-  .status-card__image {
-    flex: 0 0 60px;
-  }
 }
 
 a.status-card.compact:hover {
@@ -647,6 +649,18 @@ a.status-card.compact:hover {
   background-position: center center;
 }
 
+@media (max-width: 600px) {
+  .status-card--link {
+    flex-direction: column;
+
+    .status-card__image {
+      width: 100%;
+      height: 200px;
+      flex: none;
+    }
+  }
+}
+
 .status__favicon {
   width: 16px;
   height: 16px;
@@ -656,5 +670,38 @@ a.status-card.compact:hover {
   img {
     width: 100%;
     max-height: 100%;
+  }
+}
+
+.tombstone {
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+  border-bottom: 1px solid var(--brand-color--faint);
+  color: var(--primary-text-color--faint);
+
+  p {
+    padding: 10px;
+    background: var(--background-color);
+    border-radius: 4px;
+  }
+}
+
+.status__action-bar,
+.detailed-status__action-bar {
+  .emoji-picker-expand {
+    display: none;
+  }
+
+  &:focus-within {
+    .emoji-picker-expand {
+      display: inline-flex;
+      width: 0;
+      overflow: hidden;
+
+      &:focus-within {
+        width: unset;
+      }
+    }
   }
 }

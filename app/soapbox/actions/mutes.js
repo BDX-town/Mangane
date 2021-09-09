@@ -2,6 +2,8 @@ import api, { getLinks } from '../api';
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 import { openModal } from './modal';
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { getNextLinkName } from 'soapbox/utils/quirks';
 
 export const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 export const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';
@@ -16,24 +18,25 @@ export const MUTES_TOGGLE_HIDE_NOTIFICATIONS = 'MUTES_TOGGLE_HIDE_NOTIFICATIONS'
 
 export function fetchMutes() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
+    const nextLinkName = getNextLinkName(getState);
 
     dispatch(fetchMutesRequest());
 
     api(getState).get('/api/v1/mutes').then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(fetchMutesSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(fetchMutesFail(error)));
   };
-};
+}
 
 export function fetchMutesRequest() {
   return {
     type: MUTES_FETCH_REQUEST,
   };
-};
+}
 
 export function fetchMutesSuccess(accounts, next) {
   return {
@@ -41,18 +44,19 @@ export function fetchMutesSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function fetchMutesFail(error) {
   return {
     type: MUTES_FETCH_FAIL,
     error,
   };
-};
+}
 
 export function expandMutes() {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
+    const nextLinkName = getNextLinkName(getState);
 
     const url = getState().getIn(['user_lists', 'mutes', 'next']);
 
@@ -63,19 +67,19 @@ export function expandMutes() {
     dispatch(expandMutesRequest());
 
     api(getState).get(url).then(response => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      const next = getLinks(response).refs.find(link => link.rel === nextLinkName);
       dispatch(importFetchedAccounts(response.data));
       dispatch(expandMutesSuccess(response.data, next ? next.uri : null));
       dispatch(fetchRelationships(response.data.map(item => item.id)));
     }).catch(error => dispatch(expandMutesFail(error)));
   };
-};
+}
 
 export function expandMutesRequest() {
   return {
     type: MUTES_EXPAND_REQUEST,
   };
-};
+}
 
 export function expandMutesSuccess(accounts, next) {
   return {
@@ -83,14 +87,14 @@ export function expandMutesSuccess(accounts, next) {
     accounts,
     next,
   };
-};
+}
 
 export function expandMutesFail(error) {
   return {
     type: MUTES_EXPAND_FAIL,
     error,
   };
-};
+}
 
 export function initMuteModal(account) {
   return dispatch => {

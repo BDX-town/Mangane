@@ -1,6 +1,6 @@
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import api, { getLinks } from '../api';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
@@ -47,7 +47,7 @@ export function updateTimeline(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
 export function updateTimelineQueue(timeline, statusId, accept) {
   return dispatch => {
@@ -61,46 +61,34 @@ export function updateTimelineQueue(timeline, statusId, accept) {
       statusId,
     });
   };
-};
+}
 
-export function dequeueTimeline(timeline, expandFunc, optionalExpandArgs) {
+export function dequeueTimeline(timelineId, expandFunc, optionalExpandArgs) {
   return (dispatch, getState) => {
-    const queuedItems = getState().getIn(['timelines', timeline, 'queuedItems'], ImmutableList());
-    const totalQueuedItemsCount = getState().getIn(['timelines', timeline, 'totalQueuedItemsCount'], 0);
+    const state = getState();
+    const queuedCount = state.getIn(['timelines', timelineId, 'totalQueuedItemsCount'], 0);
 
-    let shouldDispatchDequeue = true;
+    if (queuedCount <= 0) return;
 
-    if (totalQueuedItemsCount === 0) {
+    if (queuedCount <= MAX_QUEUED_ITEMS) {
+      dispatch({ type: TIMELINE_DEQUEUE, timeline: timelineId });
       return;
-    } else if (totalQueuedItemsCount > 0 && totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
-      queuedItems.forEach(statusId => {
-        dispatch(updateTimeline(timeline, statusId, null));
-      });
-    } else {
-      if (typeof expandFunc === 'function') {
-        dispatch(clearTimeline(timeline));
-        expandFunc();
-      } else {
-        if (timeline === 'home') {
-          dispatch(clearTimeline(timeline));
-          dispatch(expandHomeTimeline(optionalExpandArgs));
-        } else if (timeline === 'community') {
-          dispatch(clearTimeline(timeline));
-          dispatch(expandCommunityTimeline(optionalExpandArgs));
-        } else {
-          shouldDispatchDequeue = false;
-        }
-      }
     }
 
-    if (!shouldDispatchDequeue) return;
-
-    dispatch({
-      type: TIMELINE_DEQUEUE,
-      timeline,
-    });
+    if (typeof expandFunc === 'function') {
+      dispatch(clearTimeline(timelineId));
+      expandFunc();
+    } else {
+      if (timelineId === 'home') {
+        dispatch(clearTimeline(timelineId));
+        dispatch(expandHomeTimeline(optionalExpandArgs));
+      } else if (timelineId === 'community') {
+        dispatch(clearTimeline(timelineId));
+        dispatch(expandCommunityTimeline(optionalExpandArgs));
+      }
+    }
   };
-};
+}
 
 export function deleteFromTimelines(id) {
   return (dispatch, getState) => {
@@ -116,13 +104,13 @@ export function deleteFromTimelines(id) {
       reblogOf,
     });
   };
-};
+}
 
 export function clearTimeline(timeline) {
   return (dispatch) => {
     dispatch({ type: TIMELINE_CLEAR, timeline });
   };
-};
+}
 
 const noOp = () => {};
 
@@ -142,7 +130,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
       return;
     }
 
-    if (!params.max_id && !params.pinned && timeline.get('items', ImmutableList()).size > 0) {
+    if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
       params.since_id = timeline.getIn(['items', 0]);
     }
 
@@ -160,11 +148,13 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
       done();
     });
   };
-};
+}
 
 export const expandHomeTimeline            = ({ maxId } = {}, done = noOp) => expandTimeline('home', '/api/v1/timelines/home', { max_id: maxId }, done);
 
 export const expandPublicTimeline          = ({ maxId, onlyMedia } = {}, done = noOp) => expandTimeline(`public${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { max_id: maxId, only_media: !!onlyMedia }, done);
+
+export const expandRemoteTimeline          = (instance, { maxId, onlyMedia } = {}, done = noOp) => expandTimeline(`remote${onlyMedia ? ':media' : ''}:${instance}`, '/api/v1/timelines/public', { local: false, instance: instance, max_id: maxId, only_media: !!onlyMedia }, done);
 
 export const expandCommunityTimeline       = ({ maxId, onlyMedia } = {}, done = noOp) => expandTimeline(`community${onlyMedia ? ':media' : ''}`, '/api/v1/timelines/public', { local: true, max_id: maxId, only_media: !!onlyMedia }, done);
 
@@ -195,7 +185,7 @@ export function expandTimelineRequest(timeline, isLoadingMore) {
     timeline,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadingRecent, isLoadingMore) {
   return {
@@ -207,7 +197,7 @@ export function expandTimelineSuccess(timeline, statuses, next, partial, isLoadi
     isLoadingRecent,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function expandTimelineFail(timeline, error, isLoadingMore) {
   return {
@@ -216,21 +206,21 @@ export function expandTimelineFail(timeline, error, isLoadingMore) {
     error,
     skipLoading: !isLoadingMore,
   };
-};
+}
 
 export function connectTimeline(timeline) {
   return {
     type: TIMELINE_CONNECT,
     timeline,
   };
-};
+}
 
 export function disconnectTimeline(timeline) {
   return {
     type: TIMELINE_DISCONNECT,
     timeline,
   };
-};
+}
 
 export function scrollTopTimeline(timeline, top) {
   return {
@@ -238,4 +228,4 @@ export function scrollTopTimeline(timeline, top) {
     timeline,
     top,
   };
-};
+}

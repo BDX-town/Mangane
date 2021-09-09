@@ -50,6 +50,10 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><FormattedMessage id='keyboard_shortcuts.favourite' defaultMessage='to like' /></td>
               </tr>
               <tr>
+                <td><kbd>e</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.react' defaultMessage='to react' /></td>
+              </tr>
+              <tr>
                 <td><kbd>b</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.boost' defaultMessage='to repost' /></td>
               </tr>
@@ -57,6 +61,19 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><kbd>enter</kbd>, <kbd>o</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.enter' defaultMessage='to open post' /></td>
               </tr>
+              <tr>
+                <td><kbd>a</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.open_media' defaultMessage='to open media' /></td>
+              </tr>
+            </tbody>
+          </table>
+          <table>
+            <thead>
+              <tr>
+                <th><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
+              </tr>
+            </thead>
+            <tbody>
               <tr>
                 <td><kbd>x</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
@@ -69,22 +86,9 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><kbd>up</kbd>, <kbd>k</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></td>
               </tr>
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th><FormattedMessage id='keyboard_shortcuts.hotkey' defaultMessage='Hotkey' /></th>
-              </tr>
-            </thead>
-            <tbody>
               <tr>
                 <td><kbd>down</kbd>, <kbd>j</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.down' defaultMessage='to move down in the list' /></td>
-              </tr>
-              <tr>
-                <td><kbd>1</kbd> - <kbd>9</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.column' defaultMessage='to focus a post in one of the columns' /></td>
               </tr>
               <tr>
                 <td><kbd>n</kbd></td>
@@ -106,18 +110,6 @@ class HotkeysModal extends ImmutablePureComponent {
                 <td><kbd>esc</kbd></td>
                 <td><FormattedMessage id='keyboard_shortcuts.unfocus' defaultMessage='to un-focus compose textarea/search' /></td>
               </tr>
-              <tr>
-                <td><kbd>g</kbd> + <kbd>h</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
-              </tr>
-              <tr>
-                <td><kbd>g</kbd> + <kbd>n</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></td>
-              </tr>
-              <tr>
-                <td><kbd>g</kbd> + <kbd>d</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.direct' defaultMessage='to open direct messages column' /></td>
-              </tr>
             </tbody>
           </table>
           <table>
@@ -128,8 +120,12 @@ class HotkeysModal extends ImmutablePureComponent {
             </thead>
             <tbody>
               <tr>
-                <td><kbd>g</kbd> + <kbd>s</kbd></td>
-                <td><FormattedMessage id='keyboard_shortcuts.start' defaultMessage='to open "get started" column' /></td>
+                <td><kbd>g</kbd> + <kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.home' defaultMessage='to open home timeline' /></td>
+              </tr>
+              <tr>
+                <td><kbd>g</kbd> + <kbd>n</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.notifications' defaultMessage='to open notifications column' /></td>
               </tr>
               <tr>
                 <td><kbd>g</kbd> + <kbd>f</kbd></td>

@@ -98,13 +98,22 @@
   }
 
   &__name {
-    display: block;
+    display: flex;
     margin-top: 10px;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    align-items: center;
 
     .display-name__account {
       display: block;
       margin-top: 2px;
       color: var(--primary-text-color--faint);
+    }
+
+    i.fa-caret-up,
+    i.fa-caret-down {
+      margin-left: auto;
+      padding-left: 10px;
     }
   }
 
@@ -140,6 +149,10 @@
   }
 }
 
+.sidebar-account {
+  text-decoration: none;
+}
+
 .sidebar-menu-item {
   display: flex;
   padding: 16px 18px;
@@ -155,7 +168,9 @@
   }
 
   .fa {
+    width: 18px;
     margin-right: 10px;
+    text-align: center;
   }
 
   &:hover {

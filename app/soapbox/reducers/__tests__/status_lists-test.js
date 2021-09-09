@@ -1,5 +1,5 @@
 import reducer from '../status_lists';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 describe('status_lists reducer', () => {
   it('should return the initial state', () => {
@@ -7,17 +7,22 @@ describe('status_lists reducer', () => {
       favourites: ImmutableMap({
         next: null,
         loaded: false,
-        items: ImmutableList(),
+        items: ImmutableOrderedSet(),
       }),
       bookmarks: ImmutableMap({
         next: null,
         loaded: false,
-        items: ImmutableList(),
+        items: ImmutableOrderedSet(),
       }),
       pins: ImmutableMap({
         next: null,
         loaded: false,
-        items: ImmutableList(),
+        items: ImmutableOrderedSet(),
+      }),
+      scheduled_statuses: ImmutableMap({
+        next: null,
+        loaded: false,
+        items: ImmutableOrderedSet(),
       }),
     }));
   });

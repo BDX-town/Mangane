@@ -17,9 +17,16 @@ import {
   ACCOUNT_MUTE_SUCCESS,
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import compareId from '../compare_id';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
 import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
+
+const TRUNCATE_LIMIT = 40;
+const TRUNCATE_SIZE  = 20;
 
 const initialState = ImmutableMap();
 
@@ -29,139 +36,197 @@ const initialTimeline = ImmutableMap({
   top: true,
   isLoading: false,
   hasMore: true,
-  items: ImmutableList(),
-  queuedItems: ImmutableList(), //max= MAX_QUEUED_ITEMS
+  items: ImmutableOrderedSet(),
+  queuedItems: ImmutableOrderedSet(), //max= MAX_QUEUED_ITEMS
   totalQueuedItemsCount: 0, //used for queuedItems overflow for MAX_QUEUED_ITEMS+
 });
 
-const expandNormalizedTimeline = (state, timeline, statuses, next, isPartial, isLoadingRecent) => {
-  return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
-    mMap.set('isLoading', false);
-    mMap.set('isPartial', isPartial);
+const getStatusIds = (statuses = ImmutableList()) => (
+  statuses.map(status => status.get('id')).toOrderedSet()
+);
 
-    if (!next && !isLoadingRecent) mMap.set('hasMore', false);
+const mergeStatusIds = (oldIds = ImmutableOrderedSet(), newIds = ImmutableOrderedSet()) => (
+  newIds.union(oldIds)
+);
 
-    if (!statuses.isEmpty()) {
-      mMap.update('items', ImmutableList(), oldIds => {
-        const newIds = statuses.map(status => status.get('id'));
+const addStatusId = (oldIds = ImmutableOrderedSet(), newId) => (
+  mergeStatusIds(oldIds, ImmutableOrderedSet([newId]))
+);
 
-        if (timeline.indexOf(':pinned') !== -1) {
-          return newIds;
+// Like `take`, but only if the collection's size exceeds truncateLimit
+const truncate = (items, truncateLimit, newSize) => (
+  items.size > truncateLimit ? items.take(newSize) : items
+);
+
+const truncateIds = items => truncate(items, TRUNCATE_LIMIT, TRUNCATE_SIZE);
+
+const setLoading = (state, timelineId, loading) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.set('isLoading', loading));
+};
+
+const expandNormalizedTimeline = (state, timelineId, statuses, next, isPartial, isLoadingRecent) => {
+  const newIds = getStatusIds(statuses);
+
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    timeline.set('isLoading', false);
+    timeline.set('isPartial', isPartial);
+
+    if (!next && !isLoadingRecent) timeline.set('hasMore', false);
+
+    // Pinned timelines can be replaced entirely
+    if (timelineId.endsWith(':pinned')) {
+      timeline.set('items', newIds);
+      return;
+    }
+
+    if (!newIds.isEmpty()) {
+      timeline.update('items', ImmutableOrderedSet(), oldIds => {
+        if (newIds.first() > oldIds.first()) {
+          return mergeStatusIds(oldIds, newIds);
+        } else {
+          return mergeStatusIds(newIds, oldIds);
         }
-
-        const lastIndex = oldIds.findLastIndex(id => id !== null && compareId(id, newIds.last()) >= 0) + 1;
-        const firstIndex = oldIds.take(lastIndex).findLastIndex(id => id !== null && compareId(id, newIds.first()) > 0);
-
-        if (firstIndex < 0) {
-          return (isPartial ? newIds.unshift(null) : newIds).concat(oldIds.skip(lastIndex));
-        }
-
-        return oldIds.take(firstIndex + 1).concat(
-          isPartial && oldIds.get(firstIndex) !== null ? newIds.unshift(null) : newIds,
-          oldIds.skip(lastIndex),
-        );
       });
     }
   }));
 };
 
-const updateTimeline = (state, timeline, statusId) => {
-  const top        = state.getIn([timeline, 'top']);
-  const ids        = state.getIn([timeline, 'items'], ImmutableList());
-  const includesId = ids.includes(statusId);
-  const unread     = state.getIn([timeline, 'unread'], 0);
+const updateTimeline = (state, timelineId, statusId) => {
+  const top    = state.getIn([timelineId, 'top']);
+  const oldIds = state.getIn([timelineId, 'items'], ImmutableOrderedSet());
+  const unread = state.getIn([timelineId, 'unread'], 0);
 
-  if (includesId) {
-    return state;
-  }
+  if (oldIds.includes(statusId)) return state;
 
-  let newIds = ids;
+  const newIds = addStatusId(oldIds, statusId);
 
-  return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
-    if (!top) mMap.set('unread', unread + 1);
-    if (top && ids.size > 40) newIds = newIds.take(20);
-    mMap.set('items', newIds.unshift(statusId));
-  }));
-};
-
-const updateTimelineQueue = (state, timeline, statusId) => {
-  const queuedStatuses = state.getIn([timeline, 'queuedItems'], ImmutableList());
-  const listedStatuses = state.getIn([timeline, 'items'], ImmutableList());
-  const totalQueuedItemsCount = state.getIn([timeline, 'totalQueuedItemsCount'], 0);
-
-  let alreadyExists = queuedStatuses.find(existingQueuedStatus => existingQueuedStatus === statusId);
-  if (!alreadyExists) alreadyExists = listedStatuses.find(existingListedStatusId => existingListedStatusId === statusId);
-
-  if (alreadyExists) {
-    return state;
-  }
-
-  let newQueuedStatuses = queuedStatuses;
-
-  return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
-    if (totalQueuedItemsCount <= MAX_QUEUED_ITEMS) {
-      mMap.set('queuedItems', newQueuedStatuses.push(statusId));
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    if (top) {
+      // For performance, truncate items if user is scrolled to the top
+      timeline.set('items', truncateIds(newIds));
+    } else {
+      timeline.set('unread', unread + 1);
+      timeline.set('items', newIds);
     }
-    mMap.set('totalQueuedItemsCount', totalQueuedItemsCount + 1);
   }));
 };
 
-const deleteStatus = (state, id, accountId, references, exclude_account = null) => {
-  state.keySeq().forEach(timeline => {
-    if (exclude_account === null || (timeline !== `account:${exclude_account}` && !timeline.startsWith(`account:${exclude_account}:`)))
-      state = state.updateIn([timeline, 'items'], list => list.filterNot(item => item === id));
-  });
+const updateTimelineQueue = (state, timelineId, statusId) => {
+  const queuedIds   = state.getIn([timelineId, 'queuedItems'], ImmutableOrderedSet());
+  const listedIds   = state.getIn([timelineId, 'items'], ImmutableOrderedSet());
+  const queuedCount = state.getIn([timelineId, 'totalQueuedItemsCount'], 0);
 
-  // Remove reblogs of deleted status
-  references.forEach(ref => {
-    state = deleteStatus(state, ref[0], ref[1], [], exclude_account);
-  });
+  if (queuedIds.includes(statusId)) return state;
+  if (listedIds.includes(statusId)) return state;
 
-  return state;
-};
-
-const clearTimeline = (state, timeline) => {
-  return state.set(timeline, initialTimeline);
-};
-
-const filterTimelines = (state, relationship, statuses) => {
-  let references;
-
-  statuses.forEach(status => {
-    if (status.get('account') !== relationship.id) {
-      return;
-    }
-
-    references = statuses.filter(item => item.get('reblog') === status.get('id')).map(item => [item.get('id'), item.get('account')]);
-    state      = deleteStatus(state, status.get('id'), status.get('account'), references, relationship.id);
-  });
-
-  return state;
-};
-
-const updateTop = (state, timeline, top) => {
-  return state.update(timeline, initialTimeline, map => map.withMutations(mMap => {
-    if (top) mMap.set('unread', 0);
-    mMap.set('top', top);
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    timeline.set('totalQueuedItemsCount', queuedCount + 1);
+    timeline.set('queuedItems', addStatusId(queuedIds, statusId).take(MAX_QUEUED_ITEMS));
   }));
 };
 
-const filterTimeline = (timeline, state, relationship, statuses) =>
-  state.updateIn([timeline, 'items'], ImmutableList(), list =>
-    list.filterNot(statusId =>
+const shouldDelete = (timelineId, excludeAccount) => {
+  if (!excludeAccount) return true;
+  if (timelineId === `account:${excludeAccount}`) return false;
+  if (timelineId.startsWith(`account:${excludeAccount}:`)) return false;
+  return true;
+};
+
+const deleteStatus = (state, statusId, accountId, references, excludeAccount = null) => {
+  return state.withMutations(state => {
+    state.keySeq().forEach(timelineId => {
+      if (shouldDelete(timelineId, excludeAccount)) {
+        state.updateIn([timelineId, 'items'], ids => ids.delete(statusId));
+        state.updateIn([timelineId, 'queuedItems'], ids => ids.delete(statusId));
+      }
+    });
+
+    // Remove reblogs of deleted status
+    references.forEach(ref => {
+      deleteStatus(state, ref[0], ref[1], [], excludeAccount);
+    });
+  });
+};
+
+const clearTimeline = (state, timelineId) => {
+  return state.set(timelineId, initialTimeline);
+};
+
+const updateTop = (state, timelineId, top) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    if (top) timeline.set('unread', 0);
+    timeline.set('top', top);
+  }));
+};
+
+const isReblogOf = (reblog, status) => reblog.get('reblog') === status.get('id');
+const statusToReference = status => [status.get('id'), status.get('account')];
+
+const buildReferencesTo = (statuses, status) => (
+  statuses
+    .filter(reblog => isReblogOf(reblog, status))
+    .map(statusToReference)
+);
+
+const filterTimeline = (state, timelineId, relationship, statuses) =>
+  state.updateIn([timelineId, 'items'], ImmutableOrderedSet(), ids =>
+    ids.filterNot(statusId =>
       statuses.getIn([statusId, 'account']) === relationship.id,
     ));
 
+const filterTimelines = (state, relationship, statuses) => {
+  return state.withMutations(state => {
+    statuses.forEach(status => {
+      if (status.get('account') !== relationship.id) return;
+      const references = buildReferencesTo(statuses, status);
+      deleteStatus(state, status.get('id'), status.get('account'), references, relationship.id);
+    });
+  });
+};
+
 const removeStatusFromGroup = (state, groupId, statusId) => {
-  return state.updateIn([`group:${groupId}`, 'items'], list => list.filterNot(item => item === statusId));
+  return state.updateIn([`group:${groupId}`, 'items'], ImmutableOrderedSet(), ids => ids.delete(statusId));
+};
+
+const timelineDequeue = (state, timelineId) => {
+  const top = state.getIn([timelineId, 'top']);
+
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    const queuedIds = timeline.get('queuedItems');
+
+    timeline.update('items', ids => {
+      const newIds = mergeStatusIds(ids, queuedIds);
+      return top ? truncateIds(newIds) : newIds;
+    });
+
+    timeline.set('queuedItems', ImmutableOrderedSet());
+    timeline.set('totalQueuedItemsCount', 0);
+  }));
+};
+
+const timelineConnect = (state, timelineId) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.set('online', true));
+};
+
+const timelineDisconnect = (state, timelineId) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
+    timeline.set('online', false);
+
+    const items = timeline.get('items', ImmutableOrderedSet());
+    if (items.isEmpty()) return;
+
+    // This is causing problems. Disable for now.
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/716
+    // timeline.set('items', addStatusId(items, null));
+  }));
 };
 
 export default function timelines(state = initialState, action) {
   switch(action.type) {
   case TIMELINE_EXPAND_REQUEST:
-    return state.update(action.timeline, initialTimeline, map => map.set('isLoading', true));
+    return setLoading(state, action.timeline, true);
   case TIMELINE_EXPAND_FAIL:
-    return state.update(action.timeline, initialTimeline, map => map.set('isLoading', false));
+    return setLoading(state, action.timeline, false);
   case TIMELINE_EXPAND_SUCCESS:
     return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
   case TIMELINE_UPDATE:
@@ -169,10 +234,7 @@ export default function timelines(state = initialState, action) {
   case TIMELINE_UPDATE_QUEUE:
     return updateTimelineQueue(state, action.timeline, action.statusId);
   case TIMELINE_DEQUEUE:
-    return state.update(action.timeline, initialTimeline, map => map.withMutations(mMap => {
-      mMap.set('queuedItems', ImmutableList());
-      mMap.set('totalQueuedItemsCount', 0);
-    }));
+    return timelineDequeue(state, action.timeline);
   case TIMELINE_DELETE:
     return deleteStatus(state, action.id, action.accountId, action.references, action.reblogOf);
   case TIMELINE_CLEAR:
@@ -181,20 +243,16 @@ export default function timelines(state = initialState, action) {
   case ACCOUNT_MUTE_SUCCESS:
     return filterTimelines(state, action.relationship, action.statuses);
   case ACCOUNT_UNFOLLOW_SUCCESS:
-    return filterTimeline('home', state, action.relationship, action.statuses);
-  case TIMELINE_CONNECT:
-    return state.update(action.timeline, initialTimeline, map => map.set('online', true));
+    return filterTimeline(state, 'home', action.relationship, action.statuses);
   case TIMELINE_SCROLL_TOP:
     return updateTop(state, action.timeline, action.top);
+  case TIMELINE_CONNECT:
+    return timelineConnect(state, action.timeline);
   case TIMELINE_DISCONNECT:
-    return state.update(
-      action.timeline,
-      initialTimeline,
-      map => map.set('online', false).update('items', items => items.first() ? items.unshift(null) : items),
-    );
+    return timelineDisconnect(state, action.timeline);
   case GROUP_REMOVE_STATUS_SUCCESS:
     return removeStatusFromGroup(state, action.groupId, action.id);
   default:
     return state;
   }
-};
+}

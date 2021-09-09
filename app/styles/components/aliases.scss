@@ -1,0 +1,107 @@
+.aliases {
+  &__accounts {
+    overflow-y: auto;
+
+    .account__display-name {
+      &:hover strong {
+        text-decoration: none;
+      }
+    }
+
+    .account__avatar {
+      cursor: default;
+    }
+
+    &.empty-column-indicator {
+      min-height: unset;
+      overflow-y: unset;
+    }
+  }
+
+  &_search {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+
+    .search__input {
+      padding: 7px 30px 6px 10px;
+    }
+
+    > label {
+      flex: 1 1;
+    }
+
+    > .search__icon .fa {
+      top: 8px;
+      right: 102px !important;
+    }
+
+    > .button {
+      width: 80px;
+      margin-left: 10px;
+    }
+  }
+}
+
+.aliases-settings-panel {
+  flex: 1;
+
+  .item-list article {
+    border-bottom: 1px solid var(--primary-text-color--faint);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .alias__container {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+
+    span.alias__list-label {
+      padding-right: 5px;
+      color: var(--primary-text-color--faint);
+    }
+
+    span.alias__list-value span {
+      padding-right: 5px;
+      text-transform: capitalize;
+
+      &::after {
+        content: ',';
+      }
+
+      &:last-of-type {
+        &::after {
+          content: '';
+        }
+      }
+    }
+
+    .alias__delete {
+      display: flex;
+      align-items: baseline;
+      cursor: pointer;
+
+      span.alias__delete-label {
+        color: var(--primary-text-color--faint);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .alias__delete-icon {
+        background: none;
+        color: var(--primary-text-color--faint);
+        padding: 0 5px;
+        margin: 0 auto;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .slist--flex {
+    height: 100%;
+  }
+}

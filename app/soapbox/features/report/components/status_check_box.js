@@ -26,7 +26,7 @@ export default class StatusCheckBox extends React.PureComponent {
 
     if (status.get('media_attachments').size > 0) {
       if (status.get('media_attachments').some(item => item.get('type') === 'unknown')) {
-
+        // Do nothing
       } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
@@ -38,7 +38,7 @@ export default class StatusCheckBox extends React.PureComponent {
                 blurhash={video.get('blurhash')}
                 src={video.get('url')}
                 alt={video.get('description')}
-                aspectRatio={video.getIn(['meta', 'small', 'aspect'])}
+                aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
                 width={239}
                 height={110}
                 inline

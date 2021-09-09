@@ -9,43 +9,28 @@
   display: block;
   height: 42px;
   line-height: 42px;
+  color: var(--primary-text-color);
   border-bottom: 1px solid var(--brand-color--med);
   background: var(--foreground-color);
-
-  &--highlighted {
-    background-color: #30ce7d;
-    border-radius: 10px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
-
-  &--top-rounded {
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
-  }
+  text-decoration: none;
+  font-size: 15px;
+  padding: 0 20px;
 
   &:last-of-type {
     border-bottom: 0;
   }
 
-  &__btn {
-    display: block;
-    text-align: left;
-    color: var(--primary-text-color);
-    text-decoration: none;
-    font-size: 15px;
-    padding: 0 20px;
+  &:hover,
+  &:focus {
+    color: var(--primary-text-color--faint);
 
-    &:hover {
-      color: var(--primary-text-color--faint);
-
-      span {
-        text-decoration: underline;
-      }
+    span {
+      text-decoration: underline;
     }
   }
 
-  &__icon {
+  &__icon,
+  .icon-with-counter {
     margin-right: 12px;
   }
 }

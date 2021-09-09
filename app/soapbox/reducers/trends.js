@@ -24,4 +24,4 @@ export default function trendsReducer(state = initialState, action) {
   default:
     return state;
   }
-};
+}

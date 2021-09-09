@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import StatusListContainer from '../../ui/containers/status_list_container';
@@ -80,13 +81,15 @@ class GroupTimeline extends React.PureComponent {
       );
     }
 
+    const acct = account ? account.get('acct') : '';
+
     return (
       <div>
         {relationships.get('member') && (
           <div className='timeline-compose-block'>
-            <div className='timeline-compose-block__avatar'>
+            <Link className='timeline-compose-block__avatar' to={`/@${acct}`}>
               <Avatar account={account} size={46} />
-            </div>
+            </Link>
             <ComposeFormContainer group={group} shouldCondense autoFocus={false} />
           </div>
         )}

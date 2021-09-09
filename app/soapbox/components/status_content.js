@@ -1,15 +1,26 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { isRtl } from '../rtl';
 import { FormattedMessage } from 'react-intl';
 import Permalink from './permalink';
 import classnames from 'classnames';
+import PollContainer from 'soapbox/containers/poll_container';
 import Icon from 'soapbox/components/icon';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { addGreentext } from 'soapbox/utils/greentext';
+import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
+const BIG_EMOJI_LIMIT = 10;
 
-export default class StatusContent extends React.PureComponent {
+const mapStateToProps = state => ({
+  greentext: getSoapboxConfig(state).get('greentext'),
+});
+
+export default @connect(mapStateToProps)
+class StatusContent extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -22,6 +33,7 @@ export default class StatusContent extends React.PureComponent {
     onExpandedToggle: PropTypes.func,
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
+    greentext: PropTypes.bool,
   };
 
   state = {
@@ -38,8 +50,8 @@ export default class StatusContent extends React.PureComponent {
 
     const links = node.querySelectorAll('a');
 
-    for (var i = 0; i < links.length; ++i) {
-      let link = links[i];
+    for (let i = 0; i < links.length; ++i) {
+      const link = links[i];
       if (link.classList.contains('status-link')) {
         continue;
       }
@@ -47,7 +59,7 @@ export default class StatusContent extends React.PureComponent {
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
-      let mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
+      const mention = this.props.status.get('mentions').find(item => link.href === `${item.get('url')}`);
 
       if (mention) {
         link.addEventListener('click', this.onMentionClick.bind(this, mention), false);
@@ -79,14 +91,27 @@ export default class StatusContent extends React.PureComponent {
     }
   }
 
-  componentDidMount() {
+  setOnlyEmoji = () => {
+    if (!this.node) return;
+    const only = onlyEmoji(this.node, BIG_EMOJI_LIMIT, true);
+
+    if (only !== this.state.onlyEmoji) {
+      this.setState({ onlyEmoji: only });
+    }
+  }
+
+  refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
+    this.setOnlyEmoji();
+  }
+
+  componentDidMount() {
+    this.refresh();
   }
 
   componentDidUpdate() {
-    this.setCollapse();
-    this._updateStatusLinks();
+    this.refresh();
   }
 
   onMentionClick = (mention, e) => {
@@ -148,16 +173,21 @@ export default class StatusContent extends React.PureComponent {
     this.node = c;
   }
 
+  parseHtml = html => {
+    const { greentext } = this.props;
+    if (greentext) return addGreentext(html);
+    return html;
+  }
+
   getHtmlContent = () => {
     const { status } = this.props;
-
-    const properContent = status.get('contentHtml');
-
-    return properContent;
+    const html = status.get('contentHtml');
+    return this.parseHtml(html);
   }
 
   render() {
     const { status } = this.props;
+    const { onlyEmoji } = this.state;
 
     if (status.get('content').length === 0) {
       return null;
@@ -172,6 +202,7 @@ export default class StatusContent extends React.PureComponent {
       'status__content--with-action': this.props.onClick && this.context.router,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
+      'status__content--big': onlyEmoji,
     });
 
     if (isRtl(status.get('search_index'))) {
@@ -210,6 +241,8 @@ export default class StatusContent extends React.PureComponent {
           {mentionsPlaceholder}
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''}`} style={directionStyle} dangerouslySetInnerHTML={content} lang={status.get('language')} />
+
+          {!hidden && !!status.get('poll') && <PollContainer pollId={status.get('poll')} />}
         </div>
       );
     } else if (this.props.onClick) {
@@ -231,18 +264,30 @@ export default class StatusContent extends React.PureComponent {
         output.push(readMoreButton);
       }
 
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} />);
+      }
+
       return output;
     } else {
-      return (
+      const output = [
         <div
           tabIndex='0'
           ref={this.setRef}
-          className='status__content'
+          className={classnames('status__content', {
+            'status__content--big': onlyEmoji,
+          })}
           style={directionStyle}
           dangerouslySetInnerHTML={content}
           lang={status.get('language')}
-        />
-      );
+        />,
+      ];
+
+      if (status.get('poll')) {
+        output.push(<PollContainer pollId={status.get('poll')} />);
+      }
+
+      return output;
     }
   }
 

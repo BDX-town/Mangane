@@ -9,10 +9,13 @@ import MediaModal from './media_modal';
 import VideoModal from './video_modal';
 import BoostModal from './boost_modal';
 import ConfirmationModal from './confirmation_modal';
+import MissingDescriptionModal from './missing_description_modal';
 import FocalPointModal from './focal_point_modal';
 import HotkeysModal from './hotkeys_modal';
 import ComposeModal from './compose_modal';
 import UnauthorizedModal from './unauthorized_modal';
+import CryptoDonateModal from './crypto_donate_modal';
+import EditFederationModal from './edit_federation_modal';
 
 import {
   MuteModal,
@@ -27,6 +30,7 @@ const MODAL_COMPONENTS = {
   'VIDEO': () => Promise.resolve({ default: VideoModal }),
   'BOOST': () => Promise.resolve({ default: BoostModal }),
   'CONFIRM': () => Promise.resolve({ default: ConfirmationModal }),
+  'MISSING_DESCRIPTION': () => Promise.resolve({ default: MissingDescriptionModal }),
   'MUTE': MuteModal,
   'REPORT': ReportModal,
   'ACTIONS': () => Promise.resolve({ default: ActionsModal }),
@@ -37,6 +41,8 @@ const MODAL_COMPONENTS = {
   'HOTKEYS': () => Promise.resolve({ default: HotkeysModal }),
   'COMPOSE': () => Promise.resolve({ default: ComposeModal }),
   'UNAUTHORIZED': () => Promise.resolve({ default: UnauthorizedModal }),
+  'CRYPTO_DONATE': () => Promise.resolve({ default: CryptoDonateModal }),
+  'EDIT_FEDERATION': () => Promise.resolve({ default: EditFederationModal }),
 };
 
 export default class ModalRoot extends React.PureComponent {

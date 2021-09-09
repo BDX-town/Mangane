@@ -13,6 +13,9 @@ import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from './media';
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { createStatus } from './statuses';
+import snackbar from 'soapbox/actions/snackbar';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -62,9 +65,14 @@ export const COMPOSE_POLL_OPTION_CHANGE   = 'COMPOSE_POLL_OPTION_CHANGE';
 export const COMPOSE_POLL_OPTION_REMOVE   = 'COMPOSE_POLL_OPTION_REMOVE';
 export const COMPOSE_POLL_SETTINGS_CHANGE = 'COMPOSE_POLL_SETTINGS_CHANGE';
 
+export const COMPOSE_SCHEDULE_ADD    = 'COMPOSE_SCHEDULE_ADD';
+export const COMPOSE_SCHEDULE_SET    = 'COMPOSE_SCHEDULE_SET';
+export const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE';
+
 const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
+  scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.'  },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -80,7 +88,7 @@ export function changeCompose(text) {
     type: COMPOSE_CHANGE,
     text: text,
   };
-};
+}
 
 export function replyCompose(status, routerHistory) {
   return (dispatch, getState) => {
@@ -93,19 +101,19 @@ export function replyCompose(status, routerHistory) {
 
     dispatch(openModal('COMPOSE'));
   };
-};
+}
 
 export function cancelReplyCompose() {
   return {
     type: COMPOSE_REPLY_CANCEL,
   };
-};
+}
 
 export function resetCompose() {
   return {
     type: COMPOSE_RESET,
   };
-};
+}
 
 export function mentionCompose(account, routerHistory) {
   return (dispatch, getState) => {
@@ -116,7 +124,7 @@ export function mentionCompose(account, routerHistory) {
 
     dispatch(openModal('COMPOSE'));
   };
-};
+}
 
 export function directCompose(account, routerHistory) {
   return (dispatch, getState) => {
@@ -127,96 +135,127 @@ export function directCompose(account, routerHistory) {
 
     dispatch(openModal('COMPOSE'));
   };
-};
+}
 
-export function handleComposeSubmit(dispatch, getState, response, status) {
+export function handleComposeSubmit(dispatch, getState, data, status) {
   if (!dispatch || !getState) return;
 
-  dispatch(insertIntoTagHistory(response.data.tags, status));
-  dispatch(submitComposeSuccess({ ...response.data }));
+  dispatch(insertIntoTagHistory(data.tags || [], status));
+  dispatch(submitComposeSuccess({ ...data }));
 
   // To make the app more responsive, immediately push the status into the columns
   const insertIfOnline = timelineId => {
     const timeline = getState().getIn(['timelines', timelineId]);
 
     if (timeline && timeline.get('items').size > 0 && timeline.getIn(['items', 0]) !== null && timeline.get('online')) {
-      let dequeueArgs = {};
+      const dequeueArgs = {};
       if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
       dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
-      dispatch(updateTimeline(timelineId, response.data.id));
+      dispatch(updateTimeline(timelineId, data.id));
     }
   };
 
-  if (response.data.visibility !== 'direct') {
+  if (data.visibility !== 'direct') {
     insertIfOnline('home');
-  } else if (response.data.visibility === 'public') {
+  } else if (data.visibility === 'public') {
     insertIfOnline('community');
     insertIfOnline('public');
   }
 }
 
-export function submitCompose(routerHistory, group) {
-  return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+const needsDescriptions = state => {
+  const media  = state.getIn(['compose', 'media_attachments']);
+  const missingDescriptionModal = getSettings(state).get('missingDescriptionModal');
 
-    const status = getState().getIn(['compose', 'text'], '');
-    const media  = getState().getIn(['compose', 'media_attachments']);
+  const hasMissing = media.filter(item => !item.get('description')).size > 0;
+
+  return missingDescriptionModal && hasMissing;
+};
+
+const validateSchedule = state => {
+  const schedule = state.getIn(['compose', 'schedule']);
+  if (!schedule) return true;
+
+  const fiveMinutesFromNow = new Date(new Date().getTime() + 300000);
+
+  return schedule.getTime() > fiveMinutesFromNow.getTime();
+};
+
+export function submitCompose(routerHistory, force = false) {
+  return function(dispatch, getState) {
+    if (!isLoggedIn(getState)) return;
+    const state = getState();
+
+    const status = state.getIn(['compose', 'text'], '');
+    const media  = state.getIn(['compose', 'media_attachments']);
+
+    if (!validateSchedule(state)) {
+      dispatch(snackbar.error(messages.scheduleError));
+      return;
+    }
 
     if ((!status || !status.length) && media.size === 0) {
+      return;
+    }
+
+    if (!force && needsDescriptions(state)) {
+      dispatch(openModal('MISSING_DESCRIPTION', {
+        onContinue: () => dispatch(submitCompose(routerHistory, true)),
+      }));
       return;
     }
 
     dispatch(submitComposeRequest());
     dispatch(closeModal());
 
-    api(getState).post('/api/v1/statuses', {
+    const idempotencyKey = state.getIn(['compose', 'idempotencyKey']);
+
+    const params = {
       status,
-      in_reply_to_id: getState().getIn(['compose', 'in_reply_to'], null),
+      in_reply_to_id: state.getIn(['compose', 'in_reply_to'], null),
       media_ids: media.map(item => item.get('id')),
-      sensitive: getState().getIn(['compose', 'sensitive']),
-      spoiler_text: getState().getIn(['compose', 'spoiler_text'], ''),
-      visibility: getState().getIn(['compose', 'privacy']),
-      content_type: getState().getIn(['compose', 'content_type']),
-      poll: getState().getIn(['compose', 'poll'], null),
-      group_id: group ? group.get('id') : null,
-    }, {
-      headers: {
-        'Idempotency-Key': getState().getIn(['compose', 'idempotencyKey']),
-      },
-    }).then(function(response) {
-      if (response.data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
+      sensitive: state.getIn(['compose', 'sensitive']),
+      spoiler_text: state.getIn(['compose', 'spoiler_text'], ''),
+      visibility: state.getIn(['compose', 'privacy']),
+      content_type: state.getIn(['compose', 'content_type']),
+      poll: state.getIn(['compose', 'poll'], null),
+      scheduled_at: state.getIn(['compose', 'schedule'], null),
+    };
+
+    dispatch(createStatus(params, idempotencyKey)).then(function(data) {
+      if (data.visibility === 'direct' && getState().getIn(['conversations', 'mounted']) <= 0 && routerHistory) {
         routerHistory.push('/messages');
       }
-      handleComposeSubmit(dispatch, getState, response, status);
+      handleComposeSubmit(dispatch, getState, data, status);
     }).catch(function(error) {
       dispatch(submitComposeFail(error));
     });
   };
-};
+}
 
 export function submitComposeRequest() {
   return {
     type: COMPOSE_SUBMIT_REQUEST,
   };
-};
+}
 
 export function submitComposeSuccess(status) {
   return {
     type: COMPOSE_SUBMIT_SUCCESS,
     status: status,
   };
-};
+}
 
 export function submitComposeFail(error) {
   return {
     type: COMPOSE_SUBMIT_FAIL,
     error: error,
   };
-};
+}
 
 export function uploadCompose(files) {
   return function(dispatch, getState) {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
     const uploadLimit = getFeatures(getState().get('instance')).attachmentLimit;
 
     const media  = getState().getIn(['compose', 'media_attachments']);
@@ -233,6 +272,8 @@ export function uploadCompose(files) {
     for (const [i, f] of Array.from(files).entries()) {
       if (media.size + i > uploadLimit - 1) break;
 
+      // FIXME: Don't define function in loop
+      /* eslint-disable no-loop-func */
       resizeImage(f).then(file => {
         const data = new FormData();
         data.append('file', file);
@@ -248,13 +289,14 @@ export function uploadCompose(files) {
           .then(({ data }) => dispatch(uploadComposeSuccess(data)));
 
       }).catch(error => dispatch(uploadComposeFail(error)));
-    };
+      /* eslint-enable no-loop-func */
+    }
   };
-};
+}
 
 export function changeUploadCompose(id, params) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(changeUploadComposeRequest());
 
@@ -264,21 +306,21 @@ export function changeUploadCompose(id, params) {
       dispatch(changeUploadComposeFail(id, error));
     });
   };
-};
+}
 
 export function changeUploadComposeRequest() {
   return {
     type: COMPOSE_UPLOAD_CHANGE_REQUEST,
     skipLoading: true,
   };
-};
+}
 export function changeUploadComposeSuccess(media) {
   return {
     type: COMPOSE_UPLOAD_CHANGE_SUCCESS,
     media: media,
     skipLoading: true,
   };
-};
+}
 
 export function changeUploadComposeFail(error) {
   return {
@@ -286,14 +328,14 @@ export function changeUploadComposeFail(error) {
     error: error,
     skipLoading: true,
   };
-};
+}
 
 export function uploadComposeRequest() {
   return {
     type: COMPOSE_UPLOAD_REQUEST,
     skipLoading: true,
   };
-};
+}
 
 export function uploadComposeProgress(loaded, total) {
   return {
@@ -301,7 +343,7 @@ export function uploadComposeProgress(loaded, total) {
     loaded: loaded,
     total: total,
   };
-};
+}
 
 export function uploadComposeSuccess(media) {
   return {
@@ -309,7 +351,7 @@ export function uploadComposeSuccess(media) {
     media: media,
     skipLoading: true,
   };
-};
+}
 
 export function uploadComposeFail(error) {
   return {
@@ -317,14 +359,14 @@ export function uploadComposeFail(error) {
     error: error,
     skipLoading: true,
   };
-};
+}
 
 export function undoUploadCompose(media_id) {
   return {
     type: COMPOSE_UPLOAD_UNDO,
     media_id: media_id,
   };
-};
+}
 
 export function clearComposeSuggestions() {
   if (cancelFetchComposeSuggestionsAccounts) {
@@ -333,7 +375,7 @@ export function clearComposeSuggestions() {
   return {
     type: COMPOSE_SUGGESTIONS_CLEAR,
   };
-};
+}
 
 const fetchComposeSuggestionsAccounts = throttle((dispatch, getState, token) => {
   if (cancelFetchComposeSuggestionsAccounts) {
@@ -381,7 +423,7 @@ export function fetchComposeSuggestions(token) {
       break;
     }
   };
-};
+}
 
 export function readyComposeSuggestionsEmojis(token, emojis) {
   return {
@@ -389,7 +431,7 @@ export function readyComposeSuggestionsEmojis(token, emojis) {
     token,
     emojis,
   };
-};
+}
 
 export function readyComposeSuggestionsAccounts(token, accounts) {
   return {
@@ -397,7 +439,7 @@ export function readyComposeSuggestionsAccounts(token, accounts) {
     token,
     accounts,
   };
-};
+}
 
 export function selectComposeSuggestion(position, token, suggestion, path) {
   return (dispatch, getState) => {
@@ -424,7 +466,7 @@ export function selectComposeSuggestion(position, token, suggestion, path) {
       path,
     });
   };
-};
+}
 
 export function updateSuggestionTags(token) {
   return {
@@ -463,46 +505,46 @@ export function mountCompose() {
   return {
     type: COMPOSE_MOUNT,
   };
-};
+}
 
 export function unmountCompose() {
   return {
     type: COMPOSE_UNMOUNT,
   };
-};
+}
 
 export function changeComposeSensitivity() {
   return {
     type: COMPOSE_SENSITIVITY_CHANGE,
   };
-};
+}
 
 export function changeComposeSpoilerness() {
   return {
     type: COMPOSE_SPOILERNESS_CHANGE,
   };
-};
+}
 
 export function changeComposeContentType(value) {
   return {
     type: COMPOSE_TYPE_CHANGE,
     value,
   };
-};
+}
 
 export function changeComposeSpoilerText(text) {
   return {
     type: COMPOSE_SPOILER_TEXT_CHANGE,
     text,
   };
-};
+}
 
 export function changeComposeVisibility(value) {
   return {
     type: COMPOSE_VISIBILITY_CHANGE,
     value,
   };
-};
+}
 
 export function insertEmojiCompose(position, emoji, needsSpace) {
   return {
@@ -511,33 +553,52 @@ export function insertEmojiCompose(position, emoji, needsSpace) {
     emoji,
     needsSpace,
   };
-};
+}
 
 export function changeComposing(value) {
   return {
     type: COMPOSE_COMPOSING_CHANGE,
     value,
   };
-};
+}
 
 export function addPoll() {
   return {
     type: COMPOSE_POLL_ADD,
   };
-};
+}
 
 export function removePoll() {
   return {
     type: COMPOSE_POLL_REMOVE,
   };
-};
+}
+
+export function addSchedule() {
+  return {
+    type: COMPOSE_SCHEDULE_ADD,
+  };
+}
+
+export function setSchedule(date) {
+  return {
+    type: COMPOSE_SCHEDULE_SET,
+    date: date,
+  };
+}
+
+export function removeSchedule() {
+  return {
+    type: COMPOSE_SCHEDULE_REMOVE,
+  };
+}
 
 export function addPollOption(title) {
   return {
     type: COMPOSE_POLL_OPTION_ADD,
     title,
   };
-};
+}
 
 export function changePollOption(index, title) {
   return {
@@ -545,14 +606,14 @@ export function changePollOption(index, title) {
     index,
     title,
   };
-};
+}
 
 export function removePollOption(index) {
   return {
     type: COMPOSE_POLL_OPTION_REMOVE,
     index,
   };
-};
+}
 
 export function changePollSettings(expiresIn, isMultiple) {
   return {
@@ -560,4 +621,4 @@ export function changePollSettings(expiresIn, isMultiple) {
     expiresIn,
     isMultiple,
   };
-};
+}

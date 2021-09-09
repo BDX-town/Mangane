@@ -15,10 +15,9 @@ import {
 import {
   changeEmail,
   changePassword,
-  fetchOAuthTokens,
-  revokeOAuthToken,
   deleteAccount,
-} from 'soapbox/actions/auth';
+} from 'soapbox/actions/security';
+import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
 import { fetchUserMfaSettings } from '../../actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
@@ -63,9 +62,8 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = state => ({
-  backup_codes: state.getIn(['auth', 'backup_codes', 'codes']),
   settings: getSettings(state),
-  tokens: state.getIn(['auth', 'tokens']),
+  tokens: state.getIn(['security', 'tokens']),
 });
 
 export default @connect(mapStateToProps)
@@ -307,7 +305,7 @@ class AuthTokenList extends ImmutablePureComponent {
 
   handleRevoke = id => {
     return e => {
-      this.props.dispatch(revokeOAuthToken(id));
+      this.props.dispatch(revokeOAuthTokenById(id));
     };
   }
 
@@ -372,7 +370,7 @@ class DeactivateAccount extends ImmutablePureComponent {
     const { password } = this.state;
     const { dispatch, intl } = this.props;
     this.setState({ isLoading: true });
-    return dispatch(deleteAccount(password)).then(() => {
+    return dispatch(deleteAccount(intl, password)).then(() => {
       //this.setState({ email: '', password: '' }); // TODO: Maybe redirect user
       dispatch(snackbar.success(intl.formatMessage(messages.deleteAccountSuccess)));
     }).catch(error => {

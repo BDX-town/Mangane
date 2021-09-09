@@ -5,24 +5,22 @@ import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
-import NotificationsCounterIcon from './notifications_counter_icon';
-import ReportsCounterIcon from './reports_counter_icon';
-import ChatsCounterIcon from './chats_counter_icon';
+import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
-import ActionBar from 'soapbox/features/compose/components/action_bar';
+import ProfileDropdown from './profile_dropdown';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Icon from '../../../components/icon';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
 });
 
-@withRouter
 class TabsBar extends React.PureComponent {
 
   static propTypes = {
@@ -32,6 +30,10 @@ class TabsBar extends React.PureComponent {
     onOpenSidebar: PropTypes.func.isRequired,
     logo: PropTypes.string,
     account: ImmutablePropTypes.map,
+    dashboardCount: PropTypes.number,
+    notificationCount: PropTypes.number,
+    chatsCount: PropTypes.number,
+    features: PropTypes.object.isRequired,
   }
 
   state = {
@@ -52,8 +54,8 @@ class TabsBar extends React.PureComponent {
   }
 
   getNavLinks() {
-    const { intl: { formatMessage }, logo, account } = this.props;
-    let links = [];
+    const { intl: { formatMessage }, logo, account, dashboardCount, notificationCount, chatsCount, features } = this.props;
+    const links = [];
     if (logo) {
       links.push(
         <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
@@ -69,26 +71,23 @@ class TabsBar extends React.PureComponent {
     if (account) {
       links.push(
         <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-          <Icon id='bell' />
-          <NotificationsCounterIcon />
+          <IconWithCounter icon='bell' count={notificationCount} />
           <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
         </NavLink>);
     }
-    if (account) {
+    if (features.chats && account) {
       links.push(
         <NavLink key='chats' className='tabs-bar__link tabs-bar__link--chats' to='/chats' data-preview-title-id='column.chats'>
-          <Icon id='comment' />
-          <ChatsCounterIcon />
+          <IconWithCounter icon='comment' count={chatsCount} />
           <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
         </NavLink>);
     }
     if (account && isStaff(account)) {
       links.push(
-        <a key='reports' className='tabs-bar__link' href='/pleroma/admin/#/reports/index' target='_blank' data-preview-title-id='tabs_bar.reports'>
-          <Icon id='gavel' />
-          <ReportsCounterIcon />
-          <span><FormattedMessage id='tabs_bar.reports' defaultMessage='Reports' /></span>
-        </a>);
+        <NavLink key='dashboard' className='tabs-bar__link' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
+          <IconWithCounter icon='tachometer' count={dashboardCount} />
+          <span><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></span>
+        </NavLink>);
     }
     links.push(
       <NavLink key='search' className='tabs-bar__link tabs-bar__link--search' to='/search' data-preview-title-id='tabs_bar.search'>
@@ -128,7 +127,7 @@ class TabsBar extends React.PureComponent {
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
                   <button className='tabs-bar__sidebar-btn' onClick={onOpenSidebar} />
-                  <ActionBar account={account} size={34} />
+                  <ProfileDropdown account={account} size={34} />
                 </div>
                 <button className='tabs-bar__button-compose button' onClick={onOpenCompose} aria-label={intl.formatMessage(messages.post)}>
                   <span>{intl.formatMessage(messages.post)}</span>
@@ -156,9 +155,17 @@ class TabsBar extends React.PureComponent {
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const reportsCount = state.getIn(['admin', 'openReports']).count();
+  const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
+  const instance = state.get('instance');
+
   return {
     account: state.getIn(['accounts', me]),
     logo: getSoapboxConfig(state).get('logo'),
+    notificationCount: state.getIn(['notifications', 'unread']),
+    chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
+    dashboardCount: reportsCount + approvalCount,
+    features: getFeatures(instance),
   };
 };
 
@@ -171,6 +178,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-export default injectIntl(
+export default withRouter(injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
-  )(TabsBar));
+  )(TabsBar)));

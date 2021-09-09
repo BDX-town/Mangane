@@ -7,8 +7,10 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 import Permalink from '../../../components/permalink';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
+import FollowRequestContainer from '../containers/follow_request_container';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+import classNames from 'classnames';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -125,6 +127,28 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderFollowRequest(notification, account, link) {
+    const { intl, unread } = this.props;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className={classNames('notification notification-follow-request focusable', { unread })} tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.follow_request', defaultMessage: '{name} has requested to follow you' }, { name: account.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='user' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.follow_request' defaultMessage='{name} has requested to follow you' values={{ name: link }} />
+            </span>
+          </div>
+
+          <FollowRequestContainer id={account.get('id')} withNote={false} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderMention(notification) {
     return (
       <StatusContainer
@@ -174,14 +198,14 @@ class Notification extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-emoji-react focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.emoji_react', defaultMessage: '{name} reacted to your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+        <div className='notification notification-emoji-react focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.pleroma:emoji_reaction', defaultMessage: '{name} reacted to your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
               <span dangerouslySetInnerHTML={{ __html: emojify(emojify(notification.get('emoji'))) }} />
             </div>
 
             <span title={notification.get('created_at')}>
-              <FormattedMessage id='notification.emoji_react' defaultMessage='{name} reacted to your post' values={{ name: link }} />
+              <FormattedMessage id='notification.pleroma:emoji_reaction' defaultMessage='{name} reacted to your post' values={{ name: link }} />
             </span>
           </div>
 
@@ -297,15 +321,42 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderMove(notification, account, targetAccount, link) {
+    const { intl } = this.props;
+
+    const targetLink = <bdi><Permalink className='notification__display-name' href={`/@${targetAccount.get('acct')}`} to={`/@${targetAccount.get('acct')}`}>{targetAccount.get('acct')}</Permalink></bdi>;
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: account.get('acct'), targetName: targetAccount.get('acct') }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__favourite-icon-wrapper'>
+              <Icon id='suitcase' fixedWidth />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.move' defaultMessage='{name} moved to {targetName}' values={{ name: link, targetName: targetLink }} />
+            </span>
+          </div>
+
+          <AccountContainer id={targetAccount.get('id')} withNote={false} hidden={this.props.hidden} />
+        </div>
+      </HotKeys>
+    );
+  }
+
   render() {
     const { notification } = this.props;
     const account          = notification.get('account');
+    const targetAccount    = notification.get('target');
     const displayNameHtml  = { __html: account.get('display_name_html') };
     const link             = <bdi><Permalink className='notification__display-name' href={`/@${account.get('acct')}`} title={account.get('acct')} to={`/@${account.get('acct')}`} dangerouslySetInnerHTML={displayNameHtml} /></bdi>;
 
     switch(notification.get('type')) {
     case 'follow':
       return this.renderFollow(notification, account, link);
+    case 'follow_request':
+      return this.renderFollowRequest(notification, account, link);
     case 'mention':
       return this.renderMention(notification);
     case 'favourite':
@@ -314,6 +365,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderReblog(notification, link);
     case 'poll':
       return this.renderPoll(notification);
+    case 'move':
+      return this.renderMove(notification, account, targetAccount, link);
     case 'pleroma:emoji_reaction':
       return this.renderEmojiReact(notification, link);
     case 'pleroma:chat_mention':

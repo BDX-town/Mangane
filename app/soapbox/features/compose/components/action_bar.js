@@ -34,12 +34,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
   onOpenHotkeys() {
     dispatch(openModal('HOTKEYS'));
   },
   onClickLogOut(e) {
-    dispatch(logOut());
+    dispatch(logOut(intl));
     e.preventDefault();
   },
 });
@@ -67,7 +67,7 @@ class ActionBar extends React.PureComponent {
     const { intl, onClickLogOut, meUsername, isStaff } = this.props;
     const size = this.props.size || 16;
 
-    let menu = [];
+    const menu = [];
 
     menu.push({ text: intl.formatMessage(messages.profile), to: `/@${meUsername}` });
     menu.push({ text: intl.formatMessage(messages.lists), to: '/lists' });

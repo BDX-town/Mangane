@@ -28,6 +28,75 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "You are about to deactivate @{acct}. Deactivating a user is a reversible action.",
+        "id": "confirmations.admin.deactivate_user.message"
+      },
+      {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "confirmations.admin.deactivate_user.confirm"
+      },
+      {
+        "defaultMessage": "@{acct} was deactivated",
+        "id": "admin.users.user_deactivated_message"
+      },
+      {
+        "defaultMessage": "You are about to delete @{acct}. THIS IS A DESTRUCTIVE ACTION THAT CANNOT BE UNDONE.",
+        "id": "confirmations.admin.delete_user.message"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "confirmations.admin.delete_user.confirm"
+      },
+      {
+        "defaultMessage": "I understand that I am about to delete a local user.",
+        "id": "confirmations.admin.delete_local_user.checkbox"
+      },
+      {
+        "defaultMessage": "@{acct} was deleted",
+        "id": "admin.users.user_deleted_message"
+      },
+      {
+        "defaultMessage": "You are about to delete a post by @{acct}. This action cannot be undone.",
+        "id": "confirmations.admin.delete_status.message"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "confirmations.admin.delete_status.confirm"
+      },
+      {
+        "defaultMessage": "Post by @{acct} was deleted",
+        "id": "admin.statuses.status_deleted_message"
+      },
+      {
+        "defaultMessage": "You are about to mark a post by @{acct} sensitive.",
+        "id": "confirmations.admin.mark_status_sensitive.message"
+      },
+      {
+        "defaultMessage": "You are about to mark a post by @{acct} not sensitive.",
+        "id": "confirmations.admin.mark_status_not_sensitive.message"
+      },
+      {
+        "defaultMessage": "Mark post sensitive",
+        "id": "confirmations.admin.mark_status_sensitive.confirm"
+      },
+      {
+        "defaultMessage": "Mark post not sensitive",
+        "id": "confirmations.admin.mark_status_not_sensitive.confirm"
+      },
+      {
+        "defaultMessage": "Post by @{acct} was marked sensitive",
+        "id": "admin.statuses.status_marked_message_sensitive"
+      },
+      {
+        "defaultMessage": "Post by @{acct} was marked not sensitive",
+        "id": "admin.statuses.status_marked_message_not_sensitive"
+      }
+    ],
+    "path": "app/soapbox/actions/moderation.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "{name} mentioned you",
         "id": "notification.mention"
       },
@@ -393,6 +462,14 @@
       {
         "defaultMessage": "Donate",
         "id": "donate"
+      },
+      {
+        "defaultMessage": "Server information",
+        "id": "column.info"
+      },
+      {
+        "defaultMessage": "Add an existing account",
+        "id": "profile_dropdown.add_account"
       }
     ],
     "path": "app/soapbox/components/sidebar_menu.json"
@@ -514,6 +591,26 @@
       {
         "defaultMessage": "Remove post from group",
         "id": "status.remove_post_from_group"
+      },
+      {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "admin.users.actions.deactivate_user"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "admin.users.actions.delete_user"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "admin.statuses.actions.delete_status"
+      },
+      {
+        "defaultMessage": "Mark post sensitive",
+        "id": "admin.statuses.actions.mark_status_sensitive"
+      },
+      {
+        "defaultMessage": "Mark post not sensitive",
+        "id": "admin.statuses.actions.mark_status_not_sensitive"
       }
     ],
     "path": "app/soapbox/components/status_action_bar.json"
@@ -693,6 +790,14 @@
         "id": "confirmations.block.block_and_report"
       },
       {
+        "defaultMessage": "@{acct} was verified",
+        "id": "admin.users.user_verified_message"
+      },
+      {
+        "defaultMessage": "@{acct} was unverified",
+        "id": "admin.users.user_unverified_message"
+      },
+      {
         "defaultMessage": "Are you sure you want to unfollow {name}?",
         "id": "confirmations.unfollow.message"
       },
@@ -835,6 +940,22 @@
         "id": "account.add_or_remove_from_list"
       },
       {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "admin.users.actions.deactivate_user"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "admin.users.actions.delete_user"
+      },
+      {
+        "defaultMessage": "Verify @{name}",
+        "id": "admin.users.actions.verify_user"
+      },
+      {
+        "defaultMessage": "Unverify @{name}",
+        "id": "admin.users.actions.unverify_user"
+      },
+      {
         "defaultMessage": "Follows you",
         "id": "account.follows_you"
       },
@@ -876,6 +997,174 @@
       }
     ],
     "path": "app/soapbox/features/account/components/header.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Awaiting Approval",
+        "id": "column.admin.awaiting_approval"
+      },
+      {
+        "defaultMessage": "There is nobody waiting for approval. When a new user signs up, you can review them here.",
+        "id": "admin.awaiting_approval.empty_message"
+      },
+      {
+        "defaultMessage": "{acct} was approved!",
+        "id": "admin.awaiting_approval.approved_message"
+      },
+      {
+        "defaultMessage": "{acct} was rejected.",
+        "id": "admin.awaiting_approval.rejected_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/awaiting_approval.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Dashboard",
+        "id": "admin_nav.dashboard"
+      },
+      {
+        "defaultMessage": "Reports",
+        "id": "admin_nav.reports"
+      },
+      {
+        "defaultMessage": "Awaiting Approval",
+        "id": "admin_nav.awaiting_approval"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/admin_nav.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Settings saved!",
+        "id": "admin.dashboard.settings_saved"
+      },
+      {
+        "defaultMessage": "Registrations",
+        "id": "admin.dashboard.registration_mode_label"
+      },
+      {
+        "defaultMessage": "Open",
+        "id": "admin.dashboard.registration_mode.open_label"
+      },
+      {
+        "defaultMessage": "Anyone can join.",
+        "id": "admin.dashboard.registration_mode.open_hint"
+      },
+      {
+        "defaultMessage": "Approval Required",
+        "id": "admin.dashboard.registration_mode.approval_label"
+      },
+      {
+        "defaultMessage": "Users can sign up, but their account only gets activated when an admin approves it.",
+        "id": "admin.dashboard.registration_mode.approval_hint"
+      },
+      {
+        "defaultMessage": "Closed",
+        "id": "admin.dashboard.registration_mode.closed_label"
+      },
+      {
+        "defaultMessage": "Nobody can sign up. You can still invite people.",
+        "id": "admin.dashboard.registration_mode.closed_hint"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/registration_mode_picker.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "View post",
+        "id": "admin.reports.actions.view_status"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "admin.statuses.actions.delete_status"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/report_status.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Report on @{name} was closed",
+        "id": "admin.reports.report_closed_message"
+      },
+      {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "admin.users.actions.deactivate_user"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "admin.users.actions.delete_user"
+      },
+      {
+        "defaultMessage": "Report on {acct}",
+        "id": "admin.reports.report_title"
+      },
+      {
+        "defaultMessage": "Close",
+        "id": "admin.reports.actions.close"
+      }
+    ],
+    "path": "app/soapbox/features/admin/components/report.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Dashboard",
+        "id": "column.admin.dashboard"
+      },
+      {
+        "defaultMessage": "total users",
+        "id": "admin.dashcounters.user_count_label"
+      },
+      {
+        "defaultMessage": "posts",
+        "id": "admin.dashcounters.status_count_label"
+      },
+      {
+        "defaultMessage": "peers",
+        "id": "admin.dashcounters.domain_count_label"
+      },
+      {
+        "defaultMessage": "Software",
+        "id": "admin.dashwidgets.software_header"
+      }
+    ],
+    "path": "app/soapbox/features/admin/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Moderation Log",
+        "id": "column.admin.moderation_log"
+      },
+      {
+        "defaultMessage": "You have not performed any moderation actions yet. When you do, a history will be shown here.",
+        "id": "admin.moderation_log.empty_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/moderation_log.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Reports",
+        "id": "column.admin.reports"
+      },
+      {
+        "defaultMessage": "Moderation Log",
+        "id": "column.admin.reports.menu.moderation_log"
+      },
+      {
+        "defaultMessage": "There are no open reports. If a user gets reported, they will show up here.",
+        "id": "admin.reports.empty_message"
+      }
+    ],
+    "path": "app/soapbox/features/admin/reports.json"
   },
   {
     "descriptors": [
@@ -972,6 +1261,31 @@
       }
     ],
     "path": "app/soapbox/features/auth_login/components/otp_auth_form.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Backups",
+        "id": "column.backups"
+      },
+      {
+        "defaultMessage": "Create backup",
+        "id": "backups.actions.create"
+      },
+      {
+        "defaultMessage": "No backups found. {action}",
+        "id": "backups.empty_message"
+      },
+      {
+        "defaultMessage": "Create one now?",
+        "id": "backups.empty_message.action"
+      },
+      {
+        "defaultMessage": "Pending",
+        "id": "backups.pending"
+      }
+    ],
+    "path": "app/soapbox/features/backups/index.json"
   },
   {
     "descriptors": [
@@ -1105,75 +1419,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Profile",
-        "id": "account.profile"
-      },
-      {
-        "defaultMessage": "Messages",
-        "id": "navigation_bar.messages"
-      },
-      {
-        "defaultMessage": "Lists",
-        "id": "navigation_bar.lists"
-      },
-      {
-        "defaultMessage": "Bookmarks",
-        "id": "navigation_bar.bookmarks"
-      },
-      {
-        "defaultMessage": "Preferences",
-        "id": "navigation_bar.preferences"
-      },
-      {
-        "defaultMessage": "Follow requests",
-        "id": "navigation_bar.follow_requests"
-      },
-      {
-        "defaultMessage": "Blocked users",
-        "id": "navigation_bar.blocks"
-      },
-      {
-        "defaultMessage": "Hidden domains",
-        "id": "navigation_bar.domain_blocks"
-      },
-      {
-        "defaultMessage": "Muted users",
-        "id": "navigation_bar.mutes"
-      },
-      {
-        "defaultMessage": "Muted words",
-        "id": "navigation_bar.filters"
-      },
-      {
-        "defaultMessage": "Admin settings",
-        "id": "navigation_bar.admin_settings"
-      },
-      {
-        "defaultMessage": "Soapbox config",
-        "id": "navigation_bar.soapbox_config"
-      },
-      {
-        "defaultMessage": "Import data",
-        "id": "navigation_bar.import_data"
-      },
-      {
-        "defaultMessage": "Security",
-        "id": "navigation_bar.security"
-      },
-      {
-        "defaultMessage": "Logout",
-        "id": "navigation_bar.logout"
-      },
-      {
-        "defaultMessage": "Hotkeys",
-        "id": "navigation_bar.keyboard_shortcuts"
-      }
-    ],
-    "path": "app/soapbox/features/compose/components/action_bar.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "What's on your mind?",
         "id": "compose_form.placeholder"
       },
@@ -1252,15 +1497,6 @@
       }
     ],
     "path": "app/soapbox/features/compose/components/emoji_picker_dropdown.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Edit profile",
-        "id": "navigation_bar.edit_profile"
-      }
-    ],
-    "path": "app/soapbox/features/compose/components/navigation_bar.json"
   },
   {
     "descriptors": [
@@ -1514,43 +1750,6 @@
       }
     ],
     "path": "app/soapbox/features/compose/containers/warning_container.json"
-  },
-  {
-    "descriptors": [
-      {
-        "defaultMessage": "Getting started",
-        "id": "getting_started.heading"
-      },
-      {
-        "defaultMessage": "Home",
-        "id": "tabs_bar.home"
-      },
-      {
-        "defaultMessage": "Notifications",
-        "id": "tabs_bar.notifications"
-      },
-      {
-        "defaultMessage": "Federated timeline",
-        "id": "navigation_bar.public_timeline"
-      },
-      {
-        "defaultMessage": "Local timeline",
-        "id": "navigation_bar.community_timeline"
-      },
-      {
-        "defaultMessage": "Preferences",
-        "id": "navigation_bar.preferences"
-      },
-      {
-        "defaultMessage": "Logout",
-        "id": "navigation_bar.logout"
-      },
-      {
-        "defaultMessage": "Compose new post",
-        "id": "navigation_bar.compose"
-      }
-    ],
-    "path": "app/soapbox/features/compose/index.json"
   },
   {
     "descriptors": [
@@ -1845,75 +2044,6 @@
   {
     "descriptors": [
       {
-        "defaultMessage": "Home",
-        "id": "tabs_bar.home"
-      },
-      {
-        "defaultMessage": "Notifications",
-        "id": "tabs_bar.notifications"
-      },
-      {
-        "defaultMessage": "Settings",
-        "id": "column_subheading.settings"
-      },
-      {
-        "defaultMessage": "Direct messages",
-        "id": "navigation_bar.direct"
-      },
-      {
-        "defaultMessage": "Preferences",
-        "id": "navigation_bar.preferences"
-      },
-      {
-        "defaultMessage": "Follow requests",
-        "id": "navigation_bar.follow_requests"
-      },
-      {
-        "defaultMessage": "Likes",
-        "id": "navigation_bar.favourites"
-      },
-      {
-        "defaultMessage": "Blocked users",
-        "id": "navigation_bar.blocks"
-      },
-      {
-        "defaultMessage": "Hidden domains",
-        "id": "navigation_bar.domain_blocks"
-      },
-      {
-        "defaultMessage": "Muted users",
-        "id": "navigation_bar.mutes"
-      },
-      {
-        "defaultMessage": "Pinned posts",
-        "id": "navigation_bar.pins"
-      },
-      {
-        "defaultMessage": "Lists",
-        "id": "navigation_bar.lists"
-      },
-      {
-        "defaultMessage": "Discover",
-        "id": "navigation_bar.discover"
-      },
-      {
-        "defaultMessage": "Personal",
-        "id": "navigation_bar.personal"
-      },
-      {
-        "defaultMessage": "Security",
-        "id": "navigation_bar.security"
-      },
-      {
-        "defaultMessage": "Getting started",
-        "id": "getting_started.heading"
-      }
-    ],
-    "path": "app/soapbox/features/getting_started/index.json"
-  },
-  {
-    "descriptors": [
-      {
         "defaultMessage": "Enter a new group title",
         "id": "groups.form.title"
       },
@@ -2130,6 +2260,18 @@
       {
         "defaultMessage": "Import blocks",
         "id": "import_data.actions.import_blocks"
+      },
+      {
+        "defaultMessage": "Mutes",
+        "id": "import_data.mutes_label"
+      },
+      {
+        "defaultMessage": "CSV file containing a list of muted accounts",
+        "id": "import_data.hints.mutes"
+      },
+      {
+        "defaultMessage": "Import mutes",
+        "id": "import_data.actions.import_mutes"
       }
     ],
     "path": "app/soapbox/features/import_data/index.json"
@@ -2163,6 +2305,18 @@
       {
         "defaultMessage": "Terms of Service",
         "id": "registration.tos"
+      },
+      {
+        "defaultMessage": "Close",
+        "id": "registration.confirmation_modal.close"
+      },
+      {
+        "defaultMessage": "Please check your inbox at {email} for confirmation instructions. You will need to verify your email address to continue.",
+        "id": "confirmations.register.needs_confirmation"
+      },
+      {
+        "defaultMessage": "Your account will be manually approved by an admin. Please be patient while we review your details.",
+        "id": "confirmations.register.needs_approval"
       },
       {
         "defaultMessage": "Registrations Closed",
@@ -2425,8 +2579,16 @@
         "id": "notifications.column_settings.follow"
       },
       {
+        "defaultMessage": "New follow requests:",
+        "id": "notifications.column_settings.follow_request"
+      },
+      {
         "defaultMessage": "Likes:",
         "id": "notifications.column_settings.favourite"
+      },
+      {
+        "defaultMessage": "Emoji reacts:",
+        "id": "notifications.column_settings.emoji_react"
       },
       {
         "defaultMessage": "Mentions:",
@@ -2466,6 +2628,10 @@
         "id": "notifications.filter.follows"
       },
       {
+        "defaultMessage": "Emoji reacts:",
+        "id": "notifications.filter.emoji_reacts"
+      },
+      {
         "defaultMessage": "All",
         "id": "notifications.filter.all"
       }
@@ -2475,8 +2641,25 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Authorize",
+        "id": "follow_request.authorize"
+      },
+      {
+        "defaultMessage": "Reject",
+        "id": "follow_request.reject"
+      }
+    ],
+    "path": "app/soapbox/features/notifications/components/follow_request.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "{name} followed you",
         "id": "notification.follow"
+      },
+      {
+        "defaultMessage": "{name} has requested to follow you",
+        "id": "notification.follow_request"
       },
       {
         "defaultMessage": "{name} sent you a message",
@@ -2484,7 +2667,7 @@
       },
       {
         "defaultMessage": "{name} reacted to your post",
-        "id": "notification.emoji_react"
+        "id": "notification.pleroma:emoji_reaction"
       },
       {
         "defaultMessage": "{name} liked your post",
@@ -2547,8 +2730,24 @@
         "id": "column.preferences"
       },
       {
+        "defaultMessage": "Hide media marked as sensitive",
+        "id": "preferences.fields.display_media.default"
+      },
+      {
+        "defaultMessage": "Always hide media",
+        "id": "preferences.fields.display_media.hide_all"
+      },
+      {
+        "defaultMessage": "Always show media",
+        "id": "preferences.fields.display_media.show_all"
+      },
+      {
         "defaultMessage": "Language",
         "id": "preferences.fields.language_label"
+      },
+      {
+        "defaultMessage": "Media display",
+        "id": "preferences.fields.media_display_label"
       },
       {
         "defaultMessage": "Post privacy",
@@ -2577,6 +2776,22 @@
       {
         "defaultMessage": "Only show to followers",
         "id": "preferences.hints.privacy_followers_only"
+      },
+      {
+        "defaultMessage": "Post format",
+        "id": "preferences.fields.content_type_label"
+      },
+      {
+        "defaultMessage": "Plain text",
+        "id": "preferences.options.content_type_plaintext"
+      },
+      {
+        "defaultMessage": "Markdown",
+        "id": "preferences.options.content_type_markdown"
+      },
+      {
+        "defaultMessage": "Warning: experimental!",
+        "id": "preferences.hints.content_type_markdown"
       },
       {
         "defaultMessage": "Show confirmation dialog before unfollowing someone",
@@ -2704,6 +2919,23 @@
       }
     ],
     "path": "app/soapbox/features/reblogs/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Federated timeline",
+        "id": "column.remote"
+      },
+      {
+        "defaultMessage": "You are viewing the timeline of {instance}.",
+        "id": "remote_timeline.filter_message"
+      },
+      {
+        "defaultMessage": "There is nothing here! Manually follow users from {instance} to fill it up.",
+        "id": "empty_column.remote"
+      }
+    ],
+    "path": "app/soapbox/features/remote_timeline/index.json"
   },
   {
     "descriptors": [
@@ -2923,6 +3155,40 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Server information",
+        "id": "column.info"
+      }
+    ],
+    "path": "app/soapbox/features/server_info/index.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Select icon",
+        "id": "icon_button.label"
+      },
+      {
+        "defaultMessage": "Search...",
+        "id": "emoji_button.search"
+      },
+      {
+        "defaultMessage": "No icons!! (╯°□°）╯︵ ┻━┻",
+        "id": "icon_button.not_found"
+      },
+      {
+        "defaultMessage": "Icons",
+        "id": "icon_button.icons"
+      },
+      {
+        "defaultMessage": "Search results",
+        "id": "emoji_button.search_results"
+      }
+    ],
+    "path": "app/soapbox/features/soapbox_config/components/icon_picker_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Soapbox config",
         "id": "column.soapbox_config"
       },
@@ -2963,6 +3229,14 @@
         "id": "soapbox_config.raw_json_hint"
       },
       {
+        "defaultMessage": "Allow verified users to edit their own display name.",
+        "id": "soapbox_config.verified_can_edit_name_label"
+      },
+      {
+        "defaultMessage": "Display domain (eg @user@domain) for local accounts.",
+        "id": "soapbox_config.display_fqn_label"
+      },
+      {
         "defaultMessage": "Brand color",
         "id": "soapbox_config.fields.brand_color_label"
       },
@@ -2983,7 +3257,7 @@
         "id": "soapbox_config.fields.promo_panel_fields_label"
       },
       {
-        "defaultMessage": "You can have custom defined links displayed on the left panel of the timelines page.",
+        "defaultMessage": "You can have custom defined links displayed on the right panel of the timelines page.",
         "id": "soapbox_config.hints.promo_panel_fields"
       },
       {
@@ -3110,6 +3384,26 @@
       {
         "defaultMessage": "Remove bookmark",
         "id": "status.unbookmark"
+      },
+      {
+        "defaultMessage": "Deactivate @{name}",
+        "id": "admin.users.actions.deactivate_user"
+      },
+      {
+        "defaultMessage": "Delete @{name}",
+        "id": "admin.users.actions.delete_user"
+      },
+      {
+        "defaultMessage": "Delete post",
+        "id": "admin.statuses.actions.delete_status"
+      },
+      {
+        "defaultMessage": "Mark post sensitive",
+        "id": "admin.statuses.actions.mark_status_sensitive"
+      },
+      {
+        "defaultMessage": "Mark post not sensitive",
+        "id": "admin.statuses.actions.mark_status_not_sensitive"
       }
     ],
     "path": "app/soapbox/features/status/components/action_bar.json"
@@ -3189,6 +3483,10 @@
       {
         "defaultMessage": "Follow",
         "id": "account.follow"
+      },
+      {
+        "defaultMessage": "Remote follow",
+        "id": "account.remote_follow"
       },
       {
         "defaultMessage": "Awaiting approval. Click to cancel follow request",
@@ -3328,6 +3626,10 @@
       {
         "defaultMessage": "Bookmarks",
         "id": "column.bookmarks"
+      },
+      {
+        "defaultMessage": "Follow requests",
+        "id": "navigation_bar.follow_requests"
       }
     ],
     "path": "app/soapbox/features/ui/components/features_panel.json"
@@ -3460,6 +3762,38 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Blocks",
+        "id": "navigation_bar.blocks"
+      },
+      {
+        "defaultMessage": "Mutes",
+        "id": "navigation_bar.mutes"
+      },
+      {
+        "defaultMessage": "Filters",
+        "id": "navigation_bar.filters"
+      },
+      {
+        "defaultMessage": "Domain blocks",
+        "id": "navigation_bar.domain_blocks"
+      },
+      {
+        "defaultMessage": "Follow requests",
+        "id": "navigation_bar.follow_requests"
+      },
+      {
+        "defaultMessage": "AdminFE",
+        "id": "navigation_bar.admin_settings"
+      },
+      {
+        "defaultMessage": "Soapbox config",
+        "id": "navigation_bar.soapbox_config"
+      },
+      {
+        "defaultMessage": "Import data",
+        "id": "navigation_bar.import_data"
+      },
+      {
         "defaultMessage": "Hotkeys",
         "id": "navigation_bar.keyboard_shortcuts"
       },
@@ -3523,6 +3857,19 @@
   {
     "descriptors": [
       {
+        "defaultMessage": "Add an existing account",
+        "id": "profile_dropdown.add_account"
+      },
+      {
+        "defaultMessage": "Log out @{acct}",
+        "id": "profile_dropdown.logout"
+      }
+    ],
+    "path": "app/soapbox/features/ui/components/profile_dropdown.json"
+  },
+  {
+    "descriptors": [
+      {
         "defaultMessage": "Ownership of this link was checked on {date}",
         "id": "account.link_verified_on"
       },
@@ -3581,7 +3928,7 @@
         "id": "report.hint"
       },
       {
-        "defaultMessage": "The account is from another server. Send an anonymized copy of the report there as well?",
+        "defaultMessage": "The account is from another server. Send a copy of the report there as well?",
         "id": "report.forward_hint"
       },
       {
@@ -3635,8 +3982,8 @@
         "id": "tabs_bar.chats"
       },
       {
-        "defaultMessage": "Reports",
-        "id": "tabs_bar.reports"
+        "defaultMessage": "Dashboard",
+        "id": "tabs_bar.dashboard"
       },
       {
         "defaultMessage": "Search",

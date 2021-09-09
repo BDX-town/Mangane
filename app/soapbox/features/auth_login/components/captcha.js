@@ -40,7 +40,7 @@ class CaptchaField extends React.Component {
     if (refreshInterval) {
       const refresh = setInterval(this.fetchCaptcha, refreshInterval);
       this.setState({ refresh });
-    };
+    }
   }
 
   endRefresh = () => {
@@ -81,15 +81,14 @@ class CaptchaField extends React.Component {
 
   render() {
     const { captcha } = this.state;
-    const { onChange } = this.props;
-    const { onClick } = this.props;
+    const { onChange, onClick, ...props } = this.props;
 
     switch(captcha.get('type')) {
     case 'native':
       return (
         <div>
           <p>{<FormattedMessage id='registration.captcha.hint' defaultMessage='Click the image to get a new captcha' />}</p>
-          <NativeCaptchaField captcha={captcha} onChange={onChange} onClick={onClick} />
+          <NativeCaptchaField captcha={captcha} onChange={onChange} onClick={onClick} {...props} />
         </div>
       );
     case 'none':
@@ -100,12 +99,13 @@ class CaptchaField extends React.Component {
 
 }
 
-export const NativeCaptchaField = ({ captcha, onChange, onClick }) => (
+export const NativeCaptchaField = ({ captcha, onChange, onClick, name, value }) => (
   <div className='captcha' >
     <img alt='captcha' src={captcha.get('url')} onClick={onClick} />
     <TextInput
       placeholder='Enter the pictured text'
-      name='captcha_solution'
+      name={name}
+      value={value}
       autoComplete='off'
       onChange={onChange}
       required
@@ -117,4 +117,6 @@ NativeCaptchaField.propTypes = {
   captcha: ImmutablePropTypes.map.isRequired,
   onChange: PropTypes.func,
   onClick: PropTypes.func,
+  name: PropTypes.string,
+  value: PropTypes.string,
 };

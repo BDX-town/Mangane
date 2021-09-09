@@ -7,7 +7,7 @@ import {
 // I've customized them.
 export const ALLOWED_EMOJI = [
   '👍',
-  '❤',
+  '❤️',
   '😆',
   '😮',
   '😢',
@@ -22,7 +22,7 @@ export const mergeEmoji = emojiReacts => (
   emojiReacts // TODO: Merge similar emoji
 );
 
-export const mergeEmojiFavourites = (emojiReacts, favouritesCount, favourited) => {
+export const mergeEmojiFavourites = (emojiReacts = ImmutableList(), favouritesCount, favourited) => {
   if (!favouritesCount) return emojiReacts;
   const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '👍');
   if (likeIndex > -1) {
@@ -75,11 +75,12 @@ export const reduceEmoji = (emojiReacts, favouritesCount, favourited, allowedEmo
     emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
-export const getReactForStatus = status => {
+export const getReactForStatus = (status, allowedEmoji=ALLOWED_EMOJI) => {
   return reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
-    status.get('favourites_count'),
+    status.get('favourites_count', 0),
     status.get('favourited'),
+    allowedEmoji,
   ).filter(e => e.get('me') === true)
     .getIn([0, 'name']);
 };

@@ -1,93 +1,107 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { FormattedMessage, injectIntl } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Hashtag from '../../../components/hashtag';
-import Icon from 'soapbox/components/icon';
-import WhoToFollowPanel from '../../ui/components/who_to_follow_panel';
-import { getFeatures } from 'soapbox/utils/features';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
+import FilterBar from '../../search/components/filter_bar';
+import LoadMore from '../../../components/load_more';
+import classNames from 'classnames';
 
-const mapStateToProps = state => ({
-  features: getFeatures(state.get('instance')),
-});
-
-export default @connect(mapStateToProps)
-@injectIntl
-class SearchResults extends ImmutablePureComponent {
+export default class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
+    value: ImmutablePropTypes.string,
     results: ImmutablePropTypes.map.isRequired,
-    features: PropTypes.object,
-    intl: PropTypes.object.isRequired,
+    submitted: PropTypes.bool,
+    expandSearch: PropTypes.func.isRequired,
+    selectedFilter: PropTypes.string.isRequired,
+    selectFilter: PropTypes.func.isRequired,
   };
 
-  state = {
-    isSmallScreen: (window.innerWidth <= 895),
-  }
+  handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
+
+  handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
   render() {
-    const { results, features } = this.props;
-    const { isSmallScreen } = this.state;
+    const { value, results, submitted, selectedFilter } = this.props;
 
-    if (results.isEmpty() && isSmallScreen) {
+    if (submitted && results.isEmpty()) {
       return (
         <div className='search-results'>
-          {features.suggestions && <WhoToFollowPanel />}
+          <LoadingIndicator />
         </div>
       );
     }
 
-    let accounts, statuses, hashtags;
-    let count = 0;
+    let searchResults;
+    let hasMore = false;
 
-    if (results.get('accounts') && results.get('accounts').size > 0) {
-      count   += results.get('accounts').size;
-      accounts = (
-        <div className='search-results__section'>
-          <h5><Icon id='users' fixedWidth /><FormattedMessage id='search_results.accounts' defaultMessage='People' /></h5>
+    if (selectedFilter === 'accounts' && results.get('accounts')) {
+      hasMore = results.get('accountsHasMore');
 
+      searchResults = results.get('accounts').size > 0 ? (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
           {results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />)}
         </div>
-      );
-    }
-
-    if (results.get('statuses') && results.get('statuses').size > 0) {
-      count   += results.get('statuses').size;
-      statuses = (
-        <div className='search-results__section'>
-          <h5><Icon id='quote-right' fixedWidth /><FormattedMessage id='search_results.statuses' defaultMessage='Posts' /></h5>
-
-          {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
+      ) : (
+        <div className='empty-column-indicator'>
+          <FormattedMessage
+            id='empty_column.search.accounts'
+            defaultMessage='There are no people results for "{term}"'
+            values={{ term: value }}
+          />
         </div>
       );
     }
 
-    if (results.get('hashtags') && results.get('hashtags').size > 0) {
-      count += results.get('hashtags').size;
-      hashtags = (
-        <div className='search-results__section'>
-          <h5><Icon id='hashtag' fixedWidth /><FormattedMessage id='search_results.hashtags' defaultMessage='Hashtags' /></h5>
+    if (selectedFilter === 'statuses' && results.get('statuses')) {
+      hasMore = results.get('statusesHasMore');
 
+      searchResults = results.get('statuses').size > 0 ? (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
+          {results.get('statuses').map(statusId => <StatusContainer key={statusId} id={statusId} />)}
+        </div>
+      ) : (
+        <div className='empty-column-indicator'>
+          <FormattedMessage
+            id='empty_column.search.statuses'
+            defaultMessage='There are no posts results for "{term}"'
+            values={{ term: value }}
+          />
+        </div>
+      );
+    }
+
+    if (selectedFilter === 'hashtags' && results.get('hashtags')) {
+      hasMore = results.get('hashtagsHasMore');
+
+      searchResults = results.get('hashtags').size > 0 ? (
+        <div className={classNames('search-results__section', { 'has-more': hasMore })}>
           {results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />)}
+        </div>
+      ) : (
+        <div className='empty-column-indicator'>
+          <FormattedMessage
+            id='empty_column.search.hashtags'
+            defaultMessage='There are no hashtags results for "{term}"'
+            values={{ term: value }}
+          />
         </div>
       );
     }
 
     return (
-      <div className='search-results'>
-        <div className='search-results__header'>
-          <Icon id='search' fixedWidth />
-          <FormattedMessage id='search_results.total' defaultMessage='{count, number} {count, plural, one {result} other {results}}' values={{ count }} />
-        </div>
+      <>
+        {submitted && <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />}
 
-        {accounts}
-        {statuses}
-        {hashtags}
-      </div>
+        {searchResults}
+
+        {hasMore && <LoadMore visible onClick={this.handleLoadMore} />}
+      </>
     );
   }
 

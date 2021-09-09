@@ -1,0 +1,106 @@
+.crypto-donate {
+  padding-bottom: 10px;
+}
+
+.crypto-address {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 24px;
+    margin-right: 10px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &__actions {
+    margin-left: auto;
+    display: flex;
+
+    a {
+      color: var(--primary-text-color--faint);
+      margin-left: 10px;
+    }
+  }
+
+  &__note {
+    margin-bottom: 10px;
+  }
+
+  &__qrcode {
+    margin-bottom: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__address {
+    margin-top: auto;
+  }
+}
+
+.site-wallet {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.crypto-donate-modal {
+  background: var(--foreground-color);
+  border-radius: 8px;
+  padding-bottom: 13px;
+}
+
+.profile-info-panel-content__fields {
+  .crypto-address {
+    padding: 10px 0;
+  }
+}
+
+.crypto-donate-panel {
+  &__message {
+    margin: 20px 0;
+    margin-top: -12px;
+    font-size: 14px;
+  }
+
+  .site-wallet {
+    display: block;
+    padding-bottom: 10px;
+  }
+
+  .crypto-address {
+    padding: 0;
+    margin: 20px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &--has-more {
+    .site-wallet {
+      padding-bottom: 0;
+    }
+  }
+}

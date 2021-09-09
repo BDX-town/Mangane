@@ -26,13 +26,13 @@ class CSVImporter extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch, action } = this.props;
+    const { dispatch, action, intl } = this.props;
 
-    let params = new FormData();
+    const params = new FormData();
     params.append('list', this.state.file);
 
     this.setState({ isLoading: true });
-    dispatch(action(params)).then(() => {
+    dispatch(action(intl, params)).then(() => {
       this.setState({ isLoading: false });
     }).catch((error) => {
       this.setState({ isLoading: false });

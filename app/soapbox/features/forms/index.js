@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
@@ -236,7 +237,7 @@ export class SelectDropdown extends ImmutablePureComponent {
       <option key={item} value={item}>{items[item]}</option>
     ));
 
-    const selectElem = <div class='select-wrapper'><select {...props}>{optionElems}</select></div>;
+    const selectElem = <div className='select-wrapper'><select {...props}>{optionElems}</select></div>;
 
     return label ? (
       <LabelInputContainer label={label} hint={hint}>{selectElem}</LabelInputContainer>
@@ -264,3 +265,38 @@ export const FileChooserLogo = props => (
 FileChooserLogo.defaultProps = {
   accept: ['image/svg', 'image/png'],
 };
+
+
+export class CopyableInput extends ImmutablePureComponent {
+
+  static propTypes = {
+    value: PropTypes.string,
+  }
+
+  setInputRef = c => {
+    this.input = c;
+  }
+
+  handleCopyClick = e => {
+    if (!this.input) return;
+
+    this.input.select();
+    this.input.setSelectionRange(0, 99999);
+
+    document.execCommand('copy');
+  }
+
+  render() {
+    const { value } = this.props;
+
+    return (
+      <div className='copyable-input'>
+        <input ref={this.setInputRef} type='text' value={value} readOnly />
+        <button onClick={this.handleCopyClick}>
+          <FormattedMessage id='forms.copy' defaultMessage='Copy' />
+        </button>
+      </div>
+    );
+  }
+
+}

@@ -7,6 +7,41 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import Blurhash from 'soapbox/components/blurhash';
+
+const MIMETYPE_ICONS = {
+  'application/x-freearc': 'file-archive-o',
+  'application/x-bzip': 'file-archive-o',
+  'application/x-bzip2': 'file-archive-o',
+  'application/gzip': 'file-archive-o',
+  'application/vnd.rar': 'file-archive-o',
+  'application/x-tar': 'file-archive-o',
+  'application/zip': 'file-archive-o',
+  'application/x-7z-compressed': 'file-archive-o',
+  'application/x-csh': 'file-code-o',
+  'application/html': 'file-code-o',
+  'text/javascript': 'file-code-o',
+  'application/json': 'file-code-o',
+  'application/ld+json': 'file-code-o',
+  'application/x-httpd-php': 'file-code-o',
+  'application/x-sh': 'file-code-o',
+  'application/xhtml+xml': 'file-code-o',
+  'application/xml': 'file-code-o',
+  'application/epub+zip': 'file-epub-o',
+  'application/vnd.oasis.opendocument.spreadsheet': 'file-excel-o',
+  'application/vnd.ms-excel': 'file-excel-o',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'file-excel-o',
+  'application/pdf': 'file-pdf-o',
+  'application/vnd.oasis.opendocument.presentation': 'file-powerpoint-o',
+  'application/vnd.ms-powerpoint': 'file-powerpoint-o',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'file-powerpoint-o',
+  'text/plain': 'file-text-o',
+  'application/rtf': 'file-text-o',
+  'application/msword': 'file-word-o',
+  'application/x-abiword': 'file-word-o',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'file-word-o',
+  'application/vnd.oasis.opendocument.text': 'file-word-o',
+};
 
 const messages = defineMessages({
   description: { id: 'upload_form.description', defaultMessage: 'Describe for the visually impaired' },
@@ -27,7 +62,6 @@ class Upload extends ImmutablePureComponent {
     onDescriptionChange: PropTypes.func.isRequired,
     onOpenFocalPoint: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    features: PropTypes.object,
   };
 
   state = {
@@ -87,8 +121,12 @@ class Upload extends ImmutablePureComponent {
     }
   }
 
+  handleOpenModal = () => {
+    this.props.onOpenModal(this.props.media);
+  }
+
   render() {
-    const { intl, media } = this.props;
+    const { intl, media, descriptionLimit } = this.props;
     const active          = this.state.hovered || this.state.focused;
     const description     = this.state.dirtyDescription || (this.state.dirtyDescription !== '' && media.get('description')) || '';
     const focusX = media.getIn(['meta', 'focus', 'x']);
@@ -96,21 +134,27 @@ class Upload extends ImmutablePureComponent {
     const x = ((focusX /  2) + .5) * 100;
     const y = ((focusY / -2) + .5) * 100;
     const mediaType = media.get('type');
+    const uploadIcon = mediaType === 'unknown' && (
+      <Icon
+        id={MIMETYPE_ICONS[media.getIn(['pleroma', 'mime_type'])] || 'paperclip'}
+      />
+    );
 
     return (
       <div className='compose-form__upload' tabIndex='0' onMouseEnter={this.handleMouseEnter} onMouseLeave={this.handleMouseLeave} onClick={this.handleClick} role='button'>
+        <Blurhash hash={media.get('blurhash')} className='media-gallery__preview' />
         <Motion defaultStyle={{ scale: 0.8 }} style={{ scale: spring(1, { stiffness: 180, damping: 12 }) }}>
           {({ scale }) => (
             <div
               className={classNames('compose-form__upload-thumbnail',  `${mediaType}`)}
               style={{
                 transform: `scale(${scale})`,
-                backgroundImage: (mediaType !== 'video' && mediaType !== 'audio' ? `url(${media.get('preview_url')})` : null),
+                backgroundImage: mediaType === 'image' ? `url(${media.get('preview_url')})`: null,
                 backgroundPosition: `${x}% ${y}%` }}
             >
               <div className={classNames('compose-form__upload__actions', { active })}>
                 <button className='icon-button' onClick={this.handleUndoClick}><Icon id='times' /> <FormattedMessage id='upload_form.undo' defaultMessage='Delete' /></button>
-                {this.props.features.focalPoint && media.get('type') === 'image' && <button className='icon-button' onClick={this.handleFocalPointClick}><Icon id='crosshairs' /> <FormattedMessage id='upload_form.focus' defaultMessage='Change preview' /></button>}
+                {mediaType !== 'unknown' && <button className='icon-button' onClick={this.handleOpenModal}><Icon id='search-plus' /> <FormattedMessage id='upload_form.preview' defaultMessage='Preview' /></button>}
               </div>
 
               <div className={classNames('compose-form__upload-description', { active })}>
@@ -120,13 +164,22 @@ class Upload extends ImmutablePureComponent {
                   <textarea
                     placeholder={intl.formatMessage(messages.description)}
                     value={description}
-                    maxLength={420}
+                    maxLength={descriptionLimit}
                     onFocus={this.handleInputFocus}
                     onChange={this.handleInputChange}
                     onBlur={this.handleInputBlur}
                     onKeyDown={this.handleKeyDown}
                   />
                 </label>
+              </div>
+
+              <div className='compose-form__upload-preview'>
+                {mediaType === 'video' && (
+                  <video autoPlay playsInline muted loop>
+                    <source src={media.get('preview_url')} />
+                  </video>
+                )}
+                {uploadIcon}
               </div>
             </div>
           )}

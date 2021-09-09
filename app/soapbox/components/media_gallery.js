@@ -8,13 +8,14 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { isIOS } from '../is_mobile';
 import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
-import { decode } from 'blurhash';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 import { Map as ImmutableMap } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
+import Blurhash from 'soapbox/components/blurhash';
 
+const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
 
 const messages = defineMessages({
@@ -24,6 +25,17 @@ const messages = defineMessages({
 const mapStateToItemProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),
 });
+
+const withinLimits = aspectRatio => {
+  return aspectRatio >= minimumAspectRatio && aspectRatio <= maximumAspectRatio;
+};
+
+const shouldLetterbox = attachment => {
+  const aspectRatio = attachment.getIn(['meta', 'original', 'aspect']);
+  if (!aspectRatio) return true;
+
+  return !withinLimits(aspectRatio);
+};
 
 @connect(mapStateToItemProps)
 class Item extends React.PureComponent {
@@ -38,6 +50,8 @@ class Item extends React.PureComponent {
     visible: PropTypes.bool.isRequired,
     dimensions: PropTypes.object,
     autoPlayGif: PropTypes.bool,
+    last: PropTypes.bool,
+    total: PropTypes.number,
   };
 
   static defaultProps = {
@@ -88,40 +102,22 @@ class Item extends React.PureComponent {
     e.stopPropagation();
   }
 
-  componentDidMount() {
-    if (this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.attachment.get('blurhash') !== this.props.attachment.get('blurhash') && this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.attachment.get('blurhash');
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
-    }
-  }
-
-  setCanvasRef = c => {
-    this.canvas = c;
-  }
-
   handleImageLoad = () => {
     this.setState({ loaded: true });
   }
 
+  handleVideoHover = ({ target: video }) => {
+    video.playbackRate = 3.0;
+    video.play();
+  }
+
+  handleVideoLeave = ({ target: video }) => {
+    video.pause();
+    video.currentTime = 0;
+  }
+
   render() {
-    const { attachment, standalone, visible, dimensions, autoPlayGif } = this.props;
+    const { attachment, standalone, visible, dimensions, autoPlayGif, last, total } = this.props;
 
     let width  = 100;
     let height = '100%';
@@ -150,20 +146,21 @@ class Item extends React.PureComponent {
       return (
         <div className={classNames('media-gallery__item', { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
           <a className='media-gallery__item-thumbnail' href={attachment.get('remote_url')} target='_blank' style={{ cursor: 'pointer' }}>
-            <canvas width={32} height={32} ref={this.setCanvasRef} className='media-gallery__preview' />
+            <Blurhash hash={attachment.get('blurhash')} className='media-gallery__preview' />
             <span className='media-gallery__item__icons'><Icon id='file' /></span>
             <span className='media-gallery__filename__label'>{filename}</span>
           </a>
         </div>
       );
     } else if (attachment.get('type') === 'image') {
-      const previewUrl   = attachment.get('preview_url');
+      const previewUrl = attachment.get('preview_url');
 
-      const originalUrl   = attachment.get('url');
+      const originalUrl = attachment.get('url');
+      const letterboxed = shouldLetterbox(attachment);
 
       thumbnail = (
         <a
-          className='media-gallery__item-thumbnail'
+          className={classNames('media-gallery__item-thumbnail', { letterboxed })}
           href={attachment.get('remote_url') || originalUrl}
           onClick={this.handleClick}
           target='_blank'
@@ -172,7 +169,7 @@ class Item extends React.PureComponent {
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
-      let conditionalAttributes = {};
+      const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';
       }
@@ -217,11 +214,43 @@ class Item extends React.PureComponent {
           <span className='media-gallery__file-extension__label'>{fileExtension}</span>
         </a>
       );
+    } else if (attachment.get('type') === 'video') {
+      const ext = attachment.get('url').split('.').pop().toUpperCase();
+      thumbnail = (
+        <a
+          className={classNames('media-gallery__item-thumbnail')}
+          href={attachment.get('url')}
+          onClick={this.handleClick}
+          target='_blank'
+          alt={attachment.get('description')}
+          title={attachment.get('description')}
+        >
+          <video
+            muted
+            loop
+            onMouseOver={this.handleVideoHover}
+            onMouseOut={this.handleVideoLeave}
+          >
+            <source src={attachment.get('url')} />
+          </video>
+          <span className='media-gallery__file-extension__label'>{ext}</span>
+        </a>
+      );
     }
 
     return (
       <div className={classNames('media-gallery__item', `media-gallery__item--${attachment.get('type')}`, { standalone })} key={attachment.get('id')} style={{ position, float, left, top, right, bottom, height, width: `${width}%` }}>
-        <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && this.state.loaded })} />
+        {last && total > ATTACHMENT_LIMIT && (
+          <div className='media-gallery__item-overflow'>
+            +{total - ATTACHMENT_LIMIT + 1}
+          </div>
+        )}
+        <Blurhash
+          hash={attachment.get('blurhash')}
+          className={classNames('media-gallery__preview', {
+            'media-gallery__preview--hidden': visible && this.state.loaded,
+          })}
+        />
         {visible && thumbnail}
       </div>
     );
@@ -296,7 +325,7 @@ class MediaGallery extends React.PureComponent {
   getSizeDataSingle = () => {
     const { media, defaultWidth } = this.props;
     const width = this.state.width || defaultWidth;
-    const aspectRatio = media.getIn([0, 'meta', 'small', 'aspect']);
+    const aspectRatio = media.getIn([0, 'meta', 'original', 'aspect']);
 
     const getHeight = () => {
       if (!aspectRatio) return width*9/16;
@@ -323,7 +352,7 @@ class MediaGallery extends React.PureComponent {
     let itemsDimensions = [];
 
     const ratios = Array(size).fill().map((_, i) =>
-      media.getIn([i, 'meta', 'small', 'aspect']),
+      media.getIn([i, 'meta', 'original', 'aspect']),
     );
 
     const [ar1, ar2, ar3, ar4] = ratios;
@@ -534,9 +563,8 @@ class MediaGallery extends React.PureComponent {
     const { media, intl, sensitive } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
-    let children, spoilerButton;
 
-    children = media.take(4).map((attachment, i) => (
+    const children = media.take(ATTACHMENT_LIMIT).map((attachment, i) => (
       <Item
         key={attachment.get('id')}
         onClick={this.handleClick}
@@ -546,8 +574,12 @@ class MediaGallery extends React.PureComponent {
         displayWidth={sizeData.get('width')}
         visible={visible}
         dimensions={sizeData.get('itemsDimensions')[i]}
+        last={i === ATTACHMENT_LIMIT - 1}
+        total={media.size}
       />
     ));
+
+    let spoilerButton;
 
     if (visible) {
       spoilerButton = <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='eye-slash' overlay onClick={this.handleOpen} />;

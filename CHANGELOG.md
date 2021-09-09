@@ -4,6 +4,89 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2021-07-02
+### Changed
+- Layout: show right sidebar on all pages.
+- Statuses: improve display of multiple rich media items.
+- Statuses: let media be cropped less (when dimensions are provided).
+- Profile metadata: show only 4 by default, let items be added and removed.
+
+### Fixed
+- Performance: fixed various performance issues, especially related to the post composer and chats.
+- Composer: fixed upload form style on light theme.
+- Composer: fixed emoji search when a custom emoji was invalid.
+- Composer: fixed uploaded images sometimes being turned sideways.
+- Chats: fix "Message" button on intermediate screen sizes.
+- Chats: filter out invalid chats.
+- Notifications: fixed notification counter on Brave Android (and possibly others).
+- Localization: fixed hardcoded strings.
+- Lists: fixed frontend issues related to lists (there are still backend issues).
+- Modals: fixed unauthorized modal style.
+- Hotkeys: remove unused hotkeys, fix broken ones.
+- Sidebar: fix alignment of icons.
+- Various iOS fixes.
+
+### Added
+- Statuses: added greentext support, configurable site-wide by admin.
+- Statuses: added Mastodon's audio player.
+- Statuses: indicate > 4 attachments.
+- Statuses: display tombstones in place of deleted posts (to not break threads).
+- Composer: added blurhash to upload form.
+- Localization: support localization of About pages, Promo Panel items, and Link Footer items.
+- Localization: display labels for default emoji reactions.
+- Alerts: return detailed error for 502.
+- Profile: support hidden stats.
+- Profile: support blocking notifications from people you don't follow.
+- Notifications: support account move notification.
+- Timelines: let Fediverse explanation box be dismissed.
+- Admin: optimistic user deletion.
+- Admin: add monthly active users count to dashboard.
+- Admin: add user retention % to dashboard.
+
+## [1.2.3] - 2021-04-18
+### Changed
+- Twemoji now bundled
+
+### Fixed
+- Redirect user after registration
+- Delete invalid auth users from browser
+- Uploaded files ending in .blob
+
+## [1.2.2] - 2021-04-13
+### Fixed
+- verify_credentials infinite loop bug
+- Emoji reacts not being sent through notifications
+- Contrast of Polls
+
+### Added
+- Configurable FQN for local accounts
+- Polish translations
+
+## [1.2.1] - 2021-04-06
+### Fixed
+- "View context" button on videos
+- Login page successfully redirects Home
+
+## [1.2.0] - 2021-04-02
+### Added
+- Remote follow button
+- Display "Bot" tag for bot users
+- Ability to view remote timelines
+- Admin interface
+- Integrated moderation features
+- Multiple account support
+- Verification (blue checkmark)
+- Better support for follow requests
+- Improve feedback when registering a new account
+- Ability to import Mutes from CSV
+- Add server information page
+- "Follow" button is more responsive
+- Portuguese translations
+
+### Fixed
+- Heart reaction works on Pleroma >= 2.3.0
+- Pagination of Blocks and Mutes
+
 ## [1.1.0] - 2020-10-05
 ### Fixed
 - General user interface and ease-of-use improvements for both mobile and desktop

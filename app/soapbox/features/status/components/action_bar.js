@@ -7,9 +7,11 @@ import IconButton from '../../../components/icon_button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
-import { isStaff } from 'soapbox/utils/accounts';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+import { isUserTouching } from 'soapbox/is_mobile';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -36,13 +38,30 @@ const messages = defineMessages({
   copy: { id: 'status.copy', defaultMessage: 'Copy link to post' },
   bookmark: { id: 'status.bookmark', defaultMessage: 'Bookmark' },
   unbookmark: { id: 'status.unbookmark', defaultMessage: 'Remove bookmark' },
+  deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
+  deleteUser: { id: 'admin.users.actions.delete_user', defaultMessage: 'Delete @{name}' },
+  deleteStatus: { id: 'admin.statuses.actions.delete_status', defaultMessage: 'Delete post' },
+  markStatusSensitive: { id: 'admin.statuses.actions.mark_status_sensitive', defaultMessage: 'Mark post sensitive' },
+  markStatusNotSensitive: { id: 'admin.statuses.actions.mark_status_not_sensitive', defaultMessage: 'Mark post not sensitive' },
+  reactionLike: { id: 'status.reactions.like', defaultMessage: 'Like' },
+  reactionHeart: { id: 'status.reactions.heart', defaultMessage: 'Love' },
+  reactionLaughing: { id: 'status.reactions.laughing', defaultMessage: 'Haha' },
+  reactionOpenMouth: { id: 'status.reactions.open_mouth', defaultMessage: 'Wow' },
+  reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
+  reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
+  emojiPickerExpand: { id: 'status.reactions_expand', defaultMessage: 'Select emoji' },
 });
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
+  const instance = state.get('instance');
+
   return {
     me,
-    isStaff: isStaff(state.getIn(['accounts', me])),
+    isStaff: account ? isStaff(account) : false,
+    isAdmin: account ? isAdmin(account) : false,
+    features: getFeatures(instance),
   };
 };
 
@@ -74,10 +93,20 @@ class ActionBar extends React.PureComponent {
     onReport: PropTypes.func,
     onPin: PropTypes.func,
     onEmbed: PropTypes.func,
+    onDeactivateUser: PropTypes.func,
+    onDeleteUser: PropTypes.func,
+    onDeleteStatus: PropTypes.func,
+    onToggleStatusSensitivity: PropTypes.func,
     intl: PropTypes.object.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     me: SoapboxPropTypes.me,
     isStaff: PropTypes.bool.isRequired,
+    isAdmin: PropTypes.bool.isRequired,
+    allowedEmoji: ImmutablePropTypes.list,
+    emojiSelectorFocused: PropTypes.bool,
+    handleEmojiSelectorExpand: PropTypes.func.isRequired,
+    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -86,6 +115,7 @@ class ActionBar extends React.PureComponent {
 
   state = {
     emojiSelectorVisible: false,
+    emojiSelectorFocused: false,
   }
 
   handleReplyClick = () => {
@@ -119,19 +149,27 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleLikeButtonHover = e => {
-    if (!this.isMobile()) this.setState({ emojiSelectorVisible: true });
+    const { features } = this.props;
+
+    if (features.emojiReacts && !isUserTouching()) {
+      this.setState({ emojiSelectorVisible: true });
+    }
   }
 
   handleLikeButtonLeave = e => {
-    if (!this.isMobile()) this.setState({ emojiSelectorVisible: false });
+    const { features } = this.props;
+
+    if (features.emojiReacts && !isUserTouching()) {
+      this.setState({ emojiSelectorVisible: false });
+    }
   }
 
   handleLikeButtonClick = e => {
-    const meEmojiReact = getReactForStatus(this.props.status) || '👍';
-    if (this.isMobile()) {
+    const { features } = this.props;
+    const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
+
+    if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
       } else {
@@ -150,8 +188,14 @@ class ActionBar extends React.PureComponent {
       } else {
         this.props.onOpenUnauthorizedModal();
       }
-      this.setState({ emojiSelectorVisible: false });
+      this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     };
+  }
+
+  handleHotkeyEmoji = () => {
+    const { emojiSelectorVisible } = this.state;
+
+    this.setState({ emojiSelectorVisible: !emojiSelectorVisible });
   }
 
   handleDeleteClick = () => {
@@ -214,10 +258,26 @@ class ActionBar extends React.PureComponent {
       textarea.select();
       document.execCommand('copy');
     } catch (e) {
-
+      // Do nothing
     } finally {
       document.body.removeChild(textarea);
     }
+  }
+
+  handleDeactivateUser = () => {
+    this.props.onDeactivateUser(this.props.status);
+  }
+
+  handleDeleteUser = () => {
+    this.props.onDeleteUser(this.props.status);
+  }
+
+  handleToggleStatusSensitivity = () => {
+    this.props.onToggleStatusSensitivity(this.props.status);
+  }
+
+  handleDeleteStatus = () => {
+    this.props.onDeleteStatus(this.props.status);
   }
 
   setRef = c => {
@@ -227,19 +287,28 @@ class ActionBar extends React.PureComponent {
   componentDidMount() {
     document.addEventListener('click', e => {
       if (this.node && !this.node.contains(e.target))
-        this.setState({ emojiSelectorVisible: false });
+        this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     });
   }
 
   render() {
-    const { status, intl, me, isStaff } = this.props;
+    const { status, intl, me, isStaff, isAdmin, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorExpand, handleEmojiSelectorUnfocus, features } = this.props;
     const { emojiSelectorVisible } = this.state;
+    const ownAccount = status.getIn(['account', 'id']) === me;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
     const mutingConversation = status.get('muted');
-    const meEmojiReact = getReactForStatus(status);
+    const meEmojiReact = getReactForStatus(status, allowedEmoji);
+    const meEmojiTitle = intl.formatMessage({
+      '👍': messages.reactionLike,
+      '❤️': messages.reactionHeart,
+      '😆': messages.reactionLaughing,
+      '😮': messages.reactionOpenMouth,
+      '😢': messages.reactionCry,
+      '😩': messages.reactionWeary,
+    }[meEmojiReact] || messages.favourite);
 
-    let menu = [];
+    const menu = [];
 
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
@@ -250,7 +319,7 @@ class ActionBar extends React.PureComponent {
 
     menu.push(null);
 
-    if (me === status.getIn(['account', 'id'])) {
+    if (ownAccount) {
       if (publicStatus) {
         menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
       } else {
@@ -271,10 +340,22 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
       menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
-      if (isStaff) {
-        menu.push(null);
+    }
+
+    if (isStaff) {
+      menu.push(null);
+
+      if (isAdmin) {
         menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-        // menu.push({ text: intl.formatMessage(messages.admin_status), href: `/admin/accounts/${status.getIn(['account', 'id'])}/statuses/${status.get('id')}` });
+        menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+      }
+
+      menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
+
+      if (!ownAccount) {
+        menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
+        menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
+        menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
       }
     }
 
@@ -293,7 +374,8 @@ class ActionBar extends React.PureComponent {
     if (status.get('visibility') === 'direct') reblogIcon = 'envelope';
     else if (status.get('visibility') === 'private') reblogIcon = 'lock';
 
-    let reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+    const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+
 
     return (
       <div className='detailed-status__action-bar'>
@@ -321,16 +403,29 @@ class ActionBar extends React.PureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
           ref={this.setRef}
         >
-          <EmojiSelector onReact={this.handleReactClick} visible={emojiSelectorVisible} />
+          <EmojiSelector
+            onReact={this.handleReactClick}
+            visible={features.emojiReacts && emojiSelectorVisible}
+            focused={emojiSelectorFocused}
+            onUnfocus={handleEmojiSelectorUnfocus}
+          />
           <IconButton
             className='star-icon'
             animate
             active={Boolean(meEmojiReact)}
-            title={intl.formatMessage(messages.favourite)}
+            title={meEmojiTitle}
             icon='thumbs-up'
             emoji={meEmojiReact}
-            text={intl.formatMessage(messages.favourite)}
+            text={meEmojiTitle}
             onClick={this.handleLikeButtonClick}
+          />
+          <IconButton
+            className='emoji-picker-expand'
+            animate
+            title={intl.formatMessage(messages.emojiPickerExpand)}
+            icon='caret-down'
+            onKeyUp={handleEmojiSelectorExpand}
+            onHover
           />
         </div>
         {shareButton}
@@ -344,4 +439,5 @@ class ActionBar extends React.PureComponent {
 
 }
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ActionBar));
+export default injectIntl(
+  connect(mapStateToProps, mapDispatchToProps)(ActionBar));

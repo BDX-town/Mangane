@@ -32,6 +32,9 @@ import {
   COMPOSE_RESET,
   COMPOSE_POLL_ADD,
   COMPOSE_POLL_REMOVE,
+  COMPOSE_SCHEDULE_ADD,
+  COMPOSE_SCHEDULE_SET,
+  COMPOSE_SCHEDULE_REMOVE,
   COMPOSE_POLL_OPTION_ADD,
   COMPOSE_POLL_OPTION_CHANGE,
   COMPOSE_POLL_OPTION_REMOVE,
@@ -52,7 +55,7 @@ const initialState = ImmutableMap({
   sensitive: false,
   spoiler: false,
   spoiler_text: '',
-  content_type: 'text/markdown',
+  content_type: 'text/plain',
   privacy: 'public',
   text: '',
   focusDate: null,
@@ -69,6 +72,7 @@ const initialState = ImmutableMap({
   suggestions: ImmutableList(),
   default_privacy: 'public',
   default_sensitive: false,
+  default_content_type: 'text/plain',
   resetFileKey: Math.floor((Math.random() * 0x10000)),
   idempotencyKey: uuid(),
   tagHistory: ImmutableList(),
@@ -89,7 +93,7 @@ function statusToTextMentions(state, status, account) {
     .delete(account.get('acct'))
     .map(m => `@${m} `)
     .join('');
-};
+}
 
 function clearAll(state) {
   return state.withMutations(map => {
@@ -97,7 +101,7 @@ function clearAll(state) {
     map.set('text', '');
     map.set('spoiler', false);
     map.set('spoiler_text', '');
-    map.set('content_type', 'text/markdown');
+    map.set('content_type', state.get('default_content_type'));
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
@@ -106,8 +110,9 @@ function clearAll(state) {
     map.set('media_attachments', ImmutableList());
     map.set('poll', null);
     map.set('idempotencyKey', uuid());
+    map.set('schedule', null);
   });
-};
+}
 
 function appendMedia(state, media) {
   const prevSize = state.get('media_attachments').size;
@@ -122,7 +127,7 @@ function appendMedia(state, media) {
       map.set('sensitive', true);
     }
   });
-};
+}
 
 function removeMedia(state, mediaId) {
   const prevSize = state.get('media_attachments').size;
@@ -135,7 +140,7 @@ function removeMedia(state, mediaId) {
       map.set('sensitive', false);
     }
   });
-};
+}
 
 const insertSuggestion = (state, position, token, completion, path) => {
   return state.withMutations(map => {
@@ -192,8 +197,52 @@ const expandMentions = status => {
   return fragment.innerHTML;
 };
 
+const getAccountSettings = account => {
+  return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
+};
+
+const importAccount = (state, account) => {
+  account = fromJS(account);
+  const settings = getAccountSettings(account);
+
+  const defaultPrivacy = settings.get('defaultPrivacy', 'public');
+  const defaultContentType = settings.get('defaultContentType', 'text/plain');
+
+  return state.merge({
+    default_privacy: defaultPrivacy,
+    privacy: defaultPrivacy,
+    default_content_type: defaultContentType,
+    content_type: defaultContentType,
+    tagHistory: ImmutableList(tagHistory.get(account.get('id'))),
+  });
+};
+
+const updateAccount = (state, account) => {
+  account = fromJS(account);
+  const settings = getAccountSettings(account);
+
+  const defaultPrivacy = settings.get('defaultPrivacy');
+  const defaultContentType = settings.get('defaultContentType');
+
+  return state.withMutations(state => {
+    if (defaultPrivacy) state.set('default_privacy', defaultPrivacy);
+    if (defaultContentType) state.set('default_content_type', defaultContentType);
+  });
+};
+
+const updateSetting = (state, path, value) => {
+  const pathString = path.join(',');
+  switch (pathString) {
+  case 'defaultPrivacy':
+    return state.set('default_privacy', value).set('privacy', value);
+  case 'defaultContentType':
+    return state.set('default_content_type', value).set('content_type', value);
+  default:
+    return state;
+  }
+};
+
 export default function compose(state = initialState, action) {
-  let me, defaultPrivacy;
   switch(action.type) {
   case COMPOSE_MOUNT:
     return state.set('mounted', state.get('mounted') + 1);
@@ -246,7 +295,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
-      map.set('content_type', 'text/markdown');
+      map.set('content_type', state.get('default_content_type'));
 
       if (action.status.get('spoiler_text', '').length > 0) {
         map.set('spoiler', true);
@@ -331,7 +380,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
-      map.set('content_type', 'text/markdown');
+      map.set('content_type', action.status.get('content_type'));
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);
@@ -353,6 +402,12 @@ export default function compose(state = initialState, action) {
     return state.set('poll', initialPoll);
   case COMPOSE_POLL_REMOVE:
     return state.set('poll', null);
+  case COMPOSE_SCHEDULE_ADD:
+    return state.set('schedule', new Date());
+  case COMPOSE_SCHEDULE_SET:
+    return state.set('schedule', action.date);
+  case COMPOSE_SCHEDULE_REMOVE:
+    return state.set('schedule', null);
   case COMPOSE_POLL_OPTION_ADD:
     return state.updateIn(['poll', 'options'], options => options.push(action.title));
   case COMPOSE_POLL_OPTION_CHANGE:
@@ -362,24 +417,12 @@ export default function compose(state = initialState, action) {
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
   case ME_FETCH_SUCCESS:
-    me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy'], 'public');
-    return state.merge({
-      default_privacy: defaultPrivacy,
-      privacy: defaultPrivacy,
-      tagHistory: ImmutableList(tagHistory.get(action.me.id)),
-    });
+    return importAccount(state, action.me);
   case ME_PATCH_SUCCESS:
-    me = fromJS(action.me);
-    defaultPrivacy = me.getIn(['pleroma', 'settings_store', FE_NAME, 'defaultPrivacy']);
-    if (!defaultPrivacy) return state;
-    return state.set('default_privacy', defaultPrivacy);
+    return updateAccount(state, action.me);
   case SETTING_CHANGE:
-    const pathString = action.path.join(',');
-    if (pathString === 'defaultPrivacy')
-      return state.set('default_privacy', action.value).set('privacy', action.value);
-    return state;
+    return updateSetting(state, action.path, action.value);
   default:
     return state;
   }
-};
+}

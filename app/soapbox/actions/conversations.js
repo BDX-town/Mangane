@@ -4,6 +4,7 @@ import {
   importFetchedStatuses,
   importFetchedStatus,
 } from './importer';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const CONVERSATIONS_MOUNT   = 'CONVERSATIONS_MOUNT';
 export const CONVERSATIONS_UNMOUNT = 'CONVERSATIONS_UNMOUNT';
@@ -24,7 +25,7 @@ export const unmountConversations = () => ({
 });
 
 export const markConversationRead = conversationId => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch({
     type: CONVERSATIONS_READ,
@@ -35,7 +36,7 @@ export const markConversationRead = conversationId => (dispatch, getState) => {
 };
 
 export const expandConversations = ({ maxId } = {}) => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch(expandConversationsRequest());
 

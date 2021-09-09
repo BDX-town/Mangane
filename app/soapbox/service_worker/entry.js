@@ -1,9 +1,4 @@
-// import { freeStorage, storageFreeable } from '../storage/modifier';
 import './web_push_notifications';
-
-// function openSystemCache() {
-//   return caches.open('soapbox-system');
-// }
 
 function openWebCache() {
   return caches.open('soapbox-web');
@@ -12,9 +7,6 @@ function openWebCache() {
 function fetchRoot() {
   return fetch('/', { credentials: 'include', redirect: 'manual' });
 }
-
-// const firefox = navigator.userAgent.match(/Firefox\/(\d+)/);
-// const invalidOnlyIfCached = firefox && firefox[1] < 60;
 
 // Cause a new version of a registered Service Worker to replace an existing one
 // that is already installed, and replace the currently active worker on open pages.
@@ -65,7 +57,9 @@ self.addEventListener('fetch', function(event) {
     url.pathname.startsWith('/avatars') ||
     url.pathname.startsWith('/authorize_follow') ||
     url.pathname.startsWith('/media_proxy') ||
-    url.pathname.startsWith('/relationships')) {
+    url.pathname.startsWith('/relationships') ||
+    url.pathname.startsWith('/main/ostatus') ||
+    url.pathname.startsWith('/ostatus_subscribe')) {
     //non-webapp routes
   } else if (url.pathname.startsWith('/')) {
     // : TODO : if is /web
@@ -79,26 +73,5 @@ self.addEventListener('fetch', function(event) {
         return response;
       },
       () => asyncCache.then(cache => cache.match('/'))));
-  } /* else if (storageFreeable && (ATTACHMENT_HOST ? url.host === ATTACHMENT_HOST : url.pathname.startsWith('/system/'))) {
-    event.respondWith(openSystemCache().then(cache => {
-      return cache.match(event.request.url).then(cached => {
-        if (cached === undefined) {
-          const asyncResponse = invalidOnlyIfCached && event.request.cache === 'only-if-cached' ?
-            fetch(event.request, { cache: 'no-cache' }) : fetch(event.request);
-
-          return asyncResponse.then(response => {
-            if (response.ok) {
-              cache
-                .put(event.request.url, response.clone())
-                .catch(()=>{}).then(freeStorage()).catch();
-            }
-
-            return response;
-          });
-        }
-
-        return cached;
-      });
-    }));
-  } */
+  }
 });

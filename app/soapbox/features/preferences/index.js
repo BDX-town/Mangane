@@ -4,7 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { changeSetting } from 'soapbox/actions/settings';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -15,7 +15,7 @@ import {
 } from 'soapbox/features/forms';
 import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 
-const languages = {
+export const languages = {
   en: 'English',
   ar: 'العربية',
   ast: 'Asturianu',
@@ -79,10 +79,13 @@ const languages = {
 
 const messages = defineMessages({
   heading: { id: 'column.preferences', defaultMessage: 'Preferences' },
+  display_media_default: { id: 'preferences.fields.display_media.default', defaultMessage: 'Hide media marked as sensitive' },
+  display_media_hide_all: { id: 'preferences.fields.display_media.hide_all', defaultMessage: 'Always hide media' },
+  display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
 });
 
 const mapStateToProps = state => ({
-  settings: state.get('settings'),
+  settings: getSettings(state),
 });
 
 export default @connect(mapStateToProps)
@@ -106,8 +109,19 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultPrivacy'], e.target.value));
   }
 
+  onDefaultContentTypeChange = e => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(['defaultContentType'], e.target.value));
+  }
+
   render() {
     const { settings, intl } = this.props;
+
+    const displayMediaOptions = {
+      default: intl.formatMessage(messages.display_media_default),
+      hide_all: intl.formatMessage(messages.display_media_hide_all),
+      show_all: intl.formatMessage(messages.display_media_show_all),
+    };
 
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -118,6 +132,15 @@ class Preferences extends ImmutablePureComponent {
               items={languages}
               defaultValue={settings.get('locale')}
               onChange={this.onSelectChange(['locale'])}
+            />
+          </FieldsGroup>
+
+          <FieldsGroup>
+            <SelectDropdown
+              label={<FormattedMessage id='preferences.fields.media_display_label' defaultMessage='Media display' />}
+              items={displayMediaOptions}
+              defaultValue={settings.get('displayMedia')}
+              onChange={this.onSelectChange(['displayMedia'])}
             />
           </FieldsGroup>
 
@@ -148,6 +171,25 @@ class Preferences extends ImmutablePureComponent {
           </FieldsGroup>
 
           <FieldsGroup>
+            <RadioGroup
+              label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
+              onChange={this.onDefaultContentTypeChange}
+            >
+              <RadioItem
+                label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
+                checked={settings.get('defaultContentType') === 'text/plain'}
+                value='text/plain'
+              />
+              <RadioItem
+                label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
+                hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
+                checked={settings.get('defaultContentType') === 'text/markdown'}
+                value='text/markdown'
+              />
+            </RadioGroup>
+          </FieldsGroup>
+
+          <FieldsGroup>
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.unfollow_modal_label' defaultMessage='Show confirmation dialog before unfollowing someone' />}
               path={['unfollowModal']}
@@ -159,6 +201,10 @@ class Preferences extends ImmutablePureComponent {
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.delete_modal_label' defaultMessage='Show confirmation dialog before deleting a post' />}
               path={['deleteModal']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.missing_description_modal_label' defaultMessage='Show confirmation dialog before sending a post without media descriptions' />}
+              path={['missingDescriptionModal']}
             />
           </FieldsGroup>
 
@@ -174,6 +220,10 @@ class Preferences extends ImmutablePureComponent {
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}
               path={['reduceMotion']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}
+              path={['underlineLinks']}
             />
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.system_font_label' defaultMessage="Use system's default font" />}

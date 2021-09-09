@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
@@ -6,9 +7,10 @@ import Column from '../ui/components/column';
 import {
   importFollows,
   importBlocks,
-  // importMutes,
+  importMutes,
 } from 'soapbox/actions/import_data';
 import CSVImporter from './components/csv_importer';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },
@@ -27,28 +29,33 @@ const blockMessages = defineMessages({
   submit: { id: 'import_data.actions.import_blocks', defaultMessage: 'Import blocks' },
 });
 
-// Not yet supported by Pleroma stable, in develop branch
-// const muteMessages = defineMessages({
-//   input_label: { id: 'import_data.mutes_label', defaultMessage: 'Mutes' },
-//   input_hint: { id: 'import_data.hints.mutes', defaultMessage: 'CSV file containing a list of muted accounts' },
-//   submit: { id: 'import_data.actions.import_mutes', defaultMessage: 'Import mutes' },
-// });
+const muteMessages = defineMessages({
+  input_label: { id: 'import_data.mutes_label', defaultMessage: 'Mutes' },
+  input_hint: { id: 'import_data.hints.mutes', defaultMessage: 'CSV file containing a list of muted accounts' },
+  submit: { id: 'import_data.actions.import_mutes', defaultMessage: 'Import mutes' },
+});
 
-export default @injectIntl
+const mapStateToProps = state => ({
+  features: getFeatures(state.get('instance')),
+});
+
+export default @connect(mapStateToProps)
+@injectIntl
 class ImportData extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    features: PropTypes.object,
   };
 
   render() {
-    const { intl } = this.props;
+    const { intl, features } = this.props;
 
     return (
       <Column icon='cloud-upload' heading={intl.formatMessage(messages.heading)} backBtnSlim>
         <CSVImporter action={importFollows} messages={followMessages} />
         <CSVImporter action={importBlocks} messages={blockMessages} />
-        {/* <CSVImporter action={importMutes} messages={muteMessages} /> */}
+        {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}
       </Column>
     );
   }

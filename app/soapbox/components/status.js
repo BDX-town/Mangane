@@ -16,8 +16,7 @@ import { MediaGallery, Video, Audio } from '../features/ui/util/async-components
 import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
-import PollContainer from 'soapbox/containers/poll_container';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
@@ -93,6 +92,7 @@ class Status extends ImmutablePureComponent {
     cachedMediaWidth: PropTypes.number,
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
+    allowedEmoji: ImmutablePropTypes.list,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -107,6 +107,7 @@ class Status extends ImmutablePureComponent {
   state = {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     statusId: undefined,
+    emojiSelectorFocused: false,
   };
 
   // Track height changes we know about to compensate scrolling
@@ -125,7 +126,7 @@ class Status extends ImmutablePureComponent {
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.status && nextProps.status.get('id') !== prevState.statusId) {
       return {
-        showMedia: defaultMediaVisibility(nextProps.status),
+        showMedia: defaultMediaVisibility(nextProps.status, nextProps.displayMedia),
         statusId: nextProps.status.get('id'),
       };
     } else {
@@ -212,6 +213,21 @@ class Status extends ImmutablePureComponent {
     this.props.OnOpenAudio(media, startTime);
   }
 
+  handleHotkeyOpenMedia = e => {
+    const { onOpenMedia, onOpenVideo } = this.props;
+    const status = this._properStatus();
+
+    e.preventDefault();
+
+    if (status.get('media_attachments').size > 0) {
+      if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+        onOpenVideo(status.getIn(['media_attachments', 0]), 0);
+      } else {
+        onOpenMedia(status.get('media_attachments'), 0);
+      }
+    }
+  }
+
   handleHotkeyReply = e => {
     e.preventDefault();
     this.props.onReply(this._properStatus(), this.context.router.history);
@@ -254,6 +270,27 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  handleHotkeyReact = () => {
+    this._expandEmojiSelector();
+  }
+
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this._expandEmojiSelector();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  _expandEmojiSelector = () => {
+    this.setState({ emojiSelectorFocused: true });
+    const firstEmoji = this.node.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji.focus();
+  };
+
   _properStatus() {
     const { status } = this.props;
 
@@ -270,12 +307,13 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let media = null;
-    let poll = null;
+    const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
     const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
 
-    let { status, account, ...other } = this.props;
+    // FIXME: why does this need to reassign status and account??
+    let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
 
     if (status === null) {
       return null;
@@ -337,10 +375,9 @@ class Status extends ImmutablePureComponent {
       status        = status.get('reblog');
     }
 
-    if (status.get('poll')) {
-      poll = <PollContainer pollId={status.get('poll')} />;
-    }
-    if (status.get('media_attachments').size > 0) {
+    const size = status.get('media_attachments').size;
+
+    if (size > 0) {
       if (this.props.muted) {
         media = (
           <AttachmentList
@@ -348,7 +385,7 @@ class Status extends ImmutablePureComponent {
             media={status.get('media_attachments')}
           />
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
         media = (
@@ -359,7 +396,7 @@ class Status extends ImmutablePureComponent {
                 blurhash={video.get('blurhash')}
                 src={video.get('url')}
                 alt={video.get('description')}
-                aspectRatio={video.getIn(['meta', 'small', 'aspect'])}
+                aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
                 width={this.props.cachedMediaWidth}
                 height={285}
                 inline
@@ -372,7 +409,7 @@ class Status extends ImmutablePureComponent {
             )}
           </Bundle>
         );
-      } else if (status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
+      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const audio = status.getIn(['media_attachments', 0]);
 
         media = (
@@ -439,6 +476,8 @@ class Status extends ImmutablePureComponent {
       moveDown: this.handleHotkeyMoveDown,
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
+      openMedia: this.handleHotkeyOpenMedia,
+      react: this.handleHotkeyReact,
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
@@ -459,7 +498,9 @@ class Status extends ImmutablePureComponent {
 
               {favicon &&
                 <div className='status__favicon'>
-                  <img src={favicon} alt='' title={domain} />
+                  <Link to={`/timeline/${domain}`}>
+                    <img src={favicon} alt='' title={domain} />
+                  </Link>
                 </div>}
 
               <div className='status__profile'>
@@ -500,7 +541,13 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
 
-            <StatusActionBar status={status} account={account} {...other} />
+            <StatusActionBar
+              status={status}
+              account={account}
+              emojiSelectorFocused={this.state.emojiSelectorFocused}
+              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+              {...other}
+            />
           </div>
         </div>
       </HotKeys>

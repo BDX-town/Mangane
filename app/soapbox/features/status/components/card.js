@@ -45,6 +45,7 @@ const addAutoPlay = html => {
     }
 
     iframe.src += 'autoplay=1&auto_play=1';
+    iframe.allow = 'autoplay';
 
     // DOM parser creates html/body elements around original HTML fragment,
     // so we need to get innerHTML out of the body and not the entire document
@@ -66,12 +67,12 @@ export default class Card extends React.PureComponent {
   };
 
   static defaultProps = {
-    maxDescription: 50,
+    maxDescription: 200,
     compact: false,
   };
 
   state = {
-    width: this.props.defaultWidth || 280,
+    width: this.props.defaultWidth || 467,
     embedded: false,
   };
 
@@ -121,12 +122,10 @@ export default class Card extends React.PureComponent {
 
   renderVideo() {
     const { card }  = this.props;
-    const cardWidth  = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
-    const cardHeight = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
     const html      = card.get('html', card.getIn(['pleroma', 'opengraph', 'html']));
     const content   = { __html: addAutoPlay(html) };
     const { width } = this.state;
-    const ratio     = cardWidth / cardHeight;
+    const ratio     = this.getRatio(card);
     const height    = width / ratio;
 
     return (
@@ -139,6 +138,21 @@ export default class Card extends React.PureComponent {
     );
   }
 
+  getRatio = card => {
+    const width  = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
+    const height = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
+    const ratio  = width / height;
+
+    // Invalid dimensions, fall back to 16:9
+    if (typeof width !== 'number' || typeof height !== 'number') {
+      return 16 / 9;
+    }
+
+    // Constrain to a sane limit
+    // https://en.wikipedia.org/wiki/Aspect_ratio_(image)
+    return Math.min(Math.max(9 / 16, ratio), 4);
+  }
+
   render() {
     const { card, maxDescription, compact } = this.props;
     const { width, embedded } = this.state;
@@ -147,27 +161,25 @@ export default class Card extends React.PureComponent {
       return null;
     }
 
-    const cardWidth   = card.get('width', card.getIn(['pleroma', 'opengraph', 'width']));
-    const cardHeight  = card.get('height', card.getIn(['pleroma', 'opengraph', 'height']));
     const provider    = card.get('provider_name').length === 0 ? decodeIDNA(getHostname(card.get('url'))) : card.get('provider_name');
-    const interactive = card.get('type') !== 'link' || card.getIn(['pleroma', 'opengraph', 'html']);
-    const horizontal  = (!compact && cardWidth > cardHeight && (cardWidth + 100 >= width)) || interactive || embedded;
-    const className   = classnames('status-card', { horizontal, compact, interactive });
+    const interactive = card.get('type') !== 'link';
+    const horizontal  = interactive || embedded;
+    const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.get('type')}`);
     const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
-    const ratio       = cardWidth / cardHeight;
+    const ratio       = this.getRatio(card);
     const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
     const description = (
       <div className='status-card__content'>
         {title}
-        {!(horizontal || compact) && <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>}
-        <span className='status-card__host'>{provider}</span>
+        <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
+        <span className='status-card__host'><Icon id='link' /> {provider}</span>
       </div>
     );
 
     let embed     = '';
     const imageUrl = card.get('image') || card.getIn(['pleroma', 'opengraph', 'thumbnail_url']);
-    let thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
+    const thumbnail = <div style={{ backgroundImage: `url(${imageUrl})`, width: horizontal ? width : null, height: horizontal ? height : null }} className='status-card__image-image' />;
 
     if (interactive) {
       if (embedded) {
@@ -196,7 +208,7 @@ export default class Card extends React.PureComponent {
       return (
         <div className={className} ref={this.setRef}>
           {embed}
-          {!compact && description}
+          {description}
         </div>
       );
     } else if (card.get('image')) {
@@ -207,7 +219,7 @@ export default class Card extends React.PureComponent {
       );
     } else {
       embed = (
-        <div className='status-card__image'>
+        <div className='status-card__image status-card__image--empty'>
           <Icon id='file-text' />
         </div>
       );

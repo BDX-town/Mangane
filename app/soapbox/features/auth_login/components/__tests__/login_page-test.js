@@ -1,22 +1,15 @@
 import React from 'react';
 import LoginPage from '../login_page';
 import { createComponent, mockStore } from 'soapbox/test_helpers';
-import { Map as ImmutableMap } from 'immutable';
-// import { __stub as stubApi } from 'soapbox/api';
-// import { logIn } from 'soapbox/actions/auth';
+import rootReducer from 'soapbox/reducers';
 
 describe('<LoginPage />', () => {
-  beforeEach(() => {
-    const store = mockStore(ImmutableMap({}));
-    return store;
-  });
-
   it('renders correctly on load', () => {
-    expect(createComponent(
-      <LoginPage />,
-    ).toJSON()).toMatchSnapshot();
+    const state = rootReducer(undefined, {})
+      .set('me', '1234')
+      .update('instance', instance => instance.set('version', '2.7.2 (compatible; Pleroma 2.3.0)'));
+    const store = mockStore(state);
 
-    const store = mockStore(ImmutableMap({ me: '1234' }));
     expect(createComponent(
       <LoginPage />,
       { store },

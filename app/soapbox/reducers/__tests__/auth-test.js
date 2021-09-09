@@ -1,124 +1,314 @@
 import reducer from '../auth';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import * as actions from 'soapbox/actions/auth';
-// import app from 'soapbox/__fixtures__/app.json';
-import user from 'soapbox/__fixtures__/user.json';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+import {
+  AUTH_APP_CREATED,
+  AUTH_LOGGED_IN,
+  AUTH_LOGGED_OUT,
+  VERIFY_CREDENTIALS_SUCCESS,
+  VERIFY_CREDENTIALS_FAIL,
+  SWITCH_ACCOUNT,
+} from 'soapbox/actions/auth';
+import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
       app: ImmutableMap(),
-      user: ImmutableMap(),
-      tokens: ImmutableList(),
+      users: ImmutableMap(),
+      tokens: ImmutableMap(),
+      me: null,
     }));
   });
 
-  it('should handle AUTH_APP_CREATED', () => {
-    const state = ImmutableMap({ });
-    const auth = {
-      auth: {
-        app: {
-          vapid_key: 'BHczIFh4Wn3Q_7wDgehaB8Ti3Uu8BoyOgXxkOVuEJRuEqxtd9TAno8K9ycz4myiQ1ruiyVfG6xT1JLeXtpxDzUs',
-          token_type: 'Bearer',
-          client_secret: 'HU6RGO4284Edr4zucuWmn8OFjcpVtMsoXJU0-8tpwRM',
-          redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-          created_at: 1594050270,
-          name: 'SoapboxFE_2020-07-06T15:43:31.989Z',
-          client_id: 'Q0A2r_9ZcEORMenj9kuDRQc3UVL8ypQRoNJ6XQHWJU8',
-          expires_in: 600,
-          scope: 'read write follow push admin',
-          refresh_token: 'aydRA4eragIhavCdAyg6QQnDJmiMbdc-oEBvHYcW_PQ',
-          website: null,
-          id: '113',
-          access_token: 'pbXS8HkoWodrAt_QE1NENcwqigxgWr3P1RIQCKMN0Os',
+  describe('AUTH_APP_CREATED', () => {
+    it('should copy in the app', () => {
+      const token = { token_type: 'Bearer', access_token: 'ABCDEFG' };
+      const action = { type: AUTH_APP_CREATED, app: token };
+
+      const result = reducer(undefined, action);
+      const expected = fromJS(token);
+
+      expect(result.get('app')).toEqual(expected);
+    });
+  });
+
+  describe('AUTH_LOGGED_IN', () => {
+    it('should import the token', () => {
+      const token = { token_type: 'Bearer', access_token: 'ABCDEFG' };
+      const action = { type: AUTH_LOGGED_IN, token };
+
+      const result = reducer(undefined, action);
+      const expected = fromJS({ 'ABCDEFG': token });
+
+      expect(result.get('tokens')).toEqual(expected);
+    });
+
+    it('should merge the token with existing state', () => {
+      const state = fromJS({
+        tokens: { 'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' } },
+      });
+
+      const expected = fromJS({
+        'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' },
+        'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
+      });
+
+      const action = {
+        type: AUTH_LOGGED_IN,
+        token: { token_type: 'Bearer', access_token: 'HIJKLMN' },
+      };
+
+      const result = reducer(state, action);
+      expect(result.get('tokens')).toEqual(expected);
+    });
+  });
+
+  describe('AUTH_LOGGED_OUT', () => {
+    it('deletes the user', () => {
+      const action = {
+        type: AUTH_LOGGED_OUT,
+        account: fromJS({ url: 'https://gleasonator.com/users/alex' }),
+      };
+
+      const state = fromJS({
+        users: {
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-        user: {
-          access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
-          expires_in: 600,
-          me: 'https://social.teci.world/users/curtis',
-          refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
-          scope: 'read write follow push admin',
-          token_type: 'Bearer',
+      });
+
+      const expected = fromJS({
+        'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+      });
+
+      const result = reducer(state, action);
+      expect(result.get('users')).toEqual(expected);
+    });
+
+    it('sets `me` to the next available user', () => {
+      const state = fromJS({
+        me: 'https://gleasonator.com/users/alex',
+        users: {
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
         },
-        tokens: [],
-      },
-    };
-    const action = {
-      type: actions.AUTH_APP_CREATED,
-      app: auth,
-    };
-    expect(reducer(state, action).toJS()).toMatchObject({
-      app: auth,
+      });
+
+      const action = {
+        type: AUTH_LOGGED_OUT,
+        account: fromJS({ url: 'https://gleasonator.com/users/alex' }),
+      };
+
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
   });
 
-  // Fails with TypeError: cannot read property merge of undefined
-  // it('should handle the Action AUTH_APP_AUTHORIZED', () => {
-  //   const state = ImmutableMap({
-  //     auth: {
-  //       app: {
-  //         vapid_key: 'oldVapidKey',
-  //         token_type: 'Bearer',
-  //         client_secret: 'oldClientSecret',
-  //         redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-  //         created_at: 1594764335,
-  //         name: 'SoapboxFE_2020-07-14T22:05:17.054Z',
-  //         client_id: 'bjiy8AxGKXXesfZcyp_iN-uQVE6Cnl03efWoSdOPh9M',
-  //         expires_in: 600,
-  //         scope: 'read write follow push admin',
-  //         refresh_token: 'oldRefreshToken',
-  //         website: null,
-  //         id: '134',
-  //         access_token: 'oldAccessToken',
-  //       },
-  //     },
-  //   });
-  //   const action = {
-  //     type: actions.AUTH_APP_AUTHORIZED,
-  //     app: app,
-  //   };
-  //   expect(reducer(state, action).toJS()).toMatchObject({
-  //     app: app,
-  //   });
-  // });
+  describe('VERIFY_CREDENTIALS_SUCCESS', () => {
+    it('should import the user', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
 
-  it('should handle the Action AUTH_LOGGED_IN', () => {
-    const state = ImmutableMap({
-      user: {
-        access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
-        expires_in: 600,
-        me: 'https://social.teci.world/users/curtis',
-        refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
-        scope: 'read write follow push admin',
-        token_type: 'Bearer',
-      },
+      const expected = fromJS({
+        'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+      });
+
+      const result = reducer(undefined, action);
+      expect(result.get('users')).toEqual(expected);
     });
-    const action = {
-      type: actions.AUTH_LOGGED_IN,
-      user: user,
-    };
-    expect(reducer(state, action).toJS()).toMatchObject({
-      user: user,
+
+    it('should set the account in the token', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const state = fromJS({
+        tokens: { 'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' } },
+      });
+
+      const expected = fromJS({
+        'ABCDEFG': {
+          token_type: 'Bearer',
+          access_token: 'ABCDEFG',
+          account: '1234',
+          me: 'https://gleasonator.com/users/alex',
+        },
+      });
+
+      const result = reducer(state, action);
+      expect(result.get('tokens')).toEqual(expected);
+    });
+
+    it('sets `me` to the account if unset', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const result = reducer(undefined, action);
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/alex');
+    });
+
+    it('leaves `me` alone if already set', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const state = fromJS({ me: 'https://gleasonator.com/users/benis' });
+
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
+    });
+
+    it('deletes mismatched users', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const state = fromJS({
+        users: {
+          'https://gleasonator.com/users/mk':     { id: '4567', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/mk' },
+          'https://gleasonator.com/users/curtis': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/curtis' },
+          'https://gleasonator.com/users/benis':  { id: '5432', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+        },
+      });
+
+      const expected = fromJS({
+        'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+        'https://gleasonator.com/users/benis': { id: '5432', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+      });
+
+      const result = reducer(state, action);
+      expect(result.get('users')).toEqual(expected);
+    });
+
+    it('upgrades from an ID to a URL', () => {
+      const action = {
+        type: VERIFY_CREDENTIALS_SUCCESS,
+        token: 'ABCDEFG',
+        account: { id: '1234', url: 'https://gleasonator.com/users/alex' },
+      };
+
+      const state = fromJS({
+        me: '1234',
+        users: {
+          '1234': { id: '1234', access_token: 'ABCDEFG' },
+          '5432': { id: '5432', access_token: 'HIJKLMN' },
+        },
+        tokens: {
+          'ABCDEFG': { access_token: 'ABCDEFG', account: '1234' },
+        },
+      });
+
+      const expected = fromJS({
+        me: 'https://gleasonator.com/users/alex',
+        users: {
+          'https://gleasonator.com/users/alex': { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          '5432': { id: '5432', access_token: 'HIJKLMN' },
+        },
+        tokens: {
+          'ABCDEFG': { access_token: 'ABCDEFG', account: '1234', me: 'https://gleasonator.com/users/alex' },
+        },
+      });
+
+      const result = reducer(state, action);
+      expect(result).toEqual(expected);
     });
   });
 
-  it('should handle the Action AUTH_LOGGED_OUT', () => {
-    const state = ImmutableMap({
-      user: {
-        access_token: 'UVBP2e17b4pTpb_h8fImIm3F5a66IBVb-JkyZHs4gLE',
-        expires_in: 600,
-        me: 'https://social.teci.world/users/curtis',
-        refresh_token: 'c2DpbVxYZBJDogNn-VBNFES72yXPNUYQCv0CrXGOplY',
-        scope: 'read write follow push admin',
-        token_type: 'Bearer',
-      },
+  describe('VERIFY_CREDENTIALS_FAIL', () => {
+    it('should delete the failed token if it 403\'d', () => {
+      const state = fromJS({
+        tokens: {
+          'ABCDEFG': { token_type: 'Bearer', access_token: 'ABCDEFG' },
+          'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
+        },
+      });
+
+      const expected = fromJS({
+        'HIJKLMN': { token_type: 'Bearer', access_token: 'HIJKLMN' },
+      });
+
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
+      const result = reducer(state, action);
+      expect(result.get('tokens')).toEqual(expected);
     });
-    const action = {
-      type: actions.AUTH_LOGGED_OUT,
-    };
-    expect(reducer(state, action).toJS()).toMatchObject({
-      user: {},
+
+    it('should delete any users associated with the failed token', () => {
+      const state = fromJS({
+        users: {
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+        },
+      });
+
+      const expected = fromJS({
+        'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+      });
+
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
+      const result = reducer(state, action);
+      expect(result.get('users')).toEqual(expected);
+    });
+
+    it('should reassign `me` to the next in line', () => {
+      const state = fromJS({
+        me: 'https://gleasonator.com/users/alex',
+        users: {
+          'https://gleasonator.com/users/alex':  { id: '1234', access_token: 'ABCDEFG', url: 'https://gleasonator.com/users/alex' },
+          'https://gleasonator.com/users/benis': { id: '5678', access_token: 'HIJKLMN', url: 'https://gleasonator.com/users/benis' },
+        },
+      });
+
+      const action = {
+        type: VERIFY_CREDENTIALS_FAIL,
+        token: 'ABCDEFG',
+        error: { response: { status: 403 } },
+      };
+
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
     });
   });
 
+  describe('SWITCH_ACCOUNT', () => {
+    it('sets the value of `me`', () => {
+      const action = {
+        type: SWITCH_ACCOUNT,
+        account: fromJS({ url: 'https://gleasonator.com/users/benis' }),
+      };
+
+      const result = reducer(undefined, action);
+      expect(result.get('me')).toEqual('https://gleasonator.com/users/benis');
+    });
+  });
+
+  describe('ME_FETCH_SKIP', () => {
+    it('sets `me` to null', () => {
+      const state = fromJS({ me: 'https://gleasonator.com/users/alex' });
+      const action = { type: ME_FETCH_SKIP };
+      const result = reducer(state, action);
+      expect(result.get('me')).toEqual(null);
+    });
+  });
 });

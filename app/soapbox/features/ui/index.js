@@ -11,40 +11,45 @@ import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import NotificationsContainer from './containers/notifications_container';
 import LoadingBarContainer from './containers/loading_bar_container';
 import ModalContainer from './containers/modal_container';
-import { isMobile } from '../../is_mobile';
 import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
-import { fetchReports } from '../../actions/admin';
+import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
 import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modal';
+import { fetchFollowRequests } from '../../actions/accounts';
+import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { WrappedRoute } from './util/react_router_helpers';
+import BundleContainer from './containers/bundle_container';
 import UploadArea from './components/upload_area';
 import TabsBar from './components/tabs_bar';
-import LinkFooter from './components/link_footer';
-import FeaturesPanel from './components/features_panel';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
-import SearchPage from 'soapbox/pages/search_page';
 import HomePage from 'soapbox/pages/home_page';
+import DefaultPage from 'soapbox/pages/default_page';
+import EmptyPage from 'soapbox/pages/default_page';
+import AdminPage from 'soapbox/pages/admin_page';
+import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
-import { isStaff } from 'soapbox/utils/accounts';
-import ChatPanes from 'soapbox/features/chats/components/chat_panes';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import ProfileHoverCard from 'soapbox/components/profile_hover_card';
+import { getAccessToken } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 
 import {
   Status,
-  // GettingStarted,
   CommunityTimeline,
   PublicTimeline,
+  RemoteTimeline,
   AccountTimeline,
   AccountGallery,
   HomeTimeline,
@@ -75,20 +80,36 @@ import {
   // GroupCreate,
   // GroupEdit,
   LoginPage,
+  ExternalLogin,
   Preferences,
   EditProfile,
   SoapboxConfig,
+  ExportData,
   ImportData,
+  Backups,
   PasswordReset,
   SecurityForm,
   MfaForm,
   ChatIndex,
   ChatRoom,
+  ChatPanes,
+  ServerInfo,
+  Dashboard,
+  AwaitingApproval,
+  Reports,
+  ModerationLog,
+  CryptoDonate,
+  ScheduledStatuses,
+  UserIndex,
+  FederationRestrictions,
+  Aliases,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.
 import '../../components/status';
+
+const isMobile = width => width <= 1190;
 
 const messages = defineMessages({
   beforeUnload: { id: 'ui.beforeunload', defaultMessage: 'Your draft will be lost if you leave.' },
@@ -98,16 +119,15 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
+  const instance = state.get('instance');
 
   return {
-    isComposing: state.getIn(['compose', 'is_composing']),
-    hasComposingText: state.getIn(['compose', 'text']).trim().length !== 0,
-    hasMediaAttachments: state.getIn(['compose', 'media_attachments']).size > 0,
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
-    accessToken: state.getIn(['auth', 'user', 'access_token']),
+    accessToken: getAccessToken(state),
     streamingUrl: state.getIn(['instance', 'urls', 'streaming_api']),
     me,
     account,
+    features: getFeatures(instance),
   };
 };
 
@@ -116,9 +136,9 @@ const keyMap = {
   new: 'n',
   search: 's',
   forceNew: 'option+n',
-  focusColumn: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
   reply: 'r',
   favourite: 'f',
+  react: 'e',
   boost: 'b',
   mention: 'm',
   open: ['enter', 'o'],
@@ -128,7 +148,6 @@ const keyMap = {
   back: 'backspace',
   goToHome: 'g h',
   goToNotifications: 'g n',
-  goToStart: 'g s',
   goToFavourites: 'g f',
   goToPinned: 'g p',
   goToProfile: 'g u',
@@ -137,28 +156,7 @@ const keyMap = {
   goToRequests: 'g r',
   toggleHidden: 'x',
   toggleSensitive: 'h',
-};
-
-const LAYOUT = {
-  EMPTY: {
-    LEFT: null,
-    RIGHT: null,
-  },
-  DEFAULT: {
-    LEFT: [
-      <LinkFooter key='1' />,
-    ],
-    RIGHT: [
-      <FeaturesPanel key='0' />,
-    ],
-  },
-  STATUS: {
-    TOP: null,
-    LEFT: null,
-    RIGHT: [
-      <LinkFooter key='2' />,
-    ],
-  },
+  openMedia: 'a',
 };
 
 class SwitchingColumnsArea extends React.PureComponent {
@@ -201,13 +199,15 @@ class SwitchingColumnsArea extends React.PureComponent {
       <Switch>
         <WrappedRoute path='/auth/sign_in' component={LoginPage} publicRoute exact />
         <WrappedRoute path='/auth/reset_password' component={PasswordReset} publicRoute exact />
-        <WrappedRoute path='/auth/edit' layout={LAYOUT.DEFAULT} component={SecurityForm} exact />
-        <WrappedRoute path='/auth/mfa' layout={LAYOUT.DEFAULT} component={MfaForm} exact />
+        <WrappedRoute path='/auth/external' component={ExternalLogin} publicRoute exact />
+        <WrappedRoute path='/auth/edit' page={DefaultPage} component={SecurityForm} exact />
+        <WrappedRoute path='/auth/mfa' page={DefaultPage} component={MfaForm} exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
-        <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} />
-        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} />
-        <WrappedRoute path='/messages' layout={LAYOUT.DEFAULT} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
+        <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
+        <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />
+        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
@@ -226,7 +226,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/main/friends' to='/' />
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
-        <WrappedRoute path='/notice/:statusId' publicRoute exact layout={LAYOUT.STATUS} component={Status} content={children} />
+        <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/home' to='/' />
 
@@ -236,22 +236,22 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
 
-        <WrappedRoute path='/lists' layout={LAYOUT.DEFAULT} component={Lists} content={children} />
+        <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
-        <WrappedRoute path='/bookmarks' layout={LAYOUT.DEFAULT} component={Bookmarks} content={children} />
+        <WrappedRoute path='/bookmarks' page={DefaultPage} component={Bookmarks} content={children} />
 
-        <WrappedRoute path='/notifications' layout={LAYOUT.DEFAULT} component={Notifications} content={children} />
+        <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
-        <WrappedRoute path='/search' publicRoute page={SearchPage} component={Search} content={children} />
+        <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
 
-        <WrappedRoute path='/chats' exact layout={LAYOUT.DEFAULT} component={ChatIndex} content={children} />
-        <WrappedRoute path='/chats/:chatId' layout={LAYOUT.DEFAULT} component={ChatRoom} content={children} />
+        <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
+        <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
 
-        <WrappedRoute path='/follow_requests' layout={LAYOUT.DEFAULT} component={FollowRequests} content={children} />
-        <WrappedRoute path='/blocks' layout={LAYOUT.DEFAULT} component={Blocks} content={children} />
-        <WrappedRoute path='/domain_blocks' layout={LAYOUT.DEFAULT} component={DomainBlocks} content={children} />
-        <WrappedRoute path='/mutes' layout={LAYOUT.DEFAULT} component={Mutes} content={children} />
-        <WrappedRoute path='/filters' layout={LAYOUT.DEFAULT} component={Filters} content={children} />
+        <WrappedRoute path='/follow_requests' page={DefaultPage} component={FollowRequests} content={children} />
+        <WrappedRoute path='/blocks' page={DefaultPage} component={Blocks} content={children} />
+        <WrappedRoute path='/domain_blocks' page={DefaultPage} component={DomainBlocks} content={children} />
+        <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
+        <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />
         <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/with_replies' component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
         <WrappedRoute path='/@:username/followers' component={Followers} page={ProfilePage} content={children} />
@@ -260,18 +260,33 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact layout={LAYOUT.STATUS} component={Status} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId/reblogs' layout={LAYOUT.STATUS} component={Reblogs} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
-        <WrappedRoute path='/settings/preferences' layout={LAYOUT.DEFAULT} component={Preferences} content={children} />
-        <WrappedRoute path='/settings/profile' layout={LAYOUT.DEFAULT} component={EditProfile} content={children} />
-        <WrappedRoute path='/settings/import' layout={LAYOUT.DEFAULT} component={ImportData} content={children} />
-        <WrappedRoute path='/soapbox/config' layout={LAYOUT.DEFAULT} component={SoapboxConfig} content={children} />
+        <WrappedRoute path='/settings/preferences' page={DefaultPage} component={Preferences} content={children} />
+        <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
+        <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
+        <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
+        <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
+        <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
+        <WrappedRoute path='/soapbox/config' page={DefaultPage} component={SoapboxConfig} content={children} />
 
-        <WrappedRoute layout={LAYOUT.EMPTY} component={GenericNotFound} content={children} />
+        <Redirect from='/admin/dashboard' to='/admin' exact />
+        <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
+        <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
+        <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
+        <WrappedRoute path='/admin/users' page={AdminPage} component={UserIndex} content={children} exact />
+        <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
+
+        <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
+        <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />
+
+        <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
       </Switch>
     );
   }
@@ -290,32 +305,19 @@ class UI extends React.PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
-    isComposing: PropTypes.bool,
-    hasComposingText: PropTypes.bool,
-    hasMediaAttachments: PropTypes.bool,
     location: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
     me: SoapboxPropTypes.me,
     streamingUrl: PropTypes.string,
     account: PropTypes.object,
+    features: PropTypes.object.isRequired,
   };
 
   state = {
     draggingOver: false,
     mobile: isMobile(window.innerWidth),
   };
-
-  handleBeforeUnload = (e) => {
-    const { intl, isComposing, hasComposingText, hasMediaAttachments } = this.props;
-
-    if (isComposing && (hasComposingText || hasMediaAttachments)) {
-      // Setting returnValue to any string causes confirmation dialog.
-      // Many browsers no longer display this text to users,
-      // but we set user-friendly message for other browsers, e.g. Edge.
-      e.returnValue = intl.formatMessage(messages.beforeUnload);
-    }
-  }
 
   handleLayoutChange = () => {
     // The cached heights are no longer accurate, invalidate
@@ -346,7 +348,7 @@ class UI extends React.PureComponent {
     try {
       e.dataTransfer.dropEffect = 'copy';
     } catch (err) {
-
+      // Do nothing
     }
 
     return false;
@@ -419,11 +421,10 @@ class UI extends React.PureComponent {
   });
 
   componentDidMount() {
-    const { account } = this.props;
+    const { account, features } = this.props;
     if (!account) return;
-    window.addEventListener('beforeunload', this.handleBeforeUnload, false);
-    window.addEventListener('resize', this.handleResize, { passive: true });
 
+    window.addEventListener('resize', this.handleResize, { passive: true });
     document.addEventListener('dragenter', this.handleDragEnter, false);
     document.addEventListener('dragover', this.handleDragOver, false);
     document.addEventListener('drop', this.handleDrop, false);
@@ -441,13 +442,30 @@ class UI extends React.PureComponent {
     if (account) {
       this.props.dispatch(expandHomeTimeline());
       this.props.dispatch(expandNotifications());
-      this.props.dispatch(fetchChats());
-      // this.props.dispatch(fetchGroups('member'));
-      if (isStaff(account))
+
+      if (features.chats) {
+        this.props.dispatch(fetchChats());
+      }
+
+      if (isStaff(account)) {
         this.props.dispatch(fetchReports({ state: 'open' }));
+        this.props.dispatch(fetchUsers(['local', 'need_approval']));
+      }
+
+      if (isAdmin(account)) {
+        this.props.dispatch(fetchConfig());
+      }
 
       setTimeout(() => this.props.dispatch(fetchFilters()), 500);
+
+      if (account.get('locked')) {
+        setTimeout(() => this.props.dispatch(fetchFollowRequests()), 700);
+      }
+
+      setTimeout(() => this.props.dispatch(fetchScheduledStatuses()), 900);
     }
+
+    this.props.dispatch(fetchCustomEmojis());
     this.connectStreaming();
   }
 
@@ -456,7 +474,6 @@ class UI extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('beforeunload', this.handleBeforeUnload);
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('dragenter', this.handleDragEnter);
     document.removeEventListener('dragover', this.handleDragOver);
@@ -472,6 +489,7 @@ class UI extends React.PureComponent {
 
   handleHotkeyNew = e => {
     e.preventDefault();
+    if (!this.node) return;
 
     const element = this.node.querySelector('.compose-form__autosuggest-wrapper textarea');
 
@@ -482,6 +500,7 @@ class UI extends React.PureComponent {
 
   handleHotkeySearch = e => {
     e.preventDefault();
+    if (!this.node) return;
 
     const element = this.node.querySelector('.search__input');
 
@@ -493,24 +512,6 @@ class UI extends React.PureComponent {
   handleHotkeyForceNew = e => {
     this.handleHotkeyNew(e);
     this.props.dispatch(resetCompose());
-  }
-
-  handleHotkeyFocusColumn = e => {
-    const index  = (e.key * 1) + 1; // First child is drawer, skip that
-    const column = this.node.querySelector(`.column:nth-child(${index})`);
-    if (!column) return;
-    const container = column.querySelector('.scrollable');
-
-    if (container) {
-      const status = container.querySelector('.focusable');
-
-      if (status) {
-        if (container.scrollTop > status.offsetTop) {
-          status.scrollIntoView(true);
-        }
-        status.focus();
-      }
-    }
   }
 
   handleHotkeyBack = () => {
@@ -543,29 +544,25 @@ class UI extends React.PureComponent {
     this.context.router.history.push('/notifications');
   }
 
-  handleHotkeyGoToStart = () => {
-    this.context.router.history.push('/getting-started');
-  }
-
   handleHotkeyGoToFavourites = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}/favorites`);
+    this.context.router.history.push(`/@${account.get('username')}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}/pins`);
+    this.context.router.history.push(`/@${account.get('username')}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/${account.get('username')}`);
+    this.context.router.history.push(`/@${account.get('username')}`);
   }
 
   handleHotkeyGoToBlocked = () => {
@@ -595,22 +592,23 @@ class UI extends React.PureComponent {
   }
 
   render() {
-    const { streamingUrl } = this.props;
+    const { streamingUrl, features } = this.props;
     const { draggingOver, mobile } = this.state;
-    const { intl, children, isComposing, location, dropdownMenuIsOpen, me } = this.props;
+    const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
-    if (me === null || !streamingUrl) return null;
+    // Wait for login to succeed or fail
+    if (me === null) return null;
+    // If login didn't fail, wait for streaming to become available
+    if (me !== false && !streamingUrl) return null;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,
       new: this.handleHotkeyNew,
       search: this.handleHotkeySearch,
       forceNew: this.handleHotkeyForceNew,
-      focusColumn: this.handleHotkeyFocusColumn,
       back: this.handleHotkeyBack,
       goToHome: this.handleHotkeyGoToHome,
       goToNotifications: this.handleHotkeyGoToNotifications,
-      goToStart: this.handleHotkeyGoToStart,
       goToFavourites: this.handleHotkeyGoToFavourites,
       goToPinned: this.handleHotkeyGoToPinned,
       goToProfile: this.handleHotkeyGoToProfile,
@@ -633,7 +631,6 @@ class UI extends React.PureComponent {
     const floatingActionButton = this.shouldHideFAB() ? null : fabElem;
 
     const classnames = classNames('ui', {
-      'is-composing': isComposing,
       'ui--chatroom': this.isChatRoomLocation(),
     });
 
@@ -656,7 +653,11 @@ class UI extends React.PureComponent {
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
-          {me && !mobile && <ChatPanes />}
+          {me && features.chats && !mobile && (
+            <BundleContainer fetchComponent={ChatPanes}>
+              {Component => <Component />}
+            </BundleContainer>
+          )}
           <ProfileHoverCard />
         </div>
       </HotKeys>

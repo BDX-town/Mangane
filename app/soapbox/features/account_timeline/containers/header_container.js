@@ -10,6 +10,8 @@ import {
   unmuteAccount,
   // pinAccount,
   // unpinAccount,
+  subscribeAccount,
+  unsubscribeAccount,
 } from '../../../actions/accounts';
 import {
   mentionCompose,
@@ -23,14 +25,32 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { startChat, openChat } from 'soapbox/actions/chats';
-import { isMobile } from 'soapbox/is_mobile';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import {
+  verifyUser,
+  unverifyUser,
+  promoteToAdmin,
+  promoteToModerator,
+  demoteToUser,
+} from 'soapbox/actions/admin';
+import { isAdmin } from 'soapbox/utils/accounts';
+import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   blockDomainConfirm: { id: 'confirmations.domain_block.confirm', defaultMessage: 'Hide entire domain' },
   blockAndReport: { id: 'confirmations.block.block_and_report', defaultMessage: 'Block & Report' },
+  userVerified: { id: 'admin.users.user_verified_message', defaultMessage: '@{acct} was verified' },
+  userUnverified: { id: 'admin.users.user_unverified_message', defaultMessage: '@{acct} was unverified' },
+  promotedToAdmin: { id: 'admin.users.actions.promote_to_admin_message', defaultMessage: '@{acct} was promoted to an admin' },
+  promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
+  demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
+  demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
+
 });
+
+const isMobile = width => width <= 1190;
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
@@ -97,6 +117,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
+  onSubscriptionToggle(account) {
+    if (account.getIn(['relationship', 'subscribing'])) {
+      dispatch(unsubscribeAccount(account.get('id')));
+    } else {
+      dispatch(subscribeAccount(account.get('id')));
+    }
+  },
+
   // onEndorseToggle(account) {
   //   if (account.getIn(['relationship', 'endorsed'])) {
   //     dispatch(unpinAccount(account.get('id')));
@@ -144,6 +172,55 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
         dispatch(openChat(chat.id));
       }
     }).catch(() => {});
+  },
+
+  onDeactivateUser(account) {
+    dispatch(deactivateUserModal(intl, account.get('id')));
+  },
+
+  onDeleteUser(account) {
+    dispatch(deleteUserModal(intl, account.get('id')));
+  },
+
+  onVerifyUser(account) {
+    const message = intl.formatMessage(messages.userVerified, { acct: account.get('acct') });
+
+    dispatch(verifyUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onUnverifyUser(account) {
+    const message = intl.formatMessage(messages.userUnverified, { acct: account.get('acct') });
+
+    dispatch(unverifyUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onPromoteToAdmin(account) {
+    const message = intl.formatMessage(messages.promotedToAdmin, { acct: account.get('acct') });
+
+    dispatch(promoteToAdmin(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onPromoteToModerator(account) {
+    const messageType = isAdmin(account) ? messages.demotedToModerator : messages.promotedToModerator;
+    const message = intl.formatMessage(messageType, { acct: account.get('acct') });
+
+    dispatch(promoteToModerator(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onDemoteToUser(account) {
+    const message = intl.formatMessage(messages.demotedToUser, { acct: account.get('acct') });
+
+    dispatch(demoteToUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
   },
 });
 

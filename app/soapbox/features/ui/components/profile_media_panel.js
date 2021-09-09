@@ -35,12 +35,6 @@ class ProfileMediaPanel extends ImmutablePureComponent {
     this.props.dispatch(expandAccountMediaTimeline(accountId));
   }
 
-  componentDidUpdate() {
-    const { account } = this.props;
-    const accountId = account.get('id');
-    this.props.dispatch(expandAccountMediaTimeline(accountId));
-  }
-
   render() {
     const { attachments, account } = this.props;
     const publicAttachments = attachments.filter(attachment => attachment.getIn(['status', 'visibility']) === 'public');
@@ -70,9 +64,9 @@ class ProfileMediaPanel extends ImmutablePureComponent {
         }
       </div>
     );
-  };
+  }
 
-};
+}
 
 const mapStateToProps = (state, { account }) => ({
   attachments: getAccountGallery(state, account.get('id')),

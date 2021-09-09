@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
 import classNames from 'classnames';
-import { decode } from 'blurhash';
+import Blurhash from 'soapbox/components/blurhash';
 import { isIOS } from 'soapbox/is_mobile';
 import { getSettings } from 'soapbox/actions/settings';
 import StillImage from 'soapbox/components/still_image';
@@ -30,34 +30,6 @@ class MediaItem extends ImmutablePureComponent {
     visible: this.props.displayMedia !== 'hide_all' && !this.props.attachment.getIn(['status', 'sensitive']) || this.props.displayMedia === 'show_all',
     loaded: false,
   };
-
-  componentDidMount() {
-    if (this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (prevProps.attachment.get('blurhash') !== this.props.attachment.get('blurhash') && this.props.attachment.get('blurhash')) {
-      this._decode();
-    }
-  }
-
-  _decode() {
-    const hash   = this.props.attachment.get('blurhash');
-    const pixels = decode(hash, 32, 32);
-
-    if (pixels) {
-      const ctx       = this.canvas.getContext('2d');
-      const imageData = new ImageData(pixels, 32, 32);
-
-      ctx.putImageData(imageData, 0, 0);
-    }
-  }
-
-  setCanvasRef = c => {
-    this.canvas = c;
-  }
 
   handleImageLoad = () => {
     this.setState({ loaded: true });
@@ -121,7 +93,7 @@ class MediaItem extends ImmutablePureComponent {
         />
       );
     } else if (['gifv', 'video'].indexOf(attachment.get('type')) !== -1) {
-      let conditionalAttributes = {};
+      const conditionalAttributes = {};
       if (isIOS()) {
         conditionalAttributes.playsInline = '1';
       }
@@ -169,7 +141,12 @@ class MediaItem extends ImmutablePureComponent {
     return (
       <div className='account-gallery__item' style={{ width, height }}>
         <a className='media-gallery__item-thumbnail' href={status.get('url')} target='_blank' onClick={this.handleClick} title={title}>
-          <canvas width={32} height={32} ref={this.setCanvasRef} className={classNames('media-gallery__preview', { 'media-gallery__preview--hidden': visible && loaded })} />
+          <Blurhash
+            hash={attachment.get('blurhash')}
+            className={classNames('media-gallery__preview', {
+              'media-gallery__preview--hidden': visible && loaded,
+            })}
+          />
           {visible && thumbnail}
           {!visible && icon}
         </a>

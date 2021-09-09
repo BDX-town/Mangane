@@ -3,53 +3,33 @@ console.log('Running in production mode'); // eslint-disable-line no-console
 
 const { merge } = require('webpack-merge');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const OfflinePlugin = require('offline-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const { output } = require('./configuration');
+const OfflinePlugin = require('@lcdp/offline-plugin');
 const sharedConfig = require('./shared');
 
 module.exports = merge(sharedConfig, {
   mode: 'production',
   devtool: 'source-map',
-  stats: 'normal',
+  stats: 'errors-warnings',
   bail: true,
   optimization: {
     minimize: true,
-    minimizer: [
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        sourceMap: true,
-
-        uglifyOptions: {
-          warnings: false,
-
-          output: {
-            comments: false,
-          },
-        },
-      }),
-    ],
   },
 
   plugins: [
-    new CompressionPlugin({
-      test: /\.(js|css|html|json|ico|svg|eot|otf|ttf|map)$/,
-    }),
-    new BundleAnalyzerPlugin({ // generates report.html
+    // Generates report.html
+    new BundleAnalyzerPlugin({
       analyzerMode: 'static',
       openAnalyzer: false,
-      logLevel: 'silent', // do not bother Webpacker, who runs with --json and parses stdout
+      logLevel: 'silent',
     }),
     new OfflinePlugin({
-      publicPath: output.publicPath, // sw.js must be served from the root to avoid scope issues
       caches: {
         main: [':rest:'],
         additional: [':externals:'],
         optional: [
           '**/locale_*.js', // don't fetch every locale; the user only needs one
           '**/*_polyfills-*.js', // the user may not need polyfills
+          '**/*.chunk.js', // only cache chunks when needed
           '**/*.woff2', // the user may have system-fonts enabled
           // images/audio can be cached on-demand
           '**/*.png',
@@ -62,24 +42,37 @@ module.exports = merge(sharedConfig, {
       },
       externals: [
         '/emoji/1f602.svg', // used for emoji picker dropdown
-        '/emoji/sheet_10.png', // used in emoji-mart
+        '/emoji/sheet_13.png', // used in emoji-mart
+
+        // Default emoji reacts
+        '/emoji/1f44d.svg', // Thumbs up
+        '/emoji/2764.svg',  // Heart
+        '/emoji/1f606.svg', // Laughing
+        '/emoji/1f62e.svg', // Surprised
+        '/emoji/1f622.svg', // Crying
+        '/emoji/1f629.svg', // Weary
+        '/emoji/1f621.svg', // Angry (Spinster)
       ],
       excludes: [
         '**/*.gz',
         '**/*.map',
         'stats.json',
         'report.html',
+        'instance/**/*',
         // any browser that supports ServiceWorker will support woff2
         '**/*.eot',
         '**/*.ttf',
         '**/*-webfont-*.svg',
         '**/*.woff',
+        // Sounds return a 206 causing sw.js to crash
+        // https://stackoverflow.com/a/66335638
+        'sounds/**/*',
+        // Don't cache index.html
+        'index.html',
       ],
       // ServiceWorker: {
-      //   entry: `imports-loader?ATTACHMENT_HOST=>${encodeURIComponent(JSON.stringify(attachmentHost))}!${encodeURI(path.join(__dirname, '../app/soapbox/service_worker/entry.js'))}`,
+      //   entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
       //   cacheName: 'soapbox',
-      //   output: '../assets/sw.js',
-      //   publicPath: '/sw.js',
       //   minify: true,
       // },
     }),

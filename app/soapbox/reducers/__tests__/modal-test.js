@@ -19,7 +19,6 @@ describe('modal reducer', () => {
       modalType: 'type1',
       modalProps: { props1: '1' },
     };
-    debugger;
     expect(reducer(state, action)).toMatchObject({
       modalType: 'type1',
       modalProps: { props1: '1' },
@@ -34,7 +33,6 @@ describe('modal reducer', () => {
     const action = {
       type: MODAL_CLOSE,
     };
-    debugger;
     expect(reducer(state, action)).toMatchObject({
       modalType: null,
       modalProps: {},

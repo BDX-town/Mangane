@@ -1,0 +1,13 @@
+.backup {
+  padding: 15px;
+  border-bottom: 1px solid var(--brand-color--faint);
+
+  a {
+    color: var(--brand-color--hicontrast);
+  }
+
+  &--pending {
+    font-style: italic;
+    color: var(--primary-text-color--faint);
+  }
+}

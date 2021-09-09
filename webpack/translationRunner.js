@@ -105,7 +105,7 @@ manageTranslations({
 /* eslint-disable no-console */
 
 function findVariablesinAST(tree) {
-  let result = new Set();
+  const result = new Set();
   tree.forEach((element) => {
     switch (element.type) {
     case parser.TYPE.argument:
@@ -114,12 +114,11 @@ function findVariablesinAST(tree) {
       break;
     case parser.TYPE.plural:
       result.add(element.value);
-      let subTrees = Object.values(element.options).map((option) => option.value);
-      subTrees.forEach((subtree) => {
-        findVariablesinAST(subtree).forEach((variable) => {
-          result.add(variable);
-        });
-      });
+      Object.values(element.options)
+        .map(option => option.value)
+        .forEach(subtree =>
+          findVariablesinAST(subtree)
+            .forEach(variable => result.add(variable)));
       break;
     case parser.TYPE.literal:
       break;
@@ -139,7 +138,7 @@ const extractedMessagesFiles = readMessageFiles(translationsDirectory);
 const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
   messageFile.descriptors.forEach((descriptor) => {
     descriptor.descriptors.forEach((item) => {
-      let variables = findVariables(item.defaultMessage);
+      const variables = findVariables(item.defaultMessage);
       acc.push({
         id: item.id,
         defaultMessage: item.defaultMessage,
@@ -172,7 +171,7 @@ function pushIfUnique(arr, newItem) {
 const problems = translations.reduce((acc, translation) => {
   extractedMessages.forEach((message) => {
     try {
-      let translationVariables = findVariables(translation.data[message.id]);
+      const translationVariables = findVariables(translation.data[message.id]);
       if ([...difference(translationVariables, message.variables)].length > 0) {
         pushIfUnique(acc, {
           language: translation.language,
@@ -206,7 +205,7 @@ if (problems.length > 0) {
   console.error('-'.repeat(60));
 
   problems.forEach((problem) => {
-    let color = (problem.severity === 'error') ? '\x1b[31m' : '';
+    const color = (problem.severity === 'error') ? '\x1b[31m' : '';
     console.error(`${color}${problem.language}\t${problem.type}\t${problem.id}\x1b[0m`);
   });
   console.error('\n');
@@ -215,4 +214,4 @@ if (problems.length > 0) {
   })) {
     process.exit(1);
   }
-};
+}

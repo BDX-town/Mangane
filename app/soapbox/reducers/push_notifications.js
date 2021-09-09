@@ -5,6 +5,7 @@ const initialState = Immutable.Map({
   subscription: null,
   alerts: new Immutable.Map({
     follow: false,
+    follow_request: false,
     favourite: false,
     reblog: false,
     mention: false,
@@ -33,4 +34,4 @@ export default function push_subscriptions(state = initialState, action) {
   default:
     return state;
   }
-};
+}

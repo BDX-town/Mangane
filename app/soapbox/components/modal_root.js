@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import 'wicg-inert';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { openModal } from '../actions/modal';
@@ -74,8 +75,31 @@ class ModalRoot extends React.PureComponent {
     }
   };
 
+
+  handleKeyDown = (e) => {
+    if (e.key === 'Tab') {
+      const focusable = Array.from(this.node.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')).filter((x) => window.getComputedStyle(x).display !== 'none');
+      const index = focusable.indexOf(e.target);
+
+      let element;
+
+      if (e.shiftKey) {
+        element = focusable[index - 1] || focusable[focusable.length - 1];
+      } else {
+        element = focusable[index + 1] || focusable[0];
+      }
+
+      if (element) {
+        element.focus();
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }
+  }
+
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
+    window.addEventListener('keydown', this.handleKeyDown, false);
   }
 
   componentDidUpdate(prevProps) {
@@ -101,6 +125,7 @@ class ModalRoot extends React.PureComponent {
 
   componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeyUp);
+    window.removeEventListener('keydown', this.handleKeyDown);
   }
 
   getSiblings = () => {

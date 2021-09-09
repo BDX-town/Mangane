@@ -1,17 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
+import ModalContainer from 'soapbox/features/ui/containers/modal_container';
 import Header from './components/header';
 import Footer from './components/footer';
 import LandingPage from '../landing_page';
 import AboutPage from '../about';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { isStandalone } from 'soapbox/utils/state';
 
 const mapStateToProps = (state, props) => ({
-  instance: state.get('instance'),
   soapbox: getSoapboxConfig(state),
+  standalone: isStandalone(state),
 });
 
 const wave = (
@@ -23,8 +25,11 @@ const wave = (
 class PublicLayout extends ImmutablePureComponent {
 
   render() {
-    const { instance } = this.props;
-    if (instance.isEmpty()) return null;
+    const { standalone } = this.props;
+
+    if (standalone) {
+      return <Redirect to='/auth/external' />;
+    }
 
     return (
       <div className='public-layout'>
@@ -40,6 +45,7 @@ class PublicLayout extends ImmutablePureComponent {
         </div>
         <Footer />
         <NotificationsContainer />
+        <ModalContainer />
       </div>
     );
   }

@@ -30,4 +30,4 @@ export default function groups(state = initialState, action) {
   default:
     return state;
   }
-};
+}

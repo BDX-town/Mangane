@@ -26,7 +26,7 @@ export default class UploadProgress extends React.PureComponent {
         </div>
 
         <div className='upload-progress__message'>
-          <FormattedMessage id='upload_progress.label' defaultMessage='Uploading...' />
+          <FormattedMessage id='upload_progress.label' defaultMessage='Uploading…' />
 
           <div className='upload-progress__backdrop'>
             <Motion defaultStyle={{ width: 0 }} style={{ width: spring(progress) }}>

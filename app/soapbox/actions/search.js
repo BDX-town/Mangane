@@ -10,18 +10,24 @@ export const SEARCH_FETCH_REQUEST = 'SEARCH_FETCH_REQUEST';
 export const SEARCH_FETCH_SUCCESS = 'SEARCH_FETCH_SUCCESS';
 export const SEARCH_FETCH_FAIL    = 'SEARCH_FETCH_FAIL';
 
+export const SEARCH_FILTER_SET = 'SEARCH_FILTER_SET';
+
+export const SEARCH_EXPAND_REQUEST = 'SEARCH_EXPAND_REQUEST';
+export const SEARCH_EXPAND_SUCCESS = 'SEARCH_EXPAND_SUCCESS';
+export const SEARCH_EXPAND_FAIL    = 'SEARCH_EXPAND_FAIL';
+
 export function changeSearch(value) {
   return {
     type: SEARCH_CHANGE,
     value,
   };
-};
+}
 
 export function clearSearch() {
   return {
     type: SEARCH_CLEAR,
   };
-};
+}
 
 export function submitSearch() {
   return (dispatch, getState) => {
@@ -31,7 +37,7 @@ export function submitSearch() {
       return;
     }
 
-    dispatch(fetchSearchRequest());
+    dispatch(fetchSearchRequest(value));
 
     api(getState).get('/api/v2/search', {
       params: {
@@ -54,30 +60,81 @@ export function submitSearch() {
       dispatch(fetchSearchFail(error));
     });
   };
-};
+}
 
-export function fetchSearchRequest() {
+export function fetchSearchRequest(value) {
   return {
     type: SEARCH_FETCH_REQUEST,
+    value,
   };
-};
+}
 
 export function fetchSearchSuccess(results) {
   return {
     type: SEARCH_FETCH_SUCCESS,
     results,
   };
-};
+}
 
 export function fetchSearchFail(error) {
   return {
     type: SEARCH_FETCH_FAIL,
     error,
   };
+}
+
+export const setFilter = filterType => dispatch => {
+  dispatch({
+    type: SEARCH_FILTER_SET,
+    path: ['search', 'filter'],
+    value: filterType,
+  });
 };
 
-export function showSearch() {
-  return {
-    type: SEARCH_SHOW,
-  };
+export const expandSearch = type => (dispatch, getState) => {
+  const value  = getState().getIn(['search', 'value']);
+  const offset = getState().getIn(['search', 'results', type]).size;
+
+  dispatch(expandSearchRequest());
+
+  api(getState).get('/api/v2/search', {
+    params: {
+      q: value,
+      type,
+      offset,
+    },
+  }).then(({ data }) => {
+    if (data.accounts) {
+      dispatch(importFetchedAccounts(data.accounts));
+    }
+
+    if (data.statuses) {
+      dispatch(importFetchedStatuses(data.statuses));
+    }
+
+    dispatch(expandSearchSuccess(data, value, type));
+    dispatch(fetchRelationships(data.accounts.map(item => item.id)));
+  }).catch(error => {
+    dispatch(expandSearchFail(error));
+  });
 };
+
+export const expandSearchRequest = () => ({
+  type: SEARCH_EXPAND_REQUEST,
+});
+
+export const expandSearchSuccess = (results, searchTerm, searchType) => ({
+  type: SEARCH_EXPAND_SUCCESS,
+  results,
+  searchTerm,
+  searchType,
+});
+
+export const expandSearchFail = error => ({
+  type: SEARCH_EXPAND_FAIL,
+  error,
+});
+
+export const showSearch = () => ({
+  type: SEARCH_SHOW,
+});

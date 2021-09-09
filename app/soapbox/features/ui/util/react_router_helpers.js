@@ -18,7 +18,7 @@ class WrappedRoute extends React.Component {
 
   static propTypes = {
     component: PropTypes.func.isRequired,
-    page: PropTypes.object,
+    page: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     content: PropTypes.node,
     componentParams: PropTypes.object,
     layout: PropTypes.object,
@@ -38,7 +38,7 @@ class WrappedRoute extends React.Component {
         <BundleContainer fetchComponent={component} loading={this.renderLoading} error={this.renderError}>
           {Component =>
             (
-              <Page params={match.params} {...componentParams}>
+              <Page params={match.params} layout={layout} {...componentParams}>
                 <Component params={match.params} {...componentParams}>
                   {content}
                 </Component>
@@ -65,11 +65,19 @@ class WrappedRoute extends React.Component {
   }
 
   renderLoading = () => {
-    return <ColumnLoading />;
+    return (
+      <ColumnsAreaContainer layout={this.props.layout}>
+        <ColumnLoading />
+      </ColumnsAreaContainer>
+    );
   }
 
   renderError = (props) => {
-    return <BundleColumnError {...props} />;
+    return (
+      <ColumnsAreaContainer layout={this.props.layout}>
+        <BundleColumnError {...props} />
+      </ColumnsAreaContainer>
+    );
   }
 
   render() {

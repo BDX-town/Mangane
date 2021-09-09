@@ -1,9 +1,12 @@
 import api from '../api';
-import openDB from '../storage/db';
-import { evictStatus } from '../storage/modifier';
 import { deleteFromTimelines } from './timelines';
-import { importFetchedStatus, importFetchedStatuses, importAccount, importStatus } from './importer';
+import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modal';
+import { isLoggedIn } from 'soapbox/utils/auth';
+
+export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
+export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
+export const STATUS_CREATE_FAIL    = 'STATUS_CREATE_FAIL';
 
 export const STATUS_FETCH_REQUEST = 'STATUS_FETCH_REQUEST';
 export const STATUS_FETCH_SUCCESS = 'STATUS_FETCH_SUCCESS';
@@ -36,48 +39,22 @@ export function fetchStatusRequest(id, skipLoading) {
     id,
     skipLoading,
   };
-};
+}
 
-function getFromDB(dispatch, getState, accountIndex, index, id) {
-  return new Promise((resolve, reject) => {
-    const request = index.get(id);
+export function createStatus(params, idempotencyKey) {
+  return (dispatch, getState) => {
+    dispatch({ type: STATUS_CREATE_REQUEST, params, idempotencyKey });
 
-    request.onerror = reject;
-
-    request.onsuccess = () => {
-      const promises = [];
-
-      if (!request.result) {
-        reject();
-        return;
-      }
-
-      dispatch(importStatus(request.result));
-
-      if (getState().getIn(['accounts', request.result.account], null) === null) {
-        promises.push(new Promise((accountResolve, accountReject) => {
-          const accountRequest = accountIndex.get(request.result.account);
-
-          accountRequest.onerror = accountReject;
-          accountRequest.onsuccess = () => {
-            if (!request.result) {
-              accountReject();
-              return;
-            }
-
-            dispatch(importAccount(accountRequest.result));
-            accountResolve();
-          };
-        }));
-      }
-
-      if (request.result.reblog && getState().getIn(['statuses', request.result.reblog], null) === null) {
-        promises.push(getFromDB(dispatch, getState, accountIndex, index, request.result.reblog));
-      }
-
-      resolve(Promise.all(promises));
-    };
-  });
+    return api(getState).post('/api/v1/statuses', params, {
+      headers: { 'Idempotency-Key': idempotencyKey },
+    }).then(({ data: status }) => {
+      dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+      return status;
+    }).catch(error => {
+      dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
+      throw error;
+    });
+  };
 }
 
 export function fetchStatus(id) {
@@ -92,34 +69,22 @@ export function fetchStatus(id) {
 
     dispatch(fetchStatusRequest(id, skipLoading));
 
-    openDB().then(db => {
-      const transaction = db.transaction(['accounts', 'statuses'], 'read');
-      const accountIndex = transaction.objectStore('accounts').index('id');
-      const index = transaction.objectStore('statuses').index('id');
-
-      return getFromDB(dispatch, getState, accountIndex, index, id).then(() => {
-        db.close();
-      }, error => {
-        db.close();
-        throw error;
-      });
-    }).then(() => {
-      dispatch(fetchStatusSuccess(skipLoading));
-    }, () => api(getState).get(`/api/v1/statuses/${id}`).then(response => {
+    api(getState).get(`/api/v1/statuses/${id}`).then(response => {
       dispatch(importFetchedStatus(response.data));
-      dispatch(fetchStatusSuccess(skipLoading));
-    })).catch(error => {
+      dispatch(fetchStatusSuccess(response.data, skipLoading));
+    }).catch(error => {
       dispatch(fetchStatusFail(id, error, skipLoading));
     });
   };
-};
+}
 
-export function fetchStatusSuccess(skipLoading) {
+export function fetchStatusSuccess(status, skipLoading) {
   return {
     type: STATUS_FETCH_SUCCESS,
+    status,
     skipLoading,
   };
-};
+}
 
 export function fetchStatusFail(id, error, skipLoading) {
   return {
@@ -129,7 +94,7 @@ export function fetchStatusFail(id, error, skipLoading) {
     skipLoading,
     skipAlert: true,
   };
-};
+}
 
 export function redraft(status, raw_text) {
   return {
@@ -137,11 +102,11 @@ export function redraft(status, raw_text) {
     status,
     raw_text,
   };
-};
+}
 
 export function deleteStatus(id, routerHistory, withRedraft = false) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     let status = getState().getIn(['statuses', id]);
 
@@ -152,7 +117,6 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
     dispatch(deleteStatusRequest(id));
 
     api(getState).delete(`/api/v1/statuses/${id}`).then(response => {
-      evictStatus(id);
       dispatch(deleteStatusSuccess(id));
       dispatch(deleteFromTimelines(id));
 
@@ -164,21 +128,21 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       dispatch(deleteStatusFail(id, error));
     });
   };
-};
+}
 
 export function deleteStatusRequest(id) {
   return {
     type: STATUS_DELETE_REQUEST,
     id: id,
   };
-};
+}
 
 export function deleteStatusSuccess(id) {
   return {
     type: STATUS_DELETE_SUCCESS,
     id: id,
   };
-};
+}
 
 export function deleteStatusFail(id, error) {
   return {
@@ -186,7 +150,7 @@ export function deleteStatusFail(id, error) {
     id: id,
     error: error,
   };
-};
+}
 
 export function fetchContext(id) {
   return (dispatch, getState) => {
@@ -204,14 +168,14 @@ export function fetchContext(id) {
       dispatch(fetchContextFail(id, error));
     });
   };
-};
+}
 
 export function fetchContextRequest(id) {
   return {
     type: CONTEXT_FETCH_REQUEST,
     id,
   };
-};
+}
 
 export function fetchContextSuccess(id, ancestors, descendants) {
   return {
@@ -220,7 +184,7 @@ export function fetchContextSuccess(id, ancestors, descendants) {
     ancestors,
     descendants,
   };
-};
+}
 
 export function fetchContextFail(id, error) {
   return {
@@ -229,11 +193,11 @@ export function fetchContextFail(id, error) {
     error,
     skipAlert: true,
   };
-};
+}
 
 export function muteStatus(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(muteStatusRequest(id));
 
@@ -243,21 +207,21 @@ export function muteStatus(id) {
       dispatch(muteStatusFail(id, error));
     });
   };
-};
+}
 
 export function muteStatusRequest(id) {
   return {
     type: STATUS_MUTE_REQUEST,
     id,
   };
-};
+}
 
 export function muteStatusSuccess(id) {
   return {
     type: STATUS_MUTE_SUCCESS,
     id,
   };
-};
+}
 
 export function muteStatusFail(id, error) {
   return {
@@ -265,11 +229,11 @@ export function muteStatusFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function unmuteStatus(id) {
   return (dispatch, getState) => {
-    if (!getState().get('me')) return;
+    if (!isLoggedIn(getState)) return;
 
     dispatch(unmuteStatusRequest(id));
 
@@ -279,21 +243,21 @@ export function unmuteStatus(id) {
       dispatch(unmuteStatusFail(id, error));
     });
   };
-};
+}
 
 export function unmuteStatusRequest(id) {
   return {
     type: STATUS_UNMUTE_REQUEST,
     id,
   };
-};
+}
 
 export function unmuteStatusSuccess(id) {
   return {
     type: STATUS_UNMUTE_SUCCESS,
     id,
   };
-};
+}
 
 export function unmuteStatusFail(id, error) {
   return {
@@ -301,7 +265,7 @@ export function unmuteStatusFail(id, error) {
     id,
     error,
   };
-};
+}
 
 export function hideStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -312,7 +276,7 @@ export function hideStatus(ids) {
     type: STATUS_HIDE,
     ids,
   };
-};
+}
 
 export function revealStatus(ids) {
   if (!Array.isArray(ids)) {
@@ -323,4 +287,4 @@ export function revealStatus(ids) {
     type: STATUS_REVEAL,
     ids,
   };
-};
+}

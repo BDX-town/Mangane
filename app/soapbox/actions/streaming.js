@@ -13,6 +13,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
+export const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -20,6 +21,17 @@ const getLocale = state => {
   const locale = getSettings(state).get('locale');
   return validLocale(locale) ? locale : 'en';
 };
+
+function updateFollowRelationships(relationships) {
+  return (dispatch, getState) => {
+    const me = getState().get('me');
+    return dispatch({
+      type: STREAMING_FOLLOW_RELATIONSHIPS_UPDATE,
+      me,
+      ...relationships,
+    });
+  };
+}
 
 export function connectTimelineStream(timelineId, path, pollingRefresh = null, accept = null) {
 
@@ -46,7 +58,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
         case 'notification':
           messages[locale]().then(messages => {
             dispatch(updateNotificationsQueue(JSON.parse(data.payload), messages, locale, window.location.pathname));
-          }).catch(() => {});
+          }).catch(error => {
+            console.error(error);
+          });
           break;
         case 'conversation':
           dispatch(updateConversations(JSON.parse(data.payload)));
@@ -69,6 +83,9 @@ export function connectTimelineStream(timelineId, path, pollingRefresh = null, a
             });
           });
           break;
+        case 'pleroma:follow_relationships_update':
+          dispatch(updateFollowRelationships(JSON.parse(data.payload)));
+          break;
         }
       },
     };
@@ -82,7 +99,8 @@ const refreshHomeTimelineAndNotification = (dispatch, done) => {
 export const connectUserStream      = () => connectTimelineStream('home', 'user', refreshHomeTimelineAndNotification);
 export const connectCommunityStream = ({ onlyMedia } = {}) => connectTimelineStream(`community${onlyMedia ? ':media' : ''}`, `public:local${onlyMedia ? ':media' : ''}`);
 export const connectPublicStream    = ({ onlyMedia } = {}) => connectTimelineStream(`public${onlyMedia ? ':media' : ''}`, `public${onlyMedia ? ':media' : ''}`);
+export const connectRemoteStream    = (instance, { onlyMedia } = {}) => connectTimelineStream(`remote${onlyMedia ? ':media' : ''}:${instance}`, `public:remote${onlyMedia ? ':media' : ''}&instance=${instance}`);
 export const connectHashtagStream   = (id, tag, accept) => connectTimelineStream(`hashtag:${id}`, `hashtag&tag=${tag}`, null, accept);
 export const connectDirectStream    = () => connectTimelineStream('direct', 'direct');
 export const connectListStream      = id => connectTimelineStream(`list:${id}`, `list&list=${id}`);
-export const connectGroupStream      = id => connectTimelineStream(`group:${id}`, `group&group=${id}`);
+export const connectGroupStream     = id => connectTimelineStream(`group:${id}`, `group&group=${id}`);

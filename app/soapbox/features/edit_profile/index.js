@@ -20,26 +20,54 @@ import {
   List as ImmutableList,
 } from 'immutable';
 import { patchMe } from 'soapbox/actions/me';
+import { updateNotificationSettings } from 'soapbox/actions/accounts';
+import Icon from 'soapbox/components/icon';
 import { unescape } from 'lodash';
+import { isVerified } from 'soapbox/utils/accounts';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
+import { makeGetAccount } from 'soapbox/selectors';
+
+const hidesNetwork = account => {
+  const pleroma = account.get('pleroma');
+  if (!pleroma) return false;
+
+  const { hide_followers, hide_follows, hide_followers_count, hide_follows_count } = pleroma.toJS();
+  return hide_followers && hide_follows && hide_followers_count && hide_follows_count;
+};
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
   verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
+  success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
+  bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
+  displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
 });
 
-const mapStateToProps = state => {
-  const me = state.get('me');
-  return {
-    account: state.getIn(['accounts', me]),
-    maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+const makeMapStateToProps = () => {
+  const getAccount = makeGetAccount();
+
+  const mapStateToProps = state => {
+    const me = state.get('me');
+    const account = getAccount(state, me);
+    const soapbox = getSoapboxConfig(state);
+
+    return {
+      account,
+      maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
+      verifiedCanEditName: soapbox.get('verifiedCanEditName'),
+      supportsEmailList: getFeatures(state.get('instance')).emailList,
+    };
   };
+
+  return mapStateToProps;
 };
 
 // Forces fields to be maxFields size, filling empty values
 const normalizeFields = (fields, maxFields) => (
-  ImmutableList(fields).setSize(maxFields).map(field =>
+  ImmutableList(fields).setSize(Math.max(fields.size, maxFields)).map(field =>
     field ? field : ImmutableMap({ name: '', value: '' }),
   )
 );
@@ -51,7 +79,7 @@ const unescapeParams = (map, params) => (
   ), map)
 );
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 @injectIntl
 class EditProfile extends ImmutablePureComponent {
 
@@ -60,6 +88,7 @@ class EditProfile extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map,
     maxFields: PropTypes.number,
+    verifiedCanEditName: PropTypes.bool,
   };
 
   state = {
@@ -68,12 +97,21 @@ class EditProfile extends ImmutablePureComponent {
 
   constructor(props) {
     super(props);
-    const initialState = props.account.withMutations(map => {
+    const { account, maxFields } = this.props;
+
+    const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
+    const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
+
+    const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
-      map.set('fields', normalizeFields(map.get('fields'), props.maxFields));
+      map.set('fields', normalizeFields(map.get('fields'), Math.min(maxFields, 4)));
+      map.set('stranger_notifications', strangerNotifications);
+      map.set('accepts_email_list', acceptsEmailList);
+      map.set('hide_network', hidesNetwork(account));
       unescapeParams(map, ['display_name', 'bio']);
     });
+
     this.state = initialState.toObject();
   }
 
@@ -82,7 +120,7 @@ class EditProfile extends ImmutablePureComponent {
     return account.merge(ImmutableMap({
       header: this.state.header,
       avatar: this.state.avatar,
-      display_name: this.state.display_name,
+      display_name: this.state.display_name || account.get('username'),
     }));
   }
 
@@ -106,13 +144,18 @@ class EditProfile extends ImmutablePureComponent {
       avatar: state.avatar_file,
       header: state.header_file,
       locked: state.locked,
+      accepts_email_list: state.accepts_email_list,
+      hide_followers: state.hide_network,
+      hide_follows: state.hide_network,
+      hide_followers_count: state.hide_network,
+      hide_follows_count: state.hide_network,
     }, this.getFieldParams().toJS());
   }
 
   getFormdata = () => {
     const data = this.getParams();
-    let formData = new FormData();
-    for (let key in data) {
+    const formData = new FormData();
+    for (const key in data) {
       // Compact the submission. This should probably be done better.
       const shouldAppend = Boolean(data[key] !== undefined || key.startsWith('fields_attributes'));
       if (shouldAppend) formData.append(key, data[key] || '');
@@ -121,14 +164,22 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch } = this.props;
-    dispatch(patchMe(this.getFormdata())).then(() => {
+    const { dispatch, intl } = this.props;
+
+    const credentials = dispatch(patchMe(this.getFormdata()));
+    const notifications = dispatch(updateNotificationSettings({
+      block_from_strangers: this.state.stranger_notifications || false,
+    }));
+
+    this.setState({ isLoading: true });
+
+    Promise.all([credentials, notifications]).then(() => {
       this.setState({ isLoading: false });
-      dispatch(snackbar.success('Profile saved!'));
+      dispatch(snackbar.success(intl.formatMessage(messages.success)));
     }).catch((error) => {
       this.setState({ isLoading: false });
     });
-    this.setState({ isLoading: true });
+
     event.preventDefault();
   }
 
@@ -159,9 +210,24 @@ class EditProfile extends ImmutablePureComponent {
     });
   }
 
+  handleAddField = () => {
+    this.setState({
+      fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
+    });
+  }
+
+  handleDeleteField = i => {
+    return () => {
+      this.setState({
+        fields: normalizeFields(this.state.fields.delete(i), Math.min(this.props.maxFields, 4)),
+      });
+    };
+  }
+
   render() {
-    const { intl, maxFields, account } = this.props;
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const { intl, maxFields, account, verifiedCanEditName, supportsEmailList } = this.props;
+    const verified = isVerified(account);
+    const canEditName = verifiedCanEditName || !verified;
 
     return (
       <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
@@ -169,16 +235,18 @@ class EditProfile extends ImmutablePureComponent {
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>
               <TextInput
-                className={verified ? 'disabled' : ''}
+                className={canEditName ? '' : 'disabled'}
                 label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
+                placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
                 name='display_name'
                 value={this.state.display_name}
                 onChange={this.handleTextChange}
-                disabled={verified}
-                hint={verified && intl.formatMessage(messages.verified)}
+                disabled={!canEditName}
+                hint={!canEditName && intl.formatMessage(messages.verified)}
               />
               <SimpleTextarea
                 label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
+                placeholder={intl.formatMessage(messages.bioPlaceholder)}
                 name='note'
                 autoComplete='off'
                 value={this.state.note}
@@ -213,12 +281,33 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleCheckboxChange}
               />
               <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.hide_network_label' defaultMessage='Hide network' />}
+                hint={<FormattedMessage id='edit_profile.hints.hide_network' defaultMessage='Who you follow and who follows you will not be shown on your profile' />}
+                name='hide_network'
+                checked={this.state.hide_network}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.bot_label' defaultMessage='This is a bot account' />}
                 hint={<FormattedMessage id='edit_profile.hints.bot' defaultMessage='This account mainly performs automated actions and might not be monitored' />}
                 name='bot'
                 checked={this.state.bot}
                 onChange={this.handleCheckboxChange}
               />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.stranger_notifications_label' defaultMessage='Block notifications from strangers' />}
+                hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
+                name='stranger_notifications'
+                checked={this.state.stranger_notifications}
+                onChange={this.handleCheckboxChange}
+              />
+              {supportsEmailList && <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
+                hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
+                name='accepts_email_list'
+                checked={this.state.accepts_email_list}
+                onChange={this.handleCheckboxChange}
+              />}
             </FieldsGroup>
             <FieldsGroup>
               <div className='fields-row__column fields-group'>
@@ -240,8 +329,21 @@ class EditProfile extends ImmutablePureComponent {
                           value={field.get('value')}
                           onChange={this.handleFieldChange(i, 'value')}
                         />
+                        {
+                          this.state.fields.size > 4 && <Icon id='times-circle' onClick={this.handleDeleteField(i)} />
+                        }
                       </div>
                     ))
+                  }
+                  {
+                    this.state.fields.size < maxFields && (
+                      <div className='actions add-row'>
+                        <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddField}>
+                          <Icon id='plus-circle' />
+                          <FormattedMessage id='edit_profile.meta_fields.add' defaultMessage='Add new item' />
+                        </div>
+                      </div>
+                    )
                   }
                 </div>
               </div>

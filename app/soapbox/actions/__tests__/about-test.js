@@ -5,15 +5,17 @@ import {
   fetchAboutPage,
 } from '../about';
 import { Map as ImmutableMap } from 'immutable';
-import { __stub as stubApi } from 'soapbox/api';
+import MockAdapter from 'axios-mock-adapter';
+import { staticClient } from 'soapbox/api';
 import { mockStore } from 'soapbox/test_helpers';
 
 describe('fetchAboutPage()', () => {
   it('creates the expected actions on success', () => {
 
-    stubApi(mock => {
-      mock.onGet('/instance/about/index.html').reply(200, '<h1>Hello world</h1>');
-    });
+    const mock = new MockAdapter(staticClient);
+
+    mock.onGet('/instance/about/index.html')
+      .reply(200, '<h1>Hello world</h1>');
 
     const expectedActions = [
       { type: FETCH_ABOUT_PAGE_REQUEST, slug: 'index' },

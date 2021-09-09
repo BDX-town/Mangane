@@ -119,8 +119,20 @@ class MediaModal extends ImmutablePureComponent {
     }
   }
 
+  handleCloserClick = ({ target }) => {
+    const whitelist = ['zoomable-image'];
+    const activeSlide = document.querySelector('.media-modal .react-swipeable-view-container > div[aria-hidden="false"]');
+
+    const isClickOutside = target === activeSlide || !activeSlide.contains(target);
+    const isWhitelisted = whitelist.some(w => target.classList.contains(w));
+
+    if (isClickOutside || isWhitelisted) {
+      this.props.onClose();
+    }
+  }
+
   render() {
-    const { media, status, intl, onClose } = this.props;
+    const { media, status, account, intl, onClose } = this.props;
     const { navigationHidden } = this.state;
 
     const index = this.getIndex();
@@ -150,7 +162,7 @@ class MediaModal extends ImmutablePureComponent {
     const content = media.map((image) => {
       const width  = image.getIn(['meta', 'original', 'width']) || null;
       const height = image.getIn(['meta', 'original', 'height']) || null;
-      const link = (status && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
+      const link = (status && account && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
 
       if (image.get('type') === 'image') {
         return (
@@ -236,7 +248,7 @@ class MediaModal extends ImmutablePureComponent {
         <div
           className='media-modal__closer'
           role='presentation'
-          onClick={onClose}
+          onClick={this.handleCloserClick}
         >
           <ReactSwipeableViews
             style={swipeableViewsStyle}

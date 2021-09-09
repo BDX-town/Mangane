@@ -14,6 +14,10 @@ import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import Bundle from 'soapbox/features/ui/components/bundle';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { initReportById } from 'soapbox/actions/reports';
+import { createSelector } from 'reselect';
+import { onlyEmoji } from 'soapbox/utils/rich_content';
+
+const BIG_EMOJI_LIMIT = 1;
 
 const messages = defineMessages({
   today: { id: 'chats.dividers.today', defaultMessage: 'Today' },
@@ -29,7 +33,7 @@ const timeChange = (prev, curr) => {
 
   if (prevDate !== currDate) {
     return currDate === nowDate ? 'today' : 'date';
-  };
+  }
 
   return null;
 };
@@ -38,15 +42,34 @@ const makeEmojiMap = record => record.get('emojis', ImmutableList()).reduce((map
   return map.set(`:${emoji.get('shortcode')}:`, emoji);
 }, ImmutableMap());
 
-const mapStateToProps = (state, { chatMessageIds }) => ({
-  me: state.get('me'),
-  chatMessages: chatMessageIds.reduce((acc, curr) => {
-    const chatMessage = state.getIn(['chat_messages', curr]);
-    return chatMessage ? acc.push(chatMessage) : acc;
-  }, ImmutableList()),
-});
+const makeGetChatMessages = () => {
+  return createSelector(
+    [(chatMessages, chatMessageIds) => (
+      chatMessageIds.reduce((acc, curr) => {
+        const chatMessage = chatMessages.get(curr);
+        return chatMessage ? acc.push(chatMessage) : acc;
+      }, ImmutableList())
+    )],
+    chatMessages => chatMessages,
+  );
+};
 
-export default @connect(mapStateToProps)
+const makeMapStateToProps = () => {
+  const getChatMessages = makeGetChatMessages();
+
+  const mapStateToProps = (state, { chatMessageIds }) => {
+    const chatMessages = state.get('chat_messages');
+
+    return {
+      me: state.get('me'),
+      chatMessages: getChatMessages(chatMessages, chatMessageIds),
+    };
+  };
+
+  return mapStateToProps;
+};
+
+export default @connect(makeMapStateToProps)
 @injectIntl
 class ChatMessageList extends ImmutablePureComponent {
 
@@ -100,6 +123,12 @@ class ChatMessageList extends ImmutablePureComponent {
       link.setAttribute('rel', 'ugc nofollow noopener');
       link.setAttribute('target', '_blank');
     });
+
+    if (onlyEmoji(c, BIG_EMOJI_LIMIT, false)) {
+      c.classList.add('chat-message__bubble--onlyEmoji');
+    } else {
+      c.classList.remove('chat-message__bubble--onlyEmoji');
+    }
   }
 
   isNearBottom = () => {

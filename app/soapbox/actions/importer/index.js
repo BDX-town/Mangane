@@ -64,6 +64,22 @@ export function importFetchedStatus(status) {
   return importFetchedStatuses([status]);
 }
 
+// Sometimes Pleroma can return an empty account,
+// or a repost can appear of a deleted account. Skip these statuses.
+const isBroken = status => {
+  try {
+    // Skip empty accounts
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    if (!status.account.id) return true;
+    // Skip broken reposts
+    // https://gitlab.com/soapbox-pub/soapbox/-/issues/28
+    if (status.reblog && !status.reblog.account.id) return true;
+    return false;
+  } catch(e) {
+    return true;
+  }
+};
+
 export function importFetchedStatuses(statuses) {
   return (dispatch, getState) => {
     const accounts = [];
@@ -71,7 +87,8 @@ export function importFetchedStatuses(statuses) {
     const polls = [];
 
     function processStatus(status) {
-      if (!status.account.id) return;
+      // Skip broken statuses
+      if (isBroken(status)) return;
 
       const normalOldStatus = getState().getIn(['statuses', status.id]);
       const expandSpoilers = getSettings(getState()).get('expandSpoilers');
@@ -104,4 +121,4 @@ export function importFetchedPoll(poll) {
 
 export function importErrorWhileFetchingAccountByUsername(username) {
   return { type: ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP, username };
-};
+}

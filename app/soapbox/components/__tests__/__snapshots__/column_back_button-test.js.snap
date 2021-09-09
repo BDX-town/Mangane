@@ -4,6 +4,7 @@ exports[`<ColumnBackButton /> renders correctly 1`] = `
 <button
   className="column-back-button"
   onClick={[Function]}
+  onKeyUp={[Function]}
 >
   <i
     alt="chevron-left"

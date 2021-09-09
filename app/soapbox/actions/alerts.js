@@ -14,13 +14,13 @@ export function dismissAlert(alert) {
     type: ALERT_DISMISS,
     alert,
   };
-};
+}
 
 export function clearAlert() {
   return {
     type: ALERT_CLEAR,
   };
-};
+}
 
 export function showAlert(title = messages.unexpectedTitle, message = messages.unexpectedMessage, severity = 'info') {
   return {
@@ -29,11 +29,15 @@ export function showAlert(title = messages.unexpectedTitle, message = messages.u
     message,
     severity,
   };
-};
+}
 
 export function showAlertForError(error) {
   if (error.response) {
     const { data, status, statusText } = error.response;
+
+    if (status === 502) {
+      return showAlert('', 'The server is down', 'error');
+    }
 
     if (status === 404 || status === 410) {
       // Skip these errors as they are reflected in the UI
@@ -41,7 +45,7 @@ export function showAlertForError(error) {
     }
 
     let message = statusText;
-    let title   = `${status}`;
+    const title = `${status}`;
 
     if (data.error) {
       message = data.error;

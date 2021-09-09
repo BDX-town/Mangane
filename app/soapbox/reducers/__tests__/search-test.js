@@ -6,8 +6,10 @@ describe('search reducer', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
       value: '',
       submitted: false,
+      submittedValue: '',
       hidden: false,
       results: ImmutableMap(),
+      filter: 'accounts',
     }));
   });
 });

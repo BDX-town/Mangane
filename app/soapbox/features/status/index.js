@@ -41,11 +41,14 @@ import StatusContainer from '../../containers/status_container';
 import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { createSelector } from 'reselect';
 import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -64,44 +67,57 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
-  const mapStateToProps = (state, props) => {
-    const status = getStatus(state, {
-      id: props.params.statusId,
-      username: props.params.username,
-    });
+  const getAncestorsIds = createSelector([
+    (_, { id }) => id,
+    state => state.getIn(['contexts', 'inReplyTos']),
+  ], (statusId, inReplyTos) => {
+    let ancestorsIds = Immutable.OrderedSet();
+    let id = statusId;
 
+    while (id) {
+      ancestorsIds = Immutable.OrderedSet([id]).union(ancestorsIds);
+      id = inReplyTos.get(id);
+    }
+
+    return ancestorsIds;
+  });
+
+  const getDescendantsIds = createSelector([
+    (_, { id }) => id,
+    state => state.getIn(['contexts', 'replies']),
+  ], (statusId, contextReplies) => {
+    let descendantsIds = Immutable.OrderedSet();
+    const ids = [statusId];
+
+    while (ids.length > 0) {
+      const id      = ids.shift();
+      const replies = contextReplies.get(id);
+
+      if (statusId !== id) {
+        descendantsIds = descendantsIds.union([id]);
+      }
+
+      if (replies) {
+        replies.reverse().forEach(reply => {
+          ids.unshift(reply);
+        });
+      }
+    }
+
+    return descendantsIds;
+  });
+
+  const mapStateToProps = (state, props) => {
+    const status = getStatus(state, { id: props.params.statusId });
     let ancestorsIds = Immutable.List();
     let descendantsIds = Immutable.List();
 
     if (status) {
-      ancestorsIds = ancestorsIds.withMutations(mutable => {
-        let id = status.get('in_reply_to_id');
-
-        while (id) {
-          mutable.unshift(id);
-          id = state.getIn(['contexts', 'inReplyTos', id]);
-        }
-      });
-
-      descendantsIds = descendantsIds.withMutations(mutable => {
-        const ids = [status.get('id')];
-
-        while (ids.length > 0) {
-          let id        = ids.shift();
-          const replies = state.getIn(['contexts', 'replies', id]);
-
-          if (status.get('id') !== id) {
-            mutable.push(id);
-          }
-
-          if (replies) {
-            replies.reverse().forEach(reply => {
-              ids.unshift(reply);
-            });
-          }
-        }
-      });
+      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
+      descendantsIds = getDescendantsIds(state, { id: status.get('id') });
     }
+
+    const soapbox = getSoapboxConfig(state);
 
     return {
       status,
@@ -110,6 +126,8 @@ const makeMapStateToProps = () => {
       askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
       domain: state.getIn(['meta', 'domain']),
       me: state.get('me'),
+      displayMedia: getSettings(state).get('displayMedia'),
+      allowedEmoji: soapbox.get('allowedEmoji'),
     };
   };
 
@@ -133,12 +151,14 @@ class Status extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     domain: PropTypes.string,
+    displayMedia: PropTypes.string,
   };
 
   state = {
     fullscreen: false,
-    showMedia: defaultMediaVisibility(this.props.status),
+    showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     loadedStatusId: undefined,
+    emojiSelectorFocused: false,
   };
 
   componentDidMount() {
@@ -172,14 +192,14 @@ class Status extends ImmutablePureComponent {
 
   handleBookmark = (status) => {
     if (status.get('bookmarked')) {
-      this.props.dispatch(unbookmark(status));
+      this.props.dispatch(unbookmark(this.props.intl, status));
     } else {
-      this.props.dispatch(bookmark(status));
+      this.props.dispatch(bookmark(this.props.intl, status));
     }
   }
 
   handleReplyClick = (status) => {
-    let { askReplyConfirmation, dispatch, intl } = this.props;
+    const { askReplyConfirmation, dispatch, intl } = this.props;
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
@@ -243,6 +263,21 @@ class Status extends ImmutablePureComponent {
     this.props.dispatch(openModal('VIDEO', { media, time }));
   }
 
+  handleHotkeyOpenMedia = e => {
+    const { onOpenMedia, onOpenVideo } = this.props;
+    const status = this._properStatus();
+
+    e.preventDefault();
+
+    if (status.get('media_attachments').size > 0) {
+      if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
+        onOpenVideo(status.getIn(['media_attachments', 0]), 0);
+      } else {
+        onOpenMedia(status.get('media_attachments'), 0);
+      }
+    }
+  }
+
   handleMuteClick = (account) => {
     this.props.dispatch(initMuteModal(account));
   }
@@ -298,6 +333,26 @@ class Status extends ImmutablePureComponent {
     this.props.dispatch(openModal('EMBED', { url: status.get('url') }));
   }
 
+  handleDeactivateUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
+  handleDeleteUser = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+  }
+
+  handleToggleStatusSensitivity = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
+  }
+
+  handleDeleteStatus = (status) => {
+    const { dispatch, intl } = this.props;
+    dispatch(deleteStatusModal(intl, status.get('id')));
+  }
+
   handleHotkeyMoveUp = () => {
     this.handleMoveUp(this.props.status.get('id'));
   }
@@ -336,6 +391,10 @@ class Status extends ImmutablePureComponent {
     this.handleToggleMediaVisibility();
   }
 
+  handleHotkeyReact = () => {
+    this._expandEmojiSelector();
+  }
+
   handleMoveUp = id => {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
@@ -370,6 +429,23 @@ class Status extends ImmutablePureComponent {
     }
   }
 
+  handleEmojiSelectorExpand = e => {
+    if (e.key === 'Enter') {
+      this._expandEmojiSelector();
+    }
+    e.preventDefault();
+  }
+
+  handleEmojiSelectorUnfocus = () => {
+    this.setState({ emojiSelectorFocused: false });
+  }
+
+  _expandEmojiSelector = () => {
+    this.setState({ emojiSelectorFocused: true });
+    const firstEmoji = this.status.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji.focus();
+  };
+
   _selectChild(index, align_top) {
     const container = this.node;
     const element = container.querySelectorAll('.focusable')[index];
@@ -384,8 +460,16 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  renderChildren(list) {
-    return list.map(id => (
+  renderTombstone(id) {
+    return (
+      <div className='tombstone' key={id}>
+        <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is unavailable.' /></p>
+      </div>
+    );
+  }
+
+  renderStatus(id) {
+    return (
       <StatusContainer
         key={id}
         id={id}
@@ -393,11 +477,25 @@ class Status extends ImmutablePureComponent {
         onMoveDown={this.handleMoveDown}
         contextType='thread'
       />
-    ));
+    );
+  }
+
+  renderChildren(list) {
+    return list.map(id => {
+      if (id.endsWith('-tombstone')) {
+        return this.renderTombstone(id);
+      } else {
+        return this.renderStatus(id);
+      }
+    });
   }
 
   setRef = c => {
     this.node = c;
+  }
+
+  setStatusRef = c => {
+    this.status = c;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -417,7 +515,7 @@ class Status extends ImmutablePureComponent {
       return;
     }
 
-    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0) {
+    if (prevProps.status && ancestorsIds && ancestorsIds.size > 0 && this.node) {
       const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
@@ -465,6 +563,8 @@ class Status extends ImmutablePureComponent {
       openProfile: this.handleHotkeyOpenProfile,
       toggleHidden: this.handleHotkeyToggleHidden,
       toggleSensitive: this.handleHotkeyToggleSensitive,
+      openMedia: this.handleHotkeyOpenMedia,
+      react: this.handleHotkeyReact,
     };
 
     return (
@@ -492,7 +592,7 @@ class Status extends ImmutablePureComponent {
           {ancestors}
 
           <HotKeys handlers={handlers}>
-            <div className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+            <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
               <DetailedStatus
                 status={status}
                 onOpenVideo={this.handleOpenVideo}
@@ -519,6 +619,14 @@ class Status extends ImmutablePureComponent {
                 onPin={this.handlePin}
                 onBookmark={this.handleBookmark}
                 onEmbed={this.handleEmbed}
+                onDeactivateUser={this.handleDeactivateUser}
+                onDeleteUser={this.handleDeleteUser}
+                onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                onDeleteStatus={this.handleDeleteStatus}
+                allowedEmoji={this.props.allowedEmoji}
+                emojiSelectorFocused={this.state.emojiSelectorFocused}
+                handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
               />
             </div>
           </HotKeys>

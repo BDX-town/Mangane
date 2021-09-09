@@ -1,10 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Chat from './chat';
-import { makeGetChat } from 'soapbox/selectors';
+import { createSelector } from 'reselect';
+
+const getSortedChatIds = chats => (
+  chats
+    .toList()
+    .sort(chatDateComparator)
+    .map(chat => chat.get('id'))
+);
 
 const chatDateComparator = (chatA, chatB) => {
   // Sort most recently updated chats at the top
@@ -17,43 +25,44 @@ const chatDateComparator = (chatA, chatB) => {
   return 0;
 };
 
-const mapStateToProps = state => {
-  const getChat = makeGetChat();
+const makeMapStateToProps = () => {
+  const sortedChatIdsSelector = createSelector(
+    [getSortedChatIds],
+    chats => chats,
+  );
 
-  const chats = state.get('chats')
-    .map(chat => getChat(state, chat.toJS()))
-    .toList()
-    .sort(chatDateComparator);
+  const mapStateToProps = state => ({
+    chatIds: sortedChatIdsSelector(state.get('chats')),
+  });
 
-  return {
-    chats,
-  };
+  return mapStateToProps;
 };
 
-export default @connect(mapStateToProps)
+export default @connect(makeMapStateToProps)
 @injectIntl
 class ChatList extends ImmutablePureComponent {
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    chatIds: ImmutablePropTypes.list,
     onClickChat: PropTypes.func,
     emptyMessage: PropTypes.node,
   };
 
   render() {
-    const { chats, emptyMessage } = this.props;
+    const { chatIds, emptyMessage } = this.props;
 
     return (
       <div className='chat-list'>
         <div className='chat-list__content'>
-          {chats.count() === 0 &&
+          {chatIds.count() === 0 &&
             <div className='empty-column-indicator'>{emptyMessage}</div>
           }
-          {chats.map(chat => (
-            <div key={chat.get('id')} className='chat-list-item'>
+          {chatIds.map(chatId => (
+            <div key={chatId} className='chat-list-item'>
               <Chat
-                chat={chat}
+                chatId={chatId}
                 onClick={this.props.onClickChat}
               />
             </div>

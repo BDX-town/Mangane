@@ -30,4 +30,4 @@ export default function chats(state = initialState, action) {
   default:
     return state;
   }
-};
+}

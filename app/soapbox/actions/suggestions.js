@@ -1,5 +1,6 @@
 import api from '../api';
 import { importFetchedAccounts } from './importer';
+import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';
 export const SUGGESTIONS_FETCH_SUCCESS = 'SUGGESTIONS_FETCH_SUCCESS';
@@ -16,14 +17,14 @@ export function fetchSuggestions() {
       dispatch(fetchSuggestionsSuccess(response.data));
     }).catch(error => dispatch(fetchSuggestionsFail(error)));
   };
-};
+}
 
 export function fetchSuggestionsRequest() {
   return {
     type: SUGGESTIONS_FETCH_REQUEST,
     skipLoading: true,
   };
-};
+}
 
 export function fetchSuggestionsSuccess(accounts) {
   return {
@@ -31,7 +32,7 @@ export function fetchSuggestionsSuccess(accounts) {
     accounts,
     skipLoading: true,
   };
-};
+}
 
 export function fetchSuggestionsFail(error) {
   return {
@@ -40,10 +41,10 @@ export function fetchSuggestionsFail(error) {
     skipLoading: true,
     skipAlert: true,
   };
-};
+}
 
 export const dismissSuggestion = accountId => (dispatch, getState) => {
-  if (!getState().get('me')) return;
+  if (!isLoggedIn(getState)) return;
 
   dispatch({
     type: SUGGESTIONS_DISMISS,

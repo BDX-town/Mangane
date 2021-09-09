@@ -1,11 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { acctFull } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { List as ImmutableList } from 'immutable';
+import { displayFqn } from 'soapbox/utils/state';
 
-const ProfilePreview = ({ account }) => (
+const mapStateToProps = state => ({
+  displayFqn: displayFqn(state),
+});
+
+const ProfilePreview = ({ account, displayFqn }) => (
   <div className='card h-card'>
     <a target='_blank' rel='noopener' href={account.get('url')}>
       <div className='card__img'>
@@ -23,7 +30,7 @@ const ProfilePreview = ({ account }) => (
               {account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified') && <VerificationBadge />}
             </strong>
           </bdi>
-          <span>{acctFull(account)}</span>
+          <span>@{getAcct(account, displayFqn)}</span>
         </div>
       </div>
     </a>
@@ -32,6 +39,7 @@ const ProfilePreview = ({ account }) => (
 
 ProfilePreview.propTypes = {
   account: ImmutablePropTypes.map,
+  displayFqn: PropTypes.bool,
 };
 
-export default ProfilePreview;
+export default connect(mapStateToProps)(ProfilePreview);

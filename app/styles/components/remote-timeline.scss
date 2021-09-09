@@ -1,0 +1,70 @@
+.instance-federation-panel {
+  .wtf-panel__content {
+    box-sizing: border-box;
+    padding: 15px;
+  }
+
+  .instance-restrictions {
+    &__message {
+      margin-bottom: 15px;
+
+      i.fa {
+        padding-right: 10px;
+      }
+    }
+  }
+}
+
+.federation-restriction {
+  display: flex;
+  padding: 15px 0;
+
+  &__icon {
+    width: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-right: 10px;
+  }
+}
+
+.pinned-hosts-picker {
+  margin-left: 10px;
+  display: inline-flex;
+  flex-wrap: wrap;
+
+  .pinned-host {
+    margin-right: 10px;
+    margin-bottom: 10px;
+  }
+
+  &:hover {
+    .pinned-host {
+      background: var(--background-color);
+
+      &:hover {
+        background: var(--brand-color--faint);
+      }
+    }
+  }
+}
+
+.pinned-host {
+  background: var(--background-color);
+  border-radius: 999px;
+  transition: 0.2s;
+
+  &.active {
+    background: var(--brand-color--faint);
+  }
+
+  a {
+    display: block;
+    color: var(--primary-text-color);
+    text-decoration: none;
+    padding: 5px 11px;
+    max-width: 115px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}

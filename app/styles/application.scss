@@ -1,3 +1,10 @@
+// Fonts from elsewhere
+@import '~fork-awesome/css/fork-awesome.css';
+@import '~@fontsource/roboto/300.css';
+@import '~@fontsource/roboto/400.css';
+@import '~@fontsource/roboto/700.css';
+@import '~@fontsource/montserrat/800.css';
+
 @import 'mixins';
 @import 'themes';
 @import 'variables';
@@ -49,7 +56,6 @@
 @import 'components/search';
 @import 'components/react-toggle';
 @import 'components/getting-started';
-@import 'components/navigation-bar';
 @import 'components/promo-panel';
 @import 'components/drawer';
 @import 'components/still-image';
@@ -71,6 +77,14 @@
 @import 'components/mfa_form';
 @import 'components/snackbar';
 @import 'components/accordion';
+@import 'components/server-info';
+@import 'components/admin';
+@import 'components/backups';
+@import 'components/crypto-donate';
+@import 'components/datepicker';
+@import 'components/remote-timeline';
+@import 'components/federation-restrictions';
+@import 'components/aliases';
 
 // Holiday
 @import 'holiday/halloween';

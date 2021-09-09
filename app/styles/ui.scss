@@ -43,7 +43,7 @@
     &:hover,
     &:active,
     &:focus {
-      color: var(--primary-text-color--faint);
+      color: var(--primary-text-color);
     }
 
     &.disabled {
@@ -66,6 +66,12 @@
     border-radius: 4px;
     padding: 2px;
 
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     &:hover {
       background: var(--background-color);
     }
@@ -87,7 +93,7 @@
   &:hover,
   &:active,
   &:focus {
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
     transition: color 200ms ease-out;
   }
 
@@ -129,6 +135,10 @@
   }
 }
 
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+
 .ellipsis::after { content: "…"; }
 
 .timeline-compose-block {
@@ -137,10 +147,6 @@
   align-items: flex-start;
   padding: 20px;
   margin-bottom: 20px;
-
-  .emoji-picker-wrapper {
-    .emoji-picker-dropdown { top: 10px; }
-  }
 
   .compose-form {
     flex: 1 1;
@@ -173,6 +179,8 @@
   }
 
   &__avatar {
+    display: block;
+    border-radius: 50%;
     @media (max-width: 405px) { display: none; }
   }
 }
@@ -604,6 +612,7 @@
 }
 
 .notification__filter-bar,
+.search__filter-bar,
 .account__section-headline {
   border-bottom: 1px solid var(--brand-color--faint);
   cursor: default;
@@ -671,6 +680,7 @@
   position: relative;
   width: 15px;
   height: 15px;
+  flex-shrink: 0;
 
   &::before {
     display: block;
@@ -697,5 +707,27 @@
     width: 15px;
     height: 15px;
     text-align: center;
+  }
+}
+
+.icon-with-counter {
+  position: relative;
+  display: inline;
+
+  &__counter {
+    @include font-montserrat;
+    @include font-size(14);
+    @include line-height(14);
+    position: absolute;
+    box-sizing: border-box;
+    left: 8px;
+    top: -12px;
+    min-width: 16px;
+    height: 16px;
+    padding: 1px 3px 0;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    background: var(--accent-color);
   }
 }

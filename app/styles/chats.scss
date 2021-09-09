@@ -163,6 +163,15 @@
         pointer-events: all;
       }
     }
+
+    &--onlyEmoji {
+      background: transparent !important;
+
+      img.emojione {
+        width: 36px !important;
+        height: 36px !important;
+      }
+    }
   }
 
   &--me .chat-message__bubble {
@@ -376,7 +385,7 @@
   }
 }
 
-@media (min-width: 630px) {
+@media (min-width: 1190px) {
   .tabs-bar .tabs-bar__link--chats {
     display: none;
   }

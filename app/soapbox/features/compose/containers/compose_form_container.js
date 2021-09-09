@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import ComposeForm from '../components/compose_form';
 import {
   changeCompose,
@@ -26,6 +27,8 @@ const mapStateToProps = state => ({
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
   isModalOpen: state.get('modal').modalType === 'COMPOSE',
   maxTootChars: state.getIn(['instance', 'max_toot_chars']),
+  scheduledAt: state.getIn(['compose', 'schedule']),
+  scheduledStatusCount: state.get('scheduled_statuses').size,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -71,4 +74,4 @@ function mergeProps(stateProps, dispatchProps, ownProps) {
   });
 }
 
-export default connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps, mergeProps)(ComposeForm));

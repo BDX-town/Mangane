@@ -13,6 +13,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import Button from '../../../components/button';
 import Toggle from 'react-toggle';
 import IconButton from '../../../components/icon_button';
+import { isRemote, getDomain } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -25,14 +27,18 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = state => {
     const accountId = state.getIn(['reports', 'new', 'account_id']);
+    const account = getAccount(state, accountId);
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
 
     return {
       isSubmitting: state.getIn(['reports', 'new', 'isSubmitting']),
-      account: getAccount(state, accountId),
+      account,
       comment: state.getIn(['reports', 'new', 'comment']),
       forward: state.getIn(['reports', 'new', 'forward']),
       block: state.getIn(['reports', 'new', 'block']),
       statusIds: OrderedSet(state.getIn(['timelines', `account:${accountId}:with_replies`, 'items'])).union(state.getIn(['reports', 'new', 'status_ids'])),
+      canForward: isRemote(account) && features.federating,
     };
   };
 
@@ -50,6 +56,7 @@ class ReportModal extends ImmutablePureComponent {
     comment: PropTypes.string.isRequired,
     forward: PropTypes.bool,
     block: PropTypes.bool,
+    canForward: PropTypes.bool,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
@@ -91,13 +98,11 @@ class ReportModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, comment, intl, statusIds, isSubmitting, forward, block, onClose } = this.props;
+    const { account, comment, intl, statusIds, isSubmitting, forward, block, canForward, onClose } = this.props;
 
     if (!account) {
       return null;
     }
-
-    const domain = account.get('acct').split('@')[1];
 
     return (
       <div className='modal-root__modal report-modal'>
@@ -120,13 +125,13 @@ class ReportModal extends ImmutablePureComponent {
               autoFocus
             />
 
-            {domain && (
+            {canForward && (
               <div>
-                <p><FormattedMessage id='report.forward_hint' defaultMessage='The account is from another server. Send an anonymized copy of the report there as well?' /></p>
+                <p><FormattedMessage id='report.forward_hint' defaultMessage='The account is from another server. Send a copy of the report there as well?' /></p>
 
                 <div className='setting-toggle'>
                   <Toggle id='report-forward' checked={forward} disabled={isSubmitting} onChange={this.handleForwardChange} />
-                  <label htmlFor='report-forward' className='setting-toggle__label'><FormattedMessage id='report.forward' defaultMessage='Forward to {target}' values={{ target: domain }} /></label>
+                  <label htmlFor='report-forward' className='setting-toggle__label'><FormattedMessage id='report.forward' defaultMessage='Forward to {target}' values={{ target: getDomain(account) }} /></label>
                 </div>
               </div>
             )}

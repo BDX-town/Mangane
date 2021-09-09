@@ -52,6 +52,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onReblogToggle(this.props.account);
   }
 
+  handleSubscriptionToggle = () => {
+    this.props.onSubscriptionToggle(this.props.account);
+  }
+
   handleMute = () => {
     this.props.onMute(this.props.account);
   }
@@ -84,6 +88,34 @@ export default class Header extends ImmutablePureComponent {
     this.props.onAddToList(this.props.account);
   }
 
+  handleDeactivateUser = () => {
+    this.props.onDeactivateUser(this.props.account);
+  }
+
+  handleDeleteUser = () => {
+    this.props.onDeleteUser(this.props.account);
+  }
+
+  handleVerifyUser = () => {
+    this.props.onVerifyUser(this.props.account);
+  }
+
+  handleUnverifyUser = () => {
+    this.props.onUnverifyUser(this.props.account);
+  }
+
+  handlePromoteToAdmin = () => {
+    this.props.onPromoteToAdmin(this.props.account);
+  }
+
+  handlePromoteToModerator = () => {
+    this.props.onPromoteToModerator(this.props.account);
+  }
+
+  handleDemoteToUser = () => {
+    this.props.onDemoteToUser(this.props.account);
+  }
+
   render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -101,12 +133,20 @@ export default class Header extends ImmutablePureComponent {
           onDirect={this.handleDirect}
           onChat={this.handleChat}
           onReblogToggle={this.handleReblogToggle}
+          onSubscriptionToggle={this.handleSubscriptionToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}
           onBlockDomain={this.handleBlockDomain}
           onUnblockDomain={this.handleUnblockDomain}
           onEndorseToggle={this.handleEndorseToggle}
           onAddToList={this.handleAddToList}
+          onDeactivateUser={this.handleDeactivateUser}
+          onDeleteUser={this.handleDeleteUser}
+          onVerifyUser={this.handleVerifyUser}
+          onUnverifyUser={this.handleUnverifyUser}
+          onPromoteToAdmin={this.handlePromoteToAdmin}
+          onPromoteToModerator={this.handlePromoteToModerator}
+          onDemoteToUser={this.handleDemoteToUser}
           username={this.props.username}
         />
       </div>

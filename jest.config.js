@@ -30,4 +30,5 @@ module.exports = {
     '<rootDir>/node_modules',
     '<rootDir>/app',
   ],
+  'testEnvironment': 'jsdom',
 };

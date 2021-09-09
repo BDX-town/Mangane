@@ -3,8 +3,9 @@ module.exports = (api) => {
 
   const envOptions = {
     debug: false,
-    loose: true,
     modules: false,
+    useBuiltIns: 'usage',
+    corejs: '3.15',
   };
 
   const config = {
@@ -17,7 +18,7 @@ module.exports = (api) => {
       ['@babel/proposal-object-rest-spread', { useBuiltIns: true }],
       ['@babel/proposal-decorators', { legacy: true }],
       '@babel/proposal-class-properties',
-      'react-intl',
+      ['react-intl', { messagesDir: './build/messages/' }],
       'preval',
     ],
     'sourceType': 'unambiguous',
@@ -25,7 +26,6 @@ module.exports = (api) => {
 
   switch (env) {
   case 'production':
-    envOptions.debug = false;
     config.plugins.push(...[
       'lodash',
       [
@@ -50,7 +50,6 @@ module.exports = (api) => {
     ]);
     break;
   case 'development':
-    envOptions.debug = true;
     config.plugins.push(...[
       '@babel/transform-react-jsx-source',
       '@babel/transform-react-jsx-self',

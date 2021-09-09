@@ -17,9 +17,9 @@ export default class StatusList extends ImmutablePureComponent {
 
   static propTypes = {
     scrollKey: PropTypes.string.isRequired,
-    statusIds: ImmutablePropTypes.list.isRequired,
+    statusIds: ImmutablePropTypes.orderedSet.isRequired,
     lastStatusId: PropTypes.string,
-    featuredStatusIds: ImmutablePropTypes.list,
+    featuredStatusIds: ImmutablePropTypes.orderedSet,
     onLoadMore: PropTypes.func,
     isLoading: PropTypes.bool,
     isPartial: PropTypes.bool,
@@ -38,7 +38,7 @@ export default class StatusList extends ImmutablePureComponent {
 
   componentDidMount() {
     this.handleDequeueTimeline();
-  };
+  }
 
   getFeaturedStatusCount = () => {
     return this.props.featuredStatusIds ? this.props.featuredStatusIds.size : 0;
@@ -46,9 +46,9 @@ export default class StatusList extends ImmutablePureComponent {
 
   getCurrentStatusIndex = (id, featured) => {
     if (featured) {
-      return this.props.featuredStatusIds.indexOf(id);
+      return this.props.featuredStatusIds.keySeq().findIndex(key => key === id);
     } else {
-      return this.props.statusIds.indexOf(id) + this.getFeaturedStatusCount();
+      return this.props.statusIds.keySeq().findIndex(key => key === id) + this.getFeaturedStatusCount();
     }
   }
 
