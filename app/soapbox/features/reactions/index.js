@@ -13,7 +13,6 @@ import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import { makeGetStatus } from '../../selectors';
-import { NavLink } from 'react-router-dom';
 
 const mapStateToProps = (state, props) => {
   const getStatus = makeGetStatus();
@@ -38,6 +37,10 @@ const mapStateToProps = (state, props) => {
 export default @connect(mapStateToProps)
 class Reactions extends ImmutablePureComponent {
 
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
+
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.array.isRequired,
@@ -60,6 +63,13 @@ class Reactions extends ImmutablePureComponent {
       prevProps.dispatch(fetchStatus(params.statusId));
     }
   }
+
+  handleFilterChange = (reaction) => () => {
+    const { params } = this.props;
+    const { username, statusId } = params;
+
+    this.context.router.history.replace(`/@${username}/posts/${statusId}/reactions/${reaction}`);
+  };
 
   render() {
     const { params, reactions, accounts, status } = this.props;
@@ -90,8 +100,8 @@ class Reactions extends ImmutablePureComponent {
         {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>
-              <NavLink to={`/@${username}/posts/${statusId}/reactions`} exact>All</NavLink>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <NavLink to={`/@${username}/posts/${statusId}/reactions/${reaction.name}`}>{reaction.name} {reaction.count}</NavLink>)}
+              <button onClick={this.handleFilterChange('')}>All</button>
+              {reactions?.filter(reaction => reaction.count).map(reaction => <button onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
             </div>
           )
         }
