@@ -1,6 +1,7 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 console.log('Running in development mode'); // eslint-disable-line no-console
 
+const { join } = require('path');
 const { merge } = require('webpack-merge');
 const sharedConfig = require('./shared');
 
@@ -9,6 +10,8 @@ const watchOptions = {};
 const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
 const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
 const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
+
+const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
 const backendEndpoints = [
   '/api',
@@ -76,6 +79,7 @@ module.exports = merge(sharedConfig, {
     hot: false,
     historyApiFallback: {
       disableDotRule: true,
+      index: join(FE_SUBDIRECTORY, '/'),
     },
     headers: {
       'Access-Control-Allow-Origin': '*',
