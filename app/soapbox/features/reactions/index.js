@@ -91,7 +91,7 @@ class Reactions extends ImmutablePureComponent {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>
               <NavLink to={`/@${username}/posts/${statusId}/reactions`} exact>All</NavLink>
-              {reactions?.map(reaction => <NavLink to={`/@${username}/posts/${statusId}/reactions/${reaction.name}`}>{reaction.name} {reaction.count}</NavLink>)}
+              {reactions?.filter(reaction => reaction.count).map(reaction => <NavLink to={`/@${username}/posts/${statusId}/reactions/${reaction.name}`}>{reaction.name} {reaction.count}</NavLink>)}
             </div>
           )
         }
