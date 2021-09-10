@@ -13,7 +13,7 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 const mapStateToProps = (state, { params }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const meUsername = state.getIn(['accounts', me, 'username']);
+  const meUsername = state.getIn(['accounts', me, 'username'], '');
   return {
     isMyAccount: (username.toLowerCase() === meUsername.toLowerCase()),
     statusIds: state.getIn(['status_lists', 'favourites', 'items']),
