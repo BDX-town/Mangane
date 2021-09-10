@@ -31,13 +31,12 @@ module.exports = merge(sharedConfig, {
           '**/*_polyfills-*.js', // the user may not need polyfills
           '**/*.chunk.js', // only cache chunks when needed
           '**/*.woff2', // the user may have system-fonts enabled
-          // images/audio can be cached on-demand
+          // images can be cached on-demand
           '**/*.png',
           '**/*.jpg',
           '**/*.jpeg',
           '**/*.svg',
           '**/*.mp3',
-          '**/*.ogg',
         ],
       },
       externals: [
@@ -66,6 +65,9 @@ module.exports = merge(sharedConfig, {
         '**/*.woff',
         // Sounds return a 206 causing sw.js to crash
         // https://stackoverflow.com/a/66335638
+        '**/*.ogg',
+        '**/*.oga',
+        '**/*.mp3',
         'sounds/**/*',
         // Don't cache index.html
         'index.html',
