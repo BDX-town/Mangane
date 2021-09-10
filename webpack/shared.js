@@ -89,9 +89,6 @@ module.exports = {
     new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
-        from: join(__dirname, '../app/sounds'),
-        to: join(output.path, 'sounds'),
-      }, {
         from: join(__dirname, '../app/instance'),
         to: join(output.path, 'instance'),
       }],

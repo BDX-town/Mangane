@@ -1,8 +1,5 @@
 'use strict';
 
-import { join } from 'path';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
-
 const createAudio = sources => {
   const audio = new Audio();
   sources.forEach(({ type, src }) => {
@@ -31,21 +28,21 @@ export default function soundsMiddleware() {
   const soundCache = {
     boop: createAudio([
       {
-        src: join(FE_SUBDIRECTORY, '/sounds/boop.ogg'),
+        src: require('../../sounds/boop.ogg'),
         type: 'audio/ogg',
       },
       {
-        src: join(FE_SUBDIRECTORY, '/sounds/boop.mp3'),
+        src: require('../../sounds/boop.mp3'),
         type: 'audio/mpeg',
       },
     ]),
     chat: createAudio([
       {
-        src: join(FE_SUBDIRECTORY, '/sounds/chat.oga'),
+        src: require('../../sounds/chat.oga'),
         type: 'audio/ogg',
       },
       {
-        src: join(FE_SUBDIRECTORY, '/sounds/chat.mp3'),
+        src: require('../../sounds/chat.mp3'),
         type: 'audio/mpeg',
       },
     ]),
