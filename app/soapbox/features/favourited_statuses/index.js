@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchUserFavouritedStatuses, expandUserFavouritedStatuses } from '../../actions/favourites';
+import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
 import Column from '../ui/components/column';
 import StatusList from '../../components/status_list';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -75,7 +75,7 @@ class Favourites extends ImmutablePureComponent {
     else {
       if (accountId && accountId !== -1) {
         this.props.dispatch(fetchAccount(accountId));
-        this.props.dispatch(fetchUserFavouritedStatuses(accountId));
+        this.props.dispatch(fetchAccountFavouritedStatuses(accountId));
       } else {
         this.props.dispatch(fetchAccountByUsername(username));
       }
@@ -87,7 +87,7 @@ class Favourites extends ImmutablePureComponent {
 
     if (!isMyAccount && accountId && accountId !== -1 && (accountId !== prevProps.accountId && accountId)) {
       this.props.dispatch(fetchAccount(accountId));
-      this.props.dispatch(fetchUserFavouritedStatuses(accountId));
+      this.props.dispatch(fetchAccountFavouritedStatuses(accountId));
     }
   }
 
@@ -97,7 +97,7 @@ class Favourites extends ImmutablePureComponent {
     if (isMyAccount) {
       this.props.dispatch(expandFavouritedStatuses());
     } else {
-      this.props.dispatch(expandUserFavouritedStatuses(accountId));
+      this.props.dispatch(expandAccountFavouritedStatuses(accountId));
     }
   }, 300, { leading: true })
 

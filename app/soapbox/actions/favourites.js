@@ -10,13 +10,13 @@ export const FAVOURITED_STATUSES_EXPAND_REQUEST = 'FAVOURITED_STATUSES_EXPAND_RE
 export const FAVOURITED_STATUSES_EXPAND_SUCCESS = 'FAVOURITED_STATUSES_EXPAND_SUCCESS';
 export const FAVOURITED_STATUSES_EXPAND_FAIL    = 'FAVOURITED_STATUSES_EXPAND_FAIL';
 
-export const USER_FAVOURITED_STATUSES_FETCH_REQUEST = 'USER_FAVOURITED_STATUSES_FETCH_REQUEST';
-export const USER_FAVOURITED_STATUSES_FETCH_SUCCESS = 'USER_FAVOURITED_STATUSES_FETCH_SUCCESS';
-export const USER_FAVOURITED_STATUSES_FETCH_FAIL    = 'USER_FAVOURITED_STATUSES_FETCH_FAIL';
+export const ACCOUNT_FAVOURITED_STATUSES_FETCH_REQUEST = 'ACCOUNT_FAVOURITED_STATUSES_FETCH_REQUEST';
+export const ACCOUNT_FAVOURITED_STATUSES_FETCH_SUCCESS = 'ACCOUNT_FAVOURITED_STATUSES_FETCH_SUCCESS';
+export const ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL    = 'ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL';
 
-export const USER_FAVOURITED_STATUSES_EXPAND_REQUEST = 'USER_FAVOURITED_STATUSES_EXPAND_REQUEST';
-export const USER_FAVOURITED_STATUSES_EXPAND_SUCCESS = 'USER_FAVOURITED_STATUSES_EXPAND_SUCCESS';
-export const USER_FAVOURITED_STATUSES_EXPAND_FAIL    = 'USER_FAVOURITED_STATUSES_EXPAND_FAIL';
+export const ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST = 'ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST';
+export const ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS = 'ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS';
+export const ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL    = 'ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL';
 
 export function fetchFavouritedStatuses() {
   return (dispatch, getState) => {
@@ -105,7 +105,7 @@ export function expandFavouritedStatusesFail(error) {
   };
 }
 
-export function fetchUserFavouritedStatuses(accountId) {
+export function fetchAccountFavouritedStatuses(accountId) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -113,29 +113,29 @@ export function fetchUserFavouritedStatuses(accountId) {
       return;
     }
 
-    dispatch(fetchUserFavouritedStatusesRequest(accountId));
+    dispatch(fetchAccountFavouritedStatusesRequest(accountId));
 
     api(getState).get(`/api/v1/pleroma/accounts/${accountId}/favourites`).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      dispatch(fetchUserFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
+      dispatch(fetchAccountFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
     }).catch(error => {
-      dispatch(fetchUserFavouritedStatusesFail(accountId, error));
+      dispatch(fetchAccountFavouritedStatusesFail(accountId, error));
     });
   };
 }
 
-export function fetchUserFavouritedStatusesRequest(accountId) {
+export function fetchAccountFavouritedStatusesRequest(accountId) {
   return {
-    type: USER_FAVOURITED_STATUSES_FETCH_REQUEST,
+    type: ACCOUNT_FAVOURITED_STATUSES_FETCH_REQUEST,
     accountId,
     skipLoading: true,
   };
 }
 
-export function fetchUserFavouritedStatusesSuccess(accountId, statuses, next) {
+export function fetchAccountFavouritedStatusesSuccess(accountId, statuses, next) {
   return {
-    type: USER_FAVOURITED_STATUSES_FETCH_SUCCESS,
+    type: ACCOUNT_FAVOURITED_STATUSES_FETCH_SUCCESS,
     accountId,
     statuses,
     next,
@@ -143,16 +143,16 @@ export function fetchUserFavouritedStatusesSuccess(accountId, statuses, next) {
   };
 }
 
-export function fetchUserFavouritedStatusesFail(accountId, error) {
+export function fetchAccountFavouritedStatusesFail(accountId, error) {
   return {
-    type: USER_FAVOURITED_STATUSES_FETCH_FAIL,
+    type: ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL,
     accountId,
     error,
     skipLoading: true,
   };
 }
 
-export function expandUserFavouritedStatuses(accountId) {
+export function expandAccountFavouritedStatuses(accountId) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -162,37 +162,37 @@ export function expandUserFavouritedStatuses(accountId) {
       return;
     }
 
-    dispatch(expandUserFavouritedStatusesRequest(accountId));
+    dispatch(expandAccountFavouritedStatusesRequest(accountId));
 
     api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
-      dispatch(expandUserFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
+      dispatch(expandAccountFavouritedStatusesSuccess(accountId, response.data, next ? next.uri : null));
     }).catch(error => {
-      dispatch(expandUserFavouritedStatusesFail(accountId, error));
+      dispatch(expandAccountFavouritedStatusesFail(accountId, error));
     });
   };
 }
 
-export function expandUserFavouritedStatusesRequest(accountId) {
+export function expandAccountFavouritedStatusesRequest(accountId) {
   return {
-    type: USER_FAVOURITED_STATUSES_EXPAND_REQUEST,
+    type: ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST,
     accountId,
   };
 }
 
-export function expandUserFavouritedStatusesSuccess(accountId, statuses, next) {
+export function expandAccountFavouritedStatusesSuccess(accountId, statuses, next) {
   return {
-    type: USER_FAVOURITED_STATUSES_EXPAND_SUCCESS,
+    type: ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS,
     accountId,
     statuses,
     next,
   };
 }
 
-export function expandUserFavouritedStatusesFail(accountId, error) {
+export function expandAccountFavouritedStatusesFail(accountId, error) {
   return {
-    type: USER_FAVOURITED_STATUSES_EXPAND_FAIL,
+    type: ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL,
     accountId,
     error,
   };
