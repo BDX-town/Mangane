@@ -156,6 +156,7 @@
     display: flex !important;
     align-items: center !important;
     transition: 0.2s !important;
+    background: var(--foreground-color);
 
     &:hover {
       background-color: var(--background-color) !important;
