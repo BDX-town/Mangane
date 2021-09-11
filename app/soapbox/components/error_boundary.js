@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import Bowser from 'bowser';
 import * as Sentry from '@sentry/browser';
 
 export default class ErrorBoundary extends React.PureComponent {
@@ -23,6 +22,14 @@ export default class ErrorBoundary extends React.PureComponent {
       error,
       componentStack: info && info.componentStack,
     });
+
+    import(/* webpackChunkName: "error" */'bowser')
+      .then(({ default: Bowser }) => {
+        this.setState({
+          browser: Bowser.getParser(window.navigator.userAgent),
+        });
+      })
+      .catch(() => {});
   }
 
   setTextareaRef = c => {
@@ -49,9 +56,7 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   render() {
-    const browser = Bowser.getParser(window.navigator.userAgent);
-
-    const { hasError } = this.state;
+    const { browser, hasError } = this.state;
 
     if (!hasError) {
       return this.props.children;
@@ -75,9 +80,9 @@ export default class ErrorBoundary extends React.PureComponent {
             onClick={this.handleCopy}
             readOnly
           />}
-          <p className='error-boundary__browser'>
+          {browser && <p className='error-boundary__browser'>
             {browser.getBrowserName()} {browser.getBrowserVersion()}
-          </p>
+          </p>}
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'
