@@ -250,6 +250,18 @@ export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
 
+export function CryptoDonatePanel() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate/components/crypto_donate_panel');
+}
+
+export function CryptoAddress() {
+  return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate/components/crypto_address');
+}
+
+export function CryptoDonateModal() {
+  return import(/* webpackChunkName: "mfeatures/crypto_donate" */'../components/crypto_donate_modal');
+}
+
 export function ScheduledStatuses() {
   return import(/* webpackChunkName: "features/scheduled_statuses" */'../../scheduled_statuses');
 }
