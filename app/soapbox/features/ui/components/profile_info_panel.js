@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -13,7 +14,7 @@ import { List as ImmutableList } from 'immutable';
 import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
-import CryptoAddress from 'soapbox/features/crypto_donate/components/crypto_address';
+import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;
 
@@ -143,7 +144,15 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {fields.map((pair, i) =>
                 isTicker(pair.get('name', '')) ? (
-                  <CryptoAddress key={i} ticker={getTicker(pair.get('name')).toLowerCase()} address={pair.get('value_plain')} />
+                  <BundleContainer fetchComponent={CryptoAddress}>
+                    {Component => (
+                      <Component
+                        key={i}
+                        ticker={getTicker(pair.get('name')).toLowerCase()}
+                        address={pair.get('value_plain')}
+                      />
+                    )}
+                  </BundleContainer>
                 ) : (
                   <dl className='profile-info-panel-content__fields__item' key={i}>
                     <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />

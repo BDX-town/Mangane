@@ -14,13 +14,13 @@ import FocalPointModal from './focal_point_modal';
 import HotkeysModal from './hotkeys_modal';
 import ComposeModal from './compose_modal';
 import UnauthorizedModal from './unauthorized_modal';
-import CryptoDonateModal from './crypto_donate_modal';
 import EditFederationModal from './edit_federation_modal';
 
 import {
   MuteModal,
   ReportModal,
   EmbedModal,
+  CryptoDonateModal,
   ListEditor,
   ListAdder,
 } from '../../../features/ui/util/async-components';
@@ -41,7 +41,7 @@ const MODAL_COMPONENTS = {
   'HOTKEYS': () => Promise.resolve({ default: HotkeysModal }),
   'COMPOSE': () => Promise.resolve({ default: ComposeModal }),
   'UNAUTHORIZED': () => Promise.resolve({ default: UnauthorizedModal }),
-  'CRYPTO_DONATE': () => Promise.resolve({ default: CryptoDonateModal }),
+  'CRYPTO_DONATE': CryptoDonateModal,
   'EDIT_FEDERATION': () => Promise.resolve({ default: EditFederationModal }),
 };
 

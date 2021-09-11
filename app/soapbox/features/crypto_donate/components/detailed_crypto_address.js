@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
@@ -9,8 +8,7 @@ import CryptoIcon from './crypto_icon';
 import { CopyableInput } from 'soapbox/features/forms';
 import { getExplorerUrl } from '../utils/block_explorer';
 
-export default @connect()
-class DetailedCryptoAddress extends ImmutablePureComponent {
+export default class DetailedCryptoAddress extends ImmutablePureComponent {
 
   static propTypes = {
     address: PropTypes.string.isRequired,
