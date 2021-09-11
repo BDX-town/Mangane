@@ -25,37 +25,33 @@ module.exports = merge(sharedConfig, {
     new OfflinePlugin({
       caches: {
         main: [':rest:'],
-        additional: [':externals:'],
+        additional: [
+          'packs/emoji/1f602-*.svg', // used for emoji picker dropdown
+          'packs/images/32-*.png',   // used in emoji-mart
+
+          // Default emoji reacts
+          'packs/emoji/1f44d-*.svg', // Thumbs up
+          'packs/emoji/2764-*.svg',  // Heart
+          'packs/emoji/1f606-*.svg', // Laughing
+          'packs/emoji/1f62e-*.svg', // Surprised
+          'packs/emoji/1f622-*.svg', // Crying
+          'packs/emoji/1f629-*.svg', // Weary
+          'packs/emoji/1f621-*.svg', // Angry (Spinster)
+        ],
         optional: [
           '**/locale_*.js', // don't fetch every locale; the user only needs one
           '**/*_polyfills-*.js', // the user may not need polyfills
           '**/*.chunk.js', // only cache chunks when needed
           '**/*.woff2', // the user may have system-fonts enabled
-          // images/audio can be cached on-demand
+          // images can be cached on-demand
           '**/*.png',
-          '**/*.jpg',
-          '**/*.jpeg',
           '**/*.svg',
-          '**/*.mp3',
-          '**/*.ogg',
         ],
       },
-      externals: [
-        '/emoji/1f602.svg', // used for emoji picker dropdown
-        '/emoji/sheet_13.png', // used in emoji-mart
-
-        // Default emoji reacts
-        '/emoji/1f44d.svg', // Thumbs up
-        '/emoji/2764.svg',  // Heart
-        '/emoji/1f606.svg', // Laughing
-        '/emoji/1f62e.svg', // Surprised
-        '/emoji/1f622.svg', // Crying
-        '/emoji/1f629.svg', // Weary
-        '/emoji/1f621.svg', // Angry (Spinster)
-      ],
       excludes: [
         '**/*.gz',
         '**/*.map',
+        '**/*.LICENSE.txt',
         'stats.json',
         'report.html',
         'instance/**/*',
@@ -66,15 +62,20 @@ module.exports = merge(sharedConfig, {
         '**/*.woff',
         // Sounds return a 206 causing sw.js to crash
         // https://stackoverflow.com/a/66335638
-        'sounds/**/*',
-        // Don't cache index.html
+        '**/*.ogg',
+        '**/*.oga',
+        '**/*.mp3',
+        // Don't serve index.html
+        // https://github.com/bromite/bromite/issues/1294
         'index.html',
+        '404.html',
       ],
       // ServiceWorker: {
       //   entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
       //   cacheName: 'soapbox',
       //   minify: true,
       // },
+      safeToUseOptionalCaches: true,
     }),
   ],
 });
