@@ -6,7 +6,7 @@ export function start() {
   Sentry.init({
     dsn: SENTRY_DSN,
     environment: NODE_ENV,
-    debug: NODE_ENV === 'development',
+    debug: false,
     integrations: [new Integrations.BrowserTracing()],
 
     // We recommend adjusting this value in production, or using tracesSampler
