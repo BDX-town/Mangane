@@ -613,7 +613,8 @@
 
 .notification__filter-bar,
 .search__filter-bar,
-.account__section-headline {
+.account__section-headline,
+.reaction__filter-bar {
   border-bottom: 1px solid var(--brand-color--faint);
   cursor: default;
   display: flex;
@@ -660,6 +661,17 @@
         border-color: transparent transparent var(--foreground-color);
       }
     }
+  }
+}
+
+.reaction__filter-bar {
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  a {
+    flex: unset;
+    padding: 15px 24px;
+    min-width: max-content;
   }
 }
 

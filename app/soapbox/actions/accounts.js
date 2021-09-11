@@ -471,8 +471,6 @@ export function unsubscribeAccountFail(error) {
 
 export function fetchFollowers(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
-
     dispatch(fetchFollowersRequest(id));
 
     api(getState).get(`/api/v1/accounts/${id}/followers`).then(response => {
@@ -561,8 +559,6 @@ export function expandFollowersFail(id, error) {
 
 export function fetchFollowing(id) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
-
     dispatch(fetchFollowingRequest(id));
 
     api(getState).get(`/api/v1/accounts/${id}/following`).then(response => {

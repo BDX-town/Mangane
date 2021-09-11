@@ -1,6 +1,8 @@
 .emoji-react {
   display: inline-block;
   transition: 0.1s;
+  color: var(--primary-text-color--faint);
+  text-decoration: none;
 
   &__emoji {
     img {
@@ -20,8 +22,6 @@
 }
 
 .emoji-react--reblogs {
-  color: var(--primary-text-color--faint);
-  text-decoration: none;
   vertical-align: middle;
   display: inline-flex;
 

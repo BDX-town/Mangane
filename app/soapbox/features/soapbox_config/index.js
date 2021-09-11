@@ -51,6 +51,8 @@ const messages = defineMessages({
   displayFqnLabel: { id: 'soapbox_config.display_fqn_label', defaultMessage: 'Display domain (eg @user@domain) for local accounts.' },
   greentextLabel: { id: 'soapbox_config.greentext_label', defaultMessage: 'Enable greentext support' },
   promoPanelIconsLink: { id: 'soapbox_config.hints.promo_panel_icons.link', defaultMessage: 'Soapbox Icons List' },
+  authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
+  authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -278,6 +280,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                 label={intl.formatMessage(messages.greentextLabel)}
                 checked={soapbox.get('greentext') === true}
                 onChange={this.handleChange(['greentext'], (e) => e.target.checked)}
+              />
+              <Checkbox
+                name='authenticatedProfile'
+                label={intl.formatMessage(messages.authenticatedProfileLabel)}
+                hint={intl.formatMessage(messages.authenticatedProfileHint)}
+                checked={soapbox.get('authenticatedProfile') === true}
+                onChange={this.handleChange(['authenticatedProfile'], (e) => e.target.checked)}
               />
             </FieldsGroup>
             <FieldsGroup>

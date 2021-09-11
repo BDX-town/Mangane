@@ -12,6 +12,7 @@ import RelativeTimestamp from './relative_timestamp';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
+import emojify from 'soapbox/features/emoji/emoji';
 
 const messages = defineMessages({
   follow: { id: 'account.follow', defaultMessage: 'Follow' },
@@ -46,6 +47,7 @@ class Account extends ImmutablePureComponent {
     onActionClick: PropTypes.func,
     withDate: PropTypes.bool,
     withRelationship: PropTypes.bool,
+    reaction: PropTypes.string,
   };
 
   static defaultProps = {
@@ -78,7 +80,7 @@ class Account extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship } = this.props;
+    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship, reaction } = this.props;
 
     if (!account) {
       return <div />;
@@ -95,6 +97,7 @@ class Account extends ImmutablePureComponent {
 
     let buttons;
     let followedBy;
+    let emoji;
 
     if (onActionClick && actionIcon) {
       buttons = <IconButton icon={actionIcon} title={actionTitle} onClick={this.handleAction} />;
@@ -128,6 +131,15 @@ class Account extends ImmutablePureComponent {
       }
     }
 
+    if (reaction) {
+      emoji = (
+        <span
+          className='emoji-react__emoji'
+          dangerouslySetInnerHTML={{ __html: emojify(reaction) }}
+        />
+      );
+    }
+
     const createdAt = account.get('created_at');
 
     const joinedAt = createdAt ? (
@@ -141,7 +153,10 @@ class Account extends ImmutablePureComponent {
       <div className={classNames('account', { 'account--with-relationship': withRelationship, 'account--with-date': withDate })}>
         <div className='account__wrapper'>
           <Permalink key={account.get('id')} className='account__display-name' title={account.get('acct')} href={`/@${account.get('acct')}`} to={`/@${account.get('acct')}`}>
-            <div className='account__avatar-wrapper'><Avatar account={account} size={36} /></div>
+            <div className='account__avatar-wrapper'>
+              {emoji}
+              <Avatar account={account} size={36} />
+            </div>
             <DisplayName account={account} withDate={Boolean(withDate && withRelationship)} />
           </Permalink>
 

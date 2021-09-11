@@ -15,7 +15,7 @@ import LoadingIndicator from '../../components/loading_indicator';
 const mapStateToProps = (state, { params }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const meUsername = state.getIn(['accounts', me, 'username']);
+  const meUsername = state.getIn(['accounts', me, 'username'], '');
 
   const isMyAccount = (username.toLowerCase() === meUsername.toLowerCase());
 

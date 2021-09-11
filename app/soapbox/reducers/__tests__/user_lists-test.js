@@ -10,6 +10,7 @@ describe('user_lists reducer', () => {
       favourited_by: ImmutableMap(),
       follow_requests: ImmutableMap(),
       blocks: ImmutableMap(),
+      reactions: ImmutableMap(),
       mutes: ImmutableMap(),
       groups: ImmutableMap(),
       groups_removed_accounts: ImmutableMap(),

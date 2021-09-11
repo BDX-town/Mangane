@@ -25,6 +25,7 @@ export const getFeatures = createSelector([
     settingsStore: v.software === 'Pleroma',
     accountAliasesAPI: v.software === 'Pleroma',
     resetPasswordAPI: v.software === 'Pleroma',
+    exposableReactions: features.includes('exposable_reactions'),
   };
 });
 
