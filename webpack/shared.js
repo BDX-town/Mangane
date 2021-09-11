@@ -30,10 +30,9 @@ const makeHtmlConfig = (params = {}) => {
 };
 
 module.exports = {
-  entry: Object.assign(
-    { application: resolve('app/application.js') },
-    { styles: resolve(join(settings.source_path, 'styles/application.scss')) },
-  ),
+  entry: {
+    application: resolve('app/application.js'),
+  },
 
   output: {
     filename: 'packs/js/[name]-[chunkhash].js',
