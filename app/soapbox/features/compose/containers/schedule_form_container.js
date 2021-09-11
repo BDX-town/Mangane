@@ -1,16 +1,15 @@
-import { connect } from 'react-redux';
-import ScheduleForm from '../components/schedule_form';
-import { setSchedule } from '../../../actions/compose';
+import React from 'react';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { ScheduleForm } from 'soapbox/features/ui/util/async-components';
 
-const mapStateToProps = state => ({
-  schedule: state.getIn(['compose', 'schedule']),
-  active: state.getIn(['compose', 'schedule']) ? true : false,
-});
+export default class ScheduleFormContainer extends React.PureComponent {
 
-const mapDispatchToProps = dispatch => ({
-  onSchedule(date) {
-    dispatch(setSchedule(date));
-  },
-});
+  render() {
+    return (
+      <BundleContainer fetchComponent={ScheduleForm}>
+        {Component => <Component {...this.props} />}
+      </BundleContainer>
+    );
+  }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ScheduleForm);
+}

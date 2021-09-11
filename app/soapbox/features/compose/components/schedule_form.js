@@ -4,10 +4,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { setSchedule, removeSchedule } from '../../../actions/compose';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
-import { removeSchedule } from 'soapbox/actions/compose';
 import classNames from 'classnames';
 
 const messages = defineMessages({
@@ -15,11 +15,22 @@ const messages = defineMessages({
   remove: { id: 'schedule.remove', defaultMessage: 'Remove schedule' },
 });
 
-const mapStateToProps = (state, ownProps) => ({
+const mapStateToProps = state => ({
+  active: state.getIn(['compose', 'schedule']) ? true : false,
   scheduledAt: state.getIn(['compose', 'schedule']),
 });
 
-export default @connect(mapStateToProps)
+const mapDispatchToProps = dispatch => ({
+  onSchedule(date) {
+    dispatch(setSchedule(date));
+  },
+
+  onRemoveSchedule(date) {
+    dispatch(removeSchedule());
+  },
+});
+
+export default @connect(mapStateToProps, mapDispatchToProps)
 @injectIntl
 class ScheduleForm extends React.Component {
 
@@ -27,6 +38,7 @@ class ScheduleForm extends React.Component {
     scheduledAt: PropTypes.instanceOf(Date),
     intl: PropTypes.object.isRequired,
     onSchedule: PropTypes.func.isRequired,
+    onRemoveSchedule: PropTypes.func.isRequired,
     dispatch: PropTypes.func,
     active: PropTypes.bool,
   };
@@ -60,7 +72,7 @@ class ScheduleForm extends React.Component {
   }
 
   handleRemove = e => {
-    this.props.dispatch(removeSchedule());
+    this.props.onRemoveSchedule();
     e.preventDefault();
   }
 

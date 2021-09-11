@@ -277,3 +277,7 @@ export function FederationRestrictions() {
 export function Aliases() {
   return import(/* webpackChunkName: "features/aliases" */'../../aliases');
 }
+
+export function ScheduleForm() {
+  return import(/* webpackChunkName: "features/compose" */'../../compose/components/schedule_form');
+}
