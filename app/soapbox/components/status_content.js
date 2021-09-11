@@ -265,15 +265,16 @@ class StatusContent extends React.PureComponent {
       }
 
       if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} />);
+        output.push(<PollContainer pollId={status.get('poll')} key='poll' />);
       }
 
       return output;
     } else {
       const output = [
         <div
-          tabIndex='0'
           ref={this.setRef}
+          tabIndex='0'
+          key='content'
           className={classnames('status__content', {
             'status__content--big': onlyEmoji,
           })}
@@ -284,7 +285,7 @@ class StatusContent extends React.PureComponent {
       ];
 
       if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} />);
+        output.push(<PollContainer pollId={status.get('poll')} key='poll' />);
       }
 
       return output;
