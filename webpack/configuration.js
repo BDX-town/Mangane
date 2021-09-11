@@ -12,7 +12,6 @@ const settings = {
   test_root_path: `${FE_BUILD_DIR}-test`,
   cache_path: 'tmp/cache',
   resolved_paths: [],
-  static_assets_extensions: [ '.jpg', '.jpeg', '.png', '.tiff', '.ico', '.svg', '.gif', '.eot', '.otf', '.ttf', '.woff', '.woff2', '.mp3', '.ogg', '.oga' ],
   extensions: [ '.mjs', '.js', '.sass', '.scss', '.css', '.module.sass', '.module.scss', '.module.css', '.png', '.svg', '.gif', '.jpeg', '.jpg' ],
 };
 
