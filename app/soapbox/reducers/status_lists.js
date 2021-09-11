@@ -5,6 +5,12 @@ import {
   FAVOURITED_STATUSES_EXPAND_REQUEST,
   FAVOURITED_STATUSES_EXPAND_SUCCESS,
   FAVOURITED_STATUSES_EXPAND_FAIL,
+  ACCOUNT_FAVOURITED_STATUSES_FETCH_REQUEST,
+  ACCOUNT_FAVOURITED_STATUSES_FETCH_SUCCESS,
+  ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL,
+  ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST,
+  ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS,
+  ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL,
 } from '../actions/favourites';
 import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
@@ -101,6 +107,16 @@ export default function statusLists(state = initialState, action) {
     return normalizeList(state, 'favourites', action.statuses, action.next);
   case FAVOURITED_STATUSES_EXPAND_SUCCESS:
     return appendToList(state, 'favourites', action.statuses, action.next);
+  case ACCOUNT_FAVOURITED_STATUSES_FETCH_REQUEST:
+  case ACCOUNT_FAVOURITED_STATUSES_EXPAND_REQUEST:
+    return setLoading(state, `favourites:${action.accountId}`, true);
+  case ACCOUNT_FAVOURITED_STATUSES_FETCH_FAIL:
+  case ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL:
+    return setLoading(state, `favourites:${action.accountId}`, false);
+  case ACCOUNT_FAVOURITED_STATUSES_FETCH_SUCCESS:
+    return normalizeList(state, `favourites:${action.accountId}`, action.statuses, action.next);
+  case ACCOUNT_FAVOURITED_STATUSES_EXPAND_SUCCESS:
+    return appendToList(state, `favourites:${action.accountId}`, action.statuses, action.next);
   case BOOKMARKED_STATUSES_FETCH_REQUEST:
   case BOOKMARKED_STATUSES_EXPAND_REQUEST:
     return setLoading(state, 'bookmarks', true);
