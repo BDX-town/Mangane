@@ -33,10 +33,7 @@ module.exports = merge(sharedConfig, {
           '**/*.woff2', // the user may have system-fonts enabled
           // images can be cached on-demand
           '**/*.png',
-          '**/*.jpg',
-          '**/*.jpeg',
           '**/*.svg',
-          '**/*.mp3',
         ],
       },
       externals: [
@@ -77,6 +74,7 @@ module.exports = merge(sharedConfig, {
       //   cacheName: 'soapbox',
       //   minify: true,
       // },
+      safeToUseOptionalCaches: true,
     }),
   ],
 });
