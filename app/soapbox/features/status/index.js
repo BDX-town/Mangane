@@ -109,8 +109,8 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => {
     const status = getStatus(state, { id: props.params.statusId });
-    let ancestorsIds = Immutable.List();
-    let descendantsIds = Immutable.List();
+    let ancestorsIds = Immutable.OrderedSet();
+    let descendantsIds = Immutable.OrderedSet();
 
     if (status) {
       ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
@@ -146,8 +146,8 @@ class Status extends ImmutablePureComponent {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     status: ImmutablePropTypes.map,
-    ancestorsIds: ImmutablePropTypes.list,
-    descendantsIds: ImmutablePropTypes.list,
+    ancestorsIds: ImmutablePropTypes.orderedSet,
+    descendantsIds: ImmutablePropTypes.orderedSet,
     intl: PropTypes.object.isRequired,
     askReplyConfirmation: PropTypes.bool,
     domain: PropTypes.string,
