@@ -60,3 +60,18 @@ For example, if you want to host the build on `https://gleasonator.com/soapbox`,
 ```sh
 NODE_ENV="production" FE_SUBDIRECTORY="/soapbox" yarn build
 ```
+
+### `SENTRY_DSN`
+
+[Sentry](https://sentry.io/) endpoint for this custom build.
+
+Sentry is an error monitoring service that may be optionally included.
+When an endpoint is not configured, it does nothing.
+
+Sentry's backend was FOSS until 2019 when it moved to source-available, but a BSD-3 fork called [GlitchTip](https://glitchtip.com/) may also be used.
+
+Options:
+
+- Endpoint URL, eg `"https://abcdefg@app.glitchtip.com/123"`
+
+Default: `""`
