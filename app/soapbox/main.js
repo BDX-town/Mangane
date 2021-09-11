@@ -1,6 +1,5 @@
 'use strict';
 
-import './wdyr';
 import './precheck';
 // FIXME: Push notifications are temporarily removed
 // import * as registerPushNotifications from './actions/push_notifications';
