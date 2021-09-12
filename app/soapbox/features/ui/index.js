@@ -45,6 +45,8 @@ import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 import {
@@ -651,6 +653,7 @@ class UI extends React.PureComponent {
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
+          <SubNavigation />
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
             {children}
           </SwitchingColumnsArea>
@@ -668,6 +671,7 @@ class UI extends React.PureComponent {
             </BundleContainer>
           )}
           <ProfileHoverCard />
+          <ThumbNavigation />
         </div>
       </HotKeys>
     );

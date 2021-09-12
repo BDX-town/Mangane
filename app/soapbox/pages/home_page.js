@@ -5,7 +5,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import BundleContainer from '../features/ui/containers/bundle_container';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
-import UserPanel from 'soapbox/features/ui/components/user_panel';
+// import UserPanel from 'soapbox/features/ui/components/user_panel';
+import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel';
 import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
 import PromoPanel from 'soapbox/features/ui/components/promo_panel';
@@ -57,13 +58,7 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <UserPanel accountId={me} key='user-panel' />
-                {showFundingPanel && <FundingPanel key='funding-panel' />}
-                {showCryptoDonatePanel && (
-                  <BundleContainer fetchComponent={CryptoDonatePanel}>
-                    {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
-                  </BundleContainer>
-                )}
+                <PrimaryNavigation />
               </div>
             </div>
 
@@ -86,10 +81,17 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
+                {/* <UserPanel accountId={me} key='user-panel' /> */}
                 {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
                 {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
                 {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 <PromoPanel key='promo-panel' />
+                {showFundingPanel && <FundingPanel key='funding-panel' />}
+                {showCryptoDonatePanel && (
+                  <BundleContainer fetchComponent={CryptoDonatePanel}>
+                    {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
+                  </BundleContainer>
+                )}
                 <LinkFooter key='link-footer' />
               </div>
             </div>
