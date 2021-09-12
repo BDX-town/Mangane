@@ -1,0 +1,18 @@
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+
+.icon-button > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

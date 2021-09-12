@@ -36,7 +36,8 @@
     outline: 0 !important;
   }
 
-  .fa {
+  .fa,
+  .svg-icon {
     @include font-size(16);
     cursor: default;
     display: inline-block;

@@ -119,6 +119,7 @@
     "react-hotkeys": "^1.1.4",
     "react-immutable-proptypes": "^2.1.0",
     "react-immutable-pure-component": "^2.0.0",
+    "react-inlinesvg": "^2.3.0",
     "react-intl": "^5.0.0",
     "react-motion": "^0.5.2",
     "react-notification": "^6.8.4",
