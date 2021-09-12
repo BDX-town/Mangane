@@ -259,7 +259,7 @@ export function CryptoAddress() {
 }
 
 export function CryptoDonateModal() {
-  return import(/* webpackChunkName: "mfeatures/crypto_donate" */'../components/crypto_donate_modal');
+  return import(/* webpackChunkName: "features/crypto_donate" */'../components/crypto_donate_modal');
 }
 
 export function ScheduledStatuses() {
