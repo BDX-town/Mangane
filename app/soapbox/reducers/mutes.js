@@ -1,12 +1,12 @@
-import Immutable from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
 } from '../actions/mutes';
 
-const initialState = Immutable.Map({
-  new: Immutable.Map({
+const initialState = ImmutableMap({
+  new: ImmutableMap({
     isSubmitting: false,
     account: null,
     notifications: true,
