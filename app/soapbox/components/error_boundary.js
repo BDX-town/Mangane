@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
-import * as Sentry from '@sentry/browser';
+import { captureException } from 'soapbox/monitoring';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -15,7 +15,7 @@ export default class ErrorBoundary extends React.PureComponent {
   }
 
   componentDidCatch(error, info) {
-    Sentry.captureException(error);
+    captureException(error);
 
     this.setState({
       hasError: true,
