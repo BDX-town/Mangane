@@ -5,7 +5,7 @@ import { throttle } from 'lodash';
 import { Link, NavLink } from 'react-router-dom';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages } from 'react-intl';
 import classNames from 'classnames';
 import Avatar from './avatar';
 import IconButton from './icon_button';
@@ -168,17 +168,10 @@ class SidebarMenu extends ImmutablePureComponent {
       <div className={classes}>
         <div className='sidebar-menu__wrapper' role='button' onClick={this.handleClose} />
         <div className='sidebar-menu'>
-
-          <div className='sidebar-menu-header'>
-            <span className='sidebar-menu-header__title'>
-              <FormattedMessage id='tabs_bar.header' defaultMessage='Account Info' />
-            </span>
-            <IconButton title='close' onClick={this.handleClose} icon='close' className='sidebar-menu-header__btn' />
-          </div>
-
           <div className='sidebar-menu__content'>
 
             <div className='sidebar-menu-profile'>
+              <IconButton title='close' onClick={this.handleClose} icon='times' className='sidebar-menu__close' />
               <div className='sidebar-menu-profile__avatar'>
                 <Link to={`/@${acct}`} title={acct} onClick={this.handleClose}>
                   <Avatar account={account} />
@@ -284,6 +277,7 @@ class SidebarMenu extends ImmutablePureComponent {
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>
+                <Icon id='sign-out' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.logout)}</span>
               </Link>
             </div>

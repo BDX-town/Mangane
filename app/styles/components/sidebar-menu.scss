@@ -29,6 +29,7 @@
   }
 
   &__content {
+    position: relative;
     overflow-y: scroll;
     overflow: auto;
     height: 100%;
@@ -81,6 +82,21 @@
 
   &__btn {
     margin-left: auto;
+  }
+}
+
+.sidebar-menu__close {
+  position: absolute;
+  top: 22px;
+  right: 18px;
+
+  i.fa {
+    font-size: 20px;
+  }
+
+  .svg-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -161,16 +177,24 @@
   color: var(--primary-text-color--faint);
   font-size: 15px;
   font-weight: 400;
+  align-items: center;
 
   &:hover {
     background-color: hsla(var(--brand-color_hsl), 0.1);
     color: var(--primary-text-color);
   }
 
-  .fa {
-    width: 18px;
-    margin-right: 10px;
+  > .fa {
+    width: 24px;
+    font-size: 20px;
+    margin-right: 15px;
     text-align: center;
+  }
+
+  > .svg-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 15px;
   }
 
   &:hover {
