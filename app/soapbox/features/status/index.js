@@ -1,4 +1,4 @@
-import Immutable from 'immutable';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -71,11 +71,11 @@ const makeMapStateToProps = () => {
     (_, { id }) => id,
     state => state.getIn(['contexts', 'inReplyTos']),
   ], (statusId, inReplyTos) => {
-    let ancestorsIds = Immutable.OrderedSet();
+    let ancestorsIds = ImmutableOrderedSet();
     let id = statusId;
 
     while (id) {
-      ancestorsIds = Immutable.OrderedSet([id]).union(ancestorsIds);
+      ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
       id = inReplyTos.get(id);
     }
 
@@ -86,7 +86,7 @@ const makeMapStateToProps = () => {
     (_, { id }) => id,
     state => state.getIn(['contexts', 'replies']),
   ], (statusId, contextReplies) => {
-    let descendantsIds = Immutable.OrderedSet();
+    let descendantsIds = ImmutableOrderedSet();
     const ids = [statusId];
 
     while (ids.length > 0) {
@@ -109,8 +109,8 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => {
     const status = getStatus(state, { id: props.params.statusId });
-    let ancestorsIds = Immutable.OrderedSet();
-    let descendantsIds = Immutable.OrderedSet();
+    let ancestorsIds = ImmutableOrderedSet();
+    let descendantsIds = ImmutableOrderedSet();
 
     if (status) {
       ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
