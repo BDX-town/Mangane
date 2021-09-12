@@ -1,5 +1,6 @@
 import unicodeMapping from './emoji_unicode_mapping_light';
 import Trie from 'substring-trie';
+import { joinPublicPath } from 'soapbox/utils/static';
 
 const trie = new Trie(Object.keys(unicodeMapping));
 
@@ -60,7 +61,7 @@ const emojify = (str, customEmojis = {}, autoplay = false) => {
     } else { // matched to unicode emoji
       const { filename, shortCode } = unicodeMapping[match];
       const title = shortCode ? `:${shortCode}:` : '';
-      const src = require(`twemoji/assets/svg/${filename}.svg`);
+      const src = joinPublicPath(`packs/emoji/${filename}.svg`);
       replacement = `<img draggable="false" class="emojione" alt="${match}" title="${title}" src="${src}" />`;
       rend = i + match.length;
       // If the matched character was followed by VS15 (for selecting text presentation), skip it.
