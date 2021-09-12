@@ -1,6 +1,4 @@
 /* eslint-disable no-case-declarations */
-import EXIF from 'exif-js';
-
 const MAX_IMAGE_PIXELS = 2073600; // 1920x1080px
 
 const _browser_quirks = {};
@@ -115,14 +113,16 @@ const getOrientation = (img, type = 'image/png') => new Promise(resolve => {
     return;
   }
 
-  EXIF.getData(img, () => {
-    const orientation = EXIF.getTag(img, 'Orientation');
-    if (orientation !== 1) {
-      dropOrientationIfNeeded(orientation).then(resolve).catch(() => resolve(orientation));
-    } else {
-      resolve(orientation);
-    }
-  });
+  import(/* webpackChunkName: "features/compose" */'exif-js').then(({ default: EXIF }) => {
+    EXIF.getData(img, () => {
+      const orientation = EXIF.getTag(img, 'Orientation');
+      if (orientation !== 1) {
+        dropOrientationIfNeeded(orientation).then(resolve).catch(() => resolve(orientation));
+      } else {
+        resolve(orientation);
+      }
+    });
+  }).catch(() => {});
 });
 
 const processImage = (img, { width, height, orientation, type = 'image/png', name = 'resized.png' }) => new Promise(resolve => {
