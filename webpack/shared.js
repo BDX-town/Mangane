@@ -88,6 +88,9 @@ module.exports = {
     new HtmlWebpackHarddiskPlugin(),
     new CopyPlugin({
       patterns: [{
+        from: join(__dirname, '../node_modules/twemoji/assets/svg'),
+        to: join(output.path, 'packs/emoji'),
+      }, {
         from: join(__dirname, '../app/instance'),
         to: join(output.path, 'instance'),
       }],

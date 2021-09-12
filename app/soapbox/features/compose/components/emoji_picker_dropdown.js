@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import { buildCustomEmojis } from '../../emoji/emoji';
+import { joinPublicPath } from 'soapbox/utils/static';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -357,7 +358,7 @@ class EmojiPickerDropdown extends React.PureComponent {
           <img
             className={classNames('emojione', { 'pulse-loading': active && loading })}
             alt='😂'
-            src={require('twemoji/assets/svg/1f602.svg')}
+            src={joinPublicPath('packs/emoji/1f602.svg')}
           />
         </div>
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import unicodeMapping from '../features/emoji/emoji_unicode_mapping_light';
+import { joinPublicPath } from 'soapbox/utils/static';
 
 export default class AutosuggestEmoji extends React.PureComponent {
 
@@ -21,7 +22,7 @@ export default class AutosuggestEmoji extends React.PureComponent {
         return null;
       }
 
-      url = require(`twemoji/assets/svg/${mapping.filename}.svg`);
+      url = joinPublicPath(`packs/emoji/${mapping.filename}.svg`);
     }
 
     return (
