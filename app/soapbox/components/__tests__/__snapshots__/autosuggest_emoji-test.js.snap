@@ -20,11 +20,7 @@ exports[`<AutosuggestEmoji /> renders native emoji 1`] = `
   <img
     alt="💙"
     className="emojione"
-    src={
-      Object {
-        "process": [Function],
-      }
-    }
+    src="/packs/emoji/1f499.svg"
   />
   :foobar:
 </div>
