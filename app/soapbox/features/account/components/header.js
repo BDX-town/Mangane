@@ -285,7 +285,7 @@ class Header extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, username, me, features } = this.props;
+    const { account, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -307,7 +307,6 @@ class Header extends ImmutablePureComponent {
       );
     }
 
-    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
