@@ -20,20 +20,26 @@
       margin: 5px 0;
       flex-direction: row;
       flex-wrap: wrap;
+    }
 
-      &__join-date {
-        display: block;
-        margin-top: 5px;
+    &__join-date {
+      display: flex;
+      font-size: 14px;
+      color: var(--primary-text-color--faint);
+      align-items: center;
+      line-height: normal;
 
-        .fa {
-          margin-right: 8px;
-        }
+      .fa {
+        margin-right: 8px;
+        font-size: 20px;
+      }
+    }
 
-        span {
-          color: var(--primary-text-color);
-          font-size: 15px;
-          line-height: 1.25;
-        }
+    &__stats {
+      margin-top: 15px;
+
+      .profile-stat {
+        font-size: 16px;
       }
     }
 
@@ -56,7 +62,7 @@
 
         small {
           display: block;
-          font-size: 16px;
+          font-size: 15px;
           line-height: 1.5;
           color: var(--primary-text-color--faint);
           font-weight: 400;

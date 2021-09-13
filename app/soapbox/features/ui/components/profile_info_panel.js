@@ -135,7 +135,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
 
-          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
+          {isLocal(account) && <div className='profile-info-panel-content__join-date'>
             <Icon id='calendar' />
             <FormattedMessage
               id='account.member_since' defaultMessage='Joined {date}' values={{
@@ -144,7 +144,10 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             />
           </div>}
 
-          <ProfileStats account={account} />
+          <ProfileStats
+            className='profile-info-panel-content__stats'
+            account={account}
+          />
 
           {(fields.size > 0 || identity_proofs.size > 0) && (
             <div className='profile-info-panel-content__fields'>

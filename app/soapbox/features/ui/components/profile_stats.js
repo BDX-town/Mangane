@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { NavLink } from 'react-router-dom';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { injectIntl, defineMessages } from 'react-intl';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -16,10 +17,11 @@ class ProfileStats extends React.PureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map.isRequired,
+    className: PropTypes.string,
   }
 
   render() {
-    const { intl } = this.props;
+    const { intl, className } = this.props;
     const { account } = this.props;
 
     if (!account) {
@@ -29,7 +31,7 @@ class ProfileStats extends React.PureComponent {
     const acct = account.get('acct');
 
     return (
-      <div className='profile-stats'>
+      <div className={classNames('profile-stats', className)}>
         <NavLink className='profile-stat' to={`/@${acct}/followers`} onClick={this.handleClose} title={intl.formatNumber(account.get('followers_count'))}>
           <strong className='profile-stat__value'>
             {shortNumberFormat(account.get('followers_count'))}
