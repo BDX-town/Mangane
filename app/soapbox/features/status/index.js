@@ -36,7 +36,7 @@ import {
 import { initMuteModal } from '../../actions/mutes';
 import { initReport } from '../../actions/reports';
 import { makeGetStatus } from '../../selectors';
-import ColumnHeader from '../../components/column_header';
+// import ColumnHeader from '../../components/column_header';
 import StatusContainer from '../../containers/status_container';
 import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
@@ -45,7 +45,7 @@ import { createSelector } from 'reselect';
 import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import Icon from 'soapbox/components/icon';
+// import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
@@ -535,7 +535,7 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let ancestors, descendants;
-    const { status, ancestorsIds, descendantsIds, intl, domain, me } = this.props;
+    const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
 
     if (status === null) {
       return (
@@ -568,8 +568,12 @@ class Status extends ImmutablePureComponent {
     };
 
     return (
-      <Column label={intl.formatMessage(messages.detailedStatus)}>
-        { me &&
+      <Column label={intl.formatMessage(messages.detailedStatus)} showBackBtn={false}>
+        {/*
+          Eye icon to show/hide all CWs in a thread.
+          I'm not convinced of the value of this. It needs a better design at the very least.
+        */}
+        {/* me &&
           <ColumnHeader
             extraButton={(
               <button
@@ -586,7 +590,7 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
           />
-        }
+        */}
 
         <div ref={this.setRef}>
           {ancestors}
