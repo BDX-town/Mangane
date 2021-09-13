@@ -12,7 +12,6 @@ import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -64,12 +63,13 @@ class TabsBar extends React.PureComponent {
                 <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
               </Link>
             )}
-          </div>
-          <div className='tabs-bar__split tabs-bar__split--right'>
+
             <div className='tabs-bar__search-container'>
               <SearchContainer openInRoute />
             </div>
-            { account &&
+          </div>
+          <div className='tabs-bar__split tabs-bar__split--right'>
+            {account &&
               <>
                 <ThemeToggle />
                 <div className='tabs-bar__profile'>

@@ -47,6 +47,7 @@
   &__search-container {
     display: block;
     width: 351px;
+    align-self: center;
 
     @media screen and (max-width: 895px) {
       display: none;
