@@ -174,7 +174,7 @@ class AccountTimeline extends ImmutablePureComponent {
     }
 
     return (
-      <Column>
+      <Column showBackBtn={false}>
         <div className='account__section-headline'>
           <NavLink exact to={`/@${accountUsername}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
