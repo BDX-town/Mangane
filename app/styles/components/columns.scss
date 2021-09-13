@@ -795,3 +795,18 @@
     }
   }
 }
+
+// Let transparent columns extend the full width of the screen
+@media screen and (max-width: 450px) {
+  .columns-area__panels__main--transparent {
+    padding: 0;
+  }
+
+  .columns-area--transparent {
+    .status__wrapper,
+    .detailed-status__wrapper,
+    .timeline-compose-block {
+      border-radius: 0;
+    }
+  }
+}
