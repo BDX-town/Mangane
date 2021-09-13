@@ -5,8 +5,6 @@ import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ColumnSettingsContainer from './containers/column_settings_container';
-import HomeColumnHeader from '../../components/home_column_header';
 import { Link } from 'react-router-dom';
 
 const messages = defineMessages({
@@ -69,13 +67,10 @@ class HomeTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, siteTitle } = this.props;
+    const { intl, siteTitle } = this.props;
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='home' active={hasUnread}>
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
         <StatusListContainer
           scrollKey='home_timeline'
           onLoadMore={this.handleLoadMore}
