@@ -15,6 +15,7 @@ import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;
 
@@ -142,6 +143,8 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               }}
             />
           </div>}
+
+          <ProfileStats account={account} />
 
           {(fields.size > 0 || identity_proofs.size > 0) && (
             <div className='profile-info-panel-content__fields'>
