@@ -103,15 +103,6 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
           </div>
 
-          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
-            <Icon id='calendar' />
-            <FormattedMessage
-              id='account.member_since' defaultMessage='Joined {date}' values={{
-                date: memberSinceDate,
-              }}
-            />
-          </div>}
-
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
               id='account.deactivated_description' defaultMessage='This account has been deactivated.'
@@ -122,6 +113,15 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
+
+          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
+            <Icon id='calendar' />
+            <FormattedMessage
+              id='account.member_since' defaultMessage='Joined {date}' values={{
+                date: memberSinceDate,
+              }}
+            />
+          </div>}
 
           {(fields.size > 0 || identity_proofs.size > 0) && (
             <div className='profile-info-panel-content__fields'>
