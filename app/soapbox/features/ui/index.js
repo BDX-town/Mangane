@@ -33,6 +33,7 @@ import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import HomePage from 'soapbox/pages/home_page';
 import DefaultPage from 'soapbox/pages/default_page';
+import StatusPage from 'soapbox/pages/status_page';
 import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
@@ -269,7 +270,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
 
