@@ -45,8 +45,18 @@
     height: 350px;
     position: relative;
     background: var(--accent-color--faint);
-    @media screen and (max-width: 895px) { height: 225px; }
-    &--none { height: 125px; }
+
+    @media screen and (max-width: 895px) {
+      height: 225px;
+    }
+
+    @media screen and (max-width: 560px) {
+      height: 150px;
+    }
+
+    &--none {
+      height: 125px;
+    }
 
     img {
       object-fit: cover;
