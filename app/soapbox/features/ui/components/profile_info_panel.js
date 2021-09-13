@@ -51,12 +51,30 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const { account } = this.props;
 
     if (isAdmin(account)) {
-      return <Badge slug='admin' title='Admin' />;
+      return <Badge slug='admin' title='Admin' key='staff' />;
     } else if (isModerator(account)) {
-      return <Badge slug='moderator' title='Moderator' />;
+      return <Badge slug='moderator' title='Moderator' key='staff' />;
     } else {
       return null;
     }
+  }
+
+  getBadges = () => {
+    const { account } = this.props;
+    const staffBadge = this.getStaffBadge();
+    const isPatron = account.getIn(['patron', 'is_patron']);
+
+    const badges = [];
+
+    if (staffBadge) {
+      badges.push(staffBadge);
+    }
+
+    if (isPatron) {
+      badges.push(<Badge slug='patron' title='Patron' key='patron' />);
+    }
+
+    return badges;
   }
 
   render() {
@@ -84,6 +102,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const badges = this.getBadges();
 
     return (
       <div className={classNames('profile-info-panel', { 'deactivated': deactivated })} >
@@ -98,10 +117,11 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             </h1>
           </div>
 
-          <div className='profile-info-panel-content__badges'>
-            {this.getStaffBadge()}
-            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-          </div>
+          {badges.length > 0 && (
+            <div className='profile-info-panel-content__badges'>
+              {badges}
+            </div>
+          )}
 
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
