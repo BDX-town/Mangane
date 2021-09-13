@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel';
 import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
 import PromoPanel from 'soapbox/features/ui/components/promo_panel';
@@ -32,7 +33,9 @@ class DefaultPage extends ImmutablePureComponent {
           <div className='columns-area__panels'>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
-              <div className='columns-area__panels__pane__inner' />
+              <div className='columns-area__panels__pane__inner'>
+                <PrimaryNavigation />
+              </div>
             </div>
 
             <div className='columns-area__panels__main'>
