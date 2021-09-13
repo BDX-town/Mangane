@@ -11,12 +11,8 @@
   transition: all 0.15s linear;
   z-index: 10001;
 
-  &__root {
-    display: none;
-  }
-
   &__wrapper {
-    display: block;
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
@@ -50,17 +46,17 @@
 
   @media (max-width: 400px) {
     width: 90vw;
+    transform: translateX(-90vw);
   }
 }
 
 .sidebar-menu__root--visible {
-  display: block;
-
   .sidebar-menu {
     transform: translateX(0);
   }
 
   .sidebar-menu__wrapper {
+    display: block;
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
