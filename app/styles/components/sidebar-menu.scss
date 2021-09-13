@@ -129,14 +129,14 @@
       padding-left: 10px;
     }
   }
-
-  &__stats {
-    display: flex;
-    margin-top: 12px;
-  }
 }
 
-.sidebar-menu-profile-stat {
+.profile-stats {
+  display: flex;
+  margin-top: 12px;
+}
+
+.profile-stat {
   display: flex;
   font-size: 14px;
   text-decoration: none;

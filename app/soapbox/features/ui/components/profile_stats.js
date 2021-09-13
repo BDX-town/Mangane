@@ -29,14 +29,23 @@ class ProfileStats extends React.PureComponent {
     const acct = account.get('acct');
 
     return (
-      <div className='sidebar-menu-profile__stats'>
-        <NavLink className='sidebar-menu-profile-stat' to={`/@${acct}/followers`} onClick={this.handleClose} title={intl.formatNumber(account.get('followers_count'))}>
-          <strong className='sidebar-menu-profile-stat__value'>{shortNumberFormat(account.get('followers_count'))}</strong>
-          <span className='sidebar-menu-profile-stat__label'>{intl.formatMessage(messages.followers)}</span>
+      <div className='profile-stats'>
+        <NavLink className='profile-stat' to={`/@${acct}/followers`} onClick={this.handleClose} title={intl.formatNumber(account.get('followers_count'))}>
+          <strong className='profile-stat__value'>
+            {shortNumberFormat(account.get('followers_count'))}
+          </strong>
+          <span className='profile-stat__label'>
+            {intl.formatMessage(messages.followers)}
+          </span>
         </NavLink>
-        <NavLink className='sidebar-menu-profile-stat' to={`/@${acct}/following`} onClick={this.handleClose} title={intl.formatNumber(account.get('following_count'))}>
-          <strong className='sidebar-menu-profile-stat__value'>{shortNumberFormat(account.get('following_count'))}</strong>
-          <span className='sidebar-menu-profile-stat__label'>{intl.formatMessage(messages.follows)}</span>
+
+        <NavLink className='profile-stat' to={`/@${acct}/following`} onClick={this.handleClose} title={intl.formatNumber(account.get('following_count'))}>
+          <strong className='profile-stat__value'>
+            {shortNumberFormat(account.get('following_count'))}
+          </strong>
+          <span className='profile-stat__label'>
+            {intl.formatMessage(messages.follows)}
+          </span>
         </NavLink>
       </div>
     );
