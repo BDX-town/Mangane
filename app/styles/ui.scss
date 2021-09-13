@@ -363,6 +363,7 @@
   width: 61px;
   height: 61px;
   background-color: var(--brand-color);
+  color: white;
   border: 0;
   border-radius: 999px;
   box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
@@ -387,6 +388,11 @@
     justify-content: center;
     color: #fff;
     margin: 0;
+  }
+
+  .svg-icon {
+    width: 26px;
+    height: 26px;
   }
 }
 

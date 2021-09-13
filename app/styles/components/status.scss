@@ -126,6 +126,11 @@
   vertical-align: middle;
 }
 
+.status__wrapper {
+  @include standard-panel;
+  margin: 10px 0;
+}
+
 .status__wrapper--filtered {
   color: var(--primary-text-color);
   border: 0;
@@ -150,7 +155,6 @@
   padding-left: 68px;
   position: relative;
   min-height: 54px;
-  border-bottom: 1px solid var(--brand-color--faint);
   cursor: default;
 
   @supports (-ms-overflow-style: -ms-autohiding-scrollbar) {
@@ -472,19 +476,12 @@
 .focusable {
   &:focus {
     outline: 0;
-    background: var(--brand-color--faint);
+    box-shadow: 0 0 6px 0 hsla(var(--brand-color_hsl), 0.7);
 
     .status.status-direct {
-      background: var(--brand-color--med);
-
       &.muted {
         background: transparent;
       }
-    }
-
-    .detailed-status,
-    .detailed-status__action-bar {
-      background: var(--brand-color--med);
     }
   }
 }

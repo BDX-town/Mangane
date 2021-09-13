@@ -6,7 +6,8 @@
 
 .promo-panel-item {
   @include standard-panel-shadow;
-  display: block;
+  display: flex;
+  align-items: center;
   height: 42px;
   line-height: 42px;
   color: var(--primary-text-color);

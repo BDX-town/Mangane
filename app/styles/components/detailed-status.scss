@@ -7,7 +7,6 @@
 }
 
 .detailed-status {
-  background: hsla(var(--brand-color_hsl), 0.03);
   padding: 14px 10px;
 
   &--flex {
@@ -64,7 +63,6 @@
 }
 
 .detailed-status__action-bar {
-  background: hsla(var(--brand-color_hsl), 0.03);
   border-top: 1px solid var(--brand-color--faint);
   border-bottom: 1px solid var(--brand-color--faint);
   display: flex;
@@ -91,7 +89,6 @@
     .icon_button__text {
       font-size: 14px;
       padding-left: 3px;
-      transform: translateY(-1px);
     }
   }
 
@@ -113,7 +110,10 @@
 }
 
 .detailed-status__wrapper {
+  @include standard-panel;
+  margin: 10px 0;
   position: relative;
+  overflow: hidden;
 }
 
 .detailed-status__application,

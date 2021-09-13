@@ -333,6 +333,32 @@
   @include standard-panel;
 }
 
+.columns-area--transparent .column {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: -10px;
+
+  .column-back-button {
+    background: transparent;
+    margin-bottom: -10px;
+  }
+
+  .slist {
+    margin-top: -10px;
+  }
+
+  .account__section-headline {
+    background: transparent;
+    border: 0;
+  }
+
+  .empty-column-indicator,
+  .error-column {
+    background: transparent;
+  }
+}
+
 .column-header__wrapper {
   position: relative;
   flex: 0 0 auto;
@@ -411,6 +437,7 @@
       border-radius: 10px;
       transition: 0.2s;
       opacity: 0;
+      z-index: -1;
     }
 
     @media screen and (max-width: $nav-breakpoint-2) {
