@@ -12,6 +12,7 @@ export default class IconButton extends React.PureComponent {
     className: PropTypes.string,
     title: PropTypes.string.isRequired,
     icon: PropTypes.string.isRequired,
+    iconset: PropTypes.string,
     onClick: PropTypes.func,
     onMouseDown: PropTypes.func,
     onKeyUp: PropTypes.func,
@@ -97,6 +98,7 @@ export default class IconButton extends React.PureComponent {
       disabled,
       expanded,
       icon,
+      iconset,
       inverted,
       overlay,
       pressed,
@@ -136,7 +138,7 @@ export default class IconButton extends React.PureComponent {
           <div style={style}>
             {emoji
               ? <div className='icon-button__emoji' dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-              : <Icon id={icon} fixedWidth aria-hidden='true' />}
+              : <Icon id={icon} iconset={iconset} fixedWidth aria-hidden='true' />}
           </div>
           {text && <span className='icon_button__text'>{text}</span>}
         </button>
@@ -165,7 +167,7 @@ export default class IconButton extends React.PureComponent {
             <div style={style}>
               {emoji
                 ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-                : <Icon id={icon} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
+                : <Icon id={icon} iconset={iconset} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
             </div>
             {text && <span className='icon_button__text'>{text}</span>}
           </button>
