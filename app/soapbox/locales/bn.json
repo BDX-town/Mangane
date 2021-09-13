@@ -23,7 +23,7 @@
   "account.locked_info": "এই নিবন্ধনের গোপনীয়তার ক্ষেত্র তালা দেওয়া আছে। নিবন্ধনকারী অনুসরণ করার অনুমতি যাদেরকে দেবেন, শুধু তারাই অনুসরণ করতে পারবেন।",
   "account.login": "Log in",
   "account.media": "ছবি বা ভিডিও",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "কে উল্লেখ করুন",
   "account.message": "Message",
   "account.moved_to": "{name} চলে গেছে এখানে:",

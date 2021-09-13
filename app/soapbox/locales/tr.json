@@ -23,7 +23,7 @@
   "account.locked_info": "Bu hesabın gizlilik durumu kilitli olarak ayarlanmış. Sahibi, onu kimin takip edebileceğini elle inceliyor.",
   "account.login": "Log in",
   "account.media": "Medya",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "kullanıcısından bahset",
   "account.message": "Message",
   "account.moved_to": "{name} şuraya taşındı:",

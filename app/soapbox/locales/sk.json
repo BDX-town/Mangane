@@ -23,7 +23,7 @@
   "account.locked_info": "Stav súkromia pre tento účet je nastavený na zamknutý. Jeho vlastník sám prehodnocuje, kto ho môže sledovať.",
   "account.login": "Log in",
   "account.media": "Médiá",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Spomeň",
   "account.message": "Message",
   "account.moved_to": "{name} sa presunul/a na:",

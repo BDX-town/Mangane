@@ -23,7 +23,7 @@
   "account.locked_info": "El estado de privacidad de esta cuenta està configurado como bloqueado. El proprietario debe revisar manualmente quien puede seguirle.",
   "account.login": "Log in",
   "account.media": "Multimedia",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mencionar",
   "account.message": "Message",
   "account.moved_to": "{name} se ha mudado a:",

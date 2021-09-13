@@ -23,7 +23,7 @@
   "account.locked_info": "Aquest estat de privadesa del compte està definit com a bloquejat. El propietari revisa manualment qui pot seguir-lo.",
   "account.login": "Log in",
   "account.media": "Mèdia",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Esmentar",
   "account.message": "Message",
   "account.moved_to": "{name} s'ha mogut a:",

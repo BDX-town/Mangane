@@ -3886,7 +3886,7 @@
         "id": "account.badges.bot"
       },
       {
-        "defaultMessage": "Member since {date}",
+        "defaultMessage": "Joined {date}",
         "id": "account.member_since"
       },
       {

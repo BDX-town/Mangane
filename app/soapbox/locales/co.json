@@ -23,7 +23,7 @@
   "account.locked_info": "U statutu di vita privata di u contu hè chjosu. U pruprietariu esamina manualmente e dumande d'abbunamentu.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mintuvà",
   "account.message": "Message",
   "account.moved_to": "{name} hè partutu nant'à:",

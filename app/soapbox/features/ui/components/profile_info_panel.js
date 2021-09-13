@@ -106,7 +106,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
           {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
             <Icon id='calendar' />
             <FormattedMessage
-              id='account.member_since' defaultMessage='Member since {date}' values={{
+              id='account.member_since' defaultMessage='Joined {date}' values={{
                 date: memberSinceDate,
               }}
             />

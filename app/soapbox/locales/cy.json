@@ -23,7 +23,7 @@
   "account.locked_info": "Mae'r statws preifatrwydd cyfrif hwn wedi'i osod i gloi. Mae'r perchennog yn adolygu'r sawl sy'n gallu eu dilyn.",
   "account.login": "Log in",
   "account.media": "Cyfryngau",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Crybwyll",
   "account.message": "Message",
   "account.moved_to": "Mae @{name} wedi symud i:",

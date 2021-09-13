@@ -23,7 +23,7 @@
   "account.locked_info": "Ez a fiók zárt. A tulaj engedélyezi, ki követheti őt.",
   "account.login": "Log in",
   "account.media": "Média",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "említése",
   "account.message": "Message",
   "account.moved_to": "{name} átköltözött:",

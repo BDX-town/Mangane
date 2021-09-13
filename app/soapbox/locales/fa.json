@@ -23,7 +23,7 @@
   "account.locked_info": "این حساب خصوصی است. صاحب این حساب تصمیم می‌گیرد که چه کسی می‌تواند پیگیرش باشد.",
   "account.login": "Log in",
   "account.media": "عکس و ویدیو",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "نام‌بردن از",
   "account.message": "Message",
   "account.moved_to": "{name} منتقل شده است به:",

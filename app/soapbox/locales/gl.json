@@ -23,7 +23,7 @@
   "account.locked_info": "O estado da intimidade de esta conta estableceuse en pechado. A persoa dona da conta revisa quen pode seguila.",
   "account.login": "Log in",
   "account.media": "Medios",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mencionar",
   "account.message": "Message",
   "account.moved_to": "{name} marchou a:",

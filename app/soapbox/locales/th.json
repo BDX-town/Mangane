@@ -23,7 +23,7 @@
   "account.locked_info": "มีการตั้งสถานะความเป็นส่วนตัวของบัญชีนี้เป็นล็อคอยู่ เจ้าของตรวจทานผู้ที่สามารถติดตามเขาด้วยตนเอง",
   "account.login": "Log in",
   "account.media": "สื่อ",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "กล่าวถึง",
   "account.message": "Message",
   "account.moved_to": "{name} ได้ย้ายไปยัง:",

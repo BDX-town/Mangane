@@ -23,7 +23,7 @@
   "account.locked_info": "此账户已锁嘟。账户的主人会手动审核关注者。",
   "account.login": "Log in",
   "account.media": "媒体",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "提及",
   "account.message": "Message",
   "account.moved_to": "{name} 已经迁移到：",

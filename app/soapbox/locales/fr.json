@@ -23,7 +23,7 @@
   "account.locked_info": "Ce compte est verrouillé. Son propriétaire approuve manuellement qui peut le ou la suivre.",
   "account.login": "Log in",
   "account.media": "Média",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mentionner",
   "account.message": "Message",
   "account.moved_to": "{name} a déménagé vers :",

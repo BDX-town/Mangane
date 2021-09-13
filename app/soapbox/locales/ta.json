@@ -23,7 +23,7 @@
   "account.locked_info": "இந்தக் கணக்கு தனியுரிமை நிலை பூட்டப்பட்டுள்ளது. அவர்களைப் பின்தொடர்பவர் யார் என்பதை உரிமையாளர் கைமுறையாக மதிப்பாய்வு செய்கிறார்.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "குறிப்பிடு ",
   "account.message": "Message",
   "account.moved_to": "{name} நகர்த்தப்பட்டது:",

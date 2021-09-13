@@ -23,7 +23,7 @@
   "account.locked_info": "L’estatut de privacitat del compte es configurat sus clavat. Lo proprietari causís qual pòt sègre son compte.",
   "account.login": "Log in",
   "account.media": "Mèdias",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mencionar",
   "account.message": "Message",
   "account.moved_to": "{name} a mudat los catons a :",

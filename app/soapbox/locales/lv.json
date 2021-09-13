@@ -23,7 +23,7 @@
   "account.locked_info": "Šī konta privātuma status ir iestatīts slēgts. Īpašnieks izskatīs un izvēlēsies kas viņam drīkst sekot.",
   "account.login": "Log in",
   "account.media": "Mēdiji",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Piemin",
   "account.message": "Message",
   "account.moved_to": "{name} ir pārvācies uz:",

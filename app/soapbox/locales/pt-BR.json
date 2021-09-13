@@ -23,7 +23,7 @@
   "account.locked_info": "Essa conta está trancada. Se você a seguir sua solicitação será revisada manualmente.",
   "account.login": "Log in",
   "account.media": "Mídia",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mencionar",
   "account.message": "Message",
   "account.moved_to": "{name} se mudou para:",

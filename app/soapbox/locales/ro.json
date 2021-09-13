@@ -23,7 +23,7 @@
   "account.locked_info": "Acest profil este privat. Această persoană gestioneaz manual cine o urmărește.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Menționează",
   "account.message": "Message",
   "account.moved_to": "{name} a fost mutat la:",

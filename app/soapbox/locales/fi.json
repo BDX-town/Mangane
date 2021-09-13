@@ -23,7 +23,7 @@
   "account.locked_info": "Tämän tili on yksityinen. Käyttäjä vahvistaa itse kuka voi seurata häntä.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mainitse",
   "account.message": "Message",
   "account.moved_to": "{name} on muuttanut instanssiin:",
