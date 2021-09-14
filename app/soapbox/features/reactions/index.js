@@ -100,8 +100,8 @@ class Reactions extends ImmutablePureComponent {
         {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>
-              <button onClick={this.handleFilterChange('')}>All</button>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
+              <button className={!params.reaction ? 'active' : ''} onClick={this.handleFilterChange('')}>All</button>
+              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} className={params.reaction === reaction.name ? 'active' : ''} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
             </div>
           )
         }

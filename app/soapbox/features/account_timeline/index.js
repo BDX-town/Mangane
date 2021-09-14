@@ -193,7 +193,7 @@ class AccountTimeline extends ImmutablePureComponent {
         </div>
         <div className={classNames('column-header__collapsible', { collapsed, animating })} onTransitionEnd={this.handleTransitionEnd}>
           <div className='column-header__collapsible-inner'>
-            <ColumnSettingsContainer />
+            {(!collapsed || animating) && <ColumnSettingsContainer />}
           </div>
         </div>
         <StatusList
