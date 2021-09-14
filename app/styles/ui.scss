@@ -638,9 +638,14 @@
     position: relative;
     background: transparent;
 
+    &:active,
+    &:focus,
+    &:hover,
     &.active {
       color: var(--primary-text-color);
+    }
 
+    &.active {
       &::before,
       &::after {
         display: block;
@@ -668,6 +673,7 @@
   overflow-x: auto;
   overflow-y: hidden;
 
+  button,
   a {
     flex: unset;
     padding: 15px 24px;

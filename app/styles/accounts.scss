@@ -524,6 +524,7 @@ a .account__avatar {
   border-radius: 4px;
   opacity: 0.7;
   white-space: nowrap;
+  transition: 0.2s;
 
   &:hover {
     opacity: 1;

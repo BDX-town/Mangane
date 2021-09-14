@@ -73,7 +73,7 @@ class Reactions extends ImmutablePureComponent {
 
   render() {
     const { params, reactions, accounts, status } = this.props;
-    const { username, statusId } = params;
+    const { username, statusId, reaction } = params;
 
     const back = `/@${username}/posts/${statusId}`;
 
@@ -95,13 +95,14 @@ class Reactions extends ImmutablePureComponent {
 
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 
+    console.log(params.reaction);
     return (
       <Column back={back}>
         {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>
-              <button onClick={this.handleFilterChange('')}>All</button>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
+              <button className={!params.reaction ? 'active' : ''} onClick={this.handleFilterChange('')}>All</button>
+              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} className={params.reaction === reaction.name ? 'active' : ''} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
             </div>
           )
         }
