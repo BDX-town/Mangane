@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import BundleContainer from '../features/ui/containers/bundle_container';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
 import UserPanel from 'soapbox/features/ui/components/user_panel';
@@ -9,7 +10,7 @@ import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel
 import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
 import PromoPanel from 'soapbox/features/ui/components/promo_panel';
 import FundingPanel from 'soapbox/features/ui/components/funding_panel';
-import CryptoDonatePanel from 'soapbox/features/crypto_donate/components/crypto_donate_panel';
+import { CryptoDonatePanel } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
 import SignUpPanel from 'soapbox/features/ui/components/sign_up_panel';
@@ -58,7 +59,11 @@ class HomePage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 <UserPanel accountId={me} key='user-panel' />
                 {showFundingPanel && <FundingPanel key='funding-panel' />}
-                {showCryptoDonatePanel && <CryptoDonatePanel limit={cryptoLimit} key='crypto-panel' />}
+                {showCryptoDonatePanel && (
+                  <BundleContainer fetchComponent={CryptoDonatePanel}>
+                    {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
+                  </BundleContainer>
+                )}
               </div>
             </div>
 

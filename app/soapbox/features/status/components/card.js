@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
+import { is, fromJS } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import punycode from 'punycode';
 import classnames from 'classnames';
@@ -77,7 +77,7 @@ export default class Card extends React.PureComponent {
   };
 
   componentDidUpdate(prevProps) {
-    if (!Immutable.is(prevProps.card, this.props.card)) {
+    if (!is(prevProps.card, this.props.card)) {
       this.setState({ embedded: false });
     }
   }
@@ -86,7 +86,7 @@ export default class Card extends React.PureComponent {
     const { card, onOpenMedia } = this.props;
 
     onOpenMedia(
-      Immutable.fromJS([
+      fromJS([
         {
           type: 'image',
           url: card.get('embed_url'),

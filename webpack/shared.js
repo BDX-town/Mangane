@@ -30,10 +30,9 @@ const makeHtmlConfig = (params = {}) => {
 };
 
 module.exports = {
-  entry: Object.assign(
-    { application: resolve('app/application.js') },
-    { styles: resolve(join(settings.source_path, 'styles/application.scss')) },
-  ),
+  entry: {
+    application: resolve('app/application.js'),
+  },
 
   output: {
     filename: 'packs/js/[name]-[chunkhash].js',
@@ -65,7 +64,7 @@ module.exports = {
   },
 
   module: {
-    rules: Object.keys(rules).map(key => rules[key]),
+    rules,
   },
 
   plugins: [
@@ -90,13 +89,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [{
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),
-        to: join(output.path, 'emoji'),
-      }, {
-        from: join(__dirname, '../node_modules/emoji-datasource/img/twitter/sheets/32.png'),
-        to: join(output.path, 'emoji/sheet_13.png'),
-      }, {
-        from: join(__dirname, '../app/sounds'),
-        to: join(output.path, 'sounds'),
+        to: join(output.path, 'packs/emoji'),
       }, {
         from: join(__dirname, '../app/instance'),
         to: join(output.path, 'instance'),

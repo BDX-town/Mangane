@@ -50,6 +50,7 @@ export const makeDefaultConfig = features => {
       limit: 1,
     }),
     aboutPages: ImmutableMap(),
+    authenticatedProfile: true,
   });
 };
 

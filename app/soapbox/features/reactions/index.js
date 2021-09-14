@@ -73,7 +73,7 @@ class Reactions extends ImmutablePureComponent {
 
   render() {
     const { params, reactions, accounts, status } = this.props;
-    const { username, statusId, reaction } = params;
+    const { username, statusId } = params;
 
     const back = `/@${username}/posts/${statusId}`;
 
@@ -95,7 +95,6 @@ class Reactions extends ImmutablePureComponent {
 
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 
-    console.log(params.reaction);
     return (
       <Column back={back}>
         {

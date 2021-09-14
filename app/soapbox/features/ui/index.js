@@ -7,6 +7,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import NotificationsContainer from './containers/notifications_container';
 import LoadingBarContainer from './containers/loading_bar_container';
@@ -44,6 +45,7 @@ import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 import {
   Status,
@@ -121,6 +123,7 @@ const mapStateToProps = state => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
+  const soapbox = getSoapboxConfig(state);
 
   return {
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
@@ -129,6 +132,7 @@ const mapStateToProps = state => {
     me,
     account,
     features: getFeatures(instance),
+    soapbox,
   };
 };
 
@@ -166,6 +170,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     children: PropTypes.node,
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
+    soapbox: ImmutablePropTypes.map.isRequired,
   };
 
   state = {
@@ -194,7 +199,8 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, soapbox } = this.props;
+    const authenticatedProfile = soapbox.get('authenticatedProfile');
 
     return (
       <Switch>
@@ -254,10 +260,10 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/mutes' page={DefaultPage} component={Mutes} content={children} />
         <WrappedRoute path='/filters' page={DefaultPage} component={Filters} content={children} />
         <WrappedRoute path='/@:username' publicRoute exact component={AccountTimeline} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/with_replies' component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
-        <WrappedRoute path='/@:username/followers' component={Followers} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/following' component={Following} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/media' component={AccountGallery} page={ProfilePage} content={children} />
+        <WrappedRoute path='/@:username/with_replies' publicRoute={!authenticatedProfile} component={AccountTimeline} page={ProfilePage} content={children} componentParams={{ withReplies: true }} />
+        <WrappedRoute path='/@:username/followers' publicRoute={!authenticatedProfile} component={Followers} page={ProfilePage} content={children} />
+        <WrappedRoute path='/@:username/following' publicRoute={!authenticatedProfile} component={Following} page={ProfilePage} content={children} />
+        <WrappedRoute path='/@:username/media' publicRoute={!authenticatedProfile} component={AccountGallery} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
@@ -314,6 +320,7 @@ class UI extends React.PureComponent {
     streamingUrl: PropTypes.string,
     account: PropTypes.object,
     features: PropTypes.object.isRequired,
+    soapbox: ImmutablePropTypes.map.isRequired,
   };
 
   state = {
@@ -594,7 +601,7 @@ class UI extends React.PureComponent {
   }
 
   render() {
-    const { streamingUrl, features } = this.props;
+    const { streamingUrl, features, soapbox } = this.props;
     const { draggingOver, mobile } = this.state;
     const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
@@ -644,7 +651,7 @@ class UI extends React.PureComponent {
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
-          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange}>
+          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
             {children}
           </SwitchingColumnsArea>
 
