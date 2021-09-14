@@ -323,13 +323,13 @@ class Header extends ImmutablePureComponent {
             {info}
           </div>
 
-          <div className='account__header__subscribe'>
-            <SubscriptionButton account={account} />
-          </div>
-
           {header && <a className='account__header__header' href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
             <StillImage src={account.get('header')} alt='' className='parallax' />
           </a>}
+
+          <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} />
+          </div>
         </div>
 
         <div className='account__header__bar'>
