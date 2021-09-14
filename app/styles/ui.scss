@@ -742,3 +742,9 @@
     background: var(--accent-color);
   }
 }
+
+// Create a new Block Formatting Context to prevent the timelines from jumping
+// https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Block_formatting_context
+.slist > .item-list > article {
+  overflow: hidden;
+}

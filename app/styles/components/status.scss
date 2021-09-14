@@ -128,7 +128,21 @@
 
 .status__wrapper {
   @include standard-panel;
-  margin: 10px 0;
+  margin: 5px 0;
+}
+
+.slist > .item-list > article {
+  &:first-child {
+    .status__wrapper {
+      margin-top: 10px;
+    }
+  }
+
+  &:last-child {
+    .status__wrapper {
+      margin-bottom: 10px;
+    }
+  }
 }
 
 .status__wrapper--filtered {
