@@ -24,8 +24,9 @@
     "test": "${npm_execpath} run test:lint && ${npm_execpath} run test:jest",
     "test:lint": "${npm_execpath} run test:lint:js && ${npm_execpath} run test:lint:sass",
     "test:lint:js": "npx eslint --ext=js . --cache",
-    "test:lint:sass": "npx stylelint app/styles/**.scss app/styles/**/*.scss",
-    "test:jest": "npx jest --coverage"
+    "test:lint:sass": "npx stylelint app/styles/**/*.scss",
+    "test:jest": "npx jest --coverage",
+    "prepare": "husky install"
   },
   "license": "AGPL-3.0-or-later",
   "browserslist": [
@@ -170,7 +171,9 @@
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-react": "^7.25.1",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "husky": "^7.0.2",
     "jest": "^27.1.0",
+    "lint-staged": ">=10",
     "raf": "^3.4.1",
     "react-intl-translations-manager": "^5.0.3",
     "react-test-renderer": "^16.13.1",
