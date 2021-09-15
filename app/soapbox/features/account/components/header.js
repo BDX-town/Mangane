@@ -17,7 +17,6 @@ import {
   isRemote,
   getDomain,
 } from 'soapbox/utils/accounts';
-import { parseVersion } from 'soapbox/utils/features';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -30,6 +29,7 @@ import ActionButton from 'soapbox/features/ui/components/action_button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
 import { openModal } from 'soapbox/actions/modal';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -72,11 +72,13 @@ const messages = defineMessages({
 const mapStateToProps = state => {
   const me = state.get('me');
   const account = state.getIn(['accounts', me]);
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
 
   return {
     me,
     meAccount: account,
-    version: parseVersion(state.getIn(['instance', 'version'])),
+    features,
   };
 };
 
@@ -90,7 +92,7 @@ class Header extends ImmutablePureComponent {
     identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
-    version: PropTypes.object,
+    features: PropTypes.object,
   };
 
   state = {
@@ -156,7 +158,7 @@ class Header extends ImmutablePureComponent {
   }
 
   makeMenu() {
-    const { account, intl, me, meAccount, version } = this.props;
+    const { account, intl, me, meAccount, features } = this.props;
 
     const menu = [];
 
@@ -196,7 +198,7 @@ class Header extends ImmutablePureComponent {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
         // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
-      } else if (version.software === 'Pleroma') {
+      } else if (features.unrestrictedLists) {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
       }
 
@@ -285,7 +287,7 @@ class Header extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, username, me } = this.props;
+    const { account, intl, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -323,13 +325,13 @@ class Header extends ImmutablePureComponent {
             {info}
           </div>
 
-          <div className='account__header__subscribe'>
-            <SubscriptionButton account={account} />
-          </div>
-
           {header && <a className='account__header__header' href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
             <StillImage src={account.get('header')} alt='' className='parallax' />
           </a>}
+
+          {features.accountSubscriptions && <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} />
+          </div>}
         </div>
 
         <div className='account__header__bar'>
