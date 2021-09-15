@@ -183,9 +183,5 @@
     "stylelint-scss": "^3.18.0",
     "webpack-dev-server": "^4.1.0",
     "yargs": "^16.0.3"
-  },
-  "lint-staged": {
-    "*.js": "eslint --cache",
-    "app/styles/**/*.scss": "stylelint"
   }
 }
