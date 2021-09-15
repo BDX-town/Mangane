@@ -3,7 +3,7 @@ import {
   SOAPBOX_CONFIG_REQUEST_SUCCESS,
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox';
-import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
 
@@ -38,7 +38,7 @@ const preloadImport = (state, action) => {
 
 export default function soapbox(state = initialState, action) {
   switch(action.type) {
-  case PRELOAD_IMPORT:
+  case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action);
   case SOAPBOX_CONFIG_REQUEST_SUCCESS:
     return fromJS(action.soapboxConfig);

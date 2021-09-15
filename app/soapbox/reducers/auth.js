@@ -8,6 +8,7 @@ import {
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
+import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { validId, isURL } from 'soapbox/utils/auth';
 import { trim } from 'lodash';
@@ -227,6 +228,32 @@ const deleteUser = (state, account) => {
   });
 };
 
+const importMastodonPreload = (state, data) => {
+  return state.withMutations(state => {
+    const accountId   = data.getIn(['meta', 'me']);
+    const accountUrl  = data.getIn(['accounts', accountId, 'url']);
+    const accessToken = data.getIn(['meta', 'access_token']);
+
+    if (validId(accessToken) && validId(accountId) && isURL(accountUrl)) {
+      state.setIn(['tokens', accessToken], fromJS({
+        access_token: accessToken,
+        account: accountId,
+        me: accountUrl,
+        scope: 'read write follow push',
+        token_type: 'Bearer',
+      }));
+
+      state.setIn(['users', accountUrl], fromJS({
+        id: accountId,
+        access_token: accessToken,
+        url: accountUrl,
+      }));
+    }
+
+    maybeShiftMe(state);
+  });
+};
+
 const reducer = (state, action) => {
   switch(action.type) {
   case AUTH_APP_CREATED:
@@ -245,6 +272,8 @@ const reducer = (state, action) => {
     return state.set('me', action.account.get('url'));
   case ME_FETCH_SKIP:
     return state.set('me', null);
+  case MASTODON_PRELOAD_IMPORT:
+    return importMastodonPreload(state, fromJS(action.data));
   default:
     return state;
   }

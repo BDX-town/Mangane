@@ -9,6 +9,7 @@ import {
   SWITCH_ACCOUNT,
 } from 'soapbox/actions/auth';
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
+import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {
@@ -309,6 +310,39 @@ describe('auth reducer', () => {
       const action = { type: ME_FETCH_SKIP };
       const result = reducer(state, action);
       expect(result.get('me')).toEqual(null);
+    });
+  });
+
+  describe('MASTODON_PRELOAD_IMPORT', () => {
+    it('imports the user and token', () => {
+      const action = {
+        type: MASTODON_PRELOAD_IMPORT,
+        data: require('soapbox/__fixtures__/mastodon_initial_state.json'),
+      };
+
+      const expected = fromJS({
+        me: 'https://mastodon.social/@benis911',
+        app: {},
+        users: {
+          'https://mastodon.social/@benis911': {
+            id: '106801667066418367',
+            access_token: 'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q',
+            url: 'https://mastodon.social/@benis911',
+          },
+        },
+        tokens: {
+          'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q': {
+            access_token: 'Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q',
+            account: '106801667066418367',
+            me: 'https://mastodon.social/@benis911',
+            scope: 'read write follow push',
+            token_type: 'Bearer',
+          },
+        },
+      });
+
+      const result = reducer(undefined, action);
+      expect(result).toEqual(expected);
     });
   });
 });
