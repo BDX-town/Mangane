@@ -3,7 +3,7 @@ import {
   INSTANCE_FETCH_FAIL,
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
-import { PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
@@ -82,7 +82,7 @@ const handleAuthFetch = state => {
 
 export default function instance(state = initialState, action) {
   switch(action.type) {
-  case PRELOAD_IMPORT:
+  case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
   case INSTANCE_FETCH_SUCCESS:
     return initialState.mergeDeep(fromJS(action.instance));
