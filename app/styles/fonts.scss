@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 // OpenDyslexic
 @font-face {
   font-family: 'OpenDyslexic';
@@ -46,14 +48,14 @@
 // html and body declaration allows developer to pass px value as argument
 // Rendered css will default to "rem" and fall back to "px" for unsupported browsers
 @mixin font-size($size) {
-  $rem: ($size / 10);
+  $rem: math.div($size, 10);
   $px: $size;
   font-size: #{$px + "px"};
   font-size: #{$rem + "rem"};
 }
 
 @mixin line-height($size) {
-  $rem: ($size / 10);
+  $rem: math.div($size, 10);
   $px: $size;
   line-height: #{$px + "px"};
   line-height: #{$rem + "rem"};
