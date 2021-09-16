@@ -50,6 +50,7 @@
     "@babel/runtime": "^7.14.6",
     "@fontsource/montserrat": "^4.5.1",
     "@fontsource/roboto": "^4.5.0",
+    "@gamestdio/websocket": "^0.3.2",
     "@lcdp/offline-plugin": "^5.1.0",
     "@popperjs/core": "^2.4.4",
     "@sentry/browser": "^6.12.0",
@@ -156,7 +157,6 @@
     "webpack-bundle-analyzer": "^4.4.2",
     "webpack-cli": "^4.8.0",
     "webpack-merge": "^5.8.0",
-    "websocket.js": "^0.1.12",
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
