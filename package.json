@@ -87,7 +87,7 @@
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.3.2",
     "http-link-header": "^1.0.2",
-    "immutable": "^4.0.0-rc.12",
+    "immutable": "^4.0.0-rc.14",
     "imports-loader": "^1.0.0",
     "intersection-observer": "^0.11.0",
     "intl": "^1.2.5",
