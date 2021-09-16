@@ -83,7 +83,6 @@
     "es6-symbol": "^3.1.1",
     "escape-html": "^1.0.3",
     "exif-js": "^2.3.0",
-    "file-loader": "^6.0.0",
     "fork-awesome": "https://github.com/alexgleason/Fork-Awesome#c23fd34246a9f33c4bf24ea095a4cf26e7abe265",
     "html-webpack-harddisk-plugin": "^2.0.0",
     "html-webpack-plugin": "^5.3.2",
