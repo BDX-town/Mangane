@@ -150,6 +150,50 @@ export function Audio() {
   return import(/* webpackChunkName: "features/audio" */'../../audio');
 }
 
+export function MediaModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+}
+
+export function VideoModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/video_modal');
+}
+
+export function BoostModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/boost_modal');
+}
+
+export function ConfirmationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/confirmation_modal');
+}
+
+export function MissingDescriptionModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/missing_description_modal');
+}
+
+export function ActionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
+}
+
+export function FocalPointModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
+}
+
+export function HotkeysModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys_modal');
+}
+
+export function ComposeModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+}
+
+export function UnauthorizedModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized_modal');
+}
+
+export function EditFederationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/edit_federation_modal');
+}
+
 export function EmbedModal() {
   return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
 }
