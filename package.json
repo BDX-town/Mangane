@@ -64,7 +64,6 @@
     "babel-plugin-preval": "^5.0.0",
     "babel-plugin-react-intl": "^7.5.20",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
-    "babel-runtime": "^6.26.0",
     "blurhash": "^1.0.0",
     "bowser": "^2.11.0",
     "browserslist": "^4.16.6",
