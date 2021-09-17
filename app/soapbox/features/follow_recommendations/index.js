@@ -4,7 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { fetchSuggestions } from 'soapbox/actions/suggestions_v2';
+import { fetchSuggestions } from 'soapbox/actions/suggestions';
 import Column from 'soapbox/features/ui/components/column';
 import Account from './components/account';
 import Button from 'soapbox/components/button';

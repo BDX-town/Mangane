@@ -3,12 +3,10 @@ import {
   SUGGESTIONS_FETCH_SUCCESS,
   SUGGESTIONS_FETCH_FAIL,
   SUGGESTIONS_DISMISS,
-} from '../actions/suggestions';
-import {
   SUGGESTIONS_V2_FETCH_REQUEST,
   SUGGESTIONS_V2_FETCH_SUCCESS,
   SUGGESTIONS_V2_FETCH_FAIL,
-} from '../actions/suggestions_v2';
+} from '../actions/suggestions';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain_blocks';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
