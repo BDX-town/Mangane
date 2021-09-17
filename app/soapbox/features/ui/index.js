@@ -109,6 +109,7 @@ import {
   UserIndex,
   FederationRestrictions,
   Aliases,
+  FollowRecommendations,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -253,6 +254,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/notifications' page={DefaultPage} component={Notifications} content={children} />
 
         <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
+        <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />
 
         <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
         <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />

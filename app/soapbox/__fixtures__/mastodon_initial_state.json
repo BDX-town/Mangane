@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "streaming_api_base_url": "wss://mastodon.social",
+    "access_token": "Nh15V9JWyY5Fshf2OJ_feNvOIkTV7YGVfEJFr0Y0D6Q",
+    "locale": "en",
+    "domain": "mastodon.social",
+    "title": "Mastodon",
+    "admin": "1",
+    "search_enabled": true,
+    "repository": "mastodon/mastodon",
+    "source_url": "https://github.com/mastodon/mastodon",
+    "version": "3.4.1",
+    "invites_enabled": true,
+    "limited_federation_mode": false,
+    "mascot": null,
+    "profile_directory": true,
+    "trends": true,
+    "me": "106801667066418367",
+    "unfollow_modal": false,
+    "boost_modal": false,
+    "delete_modal": true,
+    "auto_play_gif": false,
+    "display_media": "default",
+    "expand_spoilers": false,
+    "reduce_motion": false,
+    "disable_swiping": false,
+    "advanced_layout": false,
+    "use_blurhash": true,
+    "use_pending_items": false,
+    "is_staff": false,
+    "crop_images": true
+  },
+  "compose": {
+    "me": "106801667066418367",
+    "default_privacy": "public",
+    "default_sensitive": false,
+    "text": ""
+  },
+  "accounts": {
+    "1": {
+      "id": "1",
+      "username": "Gargron",
+      "acct": "Gargron",
+      "display_name": "Eugen",
+      "locked": false,
+      "bot": false,
+      "discoverable": true,
+      "group": false,
+      "created_at": "2016-03-16T00:00:00.000Z",
+      "note": "\\u003cp\\u003eDeveloper of Mastodon and administrator of mastodon.social. I post service announcements, development updates, and personal stuff.\\u003c/p\\u003e",
+      "url": "https://mastodon.social/@Gargron",
+      "avatar": "https://files.mastodon.social/accounts/avatars/000/000/001/original/d96d39a0abb45b92.jpg",
+      "avatar_static": "https://files.mastodon.social/accounts/avatars/000/000/001/original/d96d39a0abb45b92.jpg",
+      "header": "https://files.mastodon.social/accounts/headers/000/000/001/original/c91b871f294ea63e.png",
+      "header_static": "https://files.mastodon.social/accounts/headers/000/000/001/original/c91b871f294ea63e.png",
+      "followers_count": 469426,
+      "following_count": 459,
+      "statuses_count": 70336,
+      "last_status_at": "2021-09-15",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Patreon",
+          "value": "\\u003ca href=\"https://www.patreon.com/mastodon\" rel=\"me nofollow noopener noreferrer\" target=\"_blank\"\\u003e\\u003cspan class=\"invisible\"\\u003ehttps://www.\\u003c/span\\u003e\\u003cspan class=\"\"\\u003epatreon.com/mastodon\\u003c/span\\u003e\\u003cspan class=\"invisible\"\\u003e\\u003c/span\\u003e\\u003c/a\\u003e",
+          "verified_at": null
+        },
+        {
+          "name": "Homepage",
+          "value": "\\u003ca href=\"https://zeonfederated.com\" rel=\"me nofollow noopener noreferrer\" target=\"_blank\"\\u003e\\u003cspan class=\"invisible\"\\u003ehttps://\\u003c/span\\u003e\\u003cspan class=\"\"\\u003ezeonfederated.com\\u003c/span\\u003e\\u003cspan class=\"invisible\"\\u003e\\u003c/span\\u003e\\u003c/a\\u003e",
+          "verified_at": "2019-07-15T18:29:57.191+00:00"
+        }
+      ]
+    },
+    "106801667066418367": {
+      "id": "106801667066418367",
+      "username": "benis911",
+      "acct": "benis911",
+      "display_name": "",
+      "locked": false,
+      "bot": false,
+      "discoverable": null,
+      "group": false,
+      "created_at": "2021-08-22T00:00:00.000Z",
+      "note": "\\u003cp\\u003e\\u003c/p\\u003e",
+      "url": "https://mastodon.social/@benis911",
+      "avatar": "https://mastodon.social/avatars/original/missing.png",
+      "avatar_static": "https://mastodon.social/avatars/original/missing.png",
+      "header": "https://mastodon.social/headers/original/missing.png",
+      "header_static": "https://mastodon.social/headers/original/missing.png",
+      "followers_count": 0,
+      "following_count": 0,
+      "statuses_count": 0,
+      "last_status_at": null,
+      "emojis": [],
+      "fields": []
+    }
+  },
+  "media_attachments": {
+    "accept_content_types": [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".webm",
+      ".mp4",
+      ".m4v",
+      ".mov",
+      ".ogg",
+      ".oga",
+      ".mp3",
+      ".wav",
+      ".flac",
+      ".opus",
+      ".aac",
+      ".m4a",
+      ".3gp",
+      ".wma",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "video/webm",
+      "video/mp4",
+      "video/quicktime",
+      "video/ogg",
+      "audio/wave",
+      "audio/wav",
+      "audio/x-wav",
+      "audio/x-pn-wave",
+      "audio/ogg",
+      "audio/mpeg",
+      "audio/mp3",
+      "audio/webm",
+      "audio/flac",
+      "audio/aac",
+      "audio/m4a",
+      "audio/x-m4a",
+      "audio/mp4",
+      "audio/3gpp",
+      "video/x-ms-asf"
+    ]
+  },
+  "settings": {
+    "known_fediverse": false,
+    "notifications": {
+      "alerts": {
+        "follow": false,
+        "follow_request": false,
+        "favourite": false,
+        "reblog": false,
+        "mention": false,
+        "poll": false,
+        "status": false
+      },
+      "quickFilter": {
+        "active": "all",
+        "show": true,
+        "advanced": false
+      },
+      "dismissPermissionBanner": false,
+      "showUnread": true,
+      "shows": {
+        "follow": true,
+        "follow_request": false,
+        "favourite": true,
+        "reblog": true,
+        "mention": true,
+        "poll": true,
+        "status": true
+      },
+      "sounds": {
+        "follow": true,
+        "follow_request": false,
+        "favourite": true,
+        "reblog": true,
+        "mention": true,
+        "poll": true,
+        "status": true
+      }
+    },
+    "public": {
+      "regex": {
+        "body": ""
+      }
+    },
+    "direct": {
+      "regex": {
+        "body": ""
+      }
+    },
+    "community": {
+      "regex": {
+        "body": ""
+      }
+    },
+    "skinTone": 1,
+    "trends": {
+      "show": true
+    },
+    "columns": [
+      {
+        "id": "COMPOSE",
+        "uuid": "b6dce3ed-c6cc-4446-8981-f08f8461ae8d",
+        "params": {}
+      },
+      {
+        "id": "HOME",
+        "uuid": "e89b270b-6e79-4956-98fb-e8bf0aff098c",
+        "params": {}
+      },
+      {
+        "id": "NOTIFICATIONS",
+        "uuid": "d359cdfa-e074-44ba-bde5-f46867a3bca6",
+        "params": {}
+      }
+    ],
+    "introductionVersion": 20181216044202,
+    "home": {
+      "shows": {
+        "reblog": true,
+        "reply": true
+      },
+      "regex": {
+        "body": ""
+      }
+    }
+  },
+  "push_subscription": null
+}

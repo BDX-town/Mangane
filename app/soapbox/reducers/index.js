@@ -31,6 +31,7 @@ import listAdder from './list_adder';
 import filters from './filters';
 import conversations from './conversations';
 import suggestions from './suggestions';
+import suggestions_v2 from './suggestions_v2';
 import polls from './polls';
 import identity_proofs from './identity_proofs';
 import trends from './trends';
@@ -88,6 +89,7 @@ const appReducer = combineReducers({
   filters,
   conversations,
   suggestions,
+  suggestions_v2,
   polls,
   trends,
   groups,

@@ -10,6 +10,7 @@ export const getFeatures = createSelector([
 ], (v, features, federation) => {
   return {
     suggestions: v.software === 'Mastodon' && gte(v.compatVersion, '2.4.3'),
+    suggestionsV2: v.software === 'Mastodon' && gte(v.compatVersion, '3.4.0'),
     trends: v.software === 'Mastodon' && gte(v.compatVersion, '3.0.0'),
     emojiReacts: v.software === 'Pleroma' && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === 'Pleroma' && gte(v.version, '2.2.49'),

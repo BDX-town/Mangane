@@ -27,7 +27,8 @@
   height: 42px;
   box-sizing: border-box;
   background-color: transparent;
-  border: 0 solid hsla(var(--brand-color_hsl), 0.5);
+  border: 0 solid;
+  border-color: hsla(var(--brand-color_hsl), 0.5);
   border-width: 6px;
   border-radius: 50%;
 }
@@ -38,6 +39,10 @@
 
 .no-reduce-motion .loading-indicator__figure {
   animation: loader-figure 1.15s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.app-body--loading .loading-indicator__figure {
+  border-color: #ddd;
 }
 
 @keyframes loader-figure {
