@@ -10,8 +10,8 @@ import Account from './components/account';
 import Button from 'soapbox/components/button';
 
 const mapStateToProps = state => ({
-  suggestions: state.getIn(['suggestions_v2', 'items']),
-  isLoading: state.getIn(['suggestions_v2', 'isLoading']),
+  suggestions: state.getIn(['suggestions', 'items']),
+  isLoading: state.getIn(['suggestions', 'isLoading']),
 });
 
 export default @connect(mapStateToProps)

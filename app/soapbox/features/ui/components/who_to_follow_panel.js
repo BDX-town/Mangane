@@ -43,10 +43,10 @@ class WhoToFollowPanel extends ImmutablePureComponent {
         </div>
         <div className='wtf-panel__content'>
           <div className='wtf-panel__list'>
-            {suggestions && suggestions.map(accountId => (
+            {suggestions && suggestions.map(suggestion => (
               <AccountContainer
-                key={accountId}
-                id={accountId}
+                key={suggestion.get('account')}
+                id={suggestion.get('account')}
                 actionIcon='times'
                 actionTitle={intl.formatMessage(messages.dismissSuggestion)}
                 onActionClick={dismissSuggestion}
