@@ -856,3 +856,7 @@
 .column-list {
   position: relative;
 }
+
+.columns-area--transparent .follow-recommendations-container {
+  @include standard-panel;
+}
