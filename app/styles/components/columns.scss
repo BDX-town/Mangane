@@ -796,6 +796,10 @@
   }
 }
 
+.columns-area--transparent .follow-recommendations-container {
+  @include standard-panel;
+}
+
 // Let transparent columns extend the full width of the screen
 @media screen and (max-width: 450px) {
   .columns-area__panels__main--transparent {
@@ -805,7 +809,8 @@
   .columns-area--transparent {
     .status__wrapper,
     .detailed-status__wrapper,
-    .timeline-compose-block {
+    .timeline-compose-block,
+    .follow-recommendations-container {
       border-radius: 0;
     }
   }
@@ -855,8 +860,4 @@
 
 .column-list {
   position: relative;
-}
-
-.columns-area--transparent .follow-recommendations-container {
-  @include standard-panel;
 }
