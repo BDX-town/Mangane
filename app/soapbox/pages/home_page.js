@@ -81,10 +81,9 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {/* <UserPanel accountId={me} key='user-panel' /> */}
+                {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
                 {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 <PromoPanel key='promo-panel' />
                 {showFundingPanel && <FundingPanel key='funding-panel' />}
                 {showCryptoDonatePanel && (
