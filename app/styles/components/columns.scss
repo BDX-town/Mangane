@@ -768,3 +768,45 @@
     }
   }
 }
+
+.column-title {
+  text-align: center;
+  padding: 40px;
+
+  .logo {
+    fill: var(--primary-text-color);
+    width: 50px;
+    margin: 0 auto;
+    margin-bottom: 40px;
+  }
+
+  h3 {
+    font-size: 24px;
+    line-height: 1.5;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: var(--primary-text-color--faint);
+  }
+}
+
+.column-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  padding-top: 40px;
+
+  &__background {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 220px;
+    width: auto;
+  }
+}

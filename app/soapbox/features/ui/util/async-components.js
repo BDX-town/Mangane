@@ -281,3 +281,7 @@ export function Aliases() {
 export function ScheduleForm() {
   return import(/* webpackChunkName: "features/compose" */'../../compose/components/schedule_form');
 }
+
+export function FollowRecommendations() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
+}
