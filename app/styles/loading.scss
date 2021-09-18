@@ -148,14 +148,6 @@
   animation: shake-bottom 0.8s cubic-bezier(0.455, 0.03, 0.515, 0.955) 2s 2 both;
 }
 
-.loading-bar {
-  background-color: var(--highlight-text-color);
-  height: 3px;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .load-more {
   display: block;
   color: var(--primary-text-color);
