@@ -2,6 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+const getIcon = ticker => {
+  try {
+    return require(`cryptocurrency-icons/svg/color/${ticker.toLowerCase()}.svg`);
+  } catch {
+    return require('cryptocurrency-icons/svg/color/generic.svg');
+  }
+};
+
 export default class CryptoIcon extends React.PureComponent {
 
   static propTypes = {
@@ -16,7 +24,7 @@ export default class CryptoIcon extends React.PureComponent {
     return (
       <div className={classNames('crypto-icon', className)}>
         <img
-          src={require(`cryptocurrency-icons/svg/color/${ticker.toLowerCase()}.svg`)}
+          src={getIcon(ticker)}
           alt={title || ticker}
         />
       </div>
