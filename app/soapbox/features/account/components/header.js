@@ -187,16 +187,21 @@ class Header extends ImmutablePureComponent {
           menu.push({ text: intl.formatMessage(messages.showReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
         }
 
-        if (account.getIn(['relationship', 'subscribing'])) {
-          menu.push({ text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
-        } else {
-          menu.push({ text: intl.formatMessage(messages.subscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+        if (features.accountSubscriptions) {
+          if (account.getIn(['relationship', 'subscribing'])) {
+            menu.push({ text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+          } else {
+            menu.push({ text: intl.formatMessage(messages.subscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+          }
         }
 
-        menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
+        if (features.lists) {
+          menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
+        }
+
         // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
-      } else if (features.unrestrictedLists) {
+      } else if (features.lists && features.unrestrictedLists) {
         menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
       }
 

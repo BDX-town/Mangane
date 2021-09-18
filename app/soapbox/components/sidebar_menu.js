@@ -211,14 +211,14 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon id='bitcoin' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate_crypto)}</span>
               </NavLink>}
-              <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
+              {features.lists && <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
                 <Icon id='list' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
-              </NavLink>
-              <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
+              </NavLink>}
+              {features.bookmarks && <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
                 <Icon id='bookmark' />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
-              </NavLink>
+              </NavLink>}
             </div>
 
             <div className='sidebar-menu__section'>

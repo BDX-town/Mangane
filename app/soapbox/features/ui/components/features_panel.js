@@ -62,15 +62,19 @@ class FeaturesPanel extends React.PureComponent {
             {intl.formatMessage(messages.follow_requests)}
           </NavLink>}
 
-          <NavLink className='promo-panel-item' to='/bookmarks'>
-            <Icon id='bookmark' className='promo-panel-item__icon' fixedWidth />
-            {intl.formatMessage(messages.bookmarks)}
-          </NavLink>
+          {features.bookmarks && (
+            <NavLink className='promo-panel-item' to='/bookmarks'>
+              <Icon id='bookmark' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.bookmarks)}
+            </NavLink>
+          )}
 
-          <NavLink className='promo-panel-item' to='/lists'>
-            <Icon id='list' className='promo-panel-item__icon' fixedWidth />
-            {intl.formatMessage(messages.lists)}
-          </NavLink>
+          {features.lists && (
+            <NavLink className='promo-panel-item' to='/lists'>
+              <Icon id='list' className='promo-panel-item__icon' fixedWidth />
+              {intl.formatMessage(messages.lists)}
+            </NavLink>
+          )}
 
           {features.securityAPI ? (
             <NavLink className='promo-panel-item' to='/auth/edit'>
