@@ -290,6 +290,30 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
 
+export function UserPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
+}
+
+export function FeaturesPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/features_panel');
+}
+
+export function PromoPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/promo_panel');
+}
+
+export function SignUpPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/sign_up_panel');
+}
+
+export function FundingPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/funding_panel');
+}
+
+export function TrendsPanel() {
+  return import(/* webpackChunkName: "features/trends" */'../components/trends_panel');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }

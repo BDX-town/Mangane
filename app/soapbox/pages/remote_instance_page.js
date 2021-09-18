@@ -1,8 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import PromoPanel from 'soapbox/features/ui/components/promo_panel';
-import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  PromoPanel,
+  FeaturesPanel,
+} from 'soapbox/features/ui/util/async-components';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import InstanceInfoPanel from 'soapbox/features/ui/components/instance_info_panel';
 import InstanceModerationPanel from 'soapbox/features/ui/components/instance_moderation_panel';
@@ -46,8 +49,14 @@ class RemoteInstancePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {me && <FeaturesPanel key='features-panel' />}
-                <PromoPanel key='promo-panel' />
+                {me && (
+                  <BundleContainer fetchComponent={FeaturesPanel}>
+                    {Component => <Component key='features-panel' />}
+                  </BundleContainer>
+                )}
+                <BundleContainer fetchComponent={PromoPanel}>
+                  {Component => <Component key='promo-panel' />}
+                </BundleContainer>
                 <LinkFooter key='link-footer' />
               </div>
             </div>
