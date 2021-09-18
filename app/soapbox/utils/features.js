@@ -19,6 +19,10 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
+    lists: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
     suggestions: v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
     suggestionsV2: v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
