@@ -10,7 +10,6 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import NotificationsContainer from './containers/notifications_container';
-import LoadingBarContainer from './containers/loading_bar_container';
 import ModalContainer from './containers/modal_container';
 import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
@@ -660,7 +659,6 @@ class UI extends React.PureComponent {
           {me && floatingActionButton}
 
           <NotificationsContainer />
-          <LoadingBarContainer className='loading-bar' />
           <ModalContainer />
           <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
           {me && <SidebarMenu />}
