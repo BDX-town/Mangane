@@ -315,7 +315,9 @@ class ActionBar extends React.PureComponent {
       // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
 
-    menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+    if (features.bookmarks) {
+      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+    }
 
     menu.push(null);
 

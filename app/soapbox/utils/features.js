@@ -3,32 +3,46 @@ import gte from 'semver/functions/gte';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 
+const any = arr => arr.some(Boolean);
+
+// For uglification
+const MASTODON = 'Mastodon';
+const PLEROMA  = 'Pleroma';
+
 export const getFeatures = createSelector([
   instance => parseVersion(instance.get('version')),
   instance => instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList()),
   instance => instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap()),
 ], (v, features, federation) => {
   return {
-    suggestions: v.software === 'Mastodon' && gte(v.compatVersion, '2.4.3'),
-    suggestionsV2: v.software === 'Mastodon' && gte(v.compatVersion, '3.4.0'),
-    trends: v.software === 'Mastodon' && gte(v.compatVersion, '3.0.0'),
-    emojiReacts: v.software === 'Pleroma' && gte(v.version, '2.0.0'),
-    emojiReactsRGI: v.software === 'Pleroma' && gte(v.version, '2.2.49'),
-    attachmentLimit: v.software === 'Pleroma' ? Infinity : 4,
-    focalPoint: v.software === 'Mastodon' && gte(v.compatVersion, '2.3.0'),
-    importMutes: v.software === 'Pleroma' && gte(v.version, '2.2.0'),
+    bookmarks: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+    lists: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+    suggestions: v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
+    suggestionsV2: v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+    trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+    emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
+    emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
+    attachmentLimit: v.software === PLEROMA ? Infinity : 4,
+    focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
+    importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
     emailList: features.includes('email_list'),
-    chats: v.software === 'Pleroma' && gte(v.version, '2.1.0'),
-    scopes: v.software === 'Pleroma' ? 'read write follow push admin' : 'read write follow push',
+    chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
     federating: federation.get('enabled', true), // Assume true unless explicitly false
-    richText: v.software === 'Pleroma',
-    securityAPI: v.software === 'Pleroma',
-    settingsStore: v.software === 'Pleroma',
-    accountAliasesAPI: v.software === 'Pleroma',
-    resetPasswordAPI: v.software === 'Pleroma',
+    richText: v.software === PLEROMA,
+    securityAPI: v.software === PLEROMA,
+    settingsStore: v.software === PLEROMA,
+    accountAliasesAPI: v.software === PLEROMA,
+    resetPasswordAPI: v.software === PLEROMA,
     exposableReactions: features.includes('exposable_reactions'),
-    accountSubscriptions: v.software === 'Pleroma' && gte(v.version, '1.0.0'),
-    unrestrictedLists: v.software === 'Pleroma',
+    accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    unrestrictedLists: v.software === PLEROMA,
   };
 });
 
@@ -36,7 +50,7 @@ export const parseVersion = version => {
   const regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
   return {
-    software: match[2] || 'Mastodon',
+    software: match[2] || MASTODON,
     version: match[3] || match[1],
     compatVersion: match[1],
   };

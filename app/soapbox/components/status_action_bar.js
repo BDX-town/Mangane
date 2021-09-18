@@ -290,7 +290,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin, me, isStaff, isAdmin } = this.props;
+    const { status, intl, withDismiss, withGroupAdmin, me, features, isStaff, isAdmin } = this.props;
     const mutingConversation = status.get('muted');
     const ownAccount = status.getIn(['account', 'id']) === me;
 
@@ -303,7 +303,9 @@ class StatusActionBar extends ImmutablePureComponent {
       // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
     }
 
-    menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+    if (features.bookmarks) {
+      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+    }
 
     if (!me) {
       return menu;
