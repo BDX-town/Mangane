@@ -1,7 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
 import PromoPanel from 'soapbox/features/ui/components/promo_panel';
 import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
@@ -45,7 +46,11 @@ class DefaultPage extends ImmutablePureComponent {
               <div className='columns-area__panels__pane__inner'>
                 {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
                 {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
-                {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
+                {showWhoToFollowPanel && (
+                  <BundleContainer fetchComponent={WhoToFollowPanel}>
+                    {Component => <Component limit={5} key='wtf-panel' />}
+                  </BundleContainer>
+                )}
                 <PromoPanel key='promo-panel' />
                 <LinkFooter key='link-footer' />
               </div>

@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Helmet from 'soapbox/components/helmet';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import LinkFooter from '../features/ui/components/link_footer';
 import SignUpPanel from '../features/ui/components/sign_up_panel';
 import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
@@ -99,8 +100,12 @@ class ProfilePage extends ImmutablePureComponent {
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
                 <SignUpPanel />
-                {features.suggestions && <WhoToFollowPanel />}
                 {account && <ProfileMediaPanel account={account} />}
+                {features.suggestions && (
+                  <BundleContainer fetchComponent={WhoToFollowPanel}>
+                    {Component => <Component />}
+                  </BundleContainer>
+                )}
                 <LinkFooter />
               </div>
             </div>

@@ -282,6 +282,10 @@ export function ScheduleForm() {
   return import(/* webpackChunkName: "features/compose" */'../../compose/components/schedule_form');
 }
 
+export function WhoToFollowPanel() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../components/who_to_follow_panel');
+}
+
 export function FollowRecommendations() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
 }
