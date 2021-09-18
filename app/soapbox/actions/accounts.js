@@ -5,6 +5,7 @@ import {
   importErrorWhileFetchingAccountByUsername,
 } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
 
 export const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 export const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';
@@ -53,6 +54,10 @@ export const ACCOUNT_PIN_FAIL    = 'ACCOUNT_PIN_FAIL';
 export const ACCOUNT_UNPIN_REQUEST = 'ACCOUNT_UNPIN_REQUEST';
 export const ACCOUNT_UNPIN_SUCCESS = 'ACCOUNT_UNPIN_SUCCESS';
 export const ACCOUNT_UNPIN_FAIL    = 'ACCOUNT_UNPIN_FAIL';
+
+export const ACCOUNT_SEARCH_REQUEST = 'ACCOUNT_SEARCH_REQUEST';
+export const ACCOUNT_SEARCH_SUCCESS = 'ACCOUNT_SEARCH_SUCCESS';
+export const ACCOUNT_SEARCH_FAIL    = 'ACCOUNT_SEARCH_FAIL';
 
 export const FOLLOWERS_FETCH_REQUEST = 'FOLLOWERS_FETCH_REQUEST';
 export const FOLLOWERS_FETCH_SUCCESS = 'FOLLOWERS_FETCH_SUCCESS';
@@ -129,21 +134,45 @@ export function fetchAccount(id) {
 
 export function fetchAccountByUsername(username) {
   return (dispatch, getState) => {
-    const account = getState().get('accounts').find(account => account.get('acct') === username);
+    const state = getState();
+    const account = state.get('accounts').find(account => account.get('acct') === username);
 
     if (account) {
       dispatch(fetchAccount(account.get('id')));
       return;
     }
 
-    api(getState).get(`/api/v1/accounts/${username}`).then(response => {
-      dispatch(fetchRelationships([response.data.id]));
-      dispatch(importFetchedAccount(response.data));
-      dispatch(fetchAccountSuccess(response.data));
-    }).catch(error => {
-      dispatch(fetchAccountFail(null, error));
-      dispatch(importErrorWhileFetchingAccountByUsername(username));
-    });
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
+
+    if (features.accountByUsername) {
+      api(getState).get(`/api/v1/accounts/${username}`).then(response => {
+        dispatch(fetchRelationships([response.data.id]));
+        dispatch(importFetchedAccount(response.data));
+        dispatch(fetchAccountSuccess(response.data));
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    } else {
+      dispatch(accountSearch({
+        q: username,
+        limit: 5,
+        resolve: true,
+      })).then(accounts => {
+        const found = accounts.find(a => a.acct === username);
+
+        if (found) {
+          dispatch(fetchRelationships([found.id]));
+          dispatch(fetchAccountSuccess(found));
+        } else {
+          throw accounts;
+        }
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    }
   };
 }
 
@@ -915,5 +944,19 @@ export function unpinAccountFail(error) {
   return {
     type: ACCOUNT_UNPIN_FAIL,
     error,
+  };
+}
+
+export function accountSearch(params) {
+  return (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_SEARCH_REQUEST, params });
+    return api(getState).get('/api/v1/accounts/search', { params }).then(({ data: accounts }) => {
+      dispatch(importFetchedAccounts(accounts));
+      dispatch({ type: ACCOUNT_SEARCH_SUCCESS, accounts });
+      return accounts;
+    }).catch(error => {
+      dispatch({ type: ACCOUNT_SEARCH_FAIL, skipAlert: true });
+      throw error;
+    });
   };
 }
