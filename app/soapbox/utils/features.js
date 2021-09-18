@@ -43,6 +43,7 @@ export const getFeatures = createSelector([
     exposableReactions: features.includes('exposable_reactions'),
     accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
     unrestrictedLists: v.software === PLEROMA,
+    accountByUsername: v.software === PLEROMA,
   };
 });
 
