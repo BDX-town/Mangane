@@ -15,8 +15,6 @@ import UI from '../features/ui';
 // import Introduction from '../features/introduction';
 import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
-import { previewState as previewMediaState } from 'soapbox/features/ui/components/media_modal';
-import { previewState as previewVideoState } from 'soapbox/features/ui/components/video_modal';
 import ErrorBoundary from '../components/error_boundary';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
@@ -29,6 +27,9 @@ import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
+
+const previewMediaState = 'previewMediaModal';
+const previewVideoState = 'previewVideoModal';
 
 export const store = configureStore();
 

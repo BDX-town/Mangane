@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { makeGetAccount } from 'soapbox/selectors';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import UserPanel from 'soapbox/features/ui/components/user_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 import Badge from 'soapbox/components/badge';
@@ -74,7 +75,9 @@ export const ProfileHoverCard = ({ visible }) => {
             <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
           </span>}
         <div className='profile-hover-card__action-button'><ActionButton account={account} small /></div>
-        <UserPanel className='profile-hover-card__user' accountId={account.get('id')} />
+        <BundleContainer fetchComponent={UserPanel}>
+          {Component => <Component className='profile-hover-card__user' accountId={account.get('id')} />}
+        </BundleContainer>
         {badges.length > 0 &&
           <div className='profile-hover-card__badges'>
             {badges}

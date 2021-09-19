@@ -150,6 +150,50 @@ export function Audio() {
   return import(/* webpackChunkName: "features/audio" */'../../audio');
 }
 
+export function MediaModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/media_modal');
+}
+
+export function VideoModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/video_modal');
+}
+
+export function BoostModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/boost_modal');
+}
+
+export function ConfirmationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/confirmation_modal');
+}
+
+export function MissingDescriptionModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/missing_description_modal');
+}
+
+export function ActionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/actions_modal');
+}
+
+export function FocalPointModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/focal_point_modal');
+}
+
+export function HotkeysModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/hotkeys_modal');
+}
+
+export function ComposeModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+}
+
+export function UnauthorizedModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/unauthorized_modal');
+}
+
+export function EditFederationModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/edit_federation_modal');
+}
+
 export function EmbedModal() {
   return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
 }
@@ -246,6 +290,74 @@ export function ModerationLog() {
   return import(/* webpackChunkName: "features/admin/moderation_log" */'../../admin/moderation_log');
 }
 
+export function UserPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
+}
+
+export function FeaturesPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/features_panel');
+}
+
+export function PromoPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/promo_panel');
+}
+
+export function SignUpPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/sign_up_panel');
+}
+
+export function FundingPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../components/funding_panel');
+}
+
+export function TrendsPanel() {
+  return import(/* webpackChunkName: "features/trends" */'../components/trends_panel');
+}
+
+export function ProfileInfoPanel() {
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_info_panel');
+}
+
+export function ProfileMediaPanel() {
+  return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
+}
+
+export function InstanceInfoPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+}
+
+export function InstanceModerationPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+}
+
+export function LatestAccountsPanel() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/latest_accounts_panel');
+}
+
+export function AdminNav() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
+}
+
+export function SidebarMenu() {
+  return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
+}
+
+export function UploadArea() {
+  return import(/* webpackChunkName: "features/compose" */'../components/upload_area');
+}
+
+export function NotificationsContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/notifications_container');
+}
+
+export function ModalContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/modal_container');
+}
+
+export function ProfileHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile_hover_card');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
@@ -280,6 +392,10 @@ export function Aliases() {
 
 export function ScheduleForm() {
   return import(/* webpackChunkName: "features/compose" */'../../compose/components/schedule_form');
+}
+
+export function WhoToFollowPanel() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../components/who_to_follow_panel');
 }
 
 export function FollowRecommendations() {

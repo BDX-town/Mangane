@@ -9,12 +9,11 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ColumnSettingsContainer from './containers/column_settings_container';
 import HomeColumnHeader from '../../components/home_column_header';
 import { Link } from 'react-router-dom';
-import Button from 'soapbox/components/button';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
 
-function FollowRecommendationsList() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_list');
+function FollowRecommendationsContainer() {
+  return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');
 }
 
 const messages = defineMessages({
@@ -29,6 +28,7 @@ const mapStateToProps = state => {
     hasUnread: state.getIn(['timelines', 'home', 'unread']) > 0,
     isPartial: state.getIn(['timelines', 'home', 'isPartial']),
     siteTitle: state.getIn(['instance', 'title']),
+    isLoading: state.getIn(['timelines', 'home', 'isLoading'], true),
     isEmpty: state.getIn(['timelines', 'home', 'items'], ImmutableOrderedSet()).isEmpty(),
     features,
   };
@@ -44,6 +44,7 @@ class HomeTimeline extends React.PureComponent {
     hasUnread: PropTypes.bool,
     isPartial: PropTypes.bool,
     siteTitle: PropTypes.string,
+    isLoading: PropTypes.bool,
     isEmpty: PropTypes.bool,
     features: PropTypes.object.isRequired,
   };
@@ -94,29 +95,8 @@ class HomeTimeline extends React.PureComponent {
     this.setState({ done: true });
   }
 
-  renderFollowRecommendations = () => {
-    return (
-      <div className='scrollable follow-recommendations-container'>
-        <div className='column-title'>
-          <h3><FormattedMessage id='follow_recommendations.heading' defaultMessage="Follow people you'd like to see posts from! Here are some suggestions." /></h3>
-          <p><FormattedMessage id='follow_recommendations.lead' defaultMessage="Posts from people you follow will show up in chronological order on your home feed. Don't be afraid to make mistakes, you can unfollow people just as easily any time!" /></p>
-        </div>
-
-        <BundleContainer fetchComponent={FollowRecommendationsList}>
-          {Component => <Component />}
-        </BundleContainer>
-
-        <div className='column-actions'>
-          <Button onClick={this.handleDone}>
-            <FormattedMessage id='follow_recommendations.done' defaultMessage='Done' />
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   render() {
-    const { intl, hasUnread, siteTitle, isEmpty, features } = this.props;
+    const { intl, hasUnread, siteTitle, isLoading, isEmpty, features } = this.props;
     const { done } = this.state;
 
     return (
@@ -124,8 +104,10 @@ class HomeTimeline extends React.PureComponent {
         <HomeColumnHeader activeItem='home' active={hasUnread}>
           <ColumnSettingsContainer />
         </HomeColumnHeader>
-        {(features.suggestions && isEmpty && !done) ? (
-          this.renderFollowRecommendations()
+        {(features.suggestions && isEmpty && !isLoading && !done) ? (
+          <BundleContainer fetchComponent={FollowRecommendationsContainer}>
+            {Component => <Component onDone={this.handleDone} />}
+          </BundleContainer>
         ) : (
           <StatusListContainer
             scrollKey='home_timeline'

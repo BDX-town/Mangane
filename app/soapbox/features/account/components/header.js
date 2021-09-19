@@ -22,7 +22,8 @@ import Avatar from 'soapbox/components/avatar';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import ProfileInfoPanel from '../../ui/components/profile_info_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
 import { debounce } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
@@ -303,12 +304,13 @@ class Header extends ImmutablePureComponent {
             <div className='account__header__extra'>
               <div className='account__header__avatar' />
             </div>
-            {
-              isSmallScreen &&
+            {isSmallScreen && (
               <div className='account-mobile-container account-mobile-container--nonuser'>
-                <ProfileInfoPanel username={username} />
+                <BundleContainer fetchComponent={ProfileInfoPanel}>
+                  {Component => <Component username={username} />}
+                </BundleContainer>
               </div>
-            }
+            )}
           </div>
         </div>
       );
@@ -380,12 +382,13 @@ class Header extends ImmutablePureComponent {
               }
             </div>
 
-            {
-              isSmallScreen &&
+            {isSmallScreen && (
               <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
-                <ProfileInfoPanel username={username} account={account} />
+                <BundleContainer fetchComponent={ProfileInfoPanel}>
+                  {Component => <Component username={username} account={account} />}
+                </BundleContainer>
               </div>
-            }
+            )}
 
             <div className='account__header__extra__buttons'>
               <ActionButton account={account} />

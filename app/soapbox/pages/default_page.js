@@ -1,11 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import WhoToFollowPanel from 'soapbox/features/ui/components/who_to_follow_panel';
-import TrendsPanel from 'soapbox/features/ui/components/trends_panel';
-import PromoPanel from 'soapbox/features/ui/components/promo_panel';
-import FeaturesPanel from 'soapbox/features/ui/components/features_panel';
-import SignUpPanel from 'soapbox/features/ui/components/sign_up_panel';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import {
+  WhoToFollowPanel,
+  TrendsPanel,
+  PromoPanel,
+  FeaturesPanel,
+  SignUpPanel,
+} from 'soapbox/features/ui/util/async-components';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -43,10 +46,28 @@ class DefaultPage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {me ? <FeaturesPanel key='features-panel' /> : <SignUpPanel key='sign-up-panel' />}
-                {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
-                {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                <PromoPanel key='promo-panel' />
+                {me ? (
+                  <BundleContainer fetchComponent={FeaturesPanel}>
+                    {Component => <Component key='features-panel' />}
+                  </BundleContainer>
+                ) : (
+                  <BundleContainer fetchComponent={SignUpPanel}>
+                    {Component => <Component key='sign-up-panel' />}
+                  </BundleContainer>
+                )}
+                {showTrendsPanel && (
+                  <BundleContainer fetchComponent={TrendsPanel}>
+                    {Component => <Component key='trends-panel' />}
+                  </BundleContainer>
+                )}
+                {showWhoToFollowPanel && (
+                  <BundleContainer fetchComponent={WhoToFollowPanel}>
+                    {Component => <Component limit={5} key='wtf-panel' />}
+                  </BundleContainer>
+                )}
+                <BundleContainer fetchComponent={PromoPanel}>
+                  {Component => <Component key='promo-panel' />}
+                </BundleContainer>
                 <LinkFooter key='link-footer' />
               </div>
             </div>
