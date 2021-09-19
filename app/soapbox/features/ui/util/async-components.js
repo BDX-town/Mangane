@@ -314,6 +314,14 @@ export function TrendsPanel() {
   return import(/* webpackChunkName: "features/trends" */'../components/trends_panel');
 }
 
+export function ProfileInfoPanel() {
+  return import(/* webpackChunkName: "features/account_timeline" */'../components/profile_info_panel');
+}
+
+export function ProfileMediaPanel() {
+  return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }

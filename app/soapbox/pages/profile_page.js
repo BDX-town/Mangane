@@ -9,10 +9,10 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
   SignUpPanel,
+  ProfileInfoPanel,
+  ProfileMediaPanel,
 } from 'soapbox/features/ui/util/async-components';
 import LinkFooter from '../features/ui/components/link_footer';
-import ProfileInfoPanel from '../features/ui/components/profile_info_panel';
-import ProfileMediaPanel from '../features/ui/components/profile_media_panel';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import { getFeatures } from 'soapbox/utils/features';
@@ -89,7 +89,9 @@ class ProfilePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <ProfileInfoPanel username={accountUsername} account={account} />
+                <BundleContainer fetchComponent={ProfileInfoPanel}>
+                  {Component => <Component username={accountUsername} account={account} />}
+                </BundleContainer>
               </div>
             </div>
 
@@ -104,7 +106,11 @@ class ProfilePage extends ImmutablePureComponent {
                 <BundleContainer fetchComponent={SignUpPanel}>
                   {Component => <Component />}
                 </BundleContainer>
-                {account && <ProfileMediaPanel account={account} />}
+                {account && (
+                  <BundleContainer fetchComponent={ProfileMediaPanel}>
+                    {Component => <Component account={account} />}
+                  </BundleContainer>
+                )}
                 {features.suggestions && (
                   <BundleContainer fetchComponent={WhoToFollowPanel}>
                     {Component => <Component />}
