@@ -322,6 +322,14 @@ export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
 }
 
+export function InstanceInfoPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+}
+
+export function InstanceModerationPanel() {
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }

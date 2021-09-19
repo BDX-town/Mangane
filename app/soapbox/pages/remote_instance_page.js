@@ -5,10 +5,10 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   PromoPanel,
   FeaturesPanel,
+  InstanceInfoPanel,
+  InstanceModerationPanel,
 } from 'soapbox/features/ui/util/async-components';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
-import InstanceInfoPanel from 'soapbox/features/ui/components/instance_info_panel';
-import InstanceModerationPanel from 'soapbox/features/ui/components/instance_moderation_panel';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 import { isAdmin } from 'soapbox/utils/accounts';
 
@@ -36,8 +36,14 @@ class RemoteInstancePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <InstanceInfoPanel host={host} />
-                {(disclosed || isAdmin) && <InstanceModerationPanel host={host} />}
+                <BundleContainer fetchComponent={InstanceInfoPanel}>
+                  {Component => <Component host={host} />}
+                </BundleContainer>
+                {(disclosed || isAdmin) && (
+                  <BundleContainer fetchComponent={InstanceModerationPanel}>
+                    {Component => <Component host={host} />}
+                  </BundleContainer>
+                )}
               </div>
             </div>
 
