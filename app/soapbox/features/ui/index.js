@@ -9,8 +9,6 @@ import { Switch, withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import NotificationsContainer from './containers/notifications_container';
-import ModalContainer from './containers/modal_container';
 import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
@@ -24,8 +22,6 @@ import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { WrappedRoute } from './util/react_router_helpers';
 import BundleContainer from './containers/bundle_container';
-import UploadArea from './components/upload_area';
-import TabsBar from './components/tabs_bar';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -35,12 +31,10 @@ import DefaultPage from 'soapbox/pages/default_page';
 import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
-import SidebarMenu from '../../components/sidebar_menu';
 import { connectUserStream } from '../../actions/streaming';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
-import ProfileHoverCard from 'soapbox/components/profile_hover_card';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
@@ -106,6 +100,12 @@ import {
   FederationRestrictions,
   Aliases,
   FollowRecommendations,
+  TabsBar,
+  SidebarMenu,
+  UploadArea,
+  NotificationsContainer,
+  ModalContainer,
+  ProfileHoverCard,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -651,23 +651,42 @@ class UI extends React.PureComponent {
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
-          <TabsBar />
+          <BundleContainer fetchComponent={TabsBar}>
+            {Component => <Component />}
+          </BundleContainer>
+
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
             {children}
           </SwitchingColumnsArea>
 
           {me && floatingActionButton}
 
-          <NotificationsContainer />
-          <ModalContainer />
-          <UploadArea active={draggingOver} onClose={this.closeUploadModal} />
-          {me && <SidebarMenu />}
+          <BundleContainer fetchComponent={NotificationsContainer}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={ModalContainer}>
+            {Component => <Component />}
+          </BundleContainer>
+
+          <BundleContainer fetchComponent={UploadArea}>
+            {Component => <Component active={draggingOver} onClose={this.closeUploadModal} />}
+          </BundleContainer>
+
+          {me && (
+            <BundleContainer fetchComponent={SidebarMenu}>
+              {Component => <Component />}
+            </BundleContainer>
+          )}
           {me && features.chats && !mobile && (
             <BundleContainer fetchComponent={ChatPanes}>
               {Component => <Component />}
             </BundleContainer>
           )}
-          <ProfileHoverCard />
+
+          <BundleContainer fetchComponent={ProfileHoverCard}>
+            {Component => <Component />}
+          </BundleContainer>
         </div>
       </HotKeys>
     );

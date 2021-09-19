@@ -338,6 +338,30 @@ export function AdminNav() {
   return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
 }
 
+export function TabsBar() {
+  return import(/* webpackChunkName: "features/ui" */'../../ui/components/tabs_bar');
+}
+
+export function SidebarMenu() {
+  return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
+}
+
+export function UploadArea() {
+  return import(/* webpackChunkName: "features/compose" */'../components/upload_area');
+}
+
+export function NotificationsContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/notifications_container');
+}
+
+export function ModalContainer() {
+  return import(/* webpackChunkName: "features/ui" */'../containers/modal_container');
+}
+
+export function ProfileHoverCard() {
+  return import(/* webpackChunkName: "features/ui" */'soapbox/components/profile_hover_card');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
