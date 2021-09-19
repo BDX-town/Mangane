@@ -330,6 +330,14 @@ export function InstanceModerationPanel() {
   return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
 }
 
+export function LatestAccountsPanel() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/latest_accounts_panel');
+}
+
+export function AdminNav() {
+  return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
+}
+
 export function CryptoDonate() {
   return import(/* webpackChunkName: "features/crypto_donate" */'../../crypto_donate');
 }
