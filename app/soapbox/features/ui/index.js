@@ -22,6 +22,7 @@ import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { WrappedRoute } from './util/react_router_helpers';
 import BundleContainer from './containers/bundle_container';
+import TabsBar from './components/tabs_bar';
 import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
@@ -100,7 +101,6 @@ import {
   FederationRestrictions,
   Aliases,
   FollowRecommendations,
-  TabsBar,
   SidebarMenu,
   UploadArea,
   NotificationsContainer,
@@ -651,9 +651,7 @@ class UI extends React.PureComponent {
     return (
       <HotKeys keyMap={keyMap} handlers={handlers} ref={this.setHotkeysRef} attach={window} focused>
         <div className={classnames} ref={this.setRef} style={style}>
-          <BundleContainer fetchComponent={TabsBar}>
-            {Component => <Component />}
-          </BundleContainer>
+          <TabsBar />
 
           <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
             {children}

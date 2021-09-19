@@ -338,10 +338,6 @@ export function AdminNav() {
   return import(/* webpackChunkName: "features/admin" */'../../admin/components/admin_nav');
 }
 
-export function TabsBar() {
-  return import(/* webpackChunkName: "features/ui" */'../../ui/components/tabs_bar');
-}
-
 export function SidebarMenu() {
   return import(/* webpackChunkName: "features/ui" */'../../../components/sidebar_menu');
 }
