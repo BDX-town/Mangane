@@ -1,9 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
-import ModalContainer from 'soapbox/features/ui/containers/modal_container';
+import {
+  NotificationsContainer,
+  ModalContainer,
+} from 'soapbox/features/ui/util/async-components';
 import Header from './components/header';
 import Footer from './components/footer';
 import LandingPage from '../landing_page';
@@ -44,8 +47,14 @@ class PublicLayout extends ImmutablePureComponent {
           </div>
         </div>
         <Footer />
-        <NotificationsContainer />
-        <ModalContainer />
+
+        <BundleContainer fetchComponent={NotificationsContainer}>
+          {Component => <Component />}
+        </BundleContainer>
+
+        <BundleContainer fetchComponent={ModalContainer}>
+          {Component => <Component />}
+        </BundleContainer>
       </div>
     );
   }
