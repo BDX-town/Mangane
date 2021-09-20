@@ -15,7 +15,7 @@ const IconWithCounter = ({ icon, count, ...rest }) => {
 };
 
 IconWithCounter.propTypes = {
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   count: PropTypes.number.isRequired,
 };
 

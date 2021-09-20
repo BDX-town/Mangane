@@ -44,7 +44,7 @@ module.exports = [{
 }, {
   test: /\.svg$/,
   type: 'asset/inline',
-  include: resolve('node_modules', '@material-design-icons'),
+  include: resolve('app', 'icons'),
   generator: {
     dataUrl: content => svgToMiniDataURI(content.toString()),
   },

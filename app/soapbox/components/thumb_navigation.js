@@ -9,6 +9,7 @@ import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+import classNames from 'classnames';
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -37,15 +38,16 @@ class ThumbNavigation extends React.PureComponent {
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
     features: PropTypes.object.isRequired,
+    location: PropTypes.object,
   }
 
   render() {
-    const { account, dashboardCount, features } = this.props;
+    const { account, notificationCount, dashboardCount, location, features } = this.props;
 
     return (
       <div className='thumb-navigation'>
         <NavLink to='/' exact className='thumb-navigation__link'>
-          <Icon id='home' />
+          <Icon src={location.pathname === '/' ? require('icons/home-2-filled.svg') : require('@tabler/icons/icons/home-2.svg')} />
           <span>
             <FormattedMessage id='navigation.home' defaultMessage='Home' />
           </span>
@@ -53,7 +55,11 @@ class ThumbNavigation extends React.PureComponent {
 
         {account && (
           <NavLink to='/notifications' className='thumb-navigation__link'>
-            <Icon id='bell' />
+            <IconWithCounter
+              src={notificationCount > 0 ? require('@tabler/icons/icons/bell-ringing-2.svg') : require('@tabler/icons/icons/bell.svg')}
+              className={classNames({ 'svg-icon--active': location.pathname === '/notifications' })}
+              count={notificationCount}
+            />
             <span>
               <FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />
             </span>
@@ -62,7 +68,10 @@ class ThumbNavigation extends React.PureComponent {
 
         {(features.chats && account) && (
           <NavLink to='/chats' className='thumb-navigation__link'>
-            <Icon id='comment' />
+            <Icon
+              src={require('@tabler/icons/icons/messages.svg')}
+              className={classNames({ 'svg-icon--active': location.pathname === '/chats' })}
+            />
             <span>
               <FormattedMessage id='navigation.chats' defaultMessage='Chats' />
             </span>
@@ -70,7 +79,10 @@ class ThumbNavigation extends React.PureComponent {
         )}
 
         <NavLink to='/search' className='thumb-navigation__link'>
-          <Icon id='search' />
+          <Icon
+            src={require('@tabler/icons/icons/search.svg')}
+            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+          />
           <span>
             <FormattedMessage id='navigation.search' defaultMessage='Search' />
           </span>
@@ -78,7 +90,10 @@ class ThumbNavigation extends React.PureComponent {
 
         {(account && isStaff(account)) && (
           <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>
-            <IconWithCounter icon='tachometer' count={dashboardCount} />
+            <IconWithCounter
+              src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+              count={dashboardCount}
+            />
             <span>
               <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />
             </span>

@@ -13,7 +13,7 @@ import SvgIcon from './svg_icon';
 export default class Icon extends React.PureComponent {
 
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    id: PropTypes.string,
     src: PropTypes.string,
     className: PropTypes.string,
   };
