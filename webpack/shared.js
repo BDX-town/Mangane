@@ -106,6 +106,11 @@ module.exports = {
       resolve(settings.source_path),
       'node_modules',
     ],
+    alias: {
+      // Override tabler's package.json to allow importing .svg files directly
+      // https://stackoverflow.com/a/35990101/8811886
+      '@tabler': resolve('node_modules', '@tabler'),
+    },
     fallback: {
       path: require.resolve('path-browserify'),
       util: require.resolve('util'),

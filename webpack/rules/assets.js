@@ -2,6 +2,7 @@
 // https://webpack.js.org/guides/asset-modules/
 
 const { resolve } = require('path');
+const svgToMiniDataURI = require('mini-svg-data-uri');
 
 // These are processed in reverse-order
 // We use the name 'packs' instead of 'assets' for legacy reasons
@@ -39,6 +40,20 @@ module.exports = [{
   include: resolve('node_modules', 'twemoji'),
   generator: {
     filename: 'packs/emoji/[name]-[contenthash:8][ext]',
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/inline',
+  include: resolve('node_modules', '@material-design-icons'),
+  generator: {
+    dataUrl: content => svgToMiniDataURI(content.toString()),
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/inline',
+  include: resolve('node_modules', '@tabler'),
+  generator: {
+    dataUrl: content => svgToMiniDataURI(content.toString()),
   },
 }, {
   test: /\.svg$/,

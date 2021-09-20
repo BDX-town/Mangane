@@ -200,84 +200,84 @@ class SidebarMenu extends ImmutablePureComponent {
 
             <div className='sidebar-menu__section sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={this.handleClose}>
-                <Icon id='user' />
+                <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
               {donateUrl && <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
-                <Icon id='dollar' />
+                <Icon src={require('@tabler/icons/icons/coin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
               </a>}
               {hasCrypto && <NavLink className='sidebar-menu-item' to='/donate/crypto' onClick={this.handleClose}>
-                <Icon id='bitcoin' />
+                <Icon src={require('@tabler/icons/icons/currency-bitcoin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate_crypto)}</span>
               </NavLink>}
               {features.lists && <NavLink className='sidebar-menu-item' to='/lists' onClick={this.handleClose}>
-                <Icon id='list' />
+                <Icon src={require('@tabler/icons/icons/list.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.lists)}</span>
               </NavLink>}
               {features.bookmarks && <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
-                <Icon id='bookmark' />
+                <Icon src={require('@tabler/icons/icons/bookmarks.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
               </NavLink>}
             </div>
 
             <div className='sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to='/follow_requests' onClick={this.handleClose}>
-                <Icon id='user-plus' />
+                <Icon src={require('@tabler/icons/icons/user-plus.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.follow_requests)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/blocks' onClick={this.handleClose}>
-                <Icon id='ban' />
+                <Icon src={require('@tabler/icons/icons/ban.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.blocks)}</span>
               </NavLink>
               {features.federating && <NavLink className='sidebar-menu-item' to='/domain_blocks' onClick={this.handleClose}>
-                <Icon id='ban' />
+                <Icon src={require('@tabler/icons/icons/ban.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.domain_blocks)}</span>
               </NavLink>}
               <NavLink className='sidebar-menu-item' to='/mutes' onClick={this.handleClose}>
-                <Icon id='times-circle' />
+                <Icon src={require('@tabler/icons/icons/circle-x.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.mutes)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/filters' onClick={this.handleClose}>
-                <Icon id='filter' />
+                <Icon src={require('@tabler/icons/icons/filter.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.filters)}</span>
               </NavLink>
               {isAdmin(account) && <a className='sidebar-menu-item' href='/pleroma/admin' target='_blank' onClick={this.handleClose}>
-                <Icon id='shield' />
+                <Icon src={require('@tabler/icons/icons/shield.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.admin_settings)}</span>
               </a>}
               {isAdmin(account) && <NavLink className='sidebar-menu-item' to='/soapbox/config' onClick={this.handleClose}>
-                <Icon id='cog' />
+                <Icon src={require('@tabler/icons/icons/settings.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
               </NavLink>}
               <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
-                <Icon id='cog' />
+                <Icon src={require('@tabler/icons/icons/settings.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
               </NavLink>
               <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
-                <Icon id='cloud-upload' />
+                <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
               </NavLink>
               {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
-                <Icon id='suitcase' />
+                <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
               </NavLink>}
               <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
-                <Icon id='lock' />
+                <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
               </NavLink>
             </div>
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/info' onClick={this.handleClose}>
-                <Icon id='info' />
+                <Icon src={require('@tabler/icons/icons/info-circle.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
               </Link>
             </div>
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>
-                <Icon id='sign-out' />
+                <Icon src={require('@tabler/icons/icons/logout.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.logout)}</span>
               </Link>
             </div>

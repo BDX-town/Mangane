@@ -158,9 +158,13 @@
   }
 
   > .svg-icon {
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     margin-right: 15px;
+
+    svg.icon-tabler {
+      stroke-width: 1px;
+    }
   }
 
   &:hover {
