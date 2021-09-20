@@ -323,11 +323,11 @@ export function ProfileMediaPanel() {
 }
 
 export function InstanceInfoPanel() {
-  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_info_panel');
 }
 
 export function InstanceModerationPanel() {
-  return import(/* webpackChunkName: "features/remote_timeline" */'../components/profile_media_panel');
+  return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_moderation_panel');
 }
 
 export function LatestAccountsPanel() {
