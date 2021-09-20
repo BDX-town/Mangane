@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import Sticky from 'react-stickynode';
 import BundleContainer from '../features/ui/containers/bundle_container';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import Avatar from '../components/avatar';
@@ -60,7 +61,9 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <PrimaryNavigation />
+                <Sticky top={65}>
+                  <PrimaryNavigation />
+                </Sticky>
               </div>
             </div>
 
@@ -83,39 +86,41 @@ class HomePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                {me ? (
-                  <BundleContainer fetchComponent={FeaturesPanel}>
-                    {Component => <Component key='features-panel' />}
+                <Sticky top={65}>
+                  {me ? (
+                    <BundleContainer fetchComponent={FeaturesPanel}>
+                      {Component => <Component key='features-panel' />}
+                    </BundleContainer>
+                  ) : (
+                    <BundleContainer fetchComponent={SignUpPanel}>
+                      {Component => <Component key='sign-up-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showTrendsPanel && (
+                    <BundleContainer fetchComponent={TrendsPanel}>
+                      {Component => <Component key='trends-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showWhoToFollowPanel && (
+                    <BundleContainer fetchComponent={WhoToFollowPanel}>
+                      {Component => <Component limit={5} key='wtf-panel' />}
+                    </BundleContainer>
+                  )}
+                  <BundleContainer fetchComponent={PromoPanel}>
+                    {Component => <Component key='promo-panel' />}
                   </BundleContainer>
-                ) : (
-                  <BundleContainer fetchComponent={SignUpPanel}>
-                    {Component => <Component key='sign-up-panel' />}
-                  </BundleContainer>
-                )}
-                {showTrendsPanel && (
-                  <BundleContainer fetchComponent={TrendsPanel}>
-                    {Component => <Component key='trends-panel' />}
-                  </BundleContainer>
-                )}
-                {showWhoToFollowPanel && (
-                  <BundleContainer fetchComponent={WhoToFollowPanel}>
-                    {Component => <Component limit={5} key='wtf-panel' />}
-                  </BundleContainer>
-                )}
-                <BundleContainer fetchComponent={PromoPanel}>
-                  {Component => <Component key='promo-panel' />}
-                </BundleContainer>
-                {showFundingPanel && (
-                  <BundleContainer fetchComponent={FundingPanel}>
-                    {Component => <Component key='funding-panel' />}
-                  </BundleContainer>
-                )}
-                {showCryptoDonatePanel && (
-                  <BundleContainer fetchComponent={CryptoDonatePanel}>
-                    {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
-                  </BundleContainer>
-                )}
-                <LinkFooter key='link-footer' />
+                  {showFundingPanel && (
+                    <BundleContainer fetchComponent={FundingPanel}>
+                      {Component => <Component key='funding-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showCryptoDonatePanel && (
+                    <BundleContainer fetchComponent={CryptoDonatePanel}>
+                      {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
+                    </BundleContainer>
+                  )}
+                  <LinkFooter key='link-footer' />
+                </Sticky>
               </div>
             </div>
           </div>
