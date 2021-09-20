@@ -66,7 +66,7 @@ class SubNavigation extends React.PureComponent {
           onClick={this.handleBackClick}
           onKeyUp={this.handleBackKeyUp}
         >
-          <Icon id='chevron-left' />
+          <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
           <FormattedMessage id='sub_navigation.back' defaultMessage='Back' />
         </button>
         <div className='sub-navigation__message'>
