@@ -56,7 +56,7 @@ const notificationToMap = notification => ImmutableMap({
 const isValid = notification => Boolean(notification.account.id);
 
 const countUnseen = notifications => notifications.reduce((acc, cur) =>
-  get(cur, ['pleroma', 'is_seen'], false) === false ? acc + 1 : acc, 0);
+  get(cur, ['pleroma', 'is_seen'], true) === false ? acc + 1 : acc, 0);
 
 const normalizeNotification = (state, notification) => {
   const top = state.get('top');
