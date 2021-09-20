@@ -8,18 +8,14 @@
       font-size: 19px;
       font-weight: bold;
 
-      > i.fa,
-      > .icon-with-counter {
-        width: 25px;
-        margin-right: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+      .svg-icon {
+        width: 26px;
+        height: 26px;
+        margin-right: 10px;
 
-      > .svg-icon {
-        width: 25px;
-        margin-right: 5px;
+        svg.icon-tabler {
+          stroke-width: 1.5px;
+        }
       }
 
       &::before {
@@ -30,6 +26,16 @@
 
     &__icon {
       margin-right: 5px;
+    }
+
+    hr {
+      border: 0;
+      height: 1px;
+      width: 100%;
+      background: hsla(var(--primary-text-color_hsl), 0.12);
+      max-width: 230px;
+      text-align: left;
+      margin: 10px 0;
     }
   }
 }

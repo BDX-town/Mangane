@@ -42,7 +42,7 @@ class ThumbNavigation extends React.PureComponent {
   }
 
   render() {
-    const { account, notificationCount, dashboardCount, location, features } = this.props;
+    const { account, notificationCount, chatsCount, dashboardCount, location, features } = this.props;
 
     return (
       <div className='thumb-navigation'>
@@ -68,9 +68,10 @@ class ThumbNavigation extends React.PureComponent {
 
         {(features.chats && account) && (
           <NavLink to='/chats' className='thumb-navigation__link'>
-            <Icon
+            <IconWithCounter
               src={require('@tabler/icons/icons/messages.svg')}
               className={classNames({ 'svg-icon--active': location.pathname === '/chats' })}
+              count={chatsCount}
             />
             <span>
               <FormattedMessage id='navigation.chats' defaultMessage='Chats' />

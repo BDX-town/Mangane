@@ -51,40 +51,61 @@ class PrimaryNavigation extends React.PureComponent {
   };
 
   render() {
-    const { account, features, notificationCount, chatsCount, dashboardCount } = this.props;
+    const { account, features, notificationCount, chatsCount, dashboardCount, siteTitle } = this.props;
 
     return (
       <div className='column-header__wrapper primary-navigation__wrapper'>
         <h1 className='column-header primary-navigation'>
           <NavLink to='/' exact className='btn grouped'>
-            <Icon id='home' className='primary-navigation__icon' />
+            <Icon src={require('@tabler/icons/icons/home-2.svg')} className='primary-navigation__icon' />
             <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
           </NavLink>
 
           {account && <NavLink key='notifications' className='btn grouped' to='/notifications' data-preview-title-id='column.notifications'>
-            <IconWithCounter icon='bell' count={notificationCount} />
+            <IconWithCounter
+              src={notificationCount > 0 ? require('@tabler/icons/icons/bell-ringing-2.svg') : require('@tabler/icons/icons/bell.svg')}
+              className='primary-navigation__icon'
+              count={notificationCount}
+            />
             <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
           </NavLink>}
 
           {(features.chats && account) && <NavLink key='chats' className='btn grouped' to='/chats' data-preview-title-id='column.chats'>
-            <IconWithCounter icon='comment' count={chatsCount} />
+            <IconWithCounter
+              src={require('@tabler/icons/icons/messages.svg')}
+              className='primary-navigation__icon'
+              count={chatsCount}
+            />
             <FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />
           </NavLink>}
 
           {(account && isStaff(account)) && <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
-            <IconWithCounter icon='tachometer' count={dashboardCount} />
+            <IconWithCounter
+              src={require('@tabler/icons/icons/dashboard.svg')}
+              className='primary-navigation__icon'
+              count={dashboardCount}
+            />
             <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />
           </NavLink>}
 
-          {/* <NavLink to='/timeline/local' className='btn grouped'>
-            <Icon id={federating ? 'users' : 'globe-w'} fixedWidth className='column-header__icon' />
-            {federating ? siteTitle : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
-          </NavLink> */}
+          <hr />
 
-          {/* federating && <NavLink to='/timeline/fediverse' className='btn grouped'>
-            <Icon id='fediverse' fixedWidth className='column-header__icon' />
+          {features.federating ? (
+            <NavLink to='/timeline/local' className='btn grouped'>
+              <Icon src={require('@tabler/icons/icons/users.svg')} className='primary-navigation__icon' />
+              {siteTitle}
+            </NavLink>
+          ) : (
+            <NavLink to='/timeline/local' className='btn grouped'>
+              <Icon src={require('@tabler/icons/icons/world.svg')} className='primary-navigation__icon' />
+              <FormattedMessage id='tabs_bar.all' defaultMessage='All' />
+            </NavLink>
+          )}
+
+          {features.federating && <NavLink to='/timeline/fediverse' className='btn grouped'>
+            <Icon src={require('icons/fediverse.svg')} className='column-header__icon' />
             <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />
-          </NavLink> */}
+          </NavLink>}
         </h1>
       </div>
     );
