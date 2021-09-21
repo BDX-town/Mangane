@@ -365,26 +365,22 @@ class ActionBar extends React.PureComponent {
       <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShare} /></div>
     );
 
-    let replyIcon;
-    if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
-    } else {
-      replyIcon = 'reply-all';
+    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
+
+    if (status.get('visibility') === 'direct') {
+      reblogIcon = require('@tabler/icons/icons/mail.svg');
+    } else if (status.get('visibility') === 'private') {
+      reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    let reblogIcon = 'retweet';
-    if (status.get('visibility') === 'direct') reblogIcon = 'envelope';
-    else if (status.get('visibility') === 'private') reblogIcon = 'lock';
-
     const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
-
 
     return (
       <div className='detailed-status__action-bar'>
         <div className='detailed-status__button'>
           <IconButton
             title={intl.formatMessage(messages.reply)}
-            icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
+            src={require('feather-icons/dist/icons/message-circle.svg')}
             onClick={this.handleReplyClick}
             text={intl.formatMessage(messages.reply)}
           />
@@ -394,7 +390,7 @@ class ActionBar extends React.PureComponent {
             disabled={reblog_disabled}
             active={status.get('reblogged')}
             title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-            icon={reblogIcon}
+            src={reblogIcon}
             onClick={this.handleReblogClick}
             text={intl.formatMessage(messages.reblog)}
           />
@@ -416,7 +412,7 @@ class ActionBar extends React.PureComponent {
             animate
             active={Boolean(meEmojiReact)}
             title={meEmojiTitle}
-            icon='thumbs-up'
+            src={require('@tabler/icons/icons/thumb-up.svg')}
             emoji={meEmojiReact}
             text={meEmojiTitle}
             onClick={this.handleLikeButtonClick}

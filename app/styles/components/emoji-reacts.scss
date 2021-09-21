@@ -134,6 +134,17 @@
   }
 }
 
+.detailed-status__button {
+  .svg-icon {
+    width: 24px;
+    height: 20px;
+  }
+
+  &--favourite .svg-icon {
+    height: 24px !important;
+  }
+}
+
 .detailed-status__wrapper .emoji-react-selector {
   bottom: 40px;
   right: 10px;
