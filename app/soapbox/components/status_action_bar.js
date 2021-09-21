@@ -401,7 +401,14 @@ class StatusActionBar extends ImmutablePureComponent {
     }[meEmojiReact] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
+    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
     let replyTitle;
+
+    if (status.get('visibility') === 'direct') {
+      reblogIcon = require('@tabler/icons/icons/mail.svg');
+    } else if (status.get('visibility') === 'private') {
+      reblogIcon = require('@tabler/icons/icons/lock.svg');
+    }
 
     if (status.get('in_reply_to_id', null) === null) {
       replyTitle = intl.formatMessage(messages.reply);
@@ -420,7 +427,7 @@ class StatusActionBar extends ImmutablePureComponent {
           {replyCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`} className='detailed-status__link'>{replyCount}</Link>}
         </div>
         <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={require('feather-icons/dist/icons/repeat.svg')} onClick={this.handleReblogClick} />
+          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={reblogIcon} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
         </div>
         <div
