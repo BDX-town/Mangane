@@ -230,7 +230,10 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
         */}
 
-        {/* Redirects from Pleroma FE, etc. to fix old bookmarks */}
+        {/* Redirects from Mastodon, Pleroma FE, etc. to fix old bookmarks */}
+        <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
+        <Redirect from='/web/:path' to='/:path' />
+        <Redirect from='/timelines/home' to='/' />
         <Redirect from='/main/all' to='/timeline/fediverse' />
         <Redirect from='/main/public' to='/timeline/local' />
         <Redirect from='/main/friends' to='/' />
