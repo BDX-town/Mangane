@@ -93,16 +93,14 @@ button {
   }
 
   &.button-secondary {
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
     background: transparent;
-    padding: 3px 15px;
     border: 1px solid var(--brand-color);
 
     &:active,
     &:focus,
     &:hover {
-      border-color: var(--brand-color);
-      color: var(--background-color);
+      border-color: var(--accent-color);
     }
 
     &:disabled {
