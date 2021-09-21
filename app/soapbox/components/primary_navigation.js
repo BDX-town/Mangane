@@ -17,7 +17,6 @@ const mapStateToProps = state => {
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
-  const features = getFeatures(instance);
 
   return {
     account: state.getIn(['accounts', me]),
@@ -27,7 +26,6 @@ const mapStateToProps = state => {
     dashboardCount: reportsCount + approvalCount,
     features: getFeatures(instance),
     siteTitle: state.getIn(['instance', 'title']),
-    federating: features.federating,
   };
 };
 
@@ -47,7 +45,6 @@ class PrimaryNavigation extends React.PureComponent {
     chatsCount: PropTypes.number,
     features: PropTypes.object.isRequired,
     siteTitle: PropTypes.string,
-    federating: PropTypes.bool,
   };
 
   render() {
