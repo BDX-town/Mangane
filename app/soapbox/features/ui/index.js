@@ -231,6 +231,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         */}
 
         {/* Redirects from Mastodon, Pleroma FE, etc. to fix old bookmarks */}
+        <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
         <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
         <Redirect from='/web/:path' to='/:path' />
         <Redirect from='/timelines/home' to='/' />
