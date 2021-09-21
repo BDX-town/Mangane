@@ -96,18 +96,30 @@
   left: 0;
   right: 0;
   width: 100%;
-  height: 30px;
-  padding: 5px;
+  height: 40px;
   display: flex;
   color: var(--primary-text-color--faint);
   background: var(--foreground-color);
-  justify-content: space-around;
   border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
   border-radius: 0;
+  align-items: center;
+  justify-content: center;
   z-index: 999;
+
+  &__content {
+    width: 100%;
+    height: 100%;
+    max-width: 1200px;
+    padding: 5px 15px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+    box-sizing: border-box;
+  }
 
   &__back {
     margin-right: auto;
+    padding: 0;
     background: transparent;
     border: 0;
     display: flex;

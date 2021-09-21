@@ -61,16 +61,18 @@ class SubNavigation extends React.PureComponent {
 
     return (
       <div className='sub-navigation'>
-        <button
-          className='sub-navigation__back'
-          onClick={this.handleBackClick}
-          onKeyUp={this.handleBackKeyUp}
-        >
-          <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
-          <FormattedMessage id='sub_navigation.back' defaultMessage='Back' />
-        </button>
-        <div className='sub-navigation__message'>
-          {intl.formatMessage(message)}
+        <div className='sub-navigation__content'>
+          <button
+            className='sub-navigation__back'
+            onClick={this.handleBackClick}
+            onKeyUp={this.handleBackKeyUp}
+          >
+            <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
+            <FormattedMessage id='sub_navigation.back' defaultMessage='Back' />
+          </button>
+          <div className='sub-navigation__message'>
+            {intl.formatMessage(message)}
+          </div>
         </div>
       </div>
     );
