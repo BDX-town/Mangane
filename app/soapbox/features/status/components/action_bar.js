@@ -429,7 +429,7 @@ class ActionBar extends React.PureComponent {
         {shareButton}
 
         <div className='detailed-status__action-bar-dropdown'>
-          <DropdownMenuContainer size={18} icon='ellipsis-h' items={menu} direction='left' title='More' />
+          <DropdownMenuContainer src={require('@tabler/icons/icons/dots.svg')} items={menu} direction='left' title='More' />
         </div>
       </div>
     );

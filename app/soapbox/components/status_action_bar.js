@@ -456,7 +456,7 @@ class StatusActionBar extends ImmutablePureComponent {
         {shareButton}
 
         <div className='status__action-bar-dropdown'>
-          <DropdownMenuContainer status={status} items={menu} icon='ellipsis-h' size={18} direction='right' title={intl.formatMessage(messages.more)} />
+          <DropdownMenuContainer status={status} items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' title={intl.formatMessage(messages.more)} />
         </div>
       </div>
     );

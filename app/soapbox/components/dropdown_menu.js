@@ -197,7 +197,8 @@ export default class Dropdown extends React.PureComponent {
   };
 
   static propTypes = {
-    icon: PropTypes.string.isRequired,
+    icon: PropTypes.string,
+    src: PropTypes.string,
     items: PropTypes.array.isRequired,
     size: PropTypes.number.isRequired,
     title: PropTypes.string,
@@ -295,13 +296,14 @@ export default class Dropdown extends React.PureComponent {
   }
 
   render() {
-    const { icon, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard } = this.props;
+    const { icon, src, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
       <div>
         <IconButton
           icon={icon}
+          src={src}
           title={title}
           active={open}
           disabled={disabled}
