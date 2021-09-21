@@ -401,21 +401,11 @@ class StatusActionBar extends ImmutablePureComponent {
     }[meEmojiReact] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
-    let reblogIcon = 'retweet';
-    let replyIcon;
     let replyTitle;
 
-    if (status.get('visibility') === 'direct') {
-      reblogIcon = 'envelope';
-    } else if (status.get('visibility') === 'private') {
-      reblogIcon = 'lock';
-    }
-
     if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
       replyTitle = intl.formatMessage(messages.reply);
     } else {
-      replyIcon = 'reply-all';
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
@@ -426,11 +416,11 @@ class StatusActionBar extends ImmutablePureComponent {
     return (
       <div className='status__action-bar'>
         <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' title={replyTitle} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} />
+          <IconButton className='status__action-bar-button' title={replyTitle} src={require('feather-icons/dist/icons/message-circle.svg')} onClick={this.handleReplyClick} />
           {replyCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`} className='detailed-status__link'>{replyCount}</Link>}
         </div>
         <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
+          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={require('feather-icons/dist/icons/repeat.svg')} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
         </div>
         <div
@@ -450,7 +440,7 @@ class StatusActionBar extends ImmutablePureComponent {
             animate
             active={Boolean(meEmojiReact)}
             title={meEmojiTitle}
-            icon='thumbs-up'
+            src={require('@tabler/icons/icons/thumb-up.svg')}
             emoji={meEmojiReact}
             onClick={this.handleLikeButtonClick}
           />

@@ -128,6 +128,10 @@
   @media (max-width: 455px) {
     position: static;
   }
+
+  .svg-icon {
+    height: 24px !important;
+  }
 }
 
 .detailed-status__wrapper .emoji-react-selector {

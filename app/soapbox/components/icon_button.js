@@ -106,6 +106,7 @@ export default class IconButton extends React.PureComponent {
       title,
       text,
       emoji,
+      ...rest
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -138,7 +139,7 @@ export default class IconButton extends React.PureComponent {
           <div style={style}>
             {emoji
               ? <div className='icon-button__emoji' dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-              : <Icon id={icon} iconset={iconset} fixedWidth aria-hidden='true' />}
+              : <Icon id={icon} {...rest} aria-hidden='true' />}
           </div>
           {text && <span className='icon_button__text'>{text}</span>}
         </button>
@@ -167,7 +168,7 @@ export default class IconButton extends React.PureComponent {
             <div style={style}>
               {emoji
                 ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
-                : <Icon id={icon} iconset={iconset} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}
+                : <Icon id={icon} {...rest} style={{ transform: `rotate(${rotate}deg)` }} aria-hidden='true' />}
             </div>
             {text && <span className='icon_button__text'>{text}</span>}
           </button>

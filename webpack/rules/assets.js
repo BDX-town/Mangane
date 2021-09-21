@@ -51,6 +51,21 @@ module.exports = [{
 }, {
   test: /\.svg$/,
   type: 'asset/inline',
+  include: resolve('node_modules', 'bootstrap-icons'),
+  generator: {
+    dataUrl: content => svgToMiniDataURI(content.toString()),
+  },
+}, {
+
+  test: /\.svg$/,
+  type: 'asset/inline',
+  include: resolve('node_modules', 'feather-icons'),
+  generator: {
+    dataUrl: content => svgToMiniDataURI(content.toString()),
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/inline',
   include: resolve('node_modules', '@tabler'),
   generator: {
     dataUrl: content => svgToMiniDataURI(content.toString()),

@@ -128,7 +128,8 @@
 
 .status__wrapper {
   @include standard-panel;
-  margin: 5px 0;
+  margin-bottom: 15px;
+  padding: 15px 0 10px;
 }
 
 .slist > .item-list > article {
@@ -352,6 +353,15 @@
       font-size: 12px;
       font-weight: 500;
       color: var(--brand-color);
+    }
+  }
+
+  .svg-icon {
+    width: 24px;
+    height: 20px;
+
+    svg {
+      stroke-width: 2px;
     }
   }
 }
