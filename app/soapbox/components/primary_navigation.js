@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { NavLink, withRouter } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
+import classNames from 'classnames';
 import { getFeatures } from 'soapbox/utils/features';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
@@ -45,23 +46,24 @@ class PrimaryNavigation extends React.PureComponent {
     chatsCount: PropTypes.number,
     features: PropTypes.object.isRequired,
     siteTitle: PropTypes.string,
+    location: PropTypes.object,
   };
 
   render() {
-    const { account, features, notificationCount, chatsCount, dashboardCount, siteTitle } = this.props;
+    const { account, features, notificationCount, chatsCount, dashboardCount, siteTitle, location } = this.props;
 
     return (
       <div className='column-header__wrapper primary-navigation__wrapper'>
         <h1 className='column-header primary-navigation'>
           <NavLink to='/' exact className='btn grouped'>
-            <Icon src={require('@tabler/icons/icons/home-2.svg')} className='primary-navigation__icon' />
+            <Icon src={location.pathname === '/' ? require('icons/home-2-filled.svg') : require('@tabler/icons/icons/home-2.svg')} className='primary-navigation__icon' />
             <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
           </NavLink>
 
           {account && <NavLink key='notifications' className='btn grouped' to='/notifications' data-preview-title-id='column.notifications'>
             <IconWithCounter
               src={notificationCount > 0 ? require('@tabler/icons/icons/bell-ringing-2.svg') : require('@tabler/icons/icons/bell.svg')}
-              className='primary-navigation__icon'
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/notifications' })}
               count={notificationCount}
             />
             <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
@@ -70,7 +72,7 @@ class PrimaryNavigation extends React.PureComponent {
           {(features.chats && account) && <NavLink key='chats' className='btn grouped' to='/chats' data-preview-title-id='column.chats'>
             <IconWithCounter
               src={require('@tabler/icons/icons/messages.svg')}
-              className='primary-navigation__icon'
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
               count={chatsCount}
             />
             <FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' />
@@ -78,7 +80,7 @@ class PrimaryNavigation extends React.PureComponent {
 
           {(account && isStaff(account)) && <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
             <IconWithCounter
-              src={require('@tabler/icons/icons/dashboard.svg')}
+              src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
               className='primary-navigation__icon'
               count={dashboardCount}
             />
@@ -89,7 +91,10 @@ class PrimaryNavigation extends React.PureComponent {
 
           {features.federating ? (
             <NavLink to='/timeline/local' className='btn grouped'>
-              <Icon src={require('@tabler/icons/icons/users.svg')} className='primary-navigation__icon' />
+              <Icon
+                src={require('@tabler/icons/icons/users.svg')}
+                className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/timeline/local' })}
+              />
               {siteTitle}
             </NavLink>
           ) : (

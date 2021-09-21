@@ -78,19 +78,6 @@
       svg {
         stroke-width: 1px;
       }
-
-      &--active {
-        svg.icon-tabler-search {
-          stroke-width: 2px;
-        }
-
-        svg.icon-tabler-bell,
-        svg.icon-tabler-messages {
-          path:nth-child(2) {
-            fill: var(--primary-text-color);
-          }
-        }
-      }
     }
 
     .icon-with-counter__counter {

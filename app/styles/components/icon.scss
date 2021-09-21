@@ -5,10 +5,30 @@
   align-items: center;
   justify-content: center;
 
-  > svg {
+  svg {
     // Apparently this won't skew the image as long as it has a viewbox
     width: 100%;
     height: 100%;
+  }
+
+  &--active {
+    .icon-tabler-search {
+      stroke-width: 2px;
+    }
+
+    .icon-tabler-bell,
+    .icon-tabler-messages {
+      path:nth-child(2) {
+        fill: var(--primary-text-color);
+      }
+    }
+
+    .icon-tabler-users {
+      circle,
+      circle + path {
+        fill: var(--primary-text-color);
+      }
+    }
   }
 }
 
