@@ -200,7 +200,7 @@ export default class Dropdown extends React.PureComponent {
     icon: PropTypes.string,
     src: PropTypes.string,
     items: PropTypes.array.isRequired,
-    size: PropTypes.number.isRequired,
+    size: PropTypes.number,
     title: PropTypes.string,
     disabled: PropTypes.bool,
     status: ImmutablePropTypes.map,
