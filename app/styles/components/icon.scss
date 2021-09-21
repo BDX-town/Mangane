@@ -12,18 +12,18 @@
   }
 
   &--active {
-    .icon-tabler-search {
+    svg.icon-tabler-search {
       stroke-width: 2px;
     }
 
-    .icon-tabler-bell,
-    .icon-tabler-messages {
+    svg.icon-tabler-bell,
+    svg.icon-tabler-messages {
       path:nth-child(2) {
         fill: var(--primary-text-color);
       }
     }
 
-    .icon-tabler-users {
+    svg.icon-tabler-users {
       circle,
       circle + path {
         fill: var(--primary-text-color);
