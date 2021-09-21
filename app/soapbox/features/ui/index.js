@@ -637,7 +637,7 @@ class UI extends React.PureComponent {
         className='floating-action-button'
         aria-label={intl.formatMessage(messages.publish)}
       >
-        <Icon id='pencil' fixedWidth />
+        <Icon src={require('@tabler/icons/icons/pencil.svg')} fixedWidth />
       </button>
     );
 

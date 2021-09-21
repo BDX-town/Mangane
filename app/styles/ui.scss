@@ -356,13 +356,12 @@
   position: fixed;
   bottom: 64px;
   right: 14px;
-  width: 61px;
-  height: 61px;
+  width: 58px;
+  height: 58px;
   background-color: var(--brand-color);
   color: white;
   border: 0;
-  border-radius: 999px;
-  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
   font-size: 30px;
   align-items: center;
   justify-content: center;
@@ -378,17 +377,13 @@
     background-color: var(--brand-color--hicontrast);
   }
 
-  i.fa {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    margin: 0;
-  }
-
   .svg-icon {
-    width: 26px;
-    height: 26px;
+    width: 40px;
+    height: 40px;
+
+    svg {
+      stroke-width: 1px;
+    }
   }
 }
 
