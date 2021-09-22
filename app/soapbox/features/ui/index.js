@@ -488,6 +488,12 @@ class UI extends React.PureComponent {
 
   componentDidUpdate(prevProps) {
     this.connectStreaming();
+
+    const { dispatch, features } = this.props;
+
+    if (features.chats && !prevProps.features.chats) {
+      dispatch(fetchChats());
+    }
   }
 
   componentWillUnmount() {
