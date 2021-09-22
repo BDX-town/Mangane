@@ -344,18 +344,40 @@
         justify-content: center;
       }
 
-      .compose-form__upload-button-icon { line-height: 27px; }
-
       .compose-form__sensitive-button {
         display: none;
-        &.compose-form__sensitive-button--visible { display: block; }
-        .compose-form__sensitive-button__icon { line-height: 27px; }
+
+        &.compose-form__sensitive-button--visible {
+          display: block;
+        }
+      }
+
+      .svg-icon {
+        width: 24px;
+        height: 24px;
+
+        svg {
+          stroke-width: 1.5px;
+        }
+      }
+
+      .privacy-dropdown__value {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
 
     .icon-button {
       box-sizing: content-box;
       padding: 0 3px;
+      opacity: 0.5;
+      transition: 0.2s;
+
+      &.active,
+      &:hover {
+        opacity: 1;
+      }
     }
 
     .character-counter__wrapper {
