@@ -1,4 +1,5 @@
 import { mapValues } from 'lodash';
+import { importFetchedAccounts } from './importer';
 
 export const PLEROMA_PRELOAD_IMPORT  = 'PLEROMA_PRELOAD_IMPORT';
 export const MASTODON_PRELOAD_IMPORT = 'MASTODON_PRELOAD_IMPORT';
@@ -50,8 +51,8 @@ export function preloadPleroma(data) {
 }
 
 export function preloadMastodon(data) {
-  return {
-    type: MASTODON_PRELOAD_IMPORT,
-    data,
+  return (dispatch, getState) => {
+    importFetchedAccounts(Object.values(data.accounts));
+    dispatch({ type: MASTODON_PRELOAD_IMPORT, data });
   };
 }
