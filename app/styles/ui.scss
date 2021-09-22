@@ -1,11 +1,12 @@
 .icon-button {
   display: inline-block;
   padding: 0;
-  color: hsla(var(--primary-text-color_hsl), 0.4);
+  color: var(--primary-text-color);
   border: 0;
   background: transparent;
   cursor: pointer;
   transition: color 100ms ease-in;
+  opacity: 0.4;
 
   i.fa {
     margin: 0;
@@ -14,17 +15,18 @@
   &:hover,
   &:active,
   &:focus {
-    color: hsla(var(--primary-text-color_hsl), 0.6);
+    opacity: 0.6;
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: hsla(var(--primary-text-color_hsl), 0.2);
+    opacity: 0.2;
     cursor: default;
   }
 
   &.active {
     color: var(--highlight-text-color);
+    opacity: 1;
   }
 
   &::-moz-focus-inner {
@@ -39,6 +41,7 @@
 
   &.inverted {
     color: var(--primary-text-color--faint);
+    opacity: 1;
 
     &:hover,
     &:active,
@@ -65,6 +68,7 @@
     color: var(--primary-text-color--faint);
     border-radius: 6px;
     padding: 2px;
+    opacity: 1;
 
     > div {
       display: flex;

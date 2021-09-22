@@ -164,7 +164,7 @@ export default class IconButton extends React.PureComponent {
             tabIndex={tabIndex}
             disabled={disabled}
           >
-            <div style={style}>
+            <div style={src ? {} : style}>
               {emoji
                 ? <div className='icon-button__emoji' style={{ transform: `rotate(${rotate}deg)` }} dangerouslySetInnerHTML={{ __html: emojify(emoji) }} aria-hidden='true' />
                 : <Icon id={icon} src={src} style={{ transform: `rotate(${rotate}deg)` }} fixedWidth aria-hidden='true' />}

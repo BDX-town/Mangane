@@ -128,20 +128,28 @@
   @media (max-width: 455px) {
     position: static;
   }
-
-  .svg-icon {
-    height: 24px !important;
-  }
 }
 
+.status__action-bar,
 .detailed-status__action-bar {
   .svg-icon {
-    width: 24px;
+    width: 20px;
     height: 20px;
   }
 
-  &--favourite .svg-icon {
-    height: 24px !important;
+  svg.icon-tabler {
+    // Tabler icons are a little thicker than Feather icons
+    stroke-width: 1.6px !important;
+  }
+}
+
+// This icon is a little different than the others...
+.status__action-bar__counter--favourite,
+.detailed-status__button--favourite {
+  .svg-icon {
+    width: 26px !important;
+    height: 26px !important;
+    transform: translateY(-1px);
   }
 }
 
