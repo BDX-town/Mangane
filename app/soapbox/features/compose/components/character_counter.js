@@ -1,25 +1,42 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { injectIntl, defineMessages } from 'react-intl';
 import { length } from 'stringz';
+import ProgressCircle from 'soapbox/components/progress_circle';
 
-export default class CharacterCounter extends React.PureComponent {
+const messages = defineMessages({
+  title: { id: 'compose.character_counter.title', defaultMessage: 'Used {chars} out of {maxChars} characters' },
+});
 
-  static propTypes = {
-    text: PropTypes.string.isRequired,
-    max: PropTypes.number.isRequired,
-  };
-
-  checkRemainingText(diff) {
-    if (diff < 0) {
-      return <span className='character-counter character-counter--over'>{diff}</span>;
-    }
-
-    return <span className='character-counter'>{diff}</span>;
-  }
+/**
+ * Renders a character counter
+ * @param {string} props.text - text to use to measure
+ * @param {number} props.max - max text allowed
+ */
+class CharacterCounter extends React.PureComponent {
 
   render() {
-    const diff = this.props.max - length(this.props.text);
-    return this.checkRemainingText(diff);
+    const { intl, text, max } = this.props;
+
+    const textLength = length(text);
+    const progress = textLength / max;
+
+    return (
+      <ProgressCircle
+        title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
+        progress={progress}
+        radius={10}
+        stroke={4}
+      />
+    );
   }
 
 }
+
+CharacterCounter.propTypes = {
+  intl: PropTypes.object.isRequired,
+  text: PropTypes.string.isRequired,
+  max: PropTypes.number.isRequired,
+};
+
+export default injectIntl(CharacterCounter);

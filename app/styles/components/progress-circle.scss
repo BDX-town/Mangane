@@ -1,0 +1,17 @@
+.progress-circle {
+  display: flex;
+
+  &__circle {
+    stroke: hsla(var(--primary-text-color_hsl), 0.2);
+  }
+
+  &__progress {
+    stroke: var(--brand-color);
+  }
+
+  &--over {
+    .progress-circle__progress {
+      stroke: $warning-red;
+    }
+  }
+}

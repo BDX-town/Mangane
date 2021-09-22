@@ -383,15 +383,6 @@
     .character-counter__wrapper {
       align-self: center;
       margin: 0 10px 0 auto;
-
-      .character-counter {
-        cursor: default;
-        font-family: var(--font-sans-serif), sans-serif;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--primary-text-color--faint);
-        &.character-counter--over { color: $warning-red; }
-      }
     }
   }
 
