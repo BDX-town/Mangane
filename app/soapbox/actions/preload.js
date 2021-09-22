@@ -52,7 +52,7 @@ export function preloadPleroma(data) {
 
 export function preloadMastodon(data) {
   return (dispatch, getState) => {
-    importFetchedAccounts(Object.values(data.accounts));
+    dispatch(importFetchedAccounts(Object.values(data.accounts)));
     dispatch({ type: MASTODON_PRELOAD_IMPORT, data });
   };
 }
