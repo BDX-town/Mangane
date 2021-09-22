@@ -84,16 +84,16 @@
 
 .sidebar-menu__close {
   position: absolute;
-  top: 22px;
+  top: 16px;
   right: 18px;
 
-  i.fa {
-    font-size: 20px;
-  }
-
   .svg-icon {
-    width: 20px;
-    height: 20px;
+    width: 32px;
+    height: 32px;
+
+    svg {
+      stroke-width: 1px;
+    }
   }
 }
 
@@ -122,11 +122,14 @@
       margin-top: 2px;
       color: var(--primary-text-color--faint);
     }
+  }
 
-    i.fa-caret-up,
-    i.fa-caret-down {
-      margin-left: auto;
-      padding-left: 10px;
+  &__caret {
+    margin-left: auto;
+    padding-left: 10px;
+
+    svg {
+      stroke-width: 1px;
     }
   }
 }

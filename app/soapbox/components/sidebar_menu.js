@@ -171,7 +171,7 @@ class SidebarMenu extends ImmutablePureComponent {
           <div className='sidebar-menu__content'>
 
             <div className='sidebar-menu-profile'>
-              <IconButton title='close' onClick={this.handleClose} icon='times' className='sidebar-menu__close' />
+              <IconButton title='close' onClick={this.handleClose} src={require('@tabler/icons/icons/x.svg')} className='sidebar-menu__close' />
               <div className='sidebar-menu-profile__avatar'>
                 <Link to={`/@${acct}`} title={acct} onClick={this.handleClose}>
                   <Avatar account={account} />
@@ -179,7 +179,7 @@ class SidebarMenu extends ImmutablePureComponent {
               </div>
               <a href='#' className='sidebar-menu-profile__name' onClick={this.handleSwitcherClick}>
                 <DisplayName account={account} />
-                <Icon id={switcher ? 'caret-up' : 'caret-down'} />
+                <Icon src={switcher ? require('@tabler/icons/icons/caret-up.svg') : require('@tabler/icons/icons/caret-down.svg')} className='sidebar-menu-profile__caret' />
               </a>
             </div>
 
@@ -187,7 +187,7 @@ class SidebarMenu extends ImmutablePureComponent {
               {otherAccounts.map(account => this.renderAccount(account))}
 
               <NavLink className='sidebar-menu-item' to='/auth/sign_in' onClick={this.handleClose}>
-                <Icon id='plus' />
+                <Icon src={require('@tabler/icons/icons/plus.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.add_account)}</span>
               </NavLink>
             </div>}
