@@ -407,6 +407,15 @@
   }
 } // end .compose-form
 
+// Icon tweaks
+.compose-form__spoiler-button-icon {
+  transform: translateY(2px);
+}
+
+.compose-form__markdown-button-icon {
+  transform: translateY(1px);
+}
+
 .upload-area {
   align-items: center;
   background: rgba($base-overlay-background, 0.8);
