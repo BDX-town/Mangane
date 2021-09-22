@@ -361,8 +361,16 @@ class ActionBar extends React.PureComponent {
       }
     }
 
-    const shareButton = ('share' in navigator) && status.get('visibility') === 'public' && (
-      <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShare} /></div>
+    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+
+    const shareButton = canShare && (
+      <div className='detailed-status__button'>
+        <IconButton
+          title={intl.formatMessage(messages.share)}
+          src={require('feather-icons/dist/icons/share.svg')}
+          onClick={this.handleShare}
+        />
+      </div>
     );
 
     let reblogIcon = require('feather-icons/dist/icons/repeat.svg');

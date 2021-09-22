@@ -416,8 +416,15 @@ class StatusActionBar extends ImmutablePureComponent {
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
-    const shareButton = ('share' in navigator) && status.get('visibility') === 'public' && (
-      <IconButton className='status__action-bar-button' title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShareClick} />
+    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+
+    const shareButton = canShare && (
+      <IconButton
+        className='status__action-bar-button'
+        title={intl.formatMessage(messages.share)}
+        src={require('feather-icons/dist/icons/share.svg')}
+        onClick={this.handleShareClick}
+      />
     );
 
     return (
