@@ -77,6 +77,7 @@ module.exports = merge(sharedConfig, {
     port: 3036,
     https: false,
     hot: false,
+    allowedHosts: 'all',
     historyApiFallback: {
       disableDotRule: true,
       index: join(FE_SUBDIRECTORY, '/'),
