@@ -709,6 +709,7 @@ a.status-card.compact:hover {
     .emoji-picker-expand {
       display: inline-flex;
       width: 0;
+      height: 0;
       overflow: hidden;
 
       &:focus-within {

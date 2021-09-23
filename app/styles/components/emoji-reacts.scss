@@ -114,9 +114,7 @@
     &:hover,
     &:focus {
       img {
-        width: 36px;
-        height: 36px;
-        padding: 0;
+        transform: scale(1.2);
       }
     }
   }
@@ -142,6 +140,7 @@
   .icon-button__emoji .emojione {
     width: 20px;
     height: 20px;
+    margin: 0;
   }
 
   svg {
@@ -158,9 +157,11 @@
 .status__action-bar__counter--favourite,
 .detailed-status__button--favourite {
   .svg-icon svg {
-    width: 26px;
-    height: 26px;
-    transform: translateY(-6px);
+    transform: translateY(-1px) scale(1.3);
+
+    &.icon-tabler {
+      stroke-width: 1.4px !important;
+    }
   }
 }
 
