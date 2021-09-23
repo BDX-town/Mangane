@@ -344,7 +344,7 @@
     align-items: center;
 
     .status__action-bar-button {
-      margin-right: 4px;
+      margin-right: 8px;
     }
 
     &__label {
@@ -353,15 +353,6 @@
       font-size: 12px;
       font-weight: 500;
       color: var(--brand-color);
-    }
-  }
-
-  .svg-icon {
-    width: 24px;
-    height: 20px;
-
-    svg {
-      stroke-width: 2px;
     }
   }
 }

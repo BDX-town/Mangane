@@ -135,11 +135,17 @@
   .svg-icon {
     width: 20px;
     height: 20px;
+    display: block;
+    overflow: visible;
   }
 
   .icon-button__emoji .emojione {
     width: 20px;
     height: 20px;
+  }
+
+  svg {
+    stroke-width: 2px;
   }
 
   svg.icon-tabler {
@@ -151,10 +157,10 @@
 // This icon is a little different than the others...
 .status__action-bar__counter--favourite,
 .detailed-status__button--favourite {
-  .svg-icon {
-    width: 26px !important;
-    height: 26px !important;
-    transform: translateY(-1px);
+  .svg-icon svg {
+    width: 26px;
+    height: 26px;
+    transform: translateY(-6px);
   }
 }
 
