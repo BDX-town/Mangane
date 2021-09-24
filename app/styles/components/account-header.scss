@@ -101,7 +101,7 @@
     position: relative;
     background: var(--foreground-color);
 
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       height: 74px;
     }
   }
@@ -165,7 +165,7 @@
     box-sizing: border-box;
     position: relative;
 
-    @media (min-width: 895px) and (max-width: 1190px) {
+    @media (min-width: 896px) and (max-width: 1190px) {
       max-width: 900px;
       padding-left: 300px;
     }

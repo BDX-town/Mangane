@@ -108,7 +108,7 @@
     font-size: 18px;
     color: #fff;
 
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       display: none;
     }
   }
@@ -191,7 +191,7 @@
   }
 
   &--search {
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       display: none;
     }
   }
@@ -216,7 +216,7 @@
   }
 
   .icon-with-counter__counter {
-    @media screen and (min-width: 895px) {
+    @media screen and (min-width: 896px) {
       left: 5px;
     }
   }
