@@ -54,6 +54,10 @@ class RegistrationForm extends ImmutablePureComponent {
     inviteToken: PropTypes.string,
   }
 
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   state = {
     captchaLoading: true,
     submissionLoading: false,
@@ -98,11 +102,14 @@ class RegistrationForm extends ImmutablePureComponent {
 
   postRegisterAction = ({ access_token }) => {
     const { dispatch, needsConfirmation, needsApproval } = this.props;
+    const { router } = this.context;
 
     if (needsConfirmation || needsApproval) {
       return this.launchModal();
     } else {
-      return dispatch(verifyCredentials(access_token));
+      return dispatch(verifyCredentials(access_token)).then(() => {
+        router.history.push('/');
+      });
     }
   }
 
