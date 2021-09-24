@@ -167,13 +167,6 @@ class RegistrationForm extends ImmutablePureComponent {
       <SimpleForm onSubmit={this.onSubmit}>
         <fieldset disabled={isLoading || !isOpen}>
           <div className='simple_form__overlay-area'>
-            <p className='lead'>
-              <FormattedMessage
-                id='registration.lead'
-                defaultMessage="With an account on {instance} you'll be able to follow people on any server in the fediverse."
-                values={{ instance: <strong>{instance.get('title')}</strong> }}
-              />
-            </p>
             <div className='fields-group'>
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}
