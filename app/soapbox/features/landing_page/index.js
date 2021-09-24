@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import RegistrationForm from '../auth_login/components/registration_form';
@@ -11,8 +12,31 @@ const mapStateToProps = (state, props) => ({
 
 class LandingPage extends ImmutablePureComponent {
 
+  renderClosed = () => {
+    const { instance } = this.props;
+
+    return (
+      <div className='registrations-closed'>
+        <h2>
+          <FormattedMessage
+            id='registration.closed_title'
+            defaultMessage='Registrations Closed'
+          />
+        </h2>
+        <div className='registrations-closed__message'>
+          <FormattedMessage
+            id='registration.closed_message'
+            defaultMessage='{instance} is not accepting new members'
+            values={{ instance: <strong>{instance.get('title')}</strong> }}
+          />
+        </div>
+      </div>
+    );
+  }
+
   render() {
     const { instance } = this.props;
+    const isOpen = instance.get('registrations', false) === true;
 
     return (
       <div className='landing'>
@@ -28,7 +52,7 @@ class LandingPage extends ImmutablePureComponent {
             </div>
           </div>
           <div className='landing-columns--right'>
-            <RegistrationForm />
+            {isOpen ? <RegistrationForm /> : this.renderClosed()}
           </div>
         </div>
       </div>

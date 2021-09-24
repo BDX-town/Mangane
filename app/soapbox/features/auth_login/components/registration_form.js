@@ -140,32 +140,11 @@ class RegistrationForm extends ImmutablePureComponent {
   render() {
     const { instance, intl, supportsEmailList } = this.props;
     const { params } = this.state;
-    const isOpen = instance.get('registrations');
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
-
-    if (isOpen === false) {
-      return (
-        <div className='registrations-closed'>
-          <h2>
-            <FormattedMessage
-              id='registration.closed_title'
-              defaultMessage='Registrations Closed'
-            />
-          </h2>
-          <div className='registrations-closed__message'>
-            <FormattedMessage
-              id='registration.closed_message'
-              defaultMessage='{instance} is not accepting new members'
-              values={{ instance: <strong>{instance.get('title')}</strong> }}
-            />
-          </div>
-        </div>
-      );
-    }
 
     return (
       <SimpleForm onSubmit={this.onSubmit}>
-        <fieldset disabled={isLoading || !isOpen}>
+        <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
             <div className='fields-group'>
               <TextInput
