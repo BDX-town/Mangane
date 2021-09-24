@@ -125,7 +125,7 @@
     padding: 25px 0;
     background-color: var(--accent-color--med);
 
-    @media (min-width: 895px) {
+    @media (min-width: 896px) {
       display: block;
     }
   }
@@ -154,7 +154,7 @@
     }
   }
 
-  @media (min-width: 895px) and (max-width: 1190px) {
+  @media (min-width: 896px) and (max-width: 1190px) {
     &__title-text,
     &__type-filters-tabs {
       max-width: 900px;
