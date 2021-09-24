@@ -45,10 +45,18 @@ export default @connect(mapStateToProps)
 class RegistrationForm extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     instance: ImmutablePropTypes.map,
     locale: PropTypes.string,
-    intl: PropTypes.object.isRequired,
+    needsConfirmation: PropTypes.bool,
+    needsApproval: PropTypes.bool,
+    supportsEmailList: PropTypes.bool,
+    inviteToken: PropTypes.string,
   }
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
   state = {
     captchaLoading: true,
@@ -94,17 +102,29 @@ class RegistrationForm extends ImmutablePureComponent {
 
   postRegisterAction = ({ access_token }) => {
     const { dispatch, needsConfirmation, needsApproval } = this.props;
+    const { router } = this.context;
 
     if (needsConfirmation || needsApproval) {
       return this.launchModal();
     } else {
-      return dispatch(verifyCredentials(access_token));
+      return dispatch(verifyCredentials(access_token)).then(() => {
+        router.history.push('/');
+      });
     }
   }
 
   onSubmit = e => {
-    const { dispatch } = this.props;
-    const params = this.state.params.set('locale', this.props.locale);
+    const { dispatch, inviteToken } = this.props;
+
+    const params = this.state.params.withMutations(params => {
+      // Locale for confirmation email
+      params.set('locale', this.props.locale);
+
+      // Pleroma invites
+      if (inviteToken) {
+        params.set('token', inviteToken);
+      }
+    });
 
     this.setState({ submissionLoading: true });
 
@@ -140,40 +160,12 @@ class RegistrationForm extends ImmutablePureComponent {
   render() {
     const { instance, intl, supportsEmailList } = this.props;
     const { params } = this.state;
-    const isOpen = instance.get('registrations');
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
-
-    if (isOpen === false) {
-      return (
-        <div className='registrations-closed'>
-          <h2>
-            <FormattedMessage
-              id='registration.closed_title'
-              defaultMessage='Registrations Closed'
-            />
-          </h2>
-          <div className='registrations-closed__message'>
-            <FormattedMessage
-              id='registration.closed_message'
-              defaultMessage='{instance} is not accepting new members'
-              values={{ instance: <strong>{instance.get('title')}</strong> }}
-            />
-          </div>
-        </div>
-      );
-    }
 
     return (
       <SimpleForm onSubmit={this.onSubmit}>
-        <fieldset disabled={isLoading || !isOpen}>
+        <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
-            <p className='lead'>
-              <FormattedMessage
-                id='registration.lead'
-                defaultMessage="With an account on {instance} you'll be able to follow people on any server in the fediverse."
-                values={{ instance: <strong>{instance.get('title')}</strong> }}
-              />
-            </p>
             <div className='fields-group'>
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}

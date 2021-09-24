@@ -109,6 +109,7 @@ import {
   NotificationsContainer,
   ModalContainer,
   ProfileHoverCard,
+  RegisterInvite,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -281,6 +282,9 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
+
+        <Redirect from='/registration/:token' to='/invite/:token' />
+        <WrappedRoute path='/invite/:token' component={RegisterInvite} content={children} publicRoute />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
         <WrappedRoute path='/settings/preferences' page={DefaultPage} component={Preferences} content={children} />
@@ -489,9 +493,9 @@ class UI extends React.PureComponent {
   componentDidUpdate(prevProps) {
     this.connectStreaming();
 
-    const { dispatch, features } = this.props;
+    const { dispatch, account, features } = this.props;
 
-    if (features.chats && !prevProps.features.chats) {
+    if (features.chats && account && !prevProps.features.chats) {
       dispatch(fetchChats());
     }
   }
