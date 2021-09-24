@@ -401,3 +401,7 @@ export function WhoToFollowPanel() {
 export function FollowRecommendations() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
 }
+
+export function RegisterInvite() {
+  return import(/* webpackChunkName: "features/register_invite" */'../../register_invite');
+}

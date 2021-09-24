@@ -1,0 +1,26 @@
+.register-invite {
+  margin: 10px 0;
+
+  &__header {
+    padding: 15px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 25px;
+    line-height: normal;
+    margin-bottom: 5px;
+  }
+
+  &__form {
+    .simple_form {
+      input[type=text],
+      input[type=number],
+      input[type=email],
+      input[type=password],
+      textarea {
+        background-color: var(--foreground-color);
+      }
+    }
+  }
+}
