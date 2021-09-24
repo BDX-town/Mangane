@@ -143,7 +143,7 @@ export function verifyCredentials(token, accountUrl) {
   const baseURL = parseBaseURL(accountUrl);
 
   return (dispatch, getState) => {
-    dispatch({ type: VERIFY_CREDENTIALS_REQUEST });
+    dispatch({ type: VERIFY_CREDENTIALS_REQUEST, token });
 
     return baseClient(token, baseURL).get('/api/v1/accounts/verify_credentials').then(({ data: account }) => {
       dispatch(importFetchedAccount(account));
