@@ -90,7 +90,7 @@
     width: 100%;
     position: relative;
     background: var(--background-color);
-    @media (min-width: 895px) { height: 74px; }
+    @media (min-width: 896px) { height: 74px; }
   }
 
   &__avatar {
@@ -152,7 +152,7 @@
     max-width: 1200px;
     box-sizing: border-box;
     position: relative;
-    @media (min-width: 895px) and (max-width: 1190px) {
+    @media (min-width: 896px) and (max-width: 1190px) {
       max-width: 900px;
       padding-left: 300px;
     }
