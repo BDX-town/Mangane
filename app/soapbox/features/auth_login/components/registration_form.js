@@ -45,9 +45,13 @@ export default @connect(mapStateToProps)
 class RegistrationForm extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     instance: ImmutablePropTypes.map,
     locale: PropTypes.string,
-    intl: PropTypes.object.isRequired,
+    needsConfirmation: PropTypes.bool,
+    needsApproval: PropTypes.bool,
+    supportsEmailList: PropTypes.bool,
+    inviteToken: PropTypes.string,
   }
 
   state = {
@@ -103,8 +107,17 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   onSubmit = e => {
-    const { dispatch } = this.props;
-    const params = this.state.params.set('locale', this.props.locale);
+    const { dispatch, inviteToken } = this.props;
+
+    const params = this.state.params.withMutations(params => {
+      // Locale for confirmation email
+      params.set('locale', this.props.locale);
+
+      // Pleroma invites
+      if (inviteToken) {
+        params.set('token', inviteToken);
+      }
+    });
 
     this.setState({ submissionLoading: true });
 
