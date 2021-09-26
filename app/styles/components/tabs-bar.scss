@@ -282,6 +282,15 @@
     &:hover {
       border: 0 !important;
     }
+
+    /* Move logo to center on mobile */
+    @media screen and (max-width: 450px) {
+      margin: 0 auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
+    }
   }
 
   &--no-highlight,
