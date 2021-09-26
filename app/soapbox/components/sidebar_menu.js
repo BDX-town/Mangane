@@ -5,7 +5,7 @@ import { throttle } from 'lodash';
 import { Link, NavLink } from 'react-router-dom';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, defineMessages } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Avatar from './avatar';
 import IconButton from './icon_button';
@@ -66,6 +66,7 @@ const makeMapStateToProps = () => {
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
       features,
+      siteTitle: instance.get('title'),
     };
   };
 
@@ -155,7 +156,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features, siteTitle } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -198,7 +199,26 @@ class SidebarMenu extends ImmutablePureComponent {
               </div>
             </div>
 
-            <div className='sidebar-menu__section sidebar-menu__section'>
+            <div className='sidebar-menu__section'>
+              {features.federating ? (
+                <NavLink to='/timeline/local' className='sidebar-menu-item' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/users.svg')} />
+                  <span className='sidebar-menu-item__title'>{siteTitle}</span>
+                </NavLink>
+              ) : (
+                <NavLink to='/timeline/local' className='sidebar-menu-item' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/world.svg')} />
+                  <span className='sidebar-menu-item__title'><FormattedMessage id='tabs_bar.all' defaultMessage='All' /></span>
+                </NavLink>
+              )}
+
+              {features.federating && <NavLink to='/timeline/fediverse' className='sidebar-menu-item' onClick={this.handleClose}>
+                <Icon src={require('icons/fediverse.svg')} />
+                <span className='sidebar-menu-item__title'><FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' /></span>
+              </NavLink>}
+            </div>
+
+            <div className='sidebar-menu__section'>
               <NavLink className='sidebar-menu-item' to={`/@${acct}`} onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
