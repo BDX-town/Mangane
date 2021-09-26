@@ -156,12 +156,9 @@
 // This icon is a little different than the others...
 .status__action-bar__counter--favourite,
 .detailed-status__button--favourite {
-  .svg-icon svg {
+  .svg-icon svg.icon-tabler {
     transform: translateY(-1px) scale(1.3);
-
-    &.icon-tabler {
-      stroke-width: 1.4px !important;
-    }
+    stroke-width: 1.4px !important;
   }
 }
 
