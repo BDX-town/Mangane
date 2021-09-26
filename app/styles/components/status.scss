@@ -132,20 +132,6 @@
   padding: 15px 0 10px;
 }
 
-.slist > .item-list > article {
-  &:first-child {
-    .status__wrapper {
-      margin-top: 10px;
-    }
-  }
-
-  &:last-child {
-    .status__wrapper {
-      margin-bottom: 10px;
-    }
-  }
-}
-
 .status__wrapper--filtered {
   color: var(--primary-text-color);
   border: 0;
