@@ -231,4 +231,16 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
 });
 
-export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));
+export default @connect(makeMapStateToProps, mapDispatchToProps)
+@injectIntl
+class StatusContainer extends React.Component {
+
+  render() {
+    return (
+      <div className='status-container'>
+        <Status {...this.props} />
+      </div>
+    );
+  }
+
+}
