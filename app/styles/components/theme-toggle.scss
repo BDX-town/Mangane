@@ -12,9 +12,14 @@
       &-track-x {
         display: flex;
         align-items: center;
+        justify-content: center;
         height: 15px;
         color: #fff;
       }
     }
+  }
+
+  i.fa {
+    font-size: 20px;
   }
 }

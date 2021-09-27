@@ -346,7 +346,7 @@ class Status extends ImmutablePureComponent {
     if (featured) {
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='thumb-tack' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'><Icon id='thumbtack' className='status__prepend-icon' fixedWidth /></div>
           <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
       );
