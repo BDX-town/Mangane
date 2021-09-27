@@ -595,7 +595,7 @@ class Status extends ImmutablePureComponent {
           />
         */}
 
-        <div ref={this.setRef}>
+        <div ref={this.setRef} className='detailed-status-container'>
           {ancestors}
 
           <HotKeys handlers={handlers}>

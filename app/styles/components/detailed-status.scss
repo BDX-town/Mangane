@@ -112,7 +112,7 @@
 
 .detailed-status__wrapper {
   @include standard-panel;
-  margin: 10px 0;
+  margin-bottom: 10px;
   position: relative;
   overflow: hidden;
 }
@@ -158,4 +158,14 @@
 .detailed-status .status__favicon {
   float: left;
   margin-right: 5px;
+}
+
+.detailed-status-container {
+  > div:first-child {
+    .status-container .status__wrapper,
+    .detailed-status__wrapper {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
 }
