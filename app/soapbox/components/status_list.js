@@ -82,6 +82,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   handleDequeueTimeline = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     const { onDequeueTimeline, timelineId } = this.props;
     if (!onDequeueTimeline || !timelineId) return;
     onDequeueTimeline(timelineId);
