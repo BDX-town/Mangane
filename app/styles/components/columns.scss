@@ -42,9 +42,11 @@
       width: 100%;
       max-width: 600px;
       padding: 0 20px;
-      @media screen and (max-width: 375px) {
-        padding: 0 10px;
+
+      @media screen and (max-width: 580px) {
+        padding: 0;
       }
+
       @media screen and (min-width: 896px) {
         margin: 0 20px;
         padding: 0;
@@ -105,7 +107,9 @@
     padding: 0;
   }
 
-  .autosuggest-textarea__textarea { font-size: 16px; }
+  .autosuggest-textarea__textarea {
+    font-size: 16px;
+  }
 
   .search__input {
     line-height: 18px;
@@ -116,7 +120,14 @@
     background-color: var(--foreground-color);
   }
 
-  .search__icon .fa { top: 15px; }
+  .search__icon .fa {
+    top: 15px;
+  }
+
+  @media (max-width: 580px) {
+    padding: 0;
+  }
+
   @media screen and (min-width: 630px) {
     .detailed-status {
       padding: 15px;

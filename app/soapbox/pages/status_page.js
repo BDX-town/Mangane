@@ -39,7 +39,7 @@ class StatusPage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <Sticky top={106}>
+                <Sticky top={65}>
                   <PrimaryNavigation />
                 </Sticky>
               </div>
@@ -53,7 +53,7 @@ class StatusPage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                <Sticky top={106}>
+                <Sticky top={65}>
                   {me ? (
                     <BundleContainer fetchComponent={FeaturesPanel}>
                       {Component => <Component key='features-panel' />}

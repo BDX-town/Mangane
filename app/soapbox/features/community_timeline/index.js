@@ -7,6 +7,7 @@ import Column from '../../components/column';
 import { expandCommunityTimeline } from '../../actions/timelines';
 import { connectCommunityStream } from '../../actions/streaming';
 import { getSettings } from 'soapbox/actions/settings';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
@@ -73,6 +74,7 @@ class CommunityTimeline extends React.PureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}

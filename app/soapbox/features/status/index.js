@@ -49,8 +49,10 @@ import { textForScreenReader, defaultMediaVisibility } from '../../components/st
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
+  title: { id: 'status.title', defaultMessage: 'Post' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
@@ -569,6 +571,7 @@ class Status extends ImmutablePureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.detailedStatus)} showBackBtn={false}>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
         {/*
           Eye icon to show/hide all CWs in a thread.
           I'm not convinced of the value of this. It needs a better design at the very least.

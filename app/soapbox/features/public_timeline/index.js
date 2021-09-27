@@ -10,6 +10,7 @@ import { expandPublicTimeline } from '../../actions/timelines';
 import { connectPublicStream } from '../../actions/streaming';
 import { Link } from 'react-router-dom';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Federated timeline' },
@@ -97,6 +98,7 @@ class CommunityTimeline extends React.PureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.title)}>
+        <SubNavigation message={intl.formatMessage(messages.title)} />
         <PinnedHostsPicker />
         {showExplanationBox && <div className='explanation-box'>
           <Accordion
