@@ -32,7 +32,7 @@ export default class DetailedCryptoAddress extends ImmutablePureComponent {
           <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
           <div className='crypto-address__actions'>
             {explorerUrl && <a href={explorerUrl} target='_blank'>
-              <Icon id='external-link' />
+              <Icon id='external-link-alt' />
             </a>}
           </div>
         </div>

@@ -24,8 +24,9 @@
     .subscription-button {
       color: var(--primary-text-color);
       margin-bottom: 4px;
-      display: block;
-      vertical-align: top;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background-color: var(--background-color);
       text-transform: uppercase;
       font-size: 13px;
@@ -42,6 +43,11 @@
 
       &:not(.button-active) i.fa {
         margin: 0;
+      }
+
+      .svg-icon {
+        width: 20px;
+        height: 20px;
       }
     }
   }

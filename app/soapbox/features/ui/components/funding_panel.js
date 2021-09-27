@@ -41,7 +41,7 @@ class FundingPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel funding-panel'>
         <div className='wtf-panel-header'>
-          <i role='img' alt='users' className='fa fa-line-chart wtf-panel-header__icon' />
+          <i role='img' alt='users' className='fa fa-chart-line wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <span>Funding Goal</span>
           </span>

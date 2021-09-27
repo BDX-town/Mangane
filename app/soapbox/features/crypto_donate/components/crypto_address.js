@@ -42,7 +42,7 @@ class CryptoAddress extends ImmutablePureComponent {
               <Icon id='qrcode' />
             </a>
             {explorerUrl && <a href={explorerUrl} target='_blank'>
-              <Icon id='external-link' />
+              <Icon id='external-link-alt' />
             </a>}
           </div>
         </div>
