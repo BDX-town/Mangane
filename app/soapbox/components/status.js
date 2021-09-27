@@ -418,6 +418,8 @@ class Status extends ImmutablePureComponent {
               <Component
                 src={audio.get('url')}
                 alt={audio.get('description')}
+                width={this.props.cachedMediaWidth}
+                height={263}
                 inline
                 sensitive={status.get('sensitive')}
                 cacheWidth={this.props.cacheMediaWidth}
