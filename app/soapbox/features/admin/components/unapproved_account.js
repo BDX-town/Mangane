@@ -68,7 +68,7 @@ class UnapprovedAccount extends ImmutablePureComponent {
         </div>
         <div className='unapproved-account__actions'>
           <IconButton icon='check' size={22} onClick={this.handleApprove} />
-          <IconButton icon='close' size={22} onClick={this.handleReject} />
+          <IconButton icon='times' size={22} onClick={this.handleReject} />
         </div>
       </div>
     );

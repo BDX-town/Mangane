@@ -117,7 +117,7 @@ class ChatWindow extends ImmutablePureComponent {
             @{getAcct(account, displayFqn)}
           </button>
           <div className='pane__close'>
-            <IconButton icon='close' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
+            <IconButton icon='times' title='Close chat' onClick={this.handleChatClose(chat.get('id'))} />
           </div>
         </div>
         <div className='pane__content'>
