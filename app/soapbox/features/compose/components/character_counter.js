@@ -26,7 +26,7 @@ class CharacterCounter extends React.PureComponent {
         title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
         progress={progress}
         radius={10}
-        stroke={4}
+        stroke={3}
       />
     );
   }
