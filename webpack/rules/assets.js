@@ -21,6 +21,7 @@ module.exports = [{
   include: [
     resolve('app', 'fonts'),
     resolve('node_modules', 'fork-awesome'),
+    resolve('node_modules', 'line-awesome'),
     resolve('node_modules', '@fontsource'),
   ],
   generator: {
