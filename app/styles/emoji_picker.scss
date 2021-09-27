@@ -261,6 +261,7 @@
   background: var(--foreground-color);
   position: absolute;
   margin-top: 5px;
+  transform: translateX(calc(-1 * env(safe-area-inset-right))); /* iOS PWA */
   z-index: 20000;
 
   .emoji-mart-scroll {

@@ -685,6 +685,8 @@
     display: flex;
     position: relative;
     padding: 10px 0;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
     align-items: center;
     justify-content: center;
@@ -704,7 +706,8 @@
   &__close {
     position: absolute;
     right: 10px;
-    color: #999;
+    right: max(10px, env(safe-area-inset-right));
+    color: var(--primary-text-color--faint);
   }
 
   &__content {
@@ -712,6 +715,8 @@
     flex-direction: row;
     flex: 1;
     padding: 10px;
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
     overflow-y: hidden;
 
     &--scroll {

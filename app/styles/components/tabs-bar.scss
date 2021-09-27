@@ -24,7 +24,10 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding-left: 15px;
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: 15px;
+    padding-right: max(15px, env(safe-area-inset-right));
 
     // NOTE - might need to adjust this based on column sizing
     @media screen and (max-width: $nav-breakpoint-4) { padding: 0 10px; }

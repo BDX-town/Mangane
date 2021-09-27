@@ -12,6 +12,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
+    left: max(10px, env(safe-area-inset-left));
     z-index: 1;
   }
 
@@ -19,6 +20,7 @@
     position: absolute;
     top: 10px;
     right: 10px;
+    right: max(10px, env(safe-area-inset-right));
     z-index: 1;
 
     .subscription-button {
@@ -149,6 +151,7 @@
     @media screen and (max-width: 895px) {
       top: -45px;
       left: 20px;
+      left: max(20px + env(safe-area-inset-left));
       height: 90px;
       width: 90px;
 
@@ -178,7 +181,11 @@
 
     @media screen and (max-width: 895px) {
       max-width: 900px;
-      padding: 10px 10px 0;
+      padding-top: 10px;
+      padding-left: 10px;
+      padding-left: max(10px, env(safe-area-inset-left));
+      padding-right: 10px;
+      padding-right: max(10px, env(safe-area-inset-right));
       flex-direction: column-reverse;
       min-height: 50px;
     }
