@@ -32,6 +32,7 @@ module.exports = merge(sharedConfig, {
         additional: [
           ':externals:',
           'packs/images/32-*.png', // used in emoji-mart
+          'packs/icons/*.svg',
         ],
         optional: [
           '**/locale_*.js', // don't fetch every locale; the user only needs one

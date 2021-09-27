@@ -2,7 +2,6 @@
 // https://webpack.js.org/guides/asset-modules/
 
 const { resolve } = require('path');
-const svgToMiniDataURI = require('mini-svg-data-uri');
 
 // These are processed in reverse-order
 // We use the name 'packs' instead of 'assets' for legacy reasons
@@ -43,32 +42,32 @@ module.exports = [{
   },
 }, {
   test: /\.svg$/,
-  type: 'asset/inline',
+  type: 'asset/resource',
   include: resolve('app', 'icons'),
   generator: {
-    dataUrl: content => svgToMiniDataURI(content.toString()),
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
   test: /\.svg$/,
-  type: 'asset/inline',
+  type: 'asset/resource',
   include: resolve('node_modules', 'bootstrap-icons'),
   generator: {
-    dataUrl: content => svgToMiniDataURI(content.toString()),
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
 
   test: /\.svg$/,
-  type: 'asset/inline',
+  type: 'asset/resource',
   include: resolve('node_modules', 'feather-icons'),
   generator: {
-    dataUrl: content => svgToMiniDataURI(content.toString()),
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
   test: /\.svg$/,
-  type: 'asset/inline',
+  type: 'asset/resource',
   include: resolve('node_modules', '@tabler'),
   generator: {
-    dataUrl: content => svgToMiniDataURI(content.toString()),
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
   test: /\.svg$/,
