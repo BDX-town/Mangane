@@ -548,11 +548,11 @@ class Status extends ImmutablePureComponent {
     }
 
     if (ancestorsIds && ancestorsIds.size > 0) {
-      ancestors = <div>{this.renderChildren(ancestorsIds)}</div>;
+      ancestors = this.renderChildren(ancestorsIds);
     }
 
     if (descendantsIds && descendantsIds.size > 0) {
-      descendants = <div>{this.renderChildren(descendantsIds)}</div>;
+      descendants = this.renderChildren(descendantsIds);
     }
 
     const handlers = {
@@ -596,7 +596,9 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='detailed-status-container'>
-          {ancestors}
+          {ancestors && (
+            <div className='detailed-status__ancestors'>{ancestors}</div>
+          )}
 
           <HotKeys handlers={handlers}>
             <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
@@ -638,7 +640,9 @@ class Status extends ImmutablePureComponent {
             </div>
           </HotKeys>
 
-          {descendants}
+          {descendants && (
+            <div className='detailed-status__descendants'>{descendants}</div>
+          )}
         </div>
       </Column>
     );
