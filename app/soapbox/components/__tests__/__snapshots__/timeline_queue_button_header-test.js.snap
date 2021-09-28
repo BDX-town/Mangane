@@ -7,7 +7,19 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 1`] = `
   <a
     className="timeline-queue-header__btn"
     onClick={[Function]}
-  />
+  >
+    <div
+      className="svg-icon"
+    >
+      <svg
+        id={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+    </div>
+  </a>
 </div>
 `;
 
@@ -19,6 +31,17 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
     className="timeline-queue-header__btn"
     onClick={[Function]}
   >
+    <div
+      className="svg-icon"
+    >
+      <svg
+        id={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+    </div>
     Click to see 1 new post
   </a>
 </div>
@@ -32,6 +55,17 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
     className="timeline-queue-header__btn"
     onClick={[Function]}
   >
+    <div
+      className="svg-icon"
+    >
+      <svg
+        id={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+    </div>
     Click to see 9999999 new posts
   </a>
 </div>
