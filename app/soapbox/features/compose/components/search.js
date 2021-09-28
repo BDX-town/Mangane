@@ -5,6 +5,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import Icon from 'soapbox/components/icon';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -119,8 +120,8 @@ class Search extends React.PureComponent {
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
-          <Icon id='search' className={hasValue ? '' : 'active'} />
-          <Icon id='times-circle' className={hasValue ? 'active' : ''} aria-label={intl.formatMessage(messages.placeholder)} />
+          <Icon src={require('@tabler/icons/icons/search.svg')} className={classNames('svg-icon--search', { active: !hasValue })} />
+          <Icon src={require('@tabler/icons/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: hasValue })} aria-label={intl.formatMessage(messages.placeholder)} />
         </div>
         <Overlay show={expanded && !hasValue} placement='bottom' target={this}>
           <SearchPopout />

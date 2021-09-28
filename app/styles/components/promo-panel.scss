@@ -35,4 +35,13 @@
     margin-right: 12px;
     font-size: 20px;
   }
+
+  .svg-icon {
+    width: 24px;
+    height: 24px;
+
+    svg {
+      stroke-width: 1.3px;
+    }
+  }
 }

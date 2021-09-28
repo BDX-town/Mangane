@@ -36,7 +36,6 @@
     outline: 0 !important;
   }
 
-  .fa,
   .svg-icon {
     @include font-size(16);
     cursor: default;
@@ -56,13 +55,21 @@
       opacity: 1;
     }
   }
-  .fa-search.active { pointer-events: none; }
 
-  .fa-times-circle {
-    @include font-size(17);
+  .svg-icon--search.active {
+    pointer-events: none;
+  }
+
+  .svg-icon--backspace {
     cursor: pointer;
     color: var(--highlight-text-color);
-    &:hover { color: var(--brand-color); }
+    width: 22px;
+    height: 22px;
+    top: 5px;
+
+    &:hover {
+      color: var(--brand-color);
+    }
   }
 }
 

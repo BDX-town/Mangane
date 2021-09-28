@@ -55,17 +55,25 @@
     }
 
     .icon-button {
-      color: #fff;
+      opacity: 0.7;
+
+      &:hover {
+        opacity: 1;
+      }
 
       > div {
-        height: auto !important;
-        width: auto !important;
         margin-right: -6px;
       }
     }
 
     .pane__close {
       margin-left: auto;
+
+      .svg-icon {
+        width: 18px;
+        height: 18px;
+        transform: translateY(2px);
+      }
     }
 
     .icon-with-badge__badge {
@@ -113,8 +121,8 @@
   }
 
   .audio-toggle .react-toggle-track-check {
-    left: 4px;
-    bottom: 4px;
+    left: 2px;
+    bottom: 5px;
   }
 
   .react-toggle--checked .react-toggle-thumb {
@@ -122,8 +130,8 @@
   }
 
   .audio-toggle .react-toggle-track-x {
-    right: 4px;
-    bottom: 4px;
+    right: 8px;
+    bottom: 5px;
   }
 
   .fa {

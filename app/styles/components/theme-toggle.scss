@@ -13,13 +13,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 15px;
         color: #fff;
+        width: auto;
+      }
+
+      &-track-check {
+        left: 6px;
+      }
+
+      &-track-x {
+        right: 5px;
       }
     }
   }
 
-  i.fa {
-    font-size: 20px;
+  .svg-icon {
+    width: 18px;
+    height: 18px;
   }
 }

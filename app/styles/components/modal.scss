@@ -708,6 +708,11 @@
     right: 10px;
     right: max(10px, env(safe-area-inset-right));
     color: var(--primary-text-color--faint);
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &__content {

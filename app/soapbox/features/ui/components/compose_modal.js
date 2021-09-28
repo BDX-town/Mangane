@@ -56,7 +56,12 @@ class ComposeModal extends ImmutablePureComponent {
           <h3 className='compose-modal__header__title'>
             <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton
+            className='compose-modal__close'
+            title={intl.formatMessage(messages.close)}
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.onClickClose} size={20}
+          />
         </div>
         <div className='compose-modal__content compose-modal__content--scroll'>
           <ComposeFormContainer />
