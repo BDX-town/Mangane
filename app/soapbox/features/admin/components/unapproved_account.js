@@ -67,8 +67,8 @@ class UnapprovedAccount extends ImmutablePureComponent {
           <blockquote className='md'>{account.getIn(['pleroma', 'admin', 'registration_reason'])}</blockquote>
         </div>
         <div className='unapproved-account__actions'>
-          <IconButton icon='check' size={22} onClick={this.handleApprove} />
-          <IconButton icon='times' size={22} onClick={this.handleReject} />
+          <IconButton src={require('@tabler/icons/icons/check.svg')} onClick={this.handleApprove} />
+          <IconButton src={require('@tabler/icons/icons/x.svg')} onClick={this.handleReject} />
         </div>
       </div>
     );

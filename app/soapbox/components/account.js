@@ -100,7 +100,7 @@ class Account extends ImmutablePureComponent {
     let emoji;
 
     if (onActionClick && actionIcon) {
-      buttons = <IconButton icon={actionIcon} title={actionTitle} onClick={this.handleAction} />;
+      buttons = <IconButton src={actionIcon} title={actionTitle} onClick={this.handleAction} />;
     } else if (account.get('id') !== me && account.get('relationship', null) !== null) {
       const following = account.getIn(['relationship', 'following']);
       const requested = account.getIn(['relationship', 'requested']);
@@ -127,7 +127,7 @@ class Account extends ImmutablePureComponent {
           </Fragment>
         );
       } else if (!account.get('moved') || following) {
-        buttons = <IconButton icon={following ? 'user-times' : 'user-plus'} title={intl.formatMessage(following ? messages.unfollow : messages.follow)} onClick={this.handleFollow} active={following} />;
+        buttons = <IconButton src={following ? require('@tabler/icons/icons/user-x.svg') : require('@tabler/icons/icons/user-plus.svg')} title={intl.formatMessage(following ? messages.unfollow : messages.follow)} onClick={this.handleFollow} active={following} />;
       }
     }
 
@@ -144,7 +144,7 @@ class Account extends ImmutablePureComponent {
 
     const joinedAt = createdAt ? (
       <div className='account__joined-at'>
-        <Icon id='calendar' />
+        <Icon src={require('@tabler/icons/icons/clock.svg')} />
         <RelativeTimestamp timestamp={createdAt} />
       </div>
     ) : null;

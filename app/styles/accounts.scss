@@ -286,10 +286,13 @@ a .account__avatar {
   height: auto;
   padding: 0 0 0 5px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .dismiss-account-btn {
-    display: block;
-    margin-bottom: 5px;
+  .svg-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -546,7 +549,7 @@ a .account__avatar {
   flex-shrink: 0;
   color: var(--primary-text-color--faint);
 
-  i.fa-calendar {
-    padding-right: 5px;
+  .svg-icon {
+    padding-right: 3px;
   }
 }

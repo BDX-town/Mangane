@@ -211,10 +211,15 @@
       outline: 0;
       flex: 0 0 auto;
       background: transparent;
-      padding: 5px;
+      padding: 5px 6px;
       font-size: 16px;
       border: 0;
       color: rgba(#fff, 0.75);
+
+      .svg-icon {
+        width: 20px;
+        height: 20px;
+      }
 
       &:active,
       &:hover,

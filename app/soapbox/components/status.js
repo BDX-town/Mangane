@@ -346,7 +346,9 @@ class Status extends ImmutablePureComponent {
     if (featured) {
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='thumbtack' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('@tabler/icons/icons/pin.svg')} className='status__prepend-icon' />
+          </div>
           <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
       );
@@ -355,7 +357,9 @@ class Status extends ImmutablePureComponent {
 
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='retweet' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('feather-icons/dist/icons/repeat.svg')} className='status__prepend-icon' />
+          </div>
           <FormattedMessage
             id='status.reblogged_by' defaultMessage='{name} reposted' values={{
               name: <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'>

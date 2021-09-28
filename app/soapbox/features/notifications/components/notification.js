@@ -265,7 +265,7 @@ class Notification extends ImmutablePureComponent {
         <div className='notification notification-reblog focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.reblog', defaultMessage: '{name} reposted your post' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__favourite-icon-wrapper'>
-              <Icon id='retweet' fixedWidth />
+              <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>
