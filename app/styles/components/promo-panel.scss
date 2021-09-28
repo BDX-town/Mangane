@@ -30,15 +30,10 @@
     }
   }
 
-  &__icon,
-  .icon-with-counter {
-    margin-right: 12px;
-    font-size: 20px;
-  }
-
   .svg-icon {
     width: 24px;
     height: 24px;
+    margin-right: 12px;
 
     svg {
       stroke-width: 1.3px;
