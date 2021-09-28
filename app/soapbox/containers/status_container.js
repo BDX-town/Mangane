@@ -231,8 +231,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
 });
 
-export default @connect(makeMapStateToProps, mapDispatchToProps)
-@injectIntl
+export default @injectIntl
+@connect(makeMapStateToProps, mapDispatchToProps)
 class StatusContainer extends React.Component {
 
   render() {
