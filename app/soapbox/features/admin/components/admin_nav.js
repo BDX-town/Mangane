@@ -30,7 +30,7 @@ class AdminNav extends React.PureComponent {
         <div className='wtf-panel promo-panel'>
           <div className='promo-panel__container'>
             <NavLink className='promo-panel-item' to='/admin'>
-              <Icon id='tachometer' className='promo-panel-item__icon' fixedWidth />
+              <Icon id='tachometer-alt' className='promo-panel-item__icon' fixedWidth />
               <FormattedMessage id='admin_nav.dashboard' defaultMessage='Dashboard' />
             </NavLink>
             <NavLink className='promo-panel-item' to='/admin/reports'>
