@@ -12,7 +12,7 @@ import IconButton from './icon_button';
 import Icon from './icon';
 import DisplayName from './display_name';
 import { closeSidebar } from '../actions/sidebar';
-import { isAdmin } from '../utils/accounts';
+import { isAdmin, getBaseURL } from '../utils/accounts';
 import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
@@ -54,6 +54,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = state => {
     const me = state.get('me');
+    const account = state.getIn(['accounts', me]);
     const instance = state.get('instance');
 
     const features = getFeatures(instance);
@@ -67,6 +68,7 @@ const makeMapStateToProps = () => {
       otherAccounts: getOtherAccounts(state),
       features,
       siteTitle: instance.get('title'),
+      baseURL: getBaseURL(account),
     };
   };
 
@@ -100,6 +102,7 @@ class SidebarMenu extends ImmutablePureComponent {
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
+    baseURL: PropTypes.string,
   };
 
   state = {
@@ -156,7 +159,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features, siteTitle } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -270,10 +273,17 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/settings.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.soapbox_config)}</span>
               </NavLink>}
-              <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/settings.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
-              </NavLink>
+              {features.settingsStore ? (
+                <NavLink className='sidebar-menu-item' to='/settings/preferences' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/settings.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/settings/preferences`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/settings.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
+                </a>
+              )}
               <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
@@ -282,10 +292,17 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
               </NavLink>}
-              <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
-              </NavLink>
+              {features.securityAPI ? (
+                <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/auth/edit`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/shield-lock.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.security)}</span>
+                </a>
+              )}
             </div>
 
             <div className='sidebar-menu__section'>
