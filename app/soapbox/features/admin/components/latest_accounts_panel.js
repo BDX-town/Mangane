@@ -69,7 +69,7 @@ class LatestAccountsPanel extends ImmutablePureComponent {
 
     return (
       <AccountListPanel
-        icon='users'
+        icon={require('@tabler/icons/icons/users.svg')}
         title={intl.formatMessage(messages.title)}
         accountIds={accountIds}
         limit={limit}

@@ -43,7 +43,7 @@ class ProfileMediaPanel extends ImmutablePureComponent {
     return (
       <div className='media-panel'>
         <div className='media-panel-header'>
-          <Icon id='camera' className='media-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/camera.svg')} className='media-panel-header__icon' />
           <span className='media-panel-header__label'>
             <FormattedMessage id='media_panel.title' defaultMessage='Media' />
           </span>

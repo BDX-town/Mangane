@@ -81,7 +81,7 @@ class GroupRemovedAccounts extends ImmutablePureComponent {
           {accountIds.map(id => (<AccountContainer
             key={id}
             id={id}
-            actionIcon='remove'
+            actionIcon={require('@tabler/icons/icons/x.svg')}
             onActionClick={this.handleOnActionClick(group, id)}
             actionTitle={intl.formatMessage(messages.remove)}
           />))}

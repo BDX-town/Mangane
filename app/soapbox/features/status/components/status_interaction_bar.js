@@ -47,7 +47,7 @@ class StatusInteractionBar extends ImmutablePureComponent {
     if (status.get('reblogs_count')) {
       return (
         <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='emoji-react emoji-react--reblogs'>
-          <Icon id='retweet' />
+          <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
           <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>

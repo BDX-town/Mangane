@@ -41,7 +41,7 @@ class DisplayName extends React.PureComponent {
 
     const joinedAt = createdAt ? (
       <div className='account__joined-at'>
-        <Icon id='calendar' />
+        <Icon src={require('@tabler/icons/icons/clock.svg')} />
         <RelativeTimestamp timestamp={createdAt} />
       </div>
     ) : null;

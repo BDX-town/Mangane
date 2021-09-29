@@ -18,13 +18,18 @@
 
   .media-panel-header {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     margin-bottom: 10px;
     padding: 15px 15px 0;
 
     &__icon {
       margin-right: 10px;
       font-size: 20px;
+
+      &.svg-icon {
+        width: 20px;
+        height: 20px;
+      }
     }
 
     &__label {
