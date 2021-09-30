@@ -119,7 +119,7 @@ class MediaItem extends ImmutablePureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'audio') {
-      const remoteURL = attachment.get('remote_url');
+      const remoteURL = attachment.get('remote_url') || '';
       const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
       const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
       thumbnail = (
