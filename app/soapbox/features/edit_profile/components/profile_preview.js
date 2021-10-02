@@ -2,10 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getAcct } from 'soapbox/utils/accounts';
+import { getAcct, isVerified } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { List as ImmutableList } from 'immutable';
 import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = state => ({
@@ -27,7 +26,7 @@ const ProfilePreview = ({ account, displayFqn }) => (
           <bdi>
             <strong className='emojify p-name'>
               {account.get('display_name')}
-              {account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified') && <VerificationBadge />}
+              {isVerified(account) && <VerificationBadge />}
             </strong>
           </bdi>
           <span>@{getAcct(account, displayFqn)}</span>
