@@ -7,14 +7,7 @@ import { makeGetAccount } from 'soapbox/selectors';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';
-import IconButton from 'soapbox/components/icon_button';
-import { injectIntl, defineMessages } from 'react-intl';
-import { followAccount, unfollowAccount } from 'soapbox/actions/accounts';
-
-const messages = defineMessages({
-  follow: { id: 'account.follow', defaultMessage: 'Follow' },
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
-});
+import ActionButton from 'soapbox/features/ui/components/action_button';
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
@@ -33,7 +26,6 @@ const getFirstSentence = str => {
 };
 
 export default @connect(makeMapStateToProps)
-@injectIntl
 class Account extends ImmutablePureComponent {
 
   static propTypes = {
@@ -42,26 +34,8 @@ class Account extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
   };
 
-  handleFollow = () => {
-    const { account, dispatch } = this.props;
-
-    if (account.getIn(['relationship', 'following']) || account.getIn(['relationship', 'requested'])) {
-      dispatch(unfollowAccount(account.get('id')));
-    } else {
-      dispatch(followAccount(account.get('id')));
-    }
-  }
-
   render() {
-    const { account, intl } = this.props;
-
-    let button;
-
-    if (account.getIn(['relationship', 'following'])) {
-      button = <IconButton icon='check' title={intl.formatMessage(messages.unfollow)} active onClick={this.handleFollow} />;
-    } else {
-      button = <IconButton icon='plus' title={intl.formatMessage(messages.follow)} onClick={this.handleFollow} />;
-    }
+    const { account } = this.props;
 
     return (
       <div className='account follow-recommendations-account'>
@@ -75,7 +49,7 @@ class Account extends ImmutablePureComponent {
           </Permalink>
 
           <div className='account__relationship'>
-            {button}
+            <ActionButton account={account} />
           </div>
         </div>
       </div>
