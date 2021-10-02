@@ -5,8 +5,6 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Icon from 'soapbox/components/icon';
-import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   isStaff,
@@ -35,6 +33,7 @@ const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   mention: { id: 'account.mention', defaultMessage: 'Mention' },
+  chat: { id: 'account.chat', defaultMessage: 'Chat with @{name}' },
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
@@ -181,6 +180,11 @@ class Header extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
     } else {
       menu.push({ text: intl.formatMessage(messages.mention, { name: account.get('username') }), action: this.props.onMention });
+
+      if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
+        menu.push({ text: intl.formatMessage(messages.chat, { name: account.get('username') }), action: this.props.onChat });
+      }
+
       if (account.getIn(['relationship', 'following'])) {
         if (account.getIn(['relationship', 'showing_reblogs'])) {
           menu.push({ text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
@@ -355,12 +359,6 @@ class Header extends ImmutablePureComponent {
 
             <div className='account__header__extra__buttons'>
               <ActionButton account={account} />
-              {me && account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
-                <Button className='button-alternative-2' onClick={this.props.onChat}>
-                  <Icon id='comment' />
-                  <FormattedMessage id='account.message' defaultMessage='Message' />
-                </Button>
-              }
               {me && <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />}
             </div>
 
