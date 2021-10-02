@@ -544,6 +544,11 @@
       position: relative;
       bottom: -1px;
     }
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 
@@ -592,12 +597,19 @@ a.status-card {
 }
 
 .status-card__host {
-  display: block;
+  display: flex;
   margin-top: 10px;
   font-size: 13px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  align-items: center;
+
+  .svg-icon {
+    height: 15px;
+    width: 15px;
+    margin-right: 3px;
+  }
 }
 
 .status-card__image {

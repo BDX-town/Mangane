@@ -173,7 +173,7 @@ export default class Card extends React.PureComponent {
       <div className='status-card__content'>
         {title}
         <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
-        <span className='status-card__host'><Icon id='link' /> {provider}</span>
+        <span className='status-card__host'><Icon src={require('@tabler/icons/icons/link.svg')} /> {provider}</span>
       </div>
     );
 
@@ -185,10 +185,10 @@ export default class Card extends React.PureComponent {
       if (embedded) {
         embed = this.renderVideo();
       } else {
-        let iconVariant = 'play';
+        let iconVariant = require('@tabler/icons/icons/player-play.svg');
 
         if (card.get('type') === 'photo') {
-          iconVariant = 'search-plus';
+          iconVariant = require('@tabler/icons/icons/zoom-in.svg');
         }
 
         embed = (
@@ -197,8 +197,8 @@ export default class Card extends React.PureComponent {
 
             <div className='status-card__actions'>
               <div>
-                <button onClick={this.handleEmbedClick}><Icon id={iconVariant} /></button>
-                {horizontal && <a href={card.get('url')} target='_blank' rel='noopener'><Icon id='external-link' /></a>}
+                <button onClick={this.handleEmbedClick}><Icon src={iconVariant} /></button>
+                {horizontal && <a href={card.get('url')} target='_blank' rel='noopener'><Icon src={require('@tabler/icons/icons/external-link.svg')} /></a>}
               </div>
             </div>
           </div>
