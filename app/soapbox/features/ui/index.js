@@ -107,6 +107,7 @@ import {
   ModalContainer,
   ProfileHoverCard,
   RegisterInvite,
+  Share,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -298,6 +299,8 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
         <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />
+
+        <WrappedRoute path='/share' page={DefaultPage} component={Share} content={children} exact />
 
         <WrappedRoute page={EmptyPage} component={GenericNotFound} content={children} />
       </Switch>

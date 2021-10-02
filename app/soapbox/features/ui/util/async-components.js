@@ -405,3 +405,7 @@ export function FollowRecommendations() {
 export function RegisterInvite() {
   return import(/* webpackChunkName: "features/register_invite" */'../../register_invite');
 }
+
+export function Share() {
+  return import(/* webpackChunkName: "features/share" */'../../share');
+}
