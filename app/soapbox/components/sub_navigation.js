@@ -6,7 +6,6 @@ import Icon from 'soapbox/components/icon';
 export default class SubNavigation extends React.PureComponent {
 
   static propTypes = {
-    intl: PropTypes.object.isRequired,
     message: PropTypes.string,
   }
 
