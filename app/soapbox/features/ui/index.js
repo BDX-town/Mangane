@@ -13,6 +13,7 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
+import { fetchMarker } from 'soapbox/actions/markers';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
@@ -445,7 +446,7 @@ class UI extends React.PureComponent {
   });
 
   componentDidMount() {
-    const { account, features } = this.props;
+    const { account, features, dispatch } = this.props;
     if (!account) return;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
@@ -464,32 +465,35 @@ class UI extends React.PureComponent {
     }
 
     if (account) {
-      this.props.dispatch(expandHomeTimeline());
-      this.props.dispatch(expandNotifications());
+      dispatch(expandHomeTimeline());
+
+      dispatch(expandNotifications())
+        .then(() => dispatch(fetchMarker(['notifications'])))
+        .catch(console.error);
 
       if (features.chats) {
-        this.props.dispatch(fetchChats());
+        dispatch(fetchChats());
       }
 
       if (isStaff(account)) {
-        this.props.dispatch(fetchReports({ state: 'open' }));
-        this.props.dispatch(fetchUsers(['local', 'need_approval']));
+        dispatch(fetchReports({ state: 'open' }));
+        dispatch(fetchUsers(['local', 'need_approval']));
       }
 
       if (isAdmin(account)) {
-        this.props.dispatch(fetchConfig());
+        dispatch(fetchConfig());
       }
 
-      setTimeout(() => this.props.dispatch(fetchFilters()), 500);
+      setTimeout(() => dispatch(fetchFilters()), 500);
 
       if (account.get('locked')) {
-        setTimeout(() => this.props.dispatch(fetchFollowRequests()), 700);
+        setTimeout(() => dispatch(fetchFollowRequests()), 700);
       }
 
-      setTimeout(() => this.props.dispatch(fetchScheduledStatuses()), 900);
+      setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
     }
 
-    this.props.dispatch(fetchCustomEmojis());
+    dispatch(fetchCustomEmojis());
     this.connectStreaming();
   }
 

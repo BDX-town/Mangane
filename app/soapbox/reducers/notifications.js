@@ -18,8 +18,12 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
-import { get } from 'lodash';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from 'soapbox/actions/markers';
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   items: ImmutableOrderedMap(),
@@ -32,9 +36,11 @@ const initialState = ImmutableMap({
   lastRead: -1,
 });
 
+const parseId = id => parseInt(id, 10);
+
 // For sorting the notifications
 const comparator = (a, b) => {
-  const parse = m => parseInt(m.get('id'), 10);
+  const parse = m => parseId(m.get('id'));
   if (parse(a) < parse(b)) return 1;
   if (parse(a) > parse(b)) return -1;
   return 0;
@@ -49,14 +55,21 @@ const notificationToMap = notification => ImmutableMap({
   status: notification.status ? notification.status.id : null,
   emoji: notification.emoji,
   chat_message: notification.chat_message,
-  is_seen: get(notification, ['pleroma', 'is_seen'], true),
 });
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
 const isValid = notification => Boolean(notification.account.id);
 
-const countUnseen = notifications => notifications.reduce((acc, cur) =>
-  get(cur, ['pleroma', 'is_seen'], true) === false ? acc + 1 : acc, 0);
+// Count how many notifications appear after the given ID (for unread count)
+const countFuture = (notifications, lastId) => {
+  return notifications.reduce((acc, notification) => {
+    if (parseId(notification.get('id')) > parseId(lastId)) {
+      return acc + 1;
+    } else {
+      return acc;
+    }
+  }, 0);
+};
 
 const normalizeNotification = (state, notification) => {
   const top = state.get('top');
@@ -81,16 +94,12 @@ const processRawNotifications = notifications => (
 
 const expandNormalizedNotifications = (state, notifications, next) => {
   const items = processRawNotifications(notifications);
-  const unread = state.get('unread');
-  const legacyUnread = countUnseen(notifications);
 
   return state.withMutations(mutable => {
     mutable.update('items', map => map.merge(items).sort(comparator));
 
     if (!next) mutable.set('hasMore', false);
     mutable.set('isLoading', false);
-
-    mutable.set('unread', Math.max(legacyUnread, unread));
   });
 };
 
@@ -134,6 +143,22 @@ const updateNotificationsQueue = (state, notification, intlMessages, intlLocale)
   });
 };
 
+const importMarker = (state, marker) => {
+  const lastReadId = marker.getIn(['notifications', 'last_read_id'], -1);
+
+  if (!lastReadId) {
+    return state;
+  }
+
+  return state.withMutations(state => {
+    const notifications = state.get('items');
+    const unread = countFuture(notifications, lastReadId);
+
+    state.set('unread', unread);
+    state.set('lastRead', lastReadId);
+  });
+};
+
 export default function notifications(state = initialState, action) {
   switch(action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
@@ -166,6 +191,10 @@ export default function notifications(state = initialState, action) {
     return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
     return state.set('lastRead', action.lastRead);
+  case MARKER_FETCH_SUCCESS:
+  case MARKER_SAVE_REQUEST:
+  case MARKER_SAVE_SUCCESS:
+    return importMarker(state, fromJS(action.marker));
   case TIMELINE_DELETE:
     return deleteByStatus(state, action.id);
 

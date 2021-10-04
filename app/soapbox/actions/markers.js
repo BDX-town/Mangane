@@ -1,33 +1,33 @@
 import api from '../api';
 
-export const FETCH_MARKERS_REQUEST = 'FETCH_MARKERS_REQUEST';
-export const FETCH_MARKERS_SUCCESS = 'FETCH_MARKERS_SUCCESS';
-export const FETCH_MARKERS_FAIL    = 'FETCH_MARKERS_FAIL';
+export const MARKER_FETCH_REQUEST = 'MARKER_FETCH_REQUEST';
+export const MARKER_FETCH_SUCCESS = 'MARKER_FETCH_SUCCESS';
+export const MARKER_FETCH_FAIL    = 'MARKER_FETCH_FAIL';
 
-export const SAVE_MARKERS_REQUEST = 'SAVE_MARKERS_REQUEST';
-export const SAVE_MARKERS_SUCCESS = 'SAVE_MARKERS_SUCCESS';
-export const SAVE_MARKERS_FAIL    = 'SAVE_MARKERS_FAIL';
+export const MARKER_SAVE_REQUEST = 'MARKER_SAVE_REQUEST';
+export const MARKER_SAVE_SUCCESS = 'MARKER_SAVE_SUCCESS';
+export const MARKER_SAVE_FAIL    = 'MARKER_SAVE_FAIL';
 
-export function fetchMarkers(timeline) {
+export function fetchMarker(timeline) {
   return (dispatch, getState) => {
-    dispatch({ type: FETCH_MARKERS_REQUEST });
+    dispatch({ type: MARKER_FETCH_REQUEST });
     return api(getState).get('/api/v1/markers', {
       params: { timeline },
-    }).then(response => {
-      dispatch({ type: FETCH_MARKERS_SUCCESS, markers: response.data });
+    }).then(({ data: marker }) => {
+      dispatch({ type: MARKER_FETCH_SUCCESS, marker });
     }).catch(error => {
-      dispatch({ type: FETCH_MARKERS_FAIL, error });
+      dispatch({ type: MARKER_FETCH_FAIL, error });
     });
   };
 }
 
-export function saveMarkers(params) {
+export function saveMarker(marker) {
   return (dispatch, getState) => {
-    dispatch({ type: SAVE_MARKERS_REQUEST });
-    return api(getState).post('/api/v1/markers', params).then(response => {
-      dispatch({ type: SAVE_MARKERS_SUCCESS, markers: response.data });
+    dispatch({ type: MARKER_SAVE_REQUEST, marker });
+    return api(getState).post('/api/v1/markers', marker).then(({ data: marker }) => {
+      dispatch({ type: MARKER_SAVE_SUCCESS, marker });
     }).catch(error => {
-      dispatch({ type: SAVE_MARKERS_FAIL, error });
+      dispatch({ type: MARKER_SAVE_FAIL, error });
     });
   };
 }
