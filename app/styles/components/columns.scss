@@ -867,3 +867,13 @@
 .column-list {
   position: relative;
 }
+
+.column-loading {
+  background-color: var(--foreground-color);
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+}
