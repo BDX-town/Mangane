@@ -19,6 +19,7 @@ import {
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -284,13 +285,23 @@ export function setFilter(filterType) {
   };
 }
 
+// Of course Markers don't work properly in Pleroma.
+// https://git.pleroma.social/pleroma/pleroma/-/issues/2769
+export function markReadPleroma(max_id) {
+  return (dispatch, getState) => {
+    return api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
+  };
+}
+
 export function markReadNotifications() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
+    const instance = state.get('instance');
     const topNotificationId = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
     const lastReadId = state.getIn(['notifications', 'lastRead']);
+    const v = parseVersion(instance.get('version'));
 
     if (!(topNotificationId && topNotificationId > lastReadId)) return;
 
@@ -301,5 +312,9 @@ export function markReadNotifications() {
     };
 
     dispatch(saveMarker(marker));
+
+    if (v.software === PLEROMA) {
+      dispatch(markReadPleroma(topNotificationId));
+    }
   };
 }

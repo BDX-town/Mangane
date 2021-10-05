@@ -7,8 +7,8 @@ import { createSelector } from 'reselect';
 const any = arr => arr.some(Boolean);
 
 // For uglification
-const MASTODON = 'Mastodon';
-const PLEROMA  = 'Pleroma';
+export const MASTODON = 'Mastodon';
+export const PLEROMA  = 'Pleroma';
 
 export const getFeatures = createSelector([
   instance => parseVersion(instance.get('version')),
