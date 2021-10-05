@@ -69,6 +69,14 @@ class PrimaryNavigation extends React.PureComponent {
             <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
           </NavLink>}
 
+          <NavLink key='search' className='btn grouped' to='/search'>
+            <Icon
+              src={require('@tabler/icons/icons/search.svg')}
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
+            />
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
+          </NavLink>
+
           {(features.chats && account) && <NavLink key='chats' className='btn grouped' to='/chats' data-preview-title-id='column.chats'>
             <IconWithCounter
               src={require('@tabler/icons/icons/messages.svg')}

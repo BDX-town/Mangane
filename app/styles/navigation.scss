@@ -16,6 +16,12 @@
         svg.icon-tabler {
           stroke-width: 1.5px;
         }
+
+        &--active {
+          svg.icon-tabler-search {
+            stroke-width: 2.5px;
+          }
+        }
       }
 
       &::before {
