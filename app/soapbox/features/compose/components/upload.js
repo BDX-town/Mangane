@@ -7,6 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
 import Blurhash from 'soapbox/components/blurhash';
 
 const MIMETYPE_ICONS = {
@@ -153,8 +154,20 @@ class Upload extends ImmutablePureComponent {
                 backgroundPosition: `${x}% ${y}%` }}
             >
               <div className={classNames('compose-form__upload__actions', { active })}>
-                <button className='icon-button' onClick={this.handleUndoClick}><Icon id='times' /> <FormattedMessage id='upload_form.undo' defaultMessage='Delete' /></button>
-                {mediaType !== 'unknown' && <button className='icon-button' onClick={this.handleOpenModal}><Icon id='search-plus' /> <FormattedMessage id='upload_form.preview' defaultMessage='Preview' /></button>}
+                <IconButton
+                  onClick={this.handleUndoClick}
+                  src={require('@tabler/icons/icons/x.svg')}
+                  text={<FormattedMessage id='upload_form.undo' defaultMessage='Delete' />}
+                />
+
+                {/* Only display the "Preview" button for a valid attachment with a URL */}
+                {(mediaType !== 'unknown' && Boolean(media.get('url'))) && (
+                  <IconButton
+                    onClick={this.handleOpenModal}
+                    src={require('@tabler/icons/icons/zoom-in.svg')}
+                    text={<FormattedMessage id='upload_form.preview' defaultMessage='Preview' />}
+                  />
+                )}
               </div>
 
               <div className={classNames('compose-form__upload-description', { active })}>

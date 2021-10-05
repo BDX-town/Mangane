@@ -26,6 +26,10 @@ export const getFeatures = createSelector([
     suggestions: v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
     suggestionsV2: v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+    mediaV2: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
+      v.software === PLEROMA && gte(v.version, '2.1.0'),
+    ]),
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
     attachmentLimit: v.software === PLEROMA ? Infinity : 4,

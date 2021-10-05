@@ -86,7 +86,7 @@
     display: inline-flex;
     align-items: center;
 
-    .icon_button__text {
+    &__text {
       font-size: 14px;
       padding-left: 5px;
     }
