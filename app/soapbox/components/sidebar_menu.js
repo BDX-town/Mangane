@@ -91,8 +91,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-export default @connect(makeMapStateToProps, mapDispatchToProps)
-@injectIntl
+export default @injectIntl
+@connect(makeMapStateToProps, mapDispatchToProps)
 class SidebarMenu extends ImmutablePureComponent {
 
   static propTypes = {
