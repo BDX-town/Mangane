@@ -177,6 +177,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
     soapbox: ImmutablePropTypes.map.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   state = {
@@ -205,7 +206,7 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render() {
-    const { children, soapbox } = this.props;
+    const { children, soapbox, features } = this.props;
     const authenticatedProfile = soapbox.get('authenticatedProfile');
 
     return (
@@ -221,7 +222,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />
         <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
-        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/messages' page={DefaultPage} component={features.directTimeline ? DirectTimeline : Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
@@ -686,7 +687,7 @@ class UI extends React.PureComponent {
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
 
-          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
+          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>
             {children}
           </SwitchingColumnsArea>
 

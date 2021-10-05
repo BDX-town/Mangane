@@ -1,5 +1,6 @@
 // Detect backend features to conditionally render elements
 import gte from 'semver/functions/gte';
+import lt from 'semver/functions/lt';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
 
@@ -29,6 +30,14 @@ export const getFeatures = createSelector([
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
       v.software === PLEROMA && gte(v.version, '2.1.0'),
+    ]),
+    directTimeline: any([
+      v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
+    ]),
+    conversations: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
+      v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
