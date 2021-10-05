@@ -8,21 +8,11 @@ import DisplayName from './display_name';
 import Permalink from './permalink';
 import Icon from './icon';
 import IconButton from './icon_button';
+import ActionButton from 'soapbox/features/ui/components/action_button';
 import RelativeTimestamp from './relative_timestamp';
-import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
 import emojify from 'soapbox/features/emoji/emoji';
-
-const messages = defineMessages({
-  follow: { id: 'account.follow', defaultMessage: 'Follow' },
-  unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
-  requested: { id: 'account.requested', defaultMessage: 'Awaiting approval' },
-  unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
-  unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
-  mute_notifications: { id: 'account.mute_notifications', defaultMessage: 'Mute notifications from @{name}' },
-  unmute_notifications: { id: 'account.unmute_notifications', defaultMessage: 'Unmute notifications from @{name}' },
-});
 
 const mapStateToProps = state => {
   return {
@@ -31,7 +21,6 @@ const mapStateToProps = state => {
 };
 
 export default @connect(mapStateToProps)
-@injectIntl
 class Account extends ImmutablePureComponent {
 
   static propTypes = {
@@ -80,7 +69,7 @@ class Account extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, intl, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship, reaction } = this.props;
+    const { account, hidden, onActionClick, actionIcon, actionTitle, me, withDate, withRelationship, reaction } = this.props;
 
     if (!account) {
       return <div />;
@@ -102,33 +91,7 @@ class Account extends ImmutablePureComponent {
     if (onActionClick && actionIcon) {
       buttons = <IconButton src={actionIcon} title={actionTitle} onClick={this.handleAction} />;
     } else if (account.get('id') !== me && account.get('relationship', null) !== null) {
-      const following = account.getIn(['relationship', 'following']);
-      const requested = account.getIn(['relationship', 'requested']);
-      const blocking  = account.getIn(['relationship', 'blocking']);
-      const muting  = account.getIn(['relationship', 'muting']);
-
-      followedBy  = account.getIn(['relationship', 'followed_by']);
-
-      if (requested) {
-        buttons = <IconButton disabled icon='hourglass' title={intl.formatMessage(messages.requested)} />;
-      } else if (blocking) {
-        buttons = <IconButton active icon='unlock' title={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
-      } else if (muting) {
-        let hidingNotificationsButton;
-        if (account.getIn(['relationship', 'muting_notifications'])) {
-          hidingNotificationsButton = <IconButton active icon='bell' title={intl.formatMessage(messages.unmute_notifications, { name: account.get('username') })} onClick={this.handleUnmuteNotifications} />;
-        } else {
-          hidingNotificationsButton = <IconButton active icon='bell-slash' title={intl.formatMessage(messages.mute_notifications, { name: account.get('username')  })} onClick={this.handleMuteNotifications} />;
-        }
-        buttons = (
-          <Fragment>
-            <IconButton active icon='volume-up' title={intl.formatMessage(messages.unmute, { name: account.get('username') })} onClick={this.handleMute} />
-            {hidingNotificationsButton}
-          </Fragment>
-        );
-      } else if (!account.get('moved') || following) {
-        buttons = <IconButton src={following ? require('@tabler/icons/icons/user-x.svg') : require('@tabler/icons/icons/user-plus.svg')} title={intl.formatMessage(following ? messages.unfollow : messages.follow)} onClick={this.handleFollow} active={following} />;
-      }
+      buttons = <ActionButton account={account} />;
     }
 
     if (reaction) {
