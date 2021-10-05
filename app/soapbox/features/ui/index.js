@@ -668,7 +668,7 @@ class UI extends React.PureComponent {
         className='floating-action-button'
         aria-label={intl.formatMessage(messages.publish)}
       >
-        <Icon src={require('@tabler/icons/icons/pencil.svg')} fixedWidth />
+        <Icon src={require('icons/pen-add.svg')} />
       </button>
     );
 

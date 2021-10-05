@@ -47,7 +47,10 @@ class ThumbNavigation extends React.PureComponent {
     return (
       <div className='thumb-navigation'>
         <NavLink to='/' exact className='thumb-navigation__link'>
-          <Icon src={location.pathname === '/' ? require('icons/home-2-filled.svg') : require('@tabler/icons/icons/home-2.svg')} />
+          <Icon
+            src={require('icons/home-square.svg')}
+            className={classNames('svg-icon--home', { 'svg-icon--active': location.pathname === '/' })}
+          />
           <span>
             <FormattedMessage id='navigation.home' defaultMessage='Home' />
           </span>

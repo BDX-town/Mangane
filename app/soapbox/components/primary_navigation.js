@@ -56,7 +56,10 @@ class PrimaryNavigation extends React.PureComponent {
       <div className='column-header__wrapper primary-navigation__wrapper'>
         <h1 className='column-header primary-navigation'>
           <NavLink to='/' exact className='btn grouped'>
-            <Icon src={location.pathname === '/' ? require('icons/home-2-filled.svg') : require('@tabler/icons/icons/home-2.svg')} className='primary-navigation__icon' />
+            <Icon
+              src={require('icons/home-square.svg')}
+              className={classNames('primary-navigation__icon', 'svg-icon--home', { 'svg-icon--active': location.pathname === '/' })}
+            />
             <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
           </NavLink>
 
