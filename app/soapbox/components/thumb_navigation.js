@@ -56,8 +56,11 @@ class ThumbNavigation extends React.PureComponent {
         {account && (
           <NavLink to='/notifications' className='thumb-navigation__link'>
             <IconWithCounter
-              src={notificationCount > 0 ? require('@tabler/icons/icons/bell-ringing-2.svg') : require('@tabler/icons/icons/bell.svg')}
-              className={classNames({ 'svg-icon--active': location.pathname === '/notifications' })}
+              src={require('@tabler/icons/icons/bell.svg')}
+              className={classNames({
+                'svg-icon--active': location.pathname === '/notifications',
+                'svg-icon--unread': notificationCount > 0,
+              })}
               count={notificationCount}
             />
             <span>

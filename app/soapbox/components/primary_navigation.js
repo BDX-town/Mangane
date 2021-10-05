@@ -63,8 +63,11 @@ class PrimaryNavigation extends React.PureComponent {
           {account && (
             <NavLink key='notifications' className='btn grouped' to='/notifications' data-preview-title-id='column.notifications'>
               <IconWithCounter
-                src={notificationCount > 0 ? require('@tabler/icons/icons/bell-ringing-2.svg') : require('@tabler/icons/icons/bell.svg')}
-                className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/notifications' })}
+                src={require('@tabler/icons/icons/bell.svg')}
+                className={classNames('primary-navigation__icon', {
+                  'svg-icon--active': location.pathname === '/notifications',
+                  'svg-icon--unread': notificationCount > 0,
+                })}
                 count={notificationCount}
               />
               <FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />
