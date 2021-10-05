@@ -29,6 +29,15 @@
         fill: var(--primary-text-color);
       }
     }
+
+    svg.icon-tabler-mail {
+      stroke: var(--background-color);
+
+      rect {
+        fill: var(--primary-text-color);
+        stroke: var(--primary-text-color);
+      }
+    }
   }
 }
 

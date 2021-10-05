@@ -66,17 +66,29 @@ class ThumbNavigation extends React.PureComponent {
           </NavLink>
         )}
 
-        {(features.chats && account) && (
-          <NavLink to='/chats' className='thumb-navigation__link'>
-            <IconWithCounter
-              src={require('@tabler/icons/icons/messages.svg')}
-              className={classNames({ 'svg-icon--active': location.pathname === '/chats' })}
-              count={chatsCount}
-            />
-            <span>
-              <FormattedMessage id='navigation.chats' defaultMessage='Chats' />
-            </span>
-          </NavLink>
+        {account && (
+          features.chats ? (
+            <NavLink to='/chats' className='thumb-navigation__link'>
+              <IconWithCounter
+                src={require('@tabler/icons/icons/messages.svg')}
+                className={classNames({ 'svg-icon--active': location.pathname === '/chats' })}
+                count={chatsCount}
+              />
+              <span>
+                <FormattedMessage id='navigation.chats' defaultMessage='Chats' />
+              </span>
+            </NavLink>
+          ) : (
+            <NavLink to='/messages' className='thumb-navigation__link'>
+              <Icon
+                src={require('@tabler/icons/icons/mail.svg')}
+                className={classNames({ 'svg-icon--active': ['/messages', '/conversations'].includes(location.pathname) })}
+              />
+              <span>
+                <FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />
+              </span>
+            </NavLink>
+          )
         )}
 
         <NavLink to='/search' className='thumb-navigation__link'>

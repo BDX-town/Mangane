@@ -58,6 +58,7 @@ import {
   Reactions,
   // Favourites,
   DirectTimeline,
+  Conversations,
   HashtagTimeline,
   Notifications,
   FollowRequests,
@@ -219,6 +220,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />
+        <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
@@ -236,14 +238,20 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
         <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
         <Redirect from='/web/:path' to='/:path' />
+        <Redirect from='/statuses/new' to='/' />
         <Redirect from='/timelines/home' to='/' />
+        <Redirect from='/timelines/public/local' to='/timeline/local' />
+        <Redirect from='/timelines/public' to='/timeline/fediverse' />
+        <Redirect from='/timelines/direct' to='/messages' />
         <Redirect from='/main/all' to='/timeline/fediverse' />
         <Redirect from='/main/public' to='/timeline/local' />
         <Redirect from='/main/friends' to='/' />
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
         <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <Redirect from='/users/:username/chats' to='/chats' />
         <Redirect from='/users/:username' to='/@:username' />
+        <Redirect from='/terms' to='/about' />
         <Redirect from='/home' to='/' />
 
         {/* Soapbox Legacy redirects */}
@@ -286,6 +294,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
 
         <Redirect from='/registration/:token' to='/invite/:token' />
+        <Redirect from='/registration' to='/' />
         <WrappedRoute path='/invite/:token' component={RegisterInvite} content={children} publicRoute />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
