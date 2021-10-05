@@ -151,7 +151,7 @@
     position: absolute;
     top: 100%;
     width: 100%;
-    z-index: 99;
+    z-index: 501; /* Above TimelineQueueHeader */
     box-shadow: 4px 4px 6px rgba($base-shadow-color, 0.4);
     background: var(--background-color);
     border-radius: 0 0 4px 4px;
