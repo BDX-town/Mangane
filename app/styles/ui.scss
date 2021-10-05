@@ -671,6 +671,12 @@
       }
     }
   }
+
+  button .svg-icon {
+    width: 18px;
+    height: 18px;
+    margin: 0 auto;
+  }
 }
 
 .reaction__filter-bar {
@@ -720,7 +726,8 @@
     display: block;
     position: absolute;
     content: '\f00c';
-    font: normal normal normal 14px/1 ForkAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     font-size: 0.6em;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;

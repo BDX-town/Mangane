@@ -67,49 +67,49 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('mention')}
           title={intl.formatMessage(tooltips.mentions)}
         >
-          <Icon id='at' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/at.svg')} />
         </button>
         <button
           className={selectedFilter === 'favourite' ? 'active' : ''}
           onClick={this.onClick('favourite')}
           title={intl.formatMessage(tooltips.favourites)}
         >
-          <Icon id='thumbs-up' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />
         </button>
         {supportsEmojiReacts && <button
           className={selectedFilter === 'pleroma:emoji_reaction' ? 'active' : ''}
           onClick={this.onClick('pleroma:emoji_reaction')}
           title={intl.formatMessage(tooltips.emoji_reacts)}
         >
-          <Icon id='smile-o' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/mood-smile.svg')} />
         </button>}
         <button
           className={selectedFilter === 'reblog' ? 'active' : ''}
           onClick={this.onClick('reblog')}
           title={intl.formatMessage(tooltips.boosts)}
         >
-          <Icon id='retweet' fixedWidth />
+          <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
         </button>
         <button
           className={selectedFilter === 'poll' ? 'active' : ''}
           onClick={this.onClick('poll')}
           title={intl.formatMessage(tooltips.polls)}
         >
-          <Icon id='tasks' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/chart-bar.svg')} />
         </button>
         <button
           className={selectedFilter === 'follow' ? 'active' : ''}
           onClick={this.onClick('follow')}
           title={intl.formatMessage(tooltips.follows)}
         >
-          <Icon id='user-plus' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/user-plus.svg')} />
         </button>
         <button
           className={selectedFilter === 'move' ? 'active' : ''}
           onClick={this.onClick('move')}
           title={intl.formatMessage(tooltips.moves)}
         >
-          <Icon id='suitcase' fixedWidth />
+          <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
         </button>
       </div>
     );
