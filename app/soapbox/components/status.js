@@ -414,21 +414,22 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
-        const audio = status.getIn(['media_attachments', 0]);
+        const attachment = status.getIn(['media_attachments', 0]);
 
         media = (
           <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
             {Component => (
               <Component
-                src={audio.get('url')}
-                alt={audio.get('description')}
+                src={attachment.get('url')}
+                alt={attachment.get('description')}
+                poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : status.getIn(['account', 'avatar_static'])}
+                backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+                foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+                accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+                duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
                 width={this.props.cachedMediaWidth}
                 height={263}
-                inline
-                sensitive={status.get('sensitive')}
                 cacheWidth={this.props.cacheMediaWidth}
-                visible={this.state.showMedia}
-                onOpenAudio={this.handleOpenAudio}
               />
             )}
           </Bundle>

@@ -467,13 +467,13 @@ class Audio extends React.PureComponent {
           aria-label={alt}
         />
 
-        <img
+        {this.props.poster && <img
           src={this.props.poster}
           alt=''
           width={(this._getRadius() - TICK_SIZE) * 2 || null}
           height={(this._getRadius() - TICK_SIZE) * 2 || null}
           style={{ position: 'absolute', left: this._getCX(), top: this._getCY(), transform: 'translate(-50%, -50%)', borderRadius: '50%', pointerEvents: 'none' }}
-        />
+        />}
 
         <div className='video-player__seek' onMouseDown={this.handleMouseDown} ref={this.setSeekRef}>
           <div className='video-player__seek__buffer' style={{ width: `${buffer}%` }} />
@@ -490,8 +490,8 @@ class Audio extends React.PureComponent {
         <div className='video-player__controls active'>
           <div className='video-player__buttons-bar'>
             <div className='video-player__buttons left'>
-              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon id={paused ? 'play' : 'pause'} fixedWidth /></button>
-              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon id={muted ? 'volume-off' : 'volume-up'} fixedWidth /></button>
+              <button type='button' title={intl.formatMessage(paused ? messages.play : messages.pause)} aria-label={intl.formatMessage(paused ? messages.play : messages.pause)} className='player-button' onClick={this.togglePlay}><Icon src={paused ? require('@tabler/icons/icons/player-play.svg') : require('@tabler/icons/icons/player-pause.svg')} /></button>
+              <button type='button' title={intl.formatMessage(muted ? messages.unmute : messages.mute)} aria-label={intl.formatMessage(muted ? messages.unmute : messages.mute)} className='player-button' onClick={this.toggleMute}><Icon src={muted ? require('@tabler/icons/icons/volume-3.svg') : require('@tabler/icons/icons/volume.svg')} /></button>
 
               <div className={classNames('video-player__volume', { active: this.state.hovered })} ref={this.setVolumeRef} onMouseDown={this.handleVolumeMouseDown}>
                 <div className='video-player__volume__current' style={{ width: `${volume * 100}%`, backgroundColor: this._getAccentColor() }} />
@@ -521,7 +521,7 @@ class Audio extends React.PureComponent {
                 download
                 target='_blank'
               >
-                <Icon id={'download'} fixedWidth />
+                <Icon src={require('@tabler/icons/icons/download.svg')} />
               </a>
             </div>
           </div>

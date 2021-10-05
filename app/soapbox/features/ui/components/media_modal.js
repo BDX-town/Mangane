@@ -159,65 +159,65 @@ class MediaModal extends ImmutablePureComponent {
       return false;
     }).toArray();
 
-    const content = media.map((image) => {
-      const width  = image.getIn(['meta', 'original', 'width']) || null;
-      const height = image.getIn(['meta', 'original', 'height']) || null;
+    const content = media.map(attachment => {
+      const width  = attachment.getIn(['meta', 'original', 'width']) || null;
+      const height = attachment.getIn(['meta', 'original', 'height']) || null;
       const link = (status && account && <a href={status.get('url')} onClick={this.handleStatusClick}><FormattedMessage id='lightbox.view_context' defaultMessage='View context' /></a>);
 
-      if (image.get('type') === 'image') {
+      if (attachment.get('type') === 'image') {
         return (
           <ImageLoader
-            previewSrc={image.get('preview_url')}
-            src={image.get('url')}
+            previewSrc={attachment.get('preview_url')}
+            src={attachment.get('url')}
             width={width}
             height={height}
-            alt={image.get('description')}
-            key={image.get('url')}
+            alt={attachment.get('description')}
+            key={attachment.get('url')}
             onClick={this.toggleNavigation}
           />
         );
-      } else if (image.get('type') === 'video') {
+      } else if (attachment.get('type') === 'video') {
         const { time } = this.props;
 
         return (
           <Video
-            preview={image.get('preview_url')}
-            blurhash={image.get('blurhash')}
-            src={image.get('url')}
-            width={image.get('width')}
-            height={image.get('height')}
+            preview={attachment.get('preview_url')}
+            blurhash={attachment.get('blurhash')}
+            src={attachment.get('url')}
+            width={attachment.get('width')}
+            height={attachment.get('height')}
             startTime={time || 0}
             onCloseVideo={onClose}
             detailed
             link={link}
-            alt={image.get('description')}
-            key={image.get('url')}
+            alt={attachment.get('description')}
+            key={attachment.get('url')}
           />
         );
-      } else if (image.get('type') === 'audio') {
-        const { time } = this.props;
-
+      } else if (attachment.get('type') === 'audio') {
         return (
           <Audio
-            src={image.get('url')}
-            startTime={time || 0}
-            detailed
-            link={link}
-            alt={image.get('description')}
-            key={image.get('url')}
+            src={attachment.get('url')}
+            alt={attachment.get('description')}
+            poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : (status && status.getIn(['account', 'avatar_static']))}
+            backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+            foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+            accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+            duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
+            key={attachment.get('url')}
           />
         );
-      } else if (image.get('type') === 'gifv') {
+      } else if (attachment.get('type') === 'gifv') {
         return (
           <ExtendedVideoPlayer
-            src={image.get('url')}
+            src={attachment.get('url')}
             muted
             controls={false}
             width={width}
             link={link}
             height={height}
-            key={image.get('preview_url')}
-            alt={image.get('description')}
+            key={attachment.get('preview_url')}
+            alt={attachment.get('description')}
             onClick={this.toggleNavigation}
           />
         );
