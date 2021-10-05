@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
+import Icon from 'soapbox/components/icon';
 import ProfileDropdown from './profile_dropdown';
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
@@ -57,9 +58,14 @@ class TabsBar extends React.PureComponent {
       <nav className={classes} ref={this.setRef}>
         <div className='tabs-bar__container'>
           <div className='tabs-bar__split tabs-bar__split--left'>
-            {logo && (
+            {logo ? (
               <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
                 <img alt='Logo' src={logo} />
+                <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
+              </Link>
+            ) : (
+              <Link key='logo' className='tabs-bar__link--logo' to='/' data-preview-title-id='column.home'>
+                <Icon alt='Logo' src={require('icons/home-2-filled.svg')} />
                 <span><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
               </Link>
             )}

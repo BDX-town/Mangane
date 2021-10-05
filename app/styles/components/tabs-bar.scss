@@ -276,10 +276,19 @@
     padding: 13px 0 0;
     box-sizing: border-box;
     filter: brightness(0%) grayscale(100%) invert(100%);
-    & span { display: none !important; }
+
+    & span {
+      display: none !important;
+    }
 
     img {
       height: 100%;
+    }
+
+    .svg-icon {
+      width: 26px;
+      height: 26px;
+      margin: 0 auto;
     }
 
     &:hover {
