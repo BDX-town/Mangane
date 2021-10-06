@@ -126,15 +126,6 @@
   vertical-align: middle;
 }
 
-.status-container {
-  padding-bottom: 10px;
-}
-
-.status__wrapper {
-  @include standard-panel;
-  padding: 15px 0 10px;
-}
-
 .status__wrapper--filtered {
   color: var(--primary-text-color);
   border: 0;
@@ -717,5 +708,14 @@ a.status-card.compact:hover {
         width: unset;
       }
     }
+  }
+}
+
+.material-status {
+  padding-bottom: 10px;
+
+  &__status {
+    @include standard-panel;
+    padding: 15px 0 10px;
   }
 }
