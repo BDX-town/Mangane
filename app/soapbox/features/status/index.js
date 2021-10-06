@@ -37,7 +37,6 @@ import { initMuteModal } from '../../actions/mutes';
 import { initReport } from '../../actions/reports';
 import { makeGetStatus } from '../../selectors';
 // import ColumnHeader from '../../components/column_header';
-import StatusContainer from '../../containers/status_container';
 import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -49,6 +48,7 @@ import { textForScreenReader, defaultMediaVisibility } from '../../components/st
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import ThreadStatus from './components/thread_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
@@ -471,10 +471,13 @@ class Status extends ImmutablePureComponent {
   }
 
   renderStatus(id) {
+    const { status } = this.props;
+
     return (
-      <StatusContainer
+      <ThreadStatus
         key={id}
         id={id}
+        focusedStatusId={status && status.get('id')}
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
@@ -600,7 +603,7 @@ class Status extends ImmutablePureComponent {
             <div className='thread__ancestors'>{ancestors}</div>
           )}
 
-          <div className='thread__status'>
+          <div className='thread__status thread__status--focused'>
             <HotKeys handlers={handlers}>
               <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
                 <DetailedStatus

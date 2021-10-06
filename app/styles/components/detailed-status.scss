@@ -157,3 +157,32 @@
   float: left;
   margin-right: 5px;
 }
+
+.thread {
+  &__status {
+    position: relative;
+  }
+
+  &__connector {
+    background: hsla(var(--primary-text-color_hsl), 0.2);
+    position: absolute;
+    width: 2px;
+    left: 33px;
+    display: none;
+
+    &--bottom {
+      height: calc(100% - 8px - 48px - 14px);
+      top: calc(8px + 48px + 13px);
+      display: block;
+    }
+
+    @media screen and (min-width: 630px) {
+      left: 38px;
+
+      &--bottom {
+        height: calc(100% - 15px - 48px);
+        top: calc(15px + 48px + 9px);
+      }
+    }
+  }
+}
