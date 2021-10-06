@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   following: {
@@ -14,7 +16,16 @@ const messages = defineMessages({
 });
 
 
-export default @injectIntl
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+
+  return {
+    features: getFeatures(instance),
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
 class MoreFollows extends React.PureComponent {
 
   static propTypes = {
@@ -22,6 +33,7 @@ class MoreFollows extends React.PureComponent {
     count: PropTypes.number,
     type: PropTypes.string,
     intl: PropTypes.object.isRequired,
+    features: PropTypes.object.isRequired,
   }
 
   static defaultProps = {
@@ -34,6 +46,13 @@ class MoreFollows extends React.PureComponent {
   }
 
   render() {
+    const { features } = this.props;
+
+    // If the instance isn't federating, there are no remote followers
+    if (!features.federating) {
+      return null;
+    }
+
     return (
       <div className='morefollows-indicator'>
         <div>
