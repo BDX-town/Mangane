@@ -160,9 +160,18 @@
   margin-right: 5px;
 }
 
-/* Connect the first status to the SubNavigation */
-.detailed-status__ancestors .status-container:first-child .status__wrapper,
-.detailed-status-container > div:first-child .detailed-status__wrapper {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.thread {
+  // Don't display gaps between statuses in a thread
+  .status-container {
+    padding: 0;
+  }
+
+  .status__wrapper {
+    border-radius: 0;
+  }
+
+  .detailed-status__wrapper {
+    border-radius: 0;
+    margin: 0;
+  }
 }
