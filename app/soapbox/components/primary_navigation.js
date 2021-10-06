@@ -77,14 +77,6 @@ class PrimaryNavigation extends React.PureComponent {
             </NavLink>
           )}
 
-          <NavLink key='search' className='btn grouped' to='/search'>
-            <Icon
-              src={require('@tabler/icons/icons/search.svg')}
-              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
-            />
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </NavLink>
-
           {account && (
             features.chats ? (
               <NavLink key='chats' className='btn grouped' to='/chats' data-preview-title-id='column.chats'>
@@ -105,6 +97,14 @@ class PrimaryNavigation extends React.PureComponent {
               </NavLink>
             )
           )}
+
+          <NavLink key='search' className='btn grouped' to='/search'>
+            <Icon
+              src={require('@tabler/icons/icons/search.svg')}
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
+            />
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
+          </NavLink>
 
           {(account && isStaff(account)) && (
             <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>

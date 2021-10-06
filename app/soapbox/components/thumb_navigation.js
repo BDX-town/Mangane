@@ -72,16 +72,6 @@ class ThumbNavigation extends React.PureComponent {
           </NavLink>
         )}
 
-        <NavLink to='/search' className='thumb-navigation__link'>
-          <Icon
-            src={require('@tabler/icons/icons/search.svg')}
-            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
-          />
-          <span>
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </span>
-        </NavLink>
-
         {account && (
           features.chats ? (
             <NavLink to='/chats' className='thumb-navigation__link'>
@@ -106,6 +96,16 @@ class ThumbNavigation extends React.PureComponent {
             </NavLink>
           )
         )}
+
+        <NavLink to='/search' className='thumb-navigation__link'>
+          <Icon
+            src={require('@tabler/icons/icons/search.svg')}
+            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+          />
+          <span>
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
+          </span>
+        </NavLink>
 
         {(account && isStaff(account)) && (
           <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>
