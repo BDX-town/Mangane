@@ -194,6 +194,11 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  border-radius: 10px;
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+  }
 
   & > div {
     width: 100%;
