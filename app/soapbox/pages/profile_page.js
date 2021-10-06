@@ -19,6 +19,8 @@ import { displayFqn } from 'soapbox/utils/state';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
 import { Redirect } from 'react-router-dom';
+import classNames from 'classnames';
+
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
@@ -75,13 +77,20 @@ class ProfilePage extends ImmutablePureComponent {
       return <Redirect to={`/@${realAccount.get('acct')}`} />;
     }
 
+    let headerMissing;
+    const header = account ? account.get('header', '') : undefined;
+
+    if (header) {
+      headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path)) || !account.getIn(['pleroma', 'is_active'], true);
+    }
+
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
         {account && <Helmet>
           <title>@{getAcct(account, displayFqn)}</title>
         </Helmet>}
 
-        <div className='page__top'>
+        <div className={classNames('page__top', { 'page__top__no-header': headerMissing })}>
           <HeaderContainer accountId={accountId} username={accountUsername} />
         </div>
 

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   isStaff,
@@ -17,14 +18,18 @@ import {
 } from 'soapbox/utils/accounts';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
+import { getAcct } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
-import { debounce } from 'lodash';
+import { debounce, throttle } from 'lodash';
 import StillImage from 'soapbox/components/still_image';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
 import { openModal } from 'soapbox/actions/modal';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import Badge from 'soapbox/components/badge';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -65,6 +70,8 @@ const messages = defineMessages({
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
+  deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
 const mapStateToProps = state => {
@@ -77,6 +84,8 @@ const mapStateToProps = state => {
     me,
     meAccount: account,
     features,
+    displayFqn: displayFqn(state),
+
   };
 };
 
@@ -91,10 +100,12 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     features: PropTypes.object,
+    displayFqn: PropTypes.bool,
   };
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
+    isLocked: false,
   }
 
   isStatusesPageActive = (match, location) => {
@@ -106,11 +117,17 @@ class Header extends ImmutablePureComponent {
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
+  }
+
+  setRef = (c) => {
+    this.node = c;
   }
 
   handleResize = debounce(() => {
@@ -118,6 +135,15 @@ class Header extends ImmutablePureComponent {
   }, 5, {
     trailing: true,
   });
+
+  handleScroll = throttle(() => {
+    const { top } = this.node.getBoundingClientRect();
+    const isLocked = top <= 60;
+
+    if (this.state.isLocked !== isLocked) {
+      this.setState({ isLocked });
+    }
+  }, 100, { trailing: true });
 
   onAvatarClick = () => {
     const avatar_url = this.props.account.get('avatar');
@@ -295,16 +321,18 @@ class Header extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, username, me, features } = this.props;
-    const { isSmallScreen } = this.state;
+    const { account, displayFqn, intl, username, me, features } = this.props;
+    const { isSmallScreen, isLocked } = this.state;
 
     if (!account) {
       return (
         <div className='account__header'>
           <div className='account__header__image account__header__image--none' />
-          <div className='account__header__bar'>
+          <div className='account__header__bar' ref={this.setRef}>
             <div className='account__header__extra'>
-              <div className='account__header__avatar' />
+              <div className='account__header__card'>
+                <div className='account__header__avatar' />
+              </div>
             </div>
             {isSmallScreen && (
               <div className='account-mobile-container account-mobile-container--nonuser'>
@@ -326,6 +354,10 @@ class Header extends ImmutablePureComponent {
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
+    const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
+    const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
         <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
@@ -342,12 +374,23 @@ class Header extends ImmutablePureComponent {
           </div>}
         </div>
 
-        <div className='account__header__bar'>
+        <div className='account__header__bar' ref={this.setRef}>
           <div className='account__header__extra'>
 
-            <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
-              <Avatar account={account} size={avatarSize} />
-            </a>
+            <div className={classNames('account__header__card', { 'is-locked': !isSmallScreen && isLocked })}>
+              <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank' aria-hidden={!isSmallScreen && isLocked}>
+                <Avatar account={account} size={avatarSize} />
+              </a>
+              <div className='account__header__name' aria-hidden={isSmallScreen || !isLocked}>
+                <Avatar account={account} size={40} />
+                <div>
+                  <span dangerouslySetInnerHTML={displayNameHtml} className={classNames('profile-info-panel__name-content', { 'with-badge': verified })} />
+                  {verified && <VerificationBadge />}
+                  {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+                  { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
+                </div>
+              </div>
+            </div>
 
             {isSmallScreen && (
               <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
