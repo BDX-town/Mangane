@@ -6,18 +6,20 @@ export default class Column extends React.PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
+    transparent: PropTypes.bool,
     children: PropTypes.node,
     label: PropTypes.string,
   };
 
   render() {
-    const { className, label, children } = this.props;
+    const { className, label, children, transparent, ...rest } = this.props;
 
     return (
       <div
         role='region'
         aria-label={label}
-        className={classNames('column', className)}
+        className={classNames('column', className, { 'column--transparent': transparent })}
+        {...rest}
       >
         {children}
       </div>

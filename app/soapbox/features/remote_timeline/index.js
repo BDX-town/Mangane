@@ -85,7 +85,7 @@ class RemoteTimeline extends React.PureComponent {
     const { intl, hasUnread, onlyMedia, timelineId, instance, pinned } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
+      <Column label={intl.formatMessage(messages.title)} transparent>
         <HomeColumnHeader activeItem='fediverse' active={hasUnread} />
         <PinnedHostsPicker host={instance} />
         {!pinned && <div className='timeline-filter-message'>

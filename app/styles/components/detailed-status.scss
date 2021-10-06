@@ -111,7 +111,6 @@
 }
 
 .detailed-status__wrapper {
-  @include standard-panel;
   margin-bottom: 10px;
   position: relative;
   overflow: hidden;
@@ -158,20 +157,4 @@
 .detailed-status .status__favicon {
   float: left;
   margin-right: 5px;
-}
-
-.thread {
-  // Don't display gaps between statuses in a thread
-  .status-container {
-    padding: 0;
-  }
-
-  .status__wrapper {
-    border-radius: 0;
-  }
-
-  .detailed-status__wrapper {
-    border-radius: 0;
-    margin: 0;
-  }
 }

@@ -97,7 +97,7 @@ class CommunityTimeline extends React.PureComponent {
     const { intl, onlyMedia, timelineId, siteTitle, showExplanationBox, explanationBoxExpanded } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
+      <Column label={intl.formatMessage(messages.title)} transparent>
         <SubNavigation message={intl.formatMessage(messages.title)} />
         <PinnedHostsPicker />
         {showExplanationBox && <div className='explanation-box'>

@@ -67,8 +67,8 @@ class HomePage extends ImmutablePureComponent {
               </div>
             </div>
 
-            <div className='columns-area__panels__main columns-area__panels__main--transparent'>
-              <div className='columns-area columns-area--mobile columns-area--transparent'>
+            <div className='columns-area__panels__main'>
+              <div className='columns-area'>
                 {me && <div className='timeline-compose-block' ref={this.composeBlock}>
                   <Link className='timeline-compose-block__avatar' to={`/@${acct}`}>
                     <Avatar account={account} size={46} />

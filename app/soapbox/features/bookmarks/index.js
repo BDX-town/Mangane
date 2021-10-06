@@ -55,7 +55,7 @@ class Bookmarks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
     return (
-      <Column icon='bookmark' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column heading={intl.formatMessage(messages.heading)} transparent>
         <StatusList
           trackScroll={!pinned}
           statusIds={statusIds}

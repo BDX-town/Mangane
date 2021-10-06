@@ -170,15 +170,6 @@
     margin-top: 8px;
   }
 
-  &.status-direct:not(.read) {
-    background: var(--brand-color--med);
-    border-bottom-color: var(--brand-color--med);
-
-    .status__content a {
-      color: var(--brand-color--hicontrast);
-    }
-  }
-
   &.light {
     .status__relative-time {
       color: var(--primary-text-color--faint);
