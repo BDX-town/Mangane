@@ -30,7 +30,7 @@ class BundleColumnError extends React.PureComponent {
       <Column>
         <ColumnHeader icon='exclamation-circle' type={formatMessage(messages.title)} />
         <div className='error-column'>
-          <IconButton title={formatMessage(messages.retry)} icon='refresh' onClick={this.handleRetry} size={64} />
+          <IconButton title={formatMessage(messages.retry)} src={require('@tabler/icons/icons/refresh.svg')} onClick={this.handleRetry} />
           {formatMessage(messages.body)}
         </div>
       </Column>

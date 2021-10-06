@@ -343,7 +343,7 @@
 .columns-area--mobile .column {
   @include standard-panel;
 
-  @media screen and (max-width: 450px) {
+  @media screen and (max-width: 580px) {
     border-radius: 0;
   }
 }
@@ -736,6 +736,17 @@
 
 .error-column {
   flex-direction: column;
+  border-radius: 0 0 10px 10px;
+
+  .svg-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 30px;
+  }
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+  }
 }
 
 .column-link--transparent .icon-with-badge__badge {
