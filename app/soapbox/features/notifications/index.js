@@ -179,7 +179,7 @@ class Notifications extends React.PureComponent {
     );
 
     return (
-      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)}>
+      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} className='column--notifications'>
         <ColumnHeader icon='bell' active={isUnread} title={intl.formatMessage(messages.title)}>
           <ColumnSettingsContainer />
         </ColumnHeader>

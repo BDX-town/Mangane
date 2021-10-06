@@ -1,3 +1,12 @@
+.notification {
+  border-bottom: 1px solid var(--brand-color--med);
+  padding: 10px 0;
+}
+
+.notification-mention {
+  padding: 15px 0;
+}
+
 .notification-favourite {
   .status.status-direct {
     background: transparent;
@@ -28,12 +37,22 @@
   }
 }
 
-.notification__favourite-icon-wrapper {
+.notification__icon-wrapper {
   left: -26px;
   position: absolute;
 
-  .star-icon {
-    color: $gold-star;
+  .svg-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--highlight-text-color);
+
+    svg.icon-tabler-thumb-up {
+      color: $gold-star;
+    }
+
+    svg.feather-repeat {
+      color: var(--highlight-text-color);
+    }
   }
 }
 
@@ -54,4 +73,19 @@
 
 .notification .status__wrapper {
   box-shadow: none;
+}
+
+.notification {
+  .status-container {
+    padding: 0;
+  }
+
+  .status__wrapper {
+    border-radius: 0;
+    padding: 0;
+  }
+
+  .status {
+    padding-bottom: 8px !important;
+  }
 }

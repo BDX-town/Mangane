@@ -25,14 +25,13 @@
   vertical-align: middle;
   display: inline-flex;
 
-  i.fa {
-    color: var(--highlight-text-color);
-    font-size: 20px;
-    margin-right: 0.2em;
-  }
-
   .svg-icon {
     margin-right: 0.2em;
+    color: var(--highlight-text-color);
+
+    svg {
+      stroke-width: 3px;
+    }
   }
 }
 
