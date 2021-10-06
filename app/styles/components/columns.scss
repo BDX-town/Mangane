@@ -351,6 +351,10 @@
 
   @media screen and (max-width: 580px) {
     border-radius: 0;
+
+    .material-status__status {
+      border-radius: 0;
+    }
   }
 }
 
