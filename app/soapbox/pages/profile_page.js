@@ -19,6 +19,7 @@ import { displayFqn } from 'soapbox/utils/state';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
 import { Redirect } from 'react-router-dom';
+import { findAccountByUsername } from 'soapbox/selectors';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
@@ -32,7 +33,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   if (accountFetchError) {
     accountId = null;
   } else {
-    account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }

@@ -10,7 +10,7 @@ import { expandAccountMediaTimeline } from '../../actions/timelines';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import Column from '../ui/components/column';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getAccountGallery } from 'soapbox/selectors';
+import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
 import MediaItem from './components/media_item';
 import LoadMore from 'soapbox/components/load_more';
 import MissingIndicator from 'soapbox/components/missing_indicator';
@@ -21,7 +21,6 @@ import { FormattedMessage } from 'react-intl';
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
@@ -29,7 +28,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   if (accountFetchError) {
     accountId = null;
   } else {
-    const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    const account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }

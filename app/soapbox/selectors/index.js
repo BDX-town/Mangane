@@ -47,6 +47,14 @@ export const makeGetAccount = () => {
   });
 };
 
+export const findAccountByUsername = (state, username) => {
+  const accounts = state.get('accounts');
+
+  return accounts.find(account => {
+    return username.toLowerCase() === account.getIn(['acct'], '').toLowerCase();
+  });
+};
+
 const toServerSideType = columnType => {
   switch (columnType) {
   case 'home':
