@@ -13,7 +13,7 @@ const messages = defineMessages({
  * @param {string} props.text - text to use to measure
  * @param {number} props.max - max text allowed
  */
-class CharacterCounter extends React.PureComponent {
+class VisualCharacterCounter extends React.PureComponent {
 
   render() {
     const { intl, text, max } = this.props;
@@ -22,21 +22,23 @@ class CharacterCounter extends React.PureComponent {
     const progress = textLength / max;
 
     return (
-      <ProgressCircle
-        title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
-        progress={progress}
-        radius={10}
-        stroke={3}
-      />
+      <div className='visual-character-counter'>
+        <ProgressCircle
+          title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
+          progress={progress}
+          radius={10}
+          stroke={3}
+        />
+      </div>
     );
   }
 
 }
 
-CharacterCounter.propTypes = {
+VisualCharacterCounter.propTypes = {
   intl: PropTypes.object.isRequired,
   text: PropTypes.string.isRequired,
   max: PropTypes.number.isRequired,
 };
 
-export default injectIntl(CharacterCounter);
+export default injectIntl(VisualCharacterCounter);
