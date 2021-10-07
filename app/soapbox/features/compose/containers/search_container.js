@@ -6,30 +6,41 @@ import {
   showSearch,
 } from '../../../actions/search';
 import Search from '../components/search';
+import { debounce } from 'lodash';
 
 const mapStateToProps = state => ({
   value: state.getIn(['search', 'value']),
   submitted: state.getIn(['search', 'submitted']),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { autoSubmit }) => {
 
-  onChange(value) {
-    dispatch(changeSearch(value));
-  },
-
-  onClear() {
-    dispatch(clearSearch());
-  },
-
-  onSubmit() {
+  const debouncedSubmit = debounce(() => {
     dispatch(submitSearch());
-  },
+  }, 900);
 
-  onShow() {
-    dispatch(showSearch());
-  },
+  return {
+    onChange(value) {
+      dispatch(changeSearch(value));
 
-});
+      if (autoSubmit) {
+        debouncedSubmit();
+      }
+    },
+
+    onClear() {
+      dispatch(clearSearch());
+    },
+
+    onSubmit() {
+      dispatch(submitSearch());
+    },
+
+    onShow() {
+      dispatch(showSearch());
+    },
+
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);
