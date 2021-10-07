@@ -48,7 +48,7 @@ class DirectTimeline extends React.PureComponent {
     const { intl, hasUnread } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
+      <Column label={intl.formatMessage(messages.title)} transparent>
         <ColumnHeader
           icon='envelope'
           active={hasUnread}

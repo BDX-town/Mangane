@@ -93,7 +93,7 @@
   }
 }
 
-.columns-area--mobile {
+.columns-area {
   display: block;
   flex-direction: column;
   width: 100%;
@@ -126,6 +126,11 @@
 
   @media (max-width: 580px) {
     padding: 0;
+
+    .timeline-compose-block {
+      border-radius: 0;
+      margin-top: 10px; // Make less claustrophobic
+    }
   }
 
   @media screen and (min-width: 630px) {
@@ -340,31 +345,21 @@
   cursor: default;
 }
 
-.columns-area--mobile .column {
+.columns-area .column {
   @include standard-panel;
+
+  &--transparent {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+  }
 
   @media screen and (max-width: 580px) {
     border-radius: 0;
-  }
-}
 
-.columns-area--transparent .column {
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-
-  .column-back-button {
-    background: transparent;
-  }
-
-  .account__section-headline {
-    background: transparent;
-    border: 0;
-  }
-
-  .empty-column-indicator,
-  .error-column {
-    background: transparent;
+    .material-status__status {
+      border-radius: 0;
+    }
   }
 }
 
@@ -817,26 +812,6 @@
   }
 }
 
-.columns-area--transparent .follow-recommendations-container {
-  @include standard-panel;
-}
-
-// Let transparent columns extend the full width of the screen
-@media screen and (max-width: 450px) {
-  .columns-area__panels__main--transparent {
-    padding: 0;
-  }
-
-  .columns-area--transparent {
-    .status__wrapper,
-    .detailed-status__wrapper,
-    .timeline-compose-block,
-    .follow-recommendations-container {
-      border-radius: 0;
-    }
-  }
-}
-
 .column-title {
   text-align: center;
   padding: 40px;
@@ -894,5 +869,23 @@
 
   @media screen and (max-width: 450px) {
     border-radius: 0;
+  }
+}
+
+// Make MaterialStatus flush against SubNavigation
+.sub-navigation ~ .slist .item-list > article:first-child .material-status__status {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+// Display background for loading indicator
+.column--transparent {
+  .slist__append {
+    @include standard-panel;
+  }
+
+  .sub-navigation ~ .slist .slist__append {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 }

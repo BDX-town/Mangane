@@ -73,7 +73,7 @@ class CommunityTimeline extends React.PureComponent {
     const { intl, onlyMedia, timelineId } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
+      <Column label={intl.formatMessage(messages.title)} transparent>
         <SubNavigation message={intl.formatMessage(messages.title)} />
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}

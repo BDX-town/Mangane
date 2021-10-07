@@ -126,15 +126,6 @@
   vertical-align: middle;
 }
 
-.status-container {
-  padding-bottom: 10px;
-}
-
-.status__wrapper {
-  @include standard-panel;
-  padding: 15px 0 10px;
-}
-
 .status__wrapper--filtered {
   color: var(--primary-text-color);
   border: 0;
@@ -177,15 +168,6 @@
   .video-player,
   .audio-player {
     margin-top: 8px;
-  }
-
-  &.status-direct:not(.read) {
-    background: var(--brand-color--med);
-    border-bottom-color: var(--brand-color--med);
-
-    .status__content a {
-      color: var(--brand-color--hicontrast);
-    }
   }
 
   &.light {
@@ -717,5 +699,14 @@ a.status-card.compact:hover {
         width: unset;
       }
     }
+  }
+}
+
+.material-status {
+  padding-bottom: 10px;
+
+  &__status {
+    @include standard-panel;
+    padding: 15px 0 10px;
   }
 }

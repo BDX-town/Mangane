@@ -104,7 +104,7 @@ class ActionButton extends ImmutablePureComponent {
         // Follow & Unfollow
         return (<Button
           disabled={account.getIn(['relationship', 'blocked_by'])}
-          className={classNames('follow-button', {
+          className={classNames('button--follow', {
             'button--destructive': account.getIn(['relationship', 'following']),
           })}
           onClick={this.handleFollow}

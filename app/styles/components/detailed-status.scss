@@ -111,8 +111,6 @@
 }
 
 .detailed-status__wrapper {
-  @include standard-panel;
-  margin-bottom: 10px;
   position: relative;
   overflow: hidden;
 }
@@ -160,9 +158,31 @@
   margin-right: 5px;
 }
 
-/* Connect the first status to the SubNavigation */
-.detailed-status__ancestors .status-container:first-child .status__wrapper,
-.detailed-status-container > div:first-child .detailed-status__wrapper {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+.thread {
+  &__status {
+    position: relative;
+  }
+
+  &__connector {
+    background: hsla(var(--primary-text-color_hsl), 0.2);
+    position: absolute;
+    width: 2px;
+    left: 33px;
+    display: none;
+
+    &--bottom {
+      height: calc(100% - 8px - 48px - 14px);
+      top: calc(8px + 48px + 13px);
+      display: block;
+    }
+
+    @media screen and (min-width: 630px) {
+      left: 38px;
+
+      &--bottom {
+        height: calc(100% - 15px - 48px);
+        top: calc(15px + 48px + 9px);
+      }
+    }
+  }
 }

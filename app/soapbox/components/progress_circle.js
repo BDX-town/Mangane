@@ -2,7 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-class ProgressCircle extends React.PureComponent {
+export default class ProgressCircle extends React.PureComponent {
+
+  static propTypes = {
+    progress: PropTypes.number.isRequired,
+    radius: PropTypes.number,
+    stroke: PropTypes.number,
+    title: PropTypes.string,
+  };
 
   static defaultProps = {
     radius: 12,
@@ -51,12 +58,3 @@ class ProgressCircle extends React.PureComponent {
   }
 
 }
-
-ProgressCircle.propTypes = {
-  progress: PropTypes.number.isRequired,
-  radius: PropTypes.number,
-  stroke: PropTypes.number,
-  title: PropTypes.text,
-};
-
-export default ProgressCircle;

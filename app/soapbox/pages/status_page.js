@@ -45,8 +45,8 @@ class StatusPage extends ImmutablePureComponent {
               </div>
             </div>
 
-            <div className='columns-area__panels__main columns-area__panels__main--transparent'>
-              <div className='columns-area columns-area--mobile columns-area--transparent'>
+            <div className='columns-area__panels__main'>
+              <div className='columns-area'>
                 {children}
               </div>
             </div>

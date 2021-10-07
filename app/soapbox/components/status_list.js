@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import StatusContainer from '../containers/status_container';
+import MaterialStatus from 'soapbox/components/material_status';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoadGap from './load_gap';
 import ScrollableList from './scrollable_list';
@@ -117,7 +117,7 @@ export default class StatusList extends ImmutablePureComponent {
           onClick={onLoadMore}
         />
       ) : (
-        <StatusContainer
+        <MaterialStatus
           key={statusId}
           id={statusId}
           onMoveUp={this.handleMoveUp}
@@ -132,7 +132,7 @@ export default class StatusList extends ImmutablePureComponent {
 
     if (scrollableContent && featuredStatusIds) {
       scrollableContent = featuredStatusIds.map(statusId => (
-        <StatusContainer
+        <MaterialStatus
           key={`f-${statusId}`}
           id={statusId}
           featured
