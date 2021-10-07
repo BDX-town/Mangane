@@ -882,6 +882,10 @@
 .column--transparent {
   .slist__append {
     @include standard-panel;
+
+    @media screen and (max-width: 580px) {
+      border-radius: 0;
+    }
   }
 
   .sub-navigation ~ .slist .slist__append {
