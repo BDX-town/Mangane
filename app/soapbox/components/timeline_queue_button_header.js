@@ -55,8 +55,13 @@ class TimelineQueueButtonHeader extends React.PureComponent {
     }
   }, 150, { trailing: true });
 
+  handleClick = e => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.props.onClick(e);
+  }
+
   render() {
-    const { count, message, onClick, intl } = this.props;
+    const { count, message, intl } = this.props;
     const { scrolled } = this.state;
 
     const visible = count > 0 && scrolled;
@@ -67,7 +72,7 @@ class TimelineQueueButtonHeader extends React.PureComponent {
 
     return (
       <div className={classes}>
-        <a className='timeline-queue-header__btn' onClick={onClick}>
+        <a className='timeline-queue-header__btn' onClick={this.handleClick}>
           <Icon src={require('@tabler/icons/icons/arrow-bar-to-up.svg')} />
           {(count > 0) && (
             <div className='timeline-queue-header__label'>
