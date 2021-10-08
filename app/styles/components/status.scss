@@ -143,6 +143,10 @@
 .status__prepend-icon-wrapper {
   left: -26px;
   position: absolute;
+
+  svg.feather-repeat {
+    color: var(--highlight-text-color);
+  }
 }
 
 .status {
