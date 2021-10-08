@@ -17,6 +17,8 @@ import {
 } from 'soapbox/utils/accounts';
 import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
@@ -295,7 +297,7 @@ class Header extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, username, me, features } = this.props;
+    const { account, intl, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
 
     if (!account) {
@@ -318,6 +320,7 @@ class Header extends ImmutablePureComponent {
       );
     }
 
+    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
@@ -348,6 +351,40 @@ class Header extends ImmutablePureComponent {
             <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
               <Avatar account={account} size={avatarSize} />
             </a>
+
+            <div className='account__header__extra__links'>
+
+              <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
+                <span>{shortNumberFormat(account.get('statuses_count'))}</span>
+                <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
+              </NavLink>
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
+                <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
+              </NavLink>}
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
+                <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
+              </NavLink>}
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_favorites'], true)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}>
+                { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
+                <span>•</span>
+                <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
+              </NavLink>}
+
+              {ownAccount &&
+                <NavLink
+                  exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
+                >
+                  { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
+                  <span>•</span>
+                  <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
+                </NavLink>
+              }
+            </div>
 
             {isSmallScreen && (
               <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>

@@ -219,9 +219,11 @@
       display: flex;
       font-size: 14px;
       color: var(--primary-text-color--faint);
+
       @media screen and (max-width: 895px) {
         justify-content: center;
         flex-wrap: wrap;
+        display: none;
       }
 
       a {
