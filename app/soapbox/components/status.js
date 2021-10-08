@@ -8,7 +8,7 @@ import RelativeTimestamp from './relative_timestamp';
 import DisplayName from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
-import AttachmentList from './attachment_list';
+import AttachmentThumbs from './attachment_thumbs';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -384,10 +384,7 @@ class Status extends ImmutablePureComponent {
     if (size > 0) {
       if (this.props.muted) {
         media = (
-          <AttachmentList
-            compact
-            media={status.get('media_attachments')}
-          />
+          <AttachmentThumbs media={status.get('media_attachments')} />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);

@@ -9,7 +9,7 @@ import RelativeTimestamp from '../../../components/relative_timestamp';
 import DisplayName from '../../../components/display_name';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
-import AttachmentList from 'soapbox/components/attachment_list';
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },
@@ -88,7 +88,7 @@ class BoostModal extends ImmutablePureComponent {
             <StatusContent status={status} />
 
             {status.get('media_attachments').size > 0 && (
-              <AttachmentList
+              <AttachmentThumbs
                 compact
                 media={status.get('media_attachments')}
               />
