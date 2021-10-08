@@ -707,6 +707,7 @@
   align-items: center;
   justify-content: center;
   min-height: 160px;
+  border-radius: 0 0 10px 10px;
 
   @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;
@@ -724,20 +725,19 @@
       text-decoration: underline;
     }
   }
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+  }
 }
 
 .error-column {
   flex-direction: column;
-  border-radius: 0 0 10px 10px;
 
   .svg-icon {
     width: 70px;
     height: 70px;
     margin-bottom: 30px;
-  }
-
-  @media screen and (max-width: 580px) {
-    border-radius: 0;
   }
 }
 
