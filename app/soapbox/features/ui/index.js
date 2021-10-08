@@ -259,7 +259,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/canary' to='/about/canary' />
         <Redirect from='/canary.txt' to='/about/canary' />
 
-        <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
+        <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
         <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />

@@ -332,7 +332,7 @@
 .ui--chatroom {
   padding-bottom: 0;
 
-  .columns-area__panels__main .columns-area {
+  .columns-area__panels__main .columns-area .column {
     height: calc(100vh - 100px);
     box-sizing: border-box;
     overflow: hidden;

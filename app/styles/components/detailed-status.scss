@@ -160,6 +160,11 @@
 .thread {
   &__status {
     position: relative;
+
+    // Only display line if posts are below
+    &:last-child .detailed-status__action-bar {
+      border-bottom: 0;
+    }
   }
 
   &__connector {
