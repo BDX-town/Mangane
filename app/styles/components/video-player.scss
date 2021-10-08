@@ -297,7 +297,7 @@
       left: 0;
       top: 50%;
       transform: translate(0, -50%);
-      background: var(--brand-color);
+      background: var(--accent-color);
     }
 
     &__handle {
@@ -310,7 +310,7 @@
       left: 0;
       margin-left: -6px;
       transform: translate(0, -50%);
-      background: var(--brand-color);
+      background: var(--accent-color);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
       opacity: 0;
 
@@ -364,7 +364,7 @@
       height: 4px;
       border-radius: 4px;
       top: 14px;
-      background: var(--brand-color);
+      background: var(--accent-color);
     }
 
     &__buffer {
@@ -380,7 +380,7 @@
       height: 12px;
       top: 10px;
       margin-left: -6px;
-      background: var(--brand-color);
+      background: var(--accent-color);
       box-shadow: 1px 2px 6px rgba($base-shadow-color, 0.2);
 
       .no-reduce-motion & {
