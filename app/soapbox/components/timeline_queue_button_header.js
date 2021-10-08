@@ -14,11 +14,15 @@ class TimelineQueueButtonHeader extends React.PureComponent {
     message: PropTypes.object.isRequired,
     threshold: PropTypes.number,
     intl: PropTypes.object.isRequired,
+    autoload: PropTypes.bool,
+    autoloadThreshold: PropTypes.number,
   };
 
   static defaultProps = {
     count: 0,
     threshold: 400,
+    autoload: true,
+    autoloadThreshold: 50,
   };
 
   state = {
@@ -26,9 +30,6 @@ class TimelineQueueButtonHeader extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.window = window;
-    this.documentElement = document.scrollingElement || document.documentElement;
-
     this.attachScrollListener();
   }
 
@@ -36,17 +37,30 @@ class TimelineQueueButtonHeader extends React.PureComponent {
     this.detachScrollListener();
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { scrollTop } = (document.scrollingElement || document.documentElement);
+    const { count, onClick, autoload, autoloadThreshold } = this.props;
+
+    if (autoload && scrollTop <= autoloadThreshold && count !== prevProps.count) {
+      onClick();
+    }
+  }
+
   attachScrollListener() {
-    this.window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   detachScrollListener() {
-    this.window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
   handleScroll = throttle(() => {
     const { scrollTop } = (document.scrollingElement || document.documentElement);
-    const { threshold } = this.props;
+    const { threshold, onClick, autoload, autoloadThreshold } = this.props;
+
+    if (autoload && scrollTop <= autoloadThreshold) {
+      onClick();
+    }
 
     if (scrollTop > threshold) {
       this.setState({ scrolled: true });
