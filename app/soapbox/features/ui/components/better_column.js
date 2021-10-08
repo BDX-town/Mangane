@@ -2,7 +2,6 @@ import React from 'react';
 import ColumnHeader from './column_header';
 import PropTypes from 'prop-types';
 import Column from 'soapbox/components/column';
-import ColumnBackButton from '../../../components/column_back_button_slim';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 
 // Yes, there are 3 types of columns at this point, but this one is better, I swear
@@ -29,7 +28,6 @@ export default class BetterColumn extends React.PureComponent {
               <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
             </div>
           )}
-          <ColumnBackButton />
         </div>
         {children}
       </Column>

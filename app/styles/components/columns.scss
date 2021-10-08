@@ -772,6 +772,11 @@
   .column__top {
     display: flex;
     align-items: center;
+    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+
+    .sub-navigation {
+      border-bottom: 0;
+    }
   }
 
   .column-header {
