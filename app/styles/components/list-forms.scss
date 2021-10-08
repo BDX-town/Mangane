@@ -14,16 +14,6 @@
     border-radius: 8px 8px 0 0;
   }
 
-  .drawer__inner {
-    border-radius: 0 0 8px 8px;
-
-    &.backdrop {
-      width: calc(100% - 60px);
-      box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
-      border-radius: 0 0 0 8px;
-    }
-  }
-
   &__accounts {
     background: var(--background-color);
     overflow-y: auto;

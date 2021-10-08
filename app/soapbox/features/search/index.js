@@ -13,11 +13,7 @@ const Search = ({ intl }) => (
   <div className='column search-page'>
     <ColumnHeader icon='search' title={intl.formatMessage(messages.heading)} />
     <SearchContainer autoSubmit />
-    <div className='drawer__pager'>
-      <div className='drawer__inner darker'>
-        <SearchResultsContainer />
-      </div>
-    </div>
+    <SearchResultsContainer />
   </div>
 );
 

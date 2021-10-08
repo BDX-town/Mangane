@@ -891,28 +891,3 @@
     border-top-right-radius: 0;
   }
 }
-
-// TODO: Get rid of whatever a "drawer" is
-// Probably rename to column-something
-.drawer__pager {
-  box-sizing: border-box;
-  padding: 0;
-  flex-grow: 1;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-}
-
-.drawer__inner {
-  top: 0;
-  left: 0;
-  background: var(--foreground-color);
-  box-sizing: border-box;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  overflow-y: auto;
-  width: 100%;
-  height: 100%;
-}

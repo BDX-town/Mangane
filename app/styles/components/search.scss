@@ -166,10 +166,6 @@
 }
 
 .search-page {
-  .drawer__inner:not(:empty) {
-    min-height: 48px;
-  }
-
   .search {
     padding: 10px 15px;
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
@@ -183,14 +179,6 @@
 
   .search__icon .svg-icon {
     right: 24px;
-  }
-
-  .drawer__pager {
-    border-radius: 0 0 10px 10px;
-
-    @media screen and (max-width: 450px) {
-      border-radius: 0;
-    }
   }
 }
 
