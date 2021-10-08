@@ -96,10 +96,11 @@ class HomeTimeline extends React.PureComponent {
   render() {
     const { intl, siteTitle, isLoading, isEmpty, features } = this.props;
     const { done } = this.state;
+    const showSuggestions = features.suggestions && isEmpty && !isLoading && !done;
 
     return (
-      <Column label={intl.formatMessage(messages.title)} transparent>
-        {(features.suggestions && isEmpty && !isLoading && !done) ? (
+      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
+        {showSuggestions ? (
           <BundleContainer fetchComponent={FollowRecommendationsContainer}>
             {Component => <Component onDone={this.handleDone} />}
           </BundleContainer>

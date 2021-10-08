@@ -858,6 +858,10 @@
 
 .column-list {
   position: relative;
+
+  &__empty-message {
+    padding: 0 20px;
+  }
 }
 
 .column-loading {
