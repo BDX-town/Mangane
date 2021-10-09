@@ -18,6 +18,10 @@ import {
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
 import {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_SUCCESS,
+} from '../actions/statuses';
+import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
@@ -221,8 +225,74 @@ const timelineDisconnect = (state, timelineId) => {
   }));
 };
 
+const getTimelinesByVisibility = visibility => {
+  switch(visibility) {
+  case 'direct':
+    return ['direct'];
+  case 'public':
+    return ['home', 'community', 'public'];
+  default:
+    return ['home'];
+  }
+};
+
+const insertIfOnline = (state, timelineId, statusId) => {
+  if (state.getIn([timelineId, 'online'])) {
+    updateTimeline(state, timelineId, statusId);
+  }
+};
+
+const replaceItem = (state, timelineId, oldId, newId) => {
+  return state.updateIn([timelineId, 'items'], ids => {
+    const list = ImmutableList(ids);
+    const index = list.indexOf(oldId);
+
+    if (index > -1) {
+      return ImmutableOrderedSet(list.set(index, newId));
+    } else {
+      return ids;
+    }
+  });
+};
+
+const importPendingStatus = (state, params, idempotencyKey) => {
+  const statusId = `pending-${idempotencyKey}`;
+
+  return state.withMutations(state => {
+    const timelineIds = getTimelinesByVisibility(params.visibility);
+
+    timelineIds.forEach(timelineId => {
+      insertIfOnline(state, timelineId, statusId);
+    });
+  });
+};
+
+const replacePendingStatus = (state, idempotencyKey, newId) => {
+  const oldId = `pending-${idempotencyKey}`;
+
+  state.keySeq().forEach(timelineId => {
+    return replaceItem(state, timelineId, oldId, newId);
+  });
+};
+
+const importStatus = (state, status, idempotencyKey) => {
+  return state.withMutations(state => {
+    replacePendingStatus(state, idempotencyKey, status.id);
+
+    const timelineIds = getTimelinesByVisibility(status.visibility);
+
+    timelineIds.forEach(timelineId => {
+      insertIfOnline(state, timelineId, status.id);
+    });
+  });
+};
+
 export default function timelines(state = initialState, action) {
   switch(action.type) {
+  case STATUS_CREATE_REQUEST:
+    return importPendingStatus(state, action.params, action.idempotencyKey);
+  case STATUS_CREATE_SUCCESS:
+    return importStatus(state, action.status, action.idempotencyKey);
   case TIMELINE_EXPAND_REQUEST:
     return setLoading(state, action.timeline, true);
   case TIMELINE_EXPAND_FAIL:

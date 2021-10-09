@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import StatusContent from 'soapbox/components/status_content';
-import { buildStatus } from '../builder';
+import { buildStatus } from '../util/pending_status_builder';
 import classNames from 'classnames';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { Link, NavLink } from 'react-router-dom';
@@ -11,36 +11,36 @@ import { getDomain } from 'soapbox/utils/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
-import PollPreview from 'soapbox/features/ui/components/poll_preview';
-import ScheduledStatusActionBar from './scheduled_status_action_bar';
+import PollPreview from './poll_preview';
 
 const mapStateToProps = (state, props) => {
-  const scheduledStatus = state.getIn(['scheduled_statuses', props.statusId]);
+  const { idempotencyKey } = props;
+  const pendingStatus = state.getIn(['pending_statuses', idempotencyKey]);
   return {
-    status: buildStatus(state, scheduledStatus),
+    status: pendingStatus ? buildStatus(state, pendingStatus, idempotencyKey) : null,
   };
 };
 
 export default @connect(mapStateToProps)
-class ScheduledStatus extends ImmutablePureComponent {
+class PendingStatus extends ImmutablePureComponent {
 
   render() {
-    const { status, showThread, account, ...other } = this.props;
+    const { status, showThread } = this.props;
+    if (!status) return null;
     if (!status.get('account')) return null;
 
-    const statusUrl = `/scheduled_statuses/${status.get('id')}`;
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
     return (
-      <div className='scheduled-status'>
+      <div className='pending-status'>
         <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id') })} tabIndex={this.props.muted ? null : 0}>
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
             <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
             <div className='status__info'>
-              <NavLink to={statusUrl} className='status__relative-time'>
-                <RelativeTimestamp timestamp={status.get('created_at')} futureDate />
-              </NavLink>
+              <span className='status__relative-time'>
+                <RelativeTimestamp timestamp={status.get('created_at')} />
+              </span>
 
               {favicon &&
                 <div className='status__favicon'>
@@ -80,7 +80,8 @@ class ScheduledStatus extends ImmutablePureComponent {
               </button>
             )}
 
-            <ScheduledStatusActionBar status={status} account={account} {...other} />
+            {/* TODO */}
+            {/* <PlaceholderActionBar /> */}
           </div>
         </div>
       </div>

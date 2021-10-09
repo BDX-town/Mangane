@@ -4,6 +4,7 @@ import { FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import MaterialStatus from 'soapbox/components/material_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoadGap from './load_gap';
 import ScrollableList from './scrollable_list';
@@ -91,6 +92,104 @@ export default class StatusList extends ImmutablePureComponent {
     this.node = c;
   }
 
+  renderLoadGap(index) {
+    const { statusIds, onLoadMore, isLoading }  = this.props;
+
+    return (
+      <LoadGap
+        key={'gap:' + statusIds.get(index + 1)}
+        disabled={isLoading}
+        maxId={index > 0 ? statusIds.get(index - 1) : null}
+        onClick={onLoadMore}
+      />
+    );
+  }
+
+  renderStatus(statusId) {
+    const { timelineId, withGroupAdmin, group }  = this.props;
+
+    return (
+      <MaterialStatus
+        key={statusId}
+        id={statusId}
+        onMoveUp={this.handleMoveUp}
+        onMoveDown={this.handleMoveDown}
+        contextType={timelineId}
+        group={group}
+        withGroupAdmin={withGroupAdmin}
+        showThread
+      />
+    );
+  }
+
+  renderPendingStatus(statusId) {
+    const { timelineId, withGroupAdmin, group } = this.props;
+    const idempotencyKey = statusId.replace(/^pending-/, '');
+
+    return (
+      <div className='material-status' key={statusId}>
+        <div className='material-status__status focusable'>
+          <PendingStatus
+            key={statusId}
+            idempotencyKey={idempotencyKey}
+            onMoveUp={this.handleMoveUp}
+            onMoveDown={this.handleMoveDown}
+            contextType={timelineId}
+            group={group}
+            withGroupAdmin={withGroupAdmin}
+            showThread
+          />
+        </div>
+      </div>
+    );
+  }
+
+  renderFeaturedStatuses() {
+    const { featuredStatusIds, timelineId }  = this.props;
+    if (!featuredStatusIds) return null;
+
+    return featuredStatusIds.map(statusId => (
+      <MaterialStatus
+        key={`f-${statusId}`}
+        id={statusId}
+        featured
+        onMoveUp={this.handleMoveUp}
+        onMoveDown={this.handleMoveDown}
+        contextType={timelineId}
+        showThread
+      />
+    ));
+  }
+
+  renderStatuses() {
+    const { statusIds, isLoading }  = this.props;
+
+    if (isLoading || statusIds.size > 0) {
+      return statusIds.map((statusId, index) => {
+        if (statusId === null) {
+          return this.renderLoadGap(index);
+        } else if (statusId.startsWith('pending-')) {
+          return this.renderPendingStatus(statusId);
+        } else {
+          return this.renderStatus(statusId);
+        }
+      });
+    } else {
+      return null;
+    }
+  }
+
+  renderScrollableContent() {
+    const featuredStatuses = this.renderFeaturedStatuses();
+    const statuses = this.renderStatuses();
+
+    if (featuredStatuses) {
+      return featuredStatuses.concat(statuses);
+    } else {
+      return statuses;
+    }
+  }
+
   render() {
     const { statusIds, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other }  = this.props;
 
@@ -107,42 +206,6 @@ export default class StatusList extends ImmutablePureComponent {
       );
     }
 
-    let scrollableContent = (isLoading || statusIds.size > 0) ? (
-      statusIds.map((statusId, index) => statusId === null ? (
-        <LoadGap
-          key={'gap:' + statusIds.get(index + 1)}
-          disabled={isLoading}
-          maxId={index > 0 ? statusIds.get(index - 1) : null}
-          onClick={onLoadMore}
-        />
-      ) : (
-        <MaterialStatus
-          key={statusId}
-          id={statusId}
-          onMoveUp={this.handleMoveUp}
-          onMoveDown={this.handleMoveDown}
-          contextType={timelineId}
-          group={group}
-          withGroupAdmin={withGroupAdmin}
-          showThread
-        />
-      ))
-    ) : null;
-
-    if (scrollableContent && featuredStatusIds) {
-      scrollableContent = featuredStatusIds.map(statusId => (
-        <MaterialStatus
-          key={`f-${statusId}`}
-          id={statusId}
-          featured
-          onMoveUp={this.handleMoveUp}
-          onMoveDown={this.handleMoveDown}
-          contextType={timelineId}
-          showThread
-        />
-      )).concat(scrollableContent);
-    }
-
     return [
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
@@ -151,7 +214,7 @@ export default class StatusList extends ImmutablePureComponent {
         message={messages.queue}
       />,
       <ScrollableList key='scrollable-list' {...other} isLoading={isLoading} showLoading={isLoading && statusIds.size === 0} onLoadMore={onLoadMore && this.handleLoadOlder} ref={this.setRef}>
-        {scrollableContent}
+        {this.renderScrollableContent()}
       </ScrollableList>,
     ];
   }
