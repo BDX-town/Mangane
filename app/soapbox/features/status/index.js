@@ -49,6 +49,7 @@ import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import ThreadStatus from './components/thread_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
@@ -485,10 +486,27 @@ class Status extends ImmutablePureComponent {
     );
   }
 
+  renderPendingStatus(id) {
+    const idempotencyKey = id.replace(/^pending-/, '');
+
+    return (
+      <PendingStatus
+        key={id}
+        idempotencyKey={idempotencyKey}
+        focusedStatusId={status && status.get('id')}
+        onMoveUp={this.handleMoveUp}
+        onMoveDown={this.handleMoveDown}
+        contextType='thread'
+      />
+    );
+  }
+
   renderChildren(list) {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return this.renderTombstone(id);
+      } else if (id.startsWith('pending-')) {
+        return this.renderPendingStatus(id);
       } else {
         return this.renderStatus(id);
       }
