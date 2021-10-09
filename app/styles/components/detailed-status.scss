@@ -158,6 +158,14 @@
 }
 
 .thread {
+  @include standard-panel;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+  }
+
   &__status {
     position: relative;
 
@@ -165,6 +173,19 @@
     &:last-child .detailed-status__action-bar {
       border-bottom: 0;
     }
+  }
+
+  &__descendants .thread__status:first-child {
+    margin-top: 10px;
+  }
+
+  &__status--focused:first-child,
+  &__ancestors &__status:first-child {
+    margin-top: 10px;
+  }
+
+  &__descendants &__status:last-child {
+    margin-bottom: 10px;
   }
 
   &__connector {
