@@ -7,7 +7,7 @@ import DisplayName from '../../../components/display_name';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { isRtl } from '../../../rtl';
-import AttachmentList from 'soapbox/components/attachment_list';
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import { NavLink } from 'react-router-dom';
 
 const messages = defineMessages({
@@ -57,7 +57,7 @@ class ReplyIndicator extends ImmutablePureComponent {
         <div className='reply-indicator__content' style={style} dangerouslySetInnerHTML={content} />
 
         {status.get('media_attachments').size > 0 && (
-          <AttachmentList
+          <AttachmentThumbs
             compact
             media={status.get('media_attachments')}
           />

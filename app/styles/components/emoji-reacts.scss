@@ -21,17 +21,30 @@
   }
 }
 
-.emoji-react--reblogs {
+.emoji-react--reblogs,
+.emoji-react--favourites {
   vertical-align: middle;
   display: inline-flex;
+  margin-right: 10px;
 
   .svg-icon {
     margin-right: 0.2em;
+  }
+}
+
+.emoji-react--reblogs {
+  .svg-icon {
     color: var(--highlight-text-color);
 
     svg {
       stroke-width: 3px;
     }
+  }
+}
+
+.emoji-react--favourites {
+  .svg-icon {
+    color: $gold-star;
   }
 }
 

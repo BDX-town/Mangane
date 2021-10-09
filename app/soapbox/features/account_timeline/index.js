@@ -18,7 +18,7 @@ import { NavLink } from 'react-router-dom';
 import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSettings } from 'soapbox/actions/settings';
-import { makeGetStatusIds } from 'soapbox/selectors';
+import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
 import classNames from 'classnames';
 
 const makeMapStateToProps = () => {
@@ -27,7 +27,6 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, { params, withReplies = false }) => {
     const username = params.username || '';
     const me = state.get('me');
-    const accounts = state.getIn(['accounts']);
     const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
     const soapboxConfig = getSoapboxConfig(state);
 
@@ -37,7 +36,7 @@ const makeMapStateToProps = () => {
     if (accountFetchError) {
       accountId = null;
     } else {
-      const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+      const account = findAccountByUsername(state, username);
       accountId = account ? account.getIn(['id'], null) : -1;
       accountUsername = account ? account.getIn(['acct'], '') : '';
       accountApId = account ? account.get('url') : '';

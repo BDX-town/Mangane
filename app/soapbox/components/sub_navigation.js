@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { throttle } from 'lodash';
 import Icon from 'soapbox/components/icon';
+import classNames from 'classnames';
 
 export default class SubNavigation extends React.PureComponent {
 
@@ -11,6 +13,10 @@ export default class SubNavigation extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object.isRequired,
+  }
+
+  state = {
+    scrolled: false,
   }
 
   handleBackClick = () => {
@@ -27,11 +33,44 @@ export default class SubNavigation extends React.PureComponent {
     }
   }
 
+  componentDidMount() {
+    this.attachScrollListener();
+  }
+
+  componentWillUnmount() {
+    this.detachScrollListener();
+  }
+
+  attachScrollListener() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
+
+  detachScrollListener() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll = throttle(() => {
+    if (this.node) {
+      const { top } = this.node.getBoundingClientRect();
+
+      if (top <= 50) {
+        this.setState({ scrolled: true });
+      } else {
+        this.setState({ scrolled: false });
+      }
+    }
+  }, 150, { trailing: true });
+
+  setRef = c => {
+    this.node = c;
+  }
+
   render() {
     const { message } = this.props;
+    const { scrolled } = this.state;
 
     return (
-      <div className='sub-navigation'>
+      <div className={classNames('sub-navigation', { 'sub-navigation--scrolled': scrolled })} ref={this.setRef}>
         <div className='sub-navigation__content'>
           <button
             className='sub-navigation__back'

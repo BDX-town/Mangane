@@ -11,6 +11,7 @@ import { debounce } from 'lodash';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import LoadingIndicator from '../../components/loading_indicator';
+import { findAccountByUsername } from 'soapbox/selectors';
 
 const mapStateToProps = (state, { params }) => {
   const username = params.username || '';
@@ -28,14 +29,13 @@ const mapStateToProps = (state, { params }) => {
     };
   }
 
-  const accounts = state.getIn(['accounts']);
   const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   if (accountFetchError) {
     accountId = null;
   } else {
-    const account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    const account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
   }
 

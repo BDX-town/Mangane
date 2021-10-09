@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
+import Column from 'soapbox/features/ui/components/column';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connectListStream } from '../../actions/streaming';
 import { expandListTimeline } from '../../actions/timelines';
@@ -11,9 +11,6 @@ import { fetchList, deleteList } from '../../actions/lists';
 import { openModal } from '../../actions/modal';
 import MissingIndicator from '../../components/missing_indicator';
 import LoadingIndicator from '../../components/loading_indicator';
-import Icon from 'soapbox/components/icon';
-import HomeColumnHeader from '../../components/home_column_header';
-import { Link } from 'react-router-dom';
 import Button from 'soapbox/components/button';
 
 const messages = defineMessages({
@@ -23,7 +20,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, props) => ({
   list: state.getIn(['lists', props.params.id]),
-  hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
+  // hasUnread: state.getIn(['timelines', `list:${props.params.id}`, 'unread']) > 0,
 });
 
 export default @connect(mapStateToProps)
@@ -37,7 +34,7 @@ class ListTimeline extends React.PureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    hasUnread: PropTypes.bool,
+    // hasUnread: PropTypes.bool,
     list: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     intl: PropTypes.object.isRequired,
   };
@@ -97,7 +94,7 @@ class ListTimeline extends React.PureComponent {
   }
 
   render() {
-    const { hasUnread, list } = this.props;
+    const { list } = this.props;
     const { id } = this.props.params;
     const title  = list ? list.get('title') : id;
 
@@ -126,8 +123,8 @@ class ListTimeline extends React.PureComponent {
     );
 
     return (
-      <Column label={title}>
-        <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
+      <Column label={title} heading={title} transparent>
+        {/* <HomeColumnHeader activeItem='lists' activeSubItem={id} active={hasUnread}>
           <div className='column-header__links'>
             <button className='text-btn column-header__setting-btn' tabIndex='0' onClick={this.handleEditClick}>
               <Icon id='pencil' /> <FormattedMessage id='lists.edit' defaultMessage='Edit list' />
@@ -144,7 +141,7 @@ class ListTimeline extends React.PureComponent {
               <Icon id='arrow-right' />
             </Link>
           </div>
-        </HomeColumnHeader>
+        </HomeColumnHeader> */}
 
         <StatusListContainer
           scrollKey='list_timeline'

@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
-import HomeColumnHeader from '../../components/home_column_header';
+import Column from 'soapbox/features/ui/components/column';
 import PinnedHostsPicker from './components/pinned_hosts_picker';
 import IconButton from 'soapbox/components/icon_button';
 import { expandRemoteTimeline } from '../../actions/timelines';
@@ -82,11 +81,10 @@ class RemoteTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, onlyMedia, timelineId, instance, pinned } = this.props;
+    const { intl, onlyMedia, timelineId, instance, pinned } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)} transparent>
-        <HomeColumnHeader activeItem='fediverse' active={hasUnread} />
+      <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
         <PinnedHostsPicker host={instance} />
         {!pinned && <div className='timeline-filter-message'>
           <IconButton icon='times' onClick={this.handleCloseClick} />

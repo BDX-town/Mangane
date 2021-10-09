@@ -29,9 +29,11 @@
 }
 
 .pinned-hosts-picker {
-  margin-left: 10px;
+  padding: 10px 0 0 10px;
   display: inline-flex;
   flex-wrap: wrap;
+  background: var(--foreground-color);
+  border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
 
   .pinned-host {
     margin-right: 10px;

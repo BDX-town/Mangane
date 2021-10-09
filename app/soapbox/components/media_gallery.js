@@ -279,6 +279,7 @@ class MediaGallery extends React.PureComponent {
     visible: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
+    compact: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -560,7 +561,7 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive } = this.props;
+    const { media, intl, sensitive, compact } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
 
@@ -592,7 +593,7 @@ class MediaGallery extends React.PureComponent {
     }
 
     return (
-      <div className='media-gallery' style={sizeData.get('style')} ref={this.handleRef}>
+      <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
           {spoilerButton}
         </div>

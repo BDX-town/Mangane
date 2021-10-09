@@ -1,5 +1,6 @@
 import React from 'react';
-import CharacterCounter from './character_counter';
+// import TextCharacterCounter from './text_character_counter';
+import VisualCharacterCounter from './visual_character_counter';
 import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
@@ -351,7 +352,12 @@ export default class ComposeForm extends ImmutablePureComponent {
               <SpoilerButtonContainer />
               <MarkdownButtonContainer />
             </div>
-            {maxTootChars && <div className='character-counter__wrapper'><CharacterCounter max={maxTootChars} text={text} /></div>}
+            {maxTootChars && (
+              <div className='compose-form__counter'>
+                {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
+                <VisualCharacterCounter max={maxTootChars} text={text} />
+              </div>
+            )}
             <div className='compose-form__publish'>
               <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
             </div>

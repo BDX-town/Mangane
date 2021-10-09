@@ -56,7 +56,7 @@ import {
   Following,
   Reblogs,
   Reactions,
-  // Favourites,
+  Favourites,
   DirectTimeline,
   Conversations,
   HashtagTimeline,
@@ -259,7 +259,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/canary' to='/about/canary' />
         <Redirect from='/canary.txt' to='/about/canary' />
 
-        <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
+        <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
         <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
@@ -288,6 +288,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/likes' page={DefaultPage} component={Favourites} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
         <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 

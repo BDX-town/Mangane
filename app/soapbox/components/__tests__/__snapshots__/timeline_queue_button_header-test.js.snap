@@ -25,7 +25,7 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 1`] = `
 
 exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
 <div
-  className="timeline-queue-header"
+  className="timeline-queue-header hidden"
 >
   <a
     className="timeline-queue-header__btn"
@@ -42,14 +42,18 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
         }
       />
     </div>
-    Click to see 1 new post
+    <div
+      className="timeline-queue-header__label"
+    >
+      Click to see 1 new post
+    </div>
   </a>
 </div>
 `;
 
 exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
 <div
-  className="timeline-queue-header"
+  className="timeline-queue-header hidden"
 >
   <a
     className="timeline-queue-header__btn"
@@ -66,7 +70,11 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
         }
       />
     </div>
-    Click to see 9999999 new posts
+    <div
+      className="timeline-queue-header__label"
+    >
+      Click to see 9999999 new posts
+    </div>
   </a>
 </div>
 `;

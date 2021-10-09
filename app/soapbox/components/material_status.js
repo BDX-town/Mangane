@@ -19,9 +19,9 @@ export default class MaterialStatus extends React.Component {
     }
 
     return (
-      <div className='material-status'>
-        <div className='material-status__status'>
-          <StatusContainer {...this.props} />
+      <div className='material-status' tabIndex={-1}>
+        <div className='material-status__status focusable' tabIndex={0}>
+          <StatusContainer {...this.props} focusable={false} />
         </div>
       </div>
     );

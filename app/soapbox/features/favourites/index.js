@@ -5,19 +5,25 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import LoadingIndicator from '../../components/loading_indicator';
 import { fetchFavourites } from '../../actions/interactions';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
+
+const messages = defineMessages({
+  heading: { id: 'column.favourites', defaultMessage: 'Likes' },
+});
 
 const mapStateToProps = (state, props) => ({
   accountIds: state.getIn(['user_lists', 'favourited_by', props.params.statusId]),
 });
 
 export default @connect(mapStateToProps)
+@injectIntl
 class Favourites extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     accountIds: ImmutablePropTypes.orderedSet,
@@ -37,7 +43,7 @@ class Favourites extends ImmutablePureComponent {
   }
 
   render() {
-    const { accountIds } = this.props;
+    const { intl, accountIds } = this.props;
 
     if (!accountIds) {
       return (
@@ -50,7 +56,7 @@ class Favourites extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has liked this post yet. When someone does, they will show up here.' />;
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='favourites'
           emptyMessage={emptyMessage}

@@ -47,6 +47,36 @@ export const makeGetAccount = () => {
   });
 };
 
+const findAccountsByUsername = (state, username) => {
+  const accounts = state.get('accounts');
+
+  return accounts.filter(account => {
+    return username.toLowerCase() === account.getIn(['acct'], '').toLowerCase();
+  });
+};
+
+export const findAccountByUsername = (state, username) => {
+  const accounts = findAccountsByUsername(state, username);
+
+  if (accounts.size > 1) {
+    const me = state.get('me');
+    const meURL = state.getIn(['accounts', me, 'url']);
+
+    return accounts.find(account => {
+      try {
+        // If more than one account has the same username, try matching its host
+        const { host } = new URL(account.get('url'));
+        const { host: meHost } = new URL(meURL);
+        return host === meHost;
+      } catch {
+        return false;
+      }
+    });
+  } else {
+    return accounts.first();
+  }
+};
+
 const toServerSideType = columnType => {
   switch (columnType) {
   case 'home':

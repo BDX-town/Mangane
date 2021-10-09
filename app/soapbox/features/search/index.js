@@ -12,12 +12,8 @@ const messages = defineMessages({
 const Search = ({ intl }) => (
   <div className='column search-page'>
     <ColumnHeader icon='search' title={intl.formatMessage(messages.heading)} />
-    <SearchContainer />
-    <div className='drawer__pager'>
-      <div className='drawer__inner darker'>
-        <SearchResultsContainer />
-      </div>
-    </div>
+    <SearchContainer autoSubmit />
+    <SearchResultsContainer />
   </div>
 );
 

@@ -103,7 +103,6 @@ class UserIndex extends ImmutablePureComponent {
       <Column>
         <SimpleForm style={{ paddingBottom: 0 }}>
           <TextInput
-            value={this.state.q}
             onChange={this.handleQueryChange}
             placeholder={intl.formatMessage(messages.searchPlaceholder)}
           />

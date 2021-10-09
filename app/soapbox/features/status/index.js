@@ -573,7 +573,7 @@ class Status extends ImmutablePureComponent {
     };
 
     return (
-      <Column label={intl.formatMessage(messages.detailedStatus)} showBackBtn={false}>
+      <Column label={intl.formatMessage(messages.detailedStatus)} transparent>
         <SubNavigation message={intl.formatMessage(messages.title)} />
         {/*
           Eye icon to show/hide all CWs in a thread.

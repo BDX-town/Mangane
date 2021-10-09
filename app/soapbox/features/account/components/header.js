@@ -20,6 +20,8 @@ import classNames from 'classnames';
 import Avatar from 'soapbox/components/avatar';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
@@ -346,11 +348,12 @@ class Header extends ImmutablePureComponent {
       );
     }
 
+    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
 
     const header = account.get('header', '');
-    const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
+    // const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
@@ -360,7 +363,7 @@ class Header extends ImmutablePureComponent {
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
+        <div className={classNames('account__header__image', { /* 'account__header__image--none': headerMissing || deactivated */ })}>
           <div className='account__header__info'>
             {info}
           </div>
@@ -390,6 +393,40 @@ class Header extends ImmutablePureComponent {
                   { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
                 </div>
               </div>
+            </div>
+
+            <div className='account__header__extra__links'>
+
+              <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
+                <span>{shortNumberFormat(account.get('statuses_count'))}</span>
+                <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
+              </NavLink>
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
+                <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
+              </NavLink>}
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
+                <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
+              </NavLink>}
+
+              {(ownAccount || !account.getIn(['pleroma', 'hide_favorites'], true)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}>
+                { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
+                <span>•</span>
+                <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
+              </NavLink>}
+
+              {ownAccount &&
+                <NavLink
+                  exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
+                >
+                  { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
+                  <span>•</span>
+                  <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
+                </NavLink>
+              }
             </div>
 
             {isSmallScreen && (

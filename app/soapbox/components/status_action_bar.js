@@ -458,7 +458,13 @@ class StatusActionBar extends ImmutablePureComponent {
             emoji={meEmojiReact}
             onClick={this.handleLikeButtonClick}
           />
-          {emojiReactCount !== 0 && <span className='detailed-status__link'>{emojiReactCount}</span>}
+          {emojiReactCount !== 0 && (
+            (features.exposableReactions && !features.emojiReacts) ? (
+              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='detailed-status__link'>{emojiReactCount}</Link>
+            ) : (
+              <span className='detailed-status__link'>{emojiReactCount}</span>
+            )
+          )}
         </div>
         {shareButton}
 

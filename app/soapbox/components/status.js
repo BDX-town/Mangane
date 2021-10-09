@@ -8,7 +8,7 @@ import RelativeTimestamp from './relative_timestamp';
 import DisplayName from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
-import AttachmentList from './attachment_list';
+import AttachmentThumbs from './attachment_thumbs';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -93,6 +93,11 @@ class Status extends ImmutablePureComponent {
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
+    focusable: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    focusable: true,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -336,7 +341,7 @@ class Status extends ImmutablePureComponent {
 
       return (
         <HotKeys handlers={minHandlers}>
-          <div className='status__wrapper status__wrapper--filtered focusable' tabIndex='0' ref={this.handleRef}>
+          <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable: this.props.focusable })} tabIndex={this.props.focusable ? 0 : null} ref={this.handleRef}>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
           </div>
         </HotKeys>
@@ -384,10 +389,7 @@ class Status extends ImmutablePureComponent {
     if (size > 0) {
       if (this.props.muted) {
         media = (
-          <AttachmentList
-            compact
-            media={status.get('media_attachments')}
-          />
+          <AttachmentThumbs media={status.get('media_attachments')} onClick={this.handleClick} />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
@@ -493,7 +495,7 @@ class Status extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>

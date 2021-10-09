@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { Link } from 'react-router-dom';
 import { getAcct, isVerified } from 'soapbox/utils/accounts';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -13,7 +14,7 @@ const mapStateToProps = state => ({
 
 const ProfilePreview = ({ account, displayFqn }) => (
   <div className='card h-card'>
-    <a target='_blank' rel='noopener' href={account.get('url')}>
+    <Link to={`/@${account.get('acct')}`}>
       <div className='card__img'>
         <StillImage alt='' src={account.get('header')} />
       </div>
@@ -32,7 +33,7 @@ const ProfilePreview = ({ account, displayFqn }) => (
           <span>@{getAcct(account, displayFqn)}</span>
         </div>
       </div>
-    </a>
+    </Link>
   </div>
 );
 

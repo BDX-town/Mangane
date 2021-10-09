@@ -1,35 +1,35 @@
 .timeline-queue-header {
   display: flex;
+  align-self: center;
   align-items: center;
   justify-content: space-evenly;
-  max-height: 30px;
-  position: sticky;
+  height: 30px;
+  position: fixed;
   top: 60px;
   margin: 0 auto;
-  margin-bottom: 8px;
   background-color: var(--brand-color);
   color: #fff;
-  border-bottom: 1px solid;
-  border-top: 1px solid;
-  border-color: var(--brand-color--faint);
   border-radius: 100px;
-  transition: max-height 150ms ease;
+  transition: 150ms ease;
   overflow: hidden;
-  opacity: 1;
-  left: 0;
-  right: 0;
   padding: 0 10px;
   z-index: 500;
+
+  .sub-navigation ~ & {
+    top: calc(60px + 41px);
+  }
 
   .svg-icon {
     margin-right: 5px;
   }
 
   &.hidden {
-    max-height: 0;
-    opacity: 0;
-    margin: 0;
-    border: 0;
+    transform: scaleY(0);
+    pointer-events: none;
+
+    .timeline-queue-header__label {
+      opacity: 0;
+    }
   }
 
   &__btn {
@@ -45,5 +45,9 @@
     span {
       height: 46px;
     }
+  }
+
+  &__label {
+    transition: 150ms ease;
   }
 }

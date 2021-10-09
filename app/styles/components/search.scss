@@ -166,9 +166,7 @@
 }
 
 .search-page {
-  .drawer__inner:not(:empty) {
-    min-height: 48px;
-  }
+  height: 100%;
 
   .search {
     padding: 10px 15px;
@@ -183,14 +181,6 @@
 
   .search__icon .svg-icon {
     right: 24px;
-  }
-
-  .drawer__pager {
-    border-radius: 0 0 10px 10px;
-
-    @media screen and (max-width: 450px) {
-      border-radius: 0;
-    }
   }
 }
 
