@@ -113,6 +113,10 @@
   justify-content: center;
   z-index: 999;
 
+  &--scrolled {
+    border-radius: 0 !important;
+  }
+
   &__content {
     width: 100%;
     height: 100%;
