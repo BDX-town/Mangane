@@ -325,13 +325,13 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
 
     const header = account.get('header', '');
-    const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
+    // const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
+        <div className={classNames('account__header__image', { /* 'account__header__image--none': headerMissing || deactivated */ })}>
           <div className='account__header__info'>
             {info}
           </div>
