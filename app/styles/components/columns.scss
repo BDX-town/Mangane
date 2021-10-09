@@ -122,11 +122,9 @@
   }
 
   @media (max-width: 580px) {
-    padding: 0;
-
     .timeline-compose-block {
       border-radius: 0;
-      margin-top: 10px; // Make less claustrophobic
+      margin-top: -5px;
     }
   }
 
@@ -349,6 +347,10 @@
     background: transparent;
     border-radius: 0;
     box-shadow: none;
+
+    .sub-navigation {
+      box-shadow: 0 -6px 6px -6px rgba(0, 0, 0, 0.1);
+    }
   }
 
   @media screen and (max-width: 580px) {
