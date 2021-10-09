@@ -13,6 +13,7 @@ class AttachmentThumbs extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     media: ImmutablePropTypes.list.isRequired,
+    onClick: PropTypes.func,
   };
 
   renderLoading() {
@@ -24,19 +25,24 @@ class AttachmentThumbs extends ImmutablePureComponent {
   }
 
   render() {
-    const { media } = this.props;
+    const { media, onClick } = this.props;
 
     return (
-      <Bundle fetchComponent={MediaGallery} loading={this.renderLoading}>
-        {Component => (
-          <Component
-            media={media}
-            onOpenMedia={this.onOpenMedia}
-            height={50}
-            compact
-          />
+      <div className='attachment-thumbs'>
+        <Bundle fetchComponent={MediaGallery} loading={this.renderLoading}>
+          {Component => (
+            <Component
+              media={media}
+              onOpenMedia={this.onOpenMedia}
+              height={50}
+              compact
+            />
+          )}
+        </Bundle>
+        {onClick && (
+          <div className='attachment-thumbs__clickable-region' onClick={onClick} />
         )}
-      </Bundle>
+      </div>
     );
   }
 
