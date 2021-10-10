@@ -256,7 +256,7 @@ const replaceItem = (state, timelineId, oldId, newId) => {
 };
 
 const importPendingStatus = (state, params, idempotencyKey) => {
-  const statusId = `pending-${idempotencyKey}`;
+  const statusId = `末pending-${idempotencyKey}`;
 
   return state.withMutations(state => {
     const timelineIds = getTimelinesByVisibility(params.visibility);
@@ -268,7 +268,7 @@ const importPendingStatus = (state, params, idempotencyKey) => {
 };
 
 const replacePendingStatus = (state, idempotencyKey, newId) => {
-  const oldId = `pending-${idempotencyKey}`;
+  const oldId = `末pending-${idempotencyKey}`;
 
   state.keySeq().forEach(timelineId => {
     return replaceItem(state, timelineId, oldId, newId);

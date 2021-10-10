@@ -487,7 +487,7 @@ class Status extends ImmutablePureComponent {
   }
 
   renderPendingStatus(id) {
-    const idempotencyKey = id.replace(/^pending-/, '');
+    const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
       <PendingStatus
@@ -505,7 +505,7 @@ class Status extends ImmutablePureComponent {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return this.renderTombstone(id);
-      } else if (id.startsWith('pending-')) {
+      } else if (id.startsWith('末pending-')) {
         return this.renderPendingStatus(id);
       } else {
         return this.renderStatus(id);

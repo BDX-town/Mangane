@@ -18,7 +18,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     emojis: [],
     favourited: false,
     favourites_count: 0,
-    id: `pending-${idempotencyKey}`,
+    id: `末pending-${idempotencyKey}`,
     in_reply_to_account_id: null,
     in_reply_to_id: pendingStatus.get('in_reply_to_id'),
     language: null,

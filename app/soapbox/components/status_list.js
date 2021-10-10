@@ -124,7 +124,7 @@ export default class StatusList extends ImmutablePureComponent {
 
   renderPendingStatus(statusId) {
     const { timelineId, withGroupAdmin, group } = this.props;
-    const idempotencyKey = statusId.replace(/^pending-/, '');
+    const idempotencyKey = statusId.replace(/^末pending-/, '');
 
     return (
       <div className='material-status' key={statusId}>
@@ -168,7 +168,7 @@ export default class StatusList extends ImmutablePureComponent {
       return statusIds.map((statusId, index) => {
         if (statusId === null) {
           return this.renderLoadGap(index);
-        } else if (statusId.startsWith('pending-')) {
+        } else if (statusId.startsWith('末pending-')) {
           return this.renderPendingStatus(statusId);
         } else {
           return this.renderStatus(statusId);

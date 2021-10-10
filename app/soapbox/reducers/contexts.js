@@ -101,13 +101,13 @@ const filterContexts = (state, relationship, statuses) => {
 };
 
 const importPendingStatus = (state, params, idempotencyKey) => {
-  const id = `pending-${idempotencyKey}`;
+  const id = `末pending-${idempotencyKey}`;
   const { in_reply_to_id } = params;
   return importStatus(state, { id, in_reply_to_id });
 };
 
 const deletePendingStatus = (state, { in_reply_to_id }, idempotencyKey) => {
-  const id = `pending-${idempotencyKey}`;
+  const id = `末pending-${idempotencyKey}`;
 
   return state.withMutations(state => {
     state.deleteIn(['inReplyTos', id]);
