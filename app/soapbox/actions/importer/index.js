@@ -70,9 +70,6 @@ export function importFetchedStatus(status, idempotencyKey) {
 
     const normalizedStatus = normalizeStatus(status, normalOldStatus, expandSpoilers);
 
-    dispatch(importStatus(normalizedStatus, idempotencyKey));
-    dispatch(importFetchedAccount(status.account));
-
     if (status.reblog && status.reblog.id) {
       dispatch(importFetchedStatus(status.reblog));
     }
@@ -80,6 +77,9 @@ export function importFetchedStatus(status, idempotencyKey) {
     if (status.poll && status.poll.id) {
       dispatch(importFetchedPoll(status.poll));
     }
+
+    dispatch(importFetchedAccount(status.account));
+    dispatch(importStatus(normalizedStatus, idempotencyKey));
   };
 }
 
