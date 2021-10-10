@@ -491,6 +491,7 @@ class Status extends ImmutablePureComponent {
 
     return (
       <PendingStatus
+        className='thread__status'
         key={id}
         idempotencyKey={idempotencyKey}
         focusedStatusId={status && status.get('id')}

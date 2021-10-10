@@ -25,7 +25,7 @@ export default @connect(mapStateToProps)
 class PendingStatus extends ImmutablePureComponent {
 
   render() {
-    const { status, showThread } = this.props;
+    const { status, className, showThread } = this.props;
     if (!status) return null;
     if (!status.get('account')) return null;
 
@@ -33,7 +33,7 @@ class PendingStatus extends ImmutablePureComponent {
     const domain = getDomain(status.get('account'));
 
     return (
-      <div className='pending-status'>
+      <div className={classNames('pending-status', className)}>
         <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id') })} tabIndex={this.props.muted ? null : 0}>
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
             <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
