@@ -236,12 +236,6 @@ const getTimelinesByVisibility = visibility => {
   }
 };
 
-const insertIfOnline = (state, timelineId, statusId) => {
-  if (state.getIn([timelineId, 'online'])) {
-    updateTimeline(state, timelineId, statusId);
-  }
-};
-
 const replaceItem = (state, timelineId, oldId, newId) => {
   return state.updateIn([timelineId, 'items'], ids => {
     const list = ImmutableList(ids);
@@ -262,7 +256,7 @@ const importPendingStatus = (state, params, idempotencyKey) => {
     const timelineIds = getTimelinesByVisibility(params.visibility);
 
     timelineIds.forEach(timelineId => {
-      insertIfOnline(state, timelineId, statusId);
+      updateTimeline(state, timelineId, statusId);
     });
   });
 };
@@ -282,7 +276,7 @@ const importStatus = (state, status, idempotencyKey) => {
     const timelineIds = getTimelinesByVisibility(status.visibility);
 
     timelineIds.forEach(timelineId => {
-      insertIfOnline(state, timelineId, status.id);
+      updateTimeline(state, timelineId, status.id);
     });
   });
 };
