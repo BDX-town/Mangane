@@ -183,7 +183,7 @@ export default class StatusList extends ImmutablePureComponent {
     const featuredStatuses = this.renderFeaturedStatuses();
     const statuses = this.renderStatuses();
 
-    if (featuredStatuses) {
+    if (featuredStatuses && statuses) {
       return featuredStatuses.concat(statuses);
     } else {
       return statuses;
