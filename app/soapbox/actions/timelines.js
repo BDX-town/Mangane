@@ -29,14 +29,14 @@ export function processTimelineUpdate(timeline, status, accept) {
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());
     const shouldSkipQueue = shouldFilter(fromJS(status), columnSettings);
 
-    dispatch(importFetchedStatus(status));
-
     if (ownStatus && hasPendingStatuses) {
       // WebSockets push statuses without the Idempotency-Key,
       // so if we have pending statuses, don't import it from here.
       // We implement optimistic non-blocking statuses.
       return;
     }
+
+    dispatch(importFetchedStatus(status));
 
     if (shouldSkipQueue) {
       dispatch(updateTimeline(timeline, status.id, accept));

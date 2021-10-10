@@ -16,7 +16,8 @@ const initialState = ImmutableMap({
   replies: ImmutableMap(),
 });
 
-const importStatus = (state, { id, in_reply_to_id }) => {
+const importStatus = (state, status, idempotencyKey) => {
+  const { id, in_reply_to_id } = status;
   if (!in_reply_to_id) return state;
 
   return state.withMutations(state => {
@@ -25,6 +26,10 @@ const importStatus = (state, { id, in_reply_to_id }) => {
     state.updateIn(['replies', in_reply_to_id], ImmutableOrderedSet(), ids => {
       return ids.add(id).sort();
     });
+
+    if (idempotencyKey) {
+      deletePendingStatus(state, status, idempotencyKey);
+    }
   });
 };
 
@@ -129,7 +134,7 @@ export default function replies(state = initialState, action) {
   case STATUS_CREATE_SUCCESS:
     return deletePendingStatus(state, action.status, action.idempotencyKey);
   case STATUS_IMPORT:
-    return importStatus(state, action.status);
+    return importStatus(state, action.status, action.idempotencyKey);
   case STATUSES_IMPORT:
     return importStatuses(state, action.statuses);
   default:
