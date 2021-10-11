@@ -221,67 +221,82 @@ export default class ScrollableList extends PureComponent {
     this.node = c;
   }
 
-  render() {
-    const { children, scrollKey, showLoading, isLoading, hasMore, prepend, alwaysPrepend, emptyMessage, onLoadMore } = this.props;
+  renderLoading = () => {
+    const { prepend } = this.props;
+
+    return (
+      <div className='slist slist--flex'>
+        <div role='feed' className='item-list'>
+          {prepend}
+        </div>
+
+        <div className='slist__append'>
+          <LoadingIndicator />
+        </div>
+      </div>
+    );
+  }
+
+  renderEmptyMessage = () => {
+    const { prepend, alwaysPrepend, emptyMessage } = this.props;
+
+    return (
+      <div className='slist slist--flex' ref={this.setRef}>
+        {alwaysPrepend && prepend}
+
+        <div className='empty-column-indicator'>
+          <div>{emptyMessage}</div>
+        </div>
+      </div>
+    );
+  }
+
+  renderFeed = () => {
+    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
+    const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
 
-    const loadMore     = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
-    let scrollableArea = null;
+    return (
+      <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
+        <div role='feed' className='item-list'>
+          {prepend}
+
+          {React.Children.map(children, (child, index) => (
+            <IntersectionObserverArticleContainer
+              key={child.key}
+              id={child.key}
+              index={index}
+              listLength={childrenCount}
+              intersectionObserverWrapper={this.intersectionObserverWrapper}
+              saveHeightKey={trackScroll ? `${this.context.router.route.location.key}:${scrollKey}` : null}
+            >
+              {React.cloneElement(child, {
+                getScrollPosition: this.getScrollPosition,
+                updateScrollBottom: this.updateScrollBottom,
+                cachedMediaWidth: this.state.cachedMediaWidth,
+                cacheMediaWidth: this.cacheMediaWidth,
+              })}
+            </IntersectionObserverArticleContainer>
+          ))}
+          {this.getMoreFollows()}
+          {loadMore}
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    const { children, showLoading, isLoading, hasMore, emptyMessage } = this.props;
+    const childrenCount = React.Children.count(children);
 
     if (showLoading) {
-      scrollableArea = (
-        <div className='slist slist--flex'>
-          <div role='feed' className='item-list'>
-            {prepend}
-          </div>
-
-          <div className='slist__append'>
-            <LoadingIndicator />
-          </div>
-        </div>
-      );
+      return this.renderLoading();
     } else if (isLoading || childrenCount > 0 || hasMore || !emptyMessage) {
-      scrollableArea = (
-        <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
-          <div role='feed' className='item-list'>
-            {prepend}
-
-            {React.Children.map(this.props.children, (child, index) => (
-              <IntersectionObserverArticleContainer
-                key={child.key}
-                id={child.key}
-                index={index}
-                listLength={childrenCount}
-                intersectionObserverWrapper={this.intersectionObserverWrapper}
-                saveHeightKey={trackScroll ? `${this.context.router.route.location.key}:${scrollKey}` : null}
-              >
-                {React.cloneElement(child, {
-                  getScrollPosition: this.getScrollPosition,
-                  updateScrollBottom: this.updateScrollBottom,
-                  cachedMediaWidth: this.state.cachedMediaWidth,
-                  cacheMediaWidth: this.cacheMediaWidth,
-                })}
-              </IntersectionObserverArticleContainer>
-            ))}
-            {this.getMoreFollows()}
-            {loadMore}
-          </div>
-        </div>
-      );
+      return this.renderFeed();
     } else {
-      scrollableArea = (
-        <div className='slist slist--flex' ref={this.setRef}>
-          {alwaysPrepend && prepend}
-
-          <div className='empty-column-indicator'>
-            <div>{emptyMessage}</div>
-          </div>
-        </div>
-      );
+      return this.renderEmptyMessage();
     }
-
-    return scrollableArea;
   }
 
 }
