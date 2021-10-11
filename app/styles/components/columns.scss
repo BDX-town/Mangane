@@ -882,7 +882,7 @@
 
 // Make MaterialStatus flush against SubNavigation
 .sub-navigation ~ .slist .item-list > article:first-child .material-status__status,
-.sub-navigation ~ .material-status .material-status__status {
+.sub-navigation ~ .material-status:not(.material-status + .material-status) .material-status__status {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
