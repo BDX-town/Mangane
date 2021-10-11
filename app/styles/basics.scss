@@ -204,3 +204,12 @@ noscript {
 .greentext {
   color: #789922;
 }
+
+.placeholder-status {
+  .status__display-name strong,
+  .status__content {
+    letter-spacing: -1px;
+    color: var(--brand-color);
+    opacity: 0.1;
+  }
+}

@@ -29,6 +29,8 @@ export default class ScrollableList extends PureComponent {
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
+    placeholderComponent: PropTypes.node,
+    placeholderCount: PropTypes.number,
   };
 
   state = {
@@ -222,7 +224,13 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderLoading = () => {
-    const { prepend } = this.props;
+    const { prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
+
+    if (Placeholder && placeholderCount > 0) {
+      return Array(placeholderCount).fill().map((_, i) => (
+        <Placeholder key={i} />
+      ));
+    }
 
     return (
       <div className='slist slist--flex'>
