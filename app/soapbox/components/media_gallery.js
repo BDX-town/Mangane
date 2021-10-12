@@ -197,21 +197,18 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'audio') {
-      const remoteURL = attachment.get('remote_url');
-      const originalUrl = attachment.get('url');
-      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      const ext = attachment.get('url').split('.').pop().toUpperCase();
       thumbnail = (
         <a
           className={classNames('media-gallery__item-thumbnail')}
-          href={attachment.get('remote_url') || originalUrl}
+          href={attachment.get('url')}
           onClick={this.handleClick}
           target='_blank'
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
           <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
-          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+          <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
     } else if (attachment.get('type') === 'video') {
