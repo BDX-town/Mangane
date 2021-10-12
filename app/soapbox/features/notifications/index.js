@@ -20,6 +20,7 @@ import ScrollableList from '../../components/scrollable_list';
 import LoadGap from '../../components/load_gap';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import { getSettings } from 'soapbox/actions/settings';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -170,6 +171,8 @@ class Notifications extends React.PureComponent {
         showLoading={isLoading && notifications.size === 0}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
+        placeholderComponent={PlaceholderNotification}
+        placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
