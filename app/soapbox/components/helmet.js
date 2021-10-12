@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import { Helmet } from'react-helmet';
 import { getSettings } from 'soapbox/actions/settings';
 import sourceCode from 'soapbox/utils/code';
@@ -54,4 +55,4 @@ class SoapboxHelmet extends React.Component {
 
 }
 
-export default connect(mapStateToProps)(SoapboxHelmet);
+export default withRouter(connect(mapStateToProps)(SoapboxHelmet));
