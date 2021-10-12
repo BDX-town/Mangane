@@ -108,7 +108,6 @@ export default class ScrollableList extends PureComponent {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(snapshot);
     // Reset the scroll position when a new child comes in in order not to
     // jerk the scrollbar around if you're already scrolled down the page.
     if (snapshot !== null) {
@@ -261,7 +260,7 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderFeed = () => {
-    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, placeholderComponent: Placeholder, placeholderCount } = this.props;
+    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
@@ -288,11 +287,6 @@ export default class ScrollableList extends PureComponent {
               })}
             </IntersectionObserverArticleContainer>
           ))}
-          {(isLoading && Placeholder && placeholderCount > 0) && (
-            Array(placeholderCount).fill().map((_, i) => (
-              <Placeholder key={i} />
-            ))
-          )}
           {this.getMoreFollows()}
           {loadMore}
         </div>
