@@ -21,7 +21,7 @@ export default class DisplayName extends React.Component {
             <bdi><strong className='display-name__html'>{generateText(length)}</strong></bdi>
           </span>
         </span>
-        <span class='display-name__account'>{generateText(acctLength)}</span>
+        <span className='display-name__account'>{generateText(acctLength)}</span>
       </span>
     );
   }

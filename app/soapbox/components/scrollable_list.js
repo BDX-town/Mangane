@@ -29,7 +29,7 @@ export default class ScrollableList extends PureComponent {
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
-    placeholderComponent: PropTypes.node,
+    placeholderComponent: PropTypes.func,
     placeholderCount: PropTypes.number,
   };
 
