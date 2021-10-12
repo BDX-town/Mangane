@@ -13,7 +13,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     application: null,
     bookmarked: false,
     card: null,
-    content: pendingStatus.get('status', '').replaceAll('\n', '<br>'),
+    content: pendingStatus.get('status', '').replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
     created_at: new Date(),
     emojis: [],
     favourited: false,

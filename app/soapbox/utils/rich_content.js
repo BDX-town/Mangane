@@ -9,7 +9,7 @@ export const onlyEmoji = (node, limit = 1, ignoreMentions = true) => {
       node.querySelectorAll('a.mention').forEach(m => m.parentNode.removeChild(m));
     }
 
-    if (node.textContent.replaceAll(' ', '') !== '') return false;
+    if (node.textContent.replace(new RegExp(' ', 'g'), '') !== '') return false;
     const emojis = Array.from(node.querySelectorAll('img.emojione'));
     if (emojis.length === 0) return false;
     if (emojis.length > limit) return false;
@@ -17,7 +17,6 @@ export const onlyEmoji = (node, limit = 1, ignoreMentions = true) => {
     if (images.length > emojis.length) return false;
     return true;
   } catch (e) {
-    // Apparently some browsers can't handle `node.textContent.replaceAll`??
     // If anything in here crashes, skipping it is inconsequential.
     console.error(e);
     return false;
