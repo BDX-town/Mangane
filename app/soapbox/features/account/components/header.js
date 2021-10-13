@@ -396,7 +396,7 @@ class Header extends ImmutablePureComponent {
 
             <div className='account__header__extra__buttons'>
               <ActionButton account={account} />
-              {me && <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />}
+              {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />}
             </div>
 
           </div>

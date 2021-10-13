@@ -197,12 +197,13 @@
 
       .icon-button {
         border: 1px solid var(--brand-color--med);
-        border-radius: 4px;
+        border-radius: 999px;
         box-sizing: content-box;
-        padding: 2px;
+        padding: 7px;
 
-        > div {
-          line-height: 31px !important;
+        .svg-icon {
+          width: 20px;
+          height: 20px;
         }
       }
 
