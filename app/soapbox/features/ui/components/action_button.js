@@ -109,8 +109,14 @@ class ActionButton extends ImmutablePureComponent {
           })}
           onClick={this.handleFollow}
         >
-          {intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)}
-          <Icon src={account.getIn(['relationship', 'following']) ? require('@tabler/icons/icons/minus.svg') : require('@tabler/icons/icons/plus.svg')} />
+          {account.getIn(['relationship', 'following']) ? (
+            intl.formatMessage(messages.unfollow)
+          ) : (
+            <>
+              {intl.formatMessage(messages.follow)}
+              <Icon src={require('@tabler/icons/icons/plus.svg')} />
+            </>
+          )}
         </Button>);
       } else if (account.getIn(['relationship', 'blocking'])) {
         // Unblock
