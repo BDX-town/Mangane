@@ -4,7 +4,7 @@
 - fediverse.svg - Modified from Wikipedia, CC0  
 - gavel.svg - Created by ramsha61 for this project, MIT  
 - home-squared.svg - Modified from Tabler icons, MIT  
-- pen-add.svg - Modified from Feather icons, MIT  
+- pen-plus.svg - Modified from Tabler icons, MIT  
 
 Tabler: https://tabler-icons.io/  
 Feather: https://feathericons.com/  
