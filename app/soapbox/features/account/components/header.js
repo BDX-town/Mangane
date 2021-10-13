@@ -300,7 +300,7 @@ class Header extends ImmutablePureComponent {
   }
 
   renderMessageButton() {
-    const { account, me } = this.props;
+    const { intl, account, me } = this.props;
 
     if (!me || !account || account.get('id') === me) {
       return null;
@@ -309,9 +309,21 @@ class Header extends ImmutablePureComponent {
     const canChat = account.getIn(['pleroma', 'accepts_chat_messages'], false) === true;
 
     if (canChat) {
-      return <IconButton src={require('@tabler/icons/icons/messages.svg')} onClick={this.props.onChat} />;
+      return (
+        <IconButton
+          src={require('@tabler/icons/icons/messages.svg')}
+          onClick={this.props.onChat}
+          title={intl.formatMessage(messages.chat, { name: account.get('username') })}
+        />
+      );
     } else {
-      return <IconButton src={require('@tabler/icons/icons/mail.svg')} onClick={this.props.onDirect} />;
+      return (
+        <IconButton
+          src={require('@tabler/icons/icons/mail.svg')}
+          onClick={this.props.onDirect}
+          title={intl.formatMessage(messages.direct, { name: account.get('username') })}
+        />
+      );
     }
   }
 

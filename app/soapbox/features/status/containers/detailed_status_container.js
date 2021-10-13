@@ -32,6 +32,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../../../actions/alerts';
 import { getSettings } from 'soapbox/actions/settings';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -139,6 +140,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDirect(account, router) {
     dispatch(directCompose(account, router));
+  },
+
+  onChat(account, router) {
+    dispatch(launchChat(account, router));
   },
 
   onMention(account, router) {

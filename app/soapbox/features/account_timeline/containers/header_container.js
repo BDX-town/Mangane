@@ -24,7 +24,7 @@ import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
-import { startChat, openChat } from 'soapbox/actions/chats';
+import { launchChat } from 'soapbox/actions/chats';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import {
   verifyUser,
@@ -49,8 +49,6 @@ const messages = defineMessages({
   demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
 
 });
-
-const isMobile = width => width <= 1190;
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
@@ -164,14 +162,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onChat(account, router) {
-    // TODO make this faster
-    dispatch(startChat(account.get('id'))).then(chat => {
-      if (isMobile(window.innerWidth)) {
-        router.push(`/chats/${chat.id}`);
-      } else {
-        dispatch(openChat(chat.id));
-      }
-    }).catch(() => {});
+    dispatch(launchChat(account, router));
   },
 
   onDeactivateUser(account) {

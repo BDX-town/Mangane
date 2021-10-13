@@ -17,6 +17,7 @@ const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   redraft: { id: 'status.redraft', defaultMessage: 'Delete & re-draft' },
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
+  chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   reply: { id: 'status.reply', defaultMessage: 'Reply' },
   reblog: { id: 'status.reblog', defaultMessage: 'Repost' },
@@ -86,6 +87,7 @@ class ActionBar extends React.PureComponent {
     onDelete: PropTypes.func.isRequired,
     onBookmark: PropTypes.func,
     onDirect: PropTypes.func.isRequired,
+    onChat: PropTypes.func,
     onMention: PropTypes.func.isRequired,
     onMute: PropTypes.func,
     onMuteConversation: PropTypes.func,
@@ -208,6 +210,10 @@ class ActionBar extends React.PureComponent {
 
   handleDirectClick = () => {
     this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+  }
+
+  handleChatClick = () => {
+    this.props.onChat(this.props.status.get('account'), this.context.router.history);
   }
 
   handleMentionClick = () => {
@@ -337,7 +343,13 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick });
     } else {
       menu.push({ text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }), action: this.handleMentionClick });
-      //menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+
+      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
+        menu.push({ text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }), action: this.handleChatClick });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+      }
+
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });

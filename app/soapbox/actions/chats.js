@@ -165,3 +165,19 @@ export function deleteChatMessage(chatId, messageId) {
     });
   };
 }
+
+/** Start a chat and launch it in the UI */
+export function launchChat(account, router) {
+  const isMobile = width => width <= 1190;
+
+  return (dispatch, getState) => {
+    // TODO: make this faster
+    return dispatch(startChat(account.get('id'))).then(chat => {
+      if (isMobile(window.innerWidth)) {
+        router.push(`/chats/${chat.id}`);
+      } else {
+        dispatch(openChat(chat.id));
+      }
+    });
+  };
+}

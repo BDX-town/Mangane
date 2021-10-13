@@ -51,6 +51,7 @@ import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSe
 import ThreadStatus from './components/thread_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
@@ -252,6 +253,10 @@ class Status extends ImmutablePureComponent {
 
   handleDirectClick = (account, router) => {
     this.props.dispatch(directCompose(account, router));
+  }
+
+  handleChatClick = (account, router) => {
+    this.props.dispatch(launchChat(account, router));
   }
 
   handleMentionClick = (account, router) => {
@@ -643,6 +648,7 @@ class Status extends ImmutablePureComponent {
                   onReblog={this.handleReblogClick}
                   onDelete={this.handleDeleteClick}
                   onDirect={this.handleDirectClick}
+                  onChat={this.handleChatClick}
                   onMention={this.handleMentionClick}
                   onMute={this.handleMuteClick}
                   onMuteConversation={this.handleConversationMuteClick}
