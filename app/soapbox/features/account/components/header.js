@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import IconButton from 'soapbox/components/icon_button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   isStaff,
@@ -185,6 +186,8 @@ class Header extends ImmutablePureComponent {
 
       if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
         menu.push({ text: intl.formatMessage(messages.chat, { name: account.get('username') }), action: this.props.onChat });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.direct, { name: account.get('username') }), action: this.props.onDirect });
       }
 
       if (account.getIn(['relationship', 'following'])) {
@@ -296,6 +299,22 @@ class Header extends ImmutablePureComponent {
     return info;
   }
 
+  renderMessageButton() {
+    const { account, me } = this.props;
+
+    if (!me || !account || account.get('id') === me) {
+      return null;
+    }
+
+    const canChat = account.getIn(['pleroma', 'accepts_chat_messages'], false) === true;
+
+    if (canChat) {
+      return <IconButton src={require('@tabler/icons/icons/messages.svg')} onClick={this.props.onChat} />;
+    } else {
+      return <IconButton src={require('@tabler/icons/icons/mail.svg')} onClick={this.props.onDirect} />;
+    }
+  }
+
   render() {
     const { account, intl, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
@@ -395,8 +414,9 @@ class Header extends ImmutablePureComponent {
             )}
 
             <div className='account__header__extra__buttons'>
+              {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
+              {this.renderMessageButton()}
               <ActionButton account={account} />
-              {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />}
             </div>
 
           </div>

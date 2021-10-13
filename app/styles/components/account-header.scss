@@ -196,10 +196,15 @@
       margin-left: auto;
 
       .icon-button {
-        border: 1px solid var(--brand-color--med);
+        border: 1px solid var(--primary-text-color--faint);
         border-radius: 999px;
         box-sizing: content-box;
         padding: 7px;
+        opacity: 0.6;
+
+        &:hover {
+          opacity: 1;
+        }
 
         .svg-icon {
           width: 20px;
@@ -207,7 +212,10 @@
         }
       }
 
-      .button { margin-right: 10px; }
+      .button,
+      .icon-button {
+        margin-left: 10px;
+      }
 
       .button-active {
         border-color: #008000;
