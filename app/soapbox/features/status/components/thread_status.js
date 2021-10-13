@@ -3,12 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import StatusContainer from 'soapbox/containers/status_container';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import classNames from 'classnames';
 
 const mapStateToProps = (state, { id }) => {
   return {
-    replyToId: state.getIn(['statuses', id, 'in_reply_to_id']),
+    replyToId: state.getIn(['contexts', 'inReplyTos', id]),
     replyCount: state.getIn(['contexts', 'replies', id], ImmutableOrderedSet()).size,
+    isLoaded: Boolean(state.getIn(['statuses', id])),
   };
 };
 
@@ -19,6 +21,7 @@ class ThreadStatus extends React.Component {
     focusedStatusId: PropTypes.string,
     replyToId: PropTypes.string,
     replyCount: PropTypes.number,
+    isLoaded: PropTypes.bool,
   }
 
   renderConnector() {
@@ -43,10 +46,16 @@ class ThreadStatus extends React.Component {
   }
 
   render() {
+    const { isLoaded } = this.props;
+
     return (
       <div className='thread__status'>
         {this.renderConnector()}
-        <StatusContainer {...this.props} />
+        {isLoaded ? (
+          <StatusContainer {...this.props} />
+        ) : (
+          <PlaceholderStatus />
+        )}
       </div>
     );
   }
