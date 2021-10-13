@@ -124,6 +124,7 @@ export function clearTimeline(timeline) {
 }
 
 const noOp = () => {};
+const noOpAsync = () => () => new Promise(f => f());
 
 const parseTags = (tags = {}, mode) => {
   return (tags[mode] || []).map((tag) => {
@@ -138,7 +139,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
 
     if (timeline.get('isLoading')) {
       done();
-      return dispatch(noOp);
+      return dispatch(noOpAsync());
     }
 
     if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
