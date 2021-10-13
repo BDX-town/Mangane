@@ -27,7 +27,8 @@ const WarningWrapper = ({ needsLockWarning, hashtagWarning, directMessageWarning
   if (directMessageWarning) {
     const message = (
       <span>
-        <FormattedMessage id='compose_form.direct_message_warning' defaultMessage='This post will only be sent to the mentioned users.' /> <a href='/about/tos' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a>
+        <FormattedMessage id='compose_form.direct_message_warning' defaultMessage='This post will only be sent to the mentioned users.' />
+        {/* <a href='/about/tos' target='_blank'><FormattedMessage id='compose_form.direct_message_warning_learn_more' defaultMessage='Learn more' /></a> */}
       </span>
     );
 
