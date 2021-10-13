@@ -138,7 +138,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
 
     if (timeline.get('isLoading')) {
       done();
-      return;
+      return dispatch(noOp);
     }
 
     if (!params.max_id && !params.pinned && timeline.get('items', ImmutableOrderedSet()).size > 0) {
@@ -149,7 +149,7 @@ export function expandTimeline(timelineId, path, params = {}, done = noOp) {
 
     dispatch(expandTimelineRequest(timelineId, isLoadingMore));
 
-    api(getState).get(path, { params }).then(response => {
+    return api(getState).get(path, { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(expandTimelineSuccess(timelineId, response.data, next ? next.uri : null, response.code === 206, isLoadingRecent, isLoadingMore));
