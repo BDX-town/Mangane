@@ -36,6 +36,7 @@ const messages = defineMessages({
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
+  message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
@@ -257,8 +258,20 @@ export default class ComposeForm extends ImmutablePureComponent {
 
     let publishText = '';
 
-    if (this.props.privacy === 'private' || this.props.privacy === 'direct') {
-      publishText = <span className='compose-form__publish-private'><Icon id='lock' /> {intl.formatMessage(messages.publish)}</span>;
+    if (this.props.privacy === 'direct') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/mail.svg')} />
+          {intl.formatMessage(messages.message)}
+        </>
+      );
+    } else if (this.props.privacy === 'private') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/lock.svg')} />
+          {intl.formatMessage(messages.publish)}
+        </>
+      );
     } else {
       publishText = this.props.privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
     }

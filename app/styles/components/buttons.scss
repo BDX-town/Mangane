@@ -14,7 +14,9 @@ button {
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
@@ -30,6 +32,10 @@ button {
   white-space: nowrap;
   width: auto;
   transition: 0.2s;
+
+  .svg-icon {
+    margin-right: 5px;
+  }
 
   &:active,
   &:focus,
@@ -113,7 +119,7 @@ button {
   }
 
   &.button--block {
-    display: block;
+    display: flex;
     width: 100%;
   }
 }
