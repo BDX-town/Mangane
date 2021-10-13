@@ -260,7 +260,7 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderFeed = () => {
-    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore } = this.props;
+    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, placeholderComponent: Placeholder } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
@@ -287,6 +287,13 @@ export default class ScrollableList extends PureComponent {
               })}
             </IntersectionObserverArticleContainer>
           ))}
+          {(isLoading && Placeholder) && (
+            <div className='slist__placeholder'>
+              {Array(3).fill().map((_, i) => (
+                <Placeholder key={i} />
+              ))}
+            </div>
+          )}
           {this.getMoreFollows()}
           {loadMore}
         </div>
