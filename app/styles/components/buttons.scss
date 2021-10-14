@@ -37,6 +37,10 @@ button {
     margin-right: 5px;
   }
 
+  &__link {
+    text-decoration: none;
+  }
+
   &:active,
   &:focus,
   &:hover {
