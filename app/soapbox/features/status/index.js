@@ -257,7 +257,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleChatClick = (account, router) => {
-    this.props.dispatch(launchChat(account, router));
+    this.props.dispatch(launchChat(account.get('id'), router));
   }
 
   handleMentionClick = (account, router) => {

@@ -167,13 +167,13 @@ export function deleteChatMessage(chatId, messageId) {
 }
 
 /** Start a chat and launch it in the UI */
-export function launchChat(account, router) {
+export function launchChat(accountId, router, forceNavigate = false) {
   const isMobile = width => width <= 1190;
 
   return (dispatch, getState) => {
     // TODO: make this faster
-    return dispatch(startChat(account.get('id'))).then(chat => {
-      if (isMobile(window.innerWidth)) {
+    return dispatch(startChat(accountId)).then(chat => {
+      if (forceNavigate || isMobile(window.innerWidth)) {
         router.push(`/chats/${chat.id}`);
       } else {
         dispatch(openChat(chat.id));

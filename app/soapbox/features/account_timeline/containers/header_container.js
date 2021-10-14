@@ -162,7 +162,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onChat(account, router) {
-    dispatch(launchChat(account, router));
+    dispatch(launchChat(account.get('id'), router));
   },
 
   onDeactivateUser(account) {
