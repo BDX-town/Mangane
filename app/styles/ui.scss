@@ -166,6 +166,15 @@
       padding: 0 !important;
     }
 
+    .spoiler-input__input,
+    .autosuggest-textarea__textarea {
+      background-color: var(--background-color);
+    }
+
+    .autosuggest-textarea__textarea {
+      padding: 14px 32px 13px 10px !important;
+    }
+
     .compose-form__autosuggest-wrapper {
       &::before {
         content: "";
@@ -183,10 +192,6 @@
         @media (max-width: 405px) {
           display: none;
         }
-      }
-
-      .autosuggest-textarea__textarea {
-        padding: 14px 32px 13px 10px !important;
       }
     }
   }

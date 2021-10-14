@@ -122,7 +122,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     case 'Enter':
     case 'Tab':
       // Select suggestion
-      if (this.state.lastToken !== null && suggestions.size > 0 && !suggestionsHidden) {
+      if (suggestions.size > 0 && !suggestionsHidden) {
         e.preventDefault();
         e.stopPropagation();
         this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
