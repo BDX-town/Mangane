@@ -23,6 +23,11 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     onSelected: PropTypes.func.isRequired,
+    limit: PropTypes.number,
+  }
+
+  static defaultProps = {
+    limit: 4,
   }
 
   state = {
@@ -39,14 +44,10 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
   }
 
   handleAccountSearch = throttle(q => {
-    const { dispatch } = this.props;
+    const { dispatch, limit } = this.props;
     const source = this.refreshCancelToken();
 
-    const params = {
-      q,
-      resolve: false,
-      limit: 4,
-    };
+    const params = { q, limit, resolve: false };
 
     dispatch(accountSearch(params, source.token))
       .then(accounts => {
