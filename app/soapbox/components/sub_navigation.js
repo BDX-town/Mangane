@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 import { throttle } from 'lodash';
 import Icon from 'soapbox/components/icon';
 import classNames from 'classnames';
+import Helmet from 'soapbox/components/helmet';
 
 export default class SubNavigation extends React.PureComponent {
 
@@ -80,9 +81,12 @@ export default class SubNavigation extends React.PureComponent {
             <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
             <FormattedMessage id='sub_navigation.back' defaultMessage='Back' />
           </button>
-          <div className='sub-navigation__message'>
-            {message}
-          </div>
+          {message && (
+            <div className='sub-navigation__message'>
+              <Helmet><title>{message}</title></Helmet>
+              {message}
+            </div>
+          )}
         </div>
       </div>
     );
