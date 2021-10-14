@@ -79,7 +79,7 @@ class SecurityForm extends ImmutablePureComponent {
     const { intl } = this.props;
 
     return (
-      <Column icon='lock' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='lock' heading={intl.formatMessage(messages.heading)}>
         <ChangeEmailForm />
         <ChangePasswordForm />
         <SetUpMfa />

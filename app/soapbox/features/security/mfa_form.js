@@ -88,7 +88,7 @@ class MfaForm extends ImmutablePureComponent {
     const { displayOtpForm } = this.state;
 
     return (
-      <Column icon='lock' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='lock' heading={intl.formatMessage(messages.heading)}>
         <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
         { settings.get('otpEnabled') === true && <DisableOtpForm />}
         { settings.get('otpEnabled') === false && <EnableOtpForm handleSetupProceedClick={this.handleSetupProceedClick} />}

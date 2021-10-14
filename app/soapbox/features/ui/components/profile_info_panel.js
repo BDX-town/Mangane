@@ -170,7 +170,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {fields.map((pair, i) =>
                 isTicker(pair.get('name', '')) ? (
-                  <BundleContainer fetchComponent={CryptoAddress}>
+                  <BundleContainer fetchComponent={CryptoAddress} key={i}>
                     {Component => (
                       <Component
                         key={i}

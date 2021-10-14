@@ -79,7 +79,7 @@ export default class SubNavigation extends React.PureComponent {
             onKeyUp={this.handleBackKeyUp}
           >
             <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
-            <FormattedMessage id='sub_navigation.back' defaultMessage='Back' />
+            <FormattedMessage id='column_back_button.label' defaultMessage='Back' />
           </button>
           {message && (
             <div className='sub-navigation__message'>

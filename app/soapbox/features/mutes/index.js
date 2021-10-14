@@ -54,7 +54,7 @@ class Mutes extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.mutes' defaultMessage="You haven't muted any users yet." />;
 
     return (
-      <Column icon='volume-off' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='volume-off' heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='mutes'
           onLoadMore={this.handleLoadMore}

@@ -131,7 +131,7 @@ class Preferences extends ImmutablePureComponent {
     };
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown

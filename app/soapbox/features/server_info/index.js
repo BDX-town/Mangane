@@ -27,7 +27,7 @@ class ServerInfo extends ImmutablePureComponent {
     const { intl, instance } = this.props;
 
     return (
-      <Column icon='info' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='info' heading={intl.formatMessage(messages.heading)}>
         <div className='info_column_area'>
           <div className='info__brand'>
             <div className='brand'>

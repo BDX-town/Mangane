@@ -230,7 +230,7 @@ class EditProfile extends ImmutablePureComponent {
     const canEditName = verifiedCanEditName || !verified;
 
     return (
-      <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='user' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <FieldsGroup>

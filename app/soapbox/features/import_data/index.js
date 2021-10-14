@@ -52,7 +52,7 @@ class ImportData extends ImmutablePureComponent {
     const { intl, features } = this.props;
 
     return (
-      <Column icon='cloud-upload-alt' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cloud-upload-alt' heading={intl.formatMessage(messages.heading)}>
         <CSVImporter action={importFollows} messages={followMessages} />
         <CSVImporter action={importBlocks} messages={blockMessages} />
         {features.importMutes && <CSVImporter action={importMutes} messages={muteMessages} />}
