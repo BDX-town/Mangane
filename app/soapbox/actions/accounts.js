@@ -947,10 +947,10 @@ export function unpinAccountFail(error) {
   };
 }
 
-export function accountSearch(params) {
+export function accountSearch(params, cancelToken) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_SEARCH_REQUEST, params });
-    return api(getState).get('/api/v1/accounts/search', { params }).then(({ data: accounts }) => {
+    return api(getState).get('/api/v1/accounts/search', { params, cancelToken }).then(({ data: accounts }) => {
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: ACCOUNT_SEARCH_SUCCESS, accounts });
       return accounts;

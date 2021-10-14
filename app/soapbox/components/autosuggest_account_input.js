@@ -1,6 +1,7 @@
 import React from 'react';
 import AutosuggestInput from './autosuggest_input';
 import PropTypes from 'prop-types';
+import { CancelToken } from 'axios';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
@@ -29,8 +30,17 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
     accountIds: ImmutableOrderedSet(),
   }
 
+  source = CancelToken.source();
+
+  refreshCancelToken = () => {
+    this.source.cancel();
+    this.source = CancelToken.source();
+    return this.source;
+  }
+
   handleAccountSearch = throttle(q => {
     const { dispatch } = this.props;
+    const source = this.refreshCancelToken();
 
     const params = {
       q,
@@ -38,7 +48,7 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
       limit: 4,
     };
 
-    dispatch(accountSearch(params))
+    dispatch(accountSearch(params, source.token))
       .then(accounts => {
         const accountIds = accounts.map(account => account.id);
         this.setState({ accountIds: ImmutableOrderedSet(accountIds) });
