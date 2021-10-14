@@ -167,9 +167,12 @@
 
 .search-page {
   height: 100%;
+}
 
+.column {
   .search {
     padding: 10px 15px;
+    background-color: var(--foreground-color);
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
   }
 

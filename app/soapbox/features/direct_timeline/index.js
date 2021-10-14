@@ -8,10 +8,11 @@ import { expandDirectTimeline } from '../../actions/timelines';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
 import { directComposeById } from 'soapbox/actions/compose';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import AccountSearch from 'soapbox/components/account_search';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  searchPlaceholder: { id: 'direct.search_placeholder', defaultMessage: 'Search for an account to message…' },
 });
 
 const mapStateToProps = state => ({
@@ -62,7 +63,10 @@ class DirectTimeline extends React.PureComponent {
           onPin={this.handlePin}
         />
 
-        <AutosuggestAccountInput onSelected={this.handleSuggestion} />
+        <AccountSearch
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          onSelected={this.handleSuggestion}
+        />
 
         <StatusListContainer
           scrollKey='direct_timeline'

@@ -4,34 +4,29 @@ import PropTypes from 'prop-types';
 import { CancelToken } from 'axios';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
-import { injectIntl, defineMessages } from 'react-intl';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { accountSearch } from 'soapbox/actions/accounts';
 import { throttle } from 'lodash';
 
 const noOp = () => {};
 
-const messages = defineMessages({
-  placeholder: { id: 'autosuggest_account_input.default_placeholder', defaultMessage: 'Search for an account' },
-});
-
 export default @connect()
-@injectIntl
 class AutosuggestAccountInput extends ImmutablePureComponent {
 
   static propTypes = {
-    intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
     onSelected: PropTypes.func.isRequired,
-    limit: PropTypes.number,
+    value: PropTypes.string.isRequired,
+    limit: PropTypes.number.isRequired,
   }
 
   static defaultProps = {
+    value: '',
     limit: 4,
   }
 
   state = {
-    text: '',
     accountIds: ImmutableOrderedSet(),
   }
 
@@ -41,6 +36,10 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
     this.source.cancel();
     this.source = CancelToken.source();
     return this.source;
+  }
+
+  clearResults = () => {
+    this.setState({ accountIds: ImmutableOrderedSet() });
   }
 
   handleAccountSearch = throttle(q => {
@@ -58,23 +57,28 @@ class AutosuggestAccountInput extends ImmutablePureComponent {
 
   }, 900, { leading: true, trailing: true })
 
-  handleChange = ({ target }) => {
-    this.handleAccountSearch(target.value);
-    this.setState({ text: target.value });
+  handleChange = e => {
+    this.handleAccountSearch(e.target.value);
+    this.props.onChange(e);
   }
 
   handleSelected = (tokenStart, lastToken, accountId) => {
     this.props.onSelected(accountId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.value === '' && prevProps.value !== '') {
+      this.clearResults();
+    }
+  }
+
   render() {
-    const { intl, ...rest } = this.props;
-    const { text, accountIds } = this.state;
+    const { intl, value, onChange, ...rest } = this.props;
+    const { accountIds } = this.state;
 
     return (
       <AutosuggestInput
-        placeholder={intl.formatMessage(messages.placeholder)}
-        value={text}
+        value={value}
         onChange={this.handleChange}
         suggestions={accountIds.toList()}
         onSuggestionsFetchRequested={noOp}
