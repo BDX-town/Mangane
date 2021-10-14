@@ -12,7 +12,7 @@ import AccountSearch from 'soapbox/components/account_search';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
-  searchPlaceholder: { id: 'direct.search_placeholder', defaultMessage: 'Search for an account to message…' },
+  searchPlaceholder: { id: 'direct.search_placeholder', defaultMessage: 'Send a message to…' },
 });
 
 const mapStateToProps = state => ({
