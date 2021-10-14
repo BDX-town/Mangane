@@ -325,6 +325,7 @@ export default class ComposeForm extends ImmutablePureComponent {
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='spoiler-input__input'
+            autoFocus
           />
         </div>
 
