@@ -94,9 +94,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
       return null;
     }
 
-    let media           = '';
-    const poll = '';
-    let statusTypeIcon = '';
+    let media = null;
+    let statusTypeIcon = null;
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
@@ -155,9 +154,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     if (status.get('visibility') === 'direct') {
-      statusTypeIcon = <Icon id='envelope' />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/icons/mail.svg')} />;
     } else if (status.get('visibility') === 'private') {
-      statusTypeIcon = <Icon id='lock' />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/icons/lock.svg')} />;
     }
 
     return (
@@ -193,11 +192,11 @@ export default class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
-          {poll}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
-            <div>
+
+            <div className='detailed-status__timestamp'>
               {favicon &&
                 <div className='status__favicon'>
                   <Link to={`/timeline/${domain}`}>
@@ -205,7 +204,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
                   </Link>
                 </div>}
 
-              {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
+              {statusTypeIcon}
+
+              <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>
             </div>

@@ -53,6 +53,12 @@
         height: 22px;
       }
 
+      .svg-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 3px;
+      }
+
       h1 {
         span:first-of-type {
           font-size: 20px !important;
@@ -63,7 +69,7 @@
         }
 
         small {
-          display: block;
+          display: flex;
           font-size: 15px;
           line-height: 1.5;
           color: var(--primary-text-color--faint);

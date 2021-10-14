@@ -56,9 +56,24 @@
   font-size: 14px;
   line-height: 18px;
   display: flex;
+}
 
-  i {
-    margin-right: 0.4em;
+.detailed-status__timestamp {
+  display: flex;
+  align-items: center;
+
+  .svg-icon {
+    width: 20px;
+    height: 20px;
+
+    svg {
+      stroke-width: 1.3px;
+    }
+  }
+
+  .svg-icon,
+  .status__favicon {
+    margin-right: 5px;
   }
 }
 
@@ -150,11 +165,6 @@
 .detailed-status__display-avatar {
   float: left;
   margin-right: 10px;
-}
-
-.detailed-status .status__favicon {
-  float: left;
-  margin-right: 5px;
 }
 
 .thread {

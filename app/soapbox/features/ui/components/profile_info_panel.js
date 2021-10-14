@@ -96,7 +96,6 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       );
     }
 
-    const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
@@ -114,7 +113,12 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-              { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
+              <small>
+                @{getAcct(account, displayFqn)}
+                {account.get('locked') && (
+                  <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
+                )}
+              </small>
             </h1>
           </div>
 
