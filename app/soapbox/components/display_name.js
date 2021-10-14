@@ -48,8 +48,8 @@ class DisplayName extends React.PureComponent {
 
     if (others && others.size > 1) {
       displayName = others.take(2).map(a => (
-        <span className='display-name__name'>
-          <bdi key={a.get('id')}><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>
+        <span className='display-name__name' key={a.get('id')}>
+          <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>
           {verified && <VerificationBadge />}
           {withDate && joinedAt}
         </span>
