@@ -55,6 +55,7 @@ import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
+  titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
@@ -596,9 +597,11 @@ class Status extends ImmutablePureComponent {
       react: this.handleHotkeyReact,
     };
 
+    const titleMessage = status && status.get('visibility') === 'direct' ? messages.titleDirect : messages.title;
+
     return (
       <Column label={intl.formatMessage(messages.detailedStatus)} transparent>
-        <SubNavigation message={intl.formatMessage(messages.title)} />
+        <SubNavigation message={intl.formatMessage(titleMessage)} />
         {/*
           Eye icon to show/hide all CWs in a thread.
           I'm not convinced of the value of this. It needs a better design at the very least.
