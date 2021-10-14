@@ -12,7 +12,7 @@ const messages = defineMessages({
 const Search = ({ intl }) => (
   <div className='column search-page'>
     <ColumnHeader icon='search' title={intl.formatMessage(messages.heading)} />
-    <SearchContainer autoSubmit />
+    <SearchContainer autoFocus autoSubmit />
     <SearchResultsContainer />
   </div>
 );

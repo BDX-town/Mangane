@@ -57,8 +57,13 @@ class Search extends React.PureComponent {
     onClear: PropTypes.func.isRequired,
     onShow: PropTypes.func.isRequired,
     openInRoute: PropTypes.bool,
+    autoFocus: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
+
+  static defaultProps = {
+    autoFocus: false,
+  }
 
   state = {
     expanded: false,
@@ -100,7 +105,7 @@ class Search extends React.PureComponent {
   }
 
   render() {
-    const { intl, value, submitted } = this.props;
+    const { intl, value, autoFocus, submitted } = this.props;
     const { expanded } = this.state;
     const hasValue = value.length > 0 || submitted;
 
@@ -117,6 +122,7 @@ class Search extends React.PureComponent {
             onKeyUp={this.handleKeyUp}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
+            autoFocus={autoFocus}
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
