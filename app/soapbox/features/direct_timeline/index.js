@@ -7,6 +7,8 @@ import ColumnHeader from '../../components/column_header';
 import { expandDirectTimeline } from '../../actions/timelines';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
+import { directComposeById } from 'soapbox/actions/compose';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
@@ -40,6 +42,10 @@ class DirectTimeline extends React.PureComponent {
     }
   }
 
+  handleSuggestion = accountId => {
+    this.props.dispatch(directComposeById(accountId));
+  }
+
   handleLoadMore = maxId => {
     this.props.dispatch(expandDirectTimeline({ maxId }));
   }
@@ -55,6 +61,8 @@ class DirectTimeline extends React.PureComponent {
           title={intl.formatMessage(messages.title)}
           onPin={this.handlePin}
         />
+
+        <AutosuggestAccountInput onSelected={this.handleSuggestion} />
 
         <StatusListContainer
           scrollKey='direct_timeline'

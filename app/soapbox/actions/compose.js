@@ -136,6 +136,19 @@ export function directCompose(account, routerHistory) {
   };
 }
 
+export function directComposeById(accountId) {
+  return (dispatch, getState) => {
+    const account = getState().getIn(['accounts', accountId]);
+
+    dispatch({
+      type: COMPOSE_DIRECT,
+      account: account,
+    });
+
+    dispatch(openModal('COMPOSE'));
+  };
+}
+
 export function handleComposeSubmit(dispatch, getState, data, status) {
   if (!dispatch || !getState) return;
 
