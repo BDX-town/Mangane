@@ -1,11 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { throttle } from 'lodash';
 import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
+import { getSettings } from 'soapbox/actions/settings';
 
-export default @injectIntl
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+
+  return {
+    autoload: settings.get('autoloadTimelines'),
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
 class TimelineQueueButtonHeader extends React.PureComponent {
 
   static propTypes = {

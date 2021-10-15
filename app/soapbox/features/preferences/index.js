@@ -231,6 +231,10 @@ class Preferences extends ImmutablePureComponent {
               path={['reduceMotion']}
             />
             <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}
+              path={['autoloadTimelines']}
+            />
+            <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}
               path={['underlineLinks']}
             />
