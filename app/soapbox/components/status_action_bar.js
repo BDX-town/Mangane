@@ -15,6 +15,7 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { List as ImmutableList } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
+import { isUserTouching } from 'soapbox/is_mobile';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -133,12 +134,10 @@ class StatusActionBar extends ImmutablePureComponent {
     });
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleLikeButtonHover = e => {
     const { features } = this.props;
 
-    if (features.emojiReacts && !this.isMobile()) {
+    if (features.emojiReacts && !isUserTouching()) {
       this.setState({ emojiSelectorVisible: true });
     }
   }
@@ -146,7 +145,7 @@ class StatusActionBar extends ImmutablePureComponent {
   handleLikeButtonLeave = e => {
     const { features } = this.props;
 
-    if (features.emojiReacts && !this.isMobile()) {
+    if (features.emojiReacts && !isUserTouching()) {
       this.setState({ emojiSelectorVisible: false });
     }
   }
@@ -155,7 +154,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const { features } = this.props;
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
 
-    if (features.emojiReacts && this.isMobile()) {
+    if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
       } else {
