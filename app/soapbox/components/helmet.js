@@ -63,6 +63,10 @@ class SoapboxHelmet extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.updateFaviconBadge();
+  }
+
   render() {
     const { siteTitle, children } = this.props;
 
