@@ -600,10 +600,13 @@
   @include standard-panel;
   width: 400px;
   max-width: calc(100% - 20px);
+  max-height: calc(100vh - 20px);
 }
 
 .column-settings {
   width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &__header {
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
@@ -619,6 +622,7 @@
 
   &__content {
     padding: 10px 20px;
+    overflow-y: auto;
   }
 
   &__close {
