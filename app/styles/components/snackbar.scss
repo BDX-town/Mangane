@@ -1,7 +1,18 @@
+.notification-list {
+  position: fixed;
+  bottom: var(--thumb-navigation-height);
+  z-index: 1000; /* Above ThumbNavigation */
+  width: 100%;
+
+  @media (min-width: 895px) {
+    bottom: 0;
+  }
+}
+
 .snackbar {
   font-size: 16px !important;
   padding: 10px 20px 10px 14px !important;
-  z-index: 9999 !important;
+  position: absolute !important;
   display: flex;
   align-items: center;
   justify-content: center;
