@@ -5,7 +5,7 @@ const createFaviconService = () => {
   const favicons = [];
   const faviconWidth = 128;
   const faviconHeight = 128;
-  const badgeRadius = 32;
+  const badgeRadius = 24;
 
   const initFaviconService = () => {
     const nodes = document.querySelectorAll('link[rel="icon"]');
@@ -44,7 +44,7 @@ const createFaviconService = () => {
       if (!favimg || !favcontext || !favcontext) return;
 
       const style = getComputedStyle(document.body);
-      const badgeColor = `${style.getPropertyValue('--badgeNotification') || 'rgb(240, 100, 100)'}`;
+      const badgeColor = `${style.getPropertyValue('--badge-notification') || 'rgb(255, 0, 0)'}`;
 
       if (isImageLoaded(favimg)) {
         favcontext.drawImage(favimg, 0, 0, favimg.width, favimg.height, 0, 0, faviconWidth, faviconHeight);

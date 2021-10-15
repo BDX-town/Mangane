@@ -7,6 +7,8 @@ import { getSettings } from 'soapbox/actions/settings';
 import sourceCode from 'soapbox/utils/code';
 import FaviconService from 'soapbox/utils/favicon_service';
 
+FaviconService.initFaviconService();
+
 const getNotifTotals = state => {
   const notifications = state.getIn(['notifications', 'unread'], 0);
   const chats = state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
@@ -34,16 +36,30 @@ class SoapboxHelmet extends React.Component {
     demetricator: PropTypes.bool,
   };
 
-  addCounter = title => {
+  hasUnread = () => {
     const { unreadCount, demetricator } = this.props;
+    return !(unreadCount < 1 || demetricator);
+  }
 
-    if (unreadCount < 1 || demetricator) {
-      // Erase badge when there are no notifications
-      FaviconService.clearFaviconBadge();
-      return title;
-    } else {
+  addCounter = title => {
+    const { unreadCount } = this.props;
+    const hasUnread = this.hasUnread();
+    return hasUnread ? `(${unreadCount}) ${title}` : title;
+  }
+
+  updateFaviconBadge = () => {
+    const hasUnread = this.hasUnread();
+
+    if (hasUnread) {
       FaviconService.drawFaviconBadge();
-      return `(${unreadCount}) ${title}`;
+    } else {
+      FaviconService.clearFaviconBadge();
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.unreadCount !== prevProps.unreadCount || this.props.demetricator !== prevProps.demetricator) {
+      this.updateFaviconBadge();
     }
   }
 
