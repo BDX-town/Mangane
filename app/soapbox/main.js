@@ -12,12 +12,16 @@ import * as perf from './performance';
 import * as monitoring from './monitoring';
 import ready from './ready';
 import { NODE_ENV } from 'soapbox/build_config';
+import FaviconService from 'soapbox/utils/favicon_service';
 
 function main() {
   perf.start('main()');
 
   // Sentry
   monitoring.start();
+
+  // Favicon unread badge
+  FaviconService.initFaviconService();
 
   ready(() => {
     const mountNode = document.getElementById('soapbox');

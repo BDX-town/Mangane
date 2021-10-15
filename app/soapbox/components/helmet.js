@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { Helmet } from'react-helmet';
 import { getSettings } from 'soapbox/actions/settings';
 import sourceCode from 'soapbox/utils/code';
+import FaviconService from 'soapbox/utils/favicon_service';
 
 const getNotifTotals = state => {
   const notifications = state.getIn(['notifications', 'unread'], 0);
@@ -35,8 +36,15 @@ class SoapboxHelmet extends React.Component {
 
   addCounter = title => {
     const { unreadCount, demetricator } = this.props;
-    if (unreadCount < 1 || demetricator) return title;
-    return `(${unreadCount}) ${title}`;
+
+    if (unreadCount < 1 || demetricator) {
+      // Erase badge when there are no notifications
+      FaviconService.clearFaviconBadge();
+      return title;
+    } else {
+      FaviconService.drawFaviconBadge();
+      return `(${unreadCount}) ${title}`;
+    }
   }
 
   render() {
