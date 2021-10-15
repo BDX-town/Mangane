@@ -577,22 +577,28 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    let spoilerButton;
+    let warning;
 
-    if (visible) {
-      spoilerButton = <IconButton title={intl.formatMessage(messages.toggle_visible)} src={require('@tabler/icons/icons/eye-off.svg')} overlay onClick={this.handleOpen} />;
+    if (sensitive) {
+      warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
     } else {
-      spoilerButton = (
-        <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
-          <span className='spoiler-button__overlay__label'>{sensitive ? <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' /> : <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />}</span>
-        </button>
-      );
+      warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
     }
 
     return (
       <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
-          {spoilerButton}
+          {sensitive && (
+            visible ? (
+              <IconButton title={intl.formatMessage(messages.toggle_visible)} src={require('@tabler/icons/icons/eye-off.svg')} overlay onClick={this.handleOpen} />
+            ) : (
+              <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
+                <span className='spoiler-button__overlay__label'>
+                  {warning}
+                </span>
+              </button>
+            )
+          )}
         </div>
 
         {children}

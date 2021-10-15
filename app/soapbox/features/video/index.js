@@ -449,7 +449,7 @@ class Video extends React.PureComponent {
           onVolumeChange={this.handleVolumeChange}
         />}
 
-        <div className={classNames('spoiler-button', { 'spoiler-button--hidden': revealed })}>
+        <div className={classNames('spoiler-button', { 'spoiler-button--hidden': !sensitive || revealed })}>
           <button type='button' className='spoiler-button__overlay' onClick={this.toggleReveal}>
             <span className='spoiler-button__overlay__label'>{warning}</span>
           </button>
@@ -493,7 +493,7 @@ class Video extends React.PureComponent {
             </div>
 
             <div className='video-player__buttons right'>
-              {!onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
+              {(sensitive && !onCloseVideo) && <button type='button' aria-label={intl.formatMessage(messages.hide)} className='player-button' onClick={this.toggleReveal}><Icon src={require('@tabler/icons/icons/eye-off.svg')} /></button>}
               {(!fullscreen && onOpenVideo) && <button type='button' aria-label={intl.formatMessage(messages.expand)} className='player-button' onClick={this.handleOpenVideo}><Icon src={require('@tabler/icons/icons/maximize.svg')} /></button>}
               {onCloseVideo && <button type='button' aria-label={intl.formatMessage(messages.close)} className='player-button' onClick={this.handleCloseVideo}><Icon src={require('@tabler/icons/icons/minimize.svg')} /></button>}
               <button type='button' aria-label={intl.formatMessage(fullscreen ? messages.exit_fullscreen : messages.fullscreen)} className='player-button' onClick={this.toggleFullscreen}><Icon src={fullscreen ? require('@tabler/icons/icons/minimize.svg') : require('@tabler/icons/icons/arrows-maximize.svg')} /></button>
