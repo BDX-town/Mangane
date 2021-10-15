@@ -114,7 +114,7 @@ class ThumbNavigation extends React.PureComponent {
               count={dashboardCount}
             />
             <span>
-              <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />
+              <FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />
             </span>
           </NavLink>
         )}
