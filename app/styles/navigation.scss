@@ -59,15 +59,22 @@
   height: var(--thumb-navigation-base-height);
   display: flex;
   background: var(--foreground-color);
-  justify-content: space-around;
+  justify-content: space-between;
   box-shadow: 0 -1px hsla(var(--primary-text-color_hsl), 0.2);
   border-radius: 0;
   z-index: 999;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
+  overflow-x: scroll;
+
+  &::before,
+  &::after {
+    content: '';
+  }
 
   &__link {
     padding: 10px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: var(--primary-text-color);
@@ -75,7 +82,8 @@
     font-size: 20px;
 
     span {
-      display: none;
+      margin-top: 1px;
+      font-size: 1.2rem;
     }
 
     .svg-icon {
