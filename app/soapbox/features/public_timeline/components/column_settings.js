@@ -26,7 +26,7 @@ class ColumnSettings extends React.PureComponent {
       <div className='column-settings'>
         <div className='column-settings__header'>
           <h1 className='column-settings__title'>
-            <FormattedMessage id='community.column_settings.title' defaultMessage='Local timeline settings' />
+            <FormattedMessage id='public.column_settings.title' defaultMessage='Fediverse timeline settings' />
           </h1>
           <div className='column-settings__close'>
             <IconButton title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />

@@ -14,7 +14,7 @@ import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Federated timeline' },
+  title: { id: 'column.public', defaultMessage: 'Fediverse timeline' },
   dismiss: { id: 'fediverse_tab.explanation_box.dismiss', defaultMessage: 'Don\'t show again' },
 });
 
