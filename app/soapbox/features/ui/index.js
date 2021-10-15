@@ -112,6 +112,7 @@ import {
   ProfileHoverCard,
   RegisterInvite,
   Share,
+  NewStatus,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -239,7 +240,6 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
         <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
         <Redirect from='/web/:path' to='/:path' />
-        <Redirect from='/statuses/new' to='/' />
         <Redirect from='/timelines/home' to='/' />
         <Redirect from='/timelines/public/local' to='/timeline/local' />
         <Redirect from='/timelines/public' to='/timeline/fediverse' />
@@ -292,6 +292,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
         <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
+        <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
 

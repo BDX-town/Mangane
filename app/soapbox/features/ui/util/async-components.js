@@ -413,3 +413,7 @@ export function RegisterInvite() {
 export function Share() {
   return import(/* webpackChunkName: "features/share" */'../../share');
 }
+
+export function NewStatus() {
+  return import(/* webpackChunkName: "features/new_status" */'../../new_status');
+}
