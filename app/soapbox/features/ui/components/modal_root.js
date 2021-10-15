@@ -23,6 +23,7 @@ import {
   ComposeModal,
   UnauthorizedModal,
   EditFederationModal,
+  ComponentModal,
 } from '../../../features/ui/util/async-components';
 
 const MODAL_COMPONENTS = {
@@ -43,6 +44,7 @@ const MODAL_COMPONENTS = {
   'UNAUTHORIZED': UnauthorizedModal,
   'CRYPTO_DONATE': CryptoDonateModal,
   'EDIT_FEDERATION': EditFederationModal,
+  'COMPONENT': ComponentModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

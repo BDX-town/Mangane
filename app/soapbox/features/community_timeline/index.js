@@ -4,6 +4,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
+import ColumnSettings from './containers/column_settings_container';
 import { expandCommunityTimeline } from '../../actions/timelines';
 import { connectCommunityStream } from '../../actions/streaming';
 import { getSettings } from 'soapbox/actions/settings';
@@ -74,7 +75,7 @@ class CommunityTimeline extends React.PureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.title)} transparent>
-        <SubNavigation message={intl.formatMessage(messages.title)} />
+        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}

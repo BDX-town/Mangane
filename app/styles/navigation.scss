@@ -166,6 +166,17 @@
     font-weight: bold;
   }
 
+  &__cog {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
   @media (min-width: 580px) {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

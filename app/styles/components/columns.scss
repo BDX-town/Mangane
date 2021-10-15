@@ -596,6 +596,45 @@
   font-size: 20px;
 }
 
+.component-modal {
+  @include standard-panel;
+  width: 400px;
+  max-width: calc(100% - 20px);
+}
+
+.column-settings {
+  width: 100%;
+
+  &__header {
+    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-weight: bold;
+    color: var(--primary-text-color--faint);
+  }
+
+  &__content {
+    padding: 10px 20px;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: -10px;
+    }
+  }
+}
+
 .column-settings__outer {
   background: var(--brand-color--med);
   padding: 15px;

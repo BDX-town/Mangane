@@ -202,6 +202,10 @@ export function EmbedModal() {
   return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
 }
 
+export function ComponentModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/component_modal');
+}
+
 export function ListEditor() {
   return import(/* webpackChunkName: "features/list_editor" */'../../list_editor');
 }
