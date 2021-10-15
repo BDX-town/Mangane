@@ -615,3 +615,11 @@ export function changePollSettings(expiresIn, isMultiple) {
     isMultiple,
   };
 }
+
+export function openComposeWithText(text = '') {
+  return (dispatch, getState) => {
+    dispatch(resetCompose());
+    dispatch(openModal('COMPOSE'));
+    dispatch(changeCompose(text));
+  };
+}
