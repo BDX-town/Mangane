@@ -128,9 +128,20 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  transition: transform 0.2s, border-radius 0.2s;
 
-  &--scrolled {
+  &--sticking {
     border-radius: 0 !important;
+  }
+
+  &--show-after {
+    transform: translateY(-41px) scaleY(0);
+    margin-top: -1041px;
+    margin-bottom: 1000px;
+
+    &.sub-navigation--visible {
+      transform: translateY(0) scaleY(1);
+    }
   }
 
   &__content {
@@ -170,6 +181,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-left: auto;
 
     .svg-icon {
       width: 20px;
@@ -181,4 +193,8 @@
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
+}
+
+.home-timeline .sub-navigation__back {
+  display: none;
 }

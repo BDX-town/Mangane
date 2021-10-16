@@ -4,7 +4,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
-import Icon from 'soapbox/components/icon';
 import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
@@ -19,7 +18,7 @@ import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSettings } from 'soapbox/actions/settings';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
-import classNames from 'classnames';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
@@ -82,11 +81,6 @@ class AccountTimeline extends ImmutablePureComponent {
     unavailable: PropTypes.bool,
   };
 
-  state = {
-    collapsed: true,
-    animating: false,
-  }
-
   componentDidMount() {
     const { params: { username }, accountId, accountApId, withReplies, me, patronEnabled } = this.props;
 
@@ -135,18 +129,8 @@ class AccountTimeline extends ImmutablePureComponent {
     }
   }
 
-  handleToggleClick = (e) => {
-    e.stopPropagation();
-    this.setState({ collapsed: !this.state.collapsed, animating: true });
-  }
-
-  handleTransitionEnd = () => {
-    this.setState({ animating: false });
-  }
-
   render() {
     const { statusIds, featuredStatusIds, isLoading, hasMore, isBlocked, isAccount, accountId, unavailable, accountUsername } = this.props;
-    const { collapsed, animating } = this.state;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -177,6 +161,12 @@ class AccountTimeline extends ImmutablePureComponent {
 
     return (
       <Column transparent>
+        <SubNavigation
+          className='account__sub-navigation'
+          message={`@${accountUsername}`}
+          showAfter={300}
+          settings={ColumnSettingsContainer}
+        />
         <div className='account__section-headline'>
           <NavLink exact to={`/@${accountUsername}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
@@ -187,16 +177,6 @@ class AccountTimeline extends ImmutablePureComponent {
           <NavLink exact to={`/@${accountUsername}/media`}>
             <FormattedMessage id='account.media' defaultMessage='Media' />
           </NavLink>
-          <div className='column-header__buttons'>
-            <button onClick={this.handleToggleClick}>
-              <Icon id='sliders' />
-            </button>
-          </div>
-        </div>
-        <div className={classNames('column-header__collapsible', { collapsed, animating })} onTransitionEnd={this.handleTransitionEnd}>
-          <div className='column-header__collapsible-inner'>
-            {(!collapsed || animating) && <ColumnSettingsContainer />}
-          </div>
         </div>
         <StatusList
           scrollKey='account_timeline'

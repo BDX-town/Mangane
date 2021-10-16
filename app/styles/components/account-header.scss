@@ -335,3 +335,13 @@
     }
   }
 }
+
+.account__sub-navigation {
+  display: none;
+
+  @media (max-width: 897px) {
+    display: flex;
+    position: fixed;
+    margin: 0;
+  }
+}

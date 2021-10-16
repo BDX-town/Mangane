@@ -924,8 +924,8 @@
 }
 
 // Make MaterialStatus flush against SubNavigation
-.sub-navigation ~ .slist .item-list > article:first-child .material-status__status,
-.sub-navigation ~ .material-status:not(.material-status + .material-status) .material-status__status {
+.sub-navigation:not(.sub-navigation--hidden) ~ .slist .item-list > article:first-child .material-status__status,
+.sub-navigation:not(.sub-navigation--hidden) ~ .material-status:not(.material-status + .material-status) .material-status__status {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -940,7 +940,7 @@
     }
   }
 
-  .sub-navigation ~ .slist .slist__append {
+  .sub-navigation:not(.sub-navigation--hidden) ~ .slist .slist__append {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }

@@ -31,6 +31,8 @@ class SubNavigation extends React.PureComponent {
     message: PropTypes.string,
     settings: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     onOpenSettings: PropTypes.func.isRequired,
+    className: PropTypes.string,
+    showAfter: PropTypes.number,
   }
 
   static contextTypes = {
@@ -38,7 +40,8 @@ class SubNavigation extends React.PureComponent {
   }
 
   state = {
-    scrolled: false,
+    sticking: false,
+    visible: typeof this.props.showAfter !== 'number',
   }
 
   handleBackClick = () => {
@@ -71,16 +74,33 @@ class SubNavigation extends React.PureComponent {
     window.removeEventListener('scroll', this.handleScroll);
   }
 
-  handleScroll = throttle(() => {
+  updateSticking = () => {
     if (this.node) {
       const { top } = this.node.getBoundingClientRect();
 
       if (top <= 50) {
-        this.setState({ scrolled: true });
+        this.setState({ sticking: true });
       } else {
-        this.setState({ scrolled: false });
+        this.setState({ sticking: false });
       }
     }
+  }
+
+  updateVisibile = () => {
+    const { showAfter } = this.props;
+
+    if (typeof showAfter === 'number') {
+      if (document.documentElement.scrollTop >= showAfter) {
+        this.setState({ visible: true });
+      } else {
+        this.setState({ visible: false });
+      }
+    }
+  }
+
+  handleScroll = throttle(() => {
+    this.updateSticking();
+    this.updateVisibile();
   }, 150, { trailing: true });
 
   handleOpenSettings = () => {
@@ -92,11 +112,11 @@ class SubNavigation extends React.PureComponent {
   }
 
   render() {
-    const { intl, message, settings: Settings } = this.props;
-    const { scrolled } = this.state;
+    const { intl, message, settings: Settings, className, showAfter } = this.props;
+    const { sticking, visible } = this.state;
 
     return (
-      <div className={classNames('sub-navigation', { 'sub-navigation--scrolled': scrolled })} ref={this.setRef}>
+      <div className={classNames(className, 'sub-navigation', { 'sub-navigation--sticking': sticking, 'sub-navigation--hidden': !visible, 'sub-navigation--visible': visible, 'sub-navigation--show-after': typeof showAfter === 'number' })} ref={this.setRef}>
         <div className='sub-navigation__content'>
           <button
             className='sub-navigation__back'
