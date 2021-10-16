@@ -149,6 +149,16 @@
   }
 }
 
+.status__prepend-icon--pinned.svg-icon {
+  width: 18px;
+  height: 18px;
+  margin-top: -1px;
+
+  svg {
+    stroke-width: 1.5px;
+  }
+}
+
 .status {
   padding: 8px 10px;
   padding-left: 68px;
