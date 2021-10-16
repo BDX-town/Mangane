@@ -353,7 +353,7 @@ class Status extends ImmutablePureComponent {
       prepend = (
         <div className='status__prepend'>
           <div className='status__prepend-icon-wrapper'>
-            <Icon src={require('@tabler/icons/icons/pin.svg')} className='status__prepend-icon' />
+            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='status__prepend-icon status__prepend-icon--pinned' />
           </div>
           <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
