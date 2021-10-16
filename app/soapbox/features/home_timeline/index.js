@@ -4,13 +4,11 @@ import { expandHomeTimeline } from '../../actions/timelines';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
-import ColumnSettings from './containers/column_settings_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
-import SubNavigation from 'soapbox/components/sub_navigation';
 
 function FollowRecommendationsContainer() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');
@@ -101,24 +99,19 @@ class HomeTimeline extends React.PureComponent {
     const showSuggestions = features.suggestions && isEmpty && !isLoading && !done;
 
     return (
-      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions} className='home-timeline'>
+      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
         {showSuggestions ? (
           <BundleContainer fetchComponent={FollowRecommendationsContainer}>
             {Component => <Component onDone={this.handleDone} />}
           </BundleContainer>
-        ) : (<>
-          <SubNavigation
-            message={intl.formatMessage(messages.title)}
-            settings={ColumnSettings}
-            showAfter={300}
-          />
+        ) : (
           <StatusListContainer
             scrollKey='home_timeline'
             onLoadMore={this.handleLoadMore}
             timelineId='home'
             emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
           />
-        </>)}
+        )}
       </Column>
     );
   }

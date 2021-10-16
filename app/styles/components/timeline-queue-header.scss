@@ -15,7 +15,7 @@
   padding: 0 10px;
   z-index: 500;
 
-  .sub-navigation:not(.sub-navigation--hidden) ~ & {
+  .sub-navigation ~ & {
     top: calc(60px + 41px);
   }
 

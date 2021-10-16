@@ -162,7 +162,7 @@
   }
 }
 
-.column .sub-navigation:not(.sub-navigation--hidden) ~ .wtf-panel {
+.column .sub-navigation ~ .wtf-panel {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
