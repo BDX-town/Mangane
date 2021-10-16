@@ -52,7 +52,7 @@ class Aliases extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.aliases' defaultMessage="You haven't created any account alias yet." />;
 
     return (
-      <Column className='aliases-settings-panel' icon='suitcase' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column className='aliases-settings-panel' icon='suitcase' heading={intl.formatMessage(messages.heading)}>
         <ColumnSubheading text={intl.formatMessage(messages.subheading_add_new)} />
         <Search />
         {

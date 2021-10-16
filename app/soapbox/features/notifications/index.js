@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../../components/column';
-import ColumnHeader from '../../components/column_header';
 import {
   expandNotifications,
   scrollTopNotifications,
@@ -20,6 +19,8 @@ import ScrollableList from '../../components/scrollable_list';
 import LoadGap from '../../components/load_gap';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import { getSettings } from 'soapbox/actions/settings';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -128,7 +129,7 @@ class Notifications extends React.PureComponent {
   };
 
   render() {
-    const { intl, notifications, isLoading, isUnread, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 
     let scrollableContent = null;
@@ -170,6 +171,8 @@ class Notifications extends React.PureComponent {
         showLoading={isLoading && notifications.size === 0}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
+        placeholderComponent={PlaceholderNotification}
+        placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
@@ -179,10 +182,8 @@ class Notifications extends React.PureComponent {
     );
 
     return (
-      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)}>
-        <ColumnHeader icon='bell' active={isUnread} title={intl.formatMessage(messages.title)}>
-          <ColumnSettingsContainer />
-        </ColumnHeader>
+      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} className='column--notifications'>
+        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettingsContainer} />
         {filterBarContainer}
         <TimelineQueueButtonHeader
           onClick={this.handleDequeueNotifications}

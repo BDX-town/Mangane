@@ -4,6 +4,7 @@
  */
 
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from 'soapbox/actions/me';
+import { VERIFY_CREDENTIALS_SUCCESS } from 'soapbox/actions/auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
@@ -22,6 +23,8 @@ export default function accounts_meta(state = initialState, action) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
     return importAccount(state, fromJS(action.me));
+  case VERIFY_CREDENTIALS_SUCCESS:
+    return importAccount(state, fromJS(action.account));
   default:
     return state;
   }

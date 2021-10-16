@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin-top: 8px;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 10px;
   position: relative;
   width: 100%;
   height: auto;
@@ -15,7 +15,7 @@
   display: block;
   float: left;
   position: relative;
-  border-radius: 4px;
+  border-radius: 10px;
   overflow: hidden;
 
   &__icons {
@@ -164,7 +164,7 @@
 .media-gallery__file-extension__label {
   display: block;
   position: absolute;
-  color: var(--primary-text-color);
+  color: #fff;
   background: rgba($base-overlay-background, 0.5);
   bottom: 6px;
   left: 6px;
@@ -190,5 +190,35 @@
     .media-gallery__gifv__label {
       opacity: 1;
     }
+  }
+}
+
+$media-compact-size: 50px;
+
+.media-gallery--compact {
+  height: $media-compact-size !important;
+  background: transparent;
+
+  .spoiler-button {
+    display: none;
+  }
+
+  .media-gallery__item {
+    width: $media-compact-size !important;
+    height: $media-compact-size !important;
+    inset: auto !important;
+    margin-right: 5px;
+
+    &-overflow {
+      font-size: 20px;
+    }
+
+    &__icons {
+      font-size: 30px;
+    }
+  }
+
+  .media-gallery__file-extension__label {
+    display: none;
   }
 }

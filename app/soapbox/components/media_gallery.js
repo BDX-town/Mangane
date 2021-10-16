@@ -197,21 +197,18 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'audio') {
-      const remoteURL = attachment.get('remote_url');
-      const originalUrl = attachment.get('url');
-      const fileExtensionLastIndex = remoteURL.lastIndexOf('.');
-      const fileExtension = remoteURL.substr(fileExtensionLastIndex + 1).toUpperCase();
+      const ext = attachment.get('url').split('.').pop().toUpperCase();
       thumbnail = (
         <a
           className={classNames('media-gallery__item-thumbnail')}
-          href={attachment.get('remote_url') || originalUrl}
+          href={attachment.get('url')}
           onClick={this.handleClick}
           target='_blank'
           alt={attachment.get('description')}
           title={attachment.get('description')}
         >
           <span className='media-gallery__item__icons'><Icon id='volume-up' /></span>
-          <span className='media-gallery__file-extension__label'>{fileExtension}</span>
+          <span className='media-gallery__file-extension__label'>{ext}</span>
         </a>
       );
     } else if (attachment.get('type') === 'video') {
@@ -279,6 +276,7 @@ class MediaGallery extends React.PureComponent {
     visible: PropTypes.bool,
     onToggleVisibility: PropTypes.func,
     displayMedia: PropTypes.string,
+    compact: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -560,7 +558,7 @@ class MediaGallery extends React.PureComponent {
   }
 
   render() {
-    const { media, intl, sensitive } = this.props;
+    const { media, intl, sensitive, compact } = this.props;
     const { visible } = this.state;
     const sizeData = this.getSizeData(media.size);
 
@@ -579,22 +577,28 @@ class MediaGallery extends React.PureComponent {
       />
     ));
 
-    let spoilerButton;
+    let warning;
 
-    if (visible) {
-      spoilerButton = <IconButton title={intl.formatMessage(messages.toggle_visible)} icon='eye-slash' overlay onClick={this.handleOpen} />;
+    if (sensitive) {
+      warning = <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' />;
     } else {
-      spoilerButton = (
-        <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
-          <span className='spoiler-button__overlay__label'>{sensitive ? <FormattedMessage id='status.sensitive_warning' defaultMessage='Sensitive content' /> : <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />}</span>
-        </button>
-      );
+      warning = <FormattedMessage id='status.media_hidden' defaultMessage='Media hidden' />;
     }
 
     return (
-      <div className='media-gallery' style={sizeData.get('style')} ref={this.handleRef}>
+      <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
-          {spoilerButton}
+          {sensitive && (
+            visible ? (
+              <IconButton title={intl.formatMessage(messages.toggle_visible)} src={require('@tabler/icons/icons/eye-off.svg')} overlay onClick={this.handleOpen} />
+            ) : (
+              <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
+                <span className='spoiler-button__overlay__label'>
+                  {warning}
+                </span>
+              </button>
+            )
+          )}
         </div>
 
         {children}

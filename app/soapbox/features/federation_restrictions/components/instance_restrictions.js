@@ -135,7 +135,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
     if (remoteInstance.getIn(['federation', 'reject']) === true) {
       return (
         <div className='instance-restrictions__message'>
-          <Icon id='close' />
+          <Icon id='times' />
           <FormattedMessage
             id='remote_instance.federation_panel.restricted_message'
             defaultMessage='{siteTitle} blocks all activities from {host}.'

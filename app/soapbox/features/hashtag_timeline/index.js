@@ -8,7 +8,6 @@ import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import { FormattedMessage } from 'react-intl';
 import { connectHashtagStream } from '../../actions/streaming';
 import { isEqual } from 'lodash';
-import ColumnBackButton from '../../components/column_back_button';
 
 const mapStateToProps = (state, props) => ({
   hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}`, 'unread']) > 0,
@@ -26,8 +25,10 @@ class HashtagTimeline extends React.PureComponent {
   };
 
   title = () => {
-    const title = [this.props.params.id];
+    const title = [`#${this.props.params.id}`];
 
+    // TODO: wtf is all this?
+    // It exists in Mastodon's codebase, but undocumented
     if (this.additionalFor('any')) {
       title.push(' ', <FormattedMessage key='any' id='hashtag.column_header.tag_mode.any'  values={{ additional: this.additionalFor('any') }} defaultMessage='or {additional}' />);
     }
@@ -43,6 +44,8 @@ class HashtagTimeline extends React.PureComponent {
     return title;
   }
 
+  // TODO: wtf is this?
+  // It exists in Mastodon's codebase, but undocumented
   additionalFor = (mode) => {
     const { tags } = this.props.params;
 
@@ -108,9 +111,8 @@ class HashtagTimeline extends React.PureComponent {
     const { id } = this.props.params;
 
     return (
-      <Column label={`#${id}`}>
-        <ColumnBackButton />
-        <ColumnHeader icon='hashtag' active={hasUnread} title={this.title()} />
+      <Column label={`#${id}`} transparent>
+        <ColumnHeader active={hasUnread} title={this.title()} />
         <StatusListContainer
           scrollKey='hashtag_timeline'
           timelineId={`hashtag:${id}`}

@@ -1,30 +1,37 @@
 .icon-button {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   padding: 0;
-  color: hsla(var(--primary-text-color_hsl), 0.4);
+  color: var(--primary-text-color);
   border: 0;
   background: transparent;
   cursor: pointer;
-  transition: color 100ms ease-in;
+  transition: 100ms ease-in;
+  opacity: 0.4;
 
   i.fa {
     margin: 0;
   }
 
+  &__text {
+    padding-left: 2px;
+  }
+
   &:hover,
   &:active,
   &:focus {
-    color: hsla(var(--primary-text-color_hsl), 0.6);
+    opacity: 0.6;
     transition: color 200ms ease-out;
   }
 
   &.disabled {
-    color: hsla(var(--primary-text-color_hsl), 0.2);
+    opacity: 0.2;
     cursor: default;
   }
 
   &.active {
     color: var(--highlight-text-color);
+    opacity: 1;
   }
 
   &::-moz-focus-inner {
@@ -39,6 +46,7 @@
 
   &.inverted {
     color: var(--primary-text-color--faint);
+    opacity: 1;
 
     &:hover,
     &:active,
@@ -63,8 +71,9 @@
     box-sizing: content-box;
     background: var(--foreground-color);
     color: var(--primary-text-color--faint);
-    border-radius: 4px;
+    border-radius: 6px;
     padding: 2px;
+    opacity: 1;
 
     > div {
       display: flex;
@@ -146,7 +155,7 @@
   display: flex;
   align-items: flex-start;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .compose-form {
     flex: 1 1;
@@ -155,6 +164,15 @@
 
     @media (max-width: 405px) {
       padding: 0 !important;
+    }
+
+    .spoiler-input__input,
+    .autosuggest-textarea__textarea {
+      background-color: var(--background-color);
+    }
+
+    .autosuggest-textarea__textarea {
+      padding: 14px 32px 13px 10px !important;
     }
 
     .compose-form__autosuggest-wrapper {
@@ -170,10 +188,10 @@
         border-left: 11px solid transparent;
         left: -22px;
         top: 13px;
-      }
 
-      .autosuggest-textarea__textarea {
-        padding: 14px 32px 13px 10px !important;
+        @media (max-width: 405px) {
+          display: none;
+        }
       }
     }
   }
@@ -305,7 +323,6 @@
 .react-swipeable-view-container {
   &,
   .columns-area,
-  .drawer,
   .column {
     height: 100%;
   }
@@ -321,7 +338,7 @@
 .ui {
   display: block;
   width: 100%;
-  padding: 0 0 100px;
+  padding: 0 0 calc(var(--thumb-navigation-height) + 86px);
 
   .page {
     display: flex;
@@ -354,14 +371,14 @@
   z-index: 1000;
   display: none;
   position: fixed;
-  bottom: 14px;
+  bottom: calc(var(--thumb-navigation-height) + 14px);
   right: 14px;
-  width: 61px;
-  height: 61px;
+  width: 58px;
+  height: 58px;
   background-color: var(--brand-color);
+  color: white;
   border: 0;
-  border-radius: 999px;
-  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
   font-size: 30px;
   align-items: center;
   justify-content: center;
@@ -377,12 +394,14 @@
     background-color: var(--brand-color--hicontrast);
   }
 
-  i.fa {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    margin: 0;
+  .svg-icon {
+    width: 30px;
+    height: 30px;
+
+    svg {
+      stroke-width: 1.5px;
+      width: 30px; // iOS fix
+    }
   }
 }
 
@@ -428,7 +447,7 @@
   &__append {
     flex: 1 1 auto;
     position: relative;
-    min-height: 120px;
+    padding: 30px 15px;
   }
 }
 
@@ -649,19 +668,18 @@
         position: absolute;
         bottom: 0;
         left: 50%;
-        width: 0;
-        height: 0;
+        width: 100%;
+        height: 3px;
         transform: translateX(-50%);
-        border-style: solid;
-        border-width: 0 10px 10px;
-        border-color: transparent transparent var(--brand-color--faint);
-      }
-
-      &::after {
-        bottom: -1px;
-        border-color: transparent transparent var(--foreground-color);
+        background-color: var(--accent-color);
       }
     }
+  }
+
+  button .svg-icon {
+    width: 18px;
+    height: 18px;
+    margin: 0 auto;
   }
 }
 
@@ -712,7 +730,8 @@
     display: block;
     position: absolute;
     content: '\f00c';
-    font: normal normal normal 14px/1 ForkAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     font-size: 0.6em;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
@@ -734,8 +753,8 @@
     @include line-height(14);
     position: absolute;
     box-sizing: border-box;
-    left: 8px;
-    top: -12px;
+    right: -5px;
+    top: -9px;
     min-width: 16px;
     height: 16px;
     padding: 1px 3px 0;

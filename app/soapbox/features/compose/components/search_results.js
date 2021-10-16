@@ -9,17 +9,20 @@ import Hashtag from '../../../components/hashtag';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import FilterBar from '../../search/components/filter_bar';
 import LoadMore from '../../../components/load_more';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import classNames from 'classnames';
 
 export default class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
-    value: ImmutablePropTypes.string,
+    value: PropTypes.string,
     results: ImmutablePropTypes.map.isRequired,
     submitted: PropTypes.bool,
     expandSearch: PropTypes.func.isRequired,
     selectedFilter: PropTypes.string.isRequired,
     selectFilter: PropTypes.func.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
@@ -27,13 +30,19 @@ export default class SearchResults extends ImmutablePureComponent {
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
   render() {
-    const { value, results, submitted, selectedFilter } = this.props;
+    const { value, results, submitted, selectedFilter, features } = this.props;
 
     if (submitted && results.isEmpty()) {
       return (
         <div className='search-results'>
           <LoadingIndicator />
         </div>
+      );
+    } else if (features.suggestions && results.isEmpty()) {
+      return (
+        <BundleContainer fetchComponent={WhoToFollowPanel}>
+          {Component => <Component limit={5} />}
+        </BundleContainer>
       );
     }
 

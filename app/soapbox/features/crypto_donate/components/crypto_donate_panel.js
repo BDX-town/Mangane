@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import Icon from 'soapbox/components/icon';
 import SiteWallet from './site_wallet';
 import { List as ImmutableList } from 'immutable';
 import classNames from 'classnames';
@@ -44,7 +45,7 @@ class CryptoDonatePanel extends ImmutablePureComponent {
     return (
       <div className={classNames('wtf-panel funding-panel crypto-donate-panel', { 'crypto-donate-panel--has-more': hasMore })}>
         <div className='wtf-panel-header'>
-          <i role='img' alt='bitcoin' className='fa fa-bitcoin wtf-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/currency-bitcoin.svg')} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <span><FormattedMessage id='crypto_donate_panel.heading' defaultMessage='Donate Cryptocurrency' /></span>
           </span>

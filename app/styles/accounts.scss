@@ -3,7 +3,9 @@
     display: block;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
+    box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
 
     @media screen and (max-width: $no-gap-breakpoint) {
       box-shadow: none;
@@ -13,7 +15,7 @@
     &:active,
     &:focus {
       .card__bar {
-        background: var(--foreground-color);
+        background-color: var(--brand-color--faint);
       }
     }
   }
@@ -22,7 +24,6 @@
     height: 130px;
     position: relative;
     background: var(--background-color);
-    border-radius: 4px 4px 0 0;
 
     .still-image {
       display: block;
@@ -30,7 +31,6 @@
       height: 100%;
       margin: 0;
       object-fit: cover;
-      border-radius: 4px 4px 0 0;
     }
 
     @media screen and (max-width: 600px) {
@@ -48,12 +48,8 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background: var(--brand-color--faint);
-    border-radius: 0 0 4px 4px;
-
-    @media screen and (max-width: $no-gap-breakpoint) {
-      border-radius: 0;
-    }
+    background: var(--background-color);
+    transition: 0.2s;
 
     .avatar {
       flex: 0 0 auto;
@@ -286,10 +282,13 @@ a .account__avatar {
   height: auto;
   padding: 0 0 0 5px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  .dismiss-account-btn {
-    display: block;
-    margin-bottom: 5px;
+  .svg-icon {
+    width: 20px;
+    height: 20px;
   }
 }
 
@@ -460,10 +459,6 @@ a .account__avatar {
 }
 
 .account__section-headline {
-  background: var(--foreground-color);
-  width: 100%;
-  display: flex;
-
   button,
   a {
     flex: none;
@@ -546,7 +541,7 @@ a .account__avatar {
   flex-shrink: 0;
   color: var(--primary-text-color--faint);
 
-  i.fa-calendar {
-    padding-right: 5px;
+  .svg-icon {
+    padding-right: 3px;
   }
 }

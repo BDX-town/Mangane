@@ -5,12 +5,17 @@ body.demetricator {
   .icon-with-badge__badge,
   .icon-with-counter__counter,
   .trends__item__count,
-  .sidebar-menu-profile__stats {
+  .sidebar-menu-profile__stats,
+  .profile-stat__value {
     display: none;
   }
 
   .account__header__bar {
     min-height: 50px;
     @media (min-width: 896px) { height: 50px; }
+  }
+
+  .svg-icon--unread svg {
+    transform: rotate(0);
   }
 }

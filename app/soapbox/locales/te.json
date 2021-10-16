@@ -23,7 +23,7 @@
   "account.locked_info": "ఈ ఖాతా యొక్క గోప్యత స్థితి లాక్ చేయబడి వుంది. ఈ ఖాతాను ఎవరు అనుసరించవచ్చో యజమానే నిర్ణయం తీసుకుంటారు.",
   "account.login": "Log in",
   "account.media": "మీడియా",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "ప్రస్తావించు",
   "account.message": "Message",
   "account.moved_to": "{name} ఇక్కడికి మారారు:",

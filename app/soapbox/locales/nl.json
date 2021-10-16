@@ -23,7 +23,7 @@
   "account.locked_info": "De privacystatus van dit account is op besloten gezet. De eigenaar bepaalt handmatig wie hen kan volgen.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Vermeld",
   "account.message": "Message",
   "account.moved_to": "{name} is verhuisd naar:",

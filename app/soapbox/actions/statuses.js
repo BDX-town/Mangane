@@ -48,6 +48,7 @@ export function createStatus(params, idempotencyKey) {
     return api(getState).post('/api/v1/statuses', params, {
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
+      dispatch(importFetchedStatus(status, idempotencyKey));
       dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
       return status;
     }).catch(error => {

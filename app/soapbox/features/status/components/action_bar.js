@@ -17,6 +17,7 @@ const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   redraft: { id: 'status.redraft', defaultMessage: 'Delete & re-draft' },
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
+  chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   reply: { id: 'status.reply', defaultMessage: 'Reply' },
   reblog: { id: 'status.reblog', defaultMessage: 'Repost' },
@@ -86,6 +87,7 @@ class ActionBar extends React.PureComponent {
     onDelete: PropTypes.func.isRequired,
     onBookmark: PropTypes.func,
     onDirect: PropTypes.func.isRequired,
+    onChat: PropTypes.func,
     onMention: PropTypes.func.isRequired,
     onMute: PropTypes.func,
     onMuteConversation: PropTypes.func,
@@ -208,6 +210,10 @@ class ActionBar extends React.PureComponent {
 
   handleDirectClick = () => {
     this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+  }
+
+  handleChatClick = () => {
+    this.props.onChat(this.props.status.get('account'), this.context.router.history);
   }
 
   handleMentionClick = () => {
@@ -337,7 +343,13 @@ class ActionBar extends React.PureComponent {
       menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick });
     } else {
       menu.push({ text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }), action: this.handleMentionClick });
-      //menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+
+      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
+        menu.push({ text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }), action: this.handleChatClick });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+      }
+
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
@@ -361,30 +373,34 @@ class ActionBar extends React.PureComponent {
       }
     }
 
-    const shareButton = ('share' in navigator) && status.get('visibility') === 'public' && (
-      <div className='detailed-status__button'><IconButton title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShare} /></div>
+    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+
+    const shareButton = canShare && (
+      <div className='detailed-status__button'>
+        <IconButton
+          title={intl.formatMessage(messages.share)}
+          src={require('feather-icons/dist/icons/share.svg')}
+          onClick={this.handleShare}
+        />
+      </div>
     );
 
-    let replyIcon;
-    if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
-    } else {
-      replyIcon = 'reply-all';
+    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
+
+    if (status.get('visibility') === 'direct') {
+      reblogIcon = require('@tabler/icons/icons/mail.svg');
+    } else if (status.get('visibility') === 'private') {
+      reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    let reblogIcon = 'retweet';
-    if (status.get('visibility') === 'direct') reblogIcon = 'envelope';
-    else if (status.get('visibility') === 'private') reblogIcon = 'lock';
-
     const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
-
 
     return (
       <div className='detailed-status__action-bar'>
         <div className='detailed-status__button'>
           <IconButton
             title={intl.formatMessage(messages.reply)}
-            icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon}
+            src={require('feather-icons/dist/icons/message-circle.svg')}
             onClick={this.handleReplyClick}
             text={intl.formatMessage(messages.reply)}
           />
@@ -394,7 +410,7 @@ class ActionBar extends React.PureComponent {
             disabled={reblog_disabled}
             active={status.get('reblogged')}
             title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-            icon={reblogIcon}
+            src={reblogIcon}
             onClick={this.handleReblogClick}
             text={intl.formatMessage(messages.reblog)}
           />
@@ -416,7 +432,7 @@ class ActionBar extends React.PureComponent {
             animate
             active={Boolean(meEmojiReact)}
             title={meEmojiTitle}
-            icon='thumbs-up'
+            src={require('@tabler/icons/icons/thumb-up.svg')}
             emoji={meEmojiReact}
             text={meEmojiTitle}
             onClick={this.handleLikeButtonClick}
@@ -433,7 +449,7 @@ class ActionBar extends React.PureComponent {
         {shareButton}
 
         <div className='detailed-status__action-bar-dropdown'>
-          <DropdownMenuContainer size={18} icon='ellipsis-h' items={menu} direction='left' title='More' />
+          <DropdownMenuContainer src={require('@tabler/icons/icons/dots.svg')} items={menu} direction='left' title='More' />
         </div>
       </div>
     );

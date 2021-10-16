@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { getFeatures } from 'soapbox/utils/features';
 import Column from '../ui/components/column';
 import {
   SimpleForm,
@@ -84,9 +85,14 @@ const messages = defineMessages({
   display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
 });
 
-const mapStateToProps = state => ({
-  settings: getSettings(state),
-});
+const mapStateToProps = state => {
+  const instance = state.get('instance');
+
+  return {
+    features: getFeatures(instance),
+    settings: getSettings(state),
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -95,6 +101,7 @@ class Preferences extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    features: PropTypes.object.isRequired,
     settings: ImmutablePropTypes.map,
   };
 
@@ -115,7 +122,7 @@ class Preferences extends ImmutablePureComponent {
   }
 
   render() {
-    const { settings, intl } = this.props;
+    const { settings, features, intl } = this.props;
 
     const displayMediaOptions = {
       default: intl.formatMessage(messages.display_media_default),
@@ -124,7 +131,7 @@ class Preferences extends ImmutablePureComponent {
     };
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm>
           <FieldsGroup>
             <SelectDropdown
@@ -170,24 +177,26 @@ class Preferences extends ImmutablePureComponent {
             </RadioGroup>
           </FieldsGroup>
 
-          <FieldsGroup>
-            <RadioGroup
-              label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
-              onChange={this.onDefaultContentTypeChange}
-            >
-              <RadioItem
-                label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
-                checked={settings.get('defaultContentType') === 'text/plain'}
-                value='text/plain'
-              />
-              <RadioItem
-                label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
-                hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
-                checked={settings.get('defaultContentType') === 'text/markdown'}
-                value='text/markdown'
-              />
-            </RadioGroup>
-          </FieldsGroup>
+          {features.richText && (
+            <FieldsGroup>
+              <RadioGroup
+                label={<FormattedMessage id='preferences.fields.content_type_label' defaultMessage='Post format' />}
+                onChange={this.onDefaultContentTypeChange}
+              >
+                <RadioItem
+                  label={<FormattedMessage id='preferences.options.content_type_plaintext' defaultMessage='Plain text' />}
+                  checked={settings.get('defaultContentType') === 'text/plain'}
+                  value='text/plain'
+                />
+                <RadioItem
+                  label={<FormattedMessage id='preferences.options.content_type_markdown' defaultMessage='Markdown' />}
+                  hint={<FormattedMessage id='preferences.hints.content_type_markdown' defaultMessage='Warning: experimental!' />}
+                  checked={settings.get('defaultContentType') === 'text/markdown'}
+                  value='text/markdown'
+                />
+              </RadioGroup>
+            </FieldsGroup>
+          )}
 
           <FieldsGroup>
             <SettingsCheckbox
@@ -220,6 +229,10 @@ class Preferences extends ImmutablePureComponent {
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.reduce_motion_label' defaultMessage='Reduce motion in animations' />}
               path={['reduceMotion']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}
+              path={['autoloadTimelines']}
             />
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}

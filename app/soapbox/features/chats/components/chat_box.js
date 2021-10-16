@@ -171,9 +171,8 @@ class ChatBox extends ImmutablePureComponent {
     return this.canSubmit() ? (
       <div className='chat-box__send'>
         <IconButton
-          icon='send'
+          src={require('@tabler/icons/icons/send.svg')}
           title={intl.formatMessage(messages.send)}
-          size={16}
           onClick={this.sendMessage}
         />
       </div>

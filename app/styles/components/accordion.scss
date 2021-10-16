@@ -1,5 +1,5 @@
 .explanation-box {
-  margin: 5px 20px;
+  padding: 5px 20px;
 }
 
 .accordion {
@@ -28,9 +28,10 @@
     &::after {
       content: '';
       display: block;
-      font-family: ForkAwesome;
-      font-size: 20px;
-      padding-left: 10px;
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      font-size: 0.8em;
+      padding-left: 0.6em;
       margin-left: auto;
     }
   }

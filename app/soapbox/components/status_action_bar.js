@@ -15,11 +15,13 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { List as ImmutableList } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
+import { isUserTouching } from 'soapbox/is_mobile';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
   redraft: { id: 'status.redraft', defaultMessage: 'Delete & re-draft' },
   direct: { id: 'status.direct', defaultMessage: 'Direct message @{name}' },
+  chat: { id: 'status.chat', defaultMessage: 'Chat with @{name}' },
   mention: { id: 'status.mention', defaultMessage: 'Mention @{name}' },
   mute: { id: 'account.mute', defaultMessage: 'Mute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
@@ -74,6 +76,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onReblog: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
+    onChat: PropTypes.func,
     onMention: PropTypes.func,
     onMute: PropTypes.func,
     onBlock: PropTypes.func,
@@ -131,12 +134,10 @@ class StatusActionBar extends ImmutablePureComponent {
     });
   }
 
-  isMobile = () => window.matchMedia('only screen and (max-width: 895px)').matches;
-
   handleLikeButtonHover = e => {
     const { features } = this.props;
 
-    if (features.emojiReacts && !this.isMobile()) {
+    if (features.emojiReacts && !isUserTouching()) {
       this.setState({ emojiSelectorVisible: true });
     }
   }
@@ -144,7 +145,7 @@ class StatusActionBar extends ImmutablePureComponent {
   handleLikeButtonLeave = e => {
     const { features } = this.props;
 
-    if (features.emojiReacts && !this.isMobile()) {
+    if (features.emojiReacts && !isUserTouching()) {
       this.setState({ emojiSelectorVisible: false });
     }
   }
@@ -153,7 +154,7 @@ class StatusActionBar extends ImmutablePureComponent {
     const { features } = this.props;
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
 
-    if (features.emojiReacts && this.isMobile()) {
+    if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
         this.handleReactClick(meEmojiReact)();
       } else {
@@ -216,6 +217,10 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleDirectClick = () => {
     this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+  }
+
+  handleChatClick = () => {
+    this.props.onChat(this.props.status.get('account'), this.context.router.history);
   }
 
   handleMuteClick = () => {
@@ -331,7 +336,13 @@ class StatusActionBar extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick });
     } else {
       menu.push({ text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }), action: this.handleMentionClick });
-      menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+
+      if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
+        menu.push({ text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }), action: this.handleChatClick });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+      }
+
       menu.push(null);
       menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
       menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
@@ -401,36 +412,40 @@ class StatusActionBar extends ImmutablePureComponent {
     }[meEmojiReact] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
-    let reblogIcon = 'retweet';
-    let replyIcon;
+    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
     let replyTitle;
 
     if (status.get('visibility') === 'direct') {
-      reblogIcon = 'envelope';
+      reblogIcon = require('@tabler/icons/icons/mail.svg');
     } else if (status.get('visibility') === 'private') {
-      reblogIcon = 'lock';
+      reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
     if (status.get('in_reply_to_id', null) === null) {
-      replyIcon = 'reply';
       replyTitle = intl.formatMessage(messages.reply);
     } else {
-      replyIcon = 'reply-all';
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
-    const shareButton = ('share' in navigator) && status.get('visibility') === 'public' && (
-      <IconButton className='status__action-bar-button' title={intl.formatMessage(messages.share)} icon='share-alt' onClick={this.handleShareClick} />
+    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+
+    const shareButton = canShare && (
+      <IconButton
+        className='status__action-bar-button'
+        title={intl.formatMessage(messages.share)}
+        src={require('feather-icons/dist/icons/share.svg')}
+        onClick={this.handleShareClick}
+      />
     );
 
     return (
       <div className='status__action-bar'>
         <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' title={replyTitle} icon={status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) ? 'reply' : replyIcon} onClick={this.handleReplyClick} />
+          <IconButton className='status__action-bar-button' title={replyTitle} src={require('feather-icons/dist/icons/message-circle.svg')} onClick={this.handleReplyClick} />
           {replyCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`} className='detailed-status__link'>{replyCount}</Link>}
         </div>
         <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} icon={reblogIcon} onClick={this.handleReblogClick} />
+          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={reblogIcon} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
         </div>
         <div
@@ -450,16 +465,22 @@ class StatusActionBar extends ImmutablePureComponent {
             animate
             active={Boolean(meEmojiReact)}
             title={meEmojiTitle}
-            icon='thumbs-up'
+            src={require('@tabler/icons/icons/thumb-up.svg')}
             emoji={meEmojiReact}
             onClick={this.handleLikeButtonClick}
           />
-          {emojiReactCount !== 0 && <span className='detailed-status__link'>{emojiReactCount}</span>}
+          {emojiReactCount !== 0 && (
+            (features.exposableReactions && !features.emojiReacts) ? (
+              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='detailed-status__link'>{emojiReactCount}</Link>
+            ) : (
+              <span className='detailed-status__link'>{emojiReactCount}</span>
+            )
+          )}
         </div>
         {shareButton}
 
         <div className='status__action-bar-dropdown'>
-          <DropdownMenuContainer status={status} items={menu} icon='ellipsis-h' size={18} direction='right' title={intl.formatMessage(messages.more)} />
+          <DropdownMenuContainer status={status} items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' title={intl.formatMessage(messages.more)} />
         </div>
       </div>
     );

@@ -44,7 +44,7 @@ class AwaitingApproval extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.count() === 0;
 
     return (
-      <Column icon='user' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='user' heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

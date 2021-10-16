@@ -1,0 +1,60 @@
+.svg-icon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+
+  svg {
+    // Apparently this won't skew the image as long as it has a viewbox
+    width: 100%;
+    height: 100%;
+    transition: 0.2s;
+  }
+
+  &--active {
+    &.svg-icon--home svg {
+      fill: currentColor;
+    }
+
+    svg.icon-tabler-search {
+      stroke-width: 2.3px;
+    }
+
+    svg.icon-tabler-bell,
+    svg.icon-tabler-messages {
+      path:nth-child(2) {
+        fill: var(--primary-text-color);
+      }
+    }
+
+    svg.icon-tabler-users {
+      circle,
+      circle + path {
+        fill: var(--primary-text-color);
+      }
+    }
+
+    svg.icon-tabler-mail {
+      stroke: var(--background-color);
+
+      rect {
+        fill: var(--primary-text-color);
+        stroke: var(--primary-text-color);
+      }
+    }
+  }
+
+  &--unread {
+    svg.icon-tabler-bell {
+      transform: rotate(45deg);
+    }
+  }
+}
+
+.icon-button > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

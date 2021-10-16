@@ -16,7 +16,7 @@ const mapStateToProps = state => {
   };
 };
 
-class PinnedHostPicker extends React.PureComponent {
+class PinnedHostsPicker extends React.PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -34,18 +34,16 @@ class PinnedHostPicker extends React.PureComponent {
     if (!pinnedHosts || pinnedHosts.isEmpty()) return null;
 
     return (
-      <div>
-        <div className='pinned-hosts-picker'>
-          {pinnedHosts.map(host => (
-            <div className={classNames('pinned-host', { 'active': host === activeHost })} key={host}>
-              <Link to={`/timeline/${host}`}>{host}</Link>
-            </div>
-          ))}
-        </div>
+      <div className='pinned-hosts-picker'>
+        {pinnedHosts.map(host => (
+          <div className={classNames('pinned-host', { 'active': host === activeHost })} key={host}>
+            <Link to={`/timeline/${host}`}>{host}</Link>
+          </div>
+        ))}
       </div>
     );
   }
 
 }
 
-export default connect(mapStateToProps)(PinnedHostPicker);
+export default connect(mapStateToProps)(PinnedHostsPicker);

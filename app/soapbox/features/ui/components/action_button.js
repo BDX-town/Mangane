@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
+import Icon from 'soapbox/components/icon';
 import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
@@ -103,12 +104,20 @@ class ActionButton extends ImmutablePureComponent {
         // Follow & Unfollow
         return (<Button
           disabled={account.getIn(['relationship', 'blocked_by'])}
-          className={classNames('logo-button', {
+          className={classNames('button--follow', {
             'button--destructive': account.getIn(['relationship', 'following']),
           })}
-          text={intl.formatMessage(account.getIn(['relationship', 'following']) ? messages.unfollow : messages.follow)}
           onClick={this.handleFollow}
-        />);
+        >
+          {account.getIn(['relationship', 'following']) ? (
+            intl.formatMessage(messages.unfollow)
+          ) : (
+            <>
+              {intl.formatMessage(messages.follow)}
+              <Icon src={require('@tabler/icons/icons/plus.svg')} />
+            </>
+          )}
+        </Button>);
       } else if (account.getIn(['relationship', 'blocking'])) {
         // Unblock
         return <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;

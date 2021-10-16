@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ProgressBar from '../../../components/progress_bar';
 import { fetchPatronInstance } from 'soapbox/actions/patron';
 import { Map as ImmutableMap } from 'immutable';
+import Icon from 'soapbox/components/icon';
 
 const moneyFormat = amount => (
   new Intl
@@ -41,7 +42,7 @@ class FundingPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel funding-panel'>
         <div className='wtf-panel-header'>
-          <i role='img' alt='users' className='fa fa-line-chart wtf-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/chart-line.svg')} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <span>Funding Goal</span>
           </span>

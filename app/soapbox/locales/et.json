@@ -23,7 +23,7 @@
   "account.locked_info": "Selle konto privaatsus on lukustatud. Omanik vaatab manuaalselt üle, kes teda jägida saab.",
   "account.login": "Log in",
   "account.media": "Meedia",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Maini",
   "account.message": "Message",
   "account.moved_to": "{name} on kolinud:",

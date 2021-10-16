@@ -6,8 +6,6 @@ import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ColumnSettingsContainer from './containers/column_settings_container';
-import HomeColumnHeader from '../../components/home_column_header';
 import { Link } from 'react-router-dom';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
@@ -96,15 +94,13 @@ class HomeTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, siteTitle, isLoading, isEmpty, features } = this.props;
+    const { intl, siteTitle, isLoading, isEmpty, features } = this.props;
     const { done } = this.state;
+    const showSuggestions = features.suggestions && isEmpty && !isLoading && !done;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='home' active={hasUnread}>
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
-        {(features.suggestions && isEmpty && !isLoading && !done) ? (
+      <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
+        {showSuggestions ? (
           <BundleContainer fetchComponent={FollowRecommendationsContainer}>
             {Component => <Component onDone={this.handleDone} />}
           </BundleContainer>

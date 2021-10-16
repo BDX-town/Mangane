@@ -141,22 +141,24 @@ class SoapboxMount extends React.PureComponent {
     return (
       <IntlProvider locale={locale} messages={this.state.messages}>
         <ErrorBoundary>
-          <Helmet>
-            <body className={bodyClass} />
-            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-            {customCss && customCss.map(css => (
-              <link rel='stylesheet' href={css} key={css} />
-            ))}
-            <meta name='theme-color' content={this.props.brandColor} />
-          </Helmet>
           <BrowserRouter basename={FE_SUBDIRECTORY}>
-            <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
-              <Switch>
-                {!me && <Route exact path='/' component={PublicLayout} />}
-                <Route exact path='/about/:slug?' component={PublicLayout} />
-                <Route path='/' component={UI} />
-              </Switch>
-            </ScrollContext>
+            <>
+              <Helmet>
+                <body className={bodyClass} />
+                {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+                {customCss && customCss.map(css => (
+                  <link rel='stylesheet' href={css} key={css} />
+                ))}
+                <meta name='theme-color' content={this.props.brandColor} />
+              </Helmet>
+              <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
+                <Switch>
+                  {!me && <Route exact path='/' component={PublicLayout} />}
+                  <Route exact path='/about/:slug?' component={PublicLayout} />
+                  <Route path='/' component={UI} />
+                </Switch>
+              </ScrollContext>
+            </>
           </BrowserRouter>
         </ErrorBoundary>
       </IntlProvider>

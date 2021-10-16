@@ -39,10 +39,10 @@ class CryptoAddress extends ImmutablePureComponent {
           <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
           <div className='crypto-address__actions'>
             <a href='' onClick={this.handleModalClick}>
-              <Icon id='qrcode' />
+              <Icon src={require('@tabler/icons/icons/qrcode.svg')} />
             </a>
             {explorerUrl && <a href={explorerUrl} target='_blank'>
-              <Icon id='external-link' />
+              <Icon src={require('@tabler/icons/icons/external-link.svg')} />
             </a>}
           </div>
         </div>

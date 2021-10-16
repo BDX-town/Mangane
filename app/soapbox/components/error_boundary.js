@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { captureException } from 'soapbox/monitoring';
+import Icon from 'soapbox/components/icon';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -67,12 +68,14 @@ export default class ErrorBoundary extends React.PureComponent {
     return (
       <div className='error-boundary'>
         <div>
-          <i className='fa fa-frown-o' aria-hidden='true' />
+          <Icon src={require('@tabler/icons/icons/mood-sad.svg')} className='sad-face' />
           <FormattedMessage id='alert.unexpected.message' defaultMessage='An unexpected error occurred.' />
-          <a href='/' className='return-home'>
-            <i className='fa fa-reply' aria-hidden='true' />&nbsp;
-            <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
-          </a>
+          <div className='return-home'>
+            <a a href='/'>
+              <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
+              <FormattedMessage id='alert.unexpected.return_home' defaultMessage='Return Home' />
+            </a>
+          </div>
           {errorText && <textarea
             ref={this.setTextareaRef}
             className='error-boundary__component-stack'

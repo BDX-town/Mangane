@@ -8,7 +8,7 @@ import RelativeTimestamp from './relative_timestamp';
 import DisplayName from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
-import AttachmentList from './attachment_list';
+import AttachmentThumbs from './attachment_thumbs';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -70,6 +70,7 @@ class Status extends ImmutablePureComponent {
     onReblog: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
+    onChat: PropTypes.func,
     onMention: PropTypes.func,
     onPin: PropTypes.func,
     onOpenMedia: PropTypes.func,
@@ -93,6 +94,11 @@ class Status extends ImmutablePureComponent {
     group: ImmutablePropTypes.map,
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
+    focusable: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    focusable: true,
   };
 
   // Avoid checking props that are functions (and whose equality will always
@@ -336,7 +342,7 @@ class Status extends ImmutablePureComponent {
 
       return (
         <HotKeys handlers={minHandlers}>
-          <div className='status__wrapper status__wrapper--filtered focusable' tabIndex='0' ref={this.handleRef}>
+          <div className={classNames('status__wrapper', 'status__wrapper--filtered', { focusable: this.props.focusable })} tabIndex={this.props.focusable ? 0 : null} ref={this.handleRef}>
             <FormattedMessage id='status.filtered' defaultMessage='Filtered' />
           </div>
         </HotKeys>
@@ -346,7 +352,9 @@ class Status extends ImmutablePureComponent {
     if (featured) {
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='thumb-tack' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('@tabler/icons/icons/pin.svg')} className='status__prepend-icon' />
+          </div>
           <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
         </div>
       );
@@ -355,7 +363,9 @@ class Status extends ImmutablePureComponent {
 
       prepend = (
         <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'><Icon id='retweet' className='status__prepend-icon' fixedWidth /></div>
+          <div className='status__prepend-icon-wrapper'>
+            <Icon src={require('feather-icons/dist/icons/repeat.svg')} className='status__prepend-icon' />
+          </div>
           <FormattedMessage
             id='status.reblogged_by' defaultMessage='{name} reposted' values={{
               name: <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'>
@@ -380,10 +390,7 @@ class Status extends ImmutablePureComponent {
     if (size > 0) {
       if (this.props.muted) {
         media = (
-          <AttachmentList
-            compact
-            media={status.get('media_attachments')}
-          />
+          <AttachmentThumbs media={status.get('media_attachments')} onClick={this.handleClick} />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
@@ -410,19 +417,22 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
-        const audio = status.getIn(['media_attachments', 0]);
+        const attachment = status.getIn(['media_attachments', 0]);
 
         media = (
           <Bundle fetchComponent={Audio} loading={this.renderLoadingAudioPlayer} >
             {Component => (
               <Component
-                src={audio.get('url')}
-                alt={audio.get('description')}
-                inline
-                sensitive={status.get('sensitive')}
+                src={attachment.get('url')}
+                alt={attachment.get('description')}
+                poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : status.getIn(['account', 'avatar_static'])}
+                backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+                foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+                accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+                duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
+                width={this.props.cachedMediaWidth}
+                height={263}
                 cacheWidth={this.props.cacheMediaWidth}
-                visible={this.state.showMedia}
-                onOpenAudio={this.handleOpenAudio}
               />
             )}
           </Bundle>
@@ -486,7 +496,7 @@ class Status extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: !this.props.muted })} tabIndex={this.props.muted ? null : 0} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
           {prepend}
 
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>

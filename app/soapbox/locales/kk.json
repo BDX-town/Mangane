@@ -23,7 +23,7 @@
   "account.locked_info": "Бұл қолданушы өзі туралы мәліметтерді жасырған. Тек жазылғандар ғана көре алады.",
   "account.login": "Log in",
   "account.media": "Медиа",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Аталым",
   "account.message": "Message",
   "account.moved_to": "{name} көшіп кетті:",

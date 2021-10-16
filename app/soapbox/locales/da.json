@@ -23,7 +23,7 @@
   "account.locked_info": "Denne kontos privatlivsstatus er sat til låst. Ejeren bedømmer manuelt, hvem der kan følge dem.",
   "account.login": "Log in",
   "account.media": "Medie",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Nævn",
   "account.message": "Message",
   "account.moved_to": "{name} er flyttet til:",

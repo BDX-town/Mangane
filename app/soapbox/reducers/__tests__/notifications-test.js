@@ -8,6 +8,11 @@ import notification from 'soapbox/__fixtures__/notification.json';
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import relationship from 'soapbox/__fixtures__/relationship.json';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from 'soapbox/actions/markers';
 
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
@@ -42,7 +47,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -53,7 +57,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -64,12 +67,11 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
       hasMore: false,
       top: false,
-      unread: 1,
+      unread: 0,
       isLoading: false,
       queuedNotifications: ImmutableOrderedMap(),
       totalQueuedNotificationsCount: 0,
@@ -113,7 +115,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -124,7 +125,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -135,7 +135,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
       hasMore: false,
@@ -210,7 +209,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
       top: false,
@@ -269,7 +267,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
       ]),
       unread: 1,
@@ -292,7 +289,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -303,7 +299,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -314,7 +309,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10734', ImmutableMap({
           id: '10734',
@@ -325,7 +319,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
       ]),
       unread: 1,
@@ -357,7 +350,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -368,7 +360,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -379,7 +370,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
       unread: 1,
@@ -400,7 +390,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -411,7 +400,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -422,7 +410,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
     });
@@ -441,7 +428,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -452,7 +438,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
     }));
@@ -470,7 +455,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -481,7 +465,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -492,7 +475,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
     });
@@ -511,7 +493,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -522,7 +503,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
     }));
@@ -568,7 +548,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: '😢',
           chat_message: undefined,
-          is_seen: false,
         })],
         ['10743', ImmutableMap({
           id: '10743',
@@ -579,7 +558,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
         ['10741', ImmutableMap({
           id: '10741',
@@ -590,7 +568,6 @@ describe('notifications reducer', () => {
           status: '9vvNxoo5EFbbnfdXQu',
           emoji: undefined,
           chat_message: undefined,
-          is_seen: true,
         })],
       ]),
     });
@@ -617,7 +594,6 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: '😢',
   //         chat_message: undefined,
-  //         is_seen: false,
   //       }),
   //       ImmutableMap({
   //         id: '10743',
@@ -627,7 +603,6 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: undefined,
   //         chat_message: undefined,
-  //         is_seen: true,
   //       }),
   //       ImmutableMap({
   //         id: '10741',
@@ -637,7 +612,6 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: undefined,
   //         chat_message: undefined,
-  //         is_seen: true,
   //       }),
   //     ]),
   //   });
@@ -656,7 +630,6 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: '😢',
   //         chat_message: undefined,
-  //         is_seen: false,
   //       }),
   //       ImmutableMap({
   //         id: '10743',
@@ -666,7 +639,6 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: undefined,
   //         chat_message: undefined,
-  //         is_seen: true,
   //       }),
   //       ImmutableMap({
   //         id: '10741',
@@ -676,10 +648,125 @@ describe('notifications reducer', () => {
   //         status: '9vvNxoo5EFbbnfdXQu',
   //         emoji: undefined,
   //         chat_message: undefined,
-  //         is_seen: true,
   //       }),
   //     ]),
   //   }));
   // });
 
+  describe('MARKER_FETCH_SUCCESS', () => {
+    it('sets lastRead', () => {
+      const action = {
+        type: MARKER_FETCH_SUCCESS,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '1234',
+          },
+        },
+      };
+
+      expect(reducer(undefined, action).get('lastRead')).toEqual('1234');
+    });
+
+    it('updates the unread count', () => {
+      const action = {
+        type: MARKER_FETCH_SUCCESS,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '5678',
+          },
+        },
+      };
+
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap({
+          '9012': ImmutableMap({ id: '9012' }),
+          '5678': ImmutableMap({ id: '5678' }),
+          '1234': ImmutableMap({ id: '1234' }),
+        }),
+        unread: 3,
+      });
+
+      expect(reducer(state, action).get('unread')).toEqual(1);
+    });
+  });
+
+  describe('MARKER_SAVE_REQUEST', () => {
+    it('sets lastRead', () => {
+      const action = {
+        type: MARKER_SAVE_REQUEST,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '1234',
+          },
+        },
+      };
+
+      expect(reducer(undefined, action).get('lastRead')).toEqual('1234');
+    });
+
+    it('updates the unread count', () => {
+      const action = {
+        type: MARKER_SAVE_REQUEST,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '5678',
+          },
+        },
+      };
+
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap({
+          '9012': ImmutableMap({ id: '9012' }),
+          '5678': ImmutableMap({ id: '5678' }),
+          '1234': ImmutableMap({ id: '1234' }),
+        }),
+        unread: 3,
+      });
+
+      expect(reducer(state, action).get('unread')).toEqual(1);
+    });
+  });
+
+  describe('MARKER_SAVE_SUCCESS', () => {
+    it('sets lastRead', () => {
+      const action = {
+        type: MARKER_SAVE_SUCCESS,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '5678',
+          },
+        },
+      };
+
+      expect(reducer(undefined, action).get('lastRead')).toEqual('5678');
+    });
+
+    it('updates the unread count', () => {
+      const action = {
+        type: MARKER_SAVE_SUCCESS,
+        timeline: ['notifications'],
+        marker: {
+          notifications: {
+            last_read_id: '9012',
+          },
+        },
+      };
+
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap({
+          '9012': ImmutableMap({ id: '9012' }),
+          '5678': ImmutableMap({ id: '5678' }),
+          '1234': ImmutableMap({ id: '1234' }),
+        }),
+        unread: 3,
+      });
+
+      expect(reducer(state, action).get('unread')).toEqual(0);
+    });
+  });
 });

@@ -10,8 +10,8 @@ import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import AttachmentList from 'soapbox/components/attachment_list';
-import PollPreview from './poll_preview';
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import PollPreview from 'soapbox/features/ui/components/poll_preview';
 import ScheduledStatusActionBar from './scheduled_status_action_bar';
 
 const mapStateToProps = (state, props) => {
@@ -67,7 +67,7 @@ class ScheduledStatus extends ImmutablePureComponent {
               collapsable
             />
 
-            <AttachmentList
+            <AttachmentThumbs
               compact
               media={status.get('media_attachments')}
             />

@@ -53,49 +53,49 @@ class FeaturesPanel extends React.PureComponent {
         <div className='promo-panel__container'>
 
           <NavLink className='promo-panel-item' to='/settings/profile'>
-            <Icon id='user' className='promo-panel-item__icon' fixedWidth />
+            <Icon src={require('@tabler/icons/icons/user.svg')} className='promo-panel-item__icon' />
             {intl.formatMessage(messages.edit_profile)}
           </NavLink>
 
           {(isLocked || followRequestsCount > 0) && <NavLink className='promo-panel-item' to='/follow_requests'>
-            <IconWithCounter icon='user-plus' count={followRequestsCount} fixedWidth />
+            <IconWithCounter src={require('@tabler/icons/icons/user-plus.svg')} count={followRequestsCount} className='promo-panel-item__icon' />
             {intl.formatMessage(messages.follow_requests)}
           </NavLink>}
 
           {features.bookmarks && (
             <NavLink className='promo-panel-item' to='/bookmarks'>
-              <Icon id='bookmark' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/bookmark.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.bookmarks)}
             </NavLink>
           )}
 
           {features.lists && (
             <NavLink className='promo-panel-item' to='/lists'>
-              <Icon id='list' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/list.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.lists)}
             </NavLink>
           )}
 
           {features.securityAPI ? (
             <NavLink className='promo-panel-item' to='/auth/edit'>
-              <Icon id='lock' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/lock.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.security)}
             </NavLink>
           ) : (
             <a className='promo-panel-item' href={`${baseURL}/auth/edit`}>
-              <Icon id='lock' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/lock.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.security)}
             </a>
           )}
 
           {features.settingsStore ? (
             <NavLink className='promo-panel-item' to='/settings/preferences'>
-              <Icon id='cog' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/settings.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.preferences)}
             </NavLink>
           ) : (
             <a className='promo-panel-item' href={`${baseURL}/settings/preferences`}>
-              <Icon id='cog' className='promo-panel-item__icon' fixedWidth />
+              <Icon src={require('@tabler/icons/icons/settings.svg')} className='promo-panel-item__icon' />
               {intl.formatMessage(messages.preferences)}
             </a>
           )}

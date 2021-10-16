@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import Icon from 'soapbox/components/icon';
-import Button from 'soapbox/components/button';
+import IconButton from 'soapbox/components/icon_button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   isStaff,
@@ -37,6 +36,7 @@ const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
   account_locked: { id: 'account.locked_info', defaultMessage: 'This account privacy status is set to locked. The owner manually reviews who can follow them.' },
   mention: { id: 'account.mention', defaultMessage: 'Mention' },
+  chat: { id: 'account.chat', defaultMessage: 'Chat with @{name}' },
   direct: { id: 'account.direct', defaultMessage: 'Direct message @{name}' },
   unmute: { id: 'account.unmute', defaultMessage: 'Unmute @{name}' },
   block: { id: 'account.block', defaultMessage: 'Block @{name}' },
@@ -158,6 +158,15 @@ class Header extends ImmutablePureComponent {
     }
   }
 
+  handleShare = () => {
+    navigator.share({
+      text: `@${this.props.account.get('acct')}`,
+      url: this.props.account.get('url'),
+    }).catch((e) => {
+      if (e.name !== 'AbortError') console.error(e);
+    });
+  }
+
   makeMenu() {
     const { account, intl, me, meAccount, features } = this.props;
 
@@ -183,6 +192,13 @@ class Header extends ImmutablePureComponent {
       menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
     } else {
       menu.push({ text: intl.formatMessage(messages.mention, { name: account.get('username') }), action: this.props.onMention });
+
+      if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
+        menu.push({ text: intl.formatMessage(messages.chat, { name: account.get('username') }), action: this.props.onChat });
+      } else {
+        menu.push({ text: intl.formatMessage(messages.direct, { name: account.get('username') }), action: this.props.onDirect });
+      }
+
       if (account.getIn(['relationship', 'following'])) {
         if (account.getIn(['relationship', 'showing_reblogs'])) {
           menu.push({ text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
@@ -292,6 +308,34 @@ class Header extends ImmutablePureComponent {
     return info;
   }
 
+  renderMessageButton() {
+    const { intl, account, me } = this.props;
+
+    if (!me || !account || account.get('id') === me) {
+      return null;
+    }
+
+    const canChat = account.getIn(['pleroma', 'accepts_chat_messages'], false) === true;
+
+    if (canChat) {
+      return (
+        <IconButton
+          src={require('@tabler/icons/icons/messages.svg')}
+          onClick={this.props.onChat}
+          title={intl.formatMessage(messages.chat, { name: account.get('username') })}
+        />
+      );
+    } else {
+      return (
+        <IconButton
+          src={require('@tabler/icons/icons/mail.svg')}
+          onClick={this.props.onDirect}
+          title={intl.formatMessage(messages.direct, { name: account.get('username') })}
+        />
+      );
+    }
+  }
+
   render() {
     const { account, intl, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
@@ -321,13 +365,13 @@ class Header extends ImmutablePureComponent {
     const menu = this.makeMenu();
 
     const header = account.get('header', '');
-    const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
+    // const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
-        <div className={classNames('account__header__image', { 'account__header__image--none': headerMissing || deactivated })}>
+        <div className={classNames('account__header__image', { /* 'account__header__image--none': headerMissing || deactivated */ })}>
           <div className='account__header__info'>
             {info}
           </div>
@@ -391,14 +435,9 @@ class Header extends ImmutablePureComponent {
             )}
 
             <div className='account__header__extra__buttons'>
+              {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
+              {this.renderMessageButton()}
               <ActionButton account={account} />
-              {me && account.get('id') !== me && account.getIn(['pleroma', 'accepts_chat_messages'], false) === true &&
-                <Button className='button-alternative-2' onClick={this.props.onChat}>
-                  <Icon id='comment' />
-                  <FormattedMessage id='account.message' defaultMessage='Message' />
-                </Button>
-              }
-              {me && <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />}
             </div>
 
           </div>

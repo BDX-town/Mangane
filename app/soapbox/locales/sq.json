@@ -23,7 +23,7 @@
   "account.locked_info": "Gjendja e privatësisë së kësaj llogarie është caktuar si e kyçur. I zoti merr dorazi në shqyrtim cilët mund ta ndjekin.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Përmendni",
   "account.message": "Message",
   "account.moved_to": "{name} ka kaluar te:",

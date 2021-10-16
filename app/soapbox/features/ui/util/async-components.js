@@ -30,6 +30,10 @@ export function DirectTimeline() {
   return import(/* webpackChunkName: "features/direct_timeline" */'../../direct_timeline');
 }
 
+export function Conversations() {
+  return import(/* webpackChunkName: "features/conversations" */'../../conversations');
+}
+
 export function ListTimeline() {
   return import(/* webpackChunkName: "features/list_timeline" */'../../list_timeline');
 }
@@ -196,6 +200,10 @@ export function EditFederationModal() {
 
 export function EmbedModal() {
   return import(/* webpackChunkName: "modals/embed_modal" */'../components/embed_modal');
+}
+
+export function ComponentModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/component_modal');
 }
 
 export function ListEditor() {
@@ -408,4 +416,8 @@ export function RegisterInvite() {
 
 export function Share() {
   return import(/* webpackChunkName: "features/share" */'../../share');
+}
+
+export function NewStatus() {
+  return import(/* webpackChunkName: "features/new_status" */'../../new_status');
 }

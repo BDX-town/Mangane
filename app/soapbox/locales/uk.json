@@ -23,7 +23,7 @@
   "account.locked_info": "Статус конфіденційності цього облікового запису встановлено у заблокований. Власник вручну переглядає, хто може за ним стежити.",
   "account.login": "Log in",
   "account.media": "Медіа",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Згадати",
   "account.message": "Message",
   "account.moved_to": "{name} переїхав на:",

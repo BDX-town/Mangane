@@ -1,4 +1,6 @@
 import { mapValues } from 'lodash';
+import { importFetchedAccounts } from './importer';
+import { verifyCredentials } from './auth';
 
 export const PLEROMA_PRELOAD_IMPORT  = 'PLEROMA_PRELOAD_IMPORT';
 export const MASTODON_PRELOAD_IMPORT = 'MASTODON_PRELOAD_IMPORT';
@@ -50,8 +52,12 @@ export function preloadPleroma(data) {
 }
 
 export function preloadMastodon(data) {
-  return {
-    type: MASTODON_PRELOAD_IMPORT,
-    data,
+  return (dispatch, getState) => {
+    const { me, access_token } = data.meta;
+    const { url } = data.accounts[me];
+
+    dispatch(importFetchedAccounts(Object.values(data.accounts)));
+    dispatch(verifyCredentials(access_token, url));
+    dispatch({ type: MASTODON_PRELOAD_IMPORT, data });
   };
 }

@@ -267,7 +267,7 @@ const reducer = (state, action) => {
   case VERIFY_CREDENTIALS_SUCCESS:
     return importCredentials(state, action.token, action.account);
   case VERIFY_CREDENTIALS_FAIL:
-    return action.error.response.status === 403 ? deleteToken(state, action.token) : state;
+    return [401, 403].includes(action.error.response.status) ? deleteToken(state, action.token) : state;
   case SWITCH_ACCOUNT:
     return state.set('me', action.account.get('url'));
   case ME_FETCH_SKIP:

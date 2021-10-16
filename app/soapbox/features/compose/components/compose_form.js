@@ -1,5 +1,6 @@
 import React from 'react';
-import CharacterCounter from './character_counter';
+// import TextCharacterCounter from './text_character_counter';
+import VisualCharacterCounter from './visual_character_counter';
 import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
@@ -35,6 +36,7 @@ const messages = defineMessages({
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
+  message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
@@ -256,8 +258,20 @@ export default class ComposeForm extends ImmutablePureComponent {
 
     let publishText = '';
 
-    if (this.props.privacy === 'private' || this.props.privacy === 'direct') {
-      publishText = <span className='compose-form__publish-private'><Icon id='lock' /> {intl.formatMessage(messages.publish)}</span>;
+    if (this.props.privacy === 'direct') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/mail.svg')} />
+          {intl.formatMessage(messages.message)}
+        </>
+      );
+    } else if (this.props.privacy === 'private') {
+      publishText = (
+        <>
+          <Icon src={require('@tabler/icons/icons/lock.svg')} />
+          {intl.formatMessage(messages.publish)}
+        </>
+      );
     } else {
       publishText = this.props.privacy !== 'unlisted' ? intl.formatMessage(messages.publishLoud, { publish: intl.formatMessage(messages.publish) }) : intl.formatMessage(messages.publish);
     }
@@ -311,6 +325,7 @@ export default class ComposeForm extends ImmutablePureComponent {
             searchTokens={[':']}
             id='cw-spoiler-input'
             className='spoiler-input__input'
+            autoFocus
           />
         </div>
 
@@ -351,7 +366,12 @@ export default class ComposeForm extends ImmutablePureComponent {
               <SpoilerButtonContainer />
               <MarkdownButtonContainer />
             </div>
-            {maxTootChars && <div className='character-counter__wrapper'><CharacterCounter max={maxTootChars} text={text} /></div>}
+            {maxTootChars && (
+              <div className='compose-form__counter'>
+                {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
+                <VisualCharacterCounter max={maxTootChars} text={text} />
+              </div>
+            )}
             <div className='compose-form__publish'>
               <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
             </div>

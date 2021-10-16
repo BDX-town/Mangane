@@ -4,11 +4,11 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
-import ColumnSettingsContainer from './containers/column_settings_container';
-import HomeColumnHeader from '../../components/home_column_header';
+import ColumnSettings from './containers/column_settings_container';
 import { expandCommunityTimeline } from '../../actions/timelines';
 import { connectCommunityStream } from '../../actions/streaming';
 import { getSettings } from 'soapbox/actions/settings';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
@@ -71,13 +71,11 @@ class CommunityTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, onlyMedia, timelineId } = this.props;
+    const { intl, onlyMedia, timelineId } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='local' active={hasUnread} >
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
+      <Column label={intl.formatMessage(messages.title)} transparent>
+        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
         <StatusListContainer
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}

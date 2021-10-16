@@ -1,31 +1,31 @@
 import React from 'react';
 import ColumnHeader from './column_header';
 import PropTypes from 'prop-types';
-import ColumnBackButton from '../../../components/column_back_button';
-import ColumnBackButtonSlim from '../../../components/column_back_button_slim';
+import Column from 'soapbox/components/column';
 
-export default class Column extends React.PureComponent {
+export default class UIColumn extends React.PureComponent {
 
   static propTypes = {
     heading: PropTypes.string,
     icon: PropTypes.string,
     children: PropTypes.node,
     active: PropTypes.bool,
-    backBtnSlim: PropTypes.bool,
-    back: PropTypes.string,
+    showBackBtn: PropTypes.bool,
   };
 
+  static defaultProps = {
+    showBackBtn: true,
+  }
+
   render() {
-    const { heading, icon, children, active, backBtnSlim, back } = this.props;
+    const { heading, icon, children, active, showBackBtn, ...rest } = this.props;
     const columnHeaderId = heading && heading.replace(/ /g, '-');
-    const backBtn = backBtnSlim ? (<ColumnBackButtonSlim to={back} />) : (<ColumnBackButton to={back} />);
 
     return (
-      <div role='region' aria-labelledby={columnHeaderId} className='column'>
-        {heading && <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} />}
-        {backBtn}
+      <Column aria-labelledby={columnHeaderId} {...rest}>
+        {heading && <ColumnHeader icon={icon} active={active} type={heading} columnHeaderId={columnHeaderId} showBackBtn={showBackBtn} />}
         {children}
-      </div>
+      </Column>
     );
   }
 

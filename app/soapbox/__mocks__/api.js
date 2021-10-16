@@ -13,6 +13,12 @@ const setupMock = axios => {
 
 export const staticClient = api.staticClient;
 
+export const baseClient = (...params) => {
+  const axios = api.baseClient(...params);
+  setupMock(axios);
+  return axios;
+};
+
 export default (...params) => {
   const axios = api.default(...params);
   setupMock(axios);

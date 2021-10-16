@@ -36,7 +36,7 @@ class CryptoDonate extends ImmutablePureComponent {
     const { explanationBoxExpanded } = this.state;
 
     return (
-      <Column icon='bitcoin' heading={intl.formatMessage(messages.heading)} backBtnSlim>
+      <Column icon='bitcoin' heading={intl.formatMessage(messages.heading)}>
         <div className='crypto-donate'>
           <div className='explanation-box'>
             <Accordion

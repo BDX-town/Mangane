@@ -6,7 +6,6 @@ import { tagHistory } from '../settings';
 import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
 import { importFetchedAccounts } from './importer';
-import { updateTimeline, dequeueTimeline } from './timelines';
 import { showAlert, showAlertForError } from './alerts';
 import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
@@ -137,30 +136,24 @@ export function directCompose(account, routerHistory) {
   };
 }
 
+export function directComposeById(accountId) {
+  return (dispatch, getState) => {
+    const account = getState().getIn(['accounts', accountId]);
+
+    dispatch({
+      type: COMPOSE_DIRECT,
+      account: account,
+    });
+
+    dispatch(openModal('COMPOSE'));
+  };
+}
+
 export function handleComposeSubmit(dispatch, getState, data, status) {
   if (!dispatch || !getState) return;
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
-
-  // To make the app more responsive, immediately push the status into the columns
-  const insertIfOnline = timelineId => {
-    const timeline = getState().getIn(['timelines', timelineId]);
-
-    if (timeline && timeline.get('items').size > 0 && timeline.getIn(['items', 0]) !== null && timeline.get('online')) {
-      const dequeueArgs = {};
-      if (timelineId === 'community') dequeueArgs.onlyMedia = getSettings(getState()).getIn(['community', 'other', 'onlyMedia']);
-      dispatch(dequeueTimeline(timelineId, null, dequeueArgs));
-      dispatch(updateTimeline(timelineId, data.id));
-    }
-  };
-
-  if (data.visibility !== 'direct') {
-    insertIfOnline('home');
-  } else if (data.visibility === 'public') {
-    insertIfOnline('community');
-    insertIfOnline('public');
-  }
 }
 
 const needsDescriptions = state => {
@@ -620,5 +613,13 @@ export function changePollSettings(expiresIn, isMultiple) {
     type: COMPOSE_POLL_SETTINGS_CHANGE,
     expiresIn,
     isMultiple,
+  };
+}
+
+export function openComposeWithText(text = '') {
+  return (dispatch, getState) => {
+    dispatch(resetCompose());
+    dispatch(openModal('COMPOSE'));
+    dispatch(changeCompose(text));
   };
 }

@@ -62,7 +62,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
   render() {
     const { remoteInstance, pinned } = this.props;
     const menu = this.makeMenu();
-    const icon = pinned ? 'thumb-tack' : 'globe-w';
+    const icon = pinned ? 'thumbtack' : 'globe-w';
 
     return (
       <div className='wtf-panel instance-federation-panel'>

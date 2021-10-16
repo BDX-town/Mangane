@@ -8,6 +8,7 @@ import {
   importFetchedStatus,
   importFetchedStatuses,
 } from './importer';
+import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
 import { defineMessages } from 'react-intl';
 import {
@@ -18,6 +19,7 @@ import {
 import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -168,7 +170,7 @@ const noOp = () => {};
 
 export function expandNotifications({ maxId } = {}, done = noOp) {
   return (dispatch, getState) => {
-    if (!isLoggedIn(getState)) return;
+    if (!isLoggedIn(getState)) return dispatch(noOp);
 
     const activeFilter = getSettings(getState()).getIn(['notifications', 'quickFilter', 'active']);
     const notifications = getState().get('notifications');
@@ -176,7 +178,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
 
     if (notifications.get('isLoading')) {
       done();
-      return;
+      return dispatch(noOp);
     }
 
     const params = {
@@ -192,7 +194,7 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
 
     dispatch(expandNotificationsRequest(isLoadingMore));
 
-    api(getState).get('/api/v1/notifications', { params }).then(response => {
+    return api(getState).get('/api/v1/notifications', { params }).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       const entries = response.data.reduce((acc, item) => {
@@ -283,30 +285,36 @@ export function setFilter(filterType) {
   };
 }
 
+// Of course Markers don't work properly in Pleroma.
+// https://git.pleroma.social/pleroma/pleroma/-/issues/2769
+export function markReadPleroma(max_id) {
+  return (dispatch, getState) => {
+    return api(getState).post('/api/v1/pleroma/notifications/read', { max_id });
+  };
+}
+
 export function markReadNotifications() {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
     const state = getState();
-    const topNotification = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
-    const lastRead = state.getIn(['notifications', 'lastRead']);
+    const instance = state.get('instance');
+    const topNotificationId = state.getIn(['notifications', 'items'], ImmutableOrderedMap()).first(ImmutableMap()).get('id');
+    const lastReadId = state.getIn(['notifications', 'lastRead']);
+    const v = parseVersion(instance.get('version'));
 
-    if (!(topNotification && topNotification > lastRead)) return;
+    if (!(topNotificationId && topNotificationId > lastReadId)) return;
 
-    dispatch({
-      type: NOTIFICATIONS_MARK_READ_REQUEST,
-      lastRead: topNotification,
-    });
+    const marker = {
+      notifications: {
+        last_read_id: topNotificationId,
+      },
+    };
 
-    api(getState).post('/api/v1/pleroma/notifications/read', {
-      max_id: topNotification,
-    }).then(response => {
-      dispatch({
-        type: NOTIFICATIONS_MARK_READ_SUCCESS,
-        notifications: response.data,
-      });
-    }).catch(e => {
-      dispatch({ type: NOTIFICATIONS_MARK_READ_FAIL });
-    });
+    dispatch(saveMarker(marker));
+
+    if (v.software === PLEROMA) {
+      dispatch(markReadPleroma(topNotificationId));
+    }
   };
 }

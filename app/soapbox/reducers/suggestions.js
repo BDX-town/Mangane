@@ -39,11 +39,11 @@ const importSuggestions = (state, suggestions) => {
 };
 
 const dismissAccount = (state, accountId) => {
-  return state.update('items', list => list.filterNot(x => x.account === accountId));
+  return state.update('items', items => items.filterNot(item => item.get('account') === accountId));
 };
 
 const dismissAccounts = (state, accountIds) => {
-  return state.update('items', list => list.filterNot(x => accountIds.includes(x.account)));
+  return state.update('items', items => items.filterNot(item => accountIds.includes(item.get('account'))));
 };
 
 export default function suggestionsReducer(state = initialState, action) {

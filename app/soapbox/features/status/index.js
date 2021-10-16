@@ -36,8 +36,7 @@ import {
 import { initMuteModal } from '../../actions/mutes';
 import { initReport } from '../../actions/reports';
 import { makeGetStatus } from '../../selectors';
-import ColumnHeader from '../../components/column_header';
-import StatusContainer from '../../containers/status_container';
+// import ColumnHeader from '../../components/column_header';
 import { openModal } from '../../actions/modal';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -45,12 +44,18 @@ import { createSelector } from 'reselect';
 import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import Icon from 'soapbox/components/icon';
+// import Icon from 'soapbox/components/icon';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import ThreadStatus from './components/thread_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
+  title: { id: 'status.title', defaultMessage: 'Post' },
+  titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
@@ -249,6 +254,10 @@ class Status extends ImmutablePureComponent {
 
   handleDirectClick = (account, router) => {
     this.props.dispatch(directCompose(account, router));
+  }
+
+  handleChatClick = (account, router) => {
+    this.props.dispatch(launchChat(account.get('id'), router));
   }
 
   handleMentionClick = (account, router) => {
@@ -469,10 +478,29 @@ class Status extends ImmutablePureComponent {
   }
 
   renderStatus(id) {
+    const { status } = this.props;
+
     return (
-      <StatusContainer
+      <ThreadStatus
         key={id}
         id={id}
+        focusedStatusId={status && status.get('id')}
+        onMoveUp={this.handleMoveUp}
+        onMoveDown={this.handleMoveDown}
+        contextType='thread'
+      />
+    );
+  }
+
+  renderPendingStatus(id) {
+    const idempotencyKey = id.replace(/^末pending-/, '');
+
+    return (
+      <PendingStatus
+        className='thread__status'
+        key={id}
+        idempotencyKey={idempotencyKey}
+        focusedStatusId={status && status.get('id')}
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
@@ -484,6 +512,8 @@ class Status extends ImmutablePureComponent {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return this.renderTombstone(id);
+      } else if (id.startsWith('末pending-')) {
+        return this.renderPendingStatus(id);
       } else {
         return this.renderStatus(id);
       }
@@ -535,7 +565,7 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let ancestors, descendants;
-    const { status, ancestorsIds, descendantsIds, intl, domain, me } = this.props;
+    const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
 
     if (status === null) {
       return (
@@ -546,11 +576,11 @@ class Status extends ImmutablePureComponent {
     }
 
     if (ancestorsIds && ancestorsIds.size > 0) {
-      ancestors = <div>{this.renderChildren(ancestorsIds)}</div>;
+      ancestors = this.renderChildren(ancestorsIds);
     }
 
     if (descendantsIds && descendantsIds.size > 0) {
-      descendants = <div>{this.renderChildren(descendantsIds)}</div>;
+      descendants = this.renderChildren(descendantsIds);
     }
 
     const handlers = {
@@ -567,9 +597,16 @@ class Status extends ImmutablePureComponent {
       react: this.handleHotkeyReact,
     };
 
+    const titleMessage = status && status.get('visibility') === 'direct' ? messages.titleDirect : messages.title;
+
     return (
-      <Column label={intl.formatMessage(messages.detailedStatus)}>
-        { me &&
+      <Column label={intl.formatMessage(messages.detailedStatus)} transparent>
+        <SubNavigation message={intl.formatMessage(titleMessage)} />
+        {/*
+          Eye icon to show/hide all CWs in a thread.
+          I'm not convinced of the value of this. It needs a better design at the very least.
+        */}
+        {/* me &&
           <ColumnHeader
             extraButton={(
               <button
@@ -586,52 +623,59 @@ class Status extends ImmutablePureComponent {
               </button>
             )}
           />
-        }
+        */}
 
-        <div ref={this.setRef}>
-          {ancestors}
+        <div ref={this.setRef} className='thread'>
+          {ancestors && (
+            <div className='thread__ancestors'>{ancestors}</div>
+          )}
 
-          <HotKeys handlers={handlers}>
-            <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
-              <DetailedStatus
-                status={status}
-                onOpenVideo={this.handleOpenVideo}
-                onOpenMedia={this.handleOpenMedia}
-                onToggleHidden={this.handleToggleHidden}
-                domain={domain}
-                showMedia={this.state.showMedia}
-                onToggleMediaVisibility={this.handleToggleMediaVisibility}
-              />
+          <div className='thread__status thread__status--focused'>
+            <HotKeys handlers={handlers}>
+              <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                <DetailedStatus
+                  status={status}
+                  onOpenVideo={this.handleOpenVideo}
+                  onOpenMedia={this.handleOpenMedia}
+                  onToggleHidden={this.handleToggleHidden}
+                  domain={domain}
+                  showMedia={this.state.showMedia}
+                  onToggleMediaVisibility={this.handleToggleMediaVisibility}
+                />
 
-              <ActionBar
-                status={status}
-                onReply={this.handleReplyClick}
-                onFavourite={this.handleFavouriteClick}
-                onEmojiReact={this.handleEmojiReactClick}
-                onReblog={this.handleReblogClick}
-                onDelete={this.handleDeleteClick}
-                onDirect={this.handleDirectClick}
-                onMention={this.handleMentionClick}
-                onMute={this.handleMuteClick}
-                onMuteConversation={this.handleConversationMuteClick}
-                onBlock={this.handleBlockClick}
-                onReport={this.handleReport}
-                onPin={this.handlePin}
-                onBookmark={this.handleBookmark}
-                onEmbed={this.handleEmbed}
-                onDeactivateUser={this.handleDeactivateUser}
-                onDeleteUser={this.handleDeleteUser}
-                onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
-                onDeleteStatus={this.handleDeleteStatus}
-                allowedEmoji={this.props.allowedEmoji}
-                emojiSelectorFocused={this.state.emojiSelectorFocused}
-                handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
-                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-              />
-            </div>
-          </HotKeys>
+                <ActionBar
+                  status={status}
+                  onReply={this.handleReplyClick}
+                  onFavourite={this.handleFavouriteClick}
+                  onEmojiReact={this.handleEmojiReactClick}
+                  onReblog={this.handleReblogClick}
+                  onDelete={this.handleDeleteClick}
+                  onDirect={this.handleDirectClick}
+                  onChat={this.handleChatClick}
+                  onMention={this.handleMentionClick}
+                  onMute={this.handleMuteClick}
+                  onMuteConversation={this.handleConversationMuteClick}
+                  onBlock={this.handleBlockClick}
+                  onReport={this.handleReport}
+                  onPin={this.handlePin}
+                  onBookmark={this.handleBookmark}
+                  onEmbed={this.handleEmbed}
+                  onDeactivateUser={this.handleDeactivateUser}
+                  onDeleteUser={this.handleDeleteUser}
+                  onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                  onDeleteStatus={this.handleDeleteStatus}
+                  allowedEmoji={this.props.allowedEmoji}
+                  emojiSelectorFocused={this.state.emojiSelectorFocused}
+                  handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                />
+              </div>
+            </HotKeys>
+          </div>
 
-          {descendants}
+          {descendants && (
+            <div className='thread__descendants'>{descendants}</div>
+          )}
         </div>
       </Column>
     );

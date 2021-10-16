@@ -21,6 +21,7 @@ module.exports = [{
   include: [
     resolve('app', 'fonts'),
     resolve('node_modules', 'fork-awesome'),
+    resolve('node_modules', 'line-awesome'),
     resolve('node_modules', '@fontsource'),
   ],
   generator: {
@@ -39,6 +40,35 @@ module.exports = [{
   include: resolve('node_modules', 'twemoji'),
   generator: {
     filename: 'packs/emoji/[name]-[contenthash:8][ext]',
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/resource',
+  include: resolve('app', 'icons'),
+  generator: {
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/resource',
+  include: resolve('node_modules', 'bootstrap-icons'),
+  generator: {
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
+  },
+}, {
+
+  test: /\.svg$/,
+  type: 'asset/resource',
+  include: resolve('node_modules', 'feather-icons'),
+  generator: {
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
+  },
+}, {
+  test: /\.svg$/,
+  type: 'asset/resource',
+  include: resolve('node_modules', '@tabler'),
+  generator: {
+    filename: 'packs/icons/[name]-[contenthash:8][ext]',
   },
 }, {
   test: /\.svg$/,

@@ -23,7 +23,7 @@
   "account.locked_info": "Il livello di privacy di questo account è impostato a \"bloccato\". Il proprietario esamina manualmente le richieste di seguirlo.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Menziona",
   "account.message": "Message",
   "account.moved_to": "{name} si è trasferito su:",

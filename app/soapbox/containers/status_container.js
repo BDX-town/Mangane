@@ -37,6 +37,7 @@ import {
 import { getSettings } from '../actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -149,6 +150,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onDirect(account, router) {
     dispatch(directCompose(account, router));
+  },
+
+  onChat(account, router) {
+    dispatch(launchChat(account.get('id'), router));
   },
 
   onMention(account, router) {

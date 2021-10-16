@@ -59,7 +59,7 @@ class SubscriptionButton extends ImmutablePureComponent {
           title={intl.formatMessage(subscribing ? messages.unsubscribe : messages.subscribe, { name: account.get('username') })}
           onClick={this.handleSubscriptionToggle}
         >
-          <Icon id={subscribing ? 'bell-ringing' : 'bell'} />
+          <Icon src={subscribing ? require('@tabler/icons/icons/bell-ringing.svg') : require('@tabler/icons/icons/bell.svg')} />
           {subscribing && intl.formatMessage(messages.subscribed)}
         </Button>
       );

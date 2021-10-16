@@ -23,7 +23,7 @@
   "account.locked_info": "Статусот на приватност на овај корисник е сетиран како заклучен. Корисникот одлучува кој можи да го следи него.",
   "account.login": "Log in",
   "account.media": "Медија",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Спомни",
   "account.message": "Message",
   "account.moved_to": "{name} се пресели во:",

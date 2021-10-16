@@ -13,6 +13,7 @@ import { debounce } from 'lodash';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { expandHomeTimeline } from '../../actions/timelines';
 import { expandNotifications } from '../../actions/notifications';
+import { fetchMarker } from 'soapbox/actions/markers';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { fetchFilters } from '../../actions/filters';
 import { fetchChats } from 'soapbox/actions/chats';
@@ -29,6 +30,7 @@ import ProfilePage from 'soapbox/pages/profile_page';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import HomePage from 'soapbox/pages/home_page';
 import DefaultPage from 'soapbox/pages/default_page';
+import StatusPage from 'soapbox/pages/status_page';
 import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
@@ -39,6 +41,7 @@ import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 import {
@@ -53,8 +56,9 @@ import {
   Following,
   Reblogs,
   Reactions,
-  // Favourites,
+  Favourites,
   DirectTimeline,
+  Conversations,
   HashtagTimeline,
   Notifications,
   FollowRequests,
@@ -108,6 +112,7 @@ import {
   ProfileHoverCard,
   RegisterInvite,
   Share,
+  NewStatus,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -173,6 +178,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
     soapbox: ImmutablePropTypes.map.isRequired,
+    features: PropTypes.object.isRequired,
   };
 
   state = {
@@ -201,7 +207,7 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   render() {
-    const { children, soapbox } = this.props;
+    const { children, soapbox, features } = this.props;
     const authenticatedProfile = soapbox.get('authenticatedProfile');
 
     return (
@@ -216,7 +222,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />
         <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />
-        <WrappedRoute path='/messages' page={DefaultPage} component={DirectTimeline} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
+        <WrappedRoute path='/messages' page={DefaultPage} component={features.directTimeline ? DirectTimeline : Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
@@ -229,21 +236,30 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
         */}
 
-        {/* Redirects from Pleroma FE, etc. to fix old bookmarks */}
+        {/* Redirects from Mastodon, Pleroma FE, etc. to fix old bookmarks */}
+        <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
+        <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
+        <Redirect from='/web/:path' to='/:path' />
+        <Redirect from='/timelines/home' to='/' />
+        <Redirect from='/timelines/public/local' to='/timeline/local' />
+        <Redirect from='/timelines/public' to='/timeline/fediverse' />
+        <Redirect from='/timelines/direct' to='/messages' />
         <Redirect from='/main/all' to='/timeline/fediverse' />
         <Redirect from='/main/public' to='/timeline/local' />
         <Redirect from='/main/friends' to='/' />
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
         <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <Redirect from='/users/:username/chats' to='/chats' />
         <Redirect from='/users/:username' to='/@:username' />
+        <Redirect from='/terms' to='/about' />
         <Redirect from='/home' to='/' />
 
         {/* Soapbox Legacy redirects */}
         <Redirect from='/canary' to='/about/canary' />
         <Redirect from='/canary.txt' to='/about/canary' />
 
-        <WrappedRoute path='/tags/:id' publicRoute component={HashtagTimeline} content={children} />
+        <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
         <WrappedRoute path='/lists' page={DefaultPage} component={Lists} content={children} />
         <WrappedRoute path='/list/:id' page={HomePage} component={ListTimeline} content={children} />
@@ -270,14 +286,18 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/tagged/:tag' exact component={AccountTimeline} page={ProfilePage} content={children} />
         <WrappedRoute path='/@:username/favorites' component={FavouritedStatuses} page={ProfilePage} content={children}  />
         <WrappedRoute path='/@:username/pins' component={PinnedStatuses} page={ProfilePage} content={children} />
-        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId' publicRoute exact page={StatusPage} component={Status} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/likes' page={DefaultPage} component={Favourites} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
+        <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
+        <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />
 
         <Redirect from='/registration/:token' to='/invite/:token' />
+        <Redirect from='/registration' to='/' />
         <WrappedRoute path='/invite/:token' component={RegisterInvite} content={children} publicRoute />
 
         <Redirect exact from='/settings' to='/settings/preferences' />
@@ -438,7 +458,7 @@ class UI extends React.PureComponent {
   });
 
   componentDidMount() {
-    const { account, features } = this.props;
+    const { account, features, dispatch } = this.props;
     if (!account) return;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
@@ -457,32 +477,35 @@ class UI extends React.PureComponent {
     }
 
     if (account) {
-      this.props.dispatch(expandHomeTimeline());
-      this.props.dispatch(expandNotifications());
+      dispatch(expandHomeTimeline());
+
+      dispatch(expandNotifications())
+        .then(() => dispatch(fetchMarker(['notifications'])))
+        .catch(console.error);
 
       if (features.chats) {
-        this.props.dispatch(fetchChats());
+        dispatch(fetchChats());
       }
 
       if (isStaff(account)) {
-        this.props.dispatch(fetchReports({ state: 'open' }));
-        this.props.dispatch(fetchUsers(['local', 'need_approval']));
+        dispatch(fetchReports({ state: 'open' }));
+        dispatch(fetchUsers(['local', 'need_approval']));
       }
 
       if (isAdmin(account)) {
-        this.props.dispatch(fetchConfig());
+        dispatch(fetchConfig());
       }
 
-      setTimeout(() => this.props.dispatch(fetchFilters()), 500);
+      setTimeout(() => dispatch(fetchFilters()), 500);
 
       if (account.get('locked')) {
-        setTimeout(() => this.props.dispatch(fetchFollowRequests()), 700);
+        setTimeout(() => dispatch(fetchFollowRequests()), 700);
       }
 
-      setTimeout(() => this.props.dispatch(fetchScheduledStatuses()), 900);
+      setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
     }
 
-    this.props.dispatch(fetchCustomEmojis());
+    dispatch(fetchCustomEmojis());
     this.connectStreaming();
   }
 
@@ -647,7 +670,7 @@ class UI extends React.PureComponent {
         className='floating-action-button'
         aria-label={intl.formatMessage(messages.publish)}
       >
-        <Icon id='pencil' fixedWidth />
+        <Icon src={require('icons/pen-plus.svg')} />
       </button>
     );
 
@@ -666,7 +689,7 @@ class UI extends React.PureComponent {
         <div className={classnames} ref={this.setRef} style={style}>
           <TabsBar />
 
-          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox}>
+          <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>
             {children}
           </SwitchingColumnsArea>
 
@@ -694,6 +717,7 @@ class UI extends React.PureComponent {
               {Component => <Component />}
             </BundleContainer>
           )}
+          <ThumbNavigation />
 
           <BundleContainer fetchComponent={ProfileHoverCard}>
             {Component => <Component />}

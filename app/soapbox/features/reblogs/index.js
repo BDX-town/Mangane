@@ -7,11 +7,15 @@ import LoadingIndicator from '../../components/loading_indicator';
 import MissingIndicator from '../../components/missing_indicator';
 import { fetchReblogs } from '../../actions/interactions';
 import { fetchStatus } from '../../actions/statuses';
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import { makeGetStatus } from '../../selectors';
+
+const messages = defineMessages({
+  heading: { id: 'column.reblogs', defaultMessage: 'Reposts' },
+});
 
 const mapStateToProps = (state, props) => {
   const getStatus = makeGetStatus();
@@ -27,9 +31,11 @@ const mapStateToProps = (state, props) => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class Reblogs extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     accountIds: ImmutablePropTypes.orderedSet,
@@ -50,7 +56,7 @@ class Reblogs extends ImmutablePureComponent {
   }
 
   render() {
-    const { accountIds, status } = this.props;
+    const { intl, accountIds, status } = this.props;
 
     if (!accountIds) {
       return (
@@ -71,7 +77,7 @@ class Reblogs extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='status.reblogs.empty' defaultMessage='No one has reposted this post yet. When someone does, they will show up here.' />;
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='reblogs'
           emptyMessage={emptyMessage}

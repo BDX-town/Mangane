@@ -23,7 +23,7 @@
   "account.locked_info": "Η κατάσταση απορρήτου αυτού του λογαριασμού είναι κλειδωμένη. Ο ιδιοκτήτης επιβεβαιώνει χειροκίνητα ποιος μπορεί να τον ακολουθήσει.",
   "account.login": "Log in",
   "account.media": "Πολυμέσα",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Ανάφερε",
   "account.message": "Message",
   "account.moved_to": "{name} μεταφέρθηκε στο:",

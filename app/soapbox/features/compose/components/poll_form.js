@@ -95,6 +95,7 @@ class Option extends React.PureComponent {
             onSuggestionsClearRequested={this.onSuggestionsClearRequested}
             onSuggestionSelected={this.onSuggestionSelected}
             searchTokens={[':']}
+            autoFocus
           />
         </label>
 

@@ -128,8 +128,9 @@
 
   @media screen and (max-width: 600px) { padding: 30px 2px; }
 
-  .fa {
-    margin-right: 0;
+  .svg-icon {
+    width: 24px;
+    height: 24px;
   }
 }
 
@@ -180,7 +181,7 @@
 }
 
 .media-modal__button {
-  background-color: var(--primary-text-color);
+  background-color: #fff;
   height: 12px;
   width: 12px;
   border-radius: 6px;
@@ -337,7 +338,7 @@
   overflow: hidden;
   width: 480px;
   max-width: 90vw;
-  border-radius: 4px;
+  border-radius: 10px;
   border: 1px solid var(--primary-text-color--faint);
   color: var(--primary-text-color--faint);
   background: var(--foreground-color);
@@ -685,6 +686,8 @@
     display: flex;
     position: relative;
     padding: 10px 0;
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
     border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
     align-items: center;
     justify-content: center;
@@ -704,7 +707,13 @@
   &__close {
     position: absolute;
     right: 10px;
-    color: #999;
+    right: max(10px, env(safe-area-inset-right));
+    color: var(--primary-text-color--faint);
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+    }
   }
 
   &__content {
@@ -712,6 +721,8 @@
     flex-direction: row;
     flex: 1;
     padding: 10px;
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-right: max(10px, env(safe-area-inset-right));
     overflow-y: hidden;
 
     &--scroll {

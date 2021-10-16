@@ -47,7 +47,7 @@ class ScheduledStatusActionBar extends ImmutablePureComponent {
           <IconButton
             title={intl.formatMessage(messages.cancel)}
             text={intl.formatMessage(messages.cancel)}
-            icon='close'
+            icon='times'
             onClick={this.handleCancelClick}
           />
         </div>

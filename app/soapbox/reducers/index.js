@@ -54,6 +54,7 @@ import security from './security';
 import scheduled_statuses from './scheduled_statuses';
 import aliases from './aliases';
 import accounts_meta from './accounts_meta';
+import pending_statuses from './pending_statuses';
 
 const appReducer = combineReducers({
   dropdown_menu,
@@ -107,6 +108,7 @@ const appReducer = combineReducers({
   admin_log,
   security,
   scheduled_statuses,
+  pending_statuses,
   aliases,
   accounts_meta,
 });

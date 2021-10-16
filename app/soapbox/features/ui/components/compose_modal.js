@@ -19,6 +19,7 @@ const mapStateToProps = state => {
   return {
     account: state.getIn(['accounts', me]),
     composeText: state.getIn(['compose', 'text']),
+    privacy: state.getIn(['compose', 'privacy']),
   };
 };
 
@@ -29,6 +30,7 @@ class ComposeModal extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     composeText: PropTypes.string,
+    privacy: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -48,15 +50,24 @@ class ComposeModal extends ImmutablePureComponent {
   };
 
   render() {
-    const { intl } = this.props;
+    const { intl, privacy } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'>
-            <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />
+            {privacy === 'direct' ? (
+              <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />
+            ) : (
+              <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />
+            )}
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton
+            className='compose-modal__close'
+            title={intl.formatMessage(messages.close)}
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.onClickClose} size={20}
+          />
         </div>
         <div className='compose-modal__content compose-modal__content--scroll'>
           <ComposeFormContainer />

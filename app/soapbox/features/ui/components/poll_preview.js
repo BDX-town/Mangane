@@ -11,7 +11,7 @@ export default class PollPreview extends ImmutablePureComponent {
 
   renderOption(option) {
     const { poll } = this.props;
-    const showResults        = poll.get('voted') || poll.get('expired');
+    const showResults = poll.get('voted') || poll.get('expired');
 
     return (
       <li key={option}>

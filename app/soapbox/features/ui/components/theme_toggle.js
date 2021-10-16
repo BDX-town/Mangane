@@ -35,7 +35,7 @@ export default class ThemeToggle extends ImmutablePureComponent {
             id={id}
             checked={themeMode === 'light'}
             onChange={this.handleToggleTheme}
-            icons={{ checked: <Icon id='sun' />, unchecked: <Icon id='moon' /> }}
+            icons={{ checked: <Icon src={require('@tabler/icons/icons/sun.svg')} />, unchecked: <Icon src={require('@tabler/icons/icons/moon.svg')} /> }}
             onKeyDown={this.onKeyDown}
           />
           {showLabel && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}

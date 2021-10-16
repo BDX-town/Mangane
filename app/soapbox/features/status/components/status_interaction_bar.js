@@ -14,11 +14,10 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = state => {
   const instance = state.get('instance');
-  const features = getFeatures(instance);
 
   return {
     allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
-    reactionList: features.exposableReactions,
+    features: getFeatures(instance),
   };
 };
 
@@ -29,7 +28,7 @@ class StatusInteractionBar extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
     me: SoapboxPropTypes.me,
     allowedEmoji: ImmutablePropTypes.list,
-    reactionList: PropTypes.bool,
+    features: PropTypes.object.isRequired,
   }
 
   getNormalizedReacts = () => {
@@ -42,12 +41,12 @@ class StatusInteractionBar extends ImmutablePureComponent {
     ).reverse();
   }
 
-  getRepost = () => {
+  getReposts = () => {
     const { status } = this.props;
     if (status.get('reblogs_count')) {
       return (
         <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='emoji-react emoji-react--reblogs'>
-          <Icon id='retweet' />
+          <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
           <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>
@@ -58,8 +57,39 @@ class StatusInteractionBar extends ImmutablePureComponent {
     return '';
   }
 
+  getFavourites = () => {
+    const { features, status } = this.props;
+
+    if (status.get('favourites_count')) {
+      const favourites = (
+        <>
+          <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />
+          <span className='emoji-reacts__count'>
+            <FormattedNumber value={status.get('favourites_count')} />
+          </span>
+        </>
+      );
+
+      if (features.exposableReactions) {
+        return (
+          <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='emoji-react emoji-react--favourites'>
+            {favourites}
+          </Link>
+        );
+      } else {
+        return (
+          <div className='emoji-react emoji-react--favourites'>
+            {favourites}
+          </div>
+        );
+      }
+    }
+
+    return '';
+  }
+
   getEmojiReacts = () => {
-    const { status, reactionList } = this.props;
+    const { status, features } = this.props;
 
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
@@ -81,7 +111,7 @@ class StatusInteractionBar extends ImmutablePureComponent {
                 </>
               );
 
-              if (reactionList) {
+              if (features.exposableReactions) {
                 return <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reactions/${e.get('name')}`} className='emoji-react' key={i}>{emojiReact}</Link>;
               }
 
@@ -99,13 +129,12 @@ class StatusInteractionBar extends ImmutablePureComponent {
   };
 
   render() {
-    const emojiReacts = this.getEmojiReacts();
-    const repost = this.getRepost();
+    const { features } = this.props;
 
     return (
       <div className='status-interaction-bar'>
-        {emojiReacts}
-        {repost}
+        {features.emojiReacts ? this.getEmojiReacts() : this.getFavourites()}
+        {this.getReposts()}
       </div>
     );
   }

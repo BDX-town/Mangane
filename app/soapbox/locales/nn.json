@@ -23,7 +23,7 @@
   "account.locked_info": "Brukarens privat-status er satt til lukka. Eigaren må manuelt døme kvem som kan følje honom.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Nemne",
   "account.message": "Message",
   "account.moved_to": "{name} har flytta til:",

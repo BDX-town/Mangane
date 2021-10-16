@@ -5,12 +5,29 @@
   text-align: center;
   padding: 10px 10px 80px;
 
-  i.fa.fa-frown-o {
-    display: block;
-    text-align: center;
-    font-size: 70px;
-    margin: 20px 0;
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .sad-face {
+    width: 70px;
+    height: 70px;
+    margin: 20px auto;
     opacity: 0.5;
+    transition: 0.8s;
+
+    svg {
+      stroke-width: 1.5px;
+    }
+
+    &:hover {
+      transform: rotate(180deg);
+    }
   }
 
   a {
@@ -26,10 +43,23 @@
       color: var(--primary-text-color--faint);
     }
 
-    a.return-home {
-      display: block;
+    .return-home {
+      display: flex;
       margin: 15px auto;
-      text-align: center;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .svg-icon {
+        width: 18px;
+        height: 18px;
+        margin-right: 5px;
+      }
     }
   }
 

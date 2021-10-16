@@ -20,20 +20,28 @@
       margin: 5px 0;
       flex-direction: row;
       flex-wrap: wrap;
+    }
 
-      &__join-date {
-        display: block;
-        margin-top: 5px;
+    &__join-date {
+      display: flex;
+      font-size: 14px;
+      color: var(--primary-text-color--faint);
+      align-items: center;
+      line-height: normal;
 
-        .fa {
-          margin-right: 8px;
-        }
+      .svg-icon {
+        width: 22px;
+        height: 22px;
+        margin-right: 5px;
+        transform: translateY(-1px);
+      }
+    }
 
-        span {
-          color: var(--primary-text-color);
-          font-size: 15px;
-          line-height: 1.25;
-        }
+    &__stats {
+      margin: 15px 0;
+
+      .profile-stat {
+        font-size: 16px;
       }
     }
 
@@ -43,6 +51,12 @@
       .emojione {
         width: 22px;
         height: 22px;
+      }
+
+      .svg-icon {
+        width: 20px;
+        height: 20px;
+        margin-left: 3px;
       }
 
       h1 {
@@ -55,8 +69,8 @@
         }
 
         small {
-          display: block;
-          font-size: 16px;
+          display: flex;
+          font-size: 15px;
           line-height: 1.5;
           color: var(--primary-text-color--faint);
           font-weight: 400;

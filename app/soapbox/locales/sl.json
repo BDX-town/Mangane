@@ -23,7 +23,7 @@
   "account.locked_info": "Stanje zasebnosti računa je nastavljeno na zaklenjeno. Lastnik ročno pregleda, kdo ga lahko spremlja.",
   "account.login": "Log in",
   "account.media": "Mediji",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Omeni",
   "account.message": "Message",
   "account.moved_to": "{name} se je premaknil na:",

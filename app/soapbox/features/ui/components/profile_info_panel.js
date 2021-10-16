@@ -11,10 +11,11 @@ import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import Badge from 'soapbox/components/badge';
 import { List as ImmutableList } from 'immutable';
-import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
+import { getAcct, isAdmin, isModerator, isLocal, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import classNames from 'classnames';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;
 
@@ -51,12 +52,30 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const { account } = this.props;
 
     if (isAdmin(account)) {
-      return <Badge slug='admin' title='Admin' />;
+      return <Badge slug='admin' title='Admin' key='staff' />;
     } else if (isModerator(account)) {
-      return <Badge slug='moderator' title='Moderator' />;
+      return <Badge slug='moderator' title='Moderator' key='staff' />;
     } else {
       return null;
     }
+  }
+
+  getBadges = () => {
+    const { account } = this.props;
+    const staffBadge = this.getStaffBadge();
+    const isPatron = account.getIn(['patron', 'is_patron']);
+
+    const badges = [];
+
+    if (staffBadge) {
+      badges.push(staffBadge);
+    }
+
+    if (isPatron) {
+      badges.push(<Badge slug='patron' title='Patron' key='patron' />);
+    }
+
+    return badges;
   }
 
   render() {
@@ -77,13 +96,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       );
     }
 
-    const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
     const content = { __html: account.get('note_emojified') };
     const fields = account.get('fields');
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const verified = isVerified(account);
+    const badges = this.getBadges();
 
     return (
       <div className={classNames('profile-info-panel', { 'deactivated': deactivated })} >
@@ -94,23 +113,20 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
               {verified && <VerificationBadge />}
               {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-              { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
+              <small>
+                @{getAcct(account, displayFqn)}
+                {account.get('locked') && (
+                  <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
+                )}
+              </small>
             </h1>
           </div>
 
-          <div className='profile-info-panel-content__badges'>
-            {this.getStaffBadge()}
-            {account.getIn(['patron', 'is_patron']) && <Badge slug='patron' title='Patron' />}
-          </div>
-
-          {isLocal(account) && <div className='profile-info-panel-content__badges__join-date'>
-            <Icon id='calendar' />
-            <FormattedMessage
-              id='account.member_since' defaultMessage='Member since {date}' values={{
-                date: memberSinceDate,
-              }}
-            />
-          </div>}
+          {badges.length > 0 && (
+            <div className='profile-info-panel-content__badges'>
+              {badges}
+            </div>
+          )}
 
           <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
@@ -122,6 +138,20 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
             <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
           }
+
+          {isLocal(account) && <div className='profile-info-panel-content__join-date'>
+            <Icon src={require('@tabler/icons/icons/calendar.svg')} />
+            <FormattedMessage
+              id='account.member_since' defaultMessage='Joined {date}' values={{
+                date: memberSinceDate,
+              }}
+            />
+          </div>}
+
+          <ProfileStats
+            className='profile-info-panel-content__stats'
+            account={account}
+          />
 
           {(fields.size > 0 || identity_proofs.size > 0) && (
             <div className='profile-info-panel-content__fields'>
@@ -144,7 +174,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {fields.map((pair, i) =>
                 isTicker(pair.get('name', '')) ? (
-                  <BundleContainer fetchComponent={CryptoAddress}>
+                  <BundleContainer fetchComponent={CryptoAddress} key={i}>
                     {Component => (
                       <Component
                         key={i}

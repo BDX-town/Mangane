@@ -4,17 +4,17 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import StatusListContainer from '../ui/containers/status_list_container';
 import Column from '../../components/column';
-import ColumnSettingsContainer from './containers/column_settings_container';
-import HomeColumnHeader from '../../components/home_column_header';
+import ColumnSettings from './containers/column_settings_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
 import { expandPublicTimeline } from '../../actions/timelines';
 import { connectPublicStream } from '../../actions/streaming';
 import { Link } from 'react-router-dom';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const messages = defineMessages({
-  title: { id: 'column.public', defaultMessage: 'Federated timeline' },
+  title: { id: 'column.public', defaultMessage: 'Fediverse timeline' },
   dismiss: { id: 'fediverse_tab.explanation_box.dismiss', defaultMessage: 'Don\'t show again' },
 });
 
@@ -95,13 +95,11 @@ class CommunityTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, hasUnread, onlyMedia, timelineId, siteTitle, showExplanationBox, explanationBoxExpanded } = this.props;
+    const { intl, onlyMedia, timelineId, siteTitle, showExplanationBox, explanationBoxExpanded } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
-        <HomeColumnHeader activeItem='fediverse' active={hasUnread} >
-          <ColumnSettingsContainer />
-        </HomeColumnHeader>
+      <Column label={intl.formatMessage(messages.title)} transparent>
+        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettings} />
         <PinnedHostsPicker />
         {showExplanationBox && <div className='explanation-box'>
           <Accordion

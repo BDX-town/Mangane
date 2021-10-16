@@ -1,13 +1,25 @@
+.notification-list {
+  position: fixed;
+  bottom: var(--thumb-navigation-height);
+  z-index: 1000; /* Above ThumbNavigation */
+  width: 100%;
+
+  @media (min-width: 895px) {
+    bottom: 0;
+  }
+}
+
 .snackbar {
   font-size: 16px !important;
   padding: 10px 20px 10px 14px !important;
-  z-index: 9999 !important;
+  position: absolute !important;
   display: flex;
   align-items: center;
   justify-content: center;
 
   &::before {
-    font-family: ForkAwesome;
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
     font-size: 20px;
     margin-right: 8px;
   }
@@ -16,7 +28,7 @@
     background-color: #19759e !important;
 
     &::before {
-      content: '';
+      content: '\f05a';
     }
   }
 
@@ -24,7 +36,7 @@
     background-color: #199e5a !important;
 
     &::before {
-      content: '';
+      content: '\f00c';
     }
   }
 
@@ -32,7 +44,7 @@
     background-color: #9e1919 !important;
 
     &::before {
-      content: '';
+      content: '\f05e';
     }
   }
 

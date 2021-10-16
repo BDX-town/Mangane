@@ -94,9 +94,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
       return null;
     }
 
-    let media           = '';
-    const poll = '';
-    let statusTypeIcon = '';
+    let media = null;
+    let statusTypeIcon = null;
 
     if (this.props.measureHeight) {
       outerStyle.height = `${this.state.height}px`;
@@ -123,16 +122,18 @@ export default class DetailedStatus extends ImmutablePureComponent {
           />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
-        const audio = status.getIn(['media_attachments', 0]);
+        const attachment = status.getIn(['media_attachments', 0]);
 
         media = (
           <Audio
-            src={audio.get('url')}
-            alt={audio.get('description')}
-            inline
-            sensitive={status.get('sensitive')}
-            visible={this.props.showMedia}
-            onToggleVisibility={this.props.onToggleMediaVisibility}
+            src={attachment.get('url')}
+            alt={attachment.get('description')}
+            duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
+            poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : status.getIn(['account', 'avatar_static'])}
+            backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
+            foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
+            accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+            height={150}
           />
         );
       } else {
@@ -153,9 +154,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
     }
 
     if (status.get('visibility') === 'direct') {
-      statusTypeIcon = <Icon id='envelope' />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/icons/mail.svg')} />;
     } else if (status.get('visibility') === 'private') {
-      statusTypeIcon = <Icon id='lock' />;
+      statusTypeIcon = <Icon src={require('@tabler/icons/icons/lock.svg')} />;
     }
 
     return (
@@ -191,11 +192,11 @@ export default class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
-          {poll}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />
-            <div>
+
+            <div className='detailed-status__timestamp'>
               {favicon &&
                 <div className='status__favicon'>
                   <Link to={`/timeline/${domain}`}>
@@ -203,7 +204,9 @@ export default class DetailedStatus extends ImmutablePureComponent {
                   </Link>
                 </div>}
 
-              {statusTypeIcon}<a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
+              {statusTypeIcon}
+
+              <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
                 <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
               </a>
             </div>

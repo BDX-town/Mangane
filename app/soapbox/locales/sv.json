@@ -23,7 +23,7 @@
   "account.locked_info": "Detta konto har en låst integritetsstatus. Ägaren väljer manuellt vem som kan följa.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Nämna",
   "account.message": "Message",
   "account.moved_to": "{name} har flyttat till:",

@@ -10,11 +10,13 @@ button {
 .button {
   background-color: var(--brand-color);
   border: 10px none;
-  border-radius: 4px;
+  border-radius: 999px;
   box-sizing: border-box;
   color: #fff;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
@@ -30,6 +32,14 @@ button {
   white-space: nowrap;
   width: auto;
   transition: 0.2s;
+
+  .svg-icon {
+    margin-right: 5px;
+  }
+
+  &__link {
+    text-decoration: none;
+  }
 
   &:active,
   &:focus,
@@ -93,16 +103,14 @@ button {
   }
 
   &.button-secondary {
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
     background: transparent;
-    padding: 3px 15px;
     border: 1px solid var(--brand-color);
 
     &:active,
     &:focus,
     &:hover {
-      border-color: var(--brand-color);
-      color: var(--background-color);
+      border-color: var(--accent-color);
     }
 
     &:disabled {
@@ -115,7 +123,7 @@ button {
   }
 
   &.button--block {
-    display: block;
+    display: flex;
     width: 100%;
   }
 }
@@ -142,5 +150,17 @@ a.button {
 
   i.fa {
     margin-right: 0.6em;
+  }
+}
+
+.button--follow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .svg-icon {
+    margin-left: 6px;
+    width: 20px;
+    height: 20px;
   }
 }

@@ -7,9 +7,12 @@ import ColumnHeader from '../../components/column_header';
 import { expandDirectTimeline } from '../../actions/timelines';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
+import { directComposeById } from 'soapbox/actions/compose';
+import AccountSearch from 'soapbox/components/account_search';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },
+  searchPlaceholder: { id: 'direct.search_placeholder', defaultMessage: 'Send a message to…' },
 });
 
 const mapStateToProps = state => ({
@@ -40,6 +43,10 @@ class DirectTimeline extends React.PureComponent {
     }
   }
 
+  handleSuggestion = accountId => {
+    this.props.dispatch(directComposeById(accountId));
+  }
+
   handleLoadMore = maxId => {
     this.props.dispatch(expandDirectTimeline({ maxId }));
   }
@@ -48,12 +55,17 @@ class DirectTimeline extends React.PureComponent {
     const { intl, hasUnread } = this.props;
 
     return (
-      <Column label={intl.formatMessage(messages.title)}>
+      <Column label={intl.formatMessage(messages.title)} transparent>
         <ColumnHeader
           icon='envelope'
           active={hasUnread}
           title={intl.formatMessage(messages.title)}
           onPin={this.handlePin}
+        />
+
+        <AccountSearch
+          placeholder={intl.formatMessage(messages.searchPlaceholder)}
+          onSelected={this.handleSuggestion}
         />
 
         <StatusListContainer

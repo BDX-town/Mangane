@@ -23,7 +23,7 @@
   "account.locked_info": "تم تأمين خصوصية هذا الحساب عبر قفل. صاحب الحساب يُراجِع يدويا طلبات المتابَعة و الاشتراك بحسابه.",
   "account.login": "Log in",
   "account.media": "وسائط",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "أُذكُر/ي",
   "account.message": "Message",
   "account.moved_to": "{name} انتقل إلى:",

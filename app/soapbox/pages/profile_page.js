@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import Sticky from 'react-stickynode';
 import Helmet from 'soapbox/components/helmet';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
@@ -18,6 +19,7 @@ import { displayFqn } from 'soapbox/utils/state';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
 import { Redirect } from 'react-router-dom';
+import { findAccountByUsername } from 'soapbox/selectors';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
@@ -31,7 +33,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   if (accountFetchError) {
     accountId = null;
   } else {
-    account = accounts.find(acct => username.toLowerCase() === acct.getIn(['acct'], '').toLowerCase());
+    account = findAccountByUsername(state, username);
     accountId = account ? account.getIn(['id'], null) : -1;
     accountUsername = account ? account.getIn(['acct'], '') : '';
   }
@@ -89,34 +91,38 @@ class ProfilePage extends ImmutablePureComponent {
 
             <div className='columns-area__panels__pane columns-area__panels__pane--left'>
               <div className='columns-area__panels__pane__inner'>
-                <BundleContainer fetchComponent={ProfileInfoPanel}>
-                  {Component => <Component username={accountUsername} account={account} />}
-                </BundleContainer>
+                <Sticky top={149}>
+                  <BundleContainer fetchComponent={ProfileInfoPanel}>
+                    {Component => <Component username={accountUsername} account={account} />}
+                  </BundleContainer>
+                </Sticky>
               </div>
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area columns-area--mobile'>
+              <div className='columns-area'>
                 {children}
               </div>
             </div>
 
             <div className='columns-area__panels__pane columns-area__panels__pane--right'>
               <div className='columns-area__panels__pane__inner'>
-                <BundleContainer fetchComponent={SignUpPanel}>
-                  {Component => <Component />}
-                </BundleContainer>
-                {account && (
-                  <BundleContainer fetchComponent={ProfileMediaPanel}>
-                    {Component => <Component account={account} />}
-                  </BundleContainer>
-                )}
-                {features.suggestions && (
-                  <BundleContainer fetchComponent={WhoToFollowPanel}>
+                <Sticky top={149}>
+                  <BundleContainer fetchComponent={SignUpPanel}>
                     {Component => <Component />}
                   </BundleContainer>
-                )}
-                <LinkFooter />
+                  {account && (
+                    <BundleContainer fetchComponent={ProfileMediaPanel}>
+                      {Component => <Component account={account} />}
+                    </BundleContainer>
+                  )}
+                  {features.suggestions && (
+                    <BundleContainer fetchComponent={WhoToFollowPanel}>
+                      {Component => <Component />}
+                    </BundleContainer>
+                  )}
+                  <LinkFooter />
+                </Sticky>
               </div>
             </div>
 

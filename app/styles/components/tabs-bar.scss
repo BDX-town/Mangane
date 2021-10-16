@@ -24,7 +24,10 @@
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding-left: 15px;
+    padding-left: max(15px, env(safe-area-inset-left));
+    padding-right: 15px;
+    padding-right: max(15px, env(safe-area-inset-right));
 
     // NOTE - might need to adjust this based on column sizing
     @media screen and (max-width: $nav-breakpoint-4) { padding: 0 10px; }
@@ -46,7 +49,8 @@
 
   &__search-container {
     display: block;
-    width: 251px;
+    width: 351px;
+    align-self: center;
 
     @media screen and (max-width: 895px) {
       display: none;
@@ -272,14 +276,37 @@
     padding: 13px 0 0;
     box-sizing: border-box;
     filter: brightness(0%) grayscale(100%) invert(100%);
-    & span { display: none !important; }
+
+    & span {
+      display: none !important;
+    }
 
     img {
       height: 100%;
     }
 
+    .svg-icon {
+      width: 26px;
+      height: 26px;
+      margin: 0 auto;
+
+      svg {
+        fill: currentColor;
+        stroke-width: 1px;
+      }
+    }
+
     &:hover {
       border: 0 !important;
+    }
+
+    /* Move logo to center on mobile */
+    @media screen and (max-width: 450px) {
+      margin: 0 auto;
+      position: absolute;
+      left: 0;
+      right: 0;
+      text-align: center;
     }
   }
 

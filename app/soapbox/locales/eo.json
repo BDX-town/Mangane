@@ -23,7 +23,7 @@
   "account.locked_info": "La privateco de tiu konto estas elektita kiel fermita. La posedanto povas mane akcepti tiun, kiu povas sekvi rin.",
   "account.login": "Log in",
   "account.media": "Aŭdovidaĵoj",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Mencii",
   "account.message": "Message",
   "account.moved_to": "{name} moviĝis al:",

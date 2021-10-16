@@ -23,7 +23,7 @@
   "account.locked_info": "Status privasi akun ini disetel untuk dikunci. Pemilik secara manual meninjau siapa yang dapat mengikuti mereka.",
   "account.login": "Log in",
   "account.media": "Media",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "Balasan",
   "account.message": "Message",
   "account.moved_to": "{name} telah pindah ke:",

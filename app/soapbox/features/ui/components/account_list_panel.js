@@ -34,7 +34,7 @@ export default class AccountListPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel'>
         <div className='wtf-panel-header'>
-          <Icon id={icon} className='wtf-panel-header__icon' />
+          <Icon src={icon} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             {title}
           </span>

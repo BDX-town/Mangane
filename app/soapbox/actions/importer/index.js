@@ -26,8 +26,8 @@ export function importAccounts(accounts) {
   return { type: ACCOUNTS_IMPORT, accounts };
 }
 
-export function importStatus(status) {
-  return { type: STATUS_IMPORT, status };
+export function importStatus(status, idempotencyKey) {
+  return { type: STATUS_IMPORT, status, idempotencyKey };
 }
 
 export function importStatuses(statuses) {
@@ -60,8 +60,27 @@ export function importFetchedAccounts(accounts) {
   return importAccounts(normalAccounts);
 }
 
-export function importFetchedStatus(status) {
-  return importFetchedStatuses([status]);
+export function importFetchedStatus(status, idempotencyKey) {
+  return (dispatch, getState) => {
+    // Skip broken statuses
+    if (isBroken(status)) return;
+
+    const normalOldStatus = getState().getIn(['statuses', status.id]);
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+
+    const normalizedStatus = normalizeStatus(status, normalOldStatus, expandSpoilers);
+
+    if (status.reblog && status.reblog.id) {
+      dispatch(importFetchedStatus(status.reblog));
+    }
+
+    if (status.poll && status.poll.id) {
+      dispatch(importFetchedPoll(status.poll));
+    }
+
+    dispatch(importFetchedAccount(status.account));
+    dispatch(importStatus(normalizedStatus, idempotencyKey));
+  };
 }
 
 // Sometimes Pleroma can return an empty account,

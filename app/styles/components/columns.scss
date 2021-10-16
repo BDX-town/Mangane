@@ -42,9 +42,11 @@
       width: 100%;
       max-width: 600px;
       padding: 0 20px;
-      @media screen and (max-width: 375px) {
-        padding: 0 10px;
+
+      @media screen and (max-width: 580px) {
+        padding: 0;
       }
+
       @media screen and (min-width: 896px) {
         margin: 0 20px;
         padding: 0;
@@ -59,6 +61,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  flex: 1 1 100%;
 }
 
 @media screen and (min-width: 631px) {
@@ -66,8 +69,7 @@
     padding: 0;
   }
 
-  .column,
-  .drawer {
+  .column {
     flex: 0 0 auto;
     padding: 10px;
     padding-left: 5px;
@@ -83,29 +85,28 @@
   }
 
   .columns-area > div {
-    .column,
-    .drawer {
+    .column {
       padding-left: 5px;
       padding-right: 5px;
     }
   }
 }
 
-.columns-area--mobile {
+.columns-area {
   display: block;
   flex-direction: column;
   width: 100%;
   margin: 0 auto;
-  padding: 15px 0;
+  padding-top: 15px;
 
-  .column,
-  .drawer {
+  .column {
     width: 100%;
-    height: 100%;
     padding: 0;
   }
 
-  .autosuggest-textarea__textarea { font-size: 16px; }
+  .autosuggest-textarea__textarea {
+    font-size: 16px;
+  }
 
   .search__input {
     line-height: 18px;
@@ -116,7 +117,17 @@
     background-color: var(--foreground-color);
   }
 
-  .search__icon .fa { top: 15px; }
+  .search__icon .fa {
+    top: 15px;
+  }
+
+  @media (max-width: 580px) {
+    .timeline-compose-block {
+      border-radius: 0;
+      margin-top: -5px;
+    }
+  }
+
   @media screen and (min-width: 630px) {
     .detailed-status {
       padding: 15px;
@@ -329,8 +340,26 @@
   cursor: default;
 }
 
-.columns-area--mobile .column {
+.columns-area .column {
   @include standard-panel;
+
+  &--transparent {
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+
+    .sub-navigation {
+      box-shadow: 0 -6px 6px -6px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+
+    .material-status__status {
+      border-radius: 0;
+    }
+  }
 }
 
 .column-header__wrapper {
@@ -411,6 +440,7 @@
       border-radius: 10px;
       transition: 0.2s;
       opacity: 0;
+      z-index: -1;
     }
 
     @media screen and (max-width: $nav-breakpoint-2) {
@@ -563,6 +593,50 @@
 .column-header__icon {
   display: inline-block;
   margin-right: 5px;
+  font-size: 20px;
+}
+
+.component-modal {
+  @include standard-panel;
+  width: 400px;
+  max-width: calc(100% - 20px);
+  max-height: calc(100vh - 20px);
+}
+
+.column-settings {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &__header {
+    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__title {
+    font-weight: bold;
+    color: var(--primary-text-color--faint);
+  }
+
+  &__content {
+    padding: 10px 20px;
+    overflow-y: auto;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+
+    .svg-icon {
+      width: 20px;
+      height: 20px;
+      margin-right: -10px;
+    }
+  }
 }
 
 .column-settings__outer {
@@ -678,6 +752,7 @@
   align-items: center;
   justify-content: center;
   min-height: 160px;
+  border-radius: 0 0 10px 10px;
 
   @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;
@@ -695,10 +770,20 @@
       text-decoration: underline;
     }
   }
+
+  @media screen and (max-width: 580px) {
+    border-radius: 0;
+  }
 }
 
 .error-column {
   flex-direction: column;
+
+  .svg-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 30px;
+  }
 }
 
 .column-link--transparent .icon-with-badge__badge {
@@ -732,6 +817,11 @@
   .column__top {
     display: flex;
     align-items: center;
+    border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+
+    .sub-navigation {
+      border-bottom: 0;
+    }
   }
 
   .column-header {
@@ -813,4 +903,49 @@
 
 .column-list {
   position: relative;
+
+  &__empty-message {
+    padding: 0 20px;
+  }
+}
+
+.column-loading {
+  background-color: var(--foreground-color);
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-radius: 0 0 10px 10px;
+
+  @media screen and (max-width: 450px) {
+    border-radius: 0;
+  }
+}
+
+// Make MaterialStatus flush against SubNavigation
+.sub-navigation ~ .slist .item-list > article:first-child .material-status__status,
+.sub-navigation ~ .material-status:not(.material-status + .material-status) .material-status__status {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+// Display background for loading indicator
+.column--transparent {
+  .slist__append {
+    @include standard-panel;
+
+    @media screen and (max-width: 580px) {
+      border-radius: 0;
+    }
+  }
+
+  .sub-navigation ~ .slist .slist__append {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.column .explanation-box {
+  background: var(--foreground-color);
 }

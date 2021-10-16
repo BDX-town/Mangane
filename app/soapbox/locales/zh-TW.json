@@ -23,7 +23,7 @@
   "account.locked_info": "這隻帳戶的隱私狀態被設成鎖定。該擁有者會手動審核能關注這隻帳號的人。",
   "account.login": "Log in",
   "account.media": "媒體",
-  "account.member_since": "Member since {date}",
+  "account.member_since": "Joined {date}",
   "account.mention": "提及",
   "account.message": "Message",
   "account.moved_to": "{name} 已遷移至：",

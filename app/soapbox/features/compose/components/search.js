@@ -5,6 +5,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import Icon from 'soapbox/components/icon';
+import classNames from 'classnames';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
@@ -56,8 +57,13 @@ class Search extends React.PureComponent {
     onClear: PropTypes.func.isRequired,
     onShow: PropTypes.func.isRequired,
     openInRoute: PropTypes.bool,
+    autoFocus: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
+
+  static defaultProps = {
+    autoFocus: false,
+  }
 
   state = {
     expanded: false,
@@ -99,7 +105,7 @@ class Search extends React.PureComponent {
   }
 
   render() {
-    const { intl, value, submitted } = this.props;
+    const { intl, value, autoFocus, submitted } = this.props;
     const { expanded } = this.state;
     const hasValue = value.length > 0 || submitted;
 
@@ -116,11 +122,12 @@ class Search extends React.PureComponent {
             onKeyUp={this.handleKeyUp}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
+            autoFocus={autoFocus}
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
-          <Icon id='search' className={hasValue ? '' : 'active'} />
-          <Icon id='times-circle' className={hasValue ? 'active' : ''} aria-label={intl.formatMessage(messages.placeholder)} />
+          <Icon src={require('@tabler/icons/icons/search.svg')} className={classNames('svg-icon--search', { active: !hasValue })} />
+          <Icon src={require('@tabler/icons/icons/backspace.svg')} className={classNames('svg-icon--backspace', { active: hasValue })} aria-label={intl.formatMessage(messages.placeholder)} />
         </div>
         <Overlay show={expanded && !hasValue} placement='bottom' target={this}>
           <SearchPopout />

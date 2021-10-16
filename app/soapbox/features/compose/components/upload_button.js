@@ -18,11 +18,6 @@ const makeMapStateToProps = () => {
   return mapStateToProps;
 };
 
-const iconStyle = {
-  height: null,
-  lineHeight: '27px',
-};
-
 export default @connect(makeMapStateToProps)
 @injectIntl
 class UploadButton extends ImmutablePureComponent {
@@ -60,7 +55,13 @@ class UploadButton extends ImmutablePureComponent {
 
     return (
       <div className='compose-form__upload-button'>
-        <IconButton icon='paperclip' title={intl.formatMessage(messages.upload)} disabled={disabled} onClick={this.handleClick} className='compose-form__upload-button-icon' size={18} inverted style={iconStyle} />
+        <IconButton
+          className='compose-form__upload-button-icon'
+          src={require('@tabler/icons/icons/paperclip.svg')}
+          title={intl.formatMessage(messages.upload)}
+          disabled={disabled}
+          onClick={this.handleClick}
+        />
         <label>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.upload)}</span>
           <input

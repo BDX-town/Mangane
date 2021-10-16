@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import VerificationBadge from './verification_badge';
 import { getAcct } from '../utils/accounts';
-import { List as ImmutableList } from 'immutable';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from './icon';
 import RelativeTimestamp from './relative_timestamp';
 import { displayFqn } from 'soapbox/utils/state';
+import { isVerified } from 'soapbox/utils/accounts';
 
 const mapStateToProps = state => {
   return {
@@ -35,21 +35,21 @@ class DisplayName extends React.PureComponent {
     const { account, displayFqn, others, children, withDate } = this.props;
 
     let displayName, suffix;
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    const verified = isVerified(account);
 
     const createdAt = account.get('created_at');
 
     const joinedAt = createdAt ? (
       <div className='account__joined-at'>
-        <Icon id='calendar' />
+        <Icon src={require('@tabler/icons/icons/clock.svg')} />
         <RelativeTimestamp timestamp={createdAt} />
       </div>
     ) : null;
 
     if (others && others.size > 1) {
       displayName = others.take(2).map(a => (
-        <span className='display-name__name'>
-          <bdi key={a.get('id')}><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>
+        <span className='display-name__name' key={a.get('id')}>
+          <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>
           {verified && <VerificationBadge />}
           {withDate && joinedAt}
         </span>
