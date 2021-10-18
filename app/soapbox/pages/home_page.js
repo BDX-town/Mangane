@@ -55,6 +55,11 @@ class HomePage extends ImmutablePureComponent {
                 <UserPanel accountId={me} key='user-panel' />
                 {showFundingPanel && <FundingPanel key='funding-panel' />}
                 {showCryptoDonatePanel && <CryptoDonatePanel limit={cryptoLimit} key='crypto-panel' />}
+                {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
+                {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
+                <FeaturesPanel key='features-panel' />
+                <PromoPanel key='promo-panel' />
+                <LinkFooter key='link-footer' />
               </div>
             </div>
 
@@ -72,16 +77,6 @@ class HomePage extends ImmutablePureComponent {
                 </div>}
 
                 {children}
-              </div>
-            </div>
-
-            <div className='columns-area__panels__pane columns-area__panels__pane--right'>
-              <div className='columns-area__panels__pane__inner'>
-                {showTrendsPanel && <TrendsPanel limit={3} key='trends-panel' />}
-                {showWhoToFollowPanel && <WhoToFollowPanel limit={5} key='wtf-panel' />}
-                <FeaturesPanel key='features-panel' />
-                <PromoPanel key='promo-panel' />
-                <LinkFooter key='link-footer' />
               </div>
             </div>
           </div>
