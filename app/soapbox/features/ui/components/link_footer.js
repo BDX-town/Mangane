@@ -46,7 +46,7 @@ const LinkFooter = ({ onOpenHotkeys, account, features, onClickLogOut, baseURL }
         {features.federating && <li><Link to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></Link></li>}
         <li><Link to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></Link></li>
         {isAdmin(account) && <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='AdminFE' /></a></li>}
-        {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>}
+        {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Mangane config' /></Link></li>}
         <li><Link to='/settings/export'><FormattedMessage id='navigation_bar.export_data' defaultMessage='Export data' /></Link></li>
         <li>{features.importAPI ? (
           <Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link>
