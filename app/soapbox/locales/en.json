@@ -708,7 +708,7 @@
   "navigation_bar.preferences": "Preferences",
   "navigation_bar.profile_directory": "Profile directory",
   "navigation_bar.security": "Security",
-  "navigation_bar.soapbox_config": "Soapbox config",
+  "navigation_bar.soapbox_config": "Mangane config",
   "notification.birthday": "{name} has a birthday today",
   "notification.birthday.more": "{count} more {count, plural, one {friend} other {friends}}",
   "notification.birthday_plural": "{name} and {more} have birthday today",

@@ -1,19 +1,18 @@
 {
-  "name": "soapbox-fe",
-  "displayName": "Soapbox FE",
-  "version": "3.0.0",
-  "description": "Soapbox frontend for Pleroma.",
-  "homepage": "https://soapbox.pub/",
+  "name": "mangane-fe",
+  "version": "dry-axolotl",
+  "description": "Devanture pour https://bdx.town",
+  "homepage": "https://bdx.town",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/soapbox-pub/soapbox-fe"
+    "url": "https://github.com/Cl0v1s/mangane"
   },
   "keywords": [
     "fediverse",
     "pleroma"
   ],
   "bugs": {
-    "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues"
+    "url": "https://github.com/Cl0v1s/mangane/issues"
   },
   "scripts": {
     "start": "npx webpack-dev-server",
