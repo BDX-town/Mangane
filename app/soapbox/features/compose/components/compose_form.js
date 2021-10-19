@@ -355,28 +355,25 @@ export default class ComposeForm extends ImmutablePureComponent {
           }
         </AutosuggestTextarea>
 
-        {
-          !condensed &&
-          <div className='compose-form__buttons-wrapper'>
-            <div className='compose-form__buttons'>
-              <UploadButtonContainer />
-              <PollButtonContainer />
-              <PrivacyDropdownContainer />
-              <ScheduleButtonContainer />
-              <SpoilerButtonContainer />
-              <MarkdownButtonContainer />
-            </div>
-            {maxTootChars && (
-              <div className='compose-form__counter'>
-                {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
-                <VisualCharacterCounter max={maxTootChars} text={text} />
-              </div>
-            )}
-            <div className='compose-form__publish'>
-              <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
-            </div>
+        <div className='compose-form__buttons-wrapper'>
+          <div className='compose-form__buttons'>
+            <UploadButtonContainer />
+            <PollButtonContainer />
+            <PrivacyDropdownContainer />
+            <ScheduleButtonContainer />
+            <SpoilerButtonContainer />
+            <MarkdownButtonContainer />
           </div>
-        }
+          {maxTootChars && (
+            <div className='compose-form__counter'>
+              {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
+              <VisualCharacterCounter max={maxTootChars} text={text} />
+            </div>
+          )}
+          <div className='compose-form__publish'>
+            <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
+          </div>
+        </div>
       </div>
     );
   }
