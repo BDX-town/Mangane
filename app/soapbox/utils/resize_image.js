@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-const MAX_IMAGE_PIXELS = 2073600; // 1920x1080px
+const DEFAULT_MAX_PIXELS = 1920 * 1080;
 
 const _browser_quirks = {};
 
@@ -155,12 +155,12 @@ const processImage = (img, { width, height, orientation, type = 'image/png', nam
   }, type);
 });
 
-const resizeImage = (img, inputFile) => new Promise((resolve, reject) => {
+const resizeImage = (img, inputFile, maxPixels) => new Promise((resolve, reject) => {
   const { width, height } = img;
   const type = inputFile.type || 'image/png';
 
-  const newWidth  = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (width / height)));
-  const newHeight = Math.round(Math.sqrt(MAX_IMAGE_PIXELS * (height / width)));
+  const newWidth  = Math.round(Math.sqrt(maxPixels * (width / height)));
+  const newHeight = Math.round(Math.sqrt(maxPixels * (height / width)));
 
   checkCanvasReliability()
     .then(getOrientation(img, type))
@@ -175,19 +175,19 @@ const resizeImage = (img, inputFile) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export default inputFile => new Promise((resolve) => {
+export default (inputFile, maxPixels = DEFAULT_MAX_PIXELS) => new Promise((resolve) => {
   if (!inputFile.type.match(/image.*/) || inputFile.type === 'image/gif') {
     resolve(inputFile);
     return;
   }
 
   loadImage(inputFile).then(img => {
-    if (img.width * img.height < MAX_IMAGE_PIXELS) {
+    if (img.width * img.height < maxPixels) {
       resolve(inputFile);
       return;
     }
 
-    resizeImage(img, inputFile)
+    resizeImage(img, inputFile, maxPixels)
       .then(resolve)
       .catch(() => resolve(inputFile));
   }).catch(() => resolve(inputFile));
