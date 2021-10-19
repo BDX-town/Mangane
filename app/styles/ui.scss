@@ -355,6 +355,10 @@
       @media (min-width: 896px) {
         top: -290px;
         position: sticky;
+
+        &__no-header {
+          top: -75px;
+        }
       }
     }
 
