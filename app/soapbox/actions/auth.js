@@ -152,7 +152,7 @@ export function verifyCredentials(token, accountUrl) {
       return account;
     }).catch(error => {
       if (getState().get('me') === null) dispatch(fetchMeFail(error));
-      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error });
+      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
     });
   };
 }
