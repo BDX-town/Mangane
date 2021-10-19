@@ -105,7 +105,7 @@ class SubNavigation extends React.PureComponent {
             aria-label={intl.formatMessage(messages.back)}
             title={intl.formatMessage(messages.back)}
           >
-            <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
+            <Icon src={require('@tabler/icons/icons/arrow-left.svg')} />
             {intl.formatMessage(messages.back)}
           </button>
           {message && (
