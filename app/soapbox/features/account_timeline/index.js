@@ -9,6 +9,7 @@ import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
 import ColumnSettingsContainer from './containers/column_settings_container';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
@@ -19,7 +20,6 @@ import { fetchPatronAccount } from '../../actions/patron';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSettings } from 'soapbox/actions/settings';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
-import classNames from 'classnames';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
@@ -146,7 +146,6 @@ class AccountTimeline extends ImmutablePureComponent {
 
   render() {
     const { statusIds, featuredStatusIds, isLoading, hasMore, isBlocked, isAccount, accountId, unavailable, accountUsername } = this.props;
-    const { collapsed, animating } = this.state;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -176,7 +175,8 @@ class AccountTimeline extends ImmutablePureComponent {
     }
 
     return (
-      <Column transparent>
+      <Column className='account-timeline' transparent>
+        <SubNavigation message={`@${accountUsername}`} settings={ColumnSettingsContainer} />
         <div className='account__section-headline'>
           <NavLink exact to={`/@${accountUsername}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
@@ -191,11 +191,6 @@ class AccountTimeline extends ImmutablePureComponent {
             <button onClick={this.handleToggleClick}>
               <Icon id='sliders' />
             </button>
-          </div>
-        </div>
-        <div className={classNames('column-header__collapsible', { collapsed, animating })} onTransitionEnd={this.handleTransitionEnd}>
-          <div className='column-header__collapsible-inner'>
-            {(!collapsed || animating) && <ColumnSettingsContainer />}
           </div>
         </div>
         <StatusList
