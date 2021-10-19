@@ -1812,7 +1812,7 @@
         "id": "edit_profile.fields.header_label"
       },
       {
-        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px",
+        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
         "id": "edit_profile.hints.header"
       },
       {
@@ -1820,7 +1820,7 @@
         "id": "edit_profile.fields.avatar_label"
       },
       {
-        "defaultMessage": "PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px",
+        "defaultMessage": "PNG, GIF or JPG. Will be downscaled to {size}",
         "id": "edit_profile.hints.avatar"
       },
       {

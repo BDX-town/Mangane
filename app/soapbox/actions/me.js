@@ -53,6 +53,7 @@ export function patchMe(params) {
         dispatch(patchMeSuccess(response.data));
       }).catch(error => {
         dispatch(patchMeFail(error));
+        throw error;
       });
   };
 }
@@ -101,5 +102,6 @@ export function patchMeFail(error) {
   return {
     type: ME_PATCH_FAIL,
     error,
+    skipAlert: true,
   };
 }
