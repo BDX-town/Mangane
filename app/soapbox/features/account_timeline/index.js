@@ -8,7 +8,7 @@ import Icon from 'soapbox/components/icon';
 import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
-import ColumnSettingsContainer from './containers/column_settings_container';
+// import ColumnSettingsContainer from './containers/column_settings_container';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -176,7 +176,7 @@ class AccountTimeline extends ImmutablePureComponent {
 
     return (
       <Column className='account-timeline' transparent>
-        <SubNavigation message={`@${accountUsername}`} settings={ColumnSettingsContainer} />
+        <SubNavigation message={`@${accountUsername}`} /*settings={ColumnSettingsContainer}*/ />
         <div className='account__section-headline'>
           <NavLink exact to={`/@${accountUsername}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
