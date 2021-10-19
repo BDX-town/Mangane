@@ -25,14 +25,14 @@
     svg.icon-tabler-bell,
     svg.icon-tabler-messages {
       path:nth-child(2) {
-        fill: var(--primary-text-color);
+        fill: currentColor;
       }
     }
 
     svg.icon-tabler-users {
       circle,
       circle + path {
-        fill: var(--primary-text-color);
+        fill: currentColor;
       }
     }
 
@@ -40,8 +40,8 @@
       stroke: var(--background-color);
 
       rect {
-        fill: var(--primary-text-color);
-        stroke: var(--primary-text-color);
+        fill: currentColor;
+        stroke: currentColor;
       }
     }
   }

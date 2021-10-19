@@ -142,11 +142,13 @@
   }
 
   .theme-toggle {
-    @media screen and (max-width: $nav-breakpoint-3) { display: none; }
+    margin-left: 20px;
+
+    @media screen and (max-width: $nav-breakpoint-3) {
+      display: none;
+    }
 
     .setting-toggle {
-      margin-left: 10px;
-
       .react-toggle-track {
         background-color: var(--foreground-color);
       }
@@ -168,7 +170,6 @@
 .tabs-bar__link {
   display: flex;
   flex: 1 1 auto;
-  margin: 0 20px 0 0;
   color: #fff;
   text-decoration: none;
   position: relative;
@@ -183,14 +184,18 @@
     width: 36px;
     margin: 4px 4px 0 0;
     justify-content: center;
-
-    & > span { display: none; }
+    display: none;
   }
 
   > span {
     font-size: 15px;
     line-height: 50px;
     margin-left: 4px;
+    display: none;
+  }
+
+  & + & {
+    margin-left: 20px;
   }
 
   &--search {
@@ -199,28 +204,12 @@
     }
   }
 
-  i.fa {
-    font-size: 14px;
-    transform: translate(-1px, -1px);
-    transition: 0.1s;
+  .svg-icon {
+    width: 22px;
+    height: 22px;
 
-    @media screen and (max-width: 895px) {
-      font-size: 20px;
-    }
-
-    &.fa-home {
-      font-size: 18px;
-      transform: translate(-1px, -2px);
-
-      @media screen and (max-width: 895px) {
-        font-size: 26px;
-      }
-    }
-  }
-
-  .icon-with-counter__counter {
-    @media screen and (min-width: 896px) {
-      left: 5px;
+    svg.icon-tabler {
+      stroke-width: 1.5px;
     }
   }
 
@@ -244,8 +233,8 @@
     height: 15px;
     border-radius: 999px;
     z-index: -1;
-    width: calc(100% + 20px);
-    margin-left: -12px;
+    width: calc(100% + 12px);
+    margin-left: -9px;
 
     @media screen and (max-width: 895px) {
       height: 0;
@@ -338,4 +327,8 @@
       height: 7px;
     }
   }
+}
+
+.tabs-bar__link + .tabs-bar__profile {
+  margin-left: 20px;
 }
