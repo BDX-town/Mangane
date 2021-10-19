@@ -155,7 +155,7 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
-  dispatch(snackbar.show('post', messages.success));
+  dispatch(snackbar.success(messages.success));
 }
 
 const needsDescriptions = state => {
