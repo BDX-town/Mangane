@@ -397,7 +397,6 @@ class Header extends ImmutablePureComponent {
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
-    const lockedIcon = account.get('locked') ? (<Icon id='lock' title={intl.formatMessage(messages.account_locked)} />) : '';
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
 
@@ -430,7 +429,12 @@ class Header extends ImmutablePureComponent {
                   <span dangerouslySetInnerHTML={displayNameHtml} className={classNames('profile-info-panel__name-content', { 'with-badge': verified })} />
                   {verified && <VerificationBadge />}
                   {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-                  { <small>@{getAcct(account, displayFqn)} {lockedIcon}</small> }
+                  <small>
+                    @{getAcct(account, displayFqn)}
+                    {account.get('locked') && (
+                      <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
+                    )}
+                  </small>
                 </div>
               </div>
             </div>
