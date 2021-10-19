@@ -57,8 +57,23 @@ const notificationToMap = notification => ImmutableMap({
   chat_message: notification.chat_message,
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
-const isValid = notification => Boolean(notification.account.id);
+const isValid = notification => {
+  try {
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    if (!notification.account.id) {
+      return false;
+    }
+
+    // Mastodon can return mentions with a null status
+    if (notification.type === 'mention' && !notification.status.id) {
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 // Count how many notifications appear after the given ID (for unread count)
 const countFuture = (notifications, lastId) => {
