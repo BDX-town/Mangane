@@ -174,7 +174,6 @@
   text-decoration: none;
   position: relative;
   align-items: center;
-  padding-right: 4px;
   font-weight: bold;
   transition: 0.1s;
   outline: none;
@@ -234,7 +233,7 @@
     border-radius: 999px;
     z-index: -1;
     width: calc(100% + 12px);
-    margin-left: -9px;
+    margin-left: -6px;
 
     @media screen and (max-width: 895px) {
       height: 0;
