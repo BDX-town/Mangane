@@ -29,7 +29,8 @@ export const getFeatures = createSelector([
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
-      v.software === PLEROMA && gte(v.version, '2.1.0'),
+      // Even though Pleroma supports these endpoints, it has disadvantages
+      // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
