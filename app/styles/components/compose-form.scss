@@ -89,6 +89,12 @@
       min-height: 46px;
       border-radius: 5px;
     }
+
+    .compose-form__buttons-wrapper {
+      height: 0;
+      padding: 0;
+      overflow: hidden;
+    }
   }
 
   &__modifiers {
