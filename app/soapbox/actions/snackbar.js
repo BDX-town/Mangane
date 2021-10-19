@@ -1,6 +1,6 @@
 import { ALERT_SHOW } from './alerts';
 
-const show = (severity, message) => ({
+export const show = (severity, message) => ({
   type: ALERT_SHOW,
   message,
   severity,
@@ -22,4 +22,5 @@ export default {
   info,
   success,
   error,
+  show,
 };

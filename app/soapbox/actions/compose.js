@@ -72,6 +72,7 @@ const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.'  },
+  success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -154,6 +155,7 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
+  dispatch(snackbar.show('post', messages.success));
 }
 
 const needsDescriptions = state => {
