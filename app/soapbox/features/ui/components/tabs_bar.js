@@ -53,9 +53,19 @@ class TabsBar extends React.PureComponent {
     return pathname === '/' || pathname.startsWith('/timeline/');
   }
 
+  onProfilePage = () => {
+    try {
+      const { pathname } = this.context.router.route.location;
+      return pathname.startsWith('/@') && !pathname.includes('/posts/');
+    } catch {
+      return false;
+    }
+  }
+
   render() {
     const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount } = this.props;
     const { collapsed } = this.state;
+    const profilePage = this.onProfilePage();
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
@@ -84,38 +94,42 @@ class TabsBar extends React.PureComponent {
           <div className='tabs-bar__split tabs-bar__split--right'>
             {account ? (
               <>
-                <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
-                  <IconWithCounter
-                    src={require('@tabler/icons/icons/bell.svg')}
-                    className={classNames('primary-navigation__icon', {
-                      'svg-icon--active': location.pathname === '/notifications',
-                      'svg-icon--unread': notificationCount > 0,
-                    })}
-                    count={notificationCount}
-                  />
-                  <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
-                </NavLink>
+                {profilePage && (
+                  <>
+                    <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
+                      <IconWithCounter
+                        src={require('@tabler/icons/icons/bell.svg')}
+                        className={classNames('primary-navigation__icon', {
+                          'svg-icon--active': location.pathname === '/notifications',
+                          'svg-icon--unread': notificationCount > 0,
+                        })}
+                        count={notificationCount}
+                      />
+                      <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
+                    </NavLink>
 
-                {features.chats && (
-                  <NavLink key='chats' className='tabs-bar__link' to='/chats' data-preview-title-id='column.chats'>
-                    <IconWithCounter
-                      src={require('@tabler/icons/icons/messages.svg')}
-                      className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
-                      count={chatsCount}
-                    />
-                    <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
-                  </NavLink>
-                )}
+                    {features.chats && (
+                      <NavLink key='chats' className='tabs-bar__link' to='/chats' data-preview-title-id='column.chats'>
+                        <IconWithCounter
+                          src={require('@tabler/icons/icons/messages.svg')}
+                          className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
+                          count={chatsCount}
+                        />
+                        <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
+                      </NavLink>
+                    )}
 
-                {isStaff(account) && (
-                  <NavLink key='dashboard' className='tabs-bar__link' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
-                    <IconWithCounter
-                      src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
-                      className='primary-navigation__icon'
-                      count={dashboardCount}
-                    />
-                    <span><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></span>
-                  </NavLink>
+                    {isStaff(account) && (
+                      <NavLink key='dashboard' className='tabs-bar__link' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
+                        <IconWithCounter
+                          src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+                          className='primary-navigation__icon'
+                          count={dashboardCount}
+                        />
+                        <span><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></span>
+                      </NavLink>
+                    )}
+                  </>
                 )}
 
                 <ThemeToggle />
