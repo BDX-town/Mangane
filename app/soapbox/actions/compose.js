@@ -11,7 +11,7 @@ import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
 import { getFeatures } from 'soapbox/utils/features';
-import { uploadMedia } from './media';
+import { uploadMedia, fetchMedia, updateMedia } from './media';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { createStatus } from './statuses';
 import snackbar from 'soapbox/actions/snackbar';
@@ -249,13 +249,14 @@ export function submitComposeFail(error) {
 export function uploadCompose(files) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
-    const uploadLimit = getFeatures(getState().get('instance')).attachmentLimit;
+    const instance = getState().get('instance');
+    const { attachmentLimit } = getFeatures(instance);
 
     const media  = getState().getIn(['compose', 'media_attachments']);
     const progress = new Array(files.length).fill(0);
     let total = Array.from(files).reduce((a, v) => a + v.size, 0);
 
-    if (files.length + media.size > uploadLimit) {
+    if (files.length + media.size > attachmentLimit) {
       dispatch(showAlert(undefined, messages.uploadErrorLimit, 'error'));
       return;
     }
@@ -263,7 +264,7 @@ export function uploadCompose(files) {
     dispatch(uploadComposeRequest());
 
     for (const [i, f] of Array.from(files).entries()) {
-      if (media.size + i > uploadLimit - 1) break;
+      if (media.size + i > attachmentLimit - 1) break;
 
       // FIXME: Don't define function in loop
       /* eslint-disable no-loop-func */
@@ -279,8 +280,25 @@ export function uploadCompose(files) {
         };
 
         return dispatch(uploadMedia(data, onUploadProgress))
-          .then(({ data }) => dispatch(uploadComposeSuccess(data)));
+          .then(({ status, data }) => {
+            // If server-side processing of the media attachment has not completed yet,
+            // poll the server until it is, before showing the media attachment as uploaded
+            if (status === 200) {
+              dispatch(uploadComposeSuccess(data, f));
+            } else if (status === 202) {
+              const poll = () => {
+                dispatch(fetchMedia(data.id)).then(({ status, data }) => {
+                  if (status === 200) {
+                    dispatch(uploadComposeSuccess(data, f));
+                  } else if (status === 206) {
+                    setTimeout(() => poll(), 1000);
+                  }
+                }).catch(error => dispatch(uploadComposeFail(error)));
+              };
 
+              poll();
+            }
+          });
       }).catch(error => dispatch(uploadComposeFail(error)));
       /* eslint-enable no-loop-func */
     }
@@ -293,7 +311,7 @@ export function changeUploadCompose(id, params) {
 
     dispatch(changeUploadComposeRequest());
 
-    api(getState).put(`/api/v1/media/${id}`, params).then(response => {
+    dispatch(updateMedia(id, params)).then(response => {
       dispatch(changeUploadComposeSuccess(response.data));
     }).catch(error => {
       dispatch(changeUploadComposeFail(id, error));
