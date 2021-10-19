@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import Avatar from '../../../components/avatar';
 import Icon from 'soapbox/components/icon';
@@ -13,6 +14,8 @@ import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { isStaff } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -27,6 +30,10 @@ class TabsBar extends React.PureComponent {
     onOpenSidebar: PropTypes.func.isRequired,
     logo: PropTypes.string,
     account: ImmutablePropTypes.map,
+    features: PropTypes.object.isRequired,
+    dashboardCount: PropTypes.number,
+    notificationCount: PropTypes.number,
+    chatsCount: PropTypes.number,
   }
 
   state = {
@@ -47,7 +54,7 @@ class TabsBar extends React.PureComponent {
   }
 
   render() {
-    const { account, logo, onOpenCompose, onOpenSidebar, intl } = this.props;
+    const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount } = this.props;
     const { collapsed } = this.state;
 
     const classes = classNames('tabs-bar', {
@@ -75,8 +82,42 @@ class TabsBar extends React.PureComponent {
             </div>
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
-            {account &&
+            {account ? (
               <>
+                <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
+                  <IconWithCounter
+                    src={require('@tabler/icons/icons/bell.svg')}
+                    className={classNames('primary-navigation__icon', {
+                      'svg-icon--active': location.pathname === '/notifications',
+                      'svg-icon--unread': notificationCount > 0,
+                    })}
+                    count={notificationCount}
+                  />
+                  <span><FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' /></span>
+                </NavLink>
+
+                {features.chats && (
+                  <NavLink key='chats' className='tabs-bar__link' to='/chats' data-preview-title-id='column.chats'>
+                    <IconWithCounter
+                      src={require('@tabler/icons/icons/messages.svg')}
+                      className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/chats' })}
+                      count={chatsCount}
+                    />
+                    <span><FormattedMessage id='tabs_bar.chats' defaultMessage='Chats' /></span>
+                  </NavLink>
+                )}
+
+                {isStaff(account) && (
+                  <NavLink key='dashboard' className='tabs-bar__link' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
+                    <IconWithCounter
+                      src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+                      className='primary-navigation__icon'
+                      count={dashboardCount}
+                    />
+                    <span><FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' /></span>
+                  </NavLink>
+                )}
+
                 <ThemeToggle />
                 <div className='tabs-bar__profile'>
                   <Avatar account={account} />
@@ -87,9 +128,7 @@ class TabsBar extends React.PureComponent {
                   <span>{intl.formatMessage(messages.post)}</span>
                 </button>
               </>
-            }
-            {
-              !account &&
+            ) : (
               <div className='flex'>
                 <Link className='tabs-bar__button button' to='/auth/sign_in'>
                   <FormattedMessage id='account.login' defaultMessage='Log In' />
@@ -98,7 +137,7 @@ class TabsBar extends React.PureComponent {
                   <FormattedMessage id='account.register' defaultMessage='Sign up' />
                 </Link>
               </div>
-            }
+            )}
           </div>
         </div>
       </nav>
@@ -109,10 +148,17 @@ class TabsBar extends React.PureComponent {
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const reportsCount = state.getIn(['admin', 'openReports']).count();
+  const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
+  const instance = state.get('instance');
 
   return {
     account: state.getIn(['accounts', me]),
     logo: getSoapboxConfig(state).get('logo'),
+    features: getFeatures(instance),
+    notificationCount: state.getIn(['notifications', 'unread']),
+    chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
+    dashboardCount: reportsCount + approvalCount,
   };
 };
 

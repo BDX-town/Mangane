@@ -73,9 +73,9 @@ class SubNavigation extends React.PureComponent {
 
   handleScroll = throttle(() => {
     if (this.node) {
-      const { top } = this.node.getBoundingClientRect();
+      const { offsetTop } = this.node;
 
-      if (top <= 50) {
+      if (offsetTop > 0) {
         this.setState({ scrolled: true });
       } else {
         this.setState({ scrolled: false });
