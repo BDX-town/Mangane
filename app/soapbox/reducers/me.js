@@ -4,7 +4,11 @@ import {
   ME_FETCH_SKIP,
   ME_PATCH_SUCCESS,
 } from '../actions/me';
-import { AUTH_LOGGED_OUT, VERIFY_CREDENTIALS_SUCCESS } from '../actions/auth';
+import {
+  AUTH_LOGGED_OUT,
+  AUTH_ACCOUNT_REMEMBER_SUCCESS,
+  VERIFY_CREDENTIALS_SUCCESS,
+} from '../actions/auth';
 
 const initialState = null;
 
@@ -14,11 +18,13 @@ export default function me(state = initialState, action) {
   case ME_PATCH_SUCCESS:
     return action.me.id;
   case VERIFY_CREDENTIALS_SUCCESS:
+  case AUTH_ACCOUNT_REMEMBER_SUCCESS:
     return state || action.account.id;
-  case ME_FETCH_FAIL:
   case ME_FETCH_SKIP:
   case AUTH_LOGGED_OUT:
     return false;
+  case ME_FETCH_FAIL:
+    return [401, 403].includes(action.error.response.status) ? false : state;
   default:
     return state;
   }

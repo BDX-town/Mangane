@@ -69,7 +69,7 @@ export function loadInstance() {
   return (dispatch, getState) => {
     const host = getHost(getState());
 
-    return dispatch(rememberInstance(host)).finally(instance => {
+    return dispatch(rememberInstance(host)).finally(() => {
       return dispatch(fetchInstance());
     });
   };
