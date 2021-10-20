@@ -19,6 +19,7 @@ import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
+import KVStore from 'soapbox/storage/kv_store';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -30,6 +31,10 @@ export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
 export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
 export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
+
+export const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
+export const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
+export const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
 
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
@@ -153,6 +158,28 @@ export function verifyCredentials(token, accountUrl) {
     }).catch(error => {
       if (getState().get('me') === null) dispatch(fetchMeFail(error));
       dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+    });
+  };
+}
+
+export function rememberAuthAccount(accountUrl) {
+  return (dispatch, getState) => {
+    dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
+    return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
+      dispatch(importFetchedAccount(account));
+      dispatch({ type: AUTH_ACCOUNT_REMEMBER_SUCCESS, account, accountUrl });
+      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+      return account;
+    }).catch(error => {
+      dispatch({ type: AUTH_ACCOUNT_REMEMBER_FAIL, error, accountUrl, skipAlert: true });
+    });
+  };
+}
+
+export function loadCredentials(token, accountUrl) {
+  return (dispatch, getState) => {
+    return dispatch(rememberAuthAccount(accountUrl)).finally(() => {
+      return dispatch(verifyCredentials(token, accountUrl));
     });
   };
 }
