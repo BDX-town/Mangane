@@ -207,6 +207,7 @@ $media-compact-size: 50px;
     width: $media-compact-size !important;
     height: $media-compact-size !important;
     inset: auto !important;
+    float: left !important;
     margin-right: 5px;
 
     &-overflow {
