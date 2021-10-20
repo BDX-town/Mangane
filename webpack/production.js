@@ -74,9 +74,6 @@ module.exports = merge(sharedConfig, {
         '**/*.ogg',
         '**/*.oga',
         '**/*.mp3',
-        // Don't serve index.html
-        // https://github.com/bromite/bromite/issues/1294
-        'index.html',
         '404.html',
         'assets-manifest.json',
         // It would be nice to serve these, but they bloat up sw.js
@@ -89,6 +86,7 @@ module.exports = merge(sharedConfig, {
         minify: true,
       },
       safeToUseOptionalCaches: true,
+      appShell: join(FE_SUBDIRECTORY, '/'),
     }),
   ],
 });
