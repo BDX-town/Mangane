@@ -110,6 +110,14 @@ const persistInstance = instance => {
   }
 };
 
+const handleInstanceFetchFail = (state, error) => {
+  if (error.response && error.response.status === 401) {
+    return handleAuthFetch(state);
+  } else {
+    return state;
+  }
+};
+
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case PLEROMA_PRELOAD_IMPORT:
@@ -120,7 +128,7 @@ export default function instance(state = initialState, action) {
     persistInstance(action.instance);
     return importInstance(state, fromJS(action.instance));
   case INSTANCE_FETCH_FAIL:
-    return action.error.response.status === 401 ? handleAuthFetch(state) : state;
+    return handleInstanceFetchFail(state, action.error);
   case NODEINFO_FETCH_SUCCESS:
     return importNodeinfo(state, fromJS(action.nodeinfo));
   case ADMIN_CONFIG_UPDATE_REQUEST:

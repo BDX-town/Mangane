@@ -12,6 +12,14 @@ import {
 
 const initialState = null;
 
+const handleForbidden = (state, error) => {
+  if (error.response && [401, 403].includes(error.response.status)) {
+    return false;
+  } else {
+    return state;
+  }
+};
+
 export default function me(state = initialState, action) {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
@@ -24,7 +32,7 @@ export default function me(state = initialState, action) {
   case AUTH_LOGGED_OUT:
     return false;
   case ME_FETCH_FAIL:
-    return [401, 403].includes(action.error.response.status) ? false : state;
+    return handleForbidden(state, action.error);
   default:
     return state;
   }

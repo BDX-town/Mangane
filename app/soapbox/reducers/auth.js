@@ -261,6 +261,14 @@ const persistAuthAccount = account => {
   }
 };
 
+const deleteForbiddenToken = (state, error, token) => {
+  if (error.response && [401, 403].includes(error.response.status)) {
+    return deleteToken(state, token);
+  } else {
+    return state;
+  }
+};
+
 const reducer = (state, action) => {
   switch(action.type) {
   case AUTH_APP_CREATED:
@@ -275,7 +283,7 @@ const reducer = (state, action) => {
     persistAuthAccount(action.account);
     return importCredentials(state, action.token, action.account);
   case VERIFY_CREDENTIALS_FAIL:
-    return [401, 403].includes(action.error.response.status) ? deleteToken(state, action.token) : state;
+    return deleteForbiddenToken(state, action.error, action.token);
   case SWITCH_ACCOUNT:
     return state.set('me', action.account.get('url'));
   case ME_FETCH_SKIP:
