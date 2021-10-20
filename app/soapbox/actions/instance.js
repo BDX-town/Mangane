@@ -1,11 +1,40 @@
 import api from '../api';
 import { get } from 'lodash';
 import { parseVersion } from 'soapbox/utils/features';
+import { getAuthUserUrl } from 'soapbox/utils/auth';
+import localforage from 'localforage';
 
-export const INSTANCE_FETCH_SUCCESS = 'INSTANCE_FETCH_SUCCESS';
-export const INSTANCE_FETCH_FAIL    = 'INSTANCE_FETCH_FAIL';
+export const INSTANCE_FETCH_SUCCESS    = 'INSTANCE_FETCH_SUCCESS';
+export const INSTANCE_REMEMBER_SUCCESS = 'INSTANCE_REMEMBER_SUCCESS';
+export const INSTANCE_FETCH_FAIL       = 'INSTANCE_FETCH_FAIL';
+
 export const NODEINFO_FETCH_SUCCESS = 'NODEINFO_FETCH_SUCCESS';
 export const NODEINFO_FETCH_FAIL    = 'NODEINFO_FETCH_FAIL';
+
+const getMeUrl = state => {
+  const me = state.get('me');
+  return state.getIn(['accounts', me, 'url']);
+};
+
+// Figure out the appropriate instance to fetch depending on the state
+const getHost = state => {
+  const accountUrl = getMeUrl(state) || getAuthUserUrl(state);
+
+  try {
+    return new URL(accountUrl).host;
+  } catch {
+    return null;
+  }
+};
+
+export function rememberInstance(host) {
+  return (dispatch, getState) => {
+    return localforage.getItem(`instance:${host}`).then(instance => {
+      dispatch({ type: INSTANCE_REMEMBER_SUCCESS, instance });
+      return instance;
+    });
+  };
+}
 
 export function fetchInstance() {
   return (dispatch, getState) => {
@@ -17,6 +46,17 @@ export function fetchInstance() {
       }
     }).catch(error => {
       dispatch(instanceFail(error));
+    });
+  };
+}
+
+// Tries to remember the instance from browser storage before fetching it
+export function loadInstance() {
+  return (dispatch, getState) => {
+    const host = getHost(getState());
+
+    return dispatch(rememberInstance(host)).then(instance => {
+      return dispatch(fetchInstance());
     });
   };
 }
