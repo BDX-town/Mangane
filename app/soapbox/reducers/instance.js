@@ -8,7 +8,7 @@ import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { ConfigDB } from 'soapbox/utils/config_db';
-import localforage from 'localforage';
+import KVStore from 'soapbox/storage/kv_store';
 
 const nodeinfoToInstance = nodeinfo => {
   // Match Pleroma's develop branch
@@ -106,7 +106,7 @@ const persistInstance = instance => {
   const host = getHost(instance);
 
   if (host) {
-    localforage.setItem(`instance:${host}`, instance);
+    KVStore.setItem(`instance:${host}`, instance).catch(console.error);
   }
 };
 

@@ -10,7 +10,6 @@ import ReactDOM from 'react-dom';
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import * as perf from './performance';
 import * as monitoring from './monitoring';
-import localforage from 'localforage';
 import ready from './ready';
 import { NODE_ENV } from 'soapbox/build_config';
 
@@ -19,15 +18,6 @@ function main() {
 
   // Sentry
   monitoring.start();
-
-  // localForage
-  // https://localforage.github.io/localForage/#settings-api-config
-  localforage.config({
-    name: 'soapbox',
-    description: 'Soapbox offline data store',
-    driver: localforage.INDEXEDDB,
-    storeName: 'keyvaluepairs',
-  });
 
   ready(() => {
     const mountNode = document.getElementById('soapbox');
