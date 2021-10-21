@@ -35,6 +35,7 @@ import EmptyPage from 'soapbox/pages/default_page';
 import AdminPage from 'soapbox/pages/admin_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import { connectUserStream } from '../../actions/streaming';
+import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
 import { Redirect } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
@@ -507,6 +508,7 @@ class UI extends React.PureComponent {
 
     dispatch(fetchCustomEmojis());
     this.connectStreaming();
+    dispatch(registerPushNotifications());
   }
 
   componentDidUpdate(prevProps) {
