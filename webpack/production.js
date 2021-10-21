@@ -96,6 +96,7 @@ module.exports = merge(sharedConfig, {
             '/auth/password',
             '/.well-known/webfinger',
             '/static',
+            '/instance',
             '/main/ostatus',
             '/ostatus_subscribe',
             '/pghero',
