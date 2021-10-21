@@ -81,10 +81,35 @@ module.exports = merge(sharedConfig, {
         'packs/emoji/**/*',
       ],
       ServiceWorker: {
+        cacheName: 'soapbox',
         // entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
-        // cacheName: 'soapbox',
         minify: true,
       },
+      cacheMaps: [{
+        match: requestUrl => {
+          const backendRoutes = [
+            '/api',
+            '/pleroma',
+            '/nodeinfo',
+            '/socket',
+            '/oauth',
+            '/auth/password',
+            '/.well-known/webfinger',
+            '/static',
+            '/main/ostatus',
+            '/ostatus_subscribe',
+            '/pghero',
+            '/sidekiq',
+          ];
+
+          const isBackendRoute = ({ pathname }) => {
+            return backendRoutes.some(pathname.startsWith);
+          };
+
+          return isBackendRoute(requestUrl) && requestUrl;
+        },
+        requestTypes: ['navigate'],
+      }],
       safeToUseOptionalCaches: true,
       appShell: join(FE_SUBDIRECTORY, '/'),
     }),
