@@ -20,6 +20,7 @@ import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { joinPublicPath } from 'soapbox/utils/static';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -111,6 +112,9 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
             body,
             icon: notification.account.avatar,
             tag: notification.id,
+            data: {
+              url: joinPublicPath('/notifications'),
+            },
           });
         }).catch(console.error);
       }
