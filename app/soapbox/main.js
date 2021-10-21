@@ -1,9 +1,6 @@
 'use strict';
 
 import './precheck';
-// FIXME: Push notifications are temporarily removed
-// import * as registerPushNotifications from './actions/push_notifications';
-// import { default as Soapbox, store } from './containers/soapbox';
 import { default as Soapbox } from './containers/soapbox';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -27,8 +24,6 @@ function main() {
     if (NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
       OfflinePluginRuntime.install();
-      // FIXME: Push notifications are temporarily removed
-      // store.dispatch(registerPushNotifications.register());
     }
     perf.stop('main()');
   });

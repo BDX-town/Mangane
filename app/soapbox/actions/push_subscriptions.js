@@ -21,6 +21,7 @@ export function createPushSubsription(params) {
     dispatch({ type: PUSH_SUBSCRIPTION_CREATE_REQUEST, params });
     return api(getState).post('/api/v1/push/subscription', params).then(({ data: subscription }) => {
       dispatch({ type: PUSH_SUBSCRIPTION_CREATE_SUCCESS, params, subscription });
+      return subscription;
     }).catch(error => {
       dispatch({ type: PUSH_SUBSCRIPTION_CREATE_FAIL, params, error });
     });
@@ -38,7 +39,7 @@ export function fetchPushSubsription() {
   };
 }
 
-export function updatePushSubsription(params) {
+export function updatePushSubscription(params) {
   return (dispatch, getState) => {
     dispatch({ type: PUSH_SUBSCRIPTION_UPDATE_REQUEST, params });
     return api(getState).put('/api/v1/push/subscription', params).then(({ data: subscription }) => {
