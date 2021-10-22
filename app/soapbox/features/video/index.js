@@ -139,8 +139,8 @@ class Video extends React.PureComponent {
     revealed: this.props.visible !== undefined ? this.props.visible : (this.props.displayMedia !== 'hide_all' && !this.props.sensitive || this.props.displayMedia === 'show_all'),
   };
 
-  // hard coded in components.scss
-  // any way to get ::before values programatically?
+  // Hard-coded in components.scss
+  // Any way to get ::before values programatically?
   volWidth = 50;
   volOffset = 70;
   volHandleOffset = v => {
@@ -263,9 +263,9 @@ class Video extends React.PureComponent {
 
   togglePlay = () => {
     if (this.state.paused) {
-      this.video.play();
+      this.setState({ paused: false }, () => this.video.play());
     } else {
-      this.video.pause();
+      this.setState({ paused: true }, () => this.video.pause());
     }
   }
 
@@ -282,9 +282,13 @@ class Video extends React.PureComponent {
     document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
     document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
+
+    window.addEventListener('scroll', this.handleScroll);
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('mozfullscreenchange', this.handleFullscreenChange, true);
@@ -303,6 +307,19 @@ class Video extends React.PureComponent {
     }
   }
 
+  handleScroll = throttle(() => {
+    if (!this.video) {
+      return;
+    }
+
+    const { top, height } = this.video.getBoundingClientRect();
+    const inView = (top <= (window.innerHeight || document.documentElement.clientHeight)) && (top + height >= 0);
+
+    if (!this.state.paused && !inView) {
+      this.setState({ paused: true }, () => this.video.pause());
+    }
+  }, 150, { trailing: true })
+
   handleFullscreenChange = () => {
     this.setState({ fullscreen: isFullscreen() });
   }
@@ -316,8 +333,11 @@ class Video extends React.PureComponent {
   }
 
   toggleMute = () => {
-    this.video.muted = !this.video.muted;
-    this.setState({ muted: this.video.muted });
+    const muted = !this.video.muted;
+
+    this.setState({ muted }, () => {
+      this.video.muted = muted;
+    });
   }
 
   toggleReveal = () => {
