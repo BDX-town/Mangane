@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { makeGetNotification, makeGetStatus } from '../../../selectors';
+import { makeGetNotification } from '../../../selectors';
 import Notification from '../components/notification';
 import { openModal } from '../../../actions/modal';
 import { mentionCompose } from '../../../actions/compose';
@@ -17,13 +17,10 @@ import { getSettings } from 'soapbox/actions/settings';
 
 const makeMapStateToProps = () => {
   const getNotification = makeGetNotification();
-  const getStatus = makeGetStatus();
 
   const mapStateToProps = (state, props) => {
-    const notification = getNotification(state, props.notification, props.accountId, props.targetId);
     return {
-      notification: notification,
-      status: notification.get('status') ? getStatus(state, { id: notification.get('status') }) : null,
+      notification: getNotification(state, props.notification),
     };
   };
 
