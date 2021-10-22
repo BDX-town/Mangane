@@ -106,6 +106,18 @@
     text-align: right;
   }
 
+  &.voted &__number {
+    width: 52px;
+    padding-left: 8px;
+    flex: 0 0 52px;
+  }
+
+  &__vote__mark {
+    float: left;
+    color: var(--highlight-text-color);
+    line-height: 18px;
+  }
+
   &__footer {
     padding-top: 6px;
     padding-bottom: 5px;
