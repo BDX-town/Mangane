@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { fromJS, is } from 'immutable';
-import { throttle } from 'lodash';
+import { throttle, debounce } from 'lodash';
 import classNames from 'classnames';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 import Icon from 'soapbox/components/icon';
@@ -142,12 +142,21 @@ class Video extends React.PureComponent {
   setPlayerRef = c => {
     this.player = c;
 
-    if (c) {
-      if (this.props.cacheWidth) this.props.cacheWidth(this.player.offsetWidth);
-      this.setState({
-        containerWidth: c.offsetWidth,
-      });
+    if (this.player) {
+      this._setDimensions();
     }
+  }
+
+  _setDimensions() {
+    const width = this.player.offsetWidth;
+
+    if (this.props.cacheWidth) {
+      this.props.cacheWidth(width);
+    }
+
+    this.setState({
+      containerWidth: width,
+    });
   }
 
   setVideoRef = c => {
@@ -276,10 +285,12 @@ class Video extends React.PureComponent {
     document.addEventListener('MSFullscreenChange', this.handleFullscreenChange, true);
 
     window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('resize', this.handleResize);
 
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange, true);
     document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange, true);
@@ -298,6 +309,14 @@ class Video extends React.PureComponent {
       this.video.pause();
     }
   }
+
+  handleResize = debounce(() => {
+    if (this.player) {
+      this._setDimensions();
+    }
+  }, 250, {
+    trailing: true,
+  });
 
   handleScroll = throttle(() => {
     if (!this.video) {
