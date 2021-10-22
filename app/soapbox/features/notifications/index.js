@@ -152,8 +152,6 @@ class Notifications extends React.PureComponent {
         <NotificationContainer
           key={item.get('id')}
           notification={item}
-          accountId={item.get('account')}
-          targetId={item.get('target')}
           onMoveUp={this.handleMoveUp}
           onMoveDown={this.handleMoveDown}
         />
