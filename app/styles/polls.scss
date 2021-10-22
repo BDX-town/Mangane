@@ -96,6 +96,23 @@
       border-color: $valid-value-color;
       background: $valid-value-color;
     }
+
+    &:active,
+    &:focus,
+    &:hover {
+      border-width: 4px;
+      background: none;
+    }
+
+    &::-moz-focus-inner {
+      outline: 0 !important;
+      border: 0;
+    }
+
+    &:focus,
+    &:active {
+      outline: 0 !important;
+    }
   }
 
   &__number {
@@ -104,6 +121,18 @@
     font-weight: 700;
     padding: 0 10px;
     text-align: right;
+  }
+
+  &.voted &__number {
+    width: 52px;
+    padding-left: 8px;
+    flex: 0 0 52px;
+  }
+
+  &__vote__mark {
+    float: left;
+    color: var(--highlight-text-color);
+    line-height: 18px;
   }
 
   &__footer {
