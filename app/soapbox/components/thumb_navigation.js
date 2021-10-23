@@ -56,6 +56,16 @@ class ThumbNavigation extends React.PureComponent {
           </span>
         </NavLink>
 
+        <NavLink to='/search' className='thumb-navigation__link'>
+          <Icon
+            src={require('@tabler/icons/icons/search.svg')}
+            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+          />
+          <span>
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
+          </span>
+        </NavLink>
+
         {account && (
           <NavLink to='/notifications' className='thumb-navigation__link'>
             <IconWithCounter
@@ -96,16 +106,6 @@ class ThumbNavigation extends React.PureComponent {
             </NavLink>
           )
         )}
-
-        <NavLink to='/search' className='thumb-navigation__link'>
-          <Icon
-            src={require('@tabler/icons/icons/search.svg')}
-            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
-          />
-          <span>
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </span>
-        </NavLink>
 
         {(account && isStaff(account)) && (
           <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>
