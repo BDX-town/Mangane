@@ -236,17 +236,16 @@ const getTimelinesByVisibility = visibility => {
   }
 };
 
-const replaceItem = (state, timelineId, oldId, newId) => {
-  return state.updateIn([timelineId, 'items'], ids => {
-    const list = ImmutableList(ids);
-    const index = list.indexOf(oldId);
+// Given an OrderedSet of IDs, replace oldId with newId maintaining its position
+const replaceId = (ids, oldId, newId) => {
+  const list = ImmutableList(ids);
+  const index = list.indexOf(oldId);
 
-    if (index > -1) {
-      return ImmutableOrderedSet(list.set(index, newId));
-    } else {
-      return ids;
-    }
-  });
+  if (index > -1) {
+    return ImmutableOrderedSet(list.set(index, newId));
+  } else {
+    return ids;
+  }
 };
 
 const importPendingStatus = (state, params, idempotencyKey) => {
@@ -256,7 +255,7 @@ const importPendingStatus = (state, params, idempotencyKey) => {
     const timelineIds = getTimelinesByVisibility(params.visibility);
 
     timelineIds.forEach(timelineId => {
-      updateTimeline(state, timelineId, statusId);
+      updateTimelineQueue(state, timelineId, statusId);
     });
   });
 };
@@ -264,8 +263,12 @@ const importPendingStatus = (state, params, idempotencyKey) => {
 const replacePendingStatus = (state, idempotencyKey, newId) => {
   const oldId = `末pending-${idempotencyKey}`;
 
-  state.keySeq().forEach(timelineId => {
-    return replaceItem(state, timelineId, oldId, newId);
+  // Loop through timelines and replace the pending status with the real one
+  return state.withMutations(state => {
+    state.keySeq().forEach(timelineId => {
+      state.updateIn([timelineId, 'items'], ids => replaceId(ids, oldId, newId));
+      state.updateIn([timelineId, 'queuedItems'], ids => replaceId(ids, oldId, newId));
+    });
   });
 };
 
