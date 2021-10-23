@@ -63,6 +63,14 @@ class PrimaryNavigation extends React.PureComponent {
             <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
           </NavLink>
 
+          <NavLink key='search' className='btn grouped' to='/search'>
+            <Icon
+              src={require('@tabler/icons/icons/search.svg')}
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
+            />
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
+          </NavLink>
+
           {account && (
             <NavLink key='notifications' className='btn grouped' to='/notifications' data-preview-title-id='column.notifications'>
               <IconWithCounter
@@ -97,14 +105,6 @@ class PrimaryNavigation extends React.PureComponent {
               </NavLink>
             )
           )}
-
-          <NavLink key='search' className='btn grouped' to='/search'>
-            <Icon
-              src={require('@tabler/icons/icons/search.svg')}
-              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
-            />
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </NavLink>
 
           {(account && isStaff(account)) && (
             <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>

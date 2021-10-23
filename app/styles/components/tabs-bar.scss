@@ -47,6 +47,29 @@
     }
   }
 
+  @media screen and (max-width: 450px) {
+    // Move Profile menu to the left on mobile
+    &__split--right {
+      margin: 0;
+      order: -1;
+      width: 100%;
+    }
+
+    &__profile {
+      margin-left: 0;
+    }
+
+    &__unauthenticated {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+
+      .tabs-bar__button {
+        margin: 0;
+      }
+    }
+  }
+
   &__search-container {
     display: block;
     width: 351px;
