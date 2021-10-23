@@ -44,6 +44,16 @@
     &--right {
       margin-left: auto;
       align-items: center;
+
+      // Move Profile menu to the left on mobile
+      @media screen and (max-width: 450px) {
+        margin: 0;
+        order: -1;
+
+        .tabs-bar__profile {
+          margin-left: 0;
+        }
+      }
     }
   }
 
