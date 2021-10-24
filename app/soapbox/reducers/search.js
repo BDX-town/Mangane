@@ -5,6 +5,7 @@ import {
   SEARCH_FETCH_SUCCESS,
   SEARCH_SHOW,
   SEARCH_FILTER_SET,
+  SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
 import {
@@ -28,7 +29,6 @@ export default function search(state = initialState, action) {
   case SEARCH_CHANGE:
     return state.withMutations(map => {
       map.set('value', action.value);
-      map.set('submitted', false);
     });
   case SEARCH_CLEAR:
     return state.withMutations(map => {
@@ -58,6 +58,9 @@ export default function search(state = initialState, action) {
       accountsHasMore: action.results.accounts.length >= 20,
       statusesHasMore: action.results.statuses.length >= 20,
       hashtagsHasMore: action.results.hashtags.length >= 20,
+      accountsLoaded: true,
+      statusesLoaded: true,
+      hashtagsLoaded: true,
     })).set('submitted', true).set('filter', action.results.accounts.length > 0
       ? 'accounts'
       : action.results.statuses.length > 0
@@ -67,9 +70,12 @@ export default function search(state = initialState, action) {
           : 'accounts');
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
+  case SEARCH_EXPAND_REQUEST:
+    return state.setIn(['results', `${action.searchType}Loaded`], false);
   case SEARCH_EXPAND_SUCCESS:
     return state.withMutations((state) => {
       state.setIn(['results', `${action.searchType}HasMore`], action.results[action.searchType].length >= 20);
+      state.setIn(['results', `${action.searchType}Loaded`], true);
       state.updateIn(['results', action.searchType], list => list.concat(action.results[action.searchType].map(item => item.id)));
     });
   default:
