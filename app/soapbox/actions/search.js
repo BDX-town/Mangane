@@ -95,7 +95,7 @@ export const expandSearch = type => (dispatch, getState) => {
   const value  = getState().getIn(['search', 'value']);
   const offset = getState().getIn(['search', 'results', type]).size;
 
-  dispatch(expandSearchRequest());
+  dispatch(expandSearchRequest(type));
 
   api(getState).get('/api/v2/search', {
     params: {
@@ -119,8 +119,9 @@ export const expandSearch = type => (dispatch, getState) => {
   });
 };
 
-export const expandSearchRequest = () => ({
+export const expandSearchRequest = (searchType) => ({
   type: SEARCH_EXPAND_REQUEST,
+  searchType,
 });
 
 export const expandSearchSuccess = (results, searchTerm, searchType) => ({
