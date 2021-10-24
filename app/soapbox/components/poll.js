@@ -149,7 +149,7 @@ class Poll extends ImmutablePureComponent {
     const timeRemaining = poll.get('expired') ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.get('expires_at')} futureDate />;
     const showResults   = poll.get('voted') || poll.get('expired');
     const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
-    const voted         = me && poll.get('own_votes', []).size > 0;
+    const voted         = me && poll.get('own_votes').size > 0;
 
     return (
       <div className={classNames('poll', { voted })}>
