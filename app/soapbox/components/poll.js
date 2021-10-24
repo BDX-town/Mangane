@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
@@ -31,6 +32,7 @@ class Poll extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
+    me: SoapboxPropTypes.me,
   };
 
   state = {
@@ -138,7 +140,7 @@ class Poll extends ImmutablePureComponent {
   }
 
   render() {
-    const { poll, intl } = this.props;
+    const { me, poll, intl } = this.props;
 
     if (!poll) {
       return null;
@@ -147,7 +149,7 @@ class Poll extends ImmutablePureComponent {
     const timeRemaining = poll.get('expired') ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.get('expires_at')} futureDate />;
     const showResults   = poll.get('voted') || poll.get('expired');
     const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
-    const voted         = poll.get('own_votes').size > 0;
+    const voted         = me && poll.get('own_votes').size > 0;
 
     return (
       <div className={classNames('poll', { voted })}>
