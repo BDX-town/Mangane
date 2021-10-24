@@ -27,6 +27,7 @@ import { isVerified } from 'soapbox/utils/accounts';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from 'soapbox/selectors';
+import resizeImage from 'soapbox/utils/resize_image';
 
 const hidesNetwork = account => {
   const pleroma = account.get('pleroma');
@@ -42,6 +43,7 @@ const messages = defineMessages({
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
   verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
   success: { id: 'edit_profile.success', defaultMessage: 'Profile saved!' },
+  error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
 });
@@ -178,6 +180,7 @@ class EditProfile extends ImmutablePureComponent {
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     }).catch((error) => {
       this.setState({ isLoading: false });
+      dispatch(snackbar.error(intl.formatMessage(messages.error)));
     });
 
     event.preventDefault();
@@ -199,15 +202,20 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
-  handleFileChange = e => {
-    const { name } = e.target;
-    const [file] = e.target.files || [];
-    const url = file ? URL.createObjectURL(file) : this.state[name];
+  handleFileChange = maxPixels => {
+    return e => {
+      const { name } = e.target;
+      const [f] = e.target.files || [];
 
-    this.setState({
-      [name]: url,
-      [`${name}_file`]: file,
-    });
+      resizeImage(f, maxPixels).then(file => {
+        const url = file ? URL.createObjectURL(file) : this.state[name];
+
+        this.setState({
+          [name]: url,
+          [`${name}_file`]: file,
+        });
+      }).catch(console.error);
+    };
   }
 
   handleAddField = () => {
@@ -262,14 +270,14 @@ class EditProfile extends ImmutablePureComponent {
                   <FileChooser
                     label={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Header' />}
                     name='header'
-                    hint={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 1500x500px' />}
-                    onChange={this.handleFileChange}
+                    hint={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+                    onChange={this.handleFileChange(1920 * 1080)}
                   />
                   <FileChooser
                     label={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Avatar' />}
                     name='avatar'
-                    hint={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. At most 2 MB. Will be downscaled to 400x400px' />}
-                    onChange={this.handleFileChange}
+                    hint={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
+                    onChange={this.handleFileChange(400 * 400)}
                   />
                 </div>
               </div>

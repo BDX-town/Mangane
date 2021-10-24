@@ -901,6 +901,7 @@ export function updateNotificationSettings(params) {
       dispatch({ type: NOTIFICATION_SETTINGS_SUCCESS, params, data });
     }).catch(error => {
       dispatch({ type: NOTIFICATION_SETTINGS_FAIL, params, error });
+      throw error;
     });
   };
 }

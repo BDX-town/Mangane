@@ -73,9 +73,9 @@ class SubNavigation extends React.PureComponent {
 
   handleScroll = throttle(() => {
     if (this.node) {
-      const { top } = this.node.getBoundingClientRect();
+      const { offsetTop } = this.node;
 
-      if (top <= 50) {
+      if (offsetTop > 0) {
         this.setState({ scrolled: true });
       } else {
         this.setState({ scrolled: false });
@@ -105,7 +105,7 @@ class SubNavigation extends React.PureComponent {
             aria-label={intl.formatMessage(messages.back)}
             title={intl.formatMessage(messages.back)}
           >
-            <Icon src={require('@tabler/icons/icons/arrow-back.svg')} />
+            <Icon src={require('@tabler/icons/icons/arrow-left.svg')} />
             {intl.formatMessage(messages.back)}
           </button>
           {message && (

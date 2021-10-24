@@ -10,9 +10,12 @@ import spring from 'react-motion/lib/spring';
 import escapeTextContentForBrowser from 'escape-html';
 import emojify from 'soapbox/features/emoji/emoji';
 import RelativeTimestamp from './relative_timestamp';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
+  voted: { id: 'poll.voted', defaultMessage: 'You voted for this answer' },
+  votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
 
 const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
@@ -34,9 +37,7 @@ class Poll extends ImmutablePureComponent {
     selected: {},
   };
 
-  handleOptionChange = e => {
-    const { target: { value } } = e;
-
+  _toggleOption = value => {
     if (this.props.poll.get('multiple')) {
       const tmp = { ...this.state.selected };
       if (tmp[value]) {
@@ -50,7 +51,19 @@ class Poll extends ImmutablePureComponent {
       tmp[value] = true;
       this.setState({ selected: tmp });
     }
+  }
+
+  handleOptionChange = ({ target: { value } }) => {
+    this._toggleOption(value);
   };
+
+  handleOptionKeyPress = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      this._toggleOption(e.target.getAttribute('data-index'));
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  }
 
   handleVote = () => {
     if (this.props.disabled) {
@@ -68,12 +81,13 @@ class Poll extends ImmutablePureComponent {
     this.props.dispatch(fetchPoll(this.props.poll.get('id')));
   };
 
-  renderOption(option, optionIndex) {
-    const { poll, disabled } = this.props;
-    const percent            = poll.get('votes_count') === 0 ? 0 : (option.get('votes_count') / poll.get('votes_count')) * 100;
-    const leading            = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') > other.get('votes_count'));
-    const active             = !!this.state.selected[`${optionIndex}`];
-    const showResults        = poll.get('voted') || poll.get('expired');
+  renderOption(option, optionIndex, showResults) {
+    const { poll, disabled, intl } = this.props;
+
+    const percent = poll.get('votes_count') === 0 ? 0 : (option.get('votes_count') / poll.get('votes_count')) * 100;
+    const leading = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') >= other.get('votes_count'));
+    const active  = !!this.state.selected[`${optionIndex}`];
+    const voted   = option.get('voted') || (poll.get('own_votes') && poll.get('own_votes').includes(optionIndex));
 
     let titleEmojified = option.get('title_emojified');
     if (!titleEmojified) {
@@ -101,8 +115,21 @@ class Poll extends ImmutablePureComponent {
             disabled={disabled}
           />
 
-          {!showResults && <span className={classNames('poll__input', { checkbox: poll.get('multiple'), active })} />}
-          {showResults && <span className='poll__number'>{Math.round(percent)}%</span>}
+          {!showResults && (
+            <span
+              className={classNames('poll__input', { checkbox: poll.get('multiple'), active })}
+              tabIndex='0'
+              role={poll.get('multiple') ? 'checkbox' : 'radio'}
+              onKeyPress={this.handleOptionKeyPress}
+              aria-checked={active}
+              aria-label={option.get('title')}
+              data-index={optionIndex}
+            />
+          )}
+          {showResults && <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.get('votes_count') })}>
+            {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
+            {Math.round(percent)}%
+          </span>}
 
           <span dangerouslySetInnerHTML={{ __html: titleEmojified }} />
         </label>
@@ -120,11 +147,12 @@ class Poll extends ImmutablePureComponent {
     const timeRemaining = poll.get('expired') ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.get('expires_at')} futureDate />;
     const showResults   = poll.get('voted') || poll.get('expired');
     const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
+    const voted         = poll.get('own_votes').size > 0;
 
     return (
-      <div className='poll'>
+      <div className={classNames('poll', { voted })}>
         <ul>
-          {poll.get('options').map((option, i) => this.renderOption(option, i))}
+          {poll.get('options').map((option, i) => this.renderOption(option, i, showResults))}
         </ul>
 
         <div className='poll__footer'>

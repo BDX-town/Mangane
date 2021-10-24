@@ -12,8 +12,6 @@ const notify = options =>
       const group = {
         title: formatMessage('notifications.group', options.data.preferred_locale, { count: notifications.length + 1 }),
         body: notifications.sort((n1, n2) => n1.timestamp < n2.timestamp).map(notification => notification.title).join('\n'),
-        badge: '/badge.png',
-        icon: '/android-chrome-192x192.png',
         tag: GROUP_TAG,
         data: {
           url: (new URL('/notifications', self.location)).href,
@@ -89,9 +87,8 @@ const handlePush = (event) => {
       options.icon      = notification.account.avatar_static;
       options.timestamp = notification.created_at && new Date(notification.created_at);
       options.tag       = notification.id;
-      options.badge     = '/badge.png';
       options.image     = notification.status && notification.status.media_attachments.length > 0 && notification.status.media_attachments[0].preview_url || undefined;
-      options.data      = { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/${notification.account.username}/posts/${notification.status.id}` : `/${notification.account.username}` };
+      options.data      = { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.username}/posts/${notification.status.id}` : `/@${notification.account.username}` };
 
       if (notification.status && notification.status.spoiler_text || notification.status.sensitive) {
         options.data.hiddenBody  = htmlToPlainText(notification.status.content);
@@ -115,7 +112,6 @@ const handlePush = (event) => {
         icon,
         tag: notification_id,
         timestamp: new Date(),
-        badge: '/badge.png',
         data: { access_token, preferred_locale, url: '/notifications' },
       });
     }),
@@ -124,19 +120,19 @@ const handlePush = (event) => {
 
 const actionExpand = preferred_locale => ({
   action: 'expand',
-  icon: '/web-push-icon_expand.png',
+  icon: `/${require('../../images/web-push/web-push-icon_expand.png')}`,
   title: formatMessage('status.show_more', preferred_locale),
 });
 
 const actionReblog = preferred_locale => ({
   action: 'reblog',
-  icon: '/web-push-icon_reblog.png',
+  icon: `/${require('../../images/web-push/web-push-icon_reblog.png')}`,
   title: formatMessage('status.reblog', preferred_locale),
 });
 
 const actionFavourite = preferred_locale => ({
   action: 'favourite',
-  icon: '/web-push-icon_favourite.png',
+  icon: `/${require('../../images/web-push/web-push-icon_favourite.png')}`,
   title: formatMessage('status.favourite', preferred_locale),
 });
 
@@ -167,29 +163,12 @@ const removeActionFromNotification = (notification, action) => {
 
 const openUrl = url =>
   self.clients.matchAll({ type: 'window' }).then(clientList => {
-    if (clientList.length !== 0) {
-      // : TODO :
-      const webClients = clientList.filter(client => /\//.test(client.url));
-
-      if (webClients.length !== 0) {
-        const client       = findBestClient(webClients);
-        const { pathname } = new URL(url, self.location);
-
-        // : TODO :
-        if (pathname.startsWith('/')) {
-          return client.focus().then(client => client.postMessage({
-            type: 'navigate',
-            path: pathname.slice('/'.length - 1),
-          }));
-        }
-      } else if ('navigate' in clientList[0]) { // Chrome 42-48 does not support navigate
-        const client = findBestClient(clientList);
-
-        return client.navigate(url).then(client => client.focus());
-      }
+    if (clientList.length === 0) {
+      return self.clients.openWindow(url);
+    } else {
+      const client = findBestClient(clientList);
+      return client.navigate(url).then(client => client.focus());
     }
-
-    return self.clients.openWindow(url);
   });
 
 const handleNotificationClick = (event) => {

@@ -20,6 +20,7 @@ import { unescapeHTML } from '../utils/html';
 import { getFilters, regexFromFilters } from '../selectors';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { joinPublicPath } from 'soapbox/utils/static';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -102,16 +103,20 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
 
     // Desktop notifications
     try {
-      if (typeof window.Notification !== 'undefined' && showAlert && !filtered) {
+      if (showAlert && !filtered) {
         const title = new IntlMessageFormat(intlMessages[`notification.${notification.type}`], intlLocale).format({ name: notification.account.display_name.length > 0 ? notification.account.display_name : notification.account.username });
         const body = (notification.status && notification.status.spoiler_text.length > 0) ? notification.status.spoiler_text : unescapeHTML(notification.status ? notification.status.content : '');
 
-        const notify = new Notification(title, { body, icon: notification.account.avatar, tag: notification.id });
-
-        notify.addEventListener('click', () => {
-          window.focus();
-          notify.close();
-        });
+        navigator.serviceWorker.ready.then(serviceWorkerRegistration => {
+          serviceWorkerRegistration.showNotification(title, {
+            body,
+            icon: notification.account.avatar,
+            tag: notification.id,
+            data: {
+              url: joinPublicPath('/notifications'),
+            },
+          });
+        }).catch(console.error);
       }
     } catch(e) {
       console.warn(e);

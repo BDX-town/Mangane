@@ -20,7 +20,7 @@ const fetchExternalInstance = baseURL => {
     .get('/api/v1/instance')
     .then(({ data: instance }) => fromJS(instance))
     .catch(error => {
-      if (error.response.status === 401) {
+      if (error.response && error.response.status === 401) {
         // Authenticated fetch is enabled.
         // Continue with a limited featureset.
         return ImmutableMap({ version: '0.0.0' });

@@ -346,10 +346,11 @@
     width: 100%;
 
     &__top {
+      @include standard-panel-shadow;
       display: flex;
       width: 100%;
       height: auto;
-      z-index: 105;
+      z-index: 1000;
       background: var(--foreground-color);
 
       @media (min-width: 896px) {

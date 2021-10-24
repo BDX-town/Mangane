@@ -625,6 +625,12 @@
     overflow-y: auto;
   }
 
+  &__description {
+    font-size: 14px;
+    margin: 5px 0 15px;
+    color: var(--primary-text-color--faint);
+  }
+
   &__close {
     display: flex;
     align-items: center;
@@ -947,5 +953,9 @@
 }
 
 .column .explanation-box {
+  background: var(--foreground-color);
+}
+
+.sub-navigation + .account__section-headline {
   background: var(--foreground-color);
 }

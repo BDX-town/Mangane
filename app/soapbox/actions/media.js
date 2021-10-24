@@ -3,6 +3,18 @@ import { getFeatures } from 'soapbox/utils/features';
 
 const noOp = () => {};
 
+export function fetchMedia(mediaId) {
+  return (dispatch, getState) => {
+    return api(getState).get(`/api/v1/media/${mediaId}`);
+  };
+}
+
+export function updateMedia(mediaId, params) {
+  return (dispatch, getState) => {
+    return api(getState).put(`/api/v1/media/${mediaId}`, params);
+  };
+}
+
 export function uploadMediaV1(data, onUploadProgress = noOp) {
   return (dispatch, getState) => {
     return api(getState).post('/api/v1/media', data, {

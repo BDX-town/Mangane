@@ -88,7 +88,7 @@ class ActionButton extends ImmutablePureComponent {
     if (!me) {
       // Remote follow
       return (<form method='POST' action='/main/ostatus'>
-        <input type='hidden' name='nickname' value={account.get('username')} />
+        <input type='hidden' name='nickname' value={account.get('acct')} />
         <input type='hidden' name='profile' value='' />
         <Button className='logo-button' text={intl.formatMessage(messages.remote_follow)} click='submit' />
       </form>);

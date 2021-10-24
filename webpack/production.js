@@ -74,9 +74,6 @@ module.exports = merge(sharedConfig, {
         '**/*.ogg',
         '**/*.oga',
         '**/*.mp3',
-        // Don't serve index.html
-        // https://github.com/bromite/bromite/issues/1294
-        'index.html',
         '404.html',
         'assets-manifest.json',
         // It would be nice to serve these, but they bloat up sw.js
@@ -84,11 +81,38 @@ module.exports = merge(sharedConfig, {
         'packs/emoji/**/*',
       ],
       ServiceWorker: {
-        // entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
-        // cacheName: 'soapbox',
+        cacheName: 'soapbox',
+        entry: join(__dirname, '../app/soapbox/service_worker/entry.js'),
         minify: true,
       },
+      cacheMaps: [{
+        match: requestUrl => {
+          const backendRoutes = [
+            '/api',
+            '/pleroma',
+            '/nodeinfo',
+            '/socket',
+            '/oauth',
+            '/auth/password',
+            '/.well-known/webfinger',
+            '/static',
+            '/instance',
+            '/main/ostatus',
+            '/ostatus_subscribe',
+            '/pghero',
+            '/sidekiq',
+          ];
+
+          const isBackendRoute = ({ pathname }) => {
+            return backendRoutes.some(pathname.startsWith);
+          };
+
+          return isBackendRoute(requestUrl) && requestUrl;
+        },
+        requestTypes: ['navigate'],
+      }],
       safeToUseOptionalCaches: true,
+      appShell: join(FE_SUBDIRECTORY, '/'),
     }),
   ],
 });

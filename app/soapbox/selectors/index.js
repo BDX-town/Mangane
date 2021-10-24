@@ -182,11 +182,12 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
 
 export const makeGetNotification = () => {
   return createSelector([
-    (_, base)             => base,
-    (state, _, accountId) => state.getIn(['accounts', accountId]),
-    (state, _, __, targetId) => state.getIn(['accounts', targetId]),
-  ], (base, account, target) => {
-    return base.set('account', account).set('target', target);
+    (state, notification) => notification,
+    (state, notification) => state.getIn(['accounts', notification.get('account')]),
+    (state, notification) => state.getIn(['accounts', notification.get('target')]),
+    (state, notification) => state.getIn(['statuses', notification.get('status')]),
+  ], (notification, account, target, status) => {
+    return notification.merge({ account, target, status });
   });
 };
 
