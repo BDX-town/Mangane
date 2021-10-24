@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
 import LoadMore from './load_more';
 import MoreFollows from './more_follows';
@@ -7,10 +8,20 @@ import IntersectionObserverWrapper from '../features/ui/util/intersection_observ
 import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
 import LoadingIndicator from './loading_indicator';
+import { getSettings } from 'soapbox/actions/settings';
 
 const MOUSE_IDLE_DELAY = 300;
 
-export default class ScrollableList extends PureComponent {
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+
+  return {
+    autoload: settings.get('autoloadMore'),
+  };
+};
+
+export default @connect(mapStateToProps)
+class ScrollableList extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -31,6 +42,7 @@ export default class ScrollableList extends PureComponent {
     onScroll: PropTypes.func,
     placeholderComponent: PropTypes.func,
     placeholderCount: PropTypes.number,
+    autoload: PropTypes.bool,
   };
 
   state = {
@@ -126,12 +138,14 @@ export default class ScrollableList extends PureComponent {
   }
 
   handleScroll = throttle(() => {
+    const { autoload } = this.props;
+
     if (this.window) {
       const { scrollTop, scrollHeight } = this.documentElement;
       const { innerHeight } = this.window;
       const offset = scrollHeight - scrollTop - innerHeight;
 
-      if (400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
+      if (autoload && 400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
         this.props.onLoadMore();
       }
 

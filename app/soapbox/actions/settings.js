@@ -32,6 +32,7 @@ export const defaultSettings = ImmutableMap({
   explanationBox: true,
   otpEnabled: false,
   autoloadTimelines: true,
+  autoloadMore: true,
 
   systemFont: false,
   dyslexicFont: false,
