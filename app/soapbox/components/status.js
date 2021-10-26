@@ -95,6 +95,7 @@ class Status extends ImmutablePureComponent {
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
     focusable: PropTypes.bool,
+    component: PropTypes.func,
   };
 
   static defaultProps = {
@@ -316,7 +317,7 @@ class Status extends ImmutablePureComponent {
     const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, showThread, group, wrapperComponent: WrapperComponent } = this.props;
 
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
@@ -494,72 +495,76 @@ class Status extends ImmutablePureComponent {
     const favicon = status.getIn(['account', 'pleroma', 'favicon']);
     const domain = getDomain(status.get('account'));
 
+    const wrappedStatus = (
+      <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        {prepend}
+
+        <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
+          <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
+          <div className='status__info'>
+            <NavLink to={statusUrl} className='status__relative-time'>
+              <RelativeTimestamp timestamp={status.get('created_at')} />
+            </NavLink>
+
+            {favicon &&
+              <div className='status__favicon'>
+                <Link to={`/timeline/${domain}`}>
+                  <img src={favicon} alt='' title={domain} />
+                </Link>
+              </div>}
+
+            <div className='status__profile'>
+              <div className='status__avatar'>
+                <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
+                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
+                    {statusAvatar}
+                  </NavLink>
+                </HoverRefWrapper>
+              </div>
+              <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
+                <DisplayName account={status.get('account')} others={otherAccounts} />
+              </NavLink>
+            </div>
+          </div>
+
+          {!group && status.get('group') && (
+            <div className='status__meta'>
+              Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
+            </div>
+          )}
+
+          <StatusContent
+            status={status}
+            reblogContent={reblogContent}
+            onClick={this.handleClick}
+            expanded={!status.get('hidden')}
+            onExpandedToggle={this.handleExpandedToggle}
+            collapsable
+          />
+
+          {media}
+          {poll}
+
+          {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
+            <button className='status__content__read-more-button' onClick={this.handleClick}>
+              <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
+            </button>
+          )}
+
+          <StatusActionBar
+            status={status}
+            account={account}
+            emojiSelectorFocused={this.state.emojiSelectorFocused}
+            handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+            {...other}
+          />
+        </div>
+      </div>
+    );
+
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
-          {prepend}
-
-          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
-            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
-            <div className='status__info'>
-              <NavLink to={statusUrl} className='status__relative-time'>
-                <RelativeTimestamp timestamp={status.get('created_at')} />
-              </NavLink>
-
-              {favicon &&
-                <div className='status__favicon'>
-                  <Link to={`/timeline/${domain}`}>
-                    <img src={favicon} alt='' title={domain} />
-                  </Link>
-                </div>}
-
-              <div className='status__profile'>
-                <div className='status__avatar'>
-                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
-                      {statusAvatar}
-                    </NavLink>
-                  </HoverRefWrapper>
-                </div>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                  <DisplayName account={status.get('account')} others={otherAccounts} />
-                </NavLink>
-              </div>
-            </div>
-
-            {!group && status.get('group') && (
-              <div className='status__meta'>
-                Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
-              </div>
-            )}
-
-            <StatusContent
-              status={status}
-              reblogContent={reblogContent}
-              onClick={this.handleClick}
-              expanded={!status.get('hidden')}
-              onExpandedToggle={this.handleExpandedToggle}
-              collapsable
-            />
-
-            {media}
-            {poll}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
-
-            <StatusActionBar
-              status={status}
-              account={account}
-              emojiSelectorFocused={this.state.emojiSelectorFocused}
-              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-              {...other}
-            />
-          </div>
-        </div>
+        {WrapperComponent ? <WrapperComponent>{wrappedStatus}</WrapperComponent> : wrappedStatus}
       </HotKeys>
     );
   }
