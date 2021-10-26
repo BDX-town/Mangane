@@ -141,6 +141,10 @@ class SidebarMenu extends ImmutablePureComponent {
     if (accountChanged || otherAccountsChanged) {
       this.fetchOwnAccounts();
     }
+
+    if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
+      document.querySelector('.sidebar-menu__close').focus();
+    }
   }
 
   renderAccount = account => {

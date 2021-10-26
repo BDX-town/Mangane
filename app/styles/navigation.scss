@@ -154,6 +154,11 @@
     justify-content: center;
     color: var(--primary-text-color--faint);
 
+    &:hover,
+    &:focus {
+      color: var(--primary-text-color);
+    }
+
     .svg-icon {
       margin-right: 7px;
       width: 22px;

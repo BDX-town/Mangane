@@ -173,7 +173,8 @@
   clear: both;
   text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background: var(--brand-color--faint);
   }
 }
