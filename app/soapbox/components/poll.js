@@ -33,6 +33,7 @@ class Poll extends ImmutablePureComponent {
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
     me: SoapboxPropTypes.me,
+    onOpenUnauthorizedModal: PropTypes.func.isRequired,
   };
 
   state = {
@@ -40,18 +41,22 @@ class Poll extends ImmutablePureComponent {
   };
 
   _toggleOption = value => {
-    if (this.props.poll.get('multiple')) {
-      const tmp = { ...this.state.selected };
-      if (tmp[value]) {
-        delete tmp[value];
+    if (this.props.me) {
+      if (this.props.poll.get('multiple')) {
+        const tmp = { ...this.state.selected };
+        if (tmp[value]) {
+          delete tmp[value];
+        } else {
+          tmp[value] = true;
+        }
+        this.setState({ selected: tmp });
       } else {
+        const tmp = {};
         tmp[value] = true;
+        this.setState({ selected: tmp });
       }
-      this.setState({ selected: tmp });
     } else {
-      const tmp = {};
-      tmp[value] = true;
-      this.setState({ selected: tmp });
+      this.props.onOpenUnauthorizedModal();
     }
   }
 
