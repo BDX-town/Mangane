@@ -13,7 +13,7 @@ import {
   COMPOSE_REPLY,
   COMPOSE_DIRECT,
 } from '../actions/compose';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   value: '',
@@ -24,20 +24,65 @@ const initialState = ImmutableMap({
   filter: 'accounts',
 });
 
+const toIds = items => {
+  return ImmutableOrderedSet(items.map(item => item.id));
+};
+
+const getResultsFilter = results => {
+  if (results.accounts.length > 0) {
+    return 'accounts';
+  } else if (results.statuses.length > 0) {
+    return 'statuses';
+  } else if (results.hashtags.length > 0) {
+    return 'hashtags';
+  } else {
+    return 'accounts';
+  }
+};
+
+const importResults = (state, results) => {
+  const filter = getResultsFilter(results);
+
+  return state.withMutations(state => {
+    state.set('results', ImmutableMap({
+      accounts: toIds(results.accounts),
+      statuses: toIds(results.accounts),
+      hashtags: fromJS(results.hashtags), // it's a list of maps
+      accountsHasMore: results.accounts.length >= 20,
+      statusesHasMore: results.statuses.length >= 20,
+      hashtagsHasMore: results.hashtags.length >= 20,
+      accountsLoaded: true,
+      statusesLoaded: true,
+      hashtagsLoaded: true,
+    }));
+
+    state.set('submitted', true);
+    state.set('filter', filter);
+  });
+};
+
+const paginateResults = (state, searchType, results) => {
+  return state.withMutations(state => {
+    state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
+    state.setIn(['results', `${searchType}Loaded`], true);
+    state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+  });
+};
+
+const handleSubmitted = (state, value) => {
+  return state.withMutations(state => {
+    state.set('results', ImmutableMap());
+    state.set('submitted', true);
+    state.set('submittedValue', value);
+  });
+};
+
 export default function search(state = initialState, action) {
   switch(action.type) {
   case SEARCH_CHANGE:
-    return state.withMutations(map => {
-      map.set('value', action.value);
-    });
+    return state.set('value', action.value);
   case SEARCH_CLEAR:
-    return state.withMutations(map => {
-      map.set('value', '');
-      map.set('results', ImmutableMap());
-      map.set('submitted', false);
-      map.set('hidden', false);
-      map.set('filter', 'accounts');
-    });
+    return initialState;
   case SEARCH_SHOW:
     return state.set('hidden', false);
   case COMPOSE_REPLY:
@@ -45,39 +90,15 @@ export default function search(state = initialState, action) {
   case COMPOSE_DIRECT:
     return state.set('hidden', true);
   case SEARCH_FETCH_REQUEST:
-    return state.withMutations(map => {
-      map.set('results', ImmutableMap());
-      map.set('submitted', true);
-      map.set('submittedValue', action.value);
-    });
+    return handleSubmitted(state, action.value);
   case SEARCH_FETCH_SUCCESS:
-    return state.set('results', ImmutableMap({
-      accounts: ImmutableList(action.results.accounts.map(item => item.id)),
-      statuses: ImmutableList(action.results.statuses.map(item => item.id)),
-      hashtags: fromJS(action.results.hashtags),
-      accountsHasMore: action.results.accounts.length >= 20,
-      statusesHasMore: action.results.statuses.length >= 20,
-      hashtagsHasMore: action.results.hashtags.length >= 20,
-      accountsLoaded: true,
-      statusesLoaded: true,
-      hashtagsLoaded: true,
-    })).set('submitted', true).set('filter', action.results.accounts.length > 0
-      ? 'accounts'
-      : action.results.statuses.length > 0
-        ? 'statuses'
-        : action.results.hashtags.length > 0
-          ? 'hashtags'
-          : 'accounts');
+    return importResults(state, action.results);
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
   case SEARCH_EXPAND_REQUEST:
     return state.setIn(['results', `${action.searchType}Loaded`], false);
   case SEARCH_EXPAND_SUCCESS:
-    return state.withMutations((state) => {
-      state.setIn(['results', `${action.searchType}HasMore`], action.results[action.searchType].length >= 20);
-      state.setIn(['results', `${action.searchType}Loaded`], true);
-      state.updateIn(['results', action.searchType], list => list.concat(action.results[action.searchType].map(item => item.id)));
-    });
+    return paginateResults(state, action.searchType, action.results);
   default:
     return state;
   }
