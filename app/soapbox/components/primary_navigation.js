@@ -11,20 +11,22 @@ import IconWithCounter from 'soapbox/components/icon_with_counter';
 import classNames from 'classnames';
 import { getFeatures } from 'soapbox/utils/features';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { isStaff } from 'soapbox/utils/accounts';
+import { isStaff, getBaseURL } from 'soapbox/utils/accounts';
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
 
   return {
-    account: state.getIn(['accounts', me]),
+    account,
     logo: getSoapboxConfig(state).get('logo'),
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
+    baseURL: getBaseURL(account),
     features: getFeatures(instance),
     instance,
   };
@@ -44,13 +46,14 @@ class PrimaryNavigation extends React.PureComponent {
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
+    baseURL: PropTypes.string,
     features: PropTypes.object.isRequired,
     location: PropTypes.object,
     instance: ImmutablePropTypes.map.isRequired,
   };
 
   render() {
-    const { account, features, notificationCount, chatsCount, dashboardCount, location, instance } = this.props;
+    const { account, features, notificationCount, chatsCount, dashboardCount, location, instance, baseURL } = this.props;
 
     return (
       <div className='column-header__wrapper primary-navigation__wrapper'>
@@ -118,7 +121,7 @@ class PrimaryNavigation extends React.PureComponent {
           )}
 
           {(account && instance.get('invites_enabled')) && (
-            <a href='/invites' className='btn grouped'>
+            <a href={`${baseURL}/invites`} className='btn grouped'>
               <Icon src={require('@tabler/icons/icons/mailbox.svg')} className='primary-navigation__icon' />
               <FormattedMessage id='navigation.invites' defaultMessage='Invites' />
             </a>
