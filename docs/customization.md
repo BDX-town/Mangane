@@ -73,7 +73,7 @@ Use of the Captcha feature on the registration page is configured during the Ple
 ## Site Logo, Brand Color, and Promo Panel List Items
 The site logo, brand color, and promo panel list items are customized by copying `soapbox.example.json` in the `static/instance` folder to `soapbox.json` and editing that file.  It is recommended that you test your edited soapbox.json file in a JSON validator, such as [JSONLint](https://jsonlint.com/), before using it.
 
-The icon names for the promo panel list items can be source from [Fork Awesome](https://forkaweso.me/Fork-Awesome/icons/). Note that you should hover over or click a selected icon to see what the icon's real name is, e.g. `world`
+The icon names for the promo panel list items can be source from [Line Awesome](https://icons8.com/line-awesome). Note that you should hover over or click a selected icon to see what the icon's real name is, e.g. `world`
 
 The site logo, in SVG format, is rendered to be able to allow the site theme colors to appear in the less than 100% opaque sections of the logo.
 The logo colors are rendered in a color that provides contrast for the site theme.

@@ -296,7 +296,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />
                 </span>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://icons8.com/line-awesome'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
                 </span>
                 {
                   soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
