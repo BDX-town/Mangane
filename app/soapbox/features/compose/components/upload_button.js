@@ -10,9 +10,13 @@ const messages = defineMessages({
   upload: { id: 'upload_button.label', defaultMessage: 'Add media attachment' },
 });
 
+const onlyImages = types => {
+  return Boolean(types && types.every(type => type.startsWith('image/')));
+};
+
 const makeMapStateToProps = () => {
   const mapStateToProps = state => ({
-    acceptContentTypes: state.getIn(['media_attachments', 'accept_content_types']),
+    attachmentTypes: state.getIn(['instance', 'configuration', 'media_attachments', 'supported_mime_types']),
   });
 
   return mapStateToProps;
@@ -28,7 +32,7 @@ class UploadButton extends ImmutablePureComponent {
     onSelectFile: PropTypes.func.isRequired,
     style: PropTypes.object,
     resetFileKey: PropTypes.number,
-    acceptContentTypes: ImmutablePropTypes.listOf(PropTypes.string).isRequired,
+    attachmentTypes: ImmutablePropTypes.listOf(PropTypes.string),
     intl: PropTypes.object.isRequired,
   };
 
@@ -47,17 +51,21 @@ class UploadButton extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, resetFileKey, unavailable, disabled } = this.props;
+    const { intl, resetFileKey, attachmentTypes, unavailable, disabled } = this.props;
 
     if (unavailable) {
       return null;
     }
 
+    const src = onlyImages(attachmentTypes)
+      ? require('@tabler/icons/icons/photo.svg')
+      : require('@tabler/icons/icons/paperclip.svg');
+
     return (
       <div className='compose-form__upload-button'>
         <IconButton
           className='compose-form__upload-button-icon'
-          src={require('@tabler/icons/icons/paperclip.svg')}
+          src={src}
           title={intl.formatMessage(messages.upload)}
           disabled={disabled}
           onClick={this.handleClick}
@@ -69,8 +77,7 @@ class UploadButton extends ImmutablePureComponent {
             ref={this.setRef}
             type='file'
             multiple
-            // Accept all types for now.
-            // accept={acceptContentTypes.toArray().join(',')}
+            accept={attachmentTypes && attachmentTypes.toArray().join(',')}
             onChange={this.handleChange}
             disabled={disabled}
             style={{ display: 'none' }}
