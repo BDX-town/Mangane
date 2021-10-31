@@ -284,10 +284,17 @@ class SidebarMenu extends ImmutablePureComponent {
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
                 </a>
               )}
-              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
-              </NavLink>
+              {features.importAPI ? (
+                <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/settings/import`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </a>
+              )}
               {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
