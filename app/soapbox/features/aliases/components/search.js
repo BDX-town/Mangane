@@ -72,8 +72,7 @@ class Search extends React.PureComponent {
         </label>
 
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>
-          <Icon id='search' className={classNames({ active: !hasValue })} />
-          <Icon id='times-circle' aria-label={intl.formatMessage(messages.search)} className={classNames({ active: hasValue })} />
+          <Icon src={require('@tabler/icons/icons/backspace.svg')} aria-label={intl.formatMessage(messages.search)} className={classNames('svg-icon--backspace', { active: hasValue })} />
         </div>
         <Button onClick={this.handleSubmit}>{intl.formatMessage(messages.searchTitle)}</Button>
       </div>

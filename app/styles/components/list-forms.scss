@@ -39,8 +39,8 @@
       flex: 1 1;
     }
 
-    > .search__icon .fa {
-      right: 102px !important;
+    > .search__icon {
+      position: relative;
     }
 
     > .button {
