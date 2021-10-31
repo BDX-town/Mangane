@@ -6,19 +6,22 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
-import { isAdmin } from 'soapbox/utils/accounts';
+import { getBaseURL, isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
   const features = getFeatures(instance);
 
   return {
-    account: state.getIn(['accounts', me]),
+    account,
     federating: features.federating,
     showAliases: features.accountAliasesAPI,
+    importAPI: features.importAPI,
+    baseURL: getBaseURL(account),
   };
 };
 
@@ -32,7 +35,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLogOut }) => (
+const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, importAPI, onClickLogOut, baseURL }) => (
   <div className='getting-started__footer'>
     <ul>
       {account && <>
@@ -44,7 +47,11 @@ const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLo
         {isAdmin(account) && <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='AdminFE' /></a></li>}
         {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>}
         <li><Link to='/settings/export'><FormattedMessage id='navigation_bar.export_data' defaultMessage='Export data' /></Link></li>
-        <li><Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link></li>
+        <li>{importAPI ? (
+          <Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link>
+        ) : (
+          <a href={`${baseURL}/settings/import`}><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></a>
+        )}</li>
         {(federating && showAliases) && <li><Link to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>}
         <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>
       </>}
@@ -70,8 +77,10 @@ LinkFooter.propTypes = {
   account: ImmutablePropTypes.map,
   federating: PropTypes.bool,
   showAliases: PropTypes.bool,
+  importAPI: PropTypes.bool,
   onOpenHotkeys: PropTypes.func.isRequired,
   onClickLogOut: PropTypes.func.isRequired,
+  baseURL: PropTypes.string,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(LinkFooter));
