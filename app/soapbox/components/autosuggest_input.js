@@ -7,6 +7,7 @@ import { isRtl } from '../rtl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
+import Icon from 'soapbox/components/icon';
 
 const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
   let word;
@@ -231,7 +232,11 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         onMouseDown={this.handleMenuItemClick(item)}
         key={i}
       >
-        {item.text}
+        {item.icon && (
+          <Icon src={item.icon} />
+        )}
+
+        <span>{item.text}</span>
       </a>
     ));
   };

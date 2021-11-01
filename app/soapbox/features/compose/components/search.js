@@ -90,7 +90,7 @@ class Search extends React.PureComponent {
     const { intl, value } = this.props;
 
     return [
-      { text: intl.formatMessage(messages.action, { query: value }), action: this.handleSubmit },
+      { text: intl.formatMessage(messages.action, { query: value }), icon: require('@tabler/icons/icons/search.svg'), action: this.handleSubmit },
     ];
   }
 

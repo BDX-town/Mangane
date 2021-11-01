@@ -104,7 +104,8 @@
 }
 
 .autosuggest-input__action {
-  display: block;
+  display: flex;
+  align-items: center;
   padding: 10px;
   border-radius: 4px;
   font-weight: bold;
@@ -114,5 +115,10 @@
   &:hover,
   &.selected {
     background-color: var(--brand-color--med);
+  }
+
+  .svg-icon {
+    margin-right: 8px;
+    transform: translateY(-1px);
   }
 }
