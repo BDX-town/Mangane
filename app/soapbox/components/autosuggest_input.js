@@ -47,6 +47,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     onKeyUp: PropTypes.func,
     onKeyDown: PropTypes.func,
     autoFocus: PropTypes.bool,
+    autoSelect: PropTypes.bool,
     className: PropTypes.string,
     id: PropTypes.string,
     searchTokens: PropTypes.arrayOf(PropTypes.string),
@@ -55,13 +56,18 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
   static defaultProps = {
     autoFocus: false,
+    autoSelect: true,
     searchTokens: ImmutableList(['@', ':', '#']),
   };
+
+  getFirstIndex = () => {
+    return this.props.autoSelect ? 0 : -1;
+  }
 
   state = {
     suggestionsHidden: true,
     focused: false,
-    selectedSuggestion: 0,
+    selectedSuggestion: this.getFirstIndex(),
     lastToken: null,
     tokenStart: 0,
   };
@@ -83,6 +89,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
   onKeyDown = (e) => {
     const { suggestions, disabled } = this.props;
     const { selectedSuggestion, suggestionsHidden } = this.state;
+    const firstIndex = this.getFirstIndex();
 
     if (disabled) {
       e.preventDefault();
@@ -115,16 +122,17 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     case 'ArrowUp':
       if (suggestions.size > 0 && !suggestionsHidden) {
         e.preventDefault();
-        this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, 0) });
+        this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, firstIndex) });
       }
 
       break;
     case 'Enter':
     case 'Tab':
       // Select suggestion
-      if (suggestions.size > 0 && !suggestionsHidden) {
+      if (suggestions.size > 0 && !suggestionsHidden && selectedSuggestion > -1) {
         e.preventDefault();
         e.stopPropagation();
+        this.setState({ selectedSuggestion: firstIndex });
         this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
       }
 

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
 import Icon from 'soapbox/components/icon';
+import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import classNames from 'classnames';
 
 const messages = defineMessages({
@@ -22,13 +23,16 @@ class Search extends React.PureComponent {
     onSubmit: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired,
     onShow: PropTypes.func.isRequired,
+    onSelected: PropTypes.func,
     openInRoute: PropTypes.bool,
     autoFocus: PropTypes.bool,
+    autosuggest: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
     autoFocus: false,
+    ausosuggest: false,
   }
 
   state = {
@@ -47,7 +51,7 @@ class Search extends React.PureComponent {
     }
   }
 
-  handleKeyUp = (e) => {
+  handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
 
@@ -70,24 +74,36 @@ class Search extends React.PureComponent {
     this.setState({ expanded: false });
   }
 
+  handleSelected = accountId => {
+    const { onSelected } = this.props;
+
+    if (onSelected) {
+      onSelected(accountId, this.context.router.history);
+    }
+  }
+
   render() {
-    const { intl, value, autoFocus, submitted } = this.props;
+    const { intl, value, autoFocus, autosuggest, submitted } = this.props;
     const hasValue = value.length > 0 || submitted;
+
+    const Component = autosuggest ? AutosuggestAccountInput : 'input';
 
     return (
       <div className='search'>
         <label>
           <span style={{ display: 'none' }}>{intl.formatMessage(messages.placeholder)}</span>
-          <input
+          <Component
             className='search__input'
             type='text'
             placeholder={intl.formatMessage(messages.placeholder)}
             value={value}
             onChange={this.handleChange}
-            onKeyUp={this.handleKeyUp}
+            onKeyDown={this.handleKeyDown}
             onFocus={this.handleFocus}
             onBlur={this.handleBlur}
+            onSelected={this.handleSelected}
             autoFocus={autoFocus}
+            autoSelect={false}
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>

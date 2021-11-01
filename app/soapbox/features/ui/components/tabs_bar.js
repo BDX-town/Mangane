@@ -88,7 +88,7 @@ class TabsBar extends React.PureComponent {
             )}
 
             <div className='tabs-bar__search-container'>
-              <SearchContainer openInRoute />
+              <SearchContainer openInRoute autosuggest />
             </div>
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
