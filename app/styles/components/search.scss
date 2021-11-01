@@ -183,11 +183,22 @@
     padding: 12px 36px 12px 16px;
   }
 
-  .search__icon {
-    position: relative;
+  .search__icon .svg-icon {
+    right: 24px;
   }
 }
 
 .search-results {
   padding: 15px;
+}
+
+.aliases_search,
+.list-editor__search {
+  .search__icon {
+    position: relative;
+
+    .svg-icon {
+      right: 0;
+    }
+  }
 }
