@@ -45,9 +45,9 @@ export default class SearchResults extends ImmutablePureComponent {
 
       if (results.get('accounts') && results.get('accounts').size > 0) {
         searchResults = results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />);
-      } else if (suggestions && !suggestions.isEmpty()) {
+      } else if (!submitted && suggestions && !suggestions.isEmpty()) {
         searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.get('account')} id={suggestion.get('account')} />);
-      } else if (submitted) {
+      } else if (loaded) {
         noResultsMessage = (
           <div className='empty-column-indicator'>
             <FormattedMessage
