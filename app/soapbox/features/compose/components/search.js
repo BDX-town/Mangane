@@ -7,6 +7,7 @@ import classNames from 'classnames';
 
 const messages = defineMessages({
   placeholder: { id: 'search.placeholder', defaultMessage: 'Search' },
+  action: { id: 'search.action', defaultMessage: 'Search for “{query}”' },
 });
 
 export default @injectIntl
@@ -51,15 +52,18 @@ class Search extends React.PureComponent {
     }
   }
 
+  handleSubmit = () => {
+    this.props.onSubmit();
+
+    if (this.props.openInRoute) {
+      this.context.router.history.push('/search');
+    }
+  }
+
   handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-
-      this.props.onSubmit();
-
-      if (this.props.openInRoute) {
-        this.context.router.history.push('/search');
-      }
+      this.handleSubmit();
     } else if (e.key === 'Escape') {
       document.querySelector('.ui').parentElement.focus();
     }
@@ -80,6 +84,14 @@ class Search extends React.PureComponent {
     if (onSelected) {
       onSelected(accountId, this.context.router.history);
     }
+  }
+
+  makeMenu = () => {
+    const { intl, value } = this.props;
+
+    return [
+      { text: intl.formatMessage(messages.action, { query: value }), action: this.handleSubmit },
+    ];
   }
 
   render() {
@@ -104,6 +116,7 @@ class Search extends React.PureComponent {
             onSelected={this.handleSelected}
             autoFocus={autoFocus}
             autoSelect={false}
+            menu={this.makeMenu()}
           />
         </label>
         <div role='button' tabIndex='0' className='search__icon' onClick={this.handleClear}>

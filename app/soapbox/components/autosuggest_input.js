@@ -52,6 +52,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     id: PropTypes.string,
     searchTokens: PropTypes.arrayOf(PropTypes.string),
     maxLength: PropTypes.number,
+    menu: PropTypes.arrayOf(PropTypes.object),
   };
 
   static defaultProps = {
@@ -87,9 +88,10 @@ export default class AutosuggestInput extends ImmutablePureComponent {
   }
 
   onKeyDown = (e) => {
-    const { suggestions, disabled } = this.props;
+    const { suggestions, menu, disabled } = this.props;
     const { selectedSuggestion, suggestionsHidden } = this.state;
     const firstIndex = this.getFirstIndex();
+    const lastIndex = suggestions.size + (menu || []).length - 1;
 
     if (disabled) {
       e.preventDefault();
@@ -113,14 +115,14 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
       break;
     case 'ArrowDown':
-      if (suggestions.size > 0 && !suggestionsHidden) {
+      if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
         e.preventDefault();
-        this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, suggestions.size - 1) });
+        this.setState({ selectedSuggestion: Math.min(selectedSuggestion + 1, lastIndex) });
       }
 
       break;
     case 'ArrowUp':
-      if (suggestions.size > 0 && !suggestionsHidden) {
+      if (!suggestionsHidden && (suggestions.size > 0 || menu)) {
         e.preventDefault();
         this.setState({ selectedSuggestion: Math.max(selectedSuggestion - 1, firstIndex) });
       }
@@ -129,11 +131,17 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     case 'Enter':
     case 'Tab':
       // Select suggestion
-      if (suggestions.size > 0 && !suggestionsHidden && selectedSuggestion > -1) {
+      if (!suggestionsHidden && selectedSuggestion > -1 && (suggestions.size > 0 || menu)) {
         e.preventDefault();
         e.stopPropagation();
         this.setState({ selectedSuggestion: firstIndex });
-        this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
+
+        if (selectedSuggestion < suggestions.size) {
+          this.props.onSuggestionSelected(this.state.tokenStart, this.state.lastToken, suggestions.get(selectedSuggestion));
+        } else {
+          const item = menu[selectedSuggestion - suggestions.size];
+          this.handleMenuItemAction(item);
+        }
       }
 
       break;
@@ -194,10 +202,46 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     );
   }
 
+  handleMenuItemAction = item => {
+    this.onBlur();
+    item.action();
+  }
+
+  handleMenuItemClick = item => {
+    return e => {
+      e.preventDefault();
+      this.handleMenuItemAction(item);
+    };
+  }
+
+  renderMenu = () => {
+    const { menu, suggestions } = this.props;
+    const { selectedSuggestion } = this.state;
+
+    if (!menu) {
+      return null;
+    }
+
+    return menu.map((item, i) => (
+      <a
+        className={classNames('autosuggest-input__action', { selected: suggestions.size - selectedSuggestion === i })}
+        href='#'
+        role='button'
+        tabIndex='0'
+        onMouseDown={this.handleMenuItemClick(item)}
+        key={i}
+      >
+        {item.text}
+      </a>
+    ));
+  };
+
   render() {
-    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength } = this.props;
+    const { value, suggestions, disabled, placeholder, onKeyUp, autoFocus, className, id, maxLength, menu } = this.props;
     const { suggestionsHidden } = this.state;
     const style = { direction: 'ltr' };
+
+    const visible = !suggestionsHidden && (!suggestions.isEmpty() || (menu && value));
 
     if (isRtl(value)) {
       style.direction = 'rtl';
@@ -228,8 +272,9 @@ export default class AutosuggestInput extends ImmutablePureComponent {
           />
         </label>
 
-        <div className={`autosuggest-textarea__suggestions ${suggestionsHidden || suggestions.isEmpty() ? '' : 'autosuggest-textarea__suggestions--visible'}`}>
+        <div className={classNames('autosuggest-textarea__suggestions', { 'autosuggest-textarea__suggestions--visible': visible })}>
           {suggestions.map(this.renderSuggestion)}
+          {this.renderMenu()}
         </div>
       </div>
     );

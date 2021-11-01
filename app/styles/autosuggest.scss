@@ -102,3 +102,17 @@
 .autosuggest-account .display-name__account {
   color: var(--primary-text-color--faint);
 }
+
+.autosuggest-input__action {
+  display: block;
+  padding: 10px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--primary-text-color--faint);
+
+  &:hover,
+  &.selected {
+    background-color: var(--brand-color--med);
+  }
+}
