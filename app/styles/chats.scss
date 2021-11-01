@@ -9,7 +9,7 @@
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
-  z-index: 999;
+  z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
