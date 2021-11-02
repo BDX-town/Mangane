@@ -18,6 +18,7 @@ import { logOut, switchAccount } from 'soapbox/actions/auth';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { is as ImmutableIs } from 'immutable';
+import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -45,6 +46,7 @@ const messages = defineMessages({
   donate: { id: 'donate', defaultMessage: 'Donate' },
   donate_crypto: { id: 'donate_crypto', defaultMessage: 'Donate cryptocurrency' },
   info: { id: 'column.info', defaultMessage: 'Server information' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
@@ -67,6 +69,7 @@ const makeMapStateToProps = () => {
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
       features,
+      settings: getSettings(state),
       siteTitle: instance.get('title'),
       baseURL: getBaseURL(account),
     };
@@ -101,6 +104,7 @@ class SidebarMenu extends ImmutablePureComponent {
     otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
     baseURL: PropTypes.string,
   };
@@ -159,7 +163,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features, siteTitle, baseURL } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -318,6 +322,13 @@ class SidebarMenu extends ImmutablePureComponent {
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
               </Link>
             </div>
+
+            {(settings.get('isDeveloper')) && (
+              <Link className='sidebar-menu-item' to='/developers' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/code.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.developers)}</span>
+              </Link>
+            )}
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>

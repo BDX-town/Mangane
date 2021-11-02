@@ -18,7 +18,8 @@
         }
 
         &--active {
-          svg.icon-tabler-search {
+          svg.icon-tabler-search,
+          svg.icon-tabler-code {
             stroke-width: 2.5px;
           }
         }
