@@ -30,6 +30,7 @@
   }
 
   &__num,
+  &__icon,
   &__text {
     text-align: center;
     font-weight: 500;
@@ -37,6 +38,20 @@
     line-height: 30px;
     color: var(--primary-text-color);
     margin-bottom: 10px;
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+
+    .svg-icon {
+      width: 48px;
+      height: 48px;
+
+      svg {
+        stroke-width: 1px;
+      }
+    }
   }
 
   &__label {
