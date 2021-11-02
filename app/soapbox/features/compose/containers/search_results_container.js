@@ -11,6 +11,7 @@ const mapStateToProps = state => {
     value: state.getIn(['search', 'submittedValue']),
     results: state.getIn(['search', 'results']),
     suggestions: state.getIn(['suggestions', 'items']),
+    trends: state.getIn(['trends', 'items']),
     submitted: state.getIn(['search', 'submitted']),
     selectedFilter: state.getIn(['search', 'filter']),
     features: getFeatures(instance),

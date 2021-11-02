@@ -98,7 +98,7 @@ class HomePage extends ImmutablePureComponent {
                   )}
                   {showTrendsPanel && (
                     <BundleContainer fetchComponent={TrendsPanel}>
-                      {Component => <Component key='trends-panel' />}
+                      {Component => <Component limit={3} key='trends-panel' />}
                     </BundleContainer>
                   )}
                   {showWhoToFollowPanel && (
