@@ -421,3 +421,7 @@ export function Share() {
 export function NewStatus() {
   return import(/* webpackChunkName: "features/new_status" */'../../new_status');
 }
+
+export function IntentionalError() {
+  return import(/* webpackChunkName: "error" */'../../intentional_error');
+}
