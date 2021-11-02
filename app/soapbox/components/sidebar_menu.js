@@ -26,6 +26,7 @@ const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
+  invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -69,6 +70,7 @@ const makeMapStateToProps = () => {
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
       features,
+      instance,
       settings: getSettings(state),
       siteTitle: instance.get('title'),
       baseURL: getBaseURL(account),
@@ -106,6 +108,7 @@ class SidebarMenu extends ImmutablePureComponent {
     onClose: PropTypes.func.isRequired,
     settings: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
+    instance: ImmutablePropTypes.map.isRequired,
     baseURL: PropTypes.string,
   };
 
@@ -163,7 +166,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, siteTitle, baseURL } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, instance, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -230,6 +233,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
+              {instance.get('invites_enabled') && <a className='sidebar-menu-item' href={`${baseURL}/invites`} onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/mailbox.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.invites)}</span>
+              </a>}
               {donateUrl && <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/coin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
