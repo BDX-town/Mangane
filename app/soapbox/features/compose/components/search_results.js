@@ -23,6 +23,7 @@ export default class SearchResults extends ImmutablePureComponent {
     selectFilter: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
     suggestions: ImmutablePropTypes.list,
+    trends: ImmutablePropTypes.list,
   };
 
   handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
@@ -30,7 +31,7 @@ export default class SearchResults extends ImmutablePureComponent {
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
   render() {
-    const { value, results, submitted, selectedFilter, suggestions } = this.props;
+    const { value, results, submitted, selectedFilter, suggestions, trends } = this.props;
 
     let searchResults;
     let hasMore = false;
@@ -79,14 +80,16 @@ export default class SearchResults extends ImmutablePureComponent {
       }
     }
 
-    if (selectedFilter === 'hashtags' && results.get('hashtags')) {
+    if (selectedFilter === 'hashtags') {
       hasMore = results.get('hashtagsHasMore');
       loaded = results.get('hashtagsLoaded');
       placeholderComponent = PlaceholderHashtag;
 
-      if (results.get('hashtags').size > 0) {
+      if (results.get('hashtags') && results.get('hashtags').size > 0) {
         searchResults = results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />);
-      } else {
+      } else if (!submitted && suggestions && !suggestions.isEmpty()) {
+        searchResults = trends.map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />);
+      } else if (loaded) {
         noResultsMessage = (
           <div className='empty-column-indicator'>
             <FormattedMessage
