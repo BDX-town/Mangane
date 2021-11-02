@@ -152,7 +152,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
+    opacity: 0.6;
 
     .svg-icon {
       margin-right: 7px;
