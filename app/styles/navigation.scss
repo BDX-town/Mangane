@@ -63,7 +63,7 @@
   justify-content: space-between;
   box-shadow: 0 -1px hsla(var(--primary-text-color_hsl), 0.2);
   border-radius: 0;
-  z-index: 999;
+  z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;
