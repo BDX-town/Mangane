@@ -429,3 +429,7 @@ export function IntentionalError() {
 export function Developers() {
   return import(/* webpackChunkName: "features/developers" */'../../developers');
 }
+
+export function CreateApp() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/apps/create');
+}

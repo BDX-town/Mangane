@@ -23,12 +23,12 @@ class Developers extends React.Component {
       <Column heading={intl.formatMessage(messages.heading)}>
         <div className='dashcounters'>
           <div className='dashcounter'>
-            <Link to='/error'>
+            <Link to='/developers/apps/create'>
               <div className='dashcounter__icon'>
-                <Icon src={require('@tabler/icons/icons/mood-sad.svg')} />
+                <Icon src={require('@tabler/icons/icons/apps.svg')} />
               </div>
               <div className='dashcounter__label'>
-                <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
+                <FormattedMessage id='developers.navigation.app_create_label' defaultMessage='Create an app' />
               </div>
             </Link>
           </div>
