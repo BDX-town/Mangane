@@ -25,6 +25,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import { createGlobals } from 'soapbox/globals';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -32,6 +33,9 @@ const previewMediaState = 'previewMediaModal';
 const previewVideoState = 'previewVideoModal';
 
 export const store = configureStore();
+
+// Configure global functions for developers
+createGlobals(store);
 
 store.dispatch(preload());
 
