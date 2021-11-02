@@ -116,6 +116,7 @@ import {
   NewStatus,
   IntentionalError,
   Developers,
+  CreateApp,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -320,8 +321,9 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/admin/users' page={AdminPage} component={UserIndex} content={children} exact />
         <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
-        <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
+        <WrappedRoute path='/developers/apps/create' page={DefaultPage} component={CreateApp} content={children} />
         <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
+        <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
         <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />
