@@ -87,6 +87,8 @@
       margin: 15px 0;
       font-size: 15px;
       line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       a {
         color: var(--highlight-text-color);
