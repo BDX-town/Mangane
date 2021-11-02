@@ -425,3 +425,7 @@ export function NewStatus() {
 export function IntentionalError() {
   return import(/* webpackChunkName: "error" */'../../intentional_error');
 }
+
+export function Developers() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers');
+}

@@ -9,6 +9,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 import classNames from 'classnames';
+import { getSettings } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff, getBaseURL } from 'soapbox/utils/accounts';
@@ -27,6 +28,7 @@ const mapStateToProps = state => {
     chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
     baseURL: getBaseURL(account),
+    settings: getSettings(state),
     features: getFeatures(instance),
     instance,
   };
@@ -47,13 +49,14 @@ class PrimaryNavigation extends React.PureComponent {
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
     baseURL: PropTypes.string,
+    settings: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
     location: PropTypes.object,
     instance: ImmutablePropTypes.map.isRequired,
   };
 
   render() {
-    const { account, features, notificationCount, chatsCount, dashboardCount, location, instance, baseURL } = this.props;
+    const { account, settings, features, notificationCount, chatsCount, dashboardCount, location, instance, baseURL } = this.props;
 
     return (
       <div className='column-header__wrapper primary-navigation__wrapper'>
@@ -125,6 +128,16 @@ class PrimaryNavigation extends React.PureComponent {
               <Icon src={require('@tabler/icons/icons/mailbox.svg')} className='primary-navigation__icon' />
               <FormattedMessage id='navigation.invites' defaultMessage='Invites' />
             </a>
+          )}
+
+          {(settings.get('isDeveloper')) && (
+            <NavLink key='developers' className='btn grouped' to='/developers'>
+              <Icon
+                src={require('@tabler/icons/icons/code.svg')}
+                className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname.startsWith('/developers') })}
+              />
+              <FormattedMessage id='navigation.developers' defaultMessage='Developers' />
+            </NavLink>
           )}
 
           <hr />

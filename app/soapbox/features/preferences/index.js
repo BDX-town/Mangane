@@ -262,6 +262,10 @@ class Preferences extends ImmutablePureComponent {
               hint={<FormattedMessage id='preferences.hints.demetricator' defaultMessage='Decrease social media anxiety by hiding all numbers from the site.' />}
               path={['demetricator']}
             />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.developer_label' defaultMessage='Developer tools' />}
+              path={['isDeveloper']}
+            />
           </FieldsGroup>
         </SimpleForm>
       </Column>

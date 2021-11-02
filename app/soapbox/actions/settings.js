@@ -38,6 +38,8 @@ export const defaultSettings = ImmutableMap({
   dyslexicFont: false,
   demetricator: false,
 
+  isDeveloper: false,
+
   chats: ImmutableMap({
     panes: ImmutableList(),
     mainWindow: 'minimized',
