@@ -46,7 +46,7 @@ const importResults = (state, results) => {
   return state.withMutations(state => {
     state.set('results', ImmutableMap({
       accounts: toIds(results.accounts),
-      statuses: toIds(results.accounts),
+      statuses: toIds(results.statuses),
       hashtags: fromJS(results.hashtags), // it's a list of maps
       accountsHasMore: results.accounts.length >= 20,
       statusesHasMore: results.statuses.length >= 20,
