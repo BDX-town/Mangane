@@ -177,7 +177,11 @@ class Header extends ImmutablePureComponent {
     }
 
     if ('share' in navigator) {
-      menu.push({ text: intl.formatMessage(messages.share, { name: account.get('username') }), action: this.handleShare });
+      menu.push({
+        text: intl.formatMessage(messages.share, { name: account.get('username') }),
+        action: this.handleShare,
+        icon: require('@tabler/icons/icons/share.svg'),
+      });
       menu.push(null);
     }
 
