@@ -49,18 +49,24 @@ class Reactions extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
   };
 
+  fetchData = () => {
+    const { dispatch, params } = this.props;
+    const { statusId } = params;
+
+    dispatch(fetchFavourites(statusId));
+    dispatch(fetchReactions(statusId));
+    dispatch(fetchStatus(statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchFavourites(this.props.params.statusId));
-    this.props.dispatch(fetchReactions(this.props.params.statusId));
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchData();
   }
 
   componentDidUpdate(prevProps) {
     const { params } = this.props;
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
-      this.props.dispatch(fetchFavourites(this.props.params.statusId));
-      prevProps.dispatch(fetchReactions(params.statusId));
-      prevProps.dispatch(fetchStatus(params.statusId));
+
+    if (params.statusId !== prevProps.params.statusId) {
+      this.fetchData();
     }
   }
 

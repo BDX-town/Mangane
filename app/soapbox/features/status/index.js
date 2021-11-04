@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchStatus } from '../../actions/statuses';
+import { fetchStatusWithContext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import DetailedStatus from './components/detailed_status';
 import ActionBar from './components/action_bar';
@@ -167,13 +167,15 @@ class Status extends ImmutablePureComponent {
     emojiSelectorFocused: false,
   };
 
-  fetchStatus = () => {
+  fetchData = () => {
     const { dispatch, params } = this.props;
-    return dispatch(fetchStatus(params.statusId));
+    const { statusId } = params;
+
+    return dispatch(fetchStatusWithContext(statusId));
   }
 
   componentDidMount() {
-    this.fetchStatus();
+    this.fetchData();
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -538,9 +540,9 @@ class Status extends ImmutablePureComponent {
     const { params, status } = this.props;
     const { ancestorsIds } = prevProps;
 
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+    if (params.statusId !== prevProps.params.statusId) {
       this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(params.statusId));
+      this.fetchData();
     }
 
     if (status && status.get('id') !== prevState.loadedStatusId) {
@@ -570,10 +572,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleRefresh = () => {
-    return new Promise(resolve => {
-      this.fetchStatus();
-      resolve();
-    });
+    return this.fetchData();
   }
 
   render() {
