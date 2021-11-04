@@ -301,15 +301,31 @@ class StatusActionBar extends ImmutablePureComponent {
 
     const menu = [];
 
-    menu.push({ text: intl.formatMessage(messages.open), action: this.handleOpen });
+    menu.push({
+      text: intl.formatMessage(messages.open),
+      action: this.handleOpen,
+      icon: require('@tabler/icons/icons/arrows-vertical.svg'),
+    });
 
     if (publicStatus) {
-      menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
-      // menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      menu.push({
+        text: intl.formatMessage(messages.copy),
+        action: this.handleCopy,
+        icon: require('@tabler/icons/icons/link.svg'),
+      });
+      // menu.push({
+      //   text: intl.formatMessage(messages.embed),
+      //   action: this.handleEmbed,
+      //   icon: require('feather-icons/dist/icons/link-2.svg'),
+      // });
     }
 
     if (features.bookmarks) {
-      menu.push({ text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark), action: this.handleBookmarkClick });
+      menu.push({
+        text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+        action: this.handleBookmarkClick,
+        icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+      });
     }
 
     if (!me) {
@@ -319,57 +335,133 @@ class StatusActionBar extends ImmutablePureComponent {
     menu.push(null);
 
     if (ownAccount || withDismiss) {
-      menu.push({ text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation), action: this.handleConversationMuteClick });
+      menu.push({
+        text: intl.formatMessage(mutingConversation ? messages.unmuteConversation : messages.muteConversation),
+        action: this.handleConversationMuteClick,
+        icon: require(mutingConversation ? '@tabler/icons/icons/bell.svg' : '@tabler/icons/icons/bell-off.svg'),
+      });
       menu.push(null);
     }
 
     if (ownAccount) {
       if (publicStatus) {
-        menu.push({ text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin), action: this.handlePinClick });
+        menu.push({
+          text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin),
+          action: this.handlePinClick,
+          icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
+        });
       } else {
         if (status.get('visibility') === 'private') {
-          menu.push({ text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private), action: this.handleReblogClick });
+          menu.push({
+            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            action: this.handleReblogClick,
+            icon: require('@tabler/icons/icons/repeat.svg'),
+          });
         }
       }
 
-      menu.push({ text: intl.formatMessage(messages.delete), action: this.handleDeleteClick });
-      menu.push({ text: intl.formatMessage(messages.redraft), action: this.handleRedraftClick });
+      menu.push({
+        text: intl.formatMessage(messages.delete),
+        action: this.handleDeleteClick,
+        icon: require('@tabler/icons/icons/trash.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.redraft),
+        action: this.handleRedraftClick,
+        icon: require('@tabler/icons/icons/edit.svg'),
+      });
     } else {
-      menu.push({ text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }), action: this.handleMentionClick });
+      menu.push({
+        text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }),
+        action: this.handleMentionClick,
+        icon: require('feather-icons/dist/icons/at-sign.svg'),
+      });
 
       if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
-        menu.push({ text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }), action: this.handleChatClick });
+        menu.push({
+          text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }),
+          action: this.handleChatClick,
+          icon: require('@tabler/icons/icons/messages.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }), action: this.handleDirectClick });
+        menu.push({
+          text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }),
+          action: this.handleDirectClick,
+          icon: require('@tabler/icons/icons/mail.svg'),
+        });
       }
 
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }), action: this.handleMuteClick });
-      menu.push({ text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }), action: this.handleBlockClick });
-      menu.push({ text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }), action: this.handleReport });
+      menu.push({
+        text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }),
+        action: this.handleMuteClick,
+        icon: require('@tabler/icons/icons/circle-x.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }),
+        action: this.handleBlockClick,
+        icon: require('@tabler/icons/icons/ban.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }),
+        action: this.handleReport,
+        icon: require('@tabler/icons/icons/flag.svg'),
+      });
     }
 
     if (isStaff) {
       menu.push(null);
 
       if (isAdmin) {
-        menu.push({ text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }), href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/` });
-        menu.push({ text: intl.formatMessage(messages.admin_status), href: `/pleroma/admin/#/statuses/${status.get('id')}/` });
+        menu.push({
+          text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }),
+          href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
+          icon: require('icons/gavel.svg'),
+        });
+        menu.push({
+          text: intl.formatMessage(messages.admin_status),
+          href: `/pleroma/admin/#/statuses/${status.get('id')}/`,
+          icon: require('@tabler/icons/icons/pencil.svg'),
+        });
       }
 
-      menu.push({ text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive), action: this.handleToggleStatusSensitivity });
+      menu.push({
+        text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+        action: this.handleToggleStatusSensitivity,
+        icon: require('@tabler/icons/icons/alert-triangle.svg'),
+      });
 
       if (!ownAccount) {
-        menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeactivateUser });
-        menu.push({ text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }), action: this.handleDeleteUser });
-        menu.push({ text: intl.formatMessage(messages.deleteStatus), action: this.handleDeleteStatus });
+        menu.push({
+          text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }),
+          action: this.handleDeactivateUser,
+          icon: require('@tabler/icons/icons/user-off.svg'),
+        });
+        menu.push({
+          text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
+          action: this.handleDeleteUser,
+          icon: require('@tabler/icons/icons/user-minus.svg'),
+        });
+        menu.push({
+          text: intl.formatMessage(messages.deleteStatus),
+          action: this.handleDeleteStatus,
+          icon: require('@tabler/icons/icons/trash.svg'),
+        });
       }
     }
 
     if (!ownAccount && withGroupAdmin) {
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.group_remove_account), action: this.handleGroupRemoveAccount });
-      menu.push({ text: intl.formatMessage(messages.group_remove_post), action: this.handleGroupRemovePost });
+      menu.push({
+        text: intl.formatMessage(messages.group_remove_account),
+        action: this.handleGroupRemoveAccount,
+        icon: require('@tabler/icons/icons/user-x.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.group_remove_post),
+        action: this.handleGroupRemovePost,
+        icon: require('@tabler/icons/icons/trash.svg'),
+      });
     }
 
     return menu;

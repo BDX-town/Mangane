@@ -9,7 +9,7 @@
   padding: 4px 0;
   color: var(--primary-text-color);
   box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
-  max-width: 300px;
+  max-width: 350px;
   &.left { transform-origin: 100% 50%; }
   &.top { transform-origin: 50% 100%; }
   &.bottom { transform-origin: 50% 0; }
@@ -56,10 +56,12 @@
   }
 
   &__item a {
-    display: block;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
     overflow: hidden;
-    padding: 3px 10px 1px;
+    padding: 4px 10px;
+    font-size: 15px;
     text-decoration: none;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -76,13 +78,23 @@
         color: #fff;
       }
     }
+
+    .svg-icon:first-child {
+      height: 20px;
+      width: 20px;
+      margin-right: 10px;
+
+      svg {
+        stroke-width: 1.5;
+      }
+    }
   }
 
   &__separator {
     display: block;
     margin: 10px !important;
     height: 1px;
-    background: var(--foreground-color);
+    background: hsla(var(--primary-text-color_hsl), 0.12);
   }
 
   &__item .account {
