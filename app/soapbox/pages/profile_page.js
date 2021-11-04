@@ -100,7 +100,7 @@ class ProfilePage extends ImmutablePureComponent {
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area'>
+              <div className='columns-area '>
                 {children}
               </div>
             </div>

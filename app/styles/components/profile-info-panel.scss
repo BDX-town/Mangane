@@ -103,10 +103,6 @@
       padding: 10px 0;
       margin: 5px 0;
 
-      @media screen and (max-width: 895px) {
-        border-bottom: 1px solid var(--brand-color--med);
-      }
-
       a {
         color: var(--highlight-text-color);
       }

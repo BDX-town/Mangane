@@ -99,6 +99,10 @@
   margin: 0 auto;
   padding-top: 15px;
 
+  @media screen and (max-width: 580px) {
+    padding-top: 0;
+  }
+
   .column {
     width: 100%;
     padding: 0;
@@ -124,7 +128,7 @@
   @media (max-width: 580px) {
     .timeline-compose-block {
       border-radius: 0;
-      margin-top: -5px;
+      margin-top: 10px;
     }
   }
 
@@ -958,4 +962,19 @@
 
 .sub-navigation + .account__section-headline {
   background: var(--foreground-color);
+}
+
+// Pull to refresh
+.columns-area .column {
+  .ptr,
+  .ptr__children {
+    background: var(--foreground-color);
+  }
+
+  &--transparent {
+    .ptr,
+    .ptr__children {
+      background: transparent;
+    }
+  }
 }

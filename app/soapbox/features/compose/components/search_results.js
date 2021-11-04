@@ -11,6 +11,7 @@ import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import Pullable from 'soapbox/components/pullable';
 
 export default class SearchResults extends ImmutablePureComponent {
 
@@ -107,18 +108,20 @@ export default class SearchResults extends ImmutablePureComponent {
         <FilterBar selectedFilter={selectedFilter} selectFilter={this.handleSelectFilter} />
 
         {noResultsMessage || (
-          <ScrollableList
-            key={selectedFilter}
-            scrollKey={`${selectedFilter}:${value}`}
-            isLoading={submitted && !loaded}
-            showLoading={submitted && !loaded && results.isEmpty()}
-            hasMore={hasMore}
-            onLoadMore={this.handleLoadMore}
-            placeholderComponent={placeholderComponent}
-            placeholderCount={20}
-          >
-            {searchResults}
-          </ScrollableList>
+          <Pullable>
+            <ScrollableList
+              key={selectedFilter}
+              scrollKey={`${selectedFilter}:${value}`}
+              isLoading={submitted && !loaded}
+              showLoading={submitted && !loaded && results.isEmpty()}
+              hasMore={hasMore}
+              onLoadMore={this.handleLoadMore}
+              placeholderComponent={placeholderComponent}
+              placeholderCount={20}
+            >
+              {searchResults}
+            </ScrollableList>
+          </Pullable>
         )}
       </>
     );
