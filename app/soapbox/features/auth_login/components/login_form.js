@@ -40,6 +40,8 @@ class LoginForm extends ImmutablePureComponent {
                 type='text'
                 name='username'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 required
               />
             </div>
@@ -51,6 +53,8 @@ class LoginForm extends ImmutablePureComponent {
                 type='password'
                 name='password'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 required
               />
             </div>

@@ -172,6 +172,8 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='username'
                 hint={intl.formatMessage(messages.username_hint)}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 pattern='^[a-zA-Z\d_-]+'
                 onChange={this.onInputChange}
                 required
@@ -181,6 +183,8 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='email'
                 type='email'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onChange={this.onInputChange}
                 required
               />
@@ -189,6 +193,8 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='password'
                 type='password'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onChange={this.onInputChange}
                 required
               />
@@ -197,6 +203,8 @@ class RegistrationForm extends ImmutablePureComponent {
                 name='confirm'
                 type='password'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onChange={this.onInputChange}
                 required
               />
@@ -206,7 +214,6 @@ class RegistrationForm extends ImmutablePureComponent {
                   hint={<FormattedMessage id='registration.reason_hint' defaultMessage='This will help us review your application' />}
                   name='reason'
                   maxLength={500}
-                  autoComplete='off'
                   onChange={this.onInputChange}
                   required
                 />}
