@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PullToRefresh from 'react-simple-pull-to-refresh';
+import PullToRefresh from './pull_to_refresh';
 
 /**
  * Pullable:
@@ -13,16 +13,11 @@ export default class Pullable extends React.Component {
     children: PropTypes.node.isRequired,
   }
 
-  handleRefresh = () => {
-    return new Promise(resolve => resolve());
-  }
-
   render() {
     const { children } = this.props;
 
     return (
       <PullToRefresh
-        onRefresh={this.handleRefresh}
         pullingContent={null}
         refreshingContent={null}
       >

@@ -52,7 +52,7 @@ import ThreadStatus from './components/thread_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { launchChat } from 'soapbox/actions/chats';
-import Pullable from 'soapbox/components/pullable';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
@@ -167,8 +167,13 @@ class Status extends ImmutablePureComponent {
     emojiSelectorFocused: false,
   };
 
+  fetchStatus = () => {
+    const { dispatch, params } = this.props;
+    return dispatch(fetchStatus(params.statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchStatus();
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -564,6 +569,13 @@ class Status extends ImmutablePureComponent {
     this.setState({ fullscreen: isFullscreen() });
   }
 
+  handleRefresh = () => {
+    return new Promise(resolve => {
+      this.fetchStatus();
+      resolve();
+    });
+  }
+
   render() {
     let ancestors, descendants;
     const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
@@ -627,7 +639,7 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='thread'>
-          <Pullable>
+          <PullToRefresh onRefresh={this.handleRefresh}>
             {ancestors && (
               <div className='thread__ancestors'>{ancestors}</div>
             )}
@@ -678,7 +690,7 @@ class Status extends ImmutablePureComponent {
             {descendants && (
               <div className='thread__descendants'>{descendants}</div>
             )}
-          </Pullable>
+          </PullToRefresh>
         </div>
       </Column>
     );
