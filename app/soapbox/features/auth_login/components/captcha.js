@@ -107,6 +107,8 @@ export const NativeCaptchaField = ({ captcha, onChange, onClick, name, value }) 
       name={name}
       value={value}
       autoComplete='off'
+      autoCorrect='off'
+      autoCapitalize='off'
       onChange={onChange}
       required
     />

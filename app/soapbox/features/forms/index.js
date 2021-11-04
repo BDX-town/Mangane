@@ -126,6 +126,7 @@ export class SimpleForm extends ImmutablePureComponent {
 
   static propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -139,9 +140,14 @@ export class SimpleForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, onSubmit, ...props } = this.props;
+    const { className, children, onSubmit, ...props } = this.props;
     return (
-      <form className='simple_form' method='post' onSubmit={this.onSubmit} {...props}>
+      <form
+        className={classNames('simple_form', className)}
+        method='post'
+        onSubmit={this.onSubmit}
+        {...props}
+      >
         {children}
       </form>
     );

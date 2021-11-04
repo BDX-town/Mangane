@@ -295,6 +295,7 @@ code {
     input[type=text],
     input[type=number],
     input[type=email],
+    input[type=url],
     input[type=password],
     textarea {
       color: var(--primary-text-color--faint);
@@ -305,6 +306,7 @@ code {
   input[type=text],
   input[type=number],
   input[type=email],
+  input[type=url],
   input[type=password],
   textarea,
   .rfipbtn {
@@ -348,6 +350,7 @@ code {
   input[type=text][disabled],
   input[type=number][disabled],
   input[type=email][disabled],
+  input[type=url][disabled],
   input[type=password][disabled],
   textarea[disabled] {
     color: var(--primary-text-color--faint);
@@ -362,6 +365,7 @@ code {
     input[type=text],
     input[type=number],
     input[type=email],
+    input[type=url],
     input[type=password],
     textarea,
     select {
