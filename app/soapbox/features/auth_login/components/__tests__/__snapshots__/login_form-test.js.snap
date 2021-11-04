@@ -14,7 +14,9 @@ exports[`<LoginForm /> renders for Mastodon 1`] = `
       >
         <input
           aria-label="Username"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="string email"
           name="username"
           placeholder="Username"
@@ -27,7 +29,9 @@ exports[`<LoginForm /> renders for Mastodon 1`] = `
       >
         <input
           aria-label="Password"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="password"
           name="password"
           placeholder="Password"
@@ -74,7 +78,9 @@ exports[`<LoginForm /> renders for Pleroma 1`] = `
       >
         <input
           aria-label="Username"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="string email"
           name="username"
           placeholder="Username"
@@ -87,7 +93,9 @@ exports[`<LoginForm /> renders for Pleroma 1`] = `
       >
         <input
           aria-label="Password"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="password"
           name="password"
           placeholder="Password"

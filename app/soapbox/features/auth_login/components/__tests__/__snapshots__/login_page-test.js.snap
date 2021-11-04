@@ -17,7 +17,9 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
       >
         <input
           aria-label="Username"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="string email"
           name="username"
           placeholder="Username"
@@ -30,7 +32,9 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
       >
         <input
           aria-label="Password"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="password"
           name="password"
           placeholder="Password"
