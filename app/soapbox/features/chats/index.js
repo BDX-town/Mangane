@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { launchChat } from 'soapbox/actions/chats';
+import { fetchChats, launchChat } from 'soapbox/actions/chats';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ChatList from './components/chat_list';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 import AccountSearch from 'soapbox/components/account_search';
-import Pullable from 'soapbox/components/pullable';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },
@@ -36,6 +36,11 @@ class ChatIndex extends React.PureComponent {
     this.context.router.history.push(`/chats/${chat.get('id')}`);
   }
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(fetchChats());
+  }
+
   render() {
     const { intl } = this.props;
 
@@ -55,12 +60,12 @@ class ChatIndex extends React.PureComponent {
           onSelected={this.handleSuggestion}
         />
 
-        <Pullable>
+        <PullToRefresh onRefresh={this.handleRefresh}>
           <ChatList
             onClickChat={this.handleClickChat}
             emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
           />
-        </Pullable>
+        </PullToRefresh>
       </Column>
     );
   }
