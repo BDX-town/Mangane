@@ -44,6 +44,7 @@ class Reports extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.modlog),
       to: '/admin/log',
+      icon: require('@tabler/icons/icons/list.svg'),
     }];
   }
 

@@ -572,8 +572,9 @@
         display: flex;
         align-items: center;
         padding: 13px 10px 12px;
-        color: var(--primary-text-color--faint);
+        color: var(--primary-text-color);
         text-decoration: none;
+        opacity: 0.6;
 
         &,
         button {
@@ -582,8 +583,9 @@
 
         &.active,
         &:hover,
-        &:active,
         &:focus {
+          opacity: 1;
+
           &,
           button {
             background: var(--background-color);
@@ -592,7 +594,15 @@
           }
         }
 
-        .svg-icon:first-child { margin-right: 10px; }
+        .svg-icon:first-child {
+          height: 20px;
+          width: 20px;
+          margin-right: 10px;
+
+          svg {
+            stroke-width: 1.5;
+          }
+        }
       }
     }
   }

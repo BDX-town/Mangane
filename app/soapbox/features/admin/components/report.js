@@ -37,9 +37,11 @@ class Report extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.deactivateUser, { name: report.getIn(['account', 'username']) }),
       action: this.handleDeactivateUser,
+      icon: require('@tabler/icons/icons/user-off.svg'),
     }, {
       text: intl.formatMessage(messages.deleteUser, { name: report.getIn(['account', 'username']) }),
       action: this.handleDeleteUser,
+      icon: require('@tabler/icons/icons/user-minus.svg'),
     }];
   }
 
