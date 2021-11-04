@@ -7,9 +7,17 @@ const sharedConfig = require('./shared');
 
 const watchOptions = {};
 
-const backendUrl  = process.env.BACKEND_URL || 'http://localhost:4000';
-const patronUrl  = process.env.PATRON_URL || 'http://localhost:3037';
-const secureProxy = !(process.env.PROXY_HTTPS_INSECURE === 'true');
+const {
+  DEVSERVER_URL,
+  BACKEND_URL,
+  PATRON_URL,
+  PROXY_HTTPS_INSECURE,
+} = process.env;
+
+const DEFAULTS = {
+  DEVSERVER_URL: 'http://localhost:3036',
+  PATRON_URL: 'http://localhost:3037',
+};
 
 const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
@@ -28,15 +36,17 @@ const backendEndpoints = [
 ];
 
 const makeProxyConfig = () => {
+  const secureProxy = PROXY_HTTPS_INSECURE !== 'true';
+
   const proxyConfig = {};
   proxyConfig['/api/patron'] = {
-    target: patronUrl,
+    target: PATRON_URL || DEFAULTS.PATRON_URL,
     secure: secureProxy,
     changeOrigin: true,
   };
   backendEndpoints.map(endpoint => {
     proxyConfig[endpoint] = {
-      target: backendUrl,
+      target: BACKEND_URL || DEFAULTS.BACKEND_URL,
       secure: secureProxy,
       changeOrigin: true,
     };
@@ -50,6 +60,14 @@ if (process.env.VAGRANT) {
   // anything has changed.
   watchOptions.poll = 1000;
 }
+
+const devServerUrl = (() => {
+  try {
+    return new URL(DEVSERVER_URL);
+  } catch {
+    return new URL(DEFAULTS.DEVSERVER_URL);
+  }
+})();
 
 module.exports = merge(sharedConfig, {
   mode: 'development',
@@ -73,9 +91,9 @@ module.exports = merge(sharedConfig, {
 
   devServer: {
     compress: true,
-    host: 'localhost',
-    port: 3036,
-    https: false,
+    host: devServerUrl.hostname,
+    port: devServerUrl.port,
+    https: devServerUrl.protocol === 'https:',
     hot: false,
     allowedHosts: 'all',
     historyApiFallback: {
