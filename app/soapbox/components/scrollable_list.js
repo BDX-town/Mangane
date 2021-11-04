@@ -9,6 +9,7 @@ import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
 import LoadingIndicator from './loading_indicator';
 import { getSettings } from 'soapbox/actions/settings';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const MOUSE_IDLE_DELAY = 300;
 
@@ -43,6 +44,7 @@ class ScrollableList extends PureComponent {
     placeholderComponent: PropTypes.func,
     placeholderCount: PropTypes.number,
     autoload: PropTypes.bool,
+    onRefresh: PropTypes.func,
   };
 
   state = {
@@ -274,12 +276,12 @@ class ScrollableList extends PureComponent {
   }
 
   renderFeed = () => {
-    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, placeholderComponent: Placeholder } = this.props;
+    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, onRefresh, placeholderComponent: Placeholder } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
 
-    return (
+    const feed = (
       <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
         <div role='feed' className='item-list'>
           {prepend}
@@ -313,6 +315,16 @@ class ScrollableList extends PureComponent {
         </div>
       </div>
     );
+
+    if (onRefresh) {
+      return (
+        <PullToRefresh onRefresh={onRefresh}>
+          {feed}
+        </PullToRefresh>
+      );
+    } else {
+      return feed;
+    }
   }
 
   render() {
