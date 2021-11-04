@@ -2,19 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import spring from 'react-motion/lib/spring';
 import StatusContent from '../../../components/status_content';
 import Avatar from '../../../components/avatar';
 import RelativeTimestamp from '../../../components/relative_timestamp';
 import DisplayName from '../../../components/display_name';
-import IconButton from '../../../components/icon_button';
+import Icon from '../../../components/icon';
+import Button from '../../../components/button';
+import Motion from '../util/optional_motion';
 import classNames from 'classnames';
 
-export default class ActionsModal extends ImmutablePureComponent {
+export default @injectIntl
+class ActionsModal extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map,
     actions: PropTypes.array,
     onClick: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
   };
 
   renderAction = (action, i) => {
@@ -34,7 +40,7 @@ export default class ActionsModal extends ImmutablePureComponent {
           className={classNames({ active })}
           data-method={isLogout ? 'delete' : null}
         >
-          {icon && <IconButton title={text} icon={icon} role='presentation' tabIndex='-1' inverted />}
+          {icon && <Icon title={text} src={icon} role='presentation' tabIndex='-1' inverted />}
           <div>
             <div className={classNames({ 'actions-modal__item-label': !!meta })}>{text}</div>
             <div>{meta}</div>
@@ -45,6 +51,8 @@ export default class ActionsModal extends ImmutablePureComponent {
   }
 
   render() {
+    const { onClose } = this.props;
+
     const status = this.props.status && (
       <div className='status light'>
         <div className='boost-modal__status-header'>
@@ -68,13 +76,20 @@ export default class ActionsModal extends ImmutablePureComponent {
     );
 
     return (
-      <div className='modal-root__modal actions-modal'>
-        {status}
+      <Motion defaultStyle={{ top: 100 }} style={{ top: spring(0) }}>
+        {({ top }) => (
+          <div className='modal-root__modal actions-modal' style={{ top: `${top}%` }}>
+            {status}
 
-        <ul className={classNames({ 'with-status': !!status })}>
-          {this.props.actions.map(this.renderAction)}
-        </ul>
-      </div>
+            <ul className={classNames({ 'with-status': !!status })}>
+              {this.props.actions.map(this.renderAction)}
+              <Button className='actions-modal__close-button' onClick={onClose}>
+                <FormattedMessage id='lightbox.close' defaultMessage='Close' />
+              </Button>
+            </ul>
+          </div>
+        )}
+      </Motion>
     );
   }
 
