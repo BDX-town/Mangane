@@ -117,13 +117,14 @@ class ProfileDropdown extends React.PureComponent {
       text: intl.formatMessage(messages.add),
       to: '/auth/sign_in',
       icon: require('@tabler/icons/icons/plus.svg'),
-  });
+    });
+
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.get('acct') }),
       to: '/auth/sign_out',
       action: this.handleLogOut,
       icon: require('@tabler/icons/icons/logout.svg'),
-  });
+    });
 
     return (
       <div className='compose__action-bar' style={{ 'marginTop':'-6px' }}>

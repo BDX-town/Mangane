@@ -67,7 +67,7 @@ module.exports = {
     'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
-    indent: ['warn', 2],
+    indent: ['error', 2],
     'jsx-quotes': ['error', 'prefer-single'],
     'no-catch-shadow': 'error',
     'no-cond-assign': 'error',
