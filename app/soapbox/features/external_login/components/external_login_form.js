@@ -53,7 +53,7 @@ class ExternalLoginForm extends ImmutablePureComponent {
     }
 
     return (
-      <SimpleForm onSubmit={this.handleSubmit}>
+      <SimpleForm onSubmit={this.handleSubmit} className='external-login'>
         <fieldset disabled={isLoading}>
           <FieldsGroup>
             <TextInput
@@ -63,6 +63,8 @@ class ExternalLoginForm extends ImmutablePureComponent {
               value={this.state.host}
               onChange={this.handleHostChange}
               autoComplete='off'
+              autoCorrect='off'
+              autoCapitalize='off'
               required
             />
           </FieldsGroup>
