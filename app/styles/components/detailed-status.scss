@@ -221,3 +221,17 @@
     }
   }
 }
+
+.thread {
+  .ptr,
+  .ptr__children {
+    background: var(--foreground-color) !important;
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+
+    @media screen and (max-width: 580px) {
+      border-radius: 0;
+    }
+  }
+}
