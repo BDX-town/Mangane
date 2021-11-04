@@ -219,3 +219,13 @@
     }
   }
 }
+
+// Pull to refresh
+.lds-ellipsis div {
+  background: var(--primary-text-color--faint) !important;
+}
+
+.ptr,
+.ptr__children {
+  overflow: visible !important;
+}

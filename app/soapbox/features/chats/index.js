@@ -8,6 +8,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ChatList from './components/chat_list';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 import AccountSearch from 'soapbox/components/account_search';
+import Pullable from 'soapbox/components/pullable';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },
@@ -54,10 +55,12 @@ class ChatIndex extends React.PureComponent {
           onSelected={this.handleSuggestion}
         />
 
-        <ChatList
-          onClickChat={this.handleClickChat}
-          emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
-        />
+        <Pullable>
+          <ChatList
+            onClickChat={this.handleClickChat}
+            emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
+          />
+        </Pullable>
       </Column>
     );
   }

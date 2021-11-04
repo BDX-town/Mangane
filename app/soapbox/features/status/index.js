@@ -8,7 +8,7 @@ import { fetchStatus } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import DetailedStatus from './components/detailed_status';
 import ActionBar from './components/action_bar';
-import Column from '../ui/components/column';
+import Column from 'soapbox/components/column';
 import {
   favourite,
   unfavourite,
@@ -52,6 +52,7 @@ import ThreadStatus from './components/thread_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { launchChat } from 'soapbox/actions/chats';
+import Pullable from 'soapbox/components/pullable';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
@@ -626,56 +627,58 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='thread'>
-          {ancestors && (
-            <div className='thread__ancestors'>{ancestors}</div>
-          )}
+          <Pullable>
+            {ancestors && (
+              <div className='thread__ancestors'>{ancestors}</div>
+            )}
 
-          <div className='thread__status thread__status--focused'>
-            <HotKeys handlers={handlers}>
-              <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
-                <DetailedStatus
-                  status={status}
-                  onOpenVideo={this.handleOpenVideo}
-                  onOpenMedia={this.handleOpenMedia}
-                  onToggleHidden={this.handleToggleHidden}
-                  domain={domain}
-                  showMedia={this.state.showMedia}
-                  onToggleMediaVisibility={this.handleToggleMediaVisibility}
-                />
+            <div className='thread__status thread__status--focused'>
+              <HotKeys handlers={handlers}>
+                <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                  <DetailedStatus
+                    status={status}
+                    onOpenVideo={this.handleOpenVideo}
+                    onOpenMedia={this.handleOpenMedia}
+                    onToggleHidden={this.handleToggleHidden}
+                    domain={domain}
+                    showMedia={this.state.showMedia}
+                    onToggleMediaVisibility={this.handleToggleMediaVisibility}
+                  />
 
-                <ActionBar
-                  status={status}
-                  onReply={this.handleReplyClick}
-                  onFavourite={this.handleFavouriteClick}
-                  onEmojiReact={this.handleEmojiReactClick}
-                  onReblog={this.handleReblogClick}
-                  onDelete={this.handleDeleteClick}
-                  onDirect={this.handleDirectClick}
-                  onChat={this.handleChatClick}
-                  onMention={this.handleMentionClick}
-                  onMute={this.handleMuteClick}
-                  onMuteConversation={this.handleConversationMuteClick}
-                  onBlock={this.handleBlockClick}
-                  onReport={this.handleReport}
-                  onPin={this.handlePin}
-                  onBookmark={this.handleBookmark}
-                  onEmbed={this.handleEmbed}
-                  onDeactivateUser={this.handleDeactivateUser}
-                  onDeleteUser={this.handleDeleteUser}
-                  onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
-                  onDeleteStatus={this.handleDeleteStatus}
-                  allowedEmoji={this.props.allowedEmoji}
-                  emojiSelectorFocused={this.state.emojiSelectorFocused}
-                  handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
-                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                />
-              </div>
-            </HotKeys>
-          </div>
+                  <ActionBar
+                    status={status}
+                    onReply={this.handleReplyClick}
+                    onFavourite={this.handleFavouriteClick}
+                    onEmojiReact={this.handleEmojiReactClick}
+                    onReblog={this.handleReblogClick}
+                    onDelete={this.handleDeleteClick}
+                    onDirect={this.handleDirectClick}
+                    onChat={this.handleChatClick}
+                    onMention={this.handleMentionClick}
+                    onMute={this.handleMuteClick}
+                    onMuteConversation={this.handleConversationMuteClick}
+                    onBlock={this.handleBlockClick}
+                    onReport={this.handleReport}
+                    onPin={this.handlePin}
+                    onBookmark={this.handleBookmark}
+                    onEmbed={this.handleEmbed}
+                    onDeactivateUser={this.handleDeactivateUser}
+                    onDeleteUser={this.handleDeleteUser}
+                    onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                    onDeleteStatus={this.handleDeleteStatus}
+                    allowedEmoji={this.props.allowedEmoji}
+                    emojiSelectorFocused={this.state.emojiSelectorFocused}
+                    handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                    handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                  />
+                </div>
+              </HotKeys>
+            </div>
 
-          {descendants && (
-            <div className='thread__descendants'>{descendants}</div>
-          )}
+            {descendants && (
+              <div className='thread__descendants'>{descendants}</div>
+            )}
+          </Pullable>
         </div>
       </Column>
     );

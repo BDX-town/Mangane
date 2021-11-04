@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Column from './column';
+import Column from 'soapbox/components/column';
 import ColumnHeader from '../../../components/column_header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import LoadingIndicator from 'soapbox/components/loading_indicator';

@@ -765,3 +765,9 @@
     background: var(--accent-color);
   }
 }
+
+.page__top + .page__columns .columns-area {
+  @media screen and (max-width: 580px) {
+    padding-top: 10px;
+  }
+}

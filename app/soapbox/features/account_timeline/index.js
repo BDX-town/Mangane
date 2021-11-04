@@ -7,7 +7,7 @@ import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../acti
 import Icon from 'soapbox/components/icon';
 import StatusList from '../../components/status_list';
 import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
+import Column from 'soapbox/components/column';
 // import ColumnSettingsContainer from './containers/column_settings_container';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';

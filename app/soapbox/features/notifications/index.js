@@ -21,6 +21,7 @@ import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_h
 import { getSettings } from 'soapbox/actions/settings';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import Pullable from 'soapbox/components/pullable';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -188,7 +189,9 @@ class Notifications extends React.PureComponent {
           count={totalQueuedNotificationsCount}
           message={messages.queue}
         />
-        {scrollContainer}
+        <Pullable>
+          {scrollContainer}
+        </Pullable>
       </Column>
     );
   }
