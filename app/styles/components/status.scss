@@ -613,13 +613,18 @@ a.status-card {
   background: var(--brand-color--med);
   position: relative;
 
-  & > .fa {
-    font-size: 21px;
+  & > .svg-icon {
+    width: 40px;
+    height: 40px;
     position: absolute;
     transform-origin: 50% 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    svg {
+      stroke-width: 1px;
+    }
   }
 
   &--empty {
