@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchStatus } from '../../actions/statuses';
+import { fetchStatusWithContext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import DetailedStatus from './components/detailed_status';
 import ActionBar from './components/action_bar';
@@ -52,7 +52,7 @@ import ThreadStatus from './components/thread_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { launchChat } from 'soapbox/actions/chats';
-import Pullable from 'soapbox/components/pullable';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
@@ -167,8 +167,15 @@ class Status extends ImmutablePureComponent {
     emojiSelectorFocused: false,
   };
 
+  fetchData = () => {
+    const { dispatch, params } = this.props;
+    const { statusId } = params;
+
+    return dispatch(fetchStatusWithContext(statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchData();
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -533,9 +540,9 @@ class Status extends ImmutablePureComponent {
     const { params, status } = this.props;
     const { ancestorsIds } = prevProps;
 
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+    if (params.statusId !== prevProps.params.statusId) {
       this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(params.statusId));
+      this.fetchData();
     }
 
     if (status && status.get('id') !== prevState.loadedStatusId) {
@@ -562,6 +569,10 @@ class Status extends ImmutablePureComponent {
 
   onFullScreenChange = () => {
     this.setState({ fullscreen: isFullscreen() });
+  }
+
+  handleRefresh = () => {
+    return this.fetchData();
   }
 
   render() {
@@ -627,7 +638,7 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='thread'>
-          <Pullable>
+          <PullToRefresh onRefresh={this.handleRefresh}>
             {ancestors && (
               <div className='thread__ancestors'>{ancestors}</div>
             )}
@@ -678,7 +689,7 @@ class Status extends ImmutablePureComponent {
             {descendants && (
               <div className='thread__descendants'>{descendants}</div>
             )}
-          </Pullable>
+          </PullToRefresh>
         </div>
       </Column>
     );

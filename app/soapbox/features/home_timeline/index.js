@@ -93,6 +93,11 @@ class HomeTimeline extends React.PureComponent {
     this.setState({ done: true });
   }
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandHomeTimeline());
+  }
+
   render() {
     const { intl, siteTitle, isLoading, isEmpty, features } = this.props;
     const { done } = this.state;
@@ -108,6 +113,7 @@ class HomeTimeline extends React.PureComponent {
           <StatusListContainer
             scrollKey='home_timeline'
             onLoadMore={this.handleLoadMore}
+            onRefresh={this.handleRefresh}
             timelineId='home'
             emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
           />

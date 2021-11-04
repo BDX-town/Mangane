@@ -9,15 +9,17 @@ export const BOOKMARKED_STATUSES_EXPAND_REQUEST = 'BOOKMARKED_STATUSES_EXPAND_RE
 export const BOOKMARKED_STATUSES_EXPAND_SUCCESS = 'BOOKMARKED_STATUSES_EXPAND_SUCCESS';
 export const BOOKMARKED_STATUSES_EXPAND_FAIL    = 'BOOKMARKED_STATUSES_EXPAND_FAIL';
 
+const noOp = () => new Promise(f => f());
+
 export function fetchBookmarkedStatuses() {
   return (dispatch, getState) => {
     if (getState().getIn(['status_lists', 'bookmarks', 'isLoading'])) {
-      return;
+      return dispatch(noOp);
     }
 
     dispatch(fetchBookmarkedStatusesRequest());
 
-    api(getState).get('/api/v1/bookmarks').then(response => {
+    return api(getState).get('/api/v1/bookmarks').then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(fetchBookmarkedStatusesSuccess(response.data, next ? next.uri : null));
@@ -53,12 +55,12 @@ export function expandBookmarkedStatuses() {
     const url = getState().getIn(['status_lists', 'bookmarks', 'next'], null);
 
     if (url === null || getState().getIn(['status_lists', 'bookmarks', 'isLoading'])) {
-      return;
+      return dispatch(noOp);
     }
 
     dispatch(expandBookmarkedStatusesRequest());
 
-    api(getState).get(url).then(response => {
+    return api(getState).get(url).then(response => {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
       dispatch(importFetchedStatuses(response.data));
       dispatch(expandBookmarkedStatusesSuccess(response.data, next ? next.uri : null));

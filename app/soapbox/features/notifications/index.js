@@ -21,7 +21,6 @@ import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_h
 import { getSettings } from 'soapbox/actions/settings';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import SubNavigation from 'soapbox/components/sub_navigation';
-import Pullable from 'soapbox/components/pullable';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -129,6 +128,11 @@ class Notifications extends React.PureComponent {
     this.props.dispatch(dequeueNotifications());
   };
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandNotifications());
+  }
+
   render() {
     const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
@@ -173,6 +177,7 @@ class Notifications extends React.PureComponent {
         placeholderComponent={PlaceholderNotification}
         placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
+        onRefresh={this.handleRefresh}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
       >
@@ -189,9 +194,7 @@ class Notifications extends React.PureComponent {
           count={totalQueuedNotificationsCount}
           message={messages.queue}
         />
-        <Pullable>
-          {scrollContainer}
-        </Pullable>
+        {scrollContainer}
       </Column>
     );
   }
