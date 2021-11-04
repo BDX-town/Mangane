@@ -261,8 +261,16 @@ class ChatMessageList extends ImmutablePureComponent {
   renderMessage = (chatMessage) => {
     const { me, intl } = this.props;
     const menu = [
-      { text: intl.formatMessage(messages.delete), action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')) },
-      { text: intl.formatMessage(messages.report), action: this.handleReportUser(chatMessage.get('account_id')) },
+      {
+        text: intl.formatMessage(messages.delete),
+        action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')),
+        icon: require('@tabler/icons/icons/trash.svg'),
+      },
+      {
+        text: intl.formatMessage(messages.report),
+        action: this.handleReportUser(chatMessage.get('account_id')),
+        icon: require('@tabler/icons/icons/flag.svg'),
+      },
     ];
 
     return (

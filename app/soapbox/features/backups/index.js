@@ -52,6 +52,7 @@ class Backups extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.create),
       action: this.handleCreateBackup,
+      icon: require('@tabler/icons/icons/plus.svg'),
     }];
   }
 

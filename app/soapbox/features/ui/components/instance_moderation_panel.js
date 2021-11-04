@@ -52,6 +52,7 @@ class InstanceModerationPanel extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.editFederation),
       action: this.handleEditFederation,
+      icon: require('@tabler/icons/icons/edit.svg'),
     }];
   }
 

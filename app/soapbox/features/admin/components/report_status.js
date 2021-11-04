@@ -32,9 +32,11 @@ class ReportStatus extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.get('id')}`,
+      icon: require('@tabler/icons/icons/pencil.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: this.handleDeleteStatus,
+      icon: require('@tabler/icons/icons/trash.svg'),
     }];
   }
 

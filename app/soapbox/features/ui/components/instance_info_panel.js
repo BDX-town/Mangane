@@ -56,6 +56,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(pinned ? messages.unpinHost : messages.pinHost, { host }),
       action: this.handlePinHost,
+      icon: require(pinned ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
     }];
   }
 

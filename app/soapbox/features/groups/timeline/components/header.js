@@ -50,8 +50,16 @@ class Header extends ImmutablePureComponent {
     const { group, intl } = this.props;
 
     const menu = [
-      { text: intl.formatMessage(messages.edit), to: `/groups/${group.get('id')}/edit` },
-      { text: intl.formatMessage(messages.removed_accounts), to: `/groups/${group.get('id')}/removed_accounts` },
+      {
+        text: intl.formatMessage(messages.edit),
+        to: `/groups/${group.get('id')}/edit`,
+        icon: require('@tabler/icons/icons/edit.svg'),
+      },
+      {
+        text: intl.formatMessage(messages.removed_accounts),
+        to: `/groups/${group.get('id')}/removed_accounts`,
+        icon: require('@tabler/icons/icons/trash.svg'),
+      },
     ];
 
     return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
