@@ -7,6 +7,7 @@ const AssetsManifestPlugin = require('webpack-assets-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
@@ -72,6 +73,7 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new ForkTsCheckerWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: 'packs/css/[name]-[contenthash:8].css',
       chunkFilename: 'packs/css/[name]-[contenthash:8].chunk.css',
