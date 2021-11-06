@@ -12,6 +12,7 @@ import escapeTextContentForBrowser from 'escape-html';
 import emojify from 'soapbox/features/emoji/emoji';
 import RelativeTimestamp from './relative_timestamp';
 import Icon from 'soapbox/components/icon';
+import { openModal } from 'soapbox/actions/modal';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
@@ -33,7 +34,6 @@ class Poll extends ImmutablePureComponent {
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
     me: SoapboxPropTypes.me,
-    onOpenUnauthorizedModal: PropTypes.func.isRequired,
   };
 
   state = {
@@ -56,7 +56,7 @@ class Poll extends ImmutablePureComponent {
         this.setState({ selected: tmp });
       }
     } else {
-      this.props.onOpenUnauthorizedModal();
+      this.openUnauthorizedModal();
     }
   }
 
@@ -79,6 +79,10 @@ class Poll extends ImmutablePureComponent {
 
     this.props.dispatch(vote(this.props.poll.get('id'), Object.keys(this.state.selected)));
   };
+
+  openUnauthorizedModal = () => {
+    this.props.dispatch(openModal('UNAUTHORIZED'));
+  }
 
   handleRefresh = () => {
     if (this.props.disabled) {
