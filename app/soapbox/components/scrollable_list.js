@@ -20,7 +20,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default @connect(mapStateToProps)
+export default @connect(mapStateToProps, null, null, { forwardRef: true })
 class ScrollableList extends PureComponent {
 
   static contextTypes = {

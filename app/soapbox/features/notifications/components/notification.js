@@ -174,7 +174,7 @@ class Notification extends ImmutablePureComponent {
 
   renderMention(notification) {
     return (
-      <div className='notification notification-mention' tabIndex='0'>
+      <div className='notification notification-mention focusable-within' tabIndex='0'>
         <StatusContainer
           id={notification.getIn(['status', 'id'])}
           withDismiss
