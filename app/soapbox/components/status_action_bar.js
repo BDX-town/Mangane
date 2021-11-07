@@ -364,11 +364,13 @@ class StatusActionBar extends ImmutablePureComponent {
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteClick,
         icon: require('@tabler/icons/icons/trash.svg'),
+        type: 'warning',
       });
       menu.push({
         text: intl.formatMessage(messages.redraft),
         action: this.handleRedraftClick,
         icon: require('@tabler/icons/icons/edit.svg'),
+        type: 'warning',
       });
     } else {
       menu.push({
@@ -441,11 +443,13 @@ class StatusActionBar extends ImmutablePureComponent {
           text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
           action: this.handleDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
+          type: 'warning',
         });
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: this.handleDeleteStatus,
           icon: require('@tabler/icons/icons/trash.svg'),
+          type: 'warning',
         });
       }
     }
@@ -456,11 +460,13 @@ class StatusActionBar extends ImmutablePureComponent {
         text: intl.formatMessage(messages.group_remove_account),
         action: this.handleGroupRemoveAccount,
         icon: require('@tabler/icons/icons/user-x.svg'),
+        type: 'warning',
       });
       menu.push({
         text: intl.formatMessage(messages.group_remove_post),
         action: this.handleGroupRemovePost,
         icon: require('@tabler/icons/icons/trash.svg'),
+        type: 'warning',
       });
     }
 

@@ -28,7 +28,7 @@ class ActionsModal extends ImmutablePureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { icon = null, text, meta = null, active = false, href = '#', isLogout } = action;
+    const { icon = null, text, meta = null, active = false, href = '#', isLogout, type } = action;
 
     return (
       <li key={`${text}-${i}`}>
@@ -37,7 +37,7 @@ class ActionsModal extends ImmutablePureComponent {
           rel='noopener'
           onClick={this.props.onClick}
           data-index={i}
-          className={classNames({ active })}
+          className={classNames({ active, warning: type === 'warning' })}
           data-method={isLogout ? 'delete' : null}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex='-1' inverted />}

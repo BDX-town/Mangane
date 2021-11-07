@@ -581,6 +581,11 @@
           transition: none;
         }
 
+        &.warning {
+          color: var(--warning-color);
+          opacity: 1;
+        }
+
         &.active,
         &:hover,
         &:focus {
