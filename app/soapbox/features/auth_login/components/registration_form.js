@@ -63,6 +63,8 @@ class RegistrationForm extends ImmutablePureComponent {
     submissionLoading: false,
     params: ImmutableMap(),
     captchaIdempotencyKey: uuidv4(),
+    passwordConfirmation: '',
+    passwordMismatch: false,
   }
 
   setParams = map => {
@@ -75,6 +77,30 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onCheckboxChange = e => {
     this.setParams({ [e.target.name]: e.target.checked });
+  }
+
+  onPasswordChange = e => {
+    const password = e.target.value;
+    const { passwordConfirmation } = this.state;
+    this.onInputChange(e);
+
+    if (password === passwordConfirmation) {
+      this.setState({ passwordMismatch: false });
+    }
+  }
+
+  onPasswordConfirmChange = e => {
+    const password = this.state.params.get('password');
+    const passwordConfirmation = e.target.value;
+    this.setState({ passwordConfirmation });
+
+    if (password === passwordConfirmation) {
+      this.setState({ passwordMismatch: false });
+    }
+  }
+
+  onPasswordConfirmBlur = e => {
+    this.setState({ passwordMismatch: !this.passwordsMatch() });
   }
 
   launchModal = () => {
@@ -113,8 +139,18 @@ class RegistrationForm extends ImmutablePureComponent {
     }
   }
 
+  passwordsMatch = () => {
+    const { params, passwordConfirmation } = this.state;
+    return params.get('password', '') === passwordConfirmation;
+  }
+
   onSubmit = e => {
     const { dispatch, inviteToken } = this.props;
+
+    if (!this.passwordsMatch()) {
+      this.setState({ passwordMismatch: true });
+      return;
+    }
 
     const params = this.state.params.withMutations(params => {
       // Locale for confirmation email
@@ -159,7 +195,7 @@ class RegistrationForm extends ImmutablePureComponent {
 
   render() {
     const { instance, intl, supportsEmailList } = this.props;
-    const { params } = this.state;
+    const { params, passwordConfirmation, passwordMismatch } = this.state;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
@@ -176,6 +212,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoCapitalize='off'
                 pattern='^[a-zA-Z\d_-]+'
                 onChange={this.onInputChange}
+                value={params.get('username', '')}
                 required
               />
               <SimpleInput
@@ -186,8 +223,14 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoCorrect='off'
                 autoCapitalize='off'
                 onChange={this.onInputChange}
+                value={params.get('email', '')}
                 required
               />
+              {passwordMismatch && (
+                <div className='error'>
+                  <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
+                </div>
+              )}
               <SimpleInput
                 placeholder={intl.formatMessage(messages.password)}
                 name='password'
@@ -195,17 +238,22 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
-                onChange={this.onInputChange}
+                onChange={this.onPasswordChange}
+                value={params.get('password', '')}
+                error={passwordMismatch === true}
                 required
               />
               <SimpleInput
                 placeholder={intl.formatMessage(messages.confirm)}
-                name='confirm'
+                name='password_confirmation'
                 type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
-                onChange={this.onInputChange}
+                onChange={this.onPasswordConfirmChange}
+                onBlur={this.onPasswordConfirmBlur}
+                value={passwordConfirmation}
+                error={passwordMismatch === true}
                 required
               />
               {instance.get('approval_required') &&
@@ -215,6 +263,7 @@ class RegistrationForm extends ImmutablePureComponent {
                   name='reason'
                   maxLength={500}
                   onChange={this.onInputChange}
+                  value={params.get('reason', '')}
                   required
                 />}
             </div>
@@ -232,12 +281,14 @@ class RegistrationForm extends ImmutablePureComponent {
                 label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
                 name='agreement'
                 onChange={this.onCheckboxChange}
+                checked={params.get('agreement', false)}
                 required
               />
               {supportsEmailList && <Checkbox
                 label={intl.formatMessage(messages.newsletter)}
                 name='accepts_email_list'
                 onChange={this.onCheckboxChange}
+                checked={params.get('accepts_email_list', false)}
               />}
             </div>
             <div className='actions'>
