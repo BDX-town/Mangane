@@ -90,7 +90,7 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   onPasswordConfirmChange = e => {
-    const password = this.state.params.get('password');
+    const password = this.state.params.get('password', '');
     const passwordConfirmation = e.target.value;
     this.setState({ passwordConfirmation });
 
