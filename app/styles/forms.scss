@@ -371,13 +371,13 @@ code {
     select {
       border-color: lighten($error-red, 12%);
     }
+  }
 
-    .error {
-      display: block;
-      font-weight: 500;
-      color: lighten($error-red, 12%);
-      margin-top: 4px;
-    }
+  .error {
+    display: block;
+    font-weight: 500;
+    color: lighten($error-red, 12%);
+    margin-top: 4px;
   }
 
   .input.disabled {
