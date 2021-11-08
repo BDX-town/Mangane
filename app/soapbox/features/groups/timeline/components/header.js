@@ -59,6 +59,7 @@ class Header extends ImmutablePureComponent {
         text: intl.formatMessage(messages.removed_accounts),
         to: `/groups/${group.get('id')}/removed_accounts`,
         icon: require('@tabler/icons/icons/trash.svg'),
+        destructive: true,
       },
     ];
 

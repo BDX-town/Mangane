@@ -37,6 +37,7 @@ class ReportStatus extends ImmutablePureComponent {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: this.handleDeleteStatus,
       icon: require('@tabler/icons/icons/trash.svg'),
+      destructive: true,
     }];
   }
 

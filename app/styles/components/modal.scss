@@ -581,6 +581,11 @@
           transition: none;
         }
 
+        &.destructive {
+          color: var(--warning-color--hicontrast);
+          opacity: 1;
+        }
+
         &.active,
         &:hover,
         &:focus {

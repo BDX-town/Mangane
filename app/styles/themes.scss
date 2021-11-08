@@ -88,6 +88,11 @@ body,
     var(--brand-color_s),
     calc(var(--brand-color_l) - 12%)
   );
+  --warning-color--hicontrast: hsl(
+    var(--warning-color_h),
+    var(--warning-color_s),
+    calc(var(--warning-color_l) - 12%)
+  );
 }
 
 .theme-mode-dark {
@@ -118,5 +123,10 @@ body,
     var(--brand-color_h),
     var(--brand-color_s),
     calc(var(--brand-color_l) + 12%)
+  );
+  --warning-color--hicontrast: hsl(
+    var(--warning-color_h),
+    var(--warning-color_s),
+    calc(var(--warning-color_l) + 12%)
   );
 }
