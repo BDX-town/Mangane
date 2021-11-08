@@ -367,13 +367,13 @@ class ActionBar extends React.PureComponent {
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteClick,
         icon: require('@tabler/icons/icons/trash.svg'),
-        type: 'warning',
+        destructive: true,
       });
       menu.push({
         text: intl.formatMessage(messages.redraft),
         action: this.handleRedraftClick,
         icon: require('@tabler/icons/icons/edit.svg'),
-        type: 'warning',
+        destructive: true,
       });
     } else {
       menu.push({
@@ -446,13 +446,13 @@ class ActionBar extends React.PureComponent {
           text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
           action: this.handleDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
-          type: 'warning',
+          destructive: true,
         });
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: this.handleDeleteStatus,
           icon: require('@tabler/icons/icons/trash.svg'),
-          type: 'warning',
+          destructive: true,
         });
       }
     }

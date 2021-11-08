@@ -265,7 +265,7 @@ class ChatMessageList extends ImmutablePureComponent {
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')),
         icon: require('@tabler/icons/icons/trash.svg'),
-        type: 'warning',
+        destructive: true,
       },
       {
         text: intl.formatMessage(messages.report),
