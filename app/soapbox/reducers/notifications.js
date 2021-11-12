@@ -64,8 +64,8 @@ const isValid = notification => {
       return false;
     }
 
-    // Mastodon can return mentions with a null status
-    if (notification.type === 'mention' && !notification.status.id) {
+    // Mastodon can return status notifications with a null status
+    if (['mention', 'reblog', 'favourite', 'poll'].includes(notification.type) && !notification.status.id) {
       return false;
     }
 
