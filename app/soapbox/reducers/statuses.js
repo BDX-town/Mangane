@@ -6,6 +6,8 @@ import {
   FAVOURITE_FAIL,
 } from '../actions/interactions';
 import {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_FAIL,
   STATUS_MUTE_SUCCESS,
   STATUS_UNMUTE_SUCCESS,
   STATUS_REVEAL,
@@ -33,6 +35,22 @@ const deleteStatus = (state, id, references) => {
   return state.delete(id);
 };
 
+const importPendingStatus = (state, { in_reply_to_id }) => {
+  if (in_reply_to_id) {
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => count + 1);
+  } else {
+    return state;
+  }
+};
+
+const deletePendingStatus = (state, { in_reply_to_id }) => {
+  if (in_reply_to_id) {
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => Math.max(0, count - 1));
+  } else {
+    return state;
+  }
+};
+
 const initialState = ImmutableMap();
 
 export default function statuses(state = initialState, action) {
@@ -41,6 +59,10 @@ export default function statuses(state = initialState, action) {
     return importStatus(state, action.status);
   case STATUSES_IMPORT:
     return importStatuses(state, action.statuses);
+  case STATUS_CREATE_REQUEST:
+    return importPendingStatus(state, action.params);
+  case STATUS_CREATE_FAIL:
+    return deletePendingStatus(state, action.params);
   case FAVOURITE_REQUEST:
     return state.update(action.status.get('id'), status =>
       status
