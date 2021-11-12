@@ -20,6 +20,7 @@ const mapStateToProps = state => {
     account: state.getIn(['accounts', me]),
     composeText: state.getIn(['compose', 'text']),
     privacy: state.getIn(['compose', 'privacy']),
+    inReplyTo: state.getIn(['compose', 'in_reply_to']),
   };
 };
 
@@ -31,6 +32,7 @@ class ComposeModal extends ImmutablePureComponent {
     onClose: PropTypes.func.isRequired,
     composeText: PropTypes.string,
     privacy: PropTypes.string,
+    inReplyTo: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -49,18 +51,26 @@ class ComposeModal extends ImmutablePureComponent {
     }
   };
 
+  renderTitle = () => {
+    const { privacy, inReplyTo } = this.props;
+
+    if (privacy === 'direct') {
+      return <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />;
+    } else if (inReplyTo) {
+      return <FormattedMessage id='navigation_bar.compose_reply' defaultMessage='Reply to post' />;
+    } else {
+      return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />;
+    }
+  }
+
   render() {
-    const { intl, privacy } = this.props;
+    const { intl } = this.props;
 
     return (
       <div className='modal-root__modal compose-modal'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'>
-            {privacy === 'direct' ? (
-              <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />
-            ) : (
-              <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />
-            )}
+            {this.renderTitle()}
           </h3>
           <IconButton
             className='compose-modal__close'
