@@ -77,7 +77,6 @@ export function unreblog(status) {
     dispatch(unreblogRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unreblog`).then(response => {
-      dispatch(importFetchedStatus(response.data));
       dispatch(unreblogSuccess(status));
     }).catch(error => {
       dispatch(unreblogFail(status, error));
@@ -157,7 +156,6 @@ export function unfavourite(status) {
     dispatch(unfavouriteRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unfavourite`).then(response => {
-      dispatch(importFetchedStatus(response.data));
       dispatch(unfavouriteSuccess(status));
     }).catch(error => {
       dispatch(unfavouriteFail(status, error));
