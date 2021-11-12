@@ -171,7 +171,7 @@
     align-self: center;
     justify-self: center;
     font-weight: bold;
-    overflow-x: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     max-width: calc(100vw - 200px);
   }
