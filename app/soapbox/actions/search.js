@@ -39,6 +39,7 @@ export function clearSearch() {
 export function submitSearch() {
   return (dispatch, getState) => {
     const value = getState().getIn(['search', 'value']);
+    const filter = getState().getIn(['search', 'filter'], 'accounts');
 
     // An empty search doesn't return any results
     if (value.length === 0) {
@@ -52,6 +53,7 @@ export function submitSearch() {
         q: value,
         resolve: true,
         limit: 20,
+        type: filter,
       },
     }).then(response => {
       if (response.data.accounts) {
