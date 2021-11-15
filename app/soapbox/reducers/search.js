@@ -28,21 +28,7 @@ const toIds = items => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const getResultsFilter = results => {
-  if (results.accounts.length > 0) {
-    return 'accounts';
-  } else if (results.statuses.length > 0) {
-    return 'statuses';
-  } else if (results.hashtags.length > 0) {
-    return 'hashtags';
-  } else {
-    return 'accounts';
-  }
-};
-
 const importResults = (state, results) => {
-  const filter = getResultsFilter(results);
-
   return state.withMutations(state => {
     state.set('results', ImmutableMap({
       accounts: toIds(results.accounts),
@@ -57,7 +43,6 @@ const importResults = (state, results) => {
     }));
 
     state.set('submitted', true);
-    state.set('filter', filter);
   });
 };
 
