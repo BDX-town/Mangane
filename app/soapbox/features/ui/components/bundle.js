@@ -26,7 +26,7 @@ class Bundle extends React.PureComponent {
     onFetchFail: noop,
   }
 
-  static cache = new Map
+  static cache = new Map()
 
   state = {
     mod: undefined,
@@ -34,12 +34,12 @@ class Bundle extends React.PureComponent {
   }
 
   componentDidMount() {
-    this.load(this.props);
+    this.load();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.fetchComponent !== this.props.fetchComponent) {
-      this.load(nextProps);
+  componentDidUpdate(prevProps) {
+    if (this.props.fetchComponent !== prevProps.fetchComponent) {
+      this.load();
     }
   }
 
@@ -49,8 +49,8 @@ class Bundle extends React.PureComponent {
     }
   }
 
-  load = (props) => {
-    const { fetchComponent, onFetch, onFetchSuccess, onFetchFail, renderDelay } = props || this.props;
+  load = () => {
+    const { fetchComponent, onFetch, onFetchSuccess, onFetchFail, renderDelay } = this.props;
     const cachedMod = Bundle.cache.get(fetchComponent);
 
     if (fetchComponent === undefined) {
