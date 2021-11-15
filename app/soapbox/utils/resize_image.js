@@ -189,6 +189,9 @@ export default (inputFile, maxPixels = DEFAULT_MAX_PIXELS) => new Promise((resol
 
     resizeImage(img, inputFile, maxPixels)
       .then(resolve)
-      .catch(() => resolve(inputFile));
+      .catch(error => {
+        console.error(error);
+        resolve(inputFile);
+      });
   }).catch(() => resolve(inputFile));
 });
