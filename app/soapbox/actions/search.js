@@ -17,9 +17,16 @@ export const SEARCH_EXPAND_SUCCESS = 'SEARCH_EXPAND_SUCCESS';
 export const SEARCH_EXPAND_FAIL    = 'SEARCH_EXPAND_FAIL';
 
 export function changeSearch(value) {
-  return {
-    type: SEARCH_CHANGE,
-    value,
+  return (dispatch, getState) => {
+    // If backspaced all the way, clear the search
+    if (value.length === 0) {
+      return dispatch(clearSearch());
+    } else {
+      return dispatch({
+        type: SEARCH_CHANGE,
+        value,
+      });
+    }
   };
 }
 
@@ -33,6 +40,7 @@ export function submitSearch() {
   return (dispatch, getState) => {
     const value = getState().getIn(['search', 'value']);
 
+    // An empty search doesn't return any results
     if (value.length === 0) {
       return;
     }
