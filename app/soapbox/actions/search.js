@@ -36,10 +36,9 @@ export function clearSearch() {
   };
 }
 
-export function submitSearch() {
+export function submitSearch(filter) {
   return (dispatch, getState) => {
     const value = getState().getIn(['search', 'value']);
-    const filter = getState().getIn(['search', 'filter'], 'accounts');
 
     // An empty search doesn't return any results
     if (value.length === 0) {
@@ -53,7 +52,7 @@ export function submitSearch() {
         q: value,
         resolve: true,
         limit: 20,
-        type: filter,
+        type: filter || getState().getIn(['search', 'filter'], 'accounts'),
       },
     }).then(response => {
       if (response.data.accounts) {
@@ -93,13 +92,17 @@ export function fetchSearchFail(error) {
   };
 }
 
-export const setFilter = filterType => dispatch => {
-  dispatch({
-    type: SEARCH_FILTER_SET,
-    path: ['search', 'filter'],
-    value: filterType,
-  });
-};
+export function setFilter(filterType) {
+  return (dispatch) => {
+    dispatch(submitSearch(filterType));
+
+    dispatch({
+      type: SEARCH_FILTER_SET,
+      path: ['search', 'filter'],
+      value: filterType,
+    });
+  };
+}
 
 export const expandSearch = type => (dispatch, getState) => {
   const value  = getState().getIn(['search', 'value']);
