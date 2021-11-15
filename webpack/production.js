@@ -104,7 +104,11 @@ module.exports = merge(sharedConfig, {
           ];
 
           const isBackendRoute = ({ pathname }) => {
-            return backendRoutes.some(pathname.startsWith);
+            if (pathname) {
+              return backendRoutes.some(pathname.startsWith);
+            } else {
+              return false;
+            }
           };
 
           return isBackendRoute(requestUrl) && requestUrl;
