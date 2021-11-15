@@ -22,7 +22,7 @@ const getMeUrl = state => {
 };
 
 // Figure out the appropriate instance to fetch depending on the state
-const getHost = state => {
+export const getHost = state => {
   const accountUrl = getMeUrl(state) || getAuthUserUrl(state);
 
   try {

@@ -17,7 +17,7 @@ import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
 import { loadInstance } from 'soapbox/actions/instance';
-import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
@@ -43,7 +43,7 @@ store.dispatch(fetchMe())
   .then(() => {
     // Postpone for authenticated fetch
     store.dispatch(loadInstance());
-    store.dispatch(fetchSoapboxConfig());
+    store.dispatch(loadSoapboxConfig());
   })
   .catch(() => {});
 
