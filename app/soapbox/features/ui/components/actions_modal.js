@@ -51,7 +51,7 @@ class ActionsModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { onClose } = this.props;
+    const { actions, onClose } = this.props;
 
     const status = this.props.status && (
       <div className='status light'>
@@ -82,7 +82,7 @@ class ActionsModal extends ImmutablePureComponent {
             {status}
 
             <ul className={classNames({ 'with-status': !!status })}>
-              {this.props.actions.map(this.renderAction)}
+              {actions && actions.map(this.renderAction)}
               <Button className='actions-modal__close-button' onClick={onClose}>
                 <FormattedMessage id='lightbox.close' defaultMessage='Close' />
               </Button>
