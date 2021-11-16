@@ -1,6 +1,7 @@
 .placeholder-status,
 .placeholder-hashtag,
-.notification--placeholder {
+.notification--placeholder,
+.status-card--placeholder {
   position: relative;
 
   &::before {
@@ -104,4 +105,17 @@
 .column--transparent .slist__placeholder {
   background: transparent;
   box-shadow: none;
+}
+
+.status-card--placeholder {
+  pointer-events: none;
+
+  .status-card__title,
+  .status-card__description,
+  .status-card__host {
+    letter-spacing: -1px;
+    color: var(--brand-color) !important;
+    word-break: break-all;
+    opacity: 0.1;
+  }
 }

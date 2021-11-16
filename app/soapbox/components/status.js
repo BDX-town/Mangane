@@ -19,6 +19,7 @@ import Icon from 'soapbox/components/icon';
 import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 
 // We use the component (and not the container) since we do not want
 // to use the progress bar to show download progress
@@ -464,6 +465,10 @@ class Status extends ImmutablePureComponent {
           cacheWidth={this.props.cacheMediaWidth}
           defaultWidth={this.props.cachedMediaWidth}
         />
+      );
+    } else if (status.get('expectsCard', false)) {
+      media = (
+        <PlaceholderCard />
       );
     }
 
