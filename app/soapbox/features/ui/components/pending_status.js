@@ -12,6 +12,11 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import PollPreview from './poll_preview';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+
+const shouldHaveCard = pendingStatus => {
+  return Boolean(pendingStatus.get('content').match(/https?:\/\/\S*/));
+};
 
 const mapStateToProps = (state, props) => {
   const { idempotencyKey } = props;
@@ -23,6 +28,23 @@ const mapStateToProps = (state, props) => {
 
 export default @connect(mapStateToProps)
 class PendingStatus extends ImmutablePureComponent {
+
+  renderMedia = () => {
+    const { status } = this.props;
+
+    if (status.get('media_attachments') && !status.get('media_attachments').isEmpty()) {
+      return (
+        <AttachmentThumbs
+          compact
+          media={status.get('media_attachments')}
+        />
+      );
+    } else if (shouldHaveCard(status)) {
+      return <PlaceholderCard />;
+    } else {
+      return null;
+    }
+  }
 
   render() {
     const { status, className, showThread } = this.props;
@@ -67,11 +89,7 @@ class PendingStatus extends ImmutablePureComponent {
               collapsable
             />
 
-            <AttachmentThumbs
-              compact
-              media={status.get('media_attachments')}
-            />
-
+            {this.renderMedia()}
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
 
             {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
