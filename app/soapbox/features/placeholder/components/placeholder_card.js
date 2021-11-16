@@ -11,7 +11,7 @@ export default class PlaceholderCard extends React.Component {
 
   render() {
     return (
-      <div className='status-card status-card--placeholder'>
+      <div className='status-card status-card--link status-card--placeholder'>
         <div className='status-card__image' />
         <div className='status-card__content'>
           <span className='status-card__title'>{generateText(randomIntFromInterval(5, 25))}</span>
