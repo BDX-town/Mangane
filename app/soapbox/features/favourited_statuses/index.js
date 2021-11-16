@@ -29,7 +29,7 @@ const mapStateToProps = (state, { params }) => {
     };
   }
 
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   if (accountFetchError) {

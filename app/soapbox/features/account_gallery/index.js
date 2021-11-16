@@ -21,7 +21,7 @@ import { FormattedMessage } from 'react-intl';
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   let accountUsername = username;
