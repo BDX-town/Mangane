@@ -27,7 +27,7 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, { params, withReplies = false }) => {
     const username = params.username || '';
     const me = state.get('me');
-    const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+    const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
     const soapboxConfig = getSoapboxConfig(state);
 
     let accountId = -1;
