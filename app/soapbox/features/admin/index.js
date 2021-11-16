@@ -12,6 +12,7 @@ import sourceCode from 'soapbox/utils/code';
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
 import { getFeatures } from 'soapbox/utils/features';
 import { isAdmin } from 'soapbox/utils/accounts';
+import { isNumber } from 'soapbox/utils/numbers';
 
 // https://stackoverflow.com/a/53230807
 const download = (response, filename) => {
@@ -102,16 +103,18 @@ class Dashboard extends ImmutablePureComponent {
               </div>
             </Link>
           </div>
-          {retention && <div className='dashcounter'>
-            <div>
-              <div className='dashcounter__num'>
-                {retention}%
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+          {isNumber(retention) && (
+            <div className='dashcounter'>
+              <div>
+                <div className='dashcounter__num'>
+                  {retention}%
+                </div>
+                <div className='dashcounter__label'>
+                  <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+                </div>
               </div>
             </div>
-          </div>}
+          )}
           <div className='dashcounter'>
             <Link to='/timeline/local'>
               <div className='dashcounter__num'>
