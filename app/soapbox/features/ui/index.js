@@ -44,6 +44,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getVapidKey } from 'soapbox/utils/auth';
 
 import {
   Status,
@@ -135,6 +136,7 @@ const mapStateToProps = state => {
   const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
   const soapbox = getSoapboxConfig(state);
+  const vapidKey = getVapidKey(state);
 
   return {
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
@@ -144,6 +146,7 @@ const mapStateToProps = state => {
     account,
     features: getFeatures(instance),
     soapbox,
+    vapidKey,
   };
 };
 
@@ -357,6 +360,7 @@ class UI extends React.PureComponent {
     account: PropTypes.object,
     features: PropTypes.object.isRequired,
     soapbox: ImmutablePropTypes.map.isRequired,
+    vapidKey: PropTypes.string,
   };
 
   state = {
@@ -466,7 +470,7 @@ class UI extends React.PureComponent {
   });
 
   componentDidMount() {
-    const { account, features, dispatch } = this.props;
+    const { account, features, vapidKey, dispatch } = this.props;
     if (!account) return;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
@@ -515,16 +519,23 @@ class UI extends React.PureComponent {
 
     dispatch(fetchCustomEmojis());
     this.connectStreaming();
-    dispatch(registerPushNotifications());
+
+    if (vapidKey) {
+      dispatch(registerPushNotifications());
+    }
   }
 
   componentDidUpdate(prevProps) {
     this.connectStreaming();
 
-    const { dispatch, account, features } = this.props;
+    const { dispatch, account, features, vapidKey } = this.props;
 
     if (features.chats && account && !prevProps.features.chats) {
       dispatch(fetchChats());
+    }
+
+    if (vapidKey && !prevProps.vapidKey) {
+      dispatch(registerPushNotifications());
     }
   }
 
