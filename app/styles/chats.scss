@@ -450,6 +450,10 @@
 }
 
 .chat {
+  &__attachment-icon {
+    float: right;
+  }
+
   &__last-message {
     display: block;
     overflow: hidden;
@@ -458,6 +462,10 @@
 
     a {
       color: var(--highlight-text-color);
+    }
+
+    &.attachment {
+      font-style: italic;
     }
   }
 }

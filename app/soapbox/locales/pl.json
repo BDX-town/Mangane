@@ -138,6 +138,8 @@
   "chats.actions.delete": "Usuń wiadomość",
   "chats.actions.more": "Więcej",
   "chats.actions.report": "Zgłoś użytkownika",
+  "chats.attachment": "Załącznik",
+  "chats.attachment_image": "Zdjęcie",
   "chats.audio_toggle_off": "Wyłączono dźwięk powiadomień",
   "chats.audio_toggle_on": "Włączono dźwięk powiadomień",
   "chats.dividers.today": "Dzisiaj",
