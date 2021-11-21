@@ -26,10 +26,15 @@
 
   .search--account {
     border-top: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    padding: 5px;
 
     .autosuggest-textarea__suggestions {
       top: auto;
       bottom: 100%;
+    }
+
+    input.search__input {
+      border-radius: 6px;
     }
   }
 
