@@ -80,7 +80,7 @@ const makeMapStateToProps = () => {
     let ancestorsIds = ImmutableOrderedSet();
     let id = statusId;
 
-    while (id) {
+    while (id && !ancestorsIds.includes(id)) {
       ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
       id = inReplyTos.get(id);
     }
@@ -98,6 +98,10 @@ const makeMapStateToProps = () => {
     while (ids.length > 0) {
       const id      = ids.shift();
       const replies = contextReplies.get(id);
+
+      if (descendantsIds.includes(id)) {
+        break;
+      }
 
       if (statusId !== id) {
         descendantsIds = descendantsIds.union([id]);
@@ -119,8 +123,11 @@ const makeMapStateToProps = () => {
     let descendantsIds = ImmutableOrderedSet();
 
     if (status) {
-      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
-      descendantsIds = getDescendantsIds(state, { id: status.get('id') });
+      const statusId = status.get('id');
+      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', statusId]) });
+      descendantsIds = getDescendantsIds(state, { id: statusId });
+      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
+      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
     }
 
     const soapbox = getSoapboxConfig(state);
