@@ -728,39 +728,6 @@ a.status-card.compact:hover {
     @include standard-panel;
     padding: 15px 0 10px;
   }
-
-  .status {
-    padding: 8px 10px;
-
-    &__avatar {
-      position: relative;
-      margin-right: 10px;
-      top: 0;
-      left: 0;
-    }
-
-    &__profile {
-      display: flex;
-      align-items: center;
-    }
-
-    &__display-name {
-      .display-name__account {
-        display: block;
-      }
-    }
-  }
-}
-
-@media screen and (min-width: 630px) {
-  .columns-area .material-status .status {
-    padding: 15px;
-
-    &__avatar {
-      top: 0;
-      left: 0;
-    }
-  }
 }
 
 .attachment-thumbs {
