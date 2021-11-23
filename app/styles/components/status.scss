@@ -744,10 +744,6 @@ a.status-card.compact:hover {
       align-items: center;
     }
 
-    &__content {
-      padding-top: 10px;
-    }
-
     &__display-name {
       .display-name__account {
         display: block;
@@ -763,10 +759,6 @@ a.status-card.compact:hover {
     &__avatar {
       top: 0;
       left: 0;
-    }
-
-    &__content {
-      padding-top: 10px;
     }
   }
 }
