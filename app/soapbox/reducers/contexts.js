@@ -39,7 +39,25 @@ const importStatuses = (state, statuses) => {
   });
 };
 
+const isReplyTo = (state, childId, parentId, initialId = null) => {
+  if (!childId) return false;
+
+  // Prevent cycles
+  if (childId === initialId) return false;
+  initialId = initialId || childId;
+
+  if (childId === parentId) {
+    return true;
+  } else {
+    const nextId = state.getIn(['inReplyTos', childId]);
+    return isReplyTo(state, nextId, parentId, initialId);
+  }
+};
+
 const insertTombstone = (state, ancestorId, descendantId) => {
+  // Prevent infinite loop if the API returns a bogus response
+  if (isReplyTo(state, ancestorId, descendantId)) return state;
+
   const tombstoneId = `${descendantId}-tombstone`;
   return state.withMutations(state => {
     importStatus(state, { id: tombstoneId, in_reply_to_id: ancestorId });
