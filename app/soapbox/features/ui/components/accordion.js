@@ -34,7 +34,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
     const { headline, children, menu, expanded, intl } = this.props;
 
     return (
-      <div className={classNames('accordion', { 'accordion--expanded' : expanded })}>
+      <div className={classNames('accordion', { 'accordion--expanded': expanded })}>
         {menu && (
           <div className='accordion__menu'>
             <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />

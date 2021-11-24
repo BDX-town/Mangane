@@ -367,7 +367,7 @@ export const fetchAccountLists = accountId => (dispatch, getState) => {
 };
 
 export const fetchAccountListsRequest = id => ({
-  type:LIST_ADDER_LISTS_FETCH_REQUEST,
+  type: LIST_ADDER_LISTS_FETCH_REQUEST,
   id,
 });
 
