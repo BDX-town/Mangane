@@ -127,7 +127,7 @@ class ProfileDropdown extends React.PureComponent {
     });
 
     return (
-      <div className='compose__action-bar' style={{ 'marginTop':'-6px' }}>
+      <div className='compose__action-bar' style={{ marginTop: '-6px' }}>
         <div className='compose__action-bar-dropdown'>
           <DropdownMenuContainer items={menu} icon='chevron-down' size={size} direction='right' />
         </div>

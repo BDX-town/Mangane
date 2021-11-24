@@ -235,7 +235,7 @@ class Header extends ImmutablePureComponent {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.get('username') }),
           action: this.props.onDirect,
-          icon:require('@tabler/icons/icons/mail.svg'),
+          icon: require('@tabler/icons/icons/mail.svg'),
         });
       }
 

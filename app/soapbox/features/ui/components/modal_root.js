@@ -38,7 +38,7 @@ const MODAL_COMPONENTS = {
   'EMBED': EmbedModal,
   'LIST_EDITOR': ListEditor,
   'FOCAL_POINT': FocalPointModal,
-  'LIST_ADDER':ListAdder,
+  'LIST_ADDER': ListAdder,
   'HOTKEYS': HotkeysModal,
   'COMPOSE': ComposeModal,
   'UNAUTHORIZED': UnauthorizedModal,

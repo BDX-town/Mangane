@@ -14,7 +14,7 @@ export default class Conversation extends ImmutablePureComponent {
     conversationId: PropTypes.string.isRequired,
     accounts: ImmutablePropTypes.list.isRequired,
     lastStatusId: PropTypes.string,
-    unread:PropTypes.bool.isRequired,
+    unread: PropTypes.bool.isRequired,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
     markRead: PropTypes.func.isRequired,
