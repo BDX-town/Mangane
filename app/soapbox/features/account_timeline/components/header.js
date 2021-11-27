@@ -117,6 +117,14 @@ export default class Header extends ImmutablePureComponent {
     this.props.onDemoteToUser(this.props.account);
   }
 
+  handleSuggestUser = () => {
+    this.props.onSuggestUser(this.props.account);
+  }
+
+  handleUnsuggestUser = () => {
+    this.props.onUnsuggestUser(this.props.account);
+  }
+
   render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -148,6 +156,8 @@ export default class Header extends ImmutablePureComponent {
           onPromoteToAdmin={this.handlePromoteToAdmin}
           onPromoteToModerator={this.handlePromoteToModerator}
           onDemoteToUser={this.handleDemoteToUser}
+          onSuggestUser={this.handleSuggestUser}
+          onUnsuggestUser={this.handleUnsuggestUser}
           username={this.props.username}
         />
       </div>

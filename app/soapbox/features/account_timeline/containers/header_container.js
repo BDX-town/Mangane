@@ -32,6 +32,8 @@ import {
   promoteToAdmin,
   promoteToModerator,
   demoteToUser,
+  suggestUsers,
+  unsuggestUsers,
 } from 'soapbox/actions/admin';
 import { isAdmin } from 'soapbox/utils/accounts';
 import snackbar from 'soapbox/actions/snackbar';
@@ -47,7 +49,8 @@ const messages = defineMessages({
   promotedToModerator: { id: 'admin.users.actions.promote_to_moderator_message', defaultMessage: '@{acct} was promoted to a moderator' },
   demotedToModerator: { id: 'admin.users.actions.demote_to_moderator_message', defaultMessage: '@{acct} was demoted to a moderator' },
   demotedToUser: { id: 'admin.users.actions.demote_to_user_message', defaultMessage: '@{acct} was demoted to a regular user' },
-
+  userSuggested: { id: 'admin.users.user_suggested_message', defaultMessage: '@{acct} was suggested' },
+  userUnsuggested: { id: 'admin.users.user_unsuggested_message', defaultMessage: '@{acct} was unsuggested' },
 });
 
 const makeMapStateToProps = () => {
@@ -210,6 +213,22 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     const message = intl.formatMessage(messages.demotedToUser, { acct: account.get('acct') });
 
     dispatch(demoteToUser(account.get('id')))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onSuggestUser(account) {
+    const message = intl.formatMessage(messages.userSuggested, { acct: account.get('acct') });
+
+    dispatch(suggestUsers([account.get('id')]))
+      .then(() => dispatch(snackbar.success(message)))
+      .catch(() => {});
+  },
+
+  onUnsuggestUser(account) {
+    const message = intl.formatMessage(messages.userUnsuggested, { acct: account.get('acct') });
+
+    dispatch(unsuggestUsers([account.get('id')]))
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
   },

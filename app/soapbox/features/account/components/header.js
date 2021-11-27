@@ -68,6 +68,8 @@ const messages = defineMessages({
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
+  suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
+  unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
 });
 
 const mapStateToProps = state => {
@@ -402,6 +404,20 @@ class Header extends ImmutablePureComponent {
           text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }),
           action: this.props.onVerifyUser,
           icon: require('@tabler/icons/icons/check.svg'),
+        });
+      }
+
+      if (account.getIn(['pleroma', 'is_suggested'])) {
+        menu.push({
+          text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),
+          action: this.props.onUnsuggestUser,
+          icon: require('@tabler/icons/icons/user-x.svg'),
+        });
+      } else {
+        menu.push({
+          text: intl.formatMessage(messages.suggestUser, { name: account.get('username') }),
+          action: this.props.onSuggestUser,
+          icon: require('@tabler/icons/icons/user-check.svg'),
         });
       }
 
