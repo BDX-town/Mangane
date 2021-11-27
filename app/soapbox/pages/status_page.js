@@ -63,6 +63,9 @@ class StatusPage extends ImmutablePureComponent {
                       {Component => <Component key='sign-up-panel' />}
                     </BundleContainer>
                   )}
+                  <BundleContainer fetchComponent={PromoPanel}>
+                    {Component => <Component key='promo-panel' />}
+                  </BundleContainer>
                   {showTrendsPanel && (
                     <BundleContainer fetchComponent={TrendsPanel}>
                       {Component => <Component limit={3} key='trends-panel' />}
@@ -73,9 +76,6 @@ class StatusPage extends ImmutablePureComponent {
                       {Component => <Component limit={5} key='wtf-panel' />}
                     </BundleContainer>
                   )}
-                  <BundleContainer fetchComponent={PromoPanel}>
-                    {Component => <Component key='promo-panel' />}
-                  </BundleContainer>
                   <LinkFooter key='link-footer' />
                 </Sticky>
               </div>
