@@ -407,18 +407,20 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.getIn(['pleroma', 'is_suggested'])) {
-        menu.push({
-          text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),
-          action: this.props.onUnsuggestUser,
-          icon: require('@tabler/icons/icons/user-x.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.suggestUser, { name: account.get('username') }),
-          action: this.props.onSuggestUser,
-          icon: require('@tabler/icons/icons/user-check.svg'),
-        });
+      if (features.suggestionsV2) {
+        if (account.getIn(['pleroma', 'is_suggested'])) {
+          menu.push({
+            text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),
+            action: this.props.onUnsuggestUser,
+            icon: require('@tabler/icons/icons/user-x.svg'),
+          });
+        } else {
+          menu.push({
+            text: intl.formatMessage(messages.suggestUser, { name: account.get('username') }),
+            action: this.props.onSuggestUser,
+            icon: require('@tabler/icons/icons/user-check.svg'),
+          });
+        }
       }
 
       if (account.get('id') !== me) {
