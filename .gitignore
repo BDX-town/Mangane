@@ -12,3 +12,9 @@ yarn-error.log*
 /static-test/
 /public/
 /dist/
+
+# surge.sh
+CNAME
+AUTH
+CORS
+ROUTER
