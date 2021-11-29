@@ -13,6 +13,9 @@ yarn-error.log*
 /public/
 /dist/
 
+.idea
+.DS_Store
+
 # surge.sh
 CNAME
 AUTH
