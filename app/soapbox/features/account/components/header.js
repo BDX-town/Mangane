@@ -182,7 +182,7 @@ class Header extends ImmutablePureComponent {
       menu.push({
         text: intl.formatMessage(messages.share, { name: account.get('username') }),
         action: this.handleShare,
-        icon: require('@tabler/icons/icons/share.svg'),
+        icon: require('feather-icons/dist/icons/share.svg'),
       });
       menu.push(null);
     }
@@ -489,6 +489,23 @@ class Header extends ImmutablePureComponent {
     }
   }
 
+  renderShareButton() {
+    const { intl, account, me } = this.props;
+    const canShare = 'share' in navigator;
+
+    if (!(account && me && account.get('id') === me && canShare)) {
+      return null;
+    }
+
+    return (
+      <IconButton
+        src={require('feather-icons/dist/icons/share.svg')}
+        onClick={this.handleShare}
+        title={intl.formatMessage(messages.share, { name: account.get('username') })}
+      />
+    );
+  }
+
   render() {
     const { account, intl, username, me, features } = this.props;
     const { isSmallScreen } = this.state;
@@ -589,6 +606,7 @@ class Header extends ImmutablePureComponent {
 
             <div className='account__header__extra__buttons'>
               {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
+              {this.renderShareButton()}
               {this.renderMessageButton()}
               <ActionButton account={account} />
             </div>

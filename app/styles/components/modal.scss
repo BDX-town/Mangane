@@ -606,6 +606,11 @@
 
           svg {
             stroke-width: 1.5;
+
+            &.feather {
+              // Feather icons are a little larger
+              transform: scale(0.9);
+            }
           }
         }
       }
