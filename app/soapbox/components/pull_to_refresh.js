@@ -33,6 +33,9 @@ export default class PullToRefresh extends React.Component {
         pullingContent={null}
         // `undefined` will fallback to the default, while `null` will render nothing
         refreshingContent={onRefresh ? undefined : null}
+        pullDownThreshold={130}
+        maxPullDownDistance={130}
+        resistance={2}
         {...rest}
       >
         {children}
