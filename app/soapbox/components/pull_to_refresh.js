@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import PTRComponent from 'react-simple-pull-to-refresh';
+import LoadingSpinner from 'soapbox/components/loading_spinner';
 
 /**
  * PullToRefresh:
@@ -32,7 +33,10 @@ export default class PullToRefresh extends React.Component {
         onRefresh={this.handleRefresh}
         pullingContent={null}
         // `undefined` will fallback to the default, while `null` will render nothing
-        refreshingContent={onRefresh ? undefined : null}
+        refreshingContent={onRefresh ? <LoadingSpinner size={30} /> : null}
+        pullDownThreshold={67}
+        maxPullDownDistance={95}
+        resistance={2}
         {...rest}
       >
         {children}
