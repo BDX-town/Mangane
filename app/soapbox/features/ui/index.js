@@ -257,6 +257,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
         <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />
         <Redirect from='/users/:username/chats' to='/chats' />
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/terms' to='/about' />
