@@ -61,16 +61,14 @@
       align-items: center;
       box-sizing: border-box;
       overflow: hidden;
-      padding: 4px 10px;
+      margin: 0 6px;
+      padding: 4px 4px;
+      border-radius: 6px;
       font-size: 15px;
       text-decoration: none;
       text-overflow: ellipsis;
       white-space: nowrap;
       color: var(--primary-text-color);
-    }
-
-    &.destructive a {
-      color: var(--warning-color--hicontrast);
     }
 
     a {
@@ -79,7 +77,7 @@
       &:active {
         outline: 0;
         color: #fff;
-        background: var(--brand-color) !important;
+        background: var(--brand-color);
 
         * {
           color: #fff;
@@ -97,6 +95,17 @@
           stroke-width: 1.5;
           transition: none;
         }
+      }
+    }
+
+    &.destructive a {
+      color: var(--warning-color--hicontrast);
+
+      &:focus,
+      &:hover,
+      &:active {
+        background: var(--warning-color);
+        color: #fff;
       }
     }
   }
