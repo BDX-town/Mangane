@@ -22,7 +22,7 @@ const makeMapStateToProps = () => {
   const getChat = makeGetChat();
 
   const mapStateToProps = (state, { chatId }) => {
-    const chat = state.getIn(['chats', chatId]);
+    const chat = state.getIn(['chats', 'items', chatId]);
 
     return {
       me: state.get('me'),

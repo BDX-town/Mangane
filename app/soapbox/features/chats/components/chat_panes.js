@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 const getChatsUnreadCount = state => {
-  const chats = state.get('chats');
+  const chats = state.getIn(['chats', 'items']);
   return chats.reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
 };
 
@@ -30,7 +30,7 @@ const normalizePanes = (chats, panes = ImmutableList()) => (
 );
 
 const makeNormalizeChatPanes = () => createSelector([
-  state => state.get('chats'),
+  state => state.getIn(['chats', 'items']),
   state => getSettings(state).getIn(['chats', 'panes']),
 ], normalizePanes);
 
@@ -93,7 +93,6 @@ class ChatPanes extends ImmutablePureComponent {
             <>
               <ChatList
                 onClickChat={this.handleClickChat}
-                emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
               />
               <AccountSearch
                 placeholder={intl.formatMessage(messages.searchPlaceholder)}

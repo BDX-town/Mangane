@@ -2,10 +2,18 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { debounce } from 'lodash';
+import { expandChats } from 'soapbox/actions/chats';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import Chat from './chat';
 import { createSelector } from 'reselect';
+
+const messages = defineMessages({
+  emptyMessage: { id: 'chat_panels.main_window.empty', defaultMessage: 'No chats found. To start a chat, visit a user\'s profile' },
+});
 
 const getSortedChatIds = chats => (
   chats
@@ -32,7 +40,9 @@ const makeMapStateToProps = () => {
   );
 
   const mapStateToProps = state => ({
-    chatIds: sortedChatIdsSelector(state.get('chats')),
+    chatIds: sortedChatIdsSelector(state.getIn(['chats', 'items'])),
+    hasMore: !!state.getIn(['chats', 'next']),
+    isLoading: state.getIn(['chats', 'loading']),
   });
 
   return mapStateToProps;
@@ -47,28 +57,40 @@ class ChatList extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     chatIds: ImmutablePropTypes.list,
     onClickChat: PropTypes.func,
-    emptyMessage: PropTypes.node,
+    onRefresh: PropTypes.func,
+    hasMore: PropTypes.func,
+    isLoading: PropTypes.bool,
   };
 
+  handleLoadMore = debounce(() => {
+    this.props.dispatch(expandChats());
+  }, 300, { leading: true });
+
   render() {
-    const { chatIds, emptyMessage } = this.props;
+    const { intl, chatIds, hasMore, isLoading } = this.props;
 
     return (
-      <div className='chat-list'>
-        <div className='chat-list__content'>
-          {chatIds.count() === 0 &&
-            <div className='empty-column-indicator'>{emptyMessage}</div>
-          }
-          {chatIds.map(chatId => (
-            <div key={chatId} className='chat-list-item'>
-              <Chat
-                chatId={chatId}
-                onClick={this.props.onClickChat}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+      <ScrollableList
+        className='chat-list'
+        scrollKey='awaiting-approval'
+        emptyMessage={intl.formatMessage(messages.emptyMessage)}
+        hasMore={hasMore}
+        isLoading={isLoading}
+        showLoading={isLoading && chatIds.size === 0}
+        onLoadMore={this.handleLoadMore}
+        onRefresh={this.props.onRefresh}
+        placeholderComponent={PlaceholderChat}
+        placeholderCount={20}
+      >
+        {chatIds.map(chatId => (
+          <div key={chatId} className='chat-list-item'>
+            <Chat
+              chatId={chatId}
+              onClick={this.props.onClickChat}
+            />
+          </div>
+        ))}
+      </ScrollableList>
     );
   }
 

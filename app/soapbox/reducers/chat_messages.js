@@ -1,5 +1,6 @@
 import {
   CHATS_FETCH_SUCCESS,
+  CHATS_EXPAND_SUCCESS,
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_REQUEST,
   CHAT_MESSAGE_SEND_SUCCESS,
@@ -38,6 +39,7 @@ export default function chatMessages(state = initialState, action) {
       pending: true,
     }));
   case CHATS_FETCH_SUCCESS:
+  case CHATS_EXPAND_SUCCESS:
     return importLastMessages(state, fromJS(action.chats));
   case CHAT_MESSAGES_FETCH_SUCCESS:
     return importMessages(state, fromJS(action.chatMessages));

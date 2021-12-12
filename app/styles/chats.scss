@@ -116,6 +116,10 @@
       flex-direction: column;
       overflow: hidden;
     }
+
+    .chat-list {
+      overflow-y: auto;
+    }
   }
 
   .audio-toggle .react-toggle-thumb {
@@ -219,7 +223,6 @@
 }
 
 .chat-list {
-  overflow-y: auto;
   flex: 1;
 
   &__content {
@@ -231,6 +234,10 @@
     box-sizing: border-box;
     background: transparent;
     align-items: start;
+  }
+
+  .account {
+    border-bottom: none;
   }
 
   .account__display-name {

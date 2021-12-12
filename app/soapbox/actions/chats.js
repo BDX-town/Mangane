@@ -1,4 +1,4 @@
-import api from '../api';
+import api, { getLinks } from '../api';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
@@ -6,6 +6,10 @@ import { Map as ImmutableMap } from 'immutable';
 export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 export const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';
 export const CHATS_FETCH_FAIL    = 'CHATS_FETCH_FAIL';
+
+export const CHATS_EXPAND_REQUEST = 'CHATS_EXPAND_REQUEST';
+export const CHATS_EXPAND_SUCCESS = 'CHATS_EXPAND_SUCCESS';
+export const CHATS_EXPAND_FAIL    = 'CHATS_EXPAND_FAIL';
 
 export const CHAT_MESSAGES_FETCH_REQUEST = 'CHAT_MESSAGES_FETCH_REQUEST';
 export const CHAT_MESSAGES_FETCH_SUCCESS = 'CHAT_MESSAGES_FETCH_SUCCESS';
@@ -30,10 +34,31 @@ export const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
 export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
-    return api(getState).get('/api/v1/pleroma/chats').then(({ data }) => {
-      dispatch({ type: CHATS_FETCH_SUCCESS, chats: data });
+    api(getState).get('/api/v2/pleroma/chats').then((response) => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data, next: next ? next.uri : null });
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
+    });
+  };
+}
+
+export function expandChats() {
+  return (dispatch, getState) => {
+    const url = getState().getIn(['chats', 'next']);
+
+    if (url === null) {
+      return;
+    }
+
+    dispatch({ type: CHATS_EXPAND_REQUEST });
+    api(getState).get(url).then(response => {
+      const next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      dispatch({ type: CHATS_EXPAND_SUCCESS, chats: response.data, next: next ? next.uri : null });
+    }).catch(error => {
+      dispatch({ type: CHATS_EXPAND_FAIL, error });
     });
   };
 }
@@ -140,7 +165,7 @@ export function startChat(accountId) {
 
 export function markChatRead(chatId, lastReadId) {
   return (dispatch, getState) => {
-    const chat = getState().getIn(['chats', chatId]);
+    const chat = getState().getIn(['chats', 'items', chatId]);
     if (!lastReadId) lastReadId = chat.get('last_message');
 
     if (chat.get('unread') < 1) return;
