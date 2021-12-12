@@ -63,7 +63,7 @@ export function submitSearch(filter) {
         dispatch(importFetchedStatuses(response.data.statuses));
       }
 
-      dispatch(fetchSearchSuccess(response.data));
+      dispatch(fetchSearchSuccess(response.data, value));
       dispatch(fetchRelationships(response.data.accounts.map(item => item.id)));
     }).catch(error => {
       dispatch(fetchSearchFail(error));
@@ -78,10 +78,11 @@ export function fetchSearchRequest(value) {
   };
 }
 
-export function fetchSearchSuccess(results) {
+export function fetchSearchSuccess(results, searchTerm) {
   return {
     type: SEARCH_FETCH_SUCCESS,
     results,
+    searchTerm,
   };
 }
 

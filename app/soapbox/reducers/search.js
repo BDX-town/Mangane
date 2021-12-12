@@ -28,29 +28,33 @@ const toIds = items => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const importResults = (state, results) => {
+const importResults = (state, results, searchTerm) => {
   return state.withMutations(state => {
-    state.set('results', ImmutableMap({
-      accounts: toIds(results.accounts),
-      statuses: toIds(results.statuses),
-      hashtags: fromJS(results.hashtags), // it's a list of maps
-      accountsHasMore: results.accounts.length >= 20,
-      statusesHasMore: results.statuses.length >= 20,
-      hashtagsHasMore: results.hashtags.length >= 20,
-      accountsLoaded: true,
-      statusesLoaded: true,
-      hashtagsLoaded: true,
-    }));
+    if (state.get('value') === searchTerm) {
+      state.set('results', ImmutableMap({
+        accounts: toIds(results.accounts),
+        statuses: toIds(results.statuses),
+        hashtags: fromJS(results.hashtags), // it's a list of maps
+        accountsHasMore: results.accounts.length >= 20,
+        statusesHasMore: results.statuses.length >= 20,
+        hashtagsHasMore: results.hashtags.length >= 20,
+        accountsLoaded: true,
+        statusesLoaded: true,
+        hashtagsLoaded: true,
+      }));
 
-    state.set('submitted', true);
+      state.set('submitted', true);
+    }
   });
 };
 
-const paginateResults = (state, searchType, results) => {
+const paginateResults = (state, searchType, results, searchTerm) => {
   return state.withMutations(state => {
-    state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
-    state.setIn(['results', `${searchType}Loaded`], true);
-    state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+    if (state.get('value') === searchTerm) {
+      state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
+      state.setIn(['results', `${searchType}Loaded`], true);
+      state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+    }
   });
 };
 
@@ -77,13 +81,13 @@ export default function search(state = initialState, action) {
   case SEARCH_FETCH_REQUEST:
     return handleSubmitted(state, action.value);
   case SEARCH_FETCH_SUCCESS:
-    return importResults(state, action.results);
+    return importResults(state, action.results, action.searchTerm);
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
   case SEARCH_EXPAND_REQUEST:
     return state.setIn(['results', `${action.searchType}Loaded`], false);
   case SEARCH_EXPAND_SUCCESS:
-    return paginateResults(state, action.searchType, action.results);
+    return paginateResults(state, action.searchType, action.results, action.searchTerm);
   default:
     return state;
   }
