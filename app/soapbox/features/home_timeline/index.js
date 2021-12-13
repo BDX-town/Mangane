@@ -27,6 +27,7 @@ const mapStateToProps = state => {
     isPartial: state.getIn(['timelines', 'home', 'isPartial']),
     siteTitle: state.getIn(['instance', 'title']),
     isLoading: state.getIn(['timelines', 'home', 'isLoading'], true),
+    loadingFailed: state.getIn(['timelines', 'home', 'loadingFailed'], false),
     isEmpty: state.getIn(['timelines', 'home', 'items'], ImmutableOrderedSet()).isEmpty(),
     features,
   };
@@ -43,6 +44,7 @@ class HomeTimeline extends React.PureComponent {
     isPartial: PropTypes.bool,
     siteTitle: PropTypes.string,
     isLoading: PropTypes.bool,
+    loadingFailed: PropTypes.bool,
     isEmpty: PropTypes.bool,
     features: PropTypes.object.isRequired,
   };
@@ -99,9 +101,9 @@ class HomeTimeline extends React.PureComponent {
   }
 
   render() {
-    const { intl, siteTitle, isLoading, isEmpty, features } = this.props;
+    const { intl, siteTitle, isLoading, loadingFailed, isEmpty, features } = this.props;
     const { done } = this.state;
-    const showSuggestions = features.suggestions && isEmpty && !isLoading && !done;
+    const showSuggestions = features.suggestions && isEmpty && !isLoading && !loadingFailed && !done;
 
     return (
       <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>

@@ -68,11 +68,17 @@ const setLoading = (state, timelineId, loading) => {
   return state.update(timelineId, initialTimeline, timeline => timeline.set('isLoading', loading));
 };
 
+// Keep track of when a timeline failed to load
+const setFailed = (state, timelineId, failed) => {
+  return state.update(timelineId, initialTimeline, timeline => timeline.set('loadingFailed', failed));
+};
+
 const expandNormalizedTimeline = (state, timelineId, statuses, next, isPartial, isLoadingRecent) => {
   const newIds = getStatusIds(statuses);
 
   return state.update(timelineId, initialTimeline, timeline => timeline.withMutations(timeline => {
     timeline.set('isLoading', false);
+    timeline.set('loadingFailed', false);
     timeline.set('isPartial', isPartial);
 
     if (!next && !isLoadingRecent) timeline.set('hasMore', false);
@@ -284,6 +290,13 @@ const importStatus = (state, status, idempotencyKey) => {
   });
 };
 
+const handleExpandFail = (state, timelineId) => {
+  return state.withMutations(state => {
+    setLoading(state, timelineId, false);
+    setFailed(state, timelineId, true);
+  });
+};
+
 export default function timelines(state = initialState, action) {
   switch(action.type) {
   case STATUS_CREATE_REQUEST:
@@ -293,7 +306,7 @@ export default function timelines(state = initialState, action) {
   case TIMELINE_EXPAND_REQUEST:
     return setLoading(state, action.timeline, true);
   case TIMELINE_EXPAND_FAIL:
-    return setLoading(state, action.timeline, false);
+    return handleExpandFail(state, action.timeline);
   case TIMELINE_EXPAND_SUCCESS:
     return expandNormalizedTimeline(state, action.timeline, fromJS(action.statuses), action.next, action.partial, action.isLoadingRecent);
   case TIMELINE_UPDATE:
