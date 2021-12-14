@@ -17,6 +17,8 @@ const messages = defineMessages({
   userDeleted: { id: 'admin.users.user_deleted_message', defaultMessage: '@{acct} was deleted' },
   deleteStatusPrompt: { id: 'confirmations.admin.delete_status.message', defaultMessage: 'You are about to delete a post by @{acct}. This action cannot be undone.' },
   deleteStatusConfirm: { id: 'confirmations.admin.delete_status.confirm', defaultMessage: 'Delete post' },
+  rejectUserPrompt: { id: 'confirmations.admin.reject_user.message', defaultMessage: 'You are about to reject @{acct} registration request. This action cannot be undone.' },
+  rejectUserConfirm: { id: 'confirmations.admin.reject_user.confirm', defaultMessage: 'Reject @{name}' },
   statusDeleted: { id: 'admin.statuses.status_deleted_message', defaultMessage: 'Post by @{acct} was deleted' },
   markStatusSensitivePrompt: { id: 'confirmations.admin.mark_status_sensitive.message', defaultMessage: 'You are about to mark a post by @{acct} sensitive.' },
   markStatusNotSensitivePrompt: { id: 'confirmations.admin.mark_status_not_sensitive.message', defaultMessage: 'You are about to mark a post by @{acct} not sensitive.' },
@@ -80,6 +82,26 @@ export function deleteUserModal(intl, accountId, afterConfirm = () => {}) {
           dispatch(snackbar.success(message));
           afterConfirm();
         }).catch(() => {});
+      },
+    }));
+  };
+}
+
+export function rejectUserModal(intl, accountId, afterConfirm = () => {}) {
+  return function(dispatch, getState) {
+    const state = getState();
+    const acct = state.getIn(['accounts', accountId, 'acct']);
+    const name = state.getIn(['accounts', accountId, 'username']);
+
+    dispatch(openModal('CONFIRM', {
+      message: intl.formatMessage(messages.rejectUserPrompt, { acct }),
+      confirm: intl.formatMessage(messages.rejectUserConfirm, { name }),
+      onConfirm: () => {
+        dispatch(deleteUsers([accountId]))
+          .then(() => {
+            afterConfirm();
+          })
+          .catch(() => {});
       },
     }));
   };

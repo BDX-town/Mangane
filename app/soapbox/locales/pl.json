@@ -270,6 +270,8 @@
   "confirmations.admin.mark_status_not_sensitive.message": "Zamierzasz oznaczyć wpis {acct} jako niewrażliwy.",
   "confirmations.admin.mark_status_sensitive.confirm": "Oznacz wpis jako wrażliwy",
   "confirmations.admin.mark_status_sensitive.message": "Zamierzasz oznaczyć wpis {acct} jako wrażliwy.",
+  "confirmations.admin.reject_user.confirm": "Odrzuć @{name}",
+  "confirmations.admin.reject_user.message": "Zamierzasz odrzucić prośbę o rejestrację @{acct}. To działanie nie może zostać cofnięte.",
   "confirmations.block.block_and_report": "Zablokuj i zgłoś",
   "confirmations.block.confirm": "Zablokuj",
   "confirmations.block.message": "Czy na pewno chcesz zablokować {name}?",

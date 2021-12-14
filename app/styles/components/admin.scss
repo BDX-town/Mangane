@@ -102,10 +102,12 @@
     margin-left: auto;
     display: flex;
     flex-wrap: nowrap;
+    column-gap: 10px;
     padding-left: 20px;
 
-    button.icon-button:nth-child(n+2) {
-      padding-left: 10px;
+    .svg-icon {
+      height: 24px;
+      width: 24px;
     }
   }
 }
