@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import { fetchChats, launchChat } from 'soapbox/actions/chats';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import ChatList from './components/chat_list';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 import AccountSearch from 'soapbox/components/account_search';
-import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },
@@ -60,12 +59,10 @@ class ChatIndex extends React.PureComponent {
           onSelected={this.handleSuggestion}
         />
 
-        <PullToRefresh onRefresh={this.handleRefresh}>
-          <ChatList
-            onClickChat={this.handleClickChat}
-            emptyMessage={<FormattedMessage id='chat_panels.main_window.empty' defaultMessage="No chats found. To start a chat, visit a user's profile." />}
-          />
-        </PullToRefresh>
+        <ChatList
+          onClickChat={this.handleClickChat}
+          onRefresh={this.handleRefresh}
+        />
       </Column>
     );
   }

@@ -23,7 +23,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
-  chat: state.getIn(['chats', chatId]),
+  chat: state.getIn(['chats', 'items', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
 

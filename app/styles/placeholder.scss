@@ -46,7 +46,8 @@
 }
 
 .status__content--placeholder,
-.display-name--placeholder {
+.display-name--placeholder,
+.chat-list-item--placeholder .chat__last-message {
   letter-spacing: -1px;
   color: var(--brand-color) !important;
   opacity: 0.1;

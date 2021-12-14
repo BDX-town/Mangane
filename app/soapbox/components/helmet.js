@@ -11,7 +11,7 @@ FaviconService.initFaviconService();
 
 const getNotifTotals = state => {
   const notifications = state.getIn(['notifications', 'unread'], 0);
-  const chats = state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
+  const chats = state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0);
   const reports = state.getIn(['admin', 'openReports']).count();
   const approvals = state.getIn(['admin', 'awaitingApproval']).count();
   return notifications + chats + reports + approvals;
