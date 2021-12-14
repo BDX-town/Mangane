@@ -35,7 +35,11 @@ export function fetchChats() {
   return (dispatch, getState) => {
     dispatch({ type: CHATS_FETCH_REQUEST });
     api(getState).get('/api/v2/pleroma/chats').then((response) => {
-      const next = getLinks(response).refs.find(link => link.rel === 'next');
+      let next = getLinks(response).refs.find(link => link.rel === 'next');
+
+      if (!next && response.data.length) {
+        next = { uri: `/api/v2/pleroma/chats?max_id=${response.data[response.data.length - 1].id}&offset=0` };
+      }
 
       dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data, next: next ? next.uri : null });
     }).catch(error => {
