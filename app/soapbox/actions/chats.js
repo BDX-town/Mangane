@@ -1,5 +1,6 @@
 import api, { getLinks } from '../api';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { getFeatures } from 'soapbox/utils/features';
 import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
 
@@ -31,9 +32,17 @@ export const CHAT_MESSAGE_DELETE_REQUEST = 'CHAT_MESSAGE_DELETE_REQUEST';
 export const CHAT_MESSAGE_DELETE_SUCCESS = 'CHAT_MESSAGE_DELETE_SUCCESS';
 export const CHAT_MESSAGE_DELETE_FAIL    = 'CHAT_MESSAGE_DELETE_FAIL';
 
-export function fetchChats() {
-  return (dispatch, getState) => {
-    dispatch({ type: CHATS_FETCH_REQUEST });
+export function fetchChatsV1() {
+  return (dispatch, getState) =>
+    api(getState).get('/api/v1/pleroma/chats').then((response) => {
+      dispatch({ type: CHATS_FETCH_SUCCESS, chats: response.data });
+    }).catch(error => {
+      dispatch({ type: CHATS_FETCH_FAIL, error });
+    });
+}
+
+export function fetchChatsV2() {
+  return (dispatch, getState) =>
     api(getState).get('/api/v2/pleroma/chats').then((response) => {
       let next = getLinks(response).refs.find(link => link.rel === 'next');
 
@@ -45,6 +54,20 @@ export function fetchChats() {
     }).catch(error => {
       dispatch({ type: CHATS_FETCH_FAIL, error });
     });
+}
+
+export function fetchChats() {
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
+
+    dispatch({ type: CHATS_FETCH_REQUEST });
+    if (features.chatsV2) {
+      dispatch(fetchChatsV2());
+    } else {
+      dispatch(fetchChatsV1());
+    }
   };
 }
 
