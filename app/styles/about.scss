@@ -690,6 +690,11 @@ $fluid-breakpoint: $maximum-width + 20px;
 
       .otp-form-overlay__close {
         align-self: flex-end;
+
+        .svg-icon {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
   }

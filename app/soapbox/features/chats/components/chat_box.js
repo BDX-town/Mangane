@@ -158,7 +158,10 @@ class ChatBox extends ImmutablePureComponent {
           {truncateFilename(attachment.preview_url, 20)}
         </div>
         <div class='chat-box__remove-attachment'>
-          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+          <IconButton
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.handleRemoveFile}
+          />
         </div>
       </div>
     );

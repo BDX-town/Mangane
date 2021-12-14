@@ -37,7 +37,7 @@ export default @injectIntl class Accordion extends React.PureComponent {
       <div className={classNames('accordion', { 'accordion--expanded': expanded })}>
         {menu && (
           <div className='accordion__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>
         )}
         <button

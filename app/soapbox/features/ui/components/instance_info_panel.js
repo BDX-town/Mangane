@@ -73,7 +73,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
             <span>{remoteInstance.get('host')}</span>
           </span>
           <div className='wtf-panel__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>
         </div>
       </div>

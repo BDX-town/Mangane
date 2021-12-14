@@ -63,7 +63,7 @@ class Header extends ImmutablePureComponent {
       },
     ];
 
-    return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
+    return <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} size={24} direction='right' />;
   }
 
   render() {

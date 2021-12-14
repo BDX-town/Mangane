@@ -525,7 +525,7 @@ class ActionBar extends React.PureComponent {
             className='emoji-picker-expand'
             animate
             title={intl.formatMessage(messages.emojiPickerExpand)}
-            icon='caret-down'
+            src={require('@tabler/icons/icons/caret-down.svg')}
             onKeyUp={handleEmojiSelectorExpand}
             onHover
           />

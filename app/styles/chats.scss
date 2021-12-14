@@ -210,11 +210,18 @@
     position: absolute;
     top: -8px;
     right: -8px;
+    height: 20px;
+    padding: 1px;
     background: var(--background-color);
     border-radius: 999px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 

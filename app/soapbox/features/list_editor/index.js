@@ -68,7 +68,7 @@ class ListEditor extends ImmutablePureComponent {
           <h3 className='compose-modal__header__title'>
             {intl.formatMessage(messages.editList)}
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
         </div>
         <div className='compose-modal__content'>
           <div className='list-editor'>

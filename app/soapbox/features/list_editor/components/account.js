@@ -53,9 +53,9 @@ class Account extends ImmutablePureComponent {
     let button;
 
     if (added) {
-      button = <IconButton icon='times' title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
+      button = <IconButton src={require('@tabler/icons/icons/x.svg')} title={intl.formatMessage(messages.remove)} onClick={onRemove} />;
     } else {
-      button = <IconButton icon='plus' title={intl.formatMessage(messages.add)} onClick={onAdd} />;
+      button = <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={onAdd} />;
     }
 
     return (

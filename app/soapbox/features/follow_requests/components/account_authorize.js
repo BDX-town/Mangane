@@ -39,8 +39,8 @@ class AccountAuthorize extends ImmutablePureComponent {
         </div>
 
         <div className='account--panel'>
-          <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} icon='check' onClick={onAuthorize} /></div>
-          <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} icon='times' onClick={onReject} /></div>
+          <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/icons/check.svg')} onClick={onAuthorize} /></div>
+          <div className='account--panel__button'><IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/icons/x.svg')} onClick={onReject} /></div>
         </div>
       </div>
     );

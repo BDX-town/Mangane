@@ -456,6 +456,11 @@ a .account__avatar {
   display: flex;
   flex-direction: row;
   padding: 10px 0;
+
+  &__button .svg-icon {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .account__section-headline {
