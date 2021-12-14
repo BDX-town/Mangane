@@ -115,7 +115,7 @@ class ScheduleForm extends React.Component {
             ref={this.setRef}
           />
           <div className='datepicker__cancel'>
-            <IconButton size={20} title={intl.formatMessage(messages.remove)} icon='times' onClick={this.handleRemove} />
+            <IconButton title={intl.formatMessage(messages.remove)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleRemove} />
           </div>
         </div>
       </div>

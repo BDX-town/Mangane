@@ -19,6 +19,11 @@
 
   &__cancel {
     padding-left: 10px;
+
+    .svg-icon {
+      height: 24px;
+      width: 24px;
+    }
   }
 
   &--error .react-datepicker__input-container {

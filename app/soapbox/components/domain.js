@@ -32,7 +32,7 @@ class Account extends ImmutablePureComponent {
           </span>
 
           <div className='domain__buttons'>
-            <IconButton active icon='unlock' title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={this.handleDomainUnblock} />
+            <IconButton active src={require('@tabler/icons/icons/lock-open.svg')} title={intl.formatMessage(messages.unblockDomain, { domain })} onClick={this.handleDomainUnblock} />
           </div>
         </div>
       </div>

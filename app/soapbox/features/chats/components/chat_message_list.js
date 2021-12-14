@@ -296,8 +296,7 @@ class ChatMessageList extends ImmutablePureComponent {
           <div className='chat-message__menu'>
             <DropdownMenuContainer
               items={menu}
-              icon='ellipsis-h'
-              size={18}
+              src={require('@tabler/icons/icons/dots.svg')}
               direction='top'
               title={intl.formatMessage(messages.more)}
             />

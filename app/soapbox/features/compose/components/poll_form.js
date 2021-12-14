@@ -109,7 +109,7 @@ class Option extends React.PureComponent {
         </label>
 
         <div className='poll__cancel'>
-          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleOptionRemove} />
         </div>
       </li>
     );

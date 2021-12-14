@@ -71,7 +71,7 @@ class Lists extends ImmutablePureComponent {
           emptyMessage={emptyMessage}
         >
           {lists.map(list =>
-            <ColumnLink key={list.get('id')} to={`/list/${list.get('id')}`} icon='list-ul' text={list.get('title')} />,
+            <ColumnLink key={list.get('id')} to={`/list/${list.get('id')}`} src={require('@tabler/icons/icons/list.svg')} text={list.get('title')} />,
           )}
         </ScrollableList>
       </Column>

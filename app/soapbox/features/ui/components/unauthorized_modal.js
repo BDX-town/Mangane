@@ -36,7 +36,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
       <div className='modal-root__modal compose-modal unauthorized-modal'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'><FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} /></h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
         </div>
         <div className='compose-modal__content'>
           <div className='unauthorized-modal__content'>

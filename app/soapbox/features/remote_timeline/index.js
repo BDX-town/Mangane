@@ -87,7 +87,7 @@ class RemoteTimeline extends React.PureComponent {
       <Column label={intl.formatMessage(messages.title)} heading={instance} transparent>
         <PinnedHostsPicker host={instance} />
         {!pinned && <div className='timeline-filter-message'>
-          <IconButton icon='times' onClick={this.handleCloseClick} />
+          <IconButton src={require('@tabler/icons/icons/x.svg')} onClick={this.handleCloseClick} />
           <FormattedMessage
             id='remote_timeline.filter_message'
             defaultMessage='You are viewing the timeline of {instance}.'

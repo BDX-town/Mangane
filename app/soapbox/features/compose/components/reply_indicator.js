@@ -46,7 +46,9 @@ class ReplyIndicator extends ImmutablePureComponent {
     return (
       <div className='reply-indicator'>
         <div className='reply-indicator__header'>
-          <div className='reply-indicator__cancel'><IconButton title={intl.formatMessage(messages.cancel)} icon='times' onClick={this.handleClick} inverted /></div>
+          <div className='reply-indicator__cancel'>
+            <IconButton title={intl.formatMessage(messages.cancel)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleClick} inverted />
+          </div>
 
           <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='reply-indicator__display-name'>
             <div className='reply-indicator__display-avatar'><Avatar account={status.get('account')} size={24} /></div>

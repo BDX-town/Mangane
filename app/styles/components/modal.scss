@@ -199,6 +199,8 @@
   position: absolute;
   right: 8px;
   top: 8px;
+  height: 48px;
+  width: 48px;
   z-index: 100;
   color: #fff;
 }
@@ -693,6 +695,8 @@
   .media-modal__close {
     top: 19px;
     right: 15px;
+    height: 20px;
+    width: 20px;
   }
 }
 

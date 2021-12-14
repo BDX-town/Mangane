@@ -115,7 +115,7 @@ class Report extends ImmutablePureComponent {
           <Button className='button-alternative' size={30} onClick={this.handleCloseReport}>
             <FormattedMessage id='admin.reports.actions.close' defaultMessage='Close' />
           </Button>
-          <DropdownMenu items={menu} icon='ellipsis-v' size={24} direction='right' />
+          <DropdownMenu className='admin-report__dropdown' items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
         </div>
       </div>
     );

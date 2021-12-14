@@ -185,8 +185,10 @@
   }
 
   &__actions {
-    margin-left: auto;
     display: flex;
+    align-items: center;
+    height: fit-content;
+    margin-left: auto;
 
     .icon-button {
       padding-left: 10px;
@@ -195,6 +197,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        > .svg-icon {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
   }
