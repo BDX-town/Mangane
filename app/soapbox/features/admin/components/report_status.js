@@ -119,7 +119,7 @@ class ReportStatus extends ImmutablePureComponent {
           {media}
         </div>
         <div className='admin-report__status-actions'>
-          <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} size={18} direction='right' />
+          <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
         </div>
       </div>
     );

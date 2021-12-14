@@ -88,7 +88,7 @@ class Header extends ImmutablePureComponent {
         { mfa_auth_needed &&
           <div className='otp-form-overlay__container'>
             <div className='otp-form-overlay__form'>
-              <IconButton className='otp-form-overlay__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} size={20} />
+              <IconButton className='otp-form-overlay__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
               <OtpAuthForm mfa_token={mfa_token} />
             </div>
           </div>
