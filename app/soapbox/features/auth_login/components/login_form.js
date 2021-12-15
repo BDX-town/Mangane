@@ -50,7 +50,6 @@ class LoginForm extends ImmutablePureComponent {
               aria-label={intl.formatMessage(messages.password)}
               className='password user_password'
               placeholder={intl.formatMessage(messages.password)}
-              type='password'
               name='password'
               autoComplete='off'
               autoCorrect='off'

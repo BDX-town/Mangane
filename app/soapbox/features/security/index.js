@@ -142,7 +142,6 @@ class ChangeEmailForm extends ImmutablePureComponent {
               value={this.state.email}
             />
             <ShowablePassword
-              type='password'
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
               onChange={this.handleInputChange}
@@ -209,21 +208,18 @@ class ChangePasswordForm extends ImmutablePureComponent {
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
             <ShowablePassword
-              type='password'
               label={intl.formatMessage(messages.oldPasswordFieldLabel)}
               name='oldPassword'
               onChange={this.handleInputChange}
               value={this.state.oldPassword}
             />
             <ShowablePassword
-              type='password'
               label={intl.formatMessage(messages.newPasswordFieldLabel)}
               name='newPassword'
               onChange={this.handleInputChange}
               value={this.state.newPassword}
             />
             <ShowablePassword
-              type='password'
               label={intl.formatMessage(messages.confirmationFieldLabel)}
               name='confirmation'
               onChange={this.handleInputChange}
@@ -393,7 +389,6 @@ class DeactivateAccount extends ImmutablePureComponent {
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
             <ShowablePassword
-              type='password'
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
               onChange={this.handleInputChange}

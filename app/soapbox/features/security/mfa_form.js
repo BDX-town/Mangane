@@ -145,7 +145,6 @@ class DisableOtpForm extends ImmutablePureComponent {
           <div><FormattedMessage id='mfa.otp_enabled_description' defaultMessage='You have enabled two-factor authentication via OTP.' /></div>
           <div><FormattedMessage id='mfa.mfa_disable_enter_password' defaultMessage='Enter your current password to disable two-factor auth:' /></div>
           <ShowablePassword
-            type='password'
             name='password'
             onChange={this.handleInputChange}
           />
@@ -314,7 +313,6 @@ class OtpConfirmForm extends ImmutablePureComponent {
 
                 <div><FormattedMessage id='mfa.mfa_setup_enter_password' defaultMessage='Enter your current password to confirm your identity:' /></div>
                 <ShowablePassword
-                  type='password'
                   name='password'
                   onChange={this.handleInputChange}
                 />

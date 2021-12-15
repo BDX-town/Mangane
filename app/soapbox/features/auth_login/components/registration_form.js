@@ -235,7 +235,6 @@ class RegistrationForm extends ImmutablePureComponent {
               <ShowablePassword
                 placeholder={intl.formatMessage(messages.password)}
                 name='password'
-                type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
@@ -247,7 +246,6 @@ class RegistrationForm extends ImmutablePureComponent {
               <ShowablePassword
                 placeholder={intl.formatMessage(messages.confirm)}
                 name='password_confirmation'
-                type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
