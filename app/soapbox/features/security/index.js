@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Column from '../ui/components/column';
 import Button from 'soapbox/components/button';
+import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
-  SimpleInput,
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
@@ -141,7 +141,7 @@ class ChangeEmailForm extends ImmutablePureComponent {
               onChange={this.handleInputChange}
               value={this.state.email}
             />
-            <SimpleInput
+            <ShowablePassword
               type='password'
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
@@ -208,21 +208,21 @@ class ChangePasswordForm extends ImmutablePureComponent {
         <h2>{intl.formatMessage(messages.passwordHeader)}</h2>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
-            <SimpleInput
+            <ShowablePassword
               type='password'
               label={intl.formatMessage(messages.oldPasswordFieldLabel)}
               name='oldPassword'
               onChange={this.handleInputChange}
               value={this.state.oldPassword}
             />
-            <SimpleInput
+            <ShowablePassword
               type='password'
               label={intl.formatMessage(messages.newPasswordFieldLabel)}
               name='newPassword'
               onChange={this.handleInputChange}
               value={this.state.newPassword}
             />
-            <SimpleInput
+            <ShowablePassword
               type='password'
               label={intl.formatMessage(messages.confirmationFieldLabel)}
               name='confirmation'
@@ -392,7 +392,7 @@ class DeactivateAccount extends ImmutablePureComponent {
         </p>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
-            <SimpleInput
+            <ShowablePassword
               type='password'
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'

@@ -11,9 +11,9 @@ import LoadingIndicator from 'soapbox/components/loading_indicator';
 import Button from 'soapbox/components/button';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
+import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
-  SimpleInput,
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
@@ -144,7 +144,7 @@ class DisableOtpForm extends ImmutablePureComponent {
           </h1>
           <div><FormattedMessage id='mfa.otp_enabled_description' defaultMessage='You have enabled two-factor authentication via OTP.' /></div>
           <div><FormattedMessage id='mfa.mfa_disable_enter_password' defaultMessage='Enter your current password to disable two-factor auth:' /></div>
-          <SimpleInput
+          <ShowablePassword
             type='password'
             name='password'
             onChange={this.handleInputChange}
@@ -313,7 +313,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
                 />
 
                 <div><FormattedMessage id='mfa.mfa_setup_enter_password' defaultMessage='Enter your current password to confirm your identity:' /></div>
-                <SimpleInput
+                <ShowablePassword
                   type='password'
                   name='password'
                   onChange={this.handleInputChange}
