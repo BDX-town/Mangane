@@ -53,6 +53,7 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
           onMouseLeave={[Function]}
           tabIndex="0"
           title="Show password"
+          type="button"
         >
           <div
             style={Object {}}

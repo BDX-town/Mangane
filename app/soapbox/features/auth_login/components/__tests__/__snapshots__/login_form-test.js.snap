@@ -50,6 +50,7 @@ exports[`<LoginForm /> renders for Mastodon 1`] = `
           onMouseLeave={[Function]}
           tabIndex="0"
           title="Show password"
+          type="button"
         >
           <div
             style={Object {}}
@@ -143,6 +144,7 @@ exports[`<LoginForm /> renders for Pleroma 1`] = `
           onMouseLeave={[Function]}
           tabIndex="0"
           title="Show password"
+          type="button"
         >
           <div
             style={Object {}}
