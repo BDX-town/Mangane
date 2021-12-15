@@ -8,7 +8,7 @@ import IconButton from 'soapbox/components/icon_button';
 import { approveUsers } from 'soapbox/actions/admin';
 import { makeGetAccount } from 'soapbox/selectors';
 import snackbar from 'soapbox/actions/snackbar';
-import { rejectUserModal } from '../../../actions/admin';
+import { rejectUserModal } from '../../../actions/moderation';
 
 const messages = defineMessages({
   approved: { id: 'admin.awaiting_approval.approved_message', defaultMessage: '{acct} was approved!' },
