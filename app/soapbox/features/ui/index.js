@@ -470,9 +470,40 @@ class UI extends React.PureComponent {
     trailing: true,
   });
 
+  // Load initial data when a user is logged in
+  loadAccountData = () => {
+    const { account, features, dispatch } = this.props;
+
+    dispatch(expandHomeTimeline());
+
+    dispatch(expandNotifications())
+      .then(() => dispatch(fetchMarker(['notifications'])))
+      .catch(console.error);
+
+    if (features.chats) {
+      dispatch(fetchChats());
+    }
+
+    if (isStaff(account)) {
+      dispatch(fetchReports({ state: 'open' }));
+      dispatch(fetchUsers(['local', 'need_approval']));
+    }
+
+    if (isAdmin(account)) {
+      dispatch(fetchConfig());
+    }
+
+    setTimeout(() => dispatch(fetchFilters()), 500);
+
+    if (account.get('locked')) {
+      setTimeout(() => dispatch(fetchFollowRequests()), 700);
+    }
+
+    setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+  }
+
   componentDidMount() {
-    const { account, features, vapidKey, dispatch } = this.props;
-    if (!account) return;
+    const { account, vapidKey, dispatch } = this.props;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -490,32 +521,7 @@ class UI extends React.PureComponent {
     }
 
     if (account) {
-      dispatch(expandHomeTimeline());
-
-      dispatch(expandNotifications())
-        .then(() => dispatch(fetchMarker(['notifications'])))
-        .catch(console.error);
-
-      if (features.chats) {
-        dispatch(fetchChats());
-      }
-
-      if (isStaff(account)) {
-        dispatch(fetchReports({ state: 'open' }));
-        dispatch(fetchUsers(['local', 'need_approval']));
-      }
-
-      if (isAdmin(account)) {
-        dispatch(fetchConfig());
-      }
-
-      setTimeout(() => dispatch(fetchFilters()), 500);
-
-      if (account.get('locked')) {
-        setTimeout(() => dispatch(fetchFollowRequests()), 700);
-      }
-
-      setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+      this.loadAccountData();
     }
 
     dispatch(fetchCustomEmojis());
@@ -531,7 +537,11 @@ class UI extends React.PureComponent {
 
     const { dispatch, account, features, vapidKey } = this.props;
 
-    if (features.chats && account && !prevProps.features.chats) {
+    // The user has logged in
+    if (account && !prevProps.account) {
+      this.loadAccountData();
+    // The instance has loaded
+    } else if (account && features.chats && !prevProps.features.chats) {
       dispatch(fetchChats());
     }
 
