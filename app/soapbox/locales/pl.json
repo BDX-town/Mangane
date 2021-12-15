@@ -424,6 +424,8 @@
   "follow_request.authorize": "Autoryzuj",
   "follow_request.reject": "Odrzuć",
   "forms.copy": "Kopiuj",
+  "forms.hide_password": "Ukryj hasło",
+  "forms.show_password": "Pokaż hasło",
   "getting_started.open_source_notice": "{code_name} jest oprogramowaniem o otwartym źródle. Możesz pomóc w rozwoju lub zgłaszać błędy na GitLabie tutaj: {code_link} (v{code_version}).",
   "group.detail.archived_group": "Zarchiwizowana grupa",
   "group.members.empty": "Ta grupa nie ma żadnych członków.",

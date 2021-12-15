@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
+import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
   SimpleInput,
@@ -231,10 +232,9 @@ class RegistrationForm extends ImmutablePureComponent {
                   <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
                 </div>
               )}
-              <SimpleInput
+              <ShowablePassword
                 placeholder={intl.formatMessage(messages.password)}
                 name='password'
-                type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
@@ -243,10 +243,9 @@ class RegistrationForm extends ImmutablePureComponent {
                 error={passwordMismatch === true}
                 required
               />
-              <SimpleInput
+              <ShowablePassword
                 placeholder={intl.formatMessage(messages.confirm)}
                 name='password_confirmation'
-                type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
