@@ -307,7 +307,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 </a>
               )}
               {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
+                <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
               </NavLink>}
               {features.securityAPI ? (
