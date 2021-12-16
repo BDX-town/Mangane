@@ -20,6 +20,10 @@
 
   &__icon {
     width: 16px;
+
+    .svg-icon svg {
+      stroke-width: 1.3;
+    }
   }
 
   &--expanded &__icon i.fa {
