@@ -109,7 +109,7 @@ class FilterBar extends React.PureComponent {
           onClick={this.onClick('move')}
           title={intl.formatMessage(tooltips.moves)}
         >
-          <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
+          <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
         </button>
       </div>
     );

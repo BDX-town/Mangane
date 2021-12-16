@@ -766,17 +766,19 @@ code {
   }
 }
 
-.input .row > .fa-times-circle {
+.input .row > .svg-icon.delete-field {
+  height: 20px;
+  width: 20px;
   position: absolute;
-  right: 15px;
+  right: 13px;
   cursor: pointer;
   color: $error-red;
-  transform: translateY(-9px);
+  transform: translateY(-11px);
 }
 
-.input .row > .input.with_label + .fa-times-circle {
-  right: 7px;
-  transform: translateY(9px);
+.input .row > .input.with_label + .svg-icon.delete-field {
+  right: 5px;
+  transform: translateY(7px);
 }
 
 .site-preview {
@@ -823,11 +825,18 @@ code {
   margin: 10px 0 0;
 
   .button {
+    display: flex;
+    align-items: center;
     border: 0;
     background: transparent;
 
     &:hover {
       color: var(--primary-text-color);
+    }
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
     }
   }
 }

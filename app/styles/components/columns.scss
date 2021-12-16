@@ -746,6 +746,15 @@
 .column-settings__row {
   .text-btn {
     margin-bottom: 15px;
+
+    &.column-header__setting-btn {
+      display: flex;
+      align-items: center;
+
+      .svg-icon {
+        margin-right: 10px;
+      }
+    }
   }
 }
 
