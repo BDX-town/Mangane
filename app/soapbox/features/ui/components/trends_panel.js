@@ -35,7 +35,7 @@ class TrendsPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel'>
         <div className='wtf-panel-header'>
-          <Icon id='hashtag' className='wtf-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/hash.svg')} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <FormattedMessage id='trends.title' defaultMessage='Trends' />
           </span>

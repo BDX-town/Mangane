@@ -318,13 +318,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handlePromoItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                   </div>
                 </div>
@@ -351,13 +351,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handleHomeFooterItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                   </div>
                 </div>
@@ -390,13 +390,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={address.get('note')}
                         onChange={this.handleCryptoAdressItemChange(i, 'note', address)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['cryptoAddresses'], templates.cryptoAddress)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.crypto_address.add' defaultMessage='Add new crypto address' />
                   </div>
                 </div>

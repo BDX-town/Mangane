@@ -338,7 +338,7 @@ class EditProfile extends ImmutablePureComponent {
                           onChange={this.handleFieldChange(i, 'value')}
                         />
                         {
-                          this.state.fields.size > 4 && <Icon id='times-circle' onClick={this.handleDeleteField(i)} />
+                          this.state.fields.size > 4 && <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteField(i)} />
                         }
                       </div>
                     ))
@@ -347,7 +347,7 @@ class EditProfile extends ImmutablePureComponent {
                     this.state.fields.size < maxFields && (
                       <div className='actions add-row'>
                         <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddField}>
-                          <Icon id='plus-circle' />
+                          <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                           <FormattedMessage id='edit_profile.meta_fields.add' defaultMessage='Add new item' />
                         </div>
                       </div>
