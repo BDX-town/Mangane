@@ -10,9 +10,9 @@ import { Link, NavLink } from 'react-router-dom';
 import { getDomain } from 'soapbox/utils/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import PollPreview from './poll_preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
 
 const shouldHaveCard = pendingStatus => {
   return Boolean(pendingStatus.get('content').match(/https?:\/\/\S*/));
@@ -34,8 +34,7 @@ class PendingStatus extends ImmutablePureComponent {
 
     if (status.get('media_attachments') && !status.get('media_attachments').isEmpty()) {
       return (
-        <AttachmentThumbs
-          compact
+        <PlaceholderMediaGallery
           media={status.get('media_attachments')}
         />
       );

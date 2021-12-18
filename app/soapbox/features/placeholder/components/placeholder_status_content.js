@@ -13,7 +13,7 @@ export default class PlaceholderStatusContent extends React.Component {
     const { maxLength, minLength } = this.props;
     const length = randomIntFromInterval(maxLength, minLength);
 
-    return(
+    return (
       <div className='status__content status__content--placeholder' tabIndex='0' key='content'>
         {generateText(length)}
       </div>
