@@ -1,7 +1,8 @@
 .placeholder-status,
 .placeholder-hashtag,
 .notification--placeholder,
-.status-card--placeholder {
+.status-card--placeholder,
+.media-gallery--placeholder {
   position: relative;
 
   &::before {
@@ -118,5 +119,13 @@
     color: var(--brand-color) !important;
     word-break: break-all;
     opacity: 0.1;
+  }
+}
+
+.media-gallery.media-gallery--placeholder {
+  background: none;
+
+  .media-gallery__item {
+    background-color: var(--brand-color--faint);
   }
 }
