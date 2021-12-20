@@ -40,7 +40,7 @@ class ShowablePassword extends ImmutablePureComponent {
 
     const revealButton = (
       <IconButton
-        src={revealed ? require('@tabler/icons/icons/eye.svg') : require('@tabler/icons/icons/eye-off.svg')}
+        src={revealed ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
         onClick={this.toggleReveal}
         title={intl.formatMessage(revealed ? messages.hidePassword : messages.showPassword)}
       />
