@@ -107,6 +107,7 @@ import {
   FederationRestrictions,
   Aliases,
   FollowRecommendations,
+  Directory,
   SidebarMenu,
   UploadArea,
   NotificationsContainer,
@@ -277,6 +278,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
         <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />
+        <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />
 
         <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
         <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
