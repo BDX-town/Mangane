@@ -1,4 +1,17 @@
 .directory {
+  &__filter-form {
+    display: flex;
+    background: var(--foreground-color);
+
+    &__column {
+      padding: 10px 15px;
+    }
+
+    .radio-button {
+      display: block;
+    }
+  }
+
   &__list {
     display: grid;
     grid-gap: 10px;
@@ -24,11 +37,19 @@
     border-radius: 10px;
     background: var(--foreground-color);
     overflow: hidden;
+    position: relative;
+
+    &__action-button {
+      z-index: 1;
+      position: absolute;
+      top: 78px;
+      right: 12px;
+    }
 
     &__img {
       height: 125px;
       position: relative;
-      background: var(--foreground-color);
+      background: var(--brand-color--med);
 
       img {
         display: block;
@@ -42,7 +63,7 @@
     &__bar {
       display: flex;
       align-items: center;
-      background: var(--foreground-color);
+      background: var(--brand-color--med);
       padding: 10px;
 
       &__name {
@@ -50,17 +71,13 @@
         display: flex;
         align-items: center;
         text-decoration: none;
+        overflow: hidden;
       }
 
-      &__relationship {
-        width: 23px;
-        min-height: 1px;
-        flex: 0 0 auto;
-      }
-
-      .avatar {
+      .account__avatar {
         flex: 0 0 auto;
         width: 48px;
+        min-width: 48px;
         height: 48px;
         padding-top: 2px;
 
@@ -100,11 +117,12 @@
 
     &__extra {
       background: var(--foreground-color);
-      padding: 15px 0;
       display: flex;
       align-items: center;
+      justify-content: center;
 
       .accounts-table__count {
+        padding: 15px 0;
         text-align: center;
         font-size: 15px;
         font-weight: 500;
@@ -118,55 +136,33 @@
           font-size: 14px;
         }
       }
-    }
-  }
-}
 
-.filter-form {
-  display: flex;
-  background: var(--foreground-color);
+      .account__header__content {
+        box-sizing: border-box;
+        padding: 15px 10px;
+        border-bottom: 1px solid var(--brand-color--med);
+        width: 100%;
+        min-height: 50px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
-  &__column {
-    padding: 10px 15px;
-  }
+        &.empty {
+          border-color: transparent;
+        }
 
-  .radio-button {
-    display: block;
-  }
-}
+        p {
+          display: none;
 
-.radio-button {
-  font-size: 14px;
-  position: relative;
-  display: inline-block;
-  padding: 6px 0;
-  line-height: 18px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  cursor: pointer;
+          &:first-child {
+            display: inline;
+          }
+        }
 
-  input[type=radio],
-  input[type=checkbox] {
-    display: none;
-  }
-
-  &__input {
-    display: inline-block;
-    position: relative;
-    border: 1px solid var(--primary-text-color--faint);
-    box-sizing: border-box;
-    width: 18px;
-    height: 18px;
-    flex: 0 0 auto;
-    margin-right: 10px;
-    top: -1px;
-    border-radius: 50%;
-    vertical-align: middle;
-
-    &.checked {
-      border-color: var(--brand-color);
-      background: var(--brand-color);
+        br {
+          display: none;
+        }
+      }
     }
   }
 }
