@@ -25,7 +25,7 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   accountIds: state.getIn(['user_lists', 'directory', 'items'], ImmutableList()),
   isLoading: state.getIn(['user_lists', 'directory', 'isLoading'], true),
-  domain: state.getIn(['meta', 'domain']),
+  title: state.getIn(['instance', 'title']),
   features: getFeatures(state.get('instance')),
 });
 
@@ -45,7 +45,7 @@ class Directory extends React.PureComponent {
     columnId: PropTypes.string,
     intl: PropTypes.object.isRequired,
     multiColumn: PropTypes.bool,
-    domain: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
     params: PropTypes.shape({
       order: PropTypes.string,
       local: PropTypes.bool,
@@ -100,7 +100,7 @@ class Directory extends React.PureComponent {
   }
 
   render() {
-    const { isLoading, accountIds, intl, columnId, multiColumn, domain, shouldUpdateScroll, features } = this.props;
+    const { isLoading, accountIds, intl, columnId, multiColumn, title, shouldUpdateScroll, features } = this.props;
     const { order, local }  = this.getParams(this.props, this.state);
     const pinned = !!columnId;
 
@@ -114,7 +114,7 @@ class Directory extends React.PureComponent {
 
           {features.federating && (
             <div className='filter-form__column' role='group'>
-              <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain })} checked={local} onChange={this.handleChangeLocal} />
+              <RadioButton name='local' value='1' label={intl.formatMessage(messages.local, { domain: title })} checked={local} onChange={this.handleChangeLocal} />
               <RadioButton name='local' value='0' label={intl.formatMessage(messages.federated)} checked={!local} onChange={this.handleChangeLocal} />
             </div>
           )}
