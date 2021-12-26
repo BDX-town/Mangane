@@ -255,7 +255,7 @@ class SidebarMenu extends ImmutablePureComponent {
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
               </NavLink>}
               {features.profileDirectory && <NavLink className='sidebar-menu-item' to='/directory' onClick={this.handleClose}>
-                <Icon id='address-book' />
+                <Icon src={require('@tabler/icons/icons/friends.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profileDirectory)}</span>
               </NavLink>}
             </div>
