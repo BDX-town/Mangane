@@ -39,6 +39,7 @@ export function clearSearch() {
 export function submitSearch(filter) {
   return (dispatch, getState) => {
     const value = getState().getIn(['search', 'value']);
+    const type = filter || getState().getIn(['search', 'filter'], 'accounts');
 
     // An empty search doesn't return any results
     if (value.length === 0) {
@@ -52,7 +53,7 @@ export function submitSearch(filter) {
         q: value,
         resolve: true,
         limit: 20,
-        type: filter || getState().getIn(['search', 'filter'], 'accounts'),
+        type,
       },
     }).then(response => {
       if (response.data.accounts) {
@@ -63,7 +64,7 @@ export function submitSearch(filter) {
         dispatch(importFetchedStatuses(response.data.statuses));
       }
 
-      dispatch(fetchSearchSuccess(response.data, value));
+      dispatch(fetchSearchSuccess(response.data, value, type));
       dispatch(fetchRelationships(response.data.accounts.map(item => item.id)));
     }).catch(error => {
       dispatch(fetchSearchFail(error));
@@ -78,11 +79,12 @@ export function fetchSearchRequest(value) {
   };
 }
 
-export function fetchSearchSuccess(results, searchTerm) {
+export function fetchSearchSuccess(results, searchTerm, searchType) {
   return {
     type: SEARCH_FETCH_SUCCESS,
     results,
     searchTerm,
+    searchType,
   };
 }
 
