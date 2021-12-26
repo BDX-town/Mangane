@@ -24,6 +24,14 @@ import {
   MUTES_FETCH_SUCCESS,
   MUTES_EXPAND_SUCCESS,
 } from '../actions/mutes';
+import {
+  DIRECTORY_FETCH_REQUEST,
+  DIRECTORY_FETCH_SUCCESS,
+  DIRECTORY_FETCH_FAIL,
+  DIRECTORY_EXPAND_REQUEST,
+  DIRECTORY_EXPAND_SUCCESS,
+  DIRECTORY_EXPAND_FAIL,
+} from '../actions/directory';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
   GROUP_MEMBERS_FETCH_SUCCESS,
@@ -98,6 +106,16 @@ export default function userLists(state = initialState, action) {
     return state.setIn(['mutes', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
   case MUTES_EXPAND_SUCCESS:
     return state.updateIn(['mutes', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
+  case DIRECTORY_FETCH_SUCCESS:
+    return state.setIn(['directory', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['directory', 'isLoading'], false);
+  case DIRECTORY_EXPAND_SUCCESS:
+    return state.updateIn(['directory', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['directory', 'isLoading'], false);
+  case DIRECTORY_FETCH_REQUEST:
+  case DIRECTORY_EXPAND_REQUEST:
+    return state.setIn(['directory', 'isLoading'], true);
+  case DIRECTORY_FETCH_FAIL:
+  case DIRECTORY_EXPAND_FAIL:
+    return state.setIn(['directory', 'isLoading'], false);
   case GROUP_MEMBERS_FETCH_SUCCESS:
     return normalizeList(state, 'groups', action.id, action.accounts, action.next);
   case GROUP_MEMBERS_EXPAND_SUCCESS:

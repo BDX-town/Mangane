@@ -66,6 +66,10 @@ export const getFeatures = createSelector([
     accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
     unrestrictedLists: v.software === PLEROMA,
     accountByUsername: v.software === PLEROMA,
+    profileDirectory: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      features.includes('profile_directory'),
+    ]),
   };
 });
 

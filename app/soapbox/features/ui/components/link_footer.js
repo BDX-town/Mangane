@@ -18,6 +18,7 @@ const mapStateToProps = state => {
 
   return {
     account,
+    profileDirectory: features.profileDirectory,
     federating: features.federating,
     showAliases: features.accountAliasesAPI,
     importAPI: features.importAPI,
@@ -35,10 +36,11 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, importAPI, onClickLogOut, baseURL }) => (
+const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, showAliases, importAPI, onClickLogOut, baseURL }) => (
   <div className='getting-started__footer'>
     <ul>
       {account && <>
+        {profileDirectory && <li><Link to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></Link></li>}
         <li><Link to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></Link></li>
         <li><Link to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></Link></li>
         <li><Link to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></Link></li>
@@ -75,6 +77,7 @@ const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, importAPI
 
 LinkFooter.propTypes = {
   account: ImmutablePropTypes.map,
+  profileDirectory: PropTypes.bool,
   federating: PropTypes.bool,
   showAliases: PropTypes.bool,
   importAPI: PropTypes.bool,
