@@ -103,6 +103,7 @@ class EditProfile extends ImmutablePureComponent {
 
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
+    const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -111,6 +112,7 @@ class EditProfile extends ImmutablePureComponent {
       map.set('stranger_notifications', strangerNotifications);
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
+      map.set('discoverable', discoverable);
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -307,6 +309,13 @@ class EditProfile extends ImmutablePureComponent {
                 hint={<FormattedMessage id='edit_profile.hints.stranger_notifications' defaultMessage='Only show notifications from people you follow' />}
                 name='stranger_notifications'
                 checked={this.state.stranger_notifications}
+                onChange={this.handleCheckboxChange}
+              />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
+                hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
+                name='discoverable'
+                checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
               />
               {supportsEmailList && <Checkbox
