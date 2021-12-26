@@ -28,9 +28,9 @@ const toIds = items => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const importResults = (state, results, searchTerm) => {
+const importResults = (state, results, searchTerm, searchType) => {
   return state.withMutations(state => {
-    if (state.get('value') === searchTerm) {
+    if (state.get('value') === searchTerm && state.get('filter') === searchType) {
       state.set('results', ImmutableMap({
         accounts: toIds(results.accounts),
         statuses: toIds(results.statuses),
@@ -81,7 +81,7 @@ export default function search(state = initialState, action) {
   case SEARCH_FETCH_REQUEST:
     return handleSubmitted(state, action.value);
   case SEARCH_FETCH_SUCCESS:
-    return importResults(state, action.results, action.searchTerm);
+    return importResults(state, action.results, action.searchTerm, action.searchType);
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
   case SEARCH_EXPAND_REQUEST:
