@@ -5,6 +5,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { CancelToken } from 'axios';
+import { debounce } from 'lodash';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
@@ -20,6 +22,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
 import { openModal } from 'soapbox/actions/modal';
 import { getFeatures } from 'soapbox/utils/features';
+import { accountLookup } from 'soapbox/actions/accounts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },
@@ -39,6 +42,7 @@ const mapStateToProps = (state, props) => ({
   needsConfirmation: state.getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']),
   needsApproval: state.getIn(['instance', 'approval_required']),
   supportsEmailList: getFeatures(state.get('instance')).emailList,
+  supportsAccountLookup: getFeatures(state.get('instance')).accountLookup,
 });
 
 export default @connect(mapStateToProps)
@@ -52,6 +56,7 @@ class RegistrationForm extends ImmutablePureComponent {
     needsConfirmation: PropTypes.bool,
     needsApproval: PropTypes.bool,
     supportsEmailList: PropTypes.bool,
+    supportsAccountLookup: PropTypes.bool,
     inviteToken: PropTypes.string,
   }
 
@@ -64,8 +69,17 @@ class RegistrationForm extends ImmutablePureComponent {
     submissionLoading: false,
     params: ImmutableMap(),
     captchaIdempotencyKey: uuidv4(),
+    usernameUnavailable: false,
     passwordConfirmation: '',
     passwordMismatch: false,
+  }
+
+  source = CancelToken.source();
+
+  refreshCancelToken = () => {
+    this.source.cancel();
+    this.source = CancelToken.source();
+    return this.source;
   }
 
   setParams = map => {
@@ -74,6 +88,14 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onInputChange = e => {
     this.setParams({ [e.target.name]: e.target.value });
+  }
+
+  onUsernameChange = e => {
+    this.setParams({ username: e.target.value });
+    this.setState({ usernameUnavailable: false });
+    this.source.cancel();
+
+    this.usernameAvailable(e.target.value);
   }
 
   onCheckboxChange = e => {
@@ -145,6 +167,25 @@ class RegistrationForm extends ImmutablePureComponent {
     return params.get('password', '') === passwordConfirmation;
   }
 
+  usernameAvailable = debounce(username => {
+    const { dispatch, supportsAccountLookup } = this.props;
+
+    if (!supportsAccountLookup) return;
+
+    const source = this.refreshCancelToken();
+
+    dispatch(accountLookup(username, source.token))
+      .then(account => {
+        this.setState({ usernameUnavailable: !!account });
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 404) {
+          this.setState({ usernameUnavailable: false });
+        }
+      });
+
+  }, 1000, { trailing: true });
+
   onSubmit = e => {
     const { dispatch, inviteToken } = this.props;
 
@@ -196,7 +237,7 @@ class RegistrationForm extends ImmutablePureComponent {
 
   render() {
     const { instance, intl, supportsEmailList } = this.props;
-    const { params, passwordConfirmation, passwordMismatch } = this.state;
+    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch } = this.state;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
@@ -204,6 +245,11 @@ class RegistrationForm extends ImmutablePureComponent {
         <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
             <div className='fields-group'>
+              {usernameUnavailable && (
+                <div className='error'>
+                  <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
+                </div>
+              )}
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}
                 name='username'
@@ -212,8 +258,9 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoCorrect='off'
                 autoCapitalize='off'
                 pattern='^[a-zA-Z\d_-]+'
-                onChange={this.onInputChange}
+                onChange={this.onUsernameChange}
                 value={params.get('username', '')}
+                error={usernameUnavailable}
                 required
               />
               <SimpleInput
