@@ -955,6 +955,9 @@
 .sub-navigation ~ .ptr > .ptr__children > {
   // ScrollableList
   .slist .item-list > article:first-child,
+  // ScrollableList placeholders
+  .slist .item-list .slist__placeholder > .material-status:first-child,
+  .slist.slist--flex .item-list > .material-status:first-child,
   // Thread
   .material-status:not(.material-status + .material-status) {
     // MaterialStatus
