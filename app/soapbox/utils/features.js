@@ -70,6 +70,7 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
       features.includes('profile_directory'),
     ]),
+    accountLookup: v.software === MASTODON && gte(v.version, '3.4.0'),
   };
 });
 
