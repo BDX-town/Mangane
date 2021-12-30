@@ -148,8 +148,16 @@ export function fetchAccountByUsername(username) {
 
     const instance = state.get('instance');
     const features = getFeatures(instance);
+    const me = state.get('me');
 
-    if (features.accountByUsername) {
+    if (!me && features.accountLookup) {
+      dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchAccountSuccess(account));
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    } else if (features.accountByUsername) {
       api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
