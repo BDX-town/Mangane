@@ -112,9 +112,9 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onReblogToggle(account) {
     if (account.getIn(['relationship', 'showing_reblogs'])) {
-      dispatch(followAccount(account.get('id'), false));
+      dispatch(followAccount(account.get('id'), { reblogs: false }));
     } else {
-      dispatch(followAccount(account.get('id'), true));
+      dispatch(followAccount(account.get('id'), { reblogs: true }));
     }
   },
 
@@ -123,6 +123,14 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       dispatch(unsubscribeAccount(account.get('id')));
     } else {
       dispatch(subscribeAccount(account.get('id')));
+    }
+  },
+
+  onNotifyToggle(account) {
+    if (account.getIn(['relationship', 'notifying'])) {
+      dispatch(followAccount(account.get('id'), { notify: false }));
+    } else {
+      dispatch(followAccount(account.get('id'), { notify: true }));
     }
   },
 

@@ -57,6 +57,10 @@ export default class Header extends ImmutablePureComponent {
     this.props.onSubscriptionToggle(this.props.account);
   }
 
+  handleNotifyToggle = () => {
+    this.props.onNotifyToggle(this.props.account);
+  }
+
   handleMute = () => {
     this.props.onMute(this.props.account);
   }
@@ -143,6 +147,7 @@ export default class Header extends ImmutablePureComponent {
           onChat={this.handleChat}
           onReblogToggle={this.handleReblogToggle}
           onSubscriptionToggle={this.handleSubscriptionToggle}
+          onNotifyToggle={this.handleNotifyToggle}
           onReport={this.handleReport}
           onMute={this.handleMute}
           onBlockDomain={this.handleBlockDomain}

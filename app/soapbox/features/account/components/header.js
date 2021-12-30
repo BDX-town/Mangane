@@ -256,7 +256,21 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        if (features.accountSubscriptions) {
+        if (features.accountNotifies) {
+          if (account.getIn(['relationship', 'notifying'])) {
+            menu.push({
+              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
+              action: this.props.onNotifyToggle,
+              icon: require('@tabler/icons/icons/bell.svg'),
+            });
+          } else {
+            menu.push({
+              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
+              action: this.props.onNotifyToggle,
+              icon: require('@tabler/icons/icons/bell-off.svg'),
+            });
+          }
+        } else if (features.accountSubscriptions) {
           if (account.getIn(['relationship', 'subscribing'])) {
             menu.push({
               text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
@@ -550,8 +564,8 @@ class Header extends ImmutablePureComponent {
             <StillImage src={account.get('header')} alt='' className='parallax' />
           </a>}
 
-          {features.accountSubscriptions && <div className='account__header__subscribe'>
-            <SubscriptionButton account={account} />
+          {(features.accountNotifies || features.accountSubscriptions) && <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} features={features} />
           </div>}
         </div>
 

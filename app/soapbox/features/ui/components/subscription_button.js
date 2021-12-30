@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
@@ -7,6 +8,7 @@ import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
+  followAccount,
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
@@ -32,6 +34,13 @@ const mapDispatchToProps = (dispatch) => ({
       dispatch(subscribeAccount(account.get('id')));
     }
   },
+  onNotifyToggle(account) {
+    if (account.getIn(['relationship', 'notifying'])) {
+      dispatch(followAccount(account.get('id'), { notify: false }));
+    } else {
+      dispatch(followAccount(account.get('id'), { notify: true }));
+    }
+  },
 });
 
 export default @connect(mapStateToProps, mapDispatchToProps)
@@ -40,15 +49,17 @@ class SubscriptionButton extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
+    features: PropTypes.object.isRequired,
   };
 
   handleSubscriptionToggle = () => {
-    this.props.onSubscriptionToggle(this.props.account);
+    if (this.props.features.accountNotifies) this.props.onNotifyToggle(this.props.account);
+    else this.props.onSubscriptionToggle(this.props.account);
   }
 
   render() {
-    const { account, intl } = this.props;
-    const subscribing = account.getIn(['relationship', 'subscribing']);
+    const { account, intl, features } = this.props;
+    const subscribing = features.accountNotifies ? account.getIn(['relationship', 'notifying']) : account.getIn(['relationship', 'subscribing']);
     const following = account.getIn(['relationship', 'following']);
     const requested = account.getIn(['relationship', 'requested']);
 
