@@ -496,7 +496,7 @@ code {
     &::after {
       display: flex;
       align-items: center;
-      font-family: "Font Awesome 5 Free";
+      font-family: 'Font Awesome 5 Free';
       content: "";
       position: absolute;
       right: 12px;
@@ -504,6 +504,7 @@ code {
       padding-left: 12px;
       pointer-events: none;
       margin-top: 8px;
+      font-weight: 900;
     }
   }
 
