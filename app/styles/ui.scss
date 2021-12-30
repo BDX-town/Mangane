@@ -246,6 +246,10 @@
   }
 }
 
+article:last-child > .domain {
+  border-bottom: none;
+}
+
 .domain__wrapper {
   display: flex;
 }

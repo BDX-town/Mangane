@@ -69,7 +69,7 @@ class ListAdder extends ImmutablePureComponent {
     const { accountId, listIds, intl } = this.props;
 
     return (
-      <div className='modal-root__modal compose-modal'>
+      <div className='modal-root__modal compose-modal list-editor__content'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'>
             <FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />
