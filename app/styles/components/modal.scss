@@ -968,3 +968,27 @@
     margin-bottom: 0;
   }
 }
+
+.confirmation-modal,
+.mute-modal {
+  &__header {
+    display: flex;
+    align-items: center;
+    column-gap: 6px;
+    padding: 20px;
+    padding-bottom: 0;
+    font-size: 22px;
+
+    .svg-icon {
+      height: 24px;
+      width: 24px;
+      color: var(--primary-text-color);
+      opacity: 0.6;
+    }
+  }
+
+  &__container {
+    padding: 20px;
+    text-align: left;
+  }
+}
