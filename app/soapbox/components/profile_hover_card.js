@@ -52,6 +52,7 @@ export const ProfileHoverCard = ({ visible }) => {
 
   const [popperElement, setPopperElement] = useState(null);
 
+  const me = useSelector(state => state.get('me'));
   const accountId = useSelector(state => state.getIn(['profile_hover_card', 'accountId']));
   const account   = useSelector(state => accountId && getAccount(state, accountId));
   const targetRef = useSelector(state => state.getIn(['profile_hover_card', 'ref', 'current']));
@@ -65,7 +66,7 @@ export const ProfileHoverCard = ({ visible }) => {
 
   if (!account) return null;
   const accountBio = { __html: account.get('note_emojified') };
-  const followedBy  = account.getIn(['relationship', 'followed_by']);
+  const followedBy = me !== account.get('id') && account.getIn(['relationship', 'followed_by']);
 
   return (
     <div className={classNames('profile-hover-card', { 'profile-hover-card--visible': visible })} ref={setPopperElement} style={styles.popper} {...attributes.popper} onMouseEnter={handleMouseEnter(dispatch)} onMouseLeave={handleMouseLeave(dispatch)}>

@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import { makeGetAccount } from 'soapbox/selectors';
@@ -18,6 +19,7 @@ const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
   const mapStateToProps = (state, { id }) => ({
+    me: state.get('me'),
     account: getAccount(state, id),
     autoPlayGif: getSettings(state).get('autoPlayGif'),
   });
@@ -30,15 +32,24 @@ export default @injectIntl
 class AccountCard extends ImmutablePureComponent {
 
   static propTypes = {
+    me: SoapboxPropTypes.me,
     account: ImmutablePropTypes.map.isRequired,
     autoPlayGif: PropTypes.bool,
   };
 
   render() {
-    const { account, autoPlayGif } = this.props;
+    const { account, autoPlayGif, me } = this.props;
+
+    const followedBy = me !== account.get('id') && account.getIn(['relationship', 'followed_by']);
 
     return (
       <div className='directory__card'>
+        {followedBy &&
+          <div className='directory__card__info'>
+            <span className='relationship-tag'>
+              <FormattedMessage id='account.follows_you' defaultMessage='Follows you' />
+            </span>
+          </div>}
         <div className='directory__card__action-button'>
           <ActionButton account={account} small />
         </div>
