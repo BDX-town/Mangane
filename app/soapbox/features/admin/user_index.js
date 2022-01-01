@@ -12,6 +12,7 @@ import { SimpleForm, TextInput } from 'soapbox/features/forms';
 import { Set as ImmutableSet, OrderedSet as ImmutableOrderedSet, is } from 'immutable';
 
 const messages = defineMessages({
+  heading: { id: 'column.admin.users', defaultMessage: 'Users' },
   empty: { id: 'admin.user_index.empty', defaultMessage: 'No users found.' },
   searchPlaceholder: { id: 'admin.user_index.search_input_placeholder', defaultMessage: 'Who are you looking for?' },
 });
@@ -100,7 +101,7 @@ class UserIndex extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.isEmpty();
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <SimpleForm style={{ paddingBottom: 0 }}>
           <TextInput
             onChange={this.handleQueryChange}
