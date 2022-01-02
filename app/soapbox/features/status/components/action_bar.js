@@ -66,9 +66,12 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  onOpenUnauthorizedModal() {
-    dispatch(openModal('UNAUTHORIZED'));
+const mapDispatchToProps = (dispatch, { status }) => ({
+  onOpenUnauthorizedModal(action) {
+    dispatch(openModal('UNAUTHORIZED', {
+      action,
+      ap_id: status.get('url'),
+    }));
   },
 });
 
@@ -121,20 +124,20 @@ class ActionBar extends React.PureComponent {
   }
 
   handleReplyClick = () => {
-    const { me } = this.props;
+    const { me, onReply, onOpenUnauthorizedModal } = this.props;
     if (me) {
-      this.props.onReply(this.props.status);
+      onReply(this.props.status);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REPLY');
     }
   }
 
   handleReblogClick = (e) => {
-    const { me } = this.props;
+    const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onReblog(this.props.status, e);
+      onReblog(status, e);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REBLOG');
     }
   }
 
@@ -143,11 +146,11 @@ class ActionBar extends React.PureComponent {
   }
 
   handleFavouriteClick = () => {
-    const { me } = this.props;
+    const { me, onFavourite, onOpenUnauthorizedModal } = this.props;
     if (me) {
-      this.props.onFavourite(this.props.status);
+      onFavourite(status);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('FAVOURITE');
     }
   }
 
@@ -184,11 +187,11 @@ class ActionBar extends React.PureComponent {
 
   handleReactClick = emoji => {
     return e => {
-      const { me } = this.props;
+      const { me, onEmojiReact, onOpenUnauthorizedModal, status } = this.props;
       if (me) {
-        this.props.onEmojiReact(this.props.status, emoji);
+        onEmojiReact(status, emoji);
       } else {
-        this.props.onOpenUnauthorizedModal();
+        onOpenUnauthorizedModal('FAVOURITE');
       }
       this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     };
