@@ -117,11 +117,11 @@ class StatusActionBar extends ImmutablePureComponent {
   ]
 
   handleReplyClick = () => {
-    const { me } = this.props;
+    const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onReply(this.props.status, this.context.router.history);
+      onReply(status, this.context.router.history);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REPLY');
     }
   }
 
@@ -167,22 +167,22 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleReactClick = emoji => {
     return e => {
-      const { me, status } = this.props;
+      const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
       if (me) {
-        this.props.dispatch(simpleEmojiReact(status, emoji));
+        dispatch(simpleEmojiReact(status, emoji));
       } else {
-        this.props.onOpenUnauthorizedModal();
+        onOpenUnauthorizedModal('FAVOURITE');
       }
       this.setState({ emojiSelectorVisible: false });
     };
   }
 
   handleFavouriteClick = () => {
-    const { me } = this.props;
+    const { me, onFavourite, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onFavourite(this.props.status);
+      onFavourite(status);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('FAVOURITE');
     }
   }
 
@@ -191,11 +191,11 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleReblogClick = e => {
-    const { me } = this.props;
+    const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onReblog(this.props.status, e);
+      onReblog(status, e);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REBLOG');
     }
   }
 
@@ -599,10 +599,13 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { status }) => ({
   dispatch,
-  onOpenUnauthorizedModal() {
-    dispatch(openModal('UNAUTHORIZED'));
+  onOpenUnauthorizedModal(action) {
+    dispatch(openModal('UNAUTHORIZED', {
+      action,
+      ap_id: status.get('url'),
+    }));
   },
 });
 
