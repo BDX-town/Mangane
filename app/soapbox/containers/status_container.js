@@ -66,174 +66,176 @@ const makeMapStateToProps = () => {
   return mapStateToProps;
 };
 
-const mapDispatchToProps = (dispatch, { intl }) => ({
-
-  onReply(status, router) {
-    dispatch((_, getState) => {
-      const state = getState();
-      if (state.getIn(['compose', 'text']).trim().length !== 0) {
-        dispatch(openModal('CONFIRM', {
-          message: intl.formatMessage(messages.replyMessage),
-          confirm: intl.formatMessage(messages.replyConfirm),
-          onConfirm: () => dispatch(replyCompose(status, router)),
-        }));
-      } else {
-        dispatch(replyCompose(status, router));
-      }
-    });
-  },
-
-  onModalReblog(status) {
+const mapDispatchToProps = (dispatch, { intl }) => {
+  function onModalReblog(status) {
     if (status.get('reblogged')) {
       dispatch(unreblog(status));
     } else {
       dispatch(reblog(status));
     }
-  },
+  }
 
-  onReblog(status, e) {
-    dispatch((_, getState) => {
-      const boostModal = getSettings(getState()).get('boostModal');
-      if (e.shiftKey || !boostModal) {
-        this.onModalReblog(status);
+  return {
+    onReply(status, router) {
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.getIn(['compose', 'text']).trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(replyCompose(status, router)),
+          }));
+        } else {
+          dispatch(replyCompose(status, router));
+        }
+      });
+    },
+
+    onModalReblog,
+
+    onReblog(status, e) {
+      dispatch((_, getState) => {
+        const boostModal = getSettings(getState()).get('boostModal');
+        if (e.shiftKey || !boostModal) {
+          this.onModalReblog(status);
+        } else {
+          dispatch(openModal('BOOST', { status, onReblog: onModalReblog }));
+        }
+      });
+    },
+
+    onFavourite(status) {
+      if (status.get('favourited')) {
+        dispatch(unfavourite(status));
       } else {
-        dispatch(openModal('BOOST', { status, onReblog: this.onModalReblog }));
+        dispatch(favourite(status));
       }
-    });
-  },
+    },
 
-  onFavourite(status) {
-    if (status.get('favourited')) {
-      dispatch(unfavourite(status));
-    } else {
-      dispatch(favourite(status));
-    }
-  },
-
-  onBookmark(status) {
-    if (status.get('bookmarked')) {
-      dispatch(unbookmark(intl, status));
-    } else {
-      dispatch(bookmark(intl, status));
-    }
-  },
-
-  onPin(status) {
-    if (status.get('pinned')) {
-      dispatch(unpin(status));
-    } else {
-      dispatch(pin(status));
-    }
-  },
-
-  onEmbed(status) {
-    dispatch(openModal('EMBED', {
-      url: status.get('url'),
-      onError: error => dispatch(showAlertForError(error)),
-    }));
-  },
-
-  onDelete(status, history, withRedraft = false) {
-    dispatch((_, getState) => {
-      const deleteModal = getSettings(getState()).get('deleteModal');
-      if (!deleteModal) {
-        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+    onBookmark(status) {
+      if (status.get('bookmarked')) {
+        dispatch(unbookmark(intl, status));
       } else {
-        dispatch(openModal('CONFIRM', {
-          message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
-          confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
-        }));
+        dispatch(bookmark(intl, status));
       }
-    });
-  },
+    },
 
-  onDirect(account, router) {
-    dispatch(directCompose(account, router));
-  },
+    onPin(status) {
+      if (status.get('pinned')) {
+        dispatch(unpin(status));
+      } else {
+        dispatch(pin(status));
+      }
+    },
 
-  onChat(account, router) {
-    dispatch(launchChat(account.get('id'), router));
-  },
+    onEmbed(status) {
+      dispatch(openModal('EMBED', {
+        url: status.get('url'),
+        onError: error => dispatch(showAlertForError(error)),
+      }));
+    },
 
-  onMention(account, router) {
-    dispatch(mentionCompose(account, router));
-  },
+    onDelete(status, history, withRedraft = false) {
+      dispatch((_, getState) => {
+        const deleteModal = getSettings(getState()).get('deleteModal');
+        if (!deleteModal) {
+          dispatch(deleteStatus(status.get('id'), history, withRedraft));
+        } else {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
+            confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
+            onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+          }));
+        }
+      });
+    },
 
-  onOpenMedia(media, index) {
-    dispatch(openModal('MEDIA', { media, index }));
-  },
+    onDirect(account, router) {
+      dispatch(directCompose(account, router));
+    },
 
-  onOpenVideo(media, time) {
-    dispatch(openModal('VIDEO', { media, time }));
-  },
+    onChat(account, router) {
+      dispatch(launchChat(account.get('id'), router));
+    },
 
-  onOpenAudio(media, time) {
-    dispatch(openModal('AUDIO', { media, time }));
-  },
+    onMention(account, router) {
+      dispatch(mentionCompose(account, router));
+    },
 
-  onBlock(status) {
-    const account = status.get('account');
-    dispatch(openModal('CONFIRM', {
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
-      confirm: intl.formatMessage(messages.blockConfirm),
-      onConfirm: () => dispatch(blockAccount(account.get('id'))),
-      secondary: intl.formatMessage(messages.blockAndReport),
-      onSecondary: () => {
-        dispatch(blockAccount(account.get('id')));
-        dispatch(initReport(account, status));
-      },
-    }));
-  },
+    onOpenMedia(media, index) {
+      dispatch(openModal('MEDIA', { media, index }));
+    },
 
-  onReport(status) {
-    dispatch(initReport(status.get('account'), status));
-  },
+    onOpenVideo(media, time) {
+      dispatch(openModal('VIDEO', { media, time }));
+    },
 
-  onMute(account) {
-    dispatch(initMuteModal(account));
-  },
+    onOpenAudio(media, time) {
+      dispatch(openModal('AUDIO', { media, time }));
+    },
 
-  onMuteConversation(status) {
-    if (status.get('muted')) {
-      dispatch(unmuteStatus(status.get('id')));
-    } else {
-      dispatch(muteStatus(status.get('id')));
-    }
-  },
+    onBlock(status) {
+      const account = status.get('account');
+      dispatch(openModal('CONFIRM', {
+        message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+        confirm: intl.formatMessage(messages.blockConfirm),
+        onConfirm: () => dispatch(blockAccount(account.get('id'))),
+        secondary: intl.formatMessage(messages.blockAndReport),
+        onSecondary: () => {
+          dispatch(blockAccount(account.get('id')));
+          dispatch(initReport(account, status));
+        },
+      }));
+    },
 
-  onToggleHidden(status) {
-    if (status.get('hidden')) {
-      dispatch(revealStatus(status.get('id')));
-    } else {
-      dispatch(hideStatus(status.get('id')));
-    }
-  },
+    onReport(status) {
+      dispatch(initReport(status.get('account'), status));
+    },
 
-  onGroupRemoveAccount(groupId, accountId) {
-    dispatch(createRemovedAccount(groupId, accountId));
-  },
+    onMute(account) {
+      dispatch(initMuteModal(account));
+    },
 
-  onGroupRemoveStatus(groupId, statusId) {
-    dispatch(groupRemoveStatus(groupId, statusId));
-  },
+    onMuteConversation(status) {
+      if (status.get('muted')) {
+        dispatch(unmuteStatus(status.get('id')));
+      } else {
+        dispatch(muteStatus(status.get('id')));
+      }
+    },
 
-  onDeactivateUser(status) {
-    dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
-  },
+    onToggleHidden(status) {
+      if (status.get('hidden')) {
+        dispatch(revealStatus(status.get('id')));
+      } else {
+        dispatch(hideStatus(status.get('id')));
+      }
+    },
 
-  onDeleteUser(status) {
-    dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
-  },
+    onGroupRemoveAccount(groupId, accountId) {
+      dispatch(createRemovedAccount(groupId, accountId));
+    },
 
-  onDeleteStatus(status) {
-    dispatch(deleteStatusModal(intl, status.get('id')));
-  },
+    onGroupRemoveStatus(groupId, statusId) {
+      dispatch(groupRemoveStatus(groupId, statusId));
+    },
 
-  onToggleStatusSensitivity(status) {
-    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
-  },
+    onDeactivateUser(status) {
+      dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
+    },
 
-});
+    onDeleteUser(status) {
+      dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
+    },
+
+    onDeleteStatus(status) {
+      dispatch(deleteStatusModal(intl, status.get('id')));
+    },
+
+    onToggleStatusSensitivity(status) {
+      dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
+    },
+  };
+};
 
 export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));
