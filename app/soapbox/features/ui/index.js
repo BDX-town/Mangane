@@ -317,14 +317,14 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
-        <WrappedRoute path='/soapbox/config' page={DefaultPage} component={SoapboxConfig} content={children} />
+        <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
-        <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
-        <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
-        <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
-        <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
-        <WrappedRoute path='/admin/users' page={AdminPage} component={UserIndex} content={children} exact />
+        <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={AwaitingApproval} content={children} exact />
+        <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Reports} content={children} exact />
+        <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+        <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
         <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
 
         <WrappedRoute path='/developers/apps/create' page={DefaultPage} component={CreateApp} content={children} />
