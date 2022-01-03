@@ -399,10 +399,10 @@
 .confirmation-modal__action-bar,
 .mute-modal__action-bar {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background: var(--background-color);
   padding: 10px;
-  line-height: 36px;
 
   & > div {
     flex: 1 1 auto;
