@@ -356,7 +356,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.get('id') !== me && isLocal(account)) {
+      if (account.get('id') !== me && isLocal(account) && isAdmin(meAccount)) {
         if (isAdmin(account)) {
           menu.push({
             text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }),
@@ -407,7 +407,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (features.suggestionsV2) {
+      if (features.suggestionsV2 && isAdmin(meAccount)) {
         if (account.getIn(['pleroma', 'is_suggested'])) {
           menu.push({
             text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),

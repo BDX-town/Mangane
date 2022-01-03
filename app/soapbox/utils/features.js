@@ -74,6 +74,7 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
+    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
   };
 });
 

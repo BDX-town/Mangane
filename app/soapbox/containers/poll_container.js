@@ -6,4 +6,5 @@ const mapStateToProps = (state, { pollId }) => ({
   me: state.get('me'),
 });
 
+
 export default connect(mapStateToProps)(Poll);

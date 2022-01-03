@@ -34,6 +34,7 @@ class Poll extends ImmutablePureComponent {
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
     me: SoapboxPropTypes.me,
+    status: PropTypes.string,
   };
 
   state = {
@@ -81,7 +82,11 @@ class Poll extends ImmutablePureComponent {
   };
 
   openUnauthorizedModal = () => {
-    this.props.dispatch(openModal('UNAUTHORIZED'));
+    const { dispatch, status } = this.props;
+    dispatch(openModal('UNAUTHORIZED', {
+      action: 'POLL_VOTE',
+      ap_id: status,
+    }));
   }
 
   handleRefresh = () => {
