@@ -725,7 +725,8 @@
   }
 }
 
-.compose-modal {
+.compose-modal,
+.reply-mentions-modal {
   overflow: hidden;
   background-color: var(--background-color);
   border-radius: 6px;
@@ -755,6 +756,15 @@
     }
   }
 
+  @media screen and (max-width: 895px) {
+    margin: 0;
+    border-radius: 0;
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+.compose-modal {
   &__close {
     position: absolute;
     right: 10px;
@@ -808,12 +818,27 @@
       padding: 10px 0;
     }
   }
+}
 
-  @media screen and (max-width: 895px) {
-    margin: 0;
-    border-radius: 0;
-    height: 100vh;
-    width: 100vw;
+.reply-mentions-modal {
+  &__back {
+    position: absolute;
+    left: 10px;
+    left: max(10px, env(safe-area-inset-right));
+    color: var(--primary-text-color--faint);
+
+    .svg-icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &__accounts {
+    display: block;
+    flex-direction: row;
+    flex: 1;
+    overflow-y: auto;
+    min-height: 300px;
   }
 }
 

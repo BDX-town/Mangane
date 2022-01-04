@@ -3,6 +3,7 @@ import { deleteFromTimelines } from './timelines';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
@@ -95,10 +96,17 @@ export function fetchStatus(id) {
 }
 
 export function redraft(status, raw_text) {
-  return {
-    type: REDRAFT,
-    status,
-    raw_text,
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: REDRAFT,
+      status,
+      raw_text,
+      explicitAddressing,
+    });
   };
 }
 

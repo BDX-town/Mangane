@@ -8,6 +8,7 @@ import RelativeTimestamp from './relative_timestamp';
 import DisplayName from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
+import StatusReplyMentions from './status_reply_mentions';
 import AttachmentThumbs from './attachment_thumbs';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -537,6 +538,8 @@ class Status extends ImmutablePureComponent {
                 Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
               </div>
             )}
+
+            <StatusReplyMentions status={this._properStatus()} />
 
             <StatusContent
               status={status}

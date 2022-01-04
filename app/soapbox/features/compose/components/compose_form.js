@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
+import ReplyMentions from '../containers/reply_mentions_container';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
@@ -308,7 +309,9 @@ export default class ComposeForm extends ImmutablePureComponent {
 
         <WarningContainer />
 
-        { !shouldCondense && <ReplyIndicatorContainer /> }
+        {!shouldCondense && <ReplyIndicatorContainer />}
+
+        {!shouldCondense && <ReplyMentions />}
 
         <div className={`spoiler-input ${this.props.spoiler ? 'spoiler-input--visible' : ''}`}>
           <AutosuggestInput

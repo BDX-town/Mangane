@@ -102,6 +102,10 @@ export function Reactions() {
   return import(/* webpackChunkName: "features/reactions" */'../../reactions');
 }
 
+export function Mentions() {
+  return import(/* webpackChunkName: "features/mentions" */'../../mentions');
+}
+
 export function Favourites() {
   return import(/* webpackChunkName: "features/favourites" */'../../favourites');
 }
@@ -188,6 +192,10 @@ export function HotkeysModal() {
 
 export function ComposeModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+}
+
+export function ReplyMentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reply_mentions_modal');
 }
 
 export function UnauthorizedModal() {
