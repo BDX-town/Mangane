@@ -13,9 +13,11 @@ import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import { makeGetStatus } from '../../selectors';
+import FilterBar from 'soapbox/components/filter_bar';
 
 const messages = defineMessages({
   heading: { id: 'column.reactions', defaultMessage: 'Reactions' },
+  all: { id: 'reactions.all', defaultMessage: 'All' },
 });
 
 const mapStateToProps = (state, props) => {
@@ -82,8 +84,31 @@ class Reactions extends ImmutablePureComponent {
     this.context.router.history.replace(`/@${username}/posts/${statusId}/reactions/${reaction}`);
   };
 
+  renderFilterBar() {
+    const { intl, params, reactions } = this.props;
+    const { reaction } = params;
+
+    const items = [
+      {
+        text: intl.formatMessage(messages.all),
+        action: this.handleFilterChange(''),
+        name: 'all',
+      },
+    ];
+
+    reactions.forEach(reaction => items.push(
+      {
+        text: `${reaction.name} ${reaction.count}`,
+        action: this.handleFilterChange(reaction.name),
+        name: reaction.name,
+      },
+    ));
+
+    return <FilterBar className='reaction__filter-bar' items={items} active={reaction || 'all'} />;
+  }
+
   render() {
-    const { intl, params, reactions, accounts, status } = this.props;
+    const { intl, reactions, accounts, status } = this.props;
 
     if (!accounts) {
       return (
@@ -105,14 +130,7 @@ class Reactions extends ImmutablePureComponent {
 
     return (
       <Column heading={intl.formatMessage(messages.heading)}>
-        {
-          reactions.size > 0 && (
-            <div className='reaction__filter-bar'>
-              <button className={!params.reaction ? 'active' : ''} onClick={this.handleFilterChange('')}>All</button>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} className={params.reaction === reaction.name ? 'active' : ''} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
-            </div>
-          )
-        }
+        {reactions.size > 0 && this.renderFilterBar()}
         <ScrollableList
           scrollKey='reactions'
           emptyMessage={emptyMessage}

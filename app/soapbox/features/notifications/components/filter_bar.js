@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
 import Icon from 'soapbox/components/icon';
+import FilterBar from 'soapbox/components/filter_bar';
 
-const tooltips = defineMessages({
+const messages = defineMessages({
+  all: { id: 'notifications.filter.all', defaultMessage: 'All' },
   mentions: { id: 'notifications.filter.mentions', defaultMessage: 'Mentions' },
   favourites: { id: 'notifications.filter.favourites', defaultMessage: 'Likes' },
   boosts: { id: 'notifications.filter.boosts', defaultMessage: 'Reposts' },
@@ -14,7 +16,7 @@ const tooltips = defineMessages({
 });
 
 export default @injectIntl
-class FilterBar extends React.PureComponent {
+class NotificationFilterBar extends React.PureComponent {
 
   static propTypes = {
     selectFilter: PropTypes.func.isRequired,
@@ -30,90 +32,67 @@ class FilterBar extends React.PureComponent {
 
   render() {
     const { selectedFilter, advancedMode, supportsEmojiReacts, intl } = this.props;
-    const renderedElement = !advancedMode ? (
-      <div className='notification__filter-bar'>
-        <button
-          className={selectedFilter === 'all' ? 'active' : ''}
-          onClick={this.onClick('all')}
-        >
-          <FormattedMessage
-            id='notifications.filter.all'
-            defaultMessage='All'
-          />
-        </button>
-        <button
-          className={selectedFilter === 'mention' ? 'active' : ''}
-          onClick={this.onClick('mention')}
-        >
-          <FormattedMessage
-            id='notifications.filter.mentions'
-            defaultMessage='Mentions'
-          />
-        </button>
-      </div>
-    ) : (
-      <div className='notification__filter-bar'>
-        <button
-          className={selectedFilter === 'all' ? 'active' : ''}
-          onClick={this.onClick('all')}
-        >
-          <FormattedMessage
-            id='notifications.filter.all'
-            defaultMessage='All'
-          />
-        </button>
-        <button
-          className={selectedFilter === 'mention' ? 'active' : ''}
-          onClick={this.onClick('mention')}
-          title={intl.formatMessage(tooltips.mentions)}
-        >
-          <Icon src={require('@tabler/icons/icons/at.svg')} />
-        </button>
-        <button
-          className={selectedFilter === 'favourite' ? 'active' : ''}
-          onClick={this.onClick('favourite')}
-          title={intl.formatMessage(tooltips.favourites)}
-        >
-          <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />
-        </button>
-        {supportsEmojiReacts && <button
-          className={selectedFilter === 'pleroma:emoji_reaction' ? 'active' : ''}
-          onClick={this.onClick('pleroma:emoji_reaction')}
-          title={intl.formatMessage(tooltips.emoji_reacts)}
-        >
-          <Icon src={require('@tabler/icons/icons/mood-smile.svg')} />
-        </button>}
-        <button
-          className={selectedFilter === 'reblog' ? 'active' : ''}
-          onClick={this.onClick('reblog')}
-          title={intl.formatMessage(tooltips.boosts)}
-        >
-          <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
-        </button>
-        <button
-          className={selectedFilter === 'poll' ? 'active' : ''}
-          onClick={this.onClick('poll')}
-          title={intl.formatMessage(tooltips.polls)}
-        >
-          <Icon src={require('@tabler/icons/icons/chart-bar.svg')} />
-        </button>
-        <button
-          className={selectedFilter === 'follow' ? 'active' : ''}
-          onClick={this.onClick('follow')}
-          title={intl.formatMessage(tooltips.follows)}
-        >
-          <Icon src={require('@tabler/icons/icons/user-plus.svg')} />
-        </button>
-        <button
-          className={selectedFilter === 'move' ? 'active' : ''}
-          onClick={this.onClick('move')}
-          title={intl.formatMessage(tooltips.moves)}
-        >
-          <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
-        </button>
-      </div>
-    );
-    return renderedElement;
+
+    const items = [
+      {
+        text: intl.formatMessage(messages.all),
+        action: this.onClick('all'),
+        name: 'all',
+      },
+    ];
+
+    if (!advancedMode) {
+      items.push({
+        text: intl.formatMessage(messages.mentions),
+        action: this.onClick('mention'),
+        name: 'mention',
+      });
+    } else {
+      items.push({
+        text: <Icon src={require('@tabler/icons/icons/at.svg')} />,
+        title: intl.formatMessage(messages.mentions),
+        action: this.onClick('mention'),
+        name: 'mention',
+      });
+      items.push({
+        text: <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />,
+        title: intl.formatMessage(messages.favourites),
+        action: this.onClick('favourite'),
+        name: 'favourite',
+      });
+      if (supportsEmojiReacts) items.push({
+        text: <Icon src={require('@tabler/icons/icons/mood-smile.svg')} />,
+        title: intl.formatMessage(messages.emoji_reacts),
+        action: this.onClick('pleroma:emoji_reaction'),
+        name: 'pleroma:emoji_reaction',
+      });
+      items.push({
+        text: <Icon src={require('feather-icons/dist/icons/repeat.svg')} />,
+        title: intl.formatMessage(messages.boosts),
+        action: this.onClick('reblog'),
+        name: 'reblog',
+      });
+      items.push({
+        text: <Icon src={require('@tabler/icons/icons/chart-bar.svg')} />,
+        title: intl.formatMessage(messages.polls),
+        action: this.onClick('poll'),
+        name: 'poll',
+      });
+      items.push({
+        text: <Icon src={require('@tabler/icons/icons/user-plus.svg')} />,
+        title: intl.formatMessage(messages.follows),
+        action: this.onClick('follow'),
+        name: 'follow',
+      });
+      items.push({
+        text: <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />,
+        title: intl.formatMessage(messages.moves),
+        action: this.onClick('move'),
+        name: 'move',
+      });
+    }
+
+    return <FilterBar key={advancedMode} className='notification__filter-bar' items={items} active={selectedFilter} />;
   }
 
 }
