@@ -1,6 +1,8 @@
 import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
+  UNREBLOG_REQUEST,
+  UNREBLOG_FAIL,
   FAVOURITE_REQUEST,
   UNFAVOURITE_REQUEST,
   FAVOURITE_FAIL,
@@ -91,6 +93,10 @@ export default function statuses(state = initialState, action) {
     return state.setIn([action.status.get('id'), 'reblogged'], true);
   case REBLOG_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], false);
+  case UNREBLOG_REQUEST:
+    return state.setIn([action.status.get('id'), 'reblogged'], false);
+  case UNREBLOG_FAIL:
+    return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], true);
   case STATUS_MUTE_SUCCESS:
     return state.setIn([action.id, 'muted'], true);
   case STATUS_UNMUTE_SUCCESS:
