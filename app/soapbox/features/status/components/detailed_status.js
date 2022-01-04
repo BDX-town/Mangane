@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { injectIntl } from 'react-intl';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import StatusContent from '../../../components/status_content';
+import StatusReplyMentions from '../../../components/status_reply_mentions';
 import MediaGallery from '../../../components/media_gallery';
 import { Link, NavLink } from 'react-router-dom';
 import { FormattedDate } from 'react-intl';
@@ -18,7 +20,8 @@ import StatusInteractionBar from './status_interaction_bar';
 import { getDomain } from 'soapbox/utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
-export default class DetailedStatus extends ImmutablePureComponent {
+export default @injectIntl
+class DetailedStatus extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -81,6 +84,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
+
 
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
@@ -184,6 +188,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
               Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
             </div>
           )}
+
+          <StatusReplyMentions status={status} />
 
           <StatusContent
             status={status}

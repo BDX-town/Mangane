@@ -58,6 +58,7 @@ import {
   Following,
   Reblogs,
   Reactions,
+  Mentions,
   Favourites,
   DirectTimeline,
   Conversations,
@@ -300,6 +301,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/likes' page={DefaultPage} component={Favourites} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/mentions' page={DefaultPage} component={Mentions} content={children} />
         <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
         <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
