@@ -23,7 +23,7 @@ class ReplyMentions extends ImmutablePureComponent {
   render() {
     const { explicitAddressing, to, isReply } = this.props;
 
-    if (!explicitAddressing || !isReply || !to || to.length === 0) {
+    if (!explicitAddressing || !isReply || !to || to.size === 0) {
       return null;
     }
 

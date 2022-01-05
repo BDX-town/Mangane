@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import StatusContent from 'soapbox/components/status_content';
 import { buildStatus } from '../builder';
@@ -25,7 +24,7 @@ export default @connect(mapStateToProps)
 class ScheduledStatus extends ImmutablePureComponent {
 
   render() {
-    const { status, showThread, account, ...other } = this.props;
+    const { status, account, ...other } = this.props;
     if (!status.get('account')) return null;
 
     const statusUrl = `/scheduled_statuses/${status.get('id')}`;
@@ -73,12 +72,6 @@ class ScheduledStatus extends ImmutablePureComponent {
             />
 
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             <ScheduledStatusActionBar status={status} account={account} {...other} />
           </div>
