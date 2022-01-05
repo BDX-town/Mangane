@@ -88,7 +88,6 @@ class Status extends ImmutablePureComponent {
     unread: PropTypes.bool,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
-    showThread: PropTypes.bool,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
     cacheMediaWidth: PropTypes.func,
@@ -318,7 +317,7 @@ class Status extends ImmutablePureComponent {
     const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, group } = this.props;
 
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
@@ -552,12 +551,6 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             <StatusActionBar
               status={status}

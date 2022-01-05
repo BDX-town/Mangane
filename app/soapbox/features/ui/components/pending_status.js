@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import StatusContent from 'soapbox/components/status_content';
 import { buildStatus } from '../util/pending_status_builder';
@@ -46,7 +45,7 @@ class PendingStatus extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, className, showThread } = this.props;
+    const { status, className } = this.props;
     if (!status) return null;
     if (!status.get('account')) return null;
 
@@ -90,12 +89,6 @@ class PendingStatus extends ImmutablePureComponent {
 
             {this.renderMedia()}
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             {/* TODO */}
             {/* <PlaceholderActionBar /> */}
