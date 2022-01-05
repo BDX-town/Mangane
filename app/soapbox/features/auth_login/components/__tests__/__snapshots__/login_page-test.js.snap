@@ -17,7 +17,9 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
       >
         <input
           aria-label="Username"
+          autoCapitalize="off"
           autoComplete="off"
+          autoCorrect="off"
           className="string email"
           name="username"
           placeholder="Username"
@@ -26,17 +28,49 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
         />
       </div>
       <div
-        className="input password user_password"
+        className="input required showable-password password user_password"
       >
         <input
           aria-label="Password"
+          autoCapitalize="off"
           autoComplete="off"
-          className="password"
+          autoCorrect="off"
           name="password"
           placeholder="Password"
           required={true}
           type="password"
         />
+        <button
+          aria-label="Show password"
+          className="icon-button"
+          disabled={false}
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onKeyPress={[Function]}
+          onKeyUp={[Function]}
+          onMouseDown={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+          tabIndex="0"
+          title="Show password"
+          type="button"
+        >
+          <div
+            style={Object {}}
+          >
+            <div
+              className="svg-icon"
+            >
+              <svg
+                id={
+                  Object {
+                    "process": [Function],
+                  }
+                }
+              />
+            </div>
+          </div>
+        </button>
       </div>
       <p
         className="hint subtle-hint"

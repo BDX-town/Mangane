@@ -20,7 +20,6 @@ import reports from './reports';
 import contexts from './contexts';
 import compose from './compose';
 import search from './search';
-import media_attachments from './media_attachments';
 import notifications from './notifications';
 import height_cache from './height_cache';
 import custom_emojis from './custom_emojis';
@@ -76,7 +75,6 @@ const appReducer = combineReducers({
   contexts,
   compose,
   search,
-  media_attachments,
   notifications,
   height_cache,
   custom_emojis,

@@ -68,6 +68,9 @@ export const COMPOSE_SCHEDULE_ADD    = 'COMPOSE_SCHEDULE_ADD';
 export const COMPOSE_SCHEDULE_SET    = 'COMPOSE_SCHEDULE_SET';
 export const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE';
 
+export const COMPOSE_ADD_TO_MENTIONS = 'COMPOSE_ADD_TO_MENTIONS';
+export const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS';
+
 const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
@@ -93,10 +96,14 @@ export function changeCompose(text) {
 export function replyCompose(status, routerHistory) {
   return (dispatch, getState) => {
     const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
     dispatch({
       type: COMPOSE_REPLY,
       status: status,
       account: state.getIn(['accounts', state.get('me')]),
+      explicitAddressing,
     });
 
     dispatch(openModal('COMPOSE'));
@@ -183,6 +190,7 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
+    let to       = state.getIn(['compose', 'to'], null);
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
@@ -200,6 +208,13 @@ export function submitCompose(routerHistory, force = false) {
       return;
     }
 
+    if (to && status) {
+      const mentions = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/g); // not a perfect regex
+
+      if (mentions)
+        to = to.union(mentions.map(mention => mention.trim().slice(1)));
+    }
+
     dispatch(submitComposeRequest());
     dispatch(closeModal());
 
@@ -215,6 +230,7 @@ export function submitCompose(routerHistory, force = false) {
       content_type: state.getIn(['compose', 'content_type']),
       poll: state.getIn(['compose', 'poll'], null),
       scheduled_at: state.getIn(['compose', 'schedule'], null),
+      to,
     };
 
     dispatch(createStatus(params, idempotencyKey)).then(function(data) {
@@ -641,5 +657,29 @@ export function openComposeWithText(text = '') {
     dispatch(resetCompose());
     dispatch(openModal('COMPOSE'));
     dispatch(changeCompose(text));
+  };
+}
+
+export function addToMentions(accountId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const acct = state.getIn(['accounts', accountId, 'acct']);
+
+    return dispatch({
+      type: COMPOSE_ADD_TO_MENTIONS,
+      account: acct,
+    });
+  };
+}
+
+export function removeFromMentions(accountId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const acct = state.getIn(['accounts', accountId, 'acct']);
+
+    return dispatch({
+      type: COMPOSE_REMOVE_FROM_MENTIONS,
+      account: acct,
+    });
   };
 }

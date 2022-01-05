@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { getFeatures } from 'soapbox/utils/features';
 import { getBaseURL } from 'soapbox/utils/state';
+import ShowablePassword from 'soapbox/components/showable_password';
 
 const messages = defineMessages({
   username: { id: 'login.fields.username_placeholder', defaultMessage: 'Username' },
@@ -40,20 +41,25 @@ class LoginForm extends ImmutablePureComponent {
                 type='text'
                 name='username'
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 required
               />
             </div>
-            <div className='input password user_password'>
+            <ShowablePassword
+              aria-label={intl.formatMessage(messages.password)}
+              className='password user_password'
+              placeholder={intl.formatMessage(messages.password)}
+              name='password'
+              autoComplete='off'
+              autoCorrect='off'
+              autoCapitalize='off'
+              required
+            />
+            {/* <div className='input password user_password'>
               <input
-                aria-label={intl.formatMessage(messages.password)}
-                className='password'
-                placeholder={intl.formatMessage(messages.password)}
-                type='password'
-                name='password'
-                autoComplete='off'
-                required
               />
-            </div>
+            </div> */}
             <p className='hint subtle-hint'>
               {hasResetPasswordAPI ? (
                 <Link to='/auth/reset_password'>

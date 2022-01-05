@@ -22,7 +22,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     in_reply_to_account_id: null,
     in_reply_to_id: pendingStatus.get('in_reply_to_id'),
     language: null,
-    media_attachments: [], // TODO: render pending thumbs
+    media_attachments: pendingStatus.get('media_ids').map(id => ({ id })),
     mentions: [],
     muted: false,
     pinned: false,

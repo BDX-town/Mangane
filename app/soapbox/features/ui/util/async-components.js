@@ -102,6 +102,10 @@ export function Reactions() {
   return import(/* webpackChunkName: "features/reactions" */'../../reactions');
 }
 
+export function Mentions() {
+  return import(/* webpackChunkName: "features/mentions" */'../../mentions');
+}
+
 export function Favourites() {
   return import(/* webpackChunkName: "features/favourites" */'../../favourites');
 }
@@ -188,6 +192,10 @@ export function HotkeysModal() {
 
 export function ComposeModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
+}
+
+export function ReplyMentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reply_mentions_modal');
 }
 
 export function UnauthorizedModal() {
@@ -410,6 +418,10 @@ export function FollowRecommendations() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'../../follow_recommendations');
 }
 
+export function Directory() {
+  return import(/* webpackChunkName: "features/directory" */'../../directory');
+}
+
 export function RegisterInvite() {
   return import(/* webpackChunkName: "features/register_invite" */'../../register_invite');
 }
@@ -420,4 +432,16 @@ export function Share() {
 
 export function NewStatus() {
   return import(/* webpackChunkName: "features/new_status" */'../../new_status');
+}
+
+export function IntentionalError() {
+  return import(/* webpackChunkName: "error" */'../../intentional_error');
+}
+
+export function Developers() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers');
+}
+
+export function CreateApp() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/apps/create');
 }

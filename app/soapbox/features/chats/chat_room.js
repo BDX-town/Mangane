@@ -17,7 +17,7 @@ import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = (state, { params }) => {
   const getChat = makeGetChat();
-  const chat = state.getIn(['chats', params.chatId], ImmutableMap()).toJS();
+  const chat = state.getIn(['chats', 'items', params.chatId], ImmutableMap()).toJS();
 
   return {
     me: state.get('me'),

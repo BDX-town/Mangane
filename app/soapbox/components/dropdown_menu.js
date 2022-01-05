@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import IconButton from './icon_button';
@@ -6,6 +7,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 import Motion from '../features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import Icon from 'soapbox/components/icon';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
@@ -146,10 +148,10 @@ class DropdownMenu extends React.PureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, newTab, isLogout } = option;
+    const { text, href, to, newTab, isLogout, icon, destructive } = option;
 
     return (
-      <li className='dropdown-menu__item' key={`${text}-${i}`}>
+      <li className={classNames('dropdown-menu__item', { destructive })} key={`${text}-${i}`}>
         <a
           href={href || to || '#'}
           role='button'
@@ -162,6 +164,7 @@ class DropdownMenu extends React.PureComponent {
           target={newTab ? '_blank' : null}
           data-method={isLogout ? 'delete' : null}
         >
+          {icon && <Icon src={icon} />}
           {text}
         </a>
       </li>

@@ -7,12 +7,11 @@ import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Hashtag from '../../../components/hashtag';
 import FilterBar from '../../search/components/filter_bar';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { WhoToFollowPanel } from 'soapbox/features/ui/util/async-components';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
+import Pullable from 'soapbox/components/pullable';
 
 export default class SearchResults extends ImmutablePureComponent {
 
@@ -24,6 +23,8 @@ export default class SearchResults extends ImmutablePureComponent {
     selectedFilter: PropTypes.string.isRequired,
     selectFilter: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
+    suggestions: ImmutablePropTypes.list,
+    trends: ImmutablePropTypes.list,
   };
 
   handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
@@ -31,15 +32,7 @@ export default class SearchResults extends ImmutablePureComponent {
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
 
   render() {
-    const { value, results, submitted, selectedFilter, features } = this.props;
-
-    if (!submitted && features.suggestions && results.isEmpty()) {
-      return (
-        <BundleContainer fetchComponent={WhoToFollowPanel}>
-          {Component => <Component limit={5} />}
-        </BundleContainer>
-      );
-    }
+    const { value, results, submitted, selectedFilter, suggestions, trends } = this.props;
 
     let searchResults;
     let hasMore = false;
@@ -47,14 +40,16 @@ export default class SearchResults extends ImmutablePureComponent {
     let noResultsMessage;
     let placeholderComponent = PlaceholderStatus;
 
-    if (selectedFilter === 'accounts' && results.get('accounts')) {
+    if (selectedFilter === 'accounts') {
       hasMore = results.get('accountsHasMore');
       loaded = results.get('accountsLoaded');
       placeholderComponent = PlaceholderAccount;
 
-      if (results.get('accounts').size > 0) {
+      if (results.get('accounts') && results.get('accounts').size > 0) {
         searchResults = results.get('accounts').map(accountId => <AccountContainer key={accountId} id={accountId} />);
-      } else {
+      } else if (!submitted && suggestions && !suggestions.isEmpty()) {
+        searchResults = suggestions.map(suggestion => <AccountContainer key={suggestion.get('account')} id={suggestion.get('account')} />);
+      } else if (loaded) {
         noResultsMessage = (
           <div className='empty-column-indicator'>
             <FormattedMessage
@@ -86,14 +81,16 @@ export default class SearchResults extends ImmutablePureComponent {
       }
     }
 
-    if (selectedFilter === 'hashtags' && results.get('hashtags')) {
+    if (selectedFilter === 'hashtags') {
       hasMore = results.get('hashtagsHasMore');
       loaded = results.get('hashtagsLoaded');
       placeholderComponent = PlaceholderHashtag;
 
-      if (results.get('hashtags').size > 0) {
+      if (results.get('hashtags') && results.get('hashtags').size > 0) {
         searchResults = results.get('hashtags').map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />);
-      } else {
+      } else if (!submitted && suggestions && !suggestions.isEmpty()) {
+        searchResults = trends.map(hashtag => <Hashtag key={hashtag.get('name')} hashtag={hashtag} />);
+      } else if (loaded) {
         noResultsMessage = (
           <div className='empty-column-indicator'>
             <FormattedMessage
@@ -108,21 +105,23 @@ export default class SearchResults extends ImmutablePureComponent {
 
     return (
       <>
-        {submitted && <FilterBar selectedFilter={submitted ? selectedFilter : null} selectFilter={this.handleSelectFilter} />}
+        <FilterBar selectedFilter={selectedFilter} selectFilter={this.handleSelectFilter} />
 
         {noResultsMessage || (
-          <ScrollableList
-            key={selectedFilter}
-            scrollKey={`${selectedFilter}:${value}`}
-            isLoading={submitted && !loaded}
-            showLoading={submitted && !loaded && results.isEmpty()}
-            hasMore={hasMore}
-            onLoadMore={this.handleLoadMore}
-            placeholderComponent={placeholderComponent}
-            placeholderCount={20}
-          >
-            {searchResults}
-          </ScrollableList>
+          <Pullable>
+            <ScrollableList
+              key={selectedFilter}
+              scrollKey={`${selectedFilter}:${value}`}
+              isLoading={submitted && !loaded}
+              showLoading={submitted && !loaded && results.isEmpty()}
+              hasMore={hasMore}
+              onLoadMore={this.handleLoadMore}
+              placeholderComponent={placeholderComponent}
+              placeholderCount={20}
+            >
+              {searchResults}
+            </ScrollableList>
+          </Pullable>
         )}
       </>
     );

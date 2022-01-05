@@ -107,7 +107,7 @@ class ReportModal extends ImmutablePureComponent {
     return (
       <div className='modal-root__modal report-modal'>
         <div className='report-modal__target'>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={16} />
+          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
           <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>{account.get('acct')}</strong> }} />
         </div>
 

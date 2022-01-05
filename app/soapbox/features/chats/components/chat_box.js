@@ -23,7 +23,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
-  chat: state.getIn(['chats', chatId]),
+  chat: state.getIn(['chats', 'items', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
 
@@ -158,7 +158,10 @@ class ChatBox extends ImmutablePureComponent {
           {truncateFilename(attachment.preview_url, 20)}
         </div>
         <div class='chat-box__remove-attachment'>
-          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+          <IconButton
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.handleRemoveFile}
+          />
         </div>
       </div>
     );

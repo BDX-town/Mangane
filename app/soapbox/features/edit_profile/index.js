@@ -103,6 +103,7 @@ class EditProfile extends ImmutablePureComponent {
 
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
+    const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -111,6 +112,7 @@ class EditProfile extends ImmutablePureComponent {
       map.set('stranger_notifications', strangerNotifications);
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
+      map.set('discoverable', discoverable);
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -309,6 +311,13 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.stranger_notifications}
                 onChange={this.handleCheckboxChange}
               />
+              <Checkbox
+                label={<FormattedMessage id='edit_profile.fields.discoverable_label' defaultMessage='Allow account discovery' />}
+                hint={<FormattedMessage id='edit_profile.hints.discoverable' defaultMessage='Display account in profile directory and allow indexing by external services' />}
+                name='discoverable'
+                checked={this.state.discoverable}
+                onChange={this.handleCheckboxChange}
+              />
               {supportsEmailList && <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
                 hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
@@ -338,7 +347,7 @@ class EditProfile extends ImmutablePureComponent {
                           onChange={this.handleFieldChange(i, 'value')}
                         />
                         {
-                          this.state.fields.size > 4 && <Icon id='times-circle' onClick={this.handleDeleteField(i)} />
+                          this.state.fields.size > 4 && <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteField(i)} />
                         }
                       </div>
                     ))
@@ -347,7 +356,7 @@ class EditProfile extends ImmutablePureComponent {
                     this.state.fields.size < maxFields && (
                       <div className='actions add-row'>
                         <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddField}>
-                          <Icon id='plus-circle' />
+                          <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                           <FormattedMessage id='edit_profile.meta_fields.add' defaultMessage='Add new item' />
                         </div>
                       </div>

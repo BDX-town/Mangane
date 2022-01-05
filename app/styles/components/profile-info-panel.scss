@@ -28,6 +28,7 @@
       color: var(--primary-text-color--faint);
       align-items: center;
       line-height: normal;
+      margin-top: 15px;
 
       .svg-icon {
         width: 22px;
@@ -84,9 +85,11 @@
       display: block;
       flex: 1 1;
       color: var(--primary-text-color);
-      margin: 15px 0;
+      margin-top: 15px;
       font-size: 15px;
       line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       a {
         color: var(--highlight-text-color);
@@ -99,10 +102,6 @@
       border-top: 1px solid var(--brand-color--med);
       padding: 10px 0;
       margin: 5px 0;
-
-      @media screen and (max-width: 895px) {
-        border-bottom: 1px solid var(--brand-color--med);
-      }
 
       a {
         color: var(--highlight-text-color);

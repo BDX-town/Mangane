@@ -44,6 +44,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import ThumbNavigation from 'soapbox/components/thumb_navigation';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getVapidKey } from 'soapbox/utils/auth';
 
 import {
   Status,
@@ -57,6 +58,7 @@ import {
   Following,
   Reblogs,
   Reactions,
+  Mentions,
   Favourites,
   DirectTimeline,
   Conversations,
@@ -106,6 +108,7 @@ import {
   FederationRestrictions,
   Aliases,
   FollowRecommendations,
+  Directory,
   SidebarMenu,
   UploadArea,
   NotificationsContainer,
@@ -114,6 +117,9 @@ import {
   RegisterInvite,
   Share,
   NewStatus,
+  IntentionalError,
+  Developers,
+  CreateApp,
 } from './util/async-components';
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
@@ -132,6 +138,7 @@ const mapStateToProps = state => {
   const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
   const soapbox = getSoapboxConfig(state);
+  const vapidKey = getVapidKey(state);
 
   return {
     dropdownMenuIsOpen: state.getIn(['dropdown_menu', 'openId']) !== null,
@@ -141,6 +148,7 @@ const mapStateToProps = state => {
     account,
     features: getFeatures(instance),
     soapbox,
+    vapidKey,
   };
 };
 
@@ -251,6 +259,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/tag/:id' to='/tags/:id' />
         <Redirect from='/user-settings' to='/settings/profile' />
         <WrappedRoute path='/notice/:statusId' publicRoute exact page={DefaultPage} component={Status} content={children} />
+        <Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />
         <Redirect from='/users/:username/chats' to='/chats' />
         <Redirect from='/users/:username' to='/@:username' />
         <Redirect from='/terms' to='/about' />
@@ -270,6 +279,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/search' publicRoute page={DefaultPage} component={Search} content={children} />
         <WrappedRoute path='/suggestions' publicRoute page={DefaultPage} component={FollowRecommendations} content={children} />
+        <WrappedRoute path='/directory' publicRoute page={DefaultPage} component={Directory} content={children} />
 
         <WrappedRoute path='/chats' exact page={DefaultPage} component={ChatIndex} content={children} />
         <WrappedRoute path='/chats/:chatId' page={DefaultPage} component={ChatRoom} content={children} />
@@ -291,6 +301,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/@:username/posts/:statusId/reblogs' page={DefaultPage} component={Reblogs} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/likes' page={DefaultPage} component={Favourites} content={children} />
         <WrappedRoute path='/@:username/posts/:statusId/reactions/:reaction?' page={DefaultPage} component={Reactions} content={children} />
+        <WrappedRoute path='/@:username/posts/:statusId/mentions' page={DefaultPage} component={Mentions} content={children} />
         <Redirect from='/@:username/:statusId' to='/@:username/posts/:statusId' />
 
         <WrappedRoute path='/statuses/new' page={DefaultPage} component={NewStatus} content={children} exact />
@@ -308,15 +319,19 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
-        <WrappedRoute path='/soapbox/config' page={DefaultPage} component={SoapboxConfig} content={children} />
+        <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
         <Redirect from='/admin/dashboard' to='/admin' exact />
-        <WrappedRoute path='/admin' page={AdminPage} component={Dashboard} content={children} exact />
-        <WrappedRoute path='/admin/approval' page={AdminPage} component={AwaitingApproval} content={children} exact />
-        <WrappedRoute path='/admin/reports' page={AdminPage} component={Reports} content={children} exact />
-        <WrappedRoute path='/admin/log' page={AdminPage} component={ModerationLog} content={children} exact />
-        <WrappedRoute path='/admin/users' page={AdminPage} component={UserIndex} content={children} exact />
+        <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
+        <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={AwaitingApproval} content={children} exact />
+        <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Reports} content={children} exact />
+        <WrappedRoute path='/admin/log' staffOnly page={AdminPage} component={ModerationLog} content={children} exact />
+        <WrappedRoute path='/admin/users' staffOnly page={AdminPage} component={UserIndex} content={children} exact />
         <WrappedRoute path='/info' page={EmptyPage} component={ServerInfo} content={children} />
+
+        <WrappedRoute path='/developers/apps/create' page={DefaultPage} component={CreateApp} content={children} />
+        <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
+        <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
         <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />
@@ -350,6 +365,7 @@ class UI extends React.PureComponent {
     account: PropTypes.object,
     features: PropTypes.object.isRequired,
     soapbox: ImmutablePropTypes.map.isRequired,
+    vapidKey: PropTypes.string,
   };
 
   state = {
@@ -458,9 +474,40 @@ class UI extends React.PureComponent {
     trailing: true,
   });
 
-  componentDidMount() {
+  // Load initial data when a user is logged in
+  loadAccountData = () => {
     const { account, features, dispatch } = this.props;
-    if (!account) return;
+
+    dispatch(expandHomeTimeline());
+
+    dispatch(expandNotifications())
+      .then(() => dispatch(fetchMarker(['notifications'])))
+      .catch(console.error);
+
+    if (features.chats) {
+      dispatch(fetchChats());
+    }
+
+    if (isStaff(account)) {
+      dispatch(fetchReports({ state: 'open' }));
+      dispatch(fetchUsers(['local', 'need_approval']));
+    }
+
+    if (isAdmin(account)) {
+      dispatch(fetchConfig());
+    }
+
+    setTimeout(() => dispatch(fetchFilters()), 500);
+
+    if (account.get('locked')) {
+      setTimeout(() => dispatch(fetchFollowRequests()), 700);
+    }
+
+    setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+  }
+
+  componentDidMount() {
+    const { account, vapidKey, dispatch } = this.props;
 
     window.addEventListener('resize', this.handleResize, { passive: true });
     document.addEventListener('dragenter', this.handleDragEnter, false);
@@ -478,46 +525,32 @@ class UI extends React.PureComponent {
     }
 
     if (account) {
-      dispatch(expandHomeTimeline());
-
-      dispatch(expandNotifications())
-        .then(() => dispatch(fetchMarker(['notifications'])))
-        .catch(console.error);
-
-      if (features.chats) {
-        dispatch(fetchChats());
-      }
-
-      if (isStaff(account)) {
-        dispatch(fetchReports({ state: 'open' }));
-        dispatch(fetchUsers(['local', 'need_approval']));
-      }
-
-      if (isAdmin(account)) {
-        dispatch(fetchConfig());
-      }
-
-      setTimeout(() => dispatch(fetchFilters()), 500);
-
-      if (account.get('locked')) {
-        setTimeout(() => dispatch(fetchFollowRequests()), 700);
-      }
-
-      setTimeout(() => dispatch(fetchScheduledStatuses()), 900);
+      this.loadAccountData();
     }
 
     dispatch(fetchCustomEmojis());
     this.connectStreaming();
-    dispatch(registerPushNotifications());
+
+    if (vapidKey) {
+      dispatch(registerPushNotifications());
+    }
   }
 
   componentDidUpdate(prevProps) {
     this.connectStreaming();
 
-    const { dispatch, account, features } = this.props;
+    const { dispatch, account, features, vapidKey } = this.props;
 
-    if (features.chats && account && !prevProps.features.chats) {
+    // The user has logged in
+    if (account && !prevProps.account) {
+      this.loadAccountData();
+    // The instance has loaded
+    } else if (account && features.chats && !prevProps.features.chats) {
       dispatch(fetchChats());
+    }
+
+    if (vapidKey && !prevProps.vapidKey) {
+      dispatch(registerPushNotifications());
     }
   }
 

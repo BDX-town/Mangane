@@ -18,6 +18,7 @@ export const InputContainer = (props) => {
     'with_label': props.label,
     'required': props.required,
     'boolean': props.type === 'checkbox',
+    'field_with_errors': props.error,
   }, props.extraClass);
 
   return (
@@ -35,6 +36,7 @@ InputContainer.propTypes = {
   type: PropTypes.string,
   children: PropTypes.node,
   extraClass: PropTypes.string,
+  error: PropTypes.bool,
 };
 
 export const LabelInputContainer = ({ label, hint, children, ...props }) => {
@@ -87,10 +89,11 @@ export class SimpleInput extends ImmutablePureComponent {
   static propTypes = {
     label: FormPropTypes.label,
     hint: PropTypes.node,
+    error: PropTypes.bool,
   }
 
   render() {
-    const { hint, ...props } = this.props;
+    const { hint, error, ...props } = this.props;
     const Input = this.props.label ? LabelInput : 'input';
 
     return (
@@ -126,6 +129,7 @@ export class SimpleForm extends ImmutablePureComponent {
 
   static propTypes = {
     children: PropTypes.node,
+    className: PropTypes.string,
   };
 
   static defaultProps = {
@@ -139,9 +143,14 @@ export class SimpleForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { children, onSubmit, ...props } = this.props;
+    const { className, children, onSubmit, ...props } = this.props;
     return (
-      <form className='simple_form' method='post' onSubmit={this.onSubmit} {...props}>
+      <form
+        className={classNames('simple_form', className)}
+        method='post'
+        onSubmit={this.onSubmit}
+        {...props}
+      >
         {children}
       </form>
     );
@@ -158,7 +167,7 @@ FieldsGroup.propTypes = {
 };
 
 export const Checkbox = props => (
-  <SimpleInput type='checkbox' value {...props} />
+  <SimpleInput type='checkbox' {...props} />
 );
 
 export class RadioGroup extends ImmutablePureComponent {

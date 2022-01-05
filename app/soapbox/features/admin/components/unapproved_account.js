@@ -5,9 +5,10 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import IconButton from 'soapbox/components/icon_button';
-import { deleteUsers, approveUsers } from 'soapbox/actions/admin';
+import { approveUsers } from 'soapbox/actions/admin';
 import { makeGetAccount } from 'soapbox/selectors';
 import snackbar from 'soapbox/actions/snackbar';
+import { rejectUserModal } from '../../../actions/moderation';
 
 const messages = defineMessages({
   approved: { id: 'admin.awaiting_approval.approved_message', defaultMessage: '{acct} was approved!' },
@@ -37,7 +38,6 @@ class UnapprovedAccount extends ImmutablePureComponent {
 
   handleApprove = () => {
     const { dispatch, intl, account } = this.props;
-
     dispatch(approveUsers([account.get('id')]))
       .then(() => {
         const message = intl.formatMessage(messages.approved, { acct: `@${account.get('acct')}` });
@@ -49,12 +49,10 @@ class UnapprovedAccount extends ImmutablePureComponent {
   handleReject = () => {
     const { dispatch, intl, account } = this.props;
 
-    dispatch(deleteUsers([account.get('id')]))
-      .then(() => {
-        const message = intl.formatMessage(messages.rejected, { acct: `@${account.get('acct')}` });
-        dispatch(snackbar.info(message));
-      })
-      .catch(() => {});
+    dispatch(rejectUserModal(intl, account.get('id'), () => {
+      const message = intl.formatMessage(messages.rejected, { acct: `@${account.get('acct')}` });
+      dispatch(snackbar.info(message));
+    }));
   }
 
   render() {

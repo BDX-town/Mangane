@@ -90,8 +90,8 @@ class Option extends React.PureComponent {
             onKeyPress={this.handleCheckboxKeypress}
             role='button'
             tabIndex='0'
-            title={intl.formatMessage(isPollMultiple ? messages.switchToMultiple : messages.switchToSingle)}
-            aria-label={intl.formatMessage(isPollMultiple ? messages.switchToMultiple : messages.switchToSingle)}
+            title={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
+            aria-label={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
           />
 
           <AutosuggestInput
@@ -109,7 +109,7 @@ class Option extends React.PureComponent {
         </label>
 
         <div className='poll__cancel'>
-          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleOptionRemove} />
         </div>
       </li>
     );
@@ -178,7 +178,7 @@ class PollForm extends ImmutablePureComponent {
 
         <div className='poll__footer'>
           {options.size < maxOptions && (
-            <button className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
+            <button className='button button-secondary' onClick={this.handleAddOption}><Icon src={require('@tabler/icons/icons/plus.svg')} /> <FormattedMessage {...messages.add_option} /></button>
           )}
 
           <select value={expiresIn} onChange={this.handleSelectDuration}>

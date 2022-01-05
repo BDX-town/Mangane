@@ -127,7 +127,7 @@
 }
 
 .status__wrapper--filtered {
-  color: var(--primary-text-color);
+  color: var(--primary-text-color--faint);
   border: 0;
   font-size: inherit;
   text-align: center;
@@ -137,7 +137,6 @@
   box-sizing: border-box;
   width: 100%;
   clear: both;
-  border-bottom: 1px solid var(--brand-color--med);
 }
 
 .status__prepend-icon-wrapper {
@@ -612,13 +611,18 @@ a.status-card {
   background: var(--brand-color--med);
   position: relative;
 
-  & > .fa {
-    font-size: 21px;
+  & > .svg-icon {
+    width: 40px;
+    height: 40px;
     position: absolute;
     transform-origin: 50% 50%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+    svg {
+      stroke-width: 1px;
+    }
   }
 
   &--empty {

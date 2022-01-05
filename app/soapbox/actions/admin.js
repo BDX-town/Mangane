@@ -62,6 +62,14 @@ export const ADMIN_REMOVE_PERMISSION_GROUP_REQUEST = 'ADMIN_REMOVE_PERMISSION_GR
 export const ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS = 'ADMIN_REMOVE_PERMISSION_GROUP_SUCCESS';
 export const ADMIN_REMOVE_PERMISSION_GROUP_FAIL    = 'ADMIN_REMOVE_PERMISSION_GROUP_FAIL';
 
+export const ADMIN_USERS_SUGGEST_REQUEST = 'ADMIN_USERS_SUGGEST_REQUEST';
+export const ADMIN_USERS_SUGGEST_SUCCESS = 'ADMIN_USERS_SUGGEST_SUCCESS';
+export const ADMIN_USERS_SUGGEST_FAIL    = 'ADMIN_USERS_SUGGEST_FAIL';
+
+export const ADMIN_USERS_UNSUGGEST_REQUEST = 'ADMIN_USERS_UNSUGGEST_REQUEST';
+export const ADMIN_USERS_UNSUGGEST_SUCCESS = 'ADMIN_USERS_UNSUGGEST_SUCCESS';
+export const ADMIN_USERS_UNSUGGEST_FAIL    = 'ADMIN_USERS_UNSUGGEST_FAIL';
+
 const nicknamesFromIds = (getState, ids) => ids.map(id => getState().getIn(['accounts', id, 'acct']));
 
 export function fetchConfig() {
@@ -317,5 +325,33 @@ export function demoteToUser(accountId) {
       dispatch(removePermission([accountId], 'admin')),
       dispatch(removePermission([accountId], 'moderator')),
     ]);
+  };
+}
+
+export function suggestUsers(accountIds) {
+  return (dispatch, getState) => {
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    dispatch({ type: ADMIN_USERS_SUGGEST_REQUEST, accountIds });
+    return api(getState)
+      .patch('/api/pleroma/admin/users/suggest', { nicknames })
+      .then(({ data: { users } }) => {
+        dispatch({ type: ADMIN_USERS_SUGGEST_SUCCESS, users, accountIds });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_SUGGEST_FAIL, error, accountIds });
+      });
+  };
+}
+
+export function unsuggestUsers(accountIds) {
+  return (dispatch, getState) => {
+    const nicknames = nicknamesFromIds(getState, accountIds);
+    dispatch({ type: ADMIN_USERS_UNSUGGEST_REQUEST, accountIds });
+    return api(getState)
+      .patch('/api/pleroma/admin/users/unsuggest', { nicknames })
+      .then(({ data: { users } }) => {
+        dispatch({ type: ADMIN_USERS_UNSUGGEST_SUCCESS, users, accountIds });
+      }).catch(error => {
+        dispatch({ type: ADMIN_USERS_UNSUGGEST_FAIL, error, accountIds });
+      });
   };
 }

@@ -69,12 +69,12 @@ class ListAdder extends ImmutablePureComponent {
     const { accountId, listIds, intl } = this.props;
 
     return (
-      <div className='modal-root__modal compose-modal'>
+      <div className='modal-root__modal compose-modal list-editor__content'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'>
             <FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
         </div>
         <div className='compose-modal__content'>
           <div className='list-adder'>

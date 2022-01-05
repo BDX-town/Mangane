@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
 import LoadMore from './load_more';
 import MoreFollows from './more_follows';
@@ -9,6 +10,7 @@ import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
 import LoadingIndicator from './loading_indicator';
 import { getSettings } from 'soapbox/actions/settings';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const MOUSE_IDLE_DELAY = 300;
 
@@ -43,6 +45,8 @@ class ScrollableList extends PureComponent {
     placeholderComponent: PropTypes.func,
     placeholderCount: PropTypes.number,
     autoload: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    className: PropTypes.string,
   };
 
   state = {
@@ -238,16 +242,22 @@ class ScrollableList extends PureComponent {
   }
 
   renderLoading = () => {
-    const { prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
+    const { className, prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
 
     if (Placeholder && placeholderCount > 0) {
-      return Array(placeholderCount).fill().map((_, i) => (
-        <Placeholder key={i} />
-      ));
+      return (
+        <div className={classNames('slist slist--flex', className)}>
+          <div role='feed' className='item-list'>
+            {Array(placeholderCount).fill().map((_, i) => (
+              <Placeholder key={i} />
+            ))}
+          </div>
+        </div>
+      );
     }
 
     return (
-      <div className='slist slist--flex'>
+      <div className={classNames('slist slist--flex', className)}>
         <div role='feed' className='item-list'>
           {prepend}
         </div>
@@ -260,10 +270,10 @@ class ScrollableList extends PureComponent {
   }
 
   renderEmptyMessage = () => {
-    const { prepend, alwaysPrepend, emptyMessage } = this.props;
+    const { className, prepend, alwaysPrepend, emptyMessage } = this.props;
 
     return (
-      <div className='slist slist--flex' ref={this.setRef}>
+      <div className={classNames('slist slist--flex', className)} ref={this.setRef}>
         {alwaysPrepend && prepend}
 
         <div className='empty-column-indicator'>
@@ -274,13 +284,13 @@ class ScrollableList extends PureComponent {
   }
 
   renderFeed = () => {
-    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, placeholderComponent: Placeholder } = this.props;
+    const { className, children, scrollKey, isLoading, hasMore, prepend, onLoadMore, onRefresh, placeholderComponent: Placeholder } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
 
-    return (
-      <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
+    const feed = (
+      <div className={classNames('slist', className)} ref={this.setRef} onMouseMove={this.handleMouseMove}>
         <div role='feed' className='item-list'>
           {prepend}
 
@@ -313,6 +323,16 @@ class ScrollableList extends PureComponent {
         </div>
       </div>
     );
+
+    if (onRefresh) {
+      return (
+        <PullToRefresh onRefresh={onRefresh}>
+          {feed}
+        </PullToRefresh>
+      );
+    } else {
+      return feed;
+    }
   }
 
   render() {

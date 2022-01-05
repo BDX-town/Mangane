@@ -30,6 +30,7 @@
   }
 
   &__num,
+  &__icon,
   &__text {
     text-align: center;
     font-weight: 500;
@@ -37,6 +38,20 @@
     line-height: 30px;
     color: var(--primary-text-color);
     margin-bottom: 10px;
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+
+    .svg-icon {
+      width: 48px;
+      height: 48px;
+
+      svg {
+        stroke-width: 1px;
+      }
+    }
   }
 
   &__label {
@@ -87,10 +102,12 @@
     margin-left: auto;
     display: flex;
     flex-wrap: nowrap;
+    column-gap: 10px;
     padding-left: 20px;
 
-    button.icon-button:nth-child(n+2) {
-      padding-left: 10px;
+    .svg-icon {
+      height: 24px;
+      width: 24px;
     }
   }
 }
@@ -112,7 +129,7 @@
         display: block;
         width: 100%;
         max-width: 600px;
-        padding: 20px 20px 0;
+        padding: 10px 0;
         box-sizing: border-box;
 
         .columns-area__panels__pane__inner {
@@ -168,8 +185,10 @@
   }
 
   &__actions {
-    margin-left: auto;
     display: flex;
+    align-items: center;
+    height: fit-content;
+    margin-left: auto;
 
     .icon-button {
       padding-left: 10px;
@@ -178,6 +197,11 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        > .svg-icon {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
   }

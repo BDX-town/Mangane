@@ -16,7 +16,7 @@ class ColumnsArea extends ImmutablePureComponent {
 
   render() {
     const { children } = this.props;
-    const layout = this.props.layout || { LEFT:null, RIGHT:null };
+    const layout = this.props.layout || { LEFT: null, RIGHT: null };
 
     return (
       <div className='page'>

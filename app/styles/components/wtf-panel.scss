@@ -159,6 +159,10 @@
 
   &__menu {
     margin-left: auto;
+
+    > div {
+      height: 18px;
+    }
   }
 }
 

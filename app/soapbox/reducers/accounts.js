@@ -3,7 +3,7 @@ import {
   ACCOUNTS_IMPORT,
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from '../actions/importer';
-import { CHATS_FETCH_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
+import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import {
@@ -30,6 +30,10 @@ import {
   ADMIN_USERS_DELETE_FAIL,
   ADMIN_USERS_DEACTIVATE_REQUEST,
   ADMIN_USERS_DEACTIVATE_FAIL,
+  ADMIN_USERS_SUGGEST_REQUEST,
+  ADMIN_USERS_SUGGEST_FAIL,
+  ADMIN_USERS_UNSUGGEST_REQUEST,
+  ADMIN_USERS_UNSUGGEST_FAIL,
 } from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap();
@@ -185,6 +189,14 @@ const importAdminUsers = (state, adminUsers) => {
   });
 };
 
+const setSuggested = (state, accountIds, isSuggested) => {
+  return state.withMutations(state => {
+    accountIds.forEach(id => {
+      state.setIn([id, 'pleroma', 'is_suggested'], isSuggested);
+    });
+  });
+};
+
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
@@ -196,6 +208,7 @@ export default function accounts(state = initialState, action) {
       username: action.username,
     }));
   case CHATS_FETCH_SUCCESS:
+  case CHATS_EXPAND_SUCCESS:
     return importAccountsFromChats(state, action.chats);
   case CHAT_FETCH_SUCCESS:
   case STREAMING_CHAT_UPDATE:
@@ -224,6 +237,12 @@ export default function accounts(state = initialState, action) {
     return setActive(state, action.accountIds, true);
   case ADMIN_USERS_FETCH_SUCCESS:
     return importAdminUsers(state, action.users);
+  case ADMIN_USERS_SUGGEST_REQUEST:
+  case ADMIN_USERS_UNSUGGEST_FAIL:
+    return setSuggested(state, action.accountIds, true);
+  case ADMIN_USERS_UNSUGGEST_REQUEST:
+  case ADMIN_USERS_SUGGEST_FAIL:
+    return setSuggested(state, action.accountIds, false);
   default:
     return state;
   }

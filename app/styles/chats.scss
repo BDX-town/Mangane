@@ -9,7 +9,7 @@
   max-height: calc(100vh - 70px);
   display: flex;
   flex-direction: column;
-  z-index: 999;
+  z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
@@ -26,10 +26,15 @@
 
   .search--account {
     border-top: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
+    padding: 5px;
 
     .autosuggest-textarea__suggestions {
       top: auto;
       bottom: 100%;
+    }
+
+    input.search__input {
+      border-radius: 6px;
     }
   }
 
@@ -110,6 +115,10 @@
       flex: 1;
       flex-direction: column;
       overflow: hidden;
+    }
+
+    .chat-list {
+      overflow-y: auto;
     }
   }
 
@@ -205,16 +214,22 @@
     position: absolute;
     top: -8px;
     right: -8px;
+    height: 20px;
+    padding: 1px;
     background: var(--background-color);
     border-radius: 999px;
     opacity: 0;
     pointer-events: none;
     transition: 0.2s;
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 
 .chat-list {
-  overflow-y: auto;
   flex: 1;
 
   &__content {
@@ -226,6 +241,10 @@
     box-sizing: border-box;
     background: transparent;
     align-items: start;
+  }
+
+  .account {
+    border-bottom: none;
   }
 
   .account__display-name {
@@ -450,6 +469,10 @@
 }
 
 .chat {
+  &__attachment-icon {
+    float: right;
+  }
+
   &__last-message {
     display: block;
     overflow: hidden;
@@ -458,6 +481,10 @@
 
     a {
       color: var(--highlight-text-color);
+    }
+
+    &.attachment {
+      font-style: italic;
     }
   }
 }

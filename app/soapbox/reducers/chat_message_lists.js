@@ -1,5 +1,6 @@
 import {
   CHATS_FETCH_SUCCESS,
+  CHATS_EXPAND_SUCCESS,
   CHAT_MESSAGES_FETCH_SUCCESS,
   CHAT_MESSAGE_SEND_REQUEST,
   CHAT_MESSAGE_SEND_SUCCESS,
@@ -47,6 +48,7 @@ export default function chatMessageLists(state = initialState, action) {
   case CHAT_MESSAGE_SEND_REQUEST:
     return updateList(state, action.chatId, [action.uuid]);
   case CHATS_FETCH_SUCCESS:
+  case CHATS_EXPAND_SUCCESS:
     return importLastMessages(state, action.chats);
   case STREAMING_CHAT_UPDATE:
     if (action.chat.last_message &&

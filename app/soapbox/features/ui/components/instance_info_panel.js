@@ -56,6 +56,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(pinned ? messages.unpinHost : messages.pinHost, { host }),
       action: this.handlePinHost,
+      icon: require(pinned ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
     }];
   }
 
@@ -72,7 +73,7 @@ class InstanceInfoPanel extends ImmutablePureComponent {
             <span>{remoteInstance.get('host')}</span>
           </span>
           <div className='wtf-panel__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>
         </div>
       </div>

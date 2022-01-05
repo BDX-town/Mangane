@@ -371,7 +371,7 @@ class Notification extends ImmutablePureComponent {
         <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: notification.getIn(['account', 'acct']), targetName: notification.getIn(['target', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__icon-wrapper'>
-              <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
+              <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>

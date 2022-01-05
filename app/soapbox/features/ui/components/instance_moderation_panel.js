@@ -52,6 +52,7 @@ class InstanceModerationPanel extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.editFederation),
       action: this.handleEditFederation,
+      icon: require('@tabler/icons/icons/edit.svg'),
     }];
   }
 
@@ -67,7 +68,7 @@ class InstanceModerationPanel extends ImmutablePureComponent {
             <span><FormattedMessage id='remote_instance.federation_panel.heading' defaultMessage='Federation Restrictions' /></span>
           </span>
           {isAdmin && <div className='wtf-panel__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>}
         </div>
         <div className='wtf-panel__content'>

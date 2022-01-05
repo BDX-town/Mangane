@@ -17,7 +17,7 @@ import { preload } from '../actions/preload';
 import { IntlProvider } from 'react-intl';
 import ErrorBoundary from '../components/error_boundary';
 import { loadInstance } from 'soapbox/actions/instance';
-import { fetchSoapboxConfig } from 'soapbox/actions/soapbox';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
 import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
@@ -25,6 +25,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { generateThemeCss } from 'soapbox/utils/theme';
 import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import { createGlobals } from 'soapbox/globals';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -33,13 +34,16 @@ const previewVideoState = 'previewVideoModal';
 
 export const store = configureStore();
 
+// Configure global functions for developers
+createGlobals(store);
+
 store.dispatch(preload());
 
 store.dispatch(fetchMe())
   .then(() => {
     // Postpone for authenticated fetch
     store.dispatch(loadInstance());
-    store.dispatch(fetchSoapboxConfig());
+    store.dispatch(loadSoapboxConfig());
   })
   .catch(() => {});
 

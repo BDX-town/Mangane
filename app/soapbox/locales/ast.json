@@ -255,7 +255,7 @@
   "confirmations.delete_list.confirm": "Desaniciar",
   "confirmations.delete_list.message": "¿De xuru que quies desaniciar dafechu esta llista?",
   "confirmations.domain_block.confirm": "Anubrir tol dominiu",
-  "confirmations.domain_block.message": "Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications. Your followers from that domain will be removed.",
+  "confirmations.domain_block.message": "Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.",
   "confirmations.mute.confirm": "Mute",
   "confirmations.mute.message": "¿De xuru que quies silenciar a {name}?",
   "confirmations.redraft.confirm": "Desaniciar y reeditar",

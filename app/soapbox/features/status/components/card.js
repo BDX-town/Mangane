@@ -171,7 +171,7 @@ export default class Card extends React.PureComponent {
 
     const description = (
       <div className='status-card__content'>
-        {title}
+        <span className='status-card__title'>{title}</span>
         <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
         <span className='status-card__host'><Icon src={require('@tabler/icons/icons/link.svg')} /> {provider}</span>
       </div>
@@ -220,7 +220,7 @@ export default class Card extends React.PureComponent {
     } else {
       embed = (
         <div className='status-card__image status-card__image--empty'>
-          <Icon id='file-text' />
+          <Icon src={require('@tabler/icons/icons/file-text.svg')} />
         </div>
       );
     }

@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
+import Column from 'soapbox/components/column';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import StatusList from '../../components/status_list';
@@ -38,15 +39,22 @@ class Bookmarks extends ImmutablePureComponent {
     isLoading: PropTypes.bool,
   };
 
-  componentDidMount() {
+  fetchData = () => {
     const { dispatch } = this.props;
-    dispatch(fetchBookmarkedStatuses());
+    return dispatch(fetchBookmarkedStatuses());
+  }
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   handleLoadMore = debounce(() => {
     this.props.dispatch(expandBookmarkedStatuses());
   }, 300, { leading: true })
 
+  handleRefresh = () => {
+    return this.fetchData();
+  }
 
   render() {
     const { intl, shouldUpdateScroll, statusIds, columnId, multiColumn, hasMore, isLoading } = this.props;
@@ -55,7 +63,8 @@ class Bookmarks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.bookmarks' defaultMessage="You don't have any bookmarks yet. When you add one, it will show up here." />;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)} transparent>
+      <Column transparent>
+        <SubNavigation message={intl.formatMessage(messages.heading)} />
         <StatusList
           trackScroll={!pinned}
           statusIds={statusIds}
@@ -63,6 +72,7 @@ class Bookmarks extends ImmutablePureComponent {
           hasMore={hasMore}
           isLoading={isLoading}
           onLoadMore={this.handleLoadMore}
+          onRefresh={this.handleRefresh}
           shouldUpdateScroll={shouldUpdateScroll}
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}

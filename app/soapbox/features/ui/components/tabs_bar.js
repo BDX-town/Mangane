@@ -53,10 +53,10 @@ class TabsBar extends React.PureComponent {
     return pathname === '/' || pathname.startsWith('/timeline/');
   }
 
-  onProfilePage = () => {
+  shouldShowLinks = () => {
     try {
       const { pathname } = this.context.router.route.location;
-      return pathname.startsWith('/@') && !pathname.includes('/posts/');
+      return (pathname.startsWith('/@') && !pathname.includes('/posts/')) || pathname.startsWith('/admin');
     } catch {
       return false;
     }
@@ -65,7 +65,7 @@ class TabsBar extends React.PureComponent {
   render() {
     const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount } = this.props;
     const { collapsed } = this.state;
-    const profilePage = this.onProfilePage();
+    const showLinks = this.shouldShowLinks();
 
     const classes = classNames('tabs-bar', {
       'tabs-bar--collapsed': collapsed,
@@ -88,13 +88,13 @@ class TabsBar extends React.PureComponent {
             )}
 
             <div className='tabs-bar__search-container'>
-              <SearchContainer openInRoute />
+              <SearchContainer openInRoute autosuggest />
             </div>
           </div>
           <div className='tabs-bar__split tabs-bar__split--right'>
             {account ? (
               <>
-                {profilePage && (
+                {showLinks && (
                   <>
                     <NavLink key='notifications' className='tabs-bar__link' to='/notifications' data-preview-title-id='column.notifications'>
                       <IconWithCounter
@@ -171,7 +171,7 @@ const mapStateToProps = state => {
     logo: getSoapboxConfig(state).get('logo'),
     features: getFeatures(instance),
     notificationCount: state.getIn(['notifications', 'unread']),
-    chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
+    chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
   };
 };

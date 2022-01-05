@@ -24,7 +24,7 @@ import { findAccountByUsername } from 'soapbox/selectors';
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
   const getAccount = makeGetAccount();
 
   let accountId = -1;
@@ -100,7 +100,7 @@ class ProfilePage extends ImmutablePureComponent {
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area'>
+              <div className='columns-area '>
                 {children}
               </div>
             </div>

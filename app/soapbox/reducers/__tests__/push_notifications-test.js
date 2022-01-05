@@ -6,12 +6,12 @@ describe('push_notifications reducer', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap({
       subscription: null,
       alerts: new ImmutableMap({
-        follow: false,
-        follow_request: false,
-        favourite: false,
-        reblog: false,
-        mention: false,
-        poll: false,
+        follow: true,
+        follow_request: true,
+        favourite: true,
+        reblog: true,
+        mention: true,
+        poll: true,
       }),
       isSubscribed: false,
       browserSupport: false,

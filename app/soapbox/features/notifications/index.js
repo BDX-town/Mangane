@@ -128,6 +128,11 @@ class Notifications extends React.PureComponent {
     this.props.dispatch(dequeueNotifications());
   };
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandNotifications());
+  }
+
   render() {
     const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
@@ -172,6 +177,7 @@ class Notifications extends React.PureComponent {
         placeholderComponent={PlaceholderNotification}
         placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
+        onRefresh={this.handleRefresh}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
       >

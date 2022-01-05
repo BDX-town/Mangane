@@ -4,15 +4,19 @@ import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import LoadingIndicator from '../../components/loading_indicator';
 import MissingIndicator from '../../components/missing_indicator';
 import { fetchFavourites, fetchReactions } from '../../actions/interactions';
 import { fetchStatus } from '../../actions/statuses';
-import { FormattedMessage } from 'react-intl';
 import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
 import ScrollableList from '../../components/scrollable_list';
 import { makeGetStatus } from '../../selectors';
+
+const messages = defineMessages({
+  heading: { id: 'column.reactions', defaultMessage: 'Reactions' },
+});
 
 const mapStateToProps = (state, props) => {
   const getStatus = makeGetStatus();
@@ -35,6 +39,7 @@ const mapStateToProps = (state, props) => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class Reactions extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -49,18 +54,24 @@ class Reactions extends ImmutablePureComponent {
     status: ImmutablePropTypes.map,
   };
 
+  fetchData = () => {
+    const { dispatch, params } = this.props;
+    const { statusId } = params;
+
+    dispatch(fetchFavourites(statusId));
+    dispatch(fetchReactions(statusId));
+    dispatch(fetchStatus(statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchFavourites(this.props.params.statusId));
-    this.props.dispatch(fetchReactions(this.props.params.statusId));
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchData();
   }
 
   componentDidUpdate(prevProps) {
     const { params } = this.props;
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
-      this.props.dispatch(fetchFavourites(this.props.params.statusId));
-      prevProps.dispatch(fetchReactions(params.statusId));
-      prevProps.dispatch(fetchStatus(params.statusId));
+
+    if (params.statusId !== prevProps.params.statusId) {
+      this.fetchData();
     }
   }
 
@@ -72,14 +83,11 @@ class Reactions extends ImmutablePureComponent {
   };
 
   render() {
-    const { params, reactions, accounts, status } = this.props;
-    const { username, statusId } = params;
-
-    const back = `/@${username}/posts/${statusId}`;
+    const { intl, params, reactions, accounts, status } = this.props;
 
     if (!accounts) {
       return (
-        <Column back={back}>
+        <Column>
           <LoadingIndicator />
         </Column>
       );
@@ -87,7 +95,7 @@ class Reactions extends ImmutablePureComponent {
 
     if (!status) {
       return (
-        <Column back={back}>
+        <Column>
           <MissingIndicator />
         </Column>
       );
@@ -96,7 +104,7 @@ class Reactions extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 
     return (
-      <Column back={back}>
+      <Column heading={intl.formatMessage(messages.heading)}>
         {
           reactions.size > 0 && (
             <div className='reaction__filter-bar'>

@@ -3,7 +3,6 @@
   box-sizing: border-box;
   background: var(--brand-color);
   flex: 0 0 auto;
-  overflow-y: auto;
   height: 50px;
   width: 100%;
   position: sticky;
@@ -56,7 +55,7 @@
     }
 
     &__profile {
-      margin-left: 0;
+      margin-left: 0 !important;
     }
 
     &__unauthenticated {
@@ -283,6 +282,7 @@
     margin-right: 30px;
     border: 0;
     height: 40px;
+    width: max-content;
     overflow: hidden;
     padding: 13px 0 0;
     box-sizing: border-box;

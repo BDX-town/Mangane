@@ -32,9 +32,12 @@ class ReportStatus extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.viewStatus, { acct: `@${acct}` }),
       to: `/@${acct}/posts/${status.get('id')}`,
+      icon: require('@tabler/icons/icons/pencil.svg'),
     }, {
       text: intl.formatMessage(messages.deleteStatus, { acct: `@${acct}` }),
       action: this.handleDeleteStatus,
+      icon: require('@tabler/icons/icons/trash.svg'),
+      destructive: true,
     }];
   }
 
@@ -116,7 +119,7 @@ class ReportStatus extends ImmutablePureComponent {
           {media}
         </div>
         <div className='admin-report__status-actions'>
-          <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+          <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
         </div>
       </div>
     );

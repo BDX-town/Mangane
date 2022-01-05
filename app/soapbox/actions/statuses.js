@@ -3,6 +3,8 @@ import { deleteFromTimelines } from './timelines';
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+import { shouldHaveCard } from 'soapbox/utils/status';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
@@ -33,13 +35,9 @@ export const STATUS_HIDE   = 'STATUS_HIDE';
 
 export const REDRAFT = 'REDRAFT';
 
-export function fetchStatusRequest(id, skipLoading) {
-  return {
-    type: STATUS_FETCH_REQUEST,
-    id,
-    skipLoading,
-  };
-}
+const statusExists = (getState, statusId) => {
+  return getState().getIn(['statuses', statusId], null) !== null;
+};
 
 export function createStatus(params, idempotencyKey) {
   return (dispatch, getState) => {
@@ -48,8 +46,31 @@ export function createStatus(params, idempotencyKey) {
     return api(getState).post('/api/v1/statuses', params, {
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
+      // The backend might still be processing the rich media attachment
+      if (!status.card && shouldHaveCard(status)) {
+        status.expectsCard = true;
+      }
+
       dispatch(importFetchedStatus(status, idempotencyKey));
       dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+
+      // Poll the backend for the updated card
+      if (status.expectsCard) {
+        const delay = 1000;
+
+        const poll = (retries = 5) => {
+          api(getState).get(`/api/v1/statuses/${status.id}`).then(response => {
+            if (response.data && response.data.card) {
+              dispatch(importFetchedStatus(response.data));
+            } else if (retries > 0 && response.status === 200) {
+              setTimeout(() => poll(retries - 1), delay);
+            }
+          }).catch(console.error);
+        };
+
+        setTimeout(() => poll(), delay);
+      }
+
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
@@ -60,48 +81,32 @@ export function createStatus(params, idempotencyKey) {
 
 export function fetchStatus(id) {
   return (dispatch, getState) => {
-    const skipLoading = getState().getIn(['statuses', id], null) !== null;
+    const skipLoading = statusExists(getState, id);
 
-    dispatch(fetchContext(id));
+    dispatch({ type: STATUS_FETCH_REQUEST, id, skipLoading });
 
-    if (skipLoading) {
-      return;
-    }
-
-    dispatch(fetchStatusRequest(id, skipLoading));
-
-    api(getState).get(`/api/v1/statuses/${id}`).then(response => {
-      dispatch(importFetchedStatus(response.data));
-      dispatch(fetchStatusSuccess(response.data, skipLoading));
+    return api(getState).get(`/api/v1/statuses/${id}`).then(({ data: status }) => {
+      dispatch(importFetchedStatus(status));
+      dispatch({ type: STATUS_FETCH_SUCCESS, status, skipLoading });
+      return status;
     }).catch(error => {
-      dispatch(fetchStatusFail(id, error, skipLoading));
+      dispatch({ type: STATUS_FETCH_FAIL, id, error, skipLoading, skipAlert: true });
     });
   };
 }
 
-export function fetchStatusSuccess(status, skipLoading) {
-  return {
-    type: STATUS_FETCH_SUCCESS,
-    status,
-    skipLoading,
-  };
-}
-
-export function fetchStatusFail(id, error, skipLoading) {
-  return {
-    type: STATUS_FETCH_FAIL,
-    id,
-    error,
-    skipLoading,
-    skipAlert: true,
-  };
-}
-
 export function redraft(status, raw_text) {
-  return {
-    type: REDRAFT,
-    status,
-    raw_text,
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: REDRAFT,
+      status,
+      raw_text,
+      explicitAddressing,
+    });
   };
 }
 
@@ -115,10 +120,10 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       status = status.set('poll', getState().getIn(['polls', status.get('poll')]));
     }
 
-    dispatch(deleteStatusRequest(id));
+    dispatch({ type: STATUS_DELETE_REQUEST, id });
 
     api(getState).delete(`/api/v1/statuses/${id}`).then(response => {
-      dispatch(deleteStatusSuccess(id));
+      dispatch({ type: STATUS_DELETE_SUCCESS, id });
       dispatch(deleteFromTimelines(id));
 
       if (withRedraft) {
@@ -126,73 +131,37 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
         dispatch(openModal('COMPOSE'));
       }
     }).catch(error => {
-      dispatch(deleteStatusFail(id, error));
+      dispatch({ type: STATUS_DELETE_FAIL, id, error });
     });
-  };
-}
-
-export function deleteStatusRequest(id) {
-  return {
-    type: STATUS_DELETE_REQUEST,
-    id: id,
-  };
-}
-
-export function deleteStatusSuccess(id) {
-  return {
-    type: STATUS_DELETE_SUCCESS,
-    id: id,
-  };
-}
-
-export function deleteStatusFail(id, error) {
-  return {
-    type: STATUS_DELETE_FAIL,
-    id: id,
-    error: error,
   };
 }
 
 export function fetchContext(id) {
   return (dispatch, getState) => {
-    dispatch(fetchContextRequest(id));
+    dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
-    api(getState).get(`/api/v1/statuses/${id}/context`).then(response => {
-      dispatch(importFetchedStatuses(response.data.ancestors.concat(response.data.descendants)));
-      dispatch(fetchContextSuccess(id, response.data.ancestors, response.data.descendants));
-
+    return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
+      const { ancestors, descendants } = context;
+      const statuses = ancestors.concat(descendants);
+      dispatch(importFetchedStatuses(statuses));
+      dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      return context;
     }).catch(error => {
       if (error.response && error.response.status === 404) {
         dispatch(deleteFromTimelines(id));
       }
 
-      dispatch(fetchContextFail(id, error));
+      dispatch({ type: CONTEXT_FETCH_FAIL, id, error, skipAlert: true });
     });
   };
 }
 
-export function fetchContextRequest(id) {
-  return {
-    type: CONTEXT_FETCH_REQUEST,
-    id,
-  };
-}
-
-export function fetchContextSuccess(id, ancestors, descendants) {
-  return {
-    type: CONTEXT_FETCH_SUCCESS,
-    id,
-    ancestors,
-    descendants,
-  };
-}
-
-export function fetchContextFail(id, error) {
-  return {
-    type: CONTEXT_FETCH_FAIL,
-    id,
-    error,
-    skipAlert: true,
+export function fetchStatusWithContext(id) {
+  return (dispatch, getState) => {
+    return Promise.all([
+      dispatch(fetchContext(id)),
+      dispatch(fetchStatus(id)),
+    ]);
   };
 }
 
@@ -200,35 +169,12 @@ export function muteStatus(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(muteStatusRequest(id));
-
+    dispatch({ type: STATUS_MUTE_REQUEST, id });
     api(getState).post(`/api/v1/statuses/${id}/mute`).then(() => {
-      dispatch(muteStatusSuccess(id));
+      dispatch({ type: STATUS_MUTE_SUCCESS, id });
     }).catch(error => {
-      dispatch(muteStatusFail(id, error));
+      dispatch({ type: STATUS_MUTE_FAIL, id, error });
     });
-  };
-}
-
-export function muteStatusRequest(id) {
-  return {
-    type: STATUS_MUTE_REQUEST,
-    id,
-  };
-}
-
-export function muteStatusSuccess(id) {
-  return {
-    type: STATUS_MUTE_SUCCESS,
-    id,
-  };
-}
-
-export function muteStatusFail(id, error) {
-  return {
-    type: STATUS_MUTE_FAIL,
-    id,
-    error,
   };
 }
 
@@ -236,35 +182,12 @@ export function unmuteStatus(id) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
-    dispatch(unmuteStatusRequest(id));
-
+    dispatch({ type: STATUS_UNMUTE_REQUEST, id });
     api(getState).post(`/api/v1/statuses/${id}/unmute`).then(() => {
-      dispatch(unmuteStatusSuccess(id));
+      dispatch({ type: STATUS_UNMUTE_SUCCESS, id });
     }).catch(error => {
-      dispatch(unmuteStatusFail(id, error));
+      dispatch({ type: STATUS_UNMUTE_FAIL, id, error });
     });
-  };
-}
-
-export function unmuteStatusRequest(id) {
-  return {
-    type: STATUS_UNMUTE_REQUEST,
-    id,
-  };
-}
-
-export function unmuteStatusSuccess(id) {
-  return {
-    type: STATUS_UNMUTE_SUCCESS,
-    id,
-  };
-}
-
-export function unmuteStatusFail(id, error) {
-  return {
-    type: STATUS_UNMUTE_FAIL,
-    id,
-    error,
   };
 }
 

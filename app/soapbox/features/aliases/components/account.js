@@ -65,7 +65,7 @@ class Account extends ImmutablePureComponent {
     if (!added && accountId !== me) {
       button = (
         <div className='account__relationship'>
-          <IconButton icon='plus' title={intl.formatMessage(messages.add)} onClick={this.handleOnAdd} />
+          <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={this.handleOnAdd} />
         </div>
       );
     }

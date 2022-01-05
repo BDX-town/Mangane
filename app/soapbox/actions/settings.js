@@ -38,6 +38,8 @@ export const defaultSettings = ImmutableMap({
   dyslexicFont: false,
   demetricator: false,
 
+  isDeveloper: false,
+
   chats: ImmutableMap({
     panes: ImmutableList(),
     mainWindow: 'minimized',
@@ -101,6 +103,7 @@ export const defaultSettings = ImmutableMap({
     shows: ImmutableMap({
       reblog: false,
       reply: true,
+      direct: false,
     }),
     other: ImmutableMap({
       onlyMedia: false,
@@ -114,6 +117,7 @@ export const defaultSettings = ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
       reply: true,
+      direct: false,
     }),
     other: ImmutableMap({
       onlyMedia: false,
@@ -133,6 +137,7 @@ export const defaultSettings = ImmutableMap({
     shows: ImmutableMap({
       reblog: true,
       pinned: true,
+      direct: false,
     }),
   }),
 

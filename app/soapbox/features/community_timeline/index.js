@@ -70,6 +70,12 @@ class CommunityTimeline extends React.PureComponent {
     dispatch(expandCommunityTimeline({ maxId, onlyMedia }));
   }
 
+  handleRefresh = () => {
+    const { dispatch, onlyMedia } = this.props;
+    return dispatch(expandCommunityTimeline({ onlyMedia }));
+  }
+
+
   render() {
     const { intl, onlyMedia, timelineId } = this.props;
 
@@ -80,6 +86,7 @@ class CommunityTimeline extends React.PureComponent {
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
           onLoadMore={this.handleLoadMore}
+          onRefresh={this.handleRefresh}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
         />
       </Column>

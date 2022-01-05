@@ -11,9 +11,10 @@ import Hashtag from '../../../components/hashtag';
 class TrendsPanel extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     trends: ImmutablePropTypes.list.isRequired,
     fetchTrends: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
+    limit: PropTypes.number,
   };
 
   componentDidMount() {
@@ -22,8 +23,8 @@ class TrendsPanel extends ImmutablePureComponent {
 
   render() {
     const trends = this.props.trends.sort((a, b) => {
-      const num_a = parseInt(a.getIn(['history', 0, 'accounts']));
-      const num_b = parseInt(b.getIn(['history', 0, 'accounts']));
+      const num_a = Number(a.getIn(['history', 0, 'accounts']));
+      const num_b = Number(b.getIn(['history', 0, 'accounts']));
       return num_b - num_a;
     }).slice(0, this.props.limit);
 
@@ -34,7 +35,7 @@ class TrendsPanel extends ImmutablePureComponent {
     return (
       <div className='wtf-panel'>
         <div className='wtf-panel-header'>
-          <Icon id='hashtag' className='wtf-panel-header__icon' />
+          <Icon src={require('@tabler/icons/icons/hash.svg')} className='wtf-panel-header__icon' />
           <span className='wtf-panel-header__label'>
             <FormattedMessage id='trends.title' defaultMessage='Trends' />
           </span>

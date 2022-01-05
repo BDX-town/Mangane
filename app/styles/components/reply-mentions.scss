@@ -1,0 +1,24 @@
+.reply-mentions {
+  margin: 0 10px;
+  color: var(--primary-text-color--faint);
+  font-size: 15px;
+  text-decoration: none;
+
+  &__account,
+  a {
+    color: var(--highlight-text-color);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.status__wrapper,
+.detailed-status {
+  .reply-mentions {
+    display: block;
+    margin: 4px 0 0 0;
+  }
+}

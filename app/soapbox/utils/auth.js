@@ -57,3 +57,8 @@ export const getAuthUserUrl = state => {
     me,
   ]).find(isURL);
 };
+
+/** Get the VAPID public key. */
+export const getVapidKey = state => {
+  return state.getIn(['auth', 'app', 'vapid_key']) || state.getIn(['instance', 'pleroma', 'vapid_public_key']);
+};

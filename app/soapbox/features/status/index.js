@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchStatus } from '../../actions/statuses';
+import { fetchStatusWithContext } from '../../actions/statuses';
 import MissingIndicator from '../../components/missing_indicator';
 import DetailedStatus from './components/detailed_status';
 import ActionBar from './components/action_bar';
-import Column from '../ui/components/column';
+import Column from 'soapbox/components/column';
 import {
   favourite,
   unfavourite,
@@ -52,6 +52,7 @@ import ThreadStatus from './components/thread_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { launchChat } from 'soapbox/actions/chats';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
@@ -79,7 +80,7 @@ const makeMapStateToProps = () => {
     let ancestorsIds = ImmutableOrderedSet();
     let id = statusId;
 
-    while (id) {
+    while (id && !ancestorsIds.includes(id)) {
       ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
       id = inReplyTos.get(id);
     }
@@ -97,6 +98,10 @@ const makeMapStateToProps = () => {
     while (ids.length > 0) {
       const id      = ids.shift();
       const replies = contextReplies.get(id);
+
+      if (descendantsIds.includes(id)) {
+        break;
+      }
 
       if (statusId !== id) {
         descendantsIds = descendantsIds.union([id]);
@@ -118,8 +123,11 @@ const makeMapStateToProps = () => {
     let descendantsIds = ImmutableOrderedSet();
 
     if (status) {
-      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
-      descendantsIds = getDescendantsIds(state, { id: status.get('id') });
+      const statusId = status.get('id');
+      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', statusId]) });
+      descendantsIds = getDescendantsIds(state, { id: statusId });
+      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
+      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
     }
 
     const soapbox = getSoapboxConfig(state);
@@ -166,8 +174,15 @@ class Status extends ImmutablePureComponent {
     emojiSelectorFocused: false,
   };
 
+  fetchData = () => {
+    const { dispatch, params } = this.props;
+    const { statusId } = params;
+
+    return dispatch(fetchStatusWithContext(statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchData();
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -532,9 +547,9 @@ class Status extends ImmutablePureComponent {
     const { params, status } = this.props;
     const { ancestorsIds } = prevProps;
 
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+    if (params.statusId !== prevProps.params.statusId) {
       this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(params.statusId));
+      this.fetchData();
     }
 
     if (status && status.get('id') !== prevState.loadedStatusId) {
@@ -561,6 +576,10 @@ class Status extends ImmutablePureComponent {
 
   onFullScreenChange = () => {
     this.setState({ fullscreen: isFullscreen() });
+  }
+
+  handleRefresh = () => {
+    return this.fetchData();
   }
 
   render() {
@@ -626,56 +645,58 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='thread'>
-          {ancestors && (
-            <div className='thread__ancestors'>{ancestors}</div>
-          )}
+          <PullToRefresh onRefresh={this.handleRefresh}>
+            {ancestors && (
+              <div className='thread__ancestors'>{ancestors}</div>
+            )}
 
-          <div className='thread__status thread__status--focused'>
-            <HotKeys handlers={handlers}>
-              <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
-                <DetailedStatus
-                  status={status}
-                  onOpenVideo={this.handleOpenVideo}
-                  onOpenMedia={this.handleOpenMedia}
-                  onToggleHidden={this.handleToggleHidden}
-                  domain={domain}
-                  showMedia={this.state.showMedia}
-                  onToggleMediaVisibility={this.handleToggleMediaVisibility}
-                />
+            <div className='thread__status thread__status--focused'>
+              <HotKeys handlers={handlers}>
+                <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                  <DetailedStatus
+                    status={status}
+                    onOpenVideo={this.handleOpenVideo}
+                    onOpenMedia={this.handleOpenMedia}
+                    onToggleHidden={this.handleToggleHidden}
+                    domain={domain}
+                    showMedia={this.state.showMedia}
+                    onToggleMediaVisibility={this.handleToggleMediaVisibility}
+                  />
 
-                <ActionBar
-                  status={status}
-                  onReply={this.handleReplyClick}
-                  onFavourite={this.handleFavouriteClick}
-                  onEmojiReact={this.handleEmojiReactClick}
-                  onReblog={this.handleReblogClick}
-                  onDelete={this.handleDeleteClick}
-                  onDirect={this.handleDirectClick}
-                  onChat={this.handleChatClick}
-                  onMention={this.handleMentionClick}
-                  onMute={this.handleMuteClick}
-                  onMuteConversation={this.handleConversationMuteClick}
-                  onBlock={this.handleBlockClick}
-                  onReport={this.handleReport}
-                  onPin={this.handlePin}
-                  onBookmark={this.handleBookmark}
-                  onEmbed={this.handleEmbed}
-                  onDeactivateUser={this.handleDeactivateUser}
-                  onDeleteUser={this.handleDeleteUser}
-                  onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
-                  onDeleteStatus={this.handleDeleteStatus}
-                  allowedEmoji={this.props.allowedEmoji}
-                  emojiSelectorFocused={this.state.emojiSelectorFocused}
-                  handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
-                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                />
-              </div>
-            </HotKeys>
-          </div>
+                  <ActionBar
+                    status={status}
+                    onReply={this.handleReplyClick}
+                    onFavourite={this.handleFavouriteClick}
+                    onEmojiReact={this.handleEmojiReactClick}
+                    onReblog={this.handleReblogClick}
+                    onDelete={this.handleDeleteClick}
+                    onDirect={this.handleDirectClick}
+                    onChat={this.handleChatClick}
+                    onMention={this.handleMentionClick}
+                    onMute={this.handleMuteClick}
+                    onMuteConversation={this.handleConversationMuteClick}
+                    onBlock={this.handleBlockClick}
+                    onReport={this.handleReport}
+                    onPin={this.handlePin}
+                    onBookmark={this.handleBookmark}
+                    onEmbed={this.handleEmbed}
+                    onDeactivateUser={this.handleDeactivateUser}
+                    onDeleteUser={this.handleDeleteUser}
+                    onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                    onDeleteStatus={this.handleDeleteStatus}
+                    allowedEmoji={this.props.allowedEmoji}
+                    emojiSelectorFocused={this.state.emojiSelectorFocused}
+                    handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                    handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                  />
+                </div>
+              </HotKeys>
+            </div>
 
-          {descendants && (
-            <div className='thread__descendants'>{descendants}</div>
-          )}
+            {descendants && (
+              <div className='thread__descendants'>{descendants}</div>
+            )}
+          </PullToRefresh>
         </div>
       </Column>
     );

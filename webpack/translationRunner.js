@@ -152,7 +152,7 @@ const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
 const translations = languages.map((language) => {
   return {
     language: language,
-    data : JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
+    data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
   };
 });
 

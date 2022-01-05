@@ -1,7 +1,18 @@
-import * as actions from 'soapbox/actions/notifications';
+import {
+  NOTIFICATIONS_EXPAND_SUCCESS,
+  NOTIFICATIONS_EXPAND_REQUEST,
+  NOTIFICATIONS_EXPAND_FAIL,
+  NOTIFICATIONS_FILTER_SET,
+  NOTIFICATIONS_SCROLL_TOP,
+  NOTIFICATIONS_UPDATE,
+  NOTIFICATIONS_UPDATE_QUEUE,
+  NOTIFICATIONS_DEQUEUE,
+  NOTIFICATIONS_CLEAR,
+  NOTIFICATIONS_MARK_READ_REQUEST,
+} from 'soapbox/actions/notifications';
 import reducer from '../notifications';
 import notifications from 'soapbox/__fixtures__/notifications.json';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap } from 'immutable';
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 import { take } from 'lodash';
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import notification from 'soapbox/__fixtures__/notification.json';
@@ -28,55 +39,89 @@ describe('notifications reducer', () => {
     }));
   });
 
-  it('should handle NOTIFICATIONS_EXPAND_SUCCESS', () => {
-    const state = undefined;
-    const action = {
-      type: actions.NOTIFICATIONS_EXPAND_SUCCESS,
-      notifications: take(notifications, 3),
-      next: null,
-      skipLoading: true,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
+  describe('NOTIFICATIONS_EXPAND_SUCCESS', () => {
+    it('imports the notifications', () => {
+      const state = undefined;
+
+      const action = {
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: take(notifications, 3),
+        next: null,
+        skipLoading: true,
+      };
+
+      expect(reducer(state, action)).toEqual(ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10744', ImmutableMap({
+            id: '10744',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: undefined,
+          })],
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: undefined,
+            chat_message: undefined,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: undefined,
+            chat_message: undefined,
+          })],
+        ]),
+        hasMore: false,
+        top: false,
+        unread: 0,
+        isLoading: false,
+        queuedNotifications: ImmutableOrderedMap(),
+        totalQueuedNotificationsCount: 0,
+        lastRead: -1,
+      }));
+    });
+
+    it('drops invalid notifications', () => {
+      const action = {
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: [
+          { id: '1', type: 'mention', status: null, account: { id: '10' } },
+          { id: '2', type: 'reblog', status: null, account: { id: '9' } },
+          { id: '3', type: 'favourite', status: null, account: { id: '8' } },
+          { id: '4', type: 'mention', status: { id: 'a' }, account: { id: '7' } },
+          { id: '5', type: 'reblog', status: { id: 'b' }, account: null },
+        ],
+        next: null,
+        skipLoading: true,
+      };
+
+      const expected = ImmutableOrderedMap([
+        ['4', fromJS({
+          id: '4',
+          type: 'mention',
+          account: '7',
           target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
+          created_at: undefined,
+          status: 'a',
           emoji: undefined,
           chat_message: undefined,
         })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-      hasMore: false,
-      top: false,
-      unread: 0,
-      isLoading: false,
-      queuedNotifications: ImmutableOrderedMap(),
-      totalQueuedNotificationsCount: 0,
-      lastRead: -1,
-    }));
+      ]);
+
+      expect(reducer(undefined, action).get('items')).toEqual(expected);
+    });
   });
 
   it('should handle NOTIFICATIONS_EXPAND_REQUEST', () => {
@@ -84,7 +129,7 @@ describe('notifications reducer', () => {
       isLoading: false,
     });
     const action = {
-      type: actions.NOTIFICATIONS_EXPAND_REQUEST,
+      type: NOTIFICATIONS_EXPAND_REQUEST,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       isLoading: true,
@@ -96,7 +141,7 @@ describe('notifications reducer', () => {
       isLoading: true,
     });
     const action = {
-      type: actions.NOTIFICATIONS_EXPAND_FAIL,
+      type: NOTIFICATIONS_EXPAND_FAIL,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       isLoading: false,
@@ -146,7 +191,7 @@ describe('notifications reducer', () => {
       lastRead: -1,
     });
     const action = {
-      type: actions.NOTIFICATIONS_FILTER_SET,
+      type: NOTIFICATIONS_FILTER_SET,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       items: ImmutableOrderedMap(),
@@ -165,7 +210,7 @@ describe('notifications reducer', () => {
       unread: 1,
     });
     const action = {
-      type: actions.NOTIFICATIONS_SCROLL_TOP,
+      type: NOTIFICATIONS_SCROLL_TOP,
       top: true,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
@@ -179,7 +224,7 @@ describe('notifications reducer', () => {
       unread: 3,
     });
     const action = {
-      type: actions.NOTIFICATIONS_SCROLL_TOP,
+      type: NOTIFICATIONS_SCROLL_TOP,
       top: false,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
@@ -195,7 +240,7 @@ describe('notifications reducer', () => {
       unread: 1,
     });
     const action = {
-      type: actions.NOTIFICATIONS_UPDATE,
+      type: NOTIFICATIONS_UPDATE,
       notification: notification,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
@@ -223,7 +268,7 @@ describe('notifications reducer', () => {
       totalQueuedNotificationsCount: 0,
     });
     const action = {
-      type: actions.NOTIFICATIONS_UPDATE_QUEUE,
+      type: NOTIFICATIONS_UPDATE_QUEUE,
       notification: notification,
       intlMessages: intlMessages,
       intlLocale: 'en',
@@ -246,7 +291,7 @@ describe('notifications reducer', () => {
       totalQueuedNotificationsCount: 1,
     });
     const action = {
-      type: actions.NOTIFICATIONS_DEQUEUE,
+      type: NOTIFICATIONS_DEQUEUE,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       items: ImmutableOrderedMap(),
@@ -274,7 +319,7 @@ describe('notifications reducer', () => {
       isLoading: false,
     });
     const action = {
-      type: actions.NOTIFICATIONS_EXPAND_SUCCESS,
+      type: NOTIFICATIONS_EXPAND_SUCCESS,
       notifications: take(notifications, 3),
       next: true,
     };
@@ -335,7 +380,7 @@ describe('notifications reducer', () => {
       isLoading: false,
     });
     const action = {
-      type: actions.NOTIFICATIONS_EXPAND_SUCCESS,
+      type: NOTIFICATIONS_EXPAND_SUCCESS,
       notifications: take(notifications, 3),
       next: true,
     };
@@ -514,7 +559,7 @@ describe('notifications reducer', () => {
       hasMore: true,
     });
     const action = {
-      type: actions.NOTIFICATIONS_CLEAR,
+      type: NOTIFICATIONS_CLEAR,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({
       items: ImmutableOrderedMap(),
@@ -527,7 +572,7 @@ describe('notifications reducer', () => {
       items: ImmutableOrderedMap(),
     });
     const action = {
-      type: actions.NOTIFICATIONS_MARK_READ_REQUEST,
+      type: NOTIFICATIONS_MARK_READ_REQUEST,
       lastRead: 35098814,
     };
     expect(reducer(state, action)).toEqual(ImmutableMap({

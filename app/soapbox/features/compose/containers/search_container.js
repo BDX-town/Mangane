@@ -13,6 +13,16 @@ const mapStateToProps = state => ({
   submitted: state.getIn(['search', 'submitted']),
 });
 
+function redirectToAccount(accountId, routerHistory) {
+  return (dispatch, getState) => {
+    const acct = getState().getIn(['accounts', accountId, 'acct']);
+
+    if (acct && routerHistory) {
+      routerHistory.push(`/@${acct}`);
+    }
+  };
+}
+
 const mapDispatchToProps = (dispatch, { autoSubmit }) => {
 
   const debouncedSubmit = debounce(() => {
@@ -38,6 +48,11 @@ const mapDispatchToProps = (dispatch, { autoSubmit }) => {
 
     onShow() {
       dispatch(showSearch());
+    },
+
+    onSelected(accountId, routerHistory) {
+      dispatch(clearSearch());
+      dispatch(redirectToAccount(accountId, routerHistory));
     },
 
   };

@@ -48,8 +48,8 @@ class FollowRequest extends ImmutablePureComponent {
           </Permalink>
 
           <div className='account__relationship'>
-            <IconButton title={intl.formatMessage(messages.authorize)} icon='check' onClick={onAuthorize} />
-            <IconButton title={intl.formatMessage(messages.reject)} icon='times' onClick={onReject} />
+            <IconButton title={intl.formatMessage(messages.authorize)} src={require('@tabler/icons/icons/check.svg')} onClick={onAuthorize} />
+            <IconButton title={intl.formatMessage(messages.reject)} src={require('@tabler/icons/icons/x.svg')} onClick={onReject} />
           </div>
         </div>
       </div>

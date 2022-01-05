@@ -239,6 +239,15 @@
     font-size: 14px;
     font-weight: 500;
   }
+
+  &__buttons .svg-icon {
+    height: 18px;
+    width: 18px;
+  }
+}
+
+article:last-child > .domain {
+  border-bottom: none;
 }
 
 .domain__wrapper {
@@ -763,5 +772,11 @@
     text-align: center;
     color: #fff;
     background: var(--accent-color);
+  }
+}
+
+.page__top + .page__columns .columns-area {
+  @media screen and (max-width: 580px) {
+    padding-top: 10px;
   }
 }

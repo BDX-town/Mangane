@@ -27,6 +27,7 @@ const mapStateToProps = state => {
     isPartial: state.getIn(['timelines', 'home', 'isPartial']),
     siteTitle: state.getIn(['instance', 'title']),
     isLoading: state.getIn(['timelines', 'home', 'isLoading'], true),
+    loadingFailed: state.getIn(['timelines', 'home', 'loadingFailed'], false),
     isEmpty: state.getIn(['timelines', 'home', 'items'], ImmutableOrderedSet()).isEmpty(),
     features,
   };
@@ -43,6 +44,7 @@ class HomeTimeline extends React.PureComponent {
     isPartial: PropTypes.bool,
     siteTitle: PropTypes.string,
     isLoading: PropTypes.bool,
+    loadingFailed: PropTypes.bool,
     isEmpty: PropTypes.bool,
     features: PropTypes.object.isRequired,
   };
@@ -93,10 +95,15 @@ class HomeTimeline extends React.PureComponent {
     this.setState({ done: true });
   }
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandHomeTimeline());
+  }
+
   render() {
-    const { intl, siteTitle, isLoading, isEmpty, features } = this.props;
+    const { intl, siteTitle, isLoading, loadingFailed, isEmpty, features } = this.props;
     const { done } = this.state;
-    const showSuggestions = features.suggestions && isEmpty && !isLoading && !done;
+    const showSuggestions = features.suggestions && isEmpty && !isLoading && !loadingFailed && !done;
 
     return (
       <Column label={intl.formatMessage(messages.title)} transparent={!showSuggestions}>
@@ -108,6 +115,7 @@ class HomeTimeline extends React.PureComponent {
           <StatusListContainer
             scrollKey='home_timeline'
             onLoadMore={this.handleLoadMore}
+            onRefresh={this.handleRefresh}
             timelineId='home'
             emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
           />

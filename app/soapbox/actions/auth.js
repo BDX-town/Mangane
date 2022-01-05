@@ -186,7 +186,7 @@ export function loadCredentials(token, accountUrl) {
 
 export function logIn(intl, username, password) {
   return (dispatch, getState) => {
-    return dispatch(createAppAndToken()).then(() => {
+    return dispatch(createAuthApp()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {

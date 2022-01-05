@@ -3,7 +3,6 @@ import React from 'react';
 import { FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import StatusContainer from 'soapbox/containers/status_container';
 import MaterialStatus from 'soapbox/components/material_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -111,7 +110,7 @@ export default class StatusList extends ImmutablePureComponent {
     const { timelineId, withGroupAdmin, group }  = this.props;
 
     return (
-      <StatusContainer
+      <MaterialStatus
         key={statusId}
         id={statusId}
         onMoveUp={this.handleMoveUp}
@@ -119,9 +118,6 @@ export default class StatusList extends ImmutablePureComponent {
         contextType={timelineId}
         group={group}
         withGroupAdmin={withGroupAdmin}
-        showThread
-        wrapperComponent={MaterialStatus}
-        focusable={false}
       />
     );
   }
@@ -141,7 +137,6 @@ export default class StatusList extends ImmutablePureComponent {
             contextType={timelineId}
             group={group}
             withGroupAdmin={withGroupAdmin}
-            showThread
           />
         </div>
       </div>
@@ -153,16 +148,13 @@ export default class StatusList extends ImmutablePureComponent {
     if (!featuredStatusIds) return null;
 
     return featuredStatusIds.map(statusId => (
-      <StatusContainer
+      <MaterialStatus
         key={`f-${statusId}`}
         id={statusId}
         featured
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType={timelineId}
-        showThread
-        wrapperComponent={MaterialStatus}
-        focusable={false}
       />
     ));
   }

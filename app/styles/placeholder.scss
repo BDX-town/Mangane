@@ -1,6 +1,8 @@
 .placeholder-status,
 .placeholder-hashtag,
-.notification--placeholder {
+.notification--placeholder,
+.status-card--placeholder,
+.media-gallery--placeholder {
   position: relative;
 
   &::before {
@@ -45,7 +47,8 @@
 }
 
 .status__content--placeholder,
-.display-name--placeholder {
+.display-name--placeholder,
+.chat-list-item--placeholder .chat__last-message {
   letter-spacing: -1px;
   color: var(--brand-color) !important;
   opacity: 0.1;
@@ -104,4 +107,25 @@
 .column--transparent .slist__placeholder {
   background: transparent;
   box-shadow: none;
+}
+
+.status-card--placeholder {
+  pointer-events: none;
+
+  .status-card__title,
+  .status-card__description,
+  .status-card__host {
+    letter-spacing: -1px;
+    color: var(--brand-color) !important;
+    word-break: break-all;
+    opacity: 0.1;
+  }
+}
+
+.media-gallery.media-gallery--placeholder {
+  background: none;
+
+  .media-gallery__item {
+    background-color: var(--brand-color--faint);
+  }
 }

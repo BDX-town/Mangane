@@ -8,7 +8,7 @@ import {
 } from 'soapbox/actions/accounts';
 import { expandAccountMediaTimeline } from '../../actions/timelines';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
-import Column from '../ui/components/column';
+import Column from 'soapbox/components/column';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
 import MediaItem from './components/media_item';
@@ -17,11 +17,12 @@ import MissingIndicator from 'soapbox/components/missing_indicator';
 import { openModal } from 'soapbox/actions/modal';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import SubNavigation from 'soapbox/components/sub_navigation';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   let accountUsername = username;
@@ -186,6 +187,7 @@ class AccountGallery extends ImmutablePureComponent {
 
     return (
       <Column>
+        <SubNavigation message={`@${accountUsername}`} />
         <div className='slist slist--flex' onScroll={this.handleScroll}>
           <div className='account__section-headline'>
             <div style={{ width: '100%', display: 'flex' }}>
