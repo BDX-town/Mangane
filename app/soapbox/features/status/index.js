@@ -1,4 +1,4 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -425,10 +425,10 @@ class Status extends ImmutablePureComponent {
     if (id === status.get('id')) {
       this._selectChild(ancestorsIds.size - 1, true);
     } else {
-      let index = ancestorsIds.indexOf(id);
+      let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
-        index = descendantsIds.indexOf(id);
+        index = ImmutableList(descendantsIds).indexOf(id);
         this._selectChild(ancestorsIds.size + index, true);
       } else {
         this._selectChild(index - 1, true);
@@ -442,10 +442,10 @@ class Status extends ImmutablePureComponent {
     if (id === status.get('id')) {
       this._selectChild(ancestorsIds.size + 1, false);
     } else {
-      let index = ancestorsIds.indexOf(id);
+      let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
-        index = descendantsIds.indexOf(id);
+        index = ImmutableList(descendantsIds).indexOf(id);
         this._selectChild(ancestorsIds.size + index + 2, false);
       } else {
         this._selectChild(index + 1, false);

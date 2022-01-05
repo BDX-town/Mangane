@@ -11,6 +11,10 @@ export default class Column extends React.PureComponent {
     label: PropTypes.string,
   };
 
+  setRef = c => {
+    this.node = c;
+  }
+
   render() {
     const { className, label, children, transparent, ...rest } = this.props;
 
@@ -20,6 +24,7 @@ export default class Column extends React.PureComponent {
         aria-label={label}
         className={classNames('column', className, { 'column--transparent': transparent })}
         {...rest}
+        ref={this.setRef}
       >
         {children}
       </div>

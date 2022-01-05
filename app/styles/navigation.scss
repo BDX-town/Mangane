@@ -158,6 +158,11 @@
     opacity: 0.6;
     font-size: 16px;
 
+    &:hover,
+    &:focus {
+      color: var(--primary-text-color);
+    }
+
     .svg-icon {
       margin-right: 7px;
       width: 26px;

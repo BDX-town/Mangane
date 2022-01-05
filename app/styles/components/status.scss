@@ -472,15 +472,14 @@
   }
 }
 
-.focusable {
-  &:focus {
-    outline: 0;
-    box-shadow: 0 0 6px 0 hsla(var(--brand-color_hsl), 0.7);
+.focusable:focus,
+.focusable-within:focus-within {
+  outline: 0;
+  box-shadow: 0 0 6px 0 hsla(var(--brand-color_hsl), 0.7);
 
-    .status.status-direct {
-      &.muted {
-        background: transparent;
-      }
+  .status.status-direct {
+    &.muted {
+      background: transparent;
     }
   }
 }
