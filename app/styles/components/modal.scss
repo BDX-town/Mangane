@@ -339,7 +339,10 @@
 .confirmation-modal,
 .report-modal,
 .actions-modal,
-.mute-modal {
+.mute-modal,
+.reactions-modal,
+.reblogs-modal,
+.mentions-modal {
   position: relative;
   flex-direction: column;
   overflow: hidden;
@@ -382,6 +385,17 @@
     margin: 10px;
     height: 1px;
     background: var(--background-color);
+  }
+}
+
+.reactions-modal,
+.reblogs-modal,
+.mentions-modal {
+  height: 80vh;
+  max-height: 650px;
+
+  .slist {
+    overflow: auto;
   }
 }
 

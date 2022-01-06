@@ -1,15 +1,35 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import { openModal } from 'soapbox/actions/modal';
 
-export default @injectIntl
+const mapDispatchToProps = (dispatch) => ({
+  onOpenMentionsModal(username, statusId) {
+    dispatch(openModal('MENTIONS', {
+      username,
+      statusId,
+    }));
+  },
+});
+
+export default @connect(null, mapDispatchToProps)
+@injectIntl
 class StatusReplyMentions extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
+    onOpenMentionsModal: PropTypes.func,
+  }
+
+  handleOpenMentionsModal = () => {
+    const { status, onOpenMentionsModal } = this.props;
+
+    onOpenMentionsModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   render() {
@@ -54,6 +74,7 @@ class StatusReplyMentions extends ImmutablePureComponent {
       }
     }
 
+
     // The typical case with a reply-to and a list of mentions.
     return (
       <div className='reply-mentions'>
@@ -68,9 +89,9 @@ class StatusReplyMentions extends ImmutablePureComponent {
               {' '}
             </>)),
             more: to.size > 2 && (
-              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/mentions`}>
+              <span type='button' role='presentation' onClick={this.handleOpenMentionsModal}>
                 <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />
-              </Link>
+              </span>
             ),
           }}
         />

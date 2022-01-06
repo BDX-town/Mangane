@@ -18,8 +18,6 @@ const messages = defineMessages({
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
 });
 
-export const previewState = 'previewMediaModal';
-
 export default @injectIntl
 class MediaModal extends ImmutablePureComponent {
 
@@ -30,10 +28,6 @@ class MediaModal extends ImmutablePureComponent {
     index: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object,
   };
 
   state = {
@@ -75,28 +69,10 @@ class MediaModal extends ImmutablePureComponent {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown, false);
-
-    if (this.context.router) {
-      const history = this.context.router.history;
-
-      history.push(history.location.pathname, previewState);
-
-      this.unlistenHistory = history.listen(() => {
-        this.props.onClose();
-      });
-    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-
-    if (this.context.router) {
-      this.unlistenHistory();
-
-      if (this.context.router.history.location.state === previewState) {
-        this.context.router.history.goBack();
-      }
-    }
   }
 
   getIndex() {
