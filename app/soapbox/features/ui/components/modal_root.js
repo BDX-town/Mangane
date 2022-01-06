@@ -25,6 +25,10 @@ import {
   UnauthorizedModal,
   EditFederationModal,
   ComponentModal,
+  ReactionsModal,
+  FavouritesModal,
+  ReblogsModal,
+  MentionsModal,
 } from '../../../features/ui/util/async-components';
 
 const MODAL_COMPONENTS = {
@@ -47,6 +51,10 @@ const MODAL_COMPONENTS = {
   'CRYPTO_DONATE': CryptoDonateModal,
   'EDIT_FEDERATION': EditFederationModal,
   'COMPONENT': ComponentModal,
+  'REBLOGS': ReblogsModal,
+  'FAVOURITES': FavouritesModal,
+  'REACTIONS': ReactionsModal,
+  'MENTIONS': MentionsModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

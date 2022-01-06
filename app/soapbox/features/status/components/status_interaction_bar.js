@@ -8,9 +8,9 @@ import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { getFeatures } from 'soapbox/utils/features';
-import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { openModal } from 'soapbox/actions/modal';
 
 const mapStateToProps = state => {
   const instance = state.get('instance');
@@ -21,7 +21,29 @@ const mapStateToProps = state => {
   };
 };
 
-export default @connect(mapStateToProps)
+const mapDispatchToProps = (dispatch) => ({
+  onOpenReblogsModal(username, statusId) {
+    dispatch(openModal('REBLOGS', {
+      username,
+      statusId,
+    }));
+  },
+  onOpenFavouritesModal(username, statusId) {
+    dispatch(openModal('FAVOURITES', {
+      username,
+      statusId,
+    }));
+  },
+  onOpenReactionsModal(username, statusId, reaction) {
+    dispatch(openModal('REACTIONS', {
+      username,
+      statusId,
+      reaction,
+    }));
+  },
+});
+
+export default @connect(mapStateToProps, mapDispatchToProps)
 class StatusInteractionBar extends ImmutablePureComponent {
 
   static propTypes = {
@@ -29,6 +51,8 @@ class StatusInteractionBar extends ImmutablePureComponent {
     me: SoapboxPropTypes.me,
     allowedEmoji: ImmutablePropTypes.list,
     features: PropTypes.object.isRequired,
+    onOpenReblogsModal: PropTypes.func,
+    onOpenReactionsModal: PropTypes.func,
   }
 
   getNormalizedReacts = () => {
@@ -41,20 +65,37 @@ class StatusInteractionBar extends ImmutablePureComponent {
     ).reverse();
   }
 
+  handleOpenReblogsModal = () => {
+    const { status, onOpenReblogsModal } = this.props;
+
+    onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
+  }
+
   getReposts = () => {
     const { status } = this.props;
+
     if (status.get('reblogs_count')) {
       return (
-        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='emoji-react emoji-react--reblogs'>
+        <a
+          href='#'
+          className='emoji-react emoji-react--reblogs'
+          onClick={this.handleOpenReblogsModal}
+        >
           <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
           <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>
-        </Link>
+        </a>
       );
     }
 
     return '';
+  }
+
+  handleOpenFavouritesModal = () => {
+    const { status, onOpenFavouritesModal } = this.props;
+
+    onOpenFavouritesModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   getFavourites = () => {
@@ -72,9 +113,13 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
       if (features.exposableReactions) {
         return (
-          <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='emoji-react emoji-react--favourites'>
+          <a
+            href='#'
+            className='emoji-react emoji-react--favourites'
+            onClick={this.handleOpenFavouritesModal}
+          >
             {favourites}
-          </Link>
+          </a>
         );
       } else {
         return (
@@ -88,8 +133,14 @@ class StatusInteractionBar extends ImmutablePureComponent {
     return '';
   }
 
+  handleOpenReactionsModal = (reaction) => () => {
+    const { status, onOpenReactionsModal } = this.props;
+
+    onOpenReactionsModal(status.getIn(['account', 'acct']), status.get('id'), reaction.get('name'));
+  }
+
   getEmojiReacts = () => {
-    const { status, features } = this.props;
+    const { features } = this.props;
 
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
@@ -112,7 +163,16 @@ class StatusInteractionBar extends ImmutablePureComponent {
               );
 
               if (features.exposableReactions) {
-                return <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reactions/${e.get('name')}`} className='emoji-react' key={i}>{emojiReact}</Link>;
+                return (
+                  <a
+                    href='#'
+                    className='emoji-react'
+                    key={i}
+                    onClick={this.handleOpenReactionsModal(e)}
+                  >
+                    {emojiReact}
+                  </a>
+                );
               }
 
               return <span className='emoji-react' key={i}>{emojiReact}</span>;
