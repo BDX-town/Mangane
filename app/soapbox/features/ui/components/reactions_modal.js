@@ -9,9 +9,11 @@ import LoadingIndicator from 'soapbox/components/loading_indicator';
 import AccountContainer from 'soapbox/containers/account_container';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
+import FilterBar from 'soapbox/components/filter_bar';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
+  all: { id: 'reactions.all', defaultMessage: 'All' },
 });
 
 const mapStateToProps = (state, props) => {
@@ -62,6 +64,29 @@ class ReactionsModal extends React.PureComponent {
     this.setState({ reaction });
   };
 
+  renderFilterBar() {
+    const { intl, reactions } = this.props;
+    const { reaction } = this.state;
+
+    const items = [
+      {
+        text: intl.formatMessage(messages.all),
+        action: this.handleFilterChange(''),
+        name: 'all',
+      },
+    ];
+
+    reactions.forEach(reaction => items.push(
+      {
+        text: `${reaction.name} ${reaction.count}`,
+        action: this.handleFilterChange(reaction.name),
+        name: reaction.name,
+      },
+    ));
+
+    return <FilterBar className='reaction__filter-bar' items={items} active={reaction || 'all'} />;
+  }
+
   render() {
     const { intl, reactions } = this.props;
     const { reaction } = this.state;
@@ -78,14 +103,7 @@ class ReactionsModal extends React.PureComponent {
       const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 
       body = (<>
-        {
-          reactions.size > 0 && (
-            <div className='reaction__filter-bar'>
-              <button className={!reaction ? 'active' : ''} onClick={this.handleFilterChange('')}>All</button>
-              {reactions?.filter(reaction => reaction.count).map(reaction => <button key={reaction.name} className={this.state.reaction === reaction.name ? 'active' : ''} onClick={this.handleFilterChange(reaction.name)}>{reaction.name} {reaction.count}</button>)}
-            </div>
-          )
-        }
+        {reactions.size > 0 && this.renderFilterBar()}
         <ScrollableList
           scrollKey='reactions'
           emptyMessage={emptyMessage}
