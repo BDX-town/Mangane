@@ -70,6 +70,7 @@ class StatusActionBar extends ImmutablePureComponent {
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
+    onOpenReblogsModal: PropTypes.func.isRequired,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onBookmark: PropTypes.func,
@@ -292,6 +293,13 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleToggleStatusSensitivity = () => {
     this.props.onToggleStatusSensitivity(this.props.status);
+  }
+
+  handleOpenReblogsModal = () => {
+    const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   _makeMenu = (publicStatus) => {
@@ -544,7 +552,7 @@ class StatusActionBar extends ImmutablePureComponent {
         </div>
         <div className='status__action-bar__counter'>
           <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={reblogIcon} onClick={this.handleReblogClick} />
-          {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
+          {reblogCount !== 0 && <span className='detailed-status__link' type='button' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</span>}
         </div>
         <div
           className='status__action-bar__counter status__action-bar__counter--favourite'
@@ -605,6 +613,12 @@ const mapDispatchToProps = (dispatch, { status }) => ({
     dispatch(openModal('UNAUTHORIZED', {
       action,
       ap_id: status.get('url'),
+    }));
+  },
+  onOpenReblogsModal(username, statusId) {
+    dispatch(openModal('REBLOGS', {
+      username,
+      statusId,
     }));
   },
 });

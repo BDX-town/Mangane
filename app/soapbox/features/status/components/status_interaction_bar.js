@@ -13,15 +13,20 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { openModal } from 'soapbox/actions/modal';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const instance = state.get('instance');
 
   return {
+    me,
     allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
     features: getFeatures(instance),
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  onOpenUnauthorizedModal() {
+    dispatch(openModal('UNAUTHORIZED'));
+  },
   onOpenReblogsModal(username, statusId) {
     dispatch(openModal('REBLOGS', {
       username,
@@ -66,9 +71,10 @@ class StatusInteractionBar extends ImmutablePureComponent {
   }
 
   handleOpenReblogsModal = () => {
-    const { status, onOpenReblogsModal } = this.props;
+    const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
 
-    onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   getReposts = () => {
@@ -94,9 +100,10 @@ class StatusInteractionBar extends ImmutablePureComponent {
   }
 
   handleOpenFavouritesModal = () => {
-    const { status, onOpenFavouritesModal } = this.props;
+    const { me, status, onOpenUnauthorizedModal, onOpenFavouritesModal } = this.props;
 
-    onOpenFavouritesModal(status.getIn(['account', 'acct']), status.get('id'));
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenFavouritesModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   getFavourites = () => {
@@ -136,9 +143,10 @@ class StatusInteractionBar extends ImmutablePureComponent {
   }
 
   handleOpenReactionsModal = (reaction) => () => {
-    const { status, onOpenReactionsModal } = this.props;
+    const { me, status, onOpenUnauthorizedModal, onOpenReactionsModal } = this.props;
 
-    onOpenReactionsModal(status.getIn(['account', 'acct']), status.get('id'), reaction.get('name'));
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReactionsModal(status.getIn(['account', 'acct']), status.get('id'), reaction.get('name'));
   }
 
   getEmojiReacts = () => {

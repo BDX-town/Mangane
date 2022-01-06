@@ -146,9 +146,9 @@ class UnauthorizedModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, features, siteTitle } = this.props;
+    const { intl, features, siteTitle, action } = this.props;
 
-    if (features.remoteInteractionsAPI && features.federating) return this.renderRemoteInteractions();
+    if (action && features.remoteInteractionsAPI && features.federating) return this.renderRemoteInteractions();
 
     return (
       <div className='modal-root__modal compose-modal unauthorized-modal'>
