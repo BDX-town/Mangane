@@ -64,19 +64,6 @@ export default class FilterBar extends React.PureComponent {
     case 'ArrowLeft':
       element = items[index-1] || items[items.length-1];
       break;
-    case 'Tab':
-      if (e.shiftKey) {
-        element = items[index-1] || items[items.length-1];
-      } else {
-        element = items[index+1] || items[0];
-      }
-      break;
-    case 'Home':
-      element = items[0];
-      break;
-    case 'End':
-      element = items[items.length-1];
-      break;
     }
 
     if (element) {
