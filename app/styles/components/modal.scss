@@ -392,6 +392,7 @@
 .reblogs-modal,
 .mentions-modal {
   height: 80vh;
+  max-height: 650px;
 
   .slist {
     overflow: auto;
