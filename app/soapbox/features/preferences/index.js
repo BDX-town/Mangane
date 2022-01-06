@@ -15,6 +15,7 @@ import {
   SelectDropdown,
 } from 'soapbox/features/forms';
 import SettingsCheckbox from 'soapbox/components/settings_checkbox';
+import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
 
 export const languages = {
   en: 'English',
@@ -121,6 +122,11 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultContentType'], e.target.value));
   }
 
+  onToggleChange = (key, checked) => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(key, checked));
+  }
+
   render() {
     const { settings, features, intl } = this.props;
 
@@ -133,6 +139,20 @@ class Preferences extends ImmutablePureComponent {
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm>
+          <FormattedMessage id='home.column_settings.title' defaultMessage='Home settings' />
+          <div className='column-settings__content'>
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reply']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'direct']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_direct' defaultMessage='Show direct messages' />} />
+            </div>
+          </div>
           <FieldsGroup>
             <SelectDropdown
               label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}
