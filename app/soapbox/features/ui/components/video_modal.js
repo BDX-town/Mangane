@@ -5,8 +5,6 @@ import Video from 'soapbox/features/video';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 
-export const previewState = 'previewVideoModal';
-
 export default class VideoModal extends ImmutablePureComponent {
 
   static propTypes = {
@@ -16,32 +14,6 @@ export default class VideoModal extends ImmutablePureComponent {
     time: PropTypes.number,
     onClose: PropTypes.func.isRequired,
   };
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
-  componentDidMount() {
-    if (this.context.router) {
-      const history = this.context.router.history;
-
-      history.push(history.location.pathname, previewState);
-
-      this.unlistenHistory = history.listen(() => {
-        this.props.onClose();
-      });
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.context.router) {
-      this.unlistenHistory();
-
-      if (this.context.router.history.location.state === previewState) {
-        this.context.router.history.goBack();
-      }
-    }
-  }
 
   handleStatusClick = e => {
     const { status, account } = this.props;

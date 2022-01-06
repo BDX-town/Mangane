@@ -29,9 +29,6 @@ import { createGlobals } from 'soapbox/globals';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
-const previewMediaState = 'previewMediaModal';
-const previewVideoState = 'previewVideoModal';
-
 export const store = configureStore();
 
 // Configure global functions for developers
@@ -117,8 +114,8 @@ class SoapboxMount extends React.PureComponent {
     this.maybeUpdateMessages(prevProps);
   }
 
-  shouldUpdateScroll(_, { location }) {
-    return location.state !== previewMediaState && location.state !== previewVideoState;
+  shouldUpdateScroll(prevRouterProps, { location }) {
+    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   }
 
   render() {

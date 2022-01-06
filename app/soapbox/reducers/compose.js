@@ -39,6 +39,8 @@ import {
   COMPOSE_POLL_OPTION_CHANGE,
   COMPOSE_POLL_OPTION_REMOVE,
   COMPOSE_POLL_SETTINGS_CHANGE,
+  COMPOSE_ADD_TO_MENTIONS,
+  COMPOSE_REMOVE_FROM_MENTIONS,
 } from '../actions/compose';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { REDRAFT } from '../actions/statuses';
@@ -84,7 +86,7 @@ const initialPoll = ImmutableMap({
   multiple: false,
 });
 
-function statusToTextMentions(state, status, account) {
+const statusToTextMentions = (state, status, account) => {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
 
@@ -93,12 +95,31 @@ function statusToTextMentions(state, status, account) {
     .delete(account.get('acct'))
     .map(m => `@${m} `)
     .join('');
-}
+};
+
+export const statusToMentionsArray = (state, status, account) => {
+  const author = status.getIn(['account', 'acct']);
+  const mentions = status.get('mentions', []).map(m => m.get('acct'));
+
+  return ImmutableOrderedSet([author])
+    .concat(mentions)
+    .delete(account.get('acct'));
+};
+
+export const statusToMentionsAccountIdsArray = (state, status, account) => {
+  const author = status.getIn(['account', 'id']);
+  const mentions = status.get('mentions', []).map(m => m.get('id'));
+
+  return ImmutableOrderedSet([author])
+    .concat(mentions)
+    .delete(account.get('id'));
+};
 
 function clearAll(state) {
   return state.withMutations(map => {
     map.set('id', null);
     map.set('text', '');
+    map.set('to', ImmutableOrderedSet());
     map.set('spoiler', false);
     map.set('spoiler_text', '');
     map.set('content_type', state.get('default_content_type'));
@@ -197,6 +218,17 @@ const expandMentions = status => {
   return fragment.innerHTML;
 };
 
+const getExplicitMentions = (me, status) => {
+  const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;
+
+  const mentions = status
+    .get('mentions')
+    .filter(mention => !(fragment.querySelector(`a[href="${mention.get('url')}"]`) || mention.get('id') === me))
+    .map(m => m.get('acct'));
+
+  return ImmutableOrderedSet(mentions);
+};
+
 const getAccountSettings = account => {
   return account.getIn(['pleroma', 'settings_store', FE_NAME], ImmutableMap());
 };
@@ -290,7 +322,8 @@ export default function compose(state = initialState, action) {
   case COMPOSE_REPLY:
     return state.withMutations(map => {
       map.set('in_reply_to', action.status.get('id'));
-      map.set('text', statusToTextMentions(state, action.status, action.account));
+      map.set('to', action.explicitAddressing ? statusToMentionsArray(state, action.status, action.account) : undefined);
+      map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
@@ -373,6 +406,7 @@ export default function compose(state = initialState, action) {
   case REDRAFT:
     return state.withMutations(map => {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
+      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : null);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
       // TODO: Actually fix this rather than just removing it
@@ -416,6 +450,10 @@ export default function compose(state = initialState, action) {
     return state.updateIn(['poll', 'options'], options => options.delete(action.index));
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
+  case COMPOSE_ADD_TO_MENTIONS:
+    return state.update('to', mentions => mentions.add(action.account));
+  case COMPOSE_REMOVE_FROM_MENTIONS:
+    return state.update('to', mentions => mentions.delete(action.account));
   case ME_FETCH_SUCCESS:
     return importAccount(state, action.me);
   case ME_PATCH_SUCCESS:

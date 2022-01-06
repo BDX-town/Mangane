@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'wicg-inert';
+import { createBrowserHistory } from 'history';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { openModal } from '../actions/modal';
@@ -43,6 +44,7 @@ class ModalRoot extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     hasComposeContent: PropTypes.bool,
     type: PropTypes.string,
+    onCancel: PropTypes.func,
   };
 
   state = {
@@ -63,6 +65,8 @@ class ModalRoot extends React.PureComponent {
 
     if (hasComposeContent && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
+        icon: require('@tabler/icons/icons/trash.svg'),
+        heading: <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
         onConfirm: () => onCancelReplyCompose(),
@@ -100,12 +104,15 @@ class ModalRoot extends React.PureComponent {
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
     window.addEventListener('keydown', this.handleKeyDown, false);
+    this.history = this.context.router ? this.context.router.history : createBrowserHistory();
   }
 
   componentDidUpdate(prevProps) {
     if (!!this.props.children && !prevProps.children) {
       this.activeElement = document.activeElement;
       this.getSiblings().forEach(sibling => sibling.setAttribute('inert', true));
+
+      this._handleModalOpen();
     } else if (!prevProps.children) {
       this.setState({ revealed: false });
     }
@@ -114,18 +121,50 @@ class ModalRoot extends React.PureComponent {
       this.activeElement.focus();
       this.activeElement = null;
       this.getSiblings().forEach(sibling => sibling.removeAttribute('inert'));
+
+      this._handleModalClose();
     }
 
     if (this.props.children) {
       requestAnimationFrame(() => {
         this.setState({ revealed: true });
       });
+
+      this._ensureHistoryBuffer();
     }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keyup', this.handleKeyUp);
     window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  _handleModalOpen() {
+    this._modalHistoryKey = Date.now();
+    this.unlistenHistory = this.history.listen((_, action) => {
+      if (action === 'POP') {
+        this.handleOnClose();
+
+        if (this.props.onCancel) this.props.onCancel();
+      }
+    });
+  }
+
+  _handleModalClose() {
+    if (this.unlistenHistory) {
+      this.unlistenHistory();
+    }
+    const { state } = this.history.location;
+    if (state && state.soapboxModalKey === this._modalHistoryKey) {
+      this.history.goBack();
+    }
+  }
+
+  _ensureHistoryBuffer() {
+    const { pathname, state } = this.history.location;
+    if (!state || state.soapboxModalKey !== this._modalHistoryKey) {
+      this.history.push(pathname, { ...state, soapboxModalKey: this._modalHistoryKey });
+    }
   }
 
   getSiblings = () => {

@@ -118,7 +118,6 @@ export default class StatusList extends ImmutablePureComponent {
         contextType={timelineId}
         group={group}
         withGroupAdmin={withGroupAdmin}
-        showThread
       />
     );
   }
@@ -138,7 +137,6 @@ export default class StatusList extends ImmutablePureComponent {
             contextType={timelineId}
             group={group}
             withGroupAdmin={withGroupAdmin}
-            showThread
           />
         </div>
       </div>
@@ -157,7 +155,6 @@ export default class StatusList extends ImmutablePureComponent {
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType={timelineId}
-        showThread
       />
     ));
   }

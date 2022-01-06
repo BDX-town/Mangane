@@ -8,6 +8,7 @@ import RelativeTimestamp from './relative_timestamp';
 import DisplayName from './display_name';
 import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
+import StatusReplyMentions from './status_reply_mentions';
 import AttachmentThumbs from './attachment_thumbs';
 import Card from '../features/status/components/card';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -87,7 +88,6 @@ class Status extends ImmutablePureComponent {
     unread: PropTypes.bool,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
-    showThread: PropTypes.bool,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
     cacheMediaWidth: PropTypes.func,
@@ -317,7 +317,7 @@ class Status extends ImmutablePureComponent {
     const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, group } = this.props;
 
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
@@ -538,6 +538,8 @@ class Status extends ImmutablePureComponent {
               </div>
             )}
 
+            <StatusReplyMentions status={this._properStatus()} />
+
             <StatusContent
               status={status}
               reblogContent={reblogContent}
@@ -549,12 +551,6 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             <StatusActionBar
               status={status}
