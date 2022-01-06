@@ -699,8 +699,11 @@ article:last-child > .domain {
     height: 3px;
     bottom: 0;
     background-color: var(--accent-color);
-    transition: all 0.3s;
   }
+}
+
+.no-reduce-motion .filter-bar__active {
+  transition: all 0.3s;
 }
 
 .reaction__filter-bar {
