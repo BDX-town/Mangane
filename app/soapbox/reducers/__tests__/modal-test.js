@@ -6,6 +6,7 @@ describe('modal reducer', () => {
     expect(reducer(undefined, {})).toEqual({
       modalType: null,
       modalProps: {},
+      noPop: false,
     });
   });
 
@@ -13,6 +14,7 @@ describe('modal reducer', () => {
     const state = {
       modalType: null,
       modalProps: {},
+      noPop: false,
     };
     const action = {
       type: MODAL_OPEN,
@@ -36,6 +38,7 @@ describe('modal reducer', () => {
     expect(reducer(state, action)).toMatchObject({
       modalType: null,
       modalProps: {},
+      noPop: false,
     });
   });
 

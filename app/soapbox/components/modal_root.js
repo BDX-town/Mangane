@@ -45,6 +45,7 @@ class ModalRoot extends React.PureComponent {
     hasComposeContent: PropTypes.bool,
     type: PropTypes.string,
     onCancel: PropTypes.func,
+    noPop: PropTypes.bool,
   };
 
   state = {
@@ -120,7 +121,9 @@ class ModalRoot extends React.PureComponent {
       this.activeElement = null;
       this.getSiblings().forEach(sibling => sibling.removeAttribute('inert'));
 
-      this._handleModalClose();
+      if (!this.props.noPop) {
+        this._handleModalClose();
+      }
     }
 
     if (this.props.children) {
