@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import Button from '../../../components/button';
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
+import Icon from '../../../components/icon';
 
 export default @injectIntl
 class ConfirmationModal extends React.PureComponent {
 
   static propTypes = {
+    heading: PropTypes.node,
+    icon: PropTypes.node,
     message: PropTypes.node.isRequired,
     confirm: PropTypes.node.isRequired,
     onClose: PropTypes.func.isRequired,
@@ -52,11 +55,18 @@ class ConfirmationModal extends React.PureComponent {
   }
 
   render() {
-    const { message, confirm, secondary, checkbox } = this.props;
+    const { heading, icon, message, confirm, secondary, checkbox } = this.props;
     const { checked } = this.state;
 
     return (
       <div className='modal-root__modal confirmation-modal'>
+        {heading && (
+          <div className='confirmation-modal__header'>
+            {icon && <Icon src={icon} />}
+            {heading}
+          </div>
+        )}
+
         <div className='confirmation-modal__container'>
           {message}
         </div>

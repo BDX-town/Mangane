@@ -34,6 +34,8 @@ const messages = defineMessages({
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
   close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
   newsletter: { id: 'registration.newsletter', defaultMessage: 'Subscribe to newsletter.' },
+  needsConfirmationHeader: { id: 'confirmations.register.needs_confirmation.header', defaultMessage: 'Confirmation needed' },
+  needsApprovalHeader: { id: 'confirmations.register.needs_approval.header', defaultMessage: 'Approval needed' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -144,6 +146,12 @@ class RegistrationForm extends ImmutablePureComponent {
     </>);
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/check.svg'),
+      heading: needsConfirmation
+        ? intl.formatMessage(messages.needsConfirmationHeader)
+        : needsApproval
+          ? intl.formatMessage(messages.needsApprovalHeader)
+          : undefined,
       message,
       confirm: intl.formatMessage(messages.close),
     }));

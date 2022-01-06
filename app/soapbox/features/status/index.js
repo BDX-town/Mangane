@@ -58,8 +58,10 @@ const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
+  redraftHeading: { id: 'confirmations.redraft.heading', defaultMessage: 'Delete & redraft' },
   redraftMessage: { id: 'confirmations.redraft.message', defaultMessage: 'Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   revealAll: { id: 'status.show_more_all', defaultMessage: 'Show more for all' },
@@ -259,6 +261,8 @@ class Status extends ImmutablePureComponent {
         dispatch(deleteStatus(status.get('id'), history, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
+          icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
+          heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
           onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
@@ -338,6 +342,8 @@ class Status extends ImmutablePureComponent {
     const account = status.get('account');
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/ban.svg'),
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.get('id'))),

@@ -63,6 +63,8 @@ class ModalRoot extends React.PureComponent {
 
     if (hasComposeContent && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
+        icon: require('@tabler/icons/icons/trash.svg'),
+        heading: <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
         onConfirm: () => onCancelReplyCompose(),
