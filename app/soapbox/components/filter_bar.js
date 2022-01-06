@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import { debounce } from 'lodash';
 
 export default class FilterBar extends React.PureComponent {
 
@@ -20,11 +21,27 @@ export default class FilterBar extends React.PureComponent {
 
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown, false);
-    this.setState({ mounted: true });
+    window.addEventListener('resize', this.handleResize, { passive: true });
+
+    const { left, width } = this.getActiveTabIndicationSize();
+    this.setState({ mounted: true, left, width });
   }
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.handleKeyDown, false);
+    document.removeEventListener('resize', this.handleResize, false);
+  }
+
+  handleResize = debounce(() => {
+    this.setState(this.getActiveTabIndicationSize());
+  }, 300, {
+    trailing: true,
+  });
+
+  componentDidUpdate(prevProps) {
+    if (this.props.active !== prevProps.active) {
+      this.setState(this.getActiveTabIndicationSize());
+    }
   }
 
   setRef = c => {
@@ -88,22 +105,28 @@ export default class FilterBar extends React.PureComponent {
     }
   }
 
-  renderActiveTabIndicator() {
+  getActiveTabIndicationSize() {
     const { active, items } = this.props;
 
-    if (!active || !this.node) return null;
+    if (!active || !this.node) return { width: null };
 
     const index = items.findIndex(({ name }) => name === active);
     const elements = Array.from(this.node.getElementsByTagName('a'));
     const element = elements[index];
 
-    if (!element) return null;
+    if (!element) return { width: null };
 
-    const offsetLeft = element.offsetLeft;
+    const left = element.offsetLeft;
     const { width } = element.getBoundingClientRect();
 
+    return { left, width };
+  }
+
+  renderActiveTabIndicator() {
+    const { left, width } = this.state;
+
     return (
-      <div className='filter-bar__active' style={{ left: offsetLeft, width }} />
+      <div className='filter-bar__active' style={{ left, width }} />
     );
   }
 
@@ -112,10 +135,11 @@ export default class FilterBar extends React.PureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, title } = option;
+    const { name, text, href, to, title } = option;
 
     return (
       <a
+        key={name}
         href={href || to || '#'}
         role='button'
         tabIndex='0'
