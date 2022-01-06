@@ -76,16 +76,17 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
     if (status.get('reblogs_count')) {
       return (
-        <a
-          href='#'
+        <span
           className='emoji-react emoji-react--reblogs'
+          type='button'
+          role='presentation'
           onClick={this.handleOpenReblogsModal}
         >
           <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
           <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>
-        </a>
+        </span>
       );
     }
 
@@ -113,13 +114,14 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
       if (features.exposableReactions) {
         return (
-          <a
-            href='#'
+          <span
             className='emoji-react emoji-react--favourites'
+            type='button'
+            role='presentation'
             onClick={this.handleOpenFavouritesModal}
           >
             {favourites}
-          </a>
+          </span>
         );
       } else {
         return (
@@ -164,14 +166,15 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
               if (features.exposableReactions) {
                 return (
-                  <a
-                    href='#'
+                  <span
                     className='emoji-react'
+                    type='button'
+                    role='presentation'
                     key={i}
                     onClick={this.handleOpenReactionsModal(e)}
                   >
                     {emojiReact}
-                  </a>
+                  </span>
                 );
               }
 

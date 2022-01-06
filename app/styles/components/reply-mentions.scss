@@ -20,5 +20,9 @@
   .reply-mentions {
     display: block;
     margin: 4px 0 0 0;
+
+    span {
+      cursor: pointer;
+    }
   }
 }

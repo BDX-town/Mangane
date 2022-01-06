@@ -89,13 +89,9 @@ class StatusReplyMentions extends ImmutablePureComponent {
               {' '}
             </>)),
             more: to.size > 2 && (
-              <a
-                href='#'
-                onClick={this.handleOpenMentionsModal}
-              >
-
+              <span type='button' role='presentation' onClick={this.handleOpenMentionsModal}>
                 <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />
-              </a>
+              </span>
             ),
           }}
         />
