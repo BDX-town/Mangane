@@ -8,6 +8,7 @@ import { createSelector } from 'reselect';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
+export const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
 
 export const FE_NAME = 'soapbox_fe';
 

@@ -1,4 +1,9 @@
-import { SETTING_CHANGE, SETTING_SAVE, FE_NAME } from '../actions/settings';
+import {
+  SETTING_CHANGE,
+  SETTING_SAVE,
+  SETTINGS_UPDATE,
+  FE_NAME,
+} from '../actions/settings';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
 import { EMOJI_USE } from '../actions/emojis';
@@ -35,6 +40,8 @@ export default function settings(state = initialState, action) {
     return updateFrequentEmojis(state, action.emoji);
   case SETTING_SAVE:
     return state.set('saved', true);
+  case SETTINGS_UPDATE:
+    return fromJS(action.settings);
   default:
     return state;
   }
