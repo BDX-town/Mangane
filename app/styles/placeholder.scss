@@ -39,11 +39,10 @@
   100% { background-position-x: 0; }
 }
 
-.notification--placeholder {
-  .notification__message span {
-    color: var(--brand-color);
-    opacity: 0.1;
-  }
+.notification--placeholder .notification__message span,
+.placeholder-hashtag .trends__item__name {
+  color: var(--brand-color);
+  opacity: 0.1;
 }
 
 .status__content--placeholder,
