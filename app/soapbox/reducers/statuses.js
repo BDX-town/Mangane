@@ -24,7 +24,30 @@ import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
-const importStatus = (state, status) => state.set(status.id, fromJS(status));
+// Fix order of mentions
+const fixMentions = status => {
+  const mentions = status.get('mentions');
+  const inReplyToAccountId = status.get('in_reply_to_account_id');
+
+  // Sort the replied-to mention to the top
+  const sorted = mentions.sort((a, b) => {
+    if (a.get('id') === inReplyToAccountId) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+
+  return status.set('mentions', sorted);
+};
+
+const fixStatus = status => {
+  return status.withMutations(status => {
+    fixMentions(status);
+  });
+};
+
+const importStatus = (state, status) => state.set(status.id, fixStatus(fromJS(status)));
 
 const importStatuses = (state, statuses) =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
