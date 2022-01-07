@@ -4,11 +4,27 @@ import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
 } from 'soapbox/actions/statuses';
-
+import { STATUS_IMPORT } from 'soapbox/actions/importer';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap());
+  });
+
+  describe('STATUS_IMPORT', () => {
+    it('fixes the order of mentions', () => {
+      const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
+
+      const result = reducer(undefined, action)
+        .getIn(['AFChectaqZjmOVkXZ2', 'mentions'])
+        .map(mention => mention.get('username'))
+        .toJS();
+
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {
