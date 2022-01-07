@@ -9,7 +9,7 @@ import LoadingIndicator from 'soapbox/components/loading_indicator';
 import AccountContainer from 'soapbox/containers/account_container';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { makeGetStatus } from 'soapbox/selectors';
-import { fetchStatus } from 'soapbox/actions/statuses';
+import { fetchStatusWithContext } from 'soapbox/actions/statuses';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -47,7 +47,7 @@ class MentionsModal extends React.PureComponent {
   fetchData = () => {
     const { dispatch, statusId } = this.props;
 
-    dispatch(fetchStatus(statusId));
+    dispatch(fetchStatusWithContext(statusId));
   }
 
   componentDidMount() {
