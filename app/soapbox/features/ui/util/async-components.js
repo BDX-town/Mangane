@@ -445,3 +445,7 @@ export function Developers() {
 export function CreateApp() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/apps/create');
 }
+
+export function SettingsStore() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+}

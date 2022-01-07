@@ -33,6 +33,16 @@ class Developers extends React.Component {
             </Link>
           </div>
           <div className='dashcounter'>
+            <Link to='/developers/settings_store'>
+              <div className='dashcounter__icon'>
+                <Icon src={require('@tabler/icons/icons/code-plus.svg')} />
+              </div>
+              <div className='dashcounter__label'>
+                <FormattedMessage id='developers.navigation.settings_store_label' defaultMessage='Settings store' />
+              </div>
+            </Link>
+          </div>
+          <div className='dashcounter'>
             <Link to='/error'>
               <div className='dashcounter__icon'>
                 <Icon src={require('@tabler/icons/icons/mood-sad.svg')} />

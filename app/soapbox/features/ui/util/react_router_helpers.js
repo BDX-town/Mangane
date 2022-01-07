@@ -8,6 +8,7 @@ import ColumnLoading from '../components/column_loading';
 import ColumnForbidden from '../components/column_forbidden';
 import BundleColumnError from '../components/bundle_column_error';
 import BundleContainer from '../containers/bundle_container';
+import { getSettings } from 'soapbox/actions/settings';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 
 const mapStateToProps = state => {
@@ -15,6 +16,7 @@ const mapStateToProps = state => {
 
   return {
     account: state.getIn(['accounts', me]),
+    settings: getSettings(state),
   };
 };
 
@@ -27,9 +29,11 @@ class WrappedRoute extends React.Component {
     componentParams: PropTypes.object,
     layout: PropTypes.object,
     account: ImmutablePropTypes.map,
+    settings: ImmutablePropTypes.map.isRequired,
     publicRoute: PropTypes.bool,
     staffOnly: PropTypes.bool,
     adminOnly: PropTypes.bool,
+    developerOnly: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -100,10 +104,11 @@ class WrappedRoute extends React.Component {
   }
 
   render() {
-    const { component: Component, content, account, publicRoute, staffOnly, adminOnly, ...rest } = this.props;
+    const { component: Component, content, account, settings, publicRoute, developerOnly, staffOnly, adminOnly, ...rest } = this.props;
 
     const authorized = [
       account || publicRoute,
+      developerOnly ? settings.get('isDeveloper') : true,
       staffOnly ? account && isStaff(account) : true,
       adminOnly ? account && isAdmin(account) : true,
     ].every(c => c);
