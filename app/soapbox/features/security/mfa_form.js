@@ -9,7 +9,6 @@ import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import Button from 'soapbox/components/button';
-import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
@@ -18,11 +17,11 @@ import {
   TextInput,
 } from 'soapbox/features/forms';
 import {
+  fetchMfa,
   fetchBackupCodes,
-  fetchToptSetup,
-  confirmToptSetup,
-  fetchUserMfaSettings,
-  disableToptSetup,
+  setupMfa,
+  confirmMfa,
+  disableMfa,
 } from '../../actions/mfa';
 
 /*
@@ -44,25 +43,18 @@ const messages = defineMessages({
   qrFail: { id: 'security.qr.fail', defaultMessage: 'Failed to fetch setup key' },
   codesFail: { id: 'security.codes.fail', defaultMessage: 'Failed to fetch backup codes' },
   disableFail: { id: 'security.disable.fail', defaultMessage: 'Incorrect password. Try again.' },
+  mfaDisableSuccess: { id: 'mfa.disable.success_message', defaultMessage: 'MFA disabled' },
+  mfaConfirmSuccess: { id: 'mfa.confirm.success_message', defaultMessage: 'MFA confirmed' },
 });
 
 const mapStateToProps = state => ({
   backup_codes: state.getIn(['auth', 'backup_codes', 'codes']),
-  settings: getSettings(state),
+  mfa: state.getIn(['security', 'mfa']),
 });
 
 export default @connect(mapStateToProps)
 @injectIntl
 class MfaForm extends ImmutablePureComponent {
-
-  constructor(props) {
-    super(props);
-    this.props.dispatch(fetchUserMfaSettings()).then(response => {
-      this.props.dispatch(changeSetting(['otpEnabled'], response.data.settings.enabled));
-      // this.setState({ otpEnabled: response.data.settings.enabled });
-    }).catch(e => e);
-    this.handleSetupProceedClick = this.handleSetupProceedClick.bind(this);
-  }
 
   static contextTypes = {
     router: PropTypes.object,
@@ -71,7 +63,7 @@ class MfaForm extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    settings: ImmutablePropTypes.map.isRequired,
+    mfa: ImmutablePropTypes.map.isRequired,
   };
 
   state = {
@@ -79,20 +71,29 @@ class MfaForm extends ImmutablePureComponent {
   }
 
   handleSetupProceedClick = e => {
-    e.preventDefault();
     this.setState({ displayOtpForm: true });
+    e.preventDefault();
+  }
+
+  componentDidMount() {
+    this.props.dispatch(fetchMfa());
   }
 
   render() {
-    const { intl, settings } = this.props;
+    const { intl, mfa } = this.props;
     const { displayOtpForm } = this.state;
 
     return (
       <Column icon='lock' heading={intl.formatMessage(messages.heading)}>
         <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
-        { settings.get('otpEnabled') === true && <DisableOtpForm />}
-        { settings.get('otpEnabled') === false && <EnableOtpForm handleSetupProceedClick={this.handleSetupProceedClick} />}
-        { settings.get('otpEnabled') === false && displayOtpForm && <OtpConfirmForm /> }
+        {mfa.getIn(['settings', 'totp']) ? (
+          <DisableOtpForm />
+        ) : (
+          <>
+            <EnableOtpForm handleSetupProceedClick={this.handleSetupProceedClick} />
+            {displayOtpForm && <OtpConfirmForm />}
+          </>
+        )}
       </Column>
     );
   }
@@ -122,15 +123,17 @@ class DisableOtpForm extends ImmutablePureComponent {
   }
 
   handleOtpDisableClick = e => {
-    e.preventDefault();
     const { password } = this.state;
     const { dispatch, intl } = this.props;
-    dispatch(disableToptSetup(password)).then(response => {
-      this.context.router.history.push('../auth/edit');
-      dispatch(changeSetting(['otpEnabled'], false));
+
+    dispatch(disableMfa('totp', password)).then(() => {
+      dispatch(snackbar.success(intl.formatMessage(messages.mfaDisableSuccess)));
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
     });
+
+    this.context.router.history.push('../auth/edit');
+    e.preventDefault();
   }
 
   render() {
@@ -176,8 +179,9 @@ class EnableOtpForm extends ImmutablePureComponent {
 
   componentDidMount() {
     const { dispatch, intl } = this.props;
-    dispatch(fetchBackupCodes()).then(response => {
-      this.setState({ backupCodes: response.data.codes });
+
+    dispatch(fetchBackupCodes()).then(({ codes: backupCodes }) => {
+      this.setState({ backupCodes });
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.codesFail)));
     });
@@ -207,26 +211,26 @@ class EnableOtpForm extends ImmutablePureComponent {
             <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />
           </h2>
           <div className='backup_codes'>
-            { backupCodes.length ?
+            {backupCodes.length > 0 ? (
               <div>
                 {backupCodes.map((code, i) => (
                   <div key={i} className='backup_code'>
                     <div className='backup_code'>{code}</div>
                   </div>
                 ))}
-              </div> :
+              </div>
+            ) : (
               <LoadingIndicator />
-            }
+            )}
           </div>
-          { !displayOtpForm &&
+          {!displayOtpForm && (
             <div className='security-settings-panel__setup-otp__buttons'>
               <Button className='button button-secondary cancel' text={intl.formatMessage(messages.mfa_cancel_button)} onClick={this.handleCancelClick} />
-              { backupCodes.length ?
-                <Button className='button button-primary setup' text={intl.formatMessage(messages.mfa_setup_button)} onClick={this.props.handleSetupProceedClick} /> :
-                null
-              }
+              {backupCodes.length > 0 && (
+                <Button className='button button-primary setup' text={intl.formatMessage(messages.mfa_setup_button)} onClick={this.props.handleSetupProceedClick} />
+              )}
             </div>
-          }
+          )}
         </div>
       </SimpleForm>
     );
@@ -257,8 +261,9 @@ class OtpConfirmForm extends ImmutablePureComponent {
 
   componentDidMount() {
     const { dispatch, intl } = this.props;
-    dispatch(fetchToptSetup()).then(response => {
-      this.setState({ qrCodeURI: response.data.provisioning_uri, confirm_key: response.data.key  });
+
+    dispatch(setupMfa('totp')).then(data => {
+      this.setState({ qrCodeURI: data.provisioning_uri, confirm_key: data.key  });
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.qrFail)));
     });
@@ -269,14 +274,17 @@ class OtpConfirmForm extends ImmutablePureComponent {
   }
 
   handleOtpConfirmClick = e => {
-    e.preventDefault();
     const { code, password } = this.state;
     const { dispatch, intl } = this.props;
-    dispatch(confirmToptSetup(code, password)).then(response => {
-      dispatch(changeSetting(['otpEnabled'], true));
+
+    dispatch(confirmMfa('totp', code, password)).then(() => {
+      dispatch(snackbar.success(intl.formatMessage(messages.mfaConfirmSuccess)));
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
     });
+
+    this.context.router.history.push('../auth/edit');
+    e.preventDefault();
   }
 
   render() {

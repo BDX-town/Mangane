@@ -16,11 +16,6 @@
     font-weight: 400;
   }
 
-  div {
-    display: block;
-    margin: 10px 0;
-  }
-
   .security-warning {
     color: var(--primary-text-color);
     padding: 15px 20px;
@@ -43,10 +38,6 @@
 
     .backup_code {
       margin: 5px auto;
-    }
-
-    .loading-indicator {
-      position: absolute;
     }
   }
 

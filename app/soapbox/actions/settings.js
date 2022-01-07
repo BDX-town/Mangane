@@ -30,7 +30,6 @@ export const defaultSettings = ImmutableMap({
   locale: navigator.language.split(/[-_]/)[0] || 'en',
   showExplanationBox: true,
   explanationBox: true,
-  otpEnabled: false,
   autoloadTimelines: true,
   autoloadMore: true,
 
