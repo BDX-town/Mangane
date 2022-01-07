@@ -31,6 +31,10 @@ export default @connect(mapStateToProps)
 @injectIntl
 class MentionsModal extends React.PureComponent {
 
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -48,10 +52,21 @@ class MentionsModal extends React.PureComponent {
 
   componentDidMount() {
     this.fetchData();
+    this.unlistenHistory = this.context.router.history.listen((_, action) => {
+      if (action === 'PUSH') {
+        this.onClickClose(null, true);
+      }
+    });
   }
 
-  onClickClose = () => {
-    this.props.onClose('MENTIONS');
+  componentWillUnmount() {
+    if (this.unlistenHistory) {
+      this.unlistenHistory();
+    }
+  }
+
+  onClickClose = (_, noPop) => {
+    this.props.onClose('MENTIONS', noPop);
   };
 
   render() {

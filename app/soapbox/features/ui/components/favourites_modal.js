@@ -23,6 +23,10 @@ export default @connect(mapStateToProps)
 @injectIntl
 class FavouritesModal extends React.PureComponent {
 
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
@@ -40,10 +44,21 @@ class FavouritesModal extends React.PureComponent {
 
   componentDidMount() {
     this.fetchData();
+    this.unlistenHistory = this.context.router.history.listen((_, action) => {
+      if (action === 'PUSH') {
+        this.onClickClose(null, true);
+      }
+    });
   }
 
-  onClickClose = () => {
-    this.props.onClose('FAVOURITES');
+  componentWillUnmount() {
+    if (this.unlistenHistory) {
+      this.unlistenHistory();
+    }
+  }
+
+  onClickClose = (_, noPop) => {
+    this.props.onClose('FAVOURITES', noPop);
   };
 
   render() {
