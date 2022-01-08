@@ -33,7 +33,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
         dispatch(cancelScheduledStatus(status.get('id')));
       } else {
         dispatch(openModal('CONFIRM', {
-          icon: require('@tabler/icons/icons/trash.svg'),
+          icon: require('@tabler/icons/icons/calendar-stats.svg'),
           heading: intl.formatMessage(messages.deleteHeading),
           message: intl.formatMessage(messages.deleteMessage),
           confirm: intl.formatMessage(messages.deleteConfirm),
