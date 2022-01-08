@@ -20,7 +20,7 @@ export default class FilterBar extends React.PureComponent {
   };
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyDown, false);
+    this.node.addEventListener('keydown', this.handleKeyDown, false);
     window.addEventListener('resize', this.handleResize, { passive: true });
 
     const { left, width } = this.getActiveTabIndicationSize();
@@ -28,7 +28,7 @@ export default class FilterBar extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyDown, false);
+    this.node.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('resize', this.handleResize, false);
   }
 
