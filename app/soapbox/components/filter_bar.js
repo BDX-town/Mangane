@@ -20,6 +20,7 @@ export default class FilterBar extends React.PureComponent {
   };
 
   componentDidMount() {
+    this.node.addEventListener('keydown', this.handleKeyDown, false);
     window.addEventListener('resize', this.handleResize, { passive: true });
 
     const { left, width } = this.getActiveTabIndicationSize();
@@ -27,6 +28,7 @@ export default class FilterBar extends React.PureComponent {
   }
 
   componentWillUnmount() {
+    this.node.removeEventListener('keydown', this.handleKeyDown, false);
     document.removeEventListener('resize', this.handleResize, false);
   }
 
@@ -48,6 +50,27 @@ export default class FilterBar extends React.PureComponent {
 
   setFocusRef = c => {
     this.focusedItem = c;
+  }
+
+  handleKeyDown = e => {
+    const items = Array.from(this.node.getElementsByTagName('a'));
+    const index = items.indexOf(document.activeElement);
+    let element = null;
+
+    switch(e.key) {
+    case 'ArrowRight':
+      element = items[index+1] || items[0];
+      break;
+    case 'ArrowLeft':
+      element = items[index-1] || items[items.length-1];
+      break;
+    }
+
+    if (element) {
+      element.focus();
+      e.preventDefault();
+      e.stopPropagation();
+    }
   }
 
   handleItemKeyPress = e => {
