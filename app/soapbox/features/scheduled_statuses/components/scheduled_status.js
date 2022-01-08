@@ -66,10 +66,12 @@ class ScheduledStatus extends ImmutablePureComponent {
               collapsable
             />
 
-            <AttachmentThumbs
-              compact
-              media={status.get('media_attachments')}
-            />
+            {status.get('media_attachments').size > 0 && (
+              <AttachmentThumbs
+                compact
+                media={status.get('media_attachments')}
+              />
+            )}
 
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
 
