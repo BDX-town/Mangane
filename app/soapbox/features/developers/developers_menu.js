@@ -1,19 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 import Column from '../ui/components/column';
 import Icon from 'soapbox/components/icon';
+import { changeSetting } from 'soapbox/actions/settings';
+import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
+  leave: { id: 'developers.leave', defaultMessage: 'You have left developers' },
 });
 
-export default @injectIntl
+export default @connect()
+@injectIntl
 class DevelopersMenu extends React.Component {
+
+  static contextTypes = {
+    router: PropTypes.object,
+  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  }
+
+  leaveDevelopers = e => {
+    const { intl, dispatch } = this.props;
+
+    dispatch(changeSetting(['isDeveloper'], false));
+    dispatch(snackbar.success(intl.formatMessage(messages.leave)));
+
+    this.context.router.history.push('/');
+    e.preventDefault();
   }
 
   render() {
@@ -51,6 +71,16 @@ class DevelopersMenu extends React.Component {
                 <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
               </div>
             </Link>
+          </div>
+          <div className='dashcounter'>
+            <a href='#' onClick={this.leaveDevelopers}>
+              <div className='dashcounter__icon'>
+                <Icon src={require('@tabler/icons/icons/logout.svg')} />
+              </div>
+              <div className='dashcounter__label'>
+                <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />
+              </div>
+            </a>
           </div>
         </div>
       </Column>
