@@ -6,10 +6,15 @@ import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import IconButton from 'soapbox/components/icon_button';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { openModal } from 'soapbox/actions/modal';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled_statuses';
+import { getSettings } from 'soapbox/actions/settings';
 
 const messages = defineMessages({
   cancel: { id: 'scheduled_status.cancel', defaultMessage: 'Cancel' },
+  deleteConfirm: { id: 'confirmations.scheduled_status_delete.confirm', defaultMessage: 'Cancel' },
+  deleteHeading: { id: 'confirmations.scheduled_status_delete.heading', defaultMessage: 'Cancel scheduled post' },
+  deleteMessage: { id: 'confirmations.scheduled_status_delete.message', defaultMessage: 'Are you sure you want to cancel this scheduled post?' },
 });
 
 const mapStateToProps = state => {
@@ -19,8 +24,26 @@ const mapStateToProps = state => {
   };
 };
 
-export default @connect(mapStateToProps, null, null, { forwardRef: true })
-@injectIntl
+const mapDispatchToProps = (dispatch, { intl }) => ({
+  onCancelClick: (status) => {
+    dispatch((_, getState) => {
+
+      const deleteModal = getSettings(getState()).get('deleteModal');
+      if (!deleteModal) {
+        dispatch(cancelScheduledStatus(status.get('id')));
+      } else {
+        dispatch(openModal('CONFIRM', {
+          icon: require('@tabler/icons/icons/trash.svg'),
+          heading: intl.formatMessage(messages.deleteHeading),
+          message: intl.formatMessage(messages.deleteMessage),
+          confirm: intl.formatMessage(messages.deleteConfirm),
+          onConfirm: () => dispatch(cancelScheduledStatus(status.get('id'))),
+        }));
+      }
+    });
+  },
+});
+
 class ScheduledStatusActionBar extends ImmutablePureComponent {
 
   static contextTypes = {
@@ -31,11 +54,13 @@ class ScheduledStatusActionBar extends ImmutablePureComponent {
     status: ImmutablePropTypes.map.isRequired,
     intl: PropTypes.object.isRequired,
     me: SoapboxPropTypes.me,
+    onCancelClick: PropTypes.func.isRequired,
   };
 
   handleCancelClick = e => {
-    const { status, dispatch } = this.props;
-    dispatch(cancelScheduledStatus(status.get('id')));
+    const { status, onCancelClick } = this.props;
+
+    onCancelClick(status);
   }
 
   render() {
@@ -56,3 +81,6 @@ class ScheduledStatusActionBar extends ImmutablePureComponent {
   }
 
 }
+
+
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(ScheduledStatusActionBar));
