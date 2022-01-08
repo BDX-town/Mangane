@@ -300,8 +300,10 @@ const handleExpandFail = (state, timelineId) => {
 export default function timelines(state = initialState, action) {
   switch(action.type) {
   case STATUS_CREATE_REQUEST:
+    if (action.params.scheduled_at) return state;
     return importPendingStatus(state, action.params, action.idempotencyKey);
   case STATUS_CREATE_SUCCESS:
+    if (action.status.scheduled_at) return state;
     return importStatus(state, action.status, action.idempotencyKey);
   case TIMELINE_EXPAND_REQUEST:
     return setLoading(state, action.timeline, true);

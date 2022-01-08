@@ -145,7 +145,7 @@ const mapDispatchToProps = (dispatch, { intl }) => {
         } else {
           dispatch(openModal('CONFIRM', {
             icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
-            heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),  
+            heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
             message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
             confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
             onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
