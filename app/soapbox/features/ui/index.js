@@ -324,7 +324,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
         <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
-        <WrappedRoute path='/developers' developerOnly page={DefaultPage} component={Developers} content={children} />
+        <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
         <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
