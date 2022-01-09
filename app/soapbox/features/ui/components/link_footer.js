@@ -27,8 +27,9 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
-  onOpenHotkeys() {
+  onOpenHotkeys(e) {
     dispatch(openModal('HOTKEYS'));
+    e.preventDefault();
   },
   onClickLogOut(e) {
     dispatch(logOut(intl));
