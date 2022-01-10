@@ -1,26 +1,33 @@
-import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { createSelector } from 'reselect';
+import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import Column from 'soapbox/components/column';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+import { launchChat } from 'soapbox/actions/chats';
 import {
   deactivateUserModal,
   deleteUserModal,
   deleteStatusModal,
   toggleStatusSensitivityModal,
 } from 'soapbox/actions/moderation';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import SubNavigation from 'soapbox/components/sub_navigation';
-import { launchChat } from 'soapbox/actions/chats';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Column from 'soapbox/components/column';
 import PullToRefresh from 'soapbox/components/pull_to_refresh';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import { blockAccount } from '../../actions/accounts';
+import {
+  replyCompose,
+  mentionCompose,
+  directCompose,
+} from '../../actions/compose';
+import { simpleEmojiReact } from '../../actions/emoji_reacts';
 import {
   favourite,
   unfavourite,
@@ -31,13 +38,9 @@ import {
   pin,
   unpin,
 } from '../../actions/interactions';
-import { simpleEmojiReact } from '../../actions/emoji_reacts';
-import {
-  replyCompose,
-  mentionCompose,
-  directCompose,
-} from '../../actions/compose';
-import { blockAccount } from '../../actions/accounts';
+import { openModal } from '../../actions/modal';
+import { initMuteModal } from '../../actions/mutes';
+import { initReport } from '../../actions/reports';
 import {
   muteStatus,
   unmuteStatus,
@@ -45,17 +48,14 @@ import {
   hideStatus,
   revealStatus,
 } from '../../actions/statuses';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
-import { makeGetStatus } from '../../selectors';
-import { openModal } from '../../actions/modal';
-import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
-import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-import MissingIndicator from '../../components/missing_indicator';
 import { fetchStatusWithContext } from '../../actions/statuses';
-import ThreadStatus from './components/thread_status';
+import MissingIndicator from '../../components/missing_indicator';
+import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
+import { makeGetStatus } from '../../selectors';
+import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import ActionBar from './components/action_bar';
 import DetailedStatus from './components/detailed_status';
+import ThreadStatus from './components/thread_status';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },

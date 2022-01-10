@@ -44,12 +44,12 @@ import {
   COMPOSE_ADD_TO_MENTIONS,
   COMPOSE_REMOVE_FROM_MENTIONS,
 } from '../actions/compose';
-import { TIMELINE_DELETE } from '../actions/timelines';
-import { REDRAFT } from '../actions/statuses';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
-import uuid from '../uuid';
+import { REDRAFT } from '../actions/statuses';
+import { TIMELINE_DELETE } from '../actions/timelines';
 import { unescapeHTML } from '../utils/html';
+import uuid from '../uuid';
 
 const initialState = ImmutableMap({
   id: null,

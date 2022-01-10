@@ -1,16 +1,20 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { connect } from 'react-redux';
 import { launchChat } from 'soapbox/actions/chats';
-import Status from '../components/status';
-import { makeGetStatus } from '../selectors';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { blockAccount } from '../actions/accounts';
+import { showAlertForError } from '../actions/alerts';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
 } from '../actions/compose';
+import {
+  createRemovedAccount,
+  groupRemoveStatus,
+} from '../actions/groups';
 import {
   reblog,
   favourite,
@@ -21,7 +25,10 @@ import {
   pin,
   unpin,
 } from '../actions/interactions';
-import { blockAccount } from '../actions/accounts';
+import { openModal } from '../actions/modal';
+import { initMuteModal } from '../actions/mutes';
+import { initReport } from '../actions/reports';
+import { getSettings } from '../actions/settings';
 import {
   muteStatus,
   unmuteStatus,
@@ -29,15 +36,8 @@ import {
   hideStatus,
   revealStatus,
 } from '../actions/statuses';
-import { initMuteModal } from '../actions/mutes';
-import { initReport } from '../actions/reports';
-import { openModal } from '../actions/modal';
-import { showAlertForError } from '../actions/alerts';
-import {
-  createRemovedAccount,
-  groupRemoveStatus,
-} from '../actions/groups';
-import { getSettings } from '../actions/settings';
+import Status from '../components/status';
+import { makeGetStatus } from '../selectors';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },

@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash';
-import { importFetchedAccounts } from './importer';
 import { verifyCredentials } from './auth';
+import { importFetchedAccounts } from './importer';
 
 export const PLEROMA_PRELOAD_IMPORT  = 'PLEROMA_PRELOAD_IMPORT';
 export const MASTODON_PRELOAD_IMPORT = 'MASTODON_PRELOAD_IMPORT';

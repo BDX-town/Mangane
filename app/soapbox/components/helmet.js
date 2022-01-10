@@ -1,8 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
+import React from 'react';
 import { Helmet } from'react-helmet';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { getSettings } from 'soapbox/actions/settings';
 import sourceCode from 'soapbox/utils/code';
 import FaviconService from 'soapbox/utils/favicon_service';

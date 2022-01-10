@@ -1,15 +1,15 @@
 'use strict';
 
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import IconButton from 'soapbox/components/icon_button';
-import Icon from 'soapbox/components/icon';
+import { connect } from 'react-redux';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
+import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },

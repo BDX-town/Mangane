@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Sticky from 'react-stickynode';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Sticky from 'react-stickynode';
 import Helmet from 'soapbox/components/helmet';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -13,13 +13,13 @@ import {
   ProfileInfoPanel,
   ProfileMediaPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
-import { getFeatures } from 'soapbox/utils/features';
 import { findAccountByUsername } from 'soapbox/selectors';
-import { makeGetAccount } from '../selectors';
-import LinkFooter from '../features/ui/components/link_footer';
+import { getAcct } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+import { displayFqn } from 'soapbox/utils/state';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
+import LinkFooter from '../features/ui/components/link_footer';
+import { makeGetAccount } from '../selectors';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';

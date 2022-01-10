@@ -5,6 +5,16 @@ import {
   fromJS,
 } from 'immutable';
 import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  ACCOUNT_UNFOLLOW_SUCCESS,
+} from '../actions/accounts';
+import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
+import {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_SUCCESS,
+} from '../actions/statuses';
+import {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
   TIMELINE_CLEAR,
@@ -18,16 +28,6 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
 } from '../actions/timelines';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  ACCOUNT_UNFOLLOW_SUCCESS,
-} from '../actions/accounts';
-import {
-  STATUS_CREATE_REQUEST,
-  STATUS_CREATE_SUCCESS,
-} from '../actions/statuses';
-import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 
 const TRUNCATE_LIMIT = 40;
 const TRUNCATE_SIZE  = 20;

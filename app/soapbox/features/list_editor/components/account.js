@@ -1,14 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import { makeGetAccount } from '../../../selectors';
+import { connect } from 'react-redux';
+import { removeFromListEditor, addToListEditor } from '../../../actions/lists';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import IconButton from '../../../components/icon_button';
-import { removeFromListEditor, addToListEditor } from '../../../actions/lists';
+import { makeGetAccount } from '../../../selectors';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

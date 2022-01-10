@@ -237,6 +237,7 @@ module.exports = {
           'type',
         ],
         'newlines-between': 'ignore',
+        alphabetize: { order: 'asc' },
       },
     ],
 

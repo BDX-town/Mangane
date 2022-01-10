@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { getFeatures } from 'soapbox/utils/features';
-import ColumnSettings from '../components/column_settings';
-import { getSettings, changeSetting } from '../../../actions/settings';
+import { openModal } from '../../../actions/modal';
 import { setFilter } from '../../../actions/notifications';
 import { clearNotifications } from '../../../actions/notifications';
 import { changeAlerts as changePushNotifications } from '../../../actions/push_notifications';
-import { openModal } from '../../../actions/modal';
+import { getSettings, changeSetting } from '../../../actions/settings';
+import ColumnSettings from '../components/column_settings';
 
 const messages = defineMessages({
   clearHeading: { id: 'notifications.clear_heading', defaultMessage: 'Clear notifications' },

@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';

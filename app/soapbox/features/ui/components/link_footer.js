@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logOut } from 'soapbox/actions/auth';
 import { getBaseURL, isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';

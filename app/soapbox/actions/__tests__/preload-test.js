@@ -1,12 +1,12 @@
 import { Map as ImmutableMap } from 'immutable';
 import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/test_helpers';
+import { VERIFY_CREDENTIALS_REQUEST } from '../auth';
+import { ACCOUNTS_IMPORT } from '../importer';
 import {
   MASTODON_PRELOAD_IMPORT,
   preloadMastodon,
 } from '../preload';
-import { VERIFY_CREDENTIALS_REQUEST } from '../auth';
-import { ACCOUNTS_IMPORT } from '../importer';
 
 describe('preloadMastodon()', () => {
   it('creates the expected actions', () => {

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import SpoilerButton from '../components/spoiler_button';
 import { changeComposeSpoilerness } from '../../../actions/compose';
+import SpoilerButton from '../components/spoiler_button';
 
 const mapStateToProps = (state, { intl }) => ({
   active: state.getIn(['compose', 'spoiler']),

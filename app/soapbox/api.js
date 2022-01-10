@@ -8,8 +8,8 @@
 import axios from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
-import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
 import { BACKEND_URL, FE_SUBDIRECTORY } from 'soapbox/build_config';
+import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
 import { isURL } from 'soapbox/utils/auth';
 
 /**

@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { NavLink } from 'react-router-dom';
-import { injectIntl, defineMessages } from 'react-intl';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { injectIntl, defineMessages } from 'react-intl';
+import { NavLink } from 'react-router-dom';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const messages = defineMessages({

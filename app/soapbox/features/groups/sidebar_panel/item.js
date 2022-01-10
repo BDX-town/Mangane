@@ -2,8 +2,8 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { shortNumberFormat } from '../../../utils/numbers';
 
 const messages = defineMessages({

@@ -1,8 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { changeComposeSensitivity } from 'soapbox/actions/compose';
 
 const messages = defineMessages({

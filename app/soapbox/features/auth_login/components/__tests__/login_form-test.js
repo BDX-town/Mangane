@@ -1,6 +1,6 @@
 import React from 'react';
-import { createComponent, mockStore } from 'soapbox/test_helpers';
 import rootReducer from 'soapbox/reducers';
+import { createComponent, mockStore } from 'soapbox/test_helpers';
 import LoginForm from '../login_form';
 
 describe('<LoginForm />', () => {

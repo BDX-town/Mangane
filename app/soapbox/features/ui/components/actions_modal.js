@@ -1,16 +1,16 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import spring from 'react-motion/lib/spring';
-import classNames from 'classnames';
-import StatusContent from '../../../components/status_content';
 import Avatar from '../../../components/avatar';
-import RelativeTimestamp from '../../../components/relative_timestamp';
+import Button from '../../../components/button';
 import DisplayName from '../../../components/display_name';
 import Icon from '../../../components/icon';
-import Button from '../../../components/button';
+import RelativeTimestamp from '../../../components/relative_timestamp';
+import StatusContent from '../../../components/status_content';
 import Motion from '../util/optional_motion';
 
 export default @injectIntl

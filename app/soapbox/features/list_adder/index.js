@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import IconButton from 'soapbox/components/icon_button';
 import { setupListAdder, resetListAdder } from '../../actions/lists';

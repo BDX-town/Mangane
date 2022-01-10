@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 

@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
 import Icon from 'soapbox/components/icon';
 
 export default class ColumnBackButton extends React.PureComponent {

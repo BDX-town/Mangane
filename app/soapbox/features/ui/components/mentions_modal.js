@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { fetchStatusWithContext } from 'soapbox/actions/statuses';
 import IconButton from 'soapbox/components/icon_button';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
-import AccountContainer from 'soapbox/containers/account_container';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import AccountContainer from 'soapbox/containers/account_container';
 import { makeGetStatus } from 'soapbox/selectors';
-import { fetchStatusWithContext } from 'soapbox/actions/statuses';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

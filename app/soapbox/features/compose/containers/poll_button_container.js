@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import PollButton from '../components/poll_button';
 import { addPoll, removePoll } from '../../../actions/compose';
+import PollButton from '../components/poll_button';
 
 const mapStateToProps = state => ({
   unavailable: state.getIn(['compose', 'is_uploading']),

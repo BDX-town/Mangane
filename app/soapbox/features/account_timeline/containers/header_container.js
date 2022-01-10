@@ -1,10 +1,7 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
-import { getSettings } from 'soapbox/actions/settings';
-import { launchChat } from 'soapbox/actions/chats';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import {
   verifyUser,
   unverifyUser,
@@ -14,10 +11,11 @@ import {
   suggestUsers,
   unsuggestUsers,
 } from 'soapbox/actions/admin';
-import { isAdmin } from 'soapbox/utils/accounts';
+import { launchChat } from 'soapbox/actions/chats';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import { makeGetAccount } from '../../../selectors';
-import Header from '../components/header';
+import { isAdmin } from 'soapbox/utils/accounts';
 import {
   followAccount,
   unfollowAccount,
@@ -33,10 +31,12 @@ import {
   mentionCompose,
   directCompose,
 } from '../../../actions/compose';
+import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
+import { openModal } from '../../../actions/modal';
 import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';
-import { openModal } from '../../../actions/modal';
-import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
+import { makeGetAccount } from '../../../selectors';
+import Header from '../components/header';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },

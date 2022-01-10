@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
+import { v4 as uuidv4 } from 'uuid';
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
 import api, { getLinks } from '../api';

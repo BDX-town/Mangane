@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { expandChats } from 'soapbox/actions/chats';
 import ScrollableList from 'soapbox/components/scrollable_list';

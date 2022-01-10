@@ -1,9 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
 import { otpVerify, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { SimpleInput } from 'soapbox/features/forms';
 

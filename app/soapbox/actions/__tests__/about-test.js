@@ -1,5 +1,5 @@
-import { Map as ImmutableMap } from 'immutable';
 import MockAdapter from 'axios-mock-adapter';
+import { Map as ImmutableMap } from 'immutable';
 import { staticClient } from 'soapbox/api';
 import { mockStore } from 'soapbox/test_helpers';
 import {

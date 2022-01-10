@@ -1,21 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import QRCode from 'qrcode.react';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
-import Button from 'soapbox/components/button';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import snackbar from 'soapbox/actions/snackbar';
+import Button from 'soapbox/components/button';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
-import ColumnSubheading from '../ui/components/column_subheading';
-import Column from '../ui/components/column';
 import {
   fetchMfa,
   fetchBackupCodes,
@@ -23,6 +21,8 @@ import {
   confirmMfa,
   disableMfa,
 } from '../../actions/mfa';
+import Column from '../ui/components/column';
+import ColumnSubheading from '../ui/components/column_subheading';
 
 /*
 Security settings page for user account

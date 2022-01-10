@@ -1,14 +1,14 @@
-import { createSelector } from 'reselect';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
-import { getDomain } from 'soapbox/utils/accounts';
-import ConfigDB from 'soapbox/utils/config_db';
+import { createSelector } from 'reselect';
 import { getSettings } from 'soapbox/actions/settings';
-import { shouldFilter } from 'soapbox/utils/timelines';
+import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
+import ConfigDB from 'soapbox/utils/config_db';
+import { shouldFilter } from 'soapbox/utils/timelines';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);

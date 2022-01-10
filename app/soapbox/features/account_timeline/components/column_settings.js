@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import IconButton from 'soapbox/components/icon_button';

@@ -1,14 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import { makeGetAccount } from 'soapbox/selectors';
+import { connect } from 'react-redux';
+import { fetchAccount } from 'soapbox/actions/accounts';
+import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import IconButton from 'soapbox/components/icon_button';
-import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
-import { fetchAccount } from 'soapbox/actions/accounts';
+import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
   remove: { id: 'reply_mentions.account.remove', defaultMessage: 'Remove from mentions' },

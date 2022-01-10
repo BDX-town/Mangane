@@ -1,11 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { List as ImmutableList } from 'immutable';
 import classNames from 'classnames';
+import { List as ImmutableList } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import SiteWallet from './site_wallet';
 

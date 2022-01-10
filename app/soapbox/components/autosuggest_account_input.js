@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { CancelToken } from 'axios';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { throttle } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { accountSearch } from 'soapbox/actions/accounts';
 import AutosuggestInput from './autosuggest_input';
 

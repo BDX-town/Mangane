@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import { makeGetStatus } from 'soapbox/selectors';
 import { openModal } from 'soapbox/actions/modal';
+import { makeGetStatus } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 import ReplyMentions from '../components/reply_mentions';
 

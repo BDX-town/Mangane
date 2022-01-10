@@ -1,10 +1,9 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { trim } from 'lodash';
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { validId, isURL } from 'soapbox/utils/auth';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 import KVStore from 'soapbox/storage/kv_store';
-import { ME_FETCH_SKIP } from '../actions/me';
+import { validId, isURL } from 'soapbox/utils/auth';
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -14,6 +13,7 @@ import {
   VERIFY_CREDENTIALS_SUCCESS,
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
+import { ME_FETCH_SKIP } from '../actions/me';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),

@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { fetchPinnedStatuses } from '../../actions/pin_statuses';
-import Column from '../ui/components/column';
 import StatusList from '../../components/status_list';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.pins', defaultMessage: 'Pinned posts' },

@@ -1,5 +1,5 @@
-import React from 'react';
 import { fromJS }  from 'immutable';
+import React from 'react';
 import { createComponent } from 'soapbox/test_helpers';
 import DisplayName from '../display_name';
 

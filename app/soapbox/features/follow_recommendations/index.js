@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import Column from 'soapbox/features/ui/components/column';
 import FollowRecommendationsContainer from './components/follow_recommendations_container';
 

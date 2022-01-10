@@ -1,16 +1,24 @@
 'use strict';
 
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
-import { NavLink } from 'react-router-dom';
-import { debounce } from 'lodash';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import { openModal } from 'soapbox/actions/modal';
+import Avatar from 'soapbox/components/avatar';
 import IconButton from 'soapbox/components/icon_button';
+import StillImage from 'soapbox/components/still_image';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import ActionButton from 'soapbox/features/ui/components/action_button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
 import {
   isStaff,
   isAdmin,
@@ -20,16 +28,8 @@ import {
   isRemote,
   getDomain,
 } from 'soapbox/utils/accounts';
-import Avatar from 'soapbox/components/avatar';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
-import StillImage from 'soapbox/components/still_image';
-import ActionButton from 'soapbox/features/ui/components/action_button';
-import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import { openModal } from 'soapbox/actions/modal';
 import { getFeatures } from 'soapbox/utils/features';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },

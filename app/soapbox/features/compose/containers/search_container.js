@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
 import { debounce } from 'lodash';
+import { connect } from 'react-redux';
 import {
   changeSearch,
   clearSearch,

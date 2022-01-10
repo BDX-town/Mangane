@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({

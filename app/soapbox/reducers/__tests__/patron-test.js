@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
-import reducer from '../patron';
 import { PATRON_ACCOUNT_FETCH_SUCCESS } from '../../actions/patron';
+import reducer from '../patron';
 
 describe('patron reducer', () => {
   it('should return the initial state', () => {

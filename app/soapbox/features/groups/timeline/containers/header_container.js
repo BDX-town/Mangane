@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import Header from '../components/header';
 import { joinGroup, leaveGroup } from '../../../../actions/groups';
+import Header from '../components/header';
 
 const mapStateToProps = (state, { groupId }) => ({
   group: state.getIn(['groups', groupId]),

@@ -1,5 +1,5 @@
-import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import ThemeToggle from './theme_toggle';
 

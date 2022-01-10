@@ -1,8 +1,8 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
-import { openModal } from 'soapbox/actions/modal';
-import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';
+import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
+import { openModal } from 'soapbox/actions/modal';
 import snackbar from 'soapbox/actions/snackbar';
 import AccountContainer from 'soapbox/containers/account_container';
 import { isLocal } from 'soapbox/utils/accounts';

@@ -1,7 +1,7 @@
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
 import api from '../api';
-import { importFetchedAccount } from './importer';
 import { loadCredentials } from './auth';
+import { importFetchedAccount } from './importer';
 
 export const ME_FETCH_REQUEST = 'ME_FETCH_REQUEST';
 export const ME_FETCH_SUCCESS = 'ME_FETCH_SUCCESS';

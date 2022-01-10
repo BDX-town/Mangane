@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
 import { isEqual } from 'lodash';
-import StatusListContainer from '../ui/containers/status_list_container';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { connectHashtagStream } from '../../actions/streaming';
+import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
-import { connectHashtagStream } from '../../actions/streaming';
+import StatusListContainer from '../ui/containers/status_list_container';
 
 const mapStateToProps = (state, props) => ({
   hasUnread: state.getIn(['timelines', `hashtag:${props.params.id}`, 'unread']) > 0,

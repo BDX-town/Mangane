@@ -1,16 +1,16 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { Link } from 'react-router-dom';
 import { defineMessages, injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import LoginForm from 'soapbox/features/auth_login/components/login_form';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
 import IconButton from 'soapbox/components/icon_button';
+import LoginForm from 'soapbox/features/auth_login/components/login_form';
+import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import SiteLogo from './site_logo';
 
 const messages = defineMessages({

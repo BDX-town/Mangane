@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { useEffect, useState } from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
-import { makeGetAccount } from 'soapbox/selectors';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { UserPanel } from 'soapbox/features/ui/util/async-components';
-import ActionButton from 'soapbox/features/ui/components/action_button';
-import { isAdmin, isModerator } from 'soapbox/utils/accounts';
-import Badge from 'soapbox/components/badge';
+import { useSelector, useDispatch } from 'react-redux';
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,
 } from 'soapbox/actions/profile_hover_card';
+import Badge from 'soapbox/components/badge';
+import ActionButton from 'soapbox/features/ui/components/action_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { UserPanel } from 'soapbox/features/ui/util/async-components';
+import { makeGetAccount } from 'soapbox/selectors';
+import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 
 const getAccount = makeGetAccount();
 

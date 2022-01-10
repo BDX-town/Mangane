@@ -1,11 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
 import Column from '../ui/components/column';
-import PromoPanel from '../ui/components/promo_panel';
 import LinkFooter from '../ui/components/link_footer';
+import PromoPanel from '../ui/components/promo_panel';
 
 const messages = defineMessages({
   heading: { id: 'column.info', defaultMessage: 'Server information' },

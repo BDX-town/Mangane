@@ -8,11 +8,11 @@
 
 import { Map as ImmutableMap, fromJS } from 'immutable';
 import { createApp } from 'soapbox/actions/apps';
-import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
+import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import { parseBaseURL } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
 import sourceCode from 'soapbox/utils/code';
+import { getFeatures } from 'soapbox/utils/features';
 import { baseClient } from '../api';
 
 const fetchExternalInstance = baseURL => {

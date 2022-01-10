@@ -1,18 +1,18 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
+import FilterBar from 'soapbox/components/filter_bar';
+import Pullable from 'soapbox/components/pullable';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import Pullable from 'soapbox/components/pullable';
-import FilterBar from 'soapbox/components/filter_bar';
 import Hashtag from '../../../components/hashtag';
-import StatusContainer from '../../../containers/status_container';
 import AccountContainer from '../../../containers/account_container';
+import StatusContainer from '../../../containers/status_container';
 
 const messages = defineMessages({
   accounts: { id: 'search_results.accounts', defaultMessage: 'People' },

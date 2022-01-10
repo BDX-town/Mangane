@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { getSettings } from 'soapbox/actions/settings';
 import SubNavigation from 'soapbox/components/sub_navigation';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
-import { expandCommunityTimeline } from '../../actions/timelines';
 import { connectCommunityStream } from '../../actions/streaming';
+import { expandCommunityTimeline } from '../../actions/timelines';
+import Column from '../../components/column';
+import StatusListContainer from '../ui/containers/status_list_container';
 import ColumnSettings from './containers/column_settings_container';
 
 const messages = defineMessages({

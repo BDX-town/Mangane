@@ -1,8 +1,8 @@
+import classNames from 'classnames';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
 import { changeUploadCompose } from '../../../actions/compose';
 import { getPointerPosition } from '../../video';
 import ImageLoader from './image_loader';

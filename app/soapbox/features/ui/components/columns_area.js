@@ -1,8 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl } from 'react-intl';
 
 export default @(component => injectIntl(component, { withRef: true }))
 class ColumnsArea extends ImmutablePureComponent {

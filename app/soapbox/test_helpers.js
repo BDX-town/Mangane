@@ -1,13 +1,13 @@
 'use strict';
 
-import React from 'react';
-import thunk from 'redux-thunk';
-import renderer from 'react-test-renderer';
-import { Provider } from 'react-redux';
-import { IntlProvider } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
-import configureMockStore from 'redux-mock-store';
 import { Map as ImmutableMap } from 'immutable';
+import React from 'react';
+import { IntlProvider } from 'react-intl';
+import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import renderer from 'react-test-renderer';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import rootReducer from 'soapbox/reducers';
 
 // Mock Redux

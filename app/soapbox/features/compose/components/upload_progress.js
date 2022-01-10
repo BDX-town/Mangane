@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import spring from 'react-motion/lib/spring';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import spring from 'react-motion/lib/spring';
 import Icon from 'soapbox/components/icon';
 import Motion from '../../ui/util/optional_motion';
 

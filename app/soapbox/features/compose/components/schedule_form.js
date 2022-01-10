@@ -1,12 +1,12 @@
 'use strict';
 
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import DatePicker from 'react-datepicker';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
 import { setSchedule, removeSchedule } from '../../../actions/compose';
 

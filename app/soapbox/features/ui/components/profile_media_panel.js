@@ -1,13 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { getAccountGallery } from 'soapbox/selectors';
 import { openModal } from 'soapbox/actions/modal';
 import Icon from 'soapbox/components/icon';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { getAccountGallery } from 'soapbox/selectors';
 import { expandAccountMediaTimeline } from '../../../actions/timelines';
 import MediaItem from '../../account_gallery/components/media_item';
 

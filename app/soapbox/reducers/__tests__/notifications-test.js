@@ -1,6 +1,15 @@
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 import { take } from 'lodash';
+import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
+import notification from 'soapbox/__fixtures__/notification.json';
 import notifications from 'soapbox/__fixtures__/notifications.json';
+import relationship from 'soapbox/__fixtures__/relationship.json';
+import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from 'soapbox/actions/markers';
 import {
   NOTIFICATIONS_EXPAND_SUCCESS,
   NOTIFICATIONS_EXPAND_REQUEST,
@@ -13,16 +22,7 @@ import {
   NOTIFICATIONS_CLEAR,
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
-import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
-import notification from 'soapbox/__fixtures__/notification.json';
-import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
-import relationship from 'soapbox/__fixtures__/relationship.json';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import {
-  MARKER_FETCH_SUCCESS,
-  MARKER_SAVE_REQUEST,
-  MARKER_SAVE_SUCCESS,
-} from 'soapbox/actions/markers';
 import reducer from '../notifications';
 
 describe('notifications reducer', () => {

@@ -1,14 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
-import Blurhash from 'soapbox/components/blurhash';
-import { isIOS } from 'soapbox/is_mobile';
+import { connect } from 'react-redux';
 import { getSettings } from 'soapbox/actions/settings';
+import Blurhash from 'soapbox/components/blurhash';
+import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
+import { isIOS } from 'soapbox/is_mobile';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),

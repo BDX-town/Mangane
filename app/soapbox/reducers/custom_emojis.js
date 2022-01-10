@@ -1,6 +1,6 @@
 import { List as ImmutableList, fromJS } from 'immutable';
-import { addCustomToPool } from 'soapbox/features/emoji/emoji_mart_search_light';
 import { emojis as emojiData } from 'soapbox/features/emoji/emoji_mart_data_light';
+import { addCustomToPool } from 'soapbox/features/emoji/emoji_mart_search_light';
 import { CUSTOM_EMOJIS_FETCH_SUCCESS } from '../actions/custom_emojis';
 import { buildCustomEmojis } from '../features/emoji/emoji';
 

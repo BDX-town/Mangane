@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import {
   fetchBackups,
   createBackup,

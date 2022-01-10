@@ -1,16 +1,16 @@
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { closeReports } from 'soapbox/actions/admin';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import snackbar from 'soapbox/actions/snackbar';
 import Avatar from 'soapbox/components/avatar';
 import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
-import { closeReports } from 'soapbox/actions/admin';
-import snackbar from 'soapbox/actions/snackbar';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
 import ReportStatus from './report_status';
 
 const messages = defineMessages({

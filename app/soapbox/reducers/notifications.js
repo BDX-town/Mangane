@@ -5,6 +5,12 @@ import {
   MARKER_SAVE_SUCCESS,
 } from 'soapbox/actions/markers';
 import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
+  FOLLOW_REQUEST_REJECT_SUCCESS,
+} from '../actions/accounts';
+import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
   NOTIFICATIONS_EXPAND_REQUEST,
@@ -17,12 +23,6 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
   MAX_QUEUED_NOTIFICATIONS,
 } from '../actions/notifications';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
-  FOLLOW_REQUEST_REJECT_SUCCESS,
-} from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
 const initialState = ImmutableMap({

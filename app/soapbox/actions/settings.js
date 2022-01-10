@@ -1,5 +1,5 @@
-import { debounce } from 'lodash';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { debounce } from 'lodash';
 import { createSelector } from 'reselect';
 import { patchMe } from 'soapbox/actions/me';
 import { isLoggedIn } from 'soapbox/utils/auth';

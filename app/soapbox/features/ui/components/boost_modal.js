@@ -1,15 +1,15 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Icon from 'soapbox/components/icon';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
-import Button from '../../../components/button';
-import StatusContent from '../../../components/status_content';
+import Icon from 'soapbox/components/icon';
 import Avatar from '../../../components/avatar';
-import RelativeTimestamp from '../../../components/relative_timestamp';
+import Button from '../../../components/button';
 import DisplayName from '../../../components/display_name';
+import RelativeTimestamp from '../../../components/relative_timestamp';
+import StatusContent from '../../../components/status_content';
 
 const messages = defineMessages({
   cancel_reblog: { id: 'status.cancel_reblog_private', defaultMessage: 'Un-repost' },

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import ScheduleButton from '../components/schedule_button';
 import { addSchedule, removeSchedule } from '../../../actions/compose';
+import ScheduleButton from '../components/schedule_button';
 
 const mapStateToProps = state => ({
   active: state.getIn(['compose', 'schedule']) ? true : false,

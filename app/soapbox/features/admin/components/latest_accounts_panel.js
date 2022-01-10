@@ -1,13 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl, defineMessages } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { is } from 'immutable';
-import AccountListPanel from 'soapbox/features/ui/components/account_list_panel';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import { fetchUsers } from 'soapbox/actions/admin';
 import compareId from 'soapbox/compare_id';
+import AccountListPanel from 'soapbox/features/ui/components/account_list_panel';
 
 const messages = defineMessages({
   title: { id: 'admin.latest_accounts_panel.title', defaultMessage: 'Latest Accounts' },

@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import IconButton from 'soapbox/components/icon_button';
-import snackbar from 'soapbox/actions/snackbar';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { remoteInteraction } from 'soapbox/actions/interactions';
+import snackbar from 'soapbox/actions/snackbar';
+import IconButton from 'soapbox/components/icon_button';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({

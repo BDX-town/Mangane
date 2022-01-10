@@ -1,15 +1,15 @@
 'use strict';
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
-import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { openModal } from 'soapbox/actions/modal';
+import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 import { isAdmin } from 'soapbox/utils/accounts';
 
 const getRemoteInstance = makeGetRemoteInstance();

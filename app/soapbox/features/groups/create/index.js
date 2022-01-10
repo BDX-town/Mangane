@@ -1,8 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { changeValue, submit, reset } from '../../../actions/group_editor';
 
 const messages = defineMessages({

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import UploadButton from '../components/upload_button';
 import { uploadCompose } from '../../../actions/compose';
+import UploadButton from '../components/upload_button';
 
 const mapStateToProps = state => ({
   disabled: state.getIn(['compose', 'is_uploading']),

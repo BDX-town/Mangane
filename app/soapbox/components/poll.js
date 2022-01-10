@@ -1,17 +1,17 @@
-import React from 'react';
+import classNames from 'classnames';
+import escapeTextContentForBrowser from 'escape-html';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
 import spring from 'react-motion/lib/spring';
-import escapeTextContentForBrowser from 'escape-html';
+import { openModal } from 'soapbox/actions/modal';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
+import Icon from 'soapbox/components/icon';
+import emojify from 'soapbox/features/emoji/emoji';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import emojify from 'soapbox/features/emoji/emoji';
-import Icon from 'soapbox/components/icon';
-import { openModal } from 'soapbox/actions/modal';
 import RelativeTimestamp from './relative_timestamp';
 
 const messages = defineMessages({

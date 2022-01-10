@@ -4,8 +4,8 @@
  * @see module:soapbox/actions/auth
  */
 
-import { getLoggedInAccount } from 'soapbox/utils/auth';
 import snackbar from 'soapbox/actions/snackbar';
+import { getLoggedInAccount } from 'soapbox/utils/auth';
 import api from '../api';
 import { AUTH_LOGGED_OUT, messages } from './auth';
 

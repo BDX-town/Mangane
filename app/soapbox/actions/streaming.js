@@ -1,6 +1,9 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
 import { connectStream } from '../stream';
+import { updateConversations } from './conversations';
+import { fetchFilters } from './filters';
+import { updateNotificationsQueue, expandNotifications } from './notifications';
 import {
   deleteFromTimelines,
   expandHomeTimeline,
@@ -8,9 +11,6 @@ import {
   disconnectTimeline,
   processTimelineUpdate,
 } from './timelines';
-import { updateNotificationsQueue, expandNotifications } from './notifications';
-import { updateConversations } from './conversations';
-import { fetchFilters } from './filters';
 
 export const STREAMING_CHAT_UPDATE = 'STREAMING_CHAT_UPDATE';
 export const STREAMING_FOLLOW_RELATIONSHIPS_UPDATE = 'STREAMING_FOLLOW_RELATIONSHIPS_UPDATE';

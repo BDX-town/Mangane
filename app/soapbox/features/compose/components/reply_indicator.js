@@ -1,13 +1,13 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Avatar from '../../../components/avatar';
-import IconButton from '../../../components/icon_button';
 import DisplayName from '../../../components/display_name';
+import IconButton from '../../../components/icon_button';
 import { isRtl } from '../../../rtl';
 
 const messages = defineMessages({

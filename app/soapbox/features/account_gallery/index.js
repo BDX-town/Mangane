@@ -1,21 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import LoadMore from 'soapbox/components/load_more';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import { openModal } from 'soapbox/actions/modal';
-import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
-import Column from 'soapbox/components/column';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import {
   fetchAccount,
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
+import { openModal } from 'soapbox/actions/modal';
+import Column from 'soapbox/components/column';
+import LoadMore from 'soapbox/components/load_more';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
+import MissingIndicator from 'soapbox/components/missing_indicator';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
 import { expandAccountMediaTimeline } from '../../actions/timelines';
 import MediaItem from './components/media_item';
 

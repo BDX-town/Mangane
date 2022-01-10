@@ -1,31 +1,31 @@
 'use strict';
 
-import React from 'react';
-import { Provider, connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { IntlProvider } from 'react-intl';
+import { Provider, connect } from 'react-redux';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 // import Introduction from '../features/introduction';
-import { IntlProvider } from 'react-intl';
-import Helmet from 'soapbox/components/helmet';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { loadInstance } from 'soapbox/actions/instance';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
-import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { generateThemeCss } from 'soapbox/utils/theme';
-import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import Helmet from 'soapbox/components/helmet';
+import PublicLayout from 'soapbox/features/public_layout';
 import { createGlobals } from 'soapbox/globals';
-import { preload } from '../actions/preload';
-import UI from '../features/ui';
+import messages from 'soapbox/locales/messages';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { generateThemeCss } from 'soapbox/utils/theme';
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
-import configureStore from '../store/configureStore';
+import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
+import UI from '../features/ui';
+import configureStore from '../store/configureStore';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 

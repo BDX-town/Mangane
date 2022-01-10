@@ -1,15 +1,15 @@
 'use strict';
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import { pinHost, unpinHost } from 'soapbox/actions/remote_timeline';
 import { getSettings } from 'soapbox/actions/settings';
+import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 
 const getRemoteInstance = makeGetRemoteInstance();
 

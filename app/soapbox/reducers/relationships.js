@@ -19,13 +19,13 @@ import {
   RELATIONSHIPS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
-  ACCOUNT_IMPORT,
-  ACCOUNTS_IMPORT,
-} from '../actions/importer';
-import {
   DOMAIN_BLOCK_SUCCESS,
   DOMAIN_UNBLOCK_SUCCESS,
 } from '../actions/domain_blocks';
+import {
+  ACCOUNT_IMPORT,
+  ACCOUNTS_IMPORT,
+} from '../actions/importer';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));
 

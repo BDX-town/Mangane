@@ -1,8 +1,8 @@
+import classNames from 'classnames';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import classNames from 'classnames';
 import StatusContainer from 'soapbox/containers/status_container';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 

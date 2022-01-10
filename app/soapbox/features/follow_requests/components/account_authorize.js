@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Permalink from '../../../components/permalink';
+import { defineMessages, injectIntl } from 'react-intl';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import IconButton from '../../../components/icon_button';
+import Permalink from '../../../components/permalink';
 
 const messages = defineMessages({
   authorize: { id: 'follow_request.authorize', defaultMessage: 'Authorize' },

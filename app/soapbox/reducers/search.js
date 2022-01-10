@@ -1,5 +1,10 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import {
+  COMPOSE_MENTION,
+  COMPOSE_REPLY,
+  COMPOSE_DIRECT,
+} from '../actions/compose';
+import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
   SEARCH_FETCH_REQUEST,
@@ -9,11 +14,6 @@ import {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
-import {
-  COMPOSE_MENTION,
-  COMPOSE_REPLY,
-  COMPOSE_DIRECT,
-} from '../actions/compose';
 
 const initialState = ImmutableMap({
   value: '',

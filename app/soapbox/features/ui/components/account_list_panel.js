@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import Icon from 'soapbox/components/icon';
 import AccountContainer from '../../../containers/account_container';

@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { defineMessages } from 'react-intl';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages } from 'react-intl';
 import Toggle from 'react-toggle';
 import Icon from '../../../components/icon';
 

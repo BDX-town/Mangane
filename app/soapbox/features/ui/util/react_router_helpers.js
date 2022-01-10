@@ -1,15 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 import { getSettings } from 'soapbox/actions/settings';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
-import ColumnsAreaContainer from '../containers/columns_area_container';
-import ColumnLoading from '../components/column_loading';
-import ColumnForbidden from '../components/column_forbidden';
 import BundleColumnError from '../components/bundle_column_error';
+import ColumnForbidden from '../components/column_forbidden';
+import ColumnLoading from '../components/column_loading';
 import BundleContainer from '../containers/bundle_container';
+import ColumnsAreaContainer from '../containers/columns_area_container';
 
 const mapStateToProps = state => {
   const me = state.get('me');

@@ -1,9 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
+import { connect } from 'react-redux';
+import {
+  changeEmail,
+  changePassword,
+  deleteAccount,
+} from 'soapbox/actions/security';
+import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
+import { getSettings } from 'soapbox/actions/settings';
+import snackbar from 'soapbox/actions/snackbar';
 import Button from 'soapbox/components/button';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
@@ -11,14 +19,6 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
-import {
-  changeEmail,
-  changePassword,
-  deleteAccount,
-} from 'soapbox/actions/security';
-import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import snackbar from 'soapbox/actions/snackbar';
-import { getSettings } from 'soapbox/actions/settings';
 import { fetchMfa } from '../../actions/mfa';
 import Column from '../ui/components/column';
 

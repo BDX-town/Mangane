@@ -8,16 +8,16 @@
  */
 
 import { defineMessages } from 'react-intl';
-import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
-import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
-import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import { createApp } from 'soapbox/actions/apps';
+import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import snackbar from 'soapbox/actions/snackbar';
+import KVStore from 'soapbox/storage/kv_store';
+import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
-import KVStore from 'soapbox/storage/kv_store';
 import api, { baseClient } from '../api';
 import { importFetchedAccount } from './importer';
 

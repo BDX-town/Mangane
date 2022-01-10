@@ -1,10 +1,10 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import Icon from 'soapbox/components/icon';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 import InstanceRestrictions from './instance_restrictions';
 
 const getRemoteInstance = makeGetRemoteInstance();

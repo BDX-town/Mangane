@@ -1,10 +1,10 @@
-import React from 'react';
+import classNames from 'classnames';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import Overlay from 'react-overlays/lib/Overlay';
-import classNames from 'classnames';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { supportsPassiveEvents } from 'detect-passive-events';
 import { joinPublicPath } from 'soapbox/utils/static';
 import { buildCustomEmojis } from '../../emoji/emoji';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';

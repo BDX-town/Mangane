@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import Column from 'soapbox/features/ui/components/column';
-import IconButton from 'soapbox/components/icon_button';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { getSettings } from 'soapbox/actions/settings';
-import { expandRemoteTimeline } from '../../actions/timelines';
+import IconButton from 'soapbox/components/icon_button';
+import Column from 'soapbox/features/ui/components/column';
 import { connectRemoteStream } from '../../actions/streaming';
+import { expandRemoteTimeline } from '../../actions/timelines';
 import StatusListContainer from '../ui/containers/status_list_container';
 import PinnedHostsPicker from './components/pinned_hosts_picker';
 

@@ -1,8 +1,8 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { createSelector } from 'reselect';
-import { getFeatures } from 'soapbox/utils/features';
 import { getHost } from 'soapbox/actions/instance';
 import KVStore from 'soapbox/storage/kv_store';
+import { getFeatures } from 'soapbox/utils/features';
 import api, { staticClient } from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';

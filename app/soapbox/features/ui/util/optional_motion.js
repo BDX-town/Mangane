@@ -1,7 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import Motion from 'react-motion/lib/Motion';
+import { connect } from 'react-redux';
 import { getSettings } from 'soapbox/actions/settings';
 import ReducedMotion from './reduced_motion';
 

@@ -1,9 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import Icon from 'soapbox/components/icon';
 import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
 import AccountContainer from '../../../containers/account_container';

@@ -1,8 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
-  NOTIFICATIONS_UPDATE,
-} from '../actions/notifications';
-import {
   FOLLOWERS_FETCH_SUCCESS,
   FOLLOWERS_EXPAND_SUCCESS,
   FOLLOWING_FETCH_SUCCESS,
@@ -13,18 +10,9 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
 import {
-  REBLOGS_FETCH_SUCCESS,
-  FAVOURITES_FETCH_SUCCESS,
-  REACTIONS_FETCH_SUCCESS,
-} from '../actions/interactions';
-import {
   BLOCKS_FETCH_SUCCESS,
   BLOCKS_EXPAND_SUCCESS,
 } from '../actions/blocks';
-import {
-  MUTES_FETCH_SUCCESS,
-  MUTES_EXPAND_SUCCESS,
-} from '../actions/mutes';
 import {
   DIRECTORY_FETCH_REQUEST,
   DIRECTORY_FETCH_SUCCESS,
@@ -40,6 +28,18 @@ import {
   GROUP_REMOVED_ACCOUNTS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS,
 } from '../actions/groups';
+import {
+  REBLOGS_FETCH_SUCCESS,
+  FAVOURITES_FETCH_SUCCESS,
+  REACTIONS_FETCH_SUCCESS,
+} from '../actions/interactions';
+import {
+  MUTES_FETCH_SUCCESS,
+  MUTES_EXPAND_SUCCESS,
+} from '../actions/mutes';
+import {
+  NOTIFICATIONS_UPDATE,
+} from '../actions/notifications';
 
 const initialState = ImmutableMap({
   followers: ImmutableMap(),

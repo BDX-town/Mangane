@@ -1,8 +1,8 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import api from '../api';
-import { importFetchedAccounts } from './importer';
 import { fetchRelationships } from './accounts';
+import { importFetchedAccounts } from './importer';
 
 export const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';
 export const SUGGESTIONS_FETCH_SUCCESS = 'SUGGESTIONS_FETCH_SUCCESS';

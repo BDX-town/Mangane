@@ -1,20 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { defineMessages, injectIntl } from 'react-intl';
-import LoadingIndicator from '../../../components/loading_indicator';
+import { connect } from 'react-redux';
 import {
   fetchRemovedAccounts,
   expandRemovedAccounts,
   removeRemovedAccount,
 } from '../../../actions/groups';
+import LoadingIndicator from '../../../components/loading_indicator';
+import ScrollableList from '../../../components/scrollable_list';
 import AccountContainer from '../../../containers/account_container';
 import Column from '../../ui/components/column';
-import ScrollableList from '../../../components/scrollable_list';
 
 const messages = defineMessages({
   remove: { id: 'groups.removed_accounts', defaultMessage: 'Allow joining' },

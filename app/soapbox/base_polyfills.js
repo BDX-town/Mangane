@@ -4,9 +4,9 @@ import 'intl';
 import 'intl/locale-data/jsonp/en';
 import 'es6-symbol/implement';
 import includes from 'array-includes';
+import isNaN from 'is-nan';
 import assign from 'object-assign';
 import values from 'object.values';
-import isNaN from 'is-nan';
 import { decode as decodeBase64 } from './utils/base64';
 
 if (!Array.prototype.includes) {

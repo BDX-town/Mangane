@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import ColumnSettings from '../components/column_settings';
 import {
   getSettings,
   changeSetting,
   saveSettings,
 } from '../../../actions/settings';
+import ColumnSettings from '../components/column_settings';
 
 const mapStateToProps = state => ({
   settings: getSettings(state).get('home'),

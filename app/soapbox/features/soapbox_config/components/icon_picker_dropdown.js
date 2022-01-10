@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
-import Picker from 'emoji-mart/dist-es/components/picker/picker';
-import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import Picker from 'emoji-mart/dist-es/components/picker/picker';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({

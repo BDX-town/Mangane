@@ -1,19 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, defineMessages } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import {
   sendChatMessage,
   markChatRead,
 } from 'soapbox/actions/chats';
-import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
+import IconButton from 'soapbox/components/icon_button';
+import UploadButton from 'soapbox/features/compose/components/upload_button';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
-import IconButton from 'soapbox/components/icon_button';
 import ChatMessageList from './chat_message_list';
 
 const messages = defineMessages({

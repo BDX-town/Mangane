@@ -1,8 +1,8 @@
-import React from 'react';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 export default @injectIntl
 class ReplyMentions extends ImmutablePureComponent {

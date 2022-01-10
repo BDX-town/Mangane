@@ -1,13 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
-import classNames from 'classnames';
+import { connect } from 'react-redux';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { changeValue, submit, setUp } from '../../../actions/group_editor';
-import LoadingIndicator from '../../../components/loading_indicator';
 import Column from '../../../components/column';
+import LoadingIndicator from '../../../components/loading_indicator';
 
 const messages = defineMessages({
   title: { id: 'groups.form.title', defaultMessage: 'Title' },

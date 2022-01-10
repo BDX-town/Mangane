@@ -1,11 +1,11 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchUsers } from 'soapbox/actions/admin';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import Column from '../ui/components/column';
 import UnapprovedAccount from './components/unapproved_account';
 

@@ -3,10 +3,10 @@ import {
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
-import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
-import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 import context1 from 'soapbox/__fixtures__/context_1.json';
 import context2 from 'soapbox/__fixtures__/context_2.json';
+import { CONTEXT_FETCH_SUCCESS } from 'soapbox/actions/statuses';
+import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 import reducer from '../contexts';
 
 describe('contexts reducer', () => {

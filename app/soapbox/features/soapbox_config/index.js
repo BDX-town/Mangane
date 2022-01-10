@@ -1,13 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { SketchPicker } from 'react-color';
-import Overlay from 'react-overlays/lib/Overlay';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { SketchPicker } from 'react-color';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
+import { connect } from 'react-redux';
+import { updateConfig } from 'soapbox/actions/admin';
+import { uploadMedia } from 'soapbox/actions/media';
+import snackbar from 'soapbox/actions/snackbar';
+import { makeDefaultConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   FieldsGroup,
@@ -18,18 +23,13 @@ import {
   FormPropTypes,
   Checkbox,
 } from 'soapbox/features/forms';
-import { updateConfig } from 'soapbox/actions/admin';
-import Icon from 'soapbox/components/icon';
-import { makeDefaultConfig } from 'soapbox/actions/soapbox';
-import { getFeatures } from 'soapbox/utils/features';
-import { uploadMedia } from 'soapbox/actions/media';
-import { isMobile } from 'soapbox/is_mobile';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
-import snackbar from 'soapbox/actions/snackbar';
+import { isMobile } from 'soapbox/is_mobile';
+import { getFeatures } from 'soapbox/utils/features';
 import Accordion from '../ui/components/accordion';
 import Column from '../ui/components/column';
-import SitePreview from './components/site_preview';
 import IconPickerDropdown from './components/icon_picker_dropdown';
+import SitePreview from './components/site_preview';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },

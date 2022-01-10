@@ -1,12 +1,12 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import Icon from 'soapbox/components/icon';
-import IconButton from '../../../components/icon_button';
 import { removeFromListAdder, addToListAdder } from '../../../actions/lists';
+import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   remove: { id: 'lists.account.remove', defaultMessage: 'Remove from list' },

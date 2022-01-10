@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import Column from 'soapbox/components/column';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import ColumnHeader from './column_header';
