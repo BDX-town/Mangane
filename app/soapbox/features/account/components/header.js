@@ -280,7 +280,10 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        if (features.accountEndorsements) {
+          menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        }
+
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({

@@ -12,9 +12,10 @@ import {
   SignUpPanel,
   ProfileInfoPanel,
   ProfileMediaPanel,
+  PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
 import LinkFooter from '../features/ui/components/link_footer';
-import { getAcct } from 'soapbox/utils/accounts';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from '../selectors';
@@ -116,7 +117,11 @@ class ProfilePage extends ImmutablePureComponent {
                       {Component => <Component account={account} />}
                     </BundleContainer>
                   )}
-                  {features.suggestions && (
+                  {account && features.accountEndorsements && isLocal(account) ? (
+                    <BundleContainer fetchComponent={PinnedAccountsPanel}>
+                      {Component => <Component  account={account} />}
+                    </BundleContainer>
+                  ) : features.suggestions && (
                     <BundleContainer fetchComponent={WhoToFollowPanel}>
                       {Component => <Component />}
                     </BundleContainer>
