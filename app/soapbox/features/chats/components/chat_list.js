@@ -6,9 +6,11 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { expandChats } from 'soapbox/actions/chats';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
+
 import Chat from './chat';
 
 const messages = defineMessages({

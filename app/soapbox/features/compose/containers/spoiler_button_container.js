@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { changeComposeSpoilerness } from '../../../actions/compose';
 import SpoilerButton from '../components/spoiler_button';
 

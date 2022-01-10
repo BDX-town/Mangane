@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import {

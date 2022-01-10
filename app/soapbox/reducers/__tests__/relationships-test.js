@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import lain from 'soapbox/__fixtures__/lain.json';
+
 import {
   ACCOUNT_IMPORT,
 } from '../../actions/importer';

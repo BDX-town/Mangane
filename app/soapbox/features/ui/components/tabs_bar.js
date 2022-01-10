@@ -5,16 +5,19 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink, withRouter } from 'react-router-dom';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
 import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
 import { openModal } from '../../../actions/modal';
 import { openSidebar } from '../../../actions/sidebar';
 import Avatar from '../../../components/avatar';
 import ThemeToggle from '../../ui/components/theme_toggle_container';
+
 import ProfileDropdown from './profile_dropdown';
 
 const messages = defineMessages({

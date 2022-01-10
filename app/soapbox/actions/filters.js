@@ -1,6 +1,8 @@
 import { defineMessages } from 'react-intl';
+
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
 
 export const FILTERS_FETCH_REQUEST = 'FILTERS_FETCH_REQUEST';

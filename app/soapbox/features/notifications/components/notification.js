@@ -5,8 +5,10 @@ import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+
 import Permalink from '../../../components/permalink';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';

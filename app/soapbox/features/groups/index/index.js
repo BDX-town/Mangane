@@ -6,8 +6,10 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { fetchGroups } from '../../../actions/groups';
 import GroupCreate from '../create';
+
 import GroupCard from './card';
 
 const messages = defineMessages({

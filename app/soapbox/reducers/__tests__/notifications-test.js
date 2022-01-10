@@ -1,5 +1,6 @@
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 import { take } from 'lodash';
+
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
 import notification from 'soapbox/__fixtures__/notification.json';
 import notifications from 'soapbox/__fixtures__/notifications.json';
@@ -23,6 +24,7 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+
 import reducer from '../notifications';
 
 describe('notifications reducer', () => {

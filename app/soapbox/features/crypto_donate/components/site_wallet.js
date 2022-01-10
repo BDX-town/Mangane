@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import CryptoAddress from './crypto_address';
 
 const normalizeAddress = address => {

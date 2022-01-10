@@ -6,8 +6,10 @@ import React from 'react';
 import DatePicker from 'react-datepicker';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
+
 import { setSchedule, removeSchedule } from '../../../actions/compose';
 
 const messages = defineMessages({

@@ -1,6 +1,9 @@
 import { defineMessages } from 'react-intl';
+
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { showAlertForError } from './alerts';
 import { importFetchedAccount, importFetchedAccounts } from './importer';
 import { ME_PATCH_SUCCESS } from './me';

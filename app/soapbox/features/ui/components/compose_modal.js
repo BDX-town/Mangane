@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import IconButton from 'soapbox/components/icon_button';
+
 import { cancelReplyCompose } from '../../../actions/compose';
 import { openModal } from '../../../actions/modal';
 import ComposeFormContainer from '../../compose/containers/compose_form_container';

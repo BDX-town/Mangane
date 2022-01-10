@@ -8,7 +8,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { length } from 'stringz';
+
 import Icon from 'soapbox/components/icon';
+
 import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import Button from '../../../components/button';
@@ -28,6 +30,7 @@ import UploadButtonContainer from '../containers/upload_button_container';
 import UploadFormContainer from '../containers/upload_form_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
+
 import VisualCharacterCounter from './visual_character_counter';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';

@@ -4,9 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchUsers } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable_list';
+
 import Column from '../ui/components/column';
+
 import UnapprovedAccount from './components/unapproved_account';
 
 const messages = defineMessages({

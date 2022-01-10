@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { setHeight } from '../actions/height_cache';
 import IntersectionObserverArticle from '../components/intersection_observer_article';
 

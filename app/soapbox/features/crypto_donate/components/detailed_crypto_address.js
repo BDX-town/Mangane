@@ -2,10 +2,13 @@ import PropTypes from 'prop-types';
 import QRCode from 'qrcode.react';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import Icon from 'soapbox/components/icon';
 import { CopyableInput } from 'soapbox/features/forms';
+
 import { getExplorerUrl } from '../utils/block_explorer';
 import CoinDB from '../utils/coin_db';
+
 import CryptoIcon from './crypto_icon';
 
 export default class DetailedCryptoAddress extends ImmutablePureComponent {

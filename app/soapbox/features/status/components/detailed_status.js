@@ -6,9 +6,11 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { FormattedDate } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
+
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import { getDomain } from 'soapbox/utils/accounts';
+
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import MediaGallery from '../../../components/media_gallery';
@@ -17,6 +19,7 @@ import StatusReplyMentions from '../../../components/status_reply_mentions';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
+
 import Card from './card';
 import StatusInteractionBar from './status_interaction_bar';
 

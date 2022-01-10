@@ -8,6 +8,7 @@ import { IntlProvider } from 'react-intl';
 import { Provider, connect } from 'react-redux';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
+
 // import Introduction from '../features/introduction';
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
@@ -21,6 +22,7 @@ import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
+
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';

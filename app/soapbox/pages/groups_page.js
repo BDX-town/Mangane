@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import PromoPanel from '../features/ui/components/promo_panel';

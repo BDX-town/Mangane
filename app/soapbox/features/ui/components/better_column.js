@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import Column from 'soapbox/components/column';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+
 import ColumnHeader from './column_header';
 
 // Yes, there are 3 types of columns at this point, but this one is better, I swear

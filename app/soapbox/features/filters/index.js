@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import snackbar from 'soapbox/actions/snackbar';
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
@@ -13,6 +14,7 @@ import {
   SelectDropdown,
   Checkbox,
 } from 'soapbox/features/forms';
+
 import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
 import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';

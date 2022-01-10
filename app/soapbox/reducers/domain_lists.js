@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import {
   DOMAIN_BLOCKS_FETCH_SUCCESS,
   DOMAIN_BLOCKS_EXPAND_SUCCESS,

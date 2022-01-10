@@ -2,8 +2,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { directComposeById } from 'soapbox/actions/compose';
 import AccountSearch from 'soapbox/components/account_search';
+
 import { connectDirectStream } from '../../actions/streaming';
 import { expandDirectTimeline } from '../../actions/timelines';
 import Column from '../../components/column';

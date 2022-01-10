@@ -6,8 +6,10 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
+
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
 import { blockAccount } from '../../../actions/accounts';
 import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
 import { expandAccountTimeline } from '../../../actions/timelines';

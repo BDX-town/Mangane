@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+
 import Motion from '../../ui/util/optional_motion';
 
 export default class UploadArea extends React.PureComponent {

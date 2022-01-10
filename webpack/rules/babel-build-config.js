@@ -1,4 +1,5 @@
 const { resolve } = require('path');
+
 const { env } = require('../configuration');
 
 // This is a hack, used to force build_config @preval to recompile

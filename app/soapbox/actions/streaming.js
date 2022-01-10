@@ -1,6 +1,8 @@
 import { getSettings } from 'soapbox/actions/settings';
 import messages from 'soapbox/locales/messages';
+
 import { connectStream } from '../stream';
+
 import { updateConversations } from './conversations';
 import { fetchFilters } from './filters';
 import { updateNotificationsQueue, expandNotifications } from './notifications';

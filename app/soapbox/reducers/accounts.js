@@ -3,6 +3,7 @@ import {
   List as ImmutableList,
   fromJS,
 } from 'immutable';
+
 import {
   ADMIN_USERS_FETCH_SUCCESS,
   ADMIN_USERS_TAG_REQUEST,
@@ -30,6 +31,7 @@ import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 's
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
+
 import {
   ACCOUNT_IMPORT,
   ACCOUNTS_IMPORT,

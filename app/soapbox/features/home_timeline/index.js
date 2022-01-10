@@ -4,8 +4,10 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { getFeatures } from 'soapbox/utils/features';
+
 import { expandHomeTimeline } from '../../actions/timelines';
 import Column from '../../components/column';
 import StatusListContainer from '../ui/containers/status_list_container';

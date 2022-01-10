@@ -4,6 +4,7 @@ import {
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
+
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,

@@ -2,12 +2,15 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Icon from 'soapbox/components/icon';
 import { makeGetAccount } from 'soapbox/selectors';
+
 import { removeFromAliases } from '../../actions/aliases';
 import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
+
 import Account from './components/account';
 import Search from './components/search';
 

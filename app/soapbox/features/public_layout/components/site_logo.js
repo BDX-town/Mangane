@@ -1,6 +1,7 @@
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
 const mapStateToProps = (state, props) => ({

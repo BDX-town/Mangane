@@ -6,6 +6,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { getSettings } from 'soapbox/actions/settings';
 
 const mapStateToProps = state => {

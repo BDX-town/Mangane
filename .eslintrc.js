@@ -236,7 +236,7 @@ module.exports = {
           'object',
           'type',
         ],
-        'newlines-between': 'ignore',
+        'newlines-between': 'always',
         alphabetize: { order: 'asc' },
       },
     ],

@@ -4,7 +4,9 @@ import './precheck';
 import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import { NODE_ENV } from 'soapbox/build_config';
+
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
 import * as perf from './performance';

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { getSettings, changeSetting } from '../../../actions/settings';
 import ColumnSettings from '../components/column_settings';
 

@@ -3,8 +3,10 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Button from 'soapbox/components/button';
 import Column from 'soapbox/features/ui/components/column';
+
 import { fetchList, deleteList } from '../../actions/lists';
 import { openModal } from '../../actions/modal';
 import { connectListStream } from '../../actions/streaming';

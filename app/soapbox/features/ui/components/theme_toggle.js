@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages } from 'react-intl';
 import Toggle from 'react-toggle';
+
 import Icon from '../../../components/icon';
 
 const messages = defineMessages({

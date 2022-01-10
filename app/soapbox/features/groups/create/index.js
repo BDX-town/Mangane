@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { changeValue, submit, reset } from '../../../actions/group_editor';
 
 const messages = defineMessages({

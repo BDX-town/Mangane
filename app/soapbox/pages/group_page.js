@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import { fetchGroup } from '../actions/groups';
 import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import GroupPanel from '../features/groups/timeline/components/panel';

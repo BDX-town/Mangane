@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({

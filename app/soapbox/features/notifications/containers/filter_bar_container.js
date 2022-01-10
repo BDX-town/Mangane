@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { getFeatures } from 'soapbox/utils/features';
+
 import { setFilter } from '../../../actions/notifications';
 import FilterBar from '../components/filter_bar';
 

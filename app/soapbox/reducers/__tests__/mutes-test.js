@@ -1,8 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import {
   MUTES_INIT_MODAL,
   MUTES_TOGGLE_HIDE_NOTIFICATIONS,
 } from 'soapbox/actions/mutes';
+
 import reducer from '../mutes';
 
 describe('mutes reducer', () => {

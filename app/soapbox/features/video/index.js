@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
+
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 

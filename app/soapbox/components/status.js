@@ -6,13 +6,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
+
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import { getDomain } from 'soapbox/utils/accounts';
+
 import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
+
 import AttachmentThumbs from './attachment_thumbs';
 import Avatar from './avatar';
 import AvatarComposite from './avatar_composite';

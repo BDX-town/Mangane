@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+
 import { EMOJI_USE } from '../actions/emojis';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';

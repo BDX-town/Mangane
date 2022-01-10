@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
 import Column from 'soapbox/components/column';
 import ColumnHeader from 'soapbox/components/column_header';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';

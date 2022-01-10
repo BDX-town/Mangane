@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 // import ColumnSettingsContainer from './containers/column_settings_container';
 import { NavLink } from 'react-router-dom';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Column from 'soapbox/components/column';
@@ -14,6 +15,7 @@ import Icon from 'soapbox/components/icon';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
+
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
 import { fetchPatronAccount } from '../../actions/patron';

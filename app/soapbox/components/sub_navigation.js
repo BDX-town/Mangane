@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import Helmet from 'soapbox/components/helmet';
 import Icon from 'soapbox/components/icon';

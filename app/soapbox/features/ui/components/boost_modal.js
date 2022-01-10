@@ -3,8 +3,10 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Icon from 'soapbox/components/icon';
+
 import Avatar from '../../../components/avatar';
 import Button from '../../../components/button';
 import DisplayName from '../../../components/display_name';

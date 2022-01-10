@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchCaptcha } from 'soapbox/actions/auth';
 import { TextInput } from 'soapbox/features/forms';
 

@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { GROUP_UPDATE_SUCCESS } from '../actions/group_editor';
 import {
   GROUP_FETCH_SUCCESS,

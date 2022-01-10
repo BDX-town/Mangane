@@ -3,6 +3,7 @@ import {
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
+
 import reducer from '../admin';
 
 describe('admin reducer', () => {

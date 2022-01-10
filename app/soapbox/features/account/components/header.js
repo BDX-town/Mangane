@@ -10,6 +10,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
 import { openModal } from 'soapbox/actions/modal';
 import Avatar from 'soapbox/components/avatar';
 import IconButton from 'soapbox/components/icon_button';

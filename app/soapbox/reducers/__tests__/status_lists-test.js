@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import reducer from '../status_lists';
 
 describe('status_lists reducer', () => {

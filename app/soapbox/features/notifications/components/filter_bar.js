@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
 import FilterBar from 'soapbox/components/filter_bar';
 import Icon from 'soapbox/components/icon';
 

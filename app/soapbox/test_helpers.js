@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
+
 import rootReducer from 'soapbox/reducers';
 
 // Mock Redux

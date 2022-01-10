@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
   closeProfileHoverCard,

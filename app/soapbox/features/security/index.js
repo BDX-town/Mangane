@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   changeEmail,
   changePassword,
@@ -19,6 +20,7 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
+
 import { fetchMfa } from '../../actions/mfa';
 import Column from '../ui/components/column';
 

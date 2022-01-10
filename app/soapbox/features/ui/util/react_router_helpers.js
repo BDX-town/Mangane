@@ -3,8 +3,10 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+
 import BundleColumnError from '../components/bundle_column_error';
 import ColumnForbidden from '../components/column_forbidden';
 import ColumnLoading from '../components/column_loading';

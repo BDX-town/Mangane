@@ -4,11 +4,13 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   fetchBackups,
   createBackup,
 } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
+
 import Column from '../ui/components/better_column';
 
 const messages = defineMessages({

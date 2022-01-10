@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Sticky from 'react-stickynode';
+
 import Helmet from 'soapbox/components/helmet';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -17,6 +18,7 @@ import { findAccountByUsername } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import { displayFqn } from 'soapbox/utils/state';
+
 import HeaderContainer from '../features/account_timeline/containers/header_container';
 import LinkFooter from '../features/ui/components/link_footer';
 import { makeGetAccount } from '../selectors';

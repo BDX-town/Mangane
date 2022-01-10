@@ -5,8 +5,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { findAccountByUsername } from 'soapbox/selectors';
+
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
 import LoadingIndicator from '../../components/loading_indicator';

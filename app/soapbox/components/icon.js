@@ -7,6 +7,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import ForkAwesomeIcon from './fork_awesome_icon';
 import SvgIcon from './svg_icon';
 

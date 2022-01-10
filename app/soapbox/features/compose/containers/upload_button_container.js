@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { uploadCompose } from '../../../actions/compose';
 import UploadButton from '../components/upload_button';
 

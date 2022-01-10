@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchUsers } from 'soapbox/actions/admin';
 import compareId from 'soapbox/compare_id';
 import AccountListPanel from 'soapbox/features/ui/components/account_list_panel';

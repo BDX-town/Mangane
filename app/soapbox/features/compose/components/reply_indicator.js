@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
+
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import IconButton from '../../../components/icon_button';

@@ -2,9 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { changeSetting } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { SimpleForm, TextInput } from 'soapbox/features/forms';
+
 import Column from '../ui/components/column';
 
 const messages = defineMessages({

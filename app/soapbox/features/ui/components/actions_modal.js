@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+
 import Avatar from '../../../components/avatar';
 import Button from '../../../components/button';
 import DisplayName from '../../../components/display_name';

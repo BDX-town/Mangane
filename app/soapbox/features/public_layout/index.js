@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
@@ -9,8 +10,10 @@ import {
   ModalContainer,
 } from 'soapbox/features/ui/util/async-components';
 import { isStandalone } from 'soapbox/utils/state';
+
 import AboutPage from '../about';
 import LandingPage from '../landing_page';
+
 import Footer from './components/footer';
 import Header from './components/header';
 

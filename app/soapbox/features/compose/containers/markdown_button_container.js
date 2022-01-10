@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
+
 import { getFeatures } from 'soapbox/utils/features';
+
 import { changeComposeContentType } from '../../../actions/compose';
 import MarkdownButton from '../components/markdown_button';
 

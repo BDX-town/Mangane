@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import snackbar from 'soapbox/actions/snackbar';
 import Button from 'soapbox/components/button';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
@@ -14,6 +15,7 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
+
 import {
   fetchMfa,
   fetchBackupCodes,

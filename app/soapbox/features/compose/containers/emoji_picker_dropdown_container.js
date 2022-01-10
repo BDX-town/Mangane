@@ -1,6 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { useEmoji } from '../../../actions/emojis';
 import { getSettings, changeSetting } from '../../../actions/settings';
 import EmojiPickerDropdown from '../components/emoji_picker_dropdown';

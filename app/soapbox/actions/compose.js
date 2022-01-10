@@ -1,13 +1,16 @@
 import { CancelToken, isCancel } from 'axios';
 import { throttle } from 'lodash';
 import { defineMessages } from 'react-intl';
+
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
+
 import api from '../api';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
 import { tagHistory } from '../settings';
 import resizeImage from '../utils/resize_image';
+
 import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';

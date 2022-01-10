@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { updateMrf } from 'soapbox/actions/mrf';
 import snackbar from 'soapbox/actions/snackbar';
 import { SimpleForm, Checkbox } from 'soapbox/features/forms';

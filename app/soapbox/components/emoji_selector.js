@@ -4,6 +4,7 @@ import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import emojify from 'soapbox/features/emoji/emoji';
 

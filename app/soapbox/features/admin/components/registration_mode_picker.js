@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { updateConfig } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import {

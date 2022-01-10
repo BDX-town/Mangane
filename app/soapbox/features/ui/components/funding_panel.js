@@ -3,8 +3,10 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchPatronInstance } from 'soapbox/actions/patron';
 import Icon from 'soapbox/components/icon';
+
 import ProgressBar from '../../../components/progress_bar';
 
 const moneyFormat = amount => (

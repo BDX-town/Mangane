@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
 import {
   TRENDS_FETCH_REQUEST,
   TRENDS_FETCH_SUCCESS,

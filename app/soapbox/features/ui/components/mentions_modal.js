@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchStatusWithContext } from 'soapbox/actions/statuses';
 import IconButton from 'soapbox/components/icon_button';
 import LoadingIndicator from 'soapbox/components/loading_indicator';

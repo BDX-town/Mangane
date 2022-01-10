@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import {
   BOOKMARKED_STATUSES_FETCH_REQUEST,
   BOOKMARKED_STATUSES_FETCH_SUCCESS,

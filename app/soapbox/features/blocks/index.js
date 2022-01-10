@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchBlocks, expandBlocks } from '../../actions/blocks';
 import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';

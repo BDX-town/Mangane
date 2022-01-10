@@ -5,11 +5,13 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load_more';
 import RadioButton from 'soapbox/components/radio_button';
 import Column from 'soapbox/features/ui/components/column';
 import { getFeatures } from 'soapbox/utils/features';
+
 import AccountCard from './components/account_card';
 
 const messages = defineMessages({

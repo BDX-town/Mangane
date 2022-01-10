@@ -8,15 +8,18 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+
 import { closeSidebar } from '../actions/sidebar';
 import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 import { isAdmin, getBaseURL } from '../utils/accounts';
+
 import Avatar from './avatar';
 import DisplayName from './display_name';
 import Icon from './icon';

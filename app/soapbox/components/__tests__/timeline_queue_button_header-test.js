@@ -1,6 +1,8 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+
 import { createComponent } from 'soapbox/test_helpers';
+
 import TimelineQueueButtonHeader from '../timeline_queue_button_header';
 
 const messages = defineMessages({

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import Toggle from 'react-toggle';
+
 import StatusContent from '../../../components/status_content';
 import Bundle from '../../ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../../ui/util/async-components';

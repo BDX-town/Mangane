@@ -1,5 +1,6 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
+
 import { fetchAccountByUsername } from 'soapbox/actions/accounts';
 import { deactivateUsers, deleteUsers, deleteStatus, toggleStatusSensitivity } from 'soapbox/actions/admin';
 import { openModal } from 'soapbox/actions/modal';

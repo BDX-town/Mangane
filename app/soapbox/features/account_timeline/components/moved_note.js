@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
+
 import AvatarOverlay from '../../../components/avatar_overlay';
 import DisplayName from '../../../components/display_name';
 

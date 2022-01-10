@@ -6,6 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';

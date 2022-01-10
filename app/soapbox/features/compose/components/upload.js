@@ -5,9 +5,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
+
 import Motion from '../../ui/util/optional_motion';
 
 const MIMETYPE_ICONS = {

@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 
 const messages = defineMessages({

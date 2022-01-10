@@ -8,6 +8,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modal';
 import { initReportById } from 'soapbox/actions/reports';

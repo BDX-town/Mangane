@@ -6,12 +6,15 @@ import {
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
 import { defineMessages } from 'react-intl';
+
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { joinPublicPath } from 'soapbox/utils/static';
+
 import api, { getLinks } from '../api';
 import { getFilters, regexFromFilters } from '../selectors';
 import { unescapeHTML } from '../utils/html';
+
 import { fetchRelationships } from './accounts';
 import {
   importFetchedAccount,

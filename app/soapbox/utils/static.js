@@ -4,6 +4,7 @@
  */
 
 import { join } from 'path';
+
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 export const joinPublicPath = (...paths) => {

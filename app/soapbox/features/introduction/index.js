@@ -4,6 +4,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import ReactSwipeableViews from 'react-swipeable-views';
+
 import { closeOnboarding } from '../../actions/onboarding';
 
 const FrameWelcome = ({ domain, onNext }) => (

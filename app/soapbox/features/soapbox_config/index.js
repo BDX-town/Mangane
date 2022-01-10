@@ -8,6 +8,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import Overlay from 'react-overlays/lib/Overlay';
 import { connect } from 'react-redux';
+
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
@@ -26,8 +27,10 @@ import {
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { isMobile } from 'soapbox/is_mobile';
 import { getFeatures } from 'soapbox/utils/features';
+
 import Accordion from '../ui/components/accordion';
 import Column from '../ui/components/column';
+
 import IconPickerDropdown from './components/icon_picker_dropdown';
 import SitePreview from './components/site_preview';
 

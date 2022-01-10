@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
 import { SUGGESTIONS_DISMISS } from 'soapbox/actions/suggestions';
+
 import reducer from '../suggestions';
 
 describe('suggestions reducer', () => {

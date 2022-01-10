@@ -6,12 +6,14 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+
 import { openModal } from 'soapbox/actions/modal';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
 import RelativeTimestamp from './relative_timestamp';
 
 const messages = defineMessages({

@@ -1,8 +1,10 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
 } from 'soapbox/actions/search';
+
 import reducer from '../search';
 
 describe('search reducer', () => {

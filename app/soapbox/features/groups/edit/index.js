@@ -4,7 +4,9 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import MissingIndicator from 'soapbox/components/missing_indicator';
+
 import { changeValue, submit, setUp } from '../../../actions/group_editor';
 import Column from '../../../components/column';
 import LoadingIndicator from '../../../components/loading_indicator';

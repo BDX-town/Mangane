@@ -1,5 +1,7 @@
 import { Set as ImmutableSet } from 'immutable';
+
 import ConfigDB from 'soapbox/utils/config_db';
+
 import { fetchConfig, updateConfig } from './admin';
 
 const simplePolicyMerge = (simplePolicy, host, restrictions) => {

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { addPollOption, removePollOption, changePollOption, changePollSettings, removePoll } from '../../../actions/compose';
 import {
   clearComposeSuggestions,

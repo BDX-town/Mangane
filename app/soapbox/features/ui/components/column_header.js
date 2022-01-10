@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 // import classNames from 'classnames';
 // import Icon from 'soapbox/components/icon';
 import SubNavigation from 'soapbox/components/sub_navigation';

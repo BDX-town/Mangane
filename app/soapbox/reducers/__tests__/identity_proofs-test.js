@@ -1,5 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import * as actions from 'soapbox/actions/identity_proofs';
+
 import reducer from '../identity_proofs';
 
 describe('identity_proofs reducer', () => {

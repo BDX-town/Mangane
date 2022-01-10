@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   SimpleInput,
   SimpleForm,

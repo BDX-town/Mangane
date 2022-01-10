@@ -1,7 +1,9 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import KVStore from 'soapbox/storage/kv_store';
 import { ConfigDB } from 'soapbox/utils/config_db';
+
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin';
 import {
   SOAPBOX_CONFIG_REQUEST_SUCCESS,

@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
+
 import Button from '../../../components/button';
 import Icon from '../../../components/icon';
 

@@ -3,6 +3,7 @@ import {
   OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
+
 import { ADMIN_LOG_FETCH_SUCCESS } from 'soapbox/actions/admin';
 
 const initialState = ImmutableMap({

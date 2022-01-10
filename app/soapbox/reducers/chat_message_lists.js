@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import {
   CHATS_FETCH_SUCCESS,
   CHATS_EXPAND_SUCCESS,

@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   CHATS_FETCH_SUCCESS,
   CHATS_FETCH_REQUEST,

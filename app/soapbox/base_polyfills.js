@@ -7,6 +7,7 @@ import includes from 'array-includes';
 import isNaN from 'is-nan';
 import assign from 'object-assign';
 import values from 'object.values';
+
 import { decode as decodeBase64 } from './utils/base64';
 
 if (!Array.prototype.includes) {

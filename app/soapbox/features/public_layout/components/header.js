@@ -5,12 +5,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import IconButton from 'soapbox/components/icon_button';
 import LoginForm from 'soapbox/features/auth_login/components/login_form';
 import OtpAuthForm from 'soapbox/features/auth_login/components/otp_auth_form';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
 import SiteLogo from './site_logo';
 
 const messages = defineMessages({

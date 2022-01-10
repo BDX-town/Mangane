@@ -1,9 +1,11 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
 } from 'soapbox/actions/statuses';
+
 import reducer from '../statuses';
 
 describe('statuses reducer', () => {

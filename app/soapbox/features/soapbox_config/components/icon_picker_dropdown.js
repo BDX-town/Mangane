@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({

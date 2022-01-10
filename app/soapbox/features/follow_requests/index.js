@@ -5,10 +5,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchFollowRequests, expandFollowRequests } from '../../actions/accounts';
 import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
+
 import AccountAuthorizeContainer from './containers/account_authorize_container';
 
 const messages = defineMessages({

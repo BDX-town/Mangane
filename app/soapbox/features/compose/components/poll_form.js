@@ -7,6 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';

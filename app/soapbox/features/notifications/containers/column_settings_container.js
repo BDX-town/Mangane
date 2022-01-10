@@ -1,6 +1,8 @@
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getFeatures } from 'soapbox/utils/features';
+
 import { openModal } from '../../../actions/modal';
 import { setFilter } from '../../../actions/notifications';
 import { clearNotifications } from '../../../actions/notifications';

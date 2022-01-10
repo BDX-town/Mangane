@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import { defaultSettings } from 'soapbox/actions/settings';
 import { brandColorToCSS } from 'soapbox/utils/theme';
 

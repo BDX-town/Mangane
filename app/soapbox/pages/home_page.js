@@ -3,6 +3,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Sticky from 'react-stickynode';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
@@ -18,6 +19,7 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import { getFeatures } from 'soapbox/utils/features';
+
 import Avatar from '../components/avatar';
 import ComposeFormContainer from '../features/compose/containers/compose_form_container';
 import BundleContainer from '../features/ui/containers/bundle_container';

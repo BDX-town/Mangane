@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+
 import {
   EMOJI_REACT_REQUEST,
   UNEMOJI_REACT_REQUEST,

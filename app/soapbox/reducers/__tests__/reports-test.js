@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
+
 import reducer from '../reports';
 
 describe('reports reducer', () => {

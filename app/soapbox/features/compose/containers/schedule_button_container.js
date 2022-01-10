@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { addSchedule, removeSchedule } from '../../../actions/compose';
 import ScheduleButton from '../components/schedule_button';
 

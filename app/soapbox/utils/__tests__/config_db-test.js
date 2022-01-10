@@ -1,5 +1,7 @@
 import { fromJS } from 'immutable';
+
 import config_db from 'soapbox/__fixtures__/config_db.json';
+
 import { ConfigDB } from '../config_db';
 
 test('find', () => {

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { expandConversations } from '../../../actions/conversations';
 import ConversationsList from '../components/conversations_list';
 

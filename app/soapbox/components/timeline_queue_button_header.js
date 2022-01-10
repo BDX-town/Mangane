@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
 

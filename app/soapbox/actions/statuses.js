@@ -1,7 +1,9 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
+
 import api from '../api';
+
 import { importFetchedStatus, importFetchedStatuses } from './importer';
 import { openModal } from './modal';
 import { deleteFromTimelines } from './timelines';

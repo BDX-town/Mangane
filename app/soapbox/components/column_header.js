@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+
 // import classNames from 'classnames';
 // import { injectIntl, defineMessages } from 'react-intl';
 // import Icon from 'soapbox/components/icon';

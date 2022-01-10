@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
+
 import { fetchAliasesSuggestions, clearAliasesSuggestions, changeAliasesSuggestions } from '../../../actions/aliases';
 
 const messages = defineMessages({

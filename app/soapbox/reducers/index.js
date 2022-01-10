@@ -1,6 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
 import { combineReducers } from 'redux-immutable';
+
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
+
 import accounts from './accounts';
 import accounts_counters from './accounts_counters';
 import accounts_meta from './accounts_meta';

@@ -5,6 +5,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchUsers } from 'soapbox/actions/admin';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import AccountContainer from 'soapbox/containers/account_container';

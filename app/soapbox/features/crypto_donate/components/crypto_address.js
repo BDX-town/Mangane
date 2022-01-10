@@ -2,11 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import Icon from 'soapbox/components/icon';
 import { CopyableInput } from 'soapbox/features/forms';
+
 import { getExplorerUrl } from '../utils/block_explorer';
 import CoinDB from '../utils/coin_db';
+
 import CryptoIcon from './crypto_icon';
 
 export default @connect()

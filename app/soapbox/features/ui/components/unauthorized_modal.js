@@ -4,6 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
 import IconButton from 'soapbox/components/icon_button';

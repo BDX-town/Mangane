@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+
 import ColumnsArea from '../components/columns_area';
 
 const mapStateToProps = state => ({

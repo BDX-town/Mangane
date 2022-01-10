@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
+
 import { fetchLists } from 'soapbox/actions/lists';
 import Icon from 'soapbox/components/icon';
 

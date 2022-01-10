@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
+
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,

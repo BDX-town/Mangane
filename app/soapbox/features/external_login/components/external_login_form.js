@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { createAppAndRedirect, loginWithCode } from 'soapbox/actions/external_auth';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';

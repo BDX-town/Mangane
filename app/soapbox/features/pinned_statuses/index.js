@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import MissingIndicator from 'soapbox/components/missing_indicator';
+
 import { fetchPinnedStatuses } from '../../actions/pin_statuses';
 import StatusList from '../../components/status_list';
 import Column from '../ui/components/column';

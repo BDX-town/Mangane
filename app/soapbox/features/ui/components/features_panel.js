@@ -4,6 +4,7 @@ import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { getBaseURL } from 'soapbox/utils/accounts';

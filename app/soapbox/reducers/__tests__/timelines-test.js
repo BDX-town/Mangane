@@ -1,9 +1,11 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import {
   TIMELINE_EXPAND_REQUEST,
   TIMELINE_EXPAND_FAIL,
   TIMELINE_EXPAND_SUCCESS,
 } from 'soapbox/actions/timelines';
+
 import reducer from '../timelines';
 
 describe('timelines reducer', () => {

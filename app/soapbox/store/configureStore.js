@@ -1,5 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
+
 import errorsMiddleware from '../middleware/errors';
 import soundsMiddleware from '../middleware/sounds';
 import appReducer from '../reducers';

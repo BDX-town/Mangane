@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedNumber } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';

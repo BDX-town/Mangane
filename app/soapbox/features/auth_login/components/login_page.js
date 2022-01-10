@@ -3,9 +3,11 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { isStandalone } from 'soapbox/utils/state';
+
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
 

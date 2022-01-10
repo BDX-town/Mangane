@@ -5,8 +5,11 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import spring from 'react-motion/lib/spring';
 import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
+
 import Motion from '../features/ui/util/optional_motion';
+
 import IconButton from './icon_button';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;

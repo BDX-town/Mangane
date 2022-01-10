@@ -4,6 +4,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import StatusContainer from 'soapbox/containers/status_container';
 
 export default class MaterialStatus extends React.Component {

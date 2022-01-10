@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import {
   COMPOSE_MENTION,
   COMPOSE_REPLY,

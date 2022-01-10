@@ -1,4 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import reducer from '../push_notifications';
 
 describe('push_notifications reducer', () => {

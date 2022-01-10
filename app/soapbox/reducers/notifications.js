@@ -1,9 +1,11 @@
 import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
+
 import {
   MARKER_FETCH_SUCCESS,
   MARKER_SAVE_REQUEST,
   MARKER_SAVE_SUCCESS,
 } from 'soapbox/actions/markers';
+
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,

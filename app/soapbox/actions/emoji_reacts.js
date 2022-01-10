@@ -1,6 +1,9 @@
 import { List as ImmutableList } from 'immutable';
+
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { importFetchedAccounts, importFetchedStatus } from './importer';
 import { favourite, unfavourite } from './interactions';
 

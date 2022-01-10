@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
+
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_UNFOLLOW_SUCCESS,

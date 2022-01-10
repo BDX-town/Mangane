@@ -5,7 +5,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import { accountSearch } from 'soapbox/actions/accounts';
+
 import AutosuggestInput from './autosuggest_input';
 
 const noOp = () => {};

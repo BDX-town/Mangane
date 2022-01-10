@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import Column from 'soapbox/components/column';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+
 import ColumnHeader from '../../../components/column_header';
 
 export default class ColumnLoading extends ImmutablePureComponent {

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { connectHashtagStream } from '../../actions/streaming';
 import { expandHashtagTimeline, clearTimeline } from '../../actions/timelines';
 import Column from '../../components/column';

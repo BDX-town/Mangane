@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import {
   FOLLOWERS_FETCH_SUCCESS,
   FOLLOWERS_EXPAND_SUCCESS,

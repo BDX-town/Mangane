@@ -8,6 +8,7 @@
  */
 
 import { defineMessages } from 'react-intl';
+
 import { createAccount } from 'soapbox/actions/accounts';
 import { createApp } from 'soapbox/actions/apps';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
@@ -18,7 +19,9 @@ import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
+
 import api, { baseClient } from '../api';
+
 import { importFetchedAccount } from './importer';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';

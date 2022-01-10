@@ -5,8 +5,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import emojify from 'soapbox/features/emoji/emoji';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+
 import Avatar from './avatar';
 import DisplayName from './display_name';
 import Icon from './icon';

@@ -1,5 +1,7 @@
 import { connect } from 'react-redux';
+
 import { getFeatures } from 'soapbox/utils/features';
+
 import { expandSearch, setFilter } from '../../../actions/search';
 import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
 import SearchResults from '../components/search_results';

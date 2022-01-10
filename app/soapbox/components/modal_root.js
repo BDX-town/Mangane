@@ -4,6 +4,7 @@ import React from 'react';
 import 'wicg-inert';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { cancelReplyCompose } from '../actions/compose';
 import { openModal } from '../actions/modal';
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import ScrollableList from '../../../components/scrollable_list';
 import ConversationContainer from '../containers/conversation_container';
 

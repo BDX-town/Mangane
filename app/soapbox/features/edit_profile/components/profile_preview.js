@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { getAcct, isVerified } from 'soapbox/utils/accounts';

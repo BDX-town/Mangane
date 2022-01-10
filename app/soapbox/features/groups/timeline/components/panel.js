@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
+
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({

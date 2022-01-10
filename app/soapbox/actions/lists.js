@@ -1,5 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { showAlertForError } from './alerts';
 import { importFetchedAccounts } from './importer';
 

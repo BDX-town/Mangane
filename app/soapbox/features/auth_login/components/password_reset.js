@@ -3,6 +3,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import { resetPassword } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';

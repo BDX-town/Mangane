@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,

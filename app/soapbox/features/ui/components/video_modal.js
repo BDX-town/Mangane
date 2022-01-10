@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
+
 import Video from 'soapbox/features/video';
 
 export default class VideoModal extends ImmutablePureComponent {

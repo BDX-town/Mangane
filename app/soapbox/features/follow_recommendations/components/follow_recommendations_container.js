@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import Button from 'soapbox/components/button';
+
 import FollowRecommendationsList from './follow_recommendations_list';
 
 export default class FollowRecommendationsContainer extends React.Component {

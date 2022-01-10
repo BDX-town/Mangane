@@ -1,6 +1,8 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
 import { ACCOUNT_BLOCK_SUCCESS, ACCOUNT_MUTE_SUCCESS } from 'soapbox/actions/accounts';
 import { DOMAIN_BLOCK_SUCCESS } from 'soapbox/actions/domain_blocks';
+
 import {
   SUGGESTIONS_FETCH_REQUEST,
   SUGGESTIONS_FETCH_SUCCESS,

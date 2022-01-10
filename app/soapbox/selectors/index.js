@@ -4,6 +4,7 @@ import {
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
 import { createSelector } from 'reselect';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';

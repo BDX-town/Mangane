@@ -1,7 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+
 import DevelopersChallenge from './developers_challenge';
 import DevelopersMenu from './developers_menu';
 

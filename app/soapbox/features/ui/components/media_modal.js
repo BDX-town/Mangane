@@ -5,11 +5,13 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ReactSwipeableViews from 'react-swipeable-views';
+
 import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
 import Audio from 'soapbox/features/audio';
 import Video from 'soapbox/features/video';
+
 import ImageLoader from './image_loader';
 
 const messages = defineMessages({

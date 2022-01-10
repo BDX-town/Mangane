@@ -1,6 +1,7 @@
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   followAccount,
   unfollowAccount,

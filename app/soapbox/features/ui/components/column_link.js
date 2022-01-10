@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
 
 const ColumnLink = ({ icon, src, text, to, href, method, badge }) => {

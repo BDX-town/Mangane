@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
+
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,

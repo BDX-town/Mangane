@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';

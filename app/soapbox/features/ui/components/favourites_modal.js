@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchFavourites } from 'soapbox/actions/interactions';
 import IconButton from 'soapbox/components/icon_button';
 import LoadingIndicator from 'soapbox/components/loading_indicator';

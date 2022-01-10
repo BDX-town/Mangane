@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';

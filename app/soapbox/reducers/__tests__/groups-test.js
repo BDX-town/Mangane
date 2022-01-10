@@ -1,4 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import reducer from '../groups';
 
 describe('groups reducer', () => {

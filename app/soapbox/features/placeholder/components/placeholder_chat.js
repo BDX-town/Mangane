@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { randomIntFromInterval, generateText } from '../utils';
+
 import PlaceholderAvatar from './placeholder_avatar';
 import PlaceholderDisplayName from './placeholder_display_name';
 

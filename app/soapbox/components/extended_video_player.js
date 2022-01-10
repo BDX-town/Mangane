@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import { isIOS } from 'soapbox/is_mobile';
 
 export default class ExtendedVideoPlayer extends React.PureComponent {

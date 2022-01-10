@@ -9,6 +9,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
@@ -26,7 +27,9 @@ import { makeGetAccount } from 'soapbox/selectors';
 import { isVerified } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
+
 import Column from '../ui/components/column';
+
 import ProfilePreview from './components/profile_preview';
 
 const hidesNetwork = account => {

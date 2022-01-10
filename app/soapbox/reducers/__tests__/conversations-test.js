@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import * as actions from 'soapbox/actions/conversations';
+
 import reducer from '../conversations';
 
 describe('conversations reducer', () => {

@@ -4,6 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import { otpVerify, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { SimpleInput } from 'soapbox/features/forms';
 

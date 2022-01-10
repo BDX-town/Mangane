@@ -4,10 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { approveUsers } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import IconButton from 'soapbox/components/icon_button';
 import { makeGetAccount } from 'soapbox/selectors';
+
 import { rejectUserModal } from '../../../actions/moderation';
 
 const messages = defineMessages({

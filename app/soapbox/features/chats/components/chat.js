@@ -4,10 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import { makeGetChat } from 'soapbox/selectors';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 

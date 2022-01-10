@@ -8,6 +8,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -15,6 +16,7 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 import { getAcct, isAdmin, isModerator, isLocal, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
+
 import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;

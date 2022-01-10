@@ -5,12 +5,14 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
 import { isStaff } from 'soapbox/utils/accounts';
+
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 
 const messages = defineMessages({

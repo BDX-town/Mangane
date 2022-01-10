@@ -1,12 +1,14 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
 const { join, resolve } = require('path');
+
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
+
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 

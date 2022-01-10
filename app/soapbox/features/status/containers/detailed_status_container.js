@@ -1,9 +1,11 @@
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { launchChat } from 'soapbox/actions/chats';
 import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
 import { getSettings } from 'soapbox/actions/settings';
+
 import { blockAccount } from '../../../actions/accounts';
 import { showAlertForError } from '../../../actions/alerts';
 import {

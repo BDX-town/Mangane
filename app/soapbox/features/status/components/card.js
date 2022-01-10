@@ -1,9 +1,11 @@
 import punycode from 'punycode';
+
 import classnames from 'classnames';
 import { is, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import Icon from 'soapbox/components/icon';
 
 const IDNA_PREFIX = 'xn--';

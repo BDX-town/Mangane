@@ -8,6 +8,7 @@
 const { emojiIndex } = require('emoji-mart');
 let data = require('emoji-mart/data/all.json');
 const { uncompress: emojiMartUncompress } = require('emoji-mart/dist/utils/data');
+
 const emojiMap = require('./emoji_map.json');
 const { unicodeToFilename } = require('./unicode_to_filename');
 const { unicodeToUnifiedName } = require('./unicode_to_unified_name');

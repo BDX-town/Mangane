@@ -1,5 +1,6 @@
 import { Set as ImmutableSet } from 'immutable';
 import { connect } from 'react-redux';
+
 import { toggleStatusReport } from '../../../actions/reports';
 import StatusCheckBox from '../components/status_check_box';
 

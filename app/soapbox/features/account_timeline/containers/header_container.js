@@ -2,6 +2,7 @@ import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   verifyUser,
   unverifyUser,
@@ -16,6 +17,7 @@ import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation
 import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { isAdmin } from 'soapbox/utils/accounts';
+
 import {
   followAccount,
   unfollowAccount,

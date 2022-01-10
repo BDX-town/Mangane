@@ -2,6 +2,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import Sticky from 'react-stickynode';
+
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
@@ -13,6 +14,7 @@ import {
 } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import { getFeatures } from 'soapbox/utils/features';
+
 import BundleContainer from '../features/ui/containers/bundle_container';
 
 const mapStateToProps = state => {

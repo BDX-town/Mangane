@@ -5,8 +5,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Column from 'soapbox/components/column';
 import SubNavigation from 'soapbox/components/sub_navigation';
+
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
 import StatusList from '../../components/status_list';
 

@@ -10,6 +10,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
+
 import { fetchChats } from 'soapbox/actions/chats';
 import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
 import { fetchMarker } from 'soapbox/actions/markers';
@@ -31,6 +32,7 @@ import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
 import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { uploadCompose, resetCompose } from '../../actions/compose';
@@ -41,6 +43,7 @@ import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';
 import { expandHomeTimeline } from '../../actions/timelines';
+
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 import TabsBar from './components/tabs_bar';
 import BundleContainer from './containers/bundle_container';

@@ -3,6 +3,7 @@ import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
+
 import { muteAccount } from 'soapbox/actions/accounts';
 import { closeModal } from 'soapbox/actions/modal';
 import { toggleHideNotifications } from 'soapbox/actions/mutes';

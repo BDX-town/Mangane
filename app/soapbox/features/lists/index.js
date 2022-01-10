@@ -5,12 +5,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { fetchLists } from '../../actions/lists';
 import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
 import ColumnLink from '../ui/components/column_link';
 import ColumnSubheading from '../ui/components/column_subheading';
+
 import NewListForm from './components/new_list_form';
 
 const messages = defineMessages({

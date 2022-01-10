@@ -3,14 +3,17 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
+
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import { getDomain } from 'soapbox/utils/accounts';
+
 import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
 import { buildStatus } from '../util/pending_status_builder';
+
 import PollPreview from './poll_preview';
 
 const shouldHaveCard = pendingStatus => {

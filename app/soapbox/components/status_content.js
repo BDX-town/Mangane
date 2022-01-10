@@ -4,12 +4,15 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import PollContainer from 'soapbox/containers/poll_container';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
+
 import { isRtl } from '../rtl';
+
 import Permalink from './permalink';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)

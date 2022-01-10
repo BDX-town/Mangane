@@ -6,6 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   fetchRemovedAccounts,
   expandRemovedAccounts,

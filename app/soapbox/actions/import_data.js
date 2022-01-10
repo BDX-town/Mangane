@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
+
 import snackbar from 'soapbox/actions/snackbar';
+
 import api from '../api';
 
 export const IMPORT_FOLLOWS_REQUEST = 'IMPORT_FOLLOWS_REQUEST';

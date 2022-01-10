@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Column from '../ui/components/column';
 import LinkFooter from '../ui/components/link_footer';
 import PromoPanel from '../ui/components/promo_panel';

@@ -1,4 +1,5 @@
 import { Map as ImmutableMap } from 'immutable';
+
 import {
   PROFILE_HOVER_CARD_OPEN,
   PROFILE_HOVER_CARD_CLOSE,

@@ -8,6 +8,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { launchChat } from 'soapbox/actions/chats';
 import {
   deactivateUserModal,
@@ -21,6 +22,7 @@ import Column from 'soapbox/components/column';
 import PullToRefresh from 'soapbox/components/pull_to_refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
+
 import { blockAccount } from '../../actions/accounts';
 import {
   replyCompose,
@@ -53,6 +55,7 @@ import MissingIndicator from '../../components/missing_indicator';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
 import { makeGetStatus } from '../../selectors';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
+
 import ActionBar from './components/action_bar';
 import DetailedStatus from './components/detailed_status';
 import ThreadStatus from './components/thread_status';

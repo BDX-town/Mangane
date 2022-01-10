@@ -1,4 +1,5 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api, { getLinks } from '../api';
 
 export const DOMAIN_BLOCK_REQUEST = 'DOMAIN_BLOCK_REQUEST';

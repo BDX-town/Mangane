@@ -6,6 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { fetchChat, markChatRead } from 'soapbox/actions/chats';
 import Avatar from 'soapbox/components/avatar';
 import Column from 'soapbox/components/column';
@@ -13,6 +14,7 @@ import ColumnBackButton from 'soapbox/components/column_back_button';
 import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
+
 import ChatBox from './components/chat_box';
 
 const mapStateToProps = (state, { params }) => {

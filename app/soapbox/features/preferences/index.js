@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 import {
@@ -15,6 +16,7 @@ import {
 } from 'soapbox/features/forms';
 import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
 import { getFeatures } from 'soapbox/utils/features';
+
 import Column from '../ui/components/column';
 
 export const languages = {

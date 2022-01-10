@@ -1,5 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api, { getLinks } from '../api';
+
 import { fetchRelationships } from './accounts';
 import { importFetchedAccounts } from './importer';
 

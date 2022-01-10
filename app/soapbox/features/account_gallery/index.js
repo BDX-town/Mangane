@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+
 import {
   fetchAccount,
   fetchAccountByUsername,
@@ -16,7 +17,9 @@ import LoadingIndicator from 'soapbox/components/loading_indicator';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
+
 import { expandAccountMediaTimeline } from '../../actions/timelines';
+
 import MediaItem from './components/media_item';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {

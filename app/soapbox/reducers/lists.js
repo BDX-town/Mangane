@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   LIST_FETCH_SUCCESS,
   LIST_FETCH_FAIL,

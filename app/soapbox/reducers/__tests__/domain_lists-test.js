@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import reducer from '../domain_lists';
 
 describe('domain_lists reducer', () => {

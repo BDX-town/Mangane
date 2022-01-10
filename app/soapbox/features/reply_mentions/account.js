@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchAccount } from 'soapbox/actions/accounts';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import Avatar from 'soapbox/components/avatar';

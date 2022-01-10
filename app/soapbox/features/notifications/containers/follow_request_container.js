@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
+
 import { authorizeFollowRequest, rejectFollowRequest } from 'soapbox/actions/accounts';
 import { makeGetAccount } from 'soapbox/selectors';
+
 import FollowRequest from '../components/follow_request';
 
 const makeMapStateToProps = () => {

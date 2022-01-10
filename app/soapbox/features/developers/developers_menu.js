@@ -3,9 +3,11 @@ import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { changeSetting } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
+
 import Column from '../ui/components/column';
 
 const messages = defineMessages({

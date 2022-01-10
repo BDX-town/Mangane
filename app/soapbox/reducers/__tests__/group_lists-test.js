@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import reducer from '../group_lists';
 
 describe('group_lists reducer', () => {

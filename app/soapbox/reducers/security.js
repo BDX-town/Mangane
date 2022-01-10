@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
 import {
   MFA_FETCH_SUCCESS,
   MFA_CONFIRM_SUCCESS,

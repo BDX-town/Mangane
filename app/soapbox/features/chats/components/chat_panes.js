@@ -7,11 +7,13 @@ import { FormattedMessage } from 'react-intl';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
 import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
 import { getSettings } from 'soapbox/actions/settings';
 import AccountSearch from 'soapbox/components/account_search';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+
 import ChatList from './chat_list';
 import ChatWindow from './chat_window';
 

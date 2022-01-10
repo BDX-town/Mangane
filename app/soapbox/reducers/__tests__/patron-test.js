@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { PATRON_ACCOUNT_FETCH_SUCCESS } from '../../actions/patron';
 import reducer from '../patron';
 

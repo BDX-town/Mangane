@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import FilterBar from 'soapbox/components/filter_bar';
 import IconButton from 'soapbox/components/icon_button';

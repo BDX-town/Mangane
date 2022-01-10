@@ -3,13 +3,16 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import {
   exportFollows,
   exportBlocks,
   exportMutes,
 } from 'soapbox/actions/export_data';
 import { getFeatures } from 'soapbox/utils/features';
+
 import Column from '../ui/components/column';
+
 import CSVExporter from './components/csv_exporter';
 
 const messages = defineMessages({

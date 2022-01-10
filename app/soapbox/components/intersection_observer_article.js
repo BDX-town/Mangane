@@ -1,6 +1,7 @@
 import { is } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
+
 import getRectFromEntry from '../features/ui/util/get_rect_from_entry';
 import scheduleIdleTask from '../features/ui/util/schedule_idle_task';
 

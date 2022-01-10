@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import { deleteStatusModal } from 'soapbox/actions/moderation';
 import StatusContent from 'soapbox/components/status_content';

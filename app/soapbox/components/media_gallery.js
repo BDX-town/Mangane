@@ -6,13 +6,16 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
 import { truncateFilename } from 'soapbox/utils/media';
+
 import { isIOS } from '../is_mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+
 import IconButton from './icon_button';
 
 const ATTACHMENT_LIMIT = 4;

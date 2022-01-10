@@ -4,7 +4,9 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import Icon from 'soapbox/components/icon';
+
 import { fetchTrends } from '../../../actions/trends';
 import Hashtag from '../../../components/hashtag';
 

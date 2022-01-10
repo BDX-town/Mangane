@@ -6,6 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import { pinHost, unpinHost } from 'soapbox/actions/remote_timeline';
 import { getSettings } from 'soapbox/actions/settings';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';

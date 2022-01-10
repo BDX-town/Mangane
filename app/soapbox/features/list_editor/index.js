@@ -4,9 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+
 import IconButton from 'soapbox/components/icon_button';
+
 import { setupListEditor, clearListSuggestions, resetListEditor } from '../../actions/lists';
 import ColumnSubheading from '../ui/components/column_subheading';
+
 import Account from './components/account';
 import EditListForm from './components/edit_list_form';
 import Search from './components/search';

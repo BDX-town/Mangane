@@ -3,12 +3,14 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
 import { openModal } from '../../../actions/modal';
 import IconButton from '../../../components/icon_button';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';

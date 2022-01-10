@@ -5,6 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import {
   closeChat,
   toggleChat,
@@ -16,6 +17,7 @@ import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
+
 import ChatBox from './chat_box';
 
 const makeMapStateToProps = () => {

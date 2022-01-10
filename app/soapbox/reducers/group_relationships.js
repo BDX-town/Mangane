@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import { GROUP_RELATIONSHIPS_FETCH_SUCCESS, GROUP_JOIN_SUCCESS, GROUP_LEAVE_SUCCESS } from '../actions/groups';
 
 const normalizeRelationship = (state, relationship) => state.set(relationship.id, fromJS(relationship));

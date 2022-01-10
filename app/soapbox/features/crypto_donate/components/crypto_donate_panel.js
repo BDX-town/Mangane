@@ -6,7 +6,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
+
 import SiteWallet from './site_wallet';
 
 const mapStateToProps = state => {

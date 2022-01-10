@@ -1,5 +1,7 @@
 import { getAuthUserId, getAuthUserUrl } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { loadCredentials } from './auth';
 import { importFetchedAccount } from './importer';
 

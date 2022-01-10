@@ -5,7 +5,9 @@ import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 import spring from 'react-motion/lib/spring';
 import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
+
 import IconButton from '../../../components/icon_button';
 import Motion from '../../ui/util/optional_motion';
 

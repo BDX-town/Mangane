@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
+
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';

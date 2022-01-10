@@ -2,6 +2,7 @@ import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+
 import {
   openProfileHoverCard,
   closeProfileHoverCard,

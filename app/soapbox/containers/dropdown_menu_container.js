@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+
 import { openDropdownMenu, closeDropdownMenu } from '../actions/dropdown_menu';
 import { openModal, closeModal } from '../actions/modal';
 import DropdownMenu from '../components/dropdown_menu';

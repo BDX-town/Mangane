@@ -1,9 +1,12 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { debounce } from 'lodash';
 import { createSelector } from 'reselect';
+
 import { patchMe } from 'soapbox/actions/me';
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import uuid from '../uuid';
+
 import { showAlertForError } from './alerts';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';

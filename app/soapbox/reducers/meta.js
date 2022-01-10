@@ -1,6 +1,7 @@
 'use strict';
 
 import { Map as ImmutableMap } from 'immutable';
+
 import { INSTANCE_FETCH_FAIL } from 'soapbox/actions/instance';
 
 const initialState = ImmutableMap();

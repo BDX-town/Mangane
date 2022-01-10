@@ -1,5 +1,7 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
+
 import api from '../api';
+
 import { importFetchedStatuses } from './importer';
 
 export const PINNED_STATUSES_FETCH_REQUEST = 'PINNED_STATUSES_FETCH_REQUEST';

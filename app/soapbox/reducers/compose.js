@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import { tagHistory } from 'soapbox/settings';
+
 import {
   COMPOSE_MOUNT,
   COMPOSE_UNMOUNT,

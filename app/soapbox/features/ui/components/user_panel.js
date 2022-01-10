@@ -5,12 +5,14 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import Avatar from 'soapbox/components/avatar';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import { getAcct, isVerified } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
+
 import { makeGetAccount } from '../../../selectors';
 
 class UserPanel extends ImmutablePureComponent {
