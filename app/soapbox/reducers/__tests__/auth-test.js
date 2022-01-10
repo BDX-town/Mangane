@@ -1,5 +1,5 @@
-import reducer from '../auth';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -10,6 +10,8 @@ import {
 } from 'soapbox/actions/auth';
 import { ME_FETCH_SKIP } from 'soapbox/actions/me';
 import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+
+import reducer from '../auth';
 
 describe('auth reducer', () => {
   it('should return the initial state', () => {

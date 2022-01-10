@@ -1,15 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import { makeGetChat } from 'soapbox/selectors';
-import Icon from 'soapbox/components/icon';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+
+import Avatar from '../../../components/avatar';
+import DisplayName from '../../../components/display_name';
 
 const makeMapStateToProps = () => {
   const getChat = makeGetChat();

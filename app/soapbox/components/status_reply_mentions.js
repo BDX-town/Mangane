@@ -1,12 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { FormattedMessage, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+
 import { openModal } from 'soapbox/actions/modal';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 const mapDispatchToProps = (dispatch) => ({
   onOpenMentionsModal(username, statusId) {

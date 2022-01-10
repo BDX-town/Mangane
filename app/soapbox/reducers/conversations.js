@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import {
   CONVERSATIONS_MOUNT,
   CONVERSATIONS_UNMOUNT,

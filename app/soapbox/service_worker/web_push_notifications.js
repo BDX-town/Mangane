@@ -1,7 +1,8 @@
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
-import locales from './web_push_locales';
 import { unescape } from 'lodash';
+
+import locales from './web_push_locales';
 
 const MAX_NOTIFICATIONS = 5;
 const GROUP_TAG = 'tag';

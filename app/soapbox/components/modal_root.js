@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import 'wicg-inert';
 import { createBrowserHistory } from 'history';
+import PropTypes from 'prop-types';
+import React from 'react';
+import 'wicg-inert';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
-import { openModal } from '../actions/modal';
+
 import { cancelReplyCompose } from '../actions/compose';
+import { openModal } from '../actions/modal';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },

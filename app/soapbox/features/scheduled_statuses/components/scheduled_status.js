@@ -1,16 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusContent from 'soapbox/components/status_content';
-import { buildStatus } from '../builder';
 import classNames from 'classnames';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
+
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import StatusContent from 'soapbox/components/status_content';
 import PollPreview from 'soapbox/features/ui/components/poll_preview';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import { buildStatus } from '../builder';
+
 import ScheduledStatusActionBar from './scheduled_status_action_bar';
 
 const mapStateToProps = (state, props) => {

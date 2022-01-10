@@ -1,8 +1,9 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+
 import IconButton from 'soapbox/components/icon_button';
 import { FormPropTypes, InputContainer, LabelInputContainer } from 'soapbox/features/forms';
 

@@ -1,10 +1,12 @@
-import api from '../api';
-import { deleteFromTimelines } from './timelines';
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
+
+import api from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
+import { openModal } from './modal';
+import { deleteFromTimelines } from './timelines';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';

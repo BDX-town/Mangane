@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
-import SearchResults from '../components/search_results';
-import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
-import { expandSearch, setFilter } from '../../../actions/search';
+
 import { getFeatures } from 'soapbox/utils/features';
+
+import { expandSearch, setFilter } from '../../../actions/search';
+import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
+import SearchResults from '../components/search_results';
 
 const mapStateToProps = state => {
   const instance = state.get('instance');

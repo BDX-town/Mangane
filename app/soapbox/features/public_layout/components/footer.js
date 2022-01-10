@@ -1,10 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { List as ImmutableList } from 'immutable';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 

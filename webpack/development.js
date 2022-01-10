@@ -2,7 +2,9 @@
 console.log('Running in development mode'); // eslint-disable-line no-console
 
 const { join } = require('path');
+
 const { merge } = require('webpack-merge');
+
 const sharedConfig = require('./shared');
 
 const watchOptions = {};

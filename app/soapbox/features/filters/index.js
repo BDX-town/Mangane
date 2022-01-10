@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
-import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
-import ScrollableList from '../../components/scrollable_list';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import snackbar from 'soapbox/actions/snackbar';
 import Button from 'soapbox/components/button';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   SimpleInput,
@@ -14,8 +14,10 @@ import {
   SelectDropdown,
   Checkbox,
 } from 'soapbox/features/forms';
-import snackbar from 'soapbox/actions/snackbar';
-import Icon from 'soapbox/components/icon';
+
+import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
+import ScrollableList from '../../components/scrollable_list';
+import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
 
 const messages = defineMessages({

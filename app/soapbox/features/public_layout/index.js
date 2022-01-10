@@ -1,18 +1,21 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { connect } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   NotificationsContainer,
   ModalContainer,
 } from 'soapbox/features/ui/util/async-components';
-import Header from './components/header';
-import Footer from './components/footer';
-import LandingPage from '../landing_page';
-import AboutPage from '../about';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStandalone } from 'soapbox/utils/state';
+
+import AboutPage from '../about';
+import LandingPage from '../landing_page';
+
+import Footer from './components/footer';
+import Header from './components/header';
 
 const mapStateToProps = (state, props) => ({
   soapbox: getSoapboxConfig(state),

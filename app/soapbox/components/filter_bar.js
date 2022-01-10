@@ -1,7 +1,7 @@
-import React from 'react';
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 export default class FilterBar extends React.PureComponent {
 

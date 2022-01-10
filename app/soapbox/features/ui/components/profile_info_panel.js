@@ -1,20 +1,22 @@
 'use strict';
 
+import classNames from 'classnames';
+import { List as ImmutableList } from 'immutable';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import Badge from 'soapbox/components/badge';
-import { List as ImmutableList } from 'immutable';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 import { getAcct, isAdmin, isModerator, isLocal, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
-import classNames from 'classnames';
-import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+
 import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;

@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import { GROUPS_FETCH_SUCCESS } from '../actions/groups';
 
 const initialState = ImmutableMap({

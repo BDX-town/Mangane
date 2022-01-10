@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable';
+
 import {
   getDomain,
   acctFull,
@@ -5,7 +7,6 @@ import {
   isAdmin,
   isModerator,
 } from '../accounts';
-import { fromJS } from 'immutable';
 
 describe('getDomain', () => {
   const account = fromJS({

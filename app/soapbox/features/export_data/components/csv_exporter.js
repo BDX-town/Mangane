@@ -1,8 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { SimpleForm } from 'soapbox/features/forms';
 
 export default @connect()

@@ -1,10 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { createAppAndRedirect, loginWithCode } from 'soapbox/actions/external_auth';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 
 const messages = defineMessages({
   instanceLabel: { id: 'login.fields.instance_label', defaultMessage: 'Instance' },

@@ -1,14 +1,15 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import Column from 'soapbox/features/ui/components/column';
-import { SimpleForm, SimpleTextarea } from 'soapbox/features/forms';
+import { connect } from 'react-redux';
+
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { FE_NAME, SETTINGS_UPDATE } from 'soapbox/actions/settings';
+import { SimpleForm, SimpleTextarea } from 'soapbox/features/forms';
+import Column from 'soapbox/features/ui/components/column';
 
 const isJSONValid = text => {
   try {

@@ -1,7 +1,9 @@
-import api, { getLinks } from '../api';
-import { importFetchedAccounts } from './importer';
-import { fetchRelationships } from './accounts';
 import { isLoggedIn } from 'soapbox/utils/auth';
+
+import api, { getLinks } from '../api';
+
+import { fetchRelationships } from './accounts';
+import { importFetchedAccounts } from './importer';
 
 export const GROUP_FETCH_REQUEST = 'GROUP_FETCH_REQUEST';
 export const GROUP_FETCH_SUCCESS = 'GROUP_FETCH_SUCCESS';

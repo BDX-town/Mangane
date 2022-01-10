@@ -3,9 +3,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import Item from './item';
-import Icon from 'soapbox/components/icon';
 import { Link } from 'react-router-dom';
+
+import Icon from 'soapbox/components/icon';
+
+import Item from './item';
 
 const messages = defineMessages({
   title: { id: 'groups.sidebar-panel.title', defaultMessage: 'Groups You\'re In' },

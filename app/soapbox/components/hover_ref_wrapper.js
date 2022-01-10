@@ -1,11 +1,12 @@
-import React, { useRef } from 'react';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+
 import {
   openProfileHoverCard,
   closeProfileHoverCard,
 } from 'soapbox/actions/profile_hover_card';
-import { useDispatch } from 'react-redux';
-import { debounce } from 'lodash';
 import { isMobile } from 'soapbox/is_mobile';
 
 const showProfileHoverCard = debounce((dispatch, ref, accountId) => {

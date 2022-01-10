@@ -1,4 +1,5 @@
 const { resolve } = require('path');
+
 const { env } = require('../configuration');
 
 // This is a hack, used in conjunction with rules/git-refresh.js

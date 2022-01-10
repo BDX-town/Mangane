@@ -1,13 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
+
+import { muteAccount } from 'soapbox/actions/accounts';
+import { closeModal } from 'soapbox/actions/modal';
+import { toggleHideNotifications } from 'soapbox/actions/mutes';
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
-import { closeModal } from 'soapbox/actions/modal';
-import { muteAccount } from 'soapbox/actions/accounts';
-import { toggleHideNotifications } from 'soapbox/actions/mutes';
 
 
 const mapStateToProps = state => {

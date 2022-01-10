@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
-import Icon from 'soapbox/components/icon';
-import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+
+import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   placeholder: { id: 'account_search.placeholder', defaultMessage: 'Search for an account' },

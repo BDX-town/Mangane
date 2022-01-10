@@ -1,13 +1,15 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import ComposeFormContainer from '../../compose/containers/compose_form_container';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import IconButton from 'soapbox/components/icon_button';
-import { openModal } from '../../../actions/modal';
+
 import { cancelReplyCompose } from '../../../actions/compose';
+import { openModal } from '../../../actions/modal';
+import ComposeFormContainer from '../../compose/containers/compose_form_container';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

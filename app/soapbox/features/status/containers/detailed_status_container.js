@@ -1,7 +1,13 @@
 import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import DetailedStatus from '../components/detailed_status';
-import { makeGetStatus } from '../../../selectors';
+
+import { launchChat } from 'soapbox/actions/chats';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { getSettings } from 'soapbox/actions/settings';
+
+import { blockAccount } from '../../../actions/accounts';
+import { showAlertForError } from '../../../actions/alerts';
 import {
   replyCompose,
   mentionCompose,
@@ -17,7 +23,9 @@ import {
   pin,
   unpin,
 } from '../../../actions/interactions';
-import { blockAccount } from '../../../actions/accounts';
+import { openModal } from '../../../actions/modal';
+import { initMuteModal } from '../../../actions/mutes';
+import { initReport } from '../../../actions/reports';
 import {
   muteStatus,
   unmuteStatus,
@@ -25,14 +33,8 @@ import {
   hideStatus,
   revealStatus,
 } from '../../../actions/statuses';
-import { initMuteModal } from '../../../actions/mutes';
-import { initReport } from '../../../actions/reports';
-import { openModal } from '../../../actions/modal';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { showAlertForError } from '../../../actions/alerts';
-import { getSettings } from 'soapbox/actions/settings';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { launchChat } from 'soapbox/actions/chats';
+import { makeGetStatus } from '../../../selectors';
+import DetailedStatus from '../components/detailed_status';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },

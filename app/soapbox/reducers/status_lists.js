@@ -1,3 +1,13 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
+import {
+  BOOKMARKED_STATUSES_FETCH_REQUEST,
+  BOOKMARKED_STATUSES_FETCH_SUCCESS,
+  BOOKMARKED_STATUSES_FETCH_FAIL,
+  BOOKMARKED_STATUSES_EXPAND_REQUEST,
+  BOOKMARKED_STATUSES_EXPAND_SUCCESS,
+  BOOKMARKED_STATUSES_EXPAND_FAIL,
+} from '../actions/bookmarks';
 import {
   FAVOURITED_STATUSES_FETCH_REQUEST,
   FAVOURITED_STATUSES_FETCH_SUCCESS,
@@ -13,18 +23,6 @@ import {
   ACCOUNT_FAVOURITED_STATUSES_EXPAND_FAIL,
 } from '../actions/favourites';
 import {
-  BOOKMARKED_STATUSES_FETCH_REQUEST,
-  BOOKMARKED_STATUSES_FETCH_SUCCESS,
-  BOOKMARKED_STATUSES_FETCH_FAIL,
-  BOOKMARKED_STATUSES_EXPAND_REQUEST,
-  BOOKMARKED_STATUSES_EXPAND_SUCCESS,
-  BOOKMARKED_STATUSES_EXPAND_FAIL,
-} from '../actions/bookmarks';
-import {
-  PINNED_STATUSES_FETCH_SUCCESS,
-} from '../actions/pin_statuses';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import {
   FAVOURITE_SUCCESS,
   UNFAVOURITE_SUCCESS,
   BOOKMARK_SUCCESS,
@@ -32,6 +30,9 @@ import {
   PIN_SUCCESS,
   UNPIN_SUCCESS,
 } from '../actions/interactions';
+import {
+  PINNED_STATUSES_FETCH_SUCCESS,
+} from '../actions/pin_statuses';
 import {
   SCHEDULED_STATUSES_FETCH_REQUEST,
   SCHEDULED_STATUSES_FETCH_SUCCESS,

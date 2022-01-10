@@ -1,12 +1,11 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
-import Icon from 'soapbox/components/icon';
-import Button from 'soapbox/components/button';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   followAccount,
   unfollowAccount,
@@ -14,6 +13,8 @@ import {
   unblockAccount,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modal';
+import Button from 'soapbox/components/button';
+import Icon from 'soapbox/components/icon';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({

@@ -1,4 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
+
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
 

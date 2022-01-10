@@ -1,13 +1,21 @@
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { CancelToken } from 'axios';
+import { Map as ImmutableMap } from 'immutable';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
+import { accountLookup } from 'soapbox/actions/accounts';
+import { register, verifyCredentials } from 'soapbox/actions/auth';
+import { openModal } from 'soapbox/actions/modal';
+import { getSettings } from 'soapbox/actions/settings';
 import ShowablePassword from 'soapbox/components/showable_password';
+import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import {
   SimpleForm,
   SimpleInput,
@@ -15,14 +23,7 @@ import {
   SimpleTextarea,
   Checkbox,
 } from 'soapbox/features/forms';
-import { register, verifyCredentials } from 'soapbox/actions/auth';
-import CaptchaField from 'soapbox/features/auth_login/components/captcha';
-import { Map as ImmutableMap } from 'immutable';
-import { v4 as uuidv4 } from 'uuid';
-import { getSettings } from 'soapbox/actions/settings';
-import { openModal } from 'soapbox/actions/modal';
 import { getFeatures } from 'soapbox/utils/features';
-import { accountLookup } from 'soapbox/actions/accounts';
 
 const messages = defineMessages({
   username: { id: 'registration.fields.username_placeholder', defaultMessage: 'Username' },

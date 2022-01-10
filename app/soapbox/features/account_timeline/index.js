@@ -1,25 +1,27 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
-import Icon from 'soapbox/components/icon';
-import StatusList from '../../components/status_list';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from 'soapbox/components/column';
-// import ColumnSettingsContainer from './containers/column_settings_container';
-import SubNavigation from 'soapbox/components/sub_navigation';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
-import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import { connect } from 'react-redux';
+// import ColumnSettingsContainer from './containers/column_settings_container';
 import { NavLink } from 'react-router-dom';
-import { fetchPatronAccount } from '../../actions/patron';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Column from 'soapbox/components/column';
+import Icon from 'soapbox/components/icon';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
+
+import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
+import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
+import { fetchPatronAccount } from '../../actions/patron';
+import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
+import LoadingIndicator from '../../components/loading_indicator';
+import StatusList from '../../components/status_list';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();

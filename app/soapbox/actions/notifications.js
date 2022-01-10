@@ -1,6 +1,20 @@
-import api, { getLinks } from '../api';
+import {
+  List as ImmutableList,
+  Map as ImmutableMap,
+  OrderedMap as ImmutableOrderedMap,
+} from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
+import { defineMessages } from 'react-intl';
+
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { joinPublicPath } from 'soapbox/utils/static';
+
+import api, { getLinks } from '../api';
+import { getFilters, regexFromFilters } from '../selectors';
+import { unescapeHTML } from '../utils/html';
+
 import { fetchRelationships } from './accounts';
 import {
   importFetchedAccount,
@@ -10,17 +24,6 @@ import {
 } from './importer';
 import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
-import { defineMessages } from 'react-intl';
-import {
-  List as ImmutableList,
-  Map as ImmutableMap,
-  OrderedMap as ImmutableOrderedMap,
-} from 'immutable';
-import { unescapeHTML } from '../utils/html';
-import { getFilters, regexFromFilters } from '../selectors';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { parseVersion, PLEROMA } from 'soapbox/utils/features';
-import { joinPublicPath } from 'soapbox/utils/static';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';

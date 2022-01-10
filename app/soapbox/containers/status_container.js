@@ -1,12 +1,22 @@
 import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import Status from '../components/status';
-import { makeGetStatus } from '../selectors';
+
+import { launchChat } from 'soapbox/actions/chats';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+
+import { blockAccount } from '../actions/accounts';
+import { showAlertForError } from '../actions/alerts';
 import {
   replyCompose,
   mentionCompose,
   directCompose,
 } from '../actions/compose';
+import {
+  createRemovedAccount,
+  groupRemoveStatus,
+} from '../actions/groups';
 import {
   reblog,
   favourite,
@@ -17,7 +27,10 @@ import {
   pin,
   unpin,
 } from '../actions/interactions';
-import { blockAccount } from '../actions/accounts';
+import { openModal } from '../actions/modal';
+import { initMuteModal } from '../actions/mutes';
+import { initReport } from '../actions/reports';
+import { getSettings } from '../actions/settings';
 import {
   muteStatus,
   unmuteStatus,
@@ -25,19 +38,8 @@ import {
   hideStatus,
   revealStatus,
 } from '../actions/statuses';
-import { initMuteModal } from '../actions/mutes';
-import { initReport } from '../actions/reports';
-import { openModal } from '../actions/modal';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { showAlertForError } from '../actions/alerts';
-import {
-  createRemovedAccount,
-  groupRemoveStatus,
-} from '../actions/groups';
-import { getSettings } from '../actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { launchChat } from 'soapbox/actions/chats';
+import Status from '../components/status';
+import { makeGetStatus } from '../selectors';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -182,7 +184,7 @@ const mapDispatchToProps = (dispatch, { intl }) => {
       const account = status.get('account');
       dispatch(openModal('CONFIRM', {
         icon: require('@tabler/icons/icons/ban.svg'),
-        heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,  
+        heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
         message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
         confirm: intl.formatMessage(messages.blockConfirm),
         onConfirm: () => dispatch(blockAccount(account.get('id'))),
