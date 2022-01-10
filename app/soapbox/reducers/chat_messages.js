@@ -1,3 +1,4 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
 import {
   CHATS_FETCH_SUCCESS,
   CHATS_EXPAND_SUCCESS,
@@ -8,7 +9,6 @@ import {
   CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 

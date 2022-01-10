@@ -1,9 +1,9 @@
-import reducer from '../search';
+import { Map as ImmutableMap } from 'immutable';
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
 } from 'soapbox/actions/search';
-import { Map as ImmutableMap } from 'immutable';
+import reducer from '../search';
 
 describe('search reducer', () => {
   it('should return the initial state', () => {

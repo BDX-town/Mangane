@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/better_column';
+import classNames from 'classnames';
 import {
   fetchBackups,
   createBackup,
 } from 'soapbox/actions/backups';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import classNames from 'classnames';
+import Column from '../ui/components/better_column';
 
 const messages = defineMessages({
   heading: { id: 'column.backups', defaultMessage: 'Backups' },

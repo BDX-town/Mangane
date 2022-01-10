@@ -1,3 +1,5 @@
+import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { tagHistory } from 'soapbox/settings';
 import {
   COMPOSE_MOUNT,
   COMPOSE_UNMOUNT,
@@ -46,8 +48,6 @@ import { TIMELINE_DELETE } from '../actions/timelines';
 import { REDRAFT } from '../actions/statuses';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
-import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
-import { tagHistory } from 'soapbox/settings';
 import uuid from '../uuid';
 import { unescapeHTML } from '../utils/html';
 

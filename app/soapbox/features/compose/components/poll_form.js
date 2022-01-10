@@ -6,10 +6,10 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import classNames from 'classnames';
 import IconButton from 'soapbox/components/icon_button';
 import Icon from 'soapbox/components/icon';
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import classNames from 'classnames';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },

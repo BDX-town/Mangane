@@ -1,8 +1,8 @@
 import React from 'react';
-import ColumnHeader from './column_header';
 import PropTypes from 'prop-types';
 import Column from 'soapbox/components/column';
 import Pullable from 'soapbox/components/pullable';
+import ColumnHeader from './column_header';
 
 export default class UIColumn extends React.PureComponent {
 

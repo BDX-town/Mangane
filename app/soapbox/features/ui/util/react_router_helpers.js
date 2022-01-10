@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { Redirect, Route } from 'react-router-dom';
+import { getSettings } from 'soapbox/actions/settings';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import ColumnsAreaContainer from '../containers/columns_area_container';
 import ColumnLoading from '../components/column_loading';
 import ColumnForbidden from '../components/column_forbidden';
 import BundleColumnError from '../components/bundle_column_error';
 import BundleContainer from '../containers/bundle_container';
-import { getSettings } from 'soapbox/actions/settings';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 
 const mapStateToProps = state => {
   const me = state.get('me');

@@ -1,6 +1,18 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { HotKeys } from 'react-hotkeys';
+import classNames from 'classnames';
+import { Link, NavLink } from 'react-router-dom';
+import Icon from 'soapbox/components/icon';
+import { getDomain } from 'soapbox/utils/accounts';
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import Card from '../features/status/components/card';
+import Bundle from '../features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 import Avatar from './avatar';
 import AvatarOverlay from './avatar_overlay';
 import AvatarComposite from './avatar_composite';
@@ -10,21 +22,6 @@ import StatusContent from './status_content';
 import StatusActionBar from './status_action_bar';
 import StatusReplyMentions from './status_reply_mentions';
 import AttachmentThumbs from './attachment_thumbs';
-import Card from '../features/status/components/card';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { HotKeys } from 'react-hotkeys';
-import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
-import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
-
-// We use the component (and not the container) since we do not want
-// to use the progress bar to show download progress
-import Bundle from '../features/ui/components/bundle';
 
 export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   const displayName = status.getIn(['account', 'display_name']);

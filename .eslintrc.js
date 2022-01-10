@@ -223,6 +223,22 @@ module.exports = {
     ],
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'ignore',
+      },
+    ],
 
     'promise/catch-or-return': 'error',
 

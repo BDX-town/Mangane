@@ -1,5 +1,5 @@
-import api from '../api';
 import { getFeatures } from 'soapbox/utils/features';
+import api from '../api';
 
 const noOp = () => {};
 

@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { makeGetAccount } from '../../../selectors';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { injectIntl } from 'react-intl';
+import { makeGetAccount } from '../../../selectors';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
-import { injectIntl } from 'react-intl';
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();

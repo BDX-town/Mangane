@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import { throttle } from 'lodash';
+import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
-import classNames from 'classnames';
 import Helmet from 'soapbox/components/helmet';
 import { openModal } from 'soapbox/actions/modal';
 

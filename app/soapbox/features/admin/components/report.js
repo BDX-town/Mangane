@@ -8,10 +8,10 @@ import Avatar from 'soapbox/components/avatar';
 import Button from 'soapbox/components/button';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import Accordion from 'soapbox/features/ui/components/accordion';
-import ReportStatus from './report_status';
 import { closeReports } from 'soapbox/actions/admin';
 import snackbar from 'soapbox/actions/snackbar';
 import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import ReportStatus from './report_status';
 
 const messages = defineMessages({
   reportClosed: { id: 'admin.reports.report_closed_message', defaultMessage: 'Report on @{name} was closed' },

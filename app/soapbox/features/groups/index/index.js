@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchGroups } from '../../../actions/groups';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
-import GroupCard from './card';
+import { fetchGroups } from '../../../actions/groups';
 import GroupCreate from '../create';
+import GroupCard from './card';
 
 const messages = defineMessages({
   heading: { id: 'column.groups', defaultMessage: 'Groups' },

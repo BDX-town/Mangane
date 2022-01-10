@@ -12,11 +12,11 @@ import {
   closeChat,
   toggleChat,
 } from 'soapbox/actions/chats';
-import ChatBox from './chat_box';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import { makeGetChat } from 'soapbox/selectors';
+import ChatBox from './chat_box';
 
 const makeMapStateToProps = () => {
   const getChat = makeGetChat();

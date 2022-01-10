@@ -1,7 +1,7 @@
 import React from 'react';
 import { fromJS }  from 'immutable';
-import DisplayName from '../display_name';
 import { createComponent } from 'soapbox/test_helpers';
+import DisplayName from '../display_name';
 
 describe('<DisplayName />', () => {
   it('renders display name + account name', () => {

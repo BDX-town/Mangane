@@ -2,8 +2,8 @@ import React from 'react';
 import { Sparklines, SparklinesCurve } from 'react-sparklines';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Permalink from './permalink';
 import { shortNumberFormat } from '../utils/numbers';
+import Permalink from './permalink';
 
 const Hashtag = ({ hashtag }) => {
   const count = Number(hashtag.getIn(['history', 0, 'accounts']));

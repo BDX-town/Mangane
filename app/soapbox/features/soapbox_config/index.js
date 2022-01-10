@@ -4,7 +4,10 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { SketchPicker } from 'react-color';
+import Overlay from 'react-overlays/lib/Overlay';
+import { supportsPassiveEvents } from 'detect-passive-events';
 import {
   SimpleForm,
   FieldsGroup,
@@ -15,21 +18,18 @@ import {
   FormPropTypes,
   Checkbox,
 } from 'soapbox/features/forms';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import { updateConfig } from 'soapbox/actions/admin';
 import Icon from 'soapbox/components/icon';
 import { makeDefaultConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia } from 'soapbox/actions/media';
-import { SketchPicker } from 'react-color';
-import Overlay from 'react-overlays/lib/Overlay';
 import { isMobile } from 'soapbox/is_mobile';
-import { supportsPassiveEvents } from 'detect-passive-events';
-import Accordion from '../ui/components/accordion';
-import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
-import IconPickerDropdown from './components/icon_picker_dropdown';
 import snackbar from 'soapbox/actions/snackbar';
+import Accordion from '../ui/components/accordion';
+import Column from '../ui/components/column';
+import SitePreview from './components/site_preview';
+import IconPickerDropdown from './components/icon_picker_dropdown';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },

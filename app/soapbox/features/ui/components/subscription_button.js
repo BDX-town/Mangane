@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import {
   subscribeAccount,
   unsubscribeAccount,

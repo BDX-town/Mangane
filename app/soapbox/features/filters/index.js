@@ -3,9 +3,6 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
-import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
-import ScrollableList from '../../components/scrollable_list';
 import Button from 'soapbox/components/button';
 import {
   SimpleForm,
@@ -16,6 +13,9 @@ import {
 } from 'soapbox/features/forms';
 import snackbar from 'soapbox/actions/snackbar';
 import Icon from 'soapbox/components/icon';
+import ScrollableList from '../../components/scrollable_list';
+import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
+import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
 
 const messages = defineMessages({

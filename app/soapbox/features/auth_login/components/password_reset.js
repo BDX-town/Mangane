@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
+import { Redirect } from 'react-router-dom';
 import { resetPassword } from 'soapbox/actions/security';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
-import { Redirect } from 'react-router-dom';
 import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({

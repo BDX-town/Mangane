@@ -1,17 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusContent from 'soapbox/components/status_content';
-import { buildStatus } from '../util/pending_status_builder';
 import classNames from 'classnames';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { Link, NavLink } from 'react-router-dom';
+import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import StatusContent from 'soapbox/components/status_content';
 import { getDomain } from 'soapbox/utils/accounts';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import PollPreview from './poll_preview';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import { buildStatus } from '../util/pending_status_builder';
 import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
+import PollPreview from './poll_preview';
 
 const shouldHaveCard = pendingStatus => {
   return Boolean(pendingStatus.get('content').match(/https?:\/\/\S*/));

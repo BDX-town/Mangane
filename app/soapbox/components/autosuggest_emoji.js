@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import unicodeMapping from '../features/emoji/emoji_unicode_mapping_light';
 import { joinPublicPath } from 'soapbox/utils/static';
+import unicodeMapping from '../features/emoji/emoji_unicode_mapping_light';
 
 export default class AutosuggestEmoji extends React.PureComponent {
 

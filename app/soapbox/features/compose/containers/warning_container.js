@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Warning from '../components/warning';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
+import Warning from '../components/warning';
 
 const APPROX_HASHTAG_RE = /(?:^|[^\/\)\w])#(\w*[a-zA-Z·]\w*)/i;
 

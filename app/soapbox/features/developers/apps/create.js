@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { Map as ImmutableMap } from 'immutable';
 import Column from 'soapbox/features/ui/components/column';
 import {
   SimpleForm,
@@ -13,7 +14,6 @@ import {
 } from 'soapbox/features/forms';
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Map as ImmutableMap } from 'immutable';
 import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import Accordion from 'soapbox/features/ui/components/accordion';

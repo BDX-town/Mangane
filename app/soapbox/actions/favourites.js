@@ -1,6 +1,6 @@
+import { isLoggedIn } from 'soapbox/utils/auth';
 import api, { getLinks } from '../api';
 import { importFetchedStatuses } from './importer';
-import { isLoggedIn } from 'soapbox/utils/auth';
 
 export const FAVOURITED_STATUSES_FETCH_REQUEST = 'FAVOURITED_STATUSES_FETCH_REQUEST';
 export const FAVOURITED_STATUSES_FETCH_SUCCESS = 'FAVOURITED_STATUSES_FETCH_SUCCESS';

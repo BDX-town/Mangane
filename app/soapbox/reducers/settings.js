@@ -1,3 +1,5 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
 import {
   SETTING_CHANGE,
   SETTING_SAVE,
@@ -7,8 +9,6 @@ import {
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
 import { EMOJI_USE } from '../actions/emojis';
-import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 // Default settings are in action/settings.js
 //

@@ -1,13 +1,13 @@
+import { Map as ImmutableMap } from 'immutable';
+import MockAdapter from 'axios-mock-adapter';
+import { staticClient } from 'soapbox/api';
+import { mockStore } from 'soapbox/test_helpers';
 import {
   FETCH_ABOUT_PAGE_REQUEST,
   FETCH_ABOUT_PAGE_SUCCESS,
   FETCH_ABOUT_PAGE_FAIL,
   fetchAboutPage,
 } from '../about';
-import { Map as ImmutableMap } from 'immutable';
-import MockAdapter from 'axios-mock-adapter';
-import { staticClient } from 'soapbox/api';
-import { mockStore } from 'soapbox/test_helpers';
 
 describe('fetchAboutPage()', () => {
   it('creates the expected actions on success', () => {

@@ -1,5 +1,5 @@
-import reducer from '../height_cache';
 import { Map as ImmutableMap } from 'immutable';
+import reducer from '../height_cache';
 import { HEIGHT_CACHE_CLEAR } from '../height_cache';
 
 describe('height_cache reducer', () => {

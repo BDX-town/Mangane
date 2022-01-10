@@ -1,8 +1,8 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
 } from 'soapbox/actions/statuses';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const importStatus = (state, params, idempotencyKey) => {
   return state.set(idempotencyKey, params);

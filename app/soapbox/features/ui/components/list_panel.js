@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { fetchLists } from 'soapbox/actions/lists';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 import { NavLink, withRouter } from 'react-router-dom';
+import { fetchLists } from 'soapbox/actions/lists';
 import Icon from 'soapbox/components/icon';
 
 const getOrderedLists = createSelector([state => state.get('lists')], lists => {

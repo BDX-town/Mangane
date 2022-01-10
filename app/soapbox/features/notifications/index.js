@@ -2,25 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../../components/column';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { createSelector } from 'reselect';
+import { List as ImmutableList } from 'immutable';
+import { debounce } from 'lodash';
+import { getSettings } from 'soapbox/actions/settings';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import ScrollableList from '../../components/scrollable_list';
+import LoadGap from '../../components/load_gap';
+import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import NotificationContainer from './containers/notification_container';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ColumnSettingsContainer from './containers/column_settings_container';
+import Column from '../../components/column';
 import FilterBarContainer from './containers/filter_bar_container';
-import { createSelector } from 'reselect';
-import { List as ImmutableList } from 'immutable';
-import { debounce } from 'lodash';
-import ScrollableList from '../../components/scrollable_list';
-import LoadGap from '../../components/load_gap';
-import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
-import { getSettings } from 'soapbox/actions/settings';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import ColumnSettingsContainer from './containers/column_settings_container';
+import NotificationContainer from './containers/notification_container';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },

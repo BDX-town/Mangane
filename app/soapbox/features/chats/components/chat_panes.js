@@ -3,17 +3,17 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getSettings } from 'soapbox/actions/settings';
-import ChatList from './chat_list';
 import { FormattedMessage } from 'react-intl';
-import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
-import ChatWindow from './chat_window';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 import { List as ImmutableList } from 'immutable';
 import { createSelector } from 'reselect';
-import AccountSearch from 'soapbox/components/account_search';
 import { injectIntl, defineMessages } from 'react-intl';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+import AccountSearch from 'soapbox/components/account_search';
+import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
+import { getSettings } from 'soapbox/actions/settings';
+import ChatWindow from './chat_window';
+import ChatList from './chat_list';
 
 const messages = defineMessages({
   searchPlaceholder: { id: 'chats.search_placeholder', defaultMessage: 'Start a chat with…' },

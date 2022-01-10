@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Column from '../ui/components/column';
-import RestrictedInstance from './components/restricted_instance';
 import Accordion from 'soapbox/features/ui/components/accordion';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 import { makeGetHosts } from 'soapbox/selectors';
+import Column from '../ui/components/column';
+import RestrictedInstance from './components/restricted_instance';
 
 const messages = defineMessages({
   heading: { id: 'column.federation_restrictions', defaultMessage: 'Federation Restrictions' },

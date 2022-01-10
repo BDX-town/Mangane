@@ -1,5 +1,5 @@
-import reducer from '../user_lists';
 import { Map as ImmutableMap } from 'immutable';
+import reducer from '../user_lists';
 
 describe('user_lists reducer', () => {
   it('should return the initial state', () => {

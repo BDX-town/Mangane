@@ -4,12 +4,12 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
+import { FormattedMessage } from 'react-intl';
 import LoadingIndicator from '../../../components/loading_indicator';
 import {
   fetchMembers,
   expandMembers,
 } from '../../../actions/groups';
-import { FormattedMessage } from 'react-intl';
 import AccountContainer from '../../../containers/account_container';
 import Column from '../../ui/components/column';
 import ScrollableList from '../../../components/scrollable_list';

@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
-import { blockAccount } from '../../../actions/accounts';
-import { expandAccountTimeline } from '../../../actions/timelines';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { makeGetAccount } from '../../../selectors';
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import StatusCheckBox from '../../report/containers/status_check_box_container';
 import { OrderedSet } from 'immutable';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Button from '../../../components/button';
 import Toggle from 'react-toggle';
-import IconButton from '../../../components/icon_button';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+import IconButton from '../../../components/icon_button';
+import Button from '../../../components/button';
+import StatusCheckBox from '../../report/containers/status_check_box_container';
+import { makeGetAccount } from '../../../selectors';
+import { expandAccountTimeline } from '../../../actions/timelines';
+import { blockAccount } from '../../../actions/accounts';
+import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

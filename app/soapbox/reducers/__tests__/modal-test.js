@@ -1,5 +1,5 @@
-import reducer from '../modal';
 import { MODAL_OPEN, MODAL_CLOSE } from 'soapbox/actions/modal';
+import reducer from '../modal';
 
 describe('modal reducer', () => {
   it('should return the initial state', () => {

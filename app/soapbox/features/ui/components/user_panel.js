@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { makeGetAccount } from '../../../selectors';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Avatar from 'soapbox/components/avatar';
@@ -12,6 +11,7 @@ import { getAcct, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import { makeGetAccount } from '../../../selectors';
 
 class UserPanel extends ImmutablePureComponent {
 

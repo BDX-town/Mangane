@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { makeGetAccount } from 'soapbox/selectors';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import classNames from 'classnames';
+import { usePopper } from 'react-popper';
+import { makeGetAccount } from 'soapbox/selectors';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 import Badge from 'soapbox/components/badge';
-import classNames from 'classnames';
 import { fetchRelationships } from 'soapbox/actions/accounts';
-import { usePopper } from 'react-popper';
 import {
   closeProfileHoverCard,
   updateProfileHoverCard,

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import UnapprovedAccount from './components/unapproved_account';
 import { fetchUsers } from 'soapbox/actions/admin';
+import Column from '../ui/components/column';
+import UnapprovedAccount from './components/unapproved_account';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.awaiting_approval', defaultMessage: 'Awaiting Approval' },

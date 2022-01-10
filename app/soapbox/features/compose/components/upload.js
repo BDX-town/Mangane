@@ -1,7 +1,6 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import Motion from '../../ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
@@ -9,6 +8,7 @@ import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
 import Blurhash from 'soapbox/components/blurhash';
+import Motion from '../../ui/util/optional_motion';
 
 const MIMETYPE_ICONS = {
   'application/x-freearc': 'file-archive-o',

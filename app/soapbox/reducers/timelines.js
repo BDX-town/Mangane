@@ -1,4 +1,10 @@
 import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
+import {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
   TIMELINE_CLEAR,
@@ -21,12 +27,6 @@ import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_SUCCESS,
 } from '../actions/statuses';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-} from 'immutable';
 import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 
 const TRUNCATE_LIMIT = 40;

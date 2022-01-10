@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchModerationLog } from 'soapbox/actions/admin';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.moderation_log', defaultMessage: 'Moderation Log' },

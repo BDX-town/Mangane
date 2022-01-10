@@ -2,20 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import IconButton from './icon_button';
-import DropdownMenuContainer from '../containers/dropdown_menu_container';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
-import { openModal } from '../actions/modal';
 import { Link } from 'react-router-dom';
+import { List as ImmutableList } from 'immutable';
 import EmojiSelector from 'soapbox/components/emoji_selector';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
-import { List as ImmutableList } from 'immutable';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { getFeatures } from 'soapbox/utils/features';
 import { isUserTouching } from 'soapbox/is_mobile';
+import { openModal } from '../actions/modal';
+import DropdownMenuContainer from '../containers/dropdown_menu_container';
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },

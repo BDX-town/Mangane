@@ -1,3 +1,4 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import {
   FETCH_TOKENS_SUCCESS,
   REVOKE_TOKEN_SUCCESS,
@@ -9,7 +10,6 @@ import {
   MFA_DISABLE_SUCCESS,
   MFA_DISABLE_FAIL,
 } from '../actions/mfa';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   tokens: ImmutableList(),

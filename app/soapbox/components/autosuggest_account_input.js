@@ -1,12 +1,12 @@
 import React from 'react';
-import AutosuggestInput from './autosuggest_input';
 import PropTypes from 'prop-types';
 import { CancelToken } from 'axios';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { accountSearch } from 'soapbox/actions/accounts';
 import { throttle } from 'lodash';
+import { accountSearch } from 'soapbox/actions/accounts';
+import AutosuggestInput from './autosuggest_input';
 
 const noOp = () => {};
 

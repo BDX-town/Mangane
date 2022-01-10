@@ -1,8 +1,8 @@
+import punycode from 'punycode';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { is, fromJS } from 'immutable';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import punycode from 'punycode';
 import classnames from 'classnames';
 import Icon from 'soapbox/components/icon';
 

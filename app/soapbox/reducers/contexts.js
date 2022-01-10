@@ -1,3 +1,5 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
 import {
   ACCOUNT_BLOCK_SUCCESS,
   ACCOUNT_MUTE_SUCCESS,
@@ -8,8 +10,6 @@ import {
 } from '../actions/statuses';
 import { CONTEXT_FETCH_SUCCESS } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STATUS_IMPORT, STATUSES_IMPORT } from 'soapbox/actions/importer';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const initialState = ImmutableMap({
   inReplyTos: ImmutableMap(),

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import StatusList from '../../../components/status_list';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { makeGetStatusIds } from 'soapbox/selectors';
 import { debounce } from 'lodash';
+import { makeGetStatusIds } from 'soapbox/selectors';
 import { dequeueTimeline } from 'soapbox/actions/timelines';
+import StatusList from '../../../components/status_list';
 import { scrollTopTimeline } from '../../../actions/timelines';
 
 const makeMapStateToProps = () => {

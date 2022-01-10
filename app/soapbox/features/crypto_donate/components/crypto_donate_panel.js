@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Icon from 'soapbox/components/icon';
-import SiteWallet from './site_wallet';
 import { List as ImmutableList } from 'immutable';
 import classNames from 'classnames';
+import Icon from 'soapbox/components/icon';
+import SiteWallet from './site_wallet';
 
 const mapStateToProps = state => {
   const addresses = state.getIn(['soapbox', 'cryptoAddresses'], ImmutableList());

@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
 import {
   importFollows,
   importBlocks,
   importMutes,
 } from 'soapbox/actions/import_data';
-import CSVImporter from './components/csv_importer';
 import { getFeatures } from 'soapbox/utils/features';
+import Column from '../ui/components/column';
+import CSVImporter from './components/csv_importer';
 
 const messages = defineMessages({
   heading: { id: 'column.import_data', defaultMessage: 'Import data' },

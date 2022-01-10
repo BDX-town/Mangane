@@ -1,8 +1,8 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
 import {
   PATRON_INSTANCE_FETCH_SUCCESS,
   PATRON_ACCOUNT_FETCH_SUCCESS,
 } from '../actions/patron';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 

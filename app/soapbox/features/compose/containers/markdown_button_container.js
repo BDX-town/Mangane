@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
+import { getFeatures } from 'soapbox/utils/features';
 import MarkdownButton from '../components/markdown_button';
 import { changeComposeContentType } from '../../../actions/compose';
-import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = (state, { intl }) => {
   const instance = state.get('instance');

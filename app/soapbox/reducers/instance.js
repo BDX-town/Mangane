@@ -1,14 +1,14 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
+import { ConfigDB } from 'soapbox/utils/config_db';
+import KVStore from 'soapbox/storage/kv_store';
 import {
   INSTANCE_REMEMBER_SUCCESS,
   INSTANCE_FETCH_SUCCESS,
   INSTANCE_FETCH_FAIL,
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
-import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { ConfigDB } from 'soapbox/utils/config_db';
-import KVStore from 'soapbox/storage/kv_store';
 
 const nodeinfoToInstance = nodeinfo => {
   // Match Pleroma's develop branch

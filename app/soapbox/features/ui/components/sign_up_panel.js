@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 const mapStateToProps = state => {
   return {

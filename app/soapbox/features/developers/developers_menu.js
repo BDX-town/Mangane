@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
-import Column from '../ui/components/column';
 import Icon from 'soapbox/components/icon';
 import { changeSetting } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },

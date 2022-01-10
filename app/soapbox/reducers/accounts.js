@@ -1,16 +1,11 @@
 import {
-  ACCOUNT_IMPORT,
-  ACCOUNTS_IMPORT,
-  ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
-} from '../actions/importer';
-import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
-import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
-import {
   Map as ImmutableMap,
   List as ImmutableList,
   fromJS,
 } from 'immutable';
+import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
 import {
   ADMIN_USERS_FETCH_SUCCESS,
@@ -35,6 +30,11 @@ import {
   ADMIN_USERS_UNSUGGEST_REQUEST,
   ADMIN_USERS_UNSUGGEST_FAIL,
 } from 'soapbox/actions/admin';
+import {
+  ACCOUNT_IMPORT,
+  ACCOUNTS_IMPORT,
+  ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
+} from '../actions/importer';
 
 const initialState = ImmutableMap();
 

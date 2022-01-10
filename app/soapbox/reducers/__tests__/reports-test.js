@@ -1,5 +1,5 @@
-import reducer from '../reports';
 import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
+import reducer from '../reports';
 
 describe('reports reducer', () => {
   it('should return the initial state', () => {

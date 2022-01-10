@@ -4,11 +4,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { openModal } from '../../../actions/modal';
 import { logOut } from 'soapbox/actions/auth';
 import { getBaseURL, isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
+import { openModal } from '../../../actions/modal';
 
 const mapStateToProps = state => {
   const me = state.get('me');

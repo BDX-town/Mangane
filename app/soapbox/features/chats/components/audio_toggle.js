@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
+import Toggle from 'react-toggle';
 import Icon from 'soapbox/components/icon';
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
-import Toggle from 'react-toggle';
 
 const messages = defineMessages({
   switchOn: { id: 'chats.audio_toggle_on', defaultMessage: 'Audio notification on' },

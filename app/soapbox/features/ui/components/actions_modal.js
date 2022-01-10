@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+import classNames from 'classnames';
 import StatusContent from '../../../components/status_content';
 import Avatar from '../../../components/avatar';
 import RelativeTimestamp from '../../../components/relative_timestamp';
@@ -11,7 +12,6 @@ import DisplayName from '../../../components/display_name';
 import Icon from '../../../components/icon';
 import Button from '../../../components/button';
 import Motion from '../util/optional_motion';
-import classNames from 'classnames';
 
 export default @injectIntl
 class ActionsModal extends ImmutablePureComponent {

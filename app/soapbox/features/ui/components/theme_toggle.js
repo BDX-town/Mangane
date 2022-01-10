@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Icon from '../../../components/icon';
 import Toggle from 'react-toggle';
+import Icon from '../../../components/icon';
 
 const messages = defineMessages({
   switchToLight: { id: 'tabs_bar.theme_toggle_light', defaultMessage: 'Switch to light theme' },

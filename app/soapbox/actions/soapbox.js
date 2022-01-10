@@ -1,9 +1,9 @@
-import api, { staticClient } from '../api';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { getFeatures } from 'soapbox/utils/features';
 import { createSelector } from 'reselect';
+import { getFeatures } from 'soapbox/utils/features';
 import { getHost } from 'soapbox/actions/instance';
 import KVStore from 'soapbox/storage/kv_store';
+import api, { staticClient } from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';

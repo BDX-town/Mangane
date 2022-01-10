@@ -4,11 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { setSchedule, removeSchedule } from '../../../actions/compose';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import IconButton from 'soapbox/components/icon_button';
 import classNames from 'classnames';
+import IconButton from 'soapbox/components/icon_button';
+import { setSchedule, removeSchedule } from '../../../actions/compose';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },

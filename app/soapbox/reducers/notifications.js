@@ -1,3 +1,9 @@
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from 'soapbox/actions/markers';
 import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
@@ -18,12 +24,6 @@ import {
   FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import {
-  MARKER_FETCH_SUCCESS,
-  MARKER_SAVE_REQUEST,
-  MARKER_SAVE_SUCCESS,
-} from 'soapbox/actions/markers';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   items: ImmutableOrderedMap(),

@@ -1,20 +1,20 @@
-import api from '../api';
 import { CancelToken, isCancel } from 'axios';
 import { throttle } from 'lodash';
+import { defineMessages } from 'react-intl';
+import { getFeatures } from 'soapbox/utils/features';
+import { isLoggedIn } from 'soapbox/utils/auth';
+import snackbar from 'soapbox/actions/snackbar';
+import api from '../api';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
 import { tagHistory } from '../settings';
-import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
+import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { showAlert, showAlertForError } from './alerts';
-import { defineMessages } from 'react-intl';
 import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
-import { getFeatures } from 'soapbox/utils/features';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
-import { isLoggedIn } from 'soapbox/utils/auth';
 import { createStatus } from './statuses';
-import snackbar from 'soapbox/actions/snackbar';
 
 let cancelFetchComposeSuggestionsAccounts;
 

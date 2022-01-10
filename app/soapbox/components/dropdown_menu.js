@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import IconButton from './icon_button';
 import Overlay from 'react-overlays/lib/Overlay';
-import Motion from '../features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import { supportsPassiveEvents } from 'detect-passive-events';
 import Icon from 'soapbox/components/icon';
+import Motion from '../features/ui/util/optional_motion';
+import IconButton from './icon_button';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;

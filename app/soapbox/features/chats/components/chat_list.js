@@ -5,11 +5,11 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { debounce } from 'lodash';
+import { createSelector } from 'reselect';
 import { expandChats } from 'soapbox/actions/chats';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import Chat from './chat';
-import { createSelector } from 'reselect';
 
 const messages = defineMessages({
   emptyMessage: { id: 'chat_panels.main_window.empty', defaultMessage: 'No chats found. To start a chat, visit a user\'s profile' },

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 import { Map as ImmutableMap } from 'immutable';
+import { FormattedMessage } from 'react-intl';
 import { fetchCaptcha } from 'soapbox/actions/auth';
 import { TextInput } from 'soapbox/features/forms';
-import { FormattedMessage } from 'react-intl';
 
 const noOp = () => {};
 

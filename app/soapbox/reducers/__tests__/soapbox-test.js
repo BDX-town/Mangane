@@ -1,9 +1,9 @@
-import reducer from '../soapbox';
 import { Map as ImmutableMap } from 'immutable';
 import * as actions from 'soapbox/actions/soapbox';
 import { ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import soapbox from 'soapbox/__fixtures__/soapbox.json';
 import soapboxConfig from 'soapbox/__fixtures__/admin_api_frontend_config.json';
+import reducer from '../soapbox';
 
 describe('soapbox reducer', () => {
   it('should return the initial state', () => {

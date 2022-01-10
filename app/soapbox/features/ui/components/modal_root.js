@@ -2,9 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Base from '../../../components/modal_root';
 import BundleContainer from '../containers/bundle_container';
-import BundleModalError from './bundle_modal_error';
-import ModalLoading from './modal_loading';
-
 import {
   MediaModal,
   VideoModal,
@@ -30,6 +27,9 @@ import {
   ReblogsModal,
   MentionsModal,
 } from '../../../features/ui/util/async-components';
+import BundleModalError from './bundle_modal_error';
+import ModalLoading from './modal_loading';
+
 
 const MODAL_COMPONENTS = {
   'MEDIA': MediaModal,

@@ -1,8 +1,8 @@
 import React from 'react';
-import IconButton from '../../../components/icon_button';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.markdown.marked', defaultMessage: 'Post markdown enabled' },

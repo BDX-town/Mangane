@@ -2,8 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { changeComposeSensitivity } from 'soapbox/actions/compose';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { changeComposeSensitivity } from 'soapbox/actions/compose';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.sensitive.marked', defaultMessage: 'Media is marked as sensitive' },

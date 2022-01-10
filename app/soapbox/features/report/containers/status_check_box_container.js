@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
+import { Set as ImmutableSet } from 'immutable';
 import StatusCheckBox from '../components/status_check_box';
 import { toggleStatusReport } from '../../../actions/reports';
-import { Set as ImmutableSet } from 'immutable';
 
 const mapStateToProps = (state, { id }) => ({
   status: state.getIn(['statuses', id]),

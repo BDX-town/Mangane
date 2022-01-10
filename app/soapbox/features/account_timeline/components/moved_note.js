@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { NavLink } from 'react-router-dom';
+import Icon from 'soapbox/components/icon';
 import AvatarOverlay from '../../../components/avatar_overlay';
 import DisplayName from '../../../components/display_name';
-import Icon from 'soapbox/components/icon';
-import { NavLink } from 'react-router-dom';
 
 export default class MovedNote extends ImmutablePureComponent {
 

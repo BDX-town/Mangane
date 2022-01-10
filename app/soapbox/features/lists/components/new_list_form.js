@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { defineMessages, injectIntl } from 'react-intl';
 import { changeListEditorTitle, submitListEditor } from '../../../actions/lists';
 import Button from '../../../components/button';
-import { defineMessages, injectIntl } from 'react-intl';
 
 const messages = defineMessages({
   label: { id: 'lists.new.title_placeholder', defaultMessage: 'New list title' },

@@ -4,9 +4,9 @@
  * @see module:soapbox/actions/auth
  */
 
-import api from '../api';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
 import snackbar from 'soapbox/actions/snackbar';
+import api from '../api';
 import { AUTH_LOGGED_OUT, messages } from './auth';
 
 export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';

@@ -5,15 +5,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { Map as ImmutableMap } from 'immutable';
 import Avatar from 'soapbox/components/avatar';
 import { getAcct } from 'soapbox/utils/accounts';
 import { fetchChat, markChatRead } from 'soapbox/actions/chats';
-import ChatBox from './components/chat_box';
 import Column from 'soapbox/components/column';
 import ColumnBackButton from 'soapbox/components/column_back_button';
-import { Map as ImmutableMap } from 'immutable';
 import { makeGetChat } from 'soapbox/selectors';
 import { displayFqn } from 'soapbox/utils/state';
+import ChatBox from './components/chat_box';
 
 const mapStateToProps = (state, { params }) => {
   const getChat = makeGetChat();

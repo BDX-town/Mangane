@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { changeValue, submit, reset } from '../../../actions/group_editor';
 import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import { changeValue, submit, reset } from '../../../actions/group_editor';
 
 const messages = defineMessages({
   title: { id: 'groups.form.title', defaultMessage: 'Enter a new group title' },

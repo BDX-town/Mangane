@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { directComposeById } from 'soapbox/actions/compose';
+import AccountSearch from 'soapbox/components/account_search';
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
 import { mountConversations, unmountConversations, expandConversations } from '../../actions/conversations';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connectDirectStream } from '../../actions/streaming';
 import ConversationsListContainer from './containers/conversations_list_container';
-import { directComposeById } from 'soapbox/actions/compose';
-import AccountSearch from 'soapbox/components/account_search';
 
 const messages = defineMessages({
   title: { id: 'column.direct', defaultMessage: 'Direct messages' },

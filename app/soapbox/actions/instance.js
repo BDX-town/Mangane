@@ -1,8 +1,8 @@
-import api from '../api';
 import { get } from 'lodash';
 import { parseVersion } from 'soapbox/utils/features';
 import { getAuthUserUrl } from 'soapbox/utils/auth';
 import KVStore from 'soapbox/storage/kv_store';
+import api from '../api';
 
 export const INSTANCE_FETCH_REQUEST = 'INSTANCE_FETCH_REQUEST';
 export const INSTANCE_FETCH_SUCCESS = 'INSTANCE_FETCH_SUCCESS';

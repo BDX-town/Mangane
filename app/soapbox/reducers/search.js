@@ -1,3 +1,4 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
@@ -13,7 +14,6 @@ import {
   COMPOSE_REPLY,
   COMPOSE_DIRECT,
 } from '../actions/compose';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   value: '',

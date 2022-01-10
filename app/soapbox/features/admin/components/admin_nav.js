@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Icon from 'soapbox/components/icon';
-import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import Icon from 'soapbox/components/icon';
+import IconWithCounter from 'soapbox/components/icon_with_counter';
 
 const mapStateToProps = (state, props) => ({
   instance: state.get('instance'),

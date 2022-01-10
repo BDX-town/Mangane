@@ -7,20 +7,20 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
+import { is as ImmutableIs } from 'immutable';
+import { logOut, switchAccount } from 'soapbox/actions/auth';
+import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { getFeatures } from 'soapbox/utils/features';
+import { closeSidebar } from '../actions/sidebar';
+import { isAdmin, getBaseURL } from '../utils/accounts';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import Avatar from './avatar';
 import IconButton from './icon_button';
 import Icon from './icon';
 import DisplayName from './display_name';
-import { closeSidebar } from '../actions/sidebar';
-import { isAdmin, getBaseURL } from '../utils/accounts';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
-import { logOut, switchAccount } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle_container';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },

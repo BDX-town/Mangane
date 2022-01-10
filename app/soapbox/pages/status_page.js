@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Sticky from 'react-stickynode';
-import BundleContainer from '../features/ui/containers/bundle_container';
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
 import {
   WhoToFollowPanel,
@@ -14,6 +13,7 @@ import {
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
+import BundleContainer from '../features/ui/containers/bundle_container';
 
 const mapStateToProps = state => {
   const me = state.get('me');

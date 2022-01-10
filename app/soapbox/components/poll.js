@@ -1,18 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import classNames from 'classnames';
-import { vote, fetchPoll } from 'soapbox/actions/polls';
-import Motion from 'soapbox/features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
 import escapeTextContentForBrowser from 'escape-html';
+import { vote, fetchPoll } from 'soapbox/actions/polls';
+import Motion from 'soapbox/features/ui/util/optional_motion';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import emojify from 'soapbox/features/emoji/emoji';
-import RelativeTimestamp from './relative_timestamp';
 import Icon from 'soapbox/components/icon';
 import { openModal } from 'soapbox/actions/modal';
+import RelativeTimestamp from './relative_timestamp';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },

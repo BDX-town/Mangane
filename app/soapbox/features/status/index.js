@@ -4,11 +4,23 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchStatusWithContext } from '../../actions/statuses';
-import MissingIndicator from '../../components/missing_indicator';
-import DetailedStatus from './components/detailed_status';
-import ActionBar from './components/action_bar';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { createSelector } from 'reselect';
+import { HotKeys } from 'react-hotkeys';
 import Column from 'soapbox/components/column';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import {
+  deactivateUserModal,
+  deleteUserModal,
+  deleteStatusModal,
+  toggleStatusSensitivityModal,
+} from 'soapbox/actions/moderation';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import { launchChat } from 'soapbox/actions/chats';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
 import {
   favourite,
   unfavourite,
@@ -36,23 +48,14 @@ import {
 import { initMuteModal } from '../../actions/mutes';
 import { initReport } from '../../actions/reports';
 import { makeGetStatus } from '../../selectors';
-// import ColumnHeader from '../../components/column_header';
 import { openModal } from '../../actions/modal';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { createSelector } from 'reselect';
-import { HotKeys } from 'react-hotkeys';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-// import Icon from 'soapbox/components/icon';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import MissingIndicator from '../../components/missing_indicator';
+import { fetchStatusWithContext } from '../../actions/statuses';
 import ThreadStatus from './components/thread_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import SubNavigation from 'soapbox/components/sub_navigation';
-import { launchChat } from 'soapbox/actions/chats';
-import PullToRefresh from 'soapbox/components/pull_to_refresh';
+import ActionBar from './components/action_bar';
+import DetailedStatus from './components/detailed_status';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },

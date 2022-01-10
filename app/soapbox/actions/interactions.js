@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
-import api from '../api';
-import { importFetchedAccounts, importFetchedStatus } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import api from '../api';
+import { importFetchedAccounts, importFetchedStatus } from './importer';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';

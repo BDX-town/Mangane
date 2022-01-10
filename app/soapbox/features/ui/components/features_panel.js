@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Icon from 'soapbox/components/icon';
-import IconWithCounter from 'soapbox/components/icon_with_counter';
 import { NavLink } from 'react-router-dom';
 import { injectIntl, defineMessages } from 'react-intl';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import IconWithCounter from 'soapbox/components/icon_with_counter';
+import Icon from 'soapbox/components/icon';
 import { getFeatures } from 'soapbox/utils/features';
 import { getBaseURL } from 'soapbox/utils/accounts';
 

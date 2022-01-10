@@ -1,8 +1,8 @@
-import api, { getLinks } from '../api';
-import { getSettings, changeSetting } from 'soapbox/actions/settings';
-import { getFeatures } from 'soapbox/utils/features';
 import { v4 as uuidv4 } from 'uuid';
 import { Map as ImmutableMap } from 'immutable';
+import { getSettings, changeSetting } from 'soapbox/actions/settings';
+import { getFeatures } from 'soapbox/utils/features';
+import api, { getLinks } from '../api';
 
 export const CHATS_FETCH_REQUEST = 'CHATS_FETCH_REQUEST';
 export const CHATS_FETCH_SUCCESS = 'CHATS_FETCH_SUCCESS';

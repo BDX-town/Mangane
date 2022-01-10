@@ -1,8 +1,8 @@
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import InnerHeader from '../../account/components/header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import InnerHeader from '../../account/components/header';
 import MovedNote from './moved_note';
 
 export default class Header extends ImmutablePureComponent {

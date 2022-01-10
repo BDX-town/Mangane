@@ -2,16 +2,16 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { createSelector } from 'reselect';
 import LoadingIndicator from '../../components/loading_indicator';
 import Column from '../ui/components/column';
 import { fetchLists } from '../../actions/lists';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import ColumnLink from '../ui/components/column_link';
 import ColumnSubheading from '../ui/components/column_subheading';
-import NewListForm from './components/new_list_form';
-import { createSelector } from 'reselect';
 import ScrollableList from '../../components/scrollable_list';
+import NewListForm from './components/new_list_form';
 
 const messages = defineMessages({
   heading: { id: 'column.lists', defaultMessage: 'Lists' },

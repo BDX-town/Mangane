@@ -5,8 +5,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { fetchSuggestions } from 'soapbox/actions/suggestions';
-import Account from './account';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+import Account from './account';
 
 const mapStateToProps = state => ({
   suggestions: state.getIn(['suggestions', 'items']),

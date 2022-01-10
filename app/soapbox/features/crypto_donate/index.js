@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Column from '../ui/components/column';
 import Accordion from 'soapbox/features/ui/components/accordion';
+import Column from '../ui/components/column';
 import SiteWallet from './components/site_wallet';
 
 const messages = defineMessages({

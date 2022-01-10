@@ -7,6 +7,8 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { CancelToken } from 'axios';
 import { debounce } from 'lodash';
+import { Map as ImmutableMap } from 'immutable';
+import { v4 as uuidv4 } from 'uuid';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
   SimpleForm,
@@ -17,8 +19,6 @@ import {
 } from 'soapbox/features/forms';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
-import { Map as ImmutableMap } from 'immutable';
-import { v4 as uuidv4 } from 'uuid';
 import { getSettings } from 'soapbox/actions/settings';
 import { openModal } from 'soapbox/actions/modal';
 import { getFeatures } from 'soapbox/utils/features';

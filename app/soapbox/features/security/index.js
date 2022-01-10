@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
 import Button from 'soapbox/components/button';
 import ShowablePassword from 'soapbox/components/showable_password';
 import {
@@ -18,9 +17,10 @@ import {
   deleteAccount,
 } from 'soapbox/actions/security';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { fetchMfa } from '../../actions/mfa';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSettings } from 'soapbox/actions/settings';
+import { fetchMfa } from '../../actions/mfa';
+import Column from '../ui/components/column';
 
 /*
 Security settings page for user account

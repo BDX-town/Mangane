@@ -8,8 +8,6 @@
  */
 
 import { defineMessages } from 'react-intl';
-import api, { baseClient } from '../api';
-import { importFetchedAccount } from './importer';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/accounts';
 import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
@@ -20,6 +18,8 @@ import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
 import KVStore from 'soapbox/storage/kv_store';
+import api, { baseClient } from '../api';
+import { importFetchedAccount } from './importer';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 

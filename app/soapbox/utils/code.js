@@ -1,6 +1,6 @@
 // @preval
-const pkg = require('../../../package.json');
 const { execSync } = require('child_process');
+const pkg = require('../../../package.json');
 
 const shortRepoName = url => new URL(url).pathname.substring(1);
 const trimHash = hash => hash.substring(0, 7);

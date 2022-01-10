@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { getSettings } from 'soapbox/actions/settings';
 import { makeGetNotification } from '../../../selectors';
 import Notification from '../components/notification';
 import { openModal } from '../../../actions/modal';
@@ -13,7 +14,6 @@ import {
   hideStatus,
   revealStatus,
 } from '../../../actions/statuses';
-import { getSettings } from 'soapbox/actions/settings';
 
 const makeMapStateToProps = () => {
   const getNotification = makeGetNotification();

@@ -1,7 +1,7 @@
-import api from '../api';
-import { importFetchedAccounts } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
+import api from '../api';
+import { importFetchedAccounts } from './importer';
 import { fetchRelationships } from './accounts';
 
 export const SUGGESTIONS_FETCH_REQUEST = 'SUGGESTIONS_FETCH_REQUEST';

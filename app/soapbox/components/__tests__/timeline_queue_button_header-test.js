@@ -1,7 +1,7 @@
 import React from 'react';
-import TimelineQueueButtonHeader from '../timeline_queue_button_header';
-import { createComponent } from 'soapbox/test_helpers';
 import { defineMessages } from 'react-intl';
+import { createComponent } from 'soapbox/test_helpers';
+import TimelineQueueButtonHeader from '../timeline_queue_button_header';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },

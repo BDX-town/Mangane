@@ -1,12 +1,12 @@
-import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { ConfigDB } from 'soapbox/utils/config_db';
+import KVStore from 'soapbox/storage/kv_store';
 import {
   SOAPBOX_CONFIG_REQUEST_SUCCESS,
   SOAPBOX_CONFIG_REQUEST_FAIL,
 } from '../actions/soapbox';
-import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { Map as ImmutableMap, fromJS } from 'immutable';
-import { ConfigDB } from 'soapbox/utils/config_db';
-import KVStore from 'soapbox/storage/kv_store';
+import { ADMIN_CONFIG_UPDATE_SUCCESS } from '../actions/admin';
 
 const initialState = ImmutableMap();
 

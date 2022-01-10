@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Icon from 'soapbox/components/icon';
-import CoinDB from '../utils/coin_db';
-import CryptoIcon from './crypto_icon';
 import { openModal } from 'soapbox/actions/modal';
 import { CopyableInput } from 'soapbox/features/forms';
+import CoinDB from '../utils/coin_db';
 import { getExplorerUrl } from '../utils/block_explorer';
+import CryptoIcon from './crypto_icon';
 
 export default @connect()
 class CryptoAddress extends ImmutablePureComponent {

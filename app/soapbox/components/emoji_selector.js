@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
+import classNames from 'classnames';
 import emojify from 'soapbox/features/emoji/emoji';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import classNames from 'classnames';
 
 const mapStateToProps = state => ({
   allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),

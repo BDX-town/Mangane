@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { is } from 'immutable';
 import AccountListPanel from 'soapbox/features/ui/components/account_list_panel';
 import { fetchUsers } from 'soapbox/actions/admin';
-import { is } from 'immutable';
 import compareId from 'soapbox/compare_id';
 
 const messages = defineMessages({

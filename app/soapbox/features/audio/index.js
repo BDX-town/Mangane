@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
-import { formatTime } from 'soapbox/features/video';
-import Icon from 'soapbox/components/icon';
 import classNames from 'classnames';
 import { throttle } from 'lodash';
-import { getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
 import { debounce } from 'lodash';
+import { formatTime } from 'soapbox/features/video';
+import Icon from 'soapbox/components/icon';
+import { getPointerPosition, fileNameFromURL } from 'soapbox/features/video';
 import Visualizer from './visualizer';
 
 const messages = defineMessages({

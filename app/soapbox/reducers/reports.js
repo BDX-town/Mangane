@@ -1,3 +1,4 @@
+import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
 import {
   REPORT_INIT,
   REPORT_SUBMIT_REQUEST,
@@ -9,7 +10,6 @@ import {
   REPORT_FORWARD_CHANGE,
   REPORT_BLOCK_CHANGE,
 } from '../actions/reports';
-import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable';
 
 const initialState = ImmutableMap({
   new: ImmutableMap({

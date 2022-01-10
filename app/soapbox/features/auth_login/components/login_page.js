@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
-import LoginForm from './login_form';
-import OtpAuthForm from './otp_auth_form';
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { isStandalone } from 'soapbox/utils/state';
+import OtpAuthForm from './otp_auth_form';
+import LoginForm from './login_form';
 
 const mapStateToProps = state => ({
   me: state.get('me'),

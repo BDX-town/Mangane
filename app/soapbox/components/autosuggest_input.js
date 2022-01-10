@@ -1,13 +1,13 @@
 import React from 'react';
-import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
-import AutosuggestEmoji from './autosuggest_emoji';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import { isRtl } from '../rtl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import Icon from 'soapbox/components/icon';
+import { isRtl } from '../rtl';
+import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+import AutosuggestEmoji from './autosuggest_emoji';
 
 const textAtCursorMatchesToken = (str, caretPosition, searchTokens) => {
   let word;

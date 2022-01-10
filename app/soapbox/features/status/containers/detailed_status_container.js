@@ -1,5 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { getSettings } from 'soapbox/actions/settings';
+import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { launchChat } from 'soapbox/actions/chats';
 import DetailedStatus from '../components/detailed_status';
 import { makeGetStatus } from '../../../selectors';
 import {
@@ -28,11 +32,7 @@ import {
 import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';
 import { openModal } from '../../../actions/modal';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { showAlertForError } from '../../../actions/alerts';
-import { getSettings } from 'soapbox/actions/settings';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
-import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },

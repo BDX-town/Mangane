@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/better_column';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { fetchReports } from 'soapbox/actions/admin';
-import Report from './components/report';
 import { makeGetReport } from 'soapbox/selectors';
+import Column from '../ui/components/better_column';
+import Report from './components/report';
 
 const messages = defineMessages({
   heading: { id: 'column.admin.reports', defaultMessage: 'Reports' },

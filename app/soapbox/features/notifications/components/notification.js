@@ -1,16 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusContainer from '../../../containers/status_container';
-import AccountContainer from '../../../containers/account_container';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import Permalink from '../../../components/permalink';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { HotKeys } from 'react-hotkeys';
-import FollowRequestContainer from '../containers/follow_request_container';
+import classNames from 'classnames';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
-import classNames from 'classnames';
+import StatusContainer from '../../../containers/status_container';
+import AccountContainer from '../../../containers/account_container';
+import Permalink from '../../../components/permalink';
+import FollowRequestContainer from '../containers/follow_request_container';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];

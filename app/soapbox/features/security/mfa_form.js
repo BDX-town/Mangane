@@ -5,8 +5,6 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import QRCode from 'qrcode.react';
-import Column from '../ui/components/column';
-import ColumnSubheading from '../ui/components/column_subheading';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import Button from 'soapbox/components/button';
 import snackbar from 'soapbox/actions/snackbar';
@@ -16,6 +14,8 @@ import {
   FieldsGroup,
   TextInput,
 } from 'soapbox/features/forms';
+import ColumnSubheading from '../ui/components/column_subheading';
+import Column from '../ui/components/column';
 import {
   fetchMfa,
   fetchBackupCodes,

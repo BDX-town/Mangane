@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { makeGetAccount } from 'soapbox/selectors';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { makeGetAccount } from 'soapbox/selectors';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import IconButton from 'soapbox/components/icon_button';
-import { defineMessages, injectIntl } from 'react-intl';
 import { addToMentions, removeFromMentions } from 'soapbox/actions/compose';
 import { fetchAccount } from 'soapbox/actions/accounts';
 

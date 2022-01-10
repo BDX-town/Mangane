@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import VerificationBadge from './verification_badge';
-import { getAcct } from '../utils/accounts';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import Icon from './icon';
-import RelativeTimestamp from './relative_timestamp';
 import { displayFqn } from 'soapbox/utils/state';
 import { isVerified } from 'soapbox/utils/accounts';
+import { getAcct } from '../utils/accounts';
+import VerificationBadge from './verification_badge';
+import Icon from './icon';
+import RelativeTimestamp from './relative_timestamp';
 
 const mapStateToProps = state => {
   return {

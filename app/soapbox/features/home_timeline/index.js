@@ -1,14 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { expandHomeTimeline } from '../../actions/timelines';
 import PropTypes from 'prop-types';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { getFeatures } from 'soapbox/utils/features';
+import Column from '../../components/column';
+import StatusListContainer from '../ui/containers/status_list_container';
+import { expandHomeTimeline } from '../../actions/timelines';
 
 function FollowRecommendationsContainer() {
   return import(/* webpackChunkName: "features/follow_recommendations" */'soapbox/features/follow_recommendations/components/follow_recommendations_container');

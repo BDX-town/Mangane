@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
+import { List as ImmutableList } from 'immutable';
 import Upload from '../components/upload';
 import { undoUploadCompose, changeUploadCompose } from '../../../actions/compose';
 import { openModal } from '../../../actions/modal';
 import { submitCompose } from '../../../actions/compose';
-import { List as ImmutableList } from 'immutable';
 
 const mapStateToProps = (state, { id }) => ({
   media: state.getIn(['compose', 'media_attachments']).find(item => item.get('id') === id),

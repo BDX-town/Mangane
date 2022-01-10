@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { debounce } from 'lodash';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import Column from '../ui/components/column';
 import { fetchScheduledStatuses, expandScheduledStatuses } from '../../actions/scheduled_statuses';
 import ScheduledStatus from './components/scheduled_status';
-import { debounce } from 'lodash';
 
 const messages = defineMessages({
   heading: { id: 'column.scheduled_statuses', defaultMessage: 'Scheduled Posts' },

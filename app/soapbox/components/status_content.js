@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import { isRtl } from '../rtl';
 import { FormattedMessage } from 'react-intl';
-import Permalink from './permalink';
 import classnames from 'classnames';
 import PollContainer from 'soapbox/containers/poll_container';
 import Icon from 'soapbox/components/icon';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
+import { isRtl } from '../rtl';
+import Permalink from './permalink';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
 const BIG_EMOJI_LIMIT = 10;

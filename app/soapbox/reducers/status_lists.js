@@ -1,3 +1,4 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
   FAVOURITED_STATUSES_FETCH_REQUEST,
   FAVOURITED_STATUSES_FETCH_SUCCESS,
@@ -23,7 +24,6 @@ import {
 import {
   PINNED_STATUSES_FETCH_SUCCESS,
 } from '../actions/pin_statuses';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import {
   FAVOURITE_SUCCESS,
   UNFAVOURITE_SUCCESS,
