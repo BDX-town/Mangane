@@ -6,9 +6,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const LoadingSpinner = ({ size = 30 }) => (
-  <div class='lds-spinner' style={{ width: size, height: size }}>
-    {Array(12).fill().map(i => (
-      <div />
+  <div className='lds-spinner' style={{ width: size, height: size }}>
+    {[...Array(12).keys()].map(i => (
+      <div key={i} />
     ))}
   </div>
 );
