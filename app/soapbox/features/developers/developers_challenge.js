@@ -3,7 +3,7 @@ import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { changeSetting } from 'soapbox/actions/settings';
+import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { SimpleForm, TextInput } from 'soapbox/features/forms';
 
@@ -39,7 +39,7 @@ class DevelopersChallenge extends React.Component {
     const { answer } = this.state;
 
     if (answer === 'buzzfizz') {
-      dispatch(changeSetting(['isDeveloper'], true));
+      dispatch(changeSettingImmediate(['isDeveloper'], true));
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     } else {
       dispatch(snackbar.error(intl.formatMessage(messages.fail)));
