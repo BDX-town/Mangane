@@ -38,7 +38,7 @@ class DevelopersChallenge extends React.Component {
     const { intl, dispatch } = this.props;
     const { answer } = this.state;
 
-    if (answer === 'buzzfizz') {
+    if (answer === 'boxsoap') {
       dispatch(changeSettingImmediate(['isDeveloper'], true));
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     } else {
@@ -49,8 +49,8 @@ class DevelopersChallenge extends React.Component {
   render() {
     const { intl } = this.props;
 
-    const challenge = `function fizzbuzz() {
-  return 'fizz|buzz'.split('|').reverse().join('');
+    const challenge = `function soapbox() {
+  return 'soap|box'.split('|').reverse().join('');
 }`;
 
     return (
@@ -60,7 +60,7 @@ class DevelopersChallenge extends React.Component {
             <FormattedMessage
               id='developers.challenge.message'
               defaultMessage='What is the result of calling {function}?'
-              values={{ function: <span className='code'>fizzbuzz()</span> }}
+              values={{ function: <span className='code'>soapbox()</span> }}
             />
             <pre className='code'>
               {challenge}
