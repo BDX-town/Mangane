@@ -118,31 +118,36 @@ class DisableOtpForm extends ImmutablePureComponent {
 
   state = {
     password: '',
+    isLoading: false,
   }
 
   handleInputChange = e => {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleOtpDisableClick = e => {
+  handleSubmit = e => {
     const { password } = this.state;
     const { dispatch, intl } = this.props;
 
+    this.setState({ isLoading: true });
+
     dispatch(disableMfa('totp', password)).then(() => {
       dispatch(snackbar.success(intl.formatMessage(messages.mfaDisableSuccess)));
+      this.context.router.history.push('../auth/edit');
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
+      this.setState({ isLoading: false });
     });
 
-    this.context.router.history.push('../auth/edit');
     e.preventDefault();
   }
 
   render() {
     const { intl } = this.props;
+    const { isLoading, password } = this.state;
 
     return (
-      <SimpleForm>
+      <SimpleForm onSubmit={this.handleSubmit} disabled={isLoading}>
         <div className='security-settings-panel'>
           <h1 className='security-settings-panel__setup-otp'>
             <FormattedMessage id='mfa.otp_enabled_title' defaultMessage='OTP Enabled' />
@@ -150,10 +155,16 @@ class DisableOtpForm extends ImmutablePureComponent {
           <div><FormattedMessage id='mfa.otp_enabled_description' defaultMessage='You have enabled two-factor authentication via OTP.' /></div>
           <div><FormattedMessage id='mfa.mfa_disable_enter_password' defaultMessage='Enter your current password to disable two-factor auth:' /></div>
           <ShowablePassword
+            disabled={isLoading}
             name='password'
             onChange={this.handleInputChange}
+            value={password}
           />
-          <Button className='button button-primary disable' text={intl.formatMessage(messages.mfa_setup_disable_button)} onClick={this.handleOtpDisableClick} />
+          <Button
+            disabled={isLoading}
+            className='button button-primary disable'
+            text={intl.formatMessage(messages.mfa_setup_disable_button)}
+          />
         </div>
       </SimpleForm>
     );
@@ -255,7 +266,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
 
   state = {
     password: '',
-    done: false,
+    isLoading: false,
     code: '',
     qrCodeURI: '',
     confirm_key: '',
@@ -275,26 +286,29 @@ class OtpConfirmForm extends ImmutablePureComponent {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  handleOtpConfirmClick = e => {
-    const { code, password } = this.state;
+  handleSubmit = e => {
     const { dispatch, intl } = this.props;
+    const { code, password } = this.state;
+
+    this.setState({ isLoading: true });
 
     dispatch(confirmMfa('totp', code, password)).then(() => {
       dispatch(snackbar.success(intl.formatMessage(messages.mfaConfirmSuccess)));
+      this.context.router.history.push('../auth/edit');
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
+      this.setState({ isLoading: false });
     });
 
-    this.context.router.history.push('../auth/edit');
     e.preventDefault();
   }
 
   render() {
     const { intl } = this.props;
-    const { qrCodeURI, confirm_key } = this.state;
+    const { isLoading, qrCodeURI, confirm_key, password, code } = this.state;
 
     return (
-      <SimpleForm>
+      <SimpleForm onSubmit={this.handleSubmit} disabled={isLoading}>
         <div className='security-settings-panel'>
 
           <fieldset disabled={false}>
@@ -319,19 +333,34 @@ class OtpConfirmForm extends ImmutablePureComponent {
                   name='code'
                   onChange={this.handleInputChange}
                   autoComplete='off'
+                  value={code}
+                  disabled={isLoading}
                 />
 
                 <div><FormattedMessage id='mfa.mfa_setup_enter_password' defaultMessage='Enter your current password to confirm your identity:' /></div>
                 <ShowablePassword
                   name='password'
                   onChange={this.handleInputChange}
+                  value={password}
+                  disabled={isLoading}
                 />
               </div>
             </FieldsGroup>
           </fieldset>
           <div className='security-settings-panel__setup-otp__buttons'>
-            <Button className='button button-secondary cancel' text={intl.formatMessage(messages.mfa_cancel_button)} onClick={this.handleCancelClick} />
-            <Button className='button button-primary setup' text={intl.formatMessage(messages.mfa_setup_confirm_button)} onClick={this.handleOtpConfirmClick} />
+            <Button
+              type='button'
+              className='button button-secondary cancel'
+              text={intl.formatMessage(messages.mfa_cancel_button)}
+              onClick={this.handleCancelClick}
+              disabled={isLoading}
+            />
+            <Button
+              type='submit'
+              className='button button-primary setup'
+              text={intl.formatMessage(messages.mfa_setup_confirm_button)}
+              disabled={isLoading}
+            />
           </div>
         </div>
       </SimpleForm>
