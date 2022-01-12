@@ -143,6 +143,7 @@ export function otpVerify(code, mfa_token) {
       code: code,
       challenge_type: 'totp',
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+      scope: getScopes(getState()),
     }).then(({ data: token }) => dispatch(authLoggedIn(token)));
   };
 }
