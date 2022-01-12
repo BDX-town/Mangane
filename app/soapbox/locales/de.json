@@ -116,7 +116,7 @@
   "alert.unexpected.help_text": "Falls das Problem weiterhin besteht, benachrichtige einen Adminstrator mit einem Screenshot des Fehlers und dem verwendeten Browser. {clear_cookies} kann ebenfalls helfen. Dadurch wirst du automatisch abgemeldet.",
   "alert.unexpected.message": "Ein unerwarteter Fehler ist aufgetreten.",
   "alert.unexpected.return_home": "Zurück zur Startseite",
-  "alert.unexpected.title": "",
+  "alert.unexpected.title": "Oops!",
   "aliases.account.add": "Alias erstellen",
   "aliases.account_label": "Alter Account:",
   "aliases.aliases_list_delete": "Link zum Alias entfernen",
