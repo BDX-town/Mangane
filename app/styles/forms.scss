@@ -643,20 +643,6 @@ code {
   font-size: 24px;
 }
 
-.qr-code {
-  flex: 0 0 auto;
-  background: var(--foreground-color);
-  padding: 4px;
-  margin: 0 10px 20px 0;
-  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  display: inline-block;
-
-  svg {
-    display: block;
-    margin: 0;
-  }
-}
-
 .simple_form {
   .warning {
     box-sizing: border-box;
