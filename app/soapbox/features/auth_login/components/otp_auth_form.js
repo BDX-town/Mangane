@@ -45,10 +45,7 @@ class OtpAuthForm extends ImmutablePureComponent {
       this.setState({ shouldRedirect: true });
       return dispatch(switchAccount(account.id));
     }).catch(error => {
-      this.setState({ isLoading: false });
-      if (error.response.data.error === 'Invalid code') {
-        this.setState({ code_error: true });
-      }
+      this.setState({ isLoading: false, code_error: true });
     });
     this.setState({ isLoading: true });
     event.preventDefault();
@@ -82,11 +79,11 @@ class OtpAuthForm extends ImmutablePureComponent {
             </div>
           </div>
         </fieldset>
-        { code_error &&
+        {code_error && (
           <div className='error-box'>
             <FormattedMessage id='login.otp_log_in.fail' defaultMessage='Invalid code, please try again.' />
           </div>
-        }
+        )}
         <div className='actions'>
           <button name='button' type='submit' className='btn button button-primary'>
             <FormattedMessage id='login.log_in' defaultMessage='Log in' />
