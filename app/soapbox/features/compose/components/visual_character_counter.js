@@ -1,7 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 import { length } from 'stringz';
+
 import ProgressCircle from 'soapbox/components/progress_circle';
 
 const messages = defineMessages({

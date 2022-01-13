@@ -1,12 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Column from '../ui/components/column';
-import Icon from 'soapbox/components/icon';
-import { changeSetting } from 'soapbox/actions/settings';
+
+import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
+import Icon from 'soapbox/components/icon';
+
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -29,7 +31,7 @@ class DevelopersMenu extends React.Component {
   leaveDevelopers = e => {
     const { intl, dispatch } = this.props;
 
-    dispatch(changeSetting(['isDeveloper'], false));
+    dispatch(changeSettingImmediate(['isDeveloper'], false));
     dispatch(snackbar.success(intl.formatMessage(messages.leave)));
 
     this.context.router.history.push('/');

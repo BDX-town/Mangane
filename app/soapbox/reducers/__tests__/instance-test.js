@@ -1,5 +1,6 @@
-import reducer from '../instance';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../instance';
 
 describe('instance reducer', () => {
   it('should return the initial state', () => {

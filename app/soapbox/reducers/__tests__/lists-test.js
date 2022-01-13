@@ -1,5 +1,6 @@
-import reducer from '../lists';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../lists';
 
 describe('lists reducer', () => {
   it('should return the initial state', () => {

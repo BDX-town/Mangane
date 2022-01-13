@@ -1,17 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from 'soapbox/features/ui/components/column';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
-import { connectListStream } from '../../actions/streaming';
-import { expandListTimeline } from '../../actions/timelines';
+import { connect } from 'react-redux';
+
+import Button from 'soapbox/components/button';
+import Column from 'soapbox/features/ui/components/column';
+
 import { fetchList, deleteList } from '../../actions/lists';
 import { openModal } from '../../actions/modal';
-import MissingIndicator from '../../components/missing_indicator';
+import { connectListStream } from '../../actions/streaming';
+import { expandListTimeline } from '../../actions/timelines';
 import LoadingIndicator from '../../components/loading_indicator';
-import Button from 'soapbox/components/button';
+import MissingIndicator from '../../components/missing_indicator';
+import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
   deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },

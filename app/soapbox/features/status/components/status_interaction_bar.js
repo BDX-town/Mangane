@@ -1,16 +1,17 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { FormattedNumber } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { openModal } from 'soapbox/actions/modal';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { getFeatures } from 'soapbox/utils/features';
-import Icon from 'soapbox/components/icon';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { openModal } from 'soapbox/actions/modal';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 const mapStateToProps = state => {
   const me = state.get('me');

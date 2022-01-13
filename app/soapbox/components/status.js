@@ -1,30 +1,30 @@
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Avatar from './avatar';
-import AvatarOverlay from './avatar_overlay';
-import AvatarComposite from './avatar_composite';
-import RelativeTimestamp from './relative_timestamp';
-import DisplayName from './display_name';
-import StatusContent from './status_content';
-import StatusActionBar from './status_action_bar';
-import StatusReplyMentions from './status_reply_mentions';
-import AttachmentThumbs from './attachment_thumbs';
-import Card from '../features/status/components/card';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { HotKeys } from 'react-hotkeys';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 
-// We use the component (and not the container) since we do not want
-// to use the progress bar to show download progress
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Icon from 'soapbox/components/icon';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
+
+import AttachmentThumbs from './attachment_thumbs';
+import Avatar from './avatar';
+import AvatarComposite from './avatar_composite';
+import AvatarOverlay from './avatar_overlay';
+import DisplayName from './display_name';
+import RelativeTimestamp from './relative_timestamp';
+import StatusActionBar from './status_action_bar';
+import StatusContent from './status_content';
+import StatusReplyMentions from './status_reply_mentions';
 
 export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   const displayName = status.getIn(['account', 'display_name']);

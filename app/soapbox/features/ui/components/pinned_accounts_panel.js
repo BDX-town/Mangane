@@ -1,13 +1,15 @@
-import React from 'react';
+import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { List as ImmutableList } from 'immutable';
+
 import Icon from 'soapbox/components/icon';
-import AccountContainer from '../../../containers/account_container';
+
 import { fetchPinnedAccounts } from '../../../actions/accounts';
+import AccountContainer from '../../../containers/account_container';
 
 class PinnedAccountsPanel extends ImmutablePureComponent {
 

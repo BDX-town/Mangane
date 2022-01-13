@@ -1,8 +1,8 @@
 // Detect backend features to conditionally render elements
-import gte from 'semver/functions/gte';
-import lt from 'semver/functions/lt';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
+import gte from 'semver/functions/gte';
+import lt from 'semver/functions/lt';
 
 const any = arr => arr.some(Boolean);
 

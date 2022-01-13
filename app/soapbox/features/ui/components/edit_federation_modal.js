@@ -1,14 +1,15 @@
-import React from 'react';
+import { Map as ImmutableMap, is } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
-import { SimpleForm, Checkbox } from 'soapbox/features/forms';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
-import { Map as ImmutableMap, is } from 'immutable';
+import { connect } from 'react-redux';
+
 import { updateMrf } from 'soapbox/actions/mrf';
 import snackbar from 'soapbox/actions/snackbar';
+import { SimpleForm, Checkbox } from 'soapbox/features/forms';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 
 const getRemoteInstance = makeGetRemoteInstance();
 

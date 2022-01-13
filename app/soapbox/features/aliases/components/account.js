@@ -1,14 +1,15 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { makeGetAccount } from '../../../selectors';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { addToAliases } from '../../../actions/aliases';
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
 import IconButton from '../../../components/icon_button';
-import { defineMessages, injectIntl } from 'react-intl';
-import { addToAliases } from '../../../actions/aliases';
+import { makeGetAccount } from '../../../selectors';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },

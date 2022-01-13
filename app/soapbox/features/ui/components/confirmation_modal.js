@@ -1,8 +1,10 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import Button from '../../../components/button';
+
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
+
+import Button from '../../../components/button';
 import Icon from '../../../components/icon';
 
 export default @injectIntl

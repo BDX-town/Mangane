@@ -1,11 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
-import Column from '../ui/components/column';
-import { SimpleForm, TextInput } from 'soapbox/features/forms';
-import { changeSetting } from 'soapbox/actions/settings';
+import { connect } from 'react-redux';
+
+import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
+import { SimpleForm, TextInput } from 'soapbox/features/forms';
+
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.developers', defaultMessage: 'Developers' },
@@ -36,8 +38,8 @@ class DevelopersChallenge extends React.Component {
     const { intl, dispatch } = this.props;
     const { answer } = this.state;
 
-    if (answer === 'buzzfizz') {
-      dispatch(changeSetting(['isDeveloper'], true));
+    if (answer === 'boxsoap') {
+      dispatch(changeSettingImmediate(['isDeveloper'], true));
       dispatch(snackbar.success(intl.formatMessage(messages.success)));
     } else {
       dispatch(snackbar.error(intl.formatMessage(messages.fail)));
@@ -47,8 +49,8 @@ class DevelopersChallenge extends React.Component {
   render() {
     const { intl } = this.props;
 
-    const challenge = `function fizzbuzz() {
-  return 'fizz|buzz'.split('|').reverse().join('');
+    const challenge = `function soapbox() {
+  return 'soap|box'.split('|').reverse().join('');
 }`;
 
     return (
@@ -58,7 +60,7 @@ class DevelopersChallenge extends React.Component {
             <FormattedMessage
               id='developers.challenge.message'
               defaultMessage='What is the result of calling {function}?'
-              values={{ function: <span className='code'>fizzbuzz()</span> }}
+              values={{ function: <span className='code'>soapbox()</span> }}
             />
             <pre className='code'>
               {challenge}

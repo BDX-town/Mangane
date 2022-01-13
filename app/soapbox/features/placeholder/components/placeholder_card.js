@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { randomIntFromInterval, generateText } from '../utils';
 
 export default class PlaceholderCard extends React.Component {

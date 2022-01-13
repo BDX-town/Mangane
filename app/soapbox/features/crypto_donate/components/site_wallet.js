@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { trimStart } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import CryptoAddress from './crypto_address';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import { trimStart } from 'lodash';
+
+import CryptoAddress from './crypto_address';
 
 const normalizeAddress = address => {
   return address.update('ticker', '', ticker => {

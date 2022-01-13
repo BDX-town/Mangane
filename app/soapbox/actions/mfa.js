@@ -60,10 +60,12 @@ export function confirmMfa(method, code, password) {
   return (dispatch, getState) => {
     const params = { code, password };
     dispatch({ type: MFA_CONFIRM_REQUEST, method, code });
-    return api(getState).post(`/api/pleroma/accounts/mfa/confirm/${method}`, params).then(() => {
+    return api(getState).post(`/api/pleroma/accounts/mfa/confirm/${method}`, params).then(({ data }) => {
       dispatch({ type: MFA_CONFIRM_SUCCESS, method, code });
+      return data;
     }).catch(error => {
-      dispatch({ type: MFA_CONFIRM_FAIL, method, code, error });
+      dispatch({ type: MFA_CONFIRM_FAIL, method, code, error, skipAlert: true });
+      throw error;
     });
   };
 }
@@ -71,10 +73,12 @@ export function confirmMfa(method, code, password) {
 export function disableMfa(method, password) {
   return (dispatch, getState) => {
     dispatch({ type: MFA_DISABLE_REQUEST, method });
-    return api(getState).delete(`/api/pleroma/accounts/mfa/${method}`, { data: { password } }).then(response => {
+    return api(getState).delete(`/api/pleroma/accounts/mfa/${method}`, { data: { password } }).then(({ data }) => {
       dispatch({ type: MFA_DISABLE_SUCCESS, method });
+      return data;
     }).catch(error => {
-      dispatch({ type: MFA_DISABLE_FAIL, method });
+      dispatch({ type: MFA_DISABLE_FAIL, method, skipAlert: true });
+      throw error;
     });
   };
 }

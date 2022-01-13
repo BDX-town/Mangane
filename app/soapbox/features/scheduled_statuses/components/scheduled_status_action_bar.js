@@ -1,14 +1,15 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import IconButton from 'soapbox/components/icon_button';
-import { defineMessages, injectIntl } from 'react-intl';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled_statuses';
 import { getSettings } from 'soapbox/actions/settings';
+import IconButton from 'soapbox/components/icon_button';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 const messages = defineMessages({
   cancel: { id: 'scheduled_status.cancel', defaultMessage: 'Cancel' },

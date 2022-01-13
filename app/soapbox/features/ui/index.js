@@ -1,51 +1,52 @@
 'use strict';
 
 import classNames from 'classnames';
+import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Switch, withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import { debounce } from 'lodash';
-import { uploadCompose, resetCompose } from '../../actions/compose';
-import { expandHomeTimeline } from '../../actions/timelines';
-import { expandNotifications } from '../../actions/notifications';
-import { fetchMarker } from 'soapbox/actions/markers';
-import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
-import { fetchFilters } from '../../actions/filters';
+import { Redirect } from 'react-router-dom';
+
 import { fetchChats } from 'soapbox/actions/chats';
-import { clearHeight } from '../../actions/height_cache';
-import { openModal } from '../../actions/modal';
-import { fetchFollowRequests } from '../../actions/accounts';
-import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
-import { WrappedRoute } from './util/react_router_helpers';
-import BundleContainer from './containers/bundle_container';
-import TabsBar from './components/tabs_bar';
-import ProfilePage from 'soapbox/pages/profile_page';
+import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
+import { fetchMarker } from 'soapbox/actions/markers';
+import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
+import ThumbNavigation from 'soapbox/components/thumb_navigation';
+import AdminPage from 'soapbox/pages/admin_page';
+import DefaultPage from 'soapbox/pages/default_page';
 // import GroupsPage from 'soapbox/pages/groups_page';
 // import GroupPage from 'soapbox/pages/group_page';
-// import GroupSidebarPanel from '../groups/sidebar_panel';
-import HomePage from 'soapbox/pages/home_page';
-import DefaultPage from 'soapbox/pages/default_page';
-import StatusPage from 'soapbox/pages/status_page';
 import EmptyPage from 'soapbox/pages/default_page';
-import AdminPage from 'soapbox/pages/admin_page';
+import HomePage from 'soapbox/pages/home_page';
+import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
-import { connectUserStream } from '../../actions/streaming';
-import { register as registerPushNotifications } from 'soapbox/actions/push_notifications';
-import { Redirect } from 'react-router-dom';
-import Icon from 'soapbox/components/icon';
+import StatusPage from 'soapbox/pages/status_page';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getAccessToken } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
-import { fetchCustomEmojis } from 'soapbox/actions/custom_emojis';
-import ThumbNavigation from 'soapbox/components/thumb_navigation';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getVapidKey } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
+import { fetchFollowRequests } from '../../actions/accounts';
+import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
+import { uploadCompose, resetCompose } from '../../actions/compose';
+import { fetchFilters } from '../../actions/filters';
+import { clearHeight } from '../../actions/height_cache';
+import { openModal } from '../../actions/modal';
+import { expandNotifications } from '../../actions/notifications';
+import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
+import { connectUserStream } from '../../actions/streaming';
+import { expandHomeTimeline } from '../../actions/timelines';
+
+// import GroupSidebarPanel from '../groups/sidebar_panel';
+import TabsBar from './components/tabs_bar';
+import BundleContainer from './containers/bundle_container';
 import {
   Status,
   CommunityTimeline,
@@ -118,6 +119,8 @@ import {
   CreateApp,
   SettingsStore,
 } from './util/async-components';
+import { WrappedRoute } from './util/react_router_helpers';
+
 
 // Dummy import, to make sure that <Status /> ends up in the application bundle.
 // Without this it ends up in ~8 very commonly used bundles.

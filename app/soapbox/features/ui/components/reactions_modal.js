@@ -1,15 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
-import AccountContainer from 'soapbox/containers/account_container';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import { connect } from 'react-redux';
+
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import FilterBar from 'soapbox/components/filter_bar';
+import IconButton from 'soapbox/components/icon_button';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
+import ScrollableList from 'soapbox/components/scrollable_list';
+import AccountContainer from 'soapbox/containers/account_container';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

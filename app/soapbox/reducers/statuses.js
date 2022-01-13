@@ -1,3 +1,12 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+
+import {
+  EMOJI_REACT_REQUEST,
+  UNEMOJI_REACT_REQUEST,
+} from '../actions/emoji_reacts';
+import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
@@ -15,14 +24,7 @@ import {
   STATUS_REVEAL,
   STATUS_HIDE,
 } from '../actions/statuses';
-import {
-  EMOJI_REACT_REQUEST,
-  UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji_reacts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
-import { Map as ImmutableMap, fromJS } from 'immutable';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
 // Fix order of mentions
 const fixMentions = status => {

@@ -1,11 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { fetchTrends } from '../../../actions/trends';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+
 import Icon from 'soapbox/components/icon';
+
+import { fetchTrends } from '../../../actions/trends';
 import Hashtag from '../../../components/hashtag';
 
 class TrendsPanel extends ImmutablePureComponent {

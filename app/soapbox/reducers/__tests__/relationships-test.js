@@ -1,9 +1,11 @@
-import reducer from '../relationships';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import lain from 'soapbox/__fixtures__/lain.json';
+
 import {
   ACCOUNT_IMPORT,
 } from '../../actions/importer';
-import lain from 'soapbox/__fixtures__/lain.json';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import reducer from '../relationships';
 
 describe('relationships reducer', () => {
   it('should return the initial state', () => {

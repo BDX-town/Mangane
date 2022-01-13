@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getAcct, isVerified } from 'soapbox/utils/accounts';
+
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
+import { getAcct, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = state => ({

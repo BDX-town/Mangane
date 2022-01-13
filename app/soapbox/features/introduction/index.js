@@ -1,9 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactSwipeableViews from 'react-swipeable-views';
 import classNames from 'classnames';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import ReactSwipeableViews from 'react-swipeable-views';
+
 import { closeOnboarding } from '../../actions/onboarding';
 
 const FrameWelcome = ({ domain, onNext }) => (

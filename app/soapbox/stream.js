@@ -1,6 +1,7 @@
 'use strict';
 
 import WebSocketClient from '@gamestdio/websocket';
+
 import { getAccessToken } from 'soapbox/utils/auth';
 
 const randomIntUpTo = max => Math.floor(Math.random() * Math.floor(max));

@@ -1,10 +1,12 @@
-import reducer from '../statuses';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
 } from 'soapbox/actions/statuses';
-import { STATUS_IMPORT } from 'soapbox/actions/importer';
+
+import reducer from '../statuses';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {

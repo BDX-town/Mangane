@@ -1,13 +1,15 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
-import LoginForm from './login_form';
-import OtpAuthForm from './otp_auth_form';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { isStandalone } from 'soapbox/utils/state';
+
+import LoginForm from './login_form';
+import OtpAuthForm from './otp_auth_form';
 
 const mapStateToProps = state => ({
   me: state.get('me'),
@@ -50,8 +52,9 @@ class LoginPage extends ImmutablePureComponent {
         dispatch(switchAccount(account.id));
       }
     }).catch(error => {
-      if (error.response.data.error === 'mfa_required') {
-        this.setState({ mfa_auth_needed: true, mfa_token: error.response.data.mfa_token });
+      const data = error.response && error.response.data;
+      if (data && data.error === 'mfa_required') {
+        this.setState({ mfa_auth_needed: true, mfa_token: data.mfa_token });
       }
       this.setState({ isLoading: false });
     });

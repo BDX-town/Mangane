@@ -1,4 +1,5 @@
 import { getSettings } from '../settings';
+
 import {
   normalizeAccount,
   normalizeStatus,

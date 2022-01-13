@@ -1,3 +1,5 @@
+import { fromJS } from 'immutable';
+
 import {
   sortEmoji,
   mergeEmojiFavourites,
@@ -8,7 +10,6 @@ import {
   simulateEmojiReact,
   simulateUnEmojiReact,
 } from '../emoji_reacts';
-import { fromJS } from 'immutable';
 
 const ALLOWED_EMOJI = [
   '👍',

@@ -1,8 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
-import Icon from 'soapbox/components/icon';
+
 import FilterBar from 'soapbox/components/filter_bar';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },

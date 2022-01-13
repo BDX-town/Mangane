@@ -1,18 +1,21 @@
-import React from 'react';
-import { defineMessages, injectIntl, FormattedMessage, FormattedNumber } from 'react-intl';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
-import RegistrationModePicker from './components/registration_mode_picker';
-import { parseVersion } from 'soapbox/utils/features';
-import sourceCode from 'soapbox/utils/code';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage, FormattedNumber } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
-import { getFeatures } from 'soapbox/utils/features';
 import { isAdmin } from 'soapbox/utils/accounts';
+import sourceCode from 'soapbox/utils/code';
+import { parseVersion } from 'soapbox/utils/features';
+import { getFeatures } from 'soapbox/utils/features';
 import { isNumber } from 'soapbox/utils/numbers';
+
+import Column from '../ui/components/column';
+
+import RegistrationModePicker from './components/registration_mode_picker';
 
 // https://stackoverflow.com/a/53230807
 const download = (response, filename) => {

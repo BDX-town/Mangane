@@ -1,9 +1,10 @@
-import reducer from '../admin';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
+
+import reducer from '../admin';
 
 describe('admin reducer', () => {
   it('should return the initial state', () => {

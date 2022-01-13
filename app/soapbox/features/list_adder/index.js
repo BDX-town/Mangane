@@ -1,16 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { setupListAdder, resetListAdder } from '../../actions/lists';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import List from './components/list';
-import Account from './components/account';
+
 import IconButton from 'soapbox/components/icon_button';
+
+import { setupListAdder, resetListAdder } from '../../actions/lists';
 import NewListForm from '../lists/components/new_list_form';
 import ColumnSubheading from '../ui/components/column_subheading';
+
+import Account from './components/account';
+import List from './components/list';
 // hack
 
 const getOrderedLists = createSelector([state => state.get('lists')], lists => {

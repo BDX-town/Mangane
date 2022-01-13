@@ -1,9 +1,10 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
 import {
   TRENDS_FETCH_REQUEST,
   TRENDS_FETCH_SUCCESS,
   TRENDS_FETCH_FAIL,
 } from '../actions/trends';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   items: ImmutableList(),

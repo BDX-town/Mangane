@@ -1,6 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
+
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({

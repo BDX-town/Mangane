@@ -1,8 +1,8 @@
 // The output of this module is designed to mimic emoji-mart's
 // "data" object, such that we can use it for a light version of emoji-mart's
 // emojiIndex.search functionality.
-const { unicodeToUnifiedName } = require('./unicode_to_unified_name');
 const [ shortCodesToEmojiData, skins, categories, short_names ] = require('./emoji_compressed');
+const { unicodeToUnifiedName } = require('./unicode_to_unified_name');
 
 const emojis = {};
 

@@ -1,10 +1,13 @@
 import { defineMessages } from 'react-intl';
-import api from '../api';
-import { importFetchedAccount, importFetchedAccounts } from './importer';
-import { showAlertForError } from './alerts';
-import snackbar from './snackbar';
+
 import { isLoggedIn } from 'soapbox/utils/auth';
+
+import api from '../api';
+
+import { showAlertForError } from './alerts';
+import { importFetchedAccount, importFetchedAccounts } from './importer';
 import { ME_PATCH_SUCCESS } from './me';
+import snackbar from './snackbar';
 
 export const ALIASES_SUGGESTIONS_CHANGE = 'ALIASES_SUGGESTIONS_CHANGE';
 export const ALIASES_SUGGESTIONS_READY  = 'ALIASES_SUGGESTIONS_READY';

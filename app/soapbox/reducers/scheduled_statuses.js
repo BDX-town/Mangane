@@ -1,11 +1,13 @@
-import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   SCHEDULED_STATUSES_FETCH_SUCCESS,
   SCHEDULED_STATUS_CANCEL_REQUEST,
   SCHEDULED_STATUS_CANCEL_SUCCESS,
 } from 'soapbox/actions/scheduled_statuses';
+import { STATUS_CREATE_SUCCESS } from 'soapbox/actions/statuses';
+
 import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const importStatus = (state, status) => {
   if (!status.scheduled_at) return state;

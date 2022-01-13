@@ -1,14 +1,16 @@
 'use strict';
 
 import './precheck';
-import { default as Soapbox } from './containers/soapbox';
+import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
-import * as perf from './performance';
-import * as monitoring from './monitoring';
-import ready from './ready';
+
 import { NODE_ENV } from 'soapbox/build_config';
+
+import { default as Soapbox } from './containers/soapbox';
+import * as monitoring from './monitoring';
+import * as perf from './performance';
+import ready from './ready';
 
 function main() {
   perf.start('main()');

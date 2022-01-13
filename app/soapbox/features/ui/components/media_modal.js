@@ -1,16 +1,18 @@
-import React from 'react';
-import ReactSwipeableViews from 'react-swipeable-views';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Video from 'soapbox/features/video';
-import Audio from 'soapbox/features/audio';
-import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import classNames from 'classnames';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImageLoader from './image_loader';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import ReactSwipeableViews from 'react-swipeable-views';
+
+import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
+import Audio from 'soapbox/features/audio';
+import Video from 'soapbox/features/video';
+
+import ImageLoader from './image_loader';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

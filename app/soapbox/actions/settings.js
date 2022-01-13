@@ -1,10 +1,13 @@
-import { debounce } from 'lodash';
-import { showAlertForError } from './alerts';
-import { patchMe } from 'soapbox/actions/me';
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import uuid from '../uuid';
+import { debounce } from 'lodash';
 import { createSelector } from 'reselect';
+
+import { patchMe } from 'soapbox/actions/me';
+import { isLoggedIn } from 'soapbox/utils/auth';
+
+import uuid from '../uuid';
+
+import { showAlertForError } from './alerts';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -165,6 +168,18 @@ export const getSettings = createSelector([
     .mergeDeep(settings);
 });
 
+export function changeSettingImmediate(path, value) {
+  return dispatch => {
+    dispatch({
+      type: SETTING_CHANGE,
+      path,
+      value,
+    });
+
+    dispatch(saveSettingsImmediate());
+  };
+}
+
 export function changeSetting(path, value) {
   return dispatch => {
     dispatch({
@@ -177,23 +192,29 @@ export function changeSetting(path, value) {
   };
 }
 
+export function saveSettingsImmediate() {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    const state = getState();
+    if (getSettings(state).getIn(['saved'])) return;
+
+    const data = state.get('settings').delete('saved').toJS();
+
+    dispatch(patchMe({
+      pleroma_settings_store: {
+        [FE_NAME]: data,
+      },
+    })).then(response => {
+      dispatch({ type: SETTING_SAVE });
+    }).catch(error => {
+      dispatch(showAlertForError(error));
+    });
+  };
+}
+
 const debouncedSave = debounce((dispatch, getState) => {
-  if (!isLoggedIn(getState)) return;
-
-  const state = getState();
-  if (getSettings(state).getIn(['saved'])) return;
-
-  const data = state.get('settings').delete('saved').toJS();
-
-  dispatch(patchMe({
-    pleroma_settings_store: {
-      [FE_NAME]: data,
-    },
-  })).then(response => {
-    dispatch({ type: SETTING_SAVE });
-  }).catch(error => {
-    dispatch(showAlertForError(error));
-  });
+  dispatch(saveSettingsImmediate());
 }, 5000, { trailing: true });
 
 export function saveSettings() {

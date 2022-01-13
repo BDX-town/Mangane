@@ -1,5 +1,6 @@
-import { SET_BROWSER_SUPPORT, SET_SUBSCRIPTION, CLEAR_SUBSCRIPTION, SET_ALERTS } from '../actions/push_notifications';
 import { Map as ImmutableMap } from 'immutable';
+
+import { SET_BROWSER_SUPPORT, SET_SUBSCRIPTION, CLEAR_SUBSCRIPTION, SET_ALERTS } from '../actions/push_notifications';
 
 const initialState = ImmutableMap({
   subscription: null,

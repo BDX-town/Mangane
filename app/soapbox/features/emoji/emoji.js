@@ -1,6 +1,8 @@
-import unicodeMapping from './emoji_unicode_mapping_light';
 import Trie from 'substring-trie';
+
 import { joinPublicPath } from 'soapbox/utils/static';
+
+import unicodeMapping from './emoji_unicode_mapping_light';
 
 const trie = new Trie(Object.keys(unicodeMapping));
 

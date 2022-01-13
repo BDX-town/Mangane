@@ -1,21 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import IconButton from './icon_button';
-import DropdownMenuContainer from '../containers/dropdown_menu_container';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
-import { openModal } from '../actions/modal';
-import { Link } from 'react-router-dom';
-import EmojiSelector from 'soapbox/components/emoji_selector';
-import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
-import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { List as ImmutableList } from 'immutable';
-import { getFeatures } from 'soapbox/utils/features';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import EmojiSelector from 'soapbox/components/emoji_selector';
 import { isUserTouching } from 'soapbox/is_mobile';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
+import { getFeatures } from 'soapbox/utils/features';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
+import { openModal } from '../actions/modal';
+import DropdownMenuContainer from '../containers/dropdown_menu_container';
+
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },

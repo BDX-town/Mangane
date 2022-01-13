@@ -1,24 +1,27 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
+import { FormattedDate } from 'react-intl';
+import { Link, NavLink } from 'react-router-dom';
+
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Icon from 'soapbox/components/icon';
+import { getDomain } from 'soapbox/utils/accounts';
+
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
+import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import StatusReplyMentions from '../../../components/status_reply_mentions';
-import MediaGallery from '../../../components/media_gallery';
-import { Link, NavLink } from 'react-router-dom';
-import { FormattedDate } from 'react-intl';
-import Card from './card';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import Video from '../../video';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
-import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
+import Video from '../../video';
+
+import Card from './card';
 import StatusInteractionBar from './status_interaction_bar';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 export default @injectIntl
 class DetailedStatus extends ImmutablePureComponent {

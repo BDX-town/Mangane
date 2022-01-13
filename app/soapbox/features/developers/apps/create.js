@@ -1,22 +1,23 @@
-import React from 'react';
+import { Map as ImmutableMap } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import Column from 'soapbox/features/ui/components/column';
+import { connect } from 'react-redux';
+
+import { createApp } from 'soapbox/actions/apps';
+import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import {
   SimpleForm,
   TextInput,
   SimpleTextarea,
   FieldsGroup,
 } from 'soapbox/features/forms';
-import { createApp } from 'soapbox/actions/apps';
-import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import { Map as ImmutableMap } from 'immutable';
+import Accordion from 'soapbox/features/ui/components/accordion';
+import Column from 'soapbox/features/ui/components/column';
 import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-import Accordion from 'soapbox/features/ui/components/accordion';
 
 const messages = defineMessages({
   heading: { id: 'column.app_create', defaultMessage: 'Create app' },

@@ -1,13 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+
+import { fetchChats, launchChat } from 'soapbox/actions/chats';
+import AccountSearch from 'soapbox/components/account_search';
+import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
+
 import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
-import { fetchChats, launchChat } from 'soapbox/actions/chats';
-import { defineMessages, injectIntl } from 'react-intl';
+
 import ChatList from './components/chat_list';
-import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
-import AccountSearch from 'soapbox/components/account_search';
 
 const messages = defineMessages({
   title: { id: 'column.chats', defaultMessage: 'Chats' },
