@@ -32,6 +32,10 @@ class MediaModal extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
   };
 
+  static contextTypes = {
+    router: PropTypes.object,
+  }
+
   state = {
     index: null,
     navigationHidden: false,
@@ -94,6 +98,7 @@ class MediaModal extends ImmutablePureComponent {
       const acct = account.get('acct');
       const statusId = status.get('id');
       this.context.router.history.push(`/@${acct}/posts/${statusId}`);
+      this.props.onClose(null, true);
     }
   }
 
