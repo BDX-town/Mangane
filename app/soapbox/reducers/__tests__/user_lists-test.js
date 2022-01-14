@@ -15,6 +15,7 @@ describe('user_lists reducer', () => {
       mutes: ImmutableMap(),
       groups: ImmutableMap(),
       groups_removed_accounts: ImmutableMap(),
+      pinned: ImmutableMap(),
     }));
   });
 });

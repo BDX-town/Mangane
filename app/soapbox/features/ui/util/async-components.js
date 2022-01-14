@@ -338,6 +338,10 @@ export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
 }
 
+export function PinnedAccountsPanel() {
+  return import(/* webpackChunkName: "features/pinned_accounts]" */'../components/pinned_accounts_panel');
+}
+
 export function InstanceInfoPanel() {
   return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_info_panel');
 }

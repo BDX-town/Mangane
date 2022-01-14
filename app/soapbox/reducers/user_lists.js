@@ -9,6 +9,7 @@ import {
   FOLLOW_REQUESTS_EXPAND_SUCCESS,
   FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
   FOLLOW_REQUEST_REJECT_SUCCESS,
+  PINNED_ACCOUNTS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
   BLOCKS_FETCH_SUCCESS,
@@ -53,6 +54,7 @@ const initialState = ImmutableMap({
   mutes: ImmutableMap(),
   groups: ImmutableMap(),
   groups_removed_accounts: ImmutableMap(),
+  pinned: ImmutableMap(),
 });
 
 const normalizeList = (state, type, id, accounts, next) => {
@@ -127,6 +129,8 @@ export default function userLists(state = initialState, action) {
     return appendToList(state, 'groups_removed_accounts', action.id, action.accounts, action.next);
   case GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS:
     return state.updateIn(['groups_removed_accounts', action.groupId, 'items'], list => list.filterNot(item => item === action.id));
+  case PINNED_ACCOUNTS_FETCH_SUCCESS:
+    return normalizeList(state, 'pinned', action.id, action.accounts, action.next);
   default:
     return state;
   }

@@ -680,6 +680,7 @@
   "password_reset.confirmation": "Sprawdź swoją pocztę e-mail, aby potwierdzić.",
   "password_reset.fields.username_placeholder": "Adres e-mail lub nazwa użytkownika",
   "password_reset.reset": "Resetuj hasło",
+  "pinned_accounts.title": "Polecani przez {name}",
   "pinned_statuses.none": "Brak przypięć do pokazania.",
   "poll.closed": "Zamknięte",
   "poll.refresh": "Odśwież",
