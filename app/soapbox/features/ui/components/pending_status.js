@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -29,6 +30,7 @@ const mapStateToProps = (state, props) => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class PendingStatus extends ImmutablePureComponent {
 
   renderMedia = () => {
@@ -45,6 +47,56 @@ class PendingStatus extends ImmutablePureComponent {
     } else {
       return null;
     }
+  }
+
+  renderReplyMentions = () => {
+    const { status } = this.props;
+
+    if (!status.get('in_reply_to_id')) {
+      return null;
+    }
+
+    const to = status.get('mentions', []);
+
+    if (to.size === 0) {
+      if (status.get('in_reply_to_account_id') === status.getIn(['account', 'id'])) {
+        return (
+          <div className='reply-mentions'>
+            <FormattedMessage
+              id='reply_mentions.reply'
+              defaultMessage='Replying to {accounts}{more}'
+              values={{
+                accounts: <span className='reply-mentions__account'>@{status.getIn(['account', 'username'])}</span>,
+                more: false,
+              }}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className='reply-mentions'>
+            <FormattedMessage id='reply_mentions.reply_empty' defaultMessage='Replying to post' />
+          </div>
+        );
+      }
+    }
+
+
+    return (
+      <div className='reply-mentions'>
+        <FormattedMessage
+          id='reply_mentions.reply'
+          defaultMessage='Replying to {accounts}{more}'
+          values={{
+            accounts: to.slice(0, 2).map(account => (<>
+              <span key={account.username} className='reply-mentions__account'>@{account.username}</span>
+              {' '}
+            </>)),
+            more: to.size > 2 && <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />,
+          }}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -83,6 +135,8 @@ class PendingStatus extends ImmutablePureComponent {
                 </NavLink>
               </div>
             </div>
+
+            {this.renderReplyMentions()}
 
             <StatusContent
               status={status}
