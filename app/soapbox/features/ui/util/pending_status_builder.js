@@ -1,23 +1,13 @@
 import { fromJS } from 'immutable';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
-import { makeGetAccount, makeGetStatus } from 'soapbox/selectors';
+import { makeGetAccount } from 'soapbox/selectors';
 
 export const buildStatus = (state, pendingStatus, idempotencyKey) => {
   const getAccount = makeGetAccount();
-  const getStatus = makeGetStatus();
 
   const me = state.get('me');
   const account = getAccount(state, me);
-
-  let replyToSelf = false;
-  if (pendingStatus.get('in_reply_to_id')) {
-    const inReplyTo = getStatus(state, { id: pendingStatus.get('in_reply_to_id') });
-
-    if (inReplyTo.getIn(['account', 'id']) === me)
-      replyToSelf = true;
-  }
 
   const status = normalizeStatus({
     account,
@@ -34,13 +24,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     in_reply_to_id: pendingStatus.get('in_reply_to_id'),
     language: null,
     media_attachments: pendingStatus.get('media_ids').map(id => ({ id })),
-    mentions: (
-      replyToSelf
-        ? ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to'))
-        : pendingStatus.get('to')
-    ).map(mention => ({
-      username: mention.split('@')[0],
-    })),
+    mentions: [],
     muted: false,
     pinned: false,
     poll: pendingStatus.get('poll', null),
