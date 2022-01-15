@@ -15,6 +15,7 @@ import Icon from 'soapbox/components/icon';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
@@ -31,6 +32,7 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
     const soapboxConfig = getSoapboxConfig(state);
+    const features = getFeatures(state.get('instance'));
 
     let accountId = -1;
     let accountUsername = username;
@@ -47,7 +49,7 @@ const makeMapStateToProps = () => {
     const path = withReplies ? `${accountId}:with_replies` : accountId;
 
     const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-    const unavailable = (me === accountId) ? false : isBlocked;
+    const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
     const showPins = getSettings(state).getIn(['account_timeline', 'shows', 'pinned']) && !withReplies;
 
     return {
