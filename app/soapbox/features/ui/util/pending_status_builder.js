@@ -11,12 +11,19 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
   const me = state.get('me');
   const account = getAccount(state, me);
 
-  let replyToSelf = false;
+  let mentions;
   if (pendingStatus.get('in_reply_to_id')) {
     const inReplyTo = getStatus(state, { id: pendingStatus.get('in_reply_to_id') });
 
-    if (inReplyTo.getIn(['account', 'id']) === me)
-      replyToSelf = true;
+    if (inReplyTo.getIn(['account', 'id']) === me) {
+      mentions = ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to', []));
+    } else {
+      mentions = pendingStatus.get('to', []);
+    }
+
+    mentions = mentions.map(mention => ({
+      username: mention.split('@')[0],
+    }));
   }
 
   const status = normalizeStatus({
@@ -34,13 +41,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     in_reply_to_id: pendingStatus.get('in_reply_to_id'),
     language: null,
     media_attachments: pendingStatus.get('media_ids').map(id => ({ id })),
-    mentions: (
-      replyToSelf
-        ? ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to'))
-        : pendingStatus.get('to')
-    ).map(mention => ({
-      username: mention.split('@')[0],
-    })),
+    mentions,
     muted: false,
     pinned: false,
     poll: pendingStatus.get('poll', null),
