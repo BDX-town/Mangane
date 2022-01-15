@@ -32,6 +32,7 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       features.includes('v2_suggestions'),
     ]),
+    blockersVisible: features.includes('blockers_visible'),
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),

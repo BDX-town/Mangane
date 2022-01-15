@@ -17,6 +17,7 @@ import LoadingIndicator from 'soapbox/components/loading_indicator';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
 import { expandAccountMediaTimeline } from '../../actions/timelines';
 
@@ -26,6 +27,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
   const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
+  const features = getFeatures(state.get('instance'));
 
   let accountId = -1;
   let accountUsername = username;
@@ -38,7 +40,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   }
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     accountId,

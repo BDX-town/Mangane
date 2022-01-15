@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getFollowDifference } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 import {
   fetchAccount,
@@ -29,6 +30,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
   const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
+  const features = getFeatures(state.get('instance'));
 
   let accountId = -1;
   if (accountFetchError) {
@@ -40,7 +42,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
 
   const diffCount = getFollowDifference(state, accountId, 'followers');
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     accountId,

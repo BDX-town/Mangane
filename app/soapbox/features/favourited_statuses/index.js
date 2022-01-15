@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 
 import MissingIndicator from 'soapbox/components/missing_indicator';
 import { findAccountByUsername } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
@@ -25,6 +26,8 @@ const mapStateToProps = (state, { params }) => {
   const meUsername = state.getIn(['accounts', me, 'username'], '');
 
   const isMyAccount = (username.toLowerCase() === meUsername.toLowerCase());
+
+  const features = getFeatures(state.get('instance'));
 
   if (isMyAccount) {
     return {
@@ -46,7 +49,7 @@ const mapStateToProps = (state, { params }) => {
   }
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     isMyAccount,
