@@ -212,7 +212,7 @@ export function submitCompose(routerHistory, force = false) {
     }
 
     if (to && status) {
-      const mentions = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/g); // not a perfect regex
+      const mentions = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/gi); // not a perfect regex
 
       if (mentions)
         to = to.union(mentions.map(mention => mention.trim().slice(1)));
