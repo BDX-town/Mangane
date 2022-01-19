@@ -268,12 +268,15 @@ class ChatMessageList extends ImmutablePureComponent {
         icon: require('@tabler/icons/icons/trash.svg'),
         destructive: true,
       },
-      {
+    ];
+
+    if (chatMessage.get('account_id') !== me) {
+      menu.push({
         text: intl.formatMessage(messages.report),
         action: this.handleReportUser(chatMessage.get('account_id')),
         icon: require('@tabler/icons/icons/flag.svg'),
-      },
-    ];
+      });
+    }
 
     return (
       <div
