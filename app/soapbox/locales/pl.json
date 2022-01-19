@@ -329,7 +329,7 @@
   "edit_federation.save": "Zapisz",
   "edit_federation.success": "Zaktualizowano federację {host}",
   "edit_federation.unlisted": "Wymuś oznaczanie wpisów jako niewypisane",
-  "edit_profile.error": "Akktualizacja profilu nie powiodła się",
+  "edit_profile.error": "Aktualizacja profilu nie powiodła się",
   "edit_profile.fields.accepts_email_list_label": "Zasubskrybuj newsletter",
   "edit_profile.fields.avatar_label": "Awatar",
   "edit_profile.fields.bio_label": "Opis",
