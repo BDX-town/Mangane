@@ -103,6 +103,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
+    const birthDate = account.getIn(['pleroma', 'birth_date']) && intl.formatDate(account.getIn(['pleroma', 'birth_date']), { day: 'numeric', month: 'long', year: 'numeric' });
     const verified = isVerified(account);
     const badges = this.getBadges();
 
@@ -146,6 +147,15 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             <FormattedMessage
               id='account.member_since' defaultMessage='Joined {date}' values={{
                 date: memberSinceDate,
+              }}
+            />
+          </div>}
+
+          {birthDate && <div className='profile-info-panel-content__birth-date'>
+            <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+            <FormattedMessage
+              id='account.birth_date' defaultMessage='Birth date: {date}' values={{
+                date: birthDate,
               }}
             />
           </div>}

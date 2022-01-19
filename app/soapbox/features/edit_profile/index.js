@@ -5,10 +5,12 @@ import {
 import { unescape } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import DatePicker from 'react-datepicker';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
@@ -49,6 +51,7 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
+  birthDatePlaceholder: { id: 'edit_profile.fields.birth_date_placeholder', defaultMessage: 'Your birth date' },
 });
 
 const makeMapStateToProps = () => {
@@ -58,12 +61,15 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = getAccount(state, me);
     const soapbox = getSoapboxConfig(state);
+    const features = getFeatures(state.get('instance'));
 
     return {
       account,
       maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-      supportsEmailList: getFeatures(state.get('instance')).emailList,
+      supportsEmailList: features.emailList,
+      supportsBirthDates: features.birthDates,
+      minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birth_date_min_age']),
     };
   };
 
@@ -94,6 +100,9 @@ class EditProfile extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     maxFields: PropTypes.number,
     verifiedCanEditName: PropTypes.bool,
+    supportsEmailList: PropTypes.bool,
+    supportsBirthDates: PropTypes.bool,
+    minAge: PropTypes.number,
   };
 
   state = {
@@ -107,6 +116,7 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
+    const birthDate = account.getIn(['pleroma', 'birth_date']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -116,6 +126,7 @@ class EditProfile extends ImmutablePureComponent {
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
+      if (birthDate) map.set('birthDate', new Date(birthDate));
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -156,6 +167,7 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
+      birth_date: state.birthDate?.toISOString().slice(0, 10),
     }, this.getFieldParams().toJS());
   }
 
@@ -223,6 +235,12 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
+  handleBirthDateChange = (birthDate) => {
+    this.setState({
+      birthDate,
+    });
+  }
+
   handleAddField = () => {
     this.setState({
       fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
@@ -237,8 +255,15 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
+  isDateValid = date => {
+    const { minAge } = this.props;
+    const allowedDate = new Date();
+    allowedDate.setDate(allowedDate.getDate() - minAge);
+    return date && allowedDate.setHours(0, 0, 0, 0) >= new Date(date).setHours(0, 0, 0, 0);
+  }
+
   render() {
-    const { intl, maxFields, account, verifiedCanEditName, supportsEmailList } = this.props;
+    const { intl, maxFields, account, verifiedCanEditName, supportsEmailList, supportsBirthDates } = this.props;
     const verified = isVerified(account);
     const canEditName = verifiedCanEditName || !verified;
 
@@ -267,6 +292,23 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
                 rows={3}
               />
+              {supportsBirthDates && (
+                <div className='datepicker'>
+                  <div className='datepicker__hint'>
+                    <FormattedMessage id='edit_profile.fields.birth_date_label' defaultMessage='Birth date' />
+                  </div>
+                  <div className='datepicker__input'>
+                    <DatePicker
+                      selected={this.state.birthDate}
+                      dateFormat='d MMMM yyyy'
+                      wrapperClassName='react-datepicker-wrapper'
+                      onChange={this.handleBirthDateChange}
+                      placeholderText={intl.formatMessage(messages.birthDatePlaceholder)}
+                      filterDate={this.isDateValid}
+                    />
+                  </div>
+                </div>
+              )}
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
                   <ProfilePreview account={this.makePreviewAccount()} />
