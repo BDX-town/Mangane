@@ -109,6 +109,10 @@ export const NOTIFICATION_SETTINGS_REQUEST = 'NOTIFICATION_SETTINGS_REQUEST';
 export const NOTIFICATION_SETTINGS_SUCCESS = 'NOTIFICATION_SETTINGS_SUCCESS';
 export const NOTIFICATION_SETTINGS_FAIL    = 'NOTIFICATION_SETTINGS_FAIL';
 
+export const BIRTHDAY_REMINDERS_FETCH_REQUEST = 'BIRTHDAY_REMINDERS_FETCH_REQUEST';
+export const BIRTHDAY_REMINDERS_FETCH_SUCCESS = 'BIRTHDAY_REMINDERS_FETCH_SUCCESS';
+export const BIRTHDAY_REMINDERS_FETCH_FAIL    = 'BIRTHDAY_REMINDERS_FETCH_FAIL';
+
 export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -1027,6 +1031,29 @@ export function accountLookup(acct, cancelToken) {
     }).catch(error => {
       dispatch({ type: ACCOUNT_LOOKUP_FAIL });
       throw error;
+    });
+  };
+}
+
+export function fetchBirthdayReminders(day, month) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    const me = getState().get('me');
+
+    dispatch({ type: BIRTHDAY_REMINDERS_FETCH_REQUEST, day, month, id: me });
+
+    api(getState).get('/api/v1/pleroma/birthday_reminders', { params: { day, month } }).then(response => {
+      dispatch(importFetchedAccounts(response.data));
+      dispatch({
+        type: BIRTHDAY_REMINDERS_FETCH_SUCCESS,
+        accounts: response.data,
+        day,
+        month,
+        id: me,
+      });
+    }).catch(error => {
+      dispatch({ type: BIRTHDAY_REMINDERS_FETCH_FAIL, day, month, id: me });
     });
   };
 }

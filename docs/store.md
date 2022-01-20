@@ -391,6 +391,9 @@ If it's not documented, it's because I inherited it from Mastodon and I don't kn
          mention: true,
          poll: true,
          reblog: true
+       },
+       birthdays: {
+         show: true
        }
      },
      theme: 'azure',

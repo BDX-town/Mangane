@@ -24,6 +24,7 @@ class ColumnSettings extends React.PureComponent {
     onClear: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     supportsEmojiReacts: PropTypes.bool,
+    supportsBirthDates: PropTypes.bool,
   };
 
   onPushChange = (path, checked) => {
@@ -39,7 +40,7 @@ class ColumnSettings extends React.PureComponent {
   }
 
   render() {
-    const { intl, settings, pushSettings, onChange, onClear, onClose, supportsEmojiReacts } = this.props;
+    const { intl, settings, pushSettings, onChange, onClear, onClose, supportsEmojiReacts, supportsBirthDates } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;
     const filterAdvancedStr = <FormattedMessage id='notifications.column_settings.filter_bar.advanced' defaultMessage='Display all categories' />;
@@ -50,6 +51,7 @@ class ColumnSettings extends React.PureComponent {
     const soundSettings = [['sounds', 'follow'], ['sounds', 'favourite'], ['sounds', 'pleroma:emoji_reaction'], ['sounds', 'mention'], ['sounds', 'reblog'], ['sounds', 'poll'], ['sounds', 'move']];
     const showPushSettings = pushSettings.get('browserSupport') && pushSettings.get('isSubscribed');
     const pushStr = showPushSettings && <FormattedMessage id='notifications.column_settings.push' defaultMessage='Push notifications' />;
+    const birthdaysStr = <FormattedMessage id='notifications.column_settings.birthdays.show' defaultMessage='Show birthday reminders' />;
 
     return (
       <div className='column-settings'>
@@ -83,6 +85,17 @@ class ColumnSettings extends React.PureComponent {
               <SettingToggle id='show-filter-bar' prefix='notifications' settings={settings} settingPath={['quickFilter', 'advanced']} onChange={onChange} label={filterAdvancedStr} />
             </div>
           </div>
+
+          {supportsBirthDates &&
+            <div role='group' aria-labelledby='notifications-filter-bar'>
+              <span id='notifications-filter-bar' className='column-settings__section'>
+                <FormattedMessage id='notifications.column_settings.birthdays.category' defaultMessage='Birthdays' />
+              </span>
+              <div className='column-settings__row'>
+                <SettingToggle id='show-filter-bar' prefix='notifications' settings={settings} settingPath={['birthdays', 'show']} onChange={onChange} label={birthdaysStr} />
+              </div>
+            </div>
+          }
 
           <div role='group' aria-labelledby='notifications-follow'>
             <span id='notifications-follow' className='column-settings__section'><FormattedMessage id='notifications.column_settings.follow' defaultMessage='New followers:' /></span>

@@ -10,6 +10,7 @@ import {
   FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
   FOLLOW_REQUEST_REJECT_SUCCESS,
   PINNED_ACCOUNTS_FETCH_SUCCESS,
+  BIRTHDAY_REMINDERS_FETCH_SUCCESS,
 } from '../actions/accounts';
 import {
   BLOCKS_FETCH_SUCCESS,
@@ -55,6 +56,7 @@ const initialState = ImmutableMap({
   groups: ImmutableMap(),
   groups_removed_accounts: ImmutableMap(),
   pinned: ImmutableMap(),
+  birthday_reminders: ImmutableMap(),
 });
 
 const normalizeList = (state, type, id, accounts, next) => {
@@ -131,6 +133,8 @@ export default function userLists(state = initialState, action) {
     return state.updateIn(['groups_removed_accounts', action.groupId, 'items'], list => list.filterNot(item => item === action.id));
   case PINNED_ACCOUNTS_FETCH_SUCCESS:
     return normalizeList(state, 'pinned', action.id, action.accounts, action.next);
+  case BIRTHDAY_REMINDERS_FETCH_SUCCESS:
+    return state.setIn(['birthday_reminders', action.id], ImmutableOrderedSet(action.accounts.map(item => item.id)));
   default:
     return state;
   }

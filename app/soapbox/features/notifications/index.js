@@ -8,8 +8,10 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
+import BirthdayReminders from 'soapbox/components/birthday_reminders';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
+import { getFeatures } from 'soapbox/utils/features';
 
 import {
   expandNotifications,
@@ -45,14 +47,21 @@ const getNotifications = createSelector([
   return notifications.filter(item => item !== null && allowedType === item.get('type'));
 });
 
-const mapStateToProps = state => ({
-  showFilterBar: getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
-  notifications: getNotifications(state),
-  isLoading: state.getIn(['notifications', 'isLoading'], true),
-  isUnread: state.getIn(['notifications', 'unread']) > 0,
-  hasMore: state.getIn(['notifications', 'hasMore']),
-  totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
-});
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
+  return {
+    showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
+    notifications: getNotifications(state),
+    isLoading: state.getIn(['notifications', 'isLoading'], true),
+    isUnread: state.getIn(['notifications', 'unread']) > 0,
+    hasMore: state.getIn(['notifications', 'hasMore']),
+    totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
+    showBirthdayReminders: settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthDates,
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -68,6 +77,7 @@ class Notifications extends React.PureComponent {
     hasMore: PropTypes.bool,
     dequeueNotifications: PropTypes.func,
     totalQueuedNotificationsCount: PropTypes.number,
+    showBirthdayReminders: PropTypes.bool,
   };
 
   componentWillUnmount() {
@@ -137,7 +147,7 @@ class Notifications extends React.PureComponent {
   }
 
   render() {
-    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, showBirthdayReminders } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 
     let scrollableContent = null;
@@ -164,6 +174,8 @@ class Notifications extends React.PureComponent {
           onMoveDown={this.handleMoveDown}
         />
       ));
+
+      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(<BirthdayReminders key='birthdays' />);
     } else {
       scrollableContent = null;
     }

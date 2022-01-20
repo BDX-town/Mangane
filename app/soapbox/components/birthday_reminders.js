@@ -1,0 +1,118 @@
+
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { fetchBirthdayReminders } from 'soapbox/actions/accounts';
+import { openModal } from 'soapbox/actions/modal';
+import Icon from 'soapbox/components/icon';
+import { makeGetAccount } from 'soapbox/selectors';
+
+const mapStateToProps = (state, props) => {
+  const me = state.get('me');
+  const getAccount = makeGetAccount();
+
+  const birthdays = state.getIn(['user_lists', 'birthday_reminders', me]);
+
+  if (birthdays && birthdays.size > 0) {
+    return {
+      birthdays,
+      account: getAccount(state, birthdays.first()),
+    };
+  }
+
+  return {
+    birthdays,
+  };
+};
+
+export default @connect(mapStateToProps)
+@injectIntl
+class BirthdayReminders extends ImmutablePureComponent {
+
+  static propTypes = {
+    birthdays: ImmutablePropTypes.orderedSet,
+    intl: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+  };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+
+    const date = new Date();
+
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+
+    dispatch(fetchBirthdayReminders(day, month));
+  }
+
+  handleOpenBirthdaysModal = () => {
+    const { dispatch } = this.props;
+
+    dispatch(openModal('BIRTHDAYS'));
+  }
+
+  renderMessage() {
+    const { birthdays, account } = this.props;
+
+    const link = (
+      <bdi>
+        <Link
+          className='notification__display-name'
+          title={account.get('acct')}
+          to={`/@${account.get('acct')}`}
+          dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
+        />
+      </bdi>
+    );
+
+    if (birthdays.size === 1) {
+      return <FormattedMessage id='notification.birthday' defaultMessage='{name} has birthday today' values={{ name: link }} />;
+    }
+
+    return (
+      <FormattedMessage
+        id='notification.birthday_plural'
+        defaultMessage='{name} and {more} have birthday today'
+        values={{
+          name: link,
+          more: (
+            <span type='button' role='presentation' onClick={this.handleOpenBirthdaysModal}>
+              <FormattedMessage
+                id='notification.birthday.more'
+                defaultMessage='{count} more {count, plural, one {friend} other {friends}}'
+                values={{ count: birthdays.size - 1 }}
+              />
+            </span>
+          ),
+        }}
+      />
+    );
+  }
+
+  render() {
+    const { birthdays } = this.props;
+
+    if (!birthdays || birthdays.size === 0) return null;
+
+    return (
+      <div className='notification notification-birthday focusable'>
+        <div className='notification__message'>
+          <div className='notification__icon-wrapper'>
+            <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          </div>
+
+          <span>
+            {this.renderMessage()}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+}
