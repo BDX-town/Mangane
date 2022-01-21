@@ -80,6 +80,41 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     return badges;
   }
 
+  getBirthDate = () => {
+    const { account, intl } = this.props;
+
+    const birthDate = account.getIn(['pleroma', 'birth_date']);
+    if (!birthDate) return null;
+
+    const formattedBirthDate = intl.formatDate(birthDate, { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const date = new Date(birthDate);
+    const today = new Date();
+
+    const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+
+    if (hasBirthday) {
+      return (
+        <div className='profile-info-panel-content__birth-date' title={formattedBirthDate}>
+          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <FormattedMessage
+            id='account.birthday' defaultMessage='Has birthday today!'
+          />
+        </div>
+      );
+    }
+    return (
+      <div className='profile-info-panel-content__birth-date'>
+        <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+        <FormattedMessage
+          id='account.birth_date' defaultMessage='Birth date: {date}' values={{
+            date: formattedBirthDate,
+          }}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { account, displayFqn, intl, identity_proofs, username } = this.props;
 
@@ -103,7 +138,6 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
-    const birthDate = account.getIn(['pleroma', 'birth_date']) && intl.formatDate(account.getIn(['pleroma', 'birth_date']), { day: 'numeric', month: 'long', year: 'numeric' });
     const verified = isVerified(account);
     const badges = this.getBadges();
 
@@ -151,14 +185,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             />
           </div>}
 
-          {birthDate && <div className='profile-info-panel-content__birth-date'>
-            <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-            <FormattedMessage
-              id='account.birth_date' defaultMessage='Birth date: {date}' values={{
-                date: birthDate,
-              }}
-            />
-          </div>}
+          {this.getBirthDate()}
 
           <ProfileStats
             className='profile-info-panel-content__stats'

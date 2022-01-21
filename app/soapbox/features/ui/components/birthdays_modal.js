@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import IconButton from 'soapbox/components/icon_button';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import AccountContainer from 'soapbox/containers/account_container';
+import Account from 'soapbox/features/birthdays/account';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -69,7 +69,7 @@ class BirthdaysModal extends React.PureComponent {
           emptyMessage={emptyMessage}
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />,
+            <Account key={id} accountId={id} withNote={false} />,
           )}
         </ScrollableList>
       );

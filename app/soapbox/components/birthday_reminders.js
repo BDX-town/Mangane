@@ -1,6 +1,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
@@ -49,6 +50,12 @@ class BirthdayReminders extends ImmutablePureComponent {
     const month = date.getMonth() + 1;
 
     dispatch(fetchBirthdayReminders(day, month));
+  }
+
+  getHandlers() {
+    return {
+      open: this.handleOpenBirthdaysModal,
+    };
   }
 
   handleOpenBirthdaysModal = () => {
@@ -101,17 +108,19 @@ class BirthdayReminders extends ImmutablePureComponent {
     if (!birthdays || birthdays.size === 0) return null;
 
     return (
-      <div className='notification notification-birthday focusable'>
-        <div className='notification__message'>
-          <div className='notification__icon-wrapper'>
-            <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-          </div>
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-birthday'>
+          <div className='notification__message'>
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+            </div>
 
-          <span>
-            {this.renderMessage()}
-          </span>
+            <span>
+              {this.renderMessage()}
+            </span>
+          </div>
         </div>
-      </div>
+      </HotKeys>
     );
   }
 
