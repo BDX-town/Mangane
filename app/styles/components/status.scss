@@ -588,6 +588,11 @@ a.status-card {
 
 .status-card__description {
   color: var(--primary-text-color--faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 
 .status-card__host {
