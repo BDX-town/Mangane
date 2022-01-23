@@ -29,6 +29,8 @@ class QuotedStatus extends ImmutablePureComponent {
       }
 
       this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+
+      e.preventDefault();
     }
   }
 

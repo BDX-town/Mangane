@@ -53,6 +53,7 @@ const messages = defineMessages({
   reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
   reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
   emojiPickerExpand: { id: 'status.reactions_expand', defaultMessage: 'Select emoji' },
+  quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
 const mapStateToProps = state => {
@@ -87,6 +88,7 @@ class ActionBar extends React.PureComponent {
     status: ImmutablePropTypes.map.isRequired,
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
+    onQuote: PropTypes.func.isRequired,
     onFavourite: PropTypes.func.isRequired,
     onEmojiReact: PropTypes.func.isRequired,
     onDelete: PropTypes.func.isRequired,
@@ -138,6 +140,15 @@ class ActionBar extends React.PureComponent {
     const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
       onReblog(status, e);
+    } else {
+      onOpenUnauthorizedModal('REBLOG');
+    }
+  }
+
+  handleQuoteClick = () => {
+    const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
+    if (me) {
+      onQuote(status, this.context.router.history);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -319,6 +330,47 @@ class ActionBar extends React.PureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
+    let reblogButton;
+
+    if (me && features.quotePosts) {
+      const reblogMenu = [
+        {
+          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
+          action: this.handleReblogClick,
+          icon: require('@tabler/icons/icons/repeat.svg'),
+        },
+        {
+          text: intl.formatMessage(messages.quotePost),
+          action: this.handleQuoteClick,
+          icon: require('@tabler/icons/icons/quote.svg'),
+        },
+      ];
+
+      reblogButton = (
+        <DropdownMenuContainer
+          items={reblogMenu}
+          disabled={!publicStatus}
+          active={status.get('reblogged')}
+          pressed={status.get('reblogged')}
+          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={require('@tabler/icons/icons/repeat.svg')}
+          direction='right'
+          text={intl.formatMessage(messages.reblog)}
+        />
+      );
+    } else {
+      reblogButton = (
+        <IconButton
+          disabled={reblog_disabled}
+          active={status.get('reblogged')}
+          title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={reblogIcon}
+          onClick={this.handleReblogClick}
+          text={intl.formatMessage(messages.reblog)}
+        />
+      );
+    }
+
     const menu = [];
 
     if (publicStatus) {
@@ -497,14 +549,7 @@ class ActionBar extends React.PureComponent {
           />
         </div>
         <div className='detailed-status__button'>
-          <IconButton
-            disabled={reblog_disabled}
-            active={status.get('reblogged')}
-            title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-            src={reblogIcon}
-            onClick={this.handleReblogClick}
-            text={intl.formatMessage(messages.reblog)}
-          />
+          {reblogButton}
         </div>
         <div
           className='detailed-status__button detailed-status__button--favourite'

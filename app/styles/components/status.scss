@@ -338,6 +338,16 @@
       font-weight: 500;
       color: var(--brand-color);
     }
+
+    &--reblog {
+      > div {
+        display: flex;
+
+        > .icon-button {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
 
