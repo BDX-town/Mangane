@@ -9,7 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
-  birthDatePlaceholder: { id: 'edit_profile.fields.birth_date_placeholder', defaultMessage: 'Your birth date' },
+  birthDatePlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
 });
 
 const mapStateToProps = state => {
@@ -17,7 +17,7 @@ const mapStateToProps = state => {
 
   return {
     supportsBirthDates: features.birthDates,
-    minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birth_date_min_age']),
+    minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_min_age']),
   };
 };
 

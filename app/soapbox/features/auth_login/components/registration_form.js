@@ -47,7 +47,7 @@ const mapStateToProps = (state, props) => ({
   needsApproval: state.getIn(['instance', 'approval_required']),
   supportsEmailList: getFeatures(state.get('instance')).emailList,
   supportsAccountLookup: getFeatures(state.get('instance')).accountLookup,
-  birthDateRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birth_date_required']),
+  birthDateRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -223,7 +223,7 @@ class RegistrationForm extends ImmutablePureComponent {
       }
 
       if (birthDate) {
-        params.set('birth_date', birthDate.toISOString().slice(0, 10));
+        params.set('birthday', birthDate.toISOString().slice(0, 10));
       }
     });
 

@@ -56,7 +56,7 @@ class Account extends ImmutablePureComponent {
 
     if (!account) return null;
 
-    const birthDate = account.getIn(['pleroma', 'birth_date']);
+    const birthDate = account.getIn(['pleroma', 'birthday']);
     if (!birthDate) return null;
 
     const formattedBirthDate = intl.formatDate(birthDate, { day: 'numeric', month: 'short', year: 'numeric' });

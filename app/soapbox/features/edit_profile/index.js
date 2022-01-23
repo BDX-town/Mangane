@@ -50,7 +50,7 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
-  birthDatePlaceholder: { id: 'edit_profile.fields.birth_date_placeholder', defaultMessage: 'Your birth date' },
+  birthDatePlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
 });
 
 const makeMapStateToProps = () => {
@@ -113,8 +113,8 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
-    const birthDate = account.getIn(['pleroma', 'birth_date']);
-    const hideBirthDate = account.getIn(['pleroma', 'hide_birth_date']);
+    const birthDate = account.getIn(['pleroma', 'birthday']);
+    const showBirthDate = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -124,7 +124,7 @@ class EditProfile extends ImmutablePureComponent {
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
-      map.set('hide_birth_date', hideBirthDate);
+      map.set('show_birthday', showBirthDate);
       if (birthDate) map.set('birthDate', new Date(birthDate));
       unescapeParams(map, ['display_name', 'bio']);
     });
@@ -166,8 +166,8 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
-      birth_date: state.birthDate?.toISOString().slice(0, 10),
-      hide_birth_date: state.hide_birth_date,
+      birthday: state.birthDate?.toISOString().slice(0, 10),
+      show_birthday: state.show_birthday,
     }, this.getFieldParams().toJS());
   }
 
@@ -286,7 +286,7 @@ class EditProfile extends ImmutablePureComponent {
                 rows={3}
               />
               <BirthDateInput
-                hint={<FormattedMessage id='edit_profile.fields.birth_date_label' defaultMessage='Birth date' />}
+                hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birth date' />}
                 value={this.state.birthDate}
                 onChange={this.handleBirthDateChange}
               />
@@ -345,10 +345,10 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleCheckboxChange}
               />
               {supportsBirthDates && <Checkbox
-                label={<FormattedMessage id='edit_profile.fields.hide_birth_date_label' defaultMessage='Hide my birth date' />}
-                hint={<FormattedMessage id='edit_profile.hints.hide_birth_date' defaultMessage='Your birth date will not be shown on your profile.' />}
-                name='hide_birth_date'
-                checked={this.state.hide_birth_date}
+                label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birth date' />}
+                hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birth date will be visible on your profile.' />}
+                name='show_birthday'
+                checked={this.state.show_birthday}
                 onChange={this.handleCheckboxChange}
               />}
               {supportsEmailList && <Checkbox
