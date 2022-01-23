@@ -9,6 +9,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
+import QuotedStatus from 'soapbox/features/status/components/quoted_status';
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Avatar from '../../../components/avatar';
@@ -160,6 +161,12 @@ class DetailedStatus extends ImmutablePureComponent {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
     }
 
+    let quote;
+
+    if (status.getIn(['pleroma', 'quote'])) {
+      quote = <QuotedStatus statusId={status.getIn(['pleroma', 'quote', 'id'])} />;
+    }
+
     if (status.get('visibility') === 'direct') {
       statusTypeIcon = <Icon src={require('@tabler/icons/icons/mail.svg')} />;
     } else if (status.get('visibility') === 'private') {
@@ -201,6 +208,7 @@ class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
+          {quote}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />

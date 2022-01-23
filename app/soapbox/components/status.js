@@ -10,6 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import QuotedStatus from 'soapbox/features/status/components/quoted_status';
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Card from '../features/status/components/card';
@@ -472,6 +473,12 @@ class Status extends ImmutablePureComponent {
       );
     }
 
+    let quote;
+
+    if (status.getIn(['pleroma', 'quote'])) {
+      quote = <QuotedStatus statusId={status.getIn(['pleroma', 'quote', 'id'])} />;
+    }
+
     if (otherAccounts && otherAccounts.size > 1) {
       statusAvatar = <AvatarComposite accounts={otherAccounts} size={48} />;
     } else if (account === undefined || account === null) {
@@ -551,6 +558,7 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
+            {quote}
 
             <StatusActionBar
               status={status}

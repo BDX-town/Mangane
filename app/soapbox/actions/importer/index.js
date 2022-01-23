@@ -75,6 +75,10 @@ export function importFetchedStatus(status, idempotencyKey) {
       dispatch(importFetchedStatus(status.reblog));
     }
 
+    if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+      dispatch(importFetchedStatus(status.pleroma.quote));
+    }
+
     if (status.poll && status.poll.id) {
       dispatch(importFetchedPoll(status.poll));
     }
