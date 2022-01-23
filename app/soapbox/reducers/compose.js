@@ -347,8 +347,8 @@ export default function compose(state = initialState, action) {
   case COMPOSE_QUOTE:
     return state.withMutations(map => {
       map.set('quote', action.status.get('id'));
-      map.set('to', action.explicitAddressing ? statusToMentionsArray(state, action.status, action.account) : undefined);
-      map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
+      map.set('to', undefined);
+      map.set('text', '');
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
