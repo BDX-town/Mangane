@@ -3,7 +3,6 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
@@ -11,20 +10,8 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { isRtl } from 'soapbox/rtl';
-import { makeGetStatus } from 'soapbox/selectors';
 
-const makeMapStateToProps = () => {
-  const getStatus = makeGetStatus();
-
-  const mapStateToProps = (state, props) => ({
-    status: getStatus(state, { id: props.statusId }),
-  });
-
-  return mapStateToProps;
-};
-
-export default @connect(makeMapStateToProps)
-@injectIntl
+export default @injectIntl
 class QuotedStatus extends ImmutablePureComponent {
 
   static contextTypes = {

@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
-import QuotedStatus from 'soapbox/features/status/components/quoted_status';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Card from '../features/status/components/card';
@@ -71,6 +71,7 @@ class Status extends ImmutablePureComponent {
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
+    onQuote: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onChat: PropTypes.func,

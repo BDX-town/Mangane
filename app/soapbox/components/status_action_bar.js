@@ -78,6 +78,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onFavourite: PropTypes.func,
     onBookmark: PropTypes.func,
     onReblog: PropTypes.func,
+    onQuote: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onChat: PropTypes.func,
@@ -198,6 +199,15 @@ class StatusActionBar extends ImmutablePureComponent {
     const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
       onReblog(status, e);
+    } else {
+      onOpenUnauthorizedModal('REBLOG');
+    }
+  }
+
+  handleQuoteClick = () => {
+    const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
+    if (me) {
+      onQuote(status, this.context.router.history);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -556,6 +566,9 @@ class StatusActionBar extends ImmutablePureComponent {
         <div className='status__action-bar__counter'>
           <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={reblogIcon} onClick={this.handleReblogClick} />
           {reblogCount !== 0 && <span className='detailed-status__link' type='button' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</span>}
+        </div>
+        <div className='status__action-bar__counter'>
+          <IconButton className='status__action-bar-button' disabled={!publicStatus} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={require('@tabler/icons/icons/quote.svg')} onClick={this.handleQuoteClick} />
         </div>
         <div
           className='status__action-bar__counter status__action-bar__counter--favourite'

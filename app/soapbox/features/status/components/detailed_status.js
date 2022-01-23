@@ -9,7 +9,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
-import QuotedStatus from 'soapbox/features/status/components/quoted_status';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Avatar from '../../../components/avatar';
