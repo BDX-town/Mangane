@@ -330,47 +330,6 @@ class ActionBar extends React.PureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
-    let reblogButton;
-
-    if (me && features.quotePosts) {
-      const reblogMenu = [
-        {
-          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
-          action: this.handleReblogClick,
-          icon: require('@tabler/icons/icons/repeat.svg'),
-        },
-        {
-          text: intl.formatMessage(messages.quotePost),
-          action: this.handleQuoteClick,
-          icon: require('@tabler/icons/icons/quote.svg'),
-        },
-      ];
-
-      reblogButton = (
-        <DropdownMenuContainer
-          items={reblogMenu}
-          disabled={!publicStatus}
-          active={status.get('reblogged')}
-          pressed={status.get('reblogged')}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={require('@tabler/icons/icons/repeat.svg')}
-          direction='right'
-          text={intl.formatMessage(messages.reblog)}
-        />
-      );
-    } else {
-      reblogButton = (
-        <IconButton
-          disabled={reblog_disabled}
-          active={status.get('reblogged')}
-          title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          onClick={this.handleReblogClick}
-          text={intl.formatMessage(messages.reblog)}
-        />
-      );
-    }
-
     const menu = [];
 
     if (publicStatus) {
@@ -537,6 +496,47 @@ class ActionBar extends React.PureComponent {
     }
 
     const reblog_disabled = (status.get('visibility') === 'direct' || status.get('visibility') === 'private');
+
+    let reblogButton;
+
+    if (me && features.quotePosts) {
+      const reblogMenu = [
+        {
+          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
+          action: this.handleReblogClick,
+          icon: require('@tabler/icons/icons/repeat.svg'),
+        },
+        {
+          text: intl.formatMessage(messages.quotePost),
+          action: this.handleQuoteClick,
+          icon: require('@tabler/icons/icons/quote.svg'),
+        },
+      ];
+
+      reblogButton = (
+        <DropdownMenuContainer
+          items={reblogMenu}
+          disabled={!publicStatus}
+          active={status.get('reblogged')}
+          pressed={status.get('reblogged')}
+          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={require('@tabler/icons/icons/repeat.svg')}
+          direction='right'
+          text={intl.formatMessage(messages.reblog)}
+        />
+      );
+    } else {
+      reblogButton = (
+        <IconButton
+          disabled={reblog_disabled}
+          active={status.get('reblogged')}
+          title={reblog_disabled ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={reblogIcon}
+          onClick={this.handleReblogClick}
+          text={intl.formatMessage(messages.reblog)}
+        />
+      );
+    }
 
     return (
       <div className='detailed-status__action-bar'>

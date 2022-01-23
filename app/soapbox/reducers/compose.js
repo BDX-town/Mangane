@@ -354,14 +354,8 @@ export default function compose(state = initialState, action) {
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
       map.set('content_type', state.get('default_content_type'));
-
-      if (action.status.get('spoiler_text', '').length > 0) {
-        map.set('spoiler', true);
-        map.set('spoiler_text', action.status.get('spoiler_text'));
-      } else {
-        map.set('spoiler', false);
-        map.set('spoiler_text', '');
-      }
+      map.set('spoiler', false);
+      map.set('spoiler_text', '');
     });
   case COMPOSE_SUBMIT_REQUEST:
     return state.set('is_submitting', true);

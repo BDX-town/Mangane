@@ -531,6 +531,16 @@ class StatusActionBar extends ImmutablePureComponent {
       '😩': messages.reactionWeary,
     }[meEmojiReact] || messages.favourite);
 
+    const menu = this._makeMenu(publicStatus);
+    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
+    let replyTitle;
+
+    if (status.get('visibility') === 'direct') {
+      reblogIcon = require('@tabler/icons/icons/mail.svg');
+    } else if (status.get('visibility') === 'private') {
+      reblogIcon = require('@tabler/icons/icons/lock.svg');
+    }
+
     let reblogButton;
 
     if (me && features.quotePosts) {
@@ -570,16 +580,6 @@ class StatusActionBar extends ImmutablePureComponent {
           onClick={this.handleReblogClick}
         />
       );
-    }
-
-    const menu = this._makeMenu(publicStatus);
-    let reblogIcon = require('feather-icons/dist/icons/repeat.svg');
-    let replyTitle;
-
-    if (status.get('visibility') === 'direct') {
-      reblogIcon = require('@tabler/icons/icons/mail.svg');
-    } else if (status.get('visibility') === 'private') {
-      reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
     if (status.get('in_reply_to_id', null) === null) {
