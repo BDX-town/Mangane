@@ -101,7 +101,7 @@ const mapDispatchToProps = (dispatch, { intl }) => {
     onReblog(status, e) {
       dispatch((_, getState) => {
         const boostModal = getSettings(getState()).get('boostModal');
-        if (e.shiftKey || !boostModal) {
+        if ((e && e.shiftKey) || !boostModal) {
           onModalReblog(status);
         } else {
           dispatch(openModal('BOOST', { status, onReblog: onModalReblog }));
