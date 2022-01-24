@@ -75,6 +75,11 @@ export function importFetchedStatus(status, idempotencyKey) {
       dispatch(importFetchedStatus(status.reblog));
     }
 
+    // Fedibird quotes
+    if (status.quote && status.quote.id) {
+      dispatch(importFetchedStatus(status.quote));
+    }
+
     if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
       dispatch(importFetchedStatus(status.pleroma.quote));
     }

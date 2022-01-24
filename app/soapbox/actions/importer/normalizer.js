@@ -51,6 +51,9 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
 
   if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
     normalStatus.quote = status.pleroma.quote.id;
+  } else if (status.quote && status.quote.id) {
+    // Fedibird compatibility, because why not
+    normalStatus.quote = status.quote.id;
   }
 
   // Only calculate these values when status first encountered
