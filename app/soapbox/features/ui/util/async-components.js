@@ -343,7 +343,7 @@ export function ProfileMediaPanel() {
 }
 
 export function PinnedAccountsPanel() {
-  return import(/* webpackChunkName: "features/pinned_accounts]" */'../components/pinned_accounts_panel');
+  return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned_accounts_panel');
 }
 
 export function InstanceInfoPanel() {

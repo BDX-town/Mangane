@@ -13,12 +13,6 @@ export const STATUSES_IMPORT = 'STATUSES_IMPORT';
 export const POLLS_IMPORT    = 'POLLS_IMPORT';
 export const ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP = 'ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP';
 
-function pushUnique(array, object) {
-  if (array.every(element => element.id !== object.id)) {
-    array.push(object);
-  }
-}
-
 export function importAccount(account) {
   return { type: ACCOUNT_IMPORT, account };
 }
@@ -49,7 +43,7 @@ export function importFetchedAccounts(accounts) {
   function processAccount(account) {
     if (!account.id) return;
 
-    pushUnique(normalAccounts, normalizeAccount(account));
+    normalAccounts.push(normalizeAccount(account));
 
     if (account.moved) {
       processAccount(account.moved);
@@ -73,6 +67,15 @@ export function importFetchedStatus(status, idempotencyKey) {
 
     if (status.reblog && status.reblog.id) {
       dispatch(importFetchedStatus(status.reblog));
+    }
+
+    // Fedibird quotes
+    if (status.quote && status.quote.id) {
+      dispatch(importFetchedStatus(status.quote));
+    }
+
+    if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+      dispatch(importFetchedStatus(status.pleroma.quote));
     }
 
     if (status.poll && status.poll.id) {
@@ -113,15 +116,24 @@ export function importFetchedStatuses(statuses) {
       const normalOldStatus = getState().getIn(['statuses', status.id]);
       const expandSpoilers = getSettings(getState()).get('expandSpoilers');
 
-      pushUnique(normalStatuses, normalizeStatus(status, normalOldStatus, expandSpoilers));
-      pushUnique(accounts, status.account);
+      normalStatuses.push(normalizeStatus(status, normalOldStatus, expandSpoilers));
+      accounts.push(status.account);
 
       if (status.reblog && status.reblog.id) {
         processStatus(status.reblog);
       }
 
+      // Fedibird quotes
+      if (status.quote && status.quote.id) {
+        processStatus(status.quote);
+      }
+
+      if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+        processStatus(status.pleroma.quote);
+      }
+
       if (status.poll && status.poll.id) {
-        pushUnique(polls, normalizePoll(status.poll));
+        polls.push(normalizePoll(status.poll));
       }
     }
 

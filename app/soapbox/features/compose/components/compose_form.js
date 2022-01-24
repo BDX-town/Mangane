@@ -21,6 +21,7 @@ import MarkdownButtonContainer from '../containers/markdown_button_container';
 import PollButtonContainer from '../containers/poll_button_container';
 import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
+import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
 import ReplyMentions from '../containers/reply_mentions_container';
 import ScheduleButtonContainer from '../containers/schedule_button_container';
@@ -360,6 +361,8 @@ export default class ComposeForm extends ImmutablePureComponent {
             </div>
           }
         </AutosuggestTextarea>
+
+        <QuotedStatusContainer />
 
         <div className='compose-form__buttons-wrapper'>
           <div className='compose-form__buttons'>

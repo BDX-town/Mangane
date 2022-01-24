@@ -18,6 +18,7 @@ const checkComposeContent = compose => {
     compose.get('spoiler_text').length > 0,
     compose.get('media_attachments').size > 0,
     compose.get('in_reply_to') !== null,
+    compose.get('quote') !== null,
     compose.get('poll') !== null,
   ].some(check => check === true);
 };

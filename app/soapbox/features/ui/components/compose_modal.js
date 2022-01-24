@@ -23,6 +23,7 @@ const mapStateToProps = state => {
     composeText: state.getIn(['compose', 'text']),
     privacy: state.getIn(['compose', 'privacy']),
     inReplyTo: state.getIn(['compose', 'in_reply_to']),
+    quote: state.getIn(['compose', 'quote']),
   };
 };
 
@@ -35,6 +36,7 @@ class ComposeModal extends ImmutablePureComponent {
     composeText: PropTypes.string,
     privacy: PropTypes.string,
     inReplyTo: PropTypes.string,
+    quote: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
   };
 
@@ -56,12 +58,14 @@ class ComposeModal extends ImmutablePureComponent {
   };
 
   renderTitle = () => {
-    const { privacy, inReplyTo } = this.props;
+    const { privacy, inReplyTo, quote } = this.props;
 
     if (privacy === 'direct') {
       return <FormattedMessage id='navigation_bar.compose_direct' defaultMessage='Direct message' />;
     } else if (inReplyTo) {
       return <FormattedMessage id='navigation_bar.compose_reply' defaultMessage='Reply to post' />;
+    } else if (quote) {
+      return <FormattedMessage id='navigation_bar.compose_quote' defaultMessage='Quote post' />;
     } else {
       return <FormattedMessage id='navigation_bar.compose' defaultMessage='Compose new post' />;
     }

@@ -338,6 +338,16 @@
       font-weight: 500;
       color: var(--brand-color);
     }
+
+    &--reblog {
+      > div {
+        display: flex;
+
+        > .icon-button {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 }
 
@@ -588,6 +598,11 @@ a.status-card {
 
 .status-card__description {
   color: var(--primary-text-color--faint);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
 }
 
 .status-card__host {
@@ -745,4 +760,72 @@ a.status-card.compact:hover {
 
 .pending-status {
   opacity: 0.5;
+}
+
+.quoted-status {
+  margin-top: 14px;
+  border: 1px solid var(--brand-color--med);
+  border-radius: 10px;
+  padding: 12px;
+  transition: background 0.2s;
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: var(--brand-color--faint);
+  }
+
+  &__relative-time {
+    padding-top: 4px;
+  }
+
+  &__display-name {
+    color: var(--primary-text-color);
+    display: block;
+    max-width: 100%;
+    line-height: 24px;
+    overflow: hidden;
+    padding-right: 25px;
+    text-decoration: none;
+
+    .display-name__account {
+      color: var(--primary-text-color--faint);
+    }
+  }
+
+  &__display-avatar {
+    float: left;
+    margin-right: 5px;
+  }
+
+  .reply-mentions {
+    font-size: 14px;
+  }
+
+  &__content {
+    margin-top: 5px;
+    font-size: 14px;
+
+    a {
+      color: var(--highlight-text-color);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .attachment-thumbs .media-gallery {
+    margin-top: 5px !important;
+  }
+}
+
+/* Fedibird quote post compatibility */
+.status__content,
+.quoted-status__content {
+  .quote-inline {
+    display: none;
+  }
 }
