@@ -157,14 +157,14 @@ class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && !status.getIn(['pleroma', 'quote'])) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote')) {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
     }
 
     let quote;
 
-    if (status.getIn(['pleroma', 'quote'])) {
-      quote = <QuotedStatus statusId={status.getIn(['pleroma', 'quote', 'id'])} />;
+    if (status.get('quote')) {
+      quote = <QuotedStatus statusId={status.get('quote')} />;
     }
 
     if (status.get('visibility') === 'direct') {

@@ -124,6 +124,10 @@ export function importFetchedStatuses(statuses) {
         processStatus(status.reblog);
       }
 
+      if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+        processStatus(status.pleroma.quote);
+      }
+
       if (status.poll && status.poll.id) {
         pushUnique(polls, normalizePoll(status.poll));
       }

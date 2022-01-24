@@ -49,6 +49,10 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
     normalStatus.poll = status.poll.id;
   }
 
+  if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+    normalStatus.quote = status.pleroma.quote.id;
+  }
+
   // Only calculate these values when status first encountered
   // Otherwise keep the ones already in the reducer
   if (normalOldStatus) {

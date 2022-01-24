@@ -7,8 +7,8 @@ import QuotedStatus from '../components/quoted_status';
 const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
-  const mapStateToProps = (state, props) => ({
-    status: getStatus(state, { id: props.statusId }),
+  const mapStateToProps = (state, { statusId }) => ({
+    status: getStatus(state, { id: statusId }),
   });
 
   return mapStateToProps;

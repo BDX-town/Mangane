@@ -458,7 +458,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && !status.getIn(['pleroma', 'quote']) && status.get('card')) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote') && status.get('card')) {
       media = (
         <Card
           onOpenMedia={this.props.onOpenMedia}
@@ -476,8 +476,8 @@ class Status extends ImmutablePureComponent {
 
     let quote;
 
-    if (status.getIn(['pleroma', 'quote'])) {
-      quote = <QuotedStatus statusId={status.getIn(['pleroma', 'quote', 'id'])} />;
+    if (status.get('quote')) {
+      quote = <QuotedStatus statusId={status.get('quote')} />;
     }
 
     if (otherAccounts && otherAccounts.size > 1) {
