@@ -520,7 +520,7 @@ class ActionBar extends React.PureComponent {
           active={status.get('reblogged')}
           pressed={status.get('reblogged')}
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={require('@tabler/icons/icons/repeat.svg')}
+          src={reblogIcon}
           direction='right'
           text={intl.formatMessage(messages.reblog)}
         />
