@@ -37,7 +37,12 @@ export function normalizeAccount(account) {
 }
 
 export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
-  const normalStatus   = { ...status };
+  const normalStatus = { ...status };
+
+  // Copy the pleroma object too, so we can modify our copy
+  if (status.pleroma) {
+    normalStatus.pleroma = { ...status.pleroma };
+  }
 
   normalStatus.account = status.account.id;
 
@@ -50,7 +55,9 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
   }
 
   if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+    // Normalize quote to the top-level, so delete the original for performance
     normalStatus.quote = status.pleroma.quote.id;
+    delete normalStatus.pleroma.quote;
   } else if (status.quote && status.quote.id) {
     // Fedibird compatibility, because why not
     normalStatus.quote = status.quote.id;
