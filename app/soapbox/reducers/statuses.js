@@ -43,13 +43,29 @@ const fixMentions = status => {
   return status.set('mentions', sorted);
 };
 
-const fixStatus = status => {
+const isQuote = status => {
+  return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
+};
+
+// Preserve quote if an existing status already has it
+const fixQuote = (state, status) => {
+  const oldStatus = state.get(status.get('id'));
+
+  if (oldStatus && !status.get('quote') && isQuote(status)) {
+    return status.set('quote', oldStatus.get('quote'));
+  } else {
+    return status;
+  }
+};
+
+const fixStatus = (state, status) => {
   return status.withMutations(status => {
     fixMentions(status);
+    fixQuote(state, status);
   });
 };
 
-const importStatus = (state, status) => state.set(status.id, fixStatus(fromJS(status)));
+const importStatus = (state, status) => state.set(status.id, fixStatus(state, fromJS(status)));
 
 const importStatuses = (state, statuses) =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));

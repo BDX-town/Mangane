@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
+import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
@@ -26,6 +27,17 @@ describe('statuses reducer', () => {
         .toJS();
 
       expect(result).toEqual(expected);
+    });
+
+    it('preserves the quote', () => {
+      const quotePost = require('soapbox/__fixtures__/pleroma-quote-post.json');
+      const quotedQuotePost = require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
+
+      let state = undefined;
+      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotePost) });
+      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotedQuotePost.pleroma.quote) });
+
+      expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
     });
   });
 
