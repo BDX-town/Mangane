@@ -129,6 +129,11 @@ export function importFetchedStatuses(statuses) {
         processStatus(status.reblog);
       }
 
+      // Fedibird quotes
+      if (status.quote && status.quote.id) {
+        processStatus(status.quote);
+      }
+
       if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
         processStatus(status.pleroma.quote);
       }
