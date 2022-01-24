@@ -1,24 +1,31 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl } from 'react-intl';
+import { FormattedDate } from 'react-intl';
+import { Link, NavLink } from 'react-router-dom';
+
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Icon from 'soapbox/components/icon';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { getDomain } from 'soapbox/utils/accounts';
+
 import Avatar from '../../../components/avatar';
 import DisplayName from '../../../components/display_name';
-import StatusContent from '../../../components/status_content';
 import MediaGallery from '../../../components/media_gallery';
-import { Link, NavLink } from 'react-router-dom';
-import { FormattedDate } from 'react-intl';
-import Card from './card';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import Video from '../../video';
+import StatusContent from '../../../components/status_content';
+import StatusReplyMentions from '../../../components/status_reply_mentions';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
-import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
-import StatusInteractionBar from './status_interaction_bar';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Video from '../../video';
 
-export default class DetailedStatus extends ImmutablePureComponent {
+import Card from './card';
+import StatusInteractionBar from './status_interaction_bar';
+
+export default @injectIntl
+class DetailedStatus extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -81,6 +88,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
 
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
+
 
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
@@ -149,8 +157,14 @@ export default class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote')) {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+    }
+
+    let quote;
+
+    if (status.get('quote')) {
+      quote = <QuotedStatus statusId={status.get('quote')} />;
     }
 
     if (status.get('visibility') === 'direct') {
@@ -185,6 +199,8 @@ export default class DetailedStatus extends ImmutablePureComponent {
             </div>
           )}
 
+          <StatusReplyMentions status={status} />
+
           <StatusContent
             status={status}
             expanded={!status.get('hidden')}
@@ -192,6 +208,7 @@ export default class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
+          {quote}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />

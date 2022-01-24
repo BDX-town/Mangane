@@ -1,10 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+
+import IconButton from '../../../components/icon_button';
 
 import Column from './column';
 import ColumnHeader from './column_header';
-import IconButton from '../../../components/icon_button';
 
 const messages = defineMessages({
   title: { id: 'bundle_column_error.title', defaultMessage: 'Network error' },

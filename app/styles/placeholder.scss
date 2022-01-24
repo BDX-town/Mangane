@@ -1,5 +1,8 @@
 .placeholder-status,
-.notification--placeholder {
+.placeholder-hashtag,
+.notification--placeholder,
+.status-card--placeholder,
+.media-gallery--placeholder {
   position: relative;
 
   &::before {
@@ -14,11 +17,11 @@
     height: 100%;
     background-image: linear-gradient(
       90deg,
-      transparent 0%,
-      transparent 25%,
+      hsla(var(--foreground-color_hsl), 0) 0%,
+      hsla(var(--foreground-color_hsl), 0) 25%,
       var(--foreground-color) 50%,
-      transparent 70%,
-      transparent 100%
+      hsla(var(--foreground-color_hsl), 0) 70%,
+      hsla(var(--foreground-color_hsl), 0) 100%
     );
     background-size: 200%;
     animation: placeholder-pulse 2s infinite;
@@ -36,15 +39,15 @@
   100% { background-position-x: 0; }
 }
 
-.notification--placeholder {
-  .notification__message span {
-    color: var(--brand-color);
-    opacity: 0.1;
-  }
+.notification--placeholder .notification__message span,
+.placeholder-hashtag .trends__item__name {
+  color: var(--brand-color);
+  opacity: 0.1;
 }
 
 .status__content--placeholder,
-.display-name--placeholder {
+.display-name--placeholder,
+.chat-list-item--placeholder .chat__last-message {
   letter-spacing: -1px;
   color: var(--brand-color) !important;
   opacity: 0.1;
@@ -74,11 +77,28 @@
       width: 100%;
       height: 100%;
       z-index: 1;
-      background-image: linear-gradient(0deg, var(--background-color) 0%, transparent 50%, transparent 100%);
+      // On mobile, extend the gradient up to the ThumbNavigation height
+      background-image: linear-gradient(
+        0deg,
+        var(--background-color) 0%,
+        var(--background-color) var(--thumb-navigation-height),
+        hsla(var(--foreground-color_hsl), 0) 50%,
+        hsla(var(--foreground-color_hsl), 0) 100%
+      );
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
+
+      @media (min-width: 895px) {
+        // On desktop, fade into the bottom of the page
+        background-image: linear-gradient(
+          0deg,
+          var(--background-color) 0%,
+          hsla(var(--foreground-color_hsl), 0) 50%,
+          hsla(var(--foreground-color_hsl), 0) 100%
+        );
+      }
     }
   }
 }
@@ -86,4 +106,25 @@
 .column--transparent .slist__placeholder {
   background: transparent;
   box-shadow: none;
+}
+
+.status-card--placeholder {
+  pointer-events: none;
+
+  .status-card__title,
+  .status-card__description,
+  .status-card__host {
+    letter-spacing: -1px;
+    color: var(--brand-color) !important;
+    word-break: break-all;
+    opacity: 0.1;
+  }
+}
+
+.media-gallery.media-gallery--placeholder {
+  background: none;
+
+  .media-gallery__item {
+    background-color: var(--brand-color--faint);
+  }
 }

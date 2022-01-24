@@ -296,13 +296,21 @@
         padding: 7px;
         opacity: 0.6;
 
-        &:hover {
+        &:hover,
+        &:focus {
           opacity: 1;
         }
 
         .svg-icon {
           width: 20px;
           height: 20px;
+
+          svg {
+            &.feather {
+              // Feather icons are a little larger
+              transform: scale(0.9);
+            }
+          }
         }
       }
 
@@ -427,5 +435,11 @@
     &:hover {
       text-decoration: none;
     }
+  }
+}
+
+@media (min-width: 896px) {
+  .account-timeline .sub-navigation {
+    top: 134px;
   }
 }

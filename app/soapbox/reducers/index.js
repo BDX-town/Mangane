@@ -1,60 +1,61 @@
-import { combineReducers } from 'redux-immutable';
 import { Map as ImmutableMap } from 'immutable';
+import { combineReducers } from 'redux-immutable';
+
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
-import dropdown_menu from './dropdown_menu';
-import timelines from './timelines';
-import meta from './meta';
-import alerts from './alerts';
-import modal from './modal';
-import user_lists from './user_lists';
-import domain_lists from './domain_lists';
+
 import accounts from './accounts';
 import accounts_counters from './accounts_counters';
-import statuses from './statuses';
-import relationships from './relationships';
-import settings from './settings';
-import push_notifications from './push_notifications';
-import status_lists from './status_lists';
-import mutes from './mutes';
-import reports from './reports';
-import contexts from './contexts';
-import compose from './compose';
-import search from './search';
-import media_attachments from './media_attachments';
-import notifications from './notifications';
-import height_cache from './height_cache';
-import custom_emojis from './custom_emojis';
-import lists from './lists';
-import listEditor from './list_editor';
-import listAdder from './list_adder';
-import filters from './filters';
-import conversations from './conversations';
-import suggestions from './suggestions';
-import polls from './polls';
-import identity_proofs from './identity_proofs';
-import trends from './trends';
-import groups from './groups';
-import group_relationships from './group_relationships';
-import group_lists from './group_lists';
-import group_editor from './group_editor';
-import sidebar from './sidebar';
-import patron from './patron';
-import soapbox from './soapbox';
-import instance from './instance';
-import me from './me';
-import auth from './auth';
-import admin from './admin';
-import chats from './chats';
-import chat_messages from './chat_messages';
-import chat_message_lists from './chat_message_lists';
-import profile_hover_card from './profile_hover_card';
-import backups from './backups';
-import admin_log from './admin_log';
-import security from './security';
-import scheduled_statuses from './scheduled_statuses';
-import aliases from './aliases';
 import accounts_meta from './accounts_meta';
+import admin from './admin';
+import admin_log from './admin_log';
+import alerts from './alerts';
+import aliases from './aliases';
+import auth from './auth';
+import backups from './backups';
+import chat_message_lists from './chat_message_lists';
+import chat_messages from './chat_messages';
+import chats from './chats';
+import compose from './compose';
+import contexts from './contexts';
+import conversations from './conversations';
+import custom_emojis from './custom_emojis';
+import domain_lists from './domain_lists';
+import dropdown_menu from './dropdown_menu';
+import filters from './filters';
+import group_editor from './group_editor';
+import group_lists from './group_lists';
+import group_relationships from './group_relationships';
+import groups from './groups';
+import height_cache from './height_cache';
+import identity_proofs from './identity_proofs';
+import instance from './instance';
+import listAdder from './list_adder';
+import listEditor from './list_editor';
+import lists from './lists';
+import me from './me';
+import meta from './meta';
+import modal from './modal';
+import mutes from './mutes';
+import notifications from './notifications';
+import patron from './patron';
 import pending_statuses from './pending_statuses';
+import polls from './polls';
+import profile_hover_card from './profile_hover_card';
+import push_notifications from './push_notifications';
+import relationships from './relationships';
+import reports from './reports';
+import scheduled_statuses from './scheduled_statuses';
+import search from './search';
+import security from './security';
+import settings from './settings';
+import sidebar from './sidebar';
+import soapbox from './soapbox';
+import status_lists from './status_lists';
+import statuses from './statuses';
+import suggestions from './suggestions';
+import timelines from './timelines';
+import trends from './trends';
+import user_lists from './user_lists';
 
 const appReducer = combineReducers({
   dropdown_menu,
@@ -76,7 +77,6 @@ const appReducer = combineReducers({
   contexts,
   compose,
   search,
-  media_attachments,
   notifications,
   height_cache,
   custom_emojis,

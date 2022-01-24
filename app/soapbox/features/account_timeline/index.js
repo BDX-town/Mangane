@@ -1,25 +1,28 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
-import Icon from 'soapbox/components/icon';
-import StatusList from '../../components/status_list';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
-import ColumnSettingsContainer from './containers/column_settings_container';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
-import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
-import MissingIndicator from 'soapbox/components/missing_indicator';
+import { connect } from 'react-redux';
+// import ColumnSettingsContainer from './containers/column_settings_container';
 import { NavLink } from 'react-router-dom';
-import { fetchPatronAccount } from '../../actions/patron';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+
 import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Column from 'soapbox/components/column';
+import Icon from 'soapbox/components/icon';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import SubNavigation from 'soapbox/components/sub_navigation';
 import { makeGetStatusIds, findAccountByUsername } from 'soapbox/selectors';
-import classNames from 'classnames';
+import { getFeatures } from 'soapbox/utils/features';
+
+import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
+import { fetchAccountIdentityProofs } from '../../actions/identity_proofs';
+import { fetchPatronAccount } from '../../actions/patron';
+import { expandAccountFeaturedTimeline, expandAccountTimeline } from '../../actions/timelines';
+import LoadingIndicator from '../../components/loading_indicator';
+import StatusList from '../../components/status_list';
 
 const makeMapStateToProps = () => {
   const getStatusIds = makeGetStatusIds();
@@ -27,8 +30,9 @@ const makeMapStateToProps = () => {
   const mapStateToProps = (state, { params, withReplies = false }) => {
     const username = params.username || '';
     const me = state.get('me');
-    const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+    const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
     const soapboxConfig = getSoapboxConfig(state);
+    const features = getFeatures(state.get('instance'));
 
     let accountId = -1;
     let accountUsername = username;
@@ -45,7 +49,7 @@ const makeMapStateToProps = () => {
     const path = withReplies ? `${accountId}:with_replies` : accountId;
 
     const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-    const unavailable = (me === accountId) ? false : isBlocked;
+    const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
     const showPins = getSettings(state).getIn(['account_timeline', 'shows', 'pinned']) && !withReplies;
 
     return {
@@ -146,7 +150,6 @@ class AccountTimeline extends ImmutablePureComponent {
 
   render() {
     const { statusIds, featuredStatusIds, isLoading, hasMore, isBlocked, isAccount, accountId, unavailable, accountUsername } = this.props;
-    const { collapsed, animating } = this.state;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -176,7 +179,8 @@ class AccountTimeline extends ImmutablePureComponent {
     }
 
     return (
-      <Column transparent>
+      <Column className='account-timeline' transparent>
+        <SubNavigation message={`@${accountUsername}`} /*settings={ColumnSettingsContainer}*/ />
         <div className='account__section-headline'>
           <NavLink exact to={`/@${accountUsername}`}>
             <FormattedMessage id='account.posts' defaultMessage='Posts' />
@@ -191,11 +195,6 @@ class AccountTimeline extends ImmutablePureComponent {
             <button onClick={this.handleToggleClick}>
               <Icon id='sliders' />
             </button>
-          </div>
-        </div>
-        <div className={classNames('column-header__collapsible', { collapsed, animating })} onTransitionEnd={this.handleTransitionEnd}>
-          <div className='column-header__collapsible-inner'>
-            {(!collapsed || animating) && <ColumnSettingsContainer />}
           </div>
         </div>
         <StatusList

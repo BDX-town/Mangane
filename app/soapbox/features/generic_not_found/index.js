@@ -1,6 +1,7 @@
 import React from 'react';
-import Column from '../ui/components/column';
+
 import MissingIndicator from '../../components/missing_indicator';
+import Column from '../ui/components/column';
 
 const GenericNotFound = () => (
   <Column>

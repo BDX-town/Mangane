@@ -14,6 +14,10 @@
     border-radius: 8px 8px 0 0;
   }
 
+  &__content {
+    padding: 0;
+  }
+
   &__accounts {
     background: var(--background-color);
     overflow-y: auto;
@@ -33,14 +37,14 @@
   .search {
     display: flex;
     flex-direction: row;
-    margin: 10px 0;
+    margin: 10px;
 
     > label {
       flex: 1 1;
     }
 
-    > .search__icon .fa {
-      right: 102px !important;
+    > .search__icon {
+      position: relative;
     }
 
     > .button {

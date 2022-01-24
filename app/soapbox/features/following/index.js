@@ -1,28 +1,36 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
-import LoadingIndicator from '../../components/loading_indicator';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import { findAccountByUsername } from 'soapbox/selectors';
+import { getFollowDifference } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+
 import {
   fetchAccount,
   fetchFollowing,
   expandFollowing,
   fetchAccountByUsername,
 } from '../../actions/accounts';
-import { FormattedMessage } from 'react-intl';
+import LoadingIndicator from '../../components/loading_indicator';
+import ScrollableList from '../../components/scrollable_list';
 import AccountContainer from '../../containers/account_container';
 import Column from '../ui/components/column';
-import ScrollableList from '../../components/scrollable_list';
-import MissingIndicator from 'soapbox/components/missing_indicator';
-import { getFollowDifference } from 'soapbox/utils/accounts';
-import { findAccountByUsername } from 'soapbox/selectors';
+
+const messages = defineMessages({
+  heading: { id: 'column.following', defaultMessage: 'Following' },
+});
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
+  const features = getFeatures(state.get('instance'));
 
   let accountId = -1;
   if (accountFetchError) {
@@ -34,7 +42,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
 
   const diffCount = getFollowDifference(state, accountId, 'following');
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     accountId,
@@ -47,9 +55,11 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class Following extends ImmutablePureComponent {
 
   static propTypes = {
+    intl: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     accountIds: ImmutablePropTypes.orderedSet,
@@ -85,7 +95,7 @@ class Following extends ImmutablePureComponent {
   }, 300, { leading: true });
 
   render() {
-    const { accountIds, hasMore, isAccount, diffCount, accountId, unavailable } = this.props;
+    const { intl, accountIds, hasMore, isAccount, diffCount, accountId, unavailable } = this.props;
 
     if (!isAccount && accountId !== -1) {
       return (
@@ -114,7 +124,7 @@ class Following extends ImmutablePureComponent {
     }
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='following'
           hasMore={hasMore}

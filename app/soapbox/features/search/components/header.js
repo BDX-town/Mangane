@@ -1,8 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 const mapStateToProps = state => ({

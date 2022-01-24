@@ -1,30 +1,35 @@
 'use strict';
 
-import React from 'react';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
+
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import classNames from 'classnames';
+import { isStaff, getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { isStaff } from 'soapbox/utils/accounts';
 
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
 
   return {
-    account: state.getIn(['accounts', me]),
+    account,
     logo: getSoapboxConfig(state).get('logo'),
     notificationCount: state.getIn(['notifications', 'unread']),
-    chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
+    chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
+    baseURL: getBaseURL(account),
+    settings: getSettings(state),
     features: getFeatures(instance),
     instance,
   };
@@ -44,13 +49,15 @@ class PrimaryNavigation extends React.PureComponent {
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
+    baseURL: PropTypes.string,
+    settings: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
     location: PropTypes.object,
     instance: ImmutablePropTypes.map.isRequired,
   };
 
   render() {
-    const { account, features, notificationCount, chatsCount, dashboardCount, location, instance } = this.props;
+    const { account, settings, features, notificationCount, chatsCount, dashboardCount, location, instance, baseURL } = this.props;
 
     return (
       <div className='column-header__wrapper primary-navigation__wrapper'>
@@ -61,6 +68,14 @@ class PrimaryNavigation extends React.PureComponent {
               className={classNames('primary-navigation__icon', 'svg-icon--home', { 'svg-icon--active': location.pathname === '/' })}
             />
             <FormattedMessage id='tabs_bar.home' defaultMessage='Home' />
+          </NavLink>
+
+          <NavLink key='search' className='btn grouped' to='/search'>
+            <Icon
+              src={require('@tabler/icons/icons/search.svg')}
+              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
+            />
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
           </NavLink>
 
           {account && (
@@ -98,14 +113,6 @@ class PrimaryNavigation extends React.PureComponent {
             )
           )}
 
-          <NavLink key='search' className='btn grouped' to='/search'>
-            <Icon
-              src={require('@tabler/icons/icons/search.svg')}
-              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/search' })}
-            />
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </NavLink>
-
           {(account && isStaff(account)) && (
             <NavLink key='dashboard' className='btn grouped' to='/admin' data-preview-title-id='tabs_bar.dashboard'>
               <IconWithCounter
@@ -118,10 +125,20 @@ class PrimaryNavigation extends React.PureComponent {
           )}
 
           {(account && instance.get('invites_enabled')) && (
-            <a href='/invites' className='btn grouped'>
+            <a href={`${baseURL}/invites`} className='btn grouped'>
               <Icon src={require('@tabler/icons/icons/mailbox.svg')} className='primary-navigation__icon' />
               <FormattedMessage id='navigation.invites' defaultMessage='Invites' />
             </a>
+          )}
+
+          {(settings.get('isDeveloper')) && (
+            <NavLink key='developers' className='btn grouped' to='/developers'>
+              <Icon
+                src={require('@tabler/icons/icons/code.svg')}
+                className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname.startsWith('/developers') })}
+              />
+              <FormattedMessage id='navigation.developers' defaultMessage='Developers' />
+            </NavLink>
           )}
 
           <hr />

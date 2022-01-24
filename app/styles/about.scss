@@ -97,6 +97,7 @@ $fluid-breakpoint: $maximum-width + 20px;
           }
 
           .input {
+            flex: 1;
             margin-bottom: 0;
             margin-right: 10px;
 
@@ -690,6 +691,11 @@ $fluid-breakpoint: $maximum-width + 20px;
 
       .otp-form-overlay__close {
         align-self: flex-end;
+
+        .svg-icon {
+          height: 20px;
+          width: 20px;
+        }
       }
     }
   }

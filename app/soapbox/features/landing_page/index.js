@@ -1,8 +1,9 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import RegistrationForm from '../auth_login/components/registration_form';
 import SiteBanner from '../public_layout/components/site_banner';
 

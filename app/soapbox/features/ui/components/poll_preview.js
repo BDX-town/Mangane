@@ -1,7 +1,7 @@
+import classNames from 'classnames';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import classNames from 'classnames';
 
 export default class PollPreview extends ImmutablePureComponent {
 

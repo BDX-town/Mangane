@@ -1,8 +1,9 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import {
   parseVersion,
   getFeatures,
 } from '../features';
-import { Map as ImmutableMap } from 'immutable';
 
 describe('parseVersion', () => {
   it('with Pleroma version string', () => {

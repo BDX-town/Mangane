@@ -43,41 +43,41 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
 // Some browsers don't allow reading from a canvas and instead return all-white
 // or randomized data. Use a pre-defined image to check if reading the canvas
 // works.
-const checkCanvasReliability = () => new Promise((resolve, reject) => {
-  switch(_browser_quirks['canvas-read-unreliable']) {
-  case true:
-    reject('Canvas reading unreliable');
-    break;
-  case false:
-    resolve();
-    break;
-  default:
-    // 2×2 GIF with white, red, green and blue pixels
-    const testImageURL =
-      'data:image/gif;base64,R0lGODdhAgACAKEDAAAA//8AAAD/AP///ywAAAAAAgACAAACA1wEBQA7';
-    const refData =
-      [255, 255, 255, 255,  255, 0, 0, 255,  0, 255, 0, 255,  0, 0, 255, 255];
-    const img = new Image();
-    img.onload = () => {
-      const canvas  = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      context.drawImage(img, 0, 0, 2, 2);
-      const imageData = context.getImageData(0, 0, 2, 2);
-      if (imageData.data.every((x, i) => refData[i] === x)) {
-        _browser_quirks['canvas-read-unreliable'] = false;
-        resolve();
-      } else {
-        _browser_quirks['canvas-read-unreliable'] = true;
-        reject('Canvas reading unreliable');
-      }
-    };
-    img.onerror = () => {
-      _browser_quirks['canvas-read-unreliable'] = true;
-      reject('Failed to load test image');
-    };
-    img.src = testImageURL;
-  }
-});
+// const checkCanvasReliability = () => new Promise((resolve, reject) => {
+//   switch(_browser_quirks['canvas-read-unreliable']) {
+//   case true:
+//     reject('Canvas reading unreliable');
+//     break;
+//   case false:
+//     resolve();
+//     break;
+//   default:
+//     // 2×2 GIF with white, red, green and blue pixels
+//     const testImageURL =
+//       'data:image/gif;base64,R0lGODdhAgACAKEDAAAA//8AAAD/AP///ywAAAAAAgACAAACA1wEBQA7';
+//     const refData =
+//       [255, 255, 255, 255,  255, 0, 0, 255,  0, 255, 0, 255,  0, 0, 255, 255];
+//     const img = new Image();
+//     img.onload = () => {
+//       const canvas  = document.createElement('canvas');
+//       const context = canvas.getContext('2d');
+//       context.drawImage(img, 0, 0, 2, 2);
+//       const imageData = context.getImageData(0, 0, 2, 2);
+//       if (imageData.data.every((x, i) => refData[i] === x)) {
+//         _browser_quirks['canvas-read-unreliable'] = false;
+//         resolve();
+//       } else {
+//         _browser_quirks['canvas-read-unreliable'] = true;
+//         reject('Canvas reading unreliable');
+//       }
+//     };
+//     img.onerror = () => {
+//       _browser_quirks['canvas-read-unreliable'] = true;
+//       reject('Failed to load test image');
+//     };
+//     img.src = testImageURL;
+//   }
+// });
 
 const getImageUrl = inputFile => new Promise((resolve, reject) => {
   if (window.URL && URL.createObjectURL) {
@@ -162,8 +162,10 @@ const resizeImage = (img, inputFile, maxPixels) => new Promise((resolve, reject)
   const newWidth  = Math.round(Math.sqrt(maxPixels * (width / height)));
   const newHeight = Math.round(Math.sqrt(maxPixels * (height / width)));
 
-  checkCanvasReliability()
-    .then(getOrientation(img, type))
+  // Skip canvas reliability check for now (it's unreliable)
+  // checkCanvasReliability()
+  //   .then(getOrientation(img, type))
+  getOrientation(img, type)
     .then(orientation => processImage(img, {
       width: newWidth,
       height: newHeight,
@@ -189,6 +191,9 @@ export default (inputFile, maxPixels = DEFAULT_MAX_PIXELS) => new Promise((resol
 
     resizeImage(img, inputFile, maxPixels)
       .then(resolve)
-      .catch(() => resolve(inputFile));
+      .catch(error => {
+        console.error(error);
+        resolve(inputFile);
+      });
   }).catch(() => resolve(inputFile));
 });

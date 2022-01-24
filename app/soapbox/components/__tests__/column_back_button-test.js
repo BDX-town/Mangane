@@ -1,6 +1,8 @@
 import React from 'react';
-import ColumnBackButton from '../column_back_button';
+
 import { createComponent } from 'soapbox/test_helpers';
+
+import ColumnBackButton from '../column_back_button';
 
 describe('<ColumnBackButton />', () => {
   it('renders correctly', () => {

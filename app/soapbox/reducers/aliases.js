@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import {
   ALIASES_SUGGESTIONS_READY,
   ALIASES_SUGGESTIONS_CLEAR,

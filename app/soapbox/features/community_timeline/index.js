@@ -1,14 +1,17 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
-import ColumnSettings from './containers/column_settings_container';
-import { expandCommunityTimeline } from '../../actions/timelines';
-import { connectCommunityStream } from '../../actions/streaming';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import SubNavigation from 'soapbox/components/sub_navigation';
+
+import { connectCommunityStream } from '../../actions/streaming';
+import { expandCommunityTimeline } from '../../actions/timelines';
+import Column from '../../components/column';
+import StatusListContainer from '../ui/containers/status_list_container';
+
+import ColumnSettings from './containers/column_settings_container';
 
 const messages = defineMessages({
   title: { id: 'column.community', defaultMessage: 'Local timeline' },
@@ -70,6 +73,12 @@ class CommunityTimeline extends React.PureComponent {
     dispatch(expandCommunityTimeline({ maxId, onlyMedia }));
   }
 
+  handleRefresh = () => {
+    const { dispatch, onlyMedia } = this.props;
+    return dispatch(expandCommunityTimeline({ onlyMedia }));
+  }
+
+
   render() {
     const { intl, onlyMedia, timelineId } = this.props;
 
@@ -80,6 +89,7 @@ class CommunityTimeline extends React.PureComponent {
           scrollKey={`${timelineId}_timeline`}
           timelineId={`${timelineId}${onlyMedia ? ':media' : ''}`}
           onLoadMore={this.handleLoadMore}
+          onRefresh={this.handleRefresh}
           emptyMessage={<FormattedMessage id='empty_column.community' defaultMessage='The local timeline is empty. Write something publicly to get the ball rolling!' />}
         />
       </Column>

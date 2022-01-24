@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
-import { getFeatures } from 'soapbox/utils/features';
-import Column from '../ui/components/column';
+import SettingsCheckbox from 'soapbox/components/settings_checkbox';
 import {
   SimpleForm,
   FieldsGroup,
@@ -14,7 +14,10 @@ import {
   RadioItem,
   SelectDropdown,
 } from 'soapbox/features/forms';
-import SettingsCheckbox from 'soapbox/components/settings_checkbox';
+import SettingToggle from 'soapbox/features/notifications/components/setting_toggle';
+import { getFeatures } from 'soapbox/utils/features';
+
+import Column from '../ui/components/column';
 
 export const languages = {
   en: 'English',
@@ -121,6 +124,11 @@ class Preferences extends ImmutablePureComponent {
     dispatch(changeSetting(['defaultContentType'], e.target.value));
   }
 
+  onToggleChange = (key, checked) => {
+    const { dispatch } = this.props;
+    dispatch(changeSetting(key, checked));
+  }
+
   render() {
     const { settings, features, intl } = this.props;
 
@@ -133,6 +141,20 @@ class Preferences extends ImmutablePureComponent {
     return (
       <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
         <SimpleForm>
+          <FormattedMessage id='home.column_settings.title' defaultMessage='Home settings' />
+          <div className='column-settings__content'>
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reposts' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'reply']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />} />
+            </div>
+
+            <div className='column-settings__row'>
+              <SettingToggle prefix='home_timeline' settings={settings} settingPath={['home', 'shows', 'direct']} onChange={this.onToggleChange} label={<FormattedMessage id='home.column_settings.show_direct' defaultMessage='Show direct messages' />} />
+            </div>
+          </div>
           <FieldsGroup>
             <SelectDropdown
               label={<FormattedMessage id='preferences.fields.language_label' defaultMessage='Language' />}
@@ -233,6 +255,10 @@ class Preferences extends ImmutablePureComponent {
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.autoload_timelines_label' defaultMessage='Automatically load new posts when scrolled to the top of the page' />}
               path={['autoloadTimelines']}
+            />
+            <SettingsCheckbox
+              label={<FormattedMessage id='preferences.fields.autoload_more_label' defaultMessage='Automatically load more items when scrolled to the bottom of the page' />}
+              path={['autoloadMore']}
             />
             <SettingsCheckbox
               label={<FormattedMessage id='preferences.fields.underline_links_label' defaultMessage='Always underline links in posts' />}

@@ -425,6 +425,10 @@ a .account__avatar {
   display: flex;
   flex-wrap: wrap;
   padding: 4px 2px;
+
+  .empty-column-indicator {
+    margin: -4px -2px;
+  }
 }
 
 .account-gallery__item {
@@ -456,6 +460,11 @@ a .account__avatar {
   display: flex;
   flex-direction: row;
   padding: 10px 0;
+
+  &__button .svg-icon {
+    height: 20px;
+    width: 20px;
+  }
 }
 
 .account__section-headline {

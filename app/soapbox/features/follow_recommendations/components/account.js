@@ -1,13 +1,14 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
-import { makeGetAccount } from 'soapbox/selectors';
+
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';
 import ActionButton from 'soapbox/features/ui/components/action_button';
+import { makeGetAccount } from 'soapbox/selectors';
 
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();

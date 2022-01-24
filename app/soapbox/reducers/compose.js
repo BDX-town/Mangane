@@ -1,9 +1,15 @@
+import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
+import { tagHistory } from 'soapbox/settings';
+
 import {
   COMPOSE_MOUNT,
   COMPOSE_UNMOUNT,
   COMPOSE_CHANGE,
   COMPOSE_REPLY,
   COMPOSE_REPLY_CANCEL,
+  COMPOSE_QUOTE,
+  COMPOSE_QUOTE_CANCEL,
   COMPOSE_DIRECT,
   COMPOSE_MENTION,
   COMPOSE_SUBMIT_REQUEST,
@@ -39,15 +45,15 @@ import {
   COMPOSE_POLL_OPTION_CHANGE,
   COMPOSE_POLL_OPTION_REMOVE,
   COMPOSE_POLL_SETTINGS_CHANGE,
+  COMPOSE_ADD_TO_MENTIONS,
+  COMPOSE_REMOVE_FROM_MENTIONS,
 } from '../actions/compose';
-import { TIMELINE_DELETE } from '../actions/timelines';
-import { REDRAFT } from '../actions/statuses';
 import { ME_FETCH_SUCCESS, ME_PATCH_SUCCESS } from '../actions/me';
 import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
-import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
-import { tagHistory } from 'soapbox/settings';
-import uuid from '../uuid';
+import { REDRAFT } from '../actions/statuses';
+import { TIMELINE_DELETE } from '../actions/timelines';
 import { unescapeHTML } from '../utils/html';
+import uuid from '../uuid';
 
 const initialState = ImmutableMap({
   id: null,
@@ -61,6 +67,7 @@ const initialState = ImmutableMap({
   focusDate: null,
   caretPosition: null,
   in_reply_to: null,
+  quote: null,
   is_composing: false,
   is_submitting: false,
   is_changing_upload: false,
@@ -84,7 +91,7 @@ const initialPoll = ImmutableMap({
   multiple: false,
 });
 
-function statusToTextMentions(state, status, account) {
+const statusToTextMentions = (state, status, account) => {
   const author = status.getIn(['account', 'acct']);
   const mentions = status.get('mentions', []).map(m => m.get('acct'));
 
@@ -93,18 +100,38 @@ function statusToTextMentions(state, status, account) {
     .delete(account.get('acct'))
     .map(m => `@${m} `)
     .join('');
-}
+};
+
+export const statusToMentionsArray = (state, status, account) => {
+  const author = status.getIn(['account', 'acct']);
+  const mentions = status.get('mentions', []).map(m => m.get('acct'));
+
+  return ImmutableOrderedSet([author])
+    .concat(mentions)
+    .delete(account.get('acct'));
+};
+
+export const statusToMentionsAccountIdsArray = (state, status, account) => {
+  const author = status.getIn(['account', 'id']);
+  const mentions = status.get('mentions', []).map(m => m.get('id'));
+
+  return ImmutableOrderedSet([author])
+    .concat(mentions)
+    .delete(account.get('id'));
+};
 
 function clearAll(state) {
   return state.withMutations(map => {
     map.set('id', null);
     map.set('text', '');
+    map.set('to', ImmutableOrderedSet());
     map.set('spoiler', false);
     map.set('spoiler_text', '');
     map.set('content_type', state.get('default_content_type'));
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
+    map.set('quote', null);
     map.set('privacy', state.get('default_privacy'));
     map.set('sensitive', false);
     map.set('media_attachments', ImmutableList());
@@ -195,6 +222,17 @@ const expandMentions = status => {
   });
 
   return fragment.innerHTML;
+};
+
+const getExplicitMentions = (me, status) => {
+  const fragment = domParser.parseFromString(status.get('content'), 'text/html').documentElement;
+
+  const mentions = status
+    .get('mentions')
+    .filter(mention => !(fragment.querySelector(`a[href="${mention.get('url')}"]`) || mention.get('id') === me))
+    .map(m => m.get('acct'));
+
+  return ImmutableOrderedSet(mentions);
 };
 
 const getAccountSettings = account => {
@@ -290,7 +328,8 @@ export default function compose(state = initialState, action) {
   case COMPOSE_REPLY:
     return state.withMutations(map => {
       map.set('in_reply_to', action.status.get('id'));
-      map.set('text', statusToTextMentions(state, action.status, action.account));
+      map.set('to', action.explicitAddressing ? statusToMentionsArray(state, action.status, action.account) : undefined);
+      map.set('text', !action.explicitAddressing ? statusToTextMentions(state, action.status, action.account) : '');
       map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
@@ -305,11 +344,25 @@ export default function compose(state = initialState, action) {
         map.set('spoiler_text', '');
       }
     });
+  case COMPOSE_QUOTE:
+    return state.withMutations(map => {
+      map.set('quote', action.status.get('id'));
+      map.set('to', undefined);
+      map.set('text', '');
+      map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
+      map.set('focusDate', new Date());
+      map.set('caretPosition', null);
+      map.set('idempotencyKey', uuid());
+      map.set('content_type', state.get('default_content_type'));
+      map.set('spoiler', false);
+      map.set('spoiler_text', '');
+    });
   case COMPOSE_SUBMIT_REQUEST:
     return state.set('is_submitting', true);
   case COMPOSE_UPLOAD_CHANGE_REQUEST:
     return state.set('is_changing_upload', true);
   case COMPOSE_REPLY_CANCEL:
+  case COMPOSE_QUOTE_CANCEL:
   case COMPOSE_RESET:
   case COMPOSE_SUBMIT_SUCCESS:
     return clearAll(state);
@@ -355,6 +408,8 @@ export default function compose(state = initialState, action) {
   case TIMELINE_DELETE:
     if (action.id === state.get('in_reply_to')) {
       return state.set('in_reply_to', null);
+    } if (action.id === state.get('quote')) {
+      return state.set('quote', null);
     } else {
       return state;
     }
@@ -373,6 +428,7 @@ export default function compose(state = initialState, action) {
   case REDRAFT:
     return state.withMutations(map => {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
+      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : null);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
       // TODO: Actually fix this rather than just removing it
@@ -416,6 +472,10 @@ export default function compose(state = initialState, action) {
     return state.updateIn(['poll', 'options'], options => options.delete(action.index));
   case COMPOSE_POLL_SETTINGS_CHANGE:
     return state.update('poll', poll => poll.set('expires_in', action.expiresIn).set('multiple', action.isMultiple));
+  case COMPOSE_ADD_TO_MENTIONS:
+    return state.update('to', mentions => mentions.add(action.account));
+  case COMPOSE_REMOVE_FROM_MENTIONS:
+    return state.update('to', mentions => mentions.delete(action.account));
   case ME_FETCH_SUCCESS:
     return importAccount(state, action.me);
   case ME_PATCH_SUCCESS:

@@ -1,6 +1,8 @@
 import React from 'react';
-import PlaceholderAccount from './placeholder_account';
+
 import { randomIntFromInterval, generateText } from '../utils';
+
+import PlaceholderAccount from './placeholder_account';
 
 export default class PlaceholderNotification extends React.Component {
 

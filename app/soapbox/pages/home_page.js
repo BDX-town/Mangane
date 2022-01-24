@@ -1,12 +1,12 @@
 import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import Sticky from 'react-stickynode';
-import BundleContainer from '../features/ui/containers/bundle_container';
-import ComposeFormContainer from '../features/compose/containers/compose_form_container';
-import Avatar from '../components/avatar';
+
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
+import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import {
   WhoToFollowPanel,
   CryptoDonatePanel,
@@ -18,9 +18,11 @@ import {
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+
+import Avatar from '../components/avatar';
+import ComposeFormContainer from '../features/compose/containers/compose_form_container';
+import BundleContainer from '../features/ui/containers/bundle_container';
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -96,16 +98,6 @@ class HomePage extends ImmutablePureComponent {
                       {Component => <Component key='sign-up-panel' />}
                     </BundleContainer>
                   )}
-                  {showTrendsPanel && (
-                    <BundleContainer fetchComponent={TrendsPanel}>
-                      {Component => <Component key='trends-panel' />}
-                    </BundleContainer>
-                  )}
-                  {showWhoToFollowPanel && (
-                    <BundleContainer fetchComponent={WhoToFollowPanel}>
-                      {Component => <Component limit={5} key='wtf-panel' />}
-                    </BundleContainer>
-                  )}
                   <BundleContainer fetchComponent={PromoPanel}>
                     {Component => <Component key='promo-panel' />}
                   </BundleContainer>
@@ -117,6 +109,16 @@ class HomePage extends ImmutablePureComponent {
                   {showCryptoDonatePanel && (
                     <BundleContainer fetchComponent={CryptoDonatePanel}>
                       {Component => <Component limit={cryptoLimit} key='crypto-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showTrendsPanel && (
+                    <BundleContainer fetchComponent={TrendsPanel}>
+                      {Component => <Component limit={3} key='trends-panel' />}
+                    </BundleContainer>
+                  )}
+                  {showWhoToFollowPanel && (
+                    <BundleContainer fetchComponent={WhoToFollowPanel}>
+                      {Component => <Component limit={5} key='wtf-panel' />}
                     </BundleContainer>
                   )}
                   <LinkFooter key='link-footer' />

@@ -1,5 +1,6 @@
-import reducer from '../accounts';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../accounts';
 // import * as actions from 'soapbox/actions/importer';
 // import { take } from 'lodash';
 // import accounts from 'soapbox/__fixtures__/accounts.json';

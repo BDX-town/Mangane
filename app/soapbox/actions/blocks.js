@@ -1,8 +1,10 @@
-import api, { getLinks } from '../api';
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getNextLinkName } from 'soapbox/utils/quirks';
+
+import api, { getLinks } from '../api';
+
+import { fetchRelationships } from './accounts';
+import { importFetchedAccounts } from './importer';
 
 export const BLOCKS_FETCH_REQUEST = 'BLOCKS_FETCH_REQUEST';
 export const BLOCKS_FETCH_SUCCESS = 'BLOCKS_FETCH_SUCCESS';

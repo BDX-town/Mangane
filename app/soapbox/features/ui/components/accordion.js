@@ -1,7 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 
 const messages = defineMessages({
@@ -34,10 +35,10 @@ export default @injectIntl class Accordion extends React.PureComponent {
     const { headline, children, menu, expanded, intl } = this.props;
 
     return (
-      <div className={classNames('accordion', { 'accordion--expanded' : expanded })}>
+      <div className={classNames('accordion', { 'accordion--expanded': expanded })}>
         {menu && (
           <div className='accordion__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>
         )}
         <button

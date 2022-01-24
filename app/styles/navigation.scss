@@ -18,7 +18,8 @@
         }
 
         &--active {
-          svg.icon-tabler-search {
+          svg.icon-tabler-search,
+          svg.icon-tabler-code {
             stroke-width: 2.5px;
           }
         }
@@ -62,7 +63,7 @@
   justify-content: space-between;
   box-shadow: 0 -1px hsla(var(--primary-text-color_hsl), 0.2);
   border-radius: 0;
-  z-index: 999;
+  z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;
@@ -86,6 +87,7 @@
     color: var(--primary-text-color);
     text-decoration: none;
     font-size: 20px;
+    width: 55px;
 
     span {
       margin-top: 1px;
@@ -152,20 +154,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--primary-text-color--faint);
+    color: var(--primary-text-color);
+    opacity: 0.6;
+    font-size: 16px;
+
+    &:hover,
+    &:focus {
+      color: var(--primary-text-color);
+    }
 
     .svg-icon {
       margin-right: 7px;
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
     }
   }
 
   &__message {
     position: absolute;
+    padding: 0 10px;
     align-self: center;
     justify-self: center;
     font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 200px);
   }
 
   &__cog {

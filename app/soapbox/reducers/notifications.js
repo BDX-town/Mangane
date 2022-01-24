@@ -1,3 +1,17 @@
+import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
+
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from 'soapbox/actions/markers';
+
+import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
+  FOLLOW_REQUEST_REJECT_SUCCESS,
+} from '../actions/accounts';
 import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
@@ -11,19 +25,7 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
   MAX_QUEUED_NOTIFICATIONS,
 } from '../actions/notifications';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
-  FOLLOW_REQUEST_REJECT_SUCCESS,
-} from '../actions/accounts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import {
-  MARKER_FETCH_SUCCESS,
-  MARKER_SAVE_REQUEST,
-  MARKER_SAVE_SUCCESS,
-} from 'soapbox/actions/markers';
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   items: ImmutableOrderedMap(),
@@ -57,8 +59,23 @@ const notificationToMap = notification => ImmutableMap({
   chat_message: notification.chat_message,
 });
 
-// https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
-const isValid = notification => Boolean(notification.account.id);
+const isValid = notification => {
+  try {
+    // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/424
+    if (!notification.account.id) {
+      return false;
+    }
+
+    // Mastodon can return status notifications with a null status
+    if (['mention', 'reblog', 'favourite', 'poll'].includes(notification.type) && !notification.status.id) {
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+};
 
 // Count how many notifications appear after the given ID (for unread count)
 const countFuture = (notifications, lastId) => {

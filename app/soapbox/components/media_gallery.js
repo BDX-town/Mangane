@@ -1,19 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { is } from 'immutable';
-import IconButton from './icon_button';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { isIOS } from '../is_mobile';
-import { truncateFilename } from 'soapbox/utils/media';
 import classNames from 'classnames';
-import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+import { is } from 'immutable';
 import { Map as ImmutableMap } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
 import StillImage from 'soapbox/components/still_image';
-import Blurhash from 'soapbox/components/blurhash';
+import { truncateFilename } from 'soapbox/utils/media';
+
+import { isIOS } from '../is_mobile';
+import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
+
+import IconButton from './icon_button';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;

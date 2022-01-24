@@ -3,6 +3,7 @@ import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modal';
 const initialState = {
   modalType: null,
   modalProps: {},
+  noPop: false,
 };
 
 export default function modal(state = initialState, action) {
@@ -10,7 +11,12 @@ export default function modal(state = initialState, action) {
   case MODAL_OPEN:
     return { modalType: action.modalType, modalProps: action.modalProps };
   case MODAL_CLOSE:
-    return (action.modalType === undefined || action.modalType === state.modalType) ? initialState : state;
+    return {
+      ...(action.modalType === undefined || action.modalType === state.modalType)
+        ? initialState
+        : state,
+      noPop: !!action.noPop,
+    };
   default:
     return state;
   }

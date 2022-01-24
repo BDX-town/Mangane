@@ -1,11 +1,13 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
 import classNames from 'classnames';
-import InstanceRestrictions from './instance_restrictions';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
+
 import Icon from 'soapbox/components/icon';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
+
+import InstanceRestrictions from './instance_restrictions';
 
 const getRemoteInstance = makeGetRemoteInstance();
 
@@ -43,7 +45,7 @@ class RestrictedInstance extends ImmutablePureComponent {
       >
         <a href='#' className='restricted-instance__header' onClick={this.toggleExpanded}>
           <div className='restricted-instance__icon'>
-            <Icon id={expanded ? 'caret-down' : 'caret-right'} />
+            <Icon src={expanded ? require('@tabler/icons/icons/caret-down.svg') : require('@tabler/icons/icons/caret-right.svg')} />
           </div>
           <div className='restricted-instance__host'>
             {remoteInstance.get('host')}

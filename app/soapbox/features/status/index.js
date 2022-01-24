@@ -1,14 +1,36 @@
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchStatus } from '../../actions/statuses';
-import MissingIndicator from '../../components/missing_indicator';
-import DetailedStatus from './components/detailed_status';
-import ActionBar from './components/action_bar';
-import Column from '../ui/components/column';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { launchChat } from 'soapbox/actions/chats';
+import {
+  deactivateUserModal,
+  deleteUserModal,
+  deleteStatusModal,
+  toggleStatusSensitivityModal,
+} from 'soapbox/actions/moderation';
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Column from 'soapbox/components/column';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+
+import { blockAccount } from '../../actions/accounts';
+import {
+  replyCompose,
+  mentionCompose,
+  directCompose,
+  quoteCompose,
+} from '../../actions/compose';
+import { simpleEmojiReact } from '../../actions/emoji_reacts';
 import {
   favourite,
   unfavourite,
@@ -19,13 +41,9 @@ import {
   pin,
   unpin,
 } from '../../actions/interactions';
-import { simpleEmojiReact } from '../../actions/emoji_reacts';
-import {
-  replyCompose,
-  mentionCompose,
-  directCompose,
-} from '../../actions/compose';
-import { blockAccount } from '../../actions/accounts';
+import { openModal } from '../../actions/modal';
+import { initMuteModal } from '../../actions/mutes';
+import { initReport } from '../../actions/reports';
 import {
   muteStatus,
   unmuteStatus,
@@ -33,32 +51,24 @@ import {
   hideStatus,
   revealStatus,
 } from '../../actions/statuses';
-import { initMuteModal } from '../../actions/mutes';
-import { initReport } from '../../actions/reports';
-import { makeGetStatus } from '../../selectors';
-// import ColumnHeader from '../../components/column_header';
-import { openModal } from '../../actions/modal';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { createSelector } from 'reselect';
-import { HotKeys } from 'react-hotkeys';
-import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
+import { fetchStatusWithContext } from '../../actions/statuses';
+import MissingIndicator from '../../components/missing_indicator';
 import { textForScreenReader, defaultMediaVisibility } from '../../components/status';
-// import Icon from 'soapbox/components/icon';
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { deactivateUserModal, deleteUserModal, deleteStatusModal, toggleStatusSensitivityModal } from 'soapbox/actions/moderation';
+import { makeGetStatus } from '../../selectors';
+import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
+
+import ActionBar from './components/action_bar';
+import DetailedStatus from './components/detailed_status';
 import ThreadStatus from './components/thread_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
-import SubNavigation from 'soapbox/components/sub_navigation';
-import { launchChat } from 'soapbox/actions/chats';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: 'Post' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
+  deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
   deleteMessage: { id: 'confirmations.delete.message', defaultMessage: 'Are you sure you want to delete this post?' },
   redraftConfirm: { id: 'confirmations.redraft.confirm', defaultMessage: 'Delete & redraft' },
+  redraftHeading: { id: 'confirmations.redraft.heading', defaultMessage: 'Delete & redraft' },
   redraftMessage: { id: 'confirmations.redraft.message', defaultMessage: 'Are you sure you want to delete this post and re-draft it? Favorites and reposts will be lost, and replies to the original post will be orphaned.' },
   blockConfirm: { id: 'confirmations.block.confirm', defaultMessage: 'Block' },
   revealAll: { id: 'status.show_more_all', defaultMessage: 'Show more for all' },
@@ -79,7 +89,7 @@ const makeMapStateToProps = () => {
     let ancestorsIds = ImmutableOrderedSet();
     let id = statusId;
 
-    while (id) {
+    while (id && !ancestorsIds.includes(id)) {
       ancestorsIds = ImmutableOrderedSet([id]).union(ancestorsIds);
       id = inReplyTos.get(id);
     }
@@ -97,6 +107,10 @@ const makeMapStateToProps = () => {
     while (ids.length > 0) {
       const id      = ids.shift();
       const replies = contextReplies.get(id);
+
+      if (descendantsIds.includes(id)) {
+        break;
+      }
 
       if (statusId !== id) {
         descendantsIds = descendantsIds.union([id]);
@@ -118,8 +132,11 @@ const makeMapStateToProps = () => {
     let descendantsIds = ImmutableOrderedSet();
 
     if (status) {
-      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', status.get('id')]) });
-      descendantsIds = getDescendantsIds(state, { id: status.get('id') });
+      const statusId = status.get('id');
+      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', statusId]) });
+      descendantsIds = getDescendantsIds(state, { id: statusId });
+      ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
+      descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
     }
 
     const soapbox = getSoapboxConfig(state);
@@ -166,8 +183,15 @@ class Status extends ImmutablePureComponent {
     emojiSelectorFocused: false,
   };
 
+  fetchData = () => {
+    const { dispatch, params } = this.props;
+    const { statusId } = params;
+
+    return dispatch(fetchStatusWithContext(statusId));
+  }
+
   componentDidMount() {
-    this.props.dispatch(fetchStatus(this.props.params.statusId));
+    this.fetchData();
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -235,6 +259,19 @@ class Status extends ImmutablePureComponent {
     });
   }
 
+  handleQuoteClick = (status, e) => {
+    const { askReplyConfirmation, dispatch, intl } = this.props;
+    if (askReplyConfirmation) {
+      dispatch(openModal('CONFIRM', {
+        message: intl.formatMessage(messages.replyMessage),
+        confirm: intl.formatMessage(messages.replyConfirm),
+        onConfirm: () => dispatch(quoteCompose(status, this.context.router.history)),
+      }));
+    } else {
+      dispatch(quoteCompose(status, this.context.router.history));
+    }
+  }
+
   handleDeleteClick = (status, history, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
@@ -244,6 +281,8 @@ class Status extends ImmutablePureComponent {
         dispatch(deleteStatus(status.get('id'), history, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
+          icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
+          heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
           onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
@@ -323,6 +362,8 @@ class Status extends ImmutablePureComponent {
     const account = status.get('account');
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/ban.svg'),
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
       message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
       onConfirm: () => dispatch(blockAccount(account.get('id'))),
@@ -410,10 +451,10 @@ class Status extends ImmutablePureComponent {
     if (id === status.get('id')) {
       this._selectChild(ancestorsIds.size - 1, true);
     } else {
-      let index = ancestorsIds.indexOf(id);
+      let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
-        index = descendantsIds.indexOf(id);
+        index = ImmutableList(descendantsIds).indexOf(id);
         this._selectChild(ancestorsIds.size + index, true);
       } else {
         this._selectChild(index - 1, true);
@@ -427,10 +468,10 @@ class Status extends ImmutablePureComponent {
     if (id === status.get('id')) {
       this._selectChild(ancestorsIds.size + 1, false);
     } else {
-      let index = ancestorsIds.indexOf(id);
+      let index = ImmutableList(ancestorsIds).indexOf(id);
 
       if (index === -1) {
-        index = descendantsIds.indexOf(id);
+        index = ImmutableList(descendantsIds).indexOf(id);
         this._selectChild(ancestorsIds.size + index + 2, false);
       } else {
         this._selectChild(index + 1, false);
@@ -532,9 +573,9 @@ class Status extends ImmutablePureComponent {
     const { params, status } = this.props;
     const { ancestorsIds } = prevProps;
 
-    if (params.statusId !== prevProps.params.statusId && params.statusId) {
+    if (params.statusId !== prevProps.params.statusId) {
       this._scrolledIntoView = false;
-      this.props.dispatch(fetchStatus(params.statusId));
+      this.fetchData();
     }
 
     if (status && status.get('id') !== prevState.loadedStatusId) {
@@ -561,6 +602,10 @@ class Status extends ImmutablePureComponent {
 
   onFullScreenChange = () => {
     this.setState({ fullscreen: isFullscreen() });
+  }
+
+  handleRefresh = () => {
+    return this.fetchData();
   }
 
   render() {
@@ -626,56 +671,59 @@ class Status extends ImmutablePureComponent {
         */}
 
         <div ref={this.setRef} className='thread'>
-          {ancestors && (
-            <div className='thread__ancestors'>{ancestors}</div>
-          )}
+          <PullToRefresh onRefresh={this.handleRefresh}>
+            {ancestors && (
+              <div className='thread__ancestors'>{ancestors}</div>
+            )}
 
-          <div className='thread__status thread__status--focused'>
-            <HotKeys handlers={handlers}>
-              <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
-                <DetailedStatus
-                  status={status}
-                  onOpenVideo={this.handleOpenVideo}
-                  onOpenMedia={this.handleOpenMedia}
-                  onToggleHidden={this.handleToggleHidden}
-                  domain={domain}
-                  showMedia={this.state.showMedia}
-                  onToggleMediaVisibility={this.handleToggleMediaVisibility}
-                />
+            <div className='thread__status thread__status--focused'>
+              <HotKeys handlers={handlers}>
+                <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                  <DetailedStatus
+                    status={status}
+                    onOpenVideo={this.handleOpenVideo}
+                    onOpenMedia={this.handleOpenMedia}
+                    onToggleHidden={this.handleToggleHidden}
+                    domain={domain}
+                    showMedia={this.state.showMedia}
+                    onToggleMediaVisibility={this.handleToggleMediaVisibility}
+                  />
 
-                <ActionBar
-                  status={status}
-                  onReply={this.handleReplyClick}
-                  onFavourite={this.handleFavouriteClick}
-                  onEmojiReact={this.handleEmojiReactClick}
-                  onReblog={this.handleReblogClick}
-                  onDelete={this.handleDeleteClick}
-                  onDirect={this.handleDirectClick}
-                  onChat={this.handleChatClick}
-                  onMention={this.handleMentionClick}
-                  onMute={this.handleMuteClick}
-                  onMuteConversation={this.handleConversationMuteClick}
-                  onBlock={this.handleBlockClick}
-                  onReport={this.handleReport}
-                  onPin={this.handlePin}
-                  onBookmark={this.handleBookmark}
-                  onEmbed={this.handleEmbed}
-                  onDeactivateUser={this.handleDeactivateUser}
-                  onDeleteUser={this.handleDeleteUser}
-                  onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
-                  onDeleteStatus={this.handleDeleteStatus}
-                  allowedEmoji={this.props.allowedEmoji}
-                  emojiSelectorFocused={this.state.emojiSelectorFocused}
-                  handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
-                  handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-                />
-              </div>
-            </HotKeys>
-          </div>
+                  <ActionBar
+                    status={status}
+                    onReply={this.handleReplyClick}
+                    onFavourite={this.handleFavouriteClick}
+                    onEmojiReact={this.handleEmojiReactClick}
+                    onReblog={this.handleReblogClick}
+                    onQuote={this.handleQuoteClick}
+                    onDelete={this.handleDeleteClick}
+                    onDirect={this.handleDirectClick}
+                    onChat={this.handleChatClick}
+                    onMention={this.handleMentionClick}
+                    onMute={this.handleMuteClick}
+                    onMuteConversation={this.handleConversationMuteClick}
+                    onBlock={this.handleBlockClick}
+                    onReport={this.handleReport}
+                    onPin={this.handlePin}
+                    onBookmark={this.handleBookmark}
+                    onEmbed={this.handleEmbed}
+                    onDeactivateUser={this.handleDeactivateUser}
+                    onDeleteUser={this.handleDeleteUser}
+                    onToggleStatusSensitivity={this.handleToggleStatusSensitivity}
+                    onDeleteStatus={this.handleDeleteStatus}
+                    allowedEmoji={this.props.allowedEmoji}
+                    emojiSelectorFocused={this.state.emojiSelectorFocused}
+                    handleEmojiSelectorExpand={this.handleEmojiSelectorExpand}
+                    handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                  />
+                </div>
+              </HotKeys>
+            </div>
 
-          {descendants && (
-            <div className='thread__descendants'>{descendants}</div>
-          )}
+            {descendants && (
+              <div className='thread__descendants'>{descendants}</div>
+            )}
+          </PullToRefresh>
         </div>
       </Column>
     );

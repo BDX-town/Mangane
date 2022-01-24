@@ -1,17 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { fetchOwnAccounts } from 'soapbox/actions/auth';
+import { is as ImmutableIs } from 'immutable';
 import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
-import { isStaff } from 'soapbox/utils/accounts';
 import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
+import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import { makeGetOtherAccounts } from 'soapbox/selectors';
+import { isStaff } from 'soapbox/utils/accounts';
+
+import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
 
 const messages = defineMessages({
   add: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
@@ -113,11 +115,21 @@ class ProfileDropdown extends React.PureComponent {
 
     menu.push(null);
 
-    menu.push({ text: intl.formatMessage(messages.add), to: '/auth/sign_in' });
-    menu.push({ text: intl.formatMessage(messages.logout, { acct: account.get('acct') }), to: '/auth/sign_out', action: this.handleLogOut });
+    menu.push({
+      text: intl.formatMessage(messages.add),
+      to: '/auth/sign_in',
+      icon: require('@tabler/icons/icons/plus.svg'),
+    });
+
+    menu.push({
+      text: intl.formatMessage(messages.logout, { acct: account.get('acct') }),
+      to: '/auth/sign_out',
+      action: this.handleLogOut,
+      icon: require('@tabler/icons/icons/logout.svg'),
+    });
 
     return (
-      <div className='compose__action-bar' style={{ 'marginTop':'-6px' }}>
+      <div className='compose__action-bar' style={{ marginTop: '-6px' }}>
         <div className='compose__action-bar-dropdown'>
           <DropdownMenuContainer items={menu} icon='chevron-down' size={size} direction='right' />
         </div>

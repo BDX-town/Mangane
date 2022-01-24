@@ -1,8 +1,10 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import Sticky from 'react-stickynode';
+
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
+import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
@@ -11,7 +13,6 @@ import {
   FeaturesPanel,
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
@@ -62,9 +63,12 @@ class DefaultPage extends ImmutablePureComponent {
                       {Component => <Component key='sign-up-panel' />}
                     </BundleContainer>
                   )}
+                  <BundleContainer fetchComponent={PromoPanel}>
+                    {Component => <Component key='promo-panel' />}
+                  </BundleContainer>
                   {showTrendsPanel && (
                     <BundleContainer fetchComponent={TrendsPanel}>
-                      {Component => <Component key='trends-panel' />}
+                      {Component => <Component limit={3} key='trends-panel' />}
                     </BundleContainer>
                   )}
                   {showWhoToFollowPanel && (
@@ -72,9 +76,6 @@ class DefaultPage extends ImmutablePureComponent {
                       {Component => <Component limit={5} key='wtf-panel' />}
                     </BundleContainer>
                   )}
-                  <BundleContainer fetchComponent={PromoPanel}>
-                    {Component => <Component key='promo-panel' />}
-                  </BundleContainer>
                   <LinkFooter key='link-footer' />
                 </Sticky>
               </div>

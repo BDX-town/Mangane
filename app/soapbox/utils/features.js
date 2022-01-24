@@ -1,8 +1,8 @@
 // Detect backend features to conditionally render elements
-import gte from 'semver/functions/gte';
-import lt from 'semver/functions/lt';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
+import gte from 'semver/functions/gte';
+import lt from 'semver/functions/lt';
 
 const any = arr => arr.some(Boolean);
 
@@ -24,8 +24,15 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
     ]),
-    suggestions: v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
-    suggestionsV2: v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+    suggestions: any([
+      v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
+      features.includes('v2_suggestions'),
+    ]),
+    suggestionsV2: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      features.includes('v2_suggestions'),
+    ]),
+    blockersVisible: features.includes('blockers_visible'),
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
@@ -44,9 +51,11 @@ export const getFeatures = createSelector([
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
     attachmentLimit: v.software === PLEROMA ? Infinity : 4,
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
+    importAPI: v.software === PLEROMA,
     importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
     emailList: features.includes('email_list'),
     chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
+    chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
     federating: federation.get('enabled', true), // Assume true unless explicitly false
     richText: v.software === PLEROMA,
@@ -58,6 +67,18 @@ export const getFeatures = createSelector([
     accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
     unrestrictedLists: v.software === PLEROMA,
     accountByUsername: v.software === PLEROMA,
+    profileDirectory: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      features.includes('profile_directory'),
+    ]),
+    accountLookup: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
+    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
   };
 });
 

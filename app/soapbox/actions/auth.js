@@ -8,17 +8,21 @@
  */
 
 import { defineMessages } from 'react-intl';
-import api, { baseClient } from '../api';
-import { importFetchedAccount } from './importer';
-import snackbar from 'soapbox/actions/snackbar';
+
 import { createAccount } from 'soapbox/actions/accounts';
-import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
-import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import { createApp } from 'soapbox/actions/apps';
+import { fetchMeSuccess, fetchMeFail } from 'soapbox/actions/me';
 import { obtainOAuthToken, revokeOAuthToken } from 'soapbox/actions/oauth';
+import snackbar from 'soapbox/actions/snackbar';
+import KVStore from 'soapbox/storage/kv_store';
+import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
+
+import api, { baseClient } from '../api';
+
+import { importFetchedAccount } from './importer';
 
 export const SWITCH_ACCOUNT = 'SWITCH_ACCOUNT';
 
@@ -30,6 +34,10 @@ export const AUTH_LOGGED_OUT     = 'AUTH_LOGGED_OUT';
 export const VERIFY_CREDENTIALS_REQUEST = 'VERIFY_CREDENTIALS_REQUEST';
 export const VERIFY_CREDENTIALS_SUCCESS = 'VERIFY_CREDENTIALS_SUCCESS';
 export const VERIFY_CREDENTIALS_FAIL    = 'VERIFY_CREDENTIALS_FAIL';
+
+export const AUTH_ACCOUNT_REMEMBER_REQUEST = 'AUTH_ACCOUNT_REMEMBER_REQUEST';
+export const AUTH_ACCOUNT_REMEMBER_SUCCESS = 'AUTH_ACCOUNT_REMEMBER_SUCCESS';
+export const AUTH_ACCOUNT_REMEMBER_FAIL    = 'AUTH_ACCOUNT_REMEMBER_FAIL';
 
 export const messages = defineMessages({
   loggedOut: { id: 'auth.logged_out', defaultMessage: 'Logged out.' },
@@ -135,6 +143,7 @@ export function otpVerify(code, mfa_token) {
       code: code,
       challenge_type: 'totp',
       redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+      scope: getScopes(getState()),
     }).then(({ data: token }) => dispatch(authLoggedIn(token)));
   };
 }
@@ -157,9 +166,31 @@ export function verifyCredentials(token, accountUrl) {
   };
 }
 
+export function rememberAuthAccount(accountUrl) {
+  return (dispatch, getState) => {
+    dispatch({ type: AUTH_ACCOUNT_REMEMBER_REQUEST, accountUrl });
+    return KVStore.getItemOrError(`authAccount:${accountUrl}`).then(account => {
+      dispatch(importFetchedAccount(account));
+      dispatch({ type: AUTH_ACCOUNT_REMEMBER_SUCCESS, account, accountUrl });
+      if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+      return account;
+    }).catch(error => {
+      dispatch({ type: AUTH_ACCOUNT_REMEMBER_FAIL, error, accountUrl, skipAlert: true });
+    });
+  };
+}
+
+export function loadCredentials(token, accountUrl) {
+  return (dispatch, getState) => {
+    return dispatch(rememberAuthAccount(accountUrl)).finally(() => {
+      return dispatch(verifyCredentials(token, accountUrl));
+    });
+  };
+}
+
 export function logIn(intl, username, password) {
   return (dispatch, getState) => {
-    return dispatch(createAppAndToken()).then(() => {
+    return dispatch(createAuthApp()).then(() => {
       return dispatch(createUserToken(username, password));
     }).catch(error => {
       if (error.response.data.error === 'mfa_required') {

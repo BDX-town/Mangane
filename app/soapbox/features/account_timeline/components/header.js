@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import InnerHeader from '../../account/components/header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import InnerHeader from '../../account/components/header';
+
 import MovedNote from './moved_note';
 
 export default class Header extends ImmutablePureComponent {
@@ -20,7 +22,7 @@ export default class Header extends ImmutablePureComponent {
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
-    // onEndorseToggle: PropTypes.func.isRequired,
+    onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
   };
@@ -81,9 +83,9 @@ export default class Header extends ImmutablePureComponent {
     this.props.onChat(this.props.account, this.context.router.history);
   }
 
-  // handleEndorseToggle = () => {
-  //   this.props.onEndorseToggle(this.props.account);
-  // }
+  handleEndorseToggle = () => {
+    this.props.onEndorseToggle(this.props.account);
+  }
 
   handleAddToList = () => {
     this.props.onAddToList(this.props.account);
@@ -117,6 +119,14 @@ export default class Header extends ImmutablePureComponent {
     this.props.onDemoteToUser(this.props.account);
   }
 
+  handleSuggestUser = () => {
+    this.props.onSuggestUser(this.props.account);
+  }
+
+  handleUnsuggestUser = () => {
+    this.props.onUnsuggestUser(this.props.account);
+  }
+
   render() {
     const { account, identity_proofs } = this.props;
     const moved = (account) ? account.get('moved') : false;
@@ -148,6 +158,8 @@ export default class Header extends ImmutablePureComponent {
           onPromoteToAdmin={this.handlePromoteToAdmin}
           onPromoteToModerator={this.handlePromoteToModerator}
           onDemoteToUser={this.handleDemoteToUser}
+          onSuggestUser={this.handleSuggestUser}
+          onUnsuggestUser={this.handleUnsuggestUser}
           username={this.props.username}
         />
       </div>

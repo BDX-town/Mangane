@@ -1,20 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
-import { blockAccount } from '../../../actions/accounts';
-import { expandAccountTimeline } from '../../../actions/timelines';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { makeGetAccount } from '../../../selectors';
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
-import StatusCheckBox from '../../report/containers/status_check_box_container';
 import { OrderedSet } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Button from '../../../components/button';
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
-import IconButton from '../../../components/icon_button';
+
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { blockAccount } from '../../../actions/accounts';
+import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
+import { expandAccountTimeline } from '../../../actions/timelines';
+import Button from '../../../components/button';
+import IconButton from '../../../components/icon_button';
+import { makeGetAccount } from '../../../selectors';
+import StatusCheckBox from '../../report/containers/status_check_box_container';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -107,7 +109,7 @@ class ReportModal extends ImmutablePureComponent {
     return (
       <div className='modal-root__modal report-modal'>
         <div className='report-modal__target'>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={16} />
+          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
           <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>{account.get('acct')}</strong> }} />
         </div>
 

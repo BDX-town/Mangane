@@ -1,10 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { supportsPassiveEvents } from 'detect-passive-events';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { SketchPicker } from 'react-color';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
+import { connect } from 'react-redux';
+
+import { updateConfig } from 'soapbox/actions/admin';
+import { uploadMedia } from 'soapbox/actions/media';
+import snackbar from 'soapbox/actions/snackbar';
+import { makeDefaultConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   FieldsGroup,
@@ -15,21 +24,15 @@ import {
   FormPropTypes,
   Checkbox,
 } from 'soapbox/features/forms';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { updateConfig } from 'soapbox/actions/admin';
-import Icon from 'soapbox/components/icon';
-import { makeDefaultConfig } from 'soapbox/actions/soapbox';
-import { getFeatures } from 'soapbox/utils/features';
-import { uploadMedia } from 'soapbox/actions/media';
-import { SketchPicker } from 'react-color';
-import Overlay from 'react-overlays/lib/Overlay';
-import { isMobile } from 'soapbox/is_mobile';
-import { supportsPassiveEvents } from 'detect-passive-events';
-import Accordion from '../ui/components/accordion';
-import SitePreview from './components/site_preview';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
+import { isMobile } from 'soapbox/is_mobile';
+import { getFeatures } from 'soapbox/utils/features';
+
+import Accordion from '../ui/components/accordion';
+import Column from '../ui/components/column';
+
 import IconPickerDropdown from './components/icon_picker_dropdown';
-import snackbar from 'soapbox/actions/snackbar';
+import SitePreview from './components/site_preview';
 
 const messages = defineMessages({
   heading: { id: 'column.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -296,7 +299,7 @@ class SoapboxConfig extends ImmutablePureComponent {
                   <FormattedMessage id='soapbox_config.hints.promo_panel_fields' defaultMessage='You can have custom defined links displayed on the right panel of the timelines page.' />
                 </span>
                 <span className='hint'>
-                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://forkaweso.me/Fork-Awesome/icons/'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
+                  <FormattedMessage id='soapbox_config.hints.promo_panel_icons' defaultMessage='{ link }' values={{ link: <a target='_blank' href='https://icons8.com/line-awesome'>{intl.formatMessage(messages.promoPanelIconsLink)}</a> }} />
                 </span>
                 {
                   soapbox.getIn(['promoPanel', 'items']).map((field, i) => (
@@ -318,13 +321,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handlePromoItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['promoPanel', 'items', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['promoPanel', 'items'], templates.promoPanelItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.promo_panel.add' defaultMessage='Add new Promo panel item' />
                   </div>
                 </div>
@@ -351,13 +354,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={field.get('url')}
                         onChange={this.handleHomeFooterItemChange(i, 'url', field)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['navlinks', 'homeFooter', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['navlinks', 'homeFooter'], templates.footerItem)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.home_footer.add' defaultMessage='Add new Home Footer Item' />
                   </div>
                 </div>
@@ -390,13 +393,13 @@ class SoapboxConfig extends ImmutablePureComponent {
                         value={address.get('note')}
                         onChange={this.handleCryptoAdressItemChange(i, 'note', address)}
                       />
-                      <Icon id='times-circle' onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
+                      <Icon className='delete-field' src={require('@tabler/icons/icons/circle-x.svg')} onClick={this.handleDeleteItem(['cryptoAddresses', i])} />
                     </div>
                   ))
                 }
                 <div className='actions add-row'>
                   <div name='button' type='button' role='presentation' className='btn button button-secondary' onClick={this.handleAddItem(['cryptoAddresses'], templates.cryptoAddress)}>
-                    <Icon id='plus-circle' />
+                    <Icon src={require('@tabler/icons/icons/circle-plus.svg')} />
                     <FormattedMessage id='soapbox_config.fields.crypto_address.add' defaultMessage='Add new crypto address' />
                   </div>
                 </div>

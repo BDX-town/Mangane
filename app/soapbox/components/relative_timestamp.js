@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
-import PropTypes from 'prop-types';
 
 const messages = defineMessages({
   just_now: { id: 'relative_time.just_now', defaultMessage: 'now' },

@@ -1,17 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusContent from 'soapbox/components/status_content';
-import { buildStatus } from '../util/pending_status_builder';
 import classNames from 'classnames';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
+
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import StatusContent from 'soapbox/components/status_content';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
+import { buildStatus } from '../util/pending_status_builder';
+
 import PollPreview from './poll_preview';
+
+const shouldHaveCard = pendingStatus => {
+  return Boolean(pendingStatus.get('content').match(/https?:\/\/\S*/));
+};
 
 const mapStateToProps = (state, props) => {
   const { idempotencyKey } = props;
@@ -24,8 +31,24 @@ const mapStateToProps = (state, props) => {
 export default @connect(mapStateToProps)
 class PendingStatus extends ImmutablePureComponent {
 
+  renderMedia = () => {
+    const { status } = this.props;
+
+    if (status.get('media_attachments') && !status.get('media_attachments').isEmpty()) {
+      return (
+        <PlaceholderMediaGallery
+          media={status.get('media_attachments')}
+        />
+      );
+    } else if (shouldHaveCard(status)) {
+      return <PlaceholderCard />;
+    } else {
+      return null;
+    }
+  }
+
   render() {
-    const { status, className, showThread } = this.props;
+    const { status, className } = this.props;
     if (!status) return null;
     if (!status.get('account')) return null;
 
@@ -67,18 +90,8 @@ class PendingStatus extends ImmutablePureComponent {
               collapsable
             />
 
-            <AttachmentThumbs
-              compact
-              media={status.get('media_attachments')}
-            />
-
+            {this.renderMedia()}
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             {/* TODO */}
             {/* <PlaceholderActionBar /> */}

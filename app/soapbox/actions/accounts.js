@@ -1,11 +1,13 @@
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+
 import api, { getLinks } from '../api';
+
 import {
   importFetchedAccount,
   importFetchedAccounts,
   importErrorWhileFetchingAccountByUsername,
 } from './importer';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
 
 export const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 export const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';
@@ -55,9 +57,17 @@ export const ACCOUNT_UNPIN_REQUEST = 'ACCOUNT_UNPIN_REQUEST';
 export const ACCOUNT_UNPIN_SUCCESS = 'ACCOUNT_UNPIN_SUCCESS';
 export const ACCOUNT_UNPIN_FAIL    = 'ACCOUNT_UNPIN_FAIL';
 
+export const PINNED_ACCOUNTS_FETCH_REQUEST = 'PINNED_ACCOUNTS_FETCH_REQUEST';
+export const PINNED_ACCOUNTS_FETCH_SUCCESS = 'PINNED_ACCOUNTS_FETCH_SUCCESS';
+export const PINNED_ACCOUNTS_FETCH_FAIL = 'PINNED_ACCOUNTS_FETCH_FAIL';
+
 export const ACCOUNT_SEARCH_REQUEST = 'ACCOUNT_SEARCH_REQUEST';
 export const ACCOUNT_SEARCH_SUCCESS = 'ACCOUNT_SEARCH_SUCCESS';
 export const ACCOUNT_SEARCH_FAIL    = 'ACCOUNT_SEARCH_FAIL';
+
+export const ACCOUNT_LOOKUP_REQUEST = 'ACCOUNT_LOOKUP_REQUEST';
+export const ACCOUNT_LOOKUP_SUCCESS = 'ACCOUNT_LOOKUP_SUCCESS';
+export const ACCOUNT_LOOKUP_FAIL    = 'ACCOUNT_LOOKUP_FAIL';
 
 export const FOLLOWERS_FETCH_REQUEST = 'FOLLOWERS_FETCH_REQUEST';
 export const FOLLOWERS_FETCH_SUCCESS = 'FOLLOWERS_FETCH_SUCCESS';
@@ -144,8 +154,16 @@ export function fetchAccountByUsername(username) {
 
     const instance = state.get('instance');
     const features = getFeatures(instance);
+    const me = state.get('me');
 
-    if (features.accountByUsername) {
+    if (!me && features.accountLookup) {
+      dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchAccountSuccess(account));
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    } else if (features.accountByUsername) {
       api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
@@ -948,6 +966,43 @@ export function unpinAccountFail(error) {
   };
 }
 
+export function fetchPinnedAccounts(id) {
+  return (dispatch, getState) => {
+    dispatch(fetchPinnedAccountsRequest(id));
+
+    api(getState).get(`/api/v1/pleroma/accounts/${id}/endorsements`).then(response => {
+      dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchPinnedAccountsSuccess(id, response.data, null));
+    }).catch(error => {
+      dispatch(fetchPinnedAccountsFail(id, error));
+    });
+  };
+}
+
+export function fetchPinnedAccountsRequest(id) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_REQUEST,
+    id,
+  };
+}
+
+export function fetchPinnedAccountsSuccess(id, accounts, next) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_SUCCESS,
+    id,
+    accounts,
+    next,
+  };
+}
+
+export function fetchPinnedAccountsFail(id, error) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_FAIL,
+    id,
+    error,
+  };
+}
+
 export function accountSearch(params, cancelToken) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_SEARCH_REQUEST, params });
@@ -957,6 +1012,20 @@ export function accountSearch(params, cancelToken) {
       return accounts;
     }).catch(error => {
       dispatch({ type: ACCOUNT_SEARCH_FAIL, skipAlert: true });
+      throw error;
+    });
+  };
+}
+
+export function accountLookup(acct, cancelToken) {
+  return (dispatch, getState) => {
+    dispatch({ type: ACCOUNT_LOOKUP_REQUEST, acct });
+    return api(getState).get('/api/v1/accounts/lookup', { params: { acct }, cancelToken }).then(({ data: account }) => {
+      if (account && account.id) dispatch(importFetchedAccount(account));
+      dispatch({ type: ACCOUNT_LOOKUP_SUCCESS, account });
+      return account;
+    }).catch(error => {
+      dispatch({ type: ACCOUNT_LOOKUP_FAIL });
       throw error;
     });
   };

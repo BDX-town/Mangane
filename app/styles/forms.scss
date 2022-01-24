@@ -295,6 +295,7 @@ code {
     input[type=text],
     input[type=number],
     input[type=email],
+    input[type=url],
     input[type=password],
     textarea {
       color: var(--primary-text-color--faint);
@@ -305,6 +306,7 @@ code {
   input[type=text],
   input[type=number],
   input[type=email],
+  input[type=url],
   input[type=password],
   textarea,
   .rfipbtn {
@@ -348,6 +350,7 @@ code {
   input[type=text][disabled],
   input[type=number][disabled],
   input[type=email][disabled],
+  input[type=url][disabled],
   input[type=password][disabled],
   textarea[disabled] {
     color: var(--primary-text-color--faint);
@@ -362,18 +365,19 @@ code {
     input[type=text],
     input[type=number],
     input[type=email],
+    input[type=url],
     input[type=password],
     textarea,
     select {
       border-color: lighten($error-red, 12%);
     }
+  }
 
-    .error {
-      display: block;
-      font-weight: 500;
-      color: lighten($error-red, 12%);
-      margin-top: 4px;
-    }
+  .error {
+    display: block;
+    font-weight: 500;
+    color: lighten($error-red, 12%);
+    margin-top: 4px;
   }
 
   .input.disabled {
@@ -492,7 +496,7 @@ code {
     &::after {
       display: flex;
       align-items: center;
-      font-family: "ForkAwesome";
+      font-family: 'Font Awesome 5 Free';
       content: "";
       position: absolute;
       right: 12px;
@@ -500,6 +504,7 @@ code {
       padding-left: 12px;
       pointer-events: none;
       margin-top: 8px;
+      font-weight: 900;
     }
   }
 
@@ -604,6 +609,31 @@ code {
     margin-bottom: 14px;
     font-weight: bold;
   }
+
+  .showable-password {
+    position: relative;
+
+    input {
+      padding-right: 36px;
+    }
+
+    .icon-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 41px;
+      width: 36px;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      color: var(--primary-text-color);
+
+      .svg-icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
 }
 
 .block-icon {
@@ -611,20 +641,6 @@ code {
   margin: 0 auto;
   margin-bottom: 10px;
   font-size: 24px;
-}
-
-.qr-code {
-  flex: 0 0 auto;
-  background: var(--foreground-color);
-  padding: 4px;
-  margin: 0 10px 20px 0;
-  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  display: inline-block;
-
-  svg {
-    display: block;
-    margin: 0;
-  }
 }
 
 .simple_form {
@@ -737,17 +753,19 @@ code {
   }
 }
 
-.input .row > .fa-times-circle {
+.input .row > .svg-icon.delete-field {
+  height: 20px;
+  width: 20px;
   position: absolute;
-  right: 15px;
+  right: 13px;
   cursor: pointer;
   color: $error-red;
-  transform: translateY(-9px);
+  transform: translateY(-11px);
 }
 
-.input .row > .input.with_label + .fa-times-circle {
-  right: 7px;
-  transform: translateY(9px);
+.input .row > .input.with_label + .svg-icon.delete-field {
+  right: 5px;
+  transform: translateY(7px);
 }
 
 .site-preview {
@@ -794,11 +812,18 @@ code {
   margin: 10px 0 0;
 
   .button {
+    display: flex;
+    align-items: center;
     border: 0;
     background: transparent;
 
     &:hover {
       color: var(--primary-text-color);
+    }
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
     }
   }
 }

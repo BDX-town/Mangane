@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
-import PollForm from '../components/poll_form';
+
 import { addPollOption, removePollOption, changePollOption, changePollSettings, removePoll } from '../../../actions/compose';
 import {
   clearComposeSuggestions,
   fetchComposeSuggestions,
   selectComposeSuggestion,
 } from '../../../actions/compose';
+import PollForm from '../components/poll_form';
 
 const mapStateToProps = state => ({
   suggestions: state.getIn(['compose', 'suggestions']),

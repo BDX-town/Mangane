@@ -1,8 +1,11 @@
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import api, { getLinks } from '../api';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
+
+import api, { getLinks } from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
 
 export const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
 export const TIMELINE_DELETE  = 'TIMELINE_DELETE';

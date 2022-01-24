@@ -1,6 +1,7 @@
 'use strict';
 
 import WebSocketClient from '@gamestdio/websocket';
+
 import { getAccessToken } from 'soapbox/utils/auth';
 
 const randomIntUpTo = max => Math.floor(Math.random() * Math.floor(max));
@@ -26,37 +27,45 @@ export function connectStream(path, pollingRefresh = null, callbacks = () => ({ 
       }
     };
 
-    const subscription = getStream(streamingAPIBaseURL, accessToken, path, {
-      connected() {
-        if (pollingRefresh) {
-          clearPolling();
-        }
+    let subscription;
 
-        onConnect();
-      },
+    // If the WebSocket fails to be created, don't crash the whole page,
+    // just proceed without a subscription.
+    try {
+      subscription = getStream(streamingAPIBaseURL, accessToken, path, {
+        connected() {
+          if (pollingRefresh) {
+            clearPolling();
+          }
 
-      disconnected() {
-        if (pollingRefresh) {
-          polling = setTimeout(() => setupPolling(), randomIntUpTo(40000));
-        }
+          onConnect();
+        },
 
-        onDisconnect();
-      },
+        disconnected() {
+          if (pollingRefresh) {
+            polling = setTimeout(() => setupPolling(), randomIntUpTo(40000));
+          }
 
-      received(data) {
-        onReceive(data);
-      },
+          onDisconnect();
+        },
 
-      reconnected() {
-        if (pollingRefresh) {
-          clearPolling();
-          pollingRefresh(dispatch);
-        }
+        received(data) {
+          onReceive(data);
+        },
 
-        onConnect();
-      },
+        reconnected() {
+          if (pollingRefresh) {
+            clearPolling();
+            pollingRefresh(dispatch);
+          }
 
-    });
+          onConnect();
+        },
+
+      });
+    } catch (e) {
+      console.error(e);
+    }
 
     const disconnect = () => {
       if (subscription) {

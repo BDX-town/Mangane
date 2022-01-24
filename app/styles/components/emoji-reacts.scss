@@ -19,6 +19,10 @@
   + .emoji-react {
     margin-right: -8px;
   }
+
+  &[type='button'] {
+    cursor: pointer;
+  }
 }
 
 .emoji-react--reblogs,

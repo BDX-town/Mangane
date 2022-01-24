@@ -1,20 +1,23 @@
-import api from '../api';
 import { CancelToken, isCancel } from 'axios';
 import { throttle } from 'lodash';
+import { defineMessages } from 'react-intl';
+
+import snackbar from 'soapbox/actions/snackbar';
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+
+import api from '../api';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
 import { tagHistory } from '../settings';
-import { useEmoji } from './emojis';
 import resizeImage from '../utils/resize_image';
-import { importFetchedAccounts } from './importer';
+
 import { showAlert, showAlertForError } from './alerts';
-import { defineMessages } from 'react-intl';
+import { useEmoji } from './emojis';
+import { importFetchedAccounts } from './importer';
+import { uploadMedia, fetchMedia, updateMedia } from './media';
 import { openModal, closeModal } from './modal';
 import { getSettings } from './settings';
-import { getFeatures } from 'soapbox/utils/features';
-import { uploadMedia, fetchMedia, updateMedia } from './media';
-import { isLoggedIn } from 'soapbox/utils/auth';
 import { createStatus } from './statuses';
-import snackbar from 'soapbox/actions/snackbar';
 
 let cancelFetchComposeSuggestionsAccounts;
 
@@ -24,6 +27,8 @@ export const COMPOSE_SUBMIT_SUCCESS  = 'COMPOSE_SUBMIT_SUCCESS';
 export const COMPOSE_SUBMIT_FAIL     = 'COMPOSE_SUBMIT_FAIL';
 export const COMPOSE_REPLY           = 'COMPOSE_REPLY';
 export const COMPOSE_REPLY_CANCEL    = 'COMPOSE_REPLY_CANCEL';
+export const COMPOSE_QUOTE           = 'COMPOSE_QUOTE';
+export const COMPOSE_QUOTE_CANCEL    = 'COMPOSE_QUOTE_CANCEL';
 export const COMPOSE_DIRECT          = 'COMPOSE_DIRECT';
 export const COMPOSE_MENTION         = 'COMPOSE_MENTION';
 export const COMPOSE_RESET           = 'COMPOSE_RESET';
@@ -68,6 +73,9 @@ export const COMPOSE_SCHEDULE_ADD    = 'COMPOSE_SCHEDULE_ADD';
 export const COMPOSE_SCHEDULE_SET    = 'COMPOSE_SCHEDULE_SET';
 export const COMPOSE_SCHEDULE_REMOVE = 'COMPOSE_SCHEDULE_REMOVE';
 
+export const COMPOSE_ADD_TO_MENTIONS = 'COMPOSE_ADD_TO_MENTIONS';
+export const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS';
+
 const messages = defineMessages({
   uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
@@ -93,10 +101,14 @@ export function changeCompose(text) {
 export function replyCompose(status, routerHistory) {
   return (dispatch, getState) => {
     const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
     dispatch({
       type: COMPOSE_REPLY,
       status: status,
       account: state.getIn(['accounts', state.get('me')]),
+      explicitAddressing,
     });
 
     dispatch(openModal('COMPOSE'));
@@ -106,6 +118,29 @@ export function replyCompose(status, routerHistory) {
 export function cancelReplyCompose() {
   return {
     type: COMPOSE_REPLY_CANCEL,
+  };
+}
+
+export function quoteCompose(status, routerHistory) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_QUOTE,
+      status: status,
+      account: state.getIn(['accounts', state.get('me')]),
+      explicitAddressing,
+    });
+
+    dispatch(openModal('COMPOSE'));
+  };
+}
+
+export function cancelQuoteCompose() {
+  return {
+    type: COMPOSE_QUOTE_CANCEL,
   };
 }
 
@@ -155,7 +190,7 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
-  dispatch(snackbar.show('post', messages.success));
+  dispatch(snackbar.success(messages.success));
 }
 
 const needsDescriptions = state => {
@@ -183,6 +218,7 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
+    let to       = state.getIn(['compose', 'to'], null);
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
@@ -200,6 +236,13 @@ export function submitCompose(routerHistory, force = false) {
       return;
     }
 
+    if (to && status) {
+      const mentions = status.match(/(?:^|\s|\.)@([a-z0-9_]+(?:@[a-z0-9\.\-]+)?)/gi); // not a perfect regex
+
+      if (mentions)
+        to = to.union(mentions.map(mention => mention.trim().slice(1)));
+    }
+
     dispatch(submitComposeRequest());
     dispatch(closeModal());
 
@@ -208,6 +251,7 @@ export function submitCompose(routerHistory, force = false) {
     const params = {
       status,
       in_reply_to_id: state.getIn(['compose', 'in_reply_to'], null),
+      quote_id: state.getIn(['compose', 'quote'], null),
       media_ids: media.map(item => item.get('id')),
       sensitive: state.getIn(['compose', 'sensitive']),
       spoiler_text: state.getIn(['compose', 'spoiler_text'], ''),
@@ -215,6 +259,7 @@ export function submitCompose(routerHistory, force = false) {
       content_type: state.getIn(['compose', 'content_type']),
       poll: state.getIn(['compose', 'poll'], null),
       scheduled_at: state.getIn(['compose', 'schedule'], null),
+      to,
     };
 
     dispatch(createStatus(params, idempotencyKey)).then(function(data) {
@@ -641,5 +686,29 @@ export function openComposeWithText(text = '') {
     dispatch(resetCompose());
     dispatch(openModal('COMPOSE'));
     dispatch(changeCompose(text));
+  };
+}
+
+export function addToMentions(accountId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const acct = state.getIn(['accounts', accountId, 'acct']);
+
+    return dispatch({
+      type: COMPOSE_ADD_TO_MENTIONS,
+      account: acct,
+    });
+  };
+}
+
+export function removeFromMentions(accountId) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const acct = state.getIn(['accounts', accountId, 'acct']);
+
+    return dispatch({
+      type: COMPOSE_REMOVE_FROM_MENTIONS,
+      account: acct,
+    });
   };
 }

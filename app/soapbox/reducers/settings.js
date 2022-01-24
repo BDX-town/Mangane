@@ -1,9 +1,16 @@
-import { SETTING_CHANGE, SETTING_SAVE, FE_NAME } from '../actions/settings';
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
+
+import { EMOJI_USE } from '../actions/emojis';
 import { NOTIFICATIONS_FILTER_SET } from '../actions/notifications';
 import { SEARCH_FILTER_SET } from '../actions/search';
-import { EMOJI_USE } from '../actions/emojis';
-import { ME_FETCH_SUCCESS } from 'soapbox/actions/me';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import {
+  SETTING_CHANGE,
+  SETTING_SAVE,
+  SETTINGS_UPDATE,
+  FE_NAME,
+} from '../actions/settings';
 
 // Default settings are in action/settings.js
 //
@@ -35,6 +42,8 @@ export default function settings(state = initialState, action) {
     return updateFrequentEmojis(state, action.emoji);
   case SETTING_SAVE:
     return state.set('saved', true);
+  case SETTINGS_UPDATE:
+    return fromJS(action.settings);
   default:
     return state;
   }

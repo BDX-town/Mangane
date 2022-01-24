@@ -1,0 +1,122 @@
+{
+  "account": {
+    "acct": "apropos@freespeechextremist.com",
+    "avatar": "https://gleasonator.com/proxy/WVdkCbG7AOZ_eqMzskzXQoyjq8o/aHR0cHM6Ly9mcmVlc3BlZWNoZXh0cmVtaXN0LmNvbS9tZWRpYS8zN2I4MDMzZC03OGQ1LTQ0YmMtYmY5NC0xYTI2NzY5NTQwM2YvYmxvYi5wbmc_bmFtZT1ibG9iLnBuZw/blob.png",
+    "avatar_static": "https://gleasonator.com/proxy/WVdkCbG7AOZ_eqMzskzXQoyjq8o/aHR0cHM6Ly9mcmVlc3BlZWNoZXh0cmVtaXN0LmNvbS9tZWRpYS8zN2I4MDMzZC03OGQ1LTQ0YmMtYmY5NC0xYTI2NzY5NTQwM2YvYmxvYi5wbmc_bmFtZT1ibG9iLnBuZw/blob.png",
+    "bot": false,
+    "created_at": "2020-05-21T07:20:46.000Z",
+    "display_name": "of nothing",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 87,
+    "following_count": 85,
+    "fqn": "apropos@freespeechextremist.com",
+    "header": "https://gleasonator.com/proxy/pIracLGWm_skCfOOgdwcCNqES5s/aHR0cHM6Ly9mcmVlc3BlZWNoZXh0cmVtaXN0LmNvbS9tZWRpYS8yZDEwYmRjZC01NDUwLTRjZjYtYWFhZS1hNTJjMzYwYjk2YjYvdHJhY2tzb25tYXJzLmpwZz9uYW1lPXRyYWNrc29ubWFycy5qcGc/tracksonmars.jpg",
+    "header_static": "https://gleasonator.com/proxy/pIracLGWm_skCfOOgdwcCNqES5s/aHR0cHM6Ly9mcmVlc3BlZWNoZXh0cmVtaXN0LmNvbS9tZWRpYS8yZDEwYmRjZC01NDUwLTRjZjYtYWFhZS1hNTJjMzYwYjk2YjYvdHJhY2tzb25tYXJzLmpwZz9uYW1lPXRyYWNrc29ubWFycy5qcGc/tracksonmars.jpg",
+    "id": "9vGR3IWmWVYRkKUZ4i",
+    "last_status_at": "2022-01-07T21:47:39",
+    "locked": false,
+    "note": "If you wait by the river long enough, the bodies of your enemies will float by.<br/><br/>Deo Vindice",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "also_known_as": [],
+      "ap_id": "https://freespeechextremist.com/users/apropos",
+      "background_image": null,
+      "favicon": "https://gleasonator.com/proxy/EN7BSaEEYTRpmRj4lITIjgWp2sg/aHR0cHM6Ly9mcmVlc3BlZWNoZXh0cmVtaXN0LmNvbS9mYXZpY29uLnBuZw/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_confirmed": true,
+      "is_moderator": false,
+      "is_suggested": false,
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [],
+      "note": "",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 7087,
+    "url": "https://freespeechextremist.com/users/apropos",
+    "username": "apropos"
+  },
+  "application": null,
+  "bookmarked": false,
+  "card": null,
+  "content": "<span class=\"h-card\"><a class=\"u-url mention\" data-user=\"9r7CIa1GGezUtzTFyq\" href=\"https://iddqd.social/users/NEETzsche\" rel=\"ugc\">@<span>NEETzsche</span></a></span> <span class=\"h-card\"><a class=\"u-url mention\" data-user=\"9qoN7ZXtt7bllprZtw\" href=\"https://gleasonator.com/users/alex\" rel=\"ugc\">@<span>alex</span></a></span> <span class=\"h-card\"><a class=\"u-url mention\" data-user=\"A3dBnkLBdLgHFdxV2G\" href=\"https://pleroma.skyshanty.xyz/users/Lumeinshin\" rel=\"ugc\">@<span>Lumeinshin</span></a></span> <span class=\"h-card\"><a class=\"u-url mention\" data-user=\"ACrsGCVvaMiNdATg7E\" href=\"https://social.silkky.cloud/users/sneeden\" rel=\"ugc\">@<span>sneeden</span></a></span> <br/>&gt;seething<br/>&#39;posting&#39;, just like you.",
+  "created_at": "2022-01-07T17:29:58.000Z",
+  "emojis": [],
+  "favourited": false,
+  "favourites_count": 1,
+  "id": "AFChectaqZjmOVkXZ2",
+  "in_reply_to_account_id": "9v5bw7hEGBPc9nrpzc",
+  "in_reply_to_id": "AFChbnWqrAZ2VIlPJw",
+  "language": null,
+  "media_attachments": [],
+  "mentions": [
+    {
+      "acct": "alex",
+      "id": "9v5bmRalQvjOy0ECcC",
+      "url": "https://gleasonator.com/users/alex",
+      "username": "alex"
+    },
+    {
+      "acct": "NEETzsche@iddqd.social",
+      "id": "9v5bw7hEGBPc9nrpzc",
+      "url": "https://iddqd.social/users/NEETzsche",
+      "username": "NEETzsche"
+    },
+    {
+      "acct": "Lumeinshin@pleroma.skyshanty.xyz",
+      "id": "A3dFSwTkwgRfd998iG",
+      "url": "https://pleroma.skyshanty.xyz/users/Lumeinshin",
+      "username": "Lumeinshin"
+    },
+    {
+      "acct": "sneeden@social.silkky.cloud",
+      "id": "ACrsPAbAOPh3GbKZhQ",
+      "url": "https://social.silkky.cloud/users/sneeden",
+      "username": "sneeden"
+    }
+  ],
+  "muted": false,
+  "pinned": false,
+  "pleroma": {
+    "content": {
+      "text/plain": "@NEETzsche @alex @Lumeinshin @sneeden >seething'posting', just like you."
+    },
+    "conversation_id": "AFCYCBFN9SgOwoIWTg",
+    "direct_conversation_id": null,
+    "emoji_reactions": [],
+    "expires_at": null,
+    "in_reply_to_account_acct": "NEETzsche@iddqd.social",
+    "local": false,
+    "parent_visible": true,
+    "pinned_at": null,
+    "spoiler_text": {
+      "text/plain": ""
+    },
+    "thread_muted": false
+  },
+  "poll": null,
+  "reblog": null,
+  "reblogged": false,
+  "reblogs_count": 0,
+  "replies_count": 0,
+  "sensitive": false,
+  "spoiler_text": "",
+  "tags": [],
+  "text": null,
+  "uri": "https://freespeechextremist.com/objects/714b0e04-bec4-4a2a-9514-312814380064",
+  "url": "https://freespeechextremist.com/objects/714b0e04-bec4-4a2a-9514-312814380064",
+  "visibility": "public"
+}

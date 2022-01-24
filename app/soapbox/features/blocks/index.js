@@ -1,15 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
-import LoadingIndicator from '../../components/loading_indicator';
-import Column from '../ui/components/column';
-import AccountContainer from '../../containers/account_container';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { fetchBlocks, expandBlocks } from '../../actions/blocks';
+import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
+import AccountContainer from '../../containers/account_container';
+import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },

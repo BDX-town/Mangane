@@ -1,16 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
-import ColumnsAreaContainer from '../containers/columns_area_container';
-import ColumnLoading from '../components/column_loading';
+
+import { getSettings } from 'soapbox/actions/settings';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+
 import BundleColumnError from '../components/bundle_column_error';
+import ColumnForbidden from '../components/column_forbidden';
+import ColumnLoading from '../components/column_loading';
 import BundleContainer from '../containers/bundle_container';
+import ColumnsAreaContainer from '../containers/columns_area_container';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
+
   return {
-    me: state.get('me'),
+    account: state.getIn(['accounts', me]),
+    settings: getSettings(state),
   };
 };
 
@@ -22,8 +30,12 @@ class WrappedRoute extends React.Component {
     content: PropTypes.node,
     componentParams: PropTypes.object,
     layout: PropTypes.object,
+    account: ImmutablePropTypes.map,
+    settings: ImmutablePropTypes.map.isRequired,
     publicRoute: PropTypes.bool,
-    me: SoapboxPropTypes.me,
+    staffOnly: PropTypes.bool,
+    adminOnly: PropTypes.bool,
+    developerOnly: PropTypes.bool,
   };
 
   static defaultProps = {
@@ -72,6 +84,14 @@ class WrappedRoute extends React.Component {
     );
   }
 
+  renderForbidden = () => {
+    return (
+      <ColumnsAreaContainer layout={this.props.layout}>
+        <ColumnForbidden />
+      </ColumnsAreaContainer>
+    );
+  }
+
   renderError = (props) => {
     return (
       <ColumnsAreaContainer layout={this.props.layout}>
@@ -80,16 +100,27 @@ class WrappedRoute extends React.Component {
     );
   }
 
-  render() {
-    const { component: Component, content, publicRoute, me, ...rest } = this.props;
+  loginRedirect = () => {
+    const actualUrl = encodeURIComponent(`${this.props.computedMatch.url}${this.props.location.search}`); // eslint-disable-line react/prop-types
+    return <Redirect to={`/auth/sign_in?redirect_uri=${actualUrl}`} />;
+  }
 
-    if (!publicRoute && me === false) {
-      const actualUrl = encodeURIComponent(`${this.props.computedMatch.url}${this.props.location.search}`); // eslint-disable-line react/prop-types
-      return <Redirect to={`/auth/sign_in?redirect_uri=${actualUrl}`} />;
-      // return <Route path={this.props.path} component={() => {
-      //    window.location.href = `/auth/sign_in?redirect_uri=${actualUrl}`;
-      //    return null;
-      //  }}/>
+  render() {
+    const { component: Component, content, account, settings, publicRoute, developerOnly, staffOnly, adminOnly, ...rest } = this.props;
+
+    const authorized = [
+      account || publicRoute,
+      developerOnly ? settings.get('isDeveloper') : true,
+      staffOnly ? account && isStaff(account) : true,
+      adminOnly ? account && isAdmin(account) : true,
+    ].every(c => c);
+
+    if (!authorized) {
+      if (!account) {
+        return this.loginRedirect();
+      } else {
+        return this.renderForbidden();
+      }
     }
 
     return <Route {...rest} render={this.renderComponent} />;

@@ -1,12 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { Link } from 'react-router-dom';
+
 import Icon from './icon';
 
 export default class Button extends React.PureComponent {
 
   static propTypes = {
+    type: PropTypes.string,
     text: PropTypes.node,
     onClick: PropTypes.func,
     to: PropTypes.string,
@@ -53,6 +55,7 @@ export default class Button extends React.PureComponent {
 
     const btn = (
       <button
+        type={this.props.type}
         className={className}
         disabled={this.props.disabled}
         onClick={this.handleClick}

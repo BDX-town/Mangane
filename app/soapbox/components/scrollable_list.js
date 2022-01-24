@@ -1,16 +1,32 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
-import LoadMore from './load_more';
-import MoreFollows from './more_follows';
-import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
-import { throttle } from 'lodash';
+import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
+import { throttle } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
+import { getSettings } from 'soapbox/actions/settings';
+import PullToRefresh from 'soapbox/components/pull_to_refresh';
+
+import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
+import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
+
+import LoadMore from './load_more';
 import LoadingIndicator from './loading_indicator';
+import MoreFollows from './more_follows';
 
 const MOUSE_IDLE_DELAY = 300;
 
-export default class ScrollableList extends PureComponent {
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+
+  return {
+    autoload: settings.get('autoloadMore'),
+  };
+};
+
+export default @connect(mapStateToProps, null, null, { forwardRef: true })
+class ScrollableList extends PureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
@@ -31,6 +47,9 @@ export default class ScrollableList extends PureComponent {
     onScroll: PropTypes.func,
     placeholderComponent: PropTypes.func,
     placeholderCount: PropTypes.number,
+    autoload: PropTypes.bool,
+    onRefresh: PropTypes.func,
+    className: PropTypes.string,
   };
 
   state = {
@@ -126,12 +145,14 @@ export default class ScrollableList extends PureComponent {
   }
 
   handleScroll = throttle(() => {
+    const { autoload } = this.props;
+
     if (this.window) {
       const { scrollTop, scrollHeight } = this.documentElement;
       const { innerHeight } = this.window;
       const offset = scrollHeight - scrollTop - innerHeight;
 
-      if (400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
+      if (autoload && 400 > offset && this.props.onLoadMore && this.props.hasMore && !this.props.isLoading) {
         this.props.onLoadMore();
       }
 
@@ -224,16 +245,22 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderLoading = () => {
-    const { prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
+    const { className, prepend, placeholderComponent: Placeholder, placeholderCount } = this.props;
 
     if (Placeholder && placeholderCount > 0) {
-      return Array(placeholderCount).fill().map((_, i) => (
-        <Placeholder key={i} />
-      ));
+      return (
+        <div className={classNames('slist slist--flex', className)}>
+          <div role='feed' className='item-list'>
+            {Array(placeholderCount).fill().map((_, i) => (
+              <Placeholder key={i} />
+            ))}
+          </div>
+        </div>
+      );
     }
 
     return (
-      <div className='slist slist--flex'>
+      <div className={classNames('slist slist--flex', className)}>
         <div role='feed' className='item-list'>
           {prepend}
         </div>
@@ -246,10 +273,10 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderEmptyMessage = () => {
-    const { prepend, alwaysPrepend, emptyMessage } = this.props;
+    const { className, prepend, alwaysPrepend, emptyMessage } = this.props;
 
     return (
-      <div className='slist slist--flex' ref={this.setRef}>
+      <div className={classNames('slist slist--flex', className)} ref={this.setRef}>
         {alwaysPrepend && prepend}
 
         <div className='empty-column-indicator'>
@@ -260,13 +287,13 @@ export default class ScrollableList extends PureComponent {
   }
 
   renderFeed = () => {
-    const { children, scrollKey, isLoading, hasMore, prepend, onLoadMore, placeholderComponent: Placeholder } = this.props;
+    const { className, children, scrollKey, isLoading, hasMore, prepend, onLoadMore, onRefresh, placeholderComponent: Placeholder } = this.props;
     const childrenCount = React.Children.count(children);
     const trackScroll = true; //placeholder
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
 
-    return (
-      <div className='slist' ref={this.setRef} onMouseMove={this.handleMouseMove}>
+    const feed = (
+      <div className={classNames('slist', className)} ref={this.setRef} onMouseMove={this.handleMouseMove}>
         <div role='feed' className='item-list'>
           {prepend}
 
@@ -299,6 +326,16 @@ export default class ScrollableList extends PureComponent {
         </div>
       </div>
     );
+
+    if (onRefresh) {
+      return (
+        <PullToRefresh onRefresh={onRefresh}>
+          {feed}
+        </PullToRefresh>
+      );
+    } else {
+      return feed;
+    }
   }
 
   render() {

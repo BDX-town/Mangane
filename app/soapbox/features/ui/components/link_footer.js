@@ -1,30 +1,37 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { openModal } from '../../../actions/modal';
+import { Link } from 'react-router-dom';
+
 import { logOut } from 'soapbox/actions/auth';
-import { isAdmin } from 'soapbox/utils/accounts';
+import { getBaseURL, isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 
+import { openModal } from '../../../actions/modal';
+
 const mapStateToProps = state => {
   const me = state.get('me');
+  const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
   const features = getFeatures(instance);
 
   return {
-    account: state.getIn(['accounts', me]),
+    account,
+    profileDirectory: features.profileDirectory,
     federating: features.federating,
     showAliases: features.accountAliasesAPI,
+    importAPI: features.importAPI,
+    baseURL: getBaseURL(account),
   };
 };
 
 const mapDispatchToProps = (dispatch, { intl }) => ({
-  onOpenHotkeys() {
+  onOpenHotkeys(e) {
     dispatch(openModal('HOTKEYS'));
+    e.preventDefault();
   },
   onClickLogOut(e) {
     dispatch(logOut(intl));
@@ -32,10 +39,11 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLogOut }) => (
+const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, showAliases, importAPI, onClickLogOut, baseURL }) => (
   <div className='getting-started__footer'>
     <ul>
       {account && <>
+        {profileDirectory && <li><Link to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></Link></li>}
         <li><Link to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></Link></li>
         <li><Link to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></Link></li>
         <li><Link to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></Link></li>
@@ -44,7 +52,11 @@ const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLo
         {isAdmin(account) && <li><a href='/pleroma/admin'><FormattedMessage id='navigation_bar.admin_settings' defaultMessage='AdminFE' /></a></li>}
         {isAdmin(account) && <li><Link to='/soapbox/config'><FormattedMessage id='navigation_bar.soapbox_config' defaultMessage='Soapbox config' /></Link></li>}
         <li><Link to='/settings/export'><FormattedMessage id='navigation_bar.export_data' defaultMessage='Export data' /></Link></li>
-        <li><Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link></li>
+        <li>{importAPI ? (
+          <Link to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></Link>
+        ) : (
+          <a href={`${baseURL}/settings/import`}><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></a>
+        )}</li>
         {(federating && showAliases) && <li><Link to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>}
         <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li>
       </>}
@@ -68,10 +80,13 @@ const LinkFooter = ({ onOpenHotkeys, account, federating, showAliases, onClickLo
 
 LinkFooter.propTypes = {
   account: ImmutablePropTypes.map,
+  profileDirectory: PropTypes.bool,
   federating: PropTypes.bool,
   showAliases: PropTypes.bool,
+  importAPI: PropTypes.bool,
   onOpenHotkeys: PropTypes.func.isRequired,
   onClickLogOut: PropTypes.func.isRequired,
+  baseURL: PropTypes.string,
 };
 
 export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(LinkFooter));

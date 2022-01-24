@@ -1,11 +1,13 @@
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import LinkFooter from '../features/ui/components/link_footer';
+
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   AdminNav,
   LatestAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
+
+import LinkFooter from '../features/ui/components/link_footer';
 
 export default
 class AdminPage extends ImmutablePureComponent {

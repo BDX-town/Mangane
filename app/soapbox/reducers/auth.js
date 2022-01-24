@@ -1,3 +1,11 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { trim } from 'lodash';
+
+import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import KVStore from 'soapbox/storage/kv_store';
+import { validId, isURL } from 'soapbox/utils/auth';
+
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -8,11 +16,6 @@ import {
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
-import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { validId, isURL } from 'soapbox/utils/auth';
-import { trim } from 'lodash';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
@@ -254,6 +257,20 @@ const importMastodonPreload = (state, data) => {
   });
 };
 
+const persistAuthAccount = account => {
+  if (account && account.url) {
+    KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);
+  }
+};
+
+const deleteForbiddenToken = (state, error, token) => {
+  if (error.response && [401, 403].includes(error.response.status)) {
+    return deleteToken(state, token);
+  } else {
+    return state;
+  }
+};
+
 const reducer = (state, action) => {
   switch(action.type) {
   case AUTH_APP_CREATED:
@@ -265,9 +282,10 @@ const reducer = (state, action) => {
   case AUTH_LOGGED_OUT:
     return deleteUser(state, action.account);
   case VERIFY_CREDENTIALS_SUCCESS:
+    persistAuthAccount(action.account);
     return importCredentials(state, action.token, action.account);
   case VERIFY_CREDENTIALS_FAIL:
-    return [401, 403].includes(action.error.response.status) ? deleteToken(state, action.token) : state;
+    return deleteForbiddenToken(state, action.error, action.token);
   case SWITCH_ACCOUNT:
     return state.set('me', action.account.get('url'));
   case ME_FETCH_SKIP:

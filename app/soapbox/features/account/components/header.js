@@ -1,13 +1,28 @@
 'use strict';
 
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import classNames from 'classnames';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { debounce, throttle } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
+import { openModal } from 'soapbox/actions/modal';
+import Avatar from 'soapbox/components/avatar';
+import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import IconButton from 'soapbox/components/icon_button';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import ActionButton from 'soapbox/features/ui/components/action_button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
 import {
   isStaff,
   isAdmin,
@@ -17,24 +32,10 @@ import {
   isRemote,
   getDomain,
 } from 'soapbox/utils/accounts';
-import classNames from 'classnames';
-import Avatar from 'soapbox/components/avatar';
 import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import { NavLink } from 'react-router-dom';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
-import { debounce, throttle } from 'lodash';
-import StillImage from 'soapbox/components/still_image';
-import ActionButton from 'soapbox/features/ui/components/action_button';
-import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import { openModal } from 'soapbox/actions/modal';
-import VerificationBadge from 'soapbox/components/verification_badge';
-import Badge from 'soapbox/components/badge';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { getFeatures } from 'soapbox/utils/features';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { displayFqn } from 'soapbox/utils/state';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -73,6 +74,8 @@ const messages = defineMessages({
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
+  suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
+  unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
@@ -203,66 +206,157 @@ class Header extends ImmutablePureComponent {
     }
 
     if ('share' in navigator) {
-      menu.push({ text: intl.formatMessage(messages.share, { name: account.get('username') }), action: this.handleShare });
+      menu.push({
+        text: intl.formatMessage(messages.share, { name: account.get('username') }),
+        action: this.handleShare,
+        icon: require('feather-icons/dist/icons/share.svg'),
+      });
       menu.push(null);
     }
 
     if (account.get('id') === me) {
-      menu.push({ text: intl.formatMessage(messages.edit_profile), to: '/settings/profile' });
-      menu.push({ text: intl.formatMessage(messages.preferences), to: '/settings/preferences' });
+      menu.push({
+        text: intl.formatMessage(messages.edit_profile),
+        to: '/settings/profile',
+        icon: require('@tabler/icons/icons/user.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.preferences),
+        to: '/settings/preferences',
+        icon: require('@tabler/icons/icons/settings.svg'),
+      });
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.follow_requests), to: '/follow_requests' });
+      menu.push({
+        text: intl.formatMessage(messages.follow_requests),
+        to: '/follow_requests',
+        icon: require('@tabler/icons/icons/user-plus.svg'),
+      });
       menu.push(null);
-      menu.push({ text: intl.formatMessage(messages.mutes), to: '/mutes' });
-      menu.push({ text: intl.formatMessage(messages.blocks), to: '/blocks' });
-      menu.push({ text: intl.formatMessage(messages.domain_blocks), to: '/domain_blocks' });
+      menu.push({
+        text: intl.formatMessage(messages.mutes),
+        to: '/mutes',
+        icon: require('@tabler/icons/icons/circle-x.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.blocks),
+        to: '/blocks',
+        icon: require('@tabler/icons/icons/ban.svg'),
+      });
+      menu.push({
+        text: intl.formatMessage(messages.domain_blocks),
+        to: '/domain_blocks',
+        icon: require('@tabler/icons/icons/ban.svg'),
+      });
     } else {
-      menu.push({ text: intl.formatMessage(messages.mention, { name: account.get('username') }), action: this.props.onMention });
+      menu.push({
+        text: intl.formatMessage(messages.mention, { name: account.get('username') }),
+        action: this.props.onMention,
+        icon: require('feather-icons/dist/icons/at-sign.svg'),
+      });
 
       if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
-        menu.push({ text: intl.formatMessage(messages.chat, { name: account.get('username') }), action: this.props.onChat });
+        menu.push({
+          text: intl.formatMessage(messages.chat, { name: account.get('username') }),
+          action: this.props.onChat,
+          icon: require('@tabler/icons/icons/messages.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.direct, { name: account.get('username') }), action: this.props.onDirect });
+        menu.push({
+          text: intl.formatMessage(messages.direct, { name: account.get('username') }),
+          action: this.props.onDirect,
+          icon: require('@tabler/icons/icons/mail.svg'),
+        });
       }
 
       if (account.getIn(['relationship', 'following'])) {
         if (account.getIn(['relationship', 'showing_reblogs'])) {
-          menu.push({ text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
+          menu.push({
+            text: intl.formatMessage(messages.hideReblogs, { name: account.get('username') }),
+            action: this.props.onReblogToggle,
+            icon: require('@tabler/icons/icons/repeat.svg'),
+          });
         } else {
-          menu.push({ text: intl.formatMessage(messages.showReblogs, { name: account.get('username') }), action: this.props.onReblogToggle });
+          menu.push({
+            text: intl.formatMessage(messages.showReblogs, { name: account.get('username') }),
+            action: this.props.onReblogToggle,
+            icon: require('@tabler/icons/icons/repeat.svg'),
+          });
         }
 
         if (features.accountSubscriptions) {
           if (account.getIn(['relationship', 'subscribing'])) {
-            menu.push({ text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+            menu.push({
+              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
+              action: this.props.onSubscriptionToggle,
+              icon: require('@tabler/icons/icons/bell.svg'),
+            });
           } else {
-            menu.push({ text: intl.formatMessage(messages.subscribe, { name: account.get('username') }), action: this.props.onSubscriptionToggle });
+            menu.push({
+              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
+              action: this.props.onSubscriptionToggle,
+              icon: require('@tabler/icons/icons/bell-off.svg'),
+            });
           }
         }
 
         if (features.lists) {
-          menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
+          menu.push({
+            text: intl.formatMessage(messages.add_or_remove_from_list),
+            action: this.props.onAddToList,
+            icon: require('@tabler/icons/icons/list.svg'),
+          });
         }
 
-        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        if (features.accountEndorsements) {
+          menu.push({
+            text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse),
+            action: this.props.onEndorseToggle,
+            icon: require('@tabler/icons/icons/user-check.svg'),
+          });
+        }
+
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
-        menu.push({ text: intl.formatMessage(messages.add_or_remove_from_list), action: this.props.onAddToList });
+        menu.push({
+          text: intl.formatMessage(messages.add_or_remove_from_list),
+          action: this.props.onAddToList,
+          icon: require('@tabler/icons/icons/list.svg'),
+        });
       }
 
       if (account.getIn(['relationship', 'muting'])) {
-        menu.push({ text: intl.formatMessage(messages.unmute, { name: account.get('username') }), action: this.props.onMute });
+        menu.push({
+          text: intl.formatMessage(messages.unmute, { name: account.get('username') }),
+          action: this.props.onMute,
+          icon: require('@tabler/icons/icons/circle-x.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.mute, { name: account.get('username') }), action: this.props.onMute });
+        menu.push({
+          text: intl.formatMessage(messages.mute, { name: account.get('username') }),
+          action: this.props.onMute,
+          icon: require('@tabler/icons/icons/circle-x.svg'),
+        });
       }
 
       if (account.getIn(['relationship', 'blocking'])) {
-        menu.push({ text: intl.formatMessage(messages.unblock, { name: account.get('username') }), action: this.props.onBlock });
+        menu.push({
+          text: intl.formatMessage(messages.unblock, { name: account.get('username') }),
+          action: this.props.onBlock,
+          icon: require('@tabler/icons/icons/ban.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.block, { name: account.get('username') }), action: this.props.onBlock });
+        menu.push({
+          text: intl.formatMessage(messages.block, { name: account.get('username') }),
+          action: this.props.onBlock,
+          icon: require('@tabler/icons/icons/ban.svg'),
+        });
       }
 
-      menu.push({ text: intl.formatMessage(messages.report, { name: account.get('username') }), action: this.props.onReport });
+      menu.push({
+        text: intl.formatMessage(messages.report, { name: account.get('username') }),
+        action: this.props.onReport,
+        icon: require('@tabler/icons/icons/flag.svg'),
+      });
     }
 
     if (isRemote(account)) {
@@ -271,9 +365,17 @@ class Header extends ImmutablePureComponent {
       menu.push(null);
 
       if (account.getIn(['relationship', 'domain_blocking'])) {
-        menu.push({ text: intl.formatMessage(messages.unblockDomain, { domain }), action: this.props.onUnblockDomain });
+        menu.push({
+          text: intl.formatMessage(messages.unblockDomain, { domain }),
+          action: this.props.onUnblockDomain,
+          icon: require('@tabler/icons/icons/ban.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.blockDomain, { domain }), action: this.props.onBlockDomain });
+        menu.push({
+          text: intl.formatMessage(messages.blockDomain, { domain }),
+          action: this.props.onBlockDomain,
+          icon: require('@tabler/icons/icons/ban.svg'),
+        });
       }
     }
 
@@ -281,31 +383,90 @@ class Header extends ImmutablePureComponent {
       menu.push(null);
 
       if (isAdmin(meAccount)) {
-        menu.push({ text: intl.formatMessage(messages.admin_account, { name: account.get('username') }), href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true });
+        menu.push({
+          text: intl.formatMessage(messages.admin_account, { name: account.get('username') }),
+          href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true,
+          icon: require('icons/gavel.svg'),
+        });
       }
 
-      if (account.get('id') !== me && isLocal(account)) {
+      if (account.get('id') !== me && isLocal(account) && isAdmin(meAccount)) {
         if (isAdmin(account)) {
-          menu.push({ text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
-          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+          menu.push({
+            text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }),
+            action: this.props.onPromoteToModerator,
+            icon: require('@tabler/icons/icons/arrow-up-circle.svg'),
+          });
+          menu.push({
+            text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }),
+            action: this.props.onDemoteToUser,
+            icon: require('@tabler/icons/icons/arrow-down-circle.svg'),
+          });
         } else if (isModerator(account)) {
-          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
-          menu.push({ text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }), action: this.props.onDemoteToUser });
+          menu.push({
+            text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }),
+            action: this.props.onPromoteToAdmin,
+            icon: require('@tabler/icons/icons/arrow-up-circle.svg'),
+          });
+          menu.push({
+            text: intl.formatMessage(messages.demoteToUser, { name: account.get('username') }),
+            action: this.props.onDemoteToUser,
+            icon: require('@tabler/icons/icons/arrow-down-circle.svg'),
+          });
         } else {
-          menu.push({ text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }), action: this.props.onPromoteToAdmin });
-          menu.push({ text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }), action: this.props.onPromoteToModerator });
+          menu.push({
+            text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }),
+            action: this.props.onPromoteToAdmin,
+            icon: require('@tabler/icons/icons/arrow-up-circle.svg'),
+          });
+          menu.push({
+            text: intl.formatMessage(messages.promoteToModerator, { name: account.get('username') }),
+            action: this.props.onPromoteToModerator,
+            icon: require('@tabler/icons/icons/arrow-up-circle.svg'),
+          });
         }
       }
 
       if (isVerified(account)) {
-        menu.push({ text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }), action: this.props.onUnverifyUser });
+        menu.push({
+          text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }),
+          action: this.props.onUnverifyUser,
+          icon: require('@tabler/icons/icons/check.svg'),
+        });
       } else {
-        menu.push({ text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }), action: this.props.onVerifyUser });
+        menu.push({
+          text: intl.formatMessage(messages.verifyUser, { name: account.get('username') }),
+          action: this.props.onVerifyUser,
+          icon: require('@tabler/icons/icons/check.svg'),
+        });
+      }
+
+      if (features.suggestionsV2 && isAdmin(meAccount)) {
+        if (account.getIn(['pleroma', 'is_suggested'])) {
+          menu.push({
+            text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),
+            action: this.props.onUnsuggestUser,
+            icon: require('@tabler/icons/icons/user-x.svg'),
+          });
+        } else {
+          menu.push({
+            text: intl.formatMessage(messages.suggestUser, { name: account.get('username') }),
+            action: this.props.onSuggestUser,
+            icon: require('@tabler/icons/icons/user-check.svg'),
+          });
+        }
       }
 
       if (account.get('id') !== me) {
-        menu.push({ text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }), action: this.props.onDeactivateUser });
-        menu.push({ text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }), action: this.props.onDeleteUser });
+        menu.push({
+          text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }),
+          action: this.props.onDeactivateUser,
+          icon: require('@tabler/icons/icons/user-off.svg'),
+        });
+        menu.push({
+          text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }),
+          icon: require('@tabler/icons/icons/user-minus.svg'),
+        });
       }
     }
 
@@ -360,6 +521,23 @@ class Header extends ImmutablePureComponent {
         />
       );
     }
+  }
+
+  renderShareButton() {
+    const { intl, account, me } = this.props;
+    const canShare = 'share' in navigator;
+
+    if (!(account && me && account.get('id') === me && canShare)) {
+      return null;
+    }
+
+    return (
+      <IconButton
+        src={require('feather-icons/dist/icons/share.svg')}
+        onClick={this.handleShare}
+        title={intl.formatMessage(messages.share, { name: account.get('username') })}
+      />
+    );
   }
 
   render() {
@@ -483,6 +661,7 @@ class Header extends ImmutablePureComponent {
 
             <div className='account__header__extra__buttons'>
               {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
+              {this.renderShareButton()}
               {this.renderMessageButton()}
               <ActionButton account={account} />
             </div>

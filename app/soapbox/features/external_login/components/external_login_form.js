@@ -1,10 +1,11 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { createAppAndRedirect, loginWithCode } from 'soapbox/actions/external_auth';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 
 const messages = defineMessages({
   instanceLabel: { id: 'login.fields.instance_label', defaultMessage: 'Instance' },
@@ -53,7 +54,7 @@ class ExternalLoginForm extends ImmutablePureComponent {
     }
 
     return (
-      <SimpleForm onSubmit={this.handleSubmit}>
+      <SimpleForm onSubmit={this.handleSubmit} className='external-login'>
         <fieldset disabled={isLoading}>
           <FieldsGroup>
             <TextInput
@@ -63,6 +64,8 @@ class ExternalLoginForm extends ImmutablePureComponent {
               value={this.state.host}
               onChange={this.handleHostChange}
               autoComplete='off'
+              autoCorrect='off'
+              autoCapitalize='off'
               required
             />
           </FieldsGroup>

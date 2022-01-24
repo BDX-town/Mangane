@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
+
 import snackbar from 'soapbox/actions/snackbar';
+
 import api, { getLinks } from '../api';
 
 export const EXPORT_FOLLOWS_REQUEST = 'EXPORT_FOLLOWS_REQUEST';

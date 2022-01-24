@@ -1,7 +1,8 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
 import StatusContainer from '../../../containers/status_container';
 
 export default class Conversation extends ImmutablePureComponent {
@@ -14,7 +15,7 @@ export default class Conversation extends ImmutablePureComponent {
     conversationId: PropTypes.string.isRequired,
     accounts: ImmutablePropTypes.list.isRequired,
     lastStatusId: PropTypes.string,
-    unread:PropTypes.bool.isRequired,
+    unread: PropTypes.bool.isRequired,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
     markRead: PropTypes.func.isRequired,

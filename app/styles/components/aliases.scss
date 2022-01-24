@@ -18,22 +18,19 @@
     }
   }
 
-  &_search {
+  &_search.search {
     display: flex;
+    align-items: center;
     flex-direction: row;
-    margin: 10px;
+    border-bottom: none;
 
     .search__input {
       padding: 7px 30px 6px 10px;
+      background: none;
     }
 
     > label {
       flex: 1 1;
-    }
-
-    > .search__icon .fa {
-      top: 8px;
-      right: 102px !important;
     }
 
     > .button {

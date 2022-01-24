@@ -1,9 +1,10 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import {
   PROFILE_HOVER_CARD_OPEN,
   PROFILE_HOVER_CARD_CLOSE,
   PROFILE_HOVER_CARD_UPDATE,
 } from 'soapbox/actions/profile_hover_card';
-import { Map as ImmutableMap } from 'immutable';
 
 const initialState = ImmutableMap();
 

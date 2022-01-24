@@ -1,26 +1,29 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { List as ImmutableList } from 'immutable';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../../components/column';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { getSettings } from 'soapbox/actions/settings';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
+
 import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import NotificationContainer from './containers/notification_container';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Column from '../../components/column';
+import LoadGap from '../../components/load_gap';
+import ScrollableList from '../../components/scrollable_list';
+import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
+
 import ColumnSettingsContainer from './containers/column_settings_container';
 import FilterBarContainer from './containers/filter_bar_container';
-import { createSelector } from 'reselect';
-import { List as ImmutableList } from 'immutable';
-import { debounce } from 'lodash';
-import ScrollableList from '../../components/scrollable_list';
-import LoadGap from '../../components/load_gap';
-import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
-import { getSettings } from 'soapbox/actions/settings';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import NotificationContainer from './containers/notification_container';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -128,6 +131,11 @@ class Notifications extends React.PureComponent {
     this.props.dispatch(dequeueNotifications());
   };
 
+  handleRefresh = () => {
+    const { dispatch } = this.props;
+    return dispatch(expandNotifications());
+  }
+
   render() {
     const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
@@ -152,8 +160,6 @@ class Notifications extends React.PureComponent {
         <NotificationContainer
           key={item.get('id')}
           notification={item}
-          accountId={item.get('account')}
-          targetId={item.get('target')}
           onMoveUp={this.handleMoveUp}
           onMoveDown={this.handleMoveDown}
         />
@@ -174,6 +180,7 @@ class Notifications extends React.PureComponent {
         placeholderComponent={PlaceholderNotification}
         placeholderCount={20}
         onLoadMore={this.handleLoadOlder}
+        onRefresh={this.handleRefresh}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
       >

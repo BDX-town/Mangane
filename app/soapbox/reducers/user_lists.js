@@ -1,6 +1,5 @@
-import {
-  NOTIFICATIONS_UPDATE,
-} from '../actions/notifications';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+
 import {
   FOLLOWERS_FETCH_SUCCESS,
   FOLLOWERS_EXPAND_SUCCESS,
@@ -10,21 +9,20 @@ import {
   FOLLOW_REQUESTS_EXPAND_SUCCESS,
   FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
   FOLLOW_REQUEST_REJECT_SUCCESS,
+  PINNED_ACCOUNTS_FETCH_SUCCESS,
 } from '../actions/accounts';
-import {
-  REBLOGS_FETCH_SUCCESS,
-  FAVOURITES_FETCH_SUCCESS,
-  REACTIONS_FETCH_SUCCESS,
-} from '../actions/interactions';
 import {
   BLOCKS_FETCH_SUCCESS,
   BLOCKS_EXPAND_SUCCESS,
 } from '../actions/blocks';
 import {
-  MUTES_FETCH_SUCCESS,
-  MUTES_EXPAND_SUCCESS,
-} from '../actions/mutes';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+  DIRECTORY_FETCH_REQUEST,
+  DIRECTORY_FETCH_SUCCESS,
+  DIRECTORY_FETCH_FAIL,
+  DIRECTORY_EXPAND_REQUEST,
+  DIRECTORY_EXPAND_SUCCESS,
+  DIRECTORY_EXPAND_FAIL,
+} from '../actions/directory';
 import {
   GROUP_MEMBERS_FETCH_SUCCESS,
   GROUP_MEMBERS_EXPAND_SUCCESS,
@@ -32,6 +30,18 @@ import {
   GROUP_REMOVED_ACCOUNTS_EXPAND_SUCCESS,
   GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS,
 } from '../actions/groups';
+import {
+  REBLOGS_FETCH_SUCCESS,
+  FAVOURITES_FETCH_SUCCESS,
+  REACTIONS_FETCH_SUCCESS,
+} from '../actions/interactions';
+import {
+  MUTES_FETCH_SUCCESS,
+  MUTES_EXPAND_SUCCESS,
+} from '../actions/mutes';
+import {
+  NOTIFICATIONS_UPDATE,
+} from '../actions/notifications';
 
 const initialState = ImmutableMap({
   followers: ImmutableMap(),
@@ -44,6 +54,7 @@ const initialState = ImmutableMap({
   mutes: ImmutableMap(),
   groups: ImmutableMap(),
   groups_removed_accounts: ImmutableMap(),
+  pinned: ImmutableMap(),
 });
 
 const normalizeList = (state, type, id, accounts, next) => {
@@ -98,6 +109,16 @@ export default function userLists(state = initialState, action) {
     return state.setIn(['mutes', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
   case MUTES_EXPAND_SUCCESS:
     return state.updateIn(['mutes', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['mutes', 'next'], action.next);
+  case DIRECTORY_FETCH_SUCCESS:
+    return state.setIn(['directory', 'items'], ImmutableOrderedSet(action.accounts.map(item => item.id))).setIn(['directory', 'isLoading'], false);
+  case DIRECTORY_EXPAND_SUCCESS:
+    return state.updateIn(['directory', 'items'], list => list.concat(action.accounts.map(item => item.id))).setIn(['directory', 'isLoading'], false);
+  case DIRECTORY_FETCH_REQUEST:
+  case DIRECTORY_EXPAND_REQUEST:
+    return state.setIn(['directory', 'isLoading'], true);
+  case DIRECTORY_FETCH_FAIL:
+  case DIRECTORY_EXPAND_FAIL:
+    return state.setIn(['directory', 'isLoading'], false);
   case GROUP_MEMBERS_FETCH_SUCCESS:
     return normalizeList(state, 'groups', action.id, action.accounts, action.next);
   case GROUP_MEMBERS_EXPAND_SUCCESS:
@@ -108,6 +129,8 @@ export default function userLists(state = initialState, action) {
     return appendToList(state, 'groups_removed_accounts', action.id, action.accounts, action.next);
   case GROUP_REMOVED_ACCOUNTS_REMOVE_SUCCESS:
     return state.updateIn(['groups_removed_accounts', action.groupId, 'items'], list => list.filterNot(item => item === action.id));
+  case PINNED_ACCOUNTS_FETCH_SUCCESS:
+    return normalizeList(state, 'pinned', action.id, action.accounts, action.next);
   default:
     return state;
   }

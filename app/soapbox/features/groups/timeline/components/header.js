@@ -1,10 +1,12 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Button from 'soapbox/components/button';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
+
+import Button from 'soapbox/components/button';
+
 import DropdownMenuContainer from '../../../../containers/dropdown_menu_container';
 
 const messages = defineMessages({
@@ -50,11 +52,20 @@ class Header extends ImmutablePureComponent {
     const { group, intl } = this.props;
 
     const menu = [
-      { text: intl.formatMessage(messages.edit), to: `/groups/${group.get('id')}/edit` },
-      { text: intl.formatMessage(messages.removed_accounts), to: `/groups/${group.get('id')}/removed_accounts` },
+      {
+        text: intl.formatMessage(messages.edit),
+        to: `/groups/${group.get('id')}/edit`,
+        icon: require('@tabler/icons/icons/edit.svg'),
+      },
+      {
+        text: intl.formatMessage(messages.removed_accounts),
+        to: `/groups/${group.get('id')}/removed_accounts`,
+        icon: require('@tabler/icons/icons/trash.svg'),
+        destructive: true,
+      },
     ];
 
-    return <DropdownMenuContainer items={menu} icon='ellipsis-v' size={24} direction='right' />;
+    return <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />;
   }
 
   render() {

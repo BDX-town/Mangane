@@ -1,15 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink, withRouter } from 'react-router-dom';
+
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-import classNames from 'classnames';
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -21,7 +22,7 @@ const mapStateToProps = state => {
     account: state.getIn(['accounts', me]),
     logo: getSoapboxConfig(state).get('logo'),
     notificationCount: state.getIn(['notifications', 'unread']),
-    chatsCount: state.get('chats').reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
+    chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
     features: getFeatures(instance),
   };
@@ -53,6 +54,16 @@ class ThumbNavigation extends React.PureComponent {
           />
           <span>
             <FormattedMessage id='navigation.home' defaultMessage='Home' />
+          </span>
+        </NavLink>
+
+        <NavLink to='/search' className='thumb-navigation__link'>
+          <Icon
+            src={require('@tabler/icons/icons/search.svg')}
+            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+          />
+          <span>
+            <FormattedMessage id='navigation.search' defaultMessage='Search' />
           </span>
         </NavLink>
 
@@ -96,16 +107,6 @@ class ThumbNavigation extends React.PureComponent {
             </NavLink>
           )
         )}
-
-        <NavLink to='/search' className='thumb-navigation__link'>
-          <Icon
-            src={require('@tabler/icons/icons/search.svg')}
-            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
-          />
-          <span>
-            <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </span>
-        </NavLink>
 
         {(account && isStaff(account)) && (
           <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>

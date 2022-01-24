@@ -1,30 +1,35 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { is as ImmutableIs } from 'immutable';
 import { throttle } from 'lodash';
-import { Link, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import Avatar from './avatar';
-import IconButton from './icon_button';
-import Icon from './icon';
-import DisplayName from './display_name';
-import { closeSidebar } from '../actions/sidebar';
-import { isAdmin, getBaseURL } from '../utils/accounts';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
+import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { closeSidebar } from '../actions/sidebar';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { isAdmin, getBaseURL } from '../utils/accounts';
+
+import Avatar from './avatar';
+import DisplayName from './display_name';
+import Icon from './icon';
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
   follows: { id: 'account.follows', defaultMessage: 'Follows' },
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
+  invites: { id: 'navigation_bar.invites', defaultMessage: 'Invites' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   follow_requests: { id: 'navigation_bar.follow_requests', defaultMessage: 'Follow requests' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
@@ -39,12 +44,14 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  profileDirectory: { id: 'column.profile_directory', defaultMessage: 'Profile directory' },
   header: { id: 'tabs_bar.header', defaultMessage: 'Account Info' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
   donate: { id: 'donate', defaultMessage: 'Donate' },
   donate_crypto: { id: 'donate_crypto', defaultMessage: 'Donate cryptocurrency' },
   info: { id: 'column.info', defaultMessage: 'Server information' },
+  developers: { id: 'navigation.developers', defaultMessage: 'Developers' },
   add_account: { id: 'profile_dropdown.add_account', defaultMessage: 'Add an existing account' },
 });
 
@@ -67,6 +74,8 @@ const makeMapStateToProps = () => {
       hasCrypto: typeof soapbox.getIn(['cryptoAddresses', 0, 'ticker']) === 'string',
       otherAccounts: getOtherAccounts(state),
       features,
+      instance,
+      settings: getSettings(state),
       siteTitle: instance.get('title'),
       baseURL: getBaseURL(account),
     };
@@ -101,7 +110,9 @@ class SidebarMenu extends ImmutablePureComponent {
     otherAccounts: ImmutablePropTypes.list,
     sidebarOpen: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
+    settings: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
+    instance: ImmutablePropTypes.map.isRequired,
     baseURL: PropTypes.string,
   };
 
@@ -141,6 +152,10 @@ class SidebarMenu extends ImmutablePureComponent {
     if (accountChanged || otherAccountsChanged) {
       this.fetchOwnAccounts();
     }
+
+    if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
+      document.querySelector('.sidebar-menu__close').focus();
+    }
   }
 
   renderAccount = account => {
@@ -159,7 +174,7 @@ class SidebarMenu extends ImmutablePureComponent {
   }
 
   render() {
-    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, features, siteTitle, baseURL } = this.props;
+    const { sidebarOpen, intl, account, onClickLogOut, donateUrl, otherAccounts, hasCrypto, settings, features, instance, siteTitle, baseURL } = this.props;
     const { switcher } = this.state;
     if (!account) return null;
     const acct = account.get('acct');
@@ -226,6 +241,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/user.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profile)}</span>
               </NavLink>
+              {instance.get('invites_enabled') && <a className='sidebar-menu-item' href={`${baseURL}/invites`} onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/mailbox.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.invites)}</span>
+              </a>}
               {donateUrl && <a className='sidebar-menu-item' href={donateUrl} onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/coin.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.donate)}</span>
@@ -241,6 +260,10 @@ class SidebarMenu extends ImmutablePureComponent {
               {features.bookmarks && <NavLink className='sidebar-menu-item' to='/bookmarks' onClick={this.handleClose}>
                 <Icon src={require('@tabler/icons/icons/bookmarks.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
+              </NavLink>}
+              {features.profileDirectory && <NavLink className='sidebar-menu-item' to='/directory' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/friends.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profileDirectory)}</span>
               </NavLink>}
             </div>
 
@@ -284,12 +307,19 @@ class SidebarMenu extends ImmutablePureComponent {
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.preferences)}</span>
                 </a>
               )}
-              <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
-              </NavLink>
+              {features.importAPI ? (
+                <NavLink className='sidebar-menu-item' to='/settings/import' onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </NavLink>
+              ) : (
+                <a className='sidebar-menu-item' href={`${baseURL}/settings/import`} onClick={this.handleClose}>
+                  <Icon src={require('@tabler/icons/icons/cloud-upload.svg')} />
+                  <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
+                </a>
+              )}
               {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
+                <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
               </NavLink>}
               {features.securityAPI ? (
@@ -311,6 +341,13 @@ class SidebarMenu extends ImmutablePureComponent {
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.info)}</span>
               </Link>
             </div>
+
+            {(settings.get('isDeveloper')) && (
+              <Link className='sidebar-menu-item' to='/developers' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/code.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.developers)}</span>
+              </Link>
+            )}
 
             <div className='sidebar-menu__section'>
               <Link className='sidebar-menu-item' to='/auth/sign_out' onClick={onClickLogOut}>

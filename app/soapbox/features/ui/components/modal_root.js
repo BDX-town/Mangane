@@ -1,10 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import Base from '../../../components/modal_root';
-import BundleContainer from '../containers/bundle_container';
-import BundleModalError from './bundle_modal_error';
-import ModalLoading from './modal_loading';
+import React from 'react';
 
+import Base from '../../../components/modal_root';
 import {
   MediaModal,
   VideoModal,
@@ -21,10 +18,20 @@ import {
   FocalPointModal,
   HotkeysModal,
   ComposeModal,
+  ReplyMentionsModal,
   UnauthorizedModal,
   EditFederationModal,
   ComponentModal,
+  ReactionsModal,
+  FavouritesModal,
+  ReblogsModal,
+  MentionsModal,
 } from '../../../features/ui/util/async-components';
+import BundleContainer from '../containers/bundle_container';
+
+import BundleModalError from './bundle_modal_error';
+import ModalLoading from './modal_loading';
+
 
 const MODAL_COMPONENTS = {
   'MEDIA': MediaModal,
@@ -38,13 +45,18 @@ const MODAL_COMPONENTS = {
   'EMBED': EmbedModal,
   'LIST_EDITOR': ListEditor,
   'FOCAL_POINT': FocalPointModal,
-  'LIST_ADDER':ListAdder,
+  'LIST_ADDER': ListAdder,
   'HOTKEYS': HotkeysModal,
   'COMPOSE': ComposeModal,
+  'REPLY_MENTIONS': ReplyMentionsModal,
   'UNAUTHORIZED': UnauthorizedModal,
   'CRYPTO_DONATE': CryptoDonateModal,
   'EDIT_FEDERATION': EditFederationModal,
   'COMPONENT': ComponentModal,
+  'REBLOGS': ReblogsModal,
+  'FAVOURITES': FavouritesModal,
+  'REACTIONS': ReactionsModal,
+  'MENTIONS': MentionsModal,
 };
 
 export default class ModalRoot extends React.PureComponent {
@@ -52,6 +64,7 @@ export default class ModalRoot extends React.PureComponent {
   static propTypes = {
     type: PropTypes.string,
     props: PropTypes.object,
+    noPop: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
   };
 
@@ -75,17 +88,17 @@ export default class ModalRoot extends React.PureComponent {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
   }
 
-  onClickClose = () => {
+  onClickClose = (_, noPop) => {
     const { onClose, type } = this.props;
-    onClose(type);
+    onClose(type, noPop);
   }
 
   render() {
-    const { type, props } = this.props;
+    const { type, props, noPop } = this.props;
     const visible = !!type;
 
     return (
-      <Base onClose={this.onClickClose} type={type}>
+      <Base onClose={this.onClickClose} type={type} noPop={noPop}>
         {visible && (
           <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
             {(SpecificComponent) => <SpecificComponent {...props} onClose={this.onClickClose} />}

@@ -1,15 +1,16 @@
 'use strict';
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { makeGetRemoteInstance } from 'soapbox/selectors';
-import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
-import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { openModal } from 'soapbox/actions/modal';
+import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
+import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
+import { makeGetRemoteInstance } from 'soapbox/selectors';
 import { isAdmin } from 'soapbox/utils/accounts';
 
 const getRemoteInstance = makeGetRemoteInstance();
@@ -52,6 +53,7 @@ class InstanceModerationPanel extends ImmutablePureComponent {
     return [{
       text: intl.formatMessage(messages.editFederation),
       action: this.handleEditFederation,
+      icon: require('@tabler/icons/icons/edit.svg'),
     }];
   }
 
@@ -67,7 +69,7 @@ class InstanceModerationPanel extends ImmutablePureComponent {
             <span><FormattedMessage id='remote_instance.federation_panel.heading' defaultMessage='Federation Restrictions' /></span>
           </span>
           {isAdmin && <div className='wtf-panel__menu'>
-            <DropdownMenu items={menu} icon='ellipsis-v' size={18} direction='right' />
+            <DropdownMenu items={menu} src={require('@tabler/icons/icons/dots-vertical.svg')} direction='right' />
           </div>}
         </div>
         <div className='wtf-panel__content'>

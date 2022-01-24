@@ -1,6 +1,8 @@
-import reducer from '../list_adder';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import * as actions from 'soapbox/actions/lists';
+
+import reducer from '../list_adder';
 
 describe('list_adder reducer', () => {
   it('should return the initial state', () => {

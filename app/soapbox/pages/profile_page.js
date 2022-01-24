@@ -1,30 +1,32 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Sticky from 'react-stickynode';
+
 import Helmet from 'soapbox/components/helmet';
-import HeaderContainer from '../features/account_timeline/containers/header_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
   SignUpPanel,
   ProfileInfoPanel,
   ProfileMediaPanel,
+  PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import LinkFooter from '../features/ui/components/link_footer';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
-import { getFeatures } from 'soapbox/utils/features';
-import { Redirect } from 'react-router-dom';
-import classNames from 'classnames';
 import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
+import { displayFqn } from 'soapbox/utils/state';
+
+import HeaderContainer from '../features/account_timeline/containers/header_container';
+import LinkFooter from '../features/ui/components/link_footer';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const accounts = state.getIn(['accounts']);
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
   const getAccount = makeGetAccount();
 
   let accountId = -1;
@@ -76,20 +78,13 @@ class ProfilePage extends ImmutablePureComponent {
       return <Redirect to={`/@${realAccount.get('acct')}`} />;
     }
 
-    let headerMissing;
-    const header = account ? account.get('header', '') : undefined;
-
-    if (header) {
-      headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path)) || !account.getIn(['pleroma', 'is_active'], true);
-    }
-
     return (
       <div className={bg && `page page--customization page--${bg}` || 'page'}>
         {account && <Helmet>
           <title>@{getAcct(account, displayFqn)}</title>
         </Helmet>}
 
-        <div className={classNames('page__top', { 'page__top__no-header': headerMissing })}>
+        <div className='page__top'>
           <HeaderContainer accountId={accountId} username={accountUsername} />
         </div>
 
@@ -107,7 +102,7 @@ class ProfilePage extends ImmutablePureComponent {
             </div>
 
             <div className='columns-area__panels__main'>
-              <div className='columns-area'>
+              <div className='columns-area '>
                 {children}
               </div>
             </div>
@@ -123,7 +118,11 @@ class ProfilePage extends ImmutablePureComponent {
                       {Component => <Component account={account} />}
                     </BundleContainer>
                   )}
-                  {features.suggestions && (
+                  {account && features.accountEndorsements && isLocal(account) ? (
+                    <BundleContainer fetchComponent={PinnedAccountsPanel}>
+                      {Component => <Component  account={account} />}
+                    </BundleContainer>
+                  ) : features.suggestions && (
                     <BundleContainer fetchComponent={WhoToFollowPanel}>
                       {Component => <Component />}
                     </BundleContainer>

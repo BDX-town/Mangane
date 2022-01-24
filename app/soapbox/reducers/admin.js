@@ -1,4 +1,13 @@
 import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Set as ImmutableSet,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+  is,
+} from 'immutable';
+
+import {
   ADMIN_CONFIG_FETCH_SUCCESS,
   ADMIN_CONFIG_UPDATE_SUCCESS,
   ADMIN_REPORTS_FETCH_SUCCESS,
@@ -10,14 +19,6 @@ import {
   ADMIN_USERS_APPROVE_REQUEST,
   ADMIN_USERS_APPROVE_SUCCESS,
 } from '../actions/admin';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  Set as ImmutableSet,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-  is,
-} from 'immutable';
 
 const initialState = ImmutableMap({
   reports: ImmutableMap(),

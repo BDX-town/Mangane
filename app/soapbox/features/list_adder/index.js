@@ -1,16 +1,19 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { setupListAdder, resetListAdder } from '../../actions/lists';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
-import List from './components/list';
-import Account from './components/account';
+
 import IconButton from 'soapbox/components/icon_button';
+
+import { setupListAdder, resetListAdder } from '../../actions/lists';
 import NewListForm from '../lists/components/new_list_form';
 import ColumnSubheading from '../ui/components/column_subheading';
+
+import Account from './components/account';
+import List from './components/list';
 // hack
 
 const getOrderedLists = createSelector([state => state.get('lists')], lists => {
@@ -69,12 +72,12 @@ class ListAdder extends ImmutablePureComponent {
     const { accountId, listIds, intl } = this.props;
 
     return (
-      <div className='modal-root__modal compose-modal'>
+      <div className='modal-root__modal compose-modal list-editor__content'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'>
             <FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />
           </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={this.onClickClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
         </div>
         <div className='compose-modal__content'>
           <div className='list-adder'>

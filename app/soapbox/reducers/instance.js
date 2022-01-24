@@ -1,12 +1,16 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+
+import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
+import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import KVStore from 'soapbox/storage/kv_store';
+import { ConfigDB } from 'soapbox/utils/config_db';
+
 import {
+  INSTANCE_REMEMBER_SUCCESS,
   INSTANCE_FETCH_SUCCESS,
   INSTANCE_FETCH_FAIL,
   NODEINFO_FETCH_SUCCESS,
 } from '../actions/instance';
-import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { ConfigDB } from 'soapbox/utils/config_db';
 
 const nodeinfoToInstance = nodeinfo => {
   // Match Pleroma's develop branch
@@ -37,9 +41,17 @@ const initialState = ImmutableMap({
   version: '0.0.0',
 });
 
+const importInstance = (state, instance) => {
+  return initialState.mergeDeep(instance);
+};
+
+const importNodeinfo = (state, nodeinfo) => {
+  return nodeinfoToInstance(nodeinfo).mergeDeep(state);
+};
+
 const preloadImport = (state, action, path) => {
-  const data = action.data[path];
-  return data ? initialState.mergeDeep(fromJS(data)) : state;
+  const instance = action.data[path];
+  return instance ? importInstance(state, fromJS(instance)) : state;
 };
 
 const getConfigValue = (instanceConfig, key) => {
@@ -80,16 +92,47 @@ const handleAuthFetch = state => {
   }).merge(state);
 };
 
+const getHost = instance => {
+  try {
+    return new URL(instance.uri).host;
+  } catch {
+    try {
+      return new URL(`https://${instance.uri}`).host;
+    } catch {
+      return null;
+    }
+  }
+};
+
+const persistInstance = instance => {
+  const host = getHost(instance);
+
+  if (host) {
+    KVStore.setItem(`instance:${host}`, instance).catch(console.error);
+  }
+};
+
+const handleInstanceFetchFail = (state, error) => {
+  if (error.response && error.response.status === 401) {
+    return handleAuthFetch(state);
+  } else {
+    return state;
+  }
+};
+
 export default function instance(state = initialState, action) {
   switch(action.type) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
+  case INSTANCE_REMEMBER_SUCCESS:
+    return importInstance(state, fromJS(action.instance));
   case INSTANCE_FETCH_SUCCESS:
-    return initialState.mergeDeep(fromJS(action.instance));
+    persistInstance(action.instance);
+    return importInstance(state, fromJS(action.instance));
   case INSTANCE_FETCH_FAIL:
-    return action.error.response.status === 401 ? handleAuthFetch(state) : state;
+    return handleInstanceFetchFail(state, action.error);
   case NODEINFO_FETCH_SUCCESS:
-    return nodeinfoToInstance(fromJS(action.nodeinfo)).mergeDeep(state);
+    return importNodeinfo(state, fromJS(action.nodeinfo));
   case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
     return importConfigs(state, fromJS(action.configs));
