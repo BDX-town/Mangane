@@ -27,6 +27,8 @@ export const COMPOSE_SUBMIT_SUCCESS  = 'COMPOSE_SUBMIT_SUCCESS';
 export const COMPOSE_SUBMIT_FAIL     = 'COMPOSE_SUBMIT_FAIL';
 export const COMPOSE_REPLY           = 'COMPOSE_REPLY';
 export const COMPOSE_REPLY_CANCEL    = 'COMPOSE_REPLY_CANCEL';
+export const COMPOSE_QUOTE           = 'COMPOSE_QUOTE';
+export const COMPOSE_QUOTE_CANCEL    = 'COMPOSE_QUOTE_CANCEL';
 export const COMPOSE_DIRECT          = 'COMPOSE_DIRECT';
 export const COMPOSE_MENTION         = 'COMPOSE_MENTION';
 export const COMPOSE_RESET           = 'COMPOSE_RESET';
@@ -116,6 +118,29 @@ export function replyCompose(status, routerHistory) {
 export function cancelReplyCompose() {
   return {
     type: COMPOSE_REPLY_CANCEL,
+  };
+}
+
+export function quoteCompose(status, routerHistory) {
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: COMPOSE_QUOTE,
+      status: status,
+      account: state.getIn(['accounts', state.get('me')]),
+      explicitAddressing,
+    });
+
+    dispatch(openModal('COMPOSE'));
+  };
+}
+
+export function cancelQuoteCompose() {
+  return {
+    type: COMPOSE_QUOTE_CANCEL,
   };
 }
 
@@ -226,6 +251,7 @@ export function submitCompose(routerHistory, force = false) {
     const params = {
       status,
       in_reply_to_id: state.getIn(['compose', 'in_reply_to'], null),
+      quote_id: state.getIn(['compose', 'quote'], null),
       media_ids: media.map(item => item.get('id')),
       sensitive: state.getIn(['compose', 'sensitive']),
       spoiler_text: state.getIn(['compose', 'spoiler_text'], ''),

@@ -12,6 +12,7 @@ import {
   replyCompose,
   mentionCompose,
   directCompose,
+  quoteCompose,
 } from '../actions/compose';
 import {
   createRemovedAccount,
@@ -100,10 +101,25 @@ const mapDispatchToProps = (dispatch, { intl }) => {
     onReblog(status, e) {
       dispatch((_, getState) => {
         const boostModal = getSettings(getState()).get('boostModal');
-        if (e.shiftKey || !boostModal) {
+        if ((e && e.shiftKey) || !boostModal) {
           onModalReblog(status);
         } else {
           dispatch(openModal('BOOST', { status, onReblog: onModalReblog }));
+        }
+      });
+    },
+
+    onQuote(status, router) {
+      dispatch((_, getState) => {
+        const state = getState();
+        if (state.getIn(['compose', 'text']).trim().length !== 0) {
+          dispatch(openModal('CONFIRM', {
+            message: intl.formatMessage(messages.replyMessage),
+            confirm: intl.formatMessage(messages.replyConfirm),
+            onConfirm: () => dispatch(quoteCompose(status, router)),
+          }));
+        } else {
+          dispatch(quoteCompose(status, router));
         }
       });
     },

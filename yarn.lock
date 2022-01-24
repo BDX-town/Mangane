@@ -1519,10 +1519,10 @@
     remark "^13.0.0"
     unist-util-find-all-after "^3.0.2"
 
-"@tabler/icons@^1.41.2":
-  version "1.41.2"
-  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.41.2.tgz#effccbb261539b68609cc7dc660a058683170ee1"
-  integrity sha512-X6cQmMC24hiwg0p2BzasvU3IeCCdOk0f/9d6gNNtJM4lzG2TCloTns1bVvU5MAFkITGukxUqjPFE3Ecd6kGsfw==
+"@tabler/icons@^1.53.0":
+  version "1.53.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.53.0.tgz#51536e01b343cfaf26b701df306b2c0369769e3c"
+  integrity sha512-Skk1BqXEOEhiRsXJgZBYtjFa/+4dMSFA5UyzTUW20oyyUSd3iizhEWrYt0jT87iFu771gWoqVV2/OGobBcGjgQ==
 
 "@tootallnate/once@1":
   version "1.1.2"

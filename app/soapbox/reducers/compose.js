@@ -8,6 +8,8 @@ import {
   COMPOSE_CHANGE,
   COMPOSE_REPLY,
   COMPOSE_REPLY_CANCEL,
+  COMPOSE_QUOTE,
+  COMPOSE_QUOTE_CANCEL,
   COMPOSE_DIRECT,
   COMPOSE_MENTION,
   COMPOSE_SUBMIT_REQUEST,
@@ -65,6 +67,7 @@ const initialState = ImmutableMap({
   focusDate: null,
   caretPosition: null,
   in_reply_to: null,
+  quote: null,
   is_composing: false,
   is_submitting: false,
   is_changing_upload: false,
@@ -128,6 +131,7 @@ function clearAll(state) {
     map.set('is_submitting', false);
     map.set('is_changing_upload', false);
     map.set('in_reply_to', null);
+    map.set('quote', null);
     map.set('privacy', state.get('default_privacy'));
     map.set('sensitive', false);
     map.set('media_attachments', ImmutableList());
@@ -340,11 +344,25 @@ export default function compose(state = initialState, action) {
         map.set('spoiler_text', '');
       }
     });
+  case COMPOSE_QUOTE:
+    return state.withMutations(map => {
+      map.set('quote', action.status.get('id'));
+      map.set('to', undefined);
+      map.set('text', '');
+      map.set('privacy', privacyPreference(action.status.get('visibility'), state.get('default_privacy')));
+      map.set('focusDate', new Date());
+      map.set('caretPosition', null);
+      map.set('idempotencyKey', uuid());
+      map.set('content_type', state.get('default_content_type'));
+      map.set('spoiler', false);
+      map.set('spoiler_text', '');
+    });
   case COMPOSE_SUBMIT_REQUEST:
     return state.set('is_submitting', true);
   case COMPOSE_UPLOAD_CHANGE_REQUEST:
     return state.set('is_changing_upload', true);
   case COMPOSE_REPLY_CANCEL:
+  case COMPOSE_QUOTE_CANCEL:
   case COMPOSE_RESET:
   case COMPOSE_SUBMIT_SUCCESS:
     return clearAll(state);
@@ -390,6 +408,8 @@ export default function compose(state = initialState, action) {
   case TIMELINE_DELETE:
     if (action.id === state.get('in_reply_to')) {
       return state.set('in_reply_to', null);
+    } if (action.id === state.get('quote')) {
+      return state.set('quote', null);
     } else {
       return state;
     }

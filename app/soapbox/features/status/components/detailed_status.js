@@ -9,6 +9,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
 import Avatar from '../../../components/avatar';
@@ -156,8 +157,14 @@ class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote')) {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+    }
+
+    let quote;
+
+    if (status.get('quote')) {
+      quote = <QuotedStatus statusId={status.get('quote')} />;
     }
 
     if (status.get('visibility') === 'direct') {
@@ -201,6 +208,7 @@ class DetailedStatus extends ImmutablePureComponent {
           />
 
           {media}
+          {quote}
 
           <div className='detailed-status__meta'>
             <StatusInteractionBar status={status} />

@@ -28,6 +28,7 @@ import {
   replyCompose,
   mentionCompose,
   directCompose,
+  quoteCompose,
 } from '../../actions/compose';
 import { simpleEmojiReact } from '../../actions/emoji_reacts';
 import {
@@ -256,6 +257,19 @@ class Status extends ImmutablePureComponent {
         }
       }
     });
+  }
+
+  handleQuoteClick = (status, e) => {
+    const { askReplyConfirmation, dispatch, intl } = this.props;
+    if (askReplyConfirmation) {
+      dispatch(openModal('CONFIRM', {
+        message: intl.formatMessage(messages.replyMessage),
+        confirm: intl.formatMessage(messages.replyConfirm),
+        onConfirm: () => dispatch(quoteCompose(status, this.context.router.history)),
+      }));
+    } else {
+      dispatch(quoteCompose(status, this.context.router.history));
+    }
   }
 
   handleDeleteClick = (status, history, withRedraft = false) => {
@@ -681,6 +695,7 @@ class Status extends ImmutablePureComponent {
                     onFavourite={this.handleFavouriteClick}
                     onEmojiReact={this.handleEmojiReactClick}
                     onReblog={this.handleReblogClick}
+                    onQuote={this.handleQuoteClick}
                     onDelete={this.handleDeleteClick}
                     onDirect={this.handleDirectClick}
                     onChat={this.handleChatClick}
