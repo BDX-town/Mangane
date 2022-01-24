@@ -2,14 +2,19 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
+import IconButton from 'soapbox/components/icon_button';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import { isRtl } from 'soapbox/rtl';
+
+const messages = defineMessages({
+  cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
+});
 
 export default @injectIntl
 class QuotedStatus extends ImmutablePureComponent {
@@ -20,18 +25,29 @@ class QuotedStatus extends ImmutablePureComponent {
 
   static propTypes = {
     status: ImmutablePropTypes.map,
+    onCancel: PropTypes.func,
+    intl: PropTypes.object.isRequired,
+    compose: PropTypes.bool,
   };
 
-  handleExpandClick = (e) => {
-    if (e.button === 0) {
+  handleExpandClick = e => {
+    const { compose, status } = this.props;
+
+    if (!compose && e.button === 0) {
       if (!this.context.router) {
         return;
       }
 
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+      this.context.router.history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`);
 
       e.preventDefault();
     }
+  }
+
+  handleClose = e => {
+    this.props.onCancel();
+
+    e.preventDefault();
   }
 
   renderReplyMentions = () => {
@@ -81,7 +97,7 @@ class QuotedStatus extends ImmutablePureComponent {
   }
 
   render() {
-    const { status } = this.props;
+    const { status, onCancel, intl, compose } = this.props;
 
     if (!status) {
       return null;
@@ -92,16 +108,33 @@ class QuotedStatus extends ImmutablePureComponent {
       direction: isRtl(status.get('search_index')) ? 'rtl' : 'ltr',
     };
 
-    return (
+    const displayName = (<>
+      <div className='quoted-status__display-avatar'><Avatar account={status.get('account')} size={24} /></div>
+      <DisplayName account={status.get('account')} />
+    </>);
+
+    const quotedStatus = (
       <div className='quoted-status' onClick={this.handleExpandClick} role='presentation'>
         <div className='quoted-status__info'>
-          <div className='quoted-status__relative-time'>
-            <RelativeTimestamp timestamp={status.get('created_at')} />
-          </div>
-          <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='quoted-status__display-name'>
-            <div className='quoted-status__display-avatar'><Avatar account={status.get('account')} size={24} /></div>
-            <DisplayName account={status.get('account')} />
-          </NavLink>
+          {onCancel
+            ? (
+              <div className='reply-indicator__cancel'>
+                <IconButton title={intl.formatMessage(messages.cancel)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleClose} inverted />
+              </div>
+            ) : (
+              <div className='quoted-status__relative-time'>
+                <RelativeTimestamp timestamp={status.get('created_at')} />
+              </div>
+            )}
+          {compose ? (
+            <div className='quoted-status__display-name'>
+              {displayName}
+            </div>
+          ) : (
+            <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='quoted-status__display-name'>
+              {displayName}
+            </NavLink>
+          )}
         </div>
 
         {this.renderReplyMentions()}
@@ -116,6 +149,16 @@ class QuotedStatus extends ImmutablePureComponent {
         )}
       </div>
     );
+
+    if (compose) {
+      return (
+        <div className='compose-form__quoted-status-wrapper'>
+          {quotedStatus}
+        </div>
+      );
+    }
+
+    return quotedStatus;
   }
 
 }

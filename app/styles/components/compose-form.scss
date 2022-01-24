@@ -84,13 +84,27 @@
 
   .spoiler-input__input { border-radius: 4px; }
 
+  &__quoted-status-wrapper {
+    background: var(--background-color);
+
+    .quoted-status {
+      &:hover,
+      &:focus,
+      &:active {
+        background: transparent;
+        cursor: unset;
+      }
+    }
+  }
+
   &.condensed {
     .autosuggest-textarea__textarea {
       min-height: 46px;
       border-radius: 5px;
     }
 
-    .compose-form__buttons-wrapper {
+    .compose-form__buttons-wrapper,
+    .compose-form__quoted-status-wrapper {
       height: 0;
       padding: 0;
       overflow: hidden;
