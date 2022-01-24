@@ -61,6 +61,9 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
   } else if (status.quote && status.quote.id) {
     // Fedibird compatibility, because why not
     normalStatus.quote = status.quote.id;
+  } else if (status.quote_id) {
+    // Fedibird: fall back to quote_id
+    normalStatus.quote = status.quote_id;
   }
 
   // Only calculate these values when status first encountered
