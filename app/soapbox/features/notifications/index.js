@@ -51,6 +51,8 @@ const mapStateToProps = state => {
   const settings = getSettings(state);
   const instance = state.get('instance');
   const features = getFeatures(instance);
+  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthDates;
+  const birthdays = showBirthdayReminders && state.getIn(['user_lists', 'birthday_reminders', state.get('me')]);
 
   return {
     showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
@@ -59,7 +61,8 @@ const mapStateToProps = state => {
     isUnread: state.getIn(['notifications', 'unread']) > 0,
     hasMore: state.getIn(['notifications', 'hasMore']),
     totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
-    showBirthdayReminders: settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthDates,
+    showBirthdayReminders,
+    hasBirthdays: !!birthdays,
   };
 };
 
@@ -78,6 +81,7 @@ class Notifications extends React.PureComponent {
     dequeueNotifications: PropTypes.func,
     totalQueuedNotificationsCount: PropTypes.number,
     showBirthdayReminders: PropTypes.bool,
+    hasBirthdays: PropTypes.bool,
   };
 
   componentWillUnmount() {
@@ -114,13 +118,23 @@ class Notifications extends React.PureComponent {
   }
 
   handleMoveUp = id => {
-    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    const { hasBirthdays } = this.props;
+
+    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    if (hasBirthdays) elementIndex++;
     this._selectChild(elementIndex, true);
   }
 
   handleMoveDown = id => {
-    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    const { hasBirthdays } = this.props;
+
+    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    if (hasBirthdays) elementIndex++;
     this._selectChild(elementIndex, false);
+  }
+
+  handleMoveBelowBirthdays = () => {
+    this._selectChild(1, false);
   }
 
   _selectChild(index, align_top) {
@@ -175,7 +189,12 @@ class Notifications extends React.PureComponent {
         />
       ));
 
-      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(<BirthdayReminders key='birthdays' />);
+      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(
+        <BirthdayReminders
+          key='birthdays'
+          onMoveDown={this.handleMoveBelowBirthdays}
+        />,
+      );
     } else {
       scrollableContent = null;
     }

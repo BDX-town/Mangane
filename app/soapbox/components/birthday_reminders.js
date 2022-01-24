@@ -39,6 +39,7 @@ class BirthdayReminders extends ImmutablePureComponent {
     birthdays: ImmutablePropTypes.orderedSet,
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    onMoveDown: PropTypes.func,
   };
 
   componentDidMount() {
@@ -55,6 +56,7 @@ class BirthdayReminders extends ImmutablePureComponent {
   getHandlers() {
     return {
       open: this.handleOpenBirthdaysModal,
+      moveDown: this.props.onMoveDown,
     };
   }
 
@@ -102,6 +104,31 @@ class BirthdayReminders extends ImmutablePureComponent {
     );
   }
 
+  renderMessageForScreenReader = () => {
+    const { intl, birthdays, account } = this.props;
+
+    if (birthdays.size === 1) {
+      return intl.formatMessage({ id: 'notification.birthday', defaultMessage: '{name} has birthday today' }, { name: account.get('display_name') });
+    }
+
+    return intl.formatMessage(
+      {
+        id: 'notification.birthday_plural',
+        defaultMessage: '{name} and {more} have birthday today',
+      },
+      {
+        name: account.get('display_name'),
+        more: intl.formatMessage(
+          {
+            id: 'notification.birthday.more',
+            defaultMessage: '{count} more {count, plural, one {friend} other {friends}}',
+          },
+          { count: birthdays.size - 1 },
+        ),
+      },
+    );
+  }
+
   render() {
     const { birthdays } = this.props;
 
@@ -109,7 +136,7 @@ class BirthdayReminders extends ImmutablePureComponent {
 
     return (
       <HotKeys handlers={this.getHandlers()}>
-        <div className='notification notification-birthday'>
+        <div className='notification notification-birthday focusable' tabIndex='0' title={this.renderMessageForScreenReader()}>
           <div className='notification__message'>
             <div className='notification__icon-wrapper'>
               <Icon src={require('@tabler/icons/icons/ballon.svg')} />
