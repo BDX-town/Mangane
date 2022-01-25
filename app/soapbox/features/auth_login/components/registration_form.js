@@ -325,7 +325,7 @@ class RegistrationForm extends ImmutablePureComponent {
                 error={passwordMismatch === true}
                 required
               />
-              {!birthDateRequired &&
+              {birthDateRequired &&
                 <BirthDateInput
                   value={birthDate}
                   onChange={this.onBirthDateChange}

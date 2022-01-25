@@ -34,17 +34,13 @@ class EditProfile extends ImmutablePureComponent {
     value: PropTypes.instanceOf(Date),
   };
 
-  isDateValid = date => {
-    const { minAge } = this.props;
-    const allowedDate = new Date();
-    allowedDate.setDate(allowedDate.getDate() - minAge);
-    return date && allowedDate.setHours(0, 0, 0, 0) >= new Date(date).setHours(0, 0, 0, 0);
-  }
-
   render() {
-    const { intl, value, onChange, supportsBirthDates, hint, required } = this.props;
+    const { intl, value, onChange, supportsBirthDates, hint, required, minAge } = this.props;
 
     if (!supportsBirthDates) return null;
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() - minAge);
 
     return (
       <div className='datepicker'>
@@ -60,7 +56,7 @@ class EditProfile extends ImmutablePureComponent {
             wrapperClassName='react-datepicker-wrapper'
             onChange={onChange}
             placeholderText={intl.formatMessage(messages.birthDatePlaceholder)}
-            filterDate={this.isDateValid}
+            maxDate={maxDate}
             required={required}
           />
         </div>
