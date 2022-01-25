@@ -1,5 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
 
@@ -79,7 +81,7 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
     const emojiMap      = makeEmojiMap(normalStatus);
 
     normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;
-    normalStatus.contentHtml  = emojify(normalStatus.content, emojiMap);
+    normalStatus.contentHtml  = stripCompatibilityFeatures(emojify(normalStatus.content, emojiMap));
     normalStatus.spoilerHtml  = emojify(escapeTextContentForBrowser(spoilerText), emojiMap);
     normalStatus.hidden       = expandSpoilers ? false : spoilerText.length > 0 || normalStatus.sensitive;
   }

@@ -821,11 +821,3 @@ a.status-card.compact:hover {
     margin-top: 5px !important;
   }
 }
-
-/* Fedibird quote post compatibility */
-.status__content,
-.quoted-status__content {
-  .quote-inline {
-    display: none;
-  }
-}
