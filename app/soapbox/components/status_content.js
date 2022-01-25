@@ -75,17 +75,6 @@ class StatusContent extends React.PureComponent {
     }
   }
 
-  deleteInlineQuote() {
-    const node = this.node;
-    if (!node) return;
-
-    const inlineQuote = node.querySelector('.quote-inline');
-
-    if (inlineQuote) {
-      inlineQuote.remove();
-    }
-  }
-
   setCollapse() {
     const node = this.node;
 
@@ -117,7 +106,6 @@ class StatusContent extends React.PureComponent {
   refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
-    this.deleteInlineQuote();
     this.setOnlyEmoji();
   }
 
