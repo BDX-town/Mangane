@@ -75,15 +75,15 @@ class StatusContent extends React.PureComponent {
     }
   }
 
-  deleteInlineQuote() {
+  stripCompatibilityFeatures() {
     const node = this.node;
     if (!node) return;
 
     const inlineQuote = node.querySelector('.quote-inline');
+    const inlineRecipients = node.querySelector('.recipients-inline');
 
-    if (inlineQuote) {
-      inlineQuote.remove();
-    }
+    if (inlineQuote) inlineQuote.remove();
+    if (inlineRecipients) inlineRecipients.remove();
   }
 
   setCollapse() {
@@ -117,7 +117,7 @@ class StatusContent extends React.PureComponent {
   refresh = () => {
     this.setCollapse();
     this._updateStatusLinks();
-    this.deleteInlineQuote();
+    this.stripCompatibilityFeatures();
     this.setOnlyEmoji();
   }
 

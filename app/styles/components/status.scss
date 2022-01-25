@@ -825,7 +825,8 @@ a.status-card.compact:hover {
 /* Fedibird quote post compatibility */
 .status__content,
 .quoted-status__content {
-  .quote-inline {
+  .quote-inline,
+  .recipients-inline {
     display: none;
   }
 }
