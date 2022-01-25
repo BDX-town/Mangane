@@ -98,7 +98,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
         <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
           <Icon src={require('@tabler/icons/icons/ballon.svg')} />
           <FormattedMessage
-            id='account.birthday' defaultMessage='Has birthday today!'
+            id='account.birthday_today' defaultMessage='Birthday is today!'
           />
         </div>
       );
@@ -107,7 +107,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       <div className='profile-info-panel-content__birthday'>
         <Icon src={require('@tabler/icons/icons/ballon.svg')} />
         <FormattedMessage
-          id='account.birth_date' defaultMessage='Birth date: {date}' values={{
+          id='account.birthday' defaultMessage='Born {date}' values={{
             date: formattedBirthday,
           }}
         />

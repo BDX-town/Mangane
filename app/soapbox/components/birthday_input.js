@@ -9,7 +9,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
-  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
 });
 
 const mapStateToProps = state => {
@@ -52,7 +52,6 @@ class EditProfile extends ImmutablePureComponent {
         <div className='datepicker__input'>
           <DatePicker
             selected={value}
-            dateFormat='d MMMM yyyy'
             wrapperClassName='react-datepicker-wrapper'
             onChange={onChange}
             placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
