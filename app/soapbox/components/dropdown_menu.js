@@ -220,6 +220,7 @@ export default class Dropdown extends React.PureComponent {
     openDropdownId: PropTypes.number,
     openedViaKeyboard: PropTypes.bool,
     text: PropTypes.string,
+    onShiftClick: PropTypes.func,
   };
 
   static defaultProps = {
@@ -230,14 +231,19 @@ export default class Dropdown extends React.PureComponent {
     id: id++,
   };
 
-  handleClick = ({ target, type }) => {
-    if (this.state.id === this.props.openDropdownId) {
+  handleClick = e => {
+    const { onOpen, onShiftClick, openDropdownId } = this.props;
+
+    if (onShiftClick && e.shiftKey) {
+      e.preventDefault();
+      onShiftClick(e);
+    } else if (this.state.id === openDropdownId) {
       this.handleClose();
     } else {
-      const { top } = target.getBoundingClientRect();
+      const { top } = e.target.getBoundingClientRect();
       const placement = top * 2 < innerHeight ? 'bottom' : 'top';
 
-      this.props.onOpen(this.state.id, this.handleItemClick, placement, type !== 'click');
+      onOpen(this.state.id, this.handleItemClick, placement, e.type !== 'click');
     }
   }
 

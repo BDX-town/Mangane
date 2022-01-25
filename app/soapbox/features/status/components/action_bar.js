@@ -523,6 +523,7 @@ class ActionBar extends React.PureComponent {
           src={reblogIcon}
           direction='right'
           text={intl.formatMessage(messages.reblog)}
+          onShiftClick={this.handleReblogClick}
         />
       );
     } else {

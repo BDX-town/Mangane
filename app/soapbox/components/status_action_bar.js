@@ -566,6 +566,7 @@ class StatusActionBar extends ImmutablePureComponent {
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
           src={reblogIcon}
           direction='right'
+          onShiftClick={this.handleReblogClick}
         />
       );
     } else {
