@@ -51,7 +51,7 @@ const mapStateToProps = state => {
   const settings = getSettings(state);
   const instance = state.get('instance');
   const features = getFeatures(instance);
-  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthDates;
+  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthdays;
   const birthdays = showBirthdayReminders && state.getIn(['user_lists', 'birthday_reminders', state.get('me')]);
 
   return {

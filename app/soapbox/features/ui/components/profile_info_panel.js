@@ -80,22 +80,22 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     return badges;
   }
 
-  getBirthDate = () => {
+  getBirthday = () => {
     const { account, intl } = this.props;
 
-    const birthDate = account.getIn(['pleroma', 'birthday']);
-    if (!birthDate) return null;
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    if (!birthday) return null;
 
-    const formattedBirthDate = intl.formatDate(birthDate, { day: 'numeric', month: 'long', year: 'numeric' });
+    const formattedBirthday = intl.formatDate(birthday, { day: 'numeric', month: 'long', year: 'numeric' });
 
-    const date = new Date(birthDate);
+    const date = new Date(birthday);
     const today = new Date();
 
     const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
 
     if (hasBirthday) {
       return (
-        <div className='profile-info-panel-content__birth-date' title={formattedBirthDate}>
+        <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
           <Icon src={require('@tabler/icons/icons/ballon.svg')} />
           <FormattedMessage
             id='account.birthday' defaultMessage='Has birthday today!'
@@ -104,11 +104,11 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       );
     }
     return (
-      <div className='profile-info-panel-content__birth-date'>
+      <div className='profile-info-panel-content__birthday'>
         <Icon src={require('@tabler/icons/icons/ballon.svg')} />
         <FormattedMessage
           id='account.birth_date' defaultMessage='Birth date: {date}' values={{
-            date: formattedBirthDate,
+            date: formattedBirthday,
           }}
         />
       </div>
@@ -185,7 +185,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             />
           </div>}
 
-          {this.getBirthDate()}
+          {this.getBirthday()}
 
           <ProfileStats
             className='profile-info-panel-content__stats'

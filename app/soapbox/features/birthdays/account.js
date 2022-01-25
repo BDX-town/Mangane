@@ -56,10 +56,10 @@ class Account extends ImmutablePureComponent {
 
     if (!account) return null;
 
-    const birthDate = account.getIn(['pleroma', 'birthday']);
-    if (!birthDate) return null;
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    if (!birthday) return null;
 
-    const formattedBirthDate = intl.formatDate(birthDate, { day: 'numeric', month: 'short', year: 'numeric' });
+    const formattedBirthday = intl.formatDate(birthday, { day: 'numeric', month: 'short', year: 'numeric' });
 
     return (
       <div className='account'>
@@ -72,13 +72,13 @@ class Account extends ImmutablePureComponent {
             </div>
           </Permalink>
           <div
-            className='account__birth-date'
+            className='account__birthday'
             title={intl.formatMessage(messages.birthDate, {
-              date: formattedBirthDate,
+              date: formattedBirthday,
             })}
           >
             <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-            {formattedBirthDate}
+            {formattedBirthday}
           </div>
         </div>
       </div>

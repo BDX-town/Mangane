@@ -9,14 +9,14 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
-  birthDatePlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
 });
 
 const mapStateToProps = state => {
   const features = getFeatures(state.get('instance'));
 
   return {
-    supportsBirthDates: features.birthDates,
+    supportsBirthdays: features.birthdays,
     minAge: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_min_age']),
   };
 };
@@ -28,16 +28,16 @@ class EditProfile extends ImmutablePureComponent {
   static propTypes = {
     hint: PropTypes.node,
     required: PropTypes.bool,
-    supportsBirthDates: PropTypes.bool,
+    supportsBirthdays: PropTypes.bool,
     minAge: PropTypes.number,
     onChange: PropTypes.func.isRequired,
     value: PropTypes.instanceOf(Date),
   };
 
   render() {
-    const { intl, value, onChange, supportsBirthDates, hint, required, minAge } = this.props;
+    const { intl, value, onChange, supportsBirthdays, hint, required, minAge } = this.props;
 
-    if (!supportsBirthDates) return null;
+    if (!supportsBirthdays) return null;
 
     const maxDate = new Date();
     maxDate.setDate(maxDate.getDate() - minAge);
@@ -55,7 +55,7 @@ class EditProfile extends ImmutablePureComponent {
             dateFormat='d MMMM yyyy'
             wrapperClassName='react-datepicker-wrapper'
             onChange={onChange}
-            placeholderText={intl.formatMessage(messages.birthDatePlaceholder)}
+            placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
             maxDate={maxDate}
             required={required}
           />

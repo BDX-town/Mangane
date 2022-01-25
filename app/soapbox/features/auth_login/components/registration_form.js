@@ -14,7 +14,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modal';
 import { getSettings } from 'soapbox/actions/settings';
-import BirthDateInput from 'soapbox/components/birth_date_input';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import ShowablePassword from 'soapbox/components/showable_password';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import {
@@ -47,7 +47,7 @@ const mapStateToProps = (state, props) => ({
   needsApproval: state.getIn(['instance', 'approval_required']),
   supportsEmailList: getFeatures(state.get('instance')).emailList,
   supportsAccountLookup: getFeatures(state.get('instance')).accountLookup,
-  birthDateRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_required']),
+  birthdayRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -63,7 +63,7 @@ class RegistrationForm extends ImmutablePureComponent {
     supportsEmailList: PropTypes.bool,
     supportsAccountLookup: PropTypes.bool,
     inviteToken: PropTypes.string,
-    birthDateRequired: PropTypes.bool,
+    birthdayRequired: PropTypes.bool,
   }
 
   static contextTypes = {
@@ -132,9 +132,9 @@ class RegistrationForm extends ImmutablePureComponent {
     this.setState({ passwordMismatch: !this.passwordsMatch() });
   }
 
-  onBirthDateChange = birthDate => {
+  onBirthdayChange = birthday => {
     this.setState({
-      birthDate,
+      birthday,
     });
   }
 
@@ -206,7 +206,7 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onSubmit = e => {
     const { dispatch, inviteToken } = this.props;
-    const { birthDate } = this.state;
+    const { birthday } = this.state;
 
     if (!this.passwordsMatch()) {
       this.setState({ passwordMismatch: true });
@@ -222,8 +222,8 @@ class RegistrationForm extends ImmutablePureComponent {
         params.set('token', inviteToken);
       }
 
-      if (birthDate) {
-        params.set('birthday', birthDate.toISOString().slice(0, 10));
+      if (birthday) {
+        params.set('birthday', birthday.toISOString().slice(0, 10));
       }
     });
 
@@ -259,8 +259,8 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance, intl, supportsEmailList, birthDateRequired } = this.props;
-    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch, birthDate } = this.state;
+    const { instance, intl, supportsEmailList, birthdayRequired } = this.props;
+    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch, birthday } = this.state;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
@@ -325,10 +325,10 @@ class RegistrationForm extends ImmutablePureComponent {
                 error={passwordMismatch === true}
                 required
               />
-              {birthDateRequired &&
-                <BirthDateInput
-                  value={birthDate}
-                  onChange={this.onBirthDateChange}
+              {birthdayRequired &&
+                <BirthdayInput
+                  value={birthday}
+                  onChange={this.onBirthdayChange}
                   required
                 />}
               {instance.get('approval_required') &&

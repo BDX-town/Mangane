@@ -79,7 +79,7 @@ export const getFeatures = createSelector([
     explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    birthDates: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
   };
 });
 

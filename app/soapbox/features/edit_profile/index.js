@@ -14,7 +14,7 @@ import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import BirthDateInput from 'soapbox/components/birth_date_input';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
@@ -50,7 +50,7 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
-  birthDatePlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
 });
 
 const makeMapStateToProps = () => {
@@ -67,7 +67,7 @@ const makeMapStateToProps = () => {
       maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
       supportsEmailList: features.emailList,
-      supportsBirthDates: features.birthDates,
+      supportsBirthdays: features.birthdays,
     };
   };
 
@@ -99,7 +99,7 @@ class EditProfile extends ImmutablePureComponent {
     maxFields: PropTypes.number,
     verifiedCanEditName: PropTypes.bool,
     supportsEmailList: PropTypes.bool,
-    supportsBirthDates: PropTypes.bool,
+    supportsBirthdays: PropTypes.bool,
   };
 
   state = {
@@ -113,8 +113,8 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
-    const birthDate = account.getIn(['pleroma', 'birthday']);
-    const showBirthDate = account.getIn(['source', 'pleroma', 'show_birthday']);
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -124,8 +124,8 @@ class EditProfile extends ImmutablePureComponent {
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
-      map.set('show_birthday', showBirthDate);
-      if (birthDate) map.set('birthDate', new Date(birthDate));
+      map.set('show_birthday', showBirthday);
+      if (birthday) map.set('birthday', new Date(birthday));
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -166,7 +166,7 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
-      birthday: state.birthDate?.toISOString().slice(0, 10),
+      birthday: state.birthday?.toISOString().slice(0, 10),
       show_birthday: state.show_birthday,
     }, this.getFieldParams().toJS());
   }
@@ -235,9 +235,9 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
-  handleBirthDateChange = birthDate => {
+  handleBirthdayChange = birthday => {
     this.setState({
-      birthDate,
+      birthday,
     });
   }
 
@@ -256,7 +256,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields, account, verifiedCanEditName, supportsBirthDates, supportsEmailList } = this.props;
+    const { intl, maxFields, account, verifiedCanEditName, supportsBirthdays, supportsEmailList } = this.props;
     const verified = isVerified(account);
     const canEditName = verifiedCanEditName || !verified;
 
@@ -285,10 +285,10 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
                 rows={3}
               />
-              <BirthDateInput
+              <BirthdayInput
                 hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birth date' />}
-                value={this.state.birthDate}
-                onChange={this.handleBirthDateChange}
+                value={this.state.birthday}
+                onChange={this.handleBirthdayChange}
               />
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
@@ -344,7 +344,7 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
               />
-              {supportsBirthDates && <Checkbox
+              {supportsBirthdays && <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birth date' />}
                 hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birth date will be visible on your profile.' />}
                 name='show_birthday'

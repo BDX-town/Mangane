@@ -24,7 +24,7 @@ class ColumnSettings extends React.PureComponent {
     onClear: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     supportsEmojiReacts: PropTypes.bool,
-    supportsBirthDates: PropTypes.bool,
+    supportsBirthdays: PropTypes.bool,
   };
 
   onPushChange = (path, checked) => {
@@ -40,7 +40,7 @@ class ColumnSettings extends React.PureComponent {
   }
 
   render() {
-    const { intl, settings, pushSettings, onChange, onClear, onClose, supportsEmojiReacts, supportsBirthDates } = this.props;
+    const { intl, settings, pushSettings, onChange, onClear, onClose, supportsEmojiReacts, supportsBirthdays } = this.props;
 
     const filterShowStr = <FormattedMessage id='notifications.column_settings.filter_bar.show' defaultMessage='Show' />;
     const filterAdvancedStr = <FormattedMessage id='notifications.column_settings.filter_bar.advanced' defaultMessage='Display all categories' />;
@@ -86,7 +86,7 @@ class ColumnSettings extends React.PureComponent {
             </div>
           </div>
 
-          {supportsBirthDates &&
+          {supportsBirthdays &&
             <div role='group' aria-labelledby='notifications-filter-bar'>
               <span id='notifications-filter-bar' className='column-settings__section'>
                 <FormattedMessage id='notifications.column_settings.birthdays.category' defaultMessage='Birthdays' />
