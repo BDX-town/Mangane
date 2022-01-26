@@ -9,9 +9,10 @@ import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
-import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
 import { buildStatus } from '../util/pending_status_builder';
 
 import PollPreview from './poll_preview';
@@ -92,6 +93,8 @@ class PendingStatus extends ImmutablePureComponent {
 
             {this.renderMedia()}
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
+
+            {status.get('quote') && <QuotedStatus statusId={status.get('quote')} />}
 
             {/* TODO */}
             {/* <PlaceholderActionBar /> */}
