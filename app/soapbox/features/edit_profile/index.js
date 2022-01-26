@@ -125,7 +125,10 @@ class EditProfile extends ImmutablePureComponent {
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
       map.set('show_birthday', showBirthday);
-      if (birthday) map.set('birthday', new Date(birthday));
+      if (birthday) {
+        const date = new Date(birthday);
+        map.set('birthday', new Date(date.getTime() + (date.getTimezoneOffset() * 60000)));
+      }
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -166,7 +169,9 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
-      birthday: state.birthday?.toISOString().slice(0, 10),
+      birthday: state.birthday
+        ? new Date(state.birthday.getTime() - (state.birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10)
+        : undefined,
       show_birthday: state.show_birthday,
     }, this.getFieldParams().toJS());
   }

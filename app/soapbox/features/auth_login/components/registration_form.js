@@ -223,7 +223,7 @@ class RegistrationForm extends ImmutablePureComponent {
       }
 
       if (birthday) {
-        params.set('birthday', birthday.toISOString().slice(0, 10));
+        params.set('birthday', new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
       }
     });
 

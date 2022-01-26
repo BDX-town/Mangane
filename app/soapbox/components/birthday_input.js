@@ -39,8 +39,8 @@ class EditProfile extends ImmutablePureComponent {
 
     if (!supportsBirthdays) return null;
 
-    const maxDate = new Date();
-    maxDate.setDate(maxDate.getDate() - minAge);
+    let maxDate = new Date();
+    maxDate = new Date(maxDate.getTime() - minAge * 1000 * 60 * 60 * 24 + maxDate.getTimezoneOffset() * 1000 * 60);
 
     return (
       <div className='datepicker'>
@@ -56,6 +56,7 @@ class EditProfile extends ImmutablePureComponent {
             wrapperClassName='react-datepicker-wrapper'
             onChange={onChange}
             placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
+            minDate={new Date('1900-01-01')}
             maxDate={maxDate}
             required={required}
           />
