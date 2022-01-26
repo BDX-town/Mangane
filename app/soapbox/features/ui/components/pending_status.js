@@ -41,7 +41,7 @@ class PendingStatus extends ImmutablePureComponent {
           media={status.get('media_attachments')}
         />
       );
-    } else if (shouldHaveCard(status)) {
+    } else if (!status.get('quote') && shouldHaveCard(status)) {
       return <PlaceholderCard />;
     } else {
       return null;
