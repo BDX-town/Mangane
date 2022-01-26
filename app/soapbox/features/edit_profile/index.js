@@ -50,7 +50,7 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
-  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
 });
 
 const makeMapStateToProps = () => {
@@ -290,11 +290,22 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
                 rows={3}
               />
-              <BirthdayInput
-                hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birth date' />}
-                value={this.state.birthday}
-                onChange={this.handleBirthdayChange}
-              />
+              {supportsBirthdays && (
+                <>
+                  <BirthdayInput
+                    hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
+                    value={this.state.birthday}
+                    onChange={this.handleBirthdayChange}
+                  />
+                  <Checkbox
+                    label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birthday' />}
+                    hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birthday will be visible on your profile.' />}
+                    name='show_birthday'
+                    checked={this.state.show_birthday}
+                    onChange={this.handleCheckboxChange}
+                  />
+                </>
+              )}
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
                   <ProfilePreview account={this.makePreviewAccount()} />
@@ -349,13 +360,6 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
               />
-              {supportsBirthdays && <Checkbox
-                label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birth date' />}
-                hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birth date will be visible on your profile.' />}
-                name='show_birthday'
-                checked={this.state.show_birthday}
-                onChange={this.handleCheckboxChange}
-              />}
               {supportsEmailList && <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
                 hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}

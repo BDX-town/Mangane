@@ -12,7 +12,7 @@ import Permalink from 'soapbox/components/permalink';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const messages = defineMessages({
-  birthDate: { id: 'account.birth_date', defaultMessage: 'Birth date: {date}' },
+  birthday: { id: 'account.birthday', defaultMessage: 'Born {date}' },
 });
 
 const makeMapStateToProps = () => {
@@ -73,7 +73,7 @@ class Account extends ImmutablePureComponent {
           </Permalink>
           <div
             className='account__birthday'
-            title={intl.formatMessage(messages.birthDate, {
+            title={intl.formatMessage(messages.birthday, {
               date: formattedBirthday,
             })}
           >

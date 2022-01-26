@@ -10,7 +10,7 @@ import IconButton from 'soapbox/components/icon_button';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
-  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
   previousMonth: { id: 'datepicker.previous_month', defaultMessage: 'Previous month' },
   nextMonth: { id: 'datepicker.next_month', defaultMessage: 'Next month' },
   previousYear: { id: 'datepicker.previous_year', defaultMessage: 'Previous year' },
@@ -114,7 +114,6 @@ class EditProfile extends ImmutablePureComponent {
         <div className='datepicker__input'>
           <DatePicker
             selected={value}
-            dateFormat='d MMMM yyyy'
             wrapperClassName='react-datepicker-wrapper'
             onChange={onChange}
             placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
