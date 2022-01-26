@@ -6,10 +6,15 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import IconButton from 'soapbox/components/icon_button';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birth date' },
+  previousMonth: { id: 'datepicker.previous_month', defaultMessage: 'Previous month' },
+  nextMonth: { id: 'datepicker.next_month', defaultMessage: 'Next month' },
+  previousYear: { id: 'datepicker.previous_year', defaultMessage: 'Previous year' },
+  nextYear: { id: 'datepicker.next_year', defaultMessage: 'Next year' },
 });
 
 const mapStateToProps = state => {
@@ -33,6 +38,63 @@ class EditProfile extends ImmutablePureComponent {
     onChange: PropTypes.func.isRequired,
     value: PropTypes.instanceOf(Date),
   };
+
+  renderHeader = ({
+    decreaseMonth,
+    increaseMonth,
+    prevMonthButtonDisabled,
+    nextMonthButtonDisabled,
+    decreaseYear,
+    increaseYear,
+    prevYearButtonDisabled,
+    nextYearButtonDisabled,
+    date,
+  }) => {
+    const { intl } = this.props;
+
+    return (
+      <div className='datepicker__header'>
+        <div className='datepicker__months'>
+          <IconButton
+            className='datepicker__button'
+            src={require('@tabler/icons/icons/chevron-left.svg')}
+            onClick={decreaseMonth}
+            disabled={prevMonthButtonDisabled}
+            aria-label={intl.formatMessage(messages.previousMonth)}
+            title={intl.formatMessage(messages.previousMonth)}
+          />
+          {intl.formatDate(date, { month: 'long' })}
+          <IconButton
+            className='datepicker__button'
+            src={require('@tabler/icons/icons/chevron-right.svg')}
+            onClick={increaseMonth}
+            disabled={nextMonthButtonDisabled}
+            aria-label={intl.formatMessage(messages.nextMonth)}
+            title={intl.formatMessage(messages.nextMonth)}
+          />
+        </div>
+        <div className='datepicker__years'>
+          <IconButton
+            className='datepicker__button'
+            src={require('@tabler/icons/icons/chevron-left.svg')}
+            onClick={decreaseYear}
+            disabled={prevYearButtonDisabled}
+            aria-label={intl.formatMessage(messages.previousYear)}
+            title={intl.formatMessage(messages.previousYear)}
+          />
+          {intl.formatDate(date, { year: 'numeric' })}
+          <IconButton
+            className='datepicker__button'
+            src={require('@tabler/icons/icons/chevron-right.svg')}
+            onClick={increaseYear}
+            disabled={nextYearButtonDisabled}
+            aria-label={intl.formatMessage(messages.nextYear)}
+            title={intl.formatMessage(messages.nextYear)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   render() {
     const { intl, value, onChange, supportsBirthdays, hint, required, minAge } = this.props;
@@ -59,6 +121,7 @@ class EditProfile extends ImmutablePureComponent {
             minDate={new Date('1900-01-01')}
             maxDate={maxDate}
             required={required}
+            renderCustomHeader={this.renderHeader}
           />
         </div>
       </div>
