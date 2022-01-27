@@ -820,4 +820,14 @@ a.status-card.compact:hover {
   .attachment-thumbs .media-gallery {
     margin-top: 5px !important;
   }
+
+  &-tombstone {
+    margin-top: 14px;
+    padding: 12px;
+    border: 1px solid var(--brand-color--med);
+    border-radius: 10px;
+    color: var(--primary-text-color--faint);
+    font-size: 14px;
+    text-align: center;
+  }
 }
