@@ -38,7 +38,7 @@ export const acctFull = (account: ImmutableMap<string, any>): string => (
   account.get('fqn') || guessFqn(account)
 );
 
-export const getAcct = (account: ImmutableMap<string, any>, displayFqn: boolean) :string => (
+export const getAcct = (account: ImmutableMap<string, any>, displayFqn: boolean): string => (
   displayFqn === true ? acctFull(account) : account.get('acct')
 );
 
