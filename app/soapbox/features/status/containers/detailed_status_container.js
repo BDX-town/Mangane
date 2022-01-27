@@ -98,9 +98,9 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onBookmark(status) {
     if (status.get('bookmarked')) {
-      dispatch(unbookmark(intl, status));
+      dispatch(unbookmark(status));
     } else {
-      dispatch(bookmark(intl, status));
+      dispatch(bookmark(status));
     }
   },
 

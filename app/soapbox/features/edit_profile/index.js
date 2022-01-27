@@ -49,6 +49,7 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
+  view: { id: 'snackbar.view', defaultMessage: 'View' },
 });
 
 const makeMapStateToProps = () => {
@@ -171,7 +172,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch, intl } = this.props;
+    const { dispatch, intl, account } = this.props;
 
     const credentials = dispatch(patchMe(this.getFormdata()));
     const notifications = dispatch(updateNotificationSettings({
@@ -182,7 +183,7 @@ class EditProfile extends ImmutablePureComponent {
 
     Promise.all([credentials, notifications]).then(() => {
       this.setState({ isLoading: false });
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      dispatch(snackbar.success(intl.formatMessage(messages.success), intl.formatMessage(messages.view), `/@${account.get('acct')}`));
     }).catch((error) => {
       this.setState({ isLoading: false });
       dispatch(snackbar.error(intl.formatMessage(messages.error)));

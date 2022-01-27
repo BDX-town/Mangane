@@ -221,9 +221,9 @@ class Status extends ImmutablePureComponent {
 
   handleBookmark = (status) => {
     if (status.get('bookmarked')) {
-      this.props.dispatch(unbookmark(this.props.intl, status));
+      this.props.dispatch(unbookmark(status));
     } else {
-      this.props.dispatch(bookmark(this.props.intl, status));
+      this.props.dispatch(bookmark(status));
     }
   }
 

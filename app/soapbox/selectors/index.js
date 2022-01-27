@@ -171,6 +171,8 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
     arr.push({
       message: item.get('message'),
       title: item.get('title'),
+      actionLabel: item.get('actionLabel'),
+      actionLink: item.get('actionLink'),
       key: item.get('key'),
       className: `snackbar snackbar--${item.get('severity', 'info')}`,
       activeClassName: 'snackbar--active',
