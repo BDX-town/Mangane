@@ -477,7 +477,15 @@ class Status extends ImmutablePureComponent {
     let quote;
 
     if (status.get('quote')) {
-      quote = <QuotedStatus statusId={status.get('quote')} />;
+      if (status.getIn(['pleroma', 'quote_visible'], true) === false) {
+        quote = (
+          <div className='quoted-status-tombstone'>
+            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        quote = <QuotedStatus statusId={status.get('quote')} />;
+      }
     }
 
     if (otherAccounts && otherAccounts.size > 1) {

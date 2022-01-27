@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { FormattedDate } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -164,7 +164,15 @@ class DetailedStatus extends ImmutablePureComponent {
     let quote;
 
     if (status.get('quote')) {
-      quote = <QuotedStatus statusId={status.get('quote')} />;
+      if (status.getIn(['pleroma', 'quote_visible'], true) === false) {
+        quote = (
+          <div className='quoted-status-tombstone'>
+            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        quote = <QuotedStatus statusId={status.get('quote')} />;
+      }
     }
 
     if (status.get('visibility') === 'direct') {
