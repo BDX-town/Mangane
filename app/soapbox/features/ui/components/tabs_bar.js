@@ -6,6 +6,7 @@ import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 
+import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
@@ -168,10 +169,14 @@ const mapStateToProps = state => {
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
+  const settings = getSettings(state);
+
+  // In demo mode, use the Soapbox logo
+  const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : getSoapboxConfig(state).get('logo');
 
   return {
     account: state.getIn(['accounts', me]),
-    logo: getSoapboxConfig(state).get('logo'),
+    logo,
     features: getFeatures(instance),
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),

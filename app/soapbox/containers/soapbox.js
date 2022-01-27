@@ -54,6 +54,9 @@ const mapStateToProps = (state) => {
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
+  // In demo mode, force the default brand color
+  const brandColor = settings.get('demo') ? '#0482d8' : soapboxConfig.get('brandColor');
+
   return {
     showIntroduction,
     me,
@@ -63,11 +66,11 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
-    themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
+    themeCss: generateThemeCss(brandColor),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     halloween: settings.get('halloween'),
-    customCss: soapboxConfig.get('customCss'),
+    customCss: settings.get('demo') ? null : soapboxConfig.get('customCss'),
   };
 };
 
