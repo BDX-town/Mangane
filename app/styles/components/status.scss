@@ -804,6 +804,11 @@ a.status-card.compact:hover {
   }
 
   &__content {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
     margin-top: 5px;
     font-size: 14px;
 
