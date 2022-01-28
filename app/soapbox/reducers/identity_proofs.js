@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   IDENTITY_PROOFS_ACCOUNT_FETCH_REQUEST,
   IDENTITY_PROOFS_ACCOUNT_FETCH_SUCCESS,

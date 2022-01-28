@@ -1,5 +1,6 @@
-import reducer from '../user_lists';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../user_lists';
 
 describe('user_lists reducer', () => {
   it('should return the initial state', () => {
@@ -14,6 +15,7 @@ describe('user_lists reducer', () => {
       mutes: ImmutableMap(),
       groups: ImmutableMap(),
       groups_removed_accounts: ImmutableMap(),
+      pinned: ImmutableMap(),
     }));
   });
 });

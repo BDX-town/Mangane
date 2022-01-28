@@ -1,5 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import PullToRefresh from './pull_to_refresh';
 
 /**

@@ -1,21 +1,25 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { Link, NavLink, withRouter } from 'react-router-dom';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
-import classNames from 'classnames';
+import { Link, NavLink, withRouter } from 'react-router-dom';
+
+import { getSettings } from 'soapbox/actions/settings';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
 import SearchContainer from 'soapbox/features/compose/containers/search_container';
-import Avatar from '../../../components/avatar';
-import Icon from 'soapbox/components/icon';
-import ProfileDropdown from './profile_dropdown';
-import { openModal } from '../../../actions/modal';
-import { openSidebar } from '../../../actions/sidebar';
-import ThemeToggle from '../../ui/components/theme_toggle_container';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { openModal } from '../../../actions/modal';
+import { openSidebar } from '../../../actions/sidebar';
+import Avatar from '../../../components/avatar';
+import ThemeToggle from '../../ui/components/theme_toggle_container';
+
+import ProfileDropdown from './profile_dropdown';
 
 const messages = defineMessages({
   post: { id: 'tabs_bar.post', defaultMessage: 'Post' },
@@ -165,10 +169,14 @@ const mapStateToProps = state => {
   const reportsCount = state.getIn(['admin', 'openReports']).count();
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
+  const settings = getSettings(state);
+
+  // In demo mode, use the Soapbox logo
+  const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : getSoapboxConfig(state).get('logo');
 
   return {
     account: state.getIn(['accounts', me]),
-    logo: getSoapboxConfig(state).get('logo'),
+    logo,
     features: getFeatures(instance),
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),

@@ -1,8 +1,11 @@
 import { defineMessages } from 'react-intl';
-import api from '../api';
-import { importFetchedAccounts, importFetchedStatus } from './importer';
+
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
+
+import api from '../api';
+
+import { importFetchedAccounts, importFetchedStatus } from './importer';
 
 export const REBLOG_REQUEST = 'REBLOG_REQUEST';
 export const REBLOG_SUCCESS = 'REBLOG_SUCCESS';
@@ -47,6 +50,10 @@ export const BOOKMARK_FAIL    = 'BOOKMARKED_FAIL';
 export const UNBOOKMARK_REQUEST = 'UNBOOKMARKED_REQUEST';
 export const UNBOOKMARK_SUCCESS = 'UNBOOKMARKED_SUCCESS';
 export const UNBOOKMARK_FAIL    = 'UNBOOKMARKED_FAIL';
+
+export const REMOTE_INTERACTION_REQUEST = 'REMOTE_INTERACTION_REQUEST';
+export const REMOTE_INTERACTION_SUCCESS = 'REMOTE_INTERACTION_SUCCESS';
+export const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
 
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
@@ -473,5 +480,48 @@ export function unpinFail(status, error) {
     status,
     error,
     skipLoading: true,
+  };
+}
+
+export function remoteInteraction(ap_id, profile) {
+  return (dispatch, getState) => {
+    dispatch(remoteInteractionRequest(ap_id, profile));
+
+    return api(getState).post('/api/v1/pleroma/remote_interaction', { ap_id, profile }).then(({ data }) => {
+      if (data.error) throw new Error(data.error);
+
+      dispatch(remoteInteractionSuccess(ap_id, profile, data.url));
+
+      return data.url;
+    }).catch(error => {
+      dispatch(remoteInteractionFail(ap_id, profile, error));
+      throw error;
+    });
+  };
+}
+
+export function remoteInteractionRequest(ap_id, profile) {
+  return {
+    type: REMOTE_INTERACTION_REQUEST,
+    ap_id,
+    profile,
+  };
+}
+
+export function remoteInteractionSuccess(ap_id, profile, url) {
+  return {
+    type: REMOTE_INTERACTION_SUCCESS,
+    ap_id,
+    profile,
+    url,
+  };
+}
+
+export function remoteInteractionFail(ap_id, profile, error) {
+  return {
+    type: REMOTE_INTERACTION_FAIL,
+    ap_id,
+    profile,
+    error,
   };
 }

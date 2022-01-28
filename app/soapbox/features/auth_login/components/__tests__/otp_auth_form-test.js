@@ -1,7 +1,9 @@
-import React from 'react';
-import OtpAuthForm from '../otp_auth_form';
-import { createComponent, mockStore } from 'soapbox/test_helpers';
 import { Map as ImmutableMap } from 'immutable';
+import React from 'react';
+
+import { createComponent, mockStore } from 'soapbox/test_helpers';
+
+import OtpAuthForm from '../otp_auth_form';
 
 describe('<OtpAuthForm />', () => {
   it('renders correctly', () => {

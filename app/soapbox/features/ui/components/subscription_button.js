@@ -1,17 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl } from 'react-intl';
 import classNames from 'classnames';
-import Button from 'soapbox/components/button';
-import Icon from 'soapbox/components/icon';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   followAccount,
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
+import Button from 'soapbox/components/button';
+import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },

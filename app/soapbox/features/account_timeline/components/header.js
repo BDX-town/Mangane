@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import InnerHeader from '../../account/components/header';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import InnerHeader from '../../account/components/header';
+
 import MovedNote from './moved_note';
 
 export default class Header extends ImmutablePureComponent {
@@ -20,7 +22,7 @@ export default class Header extends ImmutablePureComponent {
     onMute: PropTypes.func.isRequired,
     onBlockDomain: PropTypes.func.isRequired,
     onUnblockDomain: PropTypes.func.isRequired,
-    // onEndorseToggle: PropTypes.func.isRequired,
+    onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
   };
@@ -85,9 +87,9 @@ export default class Header extends ImmutablePureComponent {
     this.props.onChat(this.props.account, this.context.router.history);
   }
 
-  // handleEndorseToggle = () => {
-  //   this.props.onEndorseToggle(this.props.account);
-  // }
+  handleEndorseToggle = () => {
+    this.props.onEndorseToggle(this.props.account);
+  }
 
   handleAddToList = () => {
     this.props.onAddToList(this.props.account);

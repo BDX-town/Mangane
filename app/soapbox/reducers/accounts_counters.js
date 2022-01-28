@@ -1,10 +1,12 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
+
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_UNFOLLOW_SUCCESS,
 } from '../actions/accounts';
 import { ACCOUNT_IMPORT, ACCOUNTS_IMPORT } from '../actions/importer';
-import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const normalizeAccount = (state, account) => state.set(account.id, fromJS({
   followers_count: account.followers_count,

@@ -1,5 +1,6 @@
-import reducer from '../accounts_counters';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../accounts_counters';
 // import { ACCOUNT_FOLLOW_SUCCESS, ACCOUNT_UNFOLLOW_SUCCESS } from 'soapbox/actions/accounts';
 // import relationship from 'soapbox/__fixtures__/relationship.json';
 // import accounts_counter_initial from 'soapbox/__fixtures__/accounts_counter_initial.json';

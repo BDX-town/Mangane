@@ -1,11 +1,12 @@
 'use strict';
 
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { getSettings } from 'soapbox/actions/settings';
 
 const mapStateToProps = state => {

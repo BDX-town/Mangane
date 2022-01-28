@@ -1,8 +1,9 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   BACKUPS_FETCH_SUCCESS,
   BACKUPS_CREATE_SUCCESS,
 } from '../actions/backups';
-import { Map as ImmutableMap, fromJS } from 'immutable';
 
 const initialState = ImmutableMap();
 

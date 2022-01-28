@@ -1,16 +1,19 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import classNames from 'classnames';
-import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
-import LoadMore from './load_more';
-import MoreFollows from './more_follows';
-import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
-import { throttle } from 'lodash';
 import { List as ImmutableList } from 'immutable';
-import LoadingIndicator from './loading_indicator';
+import { throttle } from 'lodash';
+import PropTypes from 'prop-types';
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull_to_refresh';
+
+import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
+import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
+
+import LoadMore from './load_more';
+import LoadingIndicator from './loading_indicator';
+import MoreFollows from './more_follows';
 
 const MOUSE_IDLE_DELAY = 300;
 
@@ -22,7 +25,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default @connect(mapStateToProps)
+export default @connect(mapStateToProps, null, null, { forwardRef: true })
 class ScrollableList extends PureComponent {
 
   static contextTypes = {

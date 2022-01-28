@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+
 import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import { makeGetAccount } from 'soapbox/selectors';
 

@@ -1,5 +1,6 @@
-import reducer from '../group_editor';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../group_editor';
 
 describe('group_editor reducer', () => {
   it('should return the initial state', () => {

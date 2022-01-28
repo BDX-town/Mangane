@@ -1,8 +1,8 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { v4 as uuidv4 } from 'uuid';
 
 export const FormPropTypes = {

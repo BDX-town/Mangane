@@ -1,8 +1,8 @@
 // Detect backend features to conditionally render elements
-import gte from 'semver/functions/gte';
-import lt from 'semver/functions/lt';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
 import { createSelector } from 'reselect';
+import gte from 'semver/functions/gte';
+import lt from 'semver/functions/lt';
 
 const any = arr => arr.some(Boolean);
 
@@ -32,6 +32,7 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       features.includes('v2_suggestions'),
     ]),
+    blockersVisible: features.includes('blockers_visible'),
     trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
@@ -78,6 +79,10 @@ export const getFeatures = createSelector([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
+    remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
   };
 });
 

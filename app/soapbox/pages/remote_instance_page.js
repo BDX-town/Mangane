@@ -1,18 +1,19 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import Sticky from 'react-stickynode';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+
 import PrimaryNavigation from 'soapbox/components/primary_navigation';
+import LinkFooter from 'soapbox/features/ui/components/link_footer';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   PromoPanel,
   FeaturesPanel,
   InstanceInfoPanel,
   InstanceModerationPanel,
 } from 'soapbox/features/ui/util/async-components';
-import LinkFooter from 'soapbox/features/ui/components/link_footer';
-import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 import { isAdmin } from 'soapbox/utils/accounts';
+import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 
 const mapStateToProps = state => {
   const me = state.get('me');

@@ -1,25 +1,27 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import Sticky from 'react-stickynode';
+
 import Helmet from 'soapbox/components/helmet';
-import HeaderContainer from '../features/account_timeline/containers/header_container';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
   SignUpPanel,
   ProfileInfoPanel,
   ProfileMediaPanel,
+  PinnedAccountsPanel,
 } from 'soapbox/features/ui/util/async-components';
-import LinkFooter from '../features/ui/components/link_footer';
-import { getAcct } from 'soapbox/utils/accounts';
-import { displayFqn } from 'soapbox/utils/state';
+import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
+import { getAcct, isLocal } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-import { makeGetAccount } from '../selectors';
-import { Redirect } from 'react-router-dom';
-import { findAccountByUsername } from 'soapbox/selectors';
+import { displayFqn } from 'soapbox/utils/state';
+
+import HeaderContainer from '../features/account_timeline/containers/header_container';
+import LinkFooter from '../features/ui/components/link_footer';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
@@ -116,7 +118,11 @@ class ProfilePage extends ImmutablePureComponent {
                       {Component => <Component account={account} />}
                     </BundleContainer>
                   )}
-                  {features.suggestions && (
+                  {account && features.accountEndorsements && isLocal(account) ? (
+                    <BundleContainer fetchComponent={PinnedAccountsPanel}>
+                      {Component => <Component  account={account} />}
+                    </BundleContainer>
+                  ) : features.suggestions && (
                     <BundleContainer fetchComponent={WhoToFollowPanel}>
                       {Component => <Component />}
                     </BundleContainer>

@@ -1,3 +1,5 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
 import {
   CHATS_FETCH_SUCCESS,
   CHATS_FETCH_REQUEST,
@@ -7,9 +9,8 @@ import {
   CHAT_READ_SUCCESS,
   CHAT_READ_REQUEST,
 } from 'soapbox/actions/chats';
-import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeChat } from 'soapbox/actions/importer/normalizer';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 
 const importChat = (state, chat) => state.setIn(['items', chat.id], fromJS(normalizeChat(chat)));
 

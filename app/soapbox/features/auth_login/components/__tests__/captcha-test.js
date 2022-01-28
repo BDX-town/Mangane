@@ -1,8 +1,10 @@
-import React from 'react';
-import CaptchaField, { NativeCaptchaField } from '../captcha';
-import renderer from 'react-test-renderer';
-import { createComponent } from 'soapbox/test_helpers';
 import { Map as ImmutableMap } from 'immutable';
+import React from 'react';
+import renderer from 'react-test-renderer';
+
+import { createComponent } from 'soapbox/test_helpers';
+
+import CaptchaField, { NativeCaptchaField } from '../captcha';
 
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {

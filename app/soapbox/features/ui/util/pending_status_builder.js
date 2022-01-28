@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+
 import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -27,6 +28,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     muted: false,
     pinned: false,
     poll: pendingStatus.get('poll', null),
+    quote: pendingStatus.get('quote_id', null),
     reblog: null,
     reblogged: false,
     reblogs_count: 0,

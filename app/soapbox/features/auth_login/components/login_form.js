@@ -1,11 +1,12 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { Link } from 'react-router-dom';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import ShowablePassword from 'soapbox/components/showable_password';
 import { getFeatures } from 'soapbox/utils/features';
 import { getBaseURL } from 'soapbox/utils/state';
-import ShowablePassword from 'soapbox/components/showable_password';
 
 const messages = defineMessages({
   username: { id: 'login.fields.username_placeholder', defaultMessage: 'Username' },

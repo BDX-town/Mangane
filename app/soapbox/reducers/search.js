@@ -1,3 +1,11 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
+import {
+  COMPOSE_MENTION,
+  COMPOSE_REPLY,
+  COMPOSE_DIRECT,
+  COMPOSE_QUOTE,
+} from '../actions/compose';
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
@@ -8,12 +16,6 @@ import {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
-import {
-  COMPOSE_MENTION,
-  COMPOSE_REPLY,
-  COMPOSE_DIRECT,
-} from '../actions/compose';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   value: '',
@@ -77,6 +79,7 @@ export default function search(state = initialState, action) {
   case COMPOSE_REPLY:
   case COMPOSE_MENTION:
   case COMPOSE_DIRECT:
+  case COMPOSE_QUOTE:
     return state.set('hidden', true);
   case SEARCH_FETCH_REQUEST:
     return handleSubmitted(state, action.value);

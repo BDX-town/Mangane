@@ -1,7 +1,9 @@
 import React from 'react';
-import LoginPage from '../login_page';
-import { createComponent, mockStore } from 'soapbox/test_helpers';
+
 import rootReducer from 'soapbox/reducers';
+import { createComponent, mockStore } from 'soapbox/test_helpers';
+
+import LoginPage from '../login_page';
 
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {

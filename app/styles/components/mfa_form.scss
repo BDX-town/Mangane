@@ -1,6 +1,10 @@
 .security-settings-panel {
   margin: 20px;
 
+  .simple_form {
+    padding: 0 !important;
+  }
+
   h1.security-settings-panel__setup-otp {
     font-size: 20px;
     line-height: 1.25;
@@ -16,11 +20,6 @@
     font-weight: 400;
   }
 
-  div {
-    display: block;
-    margin: 10px 0;
-  }
-
   .security-warning {
     color: var(--primary-text-color);
     padding: 15px 20px;
@@ -31,7 +30,7 @@
   }
 
   .backup_codes {
-    margin: 20px;
+    margin: 10px 0;
     font-weight: bold;
     padding: 15px 20px;
     font-size: 14px;
@@ -40,33 +39,40 @@
     text-align: center;
     position: relative;
     min-height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     .backup_code {
       margin: 5px auto;
     }
-
-    .loading-indicator {
-      position: absolute;
-    }
   }
 
   .security-settings-panel__setup-otp__buttons {
-    margin: 20px;
+    margin: 15px 0;
     display: flex;
     justify-content: space-between;
 
     .button {
-      min-width: 182px;
+      flex: 1;
     }
   }
 
-  div.confirm-key {
+  &__qr-code {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__confirm-key {
     display: block;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 1.5;
     color: var(--primary-text-color--faint);
     font-weight: 400;
-    margin: 0 0 20px 20px;
+    margin-top: 10px;
   }
 }
 

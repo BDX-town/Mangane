@@ -1,31 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { makeGetAccount } from '../../../selectors';
-import Header from '../components/header';
-import {
-  followAccount,
-  unfollowAccount,
-  blockAccount,
-  unblockAccount,
-  unmuteAccount,
-  // pinAccount,
-  // unpinAccount,
-  subscribeAccount,
-  unsubscribeAccount,
-} from '../../../actions/accounts';
-import {
-  mentionCompose,
-  directCompose,
-} from '../../../actions/compose';
-import { initMuteModal } from '../../../actions/mutes';
-import { initReport } from '../../../actions/reports';
-import { openModal } from '../../../actions/modal';
-import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { List as ImmutableList } from 'immutable';
-import { getSettings } from 'soapbox/actions/settings';
-import { launchChat } from 'soapbox/actions/chats';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   verifyUser,
   unverifyUser,
@@ -35,8 +12,33 @@ import {
   suggestUsers,
   unsuggestUsers,
 } from 'soapbox/actions/admin';
-import { isAdmin } from 'soapbox/utils/accounts';
+import { launchChat } from 'soapbox/actions/chats';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
+import { isAdmin } from 'soapbox/utils/accounts';
+
+import {
+  followAccount,
+  unfollowAccount,
+  blockAccount,
+  unblockAccount,
+  unmuteAccount,
+  pinAccount,
+  unpinAccount,
+  subscribeAccount,
+  unsubscribeAccount,
+} from '../../../actions/accounts';
+import {
+  mentionCompose,
+  directCompose,
+} from '../../../actions/compose';
+import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
+import { openModal } from '../../../actions/modal';
+import { initMuteModal } from '../../../actions/mutes';
+import { initReport } from '../../../actions/reports';
+import { makeGetAccount } from '../../../selectors';
+import Header from '../components/header';
 
 const messages = defineMessages({
   unfollowConfirm: { id: 'confirmations.unfollow.confirm', defaultMessage: 'Unfollow' },
@@ -90,6 +92,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
       dispatch(unblockAccount(account.get('id')));
     } else {
       dispatch(openModal('CONFIRM', {
+        icon: require('@tabler/icons/icons/ban.svg'),
+        heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
         message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
         confirm: intl.formatMessage(messages.blockConfirm),
         onConfirm: () => dispatch(blockAccount(account.get('id'))),
@@ -134,13 +138,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  // onEndorseToggle(account) {
-  //   if (account.getIn(['relationship', 'endorsed'])) {
-  //     dispatch(unpinAccount(account.get('id')));
-  //   } else {
-  //     dispatch(pinAccount(account.get('id')));
-  //   }
-  // },
+  onEndorseToggle(account) {
+    if (account.getIn(['relationship', 'endorsed'])) {
+      dispatch(unpinAccount(account.get('id')));
+    } else {
+      dispatch(pinAccount(account.get('id')));
+    }
+  },
 
   onReport(account) {
     dispatch(initReport(account));
@@ -156,6 +160,8 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onBlockDomain(domain) {
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/ban.svg'),
+      heading: <FormattedMessage id='confirmations.domain_block.heading' defaultMessage='Block {domain}' values={{ domain }} />,
       message: <FormattedMessage id='confirmations.domain_block.message' defaultMessage='Are you really, really sure you want to block the entire {domain}? In most cases a few targeted blocks or mutes are sufficient and preferable. You will not see content from that domain in any public timelines or your notifications.' values={{ domain: <strong>{domain}</strong> }} />,
       confirm: intl.formatMessage(messages.blockDomainConfirm),
       onConfirm: () => dispatch(blockDomain(domain)),

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { generateText, randomIntFromInterval } from '../utils';
 
 export default class PlaceholderHashtag extends React.Component {

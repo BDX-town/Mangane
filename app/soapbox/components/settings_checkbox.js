@@ -1,8 +1,9 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
+
 import { getSettings, changeSetting } from 'soapbox/actions/settings';
 import { Checkbox } from 'soapbox/features/forms';
 

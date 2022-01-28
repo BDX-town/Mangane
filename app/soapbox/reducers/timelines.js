@@ -1,4 +1,21 @@
 import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
+  fromJS,
+} from 'immutable';
+
+import {
+  ACCOUNT_BLOCK_SUCCESS,
+  ACCOUNT_MUTE_SUCCESS,
+  ACCOUNT_UNFOLLOW_SUCCESS,
+} from '../actions/accounts';
+import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
+import {
+  STATUS_CREATE_REQUEST,
+  STATUS_CREATE_SUCCESS,
+} from '../actions/statuses';
+import {
   TIMELINE_UPDATE,
   TIMELINE_DELETE,
   TIMELINE_CLEAR,
@@ -12,22 +29,6 @@ import {
   MAX_QUEUED_ITEMS,
   TIMELINE_SCROLL_TOP,
 } from '../actions/timelines';
-import {
-  ACCOUNT_BLOCK_SUCCESS,
-  ACCOUNT_MUTE_SUCCESS,
-  ACCOUNT_UNFOLLOW_SUCCESS,
-} from '../actions/accounts';
-import {
-  STATUS_CREATE_REQUEST,
-  STATUS_CREATE_SUCCESS,
-} from '../actions/statuses';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-  fromJS,
-} from 'immutable';
-import { GROUP_REMOVE_STATUS_SUCCESS } from '../actions/groups';
 
 const TRUNCATE_LIMIT = 40;
 const TRUNCATE_SIZE  = 20;
@@ -300,8 +301,10 @@ const handleExpandFail = (state, timelineId) => {
 export default function timelines(state = initialState, action) {
   switch(action.type) {
   case STATUS_CREATE_REQUEST:
+    if (action.params.scheduled_at) return state;
     return importPendingStatus(state, action.params, action.idempotencyKey);
   case STATUS_CREATE_SUCCESS:
+    if (action.status.scheduled_at) return state;
     return importStatus(state, action.status, action.idempotencyKey);
   case TIMELINE_EXPAND_REQUEST:
     return setLoading(state, action.timeline, true);

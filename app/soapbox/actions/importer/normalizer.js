@@ -1,4 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
+
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
 
@@ -36,7 +39,12 @@ export function normalizeAccount(account) {
 }
 
 export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
-  const normalStatus   = { ...status };
+  const normalStatus = { ...status };
+
+  // Copy the pleroma object too, so we can modify our copy
+  if (status.pleroma) {
+    normalStatus.pleroma = { ...status.pleroma };
+  }
 
   normalStatus.account = status.account.id;
 
@@ -46,6 +54,18 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
 
   if (status.poll && status.poll.id) {
     normalStatus.poll = status.poll.id;
+  }
+
+  if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+    // Normalize quote to the top-level, so delete the original for performance
+    normalStatus.quote = status.pleroma.quote.id;
+    delete normalStatus.pleroma.quote;
+  } else if (status.quote && status.quote.id) {
+    // Fedibird compatibility, because why not
+    normalStatus.quote = status.quote.id;
+  } else if (status.quote_id) {
+    // Fedibird: fall back to quote_id
+    normalStatus.quote = status.quote_id;
   }
 
   // Only calculate these values when status first encountered
@@ -61,7 +81,7 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
     const emojiMap      = makeEmojiMap(normalStatus);
 
     normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;
-    normalStatus.contentHtml  = emojify(normalStatus.content, emojiMap);
+    normalStatus.contentHtml  = stripCompatibilityFeatures(emojify(normalStatus.content, emojiMap));
     normalStatus.spoilerHtml  = emojify(escapeTextContentForBrowser(spoilerText), emojiMap);
     normalStatus.hidden       = expandSpoilers ? false : spoilerText.length > 0 || normalStatus.sensitive;
   }

@@ -1,5 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import DetailedCryptoAddress from 'soapbox/features/crypto_donate/components/detailed_crypto_address';
 
 export default class CryptoDonateModal extends React.PureComponent {

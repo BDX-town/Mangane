@@ -1,16 +1,18 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from 'soapbox/features/ui/components/column';
-import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
-import { List as ImmutableList } from 'immutable';
-import AccountCard from './components/account_card';
-import RadioButton from 'soapbox/components/radio_button';
 import classNames from 'classnames';
+import { List as ImmutableList } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { fetchDirectory, expandDirectory } from 'soapbox/actions/directory';
 import LoadMore from 'soapbox/components/load_more';
+import RadioButton from 'soapbox/components/radio_button';
+import Column from 'soapbox/features/ui/components/column';
 import { getFeatures } from 'soapbox/utils/features';
+
+import AccountCard from './components/account_card';
 
 const messages = defineMessages({
   title: { id: 'column.directory', defaultMessage: 'Browse profiles' },

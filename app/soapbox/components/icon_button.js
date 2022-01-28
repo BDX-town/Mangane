@@ -1,10 +1,12 @@
-import React from 'react';
-import Motion from '../features/ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import spring from 'react-motion/lib/spring';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+
+import Motion from '../features/ui/util/optional_motion';
 
 export default class IconButton extends React.PureComponent {
 

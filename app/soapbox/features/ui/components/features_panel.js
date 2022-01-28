@@ -1,13 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { NavLink } from 'react-router-dom';
-import { injectIntl, defineMessages } from 'react-intl';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { getFeatures } from 'soapbox/utils/features';
 import { getBaseURL } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit Profile' },

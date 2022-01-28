@@ -94,18 +94,6 @@ export function Following() {
   return import(/* webpackChunkName: "features/following" */'../../following');
 }
 
-export function Reblogs() {
-  return import(/* webpackChunkName: "features/reblogs" */'../../reblogs');
-}
-
-export function Reactions() {
-  return import(/* webpackChunkName: "features/reactions" */'../../reactions');
-}
-
-export function Favourites() {
-  return import(/* webpackChunkName: "features/favourites" */'../../favourites');
-}
-
 export function FollowRequests() {
   return import(/* webpackChunkName: "features/follow_requests" */'../../follow_requests');
 }
@@ -190,6 +178,10 @@ export function ComposeModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/compose_modal');
 }
 
+export function ReplyMentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reply_mentions_modal');
+}
+
 export function UnauthorizedModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/unauthorized_modal');
 }
@@ -204,6 +196,22 @@ export function EmbedModal() {
 
 export function ComponentModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/component_modal');
+}
+
+export function ReblogsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reblogs_modal');
+}
+
+export function FavouritesModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/favourites_modal');
+}
+
+export function ReactionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/reactions_modal');
+}
+
+export function MentionsModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/mentions_modal');
 }
 
 export function ListEditor() {
@@ -330,6 +338,10 @@ export function ProfileMediaPanel() {
   return import(/* webpackChunkName: "features/account_gallery" */'../components/profile_media_panel');
 }
 
+export function PinnedAccountsPanel() {
+  return import(/* webpackChunkName: "features/pinned_accounts" */'../components/pinned_accounts_panel');
+}
+
 export function InstanceInfoPanel() {
   return import(/* webpackChunkName: "features/remote_timeline" */'../components/instance_info_panel');
 }
@@ -436,4 +448,8 @@ export function Developers() {
 
 export function CreateApp() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/apps/create');
+}
+
+export function SettingsStore() {
+  return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
 }

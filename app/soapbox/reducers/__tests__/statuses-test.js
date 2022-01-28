@@ -1,14 +1,44 @@
-import reducer from '../statuses';
 import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { STATUS_IMPORT } from 'soapbox/actions/importer';
+import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
 } from 'soapbox/actions/statuses';
 
+import reducer from '../statuses';
 
 describe('statuses reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap());
+  });
+
+  describe('STATUS_IMPORT', () => {
+    it('fixes the order of mentions', () => {
+      const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
+
+      const result = reducer(undefined, action)
+        .getIn(['AFChectaqZjmOVkXZ2', 'mentions'])
+        .map(mention => mention.get('username'))
+        .toJS();
+
+      expect(result).toEqual(expected);
+    });
+
+    it('preserves the quote', () => {
+      const quotePost = require('soapbox/__fixtures__/pleroma-quote-post.json');
+      const quotedQuotePost = require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
+
+      let state = undefined;
+      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotePost) });
+      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotedQuotePost.pleroma.quote) });
+
+      expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
+    });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {

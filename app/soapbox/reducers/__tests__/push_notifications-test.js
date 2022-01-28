@@ -1,5 +1,6 @@
-import reducer from '../push_notifications';
 import { Map as ImmutableMap } from 'immutable';
+
+import reducer from '../push_notifications';
 
 describe('push_notifications reducer', () => {
   it('should return the initial state', () => {

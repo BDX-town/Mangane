@@ -1,11 +1,13 @@
-import reducer from '../modal';
 import { MODAL_OPEN, MODAL_CLOSE } from 'soapbox/actions/modal';
+
+import reducer from '../modal';
 
 describe('modal reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual({
       modalType: null,
       modalProps: {},
+      noPop: false,
     });
   });
 
@@ -13,6 +15,7 @@ describe('modal reducer', () => {
     const state = {
       modalType: null,
       modalProps: {},
+      noPop: false,
     };
     const action = {
       type: MODAL_OPEN,
@@ -36,6 +39,7 @@ describe('modal reducer', () => {
     expect(reducer(state, action)).toMatchObject({
       modalType: null,
       modalProps: {},
+      noPop: false,
     });
   });
 

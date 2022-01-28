@@ -1,26 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { is as ImmutableIs } from 'immutable';
 import { throttle } from 'lodash';
-import { Link, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import Avatar from './avatar';
-import IconButton from './icon_button';
-import Icon from './icon';
-import DisplayName from './display_name';
-import { closeSidebar } from '../actions/sidebar';
-import { isAdmin, getBaseURL } from '../utils/accounts';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { closeSidebar } from '../actions/sidebar';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { isAdmin, getBaseURL } from '../utils/accounts';
+
+import Avatar from './avatar';
+import DisplayName from './display_name';
+import Icon from './icon';
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -148,6 +151,10 @@ class SidebarMenu extends ImmutablePureComponent {
 
     if (accountChanged || otherAccountsChanged) {
       this.fetchOwnAccounts();
+    }
+
+    if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
+      document.querySelector('.sidebar-menu__close').focus();
     }
   }
 

@@ -4,3 +4,23 @@ export const unescapeHTML = (html) => {
   wrapper.innerHTML = html.replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n').replace(/<[^>]*>/g, '');
   return wrapper.textContent;
 };
+
+export const stripCompatibilityFeatures = html => {
+  const node = document.createElement('div');
+  node.innerHTML = html;
+
+  const selectors = [
+    '.quote-inline',
+    '.recipients-inline',
+  ];
+
+  selectors.forEach(selector => {
+    const elem = node.querySelector(selector);
+
+    if (elem) {
+      elem.remove();
+    }
+  });
+
+  return node.innerHTML;
+};

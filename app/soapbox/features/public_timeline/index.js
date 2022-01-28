@@ -1,17 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from '../../components/column';
-import ColumnSettings from './containers/column_settings_container';
-import Accordion from 'soapbox/features/ui/components/accordion';
-import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
-import { expandPublicTimeline } from '../../actions/timelines';
-import { connectPublicStream } from '../../actions/streaming';
+import React from 'react';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { changeSetting, getSettings } from 'soapbox/actions/settings';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import Accordion from 'soapbox/features/ui/components/accordion';
+
+import { connectPublicStream } from '../../actions/streaming';
+import { expandPublicTimeline } from '../../actions/timelines';
+import Column from '../../components/column';
+import PinnedHostsPicker from '../remote_timeline/components/pinned_hosts_picker';
+import StatusListContainer from '../ui/containers/status_list_container';
+
+import ColumnSettings from './containers/column_settings_container';
 
 const messages = defineMessages({
   title: { id: 'column.public', defaultMessage: 'Fediverse timeline' },

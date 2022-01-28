@@ -1,9 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
-import SettingToggle from '../../notifications/components/setting_toggle';
+
 import IconButton from 'soapbox/components/icon_button';
+
+import SettingToggle from '../../notifications/components/setting_toggle';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },

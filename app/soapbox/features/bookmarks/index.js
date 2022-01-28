@@ -1,14 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import Column from 'soapbox/components/column';
 import SubNavigation from 'soapbox/components/sub_navigation';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusList from '../../components/status_list';
+
 import { fetchBookmarkedStatuses, expandBookmarkedStatuses } from '../../actions/bookmarks';
-import { debounce } from 'lodash';
+import StatusList from '../../components/status_list';
 
 const messages = defineMessages({
   heading: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },

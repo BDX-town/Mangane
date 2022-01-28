@@ -1,27 +1,33 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
 import {
   fetchAccount,
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
-import { expandAccountMediaTimeline } from '../../actions/timelines';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
-import Column from '../ui/components/column';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
-import MediaItem from './components/media_item';
-import LoadMore from 'soapbox/components/load_more';
-import MissingIndicator from 'soapbox/components/missing_indicator';
 import { openModal } from 'soapbox/actions/modal';
-import { NavLink } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import Column from 'soapbox/components/column';
+import LoadMore from 'soapbox/components/load_more';
+import LoadingIndicator from 'soapbox/components/loading_indicator';
+import MissingIndicator from 'soapbox/components/missing_indicator';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import { getAccountGallery, findAccountByUsername } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
+
+import { expandAccountMediaTimeline } from '../../actions/timelines';
+
+import MediaItem from './components/media_item';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const me = state.get('me');
   const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
+  const features = getFeatures(state.get('instance'));
 
   let accountId = -1;
   let accountUsername = username;
@@ -34,7 +40,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   }
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     accountId,
@@ -186,6 +192,7 @@ class AccountGallery extends ImmutablePureComponent {
 
     return (
       <Column>
+        <SubNavigation message={`@${accountUsername}`} />
         <div className='slist slist--flex' onScroll={this.handleScroll}>
           <div className='account__section-headline'>
             <div style={{ width: '100%', display: 'flex' }}>

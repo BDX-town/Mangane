@@ -1,11 +1,13 @@
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+
 import api, { getLinks } from '../api';
+
 import {
   importFetchedAccount,
   importFetchedAccounts,
   importErrorWhileFetchingAccountByUsername,
 } from './importer';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
 
 export const ACCOUNT_CREATE_REQUEST = 'ACCOUNT_CREATE_REQUEST';
 export const ACCOUNT_CREATE_SUCCESS = 'ACCOUNT_CREATE_SUCCESS';
@@ -54,6 +56,10 @@ export const ACCOUNT_PIN_FAIL    = 'ACCOUNT_PIN_FAIL';
 export const ACCOUNT_UNPIN_REQUEST = 'ACCOUNT_UNPIN_REQUEST';
 export const ACCOUNT_UNPIN_SUCCESS = 'ACCOUNT_UNPIN_SUCCESS';
 export const ACCOUNT_UNPIN_FAIL    = 'ACCOUNT_UNPIN_FAIL';
+
+export const PINNED_ACCOUNTS_FETCH_REQUEST = 'PINNED_ACCOUNTS_FETCH_REQUEST';
+export const PINNED_ACCOUNTS_FETCH_SUCCESS = 'PINNED_ACCOUNTS_FETCH_SUCCESS';
+export const PINNED_ACCOUNTS_FETCH_FAIL = 'PINNED_ACCOUNTS_FETCH_FAIL';
 
 export const ACCOUNT_SEARCH_REQUEST = 'ACCOUNT_SEARCH_REQUEST';
 export const ACCOUNT_SEARCH_SUCCESS = 'ACCOUNT_SEARCH_SUCCESS';
@@ -148,8 +154,16 @@ export function fetchAccountByUsername(username) {
 
     const instance = state.get('instance');
     const features = getFeatures(instance);
+    const me = state.get('me');
 
-    if (features.accountByUsername) {
+    if (!me && features.accountLookup) {
+      dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchAccountSuccess(account));
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    } else if (features.accountByUsername) {
       api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
@@ -948,6 +962,43 @@ export function unpinAccountSuccess(relationship) {
 export function unpinAccountFail(error) {
   return {
     type: ACCOUNT_UNPIN_FAIL,
+    error,
+  };
+}
+
+export function fetchPinnedAccounts(id) {
+  return (dispatch, getState) => {
+    dispatch(fetchPinnedAccountsRequest(id));
+
+    api(getState).get(`/api/v1/pleroma/accounts/${id}/endorsements`).then(response => {
+      dispatch(importFetchedAccounts(response.data));
+      dispatch(fetchPinnedAccountsSuccess(id, response.data, null));
+    }).catch(error => {
+      dispatch(fetchPinnedAccountsFail(id, error));
+    });
+  };
+}
+
+export function fetchPinnedAccountsRequest(id) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_REQUEST,
+    id,
+  };
+}
+
+export function fetchPinnedAccountsSuccess(id, accounts, next) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_SUCCESS,
+    id,
+    accounts,
+    next,
+  };
+}
+
+export function fetchPinnedAccountsFail(id, error) {
+  return {
+    type: PINNED_ACCOUNTS_FETCH_FAIL,
+    id,
     error,
   };
 }

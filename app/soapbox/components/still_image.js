@@ -1,8 +1,9 @@
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+
 import { getSettings } from 'soapbox/actions/settings';
-import classNames from 'classnames';
 
 const mapStateToProps = state => ({
   autoPlayGif: getSettings(state).get('autoPlayGif'),

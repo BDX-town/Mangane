@@ -1,50 +1,30 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
-import { Link } from 'react-router-dom';
-import Column from '../ui/components/column';
-import Icon from 'soapbox/components/icon';
+import React from 'react';
+import { connect } from 'react-redux';
 
-const messages = defineMessages({
-  heading: { id: 'column.developers', defaultMessage: 'Developers' },
-});
+import { getSettings } from 'soapbox/actions/settings';
 
-export default @injectIntl
+import DevelopersChallenge from './developers_challenge';
+import DevelopersMenu from './developers_menu';
+
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+
+  return {
+    isDeveloper: settings.get('isDeveloper'),
+  };
+};
+
+export default @connect(mapStateToProps)
 class Developers extends React.Component {
 
   static propTypes = {
-    intl: PropTypes.object.isRequired,
+    isDeveloper: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { intl } = this.props;
-
-    return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <div className='dashcounters'>
-          <div className='dashcounter'>
-            <Link to='/developers/apps/create'>
-              <div className='dashcounter__icon'>
-                <Icon src={require('@tabler/icons/icons/apps.svg')} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='developers.navigation.app_create_label' defaultMessage='Create an app' />
-              </div>
-            </Link>
-          </div>
-          <div className='dashcounter'>
-            <Link to='/error'>
-              <div className='dashcounter__icon'>
-                <Icon src={require('@tabler/icons/icons/mood-sad.svg')} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
-              </div>
-            </Link>
-          </div>
-        </div>
-      </Column>
-    );
+    const { isDeveloper } = this.props;
+    return isDeveloper ? <DevelopersMenu /> : <DevelopersChallenge />;
   }
 
 }

@@ -1,15 +1,18 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Icon from 'soapbox/components/icon';
+import { makeGetAccount } from 'soapbox/selectors';
+
+import { removeFromAliases } from '../../actions/aliases';
+import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
-import ScrollableList from '../../components/scrollable_list';
-import Icon from 'soapbox/components/icon';
-import Search from './components/search';
+
 import Account from './components/account';
-import { removeFromAliases } from '../../actions/aliases';
-import { makeGetAccount } from 'soapbox/selectors';
+import Search from './components/search';
 
 const messages = defineMessages({
   heading: { id: 'column.aliases', defaultMessage: 'Account aliases' },

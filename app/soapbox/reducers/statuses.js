@@ -1,6 +1,17 @@
+import { Map as ImmutableMap, fromJS } from 'immutable';
+
+import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+
+import {
+  EMOJI_REACT_REQUEST,
+  UNEMOJI_REACT_REQUEST,
+} from '../actions/emoji_reacts';
+import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
 import {
   REBLOG_REQUEST,
   REBLOG_FAIL,
+  UNREBLOG_REQUEST,
+  UNREBLOG_FAIL,
   FAVOURITE_REQUEST,
   UNFAVOURITE_REQUEST,
   FAVOURITE_FAIL,
@@ -13,16 +24,50 @@ import {
   STATUS_REVEAL,
   STATUS_HIDE,
 } from '../actions/statuses';
-import {
-  EMOJI_REACT_REQUEST,
-  UNEMOJI_REACT_REQUEST,
-} from '../actions/emoji_reacts';
 import { TIMELINE_DELETE } from '../actions/timelines';
-import { STATUS_IMPORT, STATUSES_IMPORT } from '../actions/importer';
-import { Map as ImmutableMap, fromJS } from 'immutable';
-import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
-const importStatus = (state, status) => state.set(status.id, fromJS(status));
+// Fix order of mentions
+const fixMentions = status => {
+  const mentions = status.get('mentions');
+  const inReplyToAccountId = status.get('in_reply_to_account_id');
+
+  // Sort the replied-to mention to the top
+  const sorted = mentions.sort((a, b) => {
+    if (a.get('id') === inReplyToAccountId) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+
+  return status.set('mentions', sorted);
+};
+
+const isQuote = status => {
+  return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
+};
+
+// Preserve quote if an existing status already has it
+const fixQuote = (state, status) => {
+  const oldStatus = state.get(status.get('id'));
+
+  if (oldStatus && !status.get('quote') && isQuote(status)) {
+    return status
+      .set('quote', oldStatus.get('quote'))
+      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.getIn(['pleroma', 'quote_visible']));
+  } else {
+    return status;
+  }
+};
+
+const fixStatus = (state, status) => {
+  return status.withMutations(status => {
+    fixMentions(status);
+    fixQuote(state, status);
+  });
+};
+
+const importStatus = (state, status) => state.set(status.id, fixStatus(state, fromJS(status)));
 
 const importStatuses = (state, statuses) =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
@@ -91,6 +136,10 @@ export default function statuses(state = initialState, action) {
     return state.setIn([action.status.get('id'), 'reblogged'], true);
   case REBLOG_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], false);
+  case UNREBLOG_REQUEST:
+    return state.setIn([action.status.get('id'), 'reblogged'], false);
+  case UNREBLOG_FAIL:
+    return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'reblogged'], true);
   case STATUS_MUTE_SUCCESS:
     return state.setIn([action.id, 'muted'], true);
   case STATUS_UNMUTE_SUCCESS:

@@ -39,6 +39,13 @@
     overflow: hidden;
     position: relative;
 
+    &__info {
+      z-index: 1;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
     &__action-button {
       z-index: 1;
       position: absolute;

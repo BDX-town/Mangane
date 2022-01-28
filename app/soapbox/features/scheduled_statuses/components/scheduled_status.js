@@ -1,17 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import StatusContent from 'soapbox/components/status_content';
-import { buildStatus } from '../builder';
 import classNames from 'classnames';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
+
+import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
-import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
+import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import StatusContent from 'soapbox/components/status_content';
 import PollPreview from 'soapbox/features/ui/components/poll_preview';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import { buildStatus } from '../builder';
+
 import ScheduledStatusActionBar from './scheduled_status_action_bar';
 
 const mapStateToProps = (state, props) => {
@@ -25,7 +27,7 @@ export default @connect(mapStateToProps)
 class ScheduledStatus extends ImmutablePureComponent {
 
   render() {
-    const { status, showThread, account, ...other } = this.props;
+    const { status, account, ...other } = this.props;
     if (!status.get('account')) return null;
 
     const statusUrl = `/scheduled_statuses/${status.get('id')}`;
@@ -67,18 +69,14 @@ class ScheduledStatus extends ImmutablePureComponent {
               collapsable
             />
 
-            <AttachmentThumbs
-              compact
-              media={status.get('media_attachments')}
-            />
+            {status.get('media_attachments').size > 0 && (
+              <AttachmentThumbs
+                compact
+                media={status.get('media_attachments')}
+              />
+            )}
 
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
 
             <ScheduledStatusActionBar status={status} account={account} {...other} />
           </div>

@@ -1,11 +1,20 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+} from 'immutable';
+import { unescape } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { updateNotificationSettings } from 'soapbox/actions/accounts';
+import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
-import Column from '../ui/components/column';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   FieldsGroup,
@@ -14,20 +23,14 @@ import {
   FileChooser,
   SimpleTextarea,
 } from 'soapbox/features/forms';
-import ProfilePreview from './components/profile_preview';
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-} from 'immutable';
-import { patchMe } from 'soapbox/actions/me';
-import { updateNotificationSettings } from 'soapbox/actions/accounts';
-import Icon from 'soapbox/components/icon';
-import { unescape } from 'lodash';
-import { isVerified } from 'soapbox/utils/accounts';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { getFeatures } from 'soapbox/utils/features';
 import { makeGetAccount } from 'soapbox/selectors';
+import { isVerified } from 'soapbox/utils/accounts';
+import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
+
+import Column from '../ui/components/column';
+
+import ProfilePreview from './components/profile_preview';
 
 const hidesNetwork = account => {
   const pleroma = account.get('pleroma');

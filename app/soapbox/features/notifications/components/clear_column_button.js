@@ -1,6 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import Icon from 'soapbox/components/icon';
 
 export default class ClearColumnButton extends React.PureComponent {

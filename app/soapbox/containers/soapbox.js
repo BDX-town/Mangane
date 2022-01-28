@@ -1,36 +1,35 @@
 'use strict';
 
-import React from 'react';
-import { Provider, connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import Helmet from 'soapbox/components/helmet';
 import classNames from 'classnames';
-import configureStore from '../store/configureStore';
-import { INTRODUCTION_VERSION } from '../actions/onboarding';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { IntlProvider } from 'react-intl';
+import { Provider, connect } from 'react-redux';
 import { Switch, BrowserRouter, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
-import UI from '../features/ui';
+
 // import Introduction from '../features/introduction';
-import { preload } from '../actions/preload';
-import { IntlProvider } from 'react-intl';
-import ErrorBoundary from '../components/error_boundary';
 import { loadInstance } from 'soapbox/actions/instance';
-import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchMe } from 'soapbox/actions/me';
-import PublicLayout from 'soapbox/features/public_layout';
 import { getSettings } from 'soapbox/actions/settings';
+import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { generateThemeCss } from 'soapbox/utils/theme';
-import messages from 'soapbox/locales/messages';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import Helmet from 'soapbox/components/helmet';
+import PublicLayout from 'soapbox/features/public_layout';
 import { createGlobals } from 'soapbox/globals';
+import messages from 'soapbox/locales/messages';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { generateThemeCss } from 'soapbox/utils/theme';
+
+import { INTRODUCTION_VERSION } from '../actions/onboarding';
+import { preload } from '../actions/preload';
+import ErrorBoundary from '../components/error_boundary';
+import UI from '../features/ui';
+import configureStore from '../store/configureStore';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
-
-const previewMediaState = 'previewMediaModal';
-const previewVideoState = 'previewVideoModal';
 
 export const store = configureStore();
 
@@ -55,6 +54,9 @@ const mapStateToProps = (state) => {
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
+  // In demo mode, force the default brand color
+  const brandColor = settings.get('demo') ? '#0482d8' : soapboxConfig.get('brandColor');
+
   return {
     showIntroduction,
     me,
@@ -64,11 +66,11 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
-    themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
+    themeCss: generateThemeCss(brandColor),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     halloween: settings.get('halloween'),
-    customCss: soapboxConfig.get('customCss'),
+    customCss: settings.get('demo') ? null : soapboxConfig.get('customCss'),
   };
 };
 
@@ -117,8 +119,8 @@ class SoapboxMount extends React.PureComponent {
     this.maybeUpdateMessages(prevProps);
   }
 
-  shouldUpdateScroll(_, { location }) {
-    return location.state !== previewMediaState && location.state !== previewVideoState;
+  shouldUpdateScroll(prevRouterProps, { location }) {
+    return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   }
 
   render() {
