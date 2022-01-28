@@ -52,7 +52,9 @@ const fixQuote = (state, status) => {
   const oldStatus = state.get(status.get('id'));
 
   if (oldStatus && !status.get('quote') && isQuote(status)) {
-    return status.set('quote', oldStatus.get('quote'));
+    return status
+      .set('quote', oldStatus.get('quote'))
+      .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.getIn(['pleroma', 'quote_visible']));
   } else {
     return status;
   }
