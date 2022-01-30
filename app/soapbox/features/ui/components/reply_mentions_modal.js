@@ -36,27 +36,25 @@ const makeMapStateToProps = () => {
     return {
       mentions,
       author: status.getIn(['account', 'id']),
-      to: state.getIn(['compose', 'to']),
+      // to: state.getIn(['compose', 'to']),
       isReply: true,
     };
   };
 };
 
-class ComposeModal extends ImmutablePureComponent {
+class ReplyMentionsModal extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    mentions: ImmutablePropTypes.OrderedSet,
     author: PropTypes.string,
     intl: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
-    inReplyTo: PropTypes.string,
     dispatch: PropTypes.func.isRequired,
   };
 
   onClickClose = () => {
-    const { onClose, onCancel } = this.props;
-    onClose('COMPOSE');
-    if (onCancel) onCancel();
+    const { onClose } = this.props;
+    onClose('REPLY_MENTIONS');
   };
 
   render() {
@@ -85,4 +83,4 @@ class ComposeModal extends ImmutablePureComponent {
 
 }
 
-export default injectIntl(connect(makeMapStateToProps)(ComposeModal));
+export default injectIntl(connect(makeMapStateToProps)(ReplyMentionsModal));

@@ -60,8 +60,8 @@ class ReblogsModal extends React.PureComponent {
     }
   }
 
-  onClickClose = (_, noPop) => {
-    this.props.onClose('REBLOGS', noPop);
+  onClickClose = () => {
+    this.props.onClose('REBLOGS');
   };
 
   render() {

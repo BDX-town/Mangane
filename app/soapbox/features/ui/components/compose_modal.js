@@ -5,10 +5,10 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { cancelReplyCompose } from 'soapbox/actions/compose';
+import { openModal, closeModal } from 'soapbox/actions/modal';
 import IconButton from 'soapbox/components/icon_button';
 
-import { cancelReplyCompose } from '../../../actions/compose';
-import { openModal } from '../../../actions/modal';
 import ComposeFormContainer from '../../compose/containers/compose_form_container';
 
 const messages = defineMessages({
@@ -49,8 +49,10 @@ class ComposeModal extends ImmutablePureComponent {
         heading: <FormattedMessage id='confirmations.delete.heading' defaultMessage='Delete post' />,
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
-        onConfirm: () => dispatch(cancelReplyCompose()),
-        onCancel: () => dispatch(openModal('COMPOSE')),
+        onConfirm: () => {
+          dispatch(closeModal('COMPOSE'));
+          dispatch(cancelReplyCompose());
+        },
       }));
     } else {
       onClose('COMPOSE');

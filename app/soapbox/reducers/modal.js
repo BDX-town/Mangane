@@ -1,22 +1,24 @@
+import { List as ImmutableList } from 'immutable';
+
 import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modal';
 
-const initialState = {
-  modalType: null,
-  modalProps: {},
-  noPop: false,
-};
+const initialState = ImmutableList();
 
 export default function modal(state = initialState, action) {
   switch(action.type) {
   case MODAL_OPEN:
-    return { modalType: action.modalType, modalProps: action.modalProps };
+    return state.push({ modalType: action.modalType, modalProps: action.modalProps });
   case MODAL_CLOSE:
-    return {
-      ...(action.modalType === undefined || action.modalType === state.modalType)
-        ? initialState
-        : state,
-      noPop: !!action.noPop,
-    };
+    if (state.size === 0) {
+      return state;
+    }
+    if (action.modalType === undefined) {
+      return state.pop();
+    }
+    if (state.some(({ modalType }) => action.modalType === modalType)) {
+      return state.slice(0, state.findLastIndex(({ modalType }) => action.modalType === modalType));
+    }
+    return state;
   default:
     return state;
   }

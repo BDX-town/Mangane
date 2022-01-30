@@ -38,9 +38,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
   onOpenMentionsModal() {
-    dispatch(openModal('REPLY_MENTIONS', {
-      onCancel: () => dispatch(openModal('COMPOSE')),
-    }));
+    dispatch(openModal('REPLY_MENTIONS'));
   },
 });
 

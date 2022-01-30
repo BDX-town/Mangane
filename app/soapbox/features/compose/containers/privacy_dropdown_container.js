@@ -6,7 +6,7 @@ import { isUserTouching } from '../../../is_mobile';
 import PrivacyDropdown from '../components/privacy_dropdown';
 
 const mapStateToProps = state => ({
-  isModalOpen: state.get('modal').modalType === 'ACTIONS',
+  isModalOpen: state.get('modal').size && state.get('modal').last().modalType === 'ACTIONS',
   value: state.getIn(['compose', 'privacy']),
 });
 

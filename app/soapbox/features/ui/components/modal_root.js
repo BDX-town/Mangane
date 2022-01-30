@@ -64,7 +64,6 @@ export default class ModalRoot extends React.PureComponent {
   static propTypes = {
     type: PropTypes.string,
     props: PropTypes.object,
-    noPop: PropTypes.bool,
     onClose: PropTypes.func.isRequired,
   };
 
@@ -88,17 +87,17 @@ export default class ModalRoot extends React.PureComponent {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
   }
 
-  onClickClose = (_, noPop) => {
+  onClickClose = (_) => {
     const { onClose, type } = this.props;
-    onClose(type, noPop);
+    onClose(type);
   }
 
   render() {
-    const { type, props, noPop } = this.props;
+    const { type, props } = this.props;
     const visible = !!type;
 
     return (
-      <Base onClose={this.onClickClose} type={type} noPop={noPop}>
+      <Base onClose={this.onClickClose} type={type}>
         {visible && (
           <BundleContainer fetchComponent={MODAL_COMPONENTS[type]} loading={this.renderLoading(type)} error={this.renderError} renderDelay={200}>
             {(SpecificComponent) => <SpecificComponent {...props} onClose={this.onClickClose} />}
