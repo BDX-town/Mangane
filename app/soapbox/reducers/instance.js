@@ -28,21 +28,59 @@ const nodeinfoToInstance = nodeinfo => {
   });
 };
 
-// Set Mastodon defaults, overridden by Pleroma servers
+// Use Mastodon defaults
 const initialState = ImmutableMap({
-  max_toot_chars: 500,
   description_limit: 1500,
-  poll_limits: ImmutableMap({
-    max_expiration: 2629746,
-    max_option_chars: 25,
-    max_options: 4,
-    min_expiration: 300,
+  configuration: ImmutableMap({
+    statuses: ImmutableMap({
+      max_characters: 500,
+    }),
+    polls: ImmutableMap({
+      max_options: 4,
+      max_characters_per_option: 25,
+      min_expiration: 300,
+      max_expiration: 2629746,
+    }),
   }),
   version: '0.0.0',
 });
 
+// Build Mastodon configuration from Pleroma instance
+const pleromaToMastodonConfig = instance => {
+  return {
+    statuses: ImmutableMap({
+      max_characters: instance.get('max_toot_chars'),
+    }),
+    polls: ImmutableMap({
+      max_options: instance.getIn(['poll_limits', 'max_options']),
+      max_characters_per_option: instance.getIn(['poll_limits', 'max_option_chars']),
+      min_expiration: instance.getIn(['poll_limits', 'min_expiration']),
+      max_expiration: instance.getIn(['poll_limits', 'max_expiration']),
+    }),
+  };
+};
+
+// Use new value only if old value is undefined
+const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
+
+// Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
+const normalizeInstance = instance => {
+  const mastodonConfig = pleromaToMastodonConfig(instance);
+
+  return instance.withMutations(instance => {
+    // Merge configuration
+    instance.update('configuration', ImmutableMap(), configuration => (
+      configuration.mergeDeepWith(mergeDefined, mastodonConfig)
+    ));
+
+    // Merge defaults & cleanup
+    instance.mergeDeepWith(mergeDefined, initialState);
+    instance.deleteAll(['max_toot_chars', 'poll_limits']);
+  });
+};
+
 const importInstance = (state, instance) => {
-  return initialState.mergeDeep(instance);
+  return normalizeInstance(instance);
 };
 
 const importNodeinfo = (state, nodeinfo) => {
