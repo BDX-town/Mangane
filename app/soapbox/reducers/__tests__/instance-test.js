@@ -11,6 +11,7 @@ describe('instance reducer', () => {
       configuration: ImmutableMap({
         statuses: ImmutableMap({
           max_characters: 500,
+          max_media_attachments: 4,
         }),
         polls: ImmutableMap({
           max_options: 4,
@@ -36,6 +37,7 @@ describe('instance reducer', () => {
         configuration: {
           statuses: {
             max_characters: 5000,
+            max_media_attachments: Infinity,
           },
           polls: {
             max_options: 20,
@@ -95,6 +97,7 @@ describe('instance reducer', () => {
         configuration: {
           statuses: {
             max_characters: 500,
+            max_media_attachments: 4,
           },
           polls: {
             max_options: 4,

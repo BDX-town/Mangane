@@ -4,6 +4,8 @@ import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbo
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
 import KVStore from 'soapbox/storage/kv_store';
 import { ConfigDB } from 'soapbox/utils/config_db';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { isNumber } from 'soapbox/utils/numbers';
 
 import {
   INSTANCE_REMEMBER_SUCCESS,
@@ -34,6 +36,7 @@ const initialState = ImmutableMap({
   configuration: ImmutableMap({
     statuses: ImmutableMap({
       max_characters: 500,
+      max_media_attachments: 4,
     }),
     polls: ImmutableMap({
       max_options: 4,
@@ -63,8 +66,12 @@ const pleromaToMastodonConfig = instance => {
 // Use new value only if old value is undefined
 const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
+// Get the software's default attachment limit
+const getAttachmentLimit = software => software === PLEROMA ? Infinity : 4;
+
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
 const normalizeInstance = instance => {
+  const { software } = parseVersion(instance.get('version'));
   const mastodonConfig = pleromaToMastodonConfig(instance);
 
   return instance.withMutations(instance => {
@@ -72,6 +79,11 @@ const normalizeInstance = instance => {
     instance.update('configuration', ImmutableMap(), configuration => (
       configuration.mergeDeepWith(mergeDefined, mastodonConfig)
     ));
+
+    // If max attachments isn't set, check the backend software
+    instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
+      return isNumber(value) ? value : getAttachmentLimit(software);
+    });
 
     // Merge defaults & cleanup
     instance.mergeDeepWith(mergeDefined, initialState);
