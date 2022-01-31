@@ -33,7 +33,7 @@ const validLocale = locale => Object.keys(messages).includes(locale);
 
 // Delay rendering until instance has loaded or failed (for feature detection)
 const isInstanceLoaded = state => {
-  const v = state.getIn(['instance', 'version']);
+  const v = state.getIn(['instance', 'version'], '0.0.0');
   const fetchFailed = state.getIn(['meta', 'instance_fetch_failed'], false);
 
   return v !== '0.0.0' || fetchFailed;
