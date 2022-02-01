@@ -199,11 +199,11 @@ class PollForm extends ImmutablePureComponent {
 }
 
 const mapStateToProps = state => {
-  const pollLimits = state.getIn(['instance', 'poll_limits']);
+  const pollLimits = state.getIn(['instance', 'configuration', 'polls']);
 
   return {
     maxOptions: pollLimits.get('max_options'),
-    maxOptionChars: pollLimits.get('max_option_chars'),
+    maxOptionChars: pollLimits.get('max_characters_per_option'),
     maxExpiration: pollLimits.get('max_expiration'),
     minExpiration: pollLimits.get('min_expiration'),
   };

@@ -49,7 +49,6 @@ export const getFeatures = createSelector([
     ]),
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
-    attachmentLimit: v.software === PLEROMA ? Infinity : 4,
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
     importAPI: v.software === PLEROMA,
     importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
