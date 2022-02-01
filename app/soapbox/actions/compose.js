@@ -81,6 +81,7 @@ const messages = defineMessages({
   uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.'  },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
+  view: { id: 'snackbar.view', defaultMessage: 'View' },
 });
 
 const COMPOSE_PANEL_BREAKPOINT = 600 + (285 * 1) + (10 * 1);
@@ -190,7 +191,7 @@ export function handleComposeSubmit(dispatch, getState, data, status) {
 
   dispatch(insertIntoTagHistory(data.tags || [], status));
   dispatch(submitComposeSuccess({ ...data }));
-  dispatch(snackbar.success(messages.success));
+  dispatch(snackbar.success(messages.success, messages.view, `/@${data.account.acct}/posts/${data.id}`));
 }
 
 const needsDescriptions = state => {
