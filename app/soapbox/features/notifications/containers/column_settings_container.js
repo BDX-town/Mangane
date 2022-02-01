@@ -24,6 +24,7 @@ const mapStateToProps = state => {
     settings: getSettings(state).get('notifications'),
     pushSettings: state.get('push_notifications'),
     supportsEmojiReacts: features.emojiReacts,
+    supportsBirthdays: features.birthdays,
   };
 };
 

@@ -80,6 +80,41 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     return badges;
   }
 
+  getBirthday = () => {
+    const { account, intl } = this.props;
+
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    if (!birthday) return null;
+
+    const formattedBirthday = intl.formatDate(birthday, { day: 'numeric', month: 'long', year: 'numeric' });
+
+    const date = new Date(birthday);
+    const today = new Date();
+
+    const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+
+    if (hasBirthday) {
+      return (
+        <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
+          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <FormattedMessage
+            id='account.birthday_today' defaultMessage='Birthday is today!'
+          />
+        </div>
+      );
+    }
+    return (
+      <div className='profile-info-panel-content__birthday'>
+        <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+        <FormattedMessage
+          id='account.birthday' defaultMessage='Born {date}' values={{
+            date: formattedBirthday,
+          }}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { account, displayFqn, intl, identity_proofs, username } = this.props;
 
@@ -149,6 +184,8 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               }}
             />
           </div>}
+
+          {this.getBirthday()}
 
           <ProfileStats
             className='profile-info-panel-content__stats'

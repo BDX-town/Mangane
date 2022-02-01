@@ -89,3 +89,18 @@
     padding-bottom: 8px !important;
   }
 }
+
+.notification-birthday span[type="button"] {
+  &:focus,
+  &:hover,
+  &:active {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.columns-area .notification-birthday {
+  .notification__message {
+    padding-top: 0;
+  }
+}
