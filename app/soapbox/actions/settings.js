@@ -100,6 +100,10 @@ export const defaultSettings = ImmutableMap({
       move: false,
       'pleroma:emoji_reaction': false,
     }),
+
+    birthdays: ImmutableMap({
+      show: true,
+    }),
   }),
 
   community: ImmutableMap({

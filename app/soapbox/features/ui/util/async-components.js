@@ -214,6 +214,10 @@ export function MentionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/mentions_modal');
 }
 
+export function BirthdaysModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
+}
+
 export function ListEditor() {
   return import(/* webpackChunkName: "features/list_editor" */'../../list_editor');
 }

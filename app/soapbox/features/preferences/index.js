@@ -32,6 +32,7 @@ export const languages = {
   da: 'Dansk',
   de: 'Deutsch',
   el: 'Ελληνικά',
+  'en-Shaw': '𐑖𐑱𐑝𐑾𐑯',
   eo: 'Esperanto',
   es: 'Español',
   eu: 'Euskara',

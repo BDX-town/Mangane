@@ -554,3 +554,9 @@ a .account__avatar {
     padding-right: 3px;
   }
 }
+
+.account__birthday {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}

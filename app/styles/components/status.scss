@@ -804,6 +804,12 @@ a.status-card.compact:hover {
   }
 
   &__content {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    max-height: 114px;
     margin-top: 5px;
     font-size: 14px;
 
@@ -819,5 +825,15 @@ a.status-card.compact:hover {
 
   .attachment-thumbs .media-gallery {
     margin-top: 5px !important;
+  }
+
+  &-tombstone {
+    margin-top: 14px;
+    padding: 12px;
+    border: 1px solid var(--brand-color--med);
+    border-radius: 10px;
+    color: var(--primary-text-color--faint);
+    font-size: 14px;
+    text-align: center;
   }
 }

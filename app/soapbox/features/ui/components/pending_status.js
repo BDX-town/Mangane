@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -9,9 +10,10 @@ import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
-import PlaceholderMediaGallery from '../../placeholder/components/placeholder_media_gallery';
 import { buildStatus } from '../util/pending_status_builder';
 
 import PollPreview from './poll_preview';
@@ -29,6 +31,7 @@ const mapStateToProps = (state, props) => {
 };
 
 export default @connect(mapStateToProps)
+@injectIntl
 class PendingStatus extends ImmutablePureComponent {
 
   renderMedia = () => {
@@ -40,11 +43,61 @@ class PendingStatus extends ImmutablePureComponent {
           media={status.get('media_attachments')}
         />
       );
-    } else if (shouldHaveCard(status)) {
+    } else if (!status.get('quote') && shouldHaveCard(status)) {
       return <PlaceholderCard />;
     } else {
       return null;
     }
+  }
+
+  renderReplyMentions = () => {
+    const { status } = this.props;
+
+    if (!status.get('in_reply_to_id')) {
+      return null;
+    }
+
+    const to = status.get('mentions', []);
+
+    if (to.size === 0) {
+      if (status.get('in_reply_to_account_id') === status.getIn(['account', 'id'])) {
+        return (
+          <div className='reply-mentions'>
+            <FormattedMessage
+              id='reply_mentions.reply'
+              defaultMessage='Replying to {accounts}{more}'
+              values={{
+                accounts: <span className='reply-mentions__account'>@{status.getIn(['account', 'username'])}</span>,
+                more: false,
+              }}
+            />
+          </div>
+        );
+      } else {
+        return (
+          <div className='reply-mentions'>
+            <FormattedMessage id='reply_mentions.reply_empty' defaultMessage='Replying to post' />
+          </div>
+        );
+      }
+    }
+
+
+    return (
+      <div className='reply-mentions'>
+        <FormattedMessage
+          id='reply_mentions.reply'
+          defaultMessage='Replying to {accounts}{more}'
+          values={{
+            accounts: to.slice(0, 2).map(account => (<>
+              <span key={account.username} className='reply-mentions__account'>@{account.username}</span>
+              {' '}
+            </>)),
+            more: to.size > 2 && <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />,
+          }}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -84,6 +137,8 @@ class PendingStatus extends ImmutablePureComponent {
               </div>
             </div>
 
+            {this.renderReplyMentions()}
+
             <StatusContent
               status={status}
               expanded
@@ -92,6 +147,8 @@ class PendingStatus extends ImmutablePureComponent {
 
             {this.renderMedia()}
             {status.get('poll') && <PollPreview poll={status.get('poll')} />}
+
+            {status.get('quote') && <QuotedStatus statusId={status.get('quote')} />}
 
             {/* TODO */}
             {/* <PlaceholderActionBar /> */}

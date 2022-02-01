@@ -12,6 +12,7 @@ export default {
   'de': () => import(/* webpackChunkName: "locale_de" */'./de.json'),
   'el': () => import(/* webpackChunkName: "locale_el" */'./el.json'),
   'en': () => import(/* webpackChunkName: "locale_en" */'./en.json'),
+  'en-Shaw': () => import(/* webpackChunkName: "locale_en-Shaw" */'./en-Shaw.json'),
   'eo': () => import(/* webpackChunkName: "locale_eo" */'./eo.json'),
   'es-AR': () => import(/* webpackChunkName: "locale_es-AR" */'./es-AR.json'),
   'es': () => import(/* webpackChunkName: "locale_es" */'./es.json'),

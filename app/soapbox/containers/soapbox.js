@@ -31,6 +31,14 @@ import configureStore from '../store/configureStore';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
+// Delay rendering until instance has loaded or failed (for feature detection)
+const isInstanceLoaded = state => {
+  const v = state.getIn(['instance', 'version'], '0.0.0');
+  const fetchFailed = state.getIn(['meta', 'instance_fetch_failed'], false);
+
+  return v !== '0.0.0' || fetchFailed;
+};
+
 export const store = configureStore();
 
 // Configure global functions for developers
@@ -54,20 +62,24 @@ const mapStateToProps = (state) => {
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
+  // In demo mode, force the default brand color
+  const brandColor = settings.get('demo') ? '#0482d8' : soapboxConfig.get('brandColor');
+
   return {
     showIntroduction,
     me,
+    instanceLoaded: isInstanceLoaded(state),
     reduceMotion: settings.get('reduceMotion'),
     underlineLinks: settings.get('underlineLinks'),
     systemFont: settings.get('systemFont'),
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
-    themeCss: generateThemeCss(soapboxConfig.get('brandColor')),
+    themeCss: generateThemeCss(brandColor),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     halloween: settings.get('halloween'),
-    customCss: soapboxConfig.get('customCss'),
+    customCss: settings.get('demo') ? null : soapboxConfig.get('customCss'),
   };
 };
 
@@ -77,6 +89,7 @@ class SoapboxMount extends React.PureComponent {
   static propTypes = {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
+    instanceLoaded: PropTypes.bool,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
@@ -121,8 +134,9 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, themeCss, locale, customCss } = this.props;
+    const { me, instanceLoaded, themeCss, locale, customCss } = this.props;
     if (me === null) return null;
+    if (!instanceLoaded) return null;
     if (this.state.localeLoading) return null;
 
     // Disabling introduction for launch

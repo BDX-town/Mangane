@@ -109,6 +109,10 @@ export const NOTIFICATION_SETTINGS_REQUEST = 'NOTIFICATION_SETTINGS_REQUEST';
 export const NOTIFICATION_SETTINGS_SUCCESS = 'NOTIFICATION_SETTINGS_SUCCESS';
 export const NOTIFICATION_SETTINGS_FAIL    = 'NOTIFICATION_SETTINGS_FAIL';
 
+export const BIRTHDAY_REMINDERS_FETCH_REQUEST = 'BIRTHDAY_REMINDERS_FETCH_REQUEST';
+export const BIRTHDAY_REMINDERS_FETCH_SUCCESS = 'BIRTHDAY_REMINDERS_FETCH_SUCCESS';
+export const BIRTHDAY_REMINDERS_FETCH_FAIL    = 'BIRTHDAY_REMINDERS_FETCH_FAIL';
+
 export function createAccount(params) {
   return (dispatch, getState) => {
     dispatch({ type: ACCOUNT_CREATE_REQUEST, params });
@@ -156,18 +160,18 @@ export function fetchAccountByUsername(username) {
     const features = getFeatures(instance);
     const me = state.get('me');
 
-    if (!me && features.accountLookup) {
-      dispatch(accountLookup(username)).then(account => {
-        dispatch(fetchAccountSuccess(account));
-      }).catch(error => {
-        dispatch(fetchAccountFail(null, error));
-        dispatch(importErrorWhileFetchingAccountByUsername(username));
-      });
-    } else if (features.accountByUsername) {
+    if (features.accountByUsername && (me || !features.accountLookup)) {
       api(getState).get(`/api/v1/accounts/${username}`).then(response => {
         dispatch(fetchRelationships([response.data.id]));
         dispatch(importFetchedAccount(response.data));
         dispatch(fetchAccountSuccess(response.data));
+      }).catch(error => {
+        dispatch(fetchAccountFail(null, error));
+        dispatch(importErrorWhileFetchingAccountByUsername(username));
+      });
+    } else if (features.accountLookup) {
+      dispatch(accountLookup(username)).then(account => {
+        dispatch(fetchAccountSuccess(account));
       }).catch(error => {
         dispatch(fetchAccountFail(null, error));
         dispatch(importErrorWhileFetchingAccountByUsername(username));
@@ -217,7 +221,7 @@ export function fetchAccountFail(id, error) {
   };
 }
 
-export function followAccount(id, reblogs = true) {
+export function followAccount(id, options = { reblogs: true }) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -226,7 +230,7 @@ export function followAccount(id, reblogs = true) {
 
     dispatch(followAccountRequest(id, locked));
 
-    api(getState).post(`/api/v1/accounts/${id}/follow`, { reblogs }).then(response => {
+    api(getState).post(`/api/v1/accounts/${id}/follow`, options).then(response => {
       dispatch(followAccountSuccess(response.data, alreadyFollowing));
     }).catch(error => {
       dispatch(followAccountFail(error, locked));
@@ -1027,6 +1031,29 @@ export function accountLookup(acct, cancelToken) {
     }).catch(error => {
       dispatch({ type: ACCOUNT_LOOKUP_FAIL });
       throw error;
+    });
+  };
+}
+
+export function fetchBirthdayReminders(day, month) {
+  return (dispatch, getState) => {
+    if (!isLoggedIn(getState)) return;
+
+    const me = getState().get('me');
+
+    dispatch({ type: BIRTHDAY_REMINDERS_FETCH_REQUEST, day, month, id: me });
+
+    api(getState).get('/api/v1/pleroma/birthdays', { params: { day, month } }).then(response => {
+      dispatch(importFetchedAccounts(response.data));
+      dispatch({
+        type: BIRTHDAY_REMINDERS_FETCH_SUCCESS,
+        accounts: response.data,
+        day,
+        month,
+        id: me,
+      });
+    }).catch(error => {
+      dispatch({ type: BIRTHDAY_REMINDERS_FETCH_FAIL, day, month, id: me });
     });
   };
 }
