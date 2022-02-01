@@ -65,6 +65,10 @@ export const getFeatures = createSelector([
     resetPasswordAPI: v.software === PLEROMA,
     exposableReactions: features.includes('exposable_reactions'),
     accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    accountNotifies: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
     unrestrictedLists: v.software === PLEROMA,
     accountByUsername: v.software === PLEROMA,
     profileDirectory: any([
