@@ -634,6 +634,61 @@ code {
       }
     }
   }
+
+  .datepicker {
+    padding: 0;
+    margin-bottom: 8px;
+    border: none;
+
+    &__hint {
+      padding-bottom: 0;
+      color: var(--primary-text-color);
+      font-size: 14px;
+      font-style: unset;
+    }
+
+    .react-datepicker {
+      &__header {
+        padding-top: 4px;
+      }
+
+      &__input-container {
+        border: 1px solid var(--highlight-text-color);
+
+        input {
+          border: none;
+        }
+      }
+    }
+
+    &__years,
+    &__months {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 4px;
+      font-size: 16px;
+    }
+
+    &__button {
+      width: 28px;
+      margin: 0;
+      padding: 4px;
+      background: transparent;
+      color: var(--primary-text-color);
+
+      &:hover,
+      &:active,
+      &:focus {
+        background: none;
+      }
+
+      .svg-icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
 }
 
 .block-icon {

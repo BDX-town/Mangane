@@ -14,6 +14,7 @@ import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
 import { openModal } from 'soapbox/actions/modal';
 import { getSettings } from 'soapbox/actions/settings';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import ShowablePassword from 'soapbox/components/showable_password';
 import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import {
@@ -46,6 +47,7 @@ const mapStateToProps = (state, props) => ({
   needsApproval: state.getIn(['instance', 'approval_required']),
   supportsEmailList: getFeatures(state.get('instance')).emailList,
   supportsAccountLookup: getFeatures(state.get('instance')).accountLookup,
+  birthdayRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -61,6 +63,7 @@ class RegistrationForm extends ImmutablePureComponent {
     supportsEmailList: PropTypes.bool,
     supportsAccountLookup: PropTypes.bool,
     inviteToken: PropTypes.string,
+    birthdayRequired: PropTypes.bool,
   }
 
   static contextTypes = {
@@ -127,6 +130,12 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onPasswordConfirmBlur = e => {
     this.setState({ passwordMismatch: !this.passwordsMatch() });
+  }
+
+  onBirthdayChange = birthday => {
+    this.setState({
+      birthday,
+    });
   }
 
   launchModal = () => {
@@ -197,6 +206,7 @@ class RegistrationForm extends ImmutablePureComponent {
 
   onSubmit = e => {
     const { dispatch, inviteToken } = this.props;
+    const { birthday } = this.state;
 
     if (!this.passwordsMatch()) {
       this.setState({ passwordMismatch: true });
@@ -210,6 +220,10 @@ class RegistrationForm extends ImmutablePureComponent {
       // Pleroma invites
       if (inviteToken) {
         params.set('token', inviteToken);
+      }
+
+      if (birthday) {
+        params.set('birthday', new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
       }
     });
 
@@ -245,8 +259,8 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance, intl, supportsEmailList } = this.props;
-    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch } = this.state;
+    const { instance, intl, supportsEmailList, birthdayRequired } = this.props;
+    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch, birthday } = this.state;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
@@ -311,6 +325,12 @@ class RegistrationForm extends ImmutablePureComponent {
                 error={passwordMismatch === true}
                 required
               />
+              {birthdayRequired &&
+                <BirthdayInput
+                  value={birthday}
+                  onChange={this.onBirthdayChange}
+                  required
+                />}
               {instance.get('approval_required') &&
                 <SimpleTextarea
                   label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}

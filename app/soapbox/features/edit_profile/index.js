@@ -14,6 +14,7 @@ import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import BirthdayInput from 'soapbox/components/birthday_input';
 import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
@@ -49,6 +50,8 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
+  view: { id: 'snackbar.view', defaultMessage: 'View' },
+  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
 });
 
 const makeMapStateToProps = () => {
@@ -58,12 +61,14 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = getAccount(state, me);
     const soapbox = getSoapboxConfig(state);
+    const features = getFeatures(state.get('instance'));
 
     return {
       account,
       maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-      supportsEmailList: getFeatures(state.get('instance')).emailList,
+      supportsEmailList: features.emailList,
+      supportsBirthdays: features.birthdays,
     };
   };
 
@@ -94,6 +99,8 @@ class EditProfile extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     maxFields: PropTypes.number,
     verifiedCanEditName: PropTypes.bool,
+    supportsEmailList: PropTypes.bool,
+    supportsBirthdays: PropTypes.bool,
   };
 
   state = {
@@ -107,6 +114,8 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = account.withMutations(map => {
       map.merge(map.get('source'));
@@ -116,6 +125,11 @@ class EditProfile extends ImmutablePureComponent {
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
+      map.set('show_birthday', showBirthday);
+      if (birthday) {
+        const date = new Date(birthday);
+        map.set('birthday', new Date(date.getTime() + (date.getTimezoneOffset() * 60000)));
+      }
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -156,6 +170,10 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
+      birthday: state.birthday
+        ? new Date(state.birthday.getTime() - (state.birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10)
+        : undefined,
+      show_birthday: state.show_birthday,
     }, this.getFieldParams().toJS());
   }
 
@@ -171,7 +189,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   handleSubmit = (event) => {
-    const { dispatch, intl } = this.props;
+    const { dispatch, intl, account } = this.props;
 
     const credentials = dispatch(patchMe(this.getFormdata()));
     const notifications = dispatch(updateNotificationSettings({
@@ -182,7 +200,7 @@ class EditProfile extends ImmutablePureComponent {
 
     Promise.all([credentials, notifications]).then(() => {
       this.setState({ isLoading: false });
-      dispatch(snackbar.success(intl.formatMessage(messages.success)));
+      dispatch(snackbar.success(intl.formatMessage(messages.success), intl.formatMessage(messages.view), `/@${account.get('acct')}`));
     }).catch((error) => {
       this.setState({ isLoading: false });
       dispatch(snackbar.error(intl.formatMessage(messages.error)));
@@ -223,6 +241,12 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
+  handleBirthdayChange = birthday => {
+    this.setState({
+      birthday,
+    });
+  }
+
   handleAddField = () => {
     this.setState({
       fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
@@ -238,7 +262,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields, account, verifiedCanEditName, supportsEmailList } = this.props;
+    const { intl, maxFields, account, verifiedCanEditName, supportsBirthdays, supportsEmailList } = this.props;
     const verified = isVerified(account);
     const canEditName = verifiedCanEditName || !verified;
 
@@ -267,6 +291,22 @@ class EditProfile extends ImmutablePureComponent {
                 onChange={this.handleTextChange}
                 rows={3}
               />
+              {supportsBirthdays && (
+                <>
+                  <BirthdayInput
+                    hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
+                    value={this.state.birthday}
+                    onChange={this.handleBirthdayChange}
+                  />
+                  <Checkbox
+                    label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birthday' />}
+                    hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birthday will be visible on your profile.' />}
+                    name='show_birthday'
+                    checked={this.state.show_birthday}
+                    onChange={this.handleCheckboxChange}
+                  />
+                </>
+              )}
               <div className='fields-row'>
                 <div className='fields-row__column fields-row__column-6'>
                   <ProfilePreview account={this.makePreviewAccount()} />

@@ -22,7 +22,8 @@
       flex-wrap: wrap;
     }
 
-    &__join-date {
+    &__join-date,
+    &__birthday {
       display: flex;
       font-size: 14px;
       color: var(--primary-text-color--faint);

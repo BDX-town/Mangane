@@ -58,6 +58,7 @@ export const REMOTE_INTERACTION_FAIL    = 'REMOTE_INTERACTION_FAIL';
 const messages = defineMessages({
   bookmarkAdded: { id: 'status.bookmarked', defaultMessage: 'Bookmark added.' },
   bookmarkRemoved: { id: 'status.unbookmarked', defaultMessage: 'Bookmark removed.' },
+  view: { id: 'snackbar.view', defaultMessage: 'View' },
 });
 
 export function reblog(status) {
@@ -220,28 +221,28 @@ export function unfavouriteFail(status, error) {
   };
 }
 
-export function bookmark(intl, status) {
+export function bookmark(status) {
   return function(dispatch, getState) {
     dispatch(bookmarkRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/bookmark`).then(function(response) {
       dispatch(importFetchedStatus(response.data));
       dispatch(bookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(intl.formatMessage(messages.bookmarkAdded)));
+      dispatch(snackbar.success(messages.bookmarkAdded, messages.view, '/bookmarks'));
     }).catch(function(error) {
       dispatch(bookmarkFail(status, error));
     });
   };
 }
 
-export function unbookmark(intl, status) {
+export function unbookmark(status) {
   return (dispatch, getState) => {
     dispatch(unbookmarkRequest(status));
 
     api(getState).post(`/api/v1/statuses/${status.get('id')}/unbookmark`).then(response => {
       dispatch(importFetchedStatus(response.data));
       dispatch(unbookmarkSuccess(status, response.data));
-      dispatch(snackbar.success(intl.formatMessage(messages.bookmarkRemoved)));
+      dispatch(snackbar.success(messages.bookmarkRemoved));
     }).catch(error => {
       dispatch(unbookmarkFail(status, error));
     });

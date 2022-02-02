@@ -1,0 +1,131 @@
+{
+  "approval_required": true,
+  "avatar_upload_limit": 2000000,
+  "background_image": "https://gleasonator.com/images/city.jpg",
+  "background_upload_limit": 4000000,
+  "banner_upload_limit": 4000000,
+  "description": "Building the next generation of the Fediverse. Speak freely.",
+  "description_limit": 5000,
+  "email": "alex@alexgleason.me",
+  "languages": [
+    "en"
+  ],
+  "max_toot_chars": 5000,
+  "pleroma": {
+    "metadata": {
+      "account_activation_required": false,
+      "birthday_min_age": 0,
+      "birthday_required": false,
+      "features": [
+        "pleroma_api",
+        "mastodon_api",
+        "mastodon_api_streaming",
+        "polls",
+        "v2_suggestions",
+        "pleroma_explicit_addressing",
+        "shareable_emoji_packs",
+        "multifetch",
+        "pleroma:api/v1/notifications:include_types_filter",
+        "quote_posting",
+        "media_proxy",
+        "relay",
+        "pleroma_emoji_reactions",
+        "pleroma_chat_messages",
+        "email_list",
+        "profile_directory"
+      ],
+      "federation": {
+        "enabled": true,
+        "exclusions": false,
+        "mrf_hashtag": {
+          "federated_timeline_removal": [],
+          "reject": [],
+          "sensitive": [
+            "nsfw"
+          ]
+        },
+        "mrf_policies": [
+          "TagPolicy",
+          "SimplePolicy",
+          "InlineQuotePolicy",
+          "HashtagPolicy"
+        ],
+        "mrf_simple": {
+          "accept": [],
+          "avatar_removal": [
+            "pawoo.net",
+            "sinblr.com",
+            "dajiaweibo.com",
+            "baraag.net"
+          ],
+          "banner_removal": [
+            "pawoo.net",
+            "sinblr.com",
+            "dajiaweibo.com",
+            "baraag.net"
+          ],
+          "federated_timeline_removal": [],
+          "followers_only": [],
+          "media_nsfw": [],
+          "media_removal": [
+            "pawoo.net",
+            "sinblr.com",
+            "dajiaweibo.com",
+            "baraag.net"
+          ],
+          "reject": [
+            "solagg.com"
+          ],
+          "reject_deletes": [],
+          "report_removal": []
+        },
+        "mrf_simple_info": {},
+        "quarantined_instances": [],
+        "quarantined_instances_info": {
+          "quarantined_instances": {}
+        }
+      },
+      "fields_limits": {
+        "max_fields": 15,
+        "max_remote_fields": 20,
+        "name_length": 512,
+        "value_length": 2048
+      },
+      "post_formats": [
+        "text/plain",
+        "text/html",
+        "text/markdown",
+        "text/bbcode"
+      ],
+      "privileged_staff": true
+    },
+    "stats": {
+      "mau": 71
+    },
+    "vapid_public_key": "BLElLQVJVmY_e4F5JoYxI5jXiVOYNsJ9p-amkykc9NcI-jwa9T1Y2GIbDqbY-HqC6ayPkfW4K4o9vgBFKYmkuS4"
+  },
+  "poll_limits": {
+    "max_expiration": 31536000,
+    "max_option_chars": 200,
+    "max_options": 20,
+    "min_expiration": 0
+  },
+  "registrations": true,
+  "shout_limit": 5000,
+  "soapbox": {
+    "version": "1.1.1"
+  },
+  "stats": {
+    "domain_count": 8140,
+    "status_count": 101956,
+    "user_count": 421
+  },
+  "thumbnail": "https://media.gleasonator.com/c0d38bde6ef0b3baa483f574797662ebd83ef9e1a1162e8e4fcd930bb4b3c068.png",
+  "title": "Gleasonator",
+  "upload_limit": 100000000,
+  "uri": "https://gleasonator.com",
+  "urls": {
+    "streaming_api": "wss://gleasonator.com"
+  },
+  "version": "2.7.2 (compatible; Pleroma 2.4.51-1129-gf2cfef09-gleasonator)"
+}

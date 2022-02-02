@@ -49,7 +49,6 @@ export const getFeatures = createSelector([
     ]),
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
-    attachmentLimit: v.software === PLEROMA ? Infinity : 4,
     focalPoint: v.software === MASTODON && gte(v.compatVersion, '2.3.0'),
     importAPI: v.software === PLEROMA,
     importMutes: v.software === PLEROMA && gte(v.version, '2.2.0'),
@@ -65,6 +64,10 @@ export const getFeatures = createSelector([
     resetPasswordAPI: v.software === PLEROMA,
     exposableReactions: features.includes('exposable_reactions'),
     accountSubscriptions: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    accountNotifies: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.3.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
     unrestrictedLists: v.software === PLEROMA,
     accountByUsername: v.software === PLEROMA,
     profileDirectory: any([
@@ -79,6 +82,7 @@ export const getFeatures = createSelector([
     explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
   };
 });
 
