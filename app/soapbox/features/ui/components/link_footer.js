@@ -10,7 +10,7 @@ import { getBaseURL, isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 
 const mapStateToProps = state => {
   const me = state.get('me');

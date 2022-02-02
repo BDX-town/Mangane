@@ -1,6 +1,6 @@
 import { List as ImmutableList } from 'immutable';
 
-import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modal';
+import { MODAL_OPEN, MODAL_CLOSE } from '../actions/modals';
 
 const initialState = ImmutableList();
 

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from '../../../actions/compose';
-import { closeModal } from '../../../actions/modal';
+import { closeModal } from '../../../actions/modals';
 import ModalRoot from '../components/modal_root';
 
 const mapStateToProps = state => {
-  const modal = state.get('modal').last({
+  const modal = state.get('modals').last({
     modalType: null,
     modalProps: {},
   });

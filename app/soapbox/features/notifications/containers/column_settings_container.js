@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { getFeatures } from 'soapbox/utils/features';
 
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 import { setFilter } from '../../../actions/notifications';
 import { clearNotifications } from '../../../actions/notifications';
 import { changeAlerts as changePushNotifications } from '../../../actions/push_notifications';

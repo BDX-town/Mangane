@@ -5,7 +5,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 import api from '../api';
 
 import { importFetchedStatus, importFetchedStatuses } from './importer';
-import { openModal } from './modal';
+import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';

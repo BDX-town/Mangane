@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
 
 import { muteAccount } from 'soapbox/actions/accounts';
-import { closeModal } from 'soapbox/actions/modal';
+import { closeModal } from 'soapbox/actions/modals';
 import { toggleHideNotifications } from 'soapbox/actions/mutes';
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';

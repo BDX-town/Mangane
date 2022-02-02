@@ -6,7 +6,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from 'soapbox/actions/compose';
-import { openModal, closeModal } from 'soapbox/actions/modal';
+import { openModal, closeModal } from 'soapbox/actions/modals';
 import IconButton from 'soapbox/components/icon_button';
 
 import ComposeFormContainer from '../../compose/containers/compose_form_container';

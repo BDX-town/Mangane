@@ -15,7 +15,7 @@ import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
-import { openModal } from '../actions/modal';
+import { openModal } from '../actions/modals';
 import DropdownMenuContainer from '../containers/dropdown_menu_container';
 
 import IconButton from './icon_button';

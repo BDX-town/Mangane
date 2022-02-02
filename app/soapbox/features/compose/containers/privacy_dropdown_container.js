@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import { changeComposeVisibility } from '../../../actions/compose';
-import { openModal, closeModal } from '../../../actions/modal';
+import { openModal, closeModal } from '../../../actions/modals';
 import { isUserTouching } from '../../../is_mobile';
 import PrivacyDropdown from '../components/privacy_dropdown';
 
 const mapStateToProps = state => ({
-  isModalOpen: state.get('modal').size && state.get('modal').last().modalType === 'ACTIONS',
+  isModalOpen: state.get('modals').size && state.get('modals').last().modalType === 'ACTIONS',
   value: state.getIn(['compose', 'privacy']),
 });
 

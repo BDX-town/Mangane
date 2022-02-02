@@ -1,8 +1,8 @@
 import { List as ImmutableList } from 'immutable';
 
-import { MODAL_OPEN, MODAL_CLOSE } from 'soapbox/actions/modal';
+import { MODAL_OPEN, MODAL_CLOSE } from 'soapbox/actions/modals';
 
-import reducer from '../modal';
+import reducer from '../modals';
 
 describe('modal reducer', () => {
   it('should return the initial state', () => {

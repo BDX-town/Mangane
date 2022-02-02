@@ -28,7 +28,7 @@ import {
   pin,
   unpin,
 } from '../actions/interactions';
-import { openModal } from '../actions/modal';
+import { openModal } from '../actions/modals';
 import { initMuteModal } from '../actions/mutes';
 import { initReport } from '../actions/reports';
 import { getSettings } from '../actions/settings';

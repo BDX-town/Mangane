@@ -15,7 +15,7 @@ import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
-import { openModal, closeModal } from './modal';
+import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 

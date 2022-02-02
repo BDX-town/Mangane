@@ -6,7 +6,7 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from '../actions/compose';
-import { openModal, closeModal } from '../actions/modal';
+import { openModal, closeModal } from '../actions/modals';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
