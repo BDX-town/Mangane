@@ -69,7 +69,7 @@ class IconPickerMenu extends React.PureComponent {
 
     // Nice and dirty hack to display the icons
     c.querySelectorAll('button.emoji-mart-emoji > img').forEach(elem => {
-       const newIcon = document.createElement('span');
+      const newIcon = document.createElement('span');
       newIcon.innerHTML = `<i class="fa fa-${elem.parentNode.getAttribute('title')} fa-hack"></i>`;
       elem.parentNode.replaceChild(newIcon, elem);
     });
