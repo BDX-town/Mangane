@@ -73,7 +73,7 @@
   "admin.dashcounters.user_count_label": "סך כל המשתמשים",
   "admin.dashwidgets.email_list_header": "רשימת אימייל",
   "admin.dashwidgets.software_header": "תוכנה",
-  "admin.latest_accounts_panel.expand_message": "לחץ כדי לראות {count} עוד{count, plural, one {account} other {accounts}}",
+  "admin.latest_accounts_panel.expand_message": "לחץ כדי לראות {count} עוד{count, plural, one {חשבון} other {חשבונות}}",
   "admin.latest_accounts_panel.title": "חשבונות אחרונים",
   "admin.moderation_log.empty_message": "לא ביצעת פעולות ניהול עדיין. כשתבצע, ההיסטוריה תהיה כאן.",
   "admin.reports.actions.close": "סגור",
