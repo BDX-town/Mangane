@@ -19,6 +19,8 @@ export function normalizeAccount(account) {
   if (!account.emojis) account.emojis = [];
   if (!account.display_name) account.display_name = '';
   if (!account.note) account.note = '';
+  if (!account.avatar) account.avatar = account.avatar_static || require('images/avatar-missing.png');
+  if (!account.avatar_static) account.avatar_static = account.avatar;
 
   const emojiMap = makeEmojiMap(account);
   const displayName = account.display_name.trim().length === 0 ? account.username : account.display_name;

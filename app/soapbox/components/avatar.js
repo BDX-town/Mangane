@@ -28,22 +28,14 @@ export default class Avatar extends React.PureComponent {
       height: `${size}px`,
     };
 
-    // Only render the image if src is provided
-    if (account.get('avatar')) {
-      return (
-        <StillImage
-          className={classNames('account__avatar', { 'account__avatar-inline': inline })}
-          style={style}
-          src={account.get('avatar')}
-          alt=''
-        />
-      );
-    } else {
-      // Fall back on rendering an empty div
-      return (
-        <div className={classNames('account__avatar', { 'account__avatar-inline': inline })} style={style} />
-      );
-    }
+    return (
+      <StillImage
+        className={classNames('account__avatar', { 'account__avatar-inline': inline })}
+        style={style}
+        src={account.get('avatar')}
+        alt=''
+      />
+    );
   }
 
 }
