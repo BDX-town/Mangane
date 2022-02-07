@@ -260,7 +260,7 @@
   "compose_form.poll.switch_to_multiple": "שנה סקר כדי לאפשר אפשרויות בחירה מרובות",
   "compose_form.poll.switch_to_single": "שנה סקר כדי לאפשר בחירה יחידה",
   "compose_form.publish": "ללחוש",
-  "compose_form.publish_loud": "פרסם!",
+  "compose_form.publish_loud": "!פרסם",
   "compose_form.schedule": "לתזמן",
   "compose_form.scheduled_statuses.click_here": "לחץ כאן",
   "compose_form.scheduled_statuses.message": "יש לך פוסטים מתוזמנים. {לחץ_כאן} כדי לראות אותם.",
