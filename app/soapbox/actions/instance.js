@@ -61,6 +61,7 @@ export function fetchInstance() {
         dispatch(fetchNodeinfo()); // Pleroma < 2.1 backwards compatibility
       }
     }).catch(error => {
+      console.error(error);
       dispatch({ type: INSTANCE_FETCH_FAIL, error, skipAlert: true });
     });
   };

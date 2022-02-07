@@ -89,9 +89,20 @@ export const getFeatures = createSelector([
 export const parseVersion = version => {
   const regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
-  return {
-    software: match[2] || MASTODON,
-    version: match[3] || match[1],
-    compatVersion: match[1],
-  };
+
+  if (match) {
+    return {
+      software: match[2] || MASTODON,
+      version: match[3] || match[1],
+      compatVersion: match[1],
+    };
+  } else {
+    // If we can't parse the version, this is a new and exotic backend.
+    // Fall back to minimal featureset.
+    return {
+      software: null,
+      version: '0.0.0',
+      compatVersion: '0.0.0',
+    };
+  }
 };
