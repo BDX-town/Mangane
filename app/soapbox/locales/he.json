@@ -336,6 +336,7 @@
   "edit_profile.fields.discoverable_label": "אפשר גילוי חשבון",
   "edit_profile.fields.display_name_label": "שם תצוגה",
   "edit_profile.fields.display_name_placeholder": "שם",
+  "edit_profile.fields.birthday_placeholder": "יום הולדת",
   "edit_profile.fields.header_label": "כותרת",
   "edit_profile.fields.hide_network_label": "הסתר רשת",
   "edit_profile.fields.locked_label": "נעל חשבון",
