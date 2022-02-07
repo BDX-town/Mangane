@@ -143,10 +143,18 @@ export function fetchContext(id) {
     dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
     return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
-      const { ancestors, descendants } = context;
-      const statuses = ancestors.concat(descendants);
-      dispatch(importFetchedStatuses(statuses));
-      dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      if (Array.isArray(context)) {
+        // Mitra: returns a list of statuses
+        dispatch(importFetchedStatuses(context));
+      } else if (typeof context === 'object') {
+        // Standard Mastodon API returns a map with `ancestors` and `descendants`
+        const { ancestors, descendants } = context;
+        const statuses = ancestors.concat(descendants);
+        dispatch(importFetchedStatuses(statuses));
+        dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      } else {
+        throw context;
+      }
       return context;
     }).catch(error => {
       if (error.response && error.response.status === 404) {
