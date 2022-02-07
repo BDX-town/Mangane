@@ -670,14 +670,12 @@ class UI extends React.PureComponent {
   }
 
   render() {
-    const { streamingUrl, features, soapbox } = this.props;
+    const { features, soapbox } = this.props;
     const { draggingOver, mobile } = this.state;
     const { intl, children, location, dropdownMenuIsOpen, me } = this.props;
 
     // Wait for login to succeed or fail
     if (me === null) return null;
-    // If login didn't fail, wait for streaming to become available
-    if (me !== false && !streamingUrl) return null;
 
     const handlers = me ? {
       help: this.handleHotkeyToggleHelp,
