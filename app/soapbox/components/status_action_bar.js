@@ -342,16 +342,16 @@ class StatusActionBar extends ImmutablePureComponent {
       // });
     }
 
+    if (!me) {
+      return menu;
+    }
+
     if (features.bookmarks) {
       menu.push({
         text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
         action: this.handleBookmarkClick,
         icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
       });
-    }
-
-    if (!me) {
-      return menu;
     }
 
     menu.push(null);
