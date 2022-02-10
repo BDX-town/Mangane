@@ -1,12 +1,17 @@
-import { parseVersion } from './features';
+import { createSelector } from 'reselect';
+
+import { parseVersion, PLEROMA, MITRA } from './features';
 
 // For solving bugs between API implementations
-export const getQuirks = instance => {
-  const v = parseVersion(instance.get('version'));
+export const getQuirks = createSelector([
+  instance => parseVersion(instance.get('version')),
+], (v) => {
   return {
-    invertedPagination: v.software === 'Pleroma',
+    invertedPagination: v.software === PLEROMA,
+    skipsAppCreation: v.software === MITRA,
+    ethereumLoginOnly: v.software === MITRA,
   };
-};
+});
 
 export const getNextLinkName = getState =>
   getQuirks(getState().get('instance')).invertedPagination ? 'prev' : 'next';

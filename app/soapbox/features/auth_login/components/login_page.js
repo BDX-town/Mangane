@@ -4,25 +4,18 @@ import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { ethereumLogin } from 'soapbox/actions/auth';
 import { logIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { getFeatures } from 'soapbox/utils/features';
 import { isStandalone } from 'soapbox/utils/state';
 
 import LoginForm from './login_form';
 import OtpAuthForm from './otp_auth_form';
 
-const mapStateToProps = state => {
-  const instance = state.get('instance');
-
-  return {
-    me: state.get('me'),
-    isLoading: false,
-    standalone: isStandalone(state),
-    features: getFeatures(instance),
-  };
-};
+const mapStateToProps = state => ({
+  me: state.get('me'),
+  isLoading: false,
+  standalone: isStandalone(state),
+});
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -69,18 +62,8 @@ class LoginPage extends ImmutablePureComponent {
     event.preventDefault();
   }
 
-  handleEthereumLogin = e => {
-    const { dispatch } = this.props;
-
-    dispatch(ethereumLogin())
-      .then(() => this.setState({ shouldRedirect: true }))
-      .catch(console.error);
-
-    e.preventDefault();
-  };
-
   render() {
-    const { standalone, features } = this.props;
+    const { standalone } = this.props;
     const { isLoading, mfa_auth_needed, mfa_token, shouldRedirect } = this.state;
 
     if (standalone) return <Redirect to='/auth/external' />;
@@ -89,11 +72,7 @@ class LoginPage extends ImmutablePureComponent {
 
     if (mfa_auth_needed) return <OtpAuthForm mfa_token={mfa_token} />;
 
-    if (features.ethereumLogin) {
-      return <button onClick={this.handleEthereumLogin}>Log in with Ethereum</button>;
-    } else {
-      return <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />;
-    }
+    return <LoginForm handleSubmit={this.handleSubmit} isLoading={isLoading} />;
   }
 
 }
