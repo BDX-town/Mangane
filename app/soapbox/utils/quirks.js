@@ -8,7 +8,6 @@ export const getQuirks = createSelector([
 ], (v) => {
   return {
     invertedPagination: v.software === PLEROMA,
-    skipsAppCreation: v.software === MITRA,
     ethereumLoginOnly: v.software === MITRA,
   };
 });

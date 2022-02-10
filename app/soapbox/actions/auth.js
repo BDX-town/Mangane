@@ -18,7 +18,6 @@ import KVStore from 'soapbox/storage/kv_store';
 import { getLoggedInAccount, parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
-import { getQuirks } from 'soapbox/utils/quirks';
 import { isStandalone } from 'soapbox/utils/state';
 
 import api, { baseClient } from '../api';
@@ -63,10 +62,6 @@ function createAppAndToken() {
 
 function createAuthApp() {
   return (dispatch, getState) => {
-    // Mitra: skip creating the app
-    const quirks = getQuirks(getState().get('instance'));
-    if (quirks.skipsAppCreation) return dispatch(noOp());
-
     const params = {
       client_name:   sourceCode.displayName,
       redirect_uris: 'urn:ietf:wg:oauth:2.0:oob',
