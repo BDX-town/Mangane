@@ -213,36 +213,6 @@ export function logIn(intl, username, password) {
   };
 }
 
-export function ethereumLogin(instance, baseURL) {
-  return (dispatch, getState) => {
-    instance = (instance || getState().get('instance'));
-
-    const { ethereum } = window;
-    const { scopes } = getFeatures(instance);
-    const loginMessage = instance.get('login_message');
-
-    return ethereum.request({ method: 'eth_requestAccounts' }).then(walletAddresses => {
-      const [walletAddress] = walletAddresses;
-
-      return ethereum.request({ method: 'personal_sign', params: [loginMessage, walletAddress] }).then(signature => {
-        const params = {
-          grant_type: 'ethereum',
-          wallet_address: walletAddress.toLowerCase(),
-          password: signature,
-          redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-          scope: scopes,
-        };
-
-        // Note: skips app creation
-        // TODO: add to quirks.js for Mitra
-        return dispatch(obtainOAuthToken(params, baseURL))
-          .then(token => dispatch(authLoggedIn(token)))
-          .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)));
-      });
-    });
-  };
-}
-
 export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();

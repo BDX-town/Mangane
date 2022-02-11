@@ -9,10 +9,11 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { createApp } from 'soapbox/actions/apps';
-import { authLoggedIn, verifyCredentials, switchAccount, ethereumLogin } from 'soapbox/actions/auth';
+import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
+import { getWalletAndSign } from 'soapbox/utils/ethereum';
 import { getFeatures } from 'soapbox/utils/features';
 import { getQuirks } from 'soapbox/utils/quirks';
 
@@ -35,6 +36,9 @@ const fetchExternalInstance = baseURL => {
 
 function createExternalApp(instance, baseURL) {
   return (dispatch, getState) => {
+    // Mitra: skip creating the auth app
+    if (getQuirks(instance).noApps) return new Promise(f => f({}));
+
     const { scopes } = getFeatures(instance);
 
     const params = {
@@ -71,11 +75,29 @@ function externalAuthorize(instance, baseURL) {
   };
 }
 
-function externalEthereumLogin(instance, baseURL) {
+export function externalEthereumLogin(instance, baseURL) {
   return (dispatch, getState) => {
-    return dispatch(ethereumLogin(instance, baseURL))
-      .then(account => dispatch(switchAccount(account.id)))
-      .then(() => window.location.href = '/');
+    const loginMessage = instance.get('login_message');
+
+    return getWalletAndSign(loginMessage).then(({ wallet, signature }) => {
+      return dispatch(createExternalApp(instance, baseURL)).then(app => {
+        const params = {
+          grant_type: 'ethereum',
+          wallet_address: wallet.toLowerCase(),
+          client_id: app.client_id,
+          client_secret: app.client_secret,
+          password: signature,
+          redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
+          scope: getFeatures(instance).scopes,
+        };
+
+        return dispatch(obtainOAuthToken(params, baseURL))
+          .then(token => dispatch(authLoggedIn(token)))
+          .then(({ access_token }) => dispatch(verifyCredentials(access_token, baseURL)))
+          .then(account => dispatch(switchAccount(account.id)))
+          .then(() => window.location.href = '/');
+      });
+    });
   };
 }
 
@@ -87,7 +109,7 @@ export function externalLogin(host) {
       const features = getFeatures(instance);
       const quirks = getQuirks(instance);
 
-      if (features.ethereumLogin && quirks.ethereumLoginOnly) {
+      if (features.ethereumLogin && quirks.noOAuthForm) {
         return dispatch(externalEthereumLogin(instance, baseURL));
       } else {
         return dispatch(externalAuthorize(instance, baseURL));
