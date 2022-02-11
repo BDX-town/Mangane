@@ -50,7 +50,7 @@ const initialState = ImmutableMap({
 
 // Build Mastodon configuration from Pleroma instance
 const pleromaToMastodonConfig = instance => {
-  return {
+  return ImmutableMap({
     statuses: ImmutableMap({
       max_characters: instance.get('max_toot_chars'),
     }),
@@ -60,7 +60,7 @@ const pleromaToMastodonConfig = instance => {
       min_expiration: instance.getIn(['poll_limits', 'min_expiration']),
       max_expiration: instance.getIn(['poll_limits', 'max_expiration']),
     }),
-  };
+  });
 };
 
 // Use new value only if old value is undefined

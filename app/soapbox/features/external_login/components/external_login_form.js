@@ -3,7 +3,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { createAppAndRedirect, loginWithCode } from 'soapbox/actions/external_auth';
+import { externalLogin, loginWithCode } from 'soapbox/actions/external_auth';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 
@@ -31,7 +31,7 @@ class ExternalLoginForm extends ImmutablePureComponent {
 
     this.setState({ isLoading: true });
 
-    dispatch(createAppAndRedirect(host))
+    dispatch(externalLogin(host))
       .then(() => this.setState({ isLoading: false }))
       .catch(() => this.setState({ isLoading: false }));
   }

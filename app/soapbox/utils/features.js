@@ -9,6 +9,7 @@ const any = arr => arr.some(Boolean);
 // For uglification
 export const MASTODON = 'Mastodon';
 export const PLEROMA  = 'Pleroma';
+export const MITRA    = 'Mitra';
 
 export const getFeatures = createSelector([
   instance => parseVersion(instance.get('version')),
@@ -83,6 +84,7 @@ export const getFeatures = createSelector([
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
     birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ethereumLogin: v.software === MITRA,
   };
 });
 
