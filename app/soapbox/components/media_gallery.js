@@ -168,7 +168,7 @@ class Item extends React.PureComponent {
           onClick={this.handleClick}
           target='_blank'
         >
-          <StillImage src={previewUrl || originalUrl} alt={attachment.get('description')} />
+          <StillImage src={previewUrl} alt={attachment.get('description')} />
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {

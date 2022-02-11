@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
@@ -25,6 +25,30 @@ import {
   STATUS_HIDE,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
+
+// Ensure attachments have required fields
+// https://docs.joinmastodon.org/entities/attachment/
+const normalizeAttachment = attachment => {
+  const url = [
+    attachment.get('url'),
+    attachment.get('preview_url'),
+    attachment.get('remote_url'),
+  ].find(url => url) || '';
+
+  const base = ImmutableMap({
+    url,
+    preview_url: url,
+    remote_url: url,
+  });
+
+  return attachment.mergeWith((o, n) => o || n, base);
+};
+
+const normalizeAttachments = status => {
+  return status.update('media_attachments', ImmutableList(), attachments => {
+    return attachments.map(normalizeAttachment);
+  });
+};
 
 // Fix order of mentions
 const fixMentions = status => {
@@ -60,14 +84,15 @@ const fixQuote = (state, status) => {
   }
 };
 
-const fixStatus = (state, status) => {
+const normalizeStatus = (state, status) => {
   return status.withMutations(status => {
     fixMentions(status);
     fixQuote(state, status);
+    normalizeAttachments(status);
   });
 };
 
-const importStatus = (state, status) => state.set(status.id, fixStatus(state, fromJS(status)));
+const importStatus = (state, status) => state.set(status.id, normalizeStatus(state, fromJS(status)));
 
 const importStatuses = (state, statuses) =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));

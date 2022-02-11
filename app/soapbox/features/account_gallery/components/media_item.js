@@ -88,7 +88,7 @@ class MediaItem extends ImmutablePureComponent {
 
       thumbnail = (
         <StillImage
-          src={attachment.get('preview_url') || attachment.get('url')}
+          src={attachment.get('preview_url')}
           alt={attachment.get('description')}
           style={{ objectPosition: `${x}% ${y}%` }}
         />
