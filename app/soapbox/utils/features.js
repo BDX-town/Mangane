@@ -11,11 +11,11 @@ export const MASTODON = 'Mastodon';
 export const PLEROMA  = 'Pleroma';
 export const MITRA    = 'Mitra';
 
-export const getFeatures = createSelector([
-  instance => parseVersion(instance.get('version')),
-  instance => instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList()),
-  instance => instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap()),
-], (v, features, federation) => {
+export const getFeatures = createSelector([instance => instance], instance => {
+  const v = parseVersion(instance.get('version'));
+  const features = instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList());
+  const federation = instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap());
+
   return {
     bookmarks: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
@@ -82,7 +82,10 @@ export const getFeatures = createSelector([
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
     explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    quotePosts: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    quotePosts: any([
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+      instance.get('feature_quote') === true,
+    ]),
     birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
     ethereumLogin: v.software === MITRA,
   };
