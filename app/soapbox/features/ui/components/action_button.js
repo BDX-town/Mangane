@@ -25,6 +25,7 @@ const messages = defineMessages({
   requested_small: { id: 'account.requested_small', defaultMessage: 'Awaiting approval' },
   unblock: { id: 'account.unblock', defaultMessage: 'Unblock @{name}' },
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
+  blocked: { id: 'account.blocked', defaultMessage: 'Blocked' },
 });
 
 const mapStateToProps = state => {
@@ -132,8 +133,9 @@ class ActionButton extends ImmutablePureComponent {
         return <Button className='logo-button' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
       } else if (!account.getIn(['relationship', 'blocking'])) {
         // Follow & Unfollow
+        const blocked_by = account.getIn(['relationship', 'blocked_by']);
         return (<Button
-          disabled={account.getIn(['relationship', 'blocked_by'])}
+          disabled={blocked_by}
           className={classNames('button--follow', {
             'button--destructive': account.getIn(['relationship', 'following']),
           })}
@@ -143,8 +145,8 @@ class ActionButton extends ImmutablePureComponent {
             intl.formatMessage(messages.unfollow)
           ) : (
             <>
-              {intl.formatMessage(messages.follow)}
-              <Icon src={require('@tabler/icons/icons/plus.svg')} />
+              { intl.formatMessage(blocked_by ? messages.blocked : messages.follow)}
+              <Icon src={blocked_by ? require('@tabler/icons/icons/ban.svg') : require('@tabler/icons/icons/plus.svg')} />
             </>
           )}
         </Button>);

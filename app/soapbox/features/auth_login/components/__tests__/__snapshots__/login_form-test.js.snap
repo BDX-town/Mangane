@@ -56,7 +56,9 @@ exports[`<LoginForm /> renders for Mastodon 1`] = `
             style={Object {}}
           >
             <div
+              aria-hidden="true"
               className="svg-icon"
+              fixedWidth={true}
             >
               <svg
                 id={
@@ -150,7 +152,9 @@ exports[`<LoginForm /> renders for Pleroma 1`] = `
             style={Object {}}
           >
             <div
+              aria-hidden="true"
               className="svg-icon"
+              fixedWidth={true}
             >
               <svg
                 id={

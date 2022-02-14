@@ -345,15 +345,15 @@ class ActionBar extends React.PureComponent {
       // });
     }
 
-    if (features.bookmarks) {
-      menu.push({
-        text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
-        action: this.handleBookmarkClick,
-        icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
-      });
-    }
-
     if (me) {
+      if (features.bookmarks) {
+        menu.push({
+          text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+          action: this.handleBookmarkClick,
+          icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+        });
+      }
+
       menu.push(null);
 
       if (ownAccount) {

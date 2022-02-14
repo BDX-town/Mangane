@@ -59,7 +59,9 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
             style={Object {}}
           >
             <div
+              aria-hidden="true"
               className="svg-icon"
+              fixedWidth={true}
             >
               <svg
                 id={
