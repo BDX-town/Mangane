@@ -104,6 +104,7 @@ import {
   UserIndex,
   FederationRestrictions,
   Aliases,
+  Migration,
   FollowRecommendations,
   Directory,
   SidebarMenu,
@@ -314,6 +315,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
+        <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
         <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
