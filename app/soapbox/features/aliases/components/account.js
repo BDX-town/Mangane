@@ -5,11 +5,12 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { addToAliases } from '../../../actions/aliases';
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
-import IconButton from '../../../components/icon_button';
-import { makeGetAccount } from '../../../selectors';
+import { addToAliases } from 'soapbox/actions/aliases';
+import Avatar from 'soapbox/components/avatar';
+import DisplayName from 'soapbox/components/display_name';
+import IconButton from 'soapbox/components/icon_button';
+import { makeGetAccount } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },
@@ -18,17 +19,20 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  const mapStateToProps = (state, { accountId, added }) => {
+  const mapStateToProps = (state, { accountId, added, aliases }) => {
     const me = state.get('me');
-    const ownAccount = getAccount(state, me);
+
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
 
     const account = getAccount(state, accountId);
     const apId = account.getIn(['pleroma', 'ap_id']);
+    const name = features.accountMoving ? account.get('acct') : apId;
 
     return {
       account,
       apId,
-      added: typeof added === 'undefined' ? ownAccount.getIn(['pleroma', 'also_known_as']).includes(apId) : added,
+      added: typeof added === 'undefined' ? aliases.includes(name) : added,
       me,
     };
   };
@@ -56,7 +60,7 @@ class Account extends ImmutablePureComponent {
     added: false,
   };
 
-  handleOnAdd = () => this.props.onAdd(this.props.intl, this.props.apId);
+  handleOnAdd = () => this.props.onAdd(this.props.intl, this.props.account);
 
   render() {
     const { account, accountId, intl, added, me } = this.props;
