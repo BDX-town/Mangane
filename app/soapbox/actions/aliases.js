@@ -109,7 +109,7 @@ export const addToAliases = (intl, account) => (dispatch, getState) => {
     api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.getIn(['pleroma', 'ap_id'])] })
       .then((response => {
         dispatch(snackbar.success(intl.formatMessage(messages.createSuccess)));
-        dispatch(addToAliasesSuccess());
+        dispatch(addToAliasesSuccess);
         dispatch(patchMeSuccess(response.data));
       }))
       .catch(err => dispatch(addToAliasesFail(err)));
@@ -160,6 +160,7 @@ export const removeFromAliases = (intl, account) => (dispatch, getState) => {
       .then(response => {
         dispatch(snackbar.success(intl.formatMessage(messages.removeSuccess)));
         dispatch(removeFromAliasesSuccess);
+        dispatch(patchMeSuccess(response.data));
       })
       .catch(err => dispatch(removeFromAliasesFail(err)));
 
