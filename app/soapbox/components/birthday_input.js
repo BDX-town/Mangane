@@ -28,7 +28,7 @@ const mapStateToProps = state => {
 
 export default @connect(mapStateToProps)
 @injectIntl
-class EditProfile extends ImmutablePureComponent {
+class BirthdayInput extends ImmutablePureComponent {
 
   static propTypes = {
     hint: PropTypes.node,

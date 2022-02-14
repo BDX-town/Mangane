@@ -36,7 +36,6 @@ const makeMapStateToProps = () => {
     return {
       mentions,
       author: status.getIn(['account', 'id']),
-      // to: state.getIn(['compose', 'to']),
       isReply: true,
     };
   };

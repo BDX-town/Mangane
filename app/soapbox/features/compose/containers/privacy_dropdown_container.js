@@ -19,8 +19,7 @@ const mapDispatchToProps = dispatch => ({
   isUserTouching,
   onModalOpen: props => dispatch(openModal('ACTIONS', props)),
   onModalClose: () => {
-    dispatch(closeModal());
-    dispatch(openModal('COMPOSE'));
+    dispatch(closeModal('ACTIONS'));
   },
 
 });
