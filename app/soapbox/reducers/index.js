@@ -34,7 +34,7 @@ import listEditor from './list_editor';
 import lists from './lists';
 import me from './me';
 import meta from './meta';
-import modal from './modal';
+import modals from './modals';
 import mutes from './mutes';
 import notifications from './notifications';
 import patron from './patron';
@@ -62,7 +62,7 @@ const appReducer = combineReducers({
   timelines,
   meta,
   alerts,
-  modal,
+  modals,
   user_lists,
   domain_lists,
   status_lists,

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { undoUploadCompose, changeUploadCompose } from '../../../actions/compose';
 import { submitCompose } from '../../../actions/compose';
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 import Upload from '../components/upload';
 
 const mapStateToProps = (state, { id }) => ({
@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   onOpenModal: media => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0 }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0, onClose: console.log }));
   },
 
   onSubmit(router) {

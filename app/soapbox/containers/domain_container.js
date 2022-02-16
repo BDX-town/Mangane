@@ -3,7 +3,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { blockDomain, unblockDomain } from '../actions/domain_blocks';
-import { openModal } from '../actions/modal';
+import { openModal } from '../actions/modals';
 import Domain from '../components/domain';
 
 const messages = defineMessages({

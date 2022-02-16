@@ -7,7 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';

@@ -7,7 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
 import { makeGetRemoteInstance } from 'soapbox/selectors';

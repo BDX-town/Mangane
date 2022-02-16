@@ -33,18 +33,18 @@ class ConfirmationModal extends React.PureComponent {
   }
 
   handleClick = () => {
-    this.props.onClose();
+    this.props.onClose('CONFIRM');
     this.props.onConfirm();
   }
 
   handleSecondary = () => {
-    this.props.onClose();
+    this.props.onClose('CONFIRM');
     this.props.onSecondary();
   }
 
   handleCancel = () => {
     const { onClose, onCancel } = this.props;
-    onClose();
+    onClose('CONFIRM');
     if (onCancel) onCancel();
   }
 

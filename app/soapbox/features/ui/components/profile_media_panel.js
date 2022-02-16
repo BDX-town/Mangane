@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import LoadingIndicator from 'soapbox/components/loading_indicator';
 import { getAccountGallery } from 'soapbox/selectors';

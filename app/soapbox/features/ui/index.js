@@ -38,7 +38,7 @@ import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { fetchFilters } from '../../actions/filters';
 import { clearHeight } from '../../actions/height_cache';
-import { openModal } from '../../actions/modal';
+import { openModal } from '../../actions/modals';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';

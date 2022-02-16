@@ -1,22 +1,28 @@
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from '../../../actions/compose';
-import { closeModal } from '../../../actions/modal';
+import { closeModal } from '../../../actions/modals';
 import ModalRoot from '../components/modal_root';
 
-const mapStateToProps = state => ({
-  type: state.get('modal').modalType,
-  props: state.get('modal').modalProps,
-  noPop: state.get('modal').noPop,
-});
+const mapStateToProps = state => {
+  const modal = state.get('modals').last({
+    modalType: null,
+    modalProps: {},
+  });
+
+  return {
+    type: modal.modalType,
+    props: modal.modalProps,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => ({
-  onClose(optionalType, noPop) {
-    if (optionalType === 'COMPOSE') {
+  onClose(type) {
+    if (type === 'COMPOSE') {
       dispatch(cancelReplyCompose());
     }
 
-    dispatch(closeModal(undefined, noPop));
+    dispatch(closeModal(type));
   },
 });
 
