@@ -118,7 +118,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
             data: {
               url: joinPublicPath('/notifications'),
             },
-          });
+          }).catch(console.error);
         }).catch(console.error);
       }
     } catch(e) {
