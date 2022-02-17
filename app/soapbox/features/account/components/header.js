@@ -479,6 +479,7 @@ class Header extends ImmutablePureComponent {
         });
         menu.push({
           text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }),
+          action: this.props.onDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
         });
       }
