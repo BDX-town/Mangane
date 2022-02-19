@@ -40,6 +40,7 @@ const messages = defineMessages({
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   account_aliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
+  account_migration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
@@ -318,9 +319,9 @@ class SidebarMenu extends ImmutablePureComponent {
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
                 </a>
               )}
-              {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
+              {(features.federating && features.accountMoving) && <NavLink className='sidebar-menu-item' to='/settings/migration' onClick={this.handleClose}>
                 <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_migration)}</span>
               </NavLink>}
               {features.securityAPI ? (
                 <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>
