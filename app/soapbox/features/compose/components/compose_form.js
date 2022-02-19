@@ -124,7 +124,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
       document.querySelector('.modal-root__overlay'),
-    ].some(element => element && element.contains(e.target));
+    ].some(element => element?.contains(e.target));
   }
 
   handleClick = (e) => {

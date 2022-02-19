@@ -163,7 +163,7 @@ const persistInstance = instance => {
 };
 
 const handleInstanceFetchFail = (state, error) => {
-  if (error.response && error.response.status === 401) {
+  if (error.response?.status === 401) {
     return handleAuthFetch(state);
   } else {
     return state;

@@ -264,7 +264,7 @@ const persistAuthAccount = account => {
 };
 
 const deleteForbiddenToken = (state, error, token) => {
-  if (error.response && [401, 403].includes(error.response.status)) {
+  if ([401, 403].includes(error.response?.status)) {
     return deleteToken(state, token);
   } else {
     return state;

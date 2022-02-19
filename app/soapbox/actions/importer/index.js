@@ -65,20 +65,20 @@ export function importFetchedStatus(status, idempotencyKey) {
 
     const normalizedStatus = normalizeStatus(status, normalOldStatus, expandSpoilers);
 
-    if (status.reblog && status.reblog.id) {
+    if (status.reblog?.id) {
       dispatch(importFetchedStatus(status.reblog));
     }
 
     // Fedibird quotes
-    if (status.quote && status.quote.id) {
+    if (status.quote?.id) {
       dispatch(importFetchedStatus(status.quote));
     }
 
-    if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+    if (status.pleroma?.quote?.id) {
       dispatch(importFetchedStatus(status.pleroma.quote));
     }
 
-    if (status.poll && status.poll.id) {
+    if (status.poll?.id) {
       dispatch(importFetchedPoll(status.poll));
     }
 
@@ -119,20 +119,20 @@ export function importFetchedStatuses(statuses) {
       normalStatuses.push(normalizeStatus(status, normalOldStatus, expandSpoilers));
       accounts.push(status.account);
 
-      if (status.reblog && status.reblog.id) {
+      if (status.reblog?.id) {
         processStatus(status.reblog);
       }
 
       // Fedibird quotes
-      if (status.quote && status.quote.id) {
+      if (status.quote?.id) {
         processStatus(status.quote);
       }
 
-      if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+      if (status.pleroma?.quote?.id) {
         processStatus(status.pleroma.quote);
       }
 
-      if (status.poll && status.poll.id) {
+      if (status.poll?.id) {
         polls.push(normalizePoll(status.poll));
       }
     }

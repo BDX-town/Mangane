@@ -49,7 +49,7 @@ class DisplayName extends React.PureComponent {
       </div>
     ) : null;
 
-    if (others && others.size > 1) {
+    if (others?.size > 1) {
       displayName = others.take(2).map(a => (
         <span className='display-name__name' key={a.get('id')}>
           <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>
