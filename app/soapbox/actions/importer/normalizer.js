@@ -59,19 +59,19 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
 
   normalStatus.account = status.account.id;
 
-  if (status.reblog && status.reblog.id) {
+  if (status.reblog?.id) {
     normalStatus.reblog = status.reblog.id;
   }
 
-  if (status.poll && status.poll.id) {
+  if (status.poll?.id) {
     normalStatus.poll = status.poll.id;
   }
 
-  if (status.pleroma && status.pleroma.quote && status.pleroma.quote.id) {
+  if (status.pleroma?.quote?.id) {
     // Normalize quote to the top-level, so delete the original for performance
     normalStatus.quote = status.pleroma.quote.id;
     delete normalStatus.pleroma.quote;
-  } else if (status.quote && status.quote.id) {
+  } else if (status.quote?.id) {
     // Fedibird compatibility, because why not
     normalStatus.quote = status.quote.id;
   } else if (status.quote_id) {
@@ -88,7 +88,7 @@ export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
     normalStatus.hidden = normalOldStatus.get('hidden');
   } else {
     const spoilerText   = normalStatus.spoiler_text || '';
-    const searchContent = ([spoilerText, status.content].concat((status.poll && status.poll.options) ? status.poll.options.map(option => option.title) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const searchContent = ([spoilerText, status.content].concat((status.poll?.options) ? status.poll.options.map(option => option.title) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
     const emojiMap      = makeEmojiMap(normalStatus);
 
     normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;
@@ -107,7 +107,7 @@ export function normalizePoll(poll) {
 
   normalPoll.options = poll.options.map((option, index) => ({
     ...option,
-    voted: poll.own_votes && poll.own_votes.includes(index),
+    voted: Boolean(poll.own_votes?.includes(index)),
     title_emojified: emojify(escapeTextContentForBrowser(option.title), emojiMap),
   }));
 

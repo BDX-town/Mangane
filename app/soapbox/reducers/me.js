@@ -13,7 +13,7 @@ import {
 const initialState = null;
 
 const handleForbidden = (state, error) => {
-  if (error.response && [401, 403].includes(error.response.status)) {
+  if ([401, 403].includes(error.response?.status)) {
     return false;
   } else {
     return state;

@@ -34,7 +34,7 @@ export default class ColumnHeader extends React.PureComponent {
   };
 
   historyBack = () => {
-    if (window.history && window.history.length === 1) {
+    if (window.history?.length === 1) {
       this.context.router.history.push('/');
     } else {
       this.context.router.history.goBack();

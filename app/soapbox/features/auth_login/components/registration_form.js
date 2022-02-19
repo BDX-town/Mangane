@@ -197,7 +197,7 @@ class RegistrationForm extends ImmutablePureComponent {
         this.setState({ usernameUnavailable: !!account });
       })
       .catch((error) => {
-        if (error.response && error.response.status === 404) {
+        if (error.response?.status === 404) {
           this.setState({ usernameUnavailable: false });
         }
       });

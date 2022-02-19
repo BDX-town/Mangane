@@ -206,16 +206,16 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       const entries = response.data.reduce((acc, item) => {
-        if (item.account && item.account.id) {
+        if (item.account?.id) {
           acc.accounts[item.account.id] = item.account;
         }
 
         // Used by Move notification
-        if (item.target && item.target.id) {
+        if (item.target?.id) {
           acc.accounts[item.target.id] = item.target;
         }
 
-        if (item.status && item.status.id) {
+        if (item.status?.id) {
           acc.statuses[item.status.id] = item.status;
         }
 
