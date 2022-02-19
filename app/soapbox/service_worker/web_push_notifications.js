@@ -1,7 +1,8 @@
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
-import locales from './web_push_locales';
 import { unescape } from 'lodash';
+
+import locales from './web_push_locales';
 
 const MAX_NOTIFICATIONS = 5;
 const GROUP_TAG = 'tag';
@@ -72,7 +73,7 @@ const formatMessage = (messageId, locale, values = {}) =>
   (new IntlMessageFormat(locales[locale][messageId], locale)).format(values);
 
 const htmlToPlainText = html =>
-  unescape(html.replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n').replace(/<[^>]*>/g, ''));
+  unescape(html.replace(/<br\s*\/?>/g, '\n').replace(/<\/p><[^>]*>/g, '\n\n').replace(/<[^>]*>/g, ''));
 
 const handlePush = (event) => {
   const { access_token, notification_id, preferred_locale, title, body, icon } = event.data.json();
@@ -90,7 +91,7 @@ const handlePush = (event) => {
       options.image     = notification.status && notification.status.media_attachments.length > 0 && notification.status.media_attachments[0].preview_url || undefined;
       options.data      = { access_token, preferred_locale, id: notification.status ? notification.status.id : notification.account.id, url: notification.status ? `/@${notification.account.username}/posts/${notification.status.id}` : `/@${notification.account.username}` };
 
-      if (notification.status && notification.status.spoiler_text || notification.status.sensitive) {
+      if (notification.status?.spoiler_text || notification.status.sensitive) {
         options.data.hiddenBody  = htmlToPlainText(notification.status.content);
         options.data.hiddenImage = notification.status.media_attachments.length > 0 && notification.status.media_attachments[0].preview_url;
 

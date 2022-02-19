@@ -371,13 +371,13 @@ code {
     select {
       border-color: lighten($error-red, 12%);
     }
+  }
 
-    .error {
-      display: block;
-      font-weight: 500;
-      color: lighten($error-red, 12%);
-      margin-top: 4px;
-    }
+  .error {
+    display: block;
+    font-weight: 500;
+    color: lighten($error-red, 12%);
+    margin-top: 4px;
   }
 
   .input.disabled {
@@ -496,7 +496,7 @@ code {
     &::after {
       display: flex;
       align-items: center;
-      font-family: "ForkAwesome";
+      font-family: 'Font Awesome 5 Free';
       content: "";
       position: absolute;
       right: 12px;
@@ -504,6 +504,7 @@ code {
       padding-left: 12px;
       pointer-events: none;
       margin-top: 8px;
+      font-weight: 900;
     }
   }
 
@@ -608,6 +609,86 @@ code {
     margin-bottom: 14px;
     font-weight: bold;
   }
+
+  .showable-password {
+    position: relative;
+
+    input {
+      padding-right: 36px;
+    }
+
+    .icon-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 41px;
+      width: 36px;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      color: var(--primary-text-color);
+
+      .svg-icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
+
+  .datepicker {
+    padding: 0;
+    margin-bottom: 8px;
+    border: none;
+
+    &__hint {
+      padding-bottom: 0;
+      color: var(--primary-text-color);
+      font-size: 14px;
+      font-style: unset;
+    }
+
+    .react-datepicker {
+      &__header {
+        padding-top: 4px;
+      }
+
+      &__input-container {
+        border: 1px solid var(--highlight-text-color);
+
+        input {
+          border: none;
+        }
+      }
+    }
+
+    &__years,
+    &__months {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 4px;
+      font-size: 16px;
+    }
+
+    &__button {
+      width: 28px;
+      margin: 0;
+      padding: 4px;
+      background: transparent;
+      color: var(--primary-text-color);
+
+      &:hover,
+      &:active,
+      &:focus {
+        background: none;
+      }
+
+      .svg-icon {
+        height: 20px;
+        width: 20px;
+      }
+    }
+  }
 }
 
 .block-icon {
@@ -615,20 +696,6 @@ code {
   margin: 0 auto;
   margin-bottom: 10px;
   font-size: 24px;
-}
-
-.qr-code {
-  flex: 0 0 auto;
-  background: var(--foreground-color);
-  padding: 4px;
-  margin: 0 10px 20px 0;
-  box-shadow: 0 0 15px rgba($base-shadow-color, 0.2);
-  display: inline-block;
-
-  svg {
-    display: block;
-    margin: 0;
-  }
 }
 
 .simple_form {
@@ -741,17 +808,19 @@ code {
   }
 }
 
-.input .row > .fa-times-circle {
+.input .row > .svg-icon.delete-field {
+  height: 20px;
+  width: 20px;
   position: absolute;
-  right: 15px;
+  right: 13px;
   cursor: pointer;
   color: $error-red;
-  transform: translateY(-9px);
+  transform: translateY(-11px);
 }
 
-.input .row > .input.with_label + .fa-times-circle {
-  right: 7px;
-  transform: translateY(9px);
+.input .row > .input.with_label + .svg-icon.delete-field {
+  right: 5px;
+  transform: translateY(7px);
 }
 
 .site-preview {
@@ -798,11 +867,18 @@ code {
   margin: 10px 0 0;
 
   .button {
+    display: flex;
+    align-items: center;
     border: 0;
     background: transparent;
 
     &:hover {
       color: var(--primary-text-color);
+    }
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
     }
   }
 }

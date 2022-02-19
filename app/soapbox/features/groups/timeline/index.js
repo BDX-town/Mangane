@@ -1,17 +1,18 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusListContainer from '../../ui/containers/status_list_container';
-import Column from '../../../components/column';
-import { FormattedMessage, injectIntl } from 'react-intl';
+
+import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';
-import MissingIndicator from '../../../components/missing_indicator';
-import LoadingIndicator from '../../../components/loading_indicator';
-import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import Avatar from '../../../components/avatar';
+import Column from '../../../components/column';
+import LoadingIndicator from '../../../components/loading_indicator';
+import MissingIndicator from '../../../components/missing_indicator';
+import StatusListContainer from '../../ui/containers/status_list_container';
 
 const mapStateToProps = (state, props) => {
   const me = state.get('me');

@@ -1,7 +1,10 @@
-import { decode as decodeBase64 } from '../../utils/base64';
-import { pushNotificationsSetting } from '../../settings';
-import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
 import { createPushSubsription, updatePushSubscription } from 'soapbox/actions/push_subscriptions';
+import { getVapidKey } from 'soapbox/utils/auth';
+
+import { pushNotificationsSetting } from '../../settings';
+import { decode as decodeBase64 } from '../../utils/base64';
+
+import { setBrowserSupport, setSubscription, clearSubscription } from './setter';
 
 // Taken from https://www.npmjs.com/package/web-push
 const urlBase64ToUint8Array = (base64String) => {
@@ -13,11 +16,6 @@ const urlBase64ToUint8Array = (base64String) => {
   return decodeBase64(base64);
 };
 
-const getVapidKey = getState => {
-  const state = getState();
-  return state.getIn(['auth', 'app', 'vapid_key']) || state.getIn(['instance', 'pleroma', 'vapid_public_key']);
-};
-
 const getRegistration = () => navigator.serviceWorker.ready;
 
 const getPushSubscription = (registration) =>
@@ -27,7 +25,7 @@ const getPushSubscription = (registration) =>
 const subscribe = (registration, getState) =>
   registration.pushManager.subscribe({
     userVisibleOnly: true,
-    applicationServerKey: urlBase64ToUint8Array(getVapidKey(getState)),
+    applicationServerKey: urlBase64ToUint8Array(getVapidKey(getState())),
   });
 
 const unsubscribe = ({ registration, subscription }) =>
@@ -35,7 +33,8 @@ const unsubscribe = ({ registration, subscription }) =>
 
 const sendSubscriptionToBackend = (subscription, me) => {
   return (dispatch, getState) => {
-    const params = { subscription };
+    const alerts = getState().getIn(['push_notifications', 'alerts']).toJS();
+    const params = { subscription, data: { alerts } };
 
     if (me) {
       const data = pushNotificationsSetting.get(me);
@@ -54,7 +53,7 @@ const supportsPushNotifications = ('serviceWorker' in navigator && 'PushManager'
 export function register() {
   return (dispatch, getState) => {
     const me = getState().get('me');
-    const vapidKey = getVapidKey(getState);
+    const vapidKey = getVapidKey(getState());
 
     dispatch(setBrowserSupport(supportsPushNotifications));
 
@@ -105,6 +104,7 @@ export function register() {
         }
       })
       .catch(error => {
+        console.error(error);
         if (error.code === 20 && error.name === 'AbortError') {
           console.warn('Your browser supports Web Push Notifications, but does not seem to implement the VAPID protocol.');
         } else if (error.code === 5 && error.name === 'InvalidCharacterError') {

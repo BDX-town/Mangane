@@ -1,8 +1,8 @@
 // @ts-check
 
 import { decode } from 'blurhash';
-import React, { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import React, { useRef, useEffect } from 'react';
 
 /**
  * @typedef BlurhashPropsBase

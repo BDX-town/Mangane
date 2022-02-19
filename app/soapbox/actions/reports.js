@@ -1,5 +1,6 @@
 import api from '../api';
-import { openModal, closeModal } from './modal';
+
+import { openModal, closeModal } from './modals';
 
 export const REPORT_INIT   = 'REPORT_INIT';
 export const REPORT_CANCEL = 'REPORT_CANCEL';

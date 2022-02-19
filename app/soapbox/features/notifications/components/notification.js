@@ -1,16 +1,18 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusContainer from '../../../containers/status_container';
-import AccountContainer from '../../../containers/account_container';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import Permalink from '../../../components/permalink';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import FollowRequestContainer from '../containers/follow_request_container';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
-import classNames from 'classnames';
+
+import Permalink from '../../../components/permalink';
+import AccountContainer from '../../../containers/account_container';
+import StatusContainer from '../../../containers/status_container';
+import FollowRequestContainer from '../containers/follow_request_container';
 
 const notificationForScreenReader = (intl, message, timestamp) => {
   const output = [message];
@@ -174,7 +176,7 @@ class Notification extends ImmutablePureComponent {
 
   renderMention(notification) {
     return (
-      <div className='notification notification-mention' tabIndex='0'>
+      <div className='notification notification-mention focusable-within' tabIndex='0'>
         <StatusContainer
           id={notification.getIn(['status', 'id'])}
           withDismiss
@@ -371,7 +373,7 @@ class Notification extends ImmutablePureComponent {
         <div className='notification notification-move focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.move', defaultMessage: '{name} moved to {targetName}' }, { name: notification.getIn(['account', 'acct']), targetName: notification.getIn(['target', 'acct']) }), notification.get('created_at'))}>
           <div className='notification__message'>
             <div className='notification__icon-wrapper'>
-              <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
+              <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
             </div>
 
             <span title={notification.get('created_at')}>

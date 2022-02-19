@@ -1,26 +1,31 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { List as ImmutableList } from 'immutable';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../../components/column';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { createSelector } from 'reselect';
+
+import { getSettings } from 'soapbox/actions/settings';
+import BirthdayReminders from 'soapbox/components/birthday_reminders';
+import SubNavigation from 'soapbox/components/sub_navigation';
+import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
+import { getFeatures } from 'soapbox/utils/features';
+
 import {
   expandNotifications,
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import NotificationContainer from './containers/notification_container';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import Column from '../../components/column';
+import LoadGap from '../../components/load_gap';
+import ScrollableList from '../../components/scrollable_list';
+import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
+
 import ColumnSettingsContainer from './containers/column_settings_container';
 import FilterBarContainer from './containers/filter_bar_container';
-import { createSelector } from 'reselect';
-import { List as ImmutableList } from 'immutable';
-import { debounce } from 'lodash';
-import ScrollableList from '../../components/scrollable_list';
-import LoadGap from '../../components/load_gap';
-import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
-import { getSettings } from 'soapbox/actions/settings';
-import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-import SubNavigation from 'soapbox/components/sub_navigation';
+import NotificationContainer from './containers/notification_container';
 
 const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
@@ -42,14 +47,24 @@ const getNotifications = createSelector([
   return notifications.filter(item => item !== null && allowedType === item.get('type'));
 });
 
-const mapStateToProps = state => ({
-  showFilterBar: getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
-  notifications: getNotifications(state),
-  isLoading: state.getIn(['notifications', 'isLoading'], true),
-  isUnread: state.getIn(['notifications', 'unread']) > 0,
-  hasMore: state.getIn(['notifications', 'hasMore']),
-  totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
-});
+const mapStateToProps = state => {
+  const settings = getSettings(state);
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthdays;
+  const birthdays = showBirthdayReminders && state.getIn(['user_lists', 'birthday_reminders', state.get('me')]);
+
+  return {
+    showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
+    notifications: getNotifications(state),
+    isLoading: state.getIn(['notifications', 'isLoading'], true),
+    isUnread: state.getIn(['notifications', 'unread']) > 0,
+    hasMore: state.getIn(['notifications', 'hasMore']),
+    totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
+    showBirthdayReminders,
+    hasBirthdays: !!birthdays,
+  };
+};
 
 export default @connect(mapStateToProps)
 @injectIntl
@@ -65,6 +80,8 @@ class Notifications extends React.PureComponent {
     hasMore: PropTypes.bool,
     dequeueNotifications: PropTypes.func,
     totalQueuedNotificationsCount: PropTypes.number,
+    showBirthdayReminders: PropTypes.bool,
+    hasBirthdays: PropTypes.bool,
   };
 
   componentWillUnmount() {
@@ -101,13 +118,23 @@ class Notifications extends React.PureComponent {
   }
 
   handleMoveUp = id => {
-    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    const { hasBirthdays } = this.props;
+
+    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
+    if (hasBirthdays) elementIndex++;
     this._selectChild(elementIndex, true);
   }
 
   handleMoveDown = id => {
-    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    const { hasBirthdays } = this.props;
+
+    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
+    if (hasBirthdays) elementIndex++;
     this._selectChild(elementIndex, false);
+  }
+
+  handleMoveBelowBirthdays = () => {
+    this._selectChild(1, false);
   }
 
   _selectChild(index, align_top) {
@@ -134,7 +161,7 @@ class Notifications extends React.PureComponent {
   }
 
   render() {
-    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, showBirthdayReminders } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 
     let scrollableContent = null;
@@ -161,6 +188,13 @@ class Notifications extends React.PureComponent {
           onMoveDown={this.handleMoveDown}
         />
       ));
+
+      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(
+        <BirthdayReminders
+          key='birthdays'
+          onMoveDown={this.handleMoveBelowBirthdays}
+        />,
+      );
     } else {
       scrollableContent = null;
     }

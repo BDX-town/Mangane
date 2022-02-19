@@ -1,10 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import Base from '../../../components/modal_root';
-import BundleContainer from '../containers/bundle_container';
-import BundleModalError from './bundle_modal_error';
-import ModalLoading from './modal_loading';
+import React from 'react';
 
+import Base from '../../../components/modal_root';
 import {
   MediaModal,
   VideoModal,
@@ -21,10 +18,21 @@ import {
   FocalPointModal,
   HotkeysModal,
   ComposeModal,
+  ReplyMentionsModal,
   UnauthorizedModal,
   EditFederationModal,
   ComponentModal,
+  ReactionsModal,
+  FavouritesModal,
+  ReblogsModal,
+  MentionsModal,
+  BirthdaysModal,
 } from '../../../features/ui/util/async-components';
+import BundleContainer from '../containers/bundle_container';
+
+import BundleModalError from './bundle_modal_error';
+import ModalLoading from './modal_loading';
+
 
 const MODAL_COMPONENTS = {
   'MEDIA': MediaModal,
@@ -38,13 +46,19 @@ const MODAL_COMPONENTS = {
   'EMBED': EmbedModal,
   'LIST_EDITOR': ListEditor,
   'FOCAL_POINT': FocalPointModal,
-  'LIST_ADDER':ListAdder,
+  'LIST_ADDER': ListAdder,
   'HOTKEYS': HotkeysModal,
   'COMPOSE': ComposeModal,
+  'REPLY_MENTIONS': ReplyMentionsModal,
   'UNAUTHORIZED': UnauthorizedModal,
   'CRYPTO_DONATE': CryptoDonateModal,
   'EDIT_FEDERATION': EditFederationModal,
   'COMPONENT': ComponentModal,
+  'REBLOGS': ReblogsModal,
+  'FAVOURITES': FavouritesModal,
+  'REACTIONS': ReactionsModal,
+  'MENTIONS': MentionsModal,
+  'BIRTHDAYS': BirthdaysModal,
 };
 
 export default class ModalRoot extends React.PureComponent {
@@ -75,7 +89,7 @@ export default class ModalRoot extends React.PureComponent {
     return <BundleModalError {...props} onClose={this.onClickClose} />;
   }
 
-  onClickClose = () => {
+  onClickClose = (_) => {
     const { onClose, type } = this.props;
     onClose(type);
   }

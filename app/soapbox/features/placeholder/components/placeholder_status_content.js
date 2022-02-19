@@ -1,5 +1,6 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import { randomIntFromInterval, generateText } from '../utils';
 
 export default class PlaceholderStatusContent extends React.Component {
@@ -13,7 +14,7 @@ export default class PlaceholderStatusContent extends React.Component {
     const { maxLength, minLength } = this.props;
     const length = randomIntFromInterval(maxLength, minLength);
 
-    return(
+    return (
       <div className='status__content status__content--placeholder' tabIndex='0' key='content'>
         {generateText(length)}
       </div>

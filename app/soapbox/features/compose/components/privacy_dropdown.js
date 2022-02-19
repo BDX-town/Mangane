@@ -1,13 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { injectIntl, defineMessages } from 'react-intl';
-import IconButton from '../../../components/icon_button';
-import Overlay from 'react-overlays/lib/Overlay';
-import Motion from '../../ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
-import { supportsPassiveEvents } from 'detect-passive-events';
 import classNames from 'classnames';
+import { supportsPassiveEvents } from 'detect-passive-events';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl, defineMessages } from 'react-intl';
+import spring from 'react-motion/lib/spring';
+import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
+
+import IconButton from '../../../components/icon_button';
+import Motion from '../../ui/util/optional_motion';
 
 const messages = defineMessages({
   public_short: { id: 'privacy.public.short', defaultMessage: 'Public' },

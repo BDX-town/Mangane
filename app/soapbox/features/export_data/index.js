@@ -1,16 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   exportFollows,
   exportBlocks,
   exportMutes,
 } from 'soapbox/actions/export_data';
-import CSVExporter from './components/csv_exporter';
 import { getFeatures } from 'soapbox/utils/features';
+
+import Column from '../ui/components/column';
+
+import CSVExporter from './components/csv_exporter';
 
 const messages = defineMessages({
   heading: { id: 'column.export_data', defaultMessage: 'Export data' },

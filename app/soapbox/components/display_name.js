@@ -1,14 +1,17 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import VerificationBadge from './verification_badge';
-import { getAcct } from '../utils/accounts';
+import { connect } from 'react-redux';
+
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import { isVerified } from 'soapbox/utils/accounts';
+import { displayFqn } from 'soapbox/utils/state';
+
+import { getAcct } from '../utils/accounts';
+
 import Icon from './icon';
 import RelativeTimestamp from './relative_timestamp';
-import { displayFqn } from 'soapbox/utils/state';
-import { isVerified } from 'soapbox/utils/accounts';
+import VerificationBadge from './verification_badge';
 
 const mapStateToProps = state => {
   return {
@@ -46,7 +49,7 @@ class DisplayName extends React.PureComponent {
       </div>
     ) : null;
 
-    if (others && others.size > 1) {
+    if (others?.size > 1) {
       displayName = others.take(2).map(a => (
         <span className='display-name__name' key={a.get('id')}>
           <bdi><strong className='display-name__html' dangerouslySetInnerHTML={{ __html: a.get('display_name_html') }} /></bdi>

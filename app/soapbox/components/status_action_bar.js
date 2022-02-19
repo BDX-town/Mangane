@@ -1,21 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import IconButton from './icon_button';
-import DropdownMenuContainer from '../containers/dropdown_menu_container';
-import { defineMessages, injectIntl } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
-import { openModal } from '../actions/modal';
-import { Link } from 'react-router-dom';
-import EmojiSelector from 'soapbox/components/emoji_selector';
-import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
-import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { List as ImmutableList } from 'immutable';
-import { getFeatures } from 'soapbox/utils/features';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import EmojiSelector from 'soapbox/components/emoji_selector';
 import { isUserTouching } from 'soapbox/is_mobile';
+import { isStaff, isAdmin } from 'soapbox/utils/accounts';
+import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
+import { getFeatures } from 'soapbox/utils/features';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
+import { openModal } from '../actions/modals';
+import DropdownMenuContainer from '../containers/dropdown_menu_container';
+
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -59,6 +62,7 @@ const messages = defineMessages({
   reactionOpenMouth: { id: 'status.reactions.open_mouth', defaultMessage: 'Wow' },
   reactionCry: { id: 'status.reactions.cry', defaultMessage: 'Sad' },
   reactionWeary: { id: 'status.reactions.weary', defaultMessage: 'Weary' },
+  quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
 class StatusActionBar extends ImmutablePureComponent {
@@ -70,10 +74,12 @@ class StatusActionBar extends ImmutablePureComponent {
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
+    onOpenReblogsModal: PropTypes.func.isRequired,
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onBookmark: PropTypes.func,
     onReblog: PropTypes.func,
+    onQuote: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onChat: PropTypes.func,
@@ -117,11 +123,11 @@ class StatusActionBar extends ImmutablePureComponent {
   ]
 
   handleReplyClick = () => {
-    const { me } = this.props;
+    const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onReply(this.props.status, this.context.router.history);
+      onReply(status, this.context.router.history);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REPLY');
     }
   }
 
@@ -167,22 +173,22 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleReactClick = emoji => {
     return e => {
-      const { me, status } = this.props;
+      const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
       if (me) {
-        this.props.dispatch(simpleEmojiReact(status, emoji));
+        dispatch(simpleEmojiReact(status, emoji));
       } else {
-        this.props.onOpenUnauthorizedModal();
+        onOpenUnauthorizedModal('FAVOURITE');
       }
       this.setState({ emojiSelectorVisible: false });
     };
   }
 
   handleFavouriteClick = () => {
-    const { me } = this.props;
+    const { me, onFavourite, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onFavourite(this.props.status);
+      onFavourite(status);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('FAVOURITE');
     }
   }
 
@@ -191,11 +197,20 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleReblogClick = e => {
-    const { me } = this.props;
+    const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      this.props.onReblog(this.props.status, e);
+      onReblog(status, e);
     } else {
-      this.props.onOpenUnauthorizedModal();
+      onOpenUnauthorizedModal('REBLOG');
+    }
+  }
+
+  handleQuoteClick = () => {
+    const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
+    if (me) {
+      onQuote(status, this.context.router.history);
+    } else {
+      onOpenUnauthorizedModal('REBLOG');
     }
   }
 
@@ -294,6 +309,13 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onToggleStatusSensitivity(this.props.status);
   }
 
+  handleOpenReblogsModal = () => {
+    const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
+  }
+
   _makeMenu = (publicStatus) => {
     const { status, intl, withDismiss, withGroupAdmin, me, features, isStaff, isAdmin } = this.props;
     const mutingConversation = status.get('muted');
@@ -320,16 +342,16 @@ class StatusActionBar extends ImmutablePureComponent {
       // });
     }
 
+    if (!me) {
+      return menu;
+    }
+
     if (features.bookmarks) {
       menu.push({
         text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
         action: this.handleBookmarkClick,
         icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
       });
-    }
-
-    if (!me) {
-      return menu;
     }
 
     menu.push(null);
@@ -364,11 +386,13 @@ class StatusActionBar extends ImmutablePureComponent {
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteClick,
         icon: require('@tabler/icons/icons/trash.svg'),
+        destructive: true,
       });
       menu.push({
         text: intl.formatMessage(messages.redraft),
         action: this.handleRedraftClick,
         icon: require('@tabler/icons/icons/edit.svg'),
+        destructive: true,
       });
     } else {
       menu.push({
@@ -441,11 +465,13 @@ class StatusActionBar extends ImmutablePureComponent {
           text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
           action: this.handleDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
+          destructive: true,
         });
         menu.push({
           text: intl.formatMessage(messages.deleteStatus),
           action: this.handleDeleteStatus,
           icon: require('@tabler/icons/icons/trash.svg'),
+          destructive: true,
         });
       }
     }
@@ -456,11 +482,13 @@ class StatusActionBar extends ImmutablePureComponent {
         text: intl.formatMessage(messages.group_remove_account),
         action: this.handleGroupRemoveAccount,
         icon: require('@tabler/icons/icons/user-x.svg'),
+        destructive: true,
       });
       menu.push({
         text: intl.formatMessage(messages.group_remove_post),
         action: this.handleGroupRemovePost,
         icon: require('@tabler/icons/icons/trash.svg'),
+        destructive: true,
       });
     }
 
@@ -479,7 +507,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features } = this.props;
+    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
     const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
@@ -513,6 +541,48 @@ class StatusActionBar extends ImmutablePureComponent {
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
+    let reblogButton;
+
+    if (me && features.quotePosts) {
+      const reblogMenu = [
+        {
+          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
+          action: this.handleReblogClick,
+          icon: require('@tabler/icons/icons/repeat.svg'),
+        },
+        {
+          text: intl.formatMessage(messages.quotePost),
+          action: this.handleQuoteClick,
+          icon: require('@tabler/icons/icons/quote.svg'),
+        },
+      ];
+
+      reblogButton = (
+        <DropdownMenuContainer
+          items={reblogMenu}
+          disabled={!publicStatus}
+          active={status.get('reblogged')}
+          pressed={status.get('reblogged')}
+          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={reblogIcon}
+          direction='right'
+          onShiftClick={this.handleReblogClick}
+        />
+      );
+    } else {
+      reblogButton = (
+        <IconButton
+          className='status__action-bar-button'
+          disabled={!publicStatus}
+          active={status.get('reblogged')}
+          pressed={status.get('reblogged')}
+          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+          src={reblogIcon}
+          onClick={this.handleReblogClick}
+        />
+      );
+    }
+
     if (status.get('in_reply_to_id', null) === null) {
       replyTitle = intl.formatMessage(messages.reply);
     } else {
@@ -536,9 +606,9 @@ class StatusActionBar extends ImmutablePureComponent {
           <IconButton className='status__action-bar-button' title={replyTitle} src={require('feather-icons/dist/icons/message-circle.svg')} onClick={this.handleReplyClick} />
           {replyCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`} className='detailed-status__link'>{replyCount}</Link>}
         </div>
-        <div className='status__action-bar__counter'>
-          <IconButton className='status__action-bar-button' disabled={!publicStatus} active={status.get('reblogged')} pressed={status.get('reblogged')} title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)} src={reblogIcon} onClick={this.handleReblogClick} />
-          {reblogCount !== 0 && <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='detailed-status__link'>{reblogCount}</Link>}
+        <div className='status__action-bar__counter status__action-bar__counter--reblog'>
+          {reblogButton}
+          {reblogCount !== 0 && <span className='detailed-status__link' type='button' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</span>}
         </div>
         <div
           className='status__action-bar__counter status__action-bar__counter--favourite'
@@ -593,10 +663,19 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { status }) => ({
   dispatch,
-  onOpenUnauthorizedModal() {
-    dispatch(openModal('UNAUTHORIZED'));
+  onOpenUnauthorizedModal(action) {
+    dispatch(openModal('UNAUTHORIZED', {
+      action,
+      ap_id: status.get('url'),
+    }));
+  },
+  onOpenReblogsModal(username, statusId) {
+    dispatch(openModal('REBLOGS', {
+      username,
+      statusId,
+    }));
   },
 });
 

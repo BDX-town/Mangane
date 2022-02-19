@@ -1,12 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
-import Button from '../../../components/button';
-import { closeModal } from '../../../actions/modal';
-import { muteAccount } from '../../../actions/accounts';
-import { toggleHideNotifications } from '../../../actions/mutes';
+
+import { muteAccount } from 'soapbox/actions/accounts';
+import { closeModal } from 'soapbox/actions/modals';
+import { toggleHideNotifications } from 'soapbox/actions/mutes';
+import Button from 'soapbox/components/button';
+import Icon from 'soapbox/components/icon';
 
 
 const mapStateToProps = state => {
@@ -73,6 +75,14 @@ class MuteModal extends React.PureComponent {
 
     return (
       <div className='modal-root__modal mute-modal'>
+        <div className='mute-modal__header'>
+          <Icon src={require('@tabler/icons/icons/circle-x.svg')} />
+          <FormattedMessage
+            id='confirmations.mute.heading'
+            defaultMessage='Mute @{name}'
+            values={{ name: account.get('acct') }}
+          />
+        </div>
         <div className='mute-modal__container'>
           <p>
             <FormattedMessage

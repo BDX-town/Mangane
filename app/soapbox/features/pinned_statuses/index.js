@@ -1,13 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchPinnedStatuses } from '../../actions/pin_statuses';
-import Column from '../ui/components/column';
-import StatusList from '../../components/status_list';
-import { injectIntl, FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import MissingIndicator from 'soapbox/components/missing_indicator';
+
+import { fetchPinnedStatuses } from '../../actions/pin_statuses';
+import StatusList from '../../components/status_list';
+import Column from '../ui/components/column';
+
+const messages = defineMessages({
+  heading: { id: 'column.pins', defaultMessage: 'Pinned posts' },
+});
 
 const mapStateToProps = (state, { params }) => {
   const username = params.username || '';
@@ -37,7 +43,7 @@ class PinnedStatuses extends ImmutablePureComponent {
   }
 
   render() {
-    const { statusIds, hasMore, isMyAccount } = this.props;
+    const { intl, statusIds, hasMore, isMyAccount } = this.props;
 
     if (!isMyAccount) {
       return (
@@ -48,7 +54,7 @@ class PinnedStatuses extends ImmutablePureComponent {
     }
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <StatusList
           statusIds={statusIds}
           scrollKey='pinned_statuses'

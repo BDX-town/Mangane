@@ -1,3 +1,11 @@
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
+import {
+  COMPOSE_MENTION,
+  COMPOSE_REPLY,
+  COMPOSE_DIRECT,
+  COMPOSE_QUOTE,
+} from '../actions/compose';
 import {
   SEARCH_CHANGE,
   SEARCH_CLEAR,
@@ -8,12 +16,6 @@ import {
   SEARCH_EXPAND_REQUEST,
   SEARCH_EXPAND_SUCCESS,
 } from '../actions/search';
-import {
-  COMPOSE_MENTION,
-  COMPOSE_REPLY,
-  COMPOSE_DIRECT,
-} from '../actions/compose';
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 const initialState = ImmutableMap({
   value: '',
@@ -28,44 +30,33 @@ const toIds = items => {
   return ImmutableOrderedSet(items.map(item => item.id));
 };
 
-const getResultsFilter = results => {
-  if (results.accounts.length > 0) {
-    return 'accounts';
-  } else if (results.statuses.length > 0) {
-    return 'statuses';
-  } else if (results.hashtags.length > 0) {
-    return 'hashtags';
-  } else {
-    return 'accounts';
-  }
-};
-
-const importResults = (state, results) => {
-  const filter = getResultsFilter(results);
-
+const importResults = (state, results, searchTerm, searchType) => {
   return state.withMutations(state => {
-    state.set('results', ImmutableMap({
-      accounts: toIds(results.accounts),
-      statuses: toIds(results.statuses),
-      hashtags: fromJS(results.hashtags), // it's a list of maps
-      accountsHasMore: results.accounts.length >= 20,
-      statusesHasMore: results.statuses.length >= 20,
-      hashtagsHasMore: results.hashtags.length >= 20,
-      accountsLoaded: true,
-      statusesLoaded: true,
-      hashtagsLoaded: true,
-    }));
+    if (state.get('value') === searchTerm && state.get('filter') === searchType) {
+      state.set('results', ImmutableMap({
+        accounts: toIds(results.accounts),
+        statuses: toIds(results.statuses),
+        hashtags: fromJS(results.hashtags), // it's a list of maps
+        accountsHasMore: results.accounts.length >= 20,
+        statusesHasMore: results.statuses.length >= 20,
+        hashtagsHasMore: results.hashtags.length >= 20,
+        accountsLoaded: true,
+        statusesLoaded: true,
+        hashtagsLoaded: true,
+      }));
 
-    state.set('submitted', true);
-    state.set('filter', filter);
+      state.set('submitted', true);
+    }
   });
 };
 
-const paginateResults = (state, searchType, results) => {
+const paginateResults = (state, searchType, results, searchTerm) => {
   return state.withMutations(state => {
-    state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
-    state.setIn(['results', `${searchType}Loaded`], true);
-    state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+    if (state.get('value') === searchTerm) {
+      state.setIn(['results', `${searchType}HasMore`], results[searchType].length >= 20);
+      state.setIn(['results', `${searchType}Loaded`], true);
+      state.updateIn(['results', searchType], items => items.concat(results[searchType].map(item => item.id)));
+    }
   });
 };
 
@@ -88,17 +79,18 @@ export default function search(state = initialState, action) {
   case COMPOSE_REPLY:
   case COMPOSE_MENTION:
   case COMPOSE_DIRECT:
+  case COMPOSE_QUOTE:
     return state.set('hidden', true);
   case SEARCH_FETCH_REQUEST:
     return handleSubmitted(state, action.value);
   case SEARCH_FETCH_SUCCESS:
-    return importResults(state, action.results);
+    return importResults(state, action.results, action.searchTerm, action.searchType);
   case SEARCH_FILTER_SET:
     return state.set('filter', action.value);
   case SEARCH_EXPAND_REQUEST:
     return state.setIn(['results', `${action.searchType}Loaded`], false);
   case SEARCH_EXPAND_SUCCESS:
-    return paginateResults(state, action.searchType, action.results);
+    return paginateResults(state, action.searchType, action.results, action.searchTerm);
   default:
     return state;
   }

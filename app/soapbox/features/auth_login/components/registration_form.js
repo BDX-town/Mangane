@@ -1,10 +1,22 @@
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { CancelToken } from 'axios';
+import { Map as ImmutableMap } from 'immutable';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
+import { accountLookup } from 'soapbox/actions/accounts';
+import { register, verifyCredentials } from 'soapbox/actions/auth';
+import { openModal } from 'soapbox/actions/modals';
+import { getSettings } from 'soapbox/actions/settings';
+import BirthdayInput from 'soapbox/components/birthday_input';
+import ShowablePassword from 'soapbox/components/showable_password';
+import CaptchaField from 'soapbox/features/auth_login/components/captcha';
 import {
   SimpleForm,
   SimpleInput,
@@ -12,12 +24,6 @@ import {
   SimpleTextarea,
   Checkbox,
 } from 'soapbox/features/forms';
-import { register, verifyCredentials } from 'soapbox/actions/auth';
-import CaptchaField from 'soapbox/features/auth_login/components/captcha';
-import { Map as ImmutableMap } from 'immutable';
-import { v4 as uuidv4 } from 'uuid';
-import { getSettings } from 'soapbox/actions/settings';
-import { openModal } from 'soapbox/actions/modal';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -30,6 +36,8 @@ const messages = defineMessages({
   tos: { id: 'registration.tos', defaultMessage: 'Terms of Service' },
   close: { id: 'registration.confirmation_modal.close', defaultMessage: 'Close' },
   newsletter: { id: 'registration.newsletter', defaultMessage: 'Subscribe to newsletter.' },
+  needsConfirmationHeader: { id: 'confirmations.register.needs_confirmation.header', defaultMessage: 'Confirmation needed' },
+  needsApprovalHeader: { id: 'confirmations.register.needs_approval.header', defaultMessage: 'Approval needed' },
 });
 
 const mapStateToProps = (state, props) => ({
@@ -38,6 +46,8 @@ const mapStateToProps = (state, props) => ({
   needsConfirmation: state.getIn(['instance', 'pleroma', 'metadata', 'account_activation_required']),
   needsApproval: state.getIn(['instance', 'approval_required']),
   supportsEmailList: getFeatures(state.get('instance')).emailList,
+  supportsAccountLookup: getFeatures(state.get('instance')).accountLookup,
+  birthdayRequired: state.getIn(['instance', 'pleroma', 'metadata', 'birthday_required']),
 });
 
 export default @connect(mapStateToProps)
@@ -51,7 +61,9 @@ class RegistrationForm extends ImmutablePureComponent {
     needsConfirmation: PropTypes.bool,
     needsApproval: PropTypes.bool,
     supportsEmailList: PropTypes.bool,
+    supportsAccountLookup: PropTypes.bool,
     inviteToken: PropTypes.string,
+    birthdayRequired: PropTypes.bool,
   }
 
   static contextTypes = {
@@ -63,6 +75,17 @@ class RegistrationForm extends ImmutablePureComponent {
     submissionLoading: false,
     params: ImmutableMap(),
     captchaIdempotencyKey: uuidv4(),
+    usernameUnavailable: false,
+    passwordConfirmation: '',
+    passwordMismatch: false,
+  }
+
+  source = CancelToken.source();
+
+  refreshCancelToken = () => {
+    this.source.cancel();
+    this.source = CancelToken.source();
+    return this.source;
   }
 
   setParams = map => {
@@ -73,8 +96,46 @@ class RegistrationForm extends ImmutablePureComponent {
     this.setParams({ [e.target.name]: e.target.value });
   }
 
+  onUsernameChange = e => {
+    this.setParams({ username: e.target.value });
+    this.setState({ usernameUnavailable: false });
+    this.source.cancel();
+
+    this.usernameAvailable(e.target.value);
+  }
+
   onCheckboxChange = e => {
     this.setParams({ [e.target.name]: e.target.checked });
+  }
+
+  onPasswordChange = e => {
+    const password = e.target.value;
+    const { passwordConfirmation } = this.state;
+    this.onInputChange(e);
+
+    if (password === passwordConfirmation) {
+      this.setState({ passwordMismatch: false });
+    }
+  }
+
+  onPasswordConfirmChange = e => {
+    const password = this.state.params.get('password', '');
+    const passwordConfirmation = e.target.value;
+    this.setState({ passwordConfirmation });
+
+    if (password === passwordConfirmation) {
+      this.setState({ passwordMismatch: false });
+    }
+  }
+
+  onPasswordConfirmBlur = e => {
+    this.setState({ passwordMismatch: !this.passwordsMatch() });
+  }
+
+  onBirthdayChange = birthday => {
+    this.setState({
+      birthday,
+    });
   }
 
   launchModal = () => {
@@ -95,6 +156,12 @@ class RegistrationForm extends ImmutablePureComponent {
     </>);
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/check.svg'),
+      heading: needsConfirmation
+        ? intl.formatMessage(messages.needsConfirmationHeader)
+        : needsApproval
+          ? intl.formatMessage(messages.needsApprovalHeader)
+          : undefined,
       message,
       confirm: intl.formatMessage(messages.close),
     }));
@@ -113,8 +180,38 @@ class RegistrationForm extends ImmutablePureComponent {
     }
   }
 
+  passwordsMatch = () => {
+    const { params, passwordConfirmation } = this.state;
+    return params.get('password', '') === passwordConfirmation;
+  }
+
+  usernameAvailable = debounce(username => {
+    const { dispatch, supportsAccountLookup } = this.props;
+
+    if (!supportsAccountLookup) return;
+
+    const source = this.refreshCancelToken();
+
+    dispatch(accountLookup(username, source.token))
+      .then(account => {
+        this.setState({ usernameUnavailable: !!account });
+      })
+      .catch((error) => {
+        if (error.response?.status === 404) {
+          this.setState({ usernameUnavailable: false });
+        }
+      });
+
+  }, 1000, { trailing: true });
+
   onSubmit = e => {
     const { dispatch, inviteToken } = this.props;
+    const { birthday } = this.state;
+
+    if (!this.passwordsMatch()) {
+      this.setState({ passwordMismatch: true });
+      return;
+    }
 
     const params = this.state.params.withMutations(params => {
       // Locale for confirmation email
@@ -123,6 +220,10 @@ class RegistrationForm extends ImmutablePureComponent {
       // Pleroma invites
       if (inviteToken) {
         params.set('token', inviteToken);
+      }
+
+      if (birthday) {
+        params.set('birthday', new Date(birthday.getTime() - (birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10));
       }
     });
 
@@ -158,8 +259,8 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { instance, intl, supportsEmailList } = this.props;
-    const { params } = this.state;
+    const { instance, intl, supportsEmailList, birthdayRequired } = this.props;
+    const { params, usernameUnavailable, passwordConfirmation, passwordMismatch, birthday } = this.state;
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
@@ -167,6 +268,11 @@ class RegistrationForm extends ImmutablePureComponent {
         <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
             <div className='fields-group'>
+              {usernameUnavailable && (
+                <div className='error'>
+                  <FormattedMessage id='registration.username_unavailable' defaultMessage='Username is already taken.' />
+                </div>
+              )}
               <TextInput
                 placeholder={intl.formatMessage(messages.username)}
                 name='username'
@@ -175,7 +281,9 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoCorrect='off'
                 autoCapitalize='off'
                 pattern='^[a-zA-Z\d_-]+'
-                onChange={this.onInputChange}
+                onChange={this.onUsernameChange}
+                value={params.get('username', '')}
+                error={usernameUnavailable}
                 required
               />
               <SimpleInput
@@ -186,28 +294,43 @@ class RegistrationForm extends ImmutablePureComponent {
                 autoCorrect='off'
                 autoCapitalize='off'
                 onChange={this.onInputChange}
+                value={params.get('email', '')}
                 required
               />
-              <SimpleInput
+              {passwordMismatch && (
+                <div className='error'>
+                  <FormattedMessage id='registration.password_mismatch' defaultMessage="Passwords don't match." />
+                </div>
+              )}
+              <ShowablePassword
                 placeholder={intl.formatMessage(messages.password)}
                 name='password'
-                type='password'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
-                onChange={this.onInputChange}
+                onChange={this.onPasswordChange}
+                value={params.get('password', '')}
+                error={passwordMismatch === true}
                 required
               />
-              <SimpleInput
+              <ShowablePassword
                 placeholder={intl.formatMessage(messages.confirm)}
-                name='confirm'
-                type='password'
+                name='password_confirmation'
                 autoComplete='off'
                 autoCorrect='off'
                 autoCapitalize='off'
-                onChange={this.onInputChange}
+                onChange={this.onPasswordConfirmChange}
+                onBlur={this.onPasswordConfirmBlur}
+                value={passwordConfirmation}
+                error={passwordMismatch === true}
                 required
               />
+              {birthdayRequired &&
+                <BirthdayInput
+                  value={birthday}
+                  onChange={this.onBirthdayChange}
+                  required
+                />}
               {instance.get('approval_required') &&
                 <SimpleTextarea
                   label={<FormattedMessage id='registration.reason' defaultMessage='Why do you want to join?' />}
@@ -215,6 +338,7 @@ class RegistrationForm extends ImmutablePureComponent {
                   name='reason'
                   maxLength={500}
                   onChange={this.onInputChange}
+                  value={params.get('reason', '')}
                   required
                 />}
             </div>
@@ -232,12 +356,14 @@ class RegistrationForm extends ImmutablePureComponent {
                 label={intl.formatMessage(messages.agreement, { tos: <Link to='/about/tos' target='_blank' key={0}>{intl.formatMessage(messages.tos)}</Link> })}
                 name='agreement'
                 onChange={this.onCheckboxChange}
+                checked={params.get('agreement', false)}
                 required
               />
               {supportsEmailList && <Checkbox
                 label={intl.formatMessage(messages.newsletter)}
                 name='accepts_email_list'
                 onChange={this.onCheckboxChange}
+                checked={params.get('accepts_email_list', false)}
               />}
             </div>
             <div className='actions'>

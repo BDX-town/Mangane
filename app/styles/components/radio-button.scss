@@ -1,0 +1,35 @@
+.radio-button {
+  font-size: 14px;
+  position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  line-height: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+
+  input[type=radio],
+  input[type=checkbox] {
+    display: none;
+  }
+
+  &__input {
+    display: inline-block;
+    position: relative;
+    border: 1px solid var(--primary-text-color--faint);
+    box-sizing: border-box;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    margin-right: 10px;
+    top: -1px;
+    border-radius: 50%;
+    vertical-align: middle;
+
+    &.checked {
+      border-color: var(--brand-color);
+      background: var(--brand-color);
+    }
+  }
+}

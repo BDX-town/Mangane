@@ -1,10 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { defineMessages, injectIntl } from 'react-intl';
-import Picker from 'emoji-mart/dist-es/components/picker/picker';
-import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import Picker from 'emoji-mart/dist-es/components/picker/picker';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { defineMessages, injectIntl } from 'react-intl';
+import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
 
 const messages = defineMessages({
@@ -67,8 +68,10 @@ class IconPickerMenu extends React.PureComponent {
     if (!c) return;
 
     // Nice and dirty hack to display the icons
-    c.querySelectorAll('button.emoji-mart-emoji > span').forEach(elem => {
-      elem.innerHTML = `<i class="fa fa-${elem.parentNode.getAttribute('title')}"></i>`;
+    c.querySelectorAll('button.emoji-mart-emoji > img').forEach(elem => {
+      const newIcon = document.createElement('span');
+      newIcon.innerHTML = `<i class="fa fa-${elem.parentNode.getAttribute('title')} fa-hack"></i>`;
+      elem.parentNode.replaceChild(newIcon, elem);
     });
   }
 

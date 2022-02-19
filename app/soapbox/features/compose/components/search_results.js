@@ -1,19 +1,29 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import AccountContainer from '../../../containers/account_container';
-import StatusContainer from '../../../containers/status_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import Hashtag from '../../../components/hashtag';
-import FilterBar from '../../search/components/filter_bar';
+import { FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl } from 'react-intl';
+
+import FilterBar from 'soapbox/components/filter_bar';
+import Pullable from 'soapbox/components/pullable';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import PlaceholderAccount from 'soapbox/features/placeholder/components/placeholder_account';
 import PlaceholderHashtag from 'soapbox/features/placeholder/components/placeholder_hashtag';
 import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
-import Pullable from 'soapbox/components/pullable';
 
-export default class SearchResults extends ImmutablePureComponent {
+import Hashtag from '../../../components/hashtag';
+import AccountContainer from '../../../containers/account_container';
+import StatusContainer from '../../../containers/status_container';
+
+const messages = defineMessages({
+  accounts: { id: 'search_results.accounts', defaultMessage: 'People' },
+  statuses: { id: 'search_results.statuses', defaultMessage: 'Posts' },
+  hashtags: { id: 'search_results.hashtags', defaultMessage: 'Hashtags' },
+});
+
+export default @injectIntl
+class SearchResults extends ImmutablePureComponent {
 
   static propTypes = {
     value: PropTypes.string,
@@ -25,11 +35,36 @@ export default class SearchResults extends ImmutablePureComponent {
     features: PropTypes.object.isRequired,
     suggestions: ImmutablePropTypes.list,
     trends: ImmutablePropTypes.list,
+    intl: PropTypes.object.isRequired,
   };
 
   handleLoadMore = () => this.props.expandSearch(this.props.selectedFilter);
 
   handleSelectFilter = newActiveFilter => this.props.selectFilter(newActiveFilter);
+
+  renderFilterBar() {
+    const { intl, selectedFilter } = this.props;
+
+    const items = [
+      {
+        text: intl.formatMessage(messages.accounts),
+        action: () => this.handleSelectFilter('accounts'),
+        name: 'accounts',
+      },
+      {
+        text: intl.formatMessage(messages.statuses),
+        action: () => this.handleSelectFilter('statuses'),
+        name: 'statuses',
+      },
+      {
+        text: intl.formatMessage(messages.hashtags),
+        action: () => this.handleSelectFilter('hashtags'),
+        name: 'hashtags',
+      },
+    ];
+
+    return <FilterBar className='search__filter-bar' items={items} active={selectedFilter} />;
+  }
 
   render() {
     const { value, results, submitted, selectedFilter, suggestions, trends } = this.props;
@@ -105,7 +140,7 @@ export default class SearchResults extends ImmutablePureComponent {
 
     return (
       <>
-        <FilterBar selectedFilter={selectedFilter} selectFilter={this.handleSelectFilter} />
+        {this.renderFilterBar()}
 
         {noResultsMessage || (
           <Pullable>

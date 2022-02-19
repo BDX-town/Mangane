@@ -1,14 +1,16 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { makeGetAccount } from '../../../selectors';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
-import IconButton from '../../../components/icon_button';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
-import { addToAliases } from '../../../actions/aliases';
+import { connect } from 'react-redux';
+
+import { addToAliases } from 'soapbox/actions/aliases';
+import Avatar from 'soapbox/components/avatar';
+import DisplayName from 'soapbox/components/display_name';
+import IconButton from 'soapbox/components/icon_button';
+import { makeGetAccount } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   add: { id: 'aliases.account.add', defaultMessage: 'Create alias' },
@@ -17,17 +19,20 @@ const messages = defineMessages({
 const makeMapStateToProps = () => {
   const getAccount = makeGetAccount();
 
-  const mapStateToProps = (state, { accountId, added }) => {
+  const mapStateToProps = (state, { accountId, added, aliases }) => {
     const me = state.get('me');
-    const ownAccount = getAccount(state, me);
+
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
 
     const account = getAccount(state, accountId);
     const apId = account.getIn(['pleroma', 'ap_id']);
+    const name = features.accountMoving ? account.get('acct') : apId;
 
     return {
       account,
       apId,
-      added: typeof added === 'undefined' ? ownAccount.getIn(['pleroma', 'also_known_as']).includes(apId) : added,
+      added: typeof added === 'undefined' ? aliases.includes(name) : added,
       me,
     };
   };
@@ -55,7 +60,7 @@ class Account extends ImmutablePureComponent {
     added: false,
   };
 
-  handleOnAdd = () => this.props.onAdd(this.props.intl, this.props.apId);
+  handleOnAdd = () => this.props.onAdd(this.props.intl, this.props.account);
 
   render() {
     const { account, accountId, intl, added, me } = this.props;
@@ -65,7 +70,7 @@ class Account extends ImmutablePureComponent {
     if (!added && accountId !== me) {
       button = (
         <div className='account__relationship'>
-          <IconButton icon='plus' title={intl.formatMessage(messages.add)} onClick={this.handleOnAdd} />
+          <IconButton src={require('@tabler/icons/icons/plus.svg')} title={intl.formatMessage(messages.add)} onClick={this.handleOnAdd} />
         </div>
       );
     }

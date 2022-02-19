@@ -1,26 +1,28 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import Column from '../ui/components/column';
-import Button from 'soapbox/components/button';
-import {
-  SimpleForm,
-  SimpleInput,
-  FieldsGroup,
-  TextInput,
-} from 'soapbox/features/forms';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   changeEmail,
   changePassword,
   deleteAccount,
 } from 'soapbox/actions/security';
 import { fetchOAuthTokens, revokeOAuthTokenById } from 'soapbox/actions/security';
-import { fetchUserMfaSettings } from '../../actions/mfa';
+import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import { changeSetting, getSettings } from 'soapbox/actions/settings';
+import Button from 'soapbox/components/button';
+import ShowablePassword from 'soapbox/components/showable_password';
+import {
+  SimpleForm,
+  FieldsGroup,
+  TextInput,
+} from 'soapbox/features/forms';
+
+import { fetchMfa } from '../../actions/mfa';
+import Column from '../ui/components/column';
 
 /*
 Security settings page for user account
@@ -64,6 +66,7 @@ const messages = defineMessages({
 const mapStateToProps = state => ({
   settings: getSettings(state),
   tokens: state.getIn(['security', 'tokens']),
+  mfa: state.getIn(['security', 'mfa']),
 });
 
 export default @connect(mapStateToProps)
@@ -141,8 +144,7 @@ class ChangeEmailForm extends ImmutablePureComponent {
               onChange={this.handleInputChange}
               value={this.state.email}
             />
-            <SimpleInput
-              type='password'
+            <ShowablePassword
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
               onChange={this.handleInputChange}
@@ -208,22 +210,19 @@ class ChangePasswordForm extends ImmutablePureComponent {
         <h2>{intl.formatMessage(messages.passwordHeader)}</h2>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
-            <SimpleInput
-              type='password'
+            <ShowablePassword
               label={intl.formatMessage(messages.oldPasswordFieldLabel)}
               name='oldPassword'
               onChange={this.handleInputChange}
               value={this.state.oldPassword}
             />
-            <SimpleInput
-              type='password'
+            <ShowablePassword
               label={intl.formatMessage(messages.newPasswordFieldLabel)}
               name='newPassword'
               onChange={this.handleInputChange}
               value={this.state.newPassword}
             />
-            <SimpleInput
-              type='password'
+            <ShowablePassword
               label={intl.formatMessage(messages.confirmationFieldLabel)}
               name='confirmation'
               onChange={this.handleInputChange}
@@ -246,33 +245,30 @@ class ChangePasswordForm extends ImmutablePureComponent {
 @injectIntl
 class SetUpMfa extends ImmutablePureComponent {
 
-  constructor(props) {
-    super(props);
-    this.props.dispatch(fetchUserMfaSettings()).then(response => {
-      this.props.dispatch(changeSetting(['otpEnabled'], response.data.settings.enabled));
-    }).catch(e => e);
-  }
-
   static contextTypes = {
     router: PropTypes.object,
   };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    settings: ImmutablePropTypes.map.isRequired,
+    mfa: ImmutablePropTypes.map.isRequired,
   };
 
   handleMfaClick = e => {
     this.context.router.history.push('../auth/mfa');
   }
 
+  componentDidMount() {
+    this.props.dispatch(fetchMfa());
+  }
+
   render() {
-    const { intl, settings } = this.props;
+    const { intl, mfa } = this.props;
 
     return (
       <SimpleForm>
         <h2>{intl.formatMessage(messages.mfaHeader)}</h2>
-        { settings.get('otpEnabled') === false ?
+        {!mfa.getIn(['settings', 'totp']) ?
           <div>
             <p className='hint'>
               {intl.formatMessage(messages.mfa_setup_hint)}
@@ -392,8 +388,7 @@ class DeactivateAccount extends ImmutablePureComponent {
         </p>
         <fieldset disabled={this.state.isLoading}>
           <FieldsGroup>
-            <SimpleInput
-              type='password'
+            <ShowablePassword
               label={intl.formatMessage(messages.passwordFieldLabel)}
               name='password'
               onChange={this.handleInputChange}

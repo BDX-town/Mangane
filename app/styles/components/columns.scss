@@ -286,7 +286,8 @@
 .column-link {
   background: var(--brand-color--med);
   color: var(--primary-text-color);
-  display: block;
+  display: flex;
+  align-items: center;
   font-size: 16px;
   padding: 15px;
   text-decoration: none;
@@ -318,7 +319,7 @@
   }
 }
 
-.column-link__icon {
+.svg-icon.column-link__icon {
   display: inline-block;
   margin-right: 5px;
 }
@@ -745,6 +746,15 @@
 .column-settings__row {
   .text-btn {
     margin-bottom: 15px;
+
+    &.column-header__setting-btn {
+      display: flex;
+      align-items: center;
+
+      .svg-icon {
+        margin-right: 10px;
+      }
+    }
   }
 }
 
@@ -814,12 +824,19 @@
 }
 
 .timeline-filter-message {
+  display: flex;
+  align-items: center;
   background-color: var(--brand-color--faint);
   color: var(--primary-text-color);
   padding: 15px 20px;
 
   .icon-button {
-    margin-right: 8px;
+    margin: 2px 8px 2px 0;
+
+    .svg-icon {
+      height: 20px;
+      width: 20px;
+    }
   }
 }
 
@@ -938,6 +955,9 @@
 .sub-navigation ~ .ptr > .ptr__children > {
   // ScrollableList
   .slist .item-list > article:first-child,
+  // ScrollableList placeholders
+  .slist .item-list .slist__placeholder:first-child > .material-status:first-child,
+  .slist.slist--flex .item-list > .material-status:first-child,
   // Thread
   .material-status:not(.material-status + .material-status) {
     // MaterialStatus

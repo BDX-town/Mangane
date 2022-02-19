@@ -1,14 +1,15 @@
-import { createSelector } from 'reselect';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
 } from 'immutable';
-import { getDomain } from 'soapbox/utils/accounts';
-import ConfigDB from 'soapbox/utils/config_db';
+import { createSelector } from 'reselect';
+
 import { getSettings } from 'soapbox/actions/settings';
-import { shouldFilter } from 'soapbox/utils/timelines';
+import { getDomain } from 'soapbox/utils/accounts';
 import { validId } from 'soapbox/utils/auth';
+import ConfigDB from 'soapbox/utils/config_db';
+import { shouldFilter } from 'soapbox/utils/timelines';
 
 const getAccountBase         = (state, id) => state.getIn(['accounts', id], null);
 const getAccountCounters     = (state, id) => state.getIn(['accounts_counters', id], null);
@@ -170,6 +171,8 @@ export const getAlerts = createSelector([getAlertsBase], (base) => {
     arr.push({
       message: item.get('message'),
       title: item.get('title'),
+      actionLabel: item.get('actionLabel'),
+      actionLink: item.get('actionLink'),
       key: item.get('key'),
       className: `snackbar snackbar--${item.get('severity', 'info')}`,
       activeClassName: 'snackbar--active',
@@ -209,8 +212,8 @@ export const getAccountGallery = createSelector([
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state, { id }) => state.getIn(['chats', id]),
-      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', id, 'account'])]),
+      (state, { id }) => state.getIn(['chats', 'items', id]),
+      (state, { id }) => state.getIn(['accounts', state.getIn(['chats', 'items', id, 'account'])]),
       (state, { last_message }) => state.getIn(['chat_messages', last_message]),
     ],
 

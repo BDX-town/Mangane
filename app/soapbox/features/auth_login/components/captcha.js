@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { connect } from 'react-redux';
 import { Map as ImmutableMap } from 'immutable';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { fetchCaptcha } from 'soapbox/actions/auth';
 import { TextInput } from 'soapbox/features/forms';
-import { FormattedMessage } from 'react-intl';
 
 const noOp = () => {};
 

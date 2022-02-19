@@ -1,8 +1,9 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { captureException } from 'soapbox/monitoring';
+
 import Icon from 'soapbox/components/icon';
+import { captureException } from 'soapbox/monitoring';
 
 export default class ErrorBoundary extends React.PureComponent {
 

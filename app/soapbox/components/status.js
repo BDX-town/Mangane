@@ -1,28 +1,31 @@
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Avatar from './avatar';
-import AvatarOverlay from './avatar_overlay';
-import AvatarComposite from './avatar_composite';
-import RelativeTimestamp from './relative_timestamp';
-import DisplayName from './display_name';
-import StatusContent from './status_content';
-import StatusActionBar from './status_action_bar';
-import AttachmentThumbs from './attachment_thumbs';
-import Card from '../features/status/components/card';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
-import { HotKeys } from 'react-hotkeys';
 import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { HotKeys } from 'react-hotkeys';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, FormattedMessage } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
-import { getDomain } from 'soapbox/utils/accounts';
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
-// We use the component (and not the container) since we do not want
-// to use the progress bar to show download progress
+import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
+import Icon from 'soapbox/components/icon';
+import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
+import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
+import { getDomain } from 'soapbox/utils/accounts';
+
+import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
+import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
+
+import AttachmentThumbs from './attachment_thumbs';
+import Avatar from './avatar';
+import AvatarComposite from './avatar_composite';
+import AvatarOverlay from './avatar_overlay';
+import DisplayName from './display_name';
+import RelativeTimestamp from './relative_timestamp';
+import StatusActionBar from './status_action_bar';
+import StatusContent from './status_content';
+import StatusReplyMentions from './status_reply_mentions';
 
 export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   const displayName = status.getIn(['account', 'display_name']);
@@ -68,6 +71,7 @@ class Status extends ImmutablePureComponent {
     onReply: PropTypes.func,
     onFavourite: PropTypes.func,
     onReblog: PropTypes.func,
+    onQuote: PropTypes.func,
     onDelete: PropTypes.func,
     onDirect: PropTypes.func,
     onChat: PropTypes.func,
@@ -86,7 +90,6 @@ class Status extends ImmutablePureComponent {
     unread: PropTypes.bool,
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
-    showThread: PropTypes.bool,
     getScrollPosition: PropTypes.func,
     updateScrollBottom: PropTypes.func,
     cacheMediaWidth: PropTypes.func,
@@ -316,7 +319,7 @@ class Status extends ImmutablePureComponent {
     const poll = null;
     let statusAvatar, prepend, rebloggedByText, reblogContent;
 
-    const { intl, hidden, featured, otherAccounts, unread, showThread, group } = this.props;
+    const { intl, hidden, featured, otherAccounts, unread, group } = this.props;
 
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
@@ -455,7 +458,7 @@ class Status extends ImmutablePureComponent {
           </Bundle>
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && status.get('card')) {
+    } else if (status.get('spoiler_text').length === 0 && !status.get('quote') && status.get('card')) {
       media = (
         <Card
           onOpenMedia={this.props.onOpenMedia}
@@ -465,6 +468,24 @@ class Status extends ImmutablePureComponent {
           defaultWidth={this.props.cachedMediaWidth}
         />
       );
+    } else if (status.get('expectsCard', false)) {
+      media = (
+        <PlaceholderCard />
+      );
+    }
+
+    let quote;
+
+    if (status.get('quote')) {
+      if (status.getIn(['pleroma', 'quote_visible'], true) === false) {
+        quote = (
+          <div className='quoted-status-tombstone'>
+            <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
+          </div>
+        );
+      } else {
+        quote = <QuotedStatus statusId={status.get('quote')} />;
+      }
     }
 
     if (otherAccounts && otherAccounts.size > 1) {
@@ -533,6 +554,8 @@ class Status extends ImmutablePureComponent {
               </div>
             )}
 
+            <StatusReplyMentions status={this._properStatus()} />
+
             <StatusContent
               status={status}
               reblogContent={reblogContent}
@@ -544,12 +567,7 @@ class Status extends ImmutablePureComponent {
 
             {media}
             {poll}
-
-            {showThread && status.get('in_reply_to_id') && status.get('in_reply_to_account_id') === status.getIn(['account', 'id']) && (
-              <button className='status__content__read-more-button' onClick={this.handleClick}>
-                <FormattedMessage id='status.show_thread' defaultMessage='Show thread' />
-              </button>
-            )}
+            {quote}
 
             <StatusActionBar
               status={status}

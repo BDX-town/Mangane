@@ -1,7 +1,8 @@
-import React from 'react';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+
 import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
@@ -23,7 +24,7 @@ class HotkeysModal extends ImmutablePureComponent {
       <div className='modal-root__modal hotkeys-modal'>
         <div className='compose-modal__header'>
           <h3 className='compose-modal__header__title'><FormattedMessage id='keyboard_shortcuts.heading' defaultMessage='Keyboard shortcuts' /></h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={20} />
+          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
         </div>
         <div className='compose-modal__content'>
           <table>

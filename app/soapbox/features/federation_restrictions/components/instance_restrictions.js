@@ -1,11 +1,12 @@
 'use strict';
 
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { FormattedMessage } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import Icon from 'soapbox/components/icon';
 
 const hasRestrictions = remoteInstance => {
@@ -50,7 +51,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
       items.push((
         <div className='federation-restriction' key='followers_only'>
           <div className='federation-restriction__icon'>
-            <Icon id='lock' />
+            <Icon src={require('@tabler/icons/icons/lock.svg')} />
           </div>
           <div className='federation-restriction__message'>
             <FormattedMessage
@@ -64,7 +65,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
       items.push((
         <div className='federation-restriction' key='federated_timeline_removal'>
           <div className='federation-restriction__icon'>
-            <Icon id='unlock' />
+            <Icon src={require('@tabler/icons/icons/lock-open.svg')} />
           </div>
           <div className='federation-restriction__message'>
             <FormattedMessage
@@ -80,7 +81,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
       items.push((
         <div className='federation-restriction' key='full_media_removal'>
           <div className='federation-restriction__icon'>
-            <Icon id='photo' />
+            <Icon src={require('@tabler/icons/icons/photo-off.svg')} />
           </div>
           <div className='federation-restriction__message'>
             <FormattedMessage
@@ -94,7 +95,7 @@ class InstanceRestrictions extends ImmutablePureComponent {
       items.push((
         <div className='federation-restriction' key='partial_media_removal'>
           <div className='federation-restriction__icon'>
-            <Icon id='photo' />
+            <Icon src={require('@tabler/icons/icons/photo-off.svg')} />
           </div>
           <div className='federation-restriction__message'>
             <FormattedMessage

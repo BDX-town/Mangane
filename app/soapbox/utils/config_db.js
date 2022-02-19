@@ -20,7 +20,7 @@ const toSimplePolicy = configs => {
     return acc.set(trimStart(key, ':'), ImmutableSet(hosts));
   };
 
-  if (config && config.get) {
+  if (config?.get) {
     const value = config.get('value', ImmutableList());
     return value.reduce(reducer, ImmutableMap());
   } else {

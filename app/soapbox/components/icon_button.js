@@ -1,10 +1,12 @@
-import React from 'react';
-import Motion from '../features/ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import React from 'react';
+import spring from 'react-motion/lib/spring';
+
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
+
+import Motion from '../features/ui/util/optional_motion';
 
 export default class IconButton extends React.PureComponent {
 
@@ -33,6 +35,7 @@ export default class IconButton extends React.PureComponent {
     tabIndex: PropTypes.string,
     text: PropTypes.string,
     emoji: PropTypes.string,
+    type: PropTypes.string,
   };
 
   static defaultProps = {
@@ -47,6 +50,7 @@ export default class IconButton extends React.PureComponent {
     onClick: () => {},
     onMouseEnter: () => {},
     onMouseLeave: () => {},
+    type: 'button',
   };
 
   handleClick = (e) =>  {
@@ -106,6 +110,7 @@ export default class IconButton extends React.PureComponent {
       title,
       text,
       emoji,
+      type,
     } = this.props;
 
     const classes = classNames(className, 'icon-button', {
@@ -134,6 +139,7 @@ export default class IconButton extends React.PureComponent {
           onMouseLeave={this.props.onMouseLeave}
           tabIndex={tabIndex}
           disabled={disabled}
+          type={type}
         >
           <div style={src ? {} : style}>
             {emoji
@@ -163,6 +169,7 @@ export default class IconButton extends React.PureComponent {
             onMouseLeave={this.props.onMouseLeave}
             tabIndex={tabIndex}
             disabled={disabled}
+            type={type}
           >
             <div style={src ? {} : style}>
               {emoji

@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
+
 const parser = require('intl-messageformat-parser');
-const { default: manageTranslations, readMessageFiles  } = require('react-intl-translations-manager');
+const { default: manageTranslations, readMessageFiles } = require('react-intl-translations-manager'); // eslint-disable-line import/order
 
 const RFC5646_REGEXP = /^[a-z]{2,3}(?:-(?:x|[A-Za-z]{2,4}))*$/;
 
@@ -152,7 +153,7 @@ const extractedMessages = extractedMessagesFiles.reduce((acc, messageFile) => {
 const translations = languages.map((language) => {
   return {
     language: language,
-    data : JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
+    data: JSON.parse(fs.readFileSync(path.join(translationsDirectory, language + '.json'), 'utf8')),
   };
 });
 

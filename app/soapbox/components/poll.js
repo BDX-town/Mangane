@@ -1,17 +1,20 @@
-import React from 'react';
+import classNames from 'classnames';
+import escapeTextContentForBrowser from 'escape-html';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import { vote, fetchPoll } from 'soapbox/actions/polls';
-import Motion from 'soapbox/features/ui/util/optional_motion';
 import spring from 'react-motion/lib/spring';
-import escapeTextContentForBrowser from 'escape-html';
-import emojify from 'soapbox/features/emoji/emoji';
-import RelativeTimestamp from './relative_timestamp';
+
+import { openModal } from 'soapbox/actions/modals';
+import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
+import emojify from 'soapbox/features/emoji/emoji';
+import Motion from 'soapbox/features/ui/util/optional_motion';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
+import RelativeTimestamp from './relative_timestamp';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
@@ -33,7 +36,7 @@ class Poll extends ImmutablePureComponent {
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
     me: SoapboxPropTypes.me,
-    onOpenUnauthorizedModal: PropTypes.func.isRequired,
+    status: PropTypes.string,
   };
 
   state = {
@@ -56,7 +59,7 @@ class Poll extends ImmutablePureComponent {
         this.setState({ selected: tmp });
       }
     } else {
-      this.props.onOpenUnauthorizedModal();
+      this.openUnauthorizedModal();
     }
   }
 
@@ -79,6 +82,14 @@ class Poll extends ImmutablePureComponent {
 
     this.props.dispatch(vote(this.props.poll.get('id'), Object.keys(this.state.selected)));
   };
+
+  openUnauthorizedModal = () => {
+    const { dispatch, status } = this.props;
+    dispatch(openModal('UNAUTHORIZED', {
+      action: 'POLL_VOTE',
+      ap_id: status,
+    }));
+  }
 
   handleRefresh = () => {
     if (this.props.disabled) {

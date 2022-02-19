@@ -1,15 +1,16 @@
 import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+
+import { updateConfig } from 'soapbox/actions/admin';
+import snackbar from 'soapbox/actions/snackbar';
 import {
   SimpleForm,
   FieldsGroup,
   RadioGroup,
   RadioItem,
 } from 'soapbox/features/forms';
-import { updateConfig } from 'soapbox/actions/admin';
-import snackbar from 'soapbox/actions/snackbar';
 
 const messages = defineMessages({
   saved: { id: 'admin.dashboard.settings_saved', defaultMessage: 'Settings saved!' },

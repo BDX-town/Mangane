@@ -1,12 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import PropTypes from 'prop-types';
-import Column from '../ui/components/column';
-import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
-import ScrollableList from '../../components/scrollable_list';
+import React from 'react';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import snackbar from 'soapbox/actions/snackbar';
 import Button from 'soapbox/components/button';
+import Icon from 'soapbox/components/icon';
 import {
   SimpleForm,
   SimpleInput,
@@ -14,8 +14,10 @@ import {
   SelectDropdown,
   Checkbox,
 } from 'soapbox/features/forms';
-import snackbar from 'soapbox/actions/snackbar';
-import Icon from 'soapbox/components/icon';
+
+import { fetchFilters, createFilter, deleteFilter } from '../../actions/filters';
+import ScrollableList from '../../components/scrollable_list';
+import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
 
 const messages = defineMessages({
@@ -215,54 +217,50 @@ class Filters extends ImmutablePureComponent {
 
             <Button className='button button-primary setup' text={intl.formatMessage(messages.add_new)} onClick={this.handleAddNew} />
 
-            <ColumnSubheading text={intl.formatMessage(messages.subheading_filters)} />
-
-            <ScrollableList
-              scrollKey='filters'
-              emptyMessage={emptyMessage}
-            >
-              {filters.map((filter, i) => (
-                <div key={i} className='filter__container'>
-                  <div className='filter__details'>
-                    <div className='filter__phrase'>
-                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
-                      <span className='filter__list-value'>{filter.get('phrase')}</span>
-                    </div>
-                    <div className='filter__contexts'>
-                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' /></span>
-                      <span className='filter__list-value'>
-                        {filter.get('context').map((context, i) => (
-                          <span key={i} className='context'>{context}</span>
-                        ))}
-                      </span>
-                    </div>
-                    <div className='filter__details'>
-                      <span className='filter__list-label'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
-                      <span className='filter__list-value'>
-                        {filter.get('irreversible') ?
-                          <span><FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /></span> :
-                          <span><FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' /></span>
-                        }
-                        {filter.get('whole_word') &&
-                          <span><FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' /></span>
-                        }
-                      </span>
-                    </div>
-                  </div>
-                  <div className='filter__delete' role='button' tabIndex='0' onClick={this.handleFilterDelete} data-value={filter.get('id')} aria-label={intl.formatMessage(messages.delete)}>
-                    <Icon className='filter__delete-icon' id='times' size={40} />
-                    <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
-                  </div>
-                </div>
-              ))}
-            </ScrollableList>
-
           </div>
         </SimpleForm>
 
+        <ColumnSubheading text={intl.formatMessage(messages.subheading_filters)} />
 
-
-
+        <ScrollableList
+          scrollKey='filters'
+          emptyMessage={emptyMessage}
+        >
+          {filters.map((filter, i) => (
+            <div key={i} className='filter__container'>
+              <div className='filter__details'>
+                <div className='filter__phrase'>
+                  <span className='filter__list-label'><FormattedMessage id='filters.filters_list_phrase_label' defaultMessage='Keyword or phrase:' /></span>
+                  <span className='filter__list-value'>{filter.get('phrase')}</span>
+                </div>
+                <div className='filter__contexts'>
+                  <span className='filter__list-label'><FormattedMessage id='filters.filters_list_context_label' defaultMessage='Filter contexts:' /></span>
+                  <span className='filter__list-value'>
+                    {filter.get('context').map((context, i) => (
+                      <span key={i} className='context'>{context}</span>
+                    ))}
+                  </span>
+                </div>
+                <div className='filter__details'>
+                  <span className='filter__list-label'><FormattedMessage id='filters.filters_list_details_label' defaultMessage='Filter settings:' /></span>
+                  <span className='filter__list-value'>
+                    {filter.get('irreversible') ?
+                      <span><FormattedMessage id='filters.filters_list_drop' defaultMessage='Drop' /></span> :
+                      <span><FormattedMessage id='filters.filters_list_hide' defaultMessage='Hide' /></span>
+                    }
+                    {filter.get('whole_word') &&
+                      <span><FormattedMessage id='filters.filters_list_whole-word' defaultMessage='Whole word' /></span>
+                    }
+                  </span>
+                </div>
+              </div>
+              <div className='filter__delete' role='button' tabIndex='0' onClick={this.handleFilterDelete} data-value={filter.get('id')} aria-label={intl.formatMessage(messages.delete)}>
+                <Icon className='filter__delete-icon' id='times' size={40} />
+                <span className='filter__delete-label'><FormattedMessage id='filters.filters_list_delete' defaultMessage='Delete' /></span>
+              </div>
+            </div>
+          ))}
+        </ScrollableList>
       </Column>
     );
   }

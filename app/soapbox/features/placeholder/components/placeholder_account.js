@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PlaceholderAvatar from './placeholder_avatar';
 import PlaceholderDisplayName from './placeholder_display_name';
 

@@ -1,7 +1,8 @@
 'use strict';
 
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 // import classNames from 'classnames';
 // import { injectIntl, defineMessages } from 'react-intl';
 // import Icon from 'soapbox/components/icon';
@@ -33,7 +34,7 @@ export default class ColumnHeader extends React.PureComponent {
   };
 
   historyBack = () => {
-    if (window.history && window.history.length === 1) {
+    if (window.history?.length === 1) {
       this.context.router.history.push('/');
     } else {
       this.context.router.history.goBack();

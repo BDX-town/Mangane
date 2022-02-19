@@ -1,12 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import IconButton from './icon_button';
-import Overlay from 'react-overlays/lib/Overlay';
-import Motion from '../features/ui/util/optional_motion';
-import spring from 'react-motion/lib/spring';
+import classNames from 'classnames';
 import { supportsPassiveEvents } from 'detect-passive-events';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import spring from 'react-motion/lib/spring';
+import Overlay from 'react-overlays/lib/Overlay';
+
 import Icon from 'soapbox/components/icon';
+
+import Motion from '../features/ui/util/optional_motion';
+
+import IconButton from './icon_button';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
@@ -147,10 +151,10 @@ class DropdownMenu extends React.PureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { text, href, to, newTab, isLogout, icon } = option;
+    const { text, href, to, newTab, isLogout, icon, destructive } = option;
 
     return (
-      <li className='dropdown-menu__item' key={`${text}-${i}`}>
+      <li className={classNames('dropdown-menu__item', { destructive })} key={`${text}-${i}`}>
         <a
           href={href || to || '#'}
           role='button'
@@ -203,6 +207,8 @@ export default class Dropdown extends React.PureComponent {
     src: PropTypes.string,
     items: PropTypes.array.isRequired,
     size: PropTypes.number,
+    active: PropTypes.bool,
+    pressed: PropTypes.bool,
     title: PropTypes.string,
     disabled: PropTypes.bool,
     status: ImmutablePropTypes.map,
@@ -213,6 +219,8 @@ export default class Dropdown extends React.PureComponent {
     dropdownPlacement: PropTypes.string,
     openDropdownId: PropTypes.number,
     openedViaKeyboard: PropTypes.bool,
+    text: PropTypes.string,
+    onShiftClick: PropTypes.func,
   };
 
   static defaultProps = {
@@ -223,14 +231,19 @@ export default class Dropdown extends React.PureComponent {
     id: id++,
   };
 
-  handleClick = ({ target, type }) => {
-    if (this.state.id === this.props.openDropdownId) {
+  handleClick = e => {
+    const { onOpen, onShiftClick, openDropdownId } = this.props;
+
+    if (onShiftClick && e.shiftKey) {
+      e.preventDefault();
+      onShiftClick(e);
+    } else if (this.state.id === openDropdownId) {
       this.handleClose();
     } else {
-      const { top } = target.getBoundingClientRect();
+      const { top } = e.target.getBoundingClientRect();
       const placement = top * 2 < innerHeight ? 'bottom' : 'top';
 
-      this.props.onOpen(this.state.id, this.handleItemClick, placement, type !== 'click');
+      onOpen(this.state.id, this.handleItemClick, placement, e.type !== 'click');
     }
   }
 
@@ -298,7 +311,7 @@ export default class Dropdown extends React.PureComponent {
   }
 
   render() {
-    const { icon, src, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard } = this.props;
+    const { icon, src, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard, active, pressed, text } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
@@ -307,9 +320,11 @@ export default class Dropdown extends React.PureComponent {
           icon={icon}
           src={src}
           title={title}
-          active={open}
+          active={open || active}
+          pressed={pressed}
           disabled={disabled}
           size={size}
+          text={text}
           ref={this.setTargetRef}
           onClick={this.handleClick}
           onMouseDown={this.handleMouseDown}

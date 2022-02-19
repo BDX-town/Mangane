@@ -4,10 +4,10 @@
  */
 
 import { getSoapboxConfig } from'soapbox/actions/soapbox';
-import { isPrerendered } from 'soapbox/precheck';
-import { isURL } from 'soapbox/utils/auth';
-import { getBaseURL as getAccountBaseURL } from 'soapbox/utils/accounts';
 import { BACKEND_URL } from 'soapbox/build_config';
+import { isPrerendered } from 'soapbox/precheck';
+import { getBaseURL as getAccountBaseURL } from 'soapbox/utils/accounts';
+import { isURL } from 'soapbox/utils/auth';
 
 export const displayFqn = state => {
   const soapbox = getSoapboxConfig(state);

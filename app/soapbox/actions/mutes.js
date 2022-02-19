@@ -1,9 +1,11 @@
-import api, { getLinks } from '../api';
-import { fetchRelationships } from './accounts';
-import { importFetchedAccounts } from './importer';
-import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getNextLinkName } from 'soapbox/utils/quirks';
+
+import api, { getLinks } from '../api';
+
+import { fetchRelationships } from './accounts';
+import { importFetchedAccounts } from './importer';
+import { openModal } from './modals';
 
 export const MUTES_FETCH_REQUEST = 'MUTES_FETCH_REQUEST';
 export const MUTES_FETCH_SUCCESS = 'MUTES_FETCH_SUCCESS';

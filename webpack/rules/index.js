@@ -1,9 +1,9 @@
-const babel = require('./babel');
-const git = require('./babel-git');
-const gitRefresh = require('./git-refresh');
-const buildConfig = require('./babel-build-config');
-const css = require('./css');
 const assets = require('./assets');
+const babel = require('./babel');
+const buildConfig = require('./babel-build-config');
+const git = require('./babel-git');
+const css = require('./css');
+const gitRefresh = require('./git-refresh');
 const nodeModules = require('./node_modules');
 
 // Webpack loaders are processed in reverse order

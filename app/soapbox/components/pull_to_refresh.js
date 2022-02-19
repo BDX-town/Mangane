@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import PTRComponent from 'react-simple-pull-to-refresh';
 
 /**
@@ -33,6 +33,9 @@ export default class PullToRefresh extends React.Component {
         pullingContent={null}
         // `undefined` will fallback to the default, while `null` will render nothing
         refreshingContent={onRefresh ? undefined : null}
+        pullDownThreshold={67}
+        maxPullDownDistance={95}
+        resistance={2}
         {...rest}
       >
         {children}

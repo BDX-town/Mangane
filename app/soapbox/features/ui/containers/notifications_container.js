@@ -1,6 +1,9 @@
+import React from 'react';
 import { injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import { NotificationStack } from 'react-notification';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+
 import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
@@ -15,22 +18,35 @@ const defaultBarStyleFactory = (index, style, notification) => {
 const mapStateToProps = (state, { intl }) => {
   const notifications = getAlerts(state);
 
-  notifications.forEach(notification => ['title', 'message'].forEach(key => {
-    const value = notification[key];
+  notifications.forEach(notification => {
+    ['title', 'message', 'actionLabel'].forEach(key => {
+      const value = notification[key];
 
-    if (typeof value === 'object') {
-      notification[key] = intl.formatMessage(value);
+      if (typeof value === 'object') {
+        notification[key] = intl.formatMessage(value);
+      }
+    });
+
+    if (notification.actionLabel) {
+      notification.action = (
+        <Link to={notification.actionLink}>
+          {notification.actionLabel}
+        </Link>
+      );
     }
-  }));
+  });
 
-  return { notifications };
+  return { notifications, linkComponent: Link };
 };
 
 const mapDispatchToProps = (dispatch) => {
+  const onDismiss = alert => {
+    dispatch(dismissAlert(alert));
+  };
+
   return {
-    onDismiss: alert => {
-      dispatch(dismissAlert(alert));
-    },
+    onDismiss,
+    onClick: onDismiss,
     barStyleFactory: defaultBarStyleFactory,
     activeBarStyleFactory: defaultBarStyleFactory,
   };

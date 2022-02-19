@@ -1,6 +1,8 @@
-import React from 'react';
 import { fromJS } from 'immutable';
+import React from 'react';
+
 import { createComponent } from 'soapbox/test_helpers';
+
 import AvatarOverlay from '../avatar_overlay';
 
 describe('<AvatarOverlay', () => {

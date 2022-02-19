@@ -1,19 +1,19 @@
 import {
+  AUTH_LOGGED_OUT,
+  AUTH_ACCOUNT_REMEMBER_SUCCESS,
+  VERIFY_CREDENTIALS_SUCCESS,
+} from '../actions/auth';
+import {
   ME_FETCH_SUCCESS,
   ME_FETCH_FAIL,
   ME_FETCH_SKIP,
   ME_PATCH_SUCCESS,
 } from '../actions/me';
-import {
-  AUTH_LOGGED_OUT,
-  AUTH_ACCOUNT_REMEMBER_SUCCESS,
-  VERIFY_CREDENTIALS_SUCCESS,
-} from '../actions/auth';
 
 const initialState = null;
 
 const handleForbidden = (state, error) => {
-  if (error.response && [401, 403].includes(error.response.status)) {
+  if ([401, 403].includes(error.response?.status)) {
     return false;
   } else {
     return state;

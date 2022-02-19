@@ -1,24 +1,24 @@
-import React from 'react';
-import ReactSwipeableViews from 'react-swipeable-views';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import Video from 'soapbox/features/video';
-import Audio from 'soapbox/features/audio';
-import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import classNames from 'classnames';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import ImageLoader from './image_loader';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import ReactSwipeableViews from 'react-swipeable-views';
+
+import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
 import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
+import Audio from 'soapbox/features/audio';
+import Video from 'soapbox/features/video';
+
+import ImageLoader from './image_loader';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
   previous: { id: 'lightbox.previous', defaultMessage: 'Previous' },
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
 });
-
-export const previewState = 'previewMediaModal';
 
 export default @injectIntl
 class MediaModal extends ImmutablePureComponent {
@@ -34,7 +34,7 @@ class MediaModal extends ImmutablePureComponent {
 
   static contextTypes = {
     router: PropTypes.object,
-  };
+  }
 
   state = {
     index: null,
@@ -75,28 +75,10 @@ class MediaModal extends ImmutablePureComponent {
 
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown, false);
-
-    if (this.context.router) {
-      const history = this.context.router.history;
-
-      history.push(history.location.pathname, previewState);
-
-      this.unlistenHistory = history.listen(() => {
-        this.props.onClose();
-      });
-    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
-
-    if (this.context.router) {
-      this.unlistenHistory();
-
-      if (this.context.router.history.location.state === previewState) {
-        this.context.router.history.goBack();
-      }
-    }
   }
 
   getIndex() {
@@ -116,6 +98,7 @@ class MediaModal extends ImmutablePureComponent {
       const acct = account.get('acct');
       const statusId = status.get('id');
       this.context.router.history.push(`/@${acct}/posts/${statusId}`);
+      this.props.onClose(null, true);
     }
   }
 
@@ -271,7 +254,7 @@ class MediaModal extends ImmutablePureComponent {
         </div>
 
         <div className={navigationClassName}>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} icon='times' onClick={onClose} size={40} />
+          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
 
           {leftNav}
           {rightNav}

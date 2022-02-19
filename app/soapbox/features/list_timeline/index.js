@@ -1,19 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import StatusListContainer from '../ui/containers/status_list_container';
-import Column from 'soapbox/features/ui/components/column';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Button from 'soapbox/components/button';
+import Column from 'soapbox/features/ui/components/column';
+
+import { fetchList, deleteList } from '../../actions/lists';
+import { openModal } from '../../actions/modals';
 import { connectListStream } from '../../actions/streaming';
 import { expandListTimeline } from '../../actions/timelines';
-import { fetchList, deleteList } from '../../actions/lists';
-import { openModal } from '../../actions/modal';
-import MissingIndicator from '../../components/missing_indicator';
 import LoadingIndicator from '../../components/loading_indicator';
-import Button from 'soapbox/components/button';
+import MissingIndicator from '../../components/missing_indicator';
+import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({
+  deleteHeading: { id: 'confirmations.delete_list.heading', defaultMessage: 'Delete list' },
   deleteMessage: { id: 'confirmations.delete_list.message', defaultMessage: 'Are you sure you want to permanently delete this list?' },
   deleteConfirm: { id: 'confirmations.delete_list.confirm', defaultMessage: 'Delete' },
 });
@@ -84,6 +87,8 @@ class ListTimeline extends React.PureComponent {
     const { id } = this.props.params;
 
     dispatch(openModal('CONFIRM', {
+      icon: require('@tabler/icons/icons/trash.svg'),
+      heading: intl.formatMessage(messages.deleteHeading),
       message: intl.formatMessage(messages.deleteMessage),
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => {

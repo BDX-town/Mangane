@@ -4,9 +4,11 @@
  * @see module:soapbox/actions/auth
  */
 
-import api from '../api';
-import { getLoggedInAccount } from 'soapbox/utils/auth';
 import snackbar from 'soapbox/actions/snackbar';
+import { getLoggedInAccount } from 'soapbox/utils/auth';
+
+import api from '../api';
+
 import { AUTH_LOGGED_OUT, messages } from './auth';
 
 export const FETCH_TOKENS_REQUEST = 'FETCH_TOKENS_REQUEST';
@@ -32,6 +34,10 @@ export const CHANGE_EMAIL_FAIL    = 'CHANGE_EMAIL_FAIL';
 export const DELETE_ACCOUNT_REQUEST = 'DELETE_ACCOUNT_REQUEST';
 export const DELETE_ACCOUNT_SUCCESS = 'DELETE_ACCOUNT_SUCCESS';
 export const DELETE_ACCOUNT_FAIL    = 'DELETE_ACCOUNT_FAIL';
+
+export const MOVE_ACCOUNT_REQUEST = 'MOVE_ACCOUNT_REQUEST';
+export const MOVE_ACCOUNT_SUCCESS = 'MOVE_ACCOUNT_SUCCESS';
+export const MOVE_ACCOUNT_FAIL    = 'MOVE_ACCOUNT_FAIL';
 
 export function fetchOAuthTokens() {
   return (dispatch, getState) => {
@@ -118,6 +124,22 @@ export function deleteAccount(intl, password) {
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     }).catch(error => {
       dispatch({ type: DELETE_ACCOUNT_FAIL, error, skipAlert: true });
+      throw error;
+    });
+  };
+}
+
+export function moveAccount(targetAccount, password) {
+  return (dispatch, getState) => {
+    dispatch({ type: MOVE_ACCOUNT_REQUEST });
+    return api(getState).post('/api/pleroma/move_account', {
+      password,
+      target_account: targetAccount,
+    }).then(response => {
+      if (response.data.error) throw response.data.error; // This endpoint returns HTTP 200 even on failure
+      dispatch({ type: MOVE_ACCOUNT_SUCCESS, response });
+    }).catch(error => {
+      dispatch({ type: MOVE_ACCOUNT_FAIL, error, skipAlert: true });
       throw error;
     });
   };

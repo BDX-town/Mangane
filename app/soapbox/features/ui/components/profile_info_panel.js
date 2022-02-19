@@ -1,20 +1,22 @@
 'use strict';
 
+import classNames from 'classnames';
+import { List as ImmutableList } from 'immutable';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
+import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import Badge from 'soapbox/components/badge';
-import { List as ImmutableList } from 'immutable';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 import { getAcct, isAdmin, isModerator, isLocal, isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
-import classNames from 'classnames';
-import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
+
 import ProfileStats from './profile_stats';
 
 const TICKER_REGEX = /\$([a-zA-Z]*)/i;
@@ -76,6 +78,41 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     }
 
     return badges;
+  }
+
+  getBirthday = () => {
+    const { account, intl } = this.props;
+
+    const birthday = account.getIn(['pleroma', 'birthday']);
+    if (!birthday) return null;
+
+    const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
+
+    const date = new Date(birthday);
+    const today = new Date();
+
+    const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
+
+    if (hasBirthday) {
+      return (
+        <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
+          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+          <FormattedMessage
+            id='account.birthday_today' defaultMessage='Birthday is today!'
+          />
+        </div>
+      );
+    }
+    return (
+      <div className='profile-info-panel-content__birthday'>
+        <Icon src={require('@tabler/icons/icons/ballon.svg')} />
+        <FormattedMessage
+          id='account.birthday' defaultMessage='Born {date}' values={{
+            date: formattedBirthday,
+          }}
+        />
+      </div>
+    );
   }
 
   render() {
@@ -147,6 +184,8 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               }}
             />
           </div>}
+
+          {this.getBirthday()}
 
           <ProfileStats
             className='profile-info-panel-content__stats'

@@ -1,26 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import classNames from 'classnames';
+import { is as ImmutableIs } from 'immutable';
 import { throttle } from 'lodash';
-import { Link, NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
-import classNames from 'classnames';
-import Avatar from './avatar';
-import IconButton from './icon_button';
-import Icon from './icon';
-import DisplayName from './display_name';
-import { closeSidebar } from '../actions/sidebar';
-import { isAdmin, getBaseURL } from '../utils/accounts';
-import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { connect } from 'react-redux';
+import { Link, NavLink } from 'react-router-dom';
+
 import { logOut, switchAccount } from 'soapbox/actions/auth';
-import ThemeToggle from '../features/ui/components/theme_toggle_container';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { is as ImmutableIs } from 'immutable';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { closeSidebar } from '../actions/sidebar';
+import ThemeToggle from '../features/ui/components/theme_toggle_container';
+import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
+import { isAdmin, getBaseURL } from '../utils/accounts';
+
+import Avatar from './avatar';
+import DisplayName from './display_name';
+import Icon from './icon';
+import IconButton from './icon_button';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -37,10 +40,12 @@ const messages = defineMessages({
   soapbox_config: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
   import_data: { id: 'navigation_bar.import_data', defaultMessage: 'Import data' },
   account_aliases: { id: 'navigation_bar.account_aliases', defaultMessage: 'Account aliases' },
+  account_migration: { id: 'navigation_bar.account_migration', defaultMessage: 'Move account' },
   security: { id: 'navigation_bar.security', defaultMessage: 'Security' },
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
   lists: { id: 'column.lists', defaultMessage: 'Lists' },
   bookmarks: { id: 'column.bookmarks', defaultMessage: 'Bookmarks' },
+  profileDirectory: { id: 'column.profile_directory', defaultMessage: 'Profile directory' },
   header: { id: 'tabs_bar.header', defaultMessage: 'Account Info' },
   apps: { id: 'tabs_bar.apps', defaultMessage: 'Apps' },
   news: { id: 'tabs_bar.news', defaultMessage: 'News' },
@@ -148,6 +153,10 @@ class SidebarMenu extends ImmutablePureComponent {
     if (accountChanged || otherAccountsChanged) {
       this.fetchOwnAccounts();
     }
+
+    if (this.props.sidebarOpen && !prevProps.sidebarOpen) {
+      document.querySelector('.sidebar-menu__close').focus();
+    }
   }
 
   renderAccount = account => {
@@ -253,6 +262,10 @@ class SidebarMenu extends ImmutablePureComponent {
                 <Icon src={require('@tabler/icons/icons/bookmarks.svg')} />
                 <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.bookmarks)}</span>
               </NavLink>}
+              {features.profileDirectory && <NavLink className='sidebar-menu-item' to='/directory' onClick={this.handleClose}>
+                <Icon src={require('@tabler/icons/icons/friends.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.profileDirectory)}</span>
+              </NavLink>}
             </div>
 
             <div className='sidebar-menu__section'>
@@ -306,9 +319,9 @@ class SidebarMenu extends ImmutablePureComponent {
                   <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.import_data)}</span>
                 </a>
               )}
-              {(features.federating && features.accountAliasesAPI) && <NavLink className='sidebar-menu-item' to='/settings/aliases' onClick={this.handleClose}>
-                <Icon src={require('@tabler/icons/icons/briefcase.svg')} />
-                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_aliases)}</span>
+              {(features.federating && features.accountMoving) && <NavLink className='sidebar-menu-item' to='/settings/migration' onClick={this.handleClose}>
+                <Icon src={require('feather-icons/dist/icons/briefcase.svg')} />
+                <span className='sidebar-menu-item__title'>{intl.formatMessage(messages.account_migration)}</span>
               </NavLink>}
               {features.securityAPI ? (
                 <NavLink className='sidebar-menu-item' to='/auth/edit' onClick={this.handleClose}>

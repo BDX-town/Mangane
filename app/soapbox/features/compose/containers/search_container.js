@@ -1,4 +1,6 @@
+import { debounce } from 'lodash';
 import { connect } from 'react-redux';
+
 import {
   changeSearch,
   clearSearch,
@@ -6,7 +8,6 @@ import {
   showSearch,
 } from '../../../actions/search';
 import Search from '../components/search';
-import { debounce } from 'lodash';
 
 const mapStateToProps = state => ({
   value: state.getIn(['search', 'value']),

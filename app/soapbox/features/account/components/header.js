@@ -1,12 +1,28 @@
 'use strict';
 
-import React from 'react';
-import { connect } from 'react-redux';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import classNames from 'classnames';
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { debounce, throttle } from 'lodash';
 import PropTypes from 'prop-types';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+
+import { openModal } from 'soapbox/actions/modals';
+import Avatar from 'soapbox/components/avatar';
+import Badge from 'soapbox/components/badge';
+import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
+import StillImage from 'soapbox/components/still_image';
+import VerificationBadge from 'soapbox/components/verification_badge';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import ActionButton from 'soapbox/features/ui/components/action_button';
+import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
 import {
   isStaff,
   isAdmin,
@@ -16,20 +32,10 @@ import {
   isRemote,
   getDomain,
 } from 'soapbox/utils/accounts';
-import classNames from 'classnames';
-import Avatar from 'soapbox/components/avatar';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import { NavLink } from 'react-router-dom';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
-import { debounce } from 'lodash';
-import StillImage from 'soapbox/components/still_image';
-import ActionButton from 'soapbox/features/ui/components/action_button';
-import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import { openModal } from 'soapbox/actions/modal';
-import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
+import { getAcct } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
+import { displayFqn } from 'soapbox/utils/state';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -68,6 +74,10 @@ const messages = defineMessages({
   demoteToUser: { id: 'admin.users.actions.demote_to_user', defaultMessage: 'Demote @{name} to a regular user' },
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
+  suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
+  unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
+  deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
+  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
 const mapStateToProps = state => {
@@ -80,6 +90,8 @@ const mapStateToProps = state => {
     me,
     meAccount: account,
     features,
+    displayFqn: displayFqn(state),
+
   };
 };
 
@@ -94,10 +106,12 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     features: PropTypes.object,
+    displayFqn: PropTypes.bool,
   };
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
+    isLocked: false,
   }
 
   isStatusesPageActive = (match, location) => {
@@ -109,11 +123,17 @@ class Header extends ImmutablePureComponent {
   }
 
   componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
   componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
+  }
+
+  setRef = (c) => {
+    this.node = c;
   }
 
   handleResize = debounce(() => {
@@ -121,6 +141,15 @@ class Header extends ImmutablePureComponent {
   }, 5, {
     trailing: true,
   });
+
+  handleScroll = throttle(() => {
+    const { top } = this.node.getBoundingClientRect();
+    const isLocked = top <= 60;
+
+    if (this.state.isLocked !== isLocked) {
+      this.setState({ isLocked });
+    }
+  }, 100, { trailing: true });
 
   onAvatarClick = () => {
     const avatar_url = this.props.account.get('avatar');
@@ -180,7 +209,7 @@ class Header extends ImmutablePureComponent {
       menu.push({
         text: intl.formatMessage(messages.share, { name: account.get('username') }),
         action: this.handleShare,
-        icon: require('@tabler/icons/icons/share.svg'),
+        icon: require('feather-icons/dist/icons/share.svg'),
       });
       menu.push(null);
     }
@@ -235,7 +264,7 @@ class Header extends ImmutablePureComponent {
         menu.push({
           text: intl.formatMessage(messages.direct, { name: account.get('username') }),
           action: this.props.onDirect,
-          icon:require('@tabler/icons/icons/mail.svg'),
+          icon: require('@tabler/icons/icons/mail.svg'),
         });
       }
 
@@ -254,7 +283,21 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        if (features.accountSubscriptions) {
+        if (features.accountNotifies) {
+          if (account.getIn(['relationship', 'notifying'])) {
+            menu.push({
+              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
+              action: this.props.onNotifyToggle,
+              icon: require('@tabler/icons/icons/bell.svg'),
+            });
+          } else {
+            menu.push({
+              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
+              action: this.props.onNotifyToggle,
+              icon: require('@tabler/icons/icons/bell-off.svg'),
+            });
+          }
+        } else if (features.accountSubscriptions) {
           if (account.getIn(['relationship', 'subscribing'])) {
             menu.push({
               text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
@@ -278,7 +321,14 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
+        if (features.accountEndorsements) {
+          menu.push({
+            text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse),
+            action: this.props.onEndorseToggle,
+            icon: require('@tabler/icons/icons/user-check.svg'),
+          });
+        }
+
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
@@ -354,7 +404,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.get('id') !== me && isLocal(account)) {
+      if (account.get('id') !== me && isLocal(account) && isAdmin(meAccount)) {
         if (isAdmin(account)) {
           menu.push({
             text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }),
@@ -405,6 +455,22 @@ class Header extends ImmutablePureComponent {
         });
       }
 
+      if (features.suggestionsV2 && isAdmin(meAccount)) {
+        if (account.getIn(['pleroma', 'is_suggested'])) {
+          menu.push({
+            text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),
+            action: this.props.onUnsuggestUser,
+            icon: require('@tabler/icons/icons/user-x.svg'),
+          });
+        } else {
+          menu.push({
+            text: intl.formatMessage(messages.suggestUser, { name: account.get('username') }),
+            action: this.props.onSuggestUser,
+            icon: require('@tabler/icons/icons/user-check.svg'),
+          });
+        }
+      }
+
       if (account.get('id') !== me) {
         menu.push({
           text: intl.formatMessage(messages.deactivateUser, { name: account.get('username') }),
@@ -413,6 +479,7 @@ class Header extends ImmutablePureComponent {
         });
         menu.push({
           text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }),
+          action: this.props.onDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
         });
       }
@@ -471,17 +538,36 @@ class Header extends ImmutablePureComponent {
     }
   }
 
+  renderShareButton() {
+    const { intl, account, me } = this.props;
+    const canShare = 'share' in navigator;
+
+    if (!(account && me && account.get('id') === me && canShare)) {
+      return null;
+    }
+
+    return (
+      <IconButton
+        src={require('feather-icons/dist/icons/share.svg')}
+        onClick={this.handleShare}
+        title={intl.formatMessage(messages.share, { name: account.get('username') })}
+      />
+    );
+  }
+
   render() {
-    const { account, intl, username, me, features } = this.props;
-    const { isSmallScreen } = this.state;
+    const { account, displayFqn, intl, username, me, features } = this.props;
+    const { isSmallScreen, isLocked } = this.state;
 
     if (!account) {
       return (
         <div className='account__header'>
           <div className='account__header__image account__header__image--none' />
-          <div className='account__header__bar'>
+          <div className='account__header__bar' ref={this.setRef}>
             <div className='account__header__extra'>
-              <div className='account__header__avatar' />
+              <div className='account__header__card'>
+                <div className='account__header__avatar' />
+              </div>
             </div>
             {isSmallScreen && (
               <div className='account-mobile-container account-mobile-container--nonuser'>
@@ -504,6 +590,9 @@ class Header extends ImmutablePureComponent {
     const avatarSize = isSmallScreen ? 90 : 200;
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
+    const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
+    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+
     return (
       <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
         <div className={classNames('account__header__image', { /* 'account__header__image--none': headerMissing || deactivated */ })}>
@@ -515,17 +604,33 @@ class Header extends ImmutablePureComponent {
             <StillImage src={account.get('header')} alt='' className='parallax' />
           </a>}
 
-          {features.accountSubscriptions && <div className='account__header__subscribe'>
-            <SubscriptionButton account={account} />
+          {(features.accountNotifies || features.accountSubscriptions) && <div className='account__header__subscribe'>
+            <SubscriptionButton account={account} features={features} />
           </div>}
         </div>
 
-        <div className='account__header__bar'>
+        <div className='account__header__bar' ref={this.setRef}>
           <div className='account__header__extra'>
 
-            <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
-              <Avatar account={account} size={avatarSize} />
-            </a>
+            <div className={classNames('account__header__card', { 'is-locked': !isSmallScreen && isLocked })}>
+              <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank' aria-hidden={!isSmallScreen && isLocked}>
+                <Avatar account={account} size={avatarSize} />
+              </a>
+              <div className='account__header__name' aria-hidden={isSmallScreen || !isLocked}>
+                <Avatar account={account} size={40} />
+                <div>
+                  <span dangerouslySetInnerHTML={displayNameHtml} className={classNames('profile-info-panel__name-content', { 'with-badge': verified })} />
+                  {verified && <VerificationBadge />}
+                  {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+                  <small>
+                    @{getAcct(account, displayFqn)}
+                    {account.get('locked') && (
+                      <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
+                    )}
+                  </small>
+                </div>
+              </div>
+            </div>
 
             <div className='account__header__extra__links'>
 
@@ -571,6 +676,7 @@ class Header extends ImmutablePureComponent {
 
             <div className='account__header__extra__buttons'>
               {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
+              {this.renderShareButton()}
               {this.renderMessageButton()}
               <ActionButton account={account} />
             </div>

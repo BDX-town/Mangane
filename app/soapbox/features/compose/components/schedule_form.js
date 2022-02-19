@@ -1,14 +1,16 @@
 'use strict';
 
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { setSchedule, removeSchedule } from '../../../actions/compose';
+import React from 'react';
 import DatePicker from 'react-datepicker';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
-import classNames from 'classnames';
+
+import { setSchedule, removeSchedule } from '../../../actions/compose';
 
 const messages = defineMessages({
   schedule: { id: 'schedule.post_time', defaultMessage: 'Post Date/Time' },
@@ -115,7 +117,7 @@ class ScheduleForm extends React.Component {
             ref={this.setRef}
           />
           <div className='datepicker__cancel'>
-            <IconButton size={20} title={intl.formatMessage(messages.remove)} icon='times' onClick={this.handleRemove} />
+            <IconButton title={intl.formatMessage(messages.remove)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleRemove} />
           </div>
         </div>
       </div>

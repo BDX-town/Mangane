@@ -1,10 +1,18 @@
 import { defineMessages } from 'react-intl';
-import api from '../api';
-import { importFetchedAccount, importFetchedAccounts } from './importer';
-import { showAlertForError } from './alerts';
-import snackbar from './snackbar';
+
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { ME_PATCH_SUCCESS } from './me';
+import { getFeatures } from 'soapbox/utils/features';
+
+import api from '../api';
+
+import { showAlertForError } from './alerts';
+import { importFetchedAccounts } from './importer';
+import { patchMeSuccess } from './me';
+import snackbar from './snackbar';
+
+export const ALIASES_FETCH_REQUEST = 'ALIASES_FETCH_REQUEST';
+export const ALIASES_FETCH_SUCCESS = 'ALIASES_FETCH_SUCCESS';
+export const ALIASES_FETCH_FAIL    = 'ALIASES_FETCH_FAIL';
 
 export const ALIASES_SUGGESTIONS_CHANGE = 'ALIASES_SUGGESTIONS_CHANGE';
 export const ALIASES_SUGGESTIONS_READY  = 'ALIASES_SUGGESTIONS_READY';
@@ -21,6 +29,38 @@ export const ALIASES_REMOVE_FAIL    = 'ALIASES_REMOVE_FAIL';
 const messages = defineMessages({
   createSuccess: { id: 'aliases.success.add', defaultMessage: 'Account alias created successfully' },
   removeSuccess: { id: 'aliases.success.remove', defaultMessage: 'Account alias removed successfully' },
+});
+
+export const fetchAliases = (dispatch, getState) => {
+  if (!isLoggedIn(getState)) return;
+  const state = getState();
+
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
+
+  if (!features.accountMoving) return;
+
+  dispatch(fetchAliasesRequest());
+
+  api(getState).get('/api/pleroma/aliases')
+    .then(response => {
+      dispatch(fetchAliasesSuccess(response.data.aliases));
+    })
+    .catch(err => dispatch(fetchAliasesFail(err)));
+};
+
+export const fetchAliasesRequest = () => ({
+  type: ALIASES_FETCH_REQUEST,
+});
+
+export const fetchAliasesSuccess = aliases => ({
+  type: ALIASES_FETCH_SUCCESS,
+  value: aliases,
+});
+
+export const fetchAliasesFail = error => ({
+  type: ALIASES_FETCH_FAIL,
+  error,
 });
 
 export const fetchAliasesSuggestions = q => (dispatch, getState) => {
@@ -53,80 +93,104 @@ export const changeAliasesSuggestions = value => ({
   value,
 });
 
-export const addToAliases = (intl, apId) => (dispatch, getState) => {
+export const addToAliases = (intl, account) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
   const state = getState();
 
-  const me = state.get('me');
-  const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
 
-  dispatch(addToAliasesRequest(apId));
+  if (!features.accountMoving) {
+    const me = state.get('me');
+    const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
 
-  api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, apId] })
-    .then((response => {
+    dispatch(addToAliasesRequest());
+
+    api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: [...alsoKnownAs, account.getIn(['pleroma', 'ap_id'])] })
+      .then((response => {
+        dispatch(snackbar.success(intl.formatMessage(messages.createSuccess)));
+        dispatch(addToAliasesSuccess);
+        dispatch(patchMeSuccess(response.data));
+      }))
+      .catch(err => dispatch(addToAliasesFail(err)));
+
+    return;
+  }
+
+  dispatch(addToAliasesRequest());
+
+  api(getState).put('/api/pleroma/aliases', {
+    alias: account.get('acct'),
+  })
+    .then(response => {
       dispatch(snackbar.success(intl.formatMessage(messages.createSuccess)));
-      dispatch(addToAliasesSuccess(response.data));
-    }))
-    .catch(err => dispatch(addToAliasesFail(err)));
+      dispatch(addToAliasesSuccess);
+      dispatch(fetchAliases);
+    })
+    .catch(err => dispatch(fetchAliasesFail(err)));
 };
 
-export const addToAliasesRequest = (apId) => ({
+export const addToAliasesRequest = () => ({
   type: ALIASES_ADD_REQUEST,
-  apId,
 });
 
-export const addToAliasesSuccess = me => dispatch => {
-  dispatch(importFetchedAccount(me));
-  dispatch({
-    type: ME_PATCH_SUCCESS,
-    me,
-  });
-  dispatch({
-    type: ALIASES_ADD_SUCCESS,
-  });
-};
+export const addToAliasesSuccess = () => ({
+  type: ALIASES_ADD_SUCCESS,
+});
 
-export const addToAliasesFail = (apId, error) => ({
+export const addToAliasesFail = error => ({
   type: ALIASES_ADD_FAIL,
-  apId,
   error,
 });
 
-export const removeFromAliases = (intl, apId) => (dispatch, getState) => {
+export const removeFromAliases = (intl, account) => (dispatch, getState) => {
   if (!isLoggedIn(getState)) return;
   const state = getState();
 
-  const me = state.get('me');
-  const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
+  const instance = state.get('instance');
+  const features = getFeatures(instance);
 
-  dispatch(removeFromAliasesRequest(apId));
+  if (!features.accountMoving) {
+    const me = state.get('me');
+    const alsoKnownAs = state.getIn(['accounts_meta', me, 'pleroma', 'also_known_as']);
 
-  api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: alsoKnownAs.filter(id => id !== apId) })
+    dispatch(removeFromAliasesRequest());
+
+    api(getState).patch('/api/v1/accounts/update_credentials', { also_known_as: alsoKnownAs.filter(id => id !== account) })
+      .then(response => {
+        dispatch(snackbar.success(intl.formatMessage(messages.removeSuccess)));
+        dispatch(removeFromAliasesSuccess);
+        dispatch(patchMeSuccess(response.data));
+      })
+      .catch(err => dispatch(removeFromAliasesFail(err)));
+
+    return;
+  }
+
+  dispatch(addToAliasesRequest());
+
+  api(getState).delete('/api/pleroma/aliases', {
+    data: {
+      alias: account,
+    },
+  })
     .then(response => {
       dispatch(snackbar.success(intl.formatMessage(messages.removeSuccess)));
-      dispatch(removeFromAliasesSuccess(response.data));
+      dispatch(removeFromAliasesSuccess);
+      dispatch(fetchAliases);
     })
-    .catch(err => dispatch(removeFromAliasesFail(apId, err)));
+    .catch(err => dispatch(fetchAliasesFail(err)));
 };
 
-export const removeFromAliasesRequest = (apId) => ({
+export const removeFromAliasesRequest = () => ({
   type: ALIASES_REMOVE_REQUEST,
-  apId,
 });
 
-export const removeFromAliasesSuccess = me => dispatch => {
-  dispatch(importFetchedAccount(me));
-  dispatch({
-    type: ME_PATCH_SUCCESS,
-    me,
-  });
-  dispatch({
-    type: ALIASES_REMOVE_SUCCESS,
-  });
-};
+export const removeFromAliasesSuccess = () => ({
+  type: ALIASES_REMOVE_SUCCESS,
+});
 
-export const removeFromAliasesFail = (apId, error) => ({
+export const removeFromAliasesFail = error => ({
   type: ALIASES_REMOVE_FAIL,
-  apId,
   error,
 });

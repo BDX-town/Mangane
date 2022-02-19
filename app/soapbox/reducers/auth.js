@@ -1,3 +1,11 @@
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { trim } from 'lodash';
+
+import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
+import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import KVStore from 'soapbox/storage/kv_store';
+import { validId, isURL } from 'soapbox/utils/auth';
+
 import {
   AUTH_APP_CREATED,
   AUTH_LOGGED_IN,
@@ -8,12 +16,6 @@ import {
   VERIFY_CREDENTIALS_FAIL,
 } from '../actions/auth';
 import { ME_FETCH_SKIP } from '../actions/me';
-import { MASTODON_PRELOAD_IMPORT } from 'soapbox/actions/preload';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
-import { validId, isURL } from 'soapbox/utils/auth';
-import { trim } from 'lodash';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
-import KVStore from 'soapbox/storage/kv_store';
 
 const defaultState = ImmutableMap({
   app: ImmutableMap(),
@@ -262,7 +264,7 @@ const persistAuthAccount = account => {
 };
 
 const deleteForbiddenToken = (state, error, token) => {
-  if (error.response && [401, 403].includes(error.response.status)) {
+  if ([401, 403].includes(error.response?.status)) {
     return deleteToken(state, token);
   } else {
     return state;

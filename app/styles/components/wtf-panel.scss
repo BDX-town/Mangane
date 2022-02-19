@@ -30,6 +30,7 @@
 
       &.svg-icon {
         width: 20px;
+        min-width: 20px;
         height: 20px;
       }
     }
@@ -159,6 +160,10 @@
 
   &__menu {
     margin-left: auto;
+
+    > div {
+      height: 18px;
+    }
   }
 }
 

@@ -1,7 +1,8 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import RegistrationForm from 'soapbox/features/auth_login/components/registration_form';
 
 const mapStateToProps = state => {

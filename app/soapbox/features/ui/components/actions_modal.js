@@ -1,17 +1,18 @@
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import spring from 'react-motion/lib/spring';
-import StatusContent from '../../../components/status_content';
+
 import Avatar from '../../../components/avatar';
-import RelativeTimestamp from '../../../components/relative_timestamp';
+import Button from '../../../components/button';
 import DisplayName from '../../../components/display_name';
 import Icon from '../../../components/icon';
-import Button from '../../../components/button';
+import RelativeTimestamp from '../../../components/relative_timestamp';
+import StatusContent from '../../../components/status_content';
 import Motion from '../util/optional_motion';
-import classNames from 'classnames';
 
 export default @injectIntl
 class ActionsModal extends ImmutablePureComponent {
@@ -28,7 +29,7 @@ class ActionsModal extends ImmutablePureComponent {
       return <li key={`sep-${i}`} className='dropdown-menu__separator' />;
     }
 
-    const { icon = null, text, meta = null, active = false, href = '#', isLogout } = action;
+    const { icon = null, text, meta = null, active = false, href = '#', isLogout, destructive } = action;
 
     return (
       <li key={`${text}-${i}`}>
@@ -37,7 +38,7 @@ class ActionsModal extends ImmutablePureComponent {
           rel='noopener'
           onClick={this.props.onClick}
           data-index={i}
-          className={classNames({ active })}
+          className={classNames({ active, destructive })}
           data-method={isLogout ? 'delete' : null}
         >
           {icon && <Icon title={text} src={icon} role='presentation' tabIndex='-1' inverted />}
@@ -51,7 +52,7 @@ class ActionsModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { onClose } = this.props;
+    const { actions, onClose } = this.props;
 
     const status = this.props.status && (
       <div className='status light'>
@@ -82,7 +83,7 @@ class ActionsModal extends ImmutablePureComponent {
             {status}
 
             <ul className={classNames({ 'with-status': !!status })}>
-              {this.props.actions.map(this.renderAction)}
+              {actions && actions.map(this.renderAction)}
               <Button className='actions-modal__close-button' onClick={onClose}>
                 <FormattedMessage id='lightbox.close' defaultMessage='Close' />
               </Button>

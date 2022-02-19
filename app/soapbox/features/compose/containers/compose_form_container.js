@@ -1,6 +1,6 @@
-import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import ComposeForm from '../components/compose_form';
+import { connect } from 'react-redux';
+
 import {
   changeCompose,
   submitCompose,
@@ -11,6 +11,7 @@ import {
   insertEmojiCompose,
   uploadCompose,
 } from '../../../actions/compose';
+import ComposeForm from '../components/compose_form';
 
 const mapStateToProps = state => ({
   text: state.getIn(['compose', 'text']),
@@ -25,8 +26,8 @@ const mapStateToProps = state => ({
   isUploading: state.getIn(['compose', 'is_uploading']),
   showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
   anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
-  isModalOpen: state.get('modal').modalType === 'COMPOSE',
-  maxTootChars: state.getIn(['instance', 'max_toot_chars']),
+  isModalOpen: state.get('modals').size && state.get('modals').last().modalType === 'COMPOSE',
+  maxTootChars: state.getIn(['instance', 'configuration', 'statuses', 'max_characters']),
   scheduledAt: state.getIn(['compose', 'schedule']),
   scheduledStatusCount: state.get('scheduled_statuses').size,
 });

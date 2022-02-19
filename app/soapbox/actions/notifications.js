@@ -1,6 +1,20 @@
-import api, { getLinks } from '../api';
+import {
+  List as ImmutableList,
+  Map as ImmutableMap,
+  OrderedMap as ImmutableOrderedMap,
+} from 'immutable';
 import IntlMessageFormat from 'intl-messageformat';
 import 'intl-pluralrules';
+import { defineMessages } from 'react-intl';
+
+import { isLoggedIn } from 'soapbox/utils/auth';
+import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { joinPublicPath } from 'soapbox/utils/static';
+
+import api, { getLinks } from '../api';
+import { getFilters, regexFromFilters } from '../selectors';
+import { unescapeHTML } from '../utils/html';
+
 import { fetchRelationships } from './accounts';
 import {
   importFetchedAccount,
@@ -10,17 +24,6 @@ import {
 } from './importer';
 import { saveMarker } from './markers';
 import { getSettings, saveSettings } from './settings';
-import { defineMessages } from 'react-intl';
-import {
-  List as ImmutableList,
-  Map as ImmutableMap,
-  OrderedMap as ImmutableOrderedMap,
-} from 'immutable';
-import { unescapeHTML } from '../utils/html';
-import { getFilters, regexFromFilters } from '../selectors';
-import { isLoggedIn } from 'soapbox/utils/auth';
-import { parseVersion, PLEROMA } from 'soapbox/utils/features';
-import { joinPublicPath } from 'soapbox/utils/static';
 
 export const NOTIFICATIONS_UPDATE      = 'NOTIFICATIONS_UPDATE';
 export const NOTIFICATIONS_UPDATE_NOOP = 'NOTIFICATIONS_UPDATE_NOOP';
@@ -115,7 +118,7 @@ export function updateNotificationsQueue(notification, intlMessages, intlLocale,
             data: {
               url: joinPublicPath('/notifications'),
             },
-          });
+          }).catch(console.error);
         }).catch(console.error);
       }
     } catch(e) {
@@ -203,16 +206,16 @@ export function expandNotifications({ maxId } = {}, done = noOp) {
       const next = getLinks(response).refs.find(link => link.rel === 'next');
 
       const entries = response.data.reduce((acc, item) => {
-        if (item.account && item.account.id) {
+        if (item.account?.id) {
           acc.accounts[item.account.id] = item.account;
         }
 
         // Used by Move notification
-        if (item.target && item.target.id) {
+        if (item.target?.id) {
           acc.accounts[item.target.id] = item.target;
         }
 
-        if (item.status && item.status.id) {
+        if (item.status?.id) {
           acc.statuses[item.status.id] = item.status;
         }
 

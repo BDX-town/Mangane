@@ -1,20 +1,22 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, defineMessages } from 'react-intl';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
+
 import {
   sendChatMessage,
   markChatRead,
 } from 'soapbox/actions/chats';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
-import ChatMessageList from './chat_message_list';
-import UploadButton from 'soapbox/features/compose/components/upload_button';
 import { uploadMedia } from 'soapbox/actions/media';
+import IconButton from 'soapbox/components/icon_button';
+import UploadButton from 'soapbox/features/compose/components/upload_button';
 import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
-import IconButton from 'soapbox/components/icon_button';
+
+import ChatMessageList from './chat_message_list';
 
 const messages = defineMessages({
   placeholder: { id: 'chat_box.input.placeholder', defaultMessage: 'Send a message…' },
@@ -23,7 +25,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state, { chatId }) => ({
   me: state.get('me'),
-  chat: state.getIn(['chats', chatId]),
+  chat: state.getIn(['chats', 'items', chatId]),
   chatMessageIds: state.getIn(['chat_message_lists', chatId], ImmutableOrderedSet()),
 });
 
@@ -158,7 +160,10 @@ class ChatBox extends ImmutablePureComponent {
           {truncateFilename(attachment.preview_url, 20)}
         </div>
         <div class='chat-box__remove-attachment'>
-          <IconButton icon='remove' onClick={this.handleRemoveFile} />
+          <IconButton
+            src={require('@tabler/icons/icons/x.svg')}
+            onClick={this.handleRemoveFile}
+          />
         </div>
       </div>
     );

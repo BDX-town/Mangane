@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
-import Conversation from '../components/conversation';
+
 import { markConversationRead } from '../../../actions/conversations';
+import Conversation from '../components/conversation';
 
 const mapStateToProps = (state, { conversationId }) => {
   const conversation = state.getIn(['conversations', 'items']).find(x => x.get('id') === conversationId);

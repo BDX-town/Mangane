@@ -69,6 +69,10 @@ module.exports = {
     eqeqeq: 'error',
     indent: ['error', 2],
     'jsx-quotes': ['error', 'prefer-single'],
+    'key-spacing': [
+      'error',
+      { mode: 'minimum' },
+    ],
     'no-catch-shadow': 'error',
     'no-cond-assign': 'error',
     'no-console': [
@@ -111,6 +115,13 @@ module.exports = {
     'prefer-const': 'error',
     quotes: ['error', 'single'],
     semi: 'error',
+    'space-unary-ops': [
+      'error',
+      {
+        words: true,
+        nonwords: false,
+      },
+    ],
     strict: 'off',
     'valid-typeof': 'error',
 
@@ -212,6 +223,23 @@ module.exports = {
     ],
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+          'object',
+          'type',
+        ],
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc' },
+      },
+    ],
 
     'promise/catch-or-return': 'error',
 

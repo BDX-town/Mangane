@@ -1,20 +1,21 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, defineMessages } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
-import emojify from 'soapbox/features/emoji/emoji';
 import classNames from 'classnames';
-import { openModal } from 'soapbox/actions/modal';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { escape, throttle } from 'lodash';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import Bundle from 'soapbox/features/ui/components/bundle';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
-import { initReportById } from 'soapbox/actions/reports';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { injectIntl, defineMessages } from 'react-intl';
+import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+
+import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
+import { openModal } from 'soapbox/actions/modals';
+import { initReportById } from 'soapbox/actions/reports';
+import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import emojify from 'soapbox/features/emoji/emoji';
+import Bundle from 'soapbox/features/ui/components/bundle';
+import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
 const BIG_EMOJI_LIMIT = 1;
@@ -265,13 +266,17 @@ class ChatMessageList extends ImmutablePureComponent {
         text: intl.formatMessage(messages.delete),
         action: this.handleDeleteMessage(chatMessage.get('chat_id'), chatMessage.get('id')),
         icon: require('@tabler/icons/icons/trash.svg'),
+        destructive: true,
       },
-      {
+    ];
+
+    if (chatMessage.get('account_id') !== me) {
+      menu.push({
         text: intl.formatMessage(messages.report),
         action: this.handleReportUser(chatMessage.get('account_id')),
         icon: require('@tabler/icons/icons/flag.svg'),
-      },
-    ];
+      });
+    }
 
     return (
       <div
@@ -295,8 +300,7 @@ class ChatMessageList extends ImmutablePureComponent {
           <div className='chat-message__menu'>
             <DropdownMenuContainer
               items={menu}
-              icon='ellipsis-h'
-              size={18}
+              src={require('@tabler/icons/icons/dots.svg')}
               direction='top'
               title={intl.formatMessage(messages.more)}
             />

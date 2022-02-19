@@ -1,8 +1,8 @@
-import React from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
-import axios from 'axios';
 
 export default @injectIntl
 class EmbedModal extends ImmutablePureComponent {

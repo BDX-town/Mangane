@@ -1,15 +1,16 @@
 'use strict';
 
-import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import IconButton from 'soapbox/components/icon_button';
-import Icon from 'soapbox/components/icon';
+import { connect } from 'react-redux';
+
 import AutosuggestInput from 'soapbox/components/autosuggest_input';
-import classNames from 'classnames';
+import Icon from 'soapbox/components/icon';
+import IconButton from 'soapbox/components/icon_button';
 
 const messages = defineMessages({
   option_placeholder: { id: 'compose_form.poll.option_placeholder', defaultMessage: 'Choice {number}' },
@@ -90,8 +91,8 @@ class Option extends React.PureComponent {
             onKeyPress={this.handleCheckboxKeypress}
             role='button'
             tabIndex='0'
-            title={intl.formatMessage(isPollMultiple ? messages.switchToMultiple : messages.switchToSingle)}
-            aria-label={intl.formatMessage(isPollMultiple ? messages.switchToMultiple : messages.switchToSingle)}
+            title={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
+            aria-label={intl.formatMessage(isPollMultiple ? messages.switchToSingle : messages.switchToMultiple)}
           />
 
           <AutosuggestInput
@@ -109,7 +110,7 @@ class Option extends React.PureComponent {
         </label>
 
         <div className='poll__cancel'>
-          <IconButton title={intl.formatMessage(messages.remove_option)} icon='times' onClick={this.handleOptionRemove} />
+          <IconButton title={intl.formatMessage(messages.remove_option)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleOptionRemove} />
         </div>
       </li>
     );
@@ -178,7 +179,7 @@ class PollForm extends ImmutablePureComponent {
 
         <div className='poll__footer'>
           {options.size < maxOptions && (
-            <button className='button button-secondary' onClick={this.handleAddOption}><Icon id='plus' /> <FormattedMessage {...messages.add_option} /></button>
+            <button className='button button-secondary' onClick={this.handleAddOption}><Icon src={require('@tabler/icons/icons/plus.svg')} /> <FormattedMessage {...messages.add_option} /></button>
           )}
 
           <select value={expiresIn} onChange={this.handleSelectDuration}>
@@ -198,11 +199,11 @@ class PollForm extends ImmutablePureComponent {
 }
 
 const mapStateToProps = state => {
-  const pollLimits = state.getIn(['instance', 'poll_limits']);
+  const pollLimits = state.getIn(['instance', 'configuration', 'polls']);
 
   return {
     maxOptions: pollLimits.get('max_options'),
-    maxOptionChars: pollLimits.get('max_option_chars'),
+    maxOptionChars: pollLimits.get('max_characters_per_option'),
     maxExpiration: pollLimits.get('max_expiration'),
     minExpiration: pollLimits.get('min_expiration'),
   };

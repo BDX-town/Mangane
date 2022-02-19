@@ -1,11 +1,17 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import {
   ALIASES_SUGGESTIONS_READY,
   ALIASES_SUGGESTIONS_CLEAR,
   ALIASES_SUGGESTIONS_CHANGE,
+  ALIASES_FETCH_SUCCESS,
 } from '../actions/aliases';
 
 const initialState = ImmutableMap({
+  aliases: ImmutableMap({
+    loaded: false,
+    items: ImmutableList(),
+  }),
   suggestions: ImmutableMap({
     value: '',
     loaded: false,
@@ -15,6 +21,9 @@ const initialState = ImmutableMap({
 
 export default function aliasesReducer(state = initialState, action) {
   switch(action.type) {
+  case ALIASES_FETCH_SUCCESS:
+    return state
+      .setIn(['aliases', 'items'], action.value);
   case ALIASES_SUGGESTIONS_CHANGE:
     return state
       .setIn(['suggestions', 'value'], action.value)

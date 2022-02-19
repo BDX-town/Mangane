@@ -1,8 +1,12 @@
-import api from '../api';
-import { deleteFromTimelines } from './timelines';
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import { openModal } from './modal';
 import { isLoggedIn } from 'soapbox/utils/auth';
+import { getFeatures } from 'soapbox/utils/features';
+import { shouldHaveCard } from 'soapbox/utils/status';
+
+import api from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
+import { openModal } from './modals';
+import { deleteFromTimelines } from './timelines';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
 export const STATUS_CREATE_SUCCESS = 'STATUS_CREATE_SUCCESS';
@@ -44,8 +48,31 @@ export function createStatus(params, idempotencyKey) {
     return api(getState).post('/api/v1/statuses', params, {
       headers: { 'Idempotency-Key': idempotencyKey },
     }).then(({ data: status }) => {
+      // The backend might still be processing the rich media attachment
+      if (!status.card && shouldHaveCard(status)) {
+        status.expectsCard = true;
+      }
+
       dispatch(importFetchedStatus(status, idempotencyKey));
       dispatch({ type: STATUS_CREATE_SUCCESS, status, params, idempotencyKey });
+
+      // Poll the backend for the updated card
+      if (status.expectsCard) {
+        const delay = 1000;
+
+        const poll = (retries = 5) => {
+          api(getState).get(`/api/v1/statuses/${status.id}`).then(response => {
+            if (response.data?.card) {
+              dispatch(importFetchedStatus(response.data));
+            } else if (retries > 0 && response.status === 200) {
+              setTimeout(() => poll(retries - 1), delay);
+            }
+          }).catch(console.error);
+        };
+
+        setTimeout(() => poll(), delay);
+      }
+
       return status;
     }).catch(error => {
       dispatch({ type: STATUS_CREATE_FAIL, error, params, idempotencyKey });
@@ -71,10 +98,17 @@ export function fetchStatus(id) {
 }
 
 export function redraft(status, raw_text) {
-  return {
-    type: REDRAFT,
-    status,
-    raw_text,
+  return (dispatch, getState) => {
+    const state = getState();
+    const instance = state.get('instance');
+    const { explicitAddressing } = getFeatures(instance);
+
+    dispatch({
+      type: REDRAFT,
+      status,
+      raw_text,
+      explicitAddressing,
+    });
   };
 }
 
@@ -109,13 +143,21 @@ export function fetchContext(id) {
     dispatch({ type: CONTEXT_FETCH_REQUEST, id });
 
     return api(getState).get(`/api/v1/statuses/${id}/context`).then(({ data: context }) => {
-      const { ancestors, descendants } = context;
-      const statuses = ancestors.concat(descendants);
-      dispatch(importFetchedStatuses(statuses));
-      dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      if (Array.isArray(context)) {
+        // Mitra: returns a list of statuses
+        dispatch(importFetchedStatuses(context));
+      } else if (typeof context === 'object') {
+        // Standard Mastodon API returns a map with `ancestors` and `descendants`
+        const { ancestors, descendants } = context;
+        const statuses = ancestors.concat(descendants);
+        dispatch(importFetchedStatuses(statuses));
+        dispatch({ type: CONTEXT_FETCH_SUCCESS, id, ancestors, descendants });
+      } else {
+        throw context;
+      }
       return context;
     }).catch(error => {
-      if (error.response && error.response.status === 404) {
+      if (error.response?.status === 404) {
         dispatch(deleteFromTimelines(id));
       }
 

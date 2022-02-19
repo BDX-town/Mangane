@@ -1,27 +1,55 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import PropTypes from 'prop-types';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { connect } from 'react-redux';
 import { FormattedNumber } from 'react-intl';
+import { connect } from 'react-redux';
+
+import { openModal } from 'soapbox/actions/modals';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { getFeatures } from 'soapbox/utils/features';
-import { Link } from 'react-router-dom';
-import Icon from 'soapbox/components/icon';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 const mapStateToProps = state => {
+  const me = state.get('me');
   const instance = state.get('instance');
 
   return {
+    me,
     allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
     features: getFeatures(instance),
   };
 };
 
-export default @connect(mapStateToProps)
+const mapDispatchToProps = (dispatch) => ({
+  onOpenUnauthorizedModal() {
+    dispatch(openModal('UNAUTHORIZED'));
+  },
+  onOpenReblogsModal(username, statusId) {
+    dispatch(openModal('REBLOGS', {
+      username,
+      statusId,
+    }));
+  },
+  onOpenFavouritesModal(username, statusId) {
+    dispatch(openModal('FAVOURITES', {
+      username,
+      statusId,
+    }));
+  },
+  onOpenReactionsModal(username, statusId, reaction) {
+    dispatch(openModal('REACTIONS', {
+      username,
+      statusId,
+      reaction,
+    }));
+  },
+});
+
+export default @connect(mapStateToProps, mapDispatchToProps)
 class StatusInteractionBar extends ImmutablePureComponent {
 
   static propTypes = {
@@ -29,6 +57,8 @@ class StatusInteractionBar extends ImmutablePureComponent {
     me: SoapboxPropTypes.me,
     allowedEmoji: ImmutablePropTypes.list,
     features: PropTypes.object.isRequired,
+    onOpenReblogsModal: PropTypes.func,
+    onOpenReactionsModal: PropTypes.func,
   }
 
   getNormalizedReacts = () => {
@@ -41,20 +71,40 @@ class StatusInteractionBar extends ImmutablePureComponent {
     ).reverse();
   }
 
+  handleOpenReblogsModal = () => {
+    const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
+  }
+
   getReposts = () => {
     const { status } = this.props;
+
     if (status.get('reblogs_count')) {
       return (
-        <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reblogs`} className='emoji-react emoji-react--reblogs'>
+        <span
+          className='emoji-react emoji-react--reblogs'
+          type='button'
+          role='presentation'
+          onClick={this.handleOpenReblogsModal}
+        >
           <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
           <span className='emoji-reacts__count'>
             <FormattedNumber value={status.get('reblogs_count')} />
           </span>
-        </Link>
+        </span>
       );
     }
 
     return '';
+  }
+
+  handleOpenFavouritesModal = () => {
+    const { me, status, onOpenUnauthorizedModal, onOpenFavouritesModal } = this.props;
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenFavouritesModal(status.getIn(['account', 'acct']), status.get('id'));
   }
 
   getFavourites = () => {
@@ -72,9 +122,14 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
       if (features.exposableReactions) {
         return (
-          <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='emoji-react emoji-react--favourites'>
+          <span
+            className='emoji-react emoji-react--favourites'
+            type='button'
+            role='presentation'
+            onClick={this.handleOpenFavouritesModal}
+          >
             {favourites}
-          </Link>
+          </span>
         );
       } else {
         return (
@@ -88,8 +143,15 @@ class StatusInteractionBar extends ImmutablePureComponent {
     return '';
   }
 
+  handleOpenReactionsModal = (reaction) => () => {
+    const { me, status, onOpenUnauthorizedModal, onOpenReactionsModal } = this.props;
+
+    if (!me) onOpenUnauthorizedModal();
+    else onOpenReactionsModal(status.getIn(['account', 'acct']), status.get('id'), reaction.get('name'));
+  }
+
   getEmojiReacts = () => {
-    const { status, features } = this.props;
+    const { features } = this.props;
 
     const emojiReacts = this.getNormalizedReacts();
     const count = emojiReacts.reduce((acc, cur) => (
@@ -112,7 +174,17 @@ class StatusInteractionBar extends ImmutablePureComponent {
               );
 
               if (features.exposableReactions) {
-                return <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/reactions/${e.get('name')}`} className='emoji-react' key={i}>{emojiReact}</Link>;
+                return (
+                  <span
+                    className='emoji-react'
+                    type='button'
+                    role='presentation'
+                    key={i}
+                    onClick={this.handleOpenReactionsModal(e)}
+                  >
+                    {emojiReact}
+                  </span>
+                );
               }
 
               return <span className='emoji-react' key={i}>{emojiReact}</span>;

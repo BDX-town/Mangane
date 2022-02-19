@@ -1,8 +1,11 @@
-import { importFetchedStatus, importFetchedStatuses } from './importer';
-import api, { getLinks } from '../api';
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+
 import { getSettings } from 'soapbox/actions/settings';
 import { shouldFilter } from 'soapbox/utils/timelines';
+
+import api, { getLinks } from '../api';
+
+import { importFetchedStatus, importFetchedStatuses } from './importer';
 
 export const TIMELINE_UPDATE  = 'TIMELINE_UPDATE';
 export const TIMELINE_DELETE  = 'TIMELINE_DELETE';
@@ -23,7 +26,7 @@ export const MAX_QUEUED_ITEMS = 40;
 export function processTimelineUpdate(timeline, status, accept) {
   return (dispatch, getState) => {
     const me = getState().get('me');
-    const ownStatus = status.account && status.account.id === me;
+    const ownStatus = status.account?.id === me;
     const hasPendingStatuses = !getState().get('pending_statuses').isEmpty();
 
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());

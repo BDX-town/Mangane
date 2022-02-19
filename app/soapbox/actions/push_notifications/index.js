@@ -1,3 +1,4 @@
+import { register, saveSettings } from './registerer';
 import {
   SET_BROWSER_SUPPORT,
   SET_SUBSCRIPTION,
@@ -5,7 +6,6 @@ import {
   SET_ALERTS,
   setAlerts,
 } from './setter';
-import { register, saveSettings } from './registerer';
 
 export {
   SET_BROWSER_SUPPORT,

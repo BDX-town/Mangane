@@ -1,10 +1,18 @@
-import api, { staticClient } from '../api';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { getFeatures } from 'soapbox/utils/features';
 import { createSelector } from 'reselect';
+
+import { getHost } from 'soapbox/actions/instance';
+import KVStore from 'soapbox/storage/kv_store';
+import { getFeatures } from 'soapbox/utils/features';
+
+import api, { staticClient } from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
+
+export const SOAPBOX_CONFIG_REMEMBER_REQUEST = 'SOAPBOX_CONFIG_REMEMBER_REQUEST';
+export const SOAPBOX_CONFIG_REMEMBER_SUCCESS = 'SOAPBOX_CONFIG_REMEMBER_SUCCESS';
+export const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
 
 const allowedEmoji = ImmutableList([
   '👍',
@@ -61,46 +69,71 @@ export const getSoapboxConfig = createSelector([
   return makeDefaultConfig(features).merge(soapbox);
 });
 
-export function fetchSoapboxConfig() {
+export function rememberSoapboxConfig(host) {
+  return (dispatch, getState) => {
+    dispatch({ type: SOAPBOX_CONFIG_REMEMBER_REQUEST, host });
+    return KVStore.getItemOrError(`soapbox_config:${host}`).then(soapboxConfig => {
+      dispatch({ type: SOAPBOX_CONFIG_REMEMBER_SUCCESS, host, soapboxConfig });
+      return soapboxConfig;
+    }).catch(error => {
+      dispatch({ type: SOAPBOX_CONFIG_REMEMBER_FAIL, host, error, skipAlert: true });
+    });
+  };
+}
+
+export function fetchSoapboxConfig(host) {
   return (dispatch, getState) => {
     api(getState).get('/api/pleroma/frontend_configurations').then(response => {
       if (response.data.soapbox_fe) {
-        dispatch(importSoapboxConfig(response.data.soapbox_fe));
+        dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
       } else {
-        dispatch(fetchSoapboxJson());
+        dispatch(fetchSoapboxJson(host));
       }
     }).catch(error => {
-      dispatch(fetchSoapboxJson());
+      dispatch(fetchSoapboxJson(host));
     });
   };
 }
 
-export function fetchSoapboxJson() {
+// Tries to remember the config from browser storage before fetching it
+export function loadSoapboxConfig() {
+  return (dispatch, getState) => {
+    const host = getHost(getState());
+
+    return dispatch(rememberSoapboxConfig(host)).finally(() => {
+      return dispatch(fetchSoapboxConfig(host));
+    });
+  };
+}
+
+export function fetchSoapboxJson(host) {
   return (dispatch, getState) => {
     staticClient.get('/instance/soapbox.json').then(({ data }) => {
       if (!isObject(data)) throw 'soapbox.json failed';
-      dispatch(importSoapboxConfig(data));
+      dispatch(importSoapboxConfig(data, host));
     }).catch(error => {
-      dispatch(soapboxConfigFail(error));
+      dispatch(soapboxConfigFail(error, host));
     });
   };
 }
 
-export function importSoapboxConfig(soapboxConfig) {
+export function importSoapboxConfig(soapboxConfig, host) {
   if (!soapboxConfig.brandColor) {
     soapboxConfig.brandColor = '#0482d8';
   }
   return {
     type: SOAPBOX_CONFIG_REQUEST_SUCCESS,
     soapboxConfig,
+    host,
   };
 }
 
-export function soapboxConfigFail(error) {
+export function soapboxConfigFail(error, host) {
   return {
     type: SOAPBOX_CONFIG_REQUEST_FAIL,
     error,
     skipAlert: true,
+    host,
   };
 }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import PlaceholderStatus from './placeholder_status';
 
 export default class PlaceholderMaterialStatus extends React.Component {

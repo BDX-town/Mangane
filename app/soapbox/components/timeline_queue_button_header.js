@@ -1,11 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import { throttle } from 'lodash';
 import classNames from 'classnames';
-import Icon from 'soapbox/components/icon';
+import { throttle } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
+
 import { getSettings } from 'soapbox/actions/settings';
+import Icon from 'soapbox/components/icon';
 
 const mapStateToProps = state => {
   const settings = getSettings(state);

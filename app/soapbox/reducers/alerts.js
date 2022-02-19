@@ -1,9 +1,10 @@
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+
 import {
   ALERT_SHOW,
   ALERT_DISMISS,
   ALERT_CLEAR,
 } from '../actions/alerts';
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 const initialState = ImmutableList([]);
 
@@ -15,6 +16,8 @@ export default function alerts(state = initialState, action) {
       title: action.title,
       message: action.message,
       severity: action.severity || 'info',
+      actionLabel: action.actionLabel,
+      actionLink: action.actionLink,
     }));
   case ALERT_DISMISS:
     return state.filterNot(item => item.get('key') === action.alert.key);

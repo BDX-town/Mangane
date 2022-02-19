@@ -1,17 +1,24 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
-import Column from '../ui/components/column';
-import StatusList from '../../components/status_list';
-import { injectIntl, FormattedMessage } from 'react-intl';
-import ImmutablePureComponent from 'react-immutable-pure-component';
 import { debounce } from 'lodash';
+import PropTypes from 'prop-types';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
+import ImmutablePureComponent from 'react-immutable-pure-component';
+import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { connect } from 'react-redux';
+
 import MissingIndicator from 'soapbox/components/missing_indicator';
-import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
-import LoadingIndicator from '../../components/loading_indicator';
 import { findAccountByUsername } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
+
+import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
+import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
+import LoadingIndicator from '../../components/loading_indicator';
+import StatusList from '../../components/status_list';
+import Column from '../ui/components/column';
+
+const messages = defineMessages({
+  heading: { id: 'column.favourited_statuses', defaultMessage: 'Liked posts' },
+});
 
 const mapStateToProps = (state, { params }) => {
   const username = params.username || '';
@@ -19,6 +26,8 @@ const mapStateToProps = (state, { params }) => {
   const meUsername = state.getIn(['accounts', me, 'username'], '');
 
   const isMyAccount = (username.toLowerCase() === meUsername.toLowerCase());
+
+  const features = getFeatures(state.get('instance'));
 
   if (isMyAccount) {
     return {
@@ -29,7 +38,7 @@ const mapStateToProps = (state, { params }) => {
     };
   }
 
-  const accountFetchError = (state.getIn(['accounts', -1, 'username'], '').toLowerCase() === username.toLowerCase());
+  const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
 
   let accountId = -1;
   if (accountFetchError) {
@@ -40,7 +49,7 @@ const mapStateToProps = (state, { params }) => {
   }
 
   const isBlocked = state.getIn(['relationships', accountId, 'blocked_by'], false);
-  const unavailable = (me === accountId) ? false : isBlocked;
+  const unavailable = (me === accountId) ? false : (isBlocked && !features.blockersVisible);
 
   return {
     isMyAccount,
@@ -102,7 +111,7 @@ class Favourites extends ImmutablePureComponent {
   }, 300, { leading: true })
 
   render() {
-    const { statusIds, isLoading, hasMore, isMyAccount, isAccount, accountId, unavailable } = this.props;
+    const { intl, statusIds, isLoading, hasMore, isMyAccount, isAccount, accountId, unavailable } = this.props;
 
     if (!isMyAccount && !isAccount && accountId !== -1) {
       return (
@@ -135,7 +144,7 @@ class Favourites extends ImmutablePureComponent {
       : <FormattedMessage id='empty_column.account_favourited_statuses' defaultMessage="This user doesn't have any liked posts yet." />;
 
     return (
-      <Column>
+      <Column heading={intl.formatMessage(messages.heading)}>
         <StatusList
           statusIds={statusIds}
           scrollKey='favourited_statuses'

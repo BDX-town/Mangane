@@ -1,15 +1,17 @@
 import { debounce } from 'lodash';
-import React from 'react';
-import { FormattedMessage, defineMessages } from 'react-intl';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
-import MaterialStatus from 'soapbox/components/material_status';
-import PendingStatus from 'soapbox/features/ui/components/pending_status';
+import React from 'react';
+import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage, defineMessages } from 'react-intl';
+
+import MaterialStatus from 'soapbox/components/material_status';
+import PlaceholderMaterialStatus from 'soapbox/features/placeholder/components/placeholder_material_status';
+import PendingStatus from 'soapbox/features/ui/components/pending_status';
+
 import LoadGap from './load_gap';
 import ScrollableList from './scrollable_list';
 import TimelineQueueButtonHeader from './timeline_queue_button_header';
-import PlaceholderMaterialStatus from 'soapbox/features/placeholder/components/placeholder_material_status';
 
 const messages = defineMessages({
   queue: { id: 'status_list.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {post} other {posts}}' },
@@ -118,7 +120,6 @@ export default class StatusList extends ImmutablePureComponent {
         contextType={timelineId}
         group={group}
         withGroupAdmin={withGroupAdmin}
-        showThread
       />
     );
   }
@@ -138,7 +139,6 @@ export default class StatusList extends ImmutablePureComponent {
             contextType={timelineId}
             group={group}
             withGroupAdmin={withGroupAdmin}
-            showThread
           />
         </div>
       </div>
@@ -157,7 +157,6 @@ export default class StatusList extends ImmutablePureComponent {
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType={timelineId}
-        showThread
       />
     ));
   }

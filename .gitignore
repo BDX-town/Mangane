@@ -12,3 +12,12 @@ yarn-error.log*
 /static-test/
 /public/
 /dist/
+
+.idea
+.DS_Store
+
+# surge.sh
+CNAME
+AUTH
+CORS
+ROUTER

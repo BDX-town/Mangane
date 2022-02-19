@@ -1,11 +1,12 @@
-import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { MediaGallery } from 'soapbox/features/ui/util/async-components';
-import { openModal } from 'soapbox/actions/modal';
+import { connect } from 'react-redux';
+
+import { openModal } from 'soapbox/actions/modals';
 import Bundle from 'soapbox/features/ui/components/bundle';
+import { MediaGallery } from 'soapbox/features/ui/util/async-components';
 
 export default @connect()
 class AttachmentThumbs extends ImmutablePureComponent {

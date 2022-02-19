@@ -2,9 +2,11 @@
 console.log('Running in production mode'); // eslint-disable-line no-console
 
 const { join } = require('path');
-const { merge } = require('webpack-merge');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
 const OfflinePlugin = require('@lcdp/offline-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { merge } = require('webpack-merge');
+
 const sharedConfig = require('./shared');
 
 const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
@@ -104,7 +106,11 @@ module.exports = merge(sharedConfig, {
           ];
 
           const isBackendRoute = ({ pathname }) => {
-            return backendRoutes.some(pathname.startsWith);
+            if (pathname) {
+              return backendRoutes.some(pathname.startsWith);
+            } else {
+              return false;
+            }
           };
 
           return isBackendRoute(requestUrl) && requestUrl;
