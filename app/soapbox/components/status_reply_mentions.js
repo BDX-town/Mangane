@@ -43,38 +43,17 @@ class StatusReplyMentions extends ImmutablePureComponent {
     const to = status.get('mentions', []);
 
     // The post is a reply, but it has no mentions.
+    // Rare, but it can happen.
     if (to.size === 0) {
-      // The author is replying to themself.
-      if (status.get('in_reply_to_account_id') === status.getIn(['account', 'id'])) {
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage
-              id='reply_mentions.reply'
-              defaultMessage='Replying to {accounts}{more}'
-              values={{
-                accounts: (<>
-                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])} inline>
-                    <Link to={`/@${status.getIn(['account', 'acct'])}`} className='reply-mentions__account'>@{status.getIn(['account', 'username'])}</Link>
-                  </HoverRefWrapper>
-                </>),
-                more: false,
-              }}
-            />
-          </div>
-        );
-      } else {
-        // The reply-to is unknown. Rare, but it can happen.
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage
-              id='reply_mentions.reply_empty'
-              defaultMessage='Replying to post'
-            />
-          </div>
-        );
-      }
+      return (
+        <div className='reply-mentions'>
+          <FormattedMessage
+            id='reply_mentions.reply_empty'
+            defaultMessage='Replying to post'
+          />
+        </div>
+      );
     }
-
 
     // The typical case with a reply-to and a list of mentions.
     return (

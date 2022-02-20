@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable';
 import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
+import { normalizeStatus } from 'soapbox/normalizers/status';
 import { makeGetAccount, makeGetStatus } from 'soapbox/selectors';
 
 export const buildStatus = (state, pendingStatus, idempotencyKey) => {
@@ -26,7 +26,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     }));
   }
 
-  const status = normalizeStatus({
+  const status = {
     account,
     application: null,
     bookmarked: false,
@@ -57,7 +57,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     uri: '',
     url: '',
     visibility: pendingStatus.get('visibility', 'public'),
-  });
+  };
 
-  return fromJS(status).set('account', account);
+  return normalizeStatus(fromJS(status));
 };

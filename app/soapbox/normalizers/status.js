@@ -2,6 +2,14 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import { accountToMention } from 'soapbox/utils/accounts';
 
+// Some backends can return null, or omit these required fields
+const setRequiredFields = status => {
+  return status.merge({
+    emojis: status.get('emojis') || [],
+    spoiler_text: status.get('spoiler_text') || '',
+  });
+};
+
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = attachment => {
@@ -62,6 +70,7 @@ const addSelfMention = status => {
 
 export const normalizeStatus = status => {
   return status.withMutations(status => {
+    setRequiredFields(status);
     fixMentions(status);
     addSelfMention(status);
     normalizeAttachments(status);

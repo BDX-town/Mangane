@@ -1,7 +1,10 @@
+import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -27,6 +30,46 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
+const domParser = new DOMParser();
+
+const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
+  obj[`:${emoji.get('shortcode')}:`] = emoji;
+  return obj;
+}, {});
+
+const minifyStatus = status => {
+  return status.merge({
+    account: status.getIn(['account', 'id'], null),
+    reblog: status.getIn(['reblog', 'id'], null),
+    poll: status.getIn(['poll', 'id'], null),
+    quote: status.getIn(['quote', 'id']) || status.getIn(['pleroma', 'quote', 'id']) || null,
+  });
+};
+
+// Only calculate these values when status first encountered
+// Otherwise keep the ones already in the reducer
+const calculateStatus = (status, oldStatus) => {
+  if (oldStatus) {
+    return status.merge({
+      search_index: oldStatus.get('search_index'),
+      contentHtml: oldStatus.get('contentHtml'),
+      spoilerHtml: oldStatus.get('spoilerHtml'),
+      hidden: oldStatus.get('hidden'),
+    });
+  } else {
+    const spoilerText   = status.get('spoiler_text') || '';
+    const searchContent = ([spoilerText, status.get('content')].concat(status.getIn(['poll', 'options']) ? status.getIn(['poll', 'options']).map(option => option.get('title')) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const emojiMap      = makeEmojiMap(status);
+
+    return status.merge({
+      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
+      contentHtml: stripCompatibilityFeatures(emojify(status.get('content'), emojiMap)),
+      spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
+      hidden: spoilerText.length > 0 || status.get('sensitive'),
+    });
+  }
+};
+
 const isQuote = status => {
   return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
 };
@@ -45,9 +88,13 @@ const fixQuote = (state, status) => {
 };
 
 const fixStatus = (state, status) => {
+  const oldStatus = state.get(status.get('id'));
+
   return status.withMutations(status => {
     normalizeStatus(status);
     fixQuote(state, status);
+    calculateStatus(status, oldStatus);
+    minifyStatus(status);
   });
 };
 

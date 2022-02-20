@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 
-import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
+import { normalizeStatus } from 'soapbox/normalizers/status';
 import { makeGetAccount } from 'soapbox/selectors';
 
 export const buildStatus = (state, scheduledStatus) => {
@@ -10,7 +10,7 @@ export const buildStatus = (state, scheduledStatus) => {
   const params = scheduledStatus.get('params');
   const account = getAccount(state, me);
 
-  const status = normalizeStatus({
+  const status = {
     account,
     application: null,
     bookmarked: false,
@@ -40,7 +40,7 @@ export const buildStatus = (state, scheduledStatus) => {
     uri: `/scheduled_statuses/${scheduledStatus.get('id')}`,
     url: `/scheduled_statuses/${scheduledStatus.get('id')}`,
     visibility: params.get('visibility'),
-  });
+  };
 
-  return fromJS(status).set('account', account);
+  return normalizeStatus(fromJS(status));
 };

@@ -1,8 +1,5 @@
-import { getSettings } from '../settings';
-
 import {
   normalizeAccount,
-  normalizeStatus,
   normalizePoll,
 } from './normalizer';
 
@@ -60,11 +57,6 @@ export function importFetchedStatus(status, idempotencyKey) {
     // Skip broken statuses
     if (isBroken(status)) return;
 
-    const normalOldStatus = getState().getIn(['statuses', status.id]);
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-
-    const normalizedStatus = normalizeStatus(status, normalOldStatus, expandSpoilers);
-
     if (status.reblog?.id) {
       dispatch(importFetchedStatus(status.reblog));
     }
@@ -83,7 +75,7 @@ export function importFetchedStatus(status, idempotencyKey) {
     }
 
     dispatch(importFetchedAccount(status.account));
-    dispatch(importStatus(normalizedStatus, idempotencyKey));
+    dispatch(importStatus(status, idempotencyKey));
   };
 }
 
@@ -106,17 +98,12 @@ const isBroken = status => {
 export function importFetchedStatuses(statuses) {
   return (dispatch, getState) => {
     const accounts = [];
-    const normalStatuses = [];
     const polls = [];
 
     function processStatus(status) {
       // Skip broken statuses
       if (isBroken(status)) return;
 
-      const normalOldStatus = getState().getIn(['statuses', status.id]);
-      const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-
-      normalStatuses.push(normalizeStatus(status, normalOldStatus, expandSpoilers));
       accounts.push(status.account);
 
       if (status.reblog?.id) {
@@ -141,7 +128,7 @@ export function importFetchedStatuses(statuses) {
 
     dispatch(importPolls(polls));
     dispatch(importFetchedAccounts(accounts));
-    dispatch(importStatuses(normalStatuses));
+    dispatch(importStatuses(statuses));
   };
 }
 
