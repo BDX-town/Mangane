@@ -16,7 +16,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     const inReplyTo = getStatus(state, { id: pendingStatus.get('in_reply_to_id') });
 
     if (inReplyTo.getIn(['account', 'id']) === me) {
-      mentions = ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to', []));
+      mentions = ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to') || []);
     } else {
       mentions = pendingStatus.get('to', []);
     }
