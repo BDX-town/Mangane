@@ -1,5 +1,6 @@
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, fromJS } from 'immutable';
 
+import { normalizeStatus } from 'soapbox/normalizers/status';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 
 import {
@@ -26,47 +27,6 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-// Ensure attachments have required fields
-// https://docs.joinmastodon.org/entities/attachment/
-const normalizeAttachment = attachment => {
-  const url = [
-    attachment.get('url'),
-    attachment.get('preview_url'),
-    attachment.get('remote_url'),
-  ].find(url => url) || '';
-
-  const base = ImmutableMap({
-    url,
-    preview_url: url,
-    remote_url: url,
-  });
-
-  return attachment.mergeWith((o, n) => o || n, base);
-};
-
-const normalizeAttachments = status => {
-  return status.update('media_attachments', ImmutableList(), attachments => {
-    return attachments.map(normalizeAttachment);
-  });
-};
-
-// Fix order of mentions
-const fixMentions = status => {
-  const mentions = status.get('mentions');
-  const inReplyToAccountId = status.get('in_reply_to_account_id');
-
-  // Sort the replied-to mention to the top
-  const sorted = mentions.sort((a, b) => {
-    if (a.get('id') === inReplyToAccountId) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-
-  return status.set('mentions', sorted);
-};
-
 const isQuote = status => {
   return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
 };
@@ -84,15 +44,14 @@ const fixQuote = (state, status) => {
   }
 };
 
-const normalizeStatus = (state, status) => {
+const fixStatus = (state, status) => {
   return status.withMutations(status => {
-    fixMentions(status);
+    normalizeStatus(status);
     fixQuote(state, status);
-    normalizeAttachments(status);
   });
 };
 
-const importStatus = (state, status) => state.set(status.id, normalizeStatus(state, fromJS(status)));
+const importStatus = (state, status) => state.set(status.id, fixStatus(state, fromJS(status)));
 
 const importStatuses = (state, statuses) =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
