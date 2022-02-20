@@ -38,11 +38,11 @@ const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
 }, {});
 
 const minifyStatus = status => {
-  return status.merge({
-    account: status.getIn(['account', 'id'], null),
-    reblog: status.getIn(['reblog', 'id'], null),
-    poll: status.getIn(['poll', 'id'], null),
-    quote: status.getIn(['quote', 'id']) || status.getIn(['pleroma', 'quote', 'id']) || null,
+  return status.mergeWith((o, n) => n || o, {
+    account: status.getIn(['account', 'id']),
+    reblog: status.getIn(['reblog', 'id']),
+    poll: status.getIn(['poll', 'id']),
+    quote: status.getIn(['quote', 'id']) || status.getIn(['pleroma', 'quote', 'id']),
   });
 };
 
@@ -75,9 +75,7 @@ const isQuote = status => {
 };
 
 // Preserve quote if an existing status already has it
-const fixQuote = (state, status) => {
-  const oldStatus = state.get(status.get('id'));
-
+const fixQuote = (status, oldStatus) => {
   if (oldStatus && !status.get('quote') && isQuote(status)) {
     return status
       .set('quote', oldStatus.get('quote'))
@@ -92,7 +90,7 @@ const fixStatus = (state, status) => {
 
   return status.withMutations(status => {
     normalizeStatus(status);
-    fixQuote(state, status);
+    fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus);
     minifyStatus(status);
   });

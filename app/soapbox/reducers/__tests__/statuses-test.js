@@ -1,7 +1,6 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
-import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
@@ -34,8 +33,8 @@ describe('statuses reducer', () => {
       const quotedQuotePost = require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
 
       let state = undefined;
-      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotePost) });
-      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotedQuotePost.pleroma.quote) });
+      state = reducer(state, { type: STATUS_IMPORT, status: quotePost });
+      state = reducer(state, { type: STATUS_IMPORT, status: quotedQuotePost.pleroma.quote });
 
       expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
     });
@@ -43,7 +42,7 @@ describe('statuses reducer', () => {
     it('normalizes Mitra attachments', () => {
       const status = require('soapbox/__fixtures__/mitra-status-with-attachments.json');
 
-      const state = reducer(undefined, { type: STATUS_IMPORT, status: normalizeStatus(status) });
+      const state = reducer(undefined, { type: STATUS_IMPORT, status });
 
       const expected = fromJS([{
         id: '017eeb0e-e5df-30a4-77a7-a929145cb836',
@@ -76,7 +75,7 @@ describe('statuses reducer', () => {
 
     it('leaves Pleroma attachments alone', () => {
       const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
-      const action = { type: STATUS_IMPORT, status: normalizeStatus(status) };
+      const action = { type: STATUS_IMPORT, status };
       const state = reducer(undefined, action);
       const expected = fromJS(status.media_attachments);
 
