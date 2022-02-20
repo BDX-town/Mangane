@@ -219,7 +219,7 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
-    let to       = state.getIn(['compose', 'to'], null);
+    let to       = state.getIn(['compose', 'to']);
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));
