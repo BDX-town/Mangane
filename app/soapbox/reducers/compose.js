@@ -428,7 +428,7 @@ export default function compose(state = initialState, action) {
   case REDRAFT:
     return state.withMutations(map => {
       map.set('text', action.raw_text || unescapeHTML(expandMentions(action.status)));
-      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : null);
+      map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : undefined);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
       // TODO: Actually fix this rather than just removing it
