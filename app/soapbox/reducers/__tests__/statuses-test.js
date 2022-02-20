@@ -81,6 +81,23 @@ describe('statuses reducer', () => {
 
       expect(state.getIn(['AGNkA21auFR5lnEAHw', 'media_attachments'])).toEqual(expected);
     });
+
+    it('hides CWs', () => {
+      const status = require('soapbox/__fixtures__/status-cw.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      expect(hidden).toBe(true);
+    });
+
+    it('expands CWs when expandSpoilers is enabled', () => {
+      const status = require('soapbox/__fixtures__/status-cw.json');
+      const action = { type: STATUS_IMPORT, status, expandSpoilers: true };
+
+      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      expect(hidden).toBe(false);
+    });
+
   });
 
   describe('STATUS_CREATE_REQUEST', () => {

@@ -1,3 +1,5 @@
+import { getSettings } from '../settings';
+
 import {
   normalizeAccount,
   normalizePoll,
@@ -19,11 +21,17 @@ export function importAccounts(accounts) {
 }
 
 export function importStatus(status, idempotencyKey) {
-  return { type: STATUS_IMPORT, status, idempotencyKey };
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
+  };
 }
 
 export function importStatuses(statuses) {
-  return { type: STATUSES_IMPORT, statuses };
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
+  };
 }
 
 export function importPolls(polls) {

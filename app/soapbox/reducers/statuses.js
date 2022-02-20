@@ -48,7 +48,7 @@ const minifyStatus = status => {
 
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
-const calculateStatus = (status, oldStatus) => {
+const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
   if (oldStatus) {
     return status.merge({
       search_index: oldStatus.get('search_index'),
@@ -65,7 +65,7 @@ const calculateStatus = (status, oldStatus) => {
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
       contentHtml: stripCompatibilityFeatures(emojify(status.get('content'), emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: spoilerText.length > 0 || status.get('sensitive'),
+      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.get('sensitive'),
     });
   }
 };
@@ -85,21 +85,22 @@ const fixQuote = (status, oldStatus) => {
   }
 };
 
-const fixStatus = (state, status) => {
+const fixStatus = (state, status, expandSpoilers) => {
   const oldStatus = state.get(status.get('id'));
 
   return status.withMutations(status => {
     normalizeStatus(status);
     fixQuote(status, oldStatus);
-    calculateStatus(status, oldStatus);
+    calculateStatus(status, oldStatus, expandSpoilers);
     minifyStatus(status);
   });
 };
 
-const importStatus = (state, status) => state.set(status.id, fixStatus(state, fromJS(status)));
+const importStatus = (state, status, expandSpoilers) =>
+  state.set(status.id, fixStatus(state, fromJS(status), expandSpoilers));
 
-const importStatuses = (state, statuses) =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
+const importStatuses = (state, statuses, expandSpoilers) =>
+  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
 
 const deleteStatus = (state, id, references) => {
   references.forEach(ref => {
@@ -130,9 +131,9 @@ const initialState = ImmutableMap();
 export default function statuses(state = initialState, action) {
   switch(action.type) {
   case STATUS_IMPORT:
-    return importStatus(state, action.status);
+    return importStatus(state, action.status, action.expandSpoilers);
   case STATUSES_IMPORT:
-    return importStatuses(state, action.statuses);
+    return importStatuses(state, action.statuses, action.expandSpoilers);
   case STATUS_CREATE_REQUEST:
     return importPendingStatus(state, action.params);
   case STATUS_CREATE_FAIL:
