@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
+import { accountToMention } from 'soapbox/utils/accounts';
+
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = attachment => {
@@ -41,9 +43,27 @@ const fixMentions = status => {
   return status.set('mentions', sorted);
 };
 
+// Add self to mentions if it's a reply to self
+const addSelfMention = status => {
+  const accountId = status.getIn(['account', 'id']);
+
+  const isSelfReply = accountId === status.get('in_reply_to_account_id');
+  const hasSelfMention = accountId === status.getIn(['mentions', 0, 'id']);
+
+  if (isSelfReply && !hasSelfMention) {
+    const mention = accountToMention(status.get('account'));
+    return status.update('mentions', ImmutableList(), mentions => (
+      ImmutableList([mention]).concat(mentions)
+    ));
+  } else {
+    return status;
+  }
+};
+
 export const normalizeStatus = status => {
   return status.withMutations(status => {
     fixMentions(status);
+    addSelfMention(status);
     normalizeAttachments(status);
   });
 };

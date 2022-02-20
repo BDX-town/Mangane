@@ -16,6 +16,21 @@ describe('normalizeStatus', () => {
     expect(result).toEqual(expected);
   });
 
+  it('adds mention to self in self-reply on Mastodon', () => {
+    const status = fromJS(require('soapbox/__fixtures__/mastodon-reply-to-self.json'));
+
+    const expected = fromJS([{
+      id: '106801667066418367',
+      username: 'benis911',
+      acct: 'benis911',
+      url: 'https://mastodon.social/@benis911',
+    }]);
+
+    const result = normalizeStatus(status).get('mentions');
+
+    expect(result).toEqual(expected);
+  });
+
   it('normalizes Mitra attachments', () => {
     const status = fromJS(require('soapbox/__fixtures__/mitra-status-with-attachments.json'));
 
