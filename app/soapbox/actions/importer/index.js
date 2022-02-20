@@ -98,12 +98,14 @@ const isBroken = status => {
 export function importFetchedStatuses(statuses) {
   return (dispatch, getState) => {
     const accounts = [];
+    const normalStatuses = [];
     const polls = [];
 
     function processStatus(status) {
       // Skip broken statuses
       if (isBroken(status)) return;
 
+      normalStatuses.push(status);
       accounts.push(status.account);
 
       if (status.reblog?.id) {
@@ -128,7 +130,7 @@ export function importFetchedStatuses(statuses) {
 
     dispatch(importPolls(polls));
     dispatch(importFetchedAccounts(accounts));
-    dispatch(importStatuses(statuses));
+    dispatch(importStatuses(normalStatuses));
   };
 }
 
