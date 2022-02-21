@@ -48,7 +48,7 @@ const minifyStatus = status => {
 
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
-const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
+export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
   if (oldStatus) {
     return status.merge({
       search_index: oldStatus.get('search_index'),

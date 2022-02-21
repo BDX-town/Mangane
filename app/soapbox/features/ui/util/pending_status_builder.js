@@ -1,7 +1,8 @@
 import { fromJS } from 'immutable';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { OrderedSet as ImmutableOrderedSet, Map as ImmutableMap } from 'immutable';
 
 import { normalizeStatus } from 'soapbox/normalizers/status';
+import { calculateStatus } from 'soapbox/reducers/statuses';
 import { makeGetAccount, makeGetStatus } from 'soapbox/selectors';
 
 export const buildStatus = (state, pendingStatus, idempotencyKey) => {
@@ -21,8 +22,9 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
       mentions = pendingStatus.get('to', []);
     }
 
-    mentions = mentions.map(mention => ({
+    mentions = mentions.toList().map(mention => ImmutableMap({
       username: mention.split('@')[0],
+      acct: mention,
     }));
   }
 
@@ -59,5 +61,5 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     visibility: pendingStatus.get('visibility', 'public'),
   };
 
-  return normalizeStatus(fromJS(status));
+  return calculateStatus(normalizeStatus(fromJS(status)));
 };

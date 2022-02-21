@@ -1,6 +1,7 @@
 import { fromJS } from 'immutable';
 
 import { normalizeStatus } from 'soapbox/normalizers/status';
+import { calculateStatus } from 'soapbox/reducers/statuses';
 import { makeGetAccount } from 'soapbox/selectors';
 
 export const buildStatus = (state, scheduledStatus) => {
@@ -42,5 +43,5 @@ export const buildStatus = (state, scheduledStatus) => {
     visibility: params.get('visibility'),
   };
 
-  return normalizeStatus(fromJS(status));
+  return calculateStatus(normalizeStatus(fromJS(status)));
 };
