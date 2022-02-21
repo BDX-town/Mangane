@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modal';
+import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -28,8 +29,14 @@ const makeMapStateToProps = () => {
     }
     const to = state.getIn(['compose', 'to']);
 
+    const me = state.get('me');
+    const account = state.getIn(['accounts', me]);
+
+    const parentTo = statusToMentionsAccountIdsArray(state, status, account);
+
     return {
       to,
+      parentTo,
       isReply: true,
       explicitAddressing: true,
     };
