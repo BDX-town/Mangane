@@ -11,6 +11,7 @@ class ReplyMentions extends ImmutablePureComponent {
     onOpenMentionsModal: PropTypes.func.isRequired,
     explicitAddressing: PropTypes.bool,
     to: ImmutablePropTypes.orderedSet,
+    parentTo: ImmutablePropTypes.orderedSet,
     isReply: PropTypes.bool,
   };
 
@@ -21,10 +22,21 @@ class ReplyMentions extends ImmutablePureComponent {
   }
 
   render() {
-    const { explicitAddressing, to, isReply } = this.props;
+    const { explicitAddressing, to, parentTo, isReply } = this.props;
 
-    if (!explicitAddressing || !isReply || !to || to.size === 0) {
+    if (!explicitAddressing || !isReply || !to || (parentTo.size === 0)) {
       return null;
+    }
+
+    if (to.size === 0) {
+      return (
+        <a href='#' className='reply-mentions' onClick={this.handleClick}>
+          <FormattedMessage
+            id='reply_mentions.reply_empty'
+            defaultMessage='Replying to post'
+          />
+        </a>
+      );
     }
 
     return (
