@@ -1,13 +1,15 @@
+import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { fetchAliases, removeFromAliases } from 'soapbox/actions/aliases';
 import Icon from 'soapbox/components/icon';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import { makeGetAccount } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 
-import { removeFromAliases } from '../../actions/aliases';
-import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
 import ColumnSubheading from '../ui/components/column_subheading';
 
@@ -30,8 +32,16 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = getAccount(state, me);
 
+    const instance = state.get('instance');
+    const features = getFeatures(instance);
+
+    let aliases;
+
+    if (features.accountMoving) aliases = state.getIn(['aliases', 'aliases', 'items'], ImmutableList());
+    else aliases = account.getIn(['pleroma', 'also_known_as']);
+
     return {
-      aliases: account.getIn(['pleroma', 'also_known_as']),
+      aliases,
       searchAccountIds: state.getIn(['aliases', 'suggestions', 'items']),
       loaded: state.getIn(['aliases', 'suggestions', 'loaded']),
     };
@@ -43,6 +53,11 @@ const makeMapStateToProps = () => {
 export default @connect(makeMapStateToProps)
 @injectIntl
 class Aliases extends ImmutablePureComponent {
+
+  componentDidMount = e => {
+    const { dispatch } = this.props;
+    dispatch(fetchAliases);
+  }
 
   handleFilterDelete = e => {
     const { dispatch, intl } = this.props;
@@ -65,7 +80,7 @@ class Aliases extends ImmutablePureComponent {
             </div>
           ) : (
             <div className='aliases__accounts'>
-              {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} />)}
+              {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} aliases={aliases} />)}
             </div>
           )
         }

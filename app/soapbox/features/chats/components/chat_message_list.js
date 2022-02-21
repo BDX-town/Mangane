@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
 import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import { initReportById } from 'soapbox/actions/reports';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import emojify from 'soapbox/features/emoji/emoji';

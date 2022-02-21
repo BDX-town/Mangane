@@ -52,8 +52,8 @@ class LoginPage extends ImmutablePureComponent {
         dispatch(switchAccount(account.id));
       }
     }).catch(error => {
-      const data = error.response && error.response.data;
-      if (data && data.error === 'mfa_required') {
+      const data = error.response?.data;
+      if (data?.error === 'mfa_required') {
         this.setState({ mfa_auth_needed: true, mfa_token: data.mfa_token });
       }
       this.setState({ isLoading: false });

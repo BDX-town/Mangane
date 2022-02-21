@@ -6,7 +6,7 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { cancelReplyCompose } from '../actions/compose';
-import { openModal } from '../actions/modal';
+import { openModal, closeModal } from '../actions/modals';
 
 const messages = defineMessages({
   confirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
@@ -31,7 +31,11 @@ const mapDispatchToProps = (dispatch) => ({
   onOpenModal(type, opts) {
     dispatch(openModal(type, opts));
   },
+  onCloseModal(type) {
+    dispatch(closeModal(type));
+  },
   onCancelReplyCompose() {
+    dispatch(closeModal('COMPOSE'));
     dispatch(cancelReplyCompose());
   },
 });
@@ -42,12 +46,12 @@ class ModalRoot extends React.PureComponent {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
     onOpenModal: PropTypes.func.isRequired,
+    onCloseModal: PropTypes.func.isRequired,
     onCancelReplyCompose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     hasComposeContent: PropTypes.bool,
     type: PropTypes.string,
     onCancel: PropTypes.func,
-    noPop: PropTypes.bool,
   };
 
   state = {
@@ -64,7 +68,7 @@ class ModalRoot extends React.PureComponent {
   }
 
   handleOnClose = () => {
-    const { onOpenModal, hasComposeContent, intl, type, onCancelReplyCompose } = this.props;
+    const { onOpenModal, onCloseModal, hasComposeContent, intl, type, onCancelReplyCompose } = this.props;
 
     if (hasComposeContent && type === 'COMPOSE') {
       onOpenModal('CONFIRM', {
@@ -73,10 +77,10 @@ class ModalRoot extends React.PureComponent {
         message: <FormattedMessage id='confirmations.delete.message' defaultMessage='Are you sure you want to delete this post?' />,
         confirm: intl.formatMessage(messages.confirm),
         onConfirm: () => onCancelReplyCompose(),
-        onCancel: () => onOpenModal('COMPOSE'),
+        onCancel: () => onCloseModal('CONFIRM'),
       });
     } else if (hasComposeContent && type === 'CONFIRM') {
-      onOpenModal('COMPOSE');
+      onCloseModal('CONFIRM');
     } else {
       this.props.onClose();
     }
@@ -125,9 +129,7 @@ class ModalRoot extends React.PureComponent {
       this.activeElement = null;
       this.getSiblings().forEach(sibling => sibling.removeAttribute('inert'));
 
-      if (!this.props.noPop) {
-        this._handleModalClose();
-      }
+      this._handleModalClose(prevProps.type);
     }
 
     if (this.props.children) {
@@ -155,13 +157,15 @@ class ModalRoot extends React.PureComponent {
     });
   }
 
-  _handleModalClose() {
+  _handleModalClose(type) {
     if (this.unlistenHistory) {
       this.unlistenHistory();
     }
-    const { state } = this.history.location;
-    if (state && state.soapboxModalKey === this._modalHistoryKey) {
-      this.history.goBack();
+    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS'].includes(type)) {
+      const { state } = this.history.location;
+      if (state && state.soapboxModalKey === this._modalHistoryKey) {
+        this.history.goBack();
+      }
     }
   }
 

@@ -80,7 +80,7 @@ const dropOrientationIfNeeded = (orientation) => new Promise(resolve => {
 // });
 
 const getImageUrl = inputFile => new Promise((resolve, reject) => {
-  if (window.URL && URL.createObjectURL) {
+  if (window.URL?.createObjectURL) {
     try {
       resolve(URL.createObjectURL(inputFile));
     } catch (error) {

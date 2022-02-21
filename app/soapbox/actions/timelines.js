@@ -26,7 +26,7 @@ export const MAX_QUEUED_ITEMS = 40;
 export function processTimelineUpdate(timeline, status, accept) {
   return (dispatch, getState) => {
     const me = getState().get('me');
-    const ownStatus = status.account && status.account.id === me;
+    const ownStatus = status.account?.id === me;
     const hasPendingStatuses = !getState().get('pending_statuses').isEmpty();
 
     const columnSettings = getSettings(getState()).get(timeline, ImmutableMap());

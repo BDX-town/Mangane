@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import { cancelScheduledStatus } from 'soapbox/actions/scheduled_statuses';
 import { getSettings } from 'soapbox/actions/settings';
 import IconButton from 'soapbox/components/icon_button';

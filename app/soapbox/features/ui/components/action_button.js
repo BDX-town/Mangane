@@ -12,7 +12,7 @@ import {
   blockAccount,
   unblockAccount,
 } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
 import { getFeatures } from 'soapbox/utils/features';

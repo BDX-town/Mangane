@@ -5,7 +5,7 @@ import { shouldHaveCard } from 'soapbox/utils/status';
 import api from '../api';
 
 import { importFetchedStatus, importFetchedStatuses } from './importer';
-import { openModal } from './modal';
+import { openModal } from './modals';
 import { deleteFromTimelines } from './timelines';
 
 export const STATUS_CREATE_REQUEST = 'STATUS_CREATE_REQUEST';
@@ -62,7 +62,7 @@ export function createStatus(params, idempotencyKey) {
 
         const poll = (retries = 5) => {
           api(getState).get(`/api/v1/statuses/${status.id}`).then(response => {
-            if (response.data && response.data.card) {
+            if (response.data?.card) {
               dispatch(importFetchedStatus(response.data));
             } else if (retries > 0 && response.status === 200) {
               setTimeout(() => poll(retries - 1), delay);
@@ -157,7 +157,7 @@ export function fetchContext(id) {
       }
       return context;
     }).catch(error => {
-      if (error.response && error.response.status === 404) {
+      if (error.response?.status === 404) {
         dispatch(deleteFromTimelines(id));
       }
 

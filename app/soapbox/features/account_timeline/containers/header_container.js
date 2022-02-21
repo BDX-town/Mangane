@@ -34,7 +34,7 @@ import {
   directCompose,
 } from '../../../actions/compose';
 import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 import { initMuteModal } from '../../../actions/mutes';
 import { initReport } from '../../../actions/reports';
 import { makeGetAccount } from '../../../selectors';

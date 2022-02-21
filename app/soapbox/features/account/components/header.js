@@ -11,7 +11,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import Avatar from 'soapbox/components/avatar';
 import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
@@ -479,6 +479,7 @@ class Header extends ImmutablePureComponent {
         });
         menu.push({
           text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }),
+          action: this.props.onDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
         });
       }

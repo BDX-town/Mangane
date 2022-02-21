@@ -10,7 +10,7 @@ import {
   fetchAccount,
   fetchAccountByUsername,
 } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import Column from 'soapbox/components/column';
 import LoadMore from 'soapbox/components/load_more';
 import LoadingIndicator from 'soapbox/components/loading_indicator';

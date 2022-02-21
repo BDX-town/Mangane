@@ -14,7 +14,7 @@ import SearchContainer from 'soapbox/features/compose/containers/search_containe
 import { isStaff } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 import { openSidebar } from '../../../actions/sidebar';
 import Avatar from '../../../components/avatar';
 import ThemeToggle from '../../ui/components/theme_toggle_container';

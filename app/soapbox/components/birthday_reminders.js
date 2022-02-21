@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { fetchBirthdayReminders } from 'soapbox/actions/accounts';
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
 import { makeGetAccount } from 'soapbox/selectors';
 
@@ -19,7 +19,7 @@ const mapStateToProps = (state, props) => {
 
   const birthdays = state.getIn(['user_lists', 'birthday_reminders', me]);
 
-  if (birthdays && birthdays.size > 0) {
+  if (birthdays?.size > 0) {
     return {
       birthdays,
       account: getAccount(state, birthdays.first()),

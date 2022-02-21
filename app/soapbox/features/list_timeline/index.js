@@ -8,7 +8,7 @@ import Button from 'soapbox/components/button';
 import Column from 'soapbox/features/ui/components/column';
 
 import { fetchList, deleteList } from '../../actions/lists';
-import { openModal } from '../../actions/modal';
+import { openModal } from '../../actions/modals';
 import { connectListStream } from '../../actions/streaming';
 import { expandListTimeline } from '../../actions/timelines';
 import LoadingIndicator from '../../components/loading_indicator';

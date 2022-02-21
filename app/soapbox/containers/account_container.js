@@ -10,7 +10,7 @@ import {
   muteAccount,
   unmuteAccount,
 } from '../actions/accounts';
-import { openModal } from '../actions/modal';
+import { openModal } from '../actions/modals';
 import { initMuteModal } from '../actions/mutes';
 import { getSettings } from '../actions/settings';
 import Account from '../components/account';

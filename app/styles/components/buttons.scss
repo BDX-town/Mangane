@@ -67,7 +67,7 @@ button {
 
   &:disabled,
   &.disabled {
-    background-color: var(--brand-color--med);
+    opacity: 0.2;
     cursor: default;
   }
 

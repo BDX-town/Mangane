@@ -38,7 +38,7 @@ import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { fetchFilters } from '../../actions/filters';
 import { clearHeight } from '../../actions/height_cache';
-import { openModal } from '../../actions/modal';
+import { openModal } from '../../actions/modals';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';
@@ -104,6 +104,7 @@ import {
   UserIndex,
   FederationRestrictions,
   Aliases,
+  Migration,
   FollowRecommendations,
   Directory,
   SidebarMenu,
@@ -314,6 +315,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />
+        <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />
         <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} />
         <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 

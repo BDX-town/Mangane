@@ -15,7 +15,7 @@ import { showAlert, showAlertForError } from './alerts';
 import { useEmoji } from './emojis';
 import { importFetchedAccounts } from './importer';
 import { uploadMedia, fetchMedia, updateMedia } from './media';
-import { openModal, closeModal } from './modal';
+import { openModal, closeModal } from './modals';
 import { getSettings } from './settings';
 import { createStatus } from './statuses';
 
@@ -219,7 +219,7 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
-    let to       = state.getIn(['compose', 'to'], null);
+    let to       = state.getIn(['compose', 'to']);
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));

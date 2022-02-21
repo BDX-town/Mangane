@@ -9,7 +9,7 @@ import {
   unreblog,
   unfavourite,
 } from '../../../actions/interactions';
-import { openModal } from '../../../actions/modal';
+import { openModal } from '../../../actions/modals';
 import {
   hideStatus,
   revealStatus,

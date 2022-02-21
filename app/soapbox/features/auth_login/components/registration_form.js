@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { accountLookup } from 'soapbox/actions/accounts';
 import { register, verifyCredentials } from 'soapbox/actions/auth';
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import { getSettings } from 'soapbox/actions/settings';
 import BirthdayInput from 'soapbox/components/birthday_input';
 import ShowablePassword from 'soapbox/components/showable_password';
@@ -197,7 +197,7 @@ class RegistrationForm extends ImmutablePureComponent {
         this.setState({ usernameUnavailable: !!account });
       })
       .catch((error) => {
-        if (error.response && error.response.status === 404) {
+        if (error.response?.status === 404) {
           this.setState({ usernameUnavailable: false });
         }
       });

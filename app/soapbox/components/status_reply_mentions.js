@@ -6,7 +6,7 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 
 const mapDispatchToProps = (dispatch) => ({

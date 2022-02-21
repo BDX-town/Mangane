@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { openModal } from 'soapbox/actions/modal';
+import { openModal } from 'soapbox/actions/modals';
 import { statusToMentionsAccountIdsArray } from 'soapbox/reducers/compose';
 import { makeGetStatus } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
@@ -45,9 +45,7 @@ const makeMapStateToProps = () => {
 
 const mapDispatchToProps = dispatch => ({
   onOpenMentionsModal() {
-    dispatch(openModal('REPLY_MENTIONS', {
-      onCancel: () => dispatch(openModal('COMPOSE')),
-    }));
+    dispatch(openModal('REPLY_MENTIONS'));
   },
 });
 
