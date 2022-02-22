@@ -5,8 +5,9 @@ import { accountToMention } from 'soapbox/utils/accounts';
 // Some backends can return null, or omit these required fields
 const setRequiredFields = status => {
   return status.merge({
-    emojis: status.get('emojis') || [],
+    emojis: status.get('emojis') || ImmutableList(),
     spoiler_text: status.get('spoiler_text') || '',
+    mentions: status.get('mentions') || ImmutableList(),
   });
 };
 
