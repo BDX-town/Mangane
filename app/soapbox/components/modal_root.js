@@ -161,7 +161,7 @@ class ModalRoot extends React.PureComponent {
     if (this.unlistenHistory) {
       this.unlistenHistory();
     }
-    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS'].includes(type)) {
+    if (!['FAVOURITES', 'MENTIONS', 'REACTIONS', 'REBLOGS', 'MEDIA'].includes(type)) {
       const { state } = this.history.location;
       if (state && state.soapboxModalKey === this._modalHistoryKey) {
         this.history.goBack();
