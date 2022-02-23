@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Icon from 'soapbox/components/icon';
 import { captureException } from 'soapbox/monitoring';
+import sourceCode from 'soapbox/utils/code';
 
 export default class ErrorBoundary extends React.PureComponent {
 
@@ -87,6 +88,7 @@ export default class ErrorBoundary extends React.PureComponent {
           {browser && <p className='error-boundary__browser'>
             {browser.getBrowserName()} {browser.getBrowserVersion()}
           </p>}
+          <p className='error-boundary__version'>{sourceCode.displayName} {sourceCode.version}</p>
           <p className='help-text'>
             <FormattedMessage
               id='alert.unexpected.help_text'
