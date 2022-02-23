@@ -3,12 +3,16 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { accountToMention } from 'soapbox/utils/accounts';
 
 // Some backends can return null, or omit these required fields
+const baseStatus = ImmutableMap({
+  emojis: ImmutableList(),
+  spoiler_text: '',
+  mentions: ImmutableList(),
+});
+
+const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
+
 const setRequiredFields = status => {
-  return status.merge({
-    emojis: status.get('emojis') || ImmutableList(),
-    spoiler_text: status.get('spoiler_text') || '',
-    mentions: status.get('mentions') || ImmutableList(),
-  });
+  return status.mergeDeepWith(mergeDefined, baseStatus);
 };
 
 // Ensure attachments have required fields
