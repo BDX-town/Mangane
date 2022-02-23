@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "app/",
     "sourceMap": true,
     "noImplicitAny": true,
     "module": "es6",
