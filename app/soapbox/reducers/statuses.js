@@ -33,7 +33,7 @@ import { TIMELINE_DELETE } from '../actions/timelines';
 const domParser = new DOMParser();
 
 const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
-  obj[`:${emoji.get('shortcode')}:`] = emoji;
+  obj[`:${emoji.get('shortcode')}:`] = emoji.toJS();
   return obj;
 }, {});
 

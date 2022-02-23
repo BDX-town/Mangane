@@ -98,6 +98,15 @@ describe('statuses reducer', () => {
       expect(hidden).toBe(false);
     });
 
+    it('parses custom emojis', () => {
+      const status = require('soapbox/__fixtures__/status-custom-emoji.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = 'Hello <img draggable="false" class="emojione" alt=":ablobcathyper:" title=":ablobcathyper:" src="https://gleasonator.com/emoji/blobcat/ablobcathyper.png"> <img draggable="false" class="emojione" alt=":ageblobcat:" title=":ageblobcat:" src="https://gleasonator.com/emoji/blobcat/ageblobcat.png"> <img draggable="false" class="emojione" alt="😂" title=":joy:" src="/packs/emoji/1f602.svg"> world <img draggable="false" class="emojione" alt="😋" title=":yum:" src="/packs/emoji/1f60b.svg"> test <img draggable="false" class="emojione" alt=":blobcatphoto:" title=":blobcatphoto:" src="https://gleasonator.com/emoji/blobcat/blobcatphoto.png">';
+
+      const result = reducer(undefined, action).getIn(['AGm7uC9DaAIGUa4KYK', 'contentHtml']);
+      expect(result).toBe(expected);
+    });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {
