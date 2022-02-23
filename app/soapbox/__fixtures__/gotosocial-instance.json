@@ -1,0 +1,42 @@
+{
+  "uri": "http://localhost",
+  "title": "localhost",
+  "description": "",
+  "short_description": "",
+  "email": "",
+  "version": "0.2.0 31935ee",
+  "registrations": true,
+  "approval_required": true,
+  "invites_enabled": false,
+  "urls": {
+    "streaming_api": "wss://localhost"
+  },
+  "stats": {
+    "domain_count": 0,
+    "status_count": 1,
+    "user_count": 1
+  },
+  "thumbnail": "",
+  "contact_account": {
+    "id": "",
+    "username": "",
+    "acct": "",
+    "display_name": "",
+    "locked": false,
+    "bot": false,
+    "created_at": "",
+    "note": "",
+    "url": "",
+    "avatar": "",
+    "avatar_static": "",
+    "header": "",
+    "header_static": "",
+    "followers_count": 0,
+    "following_count": 0,
+    "statuses_count": 0,
+    "last_status_at": "",
+    "emojis": null,
+    "fields": null
+  },
+  "max_toot_chars": 5000
+}
