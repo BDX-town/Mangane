@@ -42,7 +42,7 @@ const minifyStatus = status => {
     account: status.getIn(['account', 'id']),
     reblog: status.getIn(['reblog', 'id']),
     poll: status.getIn(['poll', 'id']),
-    quote: status.getIn(['quote', 'id']) || status.getIn(['pleroma', 'quote', 'id']),
+    quote: status.getIn(['quote', 'id']),
   });
 };
 
@@ -70,6 +70,7 @@ export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
   }
 };
 
+// Check whether a status is a quote by secondary characteristics
 const isQuote = status => {
   return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
 };

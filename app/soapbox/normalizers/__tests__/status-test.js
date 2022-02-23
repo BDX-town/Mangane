@@ -71,4 +71,12 @@ describe('normalizeStatus', () => {
 
     expect(status.get('media_attachments')).toEqual(result.get('media_attachments'));
   });
+
+  it('normalizes Pleroma quote post', () => {
+    const status = fromJS(require('soapbox/__fixtures__/pleroma-quote-post.json'));
+    const result = normalizeStatus(status);
+
+    expect(result.get('quote')).toEqual(status.getIn(['pleroma', 'quote']));
+    expect(result.getIn(['pleroma', 'quote'])).toBe(undefined);
+  });
 });

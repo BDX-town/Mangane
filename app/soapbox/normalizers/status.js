@@ -73,10 +73,19 @@ const addSelfMention = status => {
   }
 };
 
+// Move the quote to the top-level
+const fixQuote = status => {
+  return status.withMutations(status => {
+    status.update('quote', quote => quote || status.getIn(['pleroma', 'quote']) || null);
+    status.deleteIn(['pleroma', 'quote']);
+  });
+};
+
 export const normalizeStatus = status => {
   return status.withMutations(status => {
     setRequiredFields(status);
     fixMentions(status);
+    fixQuote(status);
     addSelfMention(status);
     normalizeAttachments(status);
   });
