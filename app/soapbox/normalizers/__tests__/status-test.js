@@ -134,4 +134,21 @@ describe('normalizeStatus', () => {
 
     expect(result.toJS()).toMatchObject(missing);
   });
+
+  it('normalizes poll and poll options', () => {
+    const status = fromJS({ poll: { options: [{ title: 'Apples' }] } });
+    const result = normalizeStatus(status);
+
+    const expected = {
+      options: [{ title: 'Apples', votes_count: 0 }],
+      emojis: [],
+      expired: false,
+      multiple: false,
+      voters_count: 0,
+      votes_count: 0,
+    };
+
+    expect(result.get('poll').toJS()).toMatchObject(expected);
+    expect(result.getIn(['poll', 'expires_at']) instanceof Date).toBe(true);
+  });
 });

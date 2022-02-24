@@ -17,7 +17,7 @@ const buildMentions = pendingStatus => {
 const buildPoll = pendingStatus => {
   if (pendingStatus.hasIn(['poll', 'options'])) {
     return pendingStatus.get('poll').update('options', options => {
-      return options.map(option => ImmutableMap({ title: option, votes_count: 0 }));
+      return options.map(title => ImmutableMap({ title }));
     });
   } else {
     return null;

@@ -28,6 +28,18 @@ const baseStatus = ImmutableMap({
   visibility: 'public',
 });
 
+const basePollOption = ImmutableMap({ title: '', votes_count: 0 });
+
+const basePoll = ImmutableMap({
+  emojis: ImmutableList(),
+  expired: false,
+  expires_at: new Date(Date.now() + 1000 * (60 * 5)), // 5 minutes
+  multiple: false,
+  options: ImmutableList(),
+  voters_count: 0,
+  votes_count: 0,
+});
+
 // Merger function for only overriding undefined values
 const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
@@ -77,6 +89,23 @@ const normalizeMentions = status => {
   });
 };
 
+// Normalize poll option
+const normalizePollOption = option => {
+  return option.mergeWith(mergeDefined, basePollOption);
+};
+
+// Normalize poll
+const normalizePoll = status => {
+  if (status.hasIn(['poll', 'options'])) {
+    return status.update('poll', ImmutableMap(), poll => {
+      return poll.mergeWith(mergeDefined, basePoll).update('options', options => {
+        return options.map(normalizePollOption);
+      });
+    });
+  } else {
+    return status.set('poll', null);
+  }
+};
 // Fix order of mentions
 const fixMentionsOrder = status => {
   const mentions = status.get('mentions', ImmutableList());
@@ -124,6 +153,7 @@ export const normalizeStatus = status => {
     mergeBase(status);
     normalizeAttachments(status);
     normalizeMentions(status);
+    normalizePoll(status);
     fixMentionsOrder(status);
     addSelfMention(status);
     fixQuote(status);
