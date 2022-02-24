@@ -98,4 +98,24 @@ describe('normalizeInstance()', () => {
     const result = normalizeInstance(instance);
     expect(result.toJS()).toMatchObject(expected);
   });
+
+  it('normalizes Fedibird instance', () => {
+    const instance = fromJS(require('soapbox/__fixtures__/fedibird-instance.json'));
+    const result = normalizeInstance(instance);
+
+    // Sets description_limit
+    expect(result.get('description_limit')).toEqual(1500);
+
+    // But otherwise, it's the same
+    expect(result.delete('description_limit')).toEqual(instance);
+  });
+
+  it('normalizes Mitra instance', () => {
+    const instance = fromJS(require('soapbox/__fixtures__/mitra-instance.json'));
+    const result = normalizeInstance(instance);
+
+    // Adds configuration and description_limit
+    expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
+    expect(result.get('description_limit')).toBe(1500);
+  });
 });

@@ -1,0 +1,13 @@
+{
+  "uri": "mitra.social",
+  "title": "Mitra",
+  "short_description": "Federated social network with smart contracts",
+  "description": "This is an instance of [Mitra](https://codeberg.org/silverpill/mitra), federated social network built on [ActivityPub](https://activitypub.rocks/) protocol.\nRegistration is invitation-only.\nAdmin:\n  - [@silverpill@mitra.social](https://mitra.social/profile/dd4ebc18-269d-4c7b-a310-03d29c6ab551)\n  - Matrix: @silverpill:poa.st\n",
+  "version": "3.0.0 (compatible; Mitra 0.4.0)",
+  "registrations": false,
+  "login_message": "Sign this message to log in to https://mitra.social. Do not sign this message on other sites!",
+  "post_character_limit": 5000,
+  "blockchain_explorer_url": null,
+  "blockchain_contract_address": null,
+  "ipfs_gateway_url": "https://ipfs.mitra.social"
+}
