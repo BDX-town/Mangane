@@ -9,6 +9,7 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
+import StatusReplyMentions from 'soapbox/components/status_reply_mentions';
 import PollPreview from 'soapbox/features/ui/components/poll_preview';
 import { getDomain } from 'soapbox/utils/accounts';
 
@@ -62,6 +63,8 @@ class ScheduledStatus extends ImmutablePureComponent {
                 </NavLink>
               </div>
             </div>
+
+            <StatusReplyMentions status={status} />
 
             <StatusContent
               status={status}

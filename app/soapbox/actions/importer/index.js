@@ -2,7 +2,6 @@ import { getSettings } from '../settings';
 
 import {
   normalizeAccount,
-  normalizeStatus,
   normalizePoll,
 } from './normalizer';
 
@@ -22,11 +21,17 @@ export function importAccounts(accounts) {
 }
 
 export function importStatus(status, idempotencyKey) {
-  return { type: STATUS_IMPORT, status, idempotencyKey };
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUS_IMPORT, status, idempotencyKey, expandSpoilers });
+  };
 }
 
 export function importStatuses(statuses) {
-  return { type: STATUSES_IMPORT, statuses };
+  return (dispatch, getState) => {
+    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
+    return dispatch({ type: STATUSES_IMPORT, statuses, expandSpoilers });
+  };
 }
 
 export function importPolls(polls) {
@@ -60,11 +65,6 @@ export function importFetchedStatus(status, idempotencyKey) {
     // Skip broken statuses
     if (isBroken(status)) return;
 
-    const normalOldStatus = getState().getIn(['statuses', status.id]);
-    const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-
-    const normalizedStatus = normalizeStatus(status, normalOldStatus, expandSpoilers);
-
     if (status.reblog?.id) {
       dispatch(importFetchedStatus(status.reblog));
     }
@@ -83,7 +83,7 @@ export function importFetchedStatus(status, idempotencyKey) {
     }
 
     dispatch(importFetchedAccount(status.account));
-    dispatch(importStatus(normalizedStatus, idempotencyKey));
+    dispatch(importStatus(status, idempotencyKey));
   };
 }
 
@@ -113,10 +113,7 @@ export function importFetchedStatuses(statuses) {
       // Skip broken statuses
       if (isBroken(status)) return;
 
-      const normalOldStatus = getState().getIn(['statuses', status.id]);
-      const expandSpoilers = getSettings(getState()).get('expandSpoilers');
-
-      normalStatuses.push(normalizeStatus(status, normalOldStatus, expandSpoilers));
+      normalStatuses.push(status);
       accounts.push(status.account);
 
       if (status.reblog?.id) {

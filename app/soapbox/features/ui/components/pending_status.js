@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
+import StatusReplyMentions from 'soapbox/components/status_reply_mentions';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -50,56 +51,6 @@ class PendingStatus extends ImmutablePureComponent {
     }
   }
 
-  renderReplyMentions = () => {
-    const { status } = this.props;
-
-    if (!status.get('in_reply_to_id')) {
-      return null;
-    }
-
-    const to = status.get('mentions', []);
-
-    if (to.size === 0) {
-      if (status.get('in_reply_to_account_id') === status.getIn(['account', 'id'])) {
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage
-              id='reply_mentions.reply'
-              defaultMessage='Replying to {accounts}{more}'
-              values={{
-                accounts: <span className='reply-mentions__account'>@{status.getIn(['account', 'username'])}</span>,
-                more: false,
-              }}
-            />
-          </div>
-        );
-      } else {
-        return (
-          <div className='reply-mentions'>
-            <FormattedMessage id='reply_mentions.reply_empty' defaultMessage='Replying to post' />
-          </div>
-        );
-      }
-    }
-
-
-    return (
-      <div className='reply-mentions'>
-        <FormattedMessage
-          id='reply_mentions.reply'
-          defaultMessage='Replying to {accounts}{more}'
-          values={{
-            accounts: to.slice(0, 2).map(account => (<>
-              <span key={account.username} className='reply-mentions__account'>@{account.username}</span>
-              {' '}
-            </>)),
-            more: to.size > 2 && <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />,
-          }}
-        />
-      </div>
-    );
-  }
-
   render() {
     const { status, className } = this.props;
     if (!status) return null;
@@ -137,7 +88,7 @@ class PendingStatus extends ImmutablePureComponent {
               </div>
             </div>
 
-            {this.renderReplyMentions()}
+            <StatusReplyMentions status={status} />
 
             <StatusContent
               status={status}
