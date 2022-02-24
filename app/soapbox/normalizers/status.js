@@ -4,9 +4,28 @@ import { accountToMention } from 'soapbox/utils/accounts';
 
 // Some backends can return null, or omit these required fields
 const baseStatus = ImmutableMap({
+  application: null,
+  bookmarked: false,
+  card: null,
+  created_at: new Date(),
   emojis: ImmutableList(),
-  spoiler_text: '',
+  favourited: false,
+  favourites_count: 0,
+  in_reply_to_account_id: null,
+  in_reply_to_id: null,
+  language: null,
   mentions: ImmutableList(),
+  muted: false,
+  pinned: false,
+  reblog: null,
+  reblogged: false,
+  reblogs_count: 0,
+  replies_count: 0,
+  spoiler_text: '',
+  tags: ImmutableList(),
+  uri: '',
+  url: '',
+  visibility: 'public',
 });
 
 const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
