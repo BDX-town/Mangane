@@ -14,6 +14,16 @@ const buildMentions = pendingStatus => {
   }
 };
 
+const buildPoll = pendingStatus => {
+  if (pendingStatus.hasIn(['poll', 'options'])) {
+    return pendingStatus.get('poll').update('options', options => {
+      return options.map(option => ImmutableMap({ title: option, votes_count: 0 }));
+    });
+  } else {
+    return null;
+  }
+};
+
 export const buildStatus = (state, pendingStatus, idempotencyKey) => {
   const me = state.get('me');
   const account = getAccount(state, me);
@@ -27,7 +37,7 @@ export const buildStatus = (state, pendingStatus, idempotencyKey) => {
     in_reply_to_id: inReplyToId,
     media_attachments: pendingStatus.get('media_ids', ImmutableList()).map(id => ImmutableMap({ id })),
     mentions: buildMentions(pendingStatus),
-    poll: pendingStatus.get('poll', null),
+    poll: buildPoll(pendingStatus),
     quote: pendingStatus.get('quote_id', null),
     sensitive: pendingStatus.get('sensitive', false),
     visibility: pendingStatus.get('visibility', 'public'),

@@ -107,6 +107,20 @@ describe('statuses reducer', () => {
       const result = reducer(undefined, action).getIn(['AGm7uC9DaAIGUa4KYK', 'contentHtml']);
       expect(result).toBe(expected);
     });
+
+    it('builds search_index', () => {
+      const status = require('soapbox/__fixtures__/status-with-poll.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = `What is tolerance?
+
+Banning, censoring, and deplatforming anyone you disagree with
+
+Promoting free speech, even for people and ideas you dislike`;
+
+      const result = reducer(undefined, action).getIn(['103874034847713213', 'search_index']);
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {

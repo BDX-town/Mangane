@@ -1,5 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers/status';
@@ -58,7 +58,7 @@ export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
     });
   } else {
     const spoilerText   = status.get('spoiler_text') || '';
-    const searchContent = ([spoilerText, status.get('content')].concat(status.getIn(['poll', 'options']) ? status.getIn(['poll', 'options']).map(option => option.get('title')) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const searchContent = (ImmutableList([spoilerText, status.get('content')]).concat(status.getIn(['poll', 'options'], ImmutableList()).map(option => option.get('title')))).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
     const emojiMap      = makeEmojiMap(status);
 
     return status.merge({
