@@ -118,4 +118,30 @@ describe('normalizeInstance()', () => {
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
     expect(result.get('description_limit')).toBe(1500);
   });
+
+  it('normalizes GoToSocial instance', () => {
+    const instance = fromJS(require('soapbox/__fixtures__/gotosocial-instance.json'));
+    const result = normalizeInstance(instance);
+
+    // Normalizes max_toot_chars
+    expect(result.getIn(['configuration', 'statuses', 'max_characters'])).toEqual(5000);
+    expect(result.has('max_toot_chars')).toBe(false);
+
+    // Adds configuration and description_limit
+    expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
+    expect(result.get('description_limit')).toBe(1500);
+  });
+
+  it('normalizes Friendica instance', () => {
+    const instance = fromJS(require('soapbox/__fixtures__/friendica-instance.json'));
+    const result = normalizeInstance(instance);
+
+    // Normalizes max_toot_chars
+    expect(result.getIn(['configuration', 'statuses', 'max_characters'])).toEqual(200000);
+    expect(result.has('max_toot_chars')).toBe(false);
+
+    // Adds configuration and description_limit
+    expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
+    expect(result.get('description_limit')).toBe(1500);
+  });
 });
