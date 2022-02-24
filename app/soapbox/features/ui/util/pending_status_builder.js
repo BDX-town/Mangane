@@ -1,44 +1,35 @@
-import { fromJS } from 'immutable';
-import {
-  OrderedSet as ImmutableOrderedSet,
-  Map as ImmutableMap,
-  List as ImmutableList,
-} from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import { calculateStatus } from 'soapbox/reducers/statuses';
-import { makeGetAccount, makeGetStatus } from 'soapbox/selectors';
+import { makeGetAccount } from 'soapbox/selectors';
 
-export const buildStatus = (state, pendingStatus, idempotencyKey) => {
-  const getAccount = makeGetAccount();
-  const getStatus = makeGetStatus();
+const getAccount = makeGetAccount();
 
-  const me = state.get('me');
-  const account = getAccount(state, me);
-
-  let mentions;
+const getMentions = pendingStatus => {
   if (pendingStatus.get('in_reply_to_id')) {
-    const inReplyTo = getStatus(state, { id: pendingStatus.get('in_reply_to_id') });
-
-    if (inReplyTo.getIn(['account', 'id']) === me) {
-      mentions = ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to') || []);
-    } else {
-      mentions = pendingStatus.get('to', []);
-    }
-
-    mentions = mentions.toList().map(mention => ImmutableMap({
+    return ImmutableList(pendingStatus.get('to') || []).map(mention => ImmutableMap({
       username: mention.split('@')[0],
       acct: mention,
     }));
+  } else {
+    return ImmutableList();
   }
+};
+
+export const buildStatus = (state, pendingStatus, idempotencyKey) => {
+  const me = state.get('me');
+  const account = getAccount(state, me);
+  const inReplyToId = pendingStatus.get('in_reply_to_id');
 
   const status = {
     account,
     content: pendingStatus.get('status', '').replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
     id: `末pending-${idempotencyKey}`,
-    in_reply_to_id: pendingStatus.get('in_reply_to_id'),
+    in_reply_to_account_id: state.getIn(['statuses', inReplyToId, 'account'], null),
+    in_reply_to_id: inReplyToId,
     media_attachments: pendingStatus.get('media_ids', ImmutableList()).map(id => ImmutableMap({ id })),
-    mentions,
+    mentions: getMentions(pendingStatus),
     poll: pendingStatus.get('poll', null),
     quote: pendingStatus.get('quote_id', null),
     sensitive: pendingStatus.get('sensitive', false),
