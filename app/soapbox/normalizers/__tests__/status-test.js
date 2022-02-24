@@ -105,4 +105,33 @@ describe('normalizeStatus', () => {
     expect(result.get('quote')).toEqual(status.getIn(['pleroma', 'quote']));
     expect(result.getIn(['pleroma', 'quote'])).toBe(undefined);
   });
+
+  it('normalizes GoToSocial status', () => {
+    const status = fromJS(require('soapbox/__fixtures__/gotosocial-status.json'));
+    const result = normalizeStatus(status);
+
+    // Adds missing fields
+    const missing = {
+      in_reply_to_account_id: null,
+      in_reply_to_id: null,
+      reblog: null,
+      pinned: false,
+      quote: null,
+    };
+
+    expect(result.toJS()).toMatchObject(missing);
+  });
+
+  it('normalizes Friendica status', () => {
+    const status = fromJS(require('soapbox/__fixtures__/friendica-status.json'));
+    const result = normalizeStatus(status);
+
+    // Adds missing fields
+    const missing = {
+      pinned: false,
+      quote: null,
+    };
+
+    expect(result.toJS()).toMatchObject(missing);
+  });
 });
