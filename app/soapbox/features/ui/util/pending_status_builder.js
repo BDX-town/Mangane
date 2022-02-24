@@ -8,10 +8,7 @@ const getAccount = makeGetAccount();
 
 const buildMentions = pendingStatus => {
   if (pendingStatus.get('in_reply_to_id')) {
-    return ImmutableList(pendingStatus.get('to') || []).map(acct => ImmutableMap({
-      acct,
-      username: acct.split('@')[0],
-    }));
+    return ImmutableList(pendingStatus.get('to') || []).map(acct => ImmutableMap({ acct }));
   } else {
     return ImmutableList();
   }

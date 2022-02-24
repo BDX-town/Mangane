@@ -3,6 +3,18 @@ import { fromJS } from 'immutable';
 import { normalizeStatus } from '../status';
 
 describe('normalizeStatus', () => {
+  it('adds base fields', () => {
+    const status = fromJS({});
+    const result = normalizeStatus(status);
+
+    expect(result.get('emojis')).toEqual(fromJS([]));
+    expect(result.get('favourites_count')).toBe(0);
+    expect(result.get('mentions')).toEqual(fromJS([]));
+    expect(result.get('reblog')).toBe(null);
+    expect(result.get('uri')).toBe('');
+    expect(result.get('visibility')).toBe('public');
+  });
+
   it('fixes the order of mentions', () => {
     const status = fromJS(require('soapbox/__fixtures__/status-unordered-mentions.json'));
 
@@ -24,6 +36,20 @@ describe('normalizeStatus', () => {
       username: 'benis911',
       acct: 'benis911',
       url: 'https://mastodon.social/@benis911',
+    }]);
+
+    const result = normalizeStatus(status).get('mentions');
+
+    expect(result).toEqual(expected);
+  });
+
+  it('normalizes mentions with only acct', () => {
+    const status = fromJS({ mentions: [{ acct: 'alex@gleasonator.com' }] });
+
+    const expected = fromJS([{
+      acct: 'alex@gleasonator.com',
+      username: 'alex',
+      url: '',
     }]);
 
     const result = normalizeStatus(status).get('mentions');

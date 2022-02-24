@@ -32,7 +32,7 @@ const baseStatus = ImmutableMap({
 const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
 // Merge base status
-const setRequiredFields = status => {
+const mergeBase = status => {
   return status.mergeDeepWith(mergeDefined, baseStatus);
 };
 
@@ -121,7 +121,7 @@ const fixQuote = status => {
 
 export const normalizeStatus = status => {
   return status.withMutations(status => {
-    setRequiredFields(status);
+    mergeBase(status);
     normalizeAttachments(status);
     normalizeMentions(status);
     fixMentionsOrder(status);
