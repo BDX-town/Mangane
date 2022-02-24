@@ -28,8 +28,10 @@ const baseStatus = ImmutableMap({
   visibility: 'public',
 });
 
+// Merger function for only overriding undefined values
 const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
+// Merge base status
 const setRequiredFields = status => {
   return status.mergeDeepWith(mergeDefined, baseStatus);
 };
@@ -49,7 +51,7 @@ const normalizeAttachment = attachment => {
     remote_url: url,
   });
 
-  return attachment.mergeWith((o, n) => o || n, base);
+  return attachment.mergeWith(mergeDefined, base);
 };
 
 const normalizeAttachments = status => {
@@ -58,9 +60,26 @@ const normalizeAttachments = status => {
   });
 };
 
+// Normalize mentions
+const normalizeMention = mention => {
+  const base = ImmutableMap({
+    acct: '',
+    username: (mention.get('acct') || '').split('@')[0],
+    url: '',
+  });
+
+  return mention.mergeWith(mergeDefined, base);
+};
+
+const normalizeMentions = status => {
+  return status.update('mentions', ImmutableList(), mentions => {
+    return mentions.map(normalizeMention);
+  });
+};
+
 // Fix order of mentions
-const fixMentions = status => {
-  const mentions = status.get('mentions');
+const fixMentionsOrder = status => {
+  const mentions = status.get('mentions', ImmutableList());
   const inReplyToAccountId = status.get('in_reply_to_account_id');
 
   // Sort the replied-to mention to the top
@@ -103,9 +122,10 @@ const fixQuote = status => {
 export const normalizeStatus = status => {
   return status.withMutations(status => {
     setRequiredFields(status);
-    fixMentions(status);
-    fixQuote(status);
-    addSelfMention(status);
     normalizeAttachments(status);
+    normalizeMentions(status);
+    fixMentionsOrder(status);
+    addSelfMention(status);
+    fixQuote(status);
   });
 };

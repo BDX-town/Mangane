@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { Map as ImmutableMap } from 'immutable';
 
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import { calculateStatus } from 'soapbox/reducers/statuses';
@@ -11,7 +11,7 @@ export const buildStatus = (state, scheduledStatus) => {
   const params = scheduledStatus.get('params');
   const account = getAccount(state, me);
 
-  const status = {
+  const status = ImmutableMap({
     account,
     content: params.get('text', '').replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
     created_at: params.get('scheduled_at'),
@@ -23,7 +23,7 @@ export const buildStatus = (state, scheduledStatus) => {
     uri: `/scheduled_statuses/${scheduledStatus.get('id')}`,
     url: `/scheduled_statuses/${scheduledStatus.get('id')}`,
     visibility: params.get('visibility'),
-  };
+  });
 
-  return calculateStatus(normalizeStatus(fromJS(status)));
+  return calculateStatus(normalizeStatus(status));
 };
