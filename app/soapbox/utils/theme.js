@@ -1,8 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
 
-export const generateThemeCss = brandColor => {
+export const generateThemeCss = (brandColor, accentColor) => {
   if (!brandColor) return null;
-  return themeDataToCss(brandColorToThemeData(brandColor));
+  return themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
 };
 
 // https://stackoverflow.com/a/5624139
@@ -74,10 +74,29 @@ export const brandColorToThemeData = brandColor => {
   });
 };
 
+export const accentColorToThemeData = (brandColor, accentColor) => {
+  if (accentColor) {
+    const { h, s, l } = rgbToHsl(hexToRgb(accentColor));
+
+    return ImmutableMap({
+      'accent-color_h': h,
+      'accent-color_s': `${s}%`,
+      'accent-color_l': `${l}%`,
+    });
+  }
+
+  const { h } = rgbToHsl(hexToRgb(brandColor));
+  return ImmutableMap({
+    'accent-color_h': h - 15,
+    'accent-color_s': '86%',
+    'accent-color_l': '44%',
+  });
+};
+
 export const themeDataToCss = themeData => (
   themeData
     .entrySeq()
     .reduce((acc, cur) => acc + `--${cur[0]}:${cur[1]};`, '')
 );
 
-export const brandColorToCSS = brandColor => themeDataToCss(brandColorToThemeData(brandColor));
+export const themeColorsToCSS = (brandColor, accentColor) => themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));

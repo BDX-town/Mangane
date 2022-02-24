@@ -844,6 +844,7 @@
   "soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder": "Number of items to display in the crypto homepage widget",
   "soapbox_config.custom_css.meta_fields.url_placeholder": "URL",
   "soapbox_config.display_fqn_label": "Display domain (eg @user@domain) for local accounts.",
+  "soapbox_config.fields.accent_color_label": "Акцентний колір",
   "soapbox_config.fields.brand_color_label": "Brand color",
   "soapbox_config.fields.crypto_address.add": "Add new crypto address",
   "soapbox_config.fields.crypto_addresses_label": "Cryptocurrency addresses",

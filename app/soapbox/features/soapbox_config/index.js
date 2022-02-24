@@ -235,6 +235,12 @@ class SoapboxConfig extends ImmutablePureComponent {
                     value={soapbox.get('brandColor')}
                     onChange={this.handleChange(['brandColor'], (e) => e.hex)}
                   />
+                  <ColorWithPicker
+                    buttonId='accent_color'
+                    label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
+                    value={soapbox.get('accentColor')}
+                    onChange={this.handleChange(['accentColor'], (e) => e.hex)}
+                  />
                   <div className='input with_label toggle'>
                     <div className='label_input'>
                       <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
