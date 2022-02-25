@@ -40,6 +40,7 @@ export const makeDefaultConfig = features => {
     logo: '',
     banner: '',
     brandColor: '', // Empty
+    accentColor: '',
     customCss: ImmutableList(),
     promoPanel: ImmutableMap({
       items: ImmutableList(),

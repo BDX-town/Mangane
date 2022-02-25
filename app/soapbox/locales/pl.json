@@ -856,6 +856,7 @@
   "soapbox_config.crypto_donate_panel_limit.meta_fields.limit_placeholder": "Liczba elementów do wyświetlenia w widżecie krypto na stronie głównej",
   "soapbox_config.custom_css.meta_fields.url_placeholder": "Adres URL",
   "soapbox_config.display_fqn_label": "Wyświetlaj domenę (np. @użytkownik@domena) dla lokalnych kont.",
+  "soapbox_config.fields.accent_color_label": "Kolor akcentu",
   "soapbox_config.fields.brand_color_label": "Kolor marki",
   "soapbox_config.fields.crypto_address.add": "Dodaj nowy adres krypto",
   "soapbox_config.fields.crypto_addresses_label": "Adresy kryptowalut",
