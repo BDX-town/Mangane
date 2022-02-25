@@ -6,7 +6,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { IntlProvider } from 'react-intl';
 import { Provider, connect } from 'react-redux';
-import { Switch, BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 
 // import Introduction from '../features/introduction';
@@ -66,6 +66,8 @@ const mapStateToProps = (state) => {
   const brandColor = settings.get('demo') ? '#0482d8' : soapboxConfig.get('brandColor');
   const accentColor = settings.get('demo') ? null : soapboxConfig.get('accentColor');
 
+  const singleUserMode = soapboxConfig.get('singleUserMode') && soapboxConfig.get('singleUserModeProfile');
+
   return {
     showIntroduction,
     me,
@@ -81,6 +83,7 @@ const mapStateToProps = (state) => {
     themeMode: settings.get('themeMode'),
     halloween: settings.get('halloween'),
     customCss: settings.get('demo') ? null : soapboxConfig.get('customCss'),
+    singleUserMode,
   };
 };
 
@@ -103,6 +106,7 @@ class SoapboxMount extends React.PureComponent {
     customCss: ImmutablePropTypes.list,
     halloween: PropTypes.bool,
     dispatch: PropTypes.func,
+    singleUserMode: PropTypes.string,
   };
 
   state = {
@@ -135,7 +139,7 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, instanceLoaded, themeCss, locale, customCss } = this.props;
+    const { me, instanceLoaded, themeCss, locale, customCss, singleUserMode } = this.props;
     if (me === null) return null;
     if (!instanceLoaded) return null;
     if (this.state.localeLoading) return null;
@@ -171,7 +175,9 @@ class SoapboxMount extends React.PureComponent {
               </Helmet>
               <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
                 <Switch>
-                  {!me && <Route exact path='/' component={PublicLayout} />}
+                  {!me && (singleUserMode
+                    ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+                    : <Route exact path='/' component={PublicLayout} />)}
                   <Route exact path='/about/:slug?' component={PublicLayout} />
                   <Route path='/' component={UI} />
                 </Switch>

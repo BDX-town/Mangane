@@ -38,6 +38,7 @@ class TabsBar extends React.PureComponent {
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
+    singleUserMode: PropTypes.bool,
   }
 
   state = {
@@ -67,7 +68,7 @@ class TabsBar extends React.PureComponent {
   }
 
   render() {
-    const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount } = this.props;
+    const { intl, account, logo, onOpenCompose, onOpenSidebar, features, dashboardCount, notificationCount, chatsCount, singleUserMode } = this.props;
     const { collapsed } = this.state;
     const showLinks = this.shouldShowLinks();
 
@@ -151,9 +152,11 @@ class TabsBar extends React.PureComponent {
                 <Link className='tabs-bar__button button' to='/auth/sign_in'>
                   <FormattedMessage id='account.login' defaultMessage='Log In' />
                 </Link>
-                <Link className='tabs-bar__button button button-alternative-2' to='/'>
-                  <FormattedMessage id='account.register' defaultMessage='Sign up' />
-                </Link>
+                {!singleUserMode && (
+                  <Link className='tabs-bar__button button button-alternative-2' to='/'>
+                    <FormattedMessage id='account.register' defaultMessage='Sign up' />
+                  </Link>
+                )}
               </div>
             )}
           </div>
@@ -170,6 +173,7 @@ const mapStateToProps = state => {
   const approvalCount = state.getIn(['admin', 'awaitingApproval']).count();
   const instance = state.get('instance');
   const settings = getSettings(state);
+  const soapboxConfig = getSoapboxConfig(state);
 
   // In demo mode, use the Soapbox logo
   const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : getSoapboxConfig(state).get('logo');
@@ -181,6 +185,7 @@ const mapStateToProps = state => {
     notificationCount: state.getIn(['notifications', 'unread']),
     chatsCount: state.getIn(['chats', 'items']).reduce((acc, curr) => acc + Math.min(curr.get('unread', 0), 1), 0),
     dashboardCount: reportsCount + approvalCount,
+    singleUserMode: soapboxConfig.get('singleUserMode'),
   };
 };
 
