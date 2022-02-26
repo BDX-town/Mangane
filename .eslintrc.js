@@ -1,7 +1,10 @@
 module.exports = {
   root: true,
 
-  extends: 'eslint:recommended',
+  extends: [
+    'eslint:recommended',
+    'plugin:import/typescript',
+  ],
 
   env: {
     browser: true,
@@ -206,6 +209,9 @@ module.exports = {
       {
         js: 'never',
         mjs: 'ignorePackages',
+        jsx: 'never',
+        ts: 'never',
+        tsx: 'never',
       },
     ],
     'import/newline-after-import': 'error',
