@@ -40,7 +40,7 @@ class PinnedAccountsPanel extends ImmutablePureComponent {
               id='pinned_accounts.title'
               defaultMessage='{name}’s choices'
               values={{
-                name: account.get('display_name_html'),
+                name: <span className='display-name__html' dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }} />,
               }}
             />
           </span>
