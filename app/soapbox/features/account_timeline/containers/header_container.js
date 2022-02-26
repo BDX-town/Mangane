@@ -3,21 +3,7 @@ import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import {
-  verifyUser,
-  unverifyUser,
-  promoteToAdmin,
-  promoteToModerator,
-  demoteToUser,
-  suggestUsers,
-  unsuggestUsers,
-} from 'soapbox/actions/admin';
-import { launchChat } from 'soapbox/actions/chats';
-import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
-import { getSettings } from 'soapbox/actions/settings';
-import snackbar from 'soapbox/actions/snackbar';
-import { isAdmin } from 'soapbox/utils/accounts';
-
+import { initAccountNoteModal } from 'soapbox/actions/account_notes';
 import {
   followAccount,
   unfollowAccount,
@@ -28,16 +14,31 @@ import {
   unpinAccount,
   subscribeAccount,
   unsubscribeAccount,
-} from '../../../actions/accounts';
+} from 'soapbox/actions/accounts';
+import {
+  verifyUser,
+  unverifyUser,
+  promoteToAdmin,
+  promoteToModerator,
+  demoteToUser,
+  suggestUsers,
+  unsuggestUsers,
+} from 'soapbox/actions/admin';
+import { launchChat } from 'soapbox/actions/chats';
 import {
   mentionCompose,
   directCompose,
-} from '../../../actions/compose';
-import { blockDomain, unblockDomain } from '../../../actions/domain_blocks';
-import { openModal } from '../../../actions/modals';
-import { initMuteModal } from '../../../actions/mutes';
-import { initReport } from '../../../actions/reports';
-import { makeGetAccount } from '../../../selectors';
+} from 'soapbox/actions/compose';
+import { blockDomain, unblockDomain } from 'soapbox/actions/domain_blocks';
+import { openModal } from 'soapbox/actions/modals';
+import { deactivateUserModal, deleteUserModal } from 'soapbox/actions/moderation';
+import { initMuteModal } from 'soapbox/actions/mutes';
+import { initReport } from 'soapbox/actions/reports';
+import { getSettings } from 'soapbox/actions/settings';
+import snackbar from 'soapbox/actions/snackbar';
+import { makeGetAccount } from 'soapbox/selectors';
+import { isAdmin } from 'soapbox/utils/accounts';
+
 import Header from '../components/header';
 
 const messages = defineMessages({
@@ -245,6 +246,10 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     dispatch(unsuggestUsers([account.get('id')]))
       .then(() => dispatch(snackbar.success(message)))
       .catch(() => {});
+  },
+
+  onShowNote(account) {
+    dispatch(initAccountNoteModal(account));
   },
 });
 

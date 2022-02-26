@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
 
+import account_notes from './account_notes';
 import accounts from './accounts';
 import accounts_counters from './accounts_counters';
 import accounts_meta from './accounts_meta';
@@ -66,6 +67,7 @@ const appReducer = combineReducers({
   user_lists,
   domain_lists,
   status_lists,
+  account_notes,
   accounts,
   accounts_counters,
   statuses,

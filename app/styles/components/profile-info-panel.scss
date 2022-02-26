@@ -23,7 +23,8 @@
     }
 
     &__join-date,
-    &__birthday {
+    &__birthday,
+    &__note {
       display: flex;
       font-size: 14px;
       color: var(--primary-text-color--faint);
@@ -36,6 +37,15 @@
         height: 22px;
         margin-right: 5px;
         transform: translateY(-1px);
+      }
+    }
+
+    &__note {
+      text-decoration: none;
+
+      &:hover,
+      &:focus {
+        text-decoration: underline;
       }
     }
 
@@ -163,10 +173,10 @@
   }
 
   .profile-info-panel__name-content::before {
-    content: '[';
+    content: "[";
   }
 
   .profile-info-panel__name-content::after {
-    content: ']';
+    content: "]";
   }
 }
