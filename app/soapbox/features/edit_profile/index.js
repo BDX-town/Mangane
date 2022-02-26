@@ -114,7 +114,7 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
-    const birthday = account.getIn(['pleroma', 'birthday']);
+    const birthday = account.get('birthday');
     const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = account.withMutations(map => {
