@@ -60,6 +60,8 @@ export const makeDefaultConfig = features => {
     }),
     aboutPages: ImmutableMap(),
     authenticatedProfile: true,
+    singleUserMode: false,
+    singleUserModeProfile: '',
   });
 };
 

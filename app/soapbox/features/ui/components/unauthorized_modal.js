@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import IconButton from 'soapbox/components/icon_button';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -19,12 +20,14 @@ const messages = defineMessages({
 const mapStateToProps = (state, props) => {
   const instance = state.get('instance');
   const features = getFeatures(instance);
+  const soapboxConfig = getSoapboxConfig(state);
 
   if (props.action !== 'FOLLOW') {
     return {
       features,
       siteTitle: state.getIn(['instance', 'title']),
       remoteInteractionsAPI: features.remoteInteractionsAPI,
+      singleUserMode: soapboxConfig.get('singleUserMode'),
     };
   }
 
@@ -35,6 +38,7 @@ const mapStateToProps = (state, props) => {
     siteTitle: state.getIn(['instance', 'title']),
     userName,
     remoteInteractionsAPI: features.remoteInteractionsAPI,
+    singleUserMode: soapboxConfig.get('singleUserMode'),
   };
 };
 
@@ -53,6 +57,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
     onClose: PropTypes.func.isRequired,
     onRemoteInteraction: PropTypes.func.isRequired,
     userName: PropTypes.string,
+    singleUserMode: PropTypes.bool,
   };
 
   state = {
@@ -86,7 +91,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
   }
 
   renderRemoteInteractions() {
-    const { intl, siteTitle, userName, action } = this.props;
+    const { intl, siteTitle, userName, action, singleUserMode } = this.props;
     const { account } = this.state;
 
     let header;
@@ -134,10 +139,14 @@ class UnauthorizedModal extends ImmutablePureComponent {
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />
             </span>
           </div>
-          <h3 className='compose-modal__header__title'><FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} /></h3>
-          <Link to='/' className='unauthorized-modal-content__button button' onClick={this.onClickClose}>
-            <FormattedMessage id='account.register' defaultMessage='Sign up' />
-          </Link>
+          {!singleUserMode && (
+            <>
+              <h3 className='compose-modal__header__title'><FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} /></h3>
+              <Link to='/' className='unauthorized-modal-content__button button' onClick={this.onClickClose}>
+                <FormattedMessage id='account.register' defaultMessage='Sign up' />
+              </Link>
+            </>
+          )}
           <Link to='/auth/sign_in' className='unauthorized-modal-content__button button button-secondary' onClick={this.onClickClose}>
             <FormattedMessage id='account.login' defaultMessage='Log in' />
           </Link>
