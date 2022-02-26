@@ -418,6 +418,10 @@ code {
     margin-bottom: 10px;
     margin-right: 10px;
 
+    &#accent_color {
+      background: var(--accent-color);
+    }
+
     &:last-child {
       margin-right: 0;
     }
@@ -510,7 +514,7 @@ code {
 
   .label_input {
     &__color {
-      display: inline-flex;
+      display: flex;
       font-size: 14px;
 
       .color-swatch {

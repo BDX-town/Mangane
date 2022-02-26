@@ -1,63 +1,47 @@
-import { fromJS } from 'immutable';
-import { OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
-import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
-import { makeGetAccount, makeGetStatus } from 'soapbox/selectors';
+import { normalizeStatus } from 'soapbox/normalizers/status';
+import { calculateStatus } from 'soapbox/reducers/statuses';
+import { makeGetAccount } from 'soapbox/selectors';
+
+const getAccount = makeGetAccount();
+
+const buildMentions = pendingStatus => {
+  if (pendingStatus.get('in_reply_to_id')) {
+    return ImmutableList(pendingStatus.get('to') || []).map(acct => ImmutableMap({ acct }));
+  } else {
+    return ImmutableList();
+  }
+};
+
+const buildPoll = pendingStatus => {
+  if (pendingStatus.hasIn(['poll', 'options'])) {
+    return pendingStatus.get('poll').update('options', options => {
+      return options.map(title => ImmutableMap({ title }));
+    });
+  } else {
+    return null;
+  }
+};
 
 export const buildStatus = (state, pendingStatus, idempotencyKey) => {
-  const getAccount = makeGetAccount();
-  const getStatus = makeGetStatus();
-
   const me = state.get('me');
   const account = getAccount(state, me);
+  const inReplyToId = pendingStatus.get('in_reply_to_id');
 
-  let mentions;
-  if (pendingStatus.get('in_reply_to_id')) {
-    const inReplyTo = getStatus(state, { id: pendingStatus.get('in_reply_to_id') });
-
-    if (inReplyTo.getIn(['account', 'id']) === me) {
-      mentions = ImmutableOrderedSet([account.get('acct')]).union(pendingStatus.get('to', []));
-    } else {
-      mentions = pendingStatus.get('to', []);
-    }
-
-    mentions = mentions.map(mention => ({
-      username: mention.split('@')[0],
-    }));
-  }
-
-  const status = normalizeStatus({
+  const status = ImmutableMap({
     account,
-    application: null,
-    bookmarked: false,
-    card: null,
     content: pendingStatus.get('status', '').replace(new RegExp('\n', 'g'), '<br>'), /* eslint-disable-line no-control-regex */
-    created_at: new Date(),
-    emojis: [],
-    favourited: false,
-    favourites_count: 0,
     id: `末pending-${idempotencyKey}`,
-    in_reply_to_account_id: null,
-    in_reply_to_id: pendingStatus.get('in_reply_to_id'),
-    language: null,
-    media_attachments: pendingStatus.get('media_ids').map(id => ({ id })),
-    mentions,
-    muted: false,
-    pinned: false,
-    poll: pendingStatus.get('poll', null),
+    in_reply_to_account_id: state.getIn(['statuses', inReplyToId, 'account'], null),
+    in_reply_to_id: inReplyToId,
+    media_attachments: pendingStatus.get('media_ids', ImmutableList()).map(id => ImmutableMap({ id })),
+    mentions: buildMentions(pendingStatus),
+    poll: buildPoll(pendingStatus),
     quote: pendingStatus.get('quote_id', null),
-    reblog: null,
-    reblogged: false,
-    reblogs_count: 0,
-    replies_count: 0,
     sensitive: pendingStatus.get('sensitive', false),
-    spoiler_text: '',
-    tags: [],
-    text: null,
-    uri: '',
-    url: '',
     visibility: pendingStatus.get('visibility', 'public'),
   });
 
-  return fromJS(status).set('account', account);
+  return calculateStatus(normalizeStatus(status));
 };

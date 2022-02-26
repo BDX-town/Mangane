@@ -56,6 +56,10 @@ const messages = defineMessages({
   promoPanelIconsLink: { id: 'soapbox_config.hints.promo_panel_icons.link', defaultMessage: 'Soapbox Icons List' },
   authenticatedProfileLabel: { id: 'soapbox_config.authenticated_profile_label', defaultMessage: 'Profiles require authentication' },
   authenticatedProfileHint: { id: 'soapbox_config.authenticated_profile_hint', defaultMessage: 'Users must be logged-in to view replies and media on user profiles.' },
+  singleUserModeLabel: { id: 'soapbox_config.single_user_mode_label', defaultMessage: 'Single user mode' },
+  singleUserModeHint: { id: 'soapbox_config.single_user_mode_hint', defaultMessage: 'Front page will redirect to a given user profile.' },
+  singleUserModeProfileLabel: { id: 'soapbox_config.single_user_mode_profile_label', defaultMessage: 'Main user handle' },
+  singleUserModeProfileHint: { id: 'soapbox_config.single_user_mode_profile_hint', defaultMessage: '@handle' },
 });
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
@@ -235,6 +239,12 @@ class SoapboxConfig extends ImmutablePureComponent {
                     value={soapbox.get('brandColor')}
                     onChange={this.handleChange(['brandColor'], (e) => e.hex)}
                   />
+                  <ColorWithPicker
+                    buttonId='accent_color'
+                    label={<FormattedMessage id='soapbox_config.fields.accent_color_label' defaultMessage='Accent color' />}
+                    value={soapbox.get('accentColor')}
+                    onChange={this.handleChange(['accentColor'], (e) => e.hex)}
+                  />
                   <div className='input with_label toggle'>
                     <div className='label_input'>
                       <label><FormattedMessage id='soapbox_config.fields.theme_label' defaultMessage='Default theme' /></label>
@@ -291,6 +301,22 @@ class SoapboxConfig extends ImmutablePureComponent {
                 checked={soapbox.get('authenticatedProfile') === true}
                 onChange={this.handleChange(['authenticatedProfile'], (e) => e.target.checked)}
               />
+              <Checkbox
+                name='singleUserMode'
+                label={intl.formatMessage(messages.singleUserModeLabel)}
+                hint={intl.formatMessage(messages.singleUserModeHint)}
+                checked={soapbox.get('singleUserMode') === true}
+                onChange={this.handleChange(['singleUserMode'], (e) => e.target.checked)}
+              />
+              {soapbox.get('singleUserMode') && (
+                <TextInput
+                  name='singleUserModeProfile'
+                  label={intl.formatMessage(messages.singleUserModeProfileLabel)}
+                  placeholder={intl.formatMessage(messages.singleUserModeProfileHint)}
+                  value={soapbox.get('singleUserModeProfile')}
+                  onChange={this.handleChange(['singleUserModeProfile'], (e) => e.target.value)}
+                />
+              )}
             </FieldsGroup>
             <FieldsGroup>
               <div className='input with_block_label popup'>

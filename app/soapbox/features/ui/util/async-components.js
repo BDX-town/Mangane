@@ -218,6 +218,10 @@ export function BirthdaysModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
 }
 
+export function AccountNoteModal() {
+  return import(/* webpackChunkName: "features/ui" */'../components/account_note_modal');
+}
+
 export function ListEditor() {
   return import(/* webpackChunkName: "features/list_editor" */'../../list_editor');
 }

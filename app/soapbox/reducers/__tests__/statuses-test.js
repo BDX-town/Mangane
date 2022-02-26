@@ -1,7 +1,6 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
-import { normalizeStatus } from 'soapbox/actions/importer/normalizer';
 import {
   STATUS_CREATE_REQUEST,
   STATUS_CREATE_FAIL,
@@ -34,8 +33,8 @@ describe('statuses reducer', () => {
       const quotedQuotePost = require('soapbox/__fixtures__/pleroma-quote-of-quote-post.json');
 
       let state = undefined;
-      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotePost) });
-      state = reducer(state, { type: STATUS_IMPORT, status: normalizeStatus(quotedQuotePost.pleroma.quote) });
+      state = reducer(state, { type: STATUS_IMPORT, status: quotePost });
+      state = reducer(state, { type: STATUS_IMPORT, status: quotedQuotePost.pleroma.quote });
 
       expect(state.getIn(['AFmFMSpITT9xcOJKcK', 'quote'])).toEqual('AFmFLcd6XYVdjWCrOS');
     });
@@ -43,7 +42,7 @@ describe('statuses reducer', () => {
     it('normalizes Mitra attachments', () => {
       const status = require('soapbox/__fixtures__/mitra-status-with-attachments.json');
 
-      const state = reducer(undefined, { type: STATUS_IMPORT, status: normalizeStatus(status) });
+      const state = reducer(undefined, { type: STATUS_IMPORT, status });
 
       const expected = fromJS([{
         id: '017eeb0e-e5df-30a4-77a7-a929145cb836',
@@ -76,11 +75,51 @@ describe('statuses reducer', () => {
 
     it('leaves Pleroma attachments alone', () => {
       const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
-      const action = { type: STATUS_IMPORT, status: normalizeStatus(status) };
+      const action = { type: STATUS_IMPORT, status };
       const state = reducer(undefined, action);
       const expected = fromJS(status.media_attachments);
 
       expect(state.getIn(['AGNkA21auFR5lnEAHw', 'media_attachments'])).toEqual(expected);
+    });
+
+    it('hides CWs', () => {
+      const status = require('soapbox/__fixtures__/status-cw.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      expect(hidden).toBe(true);
+    });
+
+    it('expands CWs when expandSpoilers is enabled', () => {
+      const status = require('soapbox/__fixtures__/status-cw.json');
+      const action = { type: STATUS_IMPORT, status, expandSpoilers: true };
+
+      const hidden = reducer(undefined, action).getIn(['107831528995252317', 'hidden']);
+      expect(hidden).toBe(false);
+    });
+
+    it('parses custom emojis', () => {
+      const status = require('soapbox/__fixtures__/status-custom-emoji.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = 'Hello <img draggable="false" class="emojione" alt=":ablobcathyper:" title=":ablobcathyper:" src="https://gleasonator.com/emoji/blobcat/ablobcathyper.png"> <img draggable="false" class="emojione" alt=":ageblobcat:" title=":ageblobcat:" src="https://gleasonator.com/emoji/blobcat/ageblobcat.png"> <img draggable="false" class="emojione" alt="😂" title=":joy:" src="/packs/emoji/1f602.svg"> world <img draggable="false" class="emojione" alt="😋" title=":yum:" src="/packs/emoji/1f60b.svg"> test <img draggable="false" class="emojione" alt=":blobcatphoto:" title=":blobcatphoto:" src="https://gleasonator.com/emoji/blobcat/blobcatphoto.png">';
+
+      const result = reducer(undefined, action).getIn(['AGm7uC9DaAIGUa4KYK', 'contentHtml']);
+      expect(result).toBe(expected);
+    });
+
+    it('builds search_index', () => {
+      const status = require('soapbox/__fixtures__/status-with-poll.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = `What is tolerance?
+
+Banning, censoring, and deplatforming anyone you disagree with
+
+Promoting free speech, even for people and ideas you dislike`;
+
+      const result = reducer(undefined, action).getIn(['103874034847713213', 'search_index']);
+      expect(result).toEqual(expected);
     });
   });
 

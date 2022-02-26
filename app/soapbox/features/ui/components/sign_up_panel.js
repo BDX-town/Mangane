@@ -3,17 +3,21 @@ import React from 'react';
 import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 const mapStateToProps = state => {
+  const soapboxConfig = getSoapboxConfig(state);
+
   return {
     siteTitle: state.getIn(['instance', 'title']),
     me: state.get('me'),
+    singleUserMode: soapboxConfig.get('singleUserMode'),
   };
 };
 
-const SignUpPanel = ({ siteTitle, me }) => {
-  if (me) return null;
+const SignUpPanel = ({ siteTitle, me, singleUserMode }) => {
+  if (me || singleUserMode) return null;
 
   return (
     <div className='wtf-panel'>
@@ -39,6 +43,7 @@ const SignUpPanel = ({ siteTitle, me }) => {
 SignUpPanel.propTypes = {
   siteTitle: PropTypes.string,
   me: SoapboxPropTypes.me,
+  singleUserMode: PropTypes.bool,
 };
 
 export default injectIntl(connect(mapStateToProps)(SignUpPanel));

@@ -438,7 +438,7 @@ class ActionBar extends React.PureComponent {
           menu.push({
             text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }),
             href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
-            icon: require('icons/gavel.svg'),
+            icon: require('@tabler/icons/icons/gavel.svg'),
           });
           menu.push({
             text: intl.formatMessage(messages.admin_status),

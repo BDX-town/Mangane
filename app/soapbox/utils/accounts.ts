@@ -71,3 +71,12 @@ export const isVerified = (account: ImmutableMap<string, any>): boolean => {
   const tags: any = account.getIn(['pleroma', 'tags'], ImmutableList());
   return tags.includes('verified');
 };
+
+export const accountToMention = (account: ImmutableMap<string, any>): ImmutableMap<string, any> => {
+  return ImmutableMap({
+    id: account.get('id'),
+    username: account.get('username'),
+    acct: account.get('acct'),
+    url: account.get('url'),
+  });
+};

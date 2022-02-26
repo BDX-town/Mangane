@@ -126,7 +126,9 @@
   top: 0;
   bottom: 0;
 
-  @media screen and (max-width: 600px) { padding: 30px 2px; }
+  @media screen and (max-width: 600px) {
+    padding: 30px 2px;
+  }
 
   .svg-icon {
     width: 24px;
@@ -342,7 +344,8 @@
 .mute-modal,
 .reactions-modal,
 .reblogs-modal,
-.mentions-modal {
+.mentions-modal,
+.account-note-modal {
   position: relative;
   flex-direction: column;
   overflow: hidden;
@@ -411,7 +414,8 @@
 
 .boost-modal__action-bar,
 .confirmation-modal__action-bar,
-.mute-modal__action-bar {
+.mute-modal__action-bar,
+.account-note-modal__action-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -464,7 +468,8 @@
   vertical-align: middle;
 }
 
-.report-modal {
+.report-modal,
+.account-note-modal {
   width: 90vw;
   max-width: 700px;
 }
@@ -521,27 +526,6 @@
     margin-bottom: 20px;
   }
 
-  .setting-text {
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    color: var(--primary-text-color);
-    background: var(--background-color);
-    padding: 10px;
-    font-family: inherit;
-    font-size: 14px;
-    resize: vertical;
-    outline: 0;
-    border: 1px solid var(--background-color);
-    border-radius: 4px;
-    margin-bottom: 20px;
-
-    &:focus {
-      border: 1px solid var(--background-color);
-    }
-  }
-
   .setting-toggle {
     margin-top: 20px;
     margin-bottom: 24px;
@@ -574,7 +558,9 @@
     max-height: 300px;
   }
 
-  .actions-modal__item-label { font-weight: 500; }
+  .actions-modal__item-label {
+    font-weight: 500;
+  }
 
   ul {
     overflow-y: auto;
@@ -582,12 +568,18 @@
     max-height: calc(100vh - 147px);
 
     // NOTE - not sure what this is yet, leaving alone for now until I find out.
-    &.with-status { max-height: calc(80vh - 75px); }
+    &.with-status {
+      max-height: calc(80vh - 75px);
+    }
 
-    li:empty { margin: 0; }
+    li:empty {
+      margin: 0;
+    }
 
     li:not(:empty) {
-      &:first-of-type { margin: 10px 0 0; }
+      &:first-of-type {
+        margin: 10px 0 0;
+      }
 
       a {
         display: flex;
@@ -654,10 +646,12 @@
 }
 
 .confirmation-modal__action-bar,
-.mute-modal__action-bar {
+.mute-modal__action-bar,
+.account-note-modal__action-bar {
   .confirmation-modal__secondary-button,
   .confirmation-modal__cancel-button,
-  .mute-modal__cancel-button {
+  .mute-modal__cancel-button,
+  .account-note-modal__cancel-button {
     background-color: transparent;
     color: var(--highlight-text-color);
     font-size: 14px;
@@ -726,7 +720,9 @@
 }
 
 .modal-layout {
-  background: var(--brand-color--med) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color(var(--background-color))}"/></svg>') repeat-x bottom fixed;
+  background: var(--brand-color--med)
+    url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.80078 31.757813" width="234.80078" height="31.757812"><path d="M19.599609 0c-1.05 0-2.10039.375-2.90039 1.125L0 16.925781v14.832031h234.80078V17.025391l-16.5-15.900391c-1.6-1.5-4.20078-1.5-5.80078 0l-13.80078 13.099609c-1.6 1.5-4.19883 1.5-5.79883 0L179.09961 1.125c-1.6-1.5-4.19883-1.5-5.79883 0L159.5 14.224609c-1.6 1.5-4.20078 1.5-5.80078 0L139.90039 1.125c-1.6-1.5-4.20078-1.5-5.80078 0l-13.79883 13.099609c-1.6 1.5-4.20078 1.5-5.80078 0L100.69922 1.125c-1.600001-1.5-4.198829-1.5-5.798829 0l-13.59961 13.099609c-1.6 1.5-4.200781 1.5-5.800781 0L61.699219 1.125c-1.6-1.5-4.198828-1.5-5.798828 0L42.099609 14.224609c-1.6 1.5-4.198828 1.5-5.798828 0L22.5 1.125C21.7.375 20.649609 0 19.599609 0z" fill="#{hex-color(var(--background-color))}"/></svg>')
+    repeat-x bottom fixed;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -1068,7 +1064,8 @@
 }
 
 .confirmation-modal,
-.mute-modal {
+.mute-modal,
+.account-note-modal {
   &__header {
     display: flex;
     align-items: center;
@@ -1088,5 +1085,37 @@
   &__container {
     padding: 20px;
     text-align: left;
+  }
+}
+
+.report-modal__comment,
+.account-note-modal__container {
+  .setting-text {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    color: var(--primary-text-color);
+    background: var(--background-color);
+    padding: 10px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    outline: 0;
+    border: 1px solid var(--background-color);
+    border-radius: 4px;
+    margin-bottom: 20px;
+
+    &:focus {
+      border: 1px solid var(--background-color);
+    }
+  }
+}
+
+.account-note-modal {
+  .setting-text {
+    margin-top: 20px;
+    margin-bottom: 0;
+    resize: none;
   }
 }

@@ -1,6 +1,10 @@
+import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
+import { normalizeStatus } from 'soapbox/normalizers/status';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
+import { stripCompatibilityFeatures } from 'soapbox/utils/html';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -26,55 +30,53 @@ import {
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-// Ensure attachments have required fields
-// https://docs.joinmastodon.org/entities/attachment/
-const normalizeAttachment = attachment => {
-  const url = [
-    attachment.get('url'),
-    attachment.get('preview_url'),
-    attachment.get('remote_url'),
-  ].find(url => url) || '';
+const domParser = new DOMParser();
 
-  const base = ImmutableMap({
-    url,
-    preview_url: url,
-    remote_url: url,
-  });
+const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
+  obj[`:${emoji.get('shortcode')}:`] = emoji.toJS();
+  return obj;
+}, {});
 
-  return attachment.mergeWith((o, n) => o || n, base);
-};
-
-const normalizeAttachments = status => {
-  return status.update('media_attachments', ImmutableList(), attachments => {
-    return attachments.map(normalizeAttachment);
+const minifyStatus = status => {
+  return status.mergeWith((o, n) => n || o, {
+    account: status.getIn(['account', 'id']),
+    reblog: status.getIn(['reblog', 'id']),
+    poll: status.getIn(['poll', 'id']),
+    quote: status.getIn(['quote', 'id']),
   });
 };
 
-// Fix order of mentions
-const fixMentions = status => {
-  const mentions = status.get('mentions');
-  const inReplyToAccountId = status.get('in_reply_to_account_id');
+// Only calculate these values when status first encountered
+// Otherwise keep the ones already in the reducer
+export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
+  if (oldStatus) {
+    return status.merge({
+      search_index: oldStatus.get('search_index'),
+      contentHtml: oldStatus.get('contentHtml'),
+      spoilerHtml: oldStatus.get('spoilerHtml'),
+      hidden: oldStatus.get('hidden'),
+    });
+  } else {
+    const spoilerText   = status.get('spoiler_text') || '';
+    const searchContent = (ImmutableList([spoilerText, status.get('content')]).concat(status.getIn(['poll', 'options'], ImmutableList()).map(option => option.get('title')))).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const emojiMap      = makeEmojiMap(status);
 
-  // Sort the replied-to mention to the top
-  const sorted = mentions.sort((a, b) => {
-    if (a.get('id') === inReplyToAccountId) {
-      return -1;
-    } else {
-      return 0;
-    }
-  });
-
-  return status.set('mentions', sorted);
+    return status.merge({
+      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
+      contentHtml: stripCompatibilityFeatures(emojify(status.get('content'), emojiMap)),
+      spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
+      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.get('sensitive'),
+    });
+  }
 };
 
+// Check whether a status is a quote by secondary characteristics
 const isQuote = status => {
   return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
 };
 
 // Preserve quote if an existing status already has it
-const fixQuote = (state, status) => {
-  const oldStatus = state.get(status.get('id'));
-
+const fixQuote = (status, oldStatus) => {
   if (oldStatus && !status.get('quote') && isQuote(status)) {
     return status
       .set('quote', oldStatus.get('quote'))
@@ -84,18 +86,22 @@ const fixQuote = (state, status) => {
   }
 };
 
-const normalizeStatus = (state, status) => {
+const fixStatus = (state, status, expandSpoilers) => {
+  const oldStatus = state.get(status.get('id'));
+
   return status.withMutations(status => {
-    fixMentions(status);
-    fixQuote(state, status);
-    normalizeAttachments(status);
+    normalizeStatus(status);
+    fixQuote(status, oldStatus);
+    calculateStatus(status, oldStatus, expandSpoilers);
+    minifyStatus(status);
   });
 };
 
-const importStatus = (state, status) => state.set(status.id, normalizeStatus(state, fromJS(status)));
+const importStatus = (state, status, expandSpoilers) =>
+  state.set(status.id, fixStatus(state, fromJS(status), expandSpoilers));
 
-const importStatuses = (state, statuses) =>
-  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status)));
+const importStatuses = (state, statuses, expandSpoilers) =>
+  state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
 
 const deleteStatus = (state, id, references) => {
   references.forEach(ref => {
@@ -126,9 +132,9 @@ const initialState = ImmutableMap();
 export default function statuses(state = initialState, action) {
   switch(action.type) {
   case STATUS_IMPORT:
-    return importStatus(state, action.status);
+    return importStatus(state, action.status, action.expandSpoilers);
   case STATUSES_IMPORT:
-    return importStatuses(state, action.statuses);
+    return importStatuses(state, action.statuses, action.expandSpoilers);
   case STATUS_CREATE_REQUEST:
     return importPendingStatus(state, action.params);
   case STATUS_CREATE_FAIL:

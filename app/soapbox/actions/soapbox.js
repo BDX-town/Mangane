@@ -40,6 +40,7 @@ export const makeDefaultConfig = features => {
     logo: '',
     banner: '',
     brandColor: '', // Empty
+    accentColor: '',
     customCss: ImmutableList(),
     promoPanel: ImmutableMap({
       items: ImmutableList(),
@@ -59,6 +60,8 @@ export const makeDefaultConfig = features => {
     }),
     aboutPages: ImmutableMap(),
     authenticatedProfile: true,
+    singleUserMode: false,
+    singleUserModeProfile: '',
   });
 };
 

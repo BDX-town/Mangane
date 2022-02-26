@@ -41,9 +41,6 @@ body,
   --background-color_hsl: var(--background-color_h), var(--background-color_s), var(--background-color_l);
   --foreground-color_hsl: var(--foreground-color_h), var(--foreground-color_s), var(--foreground-color_l);
   --warning-color_hsl: var(--warning-color_h), var(--warning-color_s), var(--warning-color_l);
-  --accent-color_h: calc(var(--brand-color_h) - 15);
-  --accent-color_s: 86%;
-  --accent-color_l: 44%;
 
   // Modifiers
   --brand-color--faint: hsla(var(--brand-color_hsl), 0.1);

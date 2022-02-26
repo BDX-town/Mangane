@@ -1,11 +1,7 @@
 import escapeTextContentForBrowser from 'escape-html';
 
-import { stripCompatibilityFeatures } from 'soapbox/utils/html';
-
 import emojify from '../../features/emoji/emoji';
 import { unescapeHTML } from '../../utils/html';
-
-const domParser = new DOMParser();
 
 const makeEmojiMap = record => record.emojis.reduce((obj, emoji) => {
   obj[`:${emoji.shortcode}:`] = emoji;
@@ -43,61 +39,6 @@ export function normalizeAccount(account) {
   }
 
   return account;
-}
-
-export function normalizeStatus(status, normalOldStatus, expandSpoilers) {
-  const normalStatus = { ...status };
-
-  // Some backends can return null, or omit these required fields
-  if (!normalStatus.emojis) normalStatus.emojis = [];
-  if (!normalStatus.spoiler_text) normalStatus.spoiler_text = '';
-
-  // Copy the pleroma object too, so we can modify our copy
-  if (status.pleroma) {
-    normalStatus.pleroma = { ...status.pleroma };
-  }
-
-  normalStatus.account = status.account.id;
-
-  if (status.reblog?.id) {
-    normalStatus.reblog = status.reblog.id;
-  }
-
-  if (status.poll?.id) {
-    normalStatus.poll = status.poll.id;
-  }
-
-  if (status.pleroma?.quote?.id) {
-    // Normalize quote to the top-level, so delete the original for performance
-    normalStatus.quote = status.pleroma.quote.id;
-    delete normalStatus.pleroma.quote;
-  } else if (status.quote?.id) {
-    // Fedibird compatibility, because why not
-    normalStatus.quote = status.quote.id;
-  } else if (status.quote_id) {
-    // Fedibird: fall back to quote_id
-    normalStatus.quote = status.quote_id;
-  }
-
-  // Only calculate these values when status first encountered
-  // Otherwise keep the ones already in the reducer
-  if (normalOldStatus) {
-    normalStatus.search_index = normalOldStatus.get('search_index');
-    normalStatus.contentHtml = normalOldStatus.get('contentHtml');
-    normalStatus.spoilerHtml = normalOldStatus.get('spoilerHtml');
-    normalStatus.hidden = normalOldStatus.get('hidden');
-  } else {
-    const spoilerText   = normalStatus.spoiler_text || '';
-    const searchContent = ([spoilerText, status.content].concat((status.poll?.options) ? status.poll.options.map(option => option.title) : [])).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
-    const emojiMap      = makeEmojiMap(normalStatus);
-
-    normalStatus.search_index = domParser.parseFromString(searchContent, 'text/html').documentElement.textContent;
-    normalStatus.contentHtml  = stripCompatibilityFeatures(emojify(normalStatus.content, emojiMap));
-    normalStatus.spoilerHtml  = emojify(escapeTextContentForBrowser(spoilerText), emojiMap);
-    normalStatus.hidden       = expandSpoilers ? false : spoilerText.length > 0 || normalStatus.sensitive;
-  }
-
-  return normalStatus;
 }
 
 export function normalizePoll(poll) {
