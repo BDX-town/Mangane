@@ -400,7 +400,7 @@ class Header extends ImmutablePureComponent {
         menu.push({
           text: intl.formatMessage(messages.admin_account, { name: account.get('username') }),
           href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true,
-          icon: require('icons/gavel.svg'),
+          icon: require('@tabler/icons/icons/gavel.svg'),
         });
       }
 
