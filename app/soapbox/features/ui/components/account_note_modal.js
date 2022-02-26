@@ -80,11 +80,11 @@ class AccountNoteModal extends React.PureComponent {
       <div className='modal-root__modal account-note-modal'>
         <div className='account-note-modal__header'>
           <Icon src={require('@tabler/icons/icons/note.svg')} />
-          <FormattedMessage id='account_note.target' defaultMessage='Edit your note for @{target}' values={{ target: account.get('acct') }} />
+          <FormattedMessage id='account_note.target' defaultMessage='Note for @{target}' values={{ target: account.get('acct') }} />
         </div>
 
         <div className='account-note-modal__container'>
-          <p><FormattedMessage id='account_note.hint' defaultMessage='You can keep some note about that person for yourself (this will not be shared with them):' /></p>
+          <p><FormattedMessage id='account_note.hint' defaultMessage='You can keep notes about this user for yourself (this will not be shared with them):' /></p>
 
           <textarea
             className='setting-text light'

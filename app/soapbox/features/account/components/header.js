@@ -63,7 +63,7 @@ const messages = defineMessages({
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   createNote: { id: 'account.create_note', defaultMessage: 'Create a note' },
-  editNote: { id: 'account.edit_note', defaultMessage: 'Edit a note' },
+  editNote: { id: 'account.edit_note', defaultMessage: 'Edit note' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
