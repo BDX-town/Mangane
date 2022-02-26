@@ -9,6 +9,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { initAccountNoteModal } from 'soapbox/actions/account_notes';
 import Badge from 'soapbox/components/badge';
 import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -48,6 +49,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     displayFqn: PropTypes.bool,
+    onShowNote: PropTypes.func,
   };
 
   getStaffBadge = () => {
@@ -113,6 +115,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
         />
       </div>
     );
+  }
+
+  handleShowNote = e => {
+    const { account, onShowNote } = this.props;
+
+    e.preventDefault();
+    onShowNote(account);
   }
 
   render() {
@@ -187,6 +196,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
           {this.getBirthday()}
 
+          {!!account.getIn(['relationship', 'note']) && (
+            <a href='#' className='profile-info-panel-content__note' onClick={this.handleShowNote}>
+              <Icon src={require('@tabler/icons/icons/note.svg')} />
+              <FormattedMessage id='account.show_note' defaultMessage='Show note' />
+            </a>
+          )}
+
           <ProfileStats
             className='profile-info-panel-content__stats'
             account={account}
@@ -250,8 +266,14 @@ const mapStateToProps = (state, { account }) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onShowNote(account) {
+    dispatch(initAccountNoteModal(account));
+  },
+});
+
 export default injectIntl(
-  connect(mapStateToProps, null, null, {
+  connect(mapStateToProps, mapDispatchToProps, null, {
     forwardRef: true,
   },
   )(ProfileInfoPanel));

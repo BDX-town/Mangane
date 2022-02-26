@@ -27,6 +27,7 @@ import {
   ReblogsModal,
   MentionsModal,
   BirthdaysModal,
+  AccountNoteModal,
 } from '../../../features/ui/util/async-components';
 import BundleContainer from '../containers/bundle_container';
 
@@ -59,6 +60,7 @@ const MODAL_COMPONENTS = {
   'REACTIONS': ReactionsModal,
   'MENTIONS': MentionsModal,
   'BIRTHDAYS': BirthdaysModal,
+  'ACCOUNT_NOTE': AccountNoteModal,
 };
 
 export default class ModalRoot extends React.PureComponent {

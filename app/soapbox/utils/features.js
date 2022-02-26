@@ -89,6 +89,10 @@ export const getFeatures = createSelector([instance => instance], instance => {
     birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
     ethereumLogin: v.software === MITRA,
     accountMoving: v.software === PLEROMA && gte(v.version, '2.4.50'),
+    notes: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
+      v.software === PLEROMA && gte(v.version, '2.4.50'),
+    ]),
   };
 });
 

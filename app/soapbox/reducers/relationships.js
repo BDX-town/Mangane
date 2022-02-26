@@ -3,6 +3,7 @@ import { get } from 'lodash';
 
 import { STREAMING_FOLLOW_RELATIONSHIPS_UPDATE } from 'soapbox/actions/streaming';
 
+import { ACCOUNT_NOTE_SUBMIT_SUCCESS } from '../actions/account_notes';
 import {
   ACCOUNT_FOLLOW_SUCCESS,
   ACCOUNT_FOLLOW_REQUEST,
@@ -106,6 +107,7 @@ export default function relationships(state = initialState, action) {
   case ACCOUNT_UNSUBSCRIBE_SUCCESS:
   case ACCOUNT_PIN_SUCCESS:
   case ACCOUNT_UNPIN_SUCCESS:
+  case ACCOUNT_NOTE_SUBMIT_SUCCESS:
     return normalizeRelationship(state, action.relationship);
   case RELATIONSHIPS_FETCH_SUCCESS:
     return normalizeRelationships(state, action.relationships);
