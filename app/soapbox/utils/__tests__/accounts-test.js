@@ -119,7 +119,7 @@ describe('isModerator', () => {
 
 describe('accountToMention', () => {
   it('converts the account to a mention', () => {
-    const account = fromJS(require('soapbox/__fixtures__/alex.json'));
+    const account = fromJS(require('soapbox/__fixtures__/pleroma-account.json'));
 
     const expected = fromJS({
       id: '9v5bmRalQvjOy0ECcC',
