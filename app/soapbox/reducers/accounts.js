@@ -48,12 +48,19 @@ const normalizePleroma = account => {
 };
 
 const normalizeAccount = (state, account) => {
-  const normalized = fromJS(normalizePleroma(account)).deleteAll([
-    'followers_count',
-    'following_count',
-    'statuses_count',
-    'source',
-  ]);
+  const normalized = fromJS(normalizePleroma(account)).withMutations(account => {
+    account.deleteAll([
+      'followers_count',
+      'following_count',
+      'statuses_count',
+      'source',
+    ]);
+    account.set(
+      'birthday',
+      account.getIn(['pleroma', 'birthday'], account.getIn(['other_settings', 'birthday'])),
+    );
+  });
+
 
   return state.set(account.id, normalized);
 };

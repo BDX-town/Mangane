@@ -85,7 +85,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
   getBirthday = () => {
     const { account, intl } = this.props;
 
-    const birthday = account.getIn(['pleroma', 'birthday']);
+    const birthday = account.get('birthday');
     if (!birthday) return null;
 
     const formattedBirthday = intl.formatDate(birthday, { timeZone: 'UTC', day: 'numeric', month: 'long', year: 'numeric' });
