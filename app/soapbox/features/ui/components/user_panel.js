@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import Avatar from 'soapbox/components/avatar';
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { getAcct, isVerified } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 
@@ -51,7 +51,7 @@ class UserPanel extends ImmutablePureComponent {
               <h1>
                 <Link to={`/@${account.get('acct')}`}>
                   <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
-                  {isVerified(account) && <VerificationBadge />}
+                  {account.get('verified') && <VerificationBadge />}
                   <small className='user-panel__account__username'>@{getAcct(account, displayFqn)}</small>
                 </Link>
               </h1>

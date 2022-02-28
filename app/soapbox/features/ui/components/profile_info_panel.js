@@ -15,7 +15,7 @@ import Icon from 'soapbox/components/icon';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
-import { getAcct, isAdmin, isModerator, isLocal, isVerified } from 'soapbox/utils/accounts';
+import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import ProfileStats from './profile_stats';
@@ -147,7 +147,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
-    const verified = isVerified(account);
+    const verified = account.get('verified');
     const badges = this.getBadges();
 
     return (

@@ -64,8 +64,6 @@ export const isLocal = account => {
 
 export const isRemote = account => !isLocal(account);
 
-export const isVerified = account => account.get('verified') === true;
-
 export const accountToMention = account => {
   return ImmutableMap({
     id: account.get('id'),
