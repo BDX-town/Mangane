@@ -30,7 +30,7 @@ import {
 import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
-import { normalizePleromaUserFields } from 'soapbox/utils/pleroma';
+import { normalizeAccount } from 'soapbox/normalizers/account';
 
 import {
   ACCOUNT_IMPORT,
@@ -40,27 +40,23 @@ import {
 
 const initialState = ImmutableMap();
 
-const normalizePleroma = account => {
-  if (!account.pleroma) return account;
-  account.pleroma = normalizePleromaUserFields(account.pleroma);
-  delete account.pleroma.chat_token;
-  return account;
-};
-
-const normalizeAccount = (state, account) => {
-  const normalized = fromJS(normalizePleroma(account)).deleteAll([
+const minifyAccount = account => {
+  return account.deleteAll([
     'followers_count',
     'following_count',
     'statuses_count',
     'source',
   ]);
+};
 
+const fixAccount = (state, account) => {
+  const normalized = minifyAccount(normalizeAccount(fromJS(account)));
   return state.set(account.id, normalized);
 };
 
 const normalizeAccounts = (state, accounts) => {
   accounts.forEach(account => {
-    state = normalizeAccount(state, account);
+    state = fixAccount(state, account);
   });
 
   return state;
@@ -68,7 +64,7 @@ const normalizeAccounts = (state, accounts) => {
 
 const importAccountFromChat = (state, chat) =>
   // TODO: Fix this monstrosity
-  normalizeAccount(state, normalizeAccount2(chat.account));
+  fixAccount(state, normalizeAccount2(chat.account));
 
 const importAccountsFromChats = (state, chats) =>
   state.withMutations(mutable =>
@@ -202,7 +198,7 @@ const setSuggested = (state, accountIds, isSuggested) => {
 export default function accounts(state = initialState, action) {
   switch(action.type) {
   case ACCOUNT_IMPORT:
-    return normalizeAccount(state, action.account);
+    return fixAccount(state, action.account);
   case ACCOUNTS_IMPORT:
     return normalizeAccounts(state, action.accounts);
   case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:

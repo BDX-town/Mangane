@@ -4,7 +4,6 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { connect } from 'react-redux';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
-import { isVerified } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import { getAcct } from '../utils/accounts';
@@ -38,7 +37,7 @@ class DisplayName extends React.PureComponent {
     const { account, displayFqn, others, children, withDate } = this.props;
 
     let displayName, suffix;
-    const verified = isVerified(account);
+    const verified = account.get('verified');
 
     const createdAt = account.get('created_at');
 

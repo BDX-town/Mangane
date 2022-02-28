@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import { accountToMention } from 'soapbox/utils/accounts';
+import { mergeDefined } from 'soapbox/utils/normalizers';
 
 // Some backends can return null, or omit these required fields
 const baseStatus = ImmutableMap({
@@ -39,9 +40,6 @@ const basePoll = ImmutableMap({
   voters_count: 0,
   votes_count: 0,
 });
-
-// Merger function for only overriding undefined values
-const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
 // Merge base status
 const mergeBase = status => {

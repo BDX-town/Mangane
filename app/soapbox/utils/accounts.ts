@@ -1,8 +1,4 @@
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
 const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
   try {
@@ -66,11 +62,6 @@ export const isLocal = (account: ImmutableMap<string, any>): boolean => {
 };
 
 export const isRemote = (account: ImmutableMap<string, any>): boolean => !isLocal(account);
-
-export const isVerified = (account: ImmutableMap<string, any>): boolean => {
-  const tags: any = account.getIn(['pleroma', 'tags'], ImmutableList());
-  return tags.includes('verified');
-};
 
 export const accountToMention = (account: ImmutableMap<string, any>): ImmutableMap<string, any> => {
   return ImmutableMap({

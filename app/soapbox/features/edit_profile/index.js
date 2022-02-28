@@ -25,7 +25,6 @@ import {
   SimpleTextarea,
 } from 'soapbox/features/forms';
 import { makeGetAccount } from 'soapbox/selectors';
-import { isVerified } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
 
@@ -114,7 +113,7 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
-    const birthday = account.getIn(['pleroma', 'birthday']);
+    const birthday = account.get('birthday');
     const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = account.withMutations(map => {
@@ -263,7 +262,7 @@ class EditProfile extends ImmutablePureComponent {
 
   render() {
     const { intl, maxFields, account, verifiedCanEditName, supportsBirthdays, supportsEmailList } = this.props;
-    const verified = isVerified(account);
+    const verified = account.get('verified');
     const canEditName = verifiedCanEditName || !verified;
 
     return (
