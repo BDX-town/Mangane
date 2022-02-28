@@ -64,10 +64,6 @@ export const isLocal = account => {
 
 export const isRemote = account => !isLocal(account);
 
-export const isVerified = account => (
-  account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified')
-);
-
 export const accountToMention = account => {
   return ImmutableMap({
     id: account.get('id'),

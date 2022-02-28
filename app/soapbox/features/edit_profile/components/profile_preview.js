@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import StillImage from 'soapbox/components/still_image';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { getAcct, isVerified } from 'soapbox/utils/accounts';
+import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 const mapStateToProps = state => ({
@@ -28,7 +28,7 @@ const ProfilePreview = ({ account, displayFqn }) => (
           <bdi>
             <strong className='emojify p-name'>
               {account.get('display_name')}
-              {isVerified(account) && <VerificationBadge />}
+              {account.get('verified') && <VerificationBadge />}
             </strong>
           </bdi>
           <span>@{getAcct(account, displayFqn)}</span>

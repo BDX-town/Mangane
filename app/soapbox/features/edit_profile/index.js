@@ -25,7 +25,6 @@ import {
   SimpleTextarea,
 } from 'soapbox/features/forms';
 import { makeGetAccount } from 'soapbox/selectors';
-import { isVerified } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
 
@@ -263,7 +262,7 @@ class EditProfile extends ImmutablePureComponent {
 
   render() {
     const { intl, maxFields, account, verifiedCanEditName, supportsBirthdays, supportsEmailList } = this.props;
-    const verified = isVerified(account);
+    const verified = account.get('verified');
     const canEditName = verifiedCanEditName || !verified;
 
     return (

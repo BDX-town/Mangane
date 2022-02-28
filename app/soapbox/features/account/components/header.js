@@ -27,7 +27,6 @@ import {
   isStaff,
   isAdmin,
   isModerator,
-  isVerified,
   isLocal,
   isRemote,
   getDomain,
@@ -451,7 +450,7 @@ class Header extends ImmutablePureComponent {
         }
       }
 
-      if (isVerified(account)) {
+      if (account.get('verified')) {
         menu.push({
           text: intl.formatMessage(messages.unverifyUser, { name: account.get('username') }),
           action: this.props.onUnverifyUser,

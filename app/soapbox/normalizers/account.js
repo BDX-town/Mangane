@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
@@ -28,9 +28,20 @@ const normalizeBirthday = account => {
   return account.set('birthday', birthday);
 };
 
+// Normalize Truth Social/Pleroma verified
+const normalizeVerified = account => {
+  return account.update('verified', verified => {
+    return [
+      verified === true,
+      account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified'),
+    ].some(Boolean);
+  });
+};
+
 export const normalizeAccount = account => {
   return account.withMutations(account => {
     normalizePleromaLegacyFields(account);
+    normalizeVerified(account);
     normalizeBirthday(account);
   });
 };
