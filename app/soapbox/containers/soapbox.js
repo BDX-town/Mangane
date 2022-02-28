@@ -64,7 +64,7 @@ const mapStateToProps = (state) => {
 
   // In demo mode, force the default brand color
   const brandColor = settings.get('demo') ? '#0482d8' : soapboxConfig.get('brandColor');
-  const accentColor = settings.get('demo') ? null : soapboxConfig.get('accentColor');
+  const accentColor = (settings.get('demo') || settings.get('halloween')) ? null : soapboxConfig.get('accentColor');
 
   const singleUserMode = soapboxConfig.get('singleUserMode') && soapboxConfig.get('singleUserModeProfile');
 
