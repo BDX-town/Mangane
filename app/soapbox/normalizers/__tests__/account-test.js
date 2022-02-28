@@ -36,4 +36,22 @@ describe('normalizeAccount()', () => {
     expect(result.getIn(['pleroma', 'is_confirmed'])).toBe(true);
     expect(result.getIn(['pleroma', 'is_approved'])).toBe(true);
   });
+
+  it('normalizes a verified Pleroma user', () => {
+    const account = fromJS(require('soapbox/__fixtures__/mk.json'));
+    const result = normalizeAccount(account);
+    expect(result.get('verified')).toBe(true);
+  });
+
+  it('normalizes an unverified Pleroma user', () => {
+    const account = fromJS(require('soapbox/__fixtures__/pleroma-account.json'));
+    const result = normalizeAccount(account);
+    expect(result.get('verified')).toBe(false);
+  });
+
+  it('normalizes a verified Truth Social user', () => {
+    const account = fromJS(require('soapbox/__fixtures__/realDonaldTrump.json'));
+    const result = normalizeAccount(account);
+    expect(result.get('verified')).toBe(true);
+  });
 });
