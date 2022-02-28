@@ -196,6 +196,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
           {this.getBirthday()}
 
+          {account.get('location') && (
+            <div className='profile-info-panel-content__location'>
+              <Icon src={require('@tabler/icons/icons/map-pin.svg')} />
+              {account.get('location')}
+            </div>
+          )}
+
           {!!account.getIn(['relationship', 'note']) && (
             <a href='#' className='profile-info-panel-content__note' onClick={this.handleShowNote}>
               <Icon src={require('@tabler/icons/icons/note.svg')} />

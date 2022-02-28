@@ -54,4 +54,16 @@ describe('normalizeAccount()', () => {
     const result = normalizeAccount(account);
     expect(result.get('verified')).toBe(true);
   });
+
+  it('normalizes Fedibird location', () => {
+    const account = fromJS(require('soapbox/__fixtures__/fedibird-account.json'));
+    const result = normalizeAccount(account);
+    expect(result.get('location')).toBe('Texas, USA');
+  });
+
+  it('normalizes Truth Social location', () => {
+    const account = fromJS(require('soapbox/__fixtures__/truthsocial-account.json'));
+    const result = normalizeAccount(account);
+    expect(result.get('location')).toBe('Texas');
+  });
 });

@@ -38,10 +38,21 @@ const normalizeVerified = account => {
   });
 };
 
+// Normalize Fedibird/Truth Social location
+const normalizeLocation = account => {
+  return account.update('location', location => {
+    return [
+      location,
+      account.getIn(['other_settings', 'location']),
+    ].find(Boolean);
+  });
+};
+
 export const normalizeAccount = account => {
   return account.withMutations(account => {
     normalizePleromaLegacyFields(account);
     normalizeVerified(account);
     normalizeBirthday(account);
+    normalizeLocation(account);
   });
 };
