@@ -1,6 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
+import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
@@ -35,9 +36,6 @@ const pleromaToMastodonConfig = instance => {
     }),
   });
 };
-
-// Use new value only if old value is undefined
-const mergeDefined = (oldVal, newVal) => oldVal === undefined ? newVal : oldVal;
 
 // Get the software's default attachment limit
 const getAttachmentLimit = software => software === PLEROMA ? Infinity : 4;
