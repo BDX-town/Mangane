@@ -310,8 +310,8 @@ export function uploadCompose(files) {
 
     dispatch(uploadComposeRequest());
 
-    for (const [i, f] of Array.from(files).entries()) {
-      if (media.size + i > attachmentLimit - 1) break;
+    Array.from(files).forEach((f, i) => {
+      if (media.size + i > attachmentLimit - 1) return;
 
       // FIXME: Don't define function in loop
       /* eslint-disable no-loop-func */
@@ -348,7 +348,7 @@ export function uploadCompose(files) {
           });
       }).catch(error => dispatch(uploadComposeFail(error)));
       /* eslint-enable no-loop-func */
-    }
+    });
   };
 }
 
