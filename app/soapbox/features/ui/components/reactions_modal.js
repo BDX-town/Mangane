@@ -93,8 +93,8 @@ class ReactionsModal extends React.PureComponent {
     const { reaction } = this.state;
 
     const accounts = reactions && (reaction
-      ? reactions.find(reaction => reaction.name === this.state.reaction).accounts.map(account => ({ id: account, reaction: this.state.reaction }))
-      : reactions.map(reaction => reaction.accounts.map(account => ({ id: account, reaction: reaction.name }))).flatten());
+      ? reactions.find(reaction => reaction.name === this.state.reaction)?.accounts.map(account => ({ id: account, reaction: this.state.reaction }))
+      : reactions.map(reaction => reaction?.accounts.map(account => ({ id: account, reaction: reaction.name }))).flatten());
 
     let body;
 
