@@ -81,8 +81,12 @@ class TimelineQueueButtonHeader extends React.PureComponent {
     }
   }, 150, { trailing: true });
 
-  handleClick = e => {
+  scrollUp = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  handleClick = e => {
+    setTimeout(this.scrollUp, 10);
     this.props.onClick(e);
   }
 
