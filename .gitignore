@@ -16,6 +16,10 @@ yarn-error.log*
 .idea
 .DS_Store
 
+# Custom build files
+/custom/*
+!/custom/.gitkeep
+
 # surge.sh
 CNAME
 AUTH

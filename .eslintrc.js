@@ -70,7 +70,9 @@ module.exports = {
     'consistent-return': 'error',
     'dot-notation': 'error',
     eqeqeq: 'error',
-    indent: ['error', 2],
+    indent: ['error', 2, {
+      ignoredNodes: ['TemplateLiteral'],
+    }],
     'jsx-quotes': ['error', 'prefer-single'],
     'key-spacing': [
       'error',

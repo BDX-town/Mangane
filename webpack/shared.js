@@ -115,6 +115,7 @@ module.exports = {
       // https://stackoverflow.com/a/35990101/8811886
       '@tabler': resolve('node_modules', '@tabler'),
       'icons': resolve('app', 'icons'),
+      'custom': resolve('custom'),
     },
     fallback: {
       path: require.resolve('path-browserify'),
