@@ -83,6 +83,7 @@ export default class ComposeForm extends ImmutablePureComponent {
     isModalOpen: PropTypes.bool,
     clickableAreaRef: PropTypes.object,
     scheduledAt: PropTypes.instanceOf(Date),
+    features: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -254,7 +255,7 @@ export default class ComposeForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount } = this.props;
+    const { intl, onPaste, showSearch, anyMedia, shouldCondense, autoFocus, isModalOpen, maxTootChars, scheduledStatusCount, features } = this.props;
     const condensed = shouldCondense && !this.state.composeFocused && this.isEmpty() && !this.props.isUploading;
     const disabled = this.props.isSubmitting;
     const text     = [this.props.spoilerText, countableText(this.props.text)].join('');
@@ -366,12 +367,12 @@ export default class ComposeForm extends ImmutablePureComponent {
 
         <div className='compose-form__buttons-wrapper'>
           <div className='compose-form__buttons'>
-            <UploadButtonContainer />
-            <PollButtonContainer />
-            <PrivacyDropdownContainer />
-            <ScheduleButtonContainer />
-            <SpoilerButtonContainer />
-            <MarkdownButtonContainer />
+            {features.media && <UploadButtonContainer />}
+            {features.polls && <PollButtonContainer />}
+            {features.privacyScopes && <PrivacyDropdownContainer />}
+            {features.scheduledStatuses && <ScheduleButtonContainer />}
+            {features.spoilers && <SpoilerButtonContainer />}
+            {features.richText && <MarkdownButtonContainer />}
           </div>
           {maxTootChars && (
             <div className='compose-form__counter'>
