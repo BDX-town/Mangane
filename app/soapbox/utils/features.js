@@ -4,6 +4,19 @@ import { createSelector } from 'reselect';
 import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
 
+// FIXME: We have to use a dynamic import to trick Webpack into treating it as
+// optional, but this causes custom locales to become part of the main chunk.
+const importCustom = path => {
+  try {
+    return require(`custom/${path}.json`);
+  } catch(e) {
+    return {};
+  }
+};
+
+// Import custom overrides, if exists
+const overrides = importCustom('features');
+
 const any = arr => arr.some(Boolean);
 
 // For uglification
@@ -16,7 +29,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
   const features = instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList());
   const federation = instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap());
 
-  return {
+  return Object.assign({
     bookmarks: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -93,7 +106,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
       v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
-  };
+  }, overrides);
 });
 
 export const parseVersion = version => {
