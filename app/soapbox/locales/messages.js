@@ -1,10 +1,7 @@
 // Import custom messages
 const importCustom = locale => {
-  try {
-    return import(/* webpackChunkName: "locale_[request]" */`custom/locales/${locale}.json`);
-  } catch(e) {
-    return new Promise(resolve => resolve({ default: {} }));
-  }
+  return import(/* webpackChunkName: "locale_[request]" */`custom/locales/${locale}.json`)
+    .catch(error => ({ default: {} }));
 };
 
 // Import git-checked messages
@@ -20,6 +17,9 @@ const importMessagesWithCustom = locale => {
   ]).then(messages => {
     const [native, custom] = messages;
     return Object.assign(native.default, custom.default);
+  }).catch(error => {
+    console.error(error);
+    throw error;
   });
 };
 

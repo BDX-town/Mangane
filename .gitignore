@@ -17,8 +17,11 @@ yarn-error.log*
 .DS_Store
 
 # Custom build files
-/custom/*
+/custom/**/*
+!/custom/*
+/custom/*.*
 !/custom/.gitkeep
+!/custom/**/.gitkeep
 
 # surge.sh
 CNAME
