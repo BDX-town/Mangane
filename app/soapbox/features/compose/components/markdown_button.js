@@ -17,7 +17,6 @@ class MarkdownButton extends React.PureComponent {
     active: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    unavailable: PropTypes.bool,
   };
 
   handleClick = () => {
@@ -25,11 +24,7 @@ class MarkdownButton extends React.PureComponent {
   }
 
   render() {
-    const { intl, active, unavailable } = this.props;
-
-    if (unavailable) {
-      return null;
-    }
+    const { intl, active } = this.props;
 
     return (
       <div className='compose-form__markdown-button'>
