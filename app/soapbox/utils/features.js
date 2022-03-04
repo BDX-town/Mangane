@@ -23,6 +23,17 @@ export const getFeatures = createSelector([instance => instance], instance => {
   const federation = instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap());
 
   return Object.assign({
+    media: true,
+    privacyScopes: true,
+    spoilers: true,
+    polls: any([
+      v.software === MASTODON && gte(v.version, '2.8.0'),
+      v.software === PLEROMA,
+    ]),
+    scheduledStatuses: any([
+      v.software === MASTODON && gte(v.version, '2.7.0'),
+      v.software === PLEROMA,
+    ]),
     bookmarks: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
