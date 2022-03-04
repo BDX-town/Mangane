@@ -1,5 +1,45 @@
 # Build Configuration
 
+Soapbox supports compile-time customizations in the form of environment variables and a gitignored `custom/` directory.
+
+## `custom/` directory
+
+You can place files into the `custom/` directory to customize the Soapbox build.
+
+### Custom locales (`custom/locales/*.json`)
+
+It is possible to override locale messages by creating a file for each language, eg `custom/locales/en.json`.
+In this file, add only the messages you want to be overridden.
+For example:
+
+```json
+{
+  "account.posts": "Poasts",
+  "account.posts_with_replies": "Poasts & Replies",
+  "compose.submit_success": "Your poast was sent!",
+  "compose_form.publish": "Poast"
+}
+```
+
+These messages will be merged into the language file shipped with Soapbox.
+
+### Feature overrides (`custom/features.json`)
+
+You can create a file called `custom/features.json` to disable version-checking and force some features on or off.
+For example:
+
+```json
+{
+  "bookmarks": false,
+  "lists": false,
+  "quotePosts": true
+}
+```
+
+See `app/soapbox/utils/features.js` for the full list of features.
+
+## Environment variables
+
 When compiling Soapbox FE, environment variables may be passed to change the build itself.
 For example:
 

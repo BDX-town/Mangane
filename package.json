@@ -66,6 +66,7 @@
     "babel-plugin-preval": "^5.0.0",
     "babel-plugin-react-intl": "^7.5.20",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "babel-plugin-transform-require-context": "^0.1.1",
     "blurhash": "^1.0.0",
     "bootstrap-icons": "^1.5.0",
     "bowser": "^2.11.0",
