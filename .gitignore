@@ -19,6 +19,7 @@ yarn-error.log*
 # Custom build files
 /custom/**/*
 !/custom/*
+/custom/*.*
 !/custom/.gitkeep
 !/custom/**/.gitkeep
 
