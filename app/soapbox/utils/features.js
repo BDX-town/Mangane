@@ -4,19 +4,12 @@ import { createSelector } from 'reselect';
 import gte from 'semver/functions/gte';
 import lt from 'semver/functions/lt';
 
-// FIXME: We have to use a dynamic import to trick Webpack into treating it as
-// optional, but this causes custom locales to become part of the main chunk.
-const importCustom = path => {
-  try {
-    return require(`custom/${path}.json`);
-  } catch(e) {
-    return {};
-  }
-};
+import { custom } from 'soapbox/custom';
 
 // Import custom overrides, if exists
-const overrides = importCustom('features');
+const overrides = custom('features');
 
+// Truthy array convenience function
 const any = arr => arr.some(Boolean);
 
 // For uglification
