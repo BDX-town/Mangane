@@ -730,12 +730,12 @@ article:last-child > .domain {
 }
 
 .verified-icon {
-  display: inline-block;
+  display: inline-flex;
   margin: 0 4px 0 1px;
   vertical-align: top;
   position: relative;
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   flex-shrink: 0;
 
   .svg-icon svg > .bg {

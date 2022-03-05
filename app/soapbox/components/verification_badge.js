@@ -1,7 +1,8 @@
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
+import { useSelector } from 'react-redux';
 
-import Icon from 'soapbox/components/icon';
+import SvgIcon from 'soapbox/components/svg_icon';
 
 const messages = defineMessages({
   verified: { id: 'account.verified', defaultMessage: 'Verified Account' },
@@ -10,9 +11,16 @@ const messages = defineMessages({
 const VerificationBadge = () => {
   const intl = useIntl();
 
+  // Prefer a custom icon if found
+  const customIcon = useSelector(state => state.getIn(['soapbox', 'verifiedIcon']));
+  const icon = customIcon || require('icons/verified.svg');
+
+  // Render component based on file extension
+  const Icon = icon.endsWith('.svg') ? SvgIcon : 'img';
+
   return (
     <span className='verified-icon'>
-      <Icon src={require('icons/verified.svg')} alt={intl.formatMessage(messages.verified)} />
+      <Icon src={icon} alt={intl.formatMessage(messages.verified)} />
     </span>
   );
 };
