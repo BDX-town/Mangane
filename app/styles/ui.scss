@@ -738,32 +738,8 @@ article:last-child > .domain {
   height: 15px;
   flex-shrink: 0;
 
-  &::before {
-    display: block;
-    content: "";
-    position: absolute;
-    background-color: #00a3ed;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    border-radius: 50%;
-  }
-
-  &::after {
-    display: block;
-    position: absolute;
-    content: '\f00c';
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    font-size: 0.6em;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-    color: #fff;
-    line-height: 15px;
-    width: 15px;
-    height: 15px;
-    text-align: center;
+  .svg-icon svg > .bg {
+    fill: var(--brand-color);
   }
 }
 

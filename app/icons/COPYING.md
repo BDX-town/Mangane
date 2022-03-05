@@ -4,6 +4,7 @@
 - fediverse.svg - Modified from Wikipedia, CC0  
 - home-squared.svg - Modified from Tabler icons, MIT  
 - pen-plus.svg - Modified from Tabler icons, MIT  
+- verified.svg - Created by Alex Gleason. CC0
 
 Tabler: https://tabler-icons.io/  
 Feather: https://feathericons.com/  

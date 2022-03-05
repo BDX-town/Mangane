@@ -13,18 +13,19 @@ export default class SvgIcon extends React.PureComponent {
 
   static propTypes = {
     src: PropTypes.string.isRequired,
+    alt: PropTypes.string,
     className: PropTypes.string,
   };
 
   render() {
-    const { src, className, ...other } = this.props;
+    const { src, className, alt, ...other } = this.props;
 
     return (
       <div
         className={classNames('svg-icon', className)}
         {...other}
       >
-        <InlineSVG src={src} />
+        <InlineSVG src={src} title={alt} />
       </div>
     );
   }
