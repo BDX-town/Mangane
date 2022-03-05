@@ -52,6 +52,7 @@ export const makeDefaultConfig = features => {
       homeFooter: ImmutableList(),
     }),
     allowedEmoji: features.emojiReactsRGI ? allowedEmojiRGI : allowedEmoji,
+    verifiedIcon: '',
     verifiedCanEditName: false,
     displayFqn: Boolean(features.federating),
     cryptoAddresses: ImmutableList(),
