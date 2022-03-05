@@ -97,6 +97,13 @@ module.exports = {
       }, {
         from: join(__dirname, '../app/instance'),
         to: join(output.path, 'instance'),
+      }, {
+        from: join(__dirname, '../custom/instance'),
+        to: join(output.path, 'instance'),
+        noErrorOnMissing: true,
+        globOptions: {
+          ignore: ['**/.gitkeep'],
+        },
       }],
       options: {
         concurrency: 100,
