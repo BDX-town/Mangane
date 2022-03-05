@@ -38,6 +38,17 @@ For example:
 
 See `app/soapbox/utils/features.js` for the full list of features.
 
+### Custom files (`custom/instance/*`)
+
+You can place arbitrary files of any type in the `custom/instance/` directory.
+They will be available on your website at `https://example.com/instance/{filename}`.
+Subdirectories are supported, too.
+
+Some use cases:
+
+- Logos, which can then be referenced from `soapbox.json`
+- About pages, available at `/about` on your website.
+
 ## Environment variables
 
 When compiling Soapbox FE, environment variables may be passed to change the build itself.
