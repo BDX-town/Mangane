@@ -39,7 +39,7 @@ class ScheduledStatus extends ImmutablePureComponent {
       <div className='scheduled-status'>
         <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id') })} tabIndex={this.props.muted ? null : 0}>
           <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
-            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
+            <div className='status__expand' role='presentation' />
             <div className='status__info'>
               <NavLink to={statusUrl} className='status__relative-time'>
                 <RelativeTimestamp timestamp={status.get('created_at')} futureDate />
