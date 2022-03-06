@@ -590,10 +590,15 @@ class MediaGallery extends React.PureComponent {
 
     return (
       <div className={classNames('media-gallery', { 'media-gallery--compact': compact })} style={sizeData.get('style')} ref={this.handleRef}>
-        <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible })}>
+        <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
           {sensitive && (
-            visible ? (
-              <IconButton title={intl.formatMessage(messages.toggle_visible)} src={require('@tabler/icons/icons/eye-off.svg')} overlay onClick={this.handleOpen} />
+            (visible || compact) ? (
+              <IconButton
+                title={intl.formatMessage(messages.toggle_visible)}
+                src={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
+                overlay
+                onClick={this.handleOpen}
+              />
             ) : (
               <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
                 <span className='spoiler-button__overlay__label'>

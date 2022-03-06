@@ -64,6 +64,7 @@ class ReplyIndicator extends ImmutablePureComponent {
           <AttachmentThumbs
             compact
             media={status.get('media_attachments')}
+            sensitive={status.get('sensitive')}
           />
         )}
       </div>

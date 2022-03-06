@@ -393,7 +393,11 @@ class Status extends ImmutablePureComponent {
     if (size > 0) {
       if (this.props.muted) {
         media = (
-          <AttachmentThumbs media={status.get('media_attachments')} onClick={this.handleClick} />
+          <AttachmentThumbs
+            media={status.get('media_attachments')}
+            onClick={this.handleClick}
+            sensitive={status.get('sensitive')}
+          />
         );
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
