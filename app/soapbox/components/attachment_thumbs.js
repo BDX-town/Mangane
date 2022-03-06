@@ -15,6 +15,7 @@ class AttachmentThumbs extends ImmutablePureComponent {
     dispatch: PropTypes.func.isRequired,
     media: ImmutablePropTypes.list.isRequired,
     onClick: PropTypes.func,
+    sensitive: PropTypes.bool,
   };
 
   renderLoading() {
@@ -26,7 +27,7 @@ class AttachmentThumbs extends ImmutablePureComponent {
   }
 
   render() {
-    const { media, onClick } = this.props;
+    const { media, onClick, sensitive } = this.props;
 
     return (
       <div className='attachment-thumbs'>
@@ -37,6 +38,7 @@ class AttachmentThumbs extends ImmutablePureComponent {
               onOpenMedia={this.onOpenMedia}
               height={50}
               compact
+              sensitive={sensitive}
             />
           )}
         </Bundle>
