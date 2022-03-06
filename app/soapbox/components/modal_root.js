@@ -54,6 +54,10 @@ class ModalRoot extends React.PureComponent {
     onCancel: PropTypes.func,
   };
 
+  static contextTypes = {
+    router: PropTypes.object,
+  };
+
   state = {
     revealed: !!this.props.children,
   };
