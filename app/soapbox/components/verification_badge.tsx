@@ -1,3 +1,5 @@
+import classNames from 'classnames';
+import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { useIntl, defineMessages } from 'react-intl';
 import { useSelector } from 'react-redux';
@@ -8,11 +10,15 @@ const messages = defineMessages({
   verified: { id: 'account.verified', defaultMessage: 'Verified Account' },
 });
 
-const VerificationBadge = () => {
+interface IVerificationBadge {
+  className?: string,
+}
+
+const VerificationBadge = ({ className }: IVerificationBadge) => {
   const intl = useIntl();
 
   // Prefer a custom icon if found
-  const customIcon = useSelector(state => state.getIn(['soapbox', 'verifiedIcon']));
+  const customIcon = useSelector((state: ImmutableMap<string, any>) => state.getIn(['soapbox', 'verifiedIcon']));
   const icon = customIcon || require('icons/verified.svg');
 
   // Render component based on file extension
@@ -20,7 +26,7 @@ const VerificationBadge = () => {
 
   return (
     <span className='verified-icon'>
-      <Icon src={icon} alt={intl.formatMessage(messages.verified)} />
+      <Icon className={classNames(className)} src={icon} alt={intl.formatMessage(messages.verified)} />
     </span>
   );
 };
