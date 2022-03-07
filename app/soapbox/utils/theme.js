@@ -65,6 +65,32 @@ const rgbToHsl = value => {
   };
 };
 
+const parseShades = (obj, color, shades) => {
+  if (typeof shades === 'string') {
+    const { r, g, b } = hexToRgb(shades);
+    return obj[`--color-${color}`] = `${r} ${g} ${b}`;
+  }
+
+  return Object.keys(shades).forEach(shade => {
+    const { r, g, b } = hexToRgb(shades[shade]);
+    obj[`--color-${color}-${shade}`] = `${r} ${g} ${b}`;
+  });
+};
+
+const parseColors = colors => {
+  return Object.keys(colors).reduce((obj, color) => {
+    parseShades(obj, color, colors[color]);
+    return obj;
+  }, {});
+};
+
+export const colorsToCss = colors => {
+  const parsed = parseColors(colors);
+  return Object.keys(parsed).reduce((css, variable) => {
+    return css + `${variable}:${parsed[variable]};`;
+  }, '');
+};
+
 export const brandColorToThemeData = brandColor => {
   const { h, s, l } = rgbToHsl(hexToRgb(brandColor));
   return ImmutableMap({

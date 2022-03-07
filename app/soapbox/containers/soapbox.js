@@ -25,6 +25,7 @@ import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
 import { makeGetAccount } from 'soapbox/selectors';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+import { colorsToCss } from 'soapbox/utils/theme';
 
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
@@ -83,6 +84,7 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
+    themeCss: colorsToCss(soapboxConfig.get('colors').toJS()),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
@@ -103,6 +105,7 @@ class SoapboxMount extends React.PureComponent {
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
+    themeCss: PropTypes.string,
     themeMode: PropTypes.string,
     brandColor: PropTypes.string,
     dispatch: PropTypes.func,
@@ -139,7 +142,7 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, account, instanceLoaded, locale, singleUserMode } = this.props;
+    const { me, account, instanceLoaded, themeCss, locale, singleUserMode } = this.props;
     if (me === null) return null;
     if (me && !account) return null;
     if (!instanceLoaded) return null;
@@ -169,6 +172,7 @@ class SoapboxMount extends React.PureComponent {
               <Helmet>
                 {/* <html lang='en' className={this.props.themeMode} /> */}
                 <body className={bodyClass} />
+                {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
                 <meta name='theme-color' content={this.props.brandColor} />
               </Helmet>
               <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
