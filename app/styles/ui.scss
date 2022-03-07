@@ -737,10 +737,7 @@ article:last-child > .domain {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
-
-  .svg-icon svg > .bg {
-    fill: var(--brand-color);
-  }
+  color: var(--brand-color);
 }
 
 .icon-with-counter {
