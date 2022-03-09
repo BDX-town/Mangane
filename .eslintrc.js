@@ -40,9 +40,7 @@ module.exports = {
     react: {
       version: 'detect',
     },
-    'import/extensions': [
-      '.js',
-    ],
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
     'import/ignore': [
       'node_modules',
       '\\.(css|scss|json)$',
@@ -257,8 +255,16 @@ module.exports = {
   overrides: [
     {
       files: ['**/*.tsx'],
-      'rules': {
+      rules: {
         'react/prop-types': 'off',
+      },
+    },
+    // Disable no-undef in TypeScript
+    // https://stackoverflow.com/a/69155899
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
       },
     },
   ],
