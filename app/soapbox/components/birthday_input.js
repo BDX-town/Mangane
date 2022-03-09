@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import 'react-datepicker/dist/react-datepicker.css';
 
 import IconButton from 'soapbox/components/icon_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { DatePicker } from 'soapbox/features/ui/util/async-components';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -112,16 +112,18 @@ class BirthdayInput extends ImmutablePureComponent {
           </div>
         )}
         <div className='datepicker__input'>
-          <DatePicker
-            selected={value}
-            wrapperClassName='react-datepicker-wrapper'
-            onChange={onChange}
-            placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
-            minDate={new Date('1900-01-01')}
-            maxDate={maxDate}
-            required={required}
-            renderCustomHeader={this.renderHeader}
-          />
+          <BundleContainer fetchComponent={DatePicker}>
+            {Component => (<Component
+              selected={value}
+              wrapperClassName='react-datepicker-wrapper'
+              onChange={onChange}
+              placeholderText={intl.formatMessage(messages.birthdayPlaceholder)}
+              minDate={new Date('1900-01-01')}
+              maxDate={maxDate}
+              required={required}
+              renderCustomHeader={this.renderHeader}
+            />)}
+          </BundleContainer>
         </div>
       </div>
     );

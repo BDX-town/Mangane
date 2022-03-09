@@ -3,12 +3,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import DatePicker from 'react-datepicker';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import 'react-datepicker/dist/react-datepicker.css';
 import IconButton from 'soapbox/components/icon_button';
+import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
+import { DatePicker } from 'soapbox/features/ui/util/async-components';
 
 import { setSchedule, removeSchedule } from '../../../actions/compose';
 
@@ -104,18 +104,20 @@ class ScheduleForm extends React.Component {
           <FormattedMessage id='datepicker.hint' defaultMessage='Scheduled to post at…' />
         </div>
         <div className='datepicker__input'>
-          <DatePicker
-            selected={scheduledAt}
-            showTimeSelect
-            dateFormat='MMMM d, yyyy h:mm aa'
-            timeIntervals={15}
-            wrapperClassName='react-datepicker-wrapper'
-            onChange={this.setSchedule}
-            placeholderText={this.props.intl.formatMessage(messages.schedule)}
-            filterDate={this.isCurrentOrFutureDate}
-            filterTime={this.isFiveMinutesFromNow}
-            ref={this.setRef}
-          />
+          <BundleContainer fetchComponent={DatePicker}>
+            {Component => (<Component
+              selected={scheduledAt}
+              showTimeSelect
+              dateFormat='MMMM d, yyyy h:mm aa'
+              timeIntervals={15}
+              wrapperClassName='react-datepicker-wrapper'
+              onChange={this.setSchedule}
+              placeholderText={this.props.intl.formatMessage(messages.schedule)}
+              filterDate={this.isCurrentOrFutureDate}
+              filterTime={this.isFiveMinutesFromNow}
+              ref={this.setRef}
+            />)}
+          </BundleContainer>
           <div className='datepicker__cancel'>
             <IconButton title={intl.formatMessage(messages.remove)} src={require('@tabler/icons/icons/x.svg')} onClick={this.handleRemove} />
           </div>
