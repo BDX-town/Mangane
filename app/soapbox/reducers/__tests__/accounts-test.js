@@ -1,4 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, Record } from 'immutable';
+
+import { ACCOUNT_IMPORT } from 'soapbox/actions/importer';
 
 import reducer from '../accounts';
 // import * as actions from 'soapbox/actions/importer';
@@ -8,6 +10,16 @@ import reducer from '../accounts';
 describe('accounts reducer', () => {
   it('should return the initial state', () => {
     expect(reducer(undefined, {})).toEqual(ImmutableMap());
+  });
+
+  describe('ACCOUNT_IMPORT', () => {
+    it('parses the account as a Record', () => {
+      const account = require('soapbox/__fixtures__/pleroma-account.json');
+      const action = { type: ACCOUNT_IMPORT, account };
+      const result = reducer(undefined, action).get('9v5bmRalQvjOy0ECcC');
+
+      expect(Record.isRecord(result)).toBe(true);
+    });
   });
 
   // fails to add normalized accounts to state

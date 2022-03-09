@@ -1,3 +1,5 @@
+import { Record } from 'immutable';
+
 import { INSTANCE_REMEMBER_SUCCESS } from 'soapbox/actions/instance';
 
 import reducer from '../instance';
@@ -23,6 +25,7 @@ describe('instance reducer', () => {
       version: '0.0.0',
     };
 
+    expect(Record.isRecord(result)).toBe(true);
     expect(result.toJS()).toMatchObject(expected);
   });
 
