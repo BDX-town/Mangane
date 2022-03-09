@@ -1,5 +1,6 @@
 import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
 
+import { IStatus } from 'soapbox/types';
 import { accountToMention } from 'soapbox/utils/accounts';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
@@ -56,7 +57,7 @@ const basePoll = ImmutableMap({
 
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
-const normalizeAttachment = attachment => {
+const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
   const url = [
     attachment.get('url'),
     attachment.get('preview_url'),
@@ -72,14 +73,14 @@ const normalizeAttachment = attachment => {
   return attachment.mergeWith(mergeDefined, base);
 };
 
-const normalizeAttachments = status => {
+const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   return status.update('media_attachments', ImmutableList(), attachments => {
     return attachments.map(normalizeAttachment);
   });
 };
 
 // Normalize mentions
-const normalizeMention = mention => {
+const normalizeMention = (mention: ImmutableMap<string, any>) => {
   const base = ImmutableMap({
     acct: '',
     username: (mention.get('acct') || '').split('@')[0],
@@ -89,22 +90,22 @@ const normalizeMention = mention => {
   return mention.mergeWith(mergeDefined, base);
 };
 
-const normalizeMentions = status => {
+const normalizeMentions = (status: ImmutableMap<string, any>) => {
   return status.update('mentions', ImmutableList(), mentions => {
     return mentions.map(normalizeMention);
   });
 };
 
 // Normalize poll option
-const normalizePollOption = option => {
+const normalizePollOption = (option: ImmutableMap<string, any>) => {
   return option.mergeWith(mergeDefined, basePollOption);
 };
 
 // Normalize poll
-const normalizePoll = status => {
+const normalizePoll = (status: ImmutableMap<string, any>) => {
   if (status.hasIn(['poll', 'options'])) {
     return status.update('poll', ImmutableMap(), poll => {
-      return poll.mergeWith(mergeDefined, basePoll).update('options', options => {
+      return poll.mergeWith(mergeDefined, basePoll).update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
         return options.map(normalizePollOption);
       });
     });
@@ -113,12 +114,12 @@ const normalizePoll = status => {
   }
 };
 // Fix order of mentions
-const fixMentionsOrder = status => {
+const fixMentionsOrder = (status: ImmutableMap<string, any>) => {
   const mentions = status.get('mentions', ImmutableList());
   const inReplyToAccountId = status.get('in_reply_to_account_id');
 
   // Sort the replied-to mention to the top
-  const sorted = mentions.sort((a, b) => {
+  const sorted = mentions.sort((a: ImmutableMap<string, any>, _b: ImmutableMap<string, any>) => {
     if (a.get('id') === inReplyToAccountId) {
       return -1;
     } else {
@@ -130,7 +131,7 @@ const fixMentionsOrder = status => {
 };
 
 // Add self to mentions if it's a reply to self
-const addSelfMention = status => {
+const addSelfMention = (status: ImmutableMap<string, any>) => {
   const accountId = status.getIn(['account', 'id']);
 
   const isSelfReply = accountId === status.get('in_reply_to_account_id');
@@ -147,14 +148,14 @@ const addSelfMention = status => {
 };
 
 // Move the quote to the top-level
-const fixQuote = status => {
+const fixQuote = (status: ImmutableMap<string, any>) => {
   return status.withMutations(status => {
     status.update('quote', quote => quote || status.getIn(['pleroma', 'quote']) || null);
     status.deleteIn(['pleroma', 'quote']);
   });
 };
 
-export const normalizeStatus = status => {
+export const normalizeStatus = (status: ImmutableMap<any, string>): IStatus => {
   return StatusRecord(
     status.withMutations(status => {
       normalizeAttachments(status);
