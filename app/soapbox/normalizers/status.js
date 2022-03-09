@@ -1,32 +1,45 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
 
 import { accountToMention } from 'soapbox/utils/accounts';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
-// Some backends can return null, or omit these required fields
-const baseStatus = ImmutableMap({
+const StatusRecord = Record({
+  account: ImmutableMap(),
   application: null,
   bookmarked: false,
   card: null,
+  content: '',
   created_at: new Date(),
   emojis: ImmutableList(),
   favourited: false,
   favourites_count: 0,
   in_reply_to_account_id: null,
   in_reply_to_id: null,
+  id: '',
   language: null,
+  media_attachments: ImmutableList(),
   mentions: ImmutableList(),
   muted: false,
   pinned: false,
+  pleroma: ImmutableMap(),
+  poll: null,
+  quote: null,
   reblog: null,
   reblogged: false,
   reblogs_count: 0,
   replies_count: 0,
+  sensitive: false,
   spoiler_text: '',
   tags: ImmutableList(),
   uri: '',
   url: '',
   visibility: 'public',
+
+  // Internal fields
+  contentHtml: '',
+  hidden: false,
+  search_index: '',
+  spoilerHtml: '',
 });
 
 const basePollOption = ImmutableMap({ title: '', votes_count: 0 });
@@ -40,11 +53,6 @@ const basePoll = ImmutableMap({
   voters_count: 0,
   votes_count: 0,
 });
-
-// Merge base status
-const mergeBase = status => {
-  return status.mergeDeepWith(mergeDefined, baseStatus);
-};
 
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
@@ -147,13 +155,14 @@ const fixQuote = status => {
 };
 
 export const normalizeStatus = status => {
-  return status.withMutations(status => {
-    mergeBase(status);
-    normalizeAttachments(status);
-    normalizeMentions(status);
-    normalizePoll(status);
-    fixMentionsOrder(status);
-    addSelfMention(status);
-    fixQuote(status);
-  });
+  return StatusRecord(
+    status.withMutations(status => {
+      normalizeAttachments(status);
+      normalizeMentions(status);
+      normalizePoll(status);
+      fixMentionsOrder(status);
+      addSelfMention(status);
+      fixQuote(status);
+    }),
+  );
 };

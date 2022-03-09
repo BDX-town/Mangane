@@ -89,8 +89,7 @@ const fixQuote = (status, oldStatus) => {
 const fixStatus = (state, status, expandSpoilers) => {
   const oldStatus = state.get(status.get('id'));
 
-  return status.withMutations(status => {
-    normalizeStatus(status);
+  return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus, expandSpoilers);
     minifyStatus(status);

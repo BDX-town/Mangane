@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Record } from 'immutable';
 
 import { INSTANCE_REMEMBER_SUCCESS } from 'soapbox/actions/instance';
 
@@ -6,22 +6,27 @@ import reducer from '../instance';
 
 describe('instance reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
+    const result = reducer(undefined, {});
+
+    const expected = {
       description_limit: 1500,
-      configuration: ImmutableMap({
-        statuses: ImmutableMap({
+      configuration: {
+        statuses: {
           max_characters: 500,
           max_media_attachments: 4,
-        }),
-        polls: ImmutableMap({
+        },
+        polls: {
           max_options: 4,
           max_characters_per_option: 25,
           min_expiration: 300,
           max_expiration: 2629746,
-        }),
-      }),
+        },
+      },
       version: '0.0.0',
-    }));
+    };
+
+    expect(Record.isRecord(result)).toBe(true);
+    expect(result.toJS()).toMatchObject(expected);
   });
 
   describe('INSTANCE_REMEMBER_SUCCESS', () => {

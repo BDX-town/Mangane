@@ -1,4 +1,4 @@
-import { Map as ImmutableMap, fromJS } from 'immutable';
+import { Map as ImmutableMap, Record, fromJS } from 'immutable';
 
 import { STATUS_IMPORT } from 'soapbox/actions/importer';
 import {
@@ -14,6 +14,14 @@ describe('statuses reducer', () => {
   });
 
   describe('STATUS_IMPORT', () => {
+    it('parses the status as a Record', () => {
+      const status = require('soapbox/__fixtures__/pleroma-quote-post.json');
+      const action = { type: STATUS_IMPORT, status };
+      const result = reducer(undefined, action).get('AFmFMSpITT9xcOJKcK');
+
+      expect(Record.isRecord(result)).toBe(true);
+    });
+
     it('fixes the order of mentions', () => {
       const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
       const action = { type: STATUS_IMPORT, status };

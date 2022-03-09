@@ -40,17 +40,8 @@ import {
 
 const initialState = ImmutableMap();
 
-const minifyAccount = account => {
-  return account.deleteAll([
-    'followers_count',
-    'following_count',
-    'statuses_count',
-    'source',
-  ]);
-};
-
 const fixAccount = (state, account) => {
-  const normalized = minifyAccount(normalizeAccount(fromJS(account)));
+  const normalized = normalizeAccount(fromJS(account));
   return state.set(account.id, normalized);
 };
 
@@ -125,20 +116,15 @@ const removePermission = (state, accountIds, permissionGroup) => {
   });
 };
 
-const buildAccount = adminUser => fromJS({
+const buildAccount = adminUser => normalizeAccount(fromJS({
   id: adminUser.get('id'),
   username: adminUser.get('nickname').split('@')[0],
   acct: adminUser.get('nickname'),
   display_name: adminUser.get('display_name'),
   display_name_html: adminUser.get('display_name'),
-  note: '',
   url: adminUser.get('url'),
   avatar: adminUser.get('avatar'),
   avatar_static: adminUser.get('avatar'),
-  header: '',
-  header_static: '',
-  emojis: [],
-  fields: [],
   created_at: adminUser.get('created_at'),
   pleroma: {
     is_active: adminUser.get('is_active'),
@@ -153,7 +139,7 @@ const buildAccount = adminUser => fromJS({
     },
   },
   should_refetch: true,
-});
+}));
 
 const mergeAdminUser = (account, adminUser) => {
   return account.withMutations(account => {

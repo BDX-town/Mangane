@@ -1,16 +1,20 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
-const baseInstance = ImmutableMap({
-  description_limit: 1500,
+const InstanceRecord = Record({
+  approval_required: false,
+  contact_account: ImmutableMap(),
   configuration: ImmutableMap({
-    statuses: ImmutableMap({
-      max_characters: 500,
-      max_media_attachments: 4,
+    media_attachments: ImmutableMap({
+      image_size_limit: 10485760,
+      image_matrix_limit: 16777216,
+      video_size_limit: 41943040,
+      video_frame_rate_limit: 60,
+      video_matrix_limit: 2304000,
     }),
     polls: ImmutableMap({
       max_options: 4,
@@ -18,7 +22,38 @@ const baseInstance = ImmutableMap({
       min_expiration: 300,
       max_expiration: 2629746,
     }),
+    statuses: ImmutableMap({
+      max_characters: 500,
+      max_media_attachments: 4,
+    }),
   }),
+  description: '',
+  description_limit: 1500,
+  email: '',
+  fedibird_capabilities: ImmutableList(),
+  invites_enabled: false,
+  languages: ImmutableList(),
+  pleroma: ImmutableMap({
+    metadata: ImmutableMap({
+      account_activation_required: false,
+      birthday_min_age: 0,
+      birthday_required: false,
+      features: ImmutableList(),
+      federation: ImmutableMap({
+        enabled: true,
+        exclusions: false,
+      }),
+    }),
+    stats: ImmutableMap(),
+  }),
+  registrations: false,
+  rules: ImmutableList(),
+  short_description: '',
+  stats: ImmutableMap(),
+  title: '',
+  thumbnail: '',
+  uri: '',
+  urls: ImmutableMap(),
   version: '0.0.0',
 });
 
@@ -45,19 +80,21 @@ export const normalizeInstance = instance => {
   const { software } = parseVersion(instance.get('version'));
   const mastodonConfig = pleromaToMastodonConfig(instance);
 
-  return instance.withMutations(instance => {
-    // Merge configuration
-    instance.update('configuration', ImmutableMap(), configuration => (
-      configuration.mergeDeepWith(mergeDefined, mastodonConfig)
-    ));
+  return InstanceRecord(
+    instance.withMutations(instance => {
+      // Merge configuration
+      instance.update('configuration', ImmutableMap(), configuration => (
+        configuration.mergeDeepWith(mergeDefined, mastodonConfig)
+      ));
 
-    // If max attachments isn't set, check the backend software
-    instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
-      return isNumber(value) ? value : getAttachmentLimit(software);
-    });
+      // If max attachments isn't set, check the backend software
+      instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
+        return isNumber(value) ? value : getAttachmentLimit(software);
+      });
 
-    // Merge defaults & cleanup
-    instance.mergeDeepWith(mergeDefined, baseInstance);
-    instance.deleteAll(['max_toot_chars', 'poll_limits']);
-  });
+      // Merge defaults & cleanup
+      instance.mergeDeepWith(mergeDefined, InstanceRecord());
+      instance.deleteAll(['max_toot_chars', 'poll_limits']);
+    }),
+  );
 };

@@ -4,25 +4,60 @@ import { normalizeInstance } from '../instance';
 
 describe('normalizeInstance()', () => {
   it('normalizes an empty Map', () => {
-    const expected = ImmutableMap({
-      description_limit: 1500,
-      configuration: ImmutableMap({
-        statuses: ImmutableMap({
-          max_characters: 500,
-          max_media_attachments: 4,
-        }),
-        polls: ImmutableMap({
+    const expected = {
+      approval_required: false,
+      contact_account: {},
+      configuration: {
+        media_attachments: {
+          image_size_limit: 10485760,
+          image_matrix_limit: 16777216,
+          video_size_limit: 41943040,
+          video_frame_rate_limit: 60,
+          video_matrix_limit: 2304000,
+        },
+        polls: {
           max_options: 4,
           max_characters_per_option: 25,
           min_expiration: 300,
           max_expiration: 2629746,
-        }),
-      }),
+        },
+        statuses: {
+          max_characters: 500,
+          max_media_attachments: 4,
+        },
+      },
+      description: '',
+      description_limit: 1500,
+      email: '',
+      fedibird_capabilities: [],
+      invites_enabled: false,
+      languages: [],
+      pleroma: {
+        metadata: {
+          account_activation_required: false,
+          birthday_min_age: 0,
+          birthday_required: false,
+          features: [],
+          federation: {
+            enabled: true,
+            exclusions: false,
+          },
+        },
+        stats: {},
+      },
+      registrations: false,
+      rules: [],
+      short_description: '',
+      stats: {},
+      title: '',
+      thumbnail: '',
+      uri: '',
+      urls: {},
       version: '0.0.0',
-    });
+    };
 
     const result = normalizeInstance(ImmutableMap());
-    expect(result).toEqual(expected);
+    expect(result.toJS()).toEqual(expected);
   });
 
   it('normalizes Pleroma instance with Mastodon configuration format', () => {
@@ -104,10 +139,10 @@ describe('normalizeInstance()', () => {
     const result = normalizeInstance(instance);
 
     // Sets description_limit
-    expect(result.get('description_limit')).toEqual(1500);
+    expect(result.description_limit).toEqual(1500);
 
-    // But otherwise, it's the same
-    expect(result.delete('description_limit')).toEqual(instance);
+    // Preserves fedibird_capabilities
+    expect(result.fedibird_capabilities).toEqual(instance.get('fedibird_capabilities'));
   });
 
   it('normalizes Mitra instance', () => {
