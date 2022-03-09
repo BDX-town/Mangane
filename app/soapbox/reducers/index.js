@@ -1,4 +1,4 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 import { combineReducers } from 'redux-immutable';
 
 import { AUTH_LOGGED_OUT } from 'soapbox/actions/auth';
@@ -58,7 +58,7 @@ import timelines from './timelines';
 import trends from './trends';
 import user_lists from './user_lists';
 
-const appReducer = combineReducers({
+const reducers = {
   dropdown_menu,
   timelines,
   meta,
@@ -113,13 +113,23 @@ const appReducer = combineReducers({
   pending_statuses,
   aliases,
   accounts_meta,
-});
+};
+
+// Build a default state from all reducers: it has the key and `undefined`
+const StateRecord = ImmutableRecord(
+  Object.keys(reducers).reduce((params, reducer) => {
+    params[reducer] = undefined;
+    return params;
+  }, {}),
+);
+
+const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out
-const logOut = (state = ImmutableMap()) => {
+const logOut = (state = StateRecord()) => {
   const whitelist = ['instance', 'soapbox', 'custom_emojis', 'auth'];
 
-  return ImmutableMap(
+  return StateRecord(
     whitelist.reduce((acc, curr) => {
       acc[curr] = state.get(curr);
       return acc;
