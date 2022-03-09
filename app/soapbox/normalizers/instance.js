@@ -1,11 +1,15 @@
-import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Record as ImmutableRecord,
+} from 'immutable';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
-const InstanceRecord = Record({
+const InstanceRecord = ImmutableRecord({
   approval_required: false,
   contact_account: ImmutableMap(),
   configuration: ImmutableMap({

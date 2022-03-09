@@ -1,9 +1,13 @@
-import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Record as ImmutableRecord,
+} from 'immutable';
 
 import { IAccount } from 'soapbox/types';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
-const AccountRecord = Record({
+const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',

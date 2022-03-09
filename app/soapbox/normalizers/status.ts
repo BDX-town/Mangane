@@ -1,10 +1,14 @@
-import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Record as ImmutableRecord,
+} from 'immutable';
 
 import { IStatus } from 'soapbox/types';
 import { accountToMention } from 'soapbox/utils/accounts';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
-const StatusRecord = Record({
+const StatusRecord = ImmutableRecord({
   account: ImmutableMap(),
   application: null,
   bookmarked: false,
