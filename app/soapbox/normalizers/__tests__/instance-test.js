@@ -32,7 +32,19 @@ describe('normalizeInstance()', () => {
       fedibird_capabilities: [],
       invites_enabled: false,
       languages: [],
-      pleroma: {},
+      pleroma: {
+        metadata: {
+          account_activation_required: false,
+          birthday_min_age: 0,
+          birthday_required: false,
+          features: [],
+          federation: {
+            enabled: true,
+            exclusions: false,
+          },
+        },
+        stats: {},
+      },
       registrations: false,
       rules: [],
       short_description: '',

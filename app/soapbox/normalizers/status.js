@@ -8,6 +8,7 @@ const StatusRecord = Record({
   application: null,
   bookmarked: false,
   card: null,
+  content: '',
   created_at: new Date(),
   emojis: ImmutableList(),
   favourited: false,
