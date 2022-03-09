@@ -8,13 +8,7 @@ describe('normalizeInstance()', () => {
       approval_required: false,
       contact_account: {},
       configuration: {
-        media_attachments: {
-          image_size_limit: 10485760,
-          image_matrix_limit: 16777216,
-          video_size_limit: 41943040,
-          video_frame_rate_limit: 60,
-          video_matrix_limit: 2304000,
-        },
+        media_attachments: {},
         polls: {
           max_options: 4,
           max_characters_per_option: 25,
@@ -48,7 +42,11 @@ describe('normalizeInstance()', () => {
       registrations: false,
       rules: [],
       short_description: '',
-      stats: {},
+      stats: {
+        domain_count: 0,
+        status_count: 0,
+        user_count: 0,
+      },
       title: '',
       thumbnail: '',
       uri: '',

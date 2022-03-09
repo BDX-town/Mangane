@@ -13,13 +13,7 @@ const InstanceRecord = ImmutableRecord({
   approval_required: false,
   contact_account: ImmutableMap(),
   configuration: ImmutableMap({
-    media_attachments: ImmutableMap({
-      image_size_limit: 10485760,
-      image_matrix_limit: 16777216,
-      video_size_limit: 41943040,
-      video_frame_rate_limit: 60,
-      video_matrix_limit: 2304000,
-    }),
+    media_attachments: ImmutableMap(),
     polls: ImmutableMap({
       max_options: 4,
       max_characters_per_option: 25,
@@ -53,7 +47,11 @@ const InstanceRecord = ImmutableRecord({
   registrations: false,
   rules: ImmutableList(),
   short_description: '',
-  stats: ImmutableMap(),
+  stats: ImmutableMap({
+    domain_count: 0,
+    status_count: 0,
+    user_count: 0,
+  }),
   title: '',
   thumbnail: '',
   uri: '',
