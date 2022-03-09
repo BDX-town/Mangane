@@ -2,6 +2,44 @@ import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
 
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
+interface Account {
+  acct: string;
+  avatar: string;
+  avatar_static: string;
+  birthday: Date | undefined;
+  bot: boolean;
+  created_at: Date;
+  display_name: string;
+  emojis: ImmutableList<any>;
+  fields: ImmutableList<any>;
+  followers_count: number;
+  following_count: number;
+  fqn: string;
+  header: string;
+  header_static: string;
+  id: string;
+  last_status_at: Date;
+  location: string;
+  locked: boolean;
+  moved: null;
+  note: string;
+  pleroma: ImmutableMap<any, any>;
+  source: ImmutableMap<any, any>;
+  statuses_count: number;
+  uri: string;
+  url: string;
+  username: string;
+  verified: boolean;
+
+  // Internal fields
+  display_name_html: string;
+  note_emojified: string;
+  note_plain: string;
+  patron: ImmutableMap<any, any>;
+  relationship: ImmutableList<any>;
+  should_refetch: boolean;
+}
+
 const AccountRecord = Record({
   acct: '',
   avatar: '',
@@ -41,8 +79,8 @@ const AccountRecord = Record({
 });
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
-const normalizePleromaLegacyFields = account => {
-  return account.update('pleroma', ImmutableMap(), pleroma => {
+const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
+  return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {
       const legacy = ImmutableMap({
         is_active: !pleroma.get('deactivated'),
@@ -57,7 +95,7 @@ const normalizePleromaLegacyFields = account => {
 };
 
 // Normalize Pleroma/Fedibird birthday
-const normalizeBirthday = account => {
+const normalizeBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = [
     account.getIn(['pleroma', 'birthday']),
     account.getIn(['other_settings', 'birthday']),
@@ -66,18 +104,24 @@ const normalizeBirthday = account => {
   return account.set('birthday', birthday);
 };
 
+// Get Pleroma tags
+const getTags = (account: ImmutableMap<string, any>): ImmutableList<any> => {
+  const tags = account.getIn(['pleroma', 'tags']);
+  return ImmutableList(ImmutableList.isList(tags) ? tags : []);
+};
+
 // Normalize Truth Social/Pleroma verified
-const normalizeVerified = account => {
+const normalizeVerified = (account: ImmutableMap<string, any>) => {
   return account.update('verified', verified => {
     return [
       verified === true,
-      account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified'),
+      getTags(account).includes('verified'),
     ].some(Boolean);
   });
 };
 
 // Normalize Fedibird/Truth Social location
-const normalizeLocation = account => {
+const normalizeLocation = (account: ImmutableMap<string, any>) => {
   return account.update('location', location => {
     return [
       location,
@@ -86,7 +130,7 @@ const normalizeLocation = account => {
   });
 };
 
-export const normalizeAccount = account => {
+export const normalizeAccount = (account: ImmutableMap<string, any>): Account => {
   return AccountRecord(
     account.withMutations(account => {
       normalizePleromaLegacyFields(account);
