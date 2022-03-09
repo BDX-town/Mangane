@@ -33,6 +33,12 @@ const StatusRecord = Record({
   uri: '',
   url: '',
   visibility: 'public',
+
+  // Internal fields
+  contentHtml: '',
+  hidden: false,
+  search_index: '',
+  spoilerHtml: '',
 });
 
 const basePollOption = ImmutableMap({ title: '', votes_count: 0 });

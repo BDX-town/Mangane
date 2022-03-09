@@ -1,6 +1,42 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
 
 import { mergeDefined } from 'soapbox/utils/normalizers';
+
+const AccountRecord = Record({
+  acct: '',
+  avatar: '',
+  avatar_static: '',
+  birthday: undefined,
+  bot: false,
+  created_at: new Date(),
+  display_name: '',
+  emojis: ImmutableList(),
+  fields: ImmutableList(),
+  followers_count: 0,
+  following_count: 0,
+  fqn: '',
+  header: '',
+  header_static: '',
+  id: '',
+  last_status_at: new Date(),
+  location: '',
+  locked: false,
+  moved: null,
+  note: '',
+  pleroma: ImmutableMap(),
+  source: ImmutableMap(),
+  statuses_count: 0,
+  uri: '',
+  url: '',
+  username: '',
+  verified: false,
+
+  // Internal fields
+  display_name_html: '',
+  note_emojified: '',
+  note_plain: '',
+  should_refetch: false,
+});
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
 const normalizePleromaLegacyFields = account => {
@@ -49,10 +85,12 @@ const normalizeLocation = account => {
 };
 
 export const normalizeAccount = account => {
-  return account.withMutations(account => {
-    normalizePleromaLegacyFields(account);
-    normalizeVerified(account);
-    normalizeBirthday(account);
-    normalizeLocation(account);
-  });
+  return AccountRecord(
+    account.withMutations(account => {
+      normalizePleromaLegacyFields(account);
+      normalizeVerified(account);
+      normalizeBirthday(account);
+      normalizeLocation(account);
+    }),
+  );
 };
