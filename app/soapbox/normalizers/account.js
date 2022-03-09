@@ -35,6 +35,8 @@ const AccountRecord = Record({
   display_name_html: '',
   note_emojified: '',
   note_plain: '',
+  patron: ImmutableMap(),
+  relationship: ImmutableList(),
   should_refetch: false,
 });
 
