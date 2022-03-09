@@ -116,7 +116,7 @@ class EditProfile extends ImmutablePureComponent {
     const birthday = account.get('birthday');
     const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
-    const initialState = account.withMutations(map => {
+    const initialState = ImmutableMap(account).withMutations(map => {
       map.merge(map.get('source'));
       map.delete('source');
       map.set('fields', normalizeFields(map.get('fields'), Math.min(maxFields, 4)));
