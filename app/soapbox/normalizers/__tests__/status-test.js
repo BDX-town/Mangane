@@ -147,7 +147,7 @@ describe('normalizeStatus', () => {
       multiple: false,
       voters_count: 0,
       votes_count: 0,
-      own_votes: [],
+      own_votes: null,
       voted: false,
     };
 
@@ -163,6 +163,6 @@ describe('normalizeStatus', () => {
 
     // Adds logged-in fields
     expect(result.poll.voted).toBe(false);
-    expect(result.poll.own_votes).toEqual(fromJS([]));
+    expect(result.poll.own_votes).toBe(null);
   });
 });

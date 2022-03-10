@@ -57,11 +57,12 @@ const PollRecord = ImmutableRecord({
   emojis: ImmutableList(),
   expired: false,
   expires_at: new Date(),
+  id: '',
   multiple: false,
   options: ImmutableList(),
   voters_count: 0,
   votes_count: 0,
-  own_votes: ImmutableList(),
+  own_votes: null,
   voted: false,
 });
 
@@ -106,14 +107,42 @@ const normalizeMentions = (status: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize poll
-const normalizePoll = (status: ImmutableMap<string, any>) => {
+// Normalize poll options
+const normalizePollOptions = (poll: ImmutableMap<string, any>) => {
+  return poll.update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
+    return options.map(PollOptionRecord);
+  });
+};
+
+// Normalize own_votes to `null` if empty (like Mastodon)
+const normalizePollOwnVotes = (poll: ImmutableMap<string, any>) => {
+  return poll.update('own_votes', ownVotes => {
+    return ownVotes?.size > 0 ? ownVotes : null;
+  });
+};
+
+// Whether the user voted in the poll
+const normalizePollVoted = (poll: ImmutableMap<string, any>) => {
+  return poll.update('voted', voted => {
+    return typeof voted === 'boolean' ? voted : poll.get('own_votes')?.size > 0;
+  });
+};
+
+// Normalize the actual poll
+const normalizePoll = (poll: ImmutableMap<string, any>) => {
+  return PollRecord(
+    poll.withMutations((poll: ImmutableMap<string, any>) => {
+      normalizePollOptions(poll);
+      normalizePollOwnVotes(poll);
+      normalizePollVoted(poll);
+    }),
+  );
+};
+
+// Normalize the poll in the status, if applicable
+const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
   if (status.hasIn(['poll', 'options'])) {
-    return status.update('poll', ImmutableMap(), poll => {
-      return PollRecord(poll).update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
-        return options.map(PollOptionRecord);
-      });
-    });
+    return status.update('poll', ImmutableMap(), normalizePoll);
   } else {
     return status.set('poll', null);
   }
@@ -161,12 +190,12 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeStatus = (status: ImmutableMap<any, string>): IStatus => {
+export const normalizeStatus = (status: ImmutableMap<string, any>): IStatus => {
   return StatusRecord(
     status.withMutations(status => {
       normalizeAttachments(status);
       normalizeMentions(status);
-      normalizePoll(status);
+      normalizeStatusPoll(status);
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);

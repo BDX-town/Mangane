@@ -24,7 +24,7 @@ describe('polls reducer', () => {
           multiple: false,
           voters_count: 0,
           votes_count: 0,
-          own_votes: [],
+          own_votes: null,
           voted: false,
         },
       };
