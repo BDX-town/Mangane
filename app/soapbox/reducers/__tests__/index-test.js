@@ -7,6 +7,6 @@ describe('root reducer', () => {
     const result = reducer(undefined, {});
     expect(ImmutableRecord.isRecord(result)).toBe(true);
     expect(result.accounts.get('')).toBe(undefined);
-    expect(result.instance.get('version')).toEqual('0.0.0');
+    expect(result.instance.version).toEqual('0.0.0');
   });
 });

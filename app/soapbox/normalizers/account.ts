@@ -1,8 +1,13 @@
-import { Map as ImmutableMap, List as ImmutableList, Record } from 'immutable';
+import {
+  Map as ImmutableMap,
+  List as ImmutableList,
+  Record as ImmutableRecord,
+} from 'immutable';
 
+import { IAccount } from 'soapbox/types';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
-const AccountRecord = Record({
+const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
@@ -41,8 +46,8 @@ const AccountRecord = Record({
 });
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
-const normalizePleromaLegacyFields = account => {
-  return account.update('pleroma', ImmutableMap(), pleroma => {
+const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
+  return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
     return pleroma.withMutations(pleroma => {
       const legacy = ImmutableMap({
         is_active: !pleroma.get('deactivated'),
@@ -57,7 +62,7 @@ const normalizePleromaLegacyFields = account => {
 };
 
 // Normalize Pleroma/Fedibird birthday
-const normalizeBirthday = account => {
+const normalizeBirthday = (account: ImmutableMap<string, any>) => {
   const birthday = [
     account.getIn(['pleroma', 'birthday']),
     account.getIn(['other_settings', 'birthday']),
@@ -66,18 +71,24 @@ const normalizeBirthday = account => {
   return account.set('birthday', birthday);
 };
 
+// Get Pleroma tags
+const getTags = (account: ImmutableMap<string, any>): ImmutableList<any> => {
+  const tags = account.getIn(['pleroma', 'tags']);
+  return ImmutableList(ImmutableList.isList(tags) ? tags : []);
+};
+
 // Normalize Truth Social/Pleroma verified
-const normalizeVerified = account => {
+const normalizeVerified = (account: ImmutableMap<string, any>) => {
   return account.update('verified', verified => {
     return [
       verified === true,
-      account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified'),
+      getTags(account).includes('verified'),
     ].some(Boolean);
   });
 };
 
 // Normalize Fedibird/Truth Social location
-const normalizeLocation = account => {
+const normalizeLocation = (account: ImmutableMap<string, any>) => {
   return account.update('location', location => {
     return [
       location,
@@ -86,7 +97,7 @@ const normalizeLocation = account => {
   });
 };
 
-export const normalizeAccount = account => {
+export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount => {
   return AccountRecord(
     account.withMutations(account => {
       normalizePleromaLegacyFields(account);
