@@ -32,30 +32,34 @@ describe('normalizeStatus', () => {
   it('adds mention to self in self-reply on Mastodon', () => {
     const status = fromJS(require('soapbox/__fixtures__/mastodon-reply-to-self.json'));
 
-    const expected = fromJS([{
+    const expected = {
       id: '106801667066418367',
       username: 'benis911',
       acct: 'benis911',
       url: 'https://mastodon.social/@benis911',
-    }]);
+    };
 
-    const result = normalizeStatus(status).get('mentions');
+    const result = normalizeStatus(status).mentions;
 
-    expect(result).toEqual(expected);
+    expect(result.size).toBe(1);
+    expect(result.get(0).toJS()).toMatchObject(expected);
+    expect(result.get(0).id).toEqual('106801667066418367');
+    expect(ImmutableRecord.isRecord(result.get(0))).toBe(true);
   });
 
   it('normalizes mentions with only acct', () => {
     const status = fromJS({ mentions: [{ acct: 'alex@gleasonator.com' }] });
 
-    const expected = fromJS([{
+    const expected = [{
+      id: '',
       acct: 'alex@gleasonator.com',
       username: 'alex',
       url: '',
-    }]);
+    }];
 
     const result = normalizeStatus(status).get('mentions');
 
-    expect(result).toEqual(expected);
+    expect(result.toJS()).toEqual(expected);
   });
 
   it('normalizes Mitra attachments', () => {

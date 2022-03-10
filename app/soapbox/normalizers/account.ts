@@ -97,6 +97,13 @@ const normalizeLocation = (account: ImmutableMap<string, any>) => {
   });
 };
 
+// Set username from acct, if applicable
+const fixUsername = (account: ImmutableMap<string, any>) => {
+  return account.update('username', username => (
+    username || (account.get('acct') || '').split('@')[0]
+  ));
+};
+
 export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount => {
   return AccountRecord(
     account.withMutations(account => {
@@ -104,6 +111,7 @@ export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount =
       normalizeVerified(account);
       normalizeBirthday(account);
       normalizeLocation(account);
+      fixUsername(account);
     }),
   );
 };

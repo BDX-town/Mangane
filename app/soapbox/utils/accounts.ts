@@ -62,12 +62,3 @@ export const isLocal = (account: ImmutableMap<string, any>): boolean => {
 };
 
 export const isRemote = (account: ImmutableMap<string, any>): boolean => !isLocal(account);
-
-export const accountToMention = (account: ImmutableMap<string, any>): ImmutableMap<string, any> => {
-  return ImmutableMap({
-    id: account.get('id'),
-    username: account.get('username'),
-    acct: account.get('acct'),
-    url: account.get('url'),
-  });
-};

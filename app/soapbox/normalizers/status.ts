@@ -4,8 +4,8 @@ import {
   Record as ImmutableRecord,
 } from 'immutable';
 
+import { normalizeAccount } from 'soapbox/normalizers/account';
 import { IStatus } from 'soapbox/types';
-import { accountToMention } from 'soapbox/utils/accounts';
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
 const StatusRecord = ImmutableRecord({
@@ -79,6 +79,14 @@ const AttachmentRecord = ImmutableRecord({
   url: '',
 });
 
+// https://docs.joinmastodon.org/entities/mention/
+const MentionRecord = ImmutableRecord({
+  id: '',
+  acct: '',
+  username: '',
+  url: '',
+});
+
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
@@ -104,13 +112,7 @@ const normalizeAttachments = (status: ImmutableMap<string, any>) => {
 
 // Normalize mentions
 const normalizeMention = (mention: ImmutableMap<string, any>) => {
-  const base = ImmutableMap({
-    acct: '',
-    username: (mention.get('acct') || '').split('@')[0],
-    url: '',
-  });
-
-  return mention.mergeWith(mergeDefined, base);
+  return MentionRecord(normalizeAccount(mention));
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
@@ -184,8 +186,8 @@ const addSelfMention = (status: ImmutableMap<string, any>) => {
   const isSelfReply = accountId === status.get('in_reply_to_account_id');
   const hasSelfMention = accountId === status.getIn(['mentions', 0, 'id']);
 
-  if (isSelfReply && !hasSelfMention) {
-    const mention = accountToMention(status.get('account'));
+  if (isSelfReply && !hasSelfMention && accountId) {
+    const mention = normalizeMention(status.get('account'));
     return status.update('mentions', ImmutableList(), mentions => (
       ImmutableList([mention]).concat(mentions)
     ));
