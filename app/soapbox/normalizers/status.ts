@@ -47,16 +47,22 @@ const StatusRecord = ImmutableRecord({
   spoilerHtml: '',
 });
 
-const basePollOption = ImmutableMap({ title: '', votes_count: 0 });
+const PollOptionRecord = ImmutableRecord({
+  title: '',
+  votes_count: 0,
+});
 
-const basePoll = ImmutableMap({
+// https://docs.joinmastodon.org/entities/poll/
+const PollRecord = ImmutableRecord({
   emojis: ImmutableList(),
   expired: false,
-  expires_at: new Date(Date.now() + 1000 * (60 * 5)), // 5 minutes
+  expires_at: new Date(),
   multiple: false,
   options: ImmutableList(),
   voters_count: 0,
   votes_count: 0,
+  own_votes: ImmutableList(),
+  voted: false,
 });
 
 // Ensure attachments have required fields
@@ -100,23 +106,19 @@ const normalizeMentions = (status: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize poll option
-const normalizePollOption = (option: ImmutableMap<string, any>) => {
-  return option.mergeWith(mergeDefined, basePollOption);
-};
-
 // Normalize poll
 const normalizePoll = (status: ImmutableMap<string, any>) => {
   if (status.hasIn(['poll', 'options'])) {
     return status.update('poll', ImmutableMap(), poll => {
-      return poll.mergeWith(mergeDefined, basePoll).update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
-        return options.map(normalizePollOption);
+      return PollRecord(poll).update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
+        return options.map(PollOptionRecord);
       });
     });
   } else {
     return status.set('poll', null);
   }
 };
+
 // Fix order of mentions
 const fixMentionsOrder = (status: ImmutableMap<string, any>) => {
   const mentions = status.get('mentions', ImmutableList());
