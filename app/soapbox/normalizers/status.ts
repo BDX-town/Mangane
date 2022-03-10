@@ -66,6 +66,19 @@ const PollRecord = ImmutableRecord({
   voted: false,
 });
 
+// https://docs.joinmastodon.org/entities/attachment/
+const AttachmentRecord = ImmutableRecord({
+  blurhash: undefined,
+  description: '',
+  id: '',
+  meta: ImmutableMap(),
+  pleroma: ImmutableMap(),
+  preview_url: '',
+  remote_url: null,
+  type: 'unknown',
+  url: '',
+});
+
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
@@ -78,10 +91,9 @@ const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
   const base = ImmutableMap({
     url,
     preview_url: url,
-    remote_url: url,
   });
 
-  return attachment.mergeWith(mergeDefined, base);
+  return AttachmentRecord(attachment.mergeWith(mergeDefined, base));
 };
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
