@@ -1,8 +1,20 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import { POLLS_IMPORT } from 'soapbox/actions/importer';
+import { normalizeStatus } from 'soapbox/normalizers/status';
 
-const importPolls = (state, polls) => state.withMutations(map => polls.forEach(poll => map.set(poll.id, fromJS(poll))));
+// HOTFIX: Convert the poll into a fake status to normalize it...
+// TODO: get rid of POLLS_IMPORT and use STATUS_IMPORT here.
+const normalizePoll = poll => {
+  const status = fromJS({ poll });
+  return normalizeStatus(status).poll;
+};
+
+const importPolls = (state, polls) => {
+  return state.withMutations(map => {
+    return polls.forEach(poll => map.set(poll.id, normalizePoll(poll)));
+  });
+};
 
 const initialState = ImmutableMap();
 

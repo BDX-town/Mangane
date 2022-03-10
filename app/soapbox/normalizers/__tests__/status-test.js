@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable';
+import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeStatus } from '../status';
 
@@ -7,12 +7,13 @@ describe('normalizeStatus', () => {
     const status = fromJS({});
     const result = normalizeStatus(status);
 
-    expect(result.get('emojis')).toEqual(fromJS([]));
-    expect(result.get('favourites_count')).toBe(0);
-    expect(result.get('mentions')).toEqual(fromJS([]));
-    expect(result.get('reblog')).toBe(null);
-    expect(result.get('uri')).toBe('');
-    expect(result.get('visibility')).toBe('public');
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.emojis).toEqual(fromJS([]));
+    expect(result.favourites_count).toBe(0);
+    expect(result.mentions).toEqual(fromJS([]));
+    expect(result.reblog).toBe(null);
+    expect(result.uri).toBe('');
+    expect(result.visibility).toBe('public');
   });
 
   it('fixes the order of mentions', () => {
@@ -88,22 +89,22 @@ describe('normalizeStatus', () => {
 
     const result = normalizeStatus(status);
 
-    expect(result.get('media_attachments')).toEqual(expected);
+    expect(result.media_attachments).toEqual(expected);
   });
 
   it('leaves Pleroma attachments alone', () => {
     const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-attachments.json'));
     const result = normalizeStatus(status);
 
-    expect(status.get('media_attachments')).toEqual(result.get('media_attachments'));
+    expect(status.get('media_attachments')).toEqual(result.media_attachments);
   });
 
   it('normalizes Pleroma quote post', () => {
     const status = fromJS(require('soapbox/__fixtures__/pleroma-quote-post.json'));
     const result = normalizeStatus(status);
 
-    expect(result.get('quote')).toEqual(status.getIn(['pleroma', 'quote']));
-    expect(result.getIn(['pleroma', 'quote'])).toBe(undefined);
+    expect(result.quote).toEqual(status.getIn(['pleroma', 'quote']));
+    expect(result.pleroma.get('quote')).toBe(undefined);
   });
 
   it('normalizes GoToSocial status', () => {
@@ -119,7 +120,7 @@ describe('normalizeStatus', () => {
       quote: null,
     };
 
-    expect(result.toJS()).toMatchObject(missing);
+    expect(result).toMatchObject(missing);
   });
 
   it('normalizes Friendica status', () => {
@@ -132,7 +133,7 @@ describe('normalizeStatus', () => {
       quote: null,
     };
 
-    expect(result.toJS()).toMatchObject(missing);
+    expect(result).toMatchObject(missing);
   });
 
   it('normalizes poll and poll options', () => {
@@ -146,9 +147,22 @@ describe('normalizeStatus', () => {
       multiple: false,
       voters_count: 0,
       votes_count: 0,
+      own_votes: [],
+      voted: false,
     };
 
-    expect(result.get('poll').toJS()).toMatchObject(expected);
-    expect(result.getIn(['poll', 'expires_at']) instanceof Date).toBe(true);
+    expect(ImmutableRecord.isRecord(result.poll)).toBe(true);
+    expect(ImmutableRecord.isRecord(result.poll.options.get(0))).toBe(true);
+    expect(result.poll.toJS()).toMatchObject(expected);
+    expect(result.poll.expires_at instanceof Date).toBe(true);
+  });
+
+  it('normalizes a Pleroma logged-out poll', () => {
+    const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll.json'));
+    const result = normalizeStatus(status);
+
+    // Adds logged-in fields
+    expect(result.poll.voted).toBe(false);
+    expect(result.poll.own_votes).toEqual(fromJS([]));
   });
 });
