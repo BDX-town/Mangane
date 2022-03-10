@@ -105,7 +105,7 @@ class Poll extends ImmutablePureComponent {
     const percent = poll.get('votes_count') === 0 ? 0 : (option.get('votes_count') / poll.get('votes_count')) * 100;
     const leading = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') >= other.get('votes_count'));
     const active  = !!this.state.selected[`${optionIndex}`];
-    const voted   = option.get('voted') || (poll.get('own_votes') && poll.get('own_votes').includes(optionIndex));
+    const voted   = poll.own_votes?.includes(optionIndex);
 
     let titleEmojified = option.get('title_emojified');
     if (!titleEmojified) {
@@ -156,7 +156,7 @@ class Poll extends ImmutablePureComponent {
   }
 
   render() {
-    const { me, poll, intl } = this.props;
+    const { poll, intl } = this.props;
 
     if (!poll) {
       return null;
@@ -165,7 +165,7 @@ class Poll extends ImmutablePureComponent {
     const timeRemaining = poll.get('expired') ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.get('expires_at')} futureDate />;
     const showResults   = poll.get('voted') || poll.get('expired');
     const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
-    const voted         = me && poll.get('own_votes').size > 0;
+    const voted         = poll.voted;
 
     return (
       <div className={classNames('poll', { voted })}>
