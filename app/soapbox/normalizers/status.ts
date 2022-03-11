@@ -11,7 +11,7 @@ import { IStatus } from 'soapbox/types';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 const StatusRecord = ImmutableRecord({
-  account: ImmutableMap(),
+  account: null,
   application: null,
   bookmarked: false,
   card: null,
