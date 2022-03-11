@@ -137,8 +137,8 @@ const normalizeMentions = (status: ImmutableMap<string, any>) => {
 };
 
 // Normalize emojis
-const normalizeEmojis = (map: ImmutableMap<string, any>) => {
-  return map.update('emojis', ImmutableList(), emojis => {
+const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
+  return entity.update('emojis', ImmutableList(), emojis => {
     return emojis.map(EmojiRecord);
   });
 };
