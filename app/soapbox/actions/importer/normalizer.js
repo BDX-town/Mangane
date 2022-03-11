@@ -40,13 +40,3 @@ export function normalizeAccount(account) {
 
   return account;
 }
-
-export function normalizeChat(chat, normalOldChat) {
-  const normalChat   = { ...chat };
-  const { account, last_message: lastMessage } = chat;
-
-  if (account) normalChat.account = account.id;
-  if (lastMessage) normalChat.last_message = lastMessage.id;
-
-  return normalChat;
-}

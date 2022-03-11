@@ -9,8 +9,17 @@ import {
   CHAT_READ_SUCCESS,
   CHAT_READ_REQUEST,
 } from 'soapbox/actions/chats';
-import { normalizeChat } from 'soapbox/actions/importer/normalizer';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+
+const normalizeChat = (chat, normalOldChat) => {
+  const normalChat   = { ...chat };
+  const { account, last_message: lastMessage } = chat;
+
+  if (account) normalChat.account = account.id;
+  if (lastMessage) normalChat.last_message = lastMessage.id;
+
+  return normalChat;
+};
 
 const importChat = (state, chat) => state.setIn(['items', chat.id], fromJS(normalizeChat(chat)));
 
