@@ -41,20 +41,6 @@ export function normalizeAccount(account) {
   return account;
 }
 
-export function normalizePoll(poll) {
-  const normalPoll = { ...poll };
-
-  const emojiMap = makeEmojiMap(normalPoll);
-
-  normalPoll.options = poll.options.map((option, index) => ({
-    ...option,
-    voted: Boolean(poll.own_votes?.includes(index)),
-    title_emojified: emojify(escapeTextContentForBrowser(option.title), emojiMap),
-  }));
-
-  return normalPoll;
-}
-
 export function normalizeChat(chat, normalOldChat) {
   const normalChat   = { ...chat };
   const { account, last_message: lastMessage } = chat;

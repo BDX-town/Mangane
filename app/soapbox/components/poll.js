@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import escapeTextContentForBrowser from 'escape-html';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -10,7 +9,6 @@ import spring from 'react-motion/lib/spring';
 import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
-import emojify from 'soapbox/features/emoji/emoji';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
@@ -21,11 +19,6 @@ const messages = defineMessages({
   voted: { id: 'poll.voted', defaultMessage: 'You voted for this answer' },
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
-
-const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
-  obj[`:${emoji.get('shortcode')}:`] = emoji.toJS();
-  return obj;
-}, {});
 
 export default @injectIntl
 class Poll extends ImmutablePureComponent {
@@ -106,12 +99,7 @@ class Poll extends ImmutablePureComponent {
     const leading = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') >= other.get('votes_count'));
     const active  = !!this.state.selected[`${optionIndex}`];
     const voted   = poll.own_votes?.includes(optionIndex);
-
-    let titleEmojified = option.get('title_emojified');
-    if (!titleEmojified) {
-      const emojiMap = makeEmojiMap(poll);
-      titleEmojified = emojify(escapeTextContentForBrowser(option.get('title')), emojiMap);
-    }
+    const titleEmojified = option.get('title_emojified');
 
     return (
       <li key={option.get('title')}>

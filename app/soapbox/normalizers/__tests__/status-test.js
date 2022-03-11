@@ -173,4 +173,17 @@ describe('normalizeStatus', () => {
     expect(result.poll.voted).toBe(false);
     expect(result.poll.own_votes).toBe(null);
   });
+
+  it('normalizes poll with emojis', () => {
+    const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json'));
+    const result = normalizeStatus(status);
+
+    // Emojifies poll options
+    expect(result.poll.options.get(1).title_emojified)
+      .toEqual('Custom emoji <img draggable="false" class="emojione" alt=":gleason_excited:" title=":gleason_excited:" src="https://gleasonator.com/emoji/gleason_emojis/gleason_excited.png" /> ');
+
+    // Parses emojis as Immutable.Record's
+    expect(ImmutableRecord.isRecord(result.poll.emojis.get(0))).toBe(true);
+    expect(result.poll.emojis.get(1).shortcode).toEqual('soapbox');
+  });
 });

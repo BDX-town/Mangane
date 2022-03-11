@@ -1,9 +1,6 @@
 import { getSettings } from '../settings';
 
-import {
-  normalizeAccount,
-  normalizePoll,
-} from './normalizer';
+import { normalizeAccount } from './normalizer';
 
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 export const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
@@ -130,7 +127,7 @@ export function importFetchedStatuses(statuses) {
       }
 
       if (status.poll?.id) {
-        polls.push(normalizePoll(status.poll));
+        polls.push(status.poll);
       }
     }
 
@@ -144,7 +141,7 @@ export function importFetchedStatuses(statuses) {
 
 export function importFetchedPoll(poll) {
   return dispatch => {
-    dispatch(importPolls([normalizePoll(poll)]));
+    dispatch(importPolls([poll]));
   };
 }
 
