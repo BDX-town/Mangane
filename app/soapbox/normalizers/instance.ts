@@ -60,7 +60,7 @@ const InstanceRecord = ImmutableRecord({
 });
 
 // Build Mastodon configuration from Pleroma instance
-const pleromaToMastodonConfig = instance => {
+const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
   return ImmutableMap({
     statuses: ImmutableMap({
       max_characters: instance.get('max_toot_chars'),
@@ -75,10 +75,10 @@ const pleromaToMastodonConfig = instance => {
 };
 
 // Get the software's default attachment limit
-const getAttachmentLimit = software => software === PLEROMA ? Infinity : 4;
+const getAttachmentLimit = (software: string) => software === PLEROMA ? Infinity : 4;
 
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
-export const normalizeInstance = instance => {
+export const normalizeInstance = (instance: ImmutableMap<string, any>) => {
   const { software } = parseVersion(instance.get('version'));
   const mastodonConfig = pleromaToMastodonConfig(instance);
 
