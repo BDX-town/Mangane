@@ -5,6 +5,7 @@ import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers/status';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
 import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import {
   EMOJI_REACT_REQUEST,
@@ -32,11 +33,6 @@ import { TIMELINE_DELETE } from '../actions/timelines';
 
 const domParser = new DOMParser();
 
-const makeEmojiMap = record => record.get('emojis').reduce((obj, emoji) => {
-  obj[`:${emoji.get('shortcode')}:`] = emoji.toJS();
-  return obj;
-}, {});
-
 const minifyStatus = status => {
   return status.mergeWith((o, n) => n || o, {
     account: status.getIn(['account', 'id']),
@@ -59,7 +55,7 @@ export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
   } else {
     const spoilerText   = status.get('spoiler_text') || '';
     const searchContent = (ImmutableList([spoilerText, status.get('content')]).concat(status.getIn(['poll', 'options'], ImmutableList()).map(option => option.get('title')))).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
-    const emojiMap      = makeEmojiMap(status);
+    const emojiMap      = makeEmojiMap(status.get('emojis'));
 
     return status.merge({
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,

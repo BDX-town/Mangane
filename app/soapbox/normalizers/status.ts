@@ -1,12 +1,14 @@
+import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
 } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
+import { normalizeAccount } from 'soapbox/normalizers/account';
 import { IStatus } from 'soapbox/types';
-import { accountToMention } from 'soapbox/utils/accounts';
-import { mergeDefined } from 'soapbox/utils/normalizers';
+import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 const StatusRecord = ImmutableRecord({
   account: ImmutableMap(),
@@ -47,9 +49,25 @@ const StatusRecord = ImmutableRecord({
   spoilerHtml: '',
 });
 
-const PollOptionRecord = ImmutableRecord({
-  title: '',
-  votes_count: 0,
+// https://docs.joinmastodon.org/entities/attachment/
+const AttachmentRecord = ImmutableRecord({
+  blurhash: undefined,
+  description: '',
+  id: '',
+  meta: ImmutableMap(),
+  pleroma: ImmutableMap(),
+  preview_url: '',
+  remote_url: null,
+  type: 'unknown',
+  url: '',
+});
+
+// https://docs.joinmastodon.org/entities/mention/
+const MentionRecord = ImmutableRecord({
+  id: '',
+  acct: '',
+  username: '',
+  url: '',
 });
 
 // https://docs.joinmastodon.org/entities/poll/
@@ -66,6 +84,24 @@ const PollRecord = ImmutableRecord({
   voted: false,
 });
 
+// Sub-entity of Poll
+const PollOptionRecord = ImmutableRecord({
+  title: '',
+  votes_count: 0,
+
+  // Internal fields
+  title_emojified: '',
+});
+
+// https://docs.joinmastodon.org/entities/emoji/
+const EmojiRecord = ImmutableRecord({
+  category: '',
+  shortcode: '',
+  static_url: '',
+  url: '',
+  visible_in_picker: true,
+});
+
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
@@ -78,10 +114,9 @@ const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
   const base = ImmutableMap({
     url,
     preview_url: url,
-    remote_url: url,
   });
 
-  return attachment.mergeWith(mergeDefined, base);
+  return AttachmentRecord(attachment.mergeWith(mergeDefined, base));
 };
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
@@ -92,13 +127,7 @@ const normalizeAttachments = (status: ImmutableMap<string, any>) => {
 
 // Normalize mentions
 const normalizeMention = (mention: ImmutableMap<string, any>) => {
-  const base = ImmutableMap({
-    acct: '',
-    username: (mention.get('acct') || '').split('@')[0],
-    url: '',
-  });
-
-  return mention.mergeWith(mergeDefined, base);
+  return MentionRecord(normalizeAccount(mention));
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
@@ -107,10 +136,28 @@ const normalizeMentions = (status: ImmutableMap<string, any>) => {
   });
 };
 
+// Normalize emojis
+const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
+  return entity.update('emojis', ImmutableList(), emojis => {
+    return emojis.map(EmojiRecord);
+  });
+};
+
+const normalizePollOption = (option: ImmutableMap<string, any>, emojis: ImmutableList<ImmutableMap<string, string>> = ImmutableList()) => {
+  const emojiMap = makeEmojiMap(emojis);
+  const titleEmojified = emojify(escapeTextContentForBrowser(option.get('title')), emojiMap);
+
+  return PollOptionRecord(
+    option.set('title_emojified', titleEmojified),
+  );
+};
+
 // Normalize poll options
 const normalizePollOptions = (poll: ImmutableMap<string, any>) => {
+  const emojis = poll.get('emojis');
+
   return poll.update('options', (options: ImmutableList<ImmutableMap<string, any>>) => {
-    return options.map(PollOptionRecord);
+    return options.map(option => normalizePollOption(option, emojis));
   });
 };
 
@@ -132,6 +179,7 @@ const normalizePollVoted = (poll: ImmutableMap<string, any>) => {
 const normalizePoll = (poll: ImmutableMap<string, any>) => {
   return PollRecord(
     poll.withMutations((poll: ImmutableMap<string, any>) => {
+      normalizeEmojis(poll);
       normalizePollOptions(poll);
       normalizePollOwnVotes(poll);
       normalizePollVoted(poll);
@@ -172,8 +220,8 @@ const addSelfMention = (status: ImmutableMap<string, any>) => {
   const isSelfReply = accountId === status.get('in_reply_to_account_id');
   const hasSelfMention = accountId === status.getIn(['mentions', 0, 'id']);
 
-  if (isSelfReply && !hasSelfMention) {
-    const mention = accountToMention(status.get('account'));
+  if (isSelfReply && !hasSelfMention && accountId) {
+    const mention = normalizeMention(status.get('account'));
     return status.update('mentions', ImmutableList(), mentions => (
       ImmutableList([mention]).concat(mentions)
     ));
@@ -195,6 +243,7 @@ export const normalizeStatus = (status: ImmutableMap<string, any>): IStatus => {
     status.withMutations(status => {
       normalizeAttachments(status);
       normalizeMentions(status);
+      normalizeEmojis(status);
       normalizeStatusPoll(status);
       fixMentionsOrder(status);
       addSelfMention(status);

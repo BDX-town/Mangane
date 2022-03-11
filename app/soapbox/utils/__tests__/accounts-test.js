@@ -6,7 +6,6 @@ import {
   isStaff,
   isAdmin,
   isModerator,
-  accountToMention,
 } from '../accounts';
 
 describe('getDomain', () => {
@@ -114,21 +113,5 @@ describe('isModerator', () => {
     it('returns true', () => {
       expect(isModerator(mod)).toBe(true);
     });
-  });
-});
-
-describe('accountToMention', () => {
-  it('converts the account to a mention', () => {
-    const account = fromJS(require('soapbox/__fixtures__/pleroma-account.json'));
-
-    const expected = fromJS({
-      id: '9v5bmRalQvjOy0ECcC',
-      username: 'alex',
-      acct: 'alex',
-      url: 'https://gleasonator.com/users/alex',
-    });
-
-    const result = accountToMention(account);
-    expect(result).toEqual(expected);
   });
 });

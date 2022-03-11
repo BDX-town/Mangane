@@ -94,9 +94,8 @@ export const normalizeInstance = instance => {
         return isNumber(value) ? value : getAttachmentLimit(software);
       });
 
-      // Merge defaults & cleanup
+      // Merge defaults
       instance.mergeDeepWith(mergeDefined, InstanceRecord());
-      instance.deleteAll(['max_toot_chars', 'poll_limits']);
     }),
   );
 };
