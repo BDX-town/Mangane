@@ -1,4 +1,8 @@
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
+import {
+  Map as ImmutableMap,
+  OrderedMap as ImmutableOrderedMap,
+  Record as ImmutableRecord,
+} from 'immutable';
 import { take } from 'lodash';
 
 import intlMessages from 'soapbox/__fixtures__/intlMessages.json';
@@ -27,24 +31,27 @@ import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
 
 import reducer from '../notifications';
 
+const initialState = reducer(undefined, {});
+
 describe('notifications reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
+    const expected = {
+      items: {},
       hasMore: true,
       top: false,
       unread: 0,
       isLoading: false,
-      queuedNotifications: ImmutableOrderedMap(),
+      queuedNotifications: {},
       totalQueuedNotificationsCount: 0,
       lastRead: -1,
-    }));
+    };
+
+    expect(ImmutableRecord.isRecord(initialState)).toBe(true);
+    expect(initialState.toJS()).toMatchObject(expected);
   });
 
   describe('NOTIFICATIONS_EXPAND_SUCCESS', () => {
     it('imports the notifications', () => {
-      const state = undefined;
-
       const action = {
         type: NOTIFICATIONS_EXPAND_SUCCESS,
         notifications: take(notifications, 3),
@@ -52,47 +59,17 @@ describe('notifications reducer', () => {
         skipLoading: true,
       };
 
-      expect(reducer(state, action)).toEqual(ImmutableMap({
-        items: ImmutableOrderedMap([
-          ['10744', ImmutableMap({
-            id: '10744',
-            type: 'pleroma:emoji_reaction',
-            account: '9vMAje101ngtjlMj7w',
-            target: null,
-            created_at: '2020-06-10T02:54:39.000Z',
-            status: '9vvNxoo5EFbbnfdXQu',
-            emoji: '😢',
-            chat_message: undefined,
-          })],
-          ['10743', ImmutableMap({
-            id: '10743',
-            type: 'favourite',
-            account: '9v5c6xSEgAi3Zu1Lv6',
-            target: null,
-            created_at: '2020-06-10T02:51:05.000Z',
-            status: '9vvNxoo5EFbbnfdXQu',
-            emoji: undefined,
-            chat_message: undefined,
-          })],
-          ['10741', ImmutableMap({
-            id: '10741',
-            type: 'favourite',
-            account: '9v5cKMOPGqPcgfcWp6',
-            target: null,
-            created_at: '2020-06-10T02:05:06.000Z',
-            status: '9vvNxoo5EFbbnfdXQu',
-            emoji: undefined,
-            chat_message: undefined,
-          })],
-        ]),
-        hasMore: false,
-        top: false,
-        unread: 0,
-        isLoading: false,
-        queuedNotifications: ImmutableOrderedMap(),
-        totalQueuedNotificationsCount: 0,
-        lastRead: -1,
-      }));
+      const result = reducer(undefined, action);
+
+      // The items are parsed as records
+      expect(ImmutableOrderedMap.isOrderedMap(result.items)).toBe(true);
+      expect(ImmutableRecord.isRecord(result.items.get('10743'))).toBe(true);
+
+      // We can get an item
+      expect(result.items.get('10744').emoji).toEqual('😢');
+
+      // hasMore is set to false because `next` is null
+      expect(result.hasMore).toBe(false);
     });
 
     it('drops invalid notifications', () => {
@@ -109,596 +86,440 @@ describe('notifications reducer', () => {
         skipLoading: true,
       };
 
-      const expected = ImmutableOrderedMap([
-        ['4', fromJS({
-          id: '4',
-          type: 'mention',
-          account: '7',
-          target: null,
-          created_at: undefined,
-          status: 'a',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]);
+      const result = reducer(undefined, action);
 
-      expect(reducer(undefined, action).get('items')).toEqual(expected);
+      // Only '4' is valid
+      expect(result.items.size).toEqual(1);
+      expect(result.items.get('4').id).toEqual('4');
     });
   });
 
-  it('should handle NOTIFICATIONS_EXPAND_REQUEST', () => {
-    const state = ImmutableMap({
-      isLoading: false,
+  describe('NOTIFICATIONS_EXPAND_REQUEST', () => {
+    it('sets isLoading to true', () => {
+      const state = initialState.set('isLoading', false);
+      const action = { type: NOTIFICATIONS_EXPAND_REQUEST };
+
+      expect(reducer(state, action).isLoading).toBe(true);
     });
-    const action = {
-      type: NOTIFICATIONS_EXPAND_REQUEST,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      isLoading: true,
-    }));
   });
 
-  it('should handle NOTIFICATIONS_EXPAND_FAIL', () => {
-    const state = ImmutableMap({
-      isLoading: true,
+  describe('NOTIFICATIONS_EXPAND_FAIL', () => {
+    it('sets isLoading to false', () => {
+      const state = initialState.set('isLoading', true);
+      const action = { type: NOTIFICATIONS_EXPAND_FAIL };
+
+      expect(reducer(state, action).isLoading).toBe(false);
     });
-    const action = {
-      type: NOTIFICATIONS_EXPAND_FAIL,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      isLoading: false,
-    }));
   });
 
-  it('should handle NOTIFICATIONS_FILTER_SET', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-      hasMore: false,
-      top: false,
-      unread: 1,
-      isLoading: false,
-      queuedNotifications: ImmutableOrderedMap(),
-      totalQueuedNotificationsCount: 0,
-      lastRead: -1,
+  describe('NOTIFICATIONS_FILTER_SET', () => {
+    it('clears the items', () => {
+      const actions = [{
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: [
+          { id: '1', type: 'mention', status: { id: '4' }, account: { id: '7' } },
+          { id: '2', type: 'mention', status: { id: '5' }, account: { id: '8' } },
+          { id: '3', type: 'mention', status: { id: '6' }, account: { id: '9' } },
+        ],
+        next: null,
+        skipLoading: true,
+      }, {
+        type: NOTIFICATIONS_FILTER_SET,
+      }];
+
+      // Setup by expanding, then calling `NOTIFICATIONS_FILTER_SET`
+      const result = actions.reduce((state, action) => reducer(state, action), initialState);
+
+      // Setting the filter wipes notifications
+      expect(result.items.isEmpty()).toBe(true);
     });
-    const action = {
-      type: NOTIFICATIONS_FILTER_SET,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-      hasMore: true,
-      top: false,
-      unread: 1,
-      isLoading: false,
-      queuedNotifications: ImmutableOrderedMap(),
-      totalQueuedNotificationsCount: 0,
-      lastRead: -1,
-    }));
+
+    it('sets hasMore to true', () => {
+      const state = initialState.set('hasMore', false);
+      const action = { type: NOTIFICATIONS_FILTER_SET };
+      const result = reducer(state, action);
+
+      expect(result.hasMore).toBe(true);
+    });
   });
 
-  it('should handle NOTIFICATIONS_SCROLL_TOP by changing unread to 0 when top = true', () => {
-    const state = ImmutableMap({
-      unread: 1,
+  describe('NOTIFICATIONS_SCROLL_TOP', () => {
+    it('resets `unread` counter to 0 when top is true (ie, scrolled to the top)', () => {
+      const state = initialState.set('unread', 1);
+      const action = { type: NOTIFICATIONS_SCROLL_TOP, top: true };
+      const result = reducer(state, action);
+
+      expect(result.unread).toEqual(0);
+      expect(result.top).toBe(true);
     });
-    const action = {
-      type: NOTIFICATIONS_SCROLL_TOP,
-      top: true,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      unread: 0,
-      top: true,
-    }));
+
+    it('leaves `unread` alone when top is false (ie, not scrolled to top)', () => {
+      const state = initialState.set('unread', 3);
+      const action = { type: NOTIFICATIONS_SCROLL_TOP, top: false };
+      const result = reducer(state, action);
+
+      expect(result.unread).toEqual(3);
+      expect(result.top).toBe(false);
+    });
   });
 
-  it('should handle NOTIFICATIONS_SCROLL_TOP by not changing unread val when top = false', () => {
-    const state = ImmutableMap({
-      unread: 3,
+  describe('NOTIFICATIONS_UPDATE', () => {
+    it('imports the notification', () => {
+      const action = { type: NOTIFICATIONS_UPDATE, notification };
+      const result = reducer(initialState, action);
+
+      expect(result.items.get('10743').type).toEqual('favourite');
     });
-    const action = {
-      type: NOTIFICATIONS_SCROLL_TOP,
-      top: false,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      unread: 3,
-      top: false,
-    }));
+
+    it('increments `unread` counter when top is false', () => {
+      const action = { type: NOTIFICATIONS_UPDATE, notification };
+      const result = reducer(initialState, action);
+
+      expect(result.unread).toEqual(1);
+    });
   });
 
-  it('should handle NOTIFICATIONS_UPDATE, when top = false, increment unread', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
-      top: false,
-      unread: 1,
-    });
-    const action = {
-      type: NOTIFICATIONS_UPDATE,
-      notification: notification,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-      top: false,
-      unread: 2,
-    }));
-  });
-
-  it('should handle NOTIFICATIONS_UPDATE_QUEUE', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
-      queuedNotifications: ImmutableOrderedMap(),
-      totalQueuedNotificationsCount: 0,
-    });
-    const action = {
-      type: NOTIFICATIONS_UPDATE_QUEUE,
-      notification: notification,
-      intlMessages: intlMessages,
-      intlLocale: 'en',
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-      queuedNotifications: ImmutableOrderedMap([[notification.id, {
-        notification: notification,
-        intlMessages: intlMessages,
+  describe('NOTIFICATIONS_UPDATE_QUEUE', () => {
+    it('adds the notification to the queue (and increases the counter)', () => {
+      const action = {
+        type: NOTIFICATIONS_UPDATE_QUEUE,
+        notification,
+        intlMessages,
         intlLocale: 'en',
-      }]]),
-      totalQueuedNotificationsCount: 1,
-    }));
-  });
+      };
 
-  it('should handle NOTIFICATIONS_DEQUEUE', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
-      queuedNotifications: take(notifications, 1),
-      totalQueuedNotificationsCount: 1,
+      const result = reducer(initialState, action);
+
+      // Doesn't add it as a regular item
+      expect(result.items.isEmpty()).toBe(true);
+
+      // Adds it to the queued items
+      expect(result.queuedNotifications.size).toEqual(1);
+      expect(result.totalQueuedNotificationsCount).toEqual(1);
+      expect(result.queuedNotifications.getIn(['10743', 'notification', 'type'])).toEqual('favourite');
     });
-    const action = {
-      type: NOTIFICATIONS_DEQUEUE,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-      queuedNotifications: ImmutableOrderedMap(),
-      totalQueuedNotificationsCount: 0,
-    }));
   });
 
-  it('should handle NOTIFICATIONS_EXPAND_SUCCESS with non-empty items and next set true', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10734', ImmutableMap({
-          id: '10734',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-      ]),
-      unread: 1,
-      hasMore: true,
-      isLoading: false,
+  describe('NOTIFICATIONS_DEQUEUE', () => {
+    it('resets the queued counter to 0', () => {
+      const state = initialState.set('totalQueuedNotificationsCount', 1);
+      const action = { type: NOTIFICATIONS_DEQUEUE };
+      const result = reducer(state, action);
+
+      expect(result.totalQueuedNotificationsCount).toEqual(0);
     });
-    const action = {
-      type: NOTIFICATIONS_EXPAND_SUCCESS,
-      notifications: take(notifications, 3),
-      next: true,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10734', ImmutableMap({
-          id: '10734',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-      ]),
-      unread: 1,
-      hasMore: true,
-      isLoading: false,
-    }));
   });
 
-  it('should handle NOTIFICATIONS_EXPAND_SUCCESS with empty items and next set true', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
-      unread: 1,
-      hasMore: true,
-      isLoading: false,
+  describe('NOTIFICATIONS_EXPAND_SUCCESS', () => {
+    it('with non-empty items and next set true', () => {
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10734', ImmutableMap({
+            id: '10734',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+        ]),
+        unread: 1,
+        hasMore: true,
+        isLoading: false,
+      });
+
+      const action = {
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: take(notifications, 3),
+        next: true,
+      };
+
+      const expected = ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10744', ImmutableMap({
+            id: '10744',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10734', ImmutableMap({
+            id: '10734',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+        ]),
+        unread: 1,
+        hasMore: true,
+        isLoading: false,
+      });
+
+      expect(reducer(state, action).toJS()).toEqual(expected.toJS());
     });
-    const action = {
-      type: NOTIFICATIONS_EXPAND_SUCCESS,
-      notifications: take(notifications, 3),
-      next: true,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-      unread: 1,
-      hasMore: true,
-      isLoading: false,
-    }));
-  });
 
-  it('should handle ACCOUNT_BLOCK_SUCCESS', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
+    it('with empty items and next set true', () => {
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap(),
+        unread: 1,
+        hasMore: true,
+        isLoading: false,
+      });
+
+      const action = {
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: take(notifications, 3),
+        next: true,
+      };
+
+      const expected = ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10744', ImmutableMap({
+            id: '10744',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+        ]),
+        unread: 1,
+        hasMore: true,
+        isLoading: false,
+      });
+
+      expect(reducer(state, action).toJS()).toEqual(expected.toJS());
     });
-    const action = {
-      type: ACCOUNT_BLOCK_SUCCESS,
-      relationship: relationship,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-    }));
   });
 
-  it('should handle ACCOUNT_MUTE_SUCCESS', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
+  describe('ACCOUNT_BLOCK_SUCCESS', () => {
+    it('should handle', () => {
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10744', ImmutableMap({
+            id: '10744',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+        ]),
+      });
+      const action = {
+        type: ACCOUNT_BLOCK_SUCCESS,
+        relationship,
+      };
+      expect(reducer(state, action)).toEqual(ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+        ]),
+      }));
     });
-    const action = {
-      type: ACCOUNT_MUTE_SUCCESS,
-      relationship: relationship,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
-    }));
   });
 
-  it('should handle NOTIFICATIONS_CLEAR', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
-      hasMore: true,
+  describe('ACCOUNT_MUTE_SUCCESS', () => {
+    it('should handle', () => {
+      const state = ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10744', ImmutableMap({
+            id: '10744',
+            type: 'pleroma:emoji_reaction',
+            account: '9vMAje101ngtjlMj7w',
+            target: null,
+            created_at: '2020-06-10T02:54:39.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: '😢',
+            chat_message: null,
+          })],
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+        ]),
+      });
+      const action = {
+        type: ACCOUNT_MUTE_SUCCESS,
+        relationship: relationship,
+      };
+      expect(reducer(state, action)).toEqual(ImmutableMap({
+        items: ImmutableOrderedMap([
+          ['10743', ImmutableMap({
+            id: '10743',
+            type: 'favourite',
+            account: '9v5c6xSEgAi3Zu1Lv6',
+            target: null,
+            created_at: '2020-06-10T02:51:05.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+          ['10741', ImmutableMap({
+            id: '10741',
+            type: 'favourite',
+            account: '9v5cKMOPGqPcgfcWp6',
+            target: null,
+            created_at: '2020-06-10T02:05:06.000Z',
+            status: '9vvNxoo5EFbbnfdXQu',
+            emoji: null,
+            chat_message: null,
+          })],
+        ]),
+      }));
     });
-    const action = {
-      type: NOTIFICATIONS_CLEAR,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-      hasMore: false,
-    }));
   });
 
-  it('should handle NOTIFICATIONS_MARK_READ_REQUEST', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap(),
+  describe('NOTIFICATIONS_CLEAR', () => {
+    it('clears the items', () => {
+      const state = initialState.set('items', ImmutableOrderedMap([['1', {}], ['2', {}]]));
+      const action = { type: NOTIFICATIONS_CLEAR };
+      const result = reducer(state, action);
+
+      expect(result.items.isEmpty()).toBe(true);
     });
-    const action = {
-      type: NOTIFICATIONS_MARK_READ_REQUEST,
-      lastRead: 35098814,
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-      lastRead: 35098814,
-    }));
   });
 
-  it('should handle TIMELINE_DELETE', () => {
-    const state = ImmutableMap({
-      items: ImmutableOrderedMap([
-        ['10744', ImmutableMap({
-          id: '10744',
-          type: 'pleroma:emoji_reaction',
-          account: '9vMAje101ngtjlMj7w',
-          target: null,
-          created_at: '2020-06-10T02:54:39.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: '😢',
-          chat_message: undefined,
-        })],
-        ['10743', ImmutableMap({
-          id: '10743',
-          type: 'favourite',
-          account: '9v5c6xSEgAi3Zu1Lv6',
-          target: null,
-          created_at: '2020-06-10T02:51:05.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-        ['10741', ImmutableMap({
-          id: '10741',
-          type: 'favourite',
-          account: '9v5cKMOPGqPcgfcWp6',
-          target: null,
-          created_at: '2020-06-10T02:05:06.000Z',
-          status: '9vvNxoo5EFbbnfdXQu',
-          emoji: undefined,
-          chat_message: undefined,
-        })],
-      ]),
+  describe('NOTIFICATIONS_MARK_READ_REQUEST', () => {
+    it('sets lastRead to the one in the action', () => {
+      const action = { type: NOTIFICATIONS_MARK_READ_REQUEST, lastRead: '1234' };
+      const result = reducer(undefined, action);
+
+      expect(result.lastRead).toEqual('1234');
     });
-    const action = {
-      type: TIMELINE_DELETE,
-      id: '9vvNxoo5EFbbnfdXQu',
-    };
-    expect(reducer(state, action)).toEqual(ImmutableMap({
-      items: ImmutableOrderedMap(),
-    }));
   });
 
-  // Disable for now
-  // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/432
-  //
-  // it('should handle TIMELINE_DISCONNECT', () => {
-  //   const state = ImmutableMap({
-  //     items: ImmutableOrderedSet([
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         chat_message: undefined,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         chat_message: undefined,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         chat_message: undefined,
-  //       }),
-  //     ]),
-  //   });
-  //   const action = {
-  //     type: TIMELINE_DISCONNECT,
-  //     timeline: 'home',
-  //   };
-  //   expect(reducer(state, action)).toEqual(ImmutableMap({
-  //     items: ImmutableOrderedSet([
-  //       null,
-  //       ImmutableMap({
-  //         id: '10744',
-  //         type: 'pleroma:emoji_reaction',
-  //         account: '9vMAje101ngtjlMj7w',
-  //         created_at: '2020-06-10T02:54:39.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: '😢',
-  //         chat_message: undefined,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10743',
-  //         type: 'favourite',
-  //         account: '9v5c6xSEgAi3Zu1Lv6',
-  //         created_at: '2020-06-10T02:51:05.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         chat_message: undefined,
-  //       }),
-  //       ImmutableMap({
-  //         id: '10741',
-  //         type: 'favourite',
-  //         account: '9v5cKMOPGqPcgfcWp6',
-  //         created_at: '2020-06-10T02:05:06.000Z',
-  //         status: '9vvNxoo5EFbbnfdXQu',
-  //         emoji: undefined,
-  //         chat_message: undefined,
-  //       }),
-  //     ]),
-  //   }));
-  // });
+  describe('TIMELINE_DELETE', () => {
+    it('deletes notifications corresponding to the status ID', () => {
+      const actions = [{
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: [
+          { id: '1', type: 'mention', status: { id: '4' }, account: { id: '7' } },
+          { id: '2', type: 'mention', status: { id: '5' }, account: { id: '8' } },
+          { id: '3', type: 'mention', status: { id: '6' }, account: { id: '9' } },
+          { id: '4', type: 'mention', status: { id: '5' }, account: { id: '7' } },
+        ],
+        next: null,
+        skipLoading: true,
+      }, {
+        type: TIMELINE_DELETE,
+        id: '5',
+      }];
+
+      // Setup by expanding, then calling `NOTIFICATIONS_FILTER_SET`
+      const result = actions.reduce((state, action) => reducer(state, action), initialState);
+
+      expect(result.items.size).toEqual(2);
+      expect(result.items.get('5')).toBe(undefined);
+    });
+  });
 
   describe('MARKER_FETCH_SUCCESS', () => {
     it('sets lastRead', () => {

@@ -1,10 +1,10 @@
-import { Map as ImmutableMap, OrderedMap as ImmutableOrderedMap, fromJS } from 'immutable';
-
 import {
-  MARKER_FETCH_SUCCESS,
-  MARKER_SAVE_REQUEST,
-  MARKER_SAVE_SUCCESS,
-} from 'soapbox/actions/markers';
+  Record as ImmutableRecord,
+  OrderedMap as ImmutableOrderedMap,
+  fromJS,
+} from 'immutable';
+
+import { normalizeNotification } from 'soapbox/normalizers/notification';
 
 import {
   ACCOUNT_BLOCK_SUCCESS,
@@ -12,6 +12,11 @@ import {
   FOLLOW_REQUEST_AUTHORIZE_SUCCESS,
   FOLLOW_REQUEST_REJECT_SUCCESS,
 } from '../actions/accounts';
+import {
+  MARKER_FETCH_SUCCESS,
+  MARKER_SAVE_REQUEST,
+  MARKER_SAVE_SUCCESS,
+} from '../actions/markers';
 import {
   NOTIFICATIONS_UPDATE,
   NOTIFICATIONS_EXPAND_SUCCESS,
@@ -27,7 +32,8 @@ import {
 } from '../actions/notifications';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-const initialState = ImmutableMap({
+// Record for the whole reducer
+const NotificationsRecord = ImmutableRecord({
   items: ImmutableOrderedMap(),
   hasMore: true,
   top: false,
@@ -48,16 +54,16 @@ const comparator = (a, b) => {
   return 0;
 };
 
-const notificationToMap = notification => ImmutableMap({
-  id: notification.id,
-  type: notification.type,
-  account: notification.account.id,
-  target: notification.target ? notification.target.id : null,
-  created_at: notification.created_at,
-  status: notification.status ? notification.status.id : null,
-  emoji: notification.emoji,
-  chat_message: notification.chat_message,
-});
+const minifyNotification = notification => {
+  return notification.mergeWith((o, n) => n || o, {
+    account: notification.getIn(['account', 'id']),
+    status: notification.getIn(['status', 'id']),
+  });
+};
+
+const fixNotification = notification => {
+  return minifyNotification(normalizeNotification(notification));
+};
 
 const isValid = notification => {
   try {
@@ -88,7 +94,7 @@ const countFuture = (notifications, lastId) => {
   }, 0);
 };
 
-const normalizeNotification = (state, notification) => {
+const importNotification = (state, notification) => {
   const top = state.get('top');
 
   if (!top) state = state.update('unread', unread => unread + 1);
@@ -98,7 +104,7 @@ const normalizeNotification = (state, notification) => {
       map = map.take(20);
     }
 
-    return map.set(notification.id, notificationToMap(notification)).sort(comparator);
+    return map.set(notification.id, fixNotification(notification)).sort(comparator);
   });
 };
 
@@ -106,7 +112,7 @@ const processRawNotifications = notifications => (
   ImmutableOrderedMap(
     notifications
       .filter(isValid)
-      .map(n => [n.id, notificationToMap(n)]),
+      .map(n => [n.id, fixNotification(n)]),
   ));
 
 const expandNormalizedNotifications = (state, notifications, next) => {
@@ -176,23 +182,23 @@ const importMarker = (state, marker) => {
   });
 };
 
-export default function notifications(state = initialState, action) {
+export default function notifications(state = NotificationsRecord(), action) {
   switch(action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);
   case NOTIFICATIONS_EXPAND_FAIL:
     return state.set('isLoading', false);
   case NOTIFICATIONS_FILTER_SET:
-    return state.set('items', ImmutableOrderedMap()).set('hasMore', true);
+    return state.delete('items').set('hasMore', true);
   case NOTIFICATIONS_SCROLL_TOP:
     return updateTop(state, action.top);
   case NOTIFICATIONS_UPDATE:
-    return normalizeNotification(state, action.notification);
+    return importNotification(state, action.notification);
   case NOTIFICATIONS_UPDATE_QUEUE:
     return updateNotificationsQueue(state, action.notification, action.intlMessages, action.intlLocale);
   case NOTIFICATIONS_DEQUEUE:
     return state.withMutations(mutable => {
-      mutable.set('queuedNotifications', ImmutableOrderedMap());
+      mutable.delete('queuedNotifications');
       mutable.set('totalQueuedNotificationsCount', 0);
     });
   case NOTIFICATIONS_EXPAND_SUCCESS:
@@ -205,7 +211,7 @@ export default function notifications(state = initialState, action) {
   case FOLLOW_REQUEST_REJECT_SUCCESS:
     return filterNotificationIds(state, [action.id], 'follow_request');
   case NOTIFICATIONS_CLEAR:
-    return state.set('items', ImmutableOrderedMap()).set('hasMore', false);
+    return state.delete('items').set('hasMore', false);
   case NOTIFICATIONS_MARK_READ_REQUEST:
     return state.set('lastRead', action.lastRead);
   case MARKER_FETCH_SUCCESS:
@@ -214,16 +220,6 @@ export default function notifications(state = initialState, action) {
     return importMarker(state, fromJS(action.marker));
   case TIMELINE_DELETE:
     return deleteByStatus(state, action.id);
-
-  // Disable for now
-  // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/432
-  //
-  // case TIMELINE_DISCONNECT:
-  //   // This is kind of a hack - `null` renders a LoadGap in the component
-  //   // https://github.com/tootsuite/mastodon/pull/6886
-  //   return action.timeline === 'home' ?
-  //     state.update('items', items => items.first() ? ImmutableOrderedSet([null]).union(items) : items) :
-  //     state;
   default:
     return state;
   }
