@@ -12,6 +12,7 @@ import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import Motion from 'soapbox/features/ui/util/optional_motion';
+import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import RelativeTimestamp from './relative_timestamp';
 
@@ -34,6 +35,7 @@ class Poll extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
     disabled: PropTypes.bool,
+    me: SoapboxPropTypes.me,
     status: PropTypes.string,
   };
 
