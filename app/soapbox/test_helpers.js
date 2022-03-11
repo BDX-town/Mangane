@@ -33,3 +33,8 @@ export const createComponent = (children, props = {}) => {
     </Provider>,
   );
 };
+
+// Apply actions to the state, one at a time
+export const applyActions = (state, actions, reducer) => {
+  return actions.reduce((state, action) => reducer(state, action), state);
+};

@@ -28,6 +28,7 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
+import { applyActions } from 'soapbox/test_helpers';
 
 import reducer from '../notifications';
 
@@ -128,7 +129,7 @@ describe('notifications reducer', () => {
       }];
 
       // Setup by expanding, then calling `NOTIFICATIONS_FILTER_SET`
-      const result = actions.reduce((state, action) => reducer(state, action), initialState);
+      const result = applyActions(initialState, actions, reducer);
 
       // Setting the filter wipes notifications
       expect(result.items.isEmpty()).toBe(true);
@@ -514,7 +515,7 @@ describe('notifications reducer', () => {
       }];
 
       // Setup by expanding, then calling `NOTIFICATIONS_FILTER_SET`
-      const result = actions.reduce((state, action) => reducer(state, action), initialState);
+      const result = applyActions(initialState, actions, reducer);
 
       expect(result.items.size).toEqual(2);
       expect(result.items.get('5')).toBe(undefined);
