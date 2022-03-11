@@ -32,8 +32,7 @@ import {
 } from '../actions/notifications';
 import { TIMELINE_DELETE } from '../actions/timelines';
 
-// Record for the whole reducer
-const NotificationsRecord = ImmutableRecord({
+const ReducerRecord = ImmutableRecord({
   items: ImmutableOrderedMap(),
   hasMore: true,
   top: false,
@@ -182,7 +181,7 @@ const importMarker = (state, marker) => {
   });
 };
 
-export default function notifications(state = NotificationsRecord(), action) {
+export default function notifications(state = ReducerRecord(), action) {
   switch(action.type) {
   case NOTIFICATIONS_EXPAND_REQUEST:
     return state.set('isLoading', true);

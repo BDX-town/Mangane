@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Set as ImmutableSet,
+  Record as ImmutableRecord,
   OrderedSet as ImmutableOrderedSet,
   fromJS,
   is,
@@ -20,7 +21,7 @@ import {
   ADMIN_USERS_APPROVE_SUCCESS,
 } from '../actions/admin';
 
-const initialState = ImmutableMap({
+const ReducerRecord = ImmutableRecord({
   reports: ImmutableMap(),
   openReports: ImmutableOrderedSet(),
   users: ImmutableMap(),
@@ -126,7 +127,7 @@ function handleReportDiffs(state, reports) {
   });
 }
 
-export default function admin(state = initialState, action) {
+export default function admin(state = ReducerRecord(), action) {
   switch(action.type) {
   case ADMIN_CONFIG_FETCH_SUCCESS:
   case ADMIN_CONFIG_UPDATE_SUCCESS:

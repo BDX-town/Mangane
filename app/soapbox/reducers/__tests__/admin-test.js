@@ -1,21 +1,11 @@
-import {
-  Map as ImmutableMap,
-  List as ImmutableList,
-  OrderedSet as ImmutableOrderedSet,
-} from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import reducer from '../admin';
 
 describe('admin reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer(undefined, {})).toEqual(ImmutableMap({
-      reports: ImmutableMap(),
-      openReports: ImmutableOrderedSet(),
-      users: ImmutableMap(),
-      latestUsers: ImmutableOrderedSet(),
-      awaitingApproval: ImmutableOrderedSet(),
-      configs: ImmutableList(),
-      needsReboot: false,
-    }));
+    const result = reducer(undefined, {});
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.needsReboot).toBe(false);
   });
 });
