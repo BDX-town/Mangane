@@ -9,11 +9,11 @@ import {
   Record as ImmutableRecord,
 } from 'immutable';
 
+import { normalizeAttachment } from 'soapbox/normalizers/attachment';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 import { IStatus } from 'soapbox/types';
-import { mergeDefined } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/status/
 const StatusRecord = ImmutableRecord({
@@ -54,39 +54,6 @@ const StatusRecord = ImmutableRecord({
   search_index: '',
   spoilerHtml: '',
 });
-
-// https://docs.joinmastodon.org/entities/attachment/
-const AttachmentRecord = ImmutableRecord({
-  blurhash: undefined,
-  description: '',
-  id: '',
-  meta: ImmutableMap(),
-  pleroma: ImmutableMap(),
-  preview_url: '',
-  remote_url: null,
-  type: 'unknown',
-  url: '',
-
-  // Internal fields
-  account: null,
-  status: null,
-});
-
-// Ensure attachments have required fields
-const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
-  const url = [
-    attachment.get('url'),
-    attachment.get('preview_url'),
-    attachment.get('remote_url'),
-  ].find(url => url) || '';
-
-  const base = ImmutableMap({
-    url,
-    preview_url: url,
-  });
-
-  return AttachmentRecord(attachment.mergeWith(mergeDefined, base));
-};
 
 const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   return status.update('media_attachments', ImmutableList(), attachments => {
