@@ -2,7 +2,7 @@ import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeStatus } from '../status';
 
-describe('normalizeStatus', () => {
+describe('normalizeStatus()', () => {
   it('adds base fields', () => {
     const status = fromJS({});
     const result = normalizeStatus(status);

@@ -1,11 +1,21 @@
-import { fromJS } from 'immutable';
+import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeAccount } from '../account';
 
-describe('normalizeAccount()', () => {
-  it('normalizes a mention', () => {
-    const avatarMissing = require('images/avatar-missing.png');
+const AVATAR_MISSING = require('images/avatar-missing.png');
 
+describe('normalizeAccount()', () => {
+  it('adds base fields', () => {
+    const account = fromJS({});
+    const result = normalizeAccount(account);
+
+    expect(ImmutableRecord.isRecord(result)).toBe(true);
+    expect(result.acct).toEqual('');
+    expect(result.note).toEqual('');
+    expect(result.avatar).toEqual(AVATAR_MISSING);
+  });
+
+  it('normalizes a mention', () => {
     const mention = fromJS({
       acct: 'NEETzsche@iddqd.social',
       id: '9v5bw7hEGBPc9nrpzc',
@@ -16,8 +26,8 @@ describe('normalizeAccount()', () => {
     const result = normalizeAccount(mention);
     expect(result.emojis).toEqual(fromJS([]));
     expect(result.display_name).toEqual('NEETzsche');
-    expect(result.avatar).toEqual(avatarMissing);
-    expect(result.avatar_static).toEqual(avatarMissing);
+    expect(result.avatar).toEqual(AVATAR_MISSING);
+    expect(result.avatar_static).toEqual(AVATAR_MISSING);
     expect(result.verified).toBe(false);
   });
 

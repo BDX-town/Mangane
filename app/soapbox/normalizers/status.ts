@@ -11,8 +11,8 @@ import {
 } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
-import { normalizeAccount } from 'soapbox/normalizers/account';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
+import { normalizeMention } from 'soapbox/normalizers/mention';
 import { IStatus } from 'soapbox/types';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -73,14 +73,6 @@ const AttachmentRecord = ImmutableRecord({
   status: null,
 });
 
-// https://docs.joinmastodon.org/entities/mention/
-const MentionRecord = ImmutableRecord({
-  id: '',
-  acct: '',
-  username: '',
-  url: '',
-});
-
 // https://docs.joinmastodon.org/entities/poll/
 const PollRecord = ImmutableRecord({
   emojis: ImmutableList(),
@@ -124,11 +116,6 @@ const normalizeAttachments = (status: ImmutableMap<string, any>) => {
   return status.update('media_attachments', ImmutableList(), attachments => {
     return attachments.map(normalizeAttachment);
   });
-};
-
-// Normalize mentions
-const normalizeMention = (mention: ImmutableMap<string, any>) => {
-  return MentionRecord(normalizeAccount(mention));
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
