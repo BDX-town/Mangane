@@ -1,12 +1,22 @@
+/**
+ * Account normalizer:
+ * Converts API accounts into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/account/}
+ */
+import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
 } from 'immutable';
 
+import emojify from 'soapbox/features/emoji/emoji';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { IAccount } from 'soapbox/types';
-import { mergeDefined } from 'soapbox/utils/normalizers';
+import { unescapeHTML } from 'soapbox/utils/html';
+import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
+// https://docs.joinmastodon.org/entities/account/
 const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
@@ -45,6 +55,18 @@ const AccountRecord = ImmutableRecord({
   should_refetch: false,
 });
 
+// https://docs.joinmastodon.org/entities/field/
+const FieldRecord = ImmutableRecord({
+  name: '',
+  value: '',
+  verified_at: null,
+
+  // Internal fields
+  name_emojified: '',
+  value_emojified: '',
+  value_plain: '',
+});
+
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/549
 const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
   return account.update('pleroma', ImmutableMap(), (pleroma: ImmutableMap<string, any>) => {
@@ -59,6 +81,29 @@ const normalizePleromaLegacyFields = (account: ImmutableMap<string, any>) => {
       pleroma.deleteAll(['deactivated', 'confirmation_pending', 'approval_pending']);
     });
   });
+};
+
+// Add avatar, if missing
+const normalizeAvatar = (account: ImmutableMap<string, any>) => {
+  const avatar = account.get('avatar');
+  const avatarStatic = account.get('avatar_static');
+  const missing = require('images/avatar-missing.png');
+
+  return account.withMutations(account => {
+    account.set('avatar', avatar || avatarStatic || missing);
+    account.set('avatar_static', avatarStatic || avatar || missing);
+  });
+};
+
+// Normalize custom fields
+const normalizeFields = (account: ImmutableMap<string, any>) => {
+  return account.update('fields', ImmutableList(), fields => fields.map(FieldRecord));
+};
+
+// Normalize emojis
+const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
+  const emojis = entity.get('emojis', ImmutableList()).map(normalizeEmoji);
+  return entity.set('emojis', emojis);
 };
 
 // Normalize Pleroma/Fedibird birthday
@@ -99,19 +144,55 @@ const normalizeLocation = (account: ImmutableMap<string, any>) => {
 
 // Set username from acct, if applicable
 const fixUsername = (account: ImmutableMap<string, any>) => {
-  return account.update('username', username => (
-    username || (account.get('acct') || '').split('@')[0]
-  ));
+  const acct = account.get('acct') || '';
+  const username = account.get('username') || '';
+  return account.set('username', username || acct.split('@')[0]);
+};
+
+// Set display name from username, if applicable
+const fixDisplayName = (account: ImmutableMap<string, any>) => {
+  const displayName = account.get('display_name') || '';
+  return account.set('display_name', displayName.trim().length === 0 ? account.get('username') : displayName);
+};
+
+// Emojification, etc
+const addInternalFields = (account: ImmutableMap<string, any>) => {
+  const emojiMap = makeEmojiMap(account.get('emojis'));
+
+  return account.withMutations((account: ImmutableMap<string, any>) => {
+    // Emojify account properties
+    account.merge({
+      display_name_html: emojify(escapeTextContentForBrowser(account.get('display_name')), emojiMap),
+      note_emojified: emojify(account.get('note', ''), emojiMap),
+      note_plain: unescapeHTML(account.get('note', '')),
+    });
+
+    // Emojify fields
+    account.update('fields', ImmutableList(), fields => {
+      return fields.map((field: ImmutableMap<string, any>) => {
+        return field.merge({
+          name_emojified: emojify(escapeTextContentForBrowser(field.get('name')), emojiMap),
+          value_emojified: emojify(field.get('value'), emojiMap),
+          value_plain: unescapeHTML(field.get('value')),
+        });
+      });
+    });
+  });
 };
 
 export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount => {
   return AccountRecord(
     account.withMutations(account => {
       normalizePleromaLegacyFields(account);
+      normalizeEmojis(account);
+      normalizeAvatar(account);
+      normalizeFields(account);
       normalizeVerified(account);
       normalizeBirthday(account);
       normalizeLocation(account);
       fixUsername(account);
+      fixDisplayName(account);
+      addInternalFields(account);
     }),
   );
 };

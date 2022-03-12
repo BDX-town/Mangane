@@ -2,7 +2,7 @@ import { Record as ImmutableRecord, fromJS } from 'immutable';
 
 import { normalizeStatus } from '../status';
 
-describe('normalizeStatus', () => {
+describe('normalizeStatus()', () => {
   it('adds base fields', () => {
     const status = fromJS({});
     const result = normalizeStatus(status);
@@ -185,5 +185,14 @@ describe('normalizeStatus', () => {
     // Parses emojis as Immutable.Record's
     expect(ImmutableRecord.isRecord(result.poll.emojis.get(0))).toBe(true);
     expect(result.poll.emojis.get(1).shortcode).toEqual('soapbox');
+  });
+
+  it('normalizes a card', () => {
+    const status = fromJS(require('soapbox/__fixtures__/status-with-card.json'));
+    const result = normalizeStatus(status);
+
+    expect(ImmutableRecord.isRecord(result.card)).toBe(true);
+    expect(result.card.type).toEqual('link');
+    expect(result.card.provider_url).toEqual('https://soapbox.pub');
   });
 });
