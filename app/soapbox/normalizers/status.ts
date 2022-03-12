@@ -10,6 +10,7 @@ import {
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
+import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
@@ -83,6 +84,15 @@ const normalizeStatusPoll = (status: ImmutableMap<string, any>) => {
   }
 };
 
+// Normalize card
+const normalizeStatusCard = (status: ImmutableMap<string, any>) => {
+  if (status.get('card')) {
+    return status.update('card', ImmutableMap(), normalizeCard);
+  } else {
+    return status.set('card', null);
+  }
+};
+
 // Fix order of mentions
 const fixMentionsOrder = (status: ImmutableMap<string, any>) => {
   const mentions = status.get('mentions', ImmutableList());
@@ -132,6 +142,7 @@ export const normalizeStatus = (status: ImmutableMap<string, any>): IStatus => {
       normalizeMentions(status);
       normalizeEmojis(status);
       normalizeStatusPoll(status);
+      normalizeStatusCard(status);
       fixMentionsOrder(status);
       addSelfMention(status);
       fixQuote(status);
