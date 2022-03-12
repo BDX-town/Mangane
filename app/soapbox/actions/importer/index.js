@@ -1,7 +1,5 @@
 import { getSettings } from '../settings';
 
-import { normalizeAccount } from './normalizer';
-
 export const ACCOUNT_IMPORT  = 'ACCOUNT_IMPORT';
 export const ACCOUNTS_IMPORT = 'ACCOUNTS_IMPORT';
 export const STATUS_IMPORT   = 'STATUS_IMPORT';
@@ -45,7 +43,7 @@ export function importFetchedAccounts(accounts) {
   function processAccount(account) {
     if (!account.id) return;
 
-    normalAccounts.push(normalizeAccount(account));
+    normalAccounts.push(account);
 
     if (account.moved) {
       processAccount(account.moved);

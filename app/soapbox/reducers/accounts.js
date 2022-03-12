@@ -28,7 +28,6 @@ import {
   ADMIN_USERS_UNSUGGEST_FAIL,
 } from 'soapbox/actions/admin';
 import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
-import { normalizeAccount as normalizeAccount2 } from 'soapbox/actions/importer/normalizer';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount } from 'soapbox/normalizers/account';
 
@@ -40,8 +39,14 @@ import {
 
 const initialState = ImmutableMap();
 
+const minifyAccount = account => {
+  return account.mergeWith((o, n) => n || o, {
+    moved: account.getIn(['moved', 'id']),
+  });
+};
+
 const fixAccount = (state, account) => {
-  const normalized = normalizeAccount(fromJS(account));
+  const normalized = minifyAccount(normalizeAccount(fromJS(account)));
   return state.set(account.id, normalized);
 };
 
@@ -53,9 +58,7 @@ const normalizeAccounts = (state, accounts) => {
   return state;
 };
 
-const importAccountFromChat = (state, chat) =>
-  // TODO: Fix this monstrosity
-  fixAccount(state, normalizeAccount2(chat.account));
+const importAccountFromChat = (state, chat) => fixAccount(state, chat.account);
 
 const importAccountsFromChats = (state, chats) =>
   state.withMutations(mutable =>

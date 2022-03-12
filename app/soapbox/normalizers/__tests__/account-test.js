@@ -3,6 +3,20 @@ import { fromJS } from 'immutable';
 import { normalizeAccount } from '../account';
 
 describe('normalizeAccount()', () => {
+  it('normalizes a mention', () => {
+    const mention = fromJS({
+      acct: 'NEETzsche@iddqd.social',
+      id: '9v5bw7hEGBPc9nrpzc',
+      url: 'https://iddqd.social/users/NEETzsche',
+      username: 'NEETzsche',
+    });
+
+    const result = normalizeAccount(mention);
+    expect(result.emojis).toEqual(fromJS([]));
+    expect(result.display_name).toEqual('NEETzsche');
+    expect(result.verified).toBe(false);
+  });
+
   it('normalizes Fedibird birthday', () => {
     const account = fromJS(require('soapbox/__fixtures__/fedibird-account.json'));
     const result = normalizeAccount(account);

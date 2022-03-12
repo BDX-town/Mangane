@@ -7,6 +7,7 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeAccount } from 'soapbox/normalizers/account';
+import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { IStatus } from 'soapbox/types';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -93,15 +94,6 @@ const PollOptionRecord = ImmutableRecord({
   title_emojified: '',
 });
 
-// https://docs.joinmastodon.org/entities/emoji/
-const EmojiRecord = ImmutableRecord({
-  category: '',
-  shortcode: '',
-  static_url: '',
-  url: '',
-  visible_in_picker: true,
-});
-
 // Ensure attachments have required fields
 // https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
@@ -131,15 +123,18 @@ const normalizeMention = (mention: ImmutableMap<string, any>) => {
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
-  return status.update('mentions', ImmutableList(), mentions => {
-    return mentions.map(normalizeMention);
-  });
+  let mentions;
+
+  mentions = status.get('mentions', ImmutableList());
+  mentions = mentions.map(normalizeMention);
+
+  return status.set('mentions', mentions);
 };
 
 // Normalize emojis
 const normalizeEmojis = (entity: ImmutableMap<string, any>) => {
   return entity.update('emojis', ImmutableList(), emojis => {
-    return emojis.map(EmojiRecord);
+    return emojis.map(normalizeEmoji);
   });
 };
 
