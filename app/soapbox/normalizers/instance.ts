@@ -1,3 +1,8 @@
+/**
+ * Instance normalizer:
+ * Converts API instances into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/instance/}
+ */
 import {
   Map as ImmutableMap,
   List as ImmutableList,
@@ -9,6 +14,7 @@ import { mergeDefined } from 'soapbox/utils/normalizers';
 import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
+// https://docs.joinmastodon.org/entities/instance/
 const InstanceRecord = ImmutableRecord({
   approval_required: false,
   contact_account: ImmutableMap(),

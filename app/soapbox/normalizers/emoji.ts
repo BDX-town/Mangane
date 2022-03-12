@@ -1,3 +1,8 @@
+/**
+ * Emoji normalizer:
+ * Converts API emojis into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/emoji/}
+ */
 import { Record as ImmutableRecord, Map as ImmutableMap } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/emoji/

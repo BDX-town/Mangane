@@ -1,3 +1,8 @@
+/**
+ * Notification normalizer:
+ * Converts API notifications into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/notification/}
+ */
 import {
   Map as ImmutableMap,
   Record as ImmutableRecord,

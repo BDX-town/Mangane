@@ -1,3 +1,8 @@
+/**
+ * Status normalizer:
+ * Converts API statuses into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/status/}
+ */
 import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
@@ -11,6 +16,7 @@ import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { IStatus } from 'soapbox/types';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
+// https://docs.joinmastodon.org/entities/status/
 const StatusRecord = ImmutableRecord({
   account: null,
   application: null,
@@ -99,7 +105,6 @@ const PollOptionRecord = ImmutableRecord({
 });
 
 // Ensure attachments have required fields
-// https://docs.joinmastodon.org/entities/attachment/
 const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
   const url = [
     attachment.get('url'),

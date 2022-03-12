@@ -1,3 +1,8 @@
+/**
+ * Account normalizer:
+ * Converts API accounts into our internal format.
+ * @see {@link https://docs.joinmastodon.org/entities/account/}
+ */
 import escapeTextContentForBrowser from 'escape-html';
 import {
   Map as ImmutableMap,
