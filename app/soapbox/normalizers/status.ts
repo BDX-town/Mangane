@@ -60,6 +60,10 @@ const AttachmentRecord = ImmutableRecord({
   remote_url: null,
   type: 'unknown',
   url: '',
+
+  // Internal fields
+  account: null,
+  status: null,
 });
 
 // https://docs.joinmastodon.org/entities/mention/
