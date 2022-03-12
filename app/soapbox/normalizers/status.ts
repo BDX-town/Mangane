@@ -127,12 +127,9 @@ const normalizeMention = (mention: ImmutableMap<string, any>) => {
 };
 
 const normalizeMentions = (status: ImmutableMap<string, any>) => {
-  let mentions;
-
-  mentions = status.get('mentions', ImmutableList());
-  mentions = mentions.map(normalizeMention);
-
-  return status.set('mentions', mentions);
+  return status.update('mentions', ImmutableList(), mentions => {
+    return mentions.map(normalizeMention);
+  });
 };
 
 // Normalize emojis
