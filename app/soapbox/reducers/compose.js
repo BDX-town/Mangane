@@ -436,7 +436,7 @@ export default function compose(state = initialState, action) {
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
-      map.set('content_type', action.status.get('content_type'));
+      map.set('content_type', action.content_type || 'text/plain');
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);
