@@ -97,7 +97,7 @@ export function fetchStatus(id) {
   };
 }
 
-export function redraft(status, raw_text) {
+export function redraft(status, raw_text, content_type) {
   return (dispatch, getState) => {
     const state = getState();
     const instance = state.get('instance');
@@ -108,6 +108,7 @@ export function redraft(status, raw_text) {
       status,
       raw_text,
       explicitAddressing,
+      content_type,
     });
   };
 }
@@ -129,7 +130,7 @@ export function deleteStatus(id, routerHistory, withRedraft = false) {
       dispatch(deleteFromTimelines(id));
 
       if (withRedraft) {
-        dispatch(redraft(status, response.data.text));
+        dispatch(redraft(status, response.data.text, response.data.pleroma?.content_type));
         dispatch(openModal('COMPOSE'));
       }
     }).catch(error => {
