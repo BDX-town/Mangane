@@ -5,11 +5,12 @@
  */
 'use strict';
 
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 import LinkHeader from 'http-link-header';
 import { createSelector } from 'reselect';
 
-import { BACKEND_URL, FE_SUBDIRECTORY } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
+import { RootState } from 'soapbox/store';
 import { getAccessToken, getAppToken, parseBaseURL } from 'soapbox/utils/auth';
 import { isURL } from 'soapbox/utils/auth';
 
@@ -19,17 +20,15 @@ import { isURL } from 'soapbox/utils/auth';
  @param {object} response - Axios response object
  @returns {object} Link object
  */
-export const getLinks = response => {
-  const value = response.headers.link;
-  if (!value) return { refs: [] };
-  return LinkHeader.parse(value);
+export const getLinks = (response: AxiosResponse): LinkHeader => {
+  return new LinkHeader(response.headers?.link);
 };
 
-const getToken = (state, authType) => {
+const getToken = (state: RootState, authType: string) => {
   return authType === 'app' ? getAppToken(state) : getAccessToken(state);
 };
 
-const maybeParseJSON = data => {
+const maybeParseJSON = (data: string) => {
   try {
     return JSON.parse(data);
   } catch(Exception) {
@@ -38,8 +37,8 @@ const maybeParseJSON = data => {
 };
 
 const getAuthBaseURL = createSelector([
-  (state, me) => state.getIn(['accounts', me, 'url']),
-  (state, me) => state.getIn(['auth', 'me']),
+  (state: RootState, me: string | false | null) => state.accounts.getIn([me, 'url']),
+  (state: RootState, _me: string | false | null) => state.auth.get('me'),
 ], (accountUrl, authUserUrl) => {
   const baseURL = parseBaseURL(accountUrl) || parseBaseURL(authUserUrl);
   return baseURL !== window.location.origin ? baseURL : '';
@@ -51,10 +50,10 @@ const getAuthBaseURL = createSelector([
  * @param {string} baseURL
  * @returns {object} Axios instance
  */
-export const baseClient = (accessToken, baseURL = '') => {
+export const baseClient = (accessToken: string, baseURL: string = ''): AxiosInstance => {
   return axios.create({
     // When BACKEND_URL is set, always use it.
-    baseURL: isURL(BACKEND_URL) ? BACKEND_URL : baseURL,
+    baseURL: isURL(BuildConfig.BACKEND_URL) ? BuildConfig.BACKEND_URL : baseURL,
     headers: Object.assign(accessToken ? {
       'Authorization': `Bearer ${accessToken}`,
     } : {}),
@@ -69,7 +68,7 @@ export const baseClient = (accessToken, baseURL = '') => {
  * No authorization is needed.
  */
 export const staticClient = axios.create({
-  baseURL: FE_SUBDIRECTORY,
+  baseURL: BuildConfig.FE_SUBDIRECTORY,
   transformResponse: [maybeParseJSON],
 });
 
@@ -80,10 +79,10 @@ export const staticClient = axios.create({
  * @param {string} authType - Either 'user' or 'app'
  * @returns {object} Axios instance
  */
-export default (getState, authType = 'user') => {
+export default (getState: () => RootState, authType: string = 'user'): AxiosInstance => {
   const state = getState();
   const accessToken = getToken(state, authType);
-  const me = state.get('me');
+  const me = state.me;
   const baseURL = getAuthBaseURL(state, me);
 
   return baseClient(accessToken, baseURL);
