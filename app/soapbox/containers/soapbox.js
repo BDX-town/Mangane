@@ -27,7 +27,7 @@ import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
-import configureStore from '../store/configureStore';
+import { store } from '../store';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
@@ -38,8 +38,6 @@ const isInstanceLoaded = state => {
 
   return v !== '0.0.0' || fetchFailed;
 };
-
-export const store = configureStore();
 
 // Configure global functions for developers
 createGlobals(store);
