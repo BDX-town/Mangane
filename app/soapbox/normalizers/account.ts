@@ -132,11 +132,12 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize Fedibird/Truth Social location
+// Normalize Fedibird/Truth Social/Pleroma location
 const normalizeLocation = (account: ImmutableMap<string, any>) => {
   return account.update('location', location => {
     return [
       location,
+      account.getIn(['pleroma', 'location']),
       account.getIn(['other_settings', 'location']),
     ].find(Boolean);
   });
