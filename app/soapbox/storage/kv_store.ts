@@ -11,7 +11,7 @@ export const KVStore = localforage.createInstance({
 
 // localForage returns 'null' when a key isn't found.
 // In the Redux action flow, we want it to fail harder.
-KVStore.getItemOrError = key => {
+KVStore.getItemOrError = (key: string) => {
   return KVStore.getItem(key).then(value => {
     if (value === null) {
       throw new Error(`KVStore: null value for key ${key}`);

@@ -1814,6 +1814,13 @@
   resolved "https://registry.yarnpkg.com/@types/html-minifier-terser/-/html-minifier-terser-5.1.2.tgz#693b316ad323ea97eed6b38ed1a3cc02b1672b57"
   integrity sha512-h4lTMgMJctJybDp8CQrxTUiiYmedihHWkjnF/8Pxseu2S6Nlfcy8kwboQ8yejh456rP2yWoEVm1sS/FVsfM48w==
 
+"@types/http-link-header@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/http-link-header/-/http-link-header-1.0.3.tgz#899adf1d8d2036074514f3dbd148fb901ceff920"
+  integrity sha512-y8HkoD/vyid+5MrJ3aas0FvU3/BVBGcyG9kgxL0Zn4JwstA8CglFPnrR0RuzOjRCXwqzL5uxWC2IO7Ub0rMU2A==
+  dependencies:
+    "@types/node" "*"
+
 "@types/http-proxy@^1.17.5":
   version "1.17.7"
   resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.7.tgz#30ea85cc2c868368352a37f0d0d3581e24834c6f"
@@ -1849,6 +1856,11 @@
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
   integrity sha1-7ihweulOEdK4J7y+UnC86n8+ce4=
+
+"@types/lodash@^4.14.180":
+  version "4.14.180"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.180.tgz#4ab7c9ddfc92ec4a887886483bc14c79fb380670"
+  integrity sha512-XOKXa1KIxtNXgASAnwj7cnttJxS4fksBRywK/9LzRV5YxrF80BXZIGeQSuoESQ/VkUj30Ae0+YcuHc15wJCB2g==
 
 "@types/mdast@^3.0.0":
   version "3.0.10"
@@ -1910,14 +1922,6 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
-
-"@types/redux-immutable@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@types/redux-immutable/-/redux-immutable-4.0.2.tgz#8c3c666c33130c6794280bc3dc7726bfa0cfacc7"
-  integrity sha512-nlnhJn9B+NtIemWnnNWO9arUioeHLNvYCADSSa+48c81y8VwutgHH3WHobX711KKrfhlMlEz3+Q9SYX3sxrYPg==
-  dependencies:
-    immutable "^4.0.0-rc.1"
-    redux "^4.0.0"
 
 "@types/retry@^0.12.0":
   version "0.12.1"
@@ -5163,7 +5167,7 @@ immediate@~3.0.5:
   resolved "https://registry.yarnpkg.com/immediate/-/immediate-3.0.6.tgz#9db1dbd0faf8de6fbe0f5dd5e56bb606280de69b"
   integrity sha1-nbHb0Pr43m++D13V5Wu2BigN5ps=
 
-immutable@^4.0.0, immutable@^4.0.0-rc.1:
+immutable@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-4.0.0.tgz#b86f78de6adef3608395efb269a91462797e2c23"
   integrity sha512-zIE9hX70qew5qTUjSS7wi1iwj/l7+m54KWU247nhM3v806UdGj1yDndXj+IOYxxtW9zyLI+xqFNZjTuDaLUqFw==

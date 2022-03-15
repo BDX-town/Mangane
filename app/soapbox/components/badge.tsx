@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Badge = (props: any) => (
-  <span className={'badge badge--' + props.slug}>{props.title}</span>
-);
+import { useAppSelector } from 'soapbox/hooks';
+
+const Badge = (props: any) => {
+  const title = useAppSelector(state => state.instance.titles);
+
+  return (
+    <span title={title} className={'badge badge--' + props.slug}>{props.title}</span>
+  );
+};
 
 Badge.propTypes = {
   title: PropTypes.string.isRequired,

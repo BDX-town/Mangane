@@ -117,7 +117,7 @@ const reducers = {
 
 // Build a default state from all reducers: it has the key and `undefined`
 const StateRecord = ImmutableRecord(
-  Object.keys(reducers).reduce((params, reducer) => {
+  Object.keys(reducers).reduce((params: Record<string, any>, reducer) => {
     params[reducer] = undefined;
     return params;
   }, {}),
@@ -126,18 +126,18 @@ const StateRecord = ImmutableRecord(
 const appReducer = combineReducers(reducers, StateRecord);
 
 // Clear the state (mostly) when the user logs out
-const logOut = (state = StateRecord()) => {
-  const whitelist = ['instance', 'soapbox', 'custom_emojis', 'auth'];
+const logOut = (state: any = StateRecord()): ReturnType<typeof appReducer> => {
+  const whitelist: string[] = ['instance', 'soapbox', 'custom_emojis', 'auth'];
 
   return StateRecord(
-    whitelist.reduce((acc, curr) => {
+    whitelist.reduce((acc: Record<string, any>, curr) => {
       acc[curr] = state.get(curr);
       return acc;
     }, {}),
-  );
+  ) as unknown as ReturnType<typeof appReducer>;
 };
 
-const rootReducer = (state, action) => {
+const rootReducer: typeof appReducer = (state, action) => {
   switch(action.type) {
   case AUTH_LOGGED_OUT:
     return appReducer(logOut(state), action);
