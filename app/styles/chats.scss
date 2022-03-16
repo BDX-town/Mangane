@@ -487,6 +487,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-height: 19px;
 
     a {
       color: var(--highlight-text-color);
