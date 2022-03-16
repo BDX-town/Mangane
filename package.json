@@ -109,6 +109,7 @@
     "mark-loader": "^0.1.6",
     "marky": "^1.2.1",
     "mini-css-extract-plugin": "^1.6.2",
+    "msw": "^0.39.2",
     "object-assign": "^4.1.1",
     "object-fit-images": "^3.2.3",
     "object.values": "^1.1.0",
