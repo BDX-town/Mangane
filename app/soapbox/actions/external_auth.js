@@ -6,11 +6,10 @@
  * @see module:soapbox/actions/oauth
  */
 
-import { Map as ImmutableMap, fromJS } from 'immutable';
-
 import { createApp } from 'soapbox/actions/apps';
 import { authLoggedIn, verifyCredentials, switchAccount } from 'soapbox/actions/auth';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
+import { normalizeInstance } from 'soapbox/normalizers';
 import { parseBaseURL } from 'soapbox/utils/auth';
 import sourceCode from 'soapbox/utils/code';
 import { getWalletAndSign } from 'soapbox/utils/ethereum';
@@ -22,12 +21,12 @@ import { baseClient } from '../api';
 const fetchExternalInstance = baseURL => {
   return baseClient(null, baseURL)
     .get('/api/v1/instance')
-    .then(({ data: instance }) => fromJS(instance))
+    .then(({ data: instance }) => normalizeInstance(instance))
     .catch(error => {
       if (error.response?.status === 401) {
         // Authenticated fetch is enabled.
         // Continue with a limited featureset.
-        return ImmutableMap({ version: '0.0.0' });
+        return normalizeInstance({});
       } else {
         throw error;
       }
