@@ -45,6 +45,7 @@ export const AccountRecord = ImmutableRecord({
   uri: '',
   url: '',
   username: '',
+  website: '',
   verified: false,
 
   // Internal fields

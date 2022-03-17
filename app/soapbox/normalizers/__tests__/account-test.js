@@ -95,6 +95,12 @@ describe('normalizeAccount()', () => {
     expect(result.location).toBe('Texas');
   });
 
+  it('normalizes Truth Social website', () => {
+    const account = require('soapbox/__fixtures__/truthsocial-account.json');
+    const result = normalizeAccount(account);
+    expect(result.website).toBe('https://soapbox.pub');
+  });
+
   it('sets display_name from username', () => {
     const account = { username: 'alex' };
     const result = normalizeAccount(account);
