@@ -1,5 +1,5 @@
 import { isLoggedIn } from 'soapbox/utils/auth';
-import { getFeatures } from 'soapbox/utils/features';
+import { getFeatures, parseVersion } from 'soapbox/utils/features';
 import { shouldHaveCard } from 'soapbox/utils/status';
 
 import api from '../api';
@@ -99,17 +99,16 @@ export function fetchStatus(id) {
 
 export function redraft(status, raw_text, content_type) {
   return (dispatch, getState) => {
-    const state = getState();
-    const instance = state.get('instance');
-    const { explicitAddressing, redraftMedia } = getFeatures(instance);
+    const { instance } = getState();
+    const { explicitAddressing } = getFeatures(instance);
 
     dispatch({
       type: REDRAFT,
       status,
       raw_text,
       explicitAddressing,
-      redraftMedia,
       content_type,
+      v: parseVersion(instance.version),
     });
   };
 }

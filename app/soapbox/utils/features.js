@@ -110,7 +110,6 @@ export const getFeatures = createSelector([instance => instance], instance => {
       v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
-    redraftMedia: v.software === MASTODON,
   }, overrides);
 });
 
