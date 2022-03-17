@@ -17,7 +17,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import { IStatus } from 'soapbox/types';
 
 // https://docs.joinmastodon.org/entities/status/
-const StatusRecord = ImmutableRecord({
+export const StatusRecord = ImmutableRecord({
   account: null,
   application: null,
   bookmarked: false,

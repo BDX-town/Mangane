@@ -17,7 +17,7 @@ import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/account/
-const AccountRecord = ImmutableRecord({
+export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
@@ -56,7 +56,7 @@ const AccountRecord = ImmutableRecord({
 });
 
 // https://docs.joinmastodon.org/entities/field/
-const FieldRecord = ImmutableRecord({
+export const FieldRecord = ImmutableRecord({
   name: '',
   value: '',
   verified_at: null,

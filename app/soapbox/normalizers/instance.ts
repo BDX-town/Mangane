@@ -15,7 +15,7 @@ import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
 // https://docs.joinmastodon.org/entities/instance/
-const InstanceRecord = ImmutableRecord({
+export const InstanceRecord = ImmutableRecord({
   approval_required: false,
   contact_account: ImmutableMap(),
   configuration: ImmutableMap({

@@ -6,7 +6,7 @@
 import { Record as ImmutableRecord, Map as ImmutableMap } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/emoji/
-const EmojiRecord = ImmutableRecord({
+export const EmojiRecord = ImmutableRecord({
   category: '',
   shortcode: '',
   static_url: '',

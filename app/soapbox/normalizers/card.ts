@@ -6,7 +6,7 @@
 import { Record as ImmutableRecord, Map as ImmutableMap } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/card/
-const CardRecord = ImmutableRecord({
+export const CardRecord = ImmutableRecord({
   author_name: '',
   author_url: '',
   blurhash: null,

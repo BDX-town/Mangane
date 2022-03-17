@@ -11,7 +11,7 @@ import {
 import { normalizeAccount } from 'soapbox/normalizers/account';
 
 // https://docs.joinmastodon.org/entities/mention/
-const MentionRecord = ImmutableRecord({
+export const MentionRecord = ImmutableRecord({
   id: '',
   acct: '',
   username: '',

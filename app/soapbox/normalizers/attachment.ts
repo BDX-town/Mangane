@@ -11,7 +11,7 @@ import {
 import { mergeDefined } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/attachment/
-const AttachmentRecord = ImmutableRecord({
+export const AttachmentRecord = ImmutableRecord({
   blurhash: undefined,
   description: '',
   id: '',

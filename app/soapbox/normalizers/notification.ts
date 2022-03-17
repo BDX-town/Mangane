@@ -9,7 +9,7 @@ import {
 } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/notification/
-const NotificationRecord = ImmutableRecord({
+export const NotificationRecord = ImmutableRecord({
   account: null,
   chat_message: null, // pleroma:chat_mention
   created_at: new Date(),

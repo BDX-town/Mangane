@@ -15,7 +15,7 @@ import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/poll/
-const PollRecord = ImmutableRecord({
+export const PollRecord = ImmutableRecord({
   emojis: ImmutableList(),
   expired: false,
   expires_at: new Date(),
@@ -29,7 +29,7 @@ const PollRecord = ImmutableRecord({
 });
 
 // Sub-entity of Poll
-const PollOptionRecord = ImmutableRecord({
+export const PollOptionRecord = ImmutableRecord({
   title: '',
   votes_count: 0,
 
