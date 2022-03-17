@@ -161,4 +161,11 @@ describe('normalizeAccount()', () => {
     expect(result.header).toEqual(HEADER_MISSING);
     expect(result.header_static).toEqual(HEADER_MISSING);
   });
+
+  it('adds fqn to Mastodon account', () => {
+    const account = require('soapbox/__fixtures__/mastodon-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.fqn).toEqual('benis911@mastodon.social');
+  });
 });

@@ -14,6 +14,7 @@ import {
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { IAccount } from 'soapbox/types';
+import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -195,6 +196,10 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
+const normalizeFqn = (account: ImmutableMap<string, any>) => {
+  return account.set('fqn', acctFull(account));
+};
+
 export const normalizeAccount = (account: Record<string, any>): IAccount => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -206,6 +211,7 @@ export const normalizeAccount = (account: Record<string, any>): IAccount => {
       normalizeVerified(account);
       normalizeBirthday(account);
       normalizeLocation(account);
+      normalizeFqn(account);
       fixUsername(account);
       fixDisplayName(account);
       addInternalFields(account);
