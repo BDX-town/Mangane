@@ -3,12 +3,14 @@
 import { configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 
-import { __clear as clearApiMocks } from 'soapbox/api';
+import { server } from 'soapbox/msw';
 
 // Enzyme
 const adapter = new Adapter();
 configure({ adapter });
 
-// API mocking
-jest.mock('soapbox/api');
-afterEach(() => clearApiMocks());
+// Setup MSW
+// https://mswjs.io/docs/api/setup-server
+beforeAll(() => server.listen());
+afterEach(() => server.resetHandlers());
+afterAll(() => server.close());
