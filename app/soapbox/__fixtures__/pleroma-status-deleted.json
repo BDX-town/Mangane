@@ -1,0 +1,229 @@
+{
+  "account": {
+    "acct": "alex",
+    "avatar": "https://media.gleasonator.com/6d64aecb17348b23aaff78db4687b9476cb0da1c07cc6a819c2e6ec7144c18b1.png",
+    "avatar_static": "https://media.gleasonator.com/6d64aecb17348b23aaff78db4687b9476cb0da1c07cc6a819c2e6ec7144c18b1.png",
+    "bot": false,
+    "created_at": "2020-01-08T01:25:43.000Z",
+    "display_name": "Alex Gleason",
+    "emojis": [],
+    "fields": [
+      {
+        "name": "Website",
+        "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+      },
+      {
+        "name": "Soapbox",
+        "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+      },
+      {
+        "name": "Email",
+        "value": "alex@alexgleason.me"
+      },
+      {
+        "name": "Gender identity",
+        "value": "Soyboy"
+      },
+      {
+        "name": "Donate (PayPal)",
+        "value": "<a href=\"https://paypal.me/gleasonator\" rel=\"ugc\">https://paypal.me/gleasonator</a>"
+      },
+      {
+        "name": "$BTC",
+        "value": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n"
+      },
+      {
+        "name": "$ETH",
+        "value": "0xAc9aB5Fc04Dc1cB1789Af75b523Bd23C70B2D717"
+      },
+      {
+        "name": "$DOGE",
+        "value": "D5zVZs6jrRakaPVGiErkQiHt9sayzm6V5D"
+      },
+      {
+        "name": "$XMR",
+        "value": "45JDCLrjJ4bgVUSbbs2yjy9m5Mf4VLPW8fG7jw9sq5u69rXZZopQogZNeyYkMBnXpkaip4p4QwaaJNhdTotPa9g44DBCzdK"
+      }
+    ],
+    "follow_requests_count": 0,
+    "followers_count": 2489,
+    "following_count": 1586,
+    "fqn": "alex@gleasonator.com",
+    "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+    "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+    "id": "9v5bmRalQvjOy0ECcC",
+    "last_status_at": "2022-03-16T21:57:17",
+    "locked": false,
+    "note": "I create Fediverse software that empowers people online.<br/><br/>I&#39;m vegan btw<br/><br/>Note: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "accepts_email_list": true,
+      "allow_following_move": true,
+      "also_known_as": [
+        "https://mitra.social/users/alex"
+      ],
+      "ap_id": "https://gleasonator.com/users/alex",
+      "background_image": null,
+      "birthday": "1993-07-03",
+      "deactivated": false,
+      "email": "alex@alexgleason.me",
+      "favicon": "https://gleasonator.com/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": true,
+      "is_confirmed": true,
+      "is_moderator": false,
+      "is_suggested": true,
+      "location": null,
+      "notification_settings": {
+        "block_from_strangers": false,
+        "hide_notification_contents": false
+      },
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": [],
+      "unread_conversation_count": 392,
+      "unread_notifications_count": 2
+    },
+    "source": {
+      "fields": [
+        {
+          "name": "Website",
+          "value": "https://alexgleason.me"
+        },
+        {
+          "name": "Soapbox",
+          "value": "https://soapbox.pub"
+        },
+        {
+          "name": "Email",
+          "value": "alex@alexgleason.me"
+        },
+        {
+          "name": "Gender identity",
+          "value": "Soyboy"
+        },
+        {
+          "name": "Donate (PayPal)",
+          "value": "https://paypal.me/gleasonator"
+        },
+        {
+          "name": "$BTC",
+          "value": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n"
+        },
+        {
+          "name": "$ETH",
+          "value": "0xAc9aB5Fc04Dc1cB1789Af75b523Bd23C70B2D717"
+        },
+        {
+          "name": "$DOGE",
+          "value": "D5zVZs6jrRakaPVGiErkQiHt9sayzm6V5D"
+        },
+        {
+          "name": "$XMR",
+          "value": "45JDCLrjJ4bgVUSbbs2yjy9m5Mf4VLPW8fG7jw9sq5u69rXZZopQogZNeyYkMBnXpkaip4p4QwaaJNhdTotPa9g44DBCzdK"
+        }
+      ],
+      "note": "I create Fediverse software that empowers people online.\r\n\r\nI'm vegan btw\r\n\r\nNote: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false,
+        "no_rich_text": false,
+        "show_birthday": true,
+        "show_role": true
+      },
+      "privacy": "public",
+      "sensitive": false
+    },
+    "statuses_count": 23695,
+    "url": "https://gleasonator.com/users/alex",
+    "username": "alex"
+  },
+  "application": {
+    "name": "Soapbox FE",
+    "website": "https://soapbox.pub/"
+  },
+  "bookmarked": false,
+  "card": null,
+  "content": "<p>I am going to delete this post for testing purposes</p>",
+  "created_at": "2022-03-16T21:57:16.000Z",
+  "emojis": [],
+  "favourited": false,
+  "favourites_count": 3,
+  "id": "AHU2RrX0wdcwzCYjFQ",
+  "in_reply_to_account_id": null,
+  "in_reply_to_id": null,
+  "language": null,
+  "media_attachments": [
+    {
+      "blurhash": "eWGlL@?b~q%MRj4nt7IUof%M%MIURjRjIUM{IUM{Rjayxut7j[j[xu",
+      "description": "",
+      "id": "508107650",
+      "meta": {
+        "original": {
+          "aspect": 1,
+          "height": 1024,
+          "width": 1024
+        }
+      },
+      "pleroma": {
+        "mime_type": "image/png"
+      },
+      "preview_url": "https://media.gleasonator.com/2b9ddcd8b27cad786fd34bc2cfe02c1b63aa1b8e7b8d72379b5c9375fb61f199.png",
+      "remote_url": "https://media.gleasonator.com/2b9ddcd8b27cad786fd34bc2cfe02c1b63aa1b8e7b8d72379b5c9375fb61f199.png",
+      "text_url": "https://media.gleasonator.com/2b9ddcd8b27cad786fd34bc2cfe02c1b63aa1b8e7b8d72379b5c9375fb61f199.png",
+      "type": "image",
+      "url": "https://media.gleasonator.com/2b9ddcd8b27cad786fd34bc2cfe02c1b63aa1b8e7b8d72379b5c9375fb61f199.png"
+    }
+  ],
+  "mentions": [],
+  "muted": false,
+  "pinned": false,
+  "pleroma": {
+    "content": {
+      "text/plain": "I am going to delete this post for testing purposes"
+    },
+    "content_type": "text/markdown",
+    "conversation_id": "AHU2RrUB7BMIqPESpM",
+    "direct_conversation_id": null,
+    "emoji_reactions": [
+      {
+        "count": 1,
+        "me": false,
+        "name": "😭"
+      },
+      {
+        "count": 1,
+        "me": false,
+        "name": "❔"
+      }
+    ],
+    "expires_at": null,
+    "in_reply_to_account_acct": null,
+    "local": true,
+    "parent_visible": false,
+    "pinned_at": null,
+    "quote": null,
+    "quote_url": null,
+    "quote_visible": false,
+    "spoiler_text": {
+      "text/plain": ""
+    },
+    "thread_muted": false
+  },
+  "poll": null,
+  "reblog": null,
+  "reblogged": false,
+  "reblogs_count": 1,
+  "replies_count": 2,
+  "sensitive": false,
+  "spoiler_text": "",
+  "tags": [],
+  "text": "I am going to delete this post for testing purposes",
+  "uri": "https://gleasonator.com/objects/205ec868-d28d-4668-a56a-33321f7e285e",
+  "url": "https://gleasonator.com/notice/AHU2RrX0wdcwzCYjFQ",
+  "visibility": "public"
+}
