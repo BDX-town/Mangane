@@ -3,6 +3,7 @@ import { Record as ImmutableRecord, fromJS } from 'immutable';
 import { normalizeAccount } from '../account';
 
 const AVATAR_MISSING = require('images/avatar-missing.png');
+const HEADER_MISSING = require('images/header-missing.png');
 
 describe('normalizeAccount()', () => {
   it('adds base fields', () => {
@@ -13,6 +14,7 @@ describe('normalizeAccount()', () => {
     expect(result.acct).toEqual('');
     expect(result.note).toEqual('');
     expect(result.avatar).toEqual(AVATAR_MISSING);
+    expect(result.header_static).toEqual(HEADER_MISSING);
   });
 
   it('normalizes a mention', () => {
@@ -95,6 +97,12 @@ describe('normalizeAccount()', () => {
     expect(result.location).toBe('Texas');
   });
 
+  it('normalizes Truth Social website', () => {
+    const account = require('soapbox/__fixtures__/truthsocial-account.json');
+    const result = normalizeAccount(account);
+    expect(result.website).toBe('https://soapbox.pub');
+  });
+
   it('sets display_name from username', () => {
     const account = { username: 'alex' };
     const result = normalizeAccount(account);
@@ -142,5 +150,15 @@ describe('normalizeAccount()', () => {
     expect(field.name_emojified).toBe('Soapbox <img draggable="false" class="emojione" alt=":ablobcatrainbow:" title=":ablobcatrainbow:" src="https://gleasonator.com/emoji/blobcat/ablobcatrainbow.png" />');
     expect(field.value_emojified).toBe('<a href="https://soapbox.pub" rel="ugc">https://soapbox.pub</a> <img draggable="false" class="emojione" alt=":soapbox:" title=":soapbox:" src="https://gleasonator.com/emoji/Gleasonator/soapbox.png" />');
     expect(field.value_plain).toBe('https://soapbox.pub :soapbox:');
+  });
+
+  it('adds default avatar and banner to GoToSocial account', () => {
+    const account = require('soapbox/__fixtures__/gotosocial-account.json');
+    const result = normalizeAccount(account);
+
+    expect(result.avatar).toEqual(AVATAR_MISSING);
+    expect(result.avatar_static).toEqual(AVATAR_MISSING);
+    expect(result.header).toEqual(HEADER_MISSING);
+    expect(result.header_static).toEqual(HEADER_MISSING);
   });
 });

@@ -45,6 +45,7 @@ export const AccountRecord = ImmutableRecord({
   uri: '',
   url: '',
   username: '',
+  website: '',
   verified: false,
 
   // Internal fields
@@ -93,6 +94,18 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   return account.withMutations(account => {
     account.set('avatar', avatar || avatarStatic || missing);
     account.set('avatar_static', avatarStatic || avatar || missing);
+  });
+};
+
+// Add header, if missing
+const normalizeHeader = (account: ImmutableMap<string, any>) => {
+  const header = account.get('header');
+  const headerStatic = account.get('header_static');
+  const missing = require('images/header-missing.png');
+
+  return account.withMutations(account => {
+    account.set('header', header || headerStatic || missing);
+    account.set('header_static', headerStatic || header || missing);
   });
 };
 
@@ -188,6 +201,7 @@ export const normalizeAccount = (account: Record<string, any>): IAccount => {
       normalizePleromaLegacyFields(account);
       normalizeEmojis(account);
       normalizeAvatar(account);
+      normalizeHeader(account);
       normalizeFields(account);
       normalizeVerified(account);
       normalizeBirthday(account);
