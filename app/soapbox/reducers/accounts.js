@@ -46,7 +46,7 @@ const minifyAccount = account => {
 };
 
 const fixAccount = (state, account) => {
-  const normalized = minifyAccount(normalizeAccount(fromJS(account)));
+  const normalized = minifyAccount(normalizeAccount(account));
   return state.set(account.id, normalized);
 };
 
@@ -119,7 +119,7 @@ const removePermission = (state, accountIds, permissionGroup) => {
   });
 };
 
-const buildAccount = adminUser => normalizeAccount(fromJS({
+const buildAccount = adminUser => normalizeAccount({
   id: adminUser.get('id'),
   username: adminUser.get('nickname').split('@')[0],
   acct: adminUser.get('nickname'),
@@ -142,7 +142,7 @@ const buildAccount = adminUser => normalizeAccount(fromJS({
     },
   },
   should_refetch: true,
-}));
+});
 
 const mergeAdminUser = (account, adminUser) => {
   return account.withMutations(account => {
