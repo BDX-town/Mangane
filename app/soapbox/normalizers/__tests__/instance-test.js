@@ -177,4 +177,11 @@ describe('normalizeInstance()', () => {
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
     expect(result.get('description_limit')).toBe(1500);
   });
+
+  it('normalizes a Mastodon RC version', () => {
+    const instance = require('soapbox/__fixtures__/mastodon-instance-rc.json');
+    const result = normalizeInstance(instance);
+
+    expect(result.version).toEqual('3.5.0-rc1');
+  });
 });
