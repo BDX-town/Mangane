@@ -3,10 +3,10 @@
  * Converts API emojis into our internal format.
  * @see {@link https://docs.joinmastodon.org/entities/emoji/}
  */
-import { Record as ImmutableRecord, Map as ImmutableMap } from 'immutable';
+import { Record as ImmutableRecord, Map as ImmutableMap, fromJS } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/emoji/
-const EmojiRecord = ImmutableRecord({
+export const EmojiRecord = ImmutableRecord({
   category: '',
   shortcode: '',
   static_url: '',
@@ -14,6 +14,8 @@ const EmojiRecord = ImmutableRecord({
   visible_in_picker: true,
 });
 
-export const normalizeEmoji = (emoji: ImmutableMap<string, any>) => {
-  return EmojiRecord(emoji);
+export const normalizeEmoji = (emoji: Record<string, any>) => {
+  return EmojiRecord(
+    ImmutableMap(fromJS(emoji)),
+  );
 };
