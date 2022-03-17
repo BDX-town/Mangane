@@ -97,6 +97,18 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   });
 };
 
+// Add header, if missing
+const normalizeHeader = (account: ImmutableMap<string, any>) => {
+  const header = account.get('header');
+  const headerStatic = account.get('header_static');
+  const missing = require('images/header-missing.png');
+
+  return account.withMutations(account => {
+    account.set('header', header || headerStatic || missing);
+    account.set('header_static', headerStatic || header || missing);
+  });
+};
+
 // Normalize custom fields
 const normalizeFields = (account: ImmutableMap<string, any>) => {
   return account.update('fields', ImmutableList(), fields => fields.map(FieldRecord));
@@ -189,6 +201,7 @@ export const normalizeAccount = (account: Record<string, any>): IAccount => {
       normalizePleromaLegacyFields(account);
       normalizeEmojis(account);
       normalizeAvatar(account);
+      normalizeHeader(account);
       normalizeFields(account);
       normalizeVerified(account);
       normalizeBirthday(account);
