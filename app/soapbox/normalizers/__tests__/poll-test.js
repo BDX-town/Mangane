@@ -1,10 +1,10 @@
-import { Record as ImmutableRecord, fromJS } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { normalizePoll } from '../poll';
 
 describe('normalizePoll()', () => {
   it('adds base fields', () => {
-    const poll = fromJS({ options: [{ title: 'Apples' }] });
+    const poll = { options: [{ title: 'Apples' }] };
     const result = normalizePoll(poll);
 
     const expected = {
@@ -25,7 +25,7 @@ describe('normalizePoll()', () => {
   });
 
   it('normalizes a Pleroma logged-out poll', () => {
-    const poll = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll.json')).get('poll');
+    const { poll } = require('soapbox/__fixtures__/pleroma-status-with-poll.json');
     const result = normalizePoll(poll);
 
     // Adds logged-in fields
@@ -34,7 +34,7 @@ describe('normalizePoll()', () => {
   });
 
   it('normalizes poll with emojis', () => {
-    const poll = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json')).get('poll');
+    const { poll } = require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
     const result = normalizePoll(poll);
 
     // Emojifies poll options

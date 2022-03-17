@@ -8,6 +8,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
@@ -181,9 +182,9 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount => {
+export const normalizeAccount = (account: Record<string, any>): IAccount => {
   return AccountRecord(
-    account.withMutations(account => {
+    ImmutableMap(fromJS(account)).withMutations(account => {
       normalizePleromaLegacyFields(account);
       normalizeEmojis(account);
       normalizeAvatar(account);

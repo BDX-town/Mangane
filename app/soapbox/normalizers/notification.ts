@@ -6,6 +6,7 @@
 import {
   Map as ImmutableMap,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 // https://docs.joinmastodon.org/entities/notification/
@@ -20,6 +21,8 @@ export const NotificationRecord = ImmutableRecord({
   type: '',
 });
 
-export const normalizeNotification = (notification: ImmutableMap<string, any>) => {
-  return NotificationRecord(notification);
+export const normalizeNotification = (notification: Record<string, any>) => {
+  return NotificationRecord(
+    ImmutableMap(fromJS(notification)),
+  );
 };

@@ -7,6 +7,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
@@ -135,9 +136,9 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeStatus = (status: ImmutableMap<string, any>): IStatus => {
+export const normalizeStatus = (status: Record<string, any>): IStatus => {
   return StatusRecord(
-    status.withMutations(status => {
+    ImmutableMap(fromJS(status)).withMutations(status => {
       normalizeAttachments(status);
       normalizeMentions(status);
       normalizeEmojis(status);

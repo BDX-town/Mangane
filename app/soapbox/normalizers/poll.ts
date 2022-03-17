@@ -8,6 +8,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
@@ -76,9 +77,9 @@ const normalizePollVoted = (poll: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizePoll = (poll: ImmutableMap<string, any>) => {
+export const normalizePoll = (poll: Record<string, any>) => {
   return PollRecord(
-    poll.withMutations((poll: ImmutableMap<string, any>) => {
+    ImmutableMap(fromJS(poll)).withMutations((poll: ImmutableMap<string, any>) => {
       normalizeEmojis(poll);
       normalizePollOptions(poll);
       normalizePollOwnVotes(poll);

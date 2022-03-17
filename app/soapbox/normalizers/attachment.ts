@@ -6,6 +6,7 @@
 import {
   Map as ImmutableMap,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import { mergeDefined } from 'soapbox/utils/normalizers';
@@ -28,8 +29,7 @@ export const AttachmentRecord = ImmutableRecord({
   status: null,
 });
 
-// Ensure attachments have required fields
-export const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
+const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
   const url = [
     attachment.get('url'),
     attachment.get('preview_url'),
@@ -41,5 +41,12 @@ export const normalizeAttachment = (attachment: ImmutableMap<string, any>) => {
     preview_url: url,
   });
 
-  return AttachmentRecord(attachment.mergeWith(mergeDefined, base));
+  return attachment.mergeWith(mergeDefined, base);
+};
+
+// Ensure attachments have required fields
+export const normalizeAttachment = (attachment: Record<string, any>) => {
+  return AttachmentRecord(
+    normalizeUrls(ImmutableMap(fromJS(attachment))),
+  );
 };

@@ -7,6 +7,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
@@ -84,12 +85,12 @@ const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
 const getAttachmentLimit = (software: string) => software === PLEROMA ? Infinity : 4;
 
 // Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
-export const normalizeInstance = (instance: ImmutableMap<string, any>) => {
-  const { software } = parseVersion(instance.get('version'));
-  const mastodonConfig = pleromaToMastodonConfig(instance);
-
+export const normalizeInstance = (instance: Record<string, any>) => {
   return InstanceRecord(
-    instance.withMutations(instance => {
+    ImmutableMap(fromJS(instance)).withMutations((instance: ImmutableMap<string, any>) => {
+      const { software } = parseVersion(instance.get('version'));
+      const mastodonConfig = pleromaToMastodonConfig(instance);
+
       // Merge configuration
       instance.update('configuration', ImmutableMap(), configuration => (
         configuration.mergeDeepWith(mergeDefined, mastodonConfig)
