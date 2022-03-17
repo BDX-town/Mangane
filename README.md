@@ -2,10 +2,14 @@
 
 ![Soapbox FE Screenshot](soapbox-screenshot.png)
 
-**Soapbox FE** is a frontend for Pleroma with a focus on custom branding and ease of use.
+**Soapbox FE** is a frontend for Mastodon and Pleroma with a focus on custom branding and ease of use.
 It's part of the [Soapbox](https://soapbox.pub) project.
 
-# :rocket: Deploy on Pleroma
+## Try it out
+
+Visit https://fe.soapbox.pub/ and point it to your favorite instance.
+
+## :rocket: Deploy on Pleroma
 
 Installing Soapbox FE on an existing Pleroma server is extremely easy.
 Just ssh into the server and download a .zip of the latest build:
