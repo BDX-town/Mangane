@@ -29,6 +29,7 @@ export const AttachmentRecord = ImmutableRecord({
   status: null,
 });
 
+// Ensure attachments have required fields
 const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
   const url = [
     attachment.get('url'),
@@ -44,7 +45,6 @@ const normalizeUrls = (attachment: ImmutableMap<string, any>) => {
   return attachment.mergeWith(mergeDefined, base);
 };
 
-// Ensure attachments have required fields
 export const normalizeAttachment = (attachment: Record<string, any>) => {
   return AttachmentRecord(
     normalizeUrls(ImmutableMap(fromJS(attachment))),
