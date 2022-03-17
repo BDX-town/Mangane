@@ -432,7 +432,7 @@ export default function compose(state = initialState, action) {
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
       // TODO: Actually fix this rather than just removing it
-      // map.set('media_attachments', action.status.get('media_attachments'));
+      if (action.redraftMedia) map.set('media_attachments', action.status.get('media_attachments'));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());

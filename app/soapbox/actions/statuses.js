@@ -101,13 +101,14 @@ export function redraft(status, raw_text, content_type) {
   return (dispatch, getState) => {
     const state = getState();
     const instance = state.get('instance');
-    const { explicitAddressing } = getFeatures(instance);
+    const { explicitAddressing, redraftMedia } = getFeatures(instance);
 
     dispatch({
       type: REDRAFT,
       status,
       raw_text,
       explicitAddressing,
+      redraftMedia,
       content_type,
     });
   };
