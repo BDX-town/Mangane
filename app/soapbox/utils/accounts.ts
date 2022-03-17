@@ -10,14 +10,14 @@ const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
 };
 
 export const getDomain = (account: ImmutableMap<string, any>): string => {
-  const domain = account.get('acct').split('@')[1];
+  const domain = account.get('acct', '').split('@')[1];
   return domain ? domain : getDomainFromURL(account);
 };
 
 export const guessFqn = (account: ImmutableMap<string, any>): string => {
-  const [user, domain] = account.get('acct').split('@');
+  const [user, domain] = account.get('acct', '').split('@');
   if (!domain) return [user, getDomainFromURL(account)].join('@');
-  return account.get('acct');
+  return account.get('acct', '');
 };
 
 export const getBaseURL = (account: ImmutableMap<string, any>): string => {
@@ -31,7 +31,7 @@ export const getBaseURL = (account: ImmutableMap<string, any>): string => {
 
 // user@domain even for local users
 export const acctFull = (account: ImmutableMap<string, any>): string => (
-  account.get('fqn') || guessFqn(account)
+  account.get('fqn') || guessFqn(account) || ''
 );
 
 export const getAcct = (account: ImmutableMap<string, any>, displayFqn: boolean): string => (
