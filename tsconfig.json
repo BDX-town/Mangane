@@ -9,7 +9,8 @@
     "allowJs": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": [ "./types", "./node_modules/@types"]
   },
-  "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
+  "exclude": ["node_modules", "types", "**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
 }

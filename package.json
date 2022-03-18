@@ -61,7 +61,7 @@
     "@tabler/icons": "^1.53.0",
     "@types/escape-html": "^1.0.1",
     "@types/http-link-header": "^1.0.3",
-    "@types/redux-immutable": "^4.0.2",
+    "@types/lodash": "^4.14.180",
     "array-includes": "^3.0.3",
     "autoprefixer": "^10.0.0",
     "axios": "^0.21.4",
