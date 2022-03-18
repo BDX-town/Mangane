@@ -1,5 +1,4 @@
 import { get } from 'lodash';
-import { AnyAction } from 'redux';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { AppDispatch, RootState } from 'soapbox/store';
@@ -37,7 +36,7 @@ export const getHost = (state: RootState) => {
 };
 
 export function rememberInstance(host: string) {
-  return (dispatch: AppDispatch, _getState: () => RootState): AnyAction => {
+  return (dispatch: AppDispatch, _getState: () => RootState) => {
     dispatch({ type: INSTANCE_REMEMBER_REQUEST, host });
     return KVStore.getItemOrError(`instance:${host}`).then((instance: Record<string, any>) => {
       dispatch({ type: INSTANCE_REMEMBER_SUCCESS, host, instance });
