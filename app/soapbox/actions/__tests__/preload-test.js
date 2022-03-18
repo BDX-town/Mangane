@@ -1,6 +1,6 @@
 import { Map as ImmutableMap } from 'immutable';
 
-import { server, rest } from 'soapbox/msw';
+import { __stub } from 'soapbox/api';
 import { mockStore } from 'soapbox/test_helpers';
 
 import { VERIFY_CREDENTIALS_REQUEST } from '../auth';
@@ -14,14 +14,10 @@ describe('preloadMastodon()', () => {
   it('creates the expected actions', () => {
     const data = require('soapbox/__fixtures__/mastodon_initial_state.json');
 
-    server.use(
-      rest.get('/api/v1/accounts/verify_credentials', (req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json(require('soapbox/__fixtures__/pleroma-account.json')),
-        );
-      }),
-    );
+    __stub(mock => {
+      mock.onGet('/api/v1/accounts/verify_credentials')
+        .reply(200, {});
+    });
 
     const store = mockStore(ImmutableMap());
     store.dispatch(preloadMastodon(data));

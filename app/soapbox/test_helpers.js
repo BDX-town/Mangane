@@ -11,9 +11,6 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'soapbox/reducers';
 
-export const rootState = rootReducer(undefined, {});
-export const getState = () => rootState;
-
 // Mock Redux
 // https://redux.js.org/recipes/writing-tests/
 const middlewares = [thunk];
@@ -23,7 +20,7 @@ export const mockStore = configureMockStore(middlewares);
 export const createComponent = (children, props = {}) => {
   props = ImmutableMap({
     locale: 'en',
-    store: mockStore(rootState),
+    store: mockStore(rootReducer(ImmutableMap(), {})),
   }).merge(props);
 
   return renderer.create(

@@ -1,21 +1,21 @@
+import { Map as ImmutableMap } from 'immutable';
+
 import { STATUSES_IMPORT } from 'soapbox/actions/importer';
-import { server, rest } from 'soapbox/msw';
-import { rootState, mockStore } from 'soapbox/test_helpers';
+import { __stub } from 'soapbox/api';
+import { mockStore } from 'soapbox/test_helpers';
 
 import { fetchContext } from '../statuses';
 
 describe('fetchContext()', () => {
   it('handles Mitra context', done => {
-    server.use(
-      rest.get('/api/v1/statuses/017ed505-5926-392f-256a-f86d5075df70/context', (req, res, ctx) => {
-        return res(
-          ctx.status(200),
-          ctx.json(require('soapbox/__fixtures__/mitra-context.json')),
-        );
-      }),
-    );
+    const statuses = require('soapbox/__fixtures__/mitra-context.json');
 
-    const store = mockStore(rootState);
+    __stub(mock => {
+      mock.onGet('/api/v1/statuses/017ed505-5926-392f-256a-f86d5075df70/context')
+        .reply(200, statuses);
+    });
+
+    const store = mockStore(ImmutableMap());
 
     store.dispatch(fetchContext('017ed505-5926-392f-256a-f86d5075df70')).then(context => {
       const actions = store.getActions();
