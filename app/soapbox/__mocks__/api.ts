@@ -1,6 +1,6 @@
-import MockAdapter from 'axios-mock-adapter';
-import { AxiosInstance } from 'axios';
 import { jest } from '@jest/globals';
+import { AxiosInstance } from 'axios';
+import MockAdapter from 'axios-mock-adapter';
 
 const api = jest.requireActual('../api') as Record<string, Function>;
 let mocks: Array<Function> = [];

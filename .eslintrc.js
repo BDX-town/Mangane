@@ -254,18 +254,12 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*.tsx'],
+      files: ['**/*.ts', '**/*.tsx'],
       rules: {
+        'no-undef': 'off', // https://stackoverflow.com/a/69155899
         'react/prop-types': 'off',
       },
-    },
-    // Disable no-undef in TypeScript
-    // https://stackoverflow.com/a/69155899
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        'no-undef': 'off',
-      },
+      parser: '@typescript-eslint/parser',
     },
   ],
 };
