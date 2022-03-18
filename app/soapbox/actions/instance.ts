@@ -1,12 +1,11 @@
 import { get } from 'lodash';
 import { AnyAction } from 'redux';
-import { ThunkAction } from 'redux-thunk'
-import { AxiosResponse } from 'axios';
 
 import KVStore from 'soapbox/storage/kv_store';
 import { AppDispatch, RootState } from 'soapbox/store';
 import { getAuthUserUrl } from 'soapbox/utils/auth';
 import { parseVersion } from 'soapbox/utils/features';
+
 import api from '../api';
 
 export const INSTANCE_FETCH_REQUEST = 'INSTANCE_FETCH_REQUEST';
@@ -38,7 +37,7 @@ export const getHost = (state: RootState) => {
 };
 
 export function rememberInstance(host: string) {
-  return (dispatch: AppDispatch, _getState: () => RootState) => {
+  return (dispatch: AppDispatch, _getState: () => RootState): AnyAction => {
     dispatch({ type: INSTANCE_REMEMBER_REQUEST, host });
     return KVStore.getItemOrError(`instance:${host}`).then((instance: Record<string, any>) => {
       dispatch({ type: INSTANCE_REMEMBER_SUCCESS, host, instance });
@@ -55,8 +54,8 @@ const needsNodeinfo = (instance: Record<string, any>): boolean => {
   return v.software === 'Pleroma' && !get(instance, ['pleroma', 'metadata']);
 };
 
-export function fetchInstance(): ThunkAction<AxiosResponse, RootState, unknown, AnyAction> {
-  return (dispatch, getState) => {
+export function fetchInstance() {
+  return (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch({ type: INSTANCE_FETCH_REQUEST });
     return api(getState).get('/api/v1/instance').then(({ data: instance }: { data: Record<string, any> }) => {
       dispatch({ type: INSTANCE_FETCH_SUCCESS, instance });

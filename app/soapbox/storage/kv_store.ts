@@ -1,8 +1,12 @@
 import localforage from 'localforage';
 
+interface IKVStore extends LocalForage {
+  getItemOrError?: (key: string) => Promise<any>,
+}
+
 // localForage
 // https://localforage.github.io/localForage/#settings-api-config
-export const KVStore = localforage.createInstance({
+export const KVStore: IKVStore = localforage.createInstance({
   name: 'soapbox',
   description: 'Soapbox offline data store',
   driver: localforage.INDEXEDDB,
