@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Icon from 'soapbox/components/icon';
@@ -18,18 +19,15 @@ const messages = defineMessages({
   reblog: { id: 'status.reblog', defaultMessage: 'Repost' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class BoostModal extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
     onReblog: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
@@ -45,7 +43,7 @@ class BoostModal extends ImmutablePureComponent {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       this.props.onClose();
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
+      this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
     }
   }
 
@@ -53,7 +51,7 @@ class BoostModal extends ImmutablePureComponent {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       this.props.onClose();
-      this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('url')}`);
+      this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('url')}`);
     }
   }
 

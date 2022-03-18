@@ -50,10 +50,6 @@ class Header extends ImmutablePureComponent {
     );
   }
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   handleSubmit = (event) => {
     const { dispatch, intl } = this.props;
     const { username, password } = this.getFormData(event.target);

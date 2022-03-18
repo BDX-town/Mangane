@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage, injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
@@ -17,15 +17,13 @@ const messages = defineMessages({
 
 export default @connect()
 @injectIntl
+@withRouter
 class DevelopersMenu extends React.Component {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object,
   }
 
   leaveDevelopers = e => {
@@ -34,7 +32,7 @@ class DevelopersMenu extends React.Component {
     dispatch(changeSettingImmediate(['isDeveloper'], false));
     dispatch(snackbar.success(intl.formatMessage(messages.leave)));
 
-    this.context.router.history.push('/');
+    this.props.history.push('/');
     e.preventDefault();
   }
 

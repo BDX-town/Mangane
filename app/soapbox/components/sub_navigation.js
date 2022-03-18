@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import Helmet from 'soapbox/components/helmet';
@@ -25,6 +26,7 @@ const mapDispatchToProps = (dispatch, { settings: Settings }) => {
 
 export default @connect(undefined, mapDispatchToProps)
 @injectIntl
+@withRouter
 class SubNavigation extends React.PureComponent {
 
   static propTypes = {
@@ -32,10 +34,7 @@ class SubNavigation extends React.PureComponent {
     message: PropTypes.string,
     settings: PropTypes.oneOfType([PropTypes.func, PropTypes.object]),
     onOpenSettings: PropTypes.func.isRequired,
-  }
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
+    history: PropTypes.object,
   }
 
   state = {
@@ -44,9 +43,9 @@ class SubNavigation extends React.PureComponent {
 
   handleBackClick = () => {
     if (window.history && window.history.length === 1) {
-      this.context.router.history.push('/');
+      this.props.history.push('/');
     } else {
-      this.context.router.history.goBack();
+      this.props.history.goBack();
     }
   }
 

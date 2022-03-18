@@ -39,14 +39,11 @@ class TabsBar extends React.PureComponent {
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
     singleUserMode: PropTypes.bool,
+    location: PropTypes.object,
   }
 
   state = {
     collapsed: false,
-  }
-
-  static contextTypes = {
-    router: PropTypes.object,
   }
 
   setRef = ref => {
@@ -60,7 +57,7 @@ class TabsBar extends React.PureComponent {
 
   shouldShowLinks = () => {
     try {
-      const { pathname } = this.context.router.route.location;
+      const { pathname } = this.props.location;
       return (pathname.startsWith('/@') && !pathname.includes('/posts/')) || pathname.startsWith('/admin');
     } catch {
       return false;

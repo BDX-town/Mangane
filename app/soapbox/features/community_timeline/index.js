@@ -33,10 +33,6 @@ export default @connect(mapStateToProps)
 @injectIntl
 class CommunityTimeline extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,

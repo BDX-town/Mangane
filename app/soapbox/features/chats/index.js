@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { fetchChats, launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
@@ -19,23 +20,21 @@ const messages = defineMessages({
 
 export default @connect()
 @injectIntl
+@withRouter
 class ChatIndex extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   handleSuggestion = accountId => {
-    this.props.dispatch(launchChat(accountId, this.context.router.history, true));
+    this.props.dispatch(launchChat(accountId, this.props.history, true));
   }
 
   handleClickChat = (chat) => {
-    this.context.router.history.push(`/chats/${chat.get('id')}`);
+    this.props.history.push(`/chats/${chat.get('id')}`);
   }
 
   handleRefresh = () => {

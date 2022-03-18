@@ -28,10 +28,6 @@ export default @connect(mapStateToProps)
 @injectIntl
 class GroupTimeline extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,

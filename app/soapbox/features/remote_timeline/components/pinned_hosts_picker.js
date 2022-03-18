@@ -19,10 +19,6 @@ const mapStateToProps = state => {
 
 class PinnedHostsPicker extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     pinnedHosts: ImmutablePropTypes.orderedSet,

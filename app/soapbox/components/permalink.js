@@ -1,11 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class Permalink extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+export default @withRouter
+class Permalink extends React.PureComponent {
 
   static propTypes = {
     className: PropTypes.string,
@@ -13,6 +11,7 @@ export default class Permalink extends React.PureComponent {
     to: PropTypes.string.isRequired,
     children: PropTypes.node,
     onInterceptClick: PropTypes.func,
+    history: PropTypes.object,
   };
 
   handleClick = e => {
@@ -21,9 +20,9 @@ export default class Permalink extends React.PureComponent {
       return;
     }
 
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (this.props.history && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(this.props.to);
+      this.props.history.push(this.props.to);
     }
   }
 

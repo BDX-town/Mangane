@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import Icon from 'soapbox/components/icon';
@@ -11,12 +12,8 @@ const messages = defineMessages({
   action: { id: 'search.action', defaultMessage: 'Search for “{query}”' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Search extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
 
   static propTypes = {
     value: PropTypes.string.isRequired,
@@ -30,6 +27,7 @@ class Search extends React.PureComponent {
     autoFocus: PropTypes.bool,
     autosuggest: PropTypes.bool,
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -57,7 +55,7 @@ class Search extends React.PureComponent {
     this.props.onSubmit();
 
     if (this.props.openInRoute) {
-      this.context.router.history.push('/search');
+      this.props.history.push('/search');
     }
   }
 
@@ -83,7 +81,7 @@ class Search extends React.PureComponent {
     const { onSelected } = this.props;
 
     if (onSelected) {
-      onSelected(accountId, this.context.router.history);
+      onSelected(accountId, this.props.history);
     }
   }
 

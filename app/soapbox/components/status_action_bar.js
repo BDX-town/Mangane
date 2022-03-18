@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import EmojiSelector from 'soapbox/components/emoji_selector';
@@ -67,10 +67,6 @@ const messages = defineMessages({
 
 class StatusActionBar extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
@@ -104,6 +100,7 @@ class StatusActionBar extends ImmutablePureComponent {
     emojiSelectorFocused: PropTypes.bool,
     handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   static defaultProps = {
@@ -125,7 +122,7 @@ class StatusActionBar extends ImmutablePureComponent {
   handleReplyClick = () => {
     const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      onReply(status, this.context.router.history);
+      onReply(status, this.props.history);
     } else {
       onOpenUnauthorizedModal('REPLY');
     }
@@ -208,18 +205,18 @@ class StatusActionBar extends ImmutablePureComponent {
   handleQuoteClick = () => {
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      onQuote(status, this.context.router.history);
+      onQuote(status, this.props.history);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
   }
 
   handleDeleteClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history);
+    this.props.onDelete(this.props.status, this.props.history);
   }
 
   handleRedraftClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history, true);
+    this.props.onDelete(this.props.status, this.props.history, true);
   }
 
   handlePinClick = () => {
@@ -227,15 +224,15 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.context.router.history);
+    this.props.onMention(this.props.status.get('account'), this.props.history);
   }
 
   handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+    this.props.onDirect(this.props.status.get('account'), this.props.history);
   }
 
   handleChatClick = () => {
-    this.props.onChat(this.props.status.get('account'), this.context.router.history);
+    this.props.onChat(this.props.status.get('account'), this.props.history);
   }
 
   handleMuteClick = () => {
@@ -247,7 +244,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleOpen = () => {
-    this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
   }
 
   handleEmbed = () => {
@@ -679,6 +676,6 @@ const mapDispatchToProps = (dispatch, { status }) => ({
   },
 });
 
-export default injectIntl(
+export default withRouter(injectIntl(
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
-  )(StatusActionBar));
+  )(StatusActionBar)));

@@ -27,10 +27,6 @@ import StatusInteractionBar from './status_interaction_bar';
 export default @injectIntl
 class DetailedStatus extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     status: ImmutablePropTypes.map,
     onOpenMedia: PropTypes.func.isRequired,
