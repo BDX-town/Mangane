@@ -16,10 +16,10 @@ export const SUGGESTIONS_V2_FETCH_REQUEST = 'SUGGESTIONS_V2_FETCH_REQUEST';
 export const SUGGESTIONS_V2_FETCH_SUCCESS = 'SUGGESTIONS_V2_FETCH_SUCCESS';
 export const SUGGESTIONS_V2_FETCH_FAIL    = 'SUGGESTIONS_V2_FETCH_FAIL';
 
-export function fetchSuggestionsV1() {
+export function fetchSuggestionsV1(params = {}) {
   return (dispatch, getState) => {
     dispatch({ type: SUGGESTIONS_FETCH_REQUEST, skipLoading: true });
-    return api(getState).get('/api/v1/suggestions').then(({ data: accounts }) => {
+    return api(getState).get('/api/v1/suggestions', { params }).then(({ data: accounts }) => {
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: SUGGESTIONS_FETCH_SUCCESS, accounts, skipLoading: true });
       return accounts;
@@ -30,10 +30,10 @@ export function fetchSuggestionsV1() {
   };
 }
 
-export function fetchSuggestionsV2() {
+export function fetchSuggestionsV2(params = {}) {
   return (dispatch, getState) => {
     dispatch({ type: SUGGESTIONS_V2_FETCH_REQUEST, skipLoading: true });
-    return api(getState).get('/api/v2/suggestions').then(({ data: suggestions }) => {
+    return api(getState).get('/api/v2/suggestions', { params }).then(({ data: suggestions }) => {
       const accounts = suggestions.map(({ account }) => account);
       dispatch(importFetchedAccounts(accounts));
       dispatch({ type: SUGGESTIONS_V2_FETCH_SUCCESS, suggestions, skipLoading: true });
@@ -45,21 +45,21 @@ export function fetchSuggestionsV2() {
   };
 }
 
-export function fetchSuggestions() {
+export function fetchSuggestions(params = { limit: 50 }) {
   return (dispatch, getState) => {
     const state = getState();
     const instance = state.get('instance');
     const features = getFeatures(instance);
 
     if (features.suggestionsV2) {
-      dispatch(fetchSuggestionsV2())
+      dispatch(fetchSuggestionsV2(params))
         .then(suggestions => {
           const accountIds = suggestions.map(({ account }) => account.id);
           dispatch(fetchRelationships(accountIds));
         })
         .catch(() => {});
     } else if (features.suggestions) {
-      dispatch(fetchSuggestionsV1())
+      dispatch(fetchSuggestionsV1(params))
         .then(accounts => {
           const accountIds = accounts.map(({ id }) => id);
           dispatch(fetchRelationships(accountIds));

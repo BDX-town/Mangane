@@ -59,7 +59,7 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes Pleroma instance with Mastodon configuration format', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/pleroma-instance.json'));
+    const instance = require('soapbox/__fixtures__/pleroma-instance.json');
 
     const expected = {
       configuration: {
@@ -81,7 +81,7 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes Mastodon instance with retained configuration', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/mastodon-instance.json'));
+    const instance = require('soapbox/__fixtures__/mastodon-instance.json');
 
     const expected = {
       configuration: {
@@ -111,7 +111,7 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes Mastodon 3.0.0 instance with default configuration', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/mastodon-3.0.0-instance.json'));
+    const instance = require('soapbox/__fixtures__/mastodon-3.0.0-instance.json');
 
     const expected = {
       configuration: {
@@ -133,18 +133,18 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes Fedibird instance', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/fedibird-instance.json'));
+    const instance = require('soapbox/__fixtures__/fedibird-instance.json');
     const result = normalizeInstance(instance);
 
     // Sets description_limit
     expect(result.description_limit).toEqual(1500);
 
     // Preserves fedibird_capabilities
-    expect(result.fedibird_capabilities).toEqual(instance.get('fedibird_capabilities'));
+    expect(result.fedibird_capabilities).toEqual(fromJS(instance.fedibird_capabilities));
   });
 
   it('normalizes Mitra instance', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/mitra-instance.json'));
+    const instance = require('soapbox/__fixtures__/mitra-instance.json');
     const result = normalizeInstance(instance);
 
     // Adds configuration and description_limit
@@ -153,7 +153,7 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes GoToSocial instance', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/gotosocial-instance.json'));
+    const instance = require('soapbox/__fixtures__/gotosocial-instance.json');
     const result = normalizeInstance(instance);
 
     // Normalizes max_toot_chars
@@ -166,7 +166,7 @@ describe('normalizeInstance()', () => {
   });
 
   it('normalizes Friendica instance', () => {
-    const instance = fromJS(require('soapbox/__fixtures__/friendica-instance.json'));
+    const instance = require('soapbox/__fixtures__/friendica-instance.json');
     const result = normalizeInstance(instance);
 
     // Normalizes max_toot_chars
@@ -176,5 +176,12 @@ describe('normalizeInstance()', () => {
     // Adds configuration and description_limit
     expect(result.get('configuration') instanceof ImmutableMap).toBe(true);
     expect(result.get('description_limit')).toBe(1500);
+  });
+
+  it('normalizes a Mastodon RC version', () => {
+    const instance = require('soapbox/__fixtures__/mastodon-instance-rc.json');
+    const result = normalizeInstance(instance);
+
+    expect(result.version).toEqual('3.5.0-rc1');
   });
 });

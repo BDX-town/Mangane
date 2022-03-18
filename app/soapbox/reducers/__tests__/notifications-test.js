@@ -93,6 +93,22 @@ describe('notifications reducer', () => {
       expect(result.items.size).toEqual(1);
       expect(result.items.get('4').id).toEqual('4');
     });
+
+    it('imports move notification', () => {
+      const action = {
+        type: NOTIFICATIONS_EXPAND_SUCCESS,
+        notifications: [
+          require('soapbox/__fixtures__/pleroma-notification-move.json'),
+        ],
+        next: null,
+        skipLoading: true,
+      };
+
+      const result = reducer(undefined, action).items.get('406814');
+
+      expect(result.account).toEqual('AFmHQ18XZ7Lco68MW8');
+      expect(result.target).toEqual('A5c5LK7EJTFR0u26Pg');
+    });
   });
 
   describe('NOTIFICATIONS_EXPAND_REQUEST', () => {

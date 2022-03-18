@@ -1,3 +1,5 @@
+import { isIntegerId } from 'soapbox/utils/numbers';
+
 export const getFirstExternalLink = status => {
   try {
     // Pulled from Pleroma's media parser
@@ -12,4 +14,9 @@ export const getFirstExternalLink = status => {
 
 export const shouldHaveCard = status => {
   return Boolean(getFirstExternalLink(status));
+};
+
+// https://gitlab.com/soapbox-pub/soapbox-fe/-/merge_requests/1087
+export const hasIntegerMediaIds = status => {
+  return status.media_attachments.some(({ id }) => isIntegerId(id));
 };

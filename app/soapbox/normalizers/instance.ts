@@ -7,6 +7,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import { parseVersion, PLEROMA } from 'soapbox/utils/features';
@@ -15,7 +16,7 @@ import { isNumber } from 'soapbox/utils/numbers';
 
 // Use Mastodon defaults
 // https://docs.joinmastodon.org/entities/instance/
-const InstanceRecord = ImmutableRecord({
+export const InstanceRecord = ImmutableRecord({
   approval_required: false,
   contact_account: ImmutableMap(),
   configuration: ImmutableMap({
@@ -83,13 +84,25 @@ const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
 // Get the software's default attachment limit
 const getAttachmentLimit = (software: string) => software === PLEROMA ? Infinity : 4;
 
-// Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
-export const normalizeInstance = (instance: ImmutableMap<string, any>) => {
-  const { software } = parseVersion(instance.get('version'));
-  const mastodonConfig = pleromaToMastodonConfig(instance);
+// Normalize version
+const normalizeVersion = (instance: ImmutableMap<string, any>) => {
+  return instance.update('version', '0.0.0', version => {
+    // Handle Mastodon release candidates
+    if (new RegExp(/[0-9\.]+rc[0-9]+/g).test(version)) {
+      return version.split('rc').join('-rc');
+    } else {
+      return version;
+    }
+  });
+};
 
+// Normalize instance (Pleroma, Mastodon, etc.) to Mastodon's format
+export const normalizeInstance = (instance: Record<string, any>) => {
   return InstanceRecord(
-    instance.withMutations(instance => {
+    ImmutableMap(fromJS(instance)).withMutations((instance: ImmutableMap<string, any>) => {
+      const { software } = parseVersion(instance.get('version'));
+      const mastodonConfig = pleromaToMastodonConfig(instance);
+
       // Merge configuration
       instance.update('configuration', ImmutableMap(), configuration => (
         configuration.mergeDeepWith(mergeDefined, mastodonConfig)
@@ -99,6 +112,9 @@ export const normalizeInstance = (instance: ImmutableMap<string, any>) => {
       instance.updateIn(['configuration', 'statuses', 'max_media_attachments'], value => {
         return isNumber(value) ? value : getAttachmentLimit(software);
       });
+
+      // Normalize version
+      normalizeVersion(instance);
 
       // Merge defaults
       instance.mergeDeepWith(mergeDefined, InstanceRecord());

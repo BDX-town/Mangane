@@ -12,3 +12,5 @@ export const shortNumberFormat = number => {
     return <span><FormattedNumber value={number / 1000} maximumFractionDigits={1} />K</span>;
   }
 };
+
+export const isIntegerId = id => new RegExp(/^-?[0-9]+$/g).test(id);

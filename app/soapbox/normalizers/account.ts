@@ -8,16 +8,18 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { IAccount } from 'soapbox/types';
+import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/account/
-const AccountRecord = ImmutableRecord({
+export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
@@ -44,6 +46,7 @@ const AccountRecord = ImmutableRecord({
   uri: '',
   url: '',
   username: '',
+  website: '',
   verified: false,
 
   // Internal fields
@@ -56,7 +59,7 @@ const AccountRecord = ImmutableRecord({
 });
 
 // https://docs.joinmastodon.org/entities/field/
-const FieldRecord = ImmutableRecord({
+export const FieldRecord = ImmutableRecord({
   name: '',
   value: '',
   verified_at: null,
@@ -92,6 +95,18 @@ const normalizeAvatar = (account: ImmutableMap<string, any>) => {
   return account.withMutations(account => {
     account.set('avatar', avatar || avatarStatic || missing);
     account.set('avatar_static', avatarStatic || avatar || missing);
+  });
+};
+
+// Add header, if missing
+const normalizeHeader = (account: ImmutableMap<string, any>) => {
+  const header = account.get('header');
+  const headerStatic = account.get('header_static');
+  const missing = require('images/header-missing.png');
+
+  return account.withMutations(account => {
+    account.set('header', header || headerStatic || missing);
+    account.set('header_static', headerStatic || header || missing);
   });
 };
 
@@ -132,11 +147,12 @@ const normalizeVerified = (account: ImmutableMap<string, any>) => {
   });
 };
 
-// Normalize Fedibird/Truth Social location
+// Normalize Fedibird/Truth Social/Pleroma location
 const normalizeLocation = (account: ImmutableMap<string, any>) => {
   return account.update('location', location => {
     return [
       location,
+      account.getIn(['pleroma', 'location']),
       account.getIn(['other_settings', 'location']),
     ].find(Boolean);
   });
@@ -180,16 +196,22 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeAccount = (account: ImmutableMap<string, any>): IAccount => {
+const normalizeFqn = (account: ImmutableMap<string, any>) => {
+  return account.set('fqn', acctFull(account));
+};
+
+export const normalizeAccount = (account: Record<string, any>): IAccount => {
   return AccountRecord(
-    account.withMutations(account => {
+    ImmutableMap(fromJS(account)).withMutations(account => {
       normalizePleromaLegacyFields(account);
       normalizeEmojis(account);
       normalizeAvatar(account);
+      normalizeHeader(account);
       normalizeFields(account);
       normalizeVerified(account);
       normalizeBirthday(account);
       normalizeLocation(account);
+      normalizeFqn(account);
       fixUsername(account);
       fixDisplayName(account);
       addInternalFields(account);

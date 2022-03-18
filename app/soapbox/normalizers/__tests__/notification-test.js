@@ -1,10 +1,10 @@
-import { Record as ImmutableRecord, fromJS } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { normalizeNotification } from '../notification';
 
 describe('normalizeNotification()', () => {
   it('normalizes an empty map', () => {
-    const notification = fromJS({});
+    const notification = {};
     const result = normalizeNotification(notification);
 
     expect(ImmutableRecord.isRecord(result)).toBe(true);
