@@ -10,5 +10,6 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "exclude": ["**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
 }

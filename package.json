@@ -54,11 +54,14 @@
     "@gamestdio/websocket": "^0.3.2",
     "@lcdp/offline-plugin": "^5.1.0",
     "@popperjs/core": "^2.4.4",
+    "@redux-devtools/extension": "^3.2.2",
     "@sentry/browser": "^6.12.0",
     "@sentry/react": "^6.12.0",
     "@sentry/tracing": "^6.12.0",
     "@tabler/icons": "^1.53.0",
     "@types/escape-html": "^1.0.1",
+    "@types/http-link-header": "^1.0.3",
+    "@types/redux-immutable": "^4.0.2",
     "array-includes": "^3.0.3",
     "autoprefixer": "^10.0.0",
     "axios": "^0.21.4",
@@ -155,7 +158,6 @@
     "substring-trie": "^1.0.2",
     "terser-webpack-plugin": "^5.2.3",
     "tiny-queue": "^0.2.1",
-    "ts-jest": "^27.0.5",
     "ts-loader": "^9.2.6",
     "tslib": "^2.3.1",
     "twemoji": "https://github.com/twitter/twemoji#v13.0.2",
@@ -170,6 +172,9 @@
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
+    "@jest/globals": "^27.5.1",
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
     "axios-mock-adapter": "^1.18.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^27.1.0",
@@ -191,6 +196,7 @@
     "stylelint": "^13.7.2",
     "stylelint-config-standard": "^22.0.0",
     "stylelint-scss": "^3.18.0",
+    "ts-jest": "^27.0.5",
     "webpack-dev-server": "^4.1.0",
     "yargs": "^16.0.3"
   }

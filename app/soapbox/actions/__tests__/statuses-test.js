@@ -1,8 +1,6 @@
-import { Map as ImmutableMap } from 'immutable';
-
 import { STATUSES_IMPORT } from 'soapbox/actions/importer';
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/test_helpers';
+import { mockStore, rootState } from 'soapbox/test_helpers';
 
 import { fetchContext } from '../statuses';
 
@@ -15,7 +13,7 @@ describe('fetchContext()', () => {
         .reply(200, statuses);
     });
 
-    const store = mockStore(ImmutableMap());
+    const store = mockStore(rootState);
 
     store.dispatch(fetchContext('017ed505-5926-392f-256a-f86d5075df70')).then(context => {
       const actions = store.getActions();
