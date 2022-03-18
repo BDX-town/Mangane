@@ -8,6 +8,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import emojify from 'soapbox/features/emoji/emoji';
@@ -15,7 +16,7 @@ import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 // https://docs.joinmastodon.org/entities/poll/
-const PollRecord = ImmutableRecord({
+export const PollRecord = ImmutableRecord({
   emojis: ImmutableList(),
   expired: false,
   expires_at: new Date(),
@@ -29,7 +30,7 @@ const PollRecord = ImmutableRecord({
 });
 
 // Sub-entity of Poll
-const PollOptionRecord = ImmutableRecord({
+export const PollOptionRecord = ImmutableRecord({
   title: '',
   votes_count: 0,
 
@@ -76,9 +77,9 @@ const normalizePollVoted = (poll: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizePoll = (poll: ImmutableMap<string, any>) => {
+export const normalizePoll = (poll: Record<string, any>) => {
   return PollRecord(
-    poll.withMutations((poll: ImmutableMap<string, any>) => {
+    ImmutableMap(fromJS(poll)).withMutations((poll: ImmutableMap<string, any>) => {
       normalizeEmojis(poll);
       normalizePollOptions(poll);
       normalizePollOwnVotes(poll);

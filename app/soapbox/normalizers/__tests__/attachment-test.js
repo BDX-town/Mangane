@@ -1,10 +1,10 @@
-import { Record as ImmutableRecord, fromJS } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
 
 import { normalizeAttachment } from '../attachment';
 
 describe('normalizeAttachment()', () => {
   it('adds base fields', () => {
-    const attachment = fromJS({});
+    const attachment = {};
     const result = normalizeAttachment(attachment);
 
     expect(ImmutableRecord.isRecord(result)).toBe(true);
@@ -13,7 +13,7 @@ describe('normalizeAttachment()', () => {
   });
 
   it('infers preview_url from url', () => {
-    const attachment = fromJS({ url: 'https://site.fedi/123.png' });
+    const attachment = { url: 'https://site.fedi/123.png' };
     const result = normalizeAttachment(attachment);
 
     expect(result.preview_url).toEqual('https://site.fedi/123.png');

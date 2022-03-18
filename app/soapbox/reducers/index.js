@@ -116,7 +116,7 @@ const reducers = {
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
-const StateRecord = ImmutableRecord(
+export const StateRecord = ImmutableRecord(
   Object.keys(reducers).reduce((params, reducer) => {
     params[reducer] = undefined;
     return params;

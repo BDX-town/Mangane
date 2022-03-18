@@ -7,6 +7,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   Record as ImmutableRecord,
+  fromJS,
 } from 'immutable';
 
 import { normalizeAttachment } from 'soapbox/normalizers/attachment';
@@ -17,7 +18,7 @@ import { normalizePoll } from 'soapbox/normalizers/poll';
 import { IStatus } from 'soapbox/types';
 
 // https://docs.joinmastodon.org/entities/status/
-const StatusRecord = ImmutableRecord({
+export const StatusRecord = ImmutableRecord({
   account: null,
   application: null,
   bookmarked: false,
@@ -135,9 +136,9 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeStatus = (status: ImmutableMap<string, any>): IStatus => {
+export const normalizeStatus = (status: Record<string, any>): IStatus => {
   return StatusRecord(
-    status.withMutations(status => {
+    ImmutableMap(fromJS(status)).withMutations(status => {
       normalizeAttachments(status);
       normalizeMentions(status);
       normalizeEmojis(status);

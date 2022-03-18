@@ -1,6 +1,8 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
 
 import { tagHistory } from 'soapbox/settings';
+import { PLEROMA } from 'soapbox/utils/features';
+import { hasIntegerMediaIds } from 'soapbox/utils/status';
 
 import {
   COMPOSE_MOUNT,
@@ -431,12 +433,16 @@ export default function compose(state = initialState, action) {
       map.set('to', action.explicitAddressing ? getExplicitMentions(action.status.get('account', 'id'), action.status) : undefined);
       map.set('in_reply_to', action.status.get('in_reply_to_id'));
       map.set('privacy', action.status.get('visibility'));
-      // TODO: Actually fix this rather than just removing it
-      // map.set('media_attachments', action.status.get('media_attachments'));
       map.set('focusDate', new Date());
       map.set('caretPosition', null);
       map.set('idempotencyKey', uuid());
       map.set('content_type', action.content_type || 'text/plain');
+
+      if (action.v?.software === PLEROMA && hasIntegerMediaIds(action.status)) {
+        map.set('media_attachments', ImmutableList());
+      } else {
+        map.set('media_attachments', action.status.get('media_attachments'));
+      }
 
       if (action.status.get('spoiler_text').length > 0) {
         map.set('spoiler', true);

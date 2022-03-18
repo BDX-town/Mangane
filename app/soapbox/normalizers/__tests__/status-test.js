@@ -4,7 +4,7 @@ import { normalizeStatus } from '../status';
 
 describe('normalizeStatus()', () => {
   it('adds base fields', () => {
-    const status = fromJS({});
+    const status = {};
     const result = normalizeStatus(status);
 
     expect(ImmutableRecord.isRecord(result)).toBe(true);
@@ -17,7 +17,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('fixes the order of mentions', () => {
-    const status = fromJS(require('soapbox/__fixtures__/status-unordered-mentions.json'));
+    const status = require('soapbox/__fixtures__/status-unordered-mentions.json');
 
     const expected = ['NEETzsche', 'alex', 'Lumeinshin', 'sneeden'];
 
@@ -30,7 +30,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('adds mention to self in self-reply on Mastodon', () => {
-    const status = fromJS(require('soapbox/__fixtures__/mastodon-reply-to-self.json'));
+    const status = require('soapbox/__fixtures__/mastodon-reply-to-self.json');
 
     const expected = {
       id: '106801667066418367',
@@ -48,7 +48,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes mentions with only acct', () => {
-    const status = fromJS({ mentions: [{ acct: 'alex@gleasonator.com' }] });
+    const status = { mentions: [{ acct: 'alex@gleasonator.com' }] };
 
     const expected = [{
       id: '',
@@ -63,7 +63,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes Mitra attachments', () => {
-    const status = fromJS(require('soapbox/__fixtures__/mitra-status-with-attachments.json'));
+    const status = require('soapbox/__fixtures__/mitra-status-with-attachments.json');
 
     const expected = [{
       id: '017eeb0e-e5df-30a4-77a7-a929145cb836',
@@ -97,7 +97,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('leaves Pleroma attachments alone', () => {
-    const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-attachments.json'));
+    const status = require('soapbox/__fixtures__/pleroma-status-with-attachments.json');
     const result = normalizeStatus(status).media_attachments;
 
     expect(result.size).toBe(4);
@@ -108,15 +108,15 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes Pleroma quote post', () => {
-    const status = fromJS(require('soapbox/__fixtures__/pleroma-quote-post.json'));
+    const status = require('soapbox/__fixtures__/pleroma-quote-post.json');
     const result = normalizeStatus(status);
 
-    expect(result.quote).toEqual(status.getIn(['pleroma', 'quote']));
+    expect(result.quote).toEqual(fromJS(status.pleroma.quote));
     expect(result.pleroma.get('quote')).toBe(undefined);
   });
 
   it('normalizes GoToSocial status', () => {
-    const status = fromJS(require('soapbox/__fixtures__/gotosocial-status.json'));
+    const status = require('soapbox/__fixtures__/gotosocial-status.json');
     const result = normalizeStatus(status);
 
     // Adds missing fields
@@ -132,7 +132,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes Friendica status', () => {
-    const status = fromJS(require('soapbox/__fixtures__/friendica-status.json'));
+    const status = require('soapbox/__fixtures__/friendica-status.json');
     const result = normalizeStatus(status);
 
     // Adds missing fields
@@ -145,7 +145,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes poll and poll options', () => {
-    const status = fromJS({ poll: { options: [{ title: 'Apples' }] } });
+    const status = { poll: { options: [{ title: 'Apples' }] } };
     const result = normalizeStatus(status);
 
     const expected = {
@@ -166,7 +166,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes a Pleroma logged-out poll', () => {
-    const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll.json'));
+    const status = require('soapbox/__fixtures__/pleroma-status-with-poll.json');
     const result = normalizeStatus(status);
 
     // Adds logged-in fields
@@ -175,7 +175,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes poll with emojis', () => {
-    const status = fromJS(require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json'));
+    const status = require('soapbox/__fixtures__/pleroma-status-with-poll-with-emojis.json');
     const result = normalizeStatus(status);
 
     // Emojifies poll options
@@ -188,7 +188,7 @@ describe('normalizeStatus()', () => {
   });
 
   it('normalizes a card', () => {
-    const status = fromJS(require('soapbox/__fixtures__/status-with-card.json'));
+    const status = require('soapbox/__fixtures__/status-with-card.json');
     const result = normalizeStatus(status);
 
     expect(ImmutableRecord.isRecord(result.card)).toBe(true);

@@ -24,7 +24,7 @@ yarn-error.log*
 !/custom/**/.gitkeep
 
 # surge.sh
-CNAME
-AUTH
-CORS
-ROUTER
+/CNAME
+/AUTH
+/CORS
+/ROUTER

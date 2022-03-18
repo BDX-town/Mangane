@@ -56,6 +56,7 @@ const comparator = (a, b) => {
 const minifyNotification = notification => {
   return notification.mergeWith((o, n) => n || o, {
     account: notification.getIn(['account', 'id']),
+    target: notification.getIn(['target', 'id']),
     status: notification.getIn(['status', 'id']),
   });
 };
