@@ -3,6 +3,7 @@ import {
   List as ImmutableList,
   fromJS,
 } from 'immutable';
+import { AnyAction } from 'redux';
 
 import {
   ADMIN_USERS_FETCH_SUCCESS,
@@ -37,20 +38,27 @@ import {
   ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP,
 } from '../actions/importer';
 
-const initialState = ImmutableMap();
+type AccountRecord = ReturnType<typeof normalizeAccount>;
+type AccountMap = ImmutableMap<string, any>;
+type APIEntity = Record<string, any>;
+type APIEntities = Array<APIEntity>;
 
-const minifyAccount = account => {
+type State = ImmutableMap<string | number, AccountRecord>;
+
+const initialState: State = ImmutableMap();
+
+const minifyAccount = (account: AccountRecord): AccountRecord => {
   return account.mergeWith((o, n) => n || o, {
     moved: account.getIn(['moved', 'id']),
   });
 };
 
-const fixAccount = (state, account) => {
+const fixAccount = (state: State, account: APIEntity) => {
   const normalized = minifyAccount(normalizeAccount(account));
   return state.set(account.id, normalized);
 };
 
-const normalizeAccounts = (state, accounts) => {
+const normalizeAccounts = (state: State, accounts: ImmutableList<AccountMap>) => {
   accounts.forEach(account => {
     state = fixAccount(state, account);
   });
@@ -58,33 +66,44 @@ const normalizeAccounts = (state, accounts) => {
   return state;
 };
 
-const importAccountFromChat = (state, chat) => fixAccount(state, chat.account);
+const importAccountFromChat = (
+  state: State,
+  chat: APIEntity,
+): State => fixAccount(state, chat.account);
 
-const importAccountsFromChats = (state, chats) =>
+const importAccountsFromChats = (state: State, chats: APIEntities): State =>
   state.withMutations(mutable =>
     chats.forEach(chat => importAccountFromChat(mutable, chat)));
 
-const addTags = (state, accountIds, tags) => {
+const addTags = (
+  state: State,
+  accountIds: Array<string>,
+  tags: Array<string>,
+): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
         v.toOrderedSet().union(tags).toList(),
       );
     });
   });
 };
 
-const removeTags = (state, accountIds, tags) => {
+const removeTags = (
+  state: State,
+  accountIds: Array<string>,
+  tags: Array<string>,
+): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
         v.toOrderedSet().subtract(tags).toList(),
       );
     });
   });
 };
 
-const setActive = (state, accountIds, active) => {
+const setActive = (state: State, accountIds: Array<string>, active: boolean): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
       state.setIn([id, 'pleroma', 'is_active'], active);
@@ -92,12 +111,16 @@ const setActive = (state, accountIds, active) => {
   });
 };
 
-const permissionGroupFields = {
+const permissionGroupFields: Record<string, string> = {
   admin: 'is_admin',
   moderator: 'is_moderator',
 };
 
-const addPermission = (state, accountIds, permissionGroup) => {
+const addPermission = (
+  state: State,
+  accountIds: Array<string>,
+  permissionGroup: string,
+): State => {
   const field = permissionGroupFields[permissionGroup];
   if (!field) return state;
 
@@ -108,7 +131,11 @@ const addPermission = (state, accountIds, permissionGroup) => {
   });
 };
 
-const removePermission = (state, accountIds, permissionGroup) => {
+const removePermission = (
+  state: State,
+  accountIds: Array<string>,
+  permissionGroup: string,
+): State => {
   const field = permissionGroupFields[permissionGroup];
   if (!field) return state;
 
@@ -119,7 +146,7 @@ const removePermission = (state, accountIds, permissionGroup) => {
   });
 };
 
-const buildAccount = adminUser => normalizeAccount({
+const buildAccount = (adminUser: ImmutableMap<string, any>): AccountRecord => normalizeAccount({
   id: adminUser.get('id'),
   username: adminUser.get('nickname').split('@')[0],
   acct: adminUser.get('nickname'),
@@ -144,7 +171,10 @@ const buildAccount = adminUser => normalizeAccount({
   should_refetch: true,
 });
 
-const mergeAdminUser = (account, adminUser) => {
+const mergeAdminUser = (
+  account: AccountRecord,
+  adminUser: ImmutableMap<string, any>,
+) => {
   return account.withMutations(account => {
     account.set('display_name', adminUser.get('display_name'));
     account.set('avatar', adminUser.get('avatar'));
@@ -157,7 +187,7 @@ const mergeAdminUser = (account, adminUser) => {
   });
 };
 
-const importAdminUser = (state, adminUser) => {
+const importAdminUser = (state: State, adminUser: ImmutableMap<string, any>): State => {
   const id = adminUser.get('id');
   const account = state.get(id);
 
@@ -168,15 +198,15 @@ const importAdminUser = (state, adminUser) => {
   }
 };
 
-const importAdminUsers = (state, adminUsers) => {
-  return state.withMutations(state => {
+const importAdminUsers = (state: State, adminUsers: Array<Record<string, any>>): State => {
+  return state.withMutations((state: State) => {
     fromJS(adminUsers).forEach(adminUser => {
-      importAdminUser(state, adminUser);
+      importAdminUser(state, ImmutableMap(adminUser));
     });
   });
 };
 
-const setSuggested = (state, accountIds, isSuggested) => {
+const setSuggested = (state: State, accountIds: Array<string>, isSuggested: boolean): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
       state.setIn([id, 'pleroma', 'is_suggested'], isSuggested);
@@ -184,16 +214,14 @@ const setSuggested = (state, accountIds, isSuggested) => {
   });
 };
 
-export default function accounts(state = initialState, action) {
+export default function accounts(state: State = initialState, action: AnyAction): State {
   switch(action.type) {
   case ACCOUNT_IMPORT:
     return fixAccount(state, action.account);
   case ACCOUNTS_IMPORT:
     return normalizeAccounts(state, action.accounts);
   case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
-    return state.set(-1, ImmutableMap({
-      username: action.username,
-    }));
+    return state.set(-1, normalizeAccount({ username: action.username }));
   case CHATS_FETCH_SUCCESS:
   case CHATS_EXPAND_SUCCESS:
     return importAccountsFromChats(state, action.chats);
