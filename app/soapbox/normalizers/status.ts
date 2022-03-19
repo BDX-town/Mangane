@@ -15,7 +15,6 @@ import { normalizeCard } from 'soapbox/normalizers/card';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
-import { IStatus } from 'soapbox/types';
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
@@ -136,7 +135,7 @@ const fixQuote = (status: ImmutableMap<string, any>) => {
   });
 };
 
-export const normalizeStatus = (status: Record<string, any>): IStatus => {
+export const normalizeStatus = (status: Record<string, any>) => {
   return StatusRecord(
     ImmutableMap(fromJS(status)).withMutations(status => {
       normalizeAttachments(status);
