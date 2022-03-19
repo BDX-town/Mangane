@@ -68,7 +68,7 @@ const buildSearchContent = (status: StatusRecord): string => {
 
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
-const calculateStatus = (
+export const calculateStatus = (
   status: StatusRecord,
   oldStatus: StatusRecord,
   expandSpoilers: boolean = false,
