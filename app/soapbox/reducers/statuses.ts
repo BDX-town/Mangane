@@ -3,9 +3,9 @@ import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { AnyAction } from 'redux';
 
 import emojify from 'soapbox/features/emoji/emoji';
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
-import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import {
@@ -49,9 +49,26 @@ const minifyStatus = (status: StatusRecord): StatusRecord => {
   });
 };
 
+// Gets titles of poll options from status
+const getPollOptionTitles = (status: StatusRecord): Array<string> => {
+  return status.poll?.options.map(({ title }: { title: string }) => title);
+};
+
+// Creates search text from the status
+const buildSearchContent = (status: StatusRecord): string => {
+  const pollOptionTitles = getPollOptionTitles(status);
+
+  const fields = ImmutableList([
+    status.spoiler_text,
+    status.content,
+  ]).concat(pollOptionTitles);
+
+  return unescapeHTML(fields.join('\n\n'));
+};
+
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
-export const calculateStatus = (
+const calculateStatus = (
   status: StatusRecord,
   oldStatus: StatusRecord,
   expandSpoilers: boolean = false,
@@ -65,7 +82,7 @@ export const calculateStatus = (
     });
   } else {
     const spoilerText   = status.spoiler_text;
-    const searchContent = (ImmutableList([spoilerText, status.content]).concat(status.poll?.options).map(option => option.title)).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
+    const searchContent = buildSearchContent(status);
     const emojiMap      = makeEmojiMap(status.emojis);
 
     return status.merge({
