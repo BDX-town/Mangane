@@ -1,5 +1,6 @@
 import { Record } from 'immutable';
 
+import { ADMIN_CONFIG_UPDATE_REQUEST } from 'soapbox/actions/admin';
 import { INSTANCE_REMEMBER_SUCCESS } from 'soapbox/actions/instance';
 
 import reducer from '../instance';
@@ -114,6 +115,25 @@ describe('instance reducer', () => {
       };
 
       expect(result.toJS()).toMatchObject(expected);
+    });
+  });
+
+  describe('ADMIN_CONFIG_UPDATE_REQUEST', () => {
+    const { configs } = require('soapbox/__fixtures__/pleroma-admin-config.json');
+
+    it('imports the configs', () => {
+      const action = {
+        type: ADMIN_CONFIG_UPDATE_REQUEST,
+        configs,
+      };
+
+      // The normalizer has `registrations: closed` by default
+      const state = reducer(undefined, {});
+      expect(state.registrations).toBe(false);
+
+      // After importing the configs, registration will be open
+      const result = reducer(state, action);
+      expect(result.registrations).toBe(true);
     });
   });
 });
