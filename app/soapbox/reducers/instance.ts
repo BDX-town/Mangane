@@ -52,7 +52,7 @@ const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) 
   return v ? v.getIn(['tuple', 1]) : undefined;
 };
 
-const importConfigs = (state: typeof initialState, configs: ImmutableMap<string, any>) => {
+const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) => {
   // FIXME: This is pretty hacked together. Need to make a cleaner map.
   const config = ConfigDB.find(configs, ':pleroma', ':instance');
   const simplePolicy = ConfigDB.toSimplePolicy(configs);
@@ -126,7 +126,7 @@ export default function instance(state = initialState, action: AnyAction) {
     return importNodeinfo(state, ImmutableMap(fromJS(action.nodeinfo)));
   case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, ImmutableMap(fromJS(action.configs)));
+    return importConfigs(state, ImmutableList(fromJS(action.configs)));
   default:
     return state;
   }
