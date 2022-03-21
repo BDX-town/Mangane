@@ -7,6 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { launchChat } from 'soapbox/actions/chats';
@@ -156,13 +157,10 @@ const makeMapStateToProps = () => {
   return mapStateToProps;
 };
 
-export default @injectIntl
-@connect(makeMapStateToProps)
+export default @connect(makeMapStateToProps)
+@injectIntl
+@withRouter
 class Status extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     params: PropTypes.object.isRequired,
@@ -174,6 +172,7 @@ class Status extends ImmutablePureComponent {
     askReplyConfirmation: PropTypes.bool,
     domain: PropTypes.string,
     displayMedia: PropTypes.string,
+    history: PropTypes.object,
   };
 
   state = {
@@ -233,10 +232,10 @@ class Status extends ImmutablePureComponent {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(replyCompose(status, this.context.router.history)),
+        onConfirm: () => dispatch(replyCompose(status, this.props.history)),
       }));
     } else {
-      dispatch(replyCompose(status, this.context.router.history));
+      dispatch(replyCompose(status, this.props.history));
     }
   }
 
@@ -265,10 +264,10 @@ class Status extends ImmutablePureComponent {
       dispatch(openModal('CONFIRM', {
         message: intl.formatMessage(messages.replyMessage),
         confirm: intl.formatMessage(messages.replyConfirm),
-        onConfirm: () => dispatch(quoteCompose(status, this.context.router.history)),
+        onConfirm: () => dispatch(quoteCompose(status, this.props.history)),
       }));
     } else {
-      dispatch(quoteCompose(status, this.context.router.history));
+      dispatch(quoteCompose(status, this.props.history));
     }
   }
 
@@ -430,7 +429,7 @@ class Status extends ImmutablePureComponent {
   }
 
   handleHotkeyOpenProfile = () => {
-    this.context.router.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
+    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}`);
   }
 
   handleHotkeyToggleHidden = () => {

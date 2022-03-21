@@ -27,10 +27,6 @@ export default @connect(mapStateToProps)
 @injectIntl
 class ScheduledStatuses extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     statusIds: ImmutablePropTypes.orderedSet.isRequired,

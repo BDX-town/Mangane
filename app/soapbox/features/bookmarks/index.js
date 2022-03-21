@@ -26,10 +26,6 @@ export default @connect(mapStateToProps)
 @injectIntl
 class Bookmarks extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     shouldUpdateScroll: PropTypes.func,

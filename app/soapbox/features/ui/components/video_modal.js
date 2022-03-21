@@ -3,10 +3,12 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
 import Video from 'soapbox/features/video';
 
-export default class VideoModal extends ImmutablePureComponent {
+export default @withRouter
+class VideoModal extends ImmutablePureComponent {
 
   static propTypes = {
     media: ImmutablePropTypes.map.isRequired,
@@ -14,13 +16,14 @@ export default class VideoModal extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     time: PropTypes.number,
     onClose: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   handleStatusClick = e => {
     const { status, account } = this.props;
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/@${account.get('acct')}/posts/${status.get('id')}`);
+      this.props.history.push(`/@${account.get('acct')}/posts/${status.get('id')}`);
     }
   }
 

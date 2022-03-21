@@ -366,14 +366,11 @@ export default @connect(mapStateToProps)
 @withRouter
 class UI extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     children: PropTypes.node,
     location: PropTypes.object,
+    history: PropTypes.object,
     intl: PropTypes.object.isRequired,
     dropdownMenuIsOpen: PropTypes.bool,
     me: SoapboxPropTypes.me,
@@ -462,7 +459,7 @@ class UI extends React.PureComponent {
 
   handleServiceWorkerPostMessage = ({ data }) => {
     if (data.type === 'navigate') {
-      this.context.router.history.push(data.path);
+      this.props.history.push(data.path);
     } else {
       console.warn('Unknown message type:', data.type);
     }
@@ -613,9 +610,9 @@ class UI extends React.PureComponent {
 
   handleHotkeyBack = () => {
     if (window.history && window.history.length === 1) {
-      this.context.router.history.push('/');
+      this.props.history.push('/');
     } else {
-      this.context.router.history.goBack();
+      this.props.history.goBack();
     }
   }
 
@@ -634,44 +631,44 @@ class UI extends React.PureComponent {
   }
 
   handleHotkeyGoToHome = () => {
-    this.context.router.history.push('/');
+    this.props.history.push('/');
   }
 
   handleHotkeyGoToNotifications = () => {
-    this.context.router.history.push('/notifications');
+    this.props.history.push('/notifications');
   }
 
   handleHotkeyGoToFavourites = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/@${account.get('username')}/favorites`);
+    this.props.history.push(`/@${account.get('username')}/favorites`);
   }
 
   handleHotkeyGoToPinned = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/@${account.get('username')}/pins`);
+    this.props.history.push(`/@${account.get('username')}/pins`);
   }
 
   handleHotkeyGoToProfile = () => {
     const { account } = this.props;
     if (!account) return;
 
-    this.context.router.history.push(`/@${account.get('username')}`);
+    this.props.history.push(`/@${account.get('username')}`);
   }
 
   handleHotkeyGoToBlocked = () => {
-    this.context.router.history.push('/blocks');
+    this.props.history.push('/blocks');
   }
 
   handleHotkeyGoToMuted = () => {
-    this.context.router.history.push('/mutes');
+    this.props.history.push('/mutes');
   }
 
   handleHotkeyGoToRequests = () => {
-    this.context.router.history.push('/follow_requests');
+    this.props.history.push('/follow_requests');
   }
 
   handleOpenComposeModal = () => {
@@ -679,8 +676,13 @@ class UI extends React.PureComponent {
   }
 
   shouldHideFAB = () => {
-    const path = this.context.router.history.location.pathname;
+    const path = this.props.location.pathname;
     return path.match(/^\/posts\/|^\/search|^\/getting-started|^\/chats/);
+  }
+
+  isChatRoomLocation = () => {
+    const path = this.props.location.pathname;
+    return path.match(/^\/chats\/(.*)/);
   }
 
   render() {

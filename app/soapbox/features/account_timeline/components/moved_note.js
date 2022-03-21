@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -11,10 +10,6 @@ import AvatarOverlay from '../../../components/avatar_overlay';
 import DisplayName from '../../../components/display_name';
 
 export default class MovedNote extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     from: ImmutablePropTypes.map.isRequired,

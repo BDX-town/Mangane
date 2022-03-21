@@ -2,14 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { withRouter } from 'react-router-dom';
 
 import StatusContainer from '../../../containers/status_container';
 
-export default class Conversation extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+export default @withRouter
+class Conversation extends ImmutablePureComponent {
 
   static propTypes = {
     conversationId: PropTypes.string.isRequired,
@@ -19,10 +17,11 @@ export default class Conversation extends ImmutablePureComponent {
     onMoveUp: PropTypes.func,
     onMoveDown: PropTypes.func,
     markRead: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   handleClick = () => {
-    if (!this.context.router) {
+    if (!this.props.history) {
       return;
     }
 
@@ -32,8 +31,7 @@ export default class Conversation extends ImmutablePureComponent {
       markRead();
     }
 
-    // : TODO :
-    this.context.router.history.push(`/statuses/${lastStatusId}`);
+    this.props.history.push(`/statuses/${lastStatusId}`);
   }
 
   handleHotkeyMoveUp = () => {

@@ -11,10 +11,6 @@ import { isRtl } from '../../../rtl';
 
 export default class ReplyIndicator extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     status: ImmutablePropTypes.map,
     onCancel: PropTypes.func.isRequired,
