@@ -11,6 +11,24 @@ exports[`<Column /> renders correctly with minimal props 1`] = `
     <div
       className="mb-4 flex flex-row items-center"
     >
+      <button
+        aria-label="Back"
+        className="mr-2"
+        onClick={[Function]}
+      >
+        <svg
+          id={
+            Object {
+              "process": [Function],
+            }
+          }
+        />
+        <span
+          className="sr-only"
+        >
+          Back
+        </span>
+      </button>
       <h1
         className="text-xl font-bold"
       />
