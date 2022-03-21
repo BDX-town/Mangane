@@ -17,7 +17,7 @@ const {
 } = process.env;
 
 const DEFAULTS = {
-  DEVSERVER_URL: 'http://localhost:4545',
+  DEVSERVER_URL: 'http://localhost:3036',
   PATRON_URL: 'http://localhost:3037',
 };
 
