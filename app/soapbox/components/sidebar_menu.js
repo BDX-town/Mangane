@@ -25,6 +25,7 @@ const messages = defineMessages({
   profile: { id: 'account.profile', defaultMessage: 'Profile' },
   preferences: { id: 'navigation_bar.preferences', defaultMessage: 'Preferences' },
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
+  domainBlocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Hidden domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   filters: { id: 'navigation_bar.filters', defaultMessage: 'Muted words' },
   soapboxConfig: { id: 'navigation_bar.soapbox_config', defaultMessage: 'Soapbox config' },
@@ -209,7 +210,7 @@ const SidebarMenu = () => {
                   <SidebarLink
                     to='/domain_blocks'
                     icon={require('@tabler/icons/icons/ban.svg')}
-                    text={intl.formatMessage(messages.domain_blocks)}
+                    text={intl.formatMessage(messages.domainBlocks)}
                     onClick={onClose}
                   />
                 )}
