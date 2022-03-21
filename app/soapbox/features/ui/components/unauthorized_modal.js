@@ -54,16 +54,13 @@ const mapDispatchToProps = dispatch => ({
 @withRouter
 class UnauthorizedModal extends ImmutablePureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
-
   static propTypes = {
     intl: PropTypes.object.isRequired,
     features: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     onRemoteInteraction: PropTypes.func.isRequired,
     userName: PropTypes.string,
+    history: PropTypes.object.isRequired,
     singleUserMode: PropTypes.bool,
   };
 
@@ -100,14 +97,14 @@ class UnauthorizedModal extends ImmutablePureComponent {
   onLogin = (e) => {
     e.preventDefault();
 
-    this.context.router.history.push('/login');
+    this.props.history.push('/login');
     this.onClickClose();
   }
 
   onRegister = (e) => {
     e.preventDefault();
 
-    this.context.router.history.push('/');
+    this.props.history.push('/');
     this.onClickClose();
   }
 
