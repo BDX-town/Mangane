@@ -1,10 +1,11 @@
 import React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-interface IColumn {
+interface IColumn extends RouteComponentProps {
   backHref?: string,
   label?: string,
   transparent?: boolean,
@@ -12,7 +13,20 @@ interface IColumn {
 }
 
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true } = props;
+  const { backHref, children, label, history, transparent = false, withHeader = true } = props;
+
+  const handleBackClick = () => {
+    if (backHref) {
+      history.push(backHref);
+      return;
+    }
+
+    if (history.length === 1) {
+      history.push('/');
+    } else {
+      history.goBack();
+    }
+  };
 
   const renderChildren = () => {
     if (transparent) {
@@ -22,7 +36,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
     return (
       <Card variant='rounded'>
         {withHeader ? (
-          <CardHeader backHref={backHref}>
+          <CardHeader onBackClick={handleBackClick}>
             <CardTitle title={label} />
           </CardHeader>
         ) : null}
@@ -43,4 +57,4 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
   );
 });
 
-export default Column;
+export default withRouter(Column);

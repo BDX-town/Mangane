@@ -22,7 +22,7 @@ import { makeGetAccount } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
+import { Button, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
 
 import ProfilePreview from './components/profile_preview';
 
@@ -246,82 +246,76 @@ class EditProfile extends ImmutablePureComponent {
     const canEditName = verifiedCanEditName || !verified;
 
     return (
-      <Column label='Edit Profile' transparent withHeader={false}>
-        <Card variant='rounded'>
-          <CardHeader backHref='/settings'>
-            <CardTitle title={intl.formatMessage(messages.heading)} />
-          </CardHeader>
+      <Column label='Edit Profile'>
+        <Form onSubmit={this.handleSubmit}>
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
+            hintText={!canEditName && intl.formatMessage(messages.verified)}
+          >
+            <Input
+              name='display_name'
+              value={this.state.display_name}
+              onChange={this.handleTextChange}
+              placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
+              disabled={!canEditName}
+            />
+          </FormGroup>
 
-          <CardBody>
-            <Form onSubmit={this.handleSubmit}>
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.location_label' defaultMessage='Location' />}
+          >
+            <Input
+              name='location'
+              value={this.state.location}
+              onChange={this.handleTextChange}
+              placeholder={intl.formatMessage(messages.locationPlaceholder)}
+            />
+          </FormGroup>
+
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
+          >
+            <Input
+              name='website'
+              value={this.state.website}
+              onChange={this.handleTextChange}
+              placeholder={intl.formatMessage(messages.websitePlaceholder)}
+            />
+          </FormGroup>
+
+          <FormGroup
+            labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
+          >
+            <Textarea
+              name='note'
+              value={this.state.note}
+              onChange={this.handleTextChange}
+              autoComplete='off'
+              placeholder={intl.formatMessage(messages.bioPlaceholder)}
+            />
+          </FormGroup>
+
+          <div className='grid grid-cols-2 gap-4'>
+            <ProfilePreview account={this.makePreviewAccount()} />
+
+            <div className='space-y-4'>
               <FormGroup
-                labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
-                hintText={!canEditName && intl.formatMessage(messages.verified)}
+                labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+                hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
               >
-                <Input
-                  name='display_name'
-                  value={this.state.display_name}
-                  onChange={this.handleTextChange}
-                  placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
-                  disabled={!canEditName}
-                />
+                <input type='file' name='header' onChange={this.handleFileChange(1920 * 1080)} className='text-sm' />
               </FormGroup>
 
               <FormGroup
-                labelText={<FormattedMessage id='edit_profile.fields.location_label' defaultMessage='Location' />}
+                labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
+                hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
               >
-                <Input
-                  name='location'
-                  value={this.state.location}
-                  onChange={this.handleTextChange}
-                  placeholder={intl.formatMessage(messages.locationPlaceholder)}
-                />
+                <input type='file' name='avatar' onChange={this.handleFileChange(400 * 400)} className='text-sm' />
               </FormGroup>
+            </div>
+          </div>
 
-              <FormGroup
-                labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
-              >
-                <Input
-                  name='website'
-                  value={this.state.website}
-                  onChange={this.handleTextChange}
-                  placeholder={intl.formatMessage(messages.websitePlaceholder)}
-                />
-              </FormGroup>
-
-              <FormGroup
-                labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
-              >
-                <Textarea
-                  name='note'
-                  value={this.state.note}
-                  onChange={this.handleTextChange}
-                  autoComplete='off'
-                  placeholder={intl.formatMessage(messages.bioPlaceholder)}
-                />
-              </FormGroup>
-
-              <div className='grid grid-cols-2 gap-4'>
-                <ProfilePreview account={this.makePreviewAccount()} />
-
-                <div className='space-y-4'>
-                  <FormGroup
-                    labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
-                    hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-                  >
-                    <input type='file' name='header' onChange={this.handleFileChange(1920 * 1080)} className='text-sm' />
-                  </FormGroup>
-
-                  <FormGroup
-                    labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
-                    hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-                  >
-                    <input type='file' name='avatar' onChange={this.handleFileChange(400 * 400)} className='text-sm' />
-                  </FormGroup>
-                </div>
-              </div>
-
-              {/*<Checkbox
+          {/*<Checkbox
                 label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
                 hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
                 name='locked'
@@ -356,15 +350,15 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
               />*/}
-              {supportsEmailList && <Checkbox
-                label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
-                hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
-                name='accepts_email_list'
-                checked={this.state.accepts_email_list}
-                onChange={this.handleCheckboxChange}
-              />}
-              {/* </FieldsGroup> */}
-              {/*<FieldsGroup>
+          {supportsEmailList && <Checkbox
+            label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
+            hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
+            name='accepts_email_list'
+            checked={this.state.accepts_email_list}
+            onChange={this.handleCheckboxChange}
+          />}
+          {/* </FieldsGroup> */}
+          {/*<FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
@@ -403,19 +397,17 @@ class EditProfile extends ImmutablePureComponent {
                 </div>
               </div>
             </FieldsGroup>*/}
-              {/* </fieldset> */}
-              <FormActions>
-                <Button to='/settings' theme='ghost'>
-                  {intl.formatMessage(messages.cancel)}
-                </Button>
+          {/* </fieldset> */}
+          <FormActions>
+            <Button to='/settings' theme='ghost'>
+              {intl.formatMessage(messages.cancel)}
+            </Button>
 
-                <Button theme='primary' type='submit' disabled={this.state.isLoading}>
-                  <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
-                </Button>
-              </FormActions>
-            </Form>
-          </CardBody>
-        </Card>
+            <Button theme='primary' type='submit' disabled={this.state.isLoading}>
+              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+            </Button>
+          </FormActions>
+        </Form>
       </Column>
     );
   }
