@@ -70,6 +70,8 @@
     "@types/escape-html": "^1.0.1",
     "@types/http-link-header": "^1.0.3",
     "@types/lodash": "^4.14.180",
+    "@types/react-router-dom": "^4.2.6",
+    "@types/uuid": "^8.3.4",
     "array-includes": "^3.0.3",
     "autoprefixer": "^10.4.2",
     "axios": "^0.21.4",
@@ -183,9 +185,6 @@
   },
   "devDependencies": {
     "@jest/globals": "^27.5.1",
-    "@types/lodash": "^4.14.180",
-    "@types/react-router-dom": "^4.2.6",
-    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
     "axios-mock-adapter": "^1.18.1",
