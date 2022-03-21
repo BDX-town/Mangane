@@ -30,6 +30,7 @@ const AgeVerification = () => {
 
   const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
   const ageMinimum = useSelector((state) => state.getIn(['verification', 'ageMinimum']));
+  const siteTitle = useSelector((state) => state.instance.title);
 
   const [date, setDate] = React.useState('');
   const isValid = typeof date === 'object';
@@ -80,7 +81,7 @@ const AgeVerification = () => {
           </FormGroup>
 
           <Text theme='muted' size='sm'>
-            TRUTH Social requires users to be at least {ageMinimum} years old to
+            {siteTitle} requires users to be at least {ageMinimum} years old to
             access its platform. Anyone under the age of {ageMinimum} years old
             cannot access this platform.
           </Text>
