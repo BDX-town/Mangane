@@ -1,9 +1,8 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import IconButton from '../../../components/icon_button';
+import ComposeFormButton from './compose_form_button';
 
 const messages = defineMessages({
   marked: { id: 'compose_form.spoiler.marked', defaultMessage: 'Text is hidden behind warning' },
@@ -27,14 +26,12 @@ class SpoilerButton extends React.PureComponent {
     const { intl, active } = this.props;
 
     return (
-      <div className='compose-form__spoiler-button'>
-        <IconButton
-          className={classNames('compose-form__spoiler-button-icon', { active })}
-          src={require('@tabler/icons/icons/alert-triangle.svg')}
-          title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
-          onClick={this.handleClick}
-        />
-      </div>
+      <ComposeFormButton
+        icon={require('@tabler/icons/icons/alert-triangle.svg')}
+        title={intl.formatMessage(active ? messages.marked : messages.unmarked)}
+        active={active}
+        onClick={this.handleClick}
+      />
     );
   }
 

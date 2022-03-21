@@ -8,7 +8,7 @@ import Overlay from 'react-overlays/lib/Overlay';
 
 import Icon from 'soapbox/components/icon';
 
-import IconButton from '../../../components/icon_button';
+import { IconButton } from '../../../components/ui';
 import Motion from '../../ui/util/optional_motion';
 
 const messages = defineMessages({
@@ -253,7 +253,7 @@ class PrivacyDropdown extends React.PureComponent {
       <div className={classNames('privacy-dropdown', placement, { active: open })} onKeyDown={this.handleKeyDown}>
         <div className={classNames('privacy-dropdown__value', { active: this.options.indexOf(valueOption) === 0 })}>
           <IconButton
-            className='privacy-dropdown__value-icon'
+            className='text-gray-400 hover:text-gray-600'
             src={valueOption.icon}
             title={intl.formatMessage(messages.change_privacy)}
             expanded={open}

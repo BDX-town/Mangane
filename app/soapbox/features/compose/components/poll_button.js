@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import IconButton from '../../../components/icon_button';
+import ComposeFormButton from './compose_form_button';
 
 const messages = defineMessages({
   add_poll: { id: 'poll_button.add_poll', defaultMessage: 'Add a poll' },
@@ -33,15 +33,13 @@ class PollButton extends React.PureComponent {
     }
 
     return (
-      <div className='compose-form__poll-button'>
-        <IconButton
-          className={`compose-form__poll-button-icon ${active ? 'active' : ''}`}
-          src={require('@tabler/icons/icons/chart-bar.svg')}
-          title={intl.formatMessage(active ? messages.remove_poll : messages.add_poll)}
-          disabled={disabled}
-          onClick={this.handleClick}
-        />
-      </div>
+      <ComposeFormButton
+        icon={require('@tabler/icons/icons/chart-bar.svg')}
+        title={intl.formatMessage(active ? messages.remove_poll : messages.add_poll)}
+        active={active}
+        disabled={disabled}
+        onClick={this.handleClick}
+      />
     );
   }
 
