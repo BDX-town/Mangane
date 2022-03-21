@@ -14,7 +14,7 @@ import { openModal } from 'soapbox/actions/modals';
 import Avatar from 'soapbox/components/avatar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still_image';
-import { HStack, IconButton, Menu, MenuButton, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
+import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import {
   isStaff,
@@ -346,7 +346,8 @@ class Header extends ImmutablePureComponent {
       if (isAdmin(meAccount)) {
         menu.push({
           text: intl.formatMessage(messages.admin_account, { name: account.get('username') }),
-          href: `/pleroma/admin/#/users/${account.get('id')}/`, newTab: true,
+          to: `/pleroma/admin/#/users/${account.id}/`,
+          newTab: true,
           icon: require('@tabler/icons/icons/gavel.svg'),
         });
       }
@@ -610,20 +611,23 @@ class Header extends ImmutablePureComponent {
                         if (typeof menuItem?.text === 'undefined') {
                           return <MenuDivider key={idx} />;
                         } else {
+                          const Comp = menuItem.action ? MenuItem : MenuLink;
+                          // TODO: Add `as: Link` once React Router is upgraded.
+                          const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, target: menuItem.newTab ? '_blank' : '_self' };
+
                           return (
-                            <MenuLink key={idx} href={menuItem.to} onClick={menuItem.action} className='group'>
+                            <Comp key={idx} {...itemProps} className='group'>
                               <div className='flex items-center'>
                                 <InlineSVG src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500' />
 
                                 <div className='truncate'>{menuItem.text}</div>
                               </div>
-                            </MenuLink>
+                            </Comp>
                           );
                         }
                       })}
                     </MenuList>
                   </Menu>
-
                 )}
 
                 {this.renderShareButton()}
