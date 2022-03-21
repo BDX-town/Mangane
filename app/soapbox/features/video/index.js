@@ -339,7 +339,11 @@ class Video extends React.PureComponent {
     }
   }
 
-  togglePlay = () => {
+  togglePlay = (e) => {
+    if (e) {
+      e.stopPropagation();
+    }
+
     if (this.state.paused) {
       this.setState({ paused: false }, () => this.video.play());
     } else {
@@ -428,7 +432,9 @@ class Video extends React.PureComponent {
     });
   }
 
-  toggleReveal = () => {
+  toggleReveal = (e) => {
+    e.stopPropagation();
+
     if (this.props.onToggleVisibility) {
       this.props.onToggleVisibility();
     } else {
@@ -521,7 +527,7 @@ class Video extends React.PureComponent {
     return (
       <div
         role='menuitem'
-        className={classNames('video-player', { inactive: !revealed, detailed, inline: inline && !fullscreen, fullscreen })}
+        className={classNames('video-player', { 'video-player--inactive': !revealed, detailed, 'video-player--inline': inline && !fullscreen, fullscreen })}
         style={playerStyle}
         ref={this.setPlayerRef}
         onMouseEnter={this.handleMouseEnter}

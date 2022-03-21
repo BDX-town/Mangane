@@ -27,8 +27,10 @@ class StatusReplyMentions extends ImmutablePureComponent {
     onOpenMentionsModal: PropTypes.func,
   }
 
-  handleOpenMentionsModal = () => {
+  handleOpenMentionsModal = (e) => {
     const { status, onOpenMentionsModal } = this.props;
+
+    e.stopPropagation();
 
     onOpenMentionsModal(status.getIn(['account', 'acct']), status.get('id'));
   }
@@ -69,7 +71,7 @@ class StatusReplyMentions extends ImmutablePureComponent {
               {' '}
             </>)),
             more: to.size > 2 && (
-              <span type='button' role='presentation' onClick={this.handleOpenMentionsModal}>
+              <span className='hover:underline cursor-pointer' role='presentation' onClick={this.handleOpenMentionsModal}>
                 <FormattedMessage id='reply_mentions.more' defaultMessage='and {count} more' values={{ count: to.size - 2 }} />
               </span>
             ),

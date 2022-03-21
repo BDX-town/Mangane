@@ -5,8 +5,8 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import IconButton from 'soapbox/components/icon_button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { Spinner } from 'soapbox/components/ui';
 import Account from 'soapbox/features/birthdays/account';
 
 const messages = defineMessages({
@@ -59,7 +59,7 @@ class BirthdaysModal extends React.PureComponent {
     let body;
 
     if (!accountIds) {
-      body = <LoadingIndicator />;
+      body = <Spinner />;
     } else {
       const emptyMessage = <FormattedMessage id='status.reblogs.empty' defaultMessage='No one has reposted this post yet. When someone does, they will show up here.' />;
 

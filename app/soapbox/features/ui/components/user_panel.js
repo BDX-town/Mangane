@@ -13,6 +13,7 @@ import { getAcct } from 'soapbox/utils/accounts';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 import { displayFqn } from 'soapbox/utils/state';
 
+import { HStack, Stack, Text } from '../../../components/ui';
 import { makeGetAccount } from '../../../selectors';
 
 class UserPanel extends ImmutablePureComponent {
@@ -25,66 +26,106 @@ class UserPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, displayFqn, intl, domain } = this.props;
+    const { account, action, badges, displayFqn, intl, domain } = this.props;
     if (!account) return null;
     const displayNameHtml = { __html: account.get('display_name_html') };
     const acct = account.get('acct').indexOf('@') === -1 && domain ? `${account.get('acct')}@${domain}` : account.get('acct');
     const header = account.get('header');
+    const verified = account.get('verified');
 
     return (
-      <div className='user-panel'>
-        <div className='user-panel__container'>
+      <div className='relative'>
+        <Stack space={2}>
+          <Stack>
+            <div className='-mt-4 -mx-4 h-24 bg-gray-200 relative'>
+              {header && (
+                <StillImage
+                  src={account.get('header')}
+                  className='absolute inset-0 object-cover'
+                  alt=''
+                />
+              )}
+            </div>
 
-          <div className='user-panel__header'>
-            {header && <StillImage src={account.get('header')} alt='' />}
-          </div>
+            <HStack justifyContent='between'>
+              <Link
+                to={`/@${account.get('acct')}`}
+                title={acct}
+                className='-mt-12 block'
+              >
+                <Avatar
+                  account={account}
+                  className='h-20 w-20 bg-gray-50 ring-2 ring-white'
+                />
+              </Link>
 
-          <div className='user-panel__profile'>
-            <Link to={`/@${account.get('acct')}`} title={acct}>
-              <Avatar account={account} />
+              {action && (
+                <div className='mt-2'>{action}</div>
+              )}
+            </HStack>
+          </Stack>
+
+          <Stack>
+            <Link to={`/@${account.get('acct')}`}>
+              <HStack space={1} alignItems='center'>
+                <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+
+                {verified && <VerificationBadge />}
+
+                {badges.length > 0 && (
+                  <HStack space={1} alignItems='center'>
+                    {badges}
+                  </HStack>
+                )}
+              </HStack>
             </Link>
-          </div>
 
-          <div className='user-panel__meta'>
+            <Text size='sm' theme='muted'>
+              @{getAcct(account, displayFqn)}
+            </Text>
+          </Stack>
 
-            <div className='user-panel__account'>
-              <h1>
-                <Link to={`/@${account.get('acct')}`}>
-                  <span className='user-panel__account__name' dangerouslySetInnerHTML={displayNameHtml} />
-                  {account.get('verified') && <VerificationBadge />}
-                  <small className='user-panel__account__username'>@{getAcct(account, displayFqn)}</small>
-                </Link>
-              </h1>
-            </div>
+          <HStack alignItems='center' space={3}>
+            {account.get('statuses_count') >= 0 && (
+              <Link to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
+                <HStack alignItems='center' space={1}>
+                  <Text theme='primary' weight='bold' size='sm'>
+                    {shortNumberFormat(account.get('statuses_count'))}
+                  </Text>
+                  <Text weight='bold' size='sm'>
+                    <FormattedMessage className='user-panel-stats-item__label' id='account.posts' defaultMessage='Posts' />
+                  </Text>
+                </HStack>
+              </Link>
+            )}
 
-            <div className='user-panel__stats-block'>
+            {account.get('followers_count') >= 0 && (
+              <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
+                <HStack alignItems='center' space={1}>
+                  <Text theme='primary' weight='bold' size='sm'>
+                    {shortNumberFormat(account.get('followers_count'))}
+                  </Text>
+                  <Text weight='bold' size='sm'>
+                    <FormattedMessage id='account.followers' defaultMessage='Followers' />
+                  </Text>
+                </HStack>
+              </Link>
+            )}
 
-              {account.get('statuses_count') >= 0 && <div className='user-panel-stats-item'>
-                <Link to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                  <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('statuses_count'))}</strong>
-                  <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.posts' defaultMessage='Posts' /></span>
-                </Link>
-              </div>}
-
-              {account.get('followers_count') >= 0 && <div className='user-panel-stats-item'>
-                <Link to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                  <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('followers_count'))}</strong>
-                  <span className='user-panel-stats-item__label'><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
-                </Link>
-              </div>}
-
-              {account.get('following_count') >= 0 && <div className='user-panel-stats-item'>
-                <Link to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                  <strong className='user-panel-stats-item__value'>{shortNumberFormat(account.get('following_count'))}</strong>
-                  <span className='user-panel-stats-item__label'><FormattedMessage className='user-panel-stats-item__label' id='account.follows' defaultMessage='Follows' /></span>
-                </Link>
-              </div>}
-
-            </div>
-
-          </div>
-
-        </div>
+            {account.get('following_count') >= 0 && (
+              <Link to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
+                <HStack alignItems='center' space={1}>
+                  <Text theme='primary' weight='bold' size='sm'>
+                    {shortNumberFormat(account.get('following_count'))}
+                  </Text>
+                  <Text weight='bold' size='sm'>
+                    <FormattedMessage id='account.follows' defaultMessage='Follows' />
+                  </Text>
+                </HStack>
+              </Link>
+            )}
+          </HStack>
+        </Stack>
       </div>
     );
   }

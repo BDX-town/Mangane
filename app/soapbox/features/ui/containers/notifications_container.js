@@ -7,6 +7,12 @@ import { Link } from 'react-router-dom';
 import { dismissAlert } from '../../../actions/alerts';
 import { getAlerts } from '../../../selectors';
 
+const CustomNotificationStack = (props) => (
+  <div role='assertive' className='z-1000 fixed inset-0 flex items-end px-4 py-6 pointer-events-none sm:p-6 sm:items-start'>
+    <NotificationStack {...props} />
+  </div>
+);
+
 const defaultBarStyleFactory = (index, style, notification) => {
   return Object.assign(
     {},
@@ -52,4 +58,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(NotificationStack));
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(CustomNotificationStack));

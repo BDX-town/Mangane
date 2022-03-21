@@ -2,6 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
+import { Button } from 'soapbox/components/ui';
+
 export default class LoadMore extends React.PureComponent {
 
   static propTypes = {
@@ -17,10 +19,14 @@ export default class LoadMore extends React.PureComponent {
   render() {
     const { disabled, visible } = this.props;
 
+    if (!visible) {
+      return null;
+    }
+
     return (
-      <button className='load-more' disabled={disabled || !visible} style={{ visibility: visible ? 'visible' : 'hidden' }} onClick={this.props.onClick}>
+      <Button theme='secondary' block disabled={disabled || !visible} onClick={this.props.onClick}>
         <FormattedMessage id='status.load_more' defaultMessage='Load more' />
-      </button>
+      </Button>
     );
   }
 

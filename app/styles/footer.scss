@@ -15,19 +15,11 @@
 
     .footer-container {
       display: flex;
-      width: 960px;
-      flex-direction: row;
-      flex-wrap: wrap;
+      width: 1440px;
       align-items: center;
-
-      @media screen and (max-width: 1024px) {
-        width: 100%;
-      }
-
-      @media screen and (max-width: 767px) {
-        flex-direction: column-reverse;
-        justify-content: center;
-      }
+      padding: 0 20px;
+      flex-direction: column-reverse;
+      justify-content: center;
     }
 
     h4 {
@@ -45,7 +37,8 @@
     }
 
     .copyright {
-      margin-right: auto;
+      margin: 0 auto auto;
+      text-align: center;
 
       span {
         font-size: 1.3rem;
@@ -57,12 +50,12 @@
     ul {
       display: flex;
       flex-wrap: wrap;
-      margin-left: auto;
+      margin: 0 auto 20px;
 
       li {
         a {
           text-decoration: none;
-          color: #fff;
+          color: $color-5-dark;
           font-size: 1.3rem;
           font-weight: 500;
           line-height: 1.5;
@@ -75,17 +68,6 @@
             text-decoration: underline;
           }
         }
-      }
-    }
-
-    @media screen and (max-width: 767px) {
-      .copyright {
-        margin: 0 auto auto;
-        text-align: center;
-      }
-
-      ul {
-        margin: 0 auto 20px;
       }
     }
   }

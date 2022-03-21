@@ -4,7 +4,7 @@ import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { externalLogin, loginWithCode } from 'soapbox/actions/external_auth';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { Spinner } from 'soapbox/components/ui';
 import { SimpleForm, FieldsGroup, TextInput } from 'soapbox/features/forms';
 
 const messages = defineMessages({
@@ -50,7 +50,7 @@ class ExternalLoginForm extends ImmutablePureComponent {
     const { isLoading, code } = this.state;
 
     if (code) {
-      return <LoadingIndicator />;
+      return <Spinner />;
     }
 
     return (

@@ -1,25 +1,20 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import ImmutablePureComponent from 'react-immutable-pure-component';
+import { useSelector } from 'react-redux';
 
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
+import Account from '../../../components/account';
+import { makeGetAccount } from '../../../selectors';
 
-export default class AutosuggestAccount extends ImmutablePureComponent {
+const AutosuggestAccount = ({ id }) => {
+  const getAccount = makeGetAccount();
+  const account = useSelector((state) => getAccount(state, id));
 
-  static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
-  };
+  return <Account account={account} hideActions showProfileHoverCard={false} />;
 
-  render() {
-    const { account } = this.props;
+};
 
-    return (
-      <div className='autosuggest-account' title={account.get('acct')}>
-        <div className='autosuggest-account-icon'><Avatar account={account} size={18} /></div>
-        <DisplayName account={account} />
-      </div>
-    );
-  }
+AutosuggestAccount.propTypes = {
+  id: PropTypes.number.isRequired,
+};
 
-}
+export default AutosuggestAccount;

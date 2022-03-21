@@ -1,5 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import { debounce } from 'lodash';
+import { defineMessages } from 'react-intl';
 import { createSelector } from 'reselect';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -8,6 +8,7 @@ import { isLoggedIn } from 'soapbox/utils/auth';
 import uuid from '../uuid';
 
 import { showAlertForError } from './alerts';
+import snackbar from './snackbar';
 
 export const SETTING_CHANGE = 'SETTING_CHANGE';
 export const SETTING_SAVE   = 'SETTING_SAVE';
@@ -15,9 +16,12 @@ export const SETTINGS_UPDATE = 'SETTINGS_UPDATE';
 
 export const FE_NAME = 'soapbox_fe';
 
+const messages = defineMessages({
+  saveSuccess: { id: 'settings.save.success', defaultMessage: 'Your preferences have been saved!' },
+});
+
 export const defaultSettings = ImmutableMap({
   onboarded: false,
-
   skinTone: 1,
   reduceMotion: false,
   underlineLinks: false,
@@ -184,7 +188,7 @@ export function changeSettingImmediate(path, value) {
   };
 }
 
-export function changeSetting(path, value) {
+export function changeSetting(path, value, intl) {
   return dispatch => {
     dispatch({
       type: SETTING_CHANGE,
@@ -192,11 +196,11 @@ export function changeSetting(path, value) {
       value,
     });
 
-    dispatch(saveSettings());
+    return dispatch(saveSettings(intl));
   };
 }
 
-export function saveSettingsImmediate() {
+export function saveSettingsImmediate(intl) {
   return (dispatch, getState) => {
     if (!isLoggedIn(getState)) return;
 
@@ -211,16 +215,16 @@ export function saveSettingsImmediate() {
       },
     })).then(response => {
       dispatch({ type: SETTING_SAVE });
+
+      if (intl) {
+        dispatch(snackbar.success(intl.formatMessage(messages.saveSuccess)));
+      }
     }).catch(error => {
       dispatch(showAlertForError(error));
     });
   };
 }
 
-const debouncedSave = debounce((dispatch, getState) => {
-  dispatch(saveSettingsImmediate());
-}, 5000, { trailing: true });
-
-export function saveSettings() {
-  return (dispatch, getState) => debouncedSave(dispatch, getState);
+export function saveSettings(intl) {
+  return (dispatch, getState) => dispatch(saveSettingsImmediate(intl));
 }

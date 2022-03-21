@@ -6,7 +6,7 @@ import DropdownMenu from '../components/dropdown_menu';
 import { isUserTouching } from '../is_mobile';
 
 const mapStateToProps = state => ({
-  isModalOpen: state.get('modals').size && state.get('modals').last().modalType === 'ACTIONS',
+  isModalOpen: Boolean(state.get('modals').size && state.get('modals').last().modalType === 'ACTIONS'),
   dropdownPlacement: state.getIn(['dropdown_menu', 'placement']),
   openDropdownId: state.getIn(['dropdown_menu', 'openId']),
   openedViaKeyboard: state.getIn(['dropdown_menu', 'keyboard']),

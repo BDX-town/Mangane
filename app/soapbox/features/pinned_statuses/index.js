@@ -47,9 +47,7 @@ class PinnedStatuses extends ImmutablePureComponent {
 
     if (!isMyAccount) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

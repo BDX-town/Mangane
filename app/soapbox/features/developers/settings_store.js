@@ -8,8 +8,9 @@ import { connect } from 'react-redux';
 import { showAlertForError } from 'soapbox/actions/alerts';
 import { patchMe } from 'soapbox/actions/me';
 import { FE_NAME, SETTINGS_UPDATE } from 'soapbox/actions/settings';
-import { SimpleForm, SimpleTextarea } from 'soapbox/features/forms';
 import Column from 'soapbox/features/ui/components/column';
+
+import { Button, Form, FormActions, FormGroup, Textarea } from '../../components/ui';
 
 const isJSONValid = text => {
   try {
@@ -88,23 +89,27 @@ class SettingsStore extends ImmutablePureComponent {
     const { rawJSON, jsonValid, isLoading } = this.state;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <SimpleForm onSubmit={this.handleSubmit} disabled={!jsonValid || isLoading}>
-          <div className={jsonValid ? 'code-editor' : 'code-editor code-editor--invalid'}>
-            <SimpleTextarea
-              hint={intl.formatMessage(messages.hint)}
+      <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
+        <Form onSubmit={this.handleSubmit} disabled={!jsonValid || isLoading}>
+          <FormGroup
+            hintText={intl.formatMessage(messages.hint)}
+            errors={jsonValid ? [] : ['is invalid']}
+          >
+            <Textarea
               value={rawJSON}
               onChange={this.handleEditJSON}
               disabled={isLoading}
               rows={12}
+              isCodeEditor
             />
-          </div>
-          <div className='actions'>
-            <button name='button' type='submit' className='btn button button-primary' disabled={!jsonValid || isLoading}>
+          </FormGroup>
+
+          <FormActions>
+            <Button theme='primary' type='submit' disabled={!jsonValid || isLoading}>
               <FormattedMessage id='soapbox_config.save' defaultMessage='Save' />
-            </button>
-          </div>
-        </SimpleForm>
+            </Button>
+          </FormActions>
+        </Form>
       </Column>
     );
   }

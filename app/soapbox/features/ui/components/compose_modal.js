@@ -5,10 +5,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { cancelReplyCompose } from 'soapbox/actions/compose';
-import { openModal, closeModal } from 'soapbox/actions/modals';
-import IconButton from 'soapbox/components/icon_button';
-
+import { cancelReplyCompose } from '../../../actions/compose';
+import { openModal, closeModal } from '../../../actions/modals';
+import { Modal } from '../../../components/ui';
 import ComposeFormContainer from '../../compose/containers/compose_form_container';
 
 const messages = defineMessages({
@@ -74,25 +73,13 @@ class ComposeModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl } = this.props;
-
     return (
-      <div className='modal-root__modal compose-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            {this.renderTitle()}
-          </h3>
-          <IconButton
-            className='compose-modal__close'
-            title={intl.formatMessage(messages.close)}
-            src={require('@tabler/icons/icons/x.svg')}
-            onClick={this.onClickClose} size={20}
-          />
-        </div>
-        <div className='compose-modal__content compose-modal__content--scroll'>
-          <ComposeFormContainer />
-        </div>
-      </div>
+      <Modal
+        title={this.renderTitle()}
+        onClose={this.onClickClose}
+      >
+        <ComposeFormContainer />
+      </Modal>
     );
   }
 

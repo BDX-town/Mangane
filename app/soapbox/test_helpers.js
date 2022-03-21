@@ -1,10 +1,11 @@
 'use strict';
 
+import { mount } from 'enzyme';
 import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -32,6 +33,23 @@ export const createComponent = (children, props = {}) => {
         <BrowserRouter>
           {children}
         </BrowserRouter>
+      </IntlProvider>
+    </Provider>,
+  );
+};
+
+export const createShallowComponent = (children, props = {}, routerProps = {}) => {
+  props = ImmutableMap({
+    locale: 'en',
+    store: mockStore(rootReducer(ImmutableMap(), {})),
+  }).merge(props);
+
+  return mount(
+    <Provider store={props.get('store')}>
+      <IntlProvider locale={props.get('locale')}>
+        <MemoryRouter {...routerProps}>
+          {children}
+        </MemoryRouter>
       </IntlProvider>
     </Provider>,
   );

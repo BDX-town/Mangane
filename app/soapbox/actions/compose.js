@@ -1,4 +1,5 @@
 import { CancelToken, isCancel } from 'axios';
+import { OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { throttle } from 'lodash';
 import { defineMessages } from 'react-intl';
 
@@ -219,7 +220,7 @@ export function submitCompose(routerHistory, force = false) {
 
     const status = state.getIn(['compose', 'text'], '');
     const media  = state.getIn(['compose', 'media_attachments']);
-    let to       = state.getIn(['compose', 'to']);
+    let to       = state.getIn(['compose', 'to'], ImmutableOrderedSet());
 
     if (!validateSchedule(state)) {
       dispatch(snackbar.error(messages.scheduleError));

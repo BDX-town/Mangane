@@ -6,14 +6,14 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
-import PullToRefresh from 'soapbox/components/pull_to_refresh';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 
 import IntersectionObserverArticleContainer from '../containers/intersection_observer_article_container';
 import IntersectionObserverWrapper from '../features/ui/util/intersection_observer_wrapper';
 
 import LoadMore from './load_more';
-import LoadingIndicator from './loading_indicator';
 import MoreFollows from './more_follows';
+import { Spinner, Text } from './ui';
 
 const MOUSE_IDLE_DELAY = 300;
 
@@ -249,12 +249,10 @@ class ScrollableList extends PureComponent {
 
     if (Placeholder && placeholderCount > 0) {
       return (
-        <div className={classNames('slist slist--flex', className)}>
-          <div role='feed' className='item-list'>
-            {Array(placeholderCount).fill().map((_, i) => (
-              <Placeholder key={i} />
-            ))}
-          </div>
+        <div role='feed' className={className}>
+          {Array(placeholderCount).fill().map((_, i) => (
+            <Placeholder key={i} />
+          ))}
         </div>
       );
     }
@@ -266,7 +264,7 @@ class ScrollableList extends PureComponent {
         </div>
 
         <div className='slist__append'>
-          <LoadingIndicator />
+          <Spinner />
         </div>
       </div>
     );
@@ -276,11 +274,11 @@ class ScrollableList extends PureComponent {
     const { className, prepend, alwaysPrepend, emptyMessage } = this.props;
 
     return (
-      <div className={classNames('slist slist--flex', className)} ref={this.setRef}>
+      <div className={classNames('mt-2', className)} ref={this.setRef}>
         {alwaysPrepend && prepend}
 
-        <div className='empty-column-indicator'>
-          <div>{emptyMessage}</div>
+        <div className='bg-primary-50 mt-2 rounded-lg text-center p-8'>
+          <Text>{emptyMessage}</Text>
         </div>
       </div>
     );
@@ -293,8 +291,8 @@ class ScrollableList extends PureComponent {
     const loadMore = (hasMore && onLoadMore) ? <LoadMore visible={!isLoading} onClick={this.handleLoadMore} /> : null;
 
     const feed = (
-      <div className={classNames('slist', className)} ref={this.setRef} onMouseMove={this.handleMouseMove}>
-        <div role='feed' className='item-list'>
+      <div ref={this.setRef} onMouseMove={this.handleMouseMove}>
+        <div role='feed' className={className}>
           {prepend}
 
           {React.Children.map(children, (child, index) => (
@@ -315,11 +313,7 @@ class ScrollableList extends PureComponent {
             </IntersectionObserverArticleContainer>
           ))}
           {(isLoading && Placeholder) && (
-            <div className='slist__placeholder'>
-              {Array(3).fill().map((_, i) => (
-                <Placeholder key={i} />
-              ))}
-            </div>
+            <Placeholder />
           )}
           {this.getMoreFollows()}
           {loadMore}

@@ -18,7 +18,7 @@ exports[`<DisplayName /> renders display name + account name 1`] = `
           className="display-name__html"
           dangerouslySetInnerHTML={
             Object {
-              "__html": "<p>Foo</p>",
+              "__html": "bar",
             }
           }
         />

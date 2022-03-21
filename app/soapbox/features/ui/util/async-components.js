@@ -214,6 +214,10 @@ export function MentionsModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/mentions_modal');
 }
 
+export function LandingPageModal() {
+  return import(/* webpackChunkName: "features/ui/modals/landing-page-modal" */'../components/modals/landing-page-modal');
+}
+
 export function BirthdaysModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
 }
@@ -246,12 +250,32 @@ export function ExternalLogin() {
   return import(/* webpackChunkName: "features/external_login" */'../../external_login');
 }
 
-export function Preferences() {
-  return import(/* webpackChunkName: "features/preferences" */'../../preferences');
+export function Settings() {
+  return import(/* webpackChunkName: "features/settings" */'../../settings');
+}
+
+export function MediaDisplay() {
+  return import(/* webpackChunkName: "features/settings" */'../../settings/media_display');
 }
 
 export function EditProfile() {
   return import(/* webpackChunkName: "features/edit_profile" */'../../edit_profile');
+}
+
+export function EditEmail() {
+  return import(/* webpackChunkName: "features/edit_email" */'../../edit_email');
+}
+
+export function EmailConfirmation() {
+  return import(/* webpackChunkName: "features/email_confirmation" */'../../email_confirmation');
+}
+
+export function EditPassword() {
+  return import(/* webpackChunkName: "features/edit_password" */'../../edit_password');
+}
+
+export function DeleteAccount() {
+  return import(/* webpackChunkName: "features/delete_account" */'../../delete_account');
 }
 
 export function SoapboxConfig() {
@@ -274,8 +298,8 @@ export function PasswordReset() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/password_reset');
 }
 
-export function SecurityForm() {
-  return import(/* webpackChunkName: "features/security" */'../../security');
+export function PasswordResetConfirm() {
+  return import(/* webpackChunkName: "features/auth_login/password_reset_confirm" */'../../auth_login/components/password_reset_confirm');
 }
 
 export function MfaForm() {
@@ -335,7 +359,7 @@ export function FundingPanel() {
 }
 
 export function TrendsPanel() {
-  return import(/* webpackChunkName: "features/trends" */'../components/trends_panel');
+  return import(/* webpackChunkName: "features/trends" */'../components/trends-panel');
 }
 
 export function ProfileInfoPanel() {
@@ -427,7 +451,7 @@ export function ScheduleForm() {
 }
 
 export function WhoToFollowPanel() {
-  return import(/* webpackChunkName: "features/follow_recommendations" */'../components/who_to_follow_panel');
+  return import(/* webpackChunkName: "features/follow_recommendations" */'../components/who-to-follow-panel');
 }
 
 export function FollowRecommendations() {

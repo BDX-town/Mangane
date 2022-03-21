@@ -1,37 +1,23 @@
 .badge {
-  background-color: var(--brand-color);
-  color: #fff;
-  font-size: 12px;
-  font-weight: normal;
-  text-transform: uppercase;
-  padding: 2px 6px;
-  border-radius: 5px;
-  margin: 0 5px 5px 0;
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-primary-600 text-white;
 
   &--patron {
-    background-color: #8a2be2;
-    color: #fff;
+    @apply bg-primary-600 text-white;
   }
 
   &--admin {
-    background-color: #000;
-    color: #fff;
+    @apply bg-black;
   }
 
   &--moderator {
-    background-color: #048ba8;
-    color: #fff;
+    @apply bg-cyan-600 text-white;
   }
 
   &--bot {
-    margin-left: 5px;
-    color: var(--primary-text-color);
-    background-color: hsla(var(--primary-text-color_hsl), 0.1);
-    border: 1px solid hsla(var(--primary-text-color_hsl), 0.5);
-    text-transform: none;
-    padding: 4px 6px;
-    vertical-align: top;
-    display: inline-block;
-    line-height: 12px;
+    @apply bg-gray-100 text-gray-800;
+  }
+
+  &--opaque {
+    @apply bg-white bg-opacity-75 text-gray-900;
   }
 }

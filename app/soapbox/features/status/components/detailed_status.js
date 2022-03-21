@@ -7,16 +7,15 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { FormattedDate } from 'react-intl';
 import { Link, NavLink } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
 import { getDomain } from 'soapbox/utils/accounts';
 
-import Avatar from '../../../components/avatar';
-import DisplayName from '../../../components/display_name';
 import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
 import StatusReplyMentions from '../../../components/status_reply_mentions';
+import { HStack, Text } from '../../../components/ui';
+import AccountContainer from '../../../containers/account_container';
 import Audio from '../../audio';
 import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
@@ -69,6 +68,10 @@ class DetailedStatus extends ImmutablePureComponent {
   setRef = c => {
     this.node = c;
     this._measureHeight();
+
+    if (c) {
+      this.setState({ mediaWrapperWidth: c.offsetWidth });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -88,7 +91,6 @@ class DetailedStatus extends ImmutablePureComponent {
 
     window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   }
-
 
   render() {
     const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
@@ -112,23 +114,46 @@ class DetailedStatus extends ImmutablePureComponent {
     if (size > 0) {
       if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
-
-        media = (
-          <Video
-            preview={video.get('preview_url')}
-            blurhash={video.get('blurhash')}
-            src={video.get('url')}
-            alt={video.get('description')}
-            aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
-            width={300}
-            height={150}
-            inline
-            onOpenVideo={this.handleOpenVideo}
-            sensitive={status.get('sensitive')}
-            visible={this.props.showMedia}
-            onToggleVisibility={this.props.onToggleMediaVisibility}
-          />
-        );
+        const external_id = (video.get('external_video_id'));
+        if (external_id) {
+          const { mediaWrapperWidth } = this.state;
+          const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
+          media = (
+            <div className='status-card horizontal interactive status-card--video'>
+              <div
+                ref={this.setRef}
+                className='status-card-video'
+                style={{ height }}
+              >
+                <iframe
+                  src={`https://rumble.com/embed/${external_id}/`}
+                  frameborder='0'
+                  allowFullScreen='true'
+                  webkitallowfullscreen='true'
+                  mozallowfullscreen='true'
+                  title='Video'
+                />
+              </div>
+            </div>
+          );
+        } else {
+          media = (
+            <Video
+              preview={video.get('preview_url')}
+              blurhash={video.get('blurhash')}
+              src={video.get('url')}
+              alt={video.get('description')}
+              aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
+              width={300}
+              height={150}
+              inline
+              onOpenVideo={this.handleOpenVideo}
+              sensitive={status.get('sensitive')}
+              visible={this.props.showMedia}
+              onToggleVisibility={this.props.onToggleMediaVisibility}
+            />
+          );
+        }
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const attachment = status.getIn(['media_attachments', 0]);
 
@@ -184,21 +209,14 @@ class DetailedStatus extends ImmutablePureComponent {
     return (
       <div style={outerStyle}>
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
-          <div className='detailed-status__profile'>
-            <div className='detailed-status__display-name'>
-              <NavLink to={`/@${status.getIn(['account', 'acct'])}`}>
-                <div className='detailed-status__display-avatar'>
-                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                    <Avatar account={status.get('account')} size={48} />
-                  </HoverRefWrapper>
-                </div>
-              </NavLink>
-              <DisplayName account={status.get('account')}>
-                <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                  <NavLink className='floating-link' to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} />
-                </HoverRefWrapper>
-              </DisplayName>
-            </div>
+          <div className='mb-4'>
+            <AccountContainer
+              key={status.getIn(['account', 'id'])}
+              id={status.getIn(['account', 'id'])}
+              timestamp={status.get('created_at')}
+              avatarSize={42}
+              hideActions
+            />
           </div>
 
           {status.get('group') && (
@@ -218,7 +236,7 @@ class DetailedStatus extends ImmutablePureComponent {
           {media}
           {quote}
 
-          <div className='detailed-status__meta'>
+          <HStack justifyContent='between' alignItems='center' className='py-2'>
             <StatusInteractionBar status={status} />
 
             <div className='detailed-status__timestamp'>
@@ -231,11 +249,13 @@ class DetailedStatus extends ImmutablePureComponent {
 
               {statusTypeIcon}
 
-              <a className='detailed-status__datetime' href={status.get('url')} target='_blank' rel='noopener'>
-                <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+              <a href={status.get('url')} target='_blank' rel='noopener' className='hover:underline'>
+                <Text tag='span' theme='muted' size='sm'>
+                  <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                </Text>
               </a>
             </div>
-          </div>
+          </HStack>
         </div>
       </div>
     );

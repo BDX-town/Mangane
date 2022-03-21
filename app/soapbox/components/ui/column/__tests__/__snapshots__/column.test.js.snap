@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Column /> renders correctly with minimal props 1`] = `
+<div
+  column-type="filled"
+  role="region"
+>
+  <div
+    className="space-y-4 bg-white sm:shadow-lg overflow-hidden p-4 sm:rounded-xl"
+  >
+    <div
+      className="mb-4 flex flex-row items-center"
+    >
+      <h1
+        className="text-xl font-bold"
+      />
+    </div>
+    <div />
+  </div>
+</div>
+`;

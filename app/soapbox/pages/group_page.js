@@ -10,7 +10,7 @@ import GroupPanel from '../features/groups/timeline/components/panel';
 import HeaderContainer from '../features/groups/timeline/containers/header_container';
 import LinkFooter from '../features/ui/components/link_footer';
 import PromoPanel from '../features/ui/components/promo_panel';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
+import WhoToFollowPanel from '../features/ui/components/who-to-follow-panel';
 
 const mapStateToProps = (state, { params: { id } }) => ({
   group: state.getIn(['groups', id]),

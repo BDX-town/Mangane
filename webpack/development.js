@@ -17,7 +17,7 @@ const {
 } = process.env;
 
 const DEFAULTS = {
-  DEVSERVER_URL: 'http://localhost:3036',
+  DEVSERVER_URL: 'http://localhost:4545',
   PATRON_URL: 'http://localhost:3037',
 };
 
@@ -29,7 +29,6 @@ const backendEndpoints = [
   '/nodeinfo',
   '/socket',
   '/oauth',
-  '/auth/password',
   '/.well-known/webfinger',
   '/static',
   '/main/ostatus',

@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { Spinner } from 'soapbox/components/ui';
 import { getAccountGallery } from 'soapbox/selectors';
 
 import { expandAccountMediaTimeline } from '../../../actions/timelines';
@@ -105,7 +105,7 @@ class ProfileMediaPanel extends ImmutablePureComponent {
         {account &&
           <div className='media-panel__content'>
             {isLoading ? (
-              <LoadingIndicator />
+              <Spinner />
             ) : (
               this.renderAttachments()
             )}

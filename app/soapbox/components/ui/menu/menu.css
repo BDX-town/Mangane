@@ -1,0 +1,35 @@
+[data-reach-menu-popover] {
+  @apply origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none;
+
+  z-index: 1003;
+}
+
+div:focus[data-reach-menu-list] {
+  outline: none;
+}
+
+[data-reach-menu-item][data-selected] {
+  @apply bg-gray-100;
+}
+
+[data-reach-menu-list] {
+  @apply py-1;
+}
+
+[data-reach-menu-item],
+[data-reach-menu-link] {
+  @apply block px-4 py-2.5 text-sm text-gray-700 cursor-pointer;
+}
+
+[data-reach-menu-link] {
+  @apply hover:bg-gray-100;
+}
+
+[data-reach-menu-item][data-disabled],
+[data-reach-menu-link][data-disabled] {
+  @apply opacity-25 cursor-default;
+}
+
+[data-reach-menu-popover] hr {
+  @apply my-1 mx-2 border-t border-gray-100;
+}

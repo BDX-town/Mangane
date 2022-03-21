@@ -54,27 +54,25 @@ exports[`<RadioGroup /> renders correctly 1`] = `
 `;
 
 exports[`<SelectDropdown /> renders correctly 1`] = `
-<div
-  className="select-wrapper"
+<select
+  className="pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
 >
-  <select>
-    <option
-      value="one"
-    >
-      One
-    </option>
-    <option
-      value="two"
-    >
-      Two
-    </option>
-    <option
-      value="three"
-    >
-      Three
-    </option>
-  </select>
-</div>
+  <option
+    value="one"
+  >
+    One
+  </option>
+  <option
+    value="two"
+  >
+    Two
+  </option>
+  <option
+    value="three"
+  >
+    Three
+  </option>
+</select>
 `;
 
 exports[`<SimpleForm /> renders correctly 1`] = `

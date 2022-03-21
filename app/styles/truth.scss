@@ -1,0 +1,353 @@
+:root {
+  --tmg-green: #008000;
+}
+
+.tabs-bar {
+  background: var(--foreground-color);
+  border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.1);
+}
+
+.tabs-bar__link {
+  &--logo {
+    padding: 9px 5px;
+    align-self: center;
+    justify-self: center;
+    filter: none;
+  }
+
+  .svg-icon {
+    color: var(--brand-color);
+    transition: none;
+  }
+
+  &:hover .svg-icon {
+    color: white;
+  }
+}
+
+.tabs-bar .react-toggle-track {
+  background-color: var(--brand-color) !important;
+}
+
+.theme-mode-dark .primary-navigation > button::before,
+.theme-mode-dark .primary-navigation > .btn::before {
+  background-color: var(--brand-color) !important;
+}
+
+body,
+.site-preview {
+  --accent-color_h: 345;
+  --accent-color_s: 100%;
+  --accent-color_l: 64%;
+}
+
+@media screen and (max-width: 450px) {
+  .tabs-bar__link--logo {
+    margin: 0 auto;
+    padding: 12px 5px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
+
+  .tabs-bar__split--right {
+    margin: 0;
+    order: -1;
+  }
+}
+
+.account__section-headline .column-header__buttons,
+.account__header__extra__links > div {
+  display: none;
+}
+
+.account__header__extra__links {
+  justify-content: flex-start;
+  border-bottom: 1px solid #ccc;
+
+  a {
+    display: flex;
+    align-items: center;
+  }
+
+  span:first-of-type {
+    margin-right: 5px;
+  }
+}
+
+.display-name__name {
+  display: inline-flex;
+  align-items: center;
+}
+
+// .verified-icon {
+//   display: inline-flex;
+//   align-items: center;
+//   margin: 0 3px;
+//   padding-top: 2px;
+
+//   svg {
+//     width: 18px;
+//     height: 18px;
+//   }
+// }
+
+.theme-mode-light {
+  --background-color_h: 0;
+  --background-color_s: 0%;
+  --background-color_l: 96%;
+}
+
+.status__action-bar__counter--reblog,
+.detailed-status__button--reblog {
+  .icon-button.active {
+    color: var(--tmg-green);
+
+    .svg-icon svg {
+      color: var(--tmg-green);
+    }
+  }
+}
+
+.status__action-bar__counter--favourite,
+.detailed-status__button--favourite {
+  .icon-button.active {
+    color: var(--accent-color);
+    fill: var(--accent-color);
+
+    .svg-icon svg {
+      color: var(--accent-color);
+      fill: var(--accent-color);
+    }
+  }
+}
+
+.emoji-react--reblogs {
+  .svg-icon {
+    color: var(--tmg-green);
+  }
+}
+
+.sidebar-menu__close {
+  top: 20px;
+}
+
+.primary-navigation__icon {
+  stroke: currentColor;
+}
+
+.public-layout {
+  background: linear-gradient(135deg, #fff, #f5f5f5);
+
+  .header {
+    .simple_form {
+      button {
+        background: $color-6-light;
+        color: $color-3;
+        font-size: 14px;
+        line-height: 14px;
+        padding: 10px 15px;
+        border: 1px solid $color-3 !important;
+
+        &:hover,
+        &:active,
+        &:focus {
+          background: $color-6;
+        }
+
+        &::selection {
+          background-color: transparent;
+          color: $color-3;
+        }
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        padding: 8px 15px;
+        font-size: 14px;
+        line-height: 14px;
+        background: $color-6-light;
+        border-color: $color-6-dark;
+      }
+    }
+
+    .nav-right .simple_form.new_user .fields-group p.hint.subtle-hint a {
+      background-color: transparent;
+    }
+  }
+}
+
+.landing {
+  .landing-columns--left {
+    display: flex;
+    align-items: center;
+  }
+
+  .landing-columns--right {
+    display: flex;
+    align-items: center;
+
+    .simple_form {
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 0 30px 5px rgba(0, 0, 0, 0.05);
+      background-color: $color-6-light;
+      padding: 40px;
+
+      h1 {
+        text-align: center;
+        font-size: 32px;
+        font-weight: 600;
+        color: $color-4-dark;
+        margin-bottom: 30px;
+      }
+
+      input[type="text"],
+      input[type="password"],
+      input[type="email"] {
+        padding: 10 15px;
+        font-size: 14px;
+        line-height: 14px;
+        background: $color-6;
+        border-color: $color-6-dark;
+        margin-bottom: 10px;
+      }
+
+      button {
+        background: $color-2;
+        font-size: 16px;
+        line-height: 16px;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        color: $color-6-light;
+
+        &:hover,
+        &:active,
+        &:focus {
+          background: $color-1;
+        }
+
+        &::selection {
+          background-color: transparent;
+          color: $color-3;
+        }
+      }
+    }
+  }
+}
+
+.public-layout {
+  .brand__tagline {
+    width: auto;
+    max-width: 800px;
+  }
+
+  .landing__brand {
+    align-items: flex-start;
+  }
+
+  .public-layout__top {
+    display: flex;
+    flex-direction: column;
+
+    .lottie-wrapper {
+      position: absolute;
+      z-index: 0;
+      margin-left: -410px;
+      margin-top: -40px;
+    }
+
+    .header-container {
+      position: relative;
+      padding-top: 10px;
+    }
+
+    .nav-left,
+    .nav-right {
+      position: relative;
+      z-index: 10;
+    }
+
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    .landing {
+      display: flex;
+      flex: 1;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .landing-columns {
+      width: 100%;
+
+      .landing-columns--right {
+        margin-left: auto;
+
+        form {
+          margin: 0 auto;
+        }
+      }
+
+      .landing-columns--left {
+        position: relative;
+        z-index: 10;
+        margin-right: 0;
+
+        svg {
+          width: 700px;
+          max-width: 100%;
+          fill: $color-3-dark;
+
+          .cls-1 {
+            opacity: 0.33;
+          }
+
+          .cls-2 {
+            opacity: 0.66;
+          }
+        }
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    padding: 40px 0;
+    font-size: 12px;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    color: #fff;
+    background-color: transparent;
+
+    ul {
+      justify-content: center;
+    }
+
+    .copyright {
+      color: $color-5;
+    }
+  }
+}
+
+.compose-form__publish--direct button {
+  background-color: var(--brand-color);
+}
+
+.sub-navigation__cog {
+  display: none;
+}
+
+.detailed-status__link {
+  pointer-events: none;
+}
+
+// Pull to refresh
+.ptr__pull-down {
+  transform: translateY(10px);
+}

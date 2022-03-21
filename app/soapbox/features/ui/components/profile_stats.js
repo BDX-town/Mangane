@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -6,6 +5,8 @@ import { injectIntl, defineMessages } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
 import { shortNumberFormat } from 'soapbox/utils/numbers';
+
+import { HStack, Text } from '../../../components/ui';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -19,11 +20,12 @@ class ProfileStats extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     account: ImmutablePropTypes.map.isRequired,
     className: PropTypes.string,
+    onClickHandler: PropTypes.func,
   }
 
   render() {
-    const { intl, className } = this.props;
-    const { account } = this.props;
+    const { intl } = this.props;
+    const { account, onClickHandler } = this.props;
 
     if (!account) {
       return null;
@@ -32,25 +34,29 @@ class ProfileStats extends React.PureComponent {
     const acct = account.get('acct');
 
     return (
-      <div className={classNames('profile-stats', className)}>
-        <NavLink className='profile-stat' to={`/@${acct}/followers`} onClick={this.handleClose} title={intl.formatNumber(account.get('followers_count'))}>
-          <strong className='profile-stat__value'>
-            {shortNumberFormat(account.get('followers_count'))}
-          </strong>
-          <span className='profile-stat__label'>
-            {intl.formatMessage(messages.followers)}
-          </span>
+      <HStack alignItems='center' space={3}>
+        <NavLink to={`/@${acct}/followers`} onClick={onClickHandler} title={intl.formatNumber(account.get('followers_count'))}>
+          <HStack alignItems='center' space={1}>
+            <Text theme='primary' weight='bold' size='sm'>
+              {shortNumberFormat(account.get('followers_count'))}
+            </Text>
+            <Text weight='bold' size='sm'>
+              {intl.formatMessage(messages.followers)}
+            </Text>
+          </HStack>
         </NavLink>
 
-        <NavLink className='profile-stat' to={`/@${acct}/following`} onClick={this.handleClose} title={intl.formatNumber(account.get('following_count'))}>
-          <strong className='profile-stat__value'>
-            {shortNumberFormat(account.get('following_count'))}
-          </strong>
-          <span className='profile-stat__label'>
-            {intl.formatMessage(messages.follows)}
-          </span>
+        <NavLink to={`/@${acct}/following`} onClick={onClickHandler} title={intl.formatNumber(account.get('following_count'))}>
+          <HStack alignItems='center' space={1}>
+            <Text theme='primary' weight='bold' size='sm'>
+              {shortNumberFormat(account.get('following_count'))}
+            </Text>
+            <Text weight='bold' size='sm'>
+              {intl.formatMessage(messages.follows)}
+            </Text>
+          </HStack>
         </NavLink>
-      </div>
+      </HStack>
     );
   }
 

@@ -300,7 +300,9 @@ class MediaGallery extends React.PureComponent {
     }
   }
 
-  handleOpen = () => {
+  handleOpen = (e) => {
+    e.stopPropagation();
+
     if (this.props.onToggleVisibility) {
       this.props.onToggleVisibility();
     } else {

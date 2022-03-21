@@ -199,9 +199,8 @@ $media-compact-size: 50px;
   height: $media-compact-size !important;
   background: transparent;
 
-  .spoiler-button .svg-icon {
-    width: 16px;
-    height: 16px;
+  .spoiler-button {
+    display: none;
   }
 
   .media-gallery__item {

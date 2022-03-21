@@ -4,8 +4,7 @@ import { injectIntl, FormattedMessage } from 'react-intl';
 
 import { SimpleForm, FieldsGroup, Checkbox } from 'soapbox/features/forms';
 
-import Button from '../../../components/button';
-import Icon from '../../../components/icon';
+import { Modal } from '../../../components/ui';
 
 export default @injectIntl
 class ConfirmationModal extends React.PureComponent {
@@ -28,10 +27,6 @@ class ConfirmationModal extends React.PureComponent {
     checked: false,
   }
 
-  componentDidMount() {
-    this.button.focus();
-  }
-
   handleClick = () => {
     this.props.onClose('CONFIRM');
     this.props.onConfirm();
@@ -52,54 +47,38 @@ class ConfirmationModal extends React.PureComponent {
     this.setState({ checked: e.target.checked });
   }
 
-  setRef = (c) => {
-    this.button = c;
-  }
-
   render() {
-    const { heading, icon, message, confirm, secondary, checkbox } = this.props;
+    const { heading, message, confirm, secondary, checkbox } = this.props;
     const { checked } = this.state;
 
     return (
-      <div className='modal-root__modal confirmation-modal'>
-        {heading && (
-          <div className='confirmation-modal__header'>
-            {icon && <Icon src={icon} />}
-            {heading}
-          </div>
-        )}
+      <Modal
+        title={heading}
+        confirmationAction={this.handleClick}
+        confirmationText={confirm}
+        confirmationDisabled={checkbox && !checked}
+        confirmationTheme='danger'
+        cancelText={<FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />}
+        cancelAction={this.handleCancel}
+        secondaryText={secondary}
+        sectondaryAction={this.handleSecondary}
+      >
+        <p className='text-gray-600'>{message}</p>
 
-        <div className='confirmation-modal__container'>
-          {message}
+        <div className='mt-2'>
+          {checkbox && <div className='confirmation-modal__checkbox'>
+            <SimpleForm>
+              <FieldsGroup>
+                <Checkbox
+                  onChange={this.handleCheckboxChange}
+                  label={checkbox}
+                  checked={checked}
+                />
+              </FieldsGroup>
+            </SimpleForm>
+          </div>}
         </div>
-
-        {checkbox && <div className='confirmation-modal__checkbox'>
-          <SimpleForm>
-            <FieldsGroup>
-              <Checkbox
-                onChange={this.handleCheckboxChange}
-                label={checkbox}
-                checked={checked}
-              />
-            </FieldsGroup>
-          </SimpleForm>
-        </div>}
-
-        <div className='confirmation-modal__action-bar'>
-          <Button onClick={this.handleCancel} className='confirmation-modal__cancel-button'>
-            <FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />
-          </Button>
-          {secondary !== undefined && (
-            <Button text={secondary} onClick={this.handleSecondary} className='confirmation-modal__secondary-button' />
-          )}
-          <Button
-            text={confirm}
-            onClick={this.handleClick}
-            ref={this.setRef}
-            disabled={checkbox && !checked}
-          />
-        </div>
-      </div>
+      </Modal>
     );
   }
 

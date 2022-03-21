@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { NavLink } from 'react-router-dom';
 
-import Button from 'soapbox/components/button';
+import { Button } from 'soapbox/components/ui';
 
 import DropdownMenuContainer from '../../../../containers/dropdown_menu_container';
 

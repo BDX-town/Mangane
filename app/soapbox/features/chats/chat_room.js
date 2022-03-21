@@ -9,8 +9,8 @@ import { Link } from 'react-router-dom';
 
 import { fetchChat, markChatRead } from 'soapbox/actions/chats';
 import Avatar from 'soapbox/components/avatar';
-import Column from 'soapbox/components/column';
 import ColumnBackButton from 'soapbox/components/column_back_button';
+import { Column } from 'soapbox/components/ui';
 import { makeGetChat } from 'soapbox/selectors';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';

@@ -1,6 +1,5 @@
 'use strict';
 
-import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -11,19 +10,22 @@ import { connect } from 'react-redux';
 
 import { initAccountNoteModal } from 'soapbox/actions/account_notes';
 import Badge from 'soapbox/components/badge';
-import Icon from 'soapbox/components/icon';
+import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { CryptoAddress } from 'soapbox/features/ui/util/async-components';
 import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import ProfileStats from './profile_stats';
 
-const TICKER_REGEX = /\$([a-zA-Z]*)/i;
-
-const getTicker = value => (value.match(TICKER_REGEX) || [])[1];
-const isTicker = value => Boolean(getTicker(value));
+// Basically ensure the URL isn't `javascript:alert('hi')` or something like that
+const isSafeUrl = text => {
+  try {
+    const url = new URL(text);
+    return ['http:', 'https:'].includes(url.protocol);
+  } catch(e) {
+    return false;
+  }
+};
 
 const messages = defineMessages({
   linkVerifiedOn: { id: 'account.link_verified_on', defaultMessage: 'Ownership of this link was checked on {date}' },
@@ -31,15 +33,6 @@ const messages = defineMessages({
   deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
   bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
-
-const dateFormatOptions = {
-  month: 'short',
-  day: 'numeric',
-  year: 'numeric',
-  hour12: false,
-  hour: '2-digit',
-  minute: '2-digit',
-};
 
 class ProfileInfoPanel extends ImmutablePureComponent {
 
@@ -82,7 +75,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     return badges;
   }
 
-  getBirthday = () => {
+  renderBirthday = () => {
     const { account, intl } = this.props;
 
     const birthday = account.get('birthday');
@@ -95,25 +88,21 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
     const hasBirthday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth();
 
-    if (hasBirthday) {
-      return (
-        <div className='profile-info-panel-content__birthday' title={formattedBirthday}>
-          <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-          <FormattedMessage
-            id='account.birthday_today' defaultMessage='Birthday is today!'
-          />
-        </div>
-      );
-    }
     return (
-      <div className='profile-info-panel-content__birthday'>
-        <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-        <FormattedMessage
-          id='account.birthday' defaultMessage='Born {date}' values={{
-            date: formattedBirthday,
-          }}
+      <HStack alignItems='center' space={0.5}>
+        <Icon
+          src={require('@tabler/icons/icons/ballon.svg')}
+          className='w-4 h-4 text-gray-800'
         />
-      </div>
+
+        <Text size='sm'>
+          {hasBirthday ? (
+            <FormattedMessage id='account.birthday_today' defaultMessage='Birthday is today!' />
+          ) : (
+            <FormattedMessage id='account.birthday' defaultMessage='Born {date}' values={{ date: formattedBirthday }} />
+          )}
+        </Text>
+      </HStack>
     );
   }
 
@@ -125,25 +114,25 @@ class ProfileInfoPanel extends ImmutablePureComponent {
   }
 
   render() {
-    const { account, displayFqn, intl, identity_proofs, username } = this.props;
+    const { account, displayFqn, intl, username } = this.props;
 
     if (!account) {
       return (
-        <div className='profile-info-panel'>
-          <div className='profile-info-panel__content'>
-            <div className='profile-info-panel-content__name'>
-              <h1>
-                <span />
-                <small>@{username}</small>
-              </h1>
-            </div>
-          </div>
+        <div className='mt-6 min-w-0 flex-1 sm:px-2'>
+          <Stack space={2}>
+            <Stack>
+              <HStack space={1} alignItems='center'>
+                <Text size='sm' theme='muted'>
+                  @{username}
+                </Text>
+              </HStack>
+            </Stack>
+          </Stack>
         </div>
       );
     }
 
     const content = { __html: account.get('note_emojified') };
-    const fields = account.get('fields');
     const deactivated = !account.getIn(['pleroma', 'is_active'], true);
     const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
     const memberSinceDate = intl.formatDate(account.get('created_at'), { month: 'long', year: 'numeric' });
@@ -151,113 +140,103 @@ class ProfileInfoPanel extends ImmutablePureComponent {
     const badges = this.getBadges();
 
     return (
-      <div className={classNames('profile-info-panel', { 'deactivated': deactivated })} >
-        <div className='profile-info-panel__content'>
-
-          <div className='profile-info-panel-content__name'>
-            <h1>
-              <span dangerouslySetInnerHTML={displayNameHtml} className='profile-info-panel__name-content' />
-              {verified && <VerificationBadge />}
-              {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-              <small>
-                @{getAcct(account, displayFqn)}
-                {account.get('locked') && (
-                  <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
-                )}
-              </small>
-            </h1>
-          </div>
-
-          {badges.length > 0 && (
-            <div className='profile-info-panel-content__badges'>
-              {badges}
-            </div>
-          )}
-
-          <div className='profile-info-panel-content__deactivated'>
+      <div className='mt-6 min-w-0 flex-1 sm:px-2'>
+        <Stack space={2}>
+          {/* Not sure if this is actual used. */}
+          {/* <div className='profile-info-panel-content__deactivated'>
             <FormattedMessage
               id='account.deactivated_description' defaultMessage='This account has been deactivated.'
             />
-          </div>
+          </div> */}
+
+          <Stack>
+            <HStack space={1} alignItems='center'>
+              <Text size='lg' weight='bold' dangerouslySetInnerHTML={displayNameHtml} />
+
+              {verified && <VerificationBadge />}
+
+              {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+
+              {badges.length > 0 && (
+                <HStack space={1} alignItems='center'>
+                  {badges}
+                </HStack>
+              )}
+            </HStack>
+
+            <HStack alignItems='center' space={0.5}>
+              <Text size='sm' theme='muted'>
+                @{getAcct(account, displayFqn)}
+              </Text>
+
+              {account.get('locked') && (
+                <Icon
+                  src={require('@tabler/icons/icons/lock.svg')}
+                  title={intl.formatMessage(messages.account_locked)}
+                  className='w-4 h-4 text-gray-600'
+                />
+              )}
+            </HStack>
+          </Stack>
+
+          <ProfileStats account={account} />
 
           {
             (account.get('note').length > 0 && account.get('note') !== '<p></p>') &&
-            <div className='profile-info-panel-content__bio' dangerouslySetInnerHTML={content} />
+            <Text size='sm' dangerouslySetInnerHTML={content} />
           }
 
-          {isLocal(account) && <div className='profile-info-panel-content__join-date'>
-            <Icon src={require('@tabler/icons/icons/calendar.svg')} />
-            <FormattedMessage
-              id='account.member_since' defaultMessage='Joined {date}' values={{
-                date: memberSinceDate,
-              }}
-            />
-          </div>}
+          <div className='flex flex-col md:flex-row items-start md:items-center space-x-0 md:space-x-2'>
+            {isLocal(account) ? (
+              <HStack alignItems='center' space={0.5}>
+                <Icon
+                  src={require('@tabler/icons/icons/calendar.svg')}
+                  className='w-4 h-4 text-gray-800'
+                />
 
-          {this.getBirthday()}
+                <Text size='sm'>
+                  <FormattedMessage
+                    id='account.member_since' defaultMessage='Joined {date}' values={{
+                      date: memberSinceDate,
+                    }}
+                  />
+                </Text>
+              </HStack>
+            ) : null}
 
-          {account.get('location') && (
-            <div className='profile-info-panel-content__location'>
-              <Icon src={require('@tabler/icons/icons/map-pin.svg')} />
-              {account.get('location')}
-            </div>
-          )}
+            {account.get('location') ? (
+              <HStack alignItems='center' space={0.5}>
+                <Icon
+                  src={require('@tabler/icons/icons/map-pin.svg')}
+                  className='w-4 h-4 text-gray-800'
+                />
 
-          {!!account.getIn(['relationship', 'note']) && (
-            <a href='#' className='profile-info-panel-content__note' onClick={this.handleShowNote}>
-              <Icon src={require('@tabler/icons/icons/note.svg')} />
-              <FormattedMessage id='account.show_note' defaultMessage='Show note' />
-            </a>
-          )}
+                <Text size='sm'>
+                  {account.get('location')}
+                </Text>
+              </HStack>
+            ) : null}
 
-          <ProfileStats
-            className='profile-info-panel-content__stats'
-            account={account}
-          />
+            {account.get('website') ? (
+              <HStack alignItems='center' space={0.5}>
+                <Icon
+                  src={require('@tabler/icons/icons/link.svg')}
+                  className='w-4 h-4 text-gray-800'
+                />
 
-          {(fields.size > 0 || identity_proofs.size > 0) && (
-            <div className='profile-info-panel-content__fields'>
-              {identity_proofs.map((proof, i) => (
-                <dl className='test' key={i}>
-                  <dt dangerouslySetInnerHTML={{ __html: proof.get('provider') }} />
+                <Text size='sm'>
+                  {isSafeUrl(account.get('website')) ? (
+                    <a className='text-primary-600 hover:underline' href={account.get('website')} target='_blank'>{account.get('website')}</a>
+                  ) : (
+                    account.get('website')
+                  )}
+                </Text>
+              </HStack>
+            ) : null}
 
-                  <dd className='verified'>
-                    <a href={proof.get('proof_url')} target='_blank' rel='noopener'>
-                      <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(proof.get('updated_at'), dateFormatOptions) })}>
-                        <Icon id='check' className='verified__mark' />
-                      </span>
-                    </a>
-                    <a href={proof.get('profile_url')} target='_blank' rel='noopener'>
-                      <span dangerouslySetInnerHTML={{ __html: ' ' + proof.get('provider_username') }} />
-                    </a>
-                  </dd>
-                </dl>
-              ))}
-
-              {fields.map((pair, i) =>
-                isTicker(pair.get('name', '')) ? (
-                  <BundleContainer fetchComponent={CryptoAddress} key={i}>
-                    {Component => (
-                      <Component
-                        key={i}
-                        ticker={getTicker(pair.get('name')).toLowerCase()}
-                        address={pair.get('value_plain')}
-                      />
-                    )}
-                  </BundleContainer>
-                ) : (
-                  <dl className='profile-info-panel-content__fields__item' key={i}>
-                    <dt dangerouslySetInnerHTML={{ __html: pair.get('name_emojified') }} title={pair.get('name')} />
-
-                    <dd className={pair.get('verified_at') && 'verified'} title={pair.get('value_plain')}>
-                      {pair.get('verified_at') && <span title={intl.formatMessage(messages.linkVerifiedOn, { date: intl.formatDate(pair.get('verified_at'), dateFormatOptions) })}><Icon id='check' className='verified__mark' /></span>} <span dangerouslySetInnerHTML={{ __html: pair.get('value_emojified') }} />
-                    </dd>
-                  </dl>
-                ),
-              )}
-            </div>
-          )}
-        </div>
+            {this.renderBirthday()}
+          </div>
+        </Stack>
       </div>
     );
   }

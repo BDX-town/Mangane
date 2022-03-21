@@ -26,6 +26,7 @@ import {
   FavouritesModal,
   ReblogsModal,
   MentionsModal,
+  LandingPageModal,
   BirthdaysModal,
   AccountNoteModal,
 } from '../../../features/ui/util/async-components';
@@ -59,6 +60,7 @@ const MODAL_COMPONENTS = {
   'FAVOURITES': FavouritesModal,
   'REACTIONS': ReactionsModal,
   'MENTIONS': MentionsModal,
+  'LANDING_PAGE': LandingPageModal,
   'BIRTHDAYS': BirthdaysModal,
   'ACCOUNT_NOTE': AccountNoteModal,
 };
@@ -77,9 +79,9 @@ export default class ModalRoot extends React.PureComponent {
 
   componentDidUpdate(prevProps, prevState, { visible }) {
     if (visible) {
-      document.body.classList.add('with-modals--active');
+      document.body.classList.add('with-modals');
     } else {
-      document.body.classList.remove('with-modals--active');
+      document.body.classList.remove('with-modals');
     }
   }
 

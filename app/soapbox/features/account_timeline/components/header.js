@@ -140,7 +140,7 @@ export default class Header extends ImmutablePureComponent {
     const moved = (account) ? account.get('moved') : false;
 
     return (
-      <div className='account-timeline__header'>
+      <>
         { moved && <MovedNote from={account} to={account.get('moved')} /> }
 
         <InnerHeader
@@ -172,7 +172,7 @@ export default class Header extends ImmutablePureComponent {
           onShowNote={this.handleShowNote}
           username={this.props.username}
         />
-      </div>
+      </>
     );
   }
 

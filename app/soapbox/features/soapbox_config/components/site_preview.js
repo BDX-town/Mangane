@@ -9,13 +9,11 @@ export default function SitePreview({ soapbox }) {
 
   const settings = defaultSettings.mergeDeep(soapbox.get('defaultSettings'));
 
-  const bodyClass = classNames('site-preview app-body', `theme-mode-${settings.get('themeMode')}`, {
-    'system-font': settings.get('systemFont'),
+  const bodyClass = classNames('site-preview', `theme-mode-${settings.get('themeMode')}`, {
     'no-reduce-motion': !settings.get('reduceMotion'),
     'underline-links': settings.get('underlineLinks'),
     'dyslexic': settings.get('dyslexicFont'),
     'demetricator': settings.get('demetricator'),
-    'halloween': settings.get('halloween'),
   });
 
   return (

@@ -4,7 +4,7 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { changeListEditorTitle, submitListEditor } from '../../../actions/lists';
-import Button from '../../../components/button';
+import { Button } from '../../../components/ui';
 
 const messages = defineMessages({
   title: { id: 'lists.edit.submit', defaultMessage: 'Change title' },

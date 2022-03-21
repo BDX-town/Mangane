@@ -3,28 +3,21 @@ import React from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
-export default class DisplayName extends React.Component {
+const PlaceholderDisplayName = ({ minLength, maxLength }) => {
+  const length = randomIntFromInterval(maxLength, minLength);
+  const acctLength = randomIntFromInterval(maxLength, minLength);
 
-  static propTypes = {
-    maxLength: PropTypes.number.isRequired,
-    minLength: PropTypes.number.isRequired,
-  }
+  return (
+    <div className='flex flex-col text-slate-200'>
+      <p>{generateText(length)}</p>
+      <p>{generateText(acctLength)}</p>
+    </div>
+  );
+};
 
-  render() {
-    const { maxLength, minLength } = this.props;
-    const length = randomIntFromInterval(maxLength, minLength);
-    const acctLength = randomIntFromInterval(maxLength, minLength);
+PlaceholderDisplayName.propTypes = {
+  maxLength: PropTypes.number.isRequired,
+  minLength: PropTypes.number.isRequired,
+};
 
-    return (
-      <span className='display-name display-name--placeholder'>
-        <span>
-          <span className='display-name__name'>
-            <bdi><strong className='display-name__html'>{generateText(length)}</strong></bdi>
-          </span>
-        </span>
-        <span className='display-name__account'>{generateText(acctLength)}</span>
-      </span>
-    );
-  }
-
-}
+export default PlaceholderDisplayName;

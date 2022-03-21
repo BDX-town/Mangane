@@ -25,14 +25,14 @@ export default class ProgressCircle extends React.PureComponent {
     const dashoffset = circumference * (1 - Math.min(progress, 1));
 
     return (
-      <div className={classNames('progress-circle', { 'progress-circle--over': progress > 1 })} title={title}>
+      <div title={title}>
         <svg
           width={actualRadius * 2}
           height={actualRadius * 2}
           viewBox={`0 0 ${actualRadius * 2} ${actualRadius * 2}`}
         >
           <circle
-            className='progress-circle__circle'
+            className='stroke-gray-400'
             cx={actualRadius}
             cy={actualRadius}
             r={radius}
@@ -40,7 +40,9 @@ export default class ProgressCircle extends React.PureComponent {
             strokeWidth={stroke}
           />
           <circle
-            className={classNames('progress-circle__progress')}
+            className={classNames('stroke-primary-800', {
+              'stroke-danger-600': progress > 1,
+            })}
             style={{
               strokeDashoffset: dashoffset,
               strokeDasharray: circumference,

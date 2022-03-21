@@ -7,7 +7,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 
 import Icon from 'soapbox/components/icon';
 
-import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+import AutosuggestAccount from '../features/compose/components/autosuggest_account';
 import { isRtl } from '../rtl';
 
 import AutosuggestEmoji from './autosuggest_emoji';
@@ -195,12 +195,22 @@ export default class AutosuggestInput extends ImmutablePureComponent {
       inner = suggestion;
       key   = suggestion;
     } else {
-      inner = <AutosuggestAccountContainer id={suggestion} />;
+      inner = <AutosuggestAccount id={suggestion} />;
       key   = suggestion;
     }
 
     return (
-      <div role='button' tabIndex='0' key={key} data-index={i} className={classNames('autosuggest-textarea__suggestions__item', { selected: i === selectedSuggestion })} onMouseDown={this.onSuggestionClick}>
+      <div
+        role='button'
+        tabIndex='0'
+        key={key}
+        data-index={i}
+        className={classNames({
+          'px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 group': true,
+          'bg-gray-100 hover:bg-gray-100': i === selectedSuggestion,
+        })}
+        onMouseDown={this.onSuggestionClick}
+      >
         {inner}
       </div>
     );
@@ -228,7 +238,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
     return menu.map((item, i) => (
       <a
-        className={classNames('autosuggest-input__action', { selected: suggestions.size - selectedSuggestion === i })}
+        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-100', { selected: suggestions.size - selectedSuggestion === i })}
         href='#'
         role='button'
         tabIndex='0'
@@ -256,32 +266,42 @@ export default class AutosuggestInput extends ImmutablePureComponent {
     }
 
     return (
-      <div className='autosuggest-input'>
-        <label>
-          <span style={{ display: 'none' }}>{placeholder}</span>
+      <div className='relative'>
+        <label className='sr-only'>{placeholder}</label>
 
-          <input
-            type='text'
-            ref={this.setInput}
-            disabled={disabled}
-            placeholder={placeholder}
-            autoFocus={autoFocus}
-            value={value}
-            onChange={this.onChange}
-            onKeyDown={this.onKeyDown}
-            onKeyUp={onKeyUp}
-            onFocus={this.onFocus}
-            onBlur={this.onBlur}
-            style={style}
-            aria-autocomplete='list'
-            id={id}
-            className={className}
-            maxLength={maxLength}
-          />
-        </label>
+        <input
+          type='text'
+          className={classNames({
+            'block w-full sm:text-sm focus:ring-indigo-500 focus:border-indigo-500': true,
+            [className]: typeof className !== 'undefined',
+          })}
+          ref={this.setInput}
+          disabled={disabled}
+          placeholder={placeholder}
+          autoFocus={autoFocus}
+          value={value}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
+          onKeyUp={onKeyUp}
+          onFocus={this.onFocus}
+          onBlur={this.onBlur}
+          style={style}
+          aria-autocomplete='list'
+          id={id}
+          maxLength={maxLength}
+        />
 
-        <div className={classNames('autosuggest-textarea__suggestions', { 'autosuggest-textarea__suggestions--visible': visible })}>
-          {suggestions.map(this.renderSuggestion)}
+        <div className={classNames({
+          'absolute top-full w-full z-50 shadow bg-white rounded-lg py-1': true,
+          hidden: !visible,
+          block: visible,
+          'autosuggest-textarea__suggestions--visible': visible,
+        })}
+        >
+          <div className='space-y-0.5'>
+            {suggestions.map(this.renderSuggestion)}
+          </div>
+
           {this.renderMenu()}
         </div>
       </div>

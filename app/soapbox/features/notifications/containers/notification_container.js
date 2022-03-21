@@ -22,6 +22,7 @@ const makeMapStateToProps = () => {
 
   const mapStateToProps = (state, props) => {
     return {
+      siteTitle: state.getIn(['instance', 'title']),
       notification: getNotification(state, props.notification),
     };
   };

@@ -7,14 +7,7 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import snackbar from 'soapbox/actions/snackbar';
-import Button from 'soapbox/components/button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
-import ShowablePassword from 'soapbox/components/showable_password';
-import {
-  SimpleForm,
-  FieldsGroup,
-  TextInput,
-} from 'soapbox/features/forms';
+import { Spinner } from 'soapbox/components/ui';
 
 import {
   fetchMfa,
@@ -23,8 +16,7 @@ import {
   confirmMfa,
   disableMfa,
 } from '../../actions/mfa';
-import Column from '../ui/components/column';
-import ColumnSubheading from '../ui/components/column_subheading';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Stack, Text } from '../../components/ui';
 
 /*
 Security settings page for user account
@@ -34,8 +26,7 @@ Includes following features:
 */
 
 const messages = defineMessages({
-  heading: { id: 'column.security', defaultMessage: 'Security' },
-  subheading: { id: 'column.mfa', defaultMessage: 'Multi-Factor Authentication' },
+  heading: { id: 'column.mfa', defaultMessage: 'Multi-Factor Authentication' },
   mfa_cancel_button: { id: 'column.mfa_cancel', defaultMessage: 'Cancel' },
   mfa_setup_button: { id: 'column.mfa_setup', defaultMessage: 'Proceed to Setup' },
   mfa_setup_confirm_button: { id: 'column.mfa_confirm_button', defaultMessage: 'Confirm' },
@@ -88,16 +79,23 @@ class MfaForm extends ImmutablePureComponent {
     const { displayOtpForm } = this.state;
 
     return (
-      <Column icon='lock' heading={intl.formatMessage(messages.heading)}>
-        <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
-        {mfa.getIn(['settings', 'totp']) ? (
-          <DisableOtpForm />
-        ) : (
-          <>
-            <EnableOtpForm handleSetupProceedClick={this.handleSetupProceedClick} />
-            {displayOtpForm && <OtpConfirmForm />}
-          </>
-        )}
+      <Column label={intl.formatMessage(messages.heading)} transparent withHeader={false}>
+        <Card variant='rounded'>
+          <CardHeader backHref='/settings'>
+            <CardTitle title={intl.formatMessage(messages.heading)} />
+          </CardHeader>
+
+          <CardBody>
+            {mfa.getIn(['settings', 'totp']) ? (
+              <DisableOtpForm />
+            ) : (
+              <>
+                <EnableOtpForm displayOtpForm={displayOtpForm} handleSetupProceedClick={this.handleSetupProceedClick} />
+                {displayOtpForm && <OtpConfirmForm />}
+              </>
+            )}
+          </CardBody>
+        </Card>
       </Column>
     );
   }
@@ -149,33 +147,40 @@ class DisableOtpForm extends ImmutablePureComponent {
     const { isLoading, password } = this.state;
 
     return (
-      <div className='security-settings-panel'>
-        <SimpleForm onSubmit={this.handleSubmit} disabled={isLoading}>
-          <h1 className='security-settings-panel__setup-otp'>
+      <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+        <Stack>
+          <Text weight='medium'>
             <FormattedMessage id='mfa.otp_enabled_title' defaultMessage='OTP Enabled' />
-          </h1>
-          <h2 className='security-settings-panel__setup-otp'>
+          </Text>
+
+          <Text theme='muted'>
             <FormattedMessage id='mfa.otp_enabled_description' defaultMessage='You have enabled two-factor authentication via OTP.' />
-          </h2>
-          <ShowablePassword
-            label={intl.formatMessage(messages.passwordPlaceholder)}
+          </Text>
+        </Stack>
+
+        <FormGroup
+          labelText={intl.formatMessage(messages.passwordPlaceholder)}
+          hintText={<FormattedMessage id='mfa.mfa_disable_enter_password' defaultMessage='Enter your current password to disable two-factor auth.' />}
+        >
+          <Input
+            type='password'
             placeholder={intl.formatMessage(messages.passwordPlaceholder)}
-            hint={<FormattedMessage id='mfa.mfa_disable_enter_password' defaultMessage='Enter your current password to disable two-factor auth.' />}
             disabled={isLoading}
             name='password'
             onChange={this.handleInputChange}
             value={password}
             required
           />
-          <div className='security-settings-panel__setup-otp__buttons'>
-            <Button
-              disabled={isLoading}
-              className='button button-primary disable'
-              text={intl.formatMessage(messages.mfa_setup_disable_button)}
-            />
-          </div>
-        </SimpleForm>
-      </div>
+        </FormGroup>
+
+        <FormActions>
+          <Button
+            disabled={isLoading}
+            theme='danger'
+            text={intl.formatMessage(messages.mfa_setup_disable_button)}
+          />
+        </FormActions>
+      </Form>
     );
   }
 
@@ -215,52 +220,63 @@ class EnableOtpForm extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl } = this.props;
-    const { backupCodes, displayOtpForm } = this.state;
+    const { intl, displayOtpForm } = this.props;
+    const { backupCodes } = this.state;
 
     return (
-      <div className='security-settings-panel'>
-        <SimpleForm>
-          <h1 className='security-settings-panel__setup-otp'>
-            <FormattedMessage id='mfa.setup_otp_title' defaultMessage='OTP Disabled' />
-          </h1>
-          <h2 className='security-settings-panel__setup-otp'>
-            <FormattedMessage id='mfa.setup_hint' defaultMessage='Follow these steps to set up multi-factor authentication on your account with OTP' />
-          </h2>
-          <div className='security-warning'>
+      <Stack space={4}>
+        {/* Removing for now -- seems redundant. */}
+        {/* <p className='text-muted mb-10'>
+          <FormattedMessage id='mfa.setup_hint' defaultMessage='Follow these steps to set up multi-factor authentication on your account with OTP.' />
+        </p> */}
+        <Stack space={2}>
+          <Text theme='muted'>
             <FormattedMessage id='mfa.setup_warning' defaultMessage="Write these codes down or save them somewhere secure - otherwise you won't see them again. If you lose access to your 2FA app and recovery codes you'll be locked out of your account." />
-          </div>
-          <h2 className='security-settings-panel__setup-otp'>
-            <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />
-          </h2>
-          <div className='backup_codes'>
-            {backupCodes.length > 0 ? (
-              <div>
-                {backupCodes.map((code, i) => (
-                  <div key={i} className='backup_code'>
-                    <div className='backup_code'>{code}</div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <LoadingIndicator />
-            )}
-          </div>
-          {!displayOtpForm && (
-            <div className='security-settings-panel__setup-otp__buttons'>
-              <Button className='button button-secondary cancel' text={intl.formatMessage(messages.mfa_cancel_button)} onClick={this.handleCancelClick} />
-              {backupCodes.length > 0 && (
-                <Button className='button button-primary setup' text={intl.formatMessage(messages.mfa_setup_button)} onClick={this.props.handleSetupProceedClick} />
+          </Text>
+
+          <div className='bg-gray-100 rounded-lg p-4'>
+            <Stack space={3}>
+              <Text weight='medium' align='center'>
+                <FormattedMessage id='mfa.setup_recoverycodes' defaultMessage='Recovery codes' />
+              </Text>
+
+              {backupCodes.length > 0 ? (
+                <div className='grid gap-3 grid-cols-2 rounded-lg text-center'>
+                  {backupCodes.map((code, i) => (
+                    <Text key={i} theme='muted' size='sm'>
+                      {code}
+                    </Text>
+                  ))}
+                </div>
+              ) : (
+                <Spinner />
               )}
-            </div>
-          )}
-        </SimpleForm>
-      </div>
+            </Stack>
+          </div>
+        </Stack>
+
+        {!displayOtpForm && (
+          <FormActions>
+            <Button
+              theme='ghost'
+              text={intl.formatMessage(messages.mfa_cancel_button)}
+              onClick={this.handleCancelClick}
+            />
+
+            {backupCodes.length > 0 && (
+              <Button
+                theme='primary'
+                text={intl.formatMessage(messages.mfa_setup_button)}
+                onClick={this.props.handleSetupProceedClick}
+              />
+            )}
+          </FormActions>
+        )}
+      </Stack>
     );
   }
 
 }
-
 
 @connect()
 @injectIntl
@@ -323,69 +339,75 @@ class OtpConfirmForm extends ImmutablePureComponent {
     const { isLoading, qrCodeURI, confirm_key, password, code } = this.state;
 
     return (
-      <div className='security-settings-panel'>
-        <SimpleForm onSubmit={this.handleSubmit} disabled={isLoading}>
+      <Stack space={4}>
+        <hr className='mt-4' />
 
-          <fieldset disabled={false}>
-            <FieldsGroup>
-              <div className='security-settings-panel__section-container'>
-                <h2><FormattedMessage id='mfa.mfa_setup_scan_title' defaultMessage='Scan' /></h2>
+        <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+          <Stack>
+            <Text weight='semibold' size='lg'>
+              1. <FormattedMessage id='mfa.mfa_setup_scan_title' defaultMessage='Scan' />
+            </Text>
 
-                <div><FormattedMessage id='mfa.mfa_setup_scan_description' defaultMessage='Using your two-factor app, scan this QR code or enter the text key.' /></div>
+            <Text theme='muted'>
+              <FormattedMessage id='mfa.mfa_setup_scan_description' defaultMessage='Using your two-factor app, scan this QR code or enter the text key.' />
+            </Text>
+          </Stack>
 
-                <div className='security-settings-panel__qr-code'>
-                  <QRCode value={qrCodeURI} />
-                  <div className='security-settings-panel__confirm-key'>
-                    {confirm_key}
-                  </div>
-                </div>
+          <QRCode value={qrCodeURI} />
+          {confirm_key}
 
-              </div>
+          <Text weight='semibold' size='lg'>
+            2. <FormattedMessage id='mfa.mfa_setup_verify_title' defaultMessage='Verify' />
+          </Text>
 
-              <div className='security-settings-panel__section-container'>
-                <h2><FormattedMessage id='mfa.mfa_setup_verify_title' defaultMessage='Verify' /></h2>
+          <FormGroup
+            labelText={intl.formatMessage(messages.codePlaceholder)}
+            hintText={<FormattedMessage id='mfa.mfa_setup.code_hint' defaultMessage='Enter the code from your two-factor app.' />}
+          >
+            <Input
+              name='code'
+              placeholder={intl.formatMessage(messages.codePlaceholder)}
+              onChange={this.handleInputChange}
+              autoComplete='off'
+              value={code}
+              disabled={isLoading}
+              required
+            />
+          </FormGroup>
 
-                <TextInput
-                  name='code'
-                  label={intl.formatMessage(messages.codePlaceholder)}
-                  hint={<FormattedMessage id='mfa.mfa_setup.code_hint' defaultMessage='Enter the code from your two-factor app.' />}
-                  placeholder={intl.formatMessage(messages.codePlaceholder)}
-                  onChange={this.handleInputChange}
-                  autoComplete='off'
-                  value={code}
-                  disabled={isLoading}
-                  required
-                />
-                <ShowablePassword
-                  name='password'
-                  label={intl.formatMessage(messages.passwordPlaceholder)}
-                  hint={<FormattedMessage id='mfa.mfa_setup.password_hint' defaultMessage='Enter your current password to confirm your identity.' />}
-                  placeholder={intl.formatMessage(messages.passwordPlaceholder)}
-                  onChange={this.handleInputChange}
-                  value={password}
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-            </FieldsGroup>
-          </fieldset>
-          <div className='security-settings-panel__setup-otp__buttons'>
+          <FormGroup
+            labelText={intl.formatMessage(messages.passwordPlaceholder)}
+            hintText={<FormattedMessage id='mfa.mfa_setup.password_hint' defaultMessage='Enter your current password to confirm your identity.' />}
+          >
+            <Input
+              type='password'
+              name='password'
+              placeholder={intl.formatMessage(messages.passwordPlaceholder)}
+              onChange={this.handleInputChange}
+              value={password}
+              disabled={isLoading}
+              required
+            />
+          </FormGroup>
+
+          <FormActions>
             <Button
               type='button'
-              className='button button-secondary cancel'
+              theme='ghost'
               text={intl.formatMessage(messages.mfa_cancel_button)}
               onClick={this.handleCancelClick}
               disabled={isLoading}
             />
+
             <Button
               type='submit'
-              className='button button-primary setup'
+              theme='primary'
               text={intl.formatMessage(messages.mfa_setup_confirm_button)}
               disabled={isLoading}
             />
-          </div>
-        </SimpleForm>
-      </div>
+          </FormActions>
+        </Form>
+      </Stack>
     );
   }
 

@@ -8,8 +8,8 @@ import { connect } from 'react-redux';
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import FilterBar from 'soapbox/components/filter_bar';
 import IconButton from 'soapbox/components/icon_button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
 const messages = defineMessages({
@@ -99,7 +99,7 @@ class ReactionsModal extends React.PureComponent {
     let body;
 
     if (!accounts) {
-      body = <LoadingIndicator />;
+      body = <Spinner />;
     } else {
       const emptyMessage = <FormattedMessage id='status.reactions.empty' defaultMessage='No one has reacted to this post yet. When someone does, they will show up here.' />;
 

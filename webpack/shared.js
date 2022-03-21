@@ -13,7 +13,7 @@ const AssetsManifestPlugin = require('webpack-assets-manifest');
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
 
-const { FE_SUBDIRECTORY } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
+const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
 const makeHtmlConfig = (params = {}) => {
   return Object.assign({
@@ -95,7 +95,7 @@ module.exports = {
         from: join(__dirname, '../node_modules/twemoji/assets/svg'),
         to: join(output.path, 'packs/emoji'),
       }, {
-        from: join(__dirname, '../app/instance'),
+        from: join(__dirname, '..', 'app', FE_INSTANCE_SOURCE_DIR),
         to: join(output.path, 'instance'),
       }, {
         from: join(__dirname, '../custom/instance'),

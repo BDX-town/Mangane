@@ -5,7 +5,7 @@ import { getHost } from 'soapbox/actions/instance';
 import KVStore from 'soapbox/storage/kv_store';
 import { getFeatures } from 'soapbox/utils/features';
 
-import api, { staticClient } from '../api';
+import { staticClient } from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
@@ -47,7 +47,7 @@ export const makeDefaultConfig = features => {
     }),
     extensions: ImmutableMap(),
     defaultSettings: ImmutableMap(),
-    copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
+    copyright: `©${year} TRUTH Social`,
     navlinks: ImmutableMap({
       homeFooter: ImmutableList(),
     }),
@@ -60,6 +60,8 @@ export const makeDefaultConfig = features => {
       limit: 1,
     }),
     aboutPages: ImmutableMap(),
+    betaPages: ImmutableMap(),
+    mobilePages: ImmutableMap(),
     authenticatedProfile: true,
     singleUserMode: false,
     singleUserModeProfile: '',
@@ -86,17 +88,19 @@ export function rememberSoapboxConfig(host) {
 }
 
 export function fetchSoapboxConfig(host) {
-  return (dispatch, getState) => {
-    api(getState).get('/api/pleroma/frontend_configurations').then(response => {
-      if (response.data.soapbox_fe) {
-        dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
-      } else {
-        dispatch(fetchSoapboxJson(host));
-      }
-    }).catch(error => {
-      dispatch(fetchSoapboxJson(host));
-    });
-  };
+  return fetchSoapboxJson(host);
+
+  // return (dispatch, getState) => {
+  //   api(getState).get('/api/pleroma/frontend_configurations').then(response => {
+  //     if (response.data.soapbox_fe) {
+  //       dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
+  //     } else {
+  //       dispatch(fetchSoapboxJson(host));
+  //     }
+  //   }).catch(error => {
+  //     dispatch(fetchSoapboxJson(host));
+  //   });
+  // };
 }
 
 // Tries to remember the config from browser storage before fetching it

@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ComposeButton /> renders a button element 1`] = `
+<div
+  className="mt-4"
+>
+  <button
+    className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-6 py-3 text-base flex w-full justify-center"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    <div
+      className="svg-icon mr-2"
+    >
+      <svg
+        id={
+          Object {
+            "process": [Function],
+          }
+        }
+      />
+    </div>
+    <span>
+      Compose
+    </span>
+  </button>
+</div>
+`;

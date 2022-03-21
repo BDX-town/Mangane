@@ -11,41 +11,36 @@ import { isMobile } from 'soapbox/is_mobile';
 
 const showProfileHoverCard = debounce((dispatch, ref, accountId) => {
   dispatch(openProfileHoverCard(ref, accountId));
-}, 1200);
-
-const handleMouseEnter = (dispatch, ref, accountId) => {
-  return e => {
-    if (!isMobile(window.innerWidth))
-      showProfileHoverCard(dispatch, ref, accountId);
-  };
-};
-
-const handleMouseLeave = (dispatch) => {
-  return e => {
-    showProfileHoverCard.cancel();
-    setTimeout(() => dispatch(closeProfileHoverCard()), 300);
-  };
-};
-
-const handleClick = (dispatch) => {
-  return e => {
-    showProfileHoverCard.cancel();
-    dispatch(closeProfileHoverCard(true));
-  };
-};
+}, 600);
 
 export const HoverRefWrapper = ({ accountId, children, inline }) => {
   const dispatch = useDispatch();
   const ref = useRef();
   const Elem = inline ? 'span' : 'div';
 
+  const handleMouseEnter = () => {
+    if (!isMobile(window.innerWidth)) {
+      showProfileHoverCard(dispatch, ref, accountId);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    showProfileHoverCard.cancel();
+    setTimeout(() => dispatch(closeProfileHoverCard()), 300);
+  };
+
+  const handleClick = () => {
+    showProfileHoverCard.cancel();
+    dispatch(closeProfileHoverCard(true));
+  };
+
   return (
     <Elem
       ref={ref}
       className='hover-ref-wrapper'
-      onMouseEnter={handleMouseEnter(dispatch, ref, accountId)}
-      onMouseLeave={handleMouseLeave(dispatch)}
-      onClick={handleClick(dispatch)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
     >
       {children}
     </Elem>
@@ -62,4 +57,4 @@ HoverRefWrapper.defaultProps = {
   inline: false,
 };
 
-export default HoverRefWrapper;
+export { HoverRefWrapper as default, showProfileHoverCard };

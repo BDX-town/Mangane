@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 
 import { changeAccountNoteComment, submitAccountNote } from 'soapbox/actions/account_notes';
 import { closeModal } from 'soapbox/actions/modals';
-import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
 import { makeGetAccount } from 'soapbox/selectors';
 
 

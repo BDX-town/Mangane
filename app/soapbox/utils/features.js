@@ -26,6 +26,7 @@ export const getFeatures = createSelector([instance => instance], instance => {
     media: true,
     privacyScopes: true,
     spoilers: true,
+    filters: true,
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,

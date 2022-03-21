@@ -1,30 +1,21 @@
-import React from 'react';
+import classNames from 'classnames';
+import * as React from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
-export default class PlaceholderCard extends React.Component {
+const PlaceholderCard = () => (
+  <div className={classNames('status-card', {
+    'animate-pulse': true,
+  })}
+  >
+    <div className='w-2/5 bg-slate-200 rounded-l'>&nbsp;</div>
 
-  shouldComponentUpdate() {
-    // Re-rendering this will just cause the random lengths to jump around.
-    // There's basically no reason to ever do it.
-    return false;
-  }
+    <div className='w-3/5 p-4 flex flex-col justify-between text-slate-200 break-words'>
+      <p>{generateText(randomIntFromInterval(5, 25))}</p>
+      <p>{generateText(randomIntFromInterval(5, 75))}</p>
+      <p>{generateText(randomIntFromInterval(5, 15))}</p>
+    </div>
+  </div>
+);
 
-  render() {
-    return (
-      <div className='status-card status-card--link status-card--placeholder'>
-        <div className='status-card__image' />
-        <div className='status-card__content'>
-          <span className='status-card__title'>{generateText(randomIntFromInterval(5, 25))}</span>
-          <p className='status-card__description'>
-            {generateText(randomIntFromInterval(5, 75))}
-          </p>
-          <span className='status-card__host'>
-            {generateText(randomIntFromInterval(5, 15))}
-          </span>
-        </div>
-      </div>
-    );
-  }
-
-}
+export default React.memo(PlaceholderCard);

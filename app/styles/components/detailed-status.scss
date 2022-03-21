@@ -7,7 +7,7 @@
 }
 
 .detailed-status {
-  padding: 14px 10px;
+  // padding: 14px 10px;
 
   &--flex {
     display: flex;
@@ -127,7 +127,6 @@
 
 .detailed-status__wrapper {
   position: relative;
-  overflow: hidden;
 }
 
 .detailed-status__application,
@@ -169,68 +168,66 @@
 }
 
 .thread {
-  @include standard-panel;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-
-  @media screen and (max-width: 580px) {
-    border-radius: 0;
-  }
+  @apply sm:bg-white p-4 sm:shadow-xl sm:p-6 sm:rounded-xl;
 
   &__status {
-    position: relative;
+    @apply relative;
 
-    // Only display line if posts are below
-    &:last-child .detailed-status__action-bar {
-      border-bottom: 0;
+    .status__wrapper {
+      @apply shadow-none p-0;
     }
+
+    // // Only display line if posts are below
+    // &:last-child .detailed-status__action-bar {
+    //   border-bottom: 0;
+    // }
   }
 
-  &__descendants &__status:first-child {
-    margin-top: 10px;
-
-    .status__wrapper--filtered {
-      margin-top: -10px;
-    }
+  &__descendants {
+    @apply pt-4;
   }
 
-  &__status--focused:first-child,
-  &__ancestors &__status:first-child {
-    margin-top: 10px;
-
-    .status__wrapper--filtered {
-      margin-top: -10px;
-    }
+  &__descendants .thread__status {
+    // @apply py-4;
   }
 
-  &__descendants &__status:last-child {
-    margin-bottom: 10px;
-
-    .status__wrapper--filtered {
-      margin-bottom: -10px;
-    }
+  &__descendants .status__content-wrapper,
+  &__ancestors .status__content-wrapper {
+    padding-left: calc(42px + 12px);
   }
+
+  // &__descendants &__status:first-child {
+  //   margin-top: 10px;
+
+  //   .status__wrapper--filtered {
+  //     margin-top: -10px;
+  //   }
+  // }
+
+  // &__status--focused:first-child,
+  // &__ancestors &__status:first-child {
+  //   margin-top: 10px;
+
+  //   .status__wrapper--filtered {
+  //     margin-top: -10px;
+  //   }
+  // }
+
+  // &__descendants &__status:last-child {
+  //   margin-bottom: 10px;
+
+  //   .status__wrapper--filtered {
+  //     margin-bottom: -10px;
+  //   }
+  // }
 
   &__connector {
-    background: hsla(var(--primary-text-color_hsl), 0.2);
-    position: absolute;
-    width: 2px;
-    left: 33px;
-    display: none;
+    @apply bg-gray-200 absolute w-0.5 left-5 hidden;
 
     &--bottom {
-      height: calc(100% - 8px - 48px - 14px);
-      top: calc(8px + 48px + 13px);
-      display: block;
-    }
-
-    @media screen and (min-width: 630px) {
-      left: 38px;
-
-      &--bottom {
-        height: calc(100% - 15px - 48px);
-        top: calc(15px + 48px + 9px);
-      }
+      @apply block;
+      height: calc(100% - 42px - 8px);
+      top: calc(12px + 42px);
     }
   }
 }

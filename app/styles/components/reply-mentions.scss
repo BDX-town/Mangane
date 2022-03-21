@@ -1,23 +1,17 @@
 .reply-mentions {
-  margin: 0 10px;
-  color: var(--primary-text-color--faint);
-  font-size: 15px;
-  text-decoration: none;
+  @apply text-gray-500 mb-1 text-sm;
 
-  &__account,
-  a {
-    color: var(--highlight-text-color);
-    text-decoration: none;
+  &__account {
+    @apply text-primary-600 no-underline;
 
     &:hover {
-      text-decoration: underline;
+      @apply underline text-primary-800;
     }
   }
 }
 
 .status__wrapper,
-.detailed-status,
-.quoted-status {
+.detailed-status {
   .reply-mentions {
     display: block;
     margin: 4px 0 0 0;

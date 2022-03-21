@@ -160,8 +160,18 @@ export function verifyCredentials(token, accountUrl) {
       if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
       return account;
     }).catch(error => {
-      if (getState().get('me') === null) dispatch(fetchMeFail(error));
-      dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+      if (error?.response?.status === 403 && error?.response?.data?.id) {
+        // The user is waitlisted
+        const account = error.response.data;
+        dispatch(importFetchedAccount(account));
+        dispatch({ type: VERIFY_CREDENTIALS_SUCCESS, token, account });
+        if (account.id === getState().get('me')) dispatch(fetchMeSuccess(account));
+        return account;
+      } else {
+        if (getState().get('me') === null) dispatch(fetchMeFail(error));
+        dispatch({ type: VERIFY_CREDENTIALS_FAIL, token, error, skipAlert: true });
+        return error;
+      }
     });
   };
 }
@@ -213,6 +223,12 @@ export function logIn(intl, username, password) {
   };
 }
 
+export function deleteSession() {
+  return (dispatch, getState) => {
+    return api(getState).delete('/api/sign_out');
+  };
+}
+
 export function logOut(intl) {
   return (dispatch, getState) => {
     const state = getState();
@@ -225,7 +241,10 @@ export function logOut(intl) {
       token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
     };
 
-    return dispatch(revokeOAuthToken(params)).finally(() => {
+    return Promise.all([
+      dispatch(revokeOAuthToken(params)),
+      dispatch(deleteSession()),
+    ]).finally(() => {
       dispatch({ type: AUTH_LOGGED_OUT, account, standalone });
       dispatch(snackbar.success(intl.formatMessage(messages.loggedOut)));
     });

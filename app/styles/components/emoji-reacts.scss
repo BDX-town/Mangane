@@ -48,7 +48,11 @@
 
 .emoji-react--favourites {
   .svg-icon {
-    color: $gold-star;
+    color: var(--accent-color);
+
+    svg path {
+      fill: var(--accent-color);
+    }
   }
 }
 

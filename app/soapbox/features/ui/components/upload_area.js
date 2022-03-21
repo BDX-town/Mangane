@@ -1,53 +1,71 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
 
+import { Icon, Stack, Text } from 'soapbox/components/ui';
+
 import Motion from '../../ui/util/optional_motion';
 
-export default class UploadArea extends React.PureComponent {
-
-  static propTypes = {
-    active: PropTypes.bool,
-    onClose: PropTypes.func,
-  };
-
-  handleKeyUp = (e) => {
+const UploadArea = ({ active, onClose }) => {
+  const handleKeyUp = (e) => {
     const keyCode = e.keyCode;
-    if (this.props.active) {
+
+    if (active) {
       switch(keyCode) {
       case 27:
         e.preventDefault();
         e.stopPropagation();
-        this.props.onClose();
+        onClose();
         break;
       }
     }
-  }
+  };
 
-  componentDidMount() {
-    window.addEventListener('keyup', this.handleKeyUp, false);
-  }
+  React.useEffect(() => {
+    window.addEventListener('keyup', handleKeyUp, false);
 
-  componentWillUnmount() {
-    window.removeEventListener('keyup', this.handleKeyUp);
-  }
+    return () => window.removeEventListener('keyup', handleKeyUp);
+  }, []);
 
-  render() {
-    const { active } = this.props;
+  return (
+    <Motion
+      defaultStyle={{ backgroundOpacity: 0, backgroundScale: 0.95 }}
+      style={{ backgroundOpacity: spring(active ? 1 : 0, { stiffness: 150, damping: 15 }), backgroundScale: spring(active ? 1 : 0.95, { stiffness: 200, damping: 3 }) }}
+    >
+      {({ backgroundOpacity, backgroundScale }) => (
+        <div
+          className={classNames({
+            'flex items-center justify-center bg-gray-700 bg-opacity-90 h-full w-full absolute left-0 top-0 z-1000 pointer-events-none': true,
+            'visible': active,
+            'invisible': !active,
+          })}
+          style={{ opacity: backgroundOpacity }}
+        >
+          <div className='w-80 h-40 flex relative p-2'>
+            <div className='absolute inset-0' style={{ transform: `scale(${backgroundScale})` }} />
 
-    return (
-      <Motion defaultStyle={{ backgroundOpacity: 0, backgroundScale: 0.95 }} style={{ backgroundOpacity: spring(active ? 1 : 0, { stiffness: 150, damping: 15 }), backgroundScale: spring(active ? 1 : 0.95, { stiffness: 200, damping: 3 }) }}>
-        {({ backgroundOpacity, backgroundScale }) => (
-          <div className='upload-area' style={{ visibility: active ? 'visible' : 'hidden', opacity: backgroundOpacity }}>
-            <div className='upload-area__drop'>
-              <div className='upload-area__background' style={{ transform: `scale(${backgroundScale})` }} />
-              <div className='upload-area__content'><FormattedMessage id='upload_area.title' defaultMessage='Drag & drop to upload' /></div>
-            </div>
+            <Stack space={3} justifyContent='center' alignItems='center'>
+              <Icon
+                src={require('@tabler/icons/icons/cloud-upload.svg')}
+                className='w-12 h-12 text-white text-opacity-90'
+              />
+
+              <Text size='xl' theme='white'>
+                <FormattedMessage id='upload_area.title' defaultMessage='Drag & drop to upload' />
+              </Text>
+            </Stack>
           </div>
-        )}
-      </Motion>
-    );
-  }
+        </div>
+      )}
+    </Motion>
+  );
+};
 
-}
+UploadArea.propTypes = {
+  active: PropTypes.bool,
+  onClose: PropTypes.func,
+};
+
+export default UploadArea;

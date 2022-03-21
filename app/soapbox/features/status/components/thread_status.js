@@ -55,7 +55,7 @@ class ThreadStatus extends React.Component {
         {isLoaded ? (
           <StatusContainer {...this.props} />
         ) : (
-          <PlaceholderStatus />
+          <PlaceholderStatus thread />
         )}
       </div>
     );

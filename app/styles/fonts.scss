@@ -28,9 +28,7 @@
 // TYPEOGRAPHY MIXINS
 
 // declare the font family using these shortcuts
-@mixin font-roboto { font-family: 'Roboto', Arial, sans-serif !important; }
-
-@mixin font-montserrat { font-family: 'Montserrat', Arial, sans-serif !important; }
+@mixin font-inter { font-family: 'Inter', Arial, sans-serif !important; }
 
 // Declare font weights as a numerical value in rendered output
 // Prevents certain browsers which do not play nice with "light, medium" textual declarations

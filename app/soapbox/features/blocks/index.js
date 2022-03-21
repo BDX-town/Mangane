@@ -6,11 +6,11 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { Column, Spinner } from 'soapbox/components/ui';
+
 import { fetchBlocks, expandBlocks } from '../../actions/blocks';
-import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import AccountContainer from '../../containers/account_container';
-import Column from '../ui/components/column';
 
 const messages = defineMessages({
   heading: { id: 'column.blocks', defaultMessage: 'Blocked users' },
@@ -47,7 +47,7 @@ class Blocks extends ImmutablePureComponent {
     if (!accountIds) {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     }
@@ -55,12 +55,13 @@ class Blocks extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.blocks' defaultMessage="You haven't blocked any users yet." />;
 
     return (
-      <Column icon='ban' heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='blocks'
           onLoadMore={this.handleLoadMore}
           hasMore={hasMore}
           emptyMessage={emptyMessage}
+          className='space-y-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} />,

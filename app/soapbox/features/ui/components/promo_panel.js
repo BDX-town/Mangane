@@ -22,7 +22,7 @@ class PromoPanel extends React.PureComponent {
 
   render() {
     const { locale, promoItems } = this.props;
-    if (!promoItems) return null;
+    if (!promoItems || promoItems.isEmpty()) return null;
 
     return (
       <div className='wtf-panel promo-panel'>

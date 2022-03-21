@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import FilterBar from 'soapbox/components/filter_bar';
 import Icon from 'soapbox/components/icon';
+
+import { Tabs } from '../../../components/ui';
 
 const messages = defineMessages({
   all: { id: 'notifications.filter.all', defaultMessage: 'All' },
@@ -93,7 +94,7 @@ class NotificationFilterBar extends React.PureComponent {
       });
     }
 
-    return <FilterBar key={advancedMode} className='notification__filter-bar' items={items} active={selectedFilter} />;
+    return <Tabs items={items} activeItem={selectedFilter} />;
   }
 
 }

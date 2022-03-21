@@ -10,6 +10,7 @@
     "font-family-no-missing-generic-family-keyword": [true, { "ignoreFontFamilies": ["ForkAwesome", "Font Awesome 5 Free", "OpenDyslexic", "soapbox"] }],
     "no-descending-specificity": null,
     "no-duplicate-selectors": null,
-    "scss/at-rule-no-unknown": [true, { "ignoreAtRules": ["/tailwind/"]}]
+    "scss/at-rule-no-unknown": [true, { "ignoreAtRules": ["/tailwind/"]}],
+    "no-invalid-position-at-import-rule": [true, { "ignoreAtRules": ["/tailwind/"]}]
   }
 }

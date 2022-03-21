@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { fetchSuggestions } from 'soapbox/actions/suggestions';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
+import { Spinner } from 'soapbox/components/ui';
 
 import Account from './account';
 
@@ -40,7 +40,7 @@ class FollowRecommendationsList extends ImmutablePureComponent {
     if (isLoading) {
       return (
         <div className='column-list'>
-          <LoadingIndicator />
+          <Spinner />
         </div>
       );
     }

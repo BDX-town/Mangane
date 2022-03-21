@@ -1,15 +1,5 @@
 .sidebar-menu {
-  display: flex;
-  position: fixed;
-  flex-direction: column;
-  width: 275px;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  background-color: var(--foreground-color);
-  transform: translateX(-275px);
-  transition: all 0.15s linear;
-  z-index: 10001;
+  @apply flex inset-0 fixed flex-col w-80 bg-white transition-all ease-linear -translate-x-80 z-1000;
 
   &__wrapper {
     opacity: 0;
@@ -145,7 +135,7 @@
   text-decoration: none;
   color: var(--primary-text-color--faint);
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 500;
   align-items: center;
 
   &:hover {

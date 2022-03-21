@@ -71,6 +71,7 @@
     line-height: normal !important;
 
     img.emojione {
+      display: inline;
       width: 36px;
       height: 36px;
       padding: 5px;
@@ -158,12 +159,12 @@
   }
 }
 
+.status-link {
+  @apply hover:underline text-primary-600 hover:text-primary-800;
+}
+
 .status {
-  padding: 8px 10px;
-  padding-left: 68px;
-  position: relative;
-  min-height: 54px;
-  cursor: default;
+  @apply min-h-[54px] cursor-default;
 
   @supports (-ms-overflow-style: -ms-autohiding-scrollbar) {
     // Add margin to avoid Edge auto-hiding scrollbar appearing over content.
@@ -234,6 +235,15 @@
       }
     }
   }
+}
+
+.status__wrapper {
+  @apply bg-white px-4 py-6 sm:shadow-xl sm:p-5 sm:rounded-xl;
+}
+
+[column-type=filled] .status__wrapper,
+[column-type=filled] .status-placeholder {
+  @apply rounded-none shadow-none p-4;
 }
 
 .status__display-name {
@@ -338,16 +348,6 @@
       font-weight: 500;
       color: var(--brand-color);
     }
-
-    &--reblog {
-      > div {
-        display: flex;
-
-        > .icon-button {
-          margin-right: 8px;
-        }
-      }
-    }
   }
 }
 
@@ -379,25 +379,17 @@
 
 .status__content,
 .reply-indicator__content {
-  position: relative;
-  font-size: 15px;
-  line-height: 20px;
-  word-wrap: break-word;
-  font-weight: 400;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-top: 2px;
-  color: var(--primary-text-color);
+  @apply text-gray-900 break-words text-ellipsis overflow-hidden relative;
 
   &:focus {
-    outline: 0;
+    @apply outline-none;
   }
 
   &.status__content--with-spoiler {
-    white-space: normal;
+    @apply whitespace-normal;
 
     .status__content__text {
-      white-space: pre-wrap;
+      @apply whitespace-pre-wrap;
     }
   }
 
@@ -405,6 +397,7 @@
     width: 20px;
     height: 20px;
     margin: -3px 0 0;
+    display: inline;
   }
 
   p {
@@ -417,26 +410,7 @@
   }
 
   a {
-    color: var(--highlight-text-color);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-
-      .fa {
-        color: var(--primary-text-color);
-      }
-    }
-
-    &.mention {
-      &:hover {
-        text-decoration: none;
-
-        span {
-          text-decoration: underline;
-        }
-      }
-    }
+    @apply text-primary-600 hover:underline;
 
     .fa {
       color: var(--primary-text-color);
@@ -484,8 +458,8 @@
 
 .focusable:focus,
 .focusable-within:focus-within {
-  outline: 0;
-  box-shadow: 0 0 6px 0 hsla(var(--brand-color_hsl), 0.7);
+  outline: 0; /* Required b/c HotKeys lib sets this outline */
+  @apply ring-2 ring-primary-300;
 
   .status.status-direct {
     &.muted {
@@ -495,82 +469,15 @@
 }
 
 .status-card {
-  display: flex;
-  font-size: 14px;
-  border: 1px solid var(--brand-color--med);
-  border-radius: 10px;
-  color: var(--primary-text-color);
-  margin-top: 14px;
-  min-height: 150px;
-  text-decoration: none;
-  overflow: hidden;
-
-  &__actions {
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    & > div {
-      background: var(--background-color);
-      border-radius: 8px;
-      padding: 12px 9px;
-      flex: 0 0 auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    button,
-    a {
-      display: inline;
-      color: var(--primary-text-color--faint);
-      background: transparent;
-      border: 0;
-      padding: 0 8px;
-      text-decoration: none;
-      font-size: 18px;
-      line-height: 18px;
-
-      &:hover,
-      &:active,
-      &:focus {
-        color: var(--primary-text-color);
-      }
-    }
-
-    a {
-      font-size: 19px;
-      position: relative;
-      bottom: -1px;
-    }
-
-    .svg-icon {
-      width: 20px;
-      height: 20px;
-    }
-  }
+  @apply flex text-sm border border-solid border-gray-200 rounded-lg text-gray-800 mt-3 min-h-[150px] no-underline overflow-hidden;
 }
 
 a.status-card {
-  cursor: pointer;
-
-  &:hover {
-    background: var(--brand-color--med);
-  }
+  @apply cursor-pointer hover:bg-gray-50 hover:no-underline;
 }
 
 .status-card-photo {
-  cursor: zoom-in;
-  display: block;
-  text-decoration: none;
-  width: 100%;
-  height: auto;
-  margin: 0;
+  @apply cursor-zoom-in block no-underline w-full h-auto;
 }
 
 .status-card-video,
@@ -582,27 +489,15 @@ a.status-card {
 }
 
 .status-card__title {
-  display: block;
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: var(--primary-text-color);
-  text-decoration: none;
+  @apply block font-medium mb-2 text-gray-800 no-underline;
 }
 
 .status-card__content {
-  flex: 1 1 auto;
-  overflow: hidden;
-  padding: 16px;
+  @apply flex-1 overflow-hidden p-4;
 }
 
 .status-card__description {
-  color: var(--primary-text-color--faint);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 5;
-  -webkit-box-orient: vertical;
+  @apply text-gray-500;
 }
 
 .status-card__host {
@@ -648,44 +543,25 @@ a.status-card {
 .status-card.horizontal {
   display: block;
 
-  .status-card__image {
-    width: 100%;
-  }
-
   .status-card__title {
     white-space: inherit;
   }
 }
 
 .status-card.compact {
-  border-color: var(--brand-color--faint);
-}
-
-a.status-card.compact:hover {
-  background-color: var(--brand-color--faint);
+  @apply border-gray-200;
 }
 
 .status-card__image-image {
-  border-radius: 4px 0 0 4px;
-  display: block;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background-size: cover;
-  background-position: center center;
+  @apply block w-full h-full object-cover bg-cover bg-center;
 }
 
-@media (max-width: 600px) {
-  .status-card--link {
-    flex-direction: column;
+.status-card--link {
+  @apply flex flex-col md:flex-row;
+}
 
-    .status-card__image {
-      width: 100%;
-      height: 200px;
-      flex: none;
-    }
-  }
+.status-card--link .status-card__image {
+  @apply w-full rounded-l md:w-auto h-[200px] md:h-auto flex-none md:flex-auto;
 }
 
 .status__favicon {
@@ -741,6 +617,47 @@ a.status-card.compact:hover {
     @include standard-panel;
     padding: 15px 0 10px;
   }
+
+  .status {
+    padding: 8px 10px;
+
+    &__avatar {
+      position: relative;
+      margin-right: 10px;
+      top: 0;
+      left: 0;
+    }
+
+    &__profile {
+      display: flex;
+      align-items: center;
+    }
+
+    &__content {
+      padding-top: 10px;
+    }
+
+    &__display-name {
+      .display-name__account {
+        display: block;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 630px) {
+  .columns-area .material-status .status {
+    padding: 15px;
+
+    &__avatar {
+      top: 0;
+      left: 0;
+    }
+
+    &__content {
+      padding-top: 10px;
+    }
+  }
 }
 
 .attachment-thumbs {
@@ -760,80 +677,4 @@ a.status-card.compact:hover {
 
 .pending-status {
   opacity: 0.5;
-}
-
-.quoted-status {
-  margin-top: 14px;
-  border: 1px solid var(--brand-color--med);
-  border-radius: 10px;
-  padding: 12px;
-  transition: background 0.2s;
-  cursor: pointer;
-
-  &:hover,
-  &:focus,
-  &:active {
-    background: var(--brand-color--faint);
-  }
-
-  &__relative-time {
-    padding-top: 4px;
-  }
-
-  &__display-name {
-    color: var(--primary-text-color);
-    display: block;
-    max-width: 100%;
-    line-height: 24px;
-    overflow: hidden;
-    padding-right: 25px;
-    text-decoration: none;
-
-    .display-name__account {
-      color: var(--primary-text-color--faint);
-    }
-  }
-
-  &__display-avatar {
-    float: left;
-    margin-right: 5px;
-  }
-
-  .reply-mentions {
-    font-size: 14px;
-  }
-
-  &__content {
-    display: -webkit-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
-    max-height: 114px;
-    margin-top: 5px;
-    font-size: 14px;
-
-    a {
-      color: var(--highlight-text-color);
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-
-  .attachment-thumbs .media-gallery {
-    margin-top: 5px !important;
-  }
-
-  &-tombstone {
-    margin-top: 14px;
-    padding: 12px;
-    border: 1px solid var(--brand-color--med);
-    border-radius: 10px;
-    color: var(--primary-text-color--faint);
-    font-size: 14px;
-    text-align: center;
-  }
 }

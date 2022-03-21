@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> adds class "button-secondary" if props.theme="secondary" given 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-primary-700 bg-primary-100 hover:bg-primary-200 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+/>
+`;
+
+exports[`<Button /> renders a button element 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+/>
+`;
+
+exports[`<Button /> renders a disabled attribute if props.disabled given 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all select-none disabled:opacity-50 disabled:cursor-default border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={true}
+  onClick={[Function]}
+  type="button"
+/>
+`;
+
+exports[`<Button /> renders class="button--block" if props.block given 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm flex w-full justify-center"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+/>
+`;
+
+exports[`<Button /> renders the children 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+>
+  <p>
+    children
+  </p>
+</button>
+`;
+
+exports[`<Button /> renders the given text 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+>
+  foo
+</button>
+`;
+
+exports[`<Button /> renders the props.text instead of children 1`] = `
+<button
+  className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-accent-500 hover:bg-accent-300 focus:ring-pink-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+  disabled={false}
+  onClick={[Function]}
+  type="button"
+>
+  foo
+</button>
+`;

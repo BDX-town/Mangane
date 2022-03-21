@@ -2,32 +2,34 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import Sticky from 'react-stickynode';
+import { Redirect, withRouter } from 'react-router-dom';
 
-import Helmet from 'soapbox/components/helmet';
+import SidebarNavigation from 'soapbox/components/sidebar-navigation';
+import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   WhoToFollowPanel,
-  SignUpPanel,
+  TrendsPanel,
   ProfileInfoPanel,
-  ProfileMediaPanel,
-  PinnedAccountsPanel,
+  SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { findAccountByUsername, makeGetAccount } from 'soapbox/selectors';
-import { getAcct, isLocal } from 'soapbox/utils/accounts';
+import { findAccountByUsername } from 'soapbox/selectors';
+import { getAcct } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 import { displayFqn } from 'soapbox/utils/state';
 
+import { Column, Layout, Tabs } from '../components/ui';
 import HeaderContainer from '../features/account_timeline/containers/header_container';
-import LinkFooter from '../features/ui/components/link_footer';
+import { makeGetAccount } from '../selectors';
 
 const mapStateToProps = (state, { params, withReplies = false }) => {
   const username = params.username || '';
   const accounts = state.getIn(['accounts']);
   const accountFetchError = ((state.getIn(['accounts', -1, 'username']) || '').toLowerCase() === username.toLowerCase());
   const getAccount = makeGetAccount();
+  const me = state.get('me');
 
   let accountId = -1;
   let account = null;
@@ -51,6 +53,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
   }
 
   return {
+    me,
     account: accountId ? getAccount(state, accountId) : account,
     accountId,
     accountUsername,
@@ -61,6 +64,7 @@ const mapStateToProps = (state, { params, withReplies = false }) => {
 };
 
 export default @connect(mapStateToProps)
+@withRouter
 class ProfilePage extends ImmutablePureComponent {
 
   static propTypes = {
@@ -71,71 +75,99 @@ class ProfilePage extends ImmutablePureComponent {
   };
 
   render() {
-    const { children, accountId, account, displayFqn, accountUsername, features, realAccount } = this.props;
-    const bg = account ? account.getIn(['customizations', 'background']) : undefined;
+    const { children, accountId, account, displayFqn, accountUsername, me, features, realAccount } = this.props;
 
     if (realAccount) {
       return <Redirect to={`/@${realAccount.get('acct')}`} />;
     }
 
+    const tabItems = [
+      {
+        text: <FormattedMessage id='account.posts' defaultMessage='Posts' />,
+        to: `/@${accountUsername}`,
+        name: 'profile',
+      },
+      {
+        text: <FormattedMessage id='account.posts_with_replies' defaultMessage='Posts and replies' />,
+        to: `/@${accountUsername}/with_replies`,
+        name: 'replies',
+      },
+      {
+        text: <FormattedMessage id='account.media' defaultMessage='Media' />,
+        to: `/@${accountUsername}/media`,
+        name: 'media',
+      },
+    ];
+
+    if (account) {
+      const ownAccount = account.get('id') === me;
+      if (ownAccount || !account.getIn(['pleroma', 'hide_favorites'], true)) {
+        tabItems.push({
+          text: <FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' />,
+          to: `/@${account.get('acct')}/favorites`,
+          name: 'likes',
+        });
+      }
+    }
+
+    const showTrendsPanel = features.trends;
+    const showWhoToFollowPanel = features.suggestions;
+
+    let activeItem;
+    const pathname = this.props.history.location.pathname.replace(`@${accountUsername}/`);
+    if (pathname.includes('with_replies')) {
+      activeItem = 'replies';
+    } else if (pathname.includes('media')) {
+      activeItem = 'media';
+    } else if (pathname.includes('favorites')) {
+      activeItem = 'likes';
+    } else if (pathname === `/@${accountUsername}`) {
+      activeItem = 'profile';
+    }
+
     return (
-      <div className={bg && `page page--customization page--${bg}` || 'page'}>
-        {account && <Helmet>
-          <title>@{getAcct(account, displayFqn)}</title>
-        </Helmet>}
+      <Layout>
+        <Layout.Sidebar>
+          <SidebarNavigation />
+        </Layout.Sidebar>
 
-        <div className='page__top'>
-          <HeaderContainer accountId={accountId} username={accountUsername} />
-        </div>
+        <Layout.Main>
+          <Column label={account ? `@${getAcct(account, displayFqn)}` : null} withHeader={false}>
+            <div className='space-y-4'>
+              <HeaderContainer accountId={accountId} username={accountUsername} />
 
-        <div className='page__columns'>
-          <div className='columns-area__panels'>
+              <BundleContainer fetchComponent={ProfileInfoPanel}>
+                {Component => <Component username={accountUsername} account={account} />}
+              </BundleContainer>
 
-            <div className='columns-area__panels__pane columns-area__panels__pane--left'>
-              <div className='columns-area__panels__pane__inner'>
-                <Sticky top={149}>
-                  <BundleContainer fetchComponent={ProfileInfoPanel}>
-                    {Component => <Component username={accountUsername} account={account} />}
-                  </BundleContainer>
-                </Sticky>
-              </div>
+              {account && (
+                <Tabs items={tabItems} activeItem={activeItem} />
+              )}
+
+              {children}
             </div>
+          </Column>
+        </Layout.Main>
 
-            <div className='columns-area__panels__main'>
-              <div className='columns-area '>
-                {children}
-              </div>
-            </div>
-
-            <div className='columns-area__panels__pane columns-area__panels__pane--right'>
-              <div className='columns-area__panels__pane__inner'>
-                <Sticky top={149}>
-                  <BundleContainer fetchComponent={SignUpPanel}>
-                    {Component => <Component />}
-                  </BundleContainer>
-                  {account && (
-                    <BundleContainer fetchComponent={ProfileMediaPanel}>
-                      {Component => <Component account={account} />}
-                    </BundleContainer>
-                  )}
-                  {account && features.accountEndorsements && isLocal(account) ? (
-                    <BundleContainer fetchComponent={PinnedAccountsPanel}>
-                      {Component => <Component  account={account} />}
-                    </BundleContainer>
-                  ) : features.suggestions && (
-                    <BundleContainer fetchComponent={WhoToFollowPanel}>
-                      {Component => <Component />}
-                    </BundleContainer>
-                  )}
-                  <LinkFooter />
-                </Sticky>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
+        <Layout.Aside>
+          {!me && (
+            <BundleContainer fetchComponent={SignUpPanel}>
+              {Component => <Component key='sign-up-panel' />}
+            </BundleContainer>
+          )}
+          {showTrendsPanel && (
+            <BundleContainer fetchComponent={TrendsPanel}>
+              {Component => <Component limit={3} key='trends-panel' />}
+            </BundleContainer>
+          )}
+          {showWhoToFollowPanel && (
+            <BundleContainer fetchComponent={WhoToFollowPanel}>
+              {Component => <Component limit={5} key='wtf-panel' />}
+            </BundleContainer>
+          )}
+          <LinkFooter key='link-footer' />
+        </Layout.Aside>
+      </Layout>
     );
   }
 

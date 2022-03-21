@@ -280,11 +280,14 @@ a .account__avatar {
 
 .account__relationship {
   height: auto;
-  padding: 0 0 0 5px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  button {
+    margin-left: 5px;
+  }
 
   .svg-icon {
     width: 20px;
@@ -424,7 +427,6 @@ a .account__avatar {
 .account-gallery__container {
   display: flex;
   flex-wrap: wrap;
-  padding: 4px 2px;
 
   .empty-column-indicator {
     margin: -4px -2px;
@@ -553,10 +555,4 @@ a .account__avatar {
   .svg-icon {
     padding-right: 3px;
   }
-}
-
-.account__birthday {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
 }

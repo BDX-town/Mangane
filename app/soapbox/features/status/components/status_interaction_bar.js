@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -7,11 +8,12 @@ import { connect } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
 import { reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
+
+import { HStack, IconButton, Text } from '../../../components/ui';
 
 const mapStateToProps = state => {
   const me = state.get('me');
@@ -71,8 +73,10 @@ class StatusInteractionBar extends ImmutablePureComponent {
     ).reverse();
   }
 
-  handleOpenReblogsModal = () => {
+  handleOpenReblogsModal = (event) => {
     const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
+
+    event.preventDefault();
 
     if (!me) onOpenUnauthorizedModal();
     else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
@@ -83,25 +87,28 @@ class StatusInteractionBar extends ImmutablePureComponent {
 
     if (status.get('reblogs_count')) {
       return (
-        <span
-          className='emoji-react emoji-react--reblogs'
-          type='button'
-          role='presentation'
-          onClick={this.handleOpenReblogsModal}
-        >
-          <Icon src={require('feather-icons/dist/icons/repeat.svg')} />
-          <span className='emoji-reacts__count'>
+        <HStack space={0.5} alignItems='center'>
+          <IconButton
+            className='text-success-600 cursor-pointer'
+            src={require('@tabler/icons/icons/repeat.svg')}
+            role='presentation'
+            onClick={this.handleOpenReblogsModal}
+          />
+
+          <Text theme='muted' size='sm'>
             <FormattedNumber value={status.get('reblogs_count')} />
-          </span>
-        </span>
+          </Text>
+        </HStack>
       );
     }
 
     return '';
   }
 
-  handleOpenFavouritesModal = () => {
+  handleOpenFavouritesModal = (event) => {
     const { me, status, onOpenUnauthorizedModal, onOpenFavouritesModal } = this.props;
+
+    event.preventDefault();
 
     if (!me) onOpenUnauthorizedModal();
     else onOpenFavouritesModal(status.getIn(['account', 'acct']), status.get('id'));
@@ -111,33 +118,24 @@ class StatusInteractionBar extends ImmutablePureComponent {
     const { features, status } = this.props;
 
     if (status.get('favourites_count')) {
-      const favourites = (
-        <>
-          <Icon src={require('@tabler/icons/icons/thumb-up.svg')} />
-          <span className='emoji-reacts__count'>
-            <FormattedNumber value={status.get('favourites_count')} />
-          </span>
-        </>
-      );
-
-      if (features.exposableReactions) {
-        return (
-          <span
-            className='emoji-react emoji-react--favourites'
-            type='button'
+      return (
+        <HStack space={0.5} alignItems='center'>
+          <IconButton
+            className={classNames({
+              'text-accent-300': true,
+              'cursor-default': !features.exposableReactions,
+            })}
+            src={require('@tabler/icons/icons/heart.svg')}
+            iconClassName='fill-accent-300'
             role='presentation'
-            onClick={this.handleOpenFavouritesModal}
-          >
-            {favourites}
-          </span>
-        );
-      } else {
-        return (
-          <div className='emoji-react emoji-react--favourites'>
-            {favourites}
-          </div>
-        );
-      }
+            onClick={features.exposableReactions ? this.handleOpenFavouritesModal : null}
+          />
+
+          <Text theme='muted' size='sm'>
+            <FormattedNumber value={status.get('favourites_count')} />
+          </Text>
+        </HStack>
+      );
     }
 
     return '';
@@ -204,10 +202,11 @@ class StatusInteractionBar extends ImmutablePureComponent {
     const { features } = this.props;
 
     return (
-      <div className='status-interaction-bar'>
+      <HStack space={3}>
         {features.emojiReacts ? this.getEmojiReacts() : this.getFavourites()}
+
         {this.getReposts()}
-      </div>
+      </HStack>
     );
   }
 

@@ -1,35 +1,29 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import * as React from 'react';
 
-export default class Avatar extends React.PureComponent {
+const PlaceholderAvatar = ({ size }) => {
+  const style = React.useMemo(() => {
+    if (!size) {
+      return {};
+    }
 
-  static propTypes = {
-    size: PropTypes.number,
-    style: PropTypes.object,
-    inline: PropTypes.bool,
-  };
-
-  static defaultProps = {
-    inline: false,
-  };
-
-  render() {
-    const { size, inline } = this.props;
-
-    // : TODO : remove inline and change all avatars to be sized using css
-    const style = !size ? {} : {
+    return {
       width: `${size}px`,
       height: `${size}px`,
     };
+  }, [size]);
 
-    return (
-      <div
-        className={classNames('account__avatar', { 'account__avatar-inline': inline })}
-        style={style}
-        alt=''
-      />
-    );
-  }
+  return (
+    <div
+      className='rounded-full bg-slate-200'
+      style={style}
+      alt=''
+    />
+  );
+};
 
-}
+PlaceholderAvatar.propTypes = {
+  size: PropTypes.number.isRequired,
+};
+
+export default PlaceholderAvatar;

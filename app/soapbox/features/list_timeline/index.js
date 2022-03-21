@@ -4,14 +4,13 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import Button from 'soapbox/components/button';
+import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
 
 import { fetchList, deleteList } from '../../actions/lists';
 import { openModal } from '../../actions/modals';
 import { connectListStream } from '../../actions/streaming';
 import { expandListTimeline } from '../../actions/timelines';
-import LoadingIndicator from '../../components/loading_indicator';
 import MissingIndicator from '../../components/missing_indicator';
 import StatusListContainer from '../ui/containers/status_list_container';
 
@@ -107,15 +106,13 @@ class ListTimeline extends React.PureComponent {
       return (
         <Column>
           <div>
-            <LoadingIndicator />
+            <Spinner />
           </div>
         </Column>
       );
     } else if (list === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

@@ -1,18 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { fetchFavourites } from 'soapbox/actions/interactions';
-import IconButton from 'soapbox/components/icon_button';
-import LoadingIndicator from 'soapbox/components/loading_indicator';
 import ScrollableList from 'soapbox/components/scrollable_list';
+import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-
-const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-});
 
 const mapStateToProps = (state, props) => {
   return {
@@ -21,12 +16,10 @@ const mapStateToProps = (state, props) => {
 };
 
 export default @connect(mapStateToProps)
-@injectIntl
 class FavouritesModal extends React.PureComponent {
 
   static propTypes = {
     onClose: PropTypes.func.isRequired,
-    intl: PropTypes.object.isRequired,
     statusId: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -48,12 +41,12 @@ class FavouritesModal extends React.PureComponent {
   };
 
   render() {
-    const { intl, accountIds } = this.props;
+    const { accountIds } = this.props;
 
     let body;
 
     if (!accountIds) {
-      body = <LoadingIndicator />;
+      body = <Spinner />;
     } else {
       const emptyMessage = <FormattedMessage id='empty_column.favourites' defaultMessage='No one has liked this post yet. When someone does, they will show up here.' />;
 
@@ -61,30 +54,22 @@ class FavouritesModal extends React.PureComponent {
         <ScrollableList
           scrollKey='favourites'
           emptyMessage={emptyMessage}
+          className='space-y-3'
         >
           {accountIds.map(id =>
-            <AccountContainer key={id} id={id} withNote={false} />,
+            <AccountContainer key={id} id={id} />,
           )}
         </ScrollableList>
       );
     }
 
-
     return (
-      <div className='modal-root__modal reactions-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            <FormattedMessage id='column.favourites' defaultMessage='likes' />
-          </h3>
-          <IconButton
-            className='compose-modal__close'
-            title={intl.formatMessage(messages.close)}
-            src={require('@tabler/icons/icons/x.svg')}
-            onClick={this.onClickClose} size={20}
-          />
-        </div>
+      <Modal
+        title={<FormattedMessage id='column.favourites' defaultMessage='likes' />}
+        onClose={this.onClickClose}
+      >
         {body}
-      </div>
+      </Modal>
     );
   }
 

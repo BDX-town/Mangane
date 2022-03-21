@@ -134,7 +134,7 @@ module.exports = {
     'react/jsx-equals-spacing': 'error',
     'react/jsx-first-prop-new-line': ['error', 'multiline-multiprop'],
     'react/jsx-indent': ['error', 2],
-    'react/jsx-no-bind': 'error',
+    // 'react/jsx-no-bind': ['error'],
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-undef': 'error',
     'react/jsx-tag-spacing': 'error',

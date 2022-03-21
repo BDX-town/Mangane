@@ -1,5 +1,7 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
+import { Account } from 'soapbox/types/entities';
+
 const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
   try {
     const url = account.get('url');
@@ -34,8 +36,8 @@ export const acctFull = (account: ImmutableMap<string, any>): string => (
   account.get('fqn') || guessFqn(account) || ''
 );
 
-export const getAcct = (account: ImmutableMap<string, any>, displayFqn: boolean): string => (
-  displayFqn === true ? acctFull(account) : account.get('acct')
+export const getAcct = (account: Account, displayFqn: boolean): string => (
+  displayFqn === true ? account.fqn : account.acct
 );
 
 export const isStaff = (account: ImmutableMap<any, any> = ImmutableMap()): boolean => (

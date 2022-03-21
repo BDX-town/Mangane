@@ -23,14 +23,12 @@ class VisualCharacterCounter extends React.PureComponent {
     const progress = textLength / max;
 
     return (
-      <div className='visual-character-counter'>
-        <ProgressCircle
-          title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
-          progress={progress}
-          radius={10}
-          stroke={3}
-        />
-      </div>
+      <ProgressCircle
+        title={intl.formatMessage(messages.title, { chars: textLength, maxChars: max })}
+        progress={progress}
+        radius={10}
+        stroke={3}
+      />
     );
   }
 

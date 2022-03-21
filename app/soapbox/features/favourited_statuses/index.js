@@ -7,12 +7,12 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import { Spinner } from 'soapbox/components/ui';
 import { findAccountByUsername } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { fetchAccount, fetchAccountByUsername } from '../../actions/accounts';
 import { fetchFavouritedStatuses, expandFavouritedStatuses, fetchAccountFavouritedStatuses, expandAccountFavouritedStatuses } from '../../actions/favourites';
-import LoadingIndicator from '../../components/loading_indicator';
 import StatusList from '../../components/status_list';
 import Column from '../ui/components/column';
 
@@ -115,16 +115,14 @@ class Favourites extends ImmutablePureComponent {
 
     if (!isMyAccount && !isAccount && accountId !== -1) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
     if (accountId === -1) {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     }
@@ -144,7 +142,7 @@ class Favourites extends ImmutablePureComponent {
       : <FormattedMessage id='empty_column.account_favourited_statuses' defaultMessage="This user doesn't have any liked posts yet." />;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader={false} transparent>
         <StatusList
           statusIds={statusIds}
           scrollKey='favourited_statuses'

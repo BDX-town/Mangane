@@ -12,3 +12,5 @@ configure({ adapter });
 // API mocking
 jest.mock('soapbox/api');
 afterEach(() => clearApiMocks());
+
+jest.mock('uuid', () => ({ v4: jest.fn(() => 1) }));

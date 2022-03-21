@@ -109,7 +109,7 @@
   }
 
   .autosuggest-textarea__textarea {
-    font-size: 16px;
+    // font-size: 16px;
   }
 
   .search__input {
@@ -760,19 +760,7 @@
 
 .empty-column-indicator,
 .error-column {
-  color: var(--primary-text-color);
-  background: var(--accent-color--med);
-  text-align: center;
-  padding: 40px;
-  font-size: 15px;
-  font-weight: 400;
-  cursor: default;
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
-  min-height: 160px;
-  border-radius: 0 0 10px 10px;
+  @apply bg-primary-50 text-gray-900 text-center p-10 flex flex-1 items-center justify-center min-h-[160px] rounded-lg;
 
   @supports (display: grid) { // hack to fix Chrome <57
     contain: strict;
@@ -783,16 +771,7 @@
   }
 
   a {
-    color: var(--highlight-text-color);
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  @media screen and (max-width: 580px) {
-    border-radius: 0;
+    @apply text-primary-600 no-underline hover:underline;
   }
 }
 
@@ -982,6 +961,15 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
+}
+
+.follow_heading {
+  color: var(--accent-color);
+}
+
+.follow_subhead {
+  margin: 50px 0;
+  font-size: 20px;
 }
 
 .column .explanation-box {

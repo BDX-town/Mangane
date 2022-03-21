@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
@@ -13,8 +12,8 @@ import {
   unblockAccount,
 } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
-import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -126,37 +125,36 @@ class ActionButton extends ImmutablePureComponent {
     }
 
     if (me !== account.get('id')) {
+      const isFollowing = account.getIn(['relationship', 'following']);
+      const blockedBy = account.getIn(['relationship', 'blocked_by']);
+
       if (!account.get('relationship')) { // Wait until the relationship is loaded
         return empty;
       } else if (account.getIn(['relationship', 'requested'])) {
         // Awaiting acceptance
-        return <Button className='logo-button' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
+        return <Button size='sm' theme='secondary' text={small ? intl.formatMessage(messages.requested_small) : intl.formatMessage(messages.requested)} onClick={this.handleFollow} />;
       } else if (!account.getIn(['relationship', 'blocking'])) {
         // Follow & Unfollow
-        const blocked_by = account.getIn(['relationship', 'blocked_by']);
         return (<Button
-          disabled={blocked_by}
-          className={classNames('button--follow', {
-            'button--destructive': account.getIn(['relationship', 'following']),
-          })}
+          size='sm'
+          disabled={blockedBy}
+          theme={isFollowing ? 'secondary' : 'primary'}
+          icon={blockedBy ? require('@tabler/icons/icons/ban.svg') : (!isFollowing && require('@tabler/icons/icons/plus.svg'))}
           onClick={this.handleFollow}
         >
-          {account.getIn(['relationship', 'following']) ? (
+          {isFollowing ? (
             intl.formatMessage(messages.unfollow)
           ) : (
-            <>
-              { intl.formatMessage(blocked_by ? messages.blocked : messages.follow)}
-              <Icon src={blocked_by ? require('@tabler/icons/icons/ban.svg') : require('@tabler/icons/icons/plus.svg')} />
-            </>
+            intl.formatMessage(blockedBy ? messages.blocked : messages.follow)
           )}
         </Button>);
       } else if (account.getIn(['relationship', 'blocking'])) {
         // Unblock
-        return <Button className='logo-button' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
+        return <Button theme='danger' size='sm' text={intl.formatMessage(messages.unblock, { name: account.get('username') })} onClick={this.handleBlock} />;
       }
     } else {
       // Edit profile
-      return <Button className='logo-button' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
+      return <Button theme='secondary' size='sm' text={intl.formatMessage(messages.edit_profile)} to='/settings/profile' />;
     }
     return empty;
   }

@@ -18,9 +18,9 @@ import {
 } from 'soapbox/actions/moderation';
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import Column from 'soapbox/components/column';
-import PullToRefresh from 'soapbox/components/pull_to_refresh';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
+import { Column } from 'soapbox/components/ui';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
 import { blockAccount } from '../../actions/accounts';
@@ -62,7 +62,7 @@ import DetailedStatus from './components/detailed_status';
 import ThreadStatus from './components/thread_status';
 
 const messages = defineMessages({
-  title: { id: 'status.title', defaultMessage: 'Post' },
+  title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
   titleDirect: { id: 'status.title_direct', defaultMessage: 'Direct message' },
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },
   deleteHeading: { id: 'confirmations.delete.heading', defaultMessage: 'Delete post' },
@@ -614,9 +614,7 @@ class Status extends ImmutablePureComponent {
 
     if (status === null) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 
@@ -642,11 +640,14 @@ class Status extends ImmutablePureComponent {
       react: this.handleHotkeyReact,
     };
 
+    const username = status.getIn(['account', 'acct']);
     const titleMessage = status && status.get('visibility') === 'direct' ? messages.titleDirect : messages.title;
 
     return (
-      <Column label={intl.formatMessage(messages.detailedStatus)} transparent>
-        <SubNavigation message={intl.formatMessage(titleMessage)} />
+      <Column label={intl.formatMessage(titleMessage, { username })} transparent>
+        <div className='px-4 pt-4 sm:p-0'>
+          <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
+        </div>
         {/*
           Eye icon to show/hide all CWs in a thread.
           I'm not convinced of the value of this. It needs a better design at the very least.
@@ -673,12 +674,12 @@ class Status extends ImmutablePureComponent {
         <div ref={this.setRef} className='thread'>
           <PullToRefresh onRefresh={this.handleRefresh}>
             {ancestors && (
-              <div className='thread__ancestors'>{ancestors}</div>
+              <div className='thread__ancestors space-y-4 mb-4'>{ancestors}</div>
             )}
 
             <div className='thread__status thread__status--focused'>
               <HotKeys handlers={handlers}>
-                <div ref={this.setStatusRef} className={classNames('focusable', 'detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                <div ref={this.setStatusRef} className={classNames('detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
                   <DetailedStatus
                     status={status}
                     onOpenVideo={this.handleOpenVideo}
@@ -688,6 +689,8 @@ class Status extends ImmutablePureComponent {
                     showMedia={this.state.showMedia}
                     onToggleMediaVisibility={this.handleToggleMediaVisibility}
                   />
+
+                  <hr className='mb-2' />
 
                   <ActionBar
                     status={status}
@@ -721,7 +724,10 @@ class Status extends ImmutablePureComponent {
             </div>
 
             {descendants && (
-              <div className='thread__descendants'>{descendants}</div>
+              <>
+                <hr className='mt-2' />
+                <div className='thread__descendants space-y-4'>{descendants}</div>
+              </>
             )}
           </PullToRefresh>
         </div>

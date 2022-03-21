@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { length } from 'stringz';
@@ -10,11 +11,16 @@ export default class TextCharacterCounter extends React.PureComponent {
   };
 
   checkRemainingText(diff) {
-    if (diff < 0) {
-      return <span className='character-counter character-counter--over'>{diff}</span>;
-    }
-
-    return <span className='character-counter'>{diff}</span>;
+    return (
+      <span
+        className={classNames('text-sm font-semibold', {
+          'text-gray-400': diff >= 0,
+          'text-danger-600': diff < 0,
+        })}
+      >
+        {diff}
+      </span>
+    );
   }
 
   render() {

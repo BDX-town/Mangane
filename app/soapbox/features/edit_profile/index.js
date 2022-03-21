@@ -10,25 +10,19 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { updateNotificationSettings } from 'soapbox/actions/accounts';
+// import { updateNotificationSettings } from 'soapbox/actions/accounts';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import BirthdayInput from 'soapbox/components/birthday_input';
-import Icon from 'soapbox/components/icon';
+// import Icon from 'soapbox/components/icon';
 import {
-  SimpleForm,
-  FieldsGroup,
-  TextInput,
   Checkbox,
-  FileChooser,
-  SimpleTextarea,
 } from 'soapbox/features/forms';
 import { makeGetAccount } from 'soapbox/selectors';
 import { getFeatures } from 'soapbox/utils/features';
 import resizeImage from 'soapbox/utils/resize_image';
 
-import Column from '../ui/components/column';
+import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormActions, FormGroup, Input, Textarea } from '../../components/ui';
 
 import ProfilePreview from './components/profile_preview';
 
@@ -49,8 +43,9 @@ const messages = defineMessages({
   error: { id: 'edit_profile.error', defaultMessage: 'Profile update failed' },
   bioPlaceholder: { id: 'edit_profile.fields.bio_placeholder', defaultMessage: 'Tell us about yourself.' },
   displayNamePlaceholder: { id: 'edit_profile.fields.display_name_placeholder', defaultMessage: 'Name' },
-  view: { id: 'snackbar.view', defaultMessage: 'View' },
-  birthdayPlaceholder: { id: 'edit_profile.fields.birthday_placeholder', defaultMessage: 'Your birthday' },
+  websitePlaceholder: { id: 'edit_profile.fields.website_placeholder', defaultMessage: 'Display a Link' },
+  locationPlaceholder: { id: 'edit_profile.fields.location_placeholder', defaultMessage: 'Location' },
+  cancel: { id: 'common.cancel', defaultMessage: 'Cancel' },
 });
 
 const makeMapStateToProps = () => {
@@ -60,14 +55,12 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = getAccount(state, me);
     const soapbox = getSoapboxConfig(state);
-    const features = getFeatures(state.get('instance'));
 
     return {
       account,
       maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-      supportsEmailList: features.emailList,
-      supportsBirthdays: features.birthdays,
+      supportsEmailList: getFeatures(state.get('instance')).emailList,
     };
   };
 
@@ -98,8 +91,6 @@ class EditProfile extends ImmutablePureComponent {
     account: ImmutablePropTypes.map,
     maxFields: PropTypes.number,
     verifiedCanEditName: PropTypes.bool,
-    supportsEmailList: PropTypes.bool,
-    supportsBirthdays: PropTypes.bool,
   };
 
   state = {
@@ -113,8 +104,6 @@ class EditProfile extends ImmutablePureComponent {
     const strangerNotifications = account.getIn(['pleroma', 'notification_settings', 'block_from_strangers']);
     const acceptsEmailList = account.getIn(['pleroma', 'accepts_email_list']);
     const discoverable = account.getIn(['source', 'pleroma', 'discoverable']);
-    const birthday = account.get('birthday');
-    const showBirthday = account.getIn(['source', 'pleroma', 'show_birthday']);
 
     const initialState = ImmutableMap(account).withMutations(map => {
       map.merge(map.get('source'));
@@ -124,11 +113,6 @@ class EditProfile extends ImmutablePureComponent {
       map.set('accepts_email_list', acceptsEmailList);
       map.set('hide_network', hidesNetwork(account));
       map.set('discoverable', discoverable);
-      map.set('show_birthday', showBirthday);
-      if (birthday) {
-        const date = new Date(birthday);
-        map.set('birthday', new Date(date.getTime() + (date.getTimezoneOffset() * 60000)));
-      }
       unescapeParams(map, ['display_name', 'bio']);
     });
 
@@ -141,6 +125,8 @@ class EditProfile extends ImmutablePureComponent {
       header: this.state.header,
       avatar: this.state.avatar,
       display_name: this.state.display_name || account.get('username'),
+      website: this.state.website || account.get('website'),
+      location: this.state.location || account.get('location'),
     }));
   }
 
@@ -160,6 +146,8 @@ class EditProfile extends ImmutablePureComponent {
       discoverable: state.discoverable,
       bot: state.bot,
       display_name: state.display_name,
+      website: state.website,
+      location: state.location,
       note: state.note,
       avatar: state.avatar_file,
       header: state.header_file,
@@ -169,10 +157,6 @@ class EditProfile extends ImmutablePureComponent {
       hide_follows: state.hide_network,
       hide_followers_count: state.hide_network,
       hide_follows_count: state.hide_network,
-      birthday: state.birthday
-        ? new Date(state.birthday.getTime() - (state.birthday.getTimezoneOffset() * 60000)).toISOString().slice(0, 10)
-        : undefined,
-      show_birthday: state.show_birthday,
     }, this.getFieldParams().toJS());
   }
 
@@ -180,26 +164,28 @@ class EditProfile extends ImmutablePureComponent {
     const data = this.getParams();
     const formData = new FormData();
     for (const key in data) {
+      const hasValue = data[key] !== null && data[key] !== undefined;
       // Compact the submission. This should probably be done better.
-      const shouldAppend = Boolean(data[key] !== undefined || key.startsWith('fields_attributes'));
-      if (shouldAppend) formData.append(key, data[key] || '');
+      const shouldAppend = Boolean(hasValue || key.startsWith('fields_attributes'));
+      if (shouldAppend) formData.append(key, hasValue ? data[key] : '');
     }
     return formData;
   }
 
   handleSubmit = (event) => {
-    const { dispatch, intl, account } = this.props;
+    const { dispatch, intl } = this.props;
 
     const credentials = dispatch(patchMe(this.getFormdata()));
-    const notifications = dispatch(updateNotificationSettings({
+    /* Bad API url, was causing errors in the promise call below blocking the success message after making edits. */
+    /* const notifications = dispatch(updateNotificationSettings({
       block_from_strangers: this.state.stranger_notifications || false,
-    }));
+    })); */
 
     this.setState({ isLoading: true });
 
-    Promise.all([credentials, notifications]).then(() => {
+    Promise.all([credentials /*notifications*/]).then(() => {
       this.setState({ isLoading: false });
-      dispatch(snackbar.success(intl.formatMessage(messages.success), intl.formatMessage(messages.view), `/@${account.get('acct')}`));
+      dispatch(snackbar.success(intl.formatMessage(messages.success)));
     }).catch((error) => {
       this.setState({ isLoading: false });
       dispatch(snackbar.error(intl.formatMessage(messages.error)));
@@ -240,12 +226,6 @@ class EditProfile extends ImmutablePureComponent {
     };
   }
 
-  handleBirthdayChange = birthday => {
-    this.setState({
-      birthday,
-    });
-  }
-
   handleAddField = () => {
     this.setState({
       fields: this.state.fields.push(ImmutableMap({ name: '', value: '' })),
@@ -261,71 +241,87 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, maxFields, account, verifiedCanEditName, supportsBirthdays, supportsEmailList } = this.props;
+    const { intl, account, verifiedCanEditName, supportsEmailList /* maxFields */ } = this.props;
     const verified = account.get('verified');
     const canEditName = verifiedCanEditName || !verified;
 
     return (
-      <Column icon='user' heading={intl.formatMessage(messages.heading)}>
-        <SimpleForm onSubmit={this.handleSubmit}>
-          <fieldset disabled={this.state.isLoading}>
-            <FieldsGroup>
-              <TextInput
-                className={canEditName ? '' : 'disabled'}
-                label={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
-                placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
-                name='display_name'
-                value={this.state.display_name}
-                onChange={this.handleTextChange}
-                disabled={!canEditName}
-                hint={!canEditName && intl.formatMessage(messages.verified)}
-              />
-              <SimpleTextarea
-                label={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
-                placeholder={intl.formatMessage(messages.bioPlaceholder)}
-                name='note'
-                autoComplete='off'
-                value={this.state.note}
-                wrap='hard'
-                onChange={this.handleTextChange}
-                rows={3}
-              />
-              {supportsBirthdays && (
-                <>
-                  <BirthdayInput
-                    hint={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
-                    value={this.state.birthday}
-                    onChange={this.handleBirthdayChange}
-                  />
-                  <Checkbox
-                    label={<FormattedMessage id='edit_profile.fields.show_birthday_label' defaultMessage='Show my birthday' />}
-                    hint={<FormattedMessage id='edit_profile.hints.show_birthday' defaultMessage='Your birthday will be visible on your profile.' />}
-                    name='show_birthday'
-                    checked={this.state.show_birthday}
-                    onChange={this.handleCheckboxChange}
-                  />
-                </>
-              )}
-              <div className='fields-row'>
-                <div className='fields-row__column fields-row__column-6'>
-                  <ProfilePreview account={this.makePreviewAccount()} />
-                </div>
-                <div className='fields-row__column fields-group fields-row__column-6'>
-                  <FileChooser
-                    label={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Header' />}
-                    name='header'
-                    hint={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
-                    onChange={this.handleFileChange(1920 * 1080)}
-                  />
-                  <FileChooser
-                    label={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Avatar' />}
-                    name='avatar'
-                    hint={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
-                    onChange={this.handleFileChange(400 * 400)}
-                  />
+      <Column label='Edit Profile' transparent withHeader={false}>
+        <Card variant='rounded'>
+          <CardHeader backHref='/settings'>
+            <CardTitle title={intl.formatMessage(messages.heading)} />
+          </CardHeader>
+
+          <CardBody>
+            <Form onSubmit={this.handleSubmit}>
+              <FormGroup
+                labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}
+                hintText={!canEditName && intl.formatMessage(messages.verified)}
+              >
+                <Input
+                  name='display_name'
+                  value={this.state.display_name}
+                  onChange={this.handleTextChange}
+                  placeholder={intl.formatMessage(messages.displayNamePlaceholder)}
+                  disabled={!canEditName}
+                />
+              </FormGroup>
+
+              <FormGroup
+                labelText={<FormattedMessage id='edit_profile.fields.location_label' defaultMessage='Location' />}
+              >
+                <Input
+                  name='location'
+                  value={this.state.location}
+                  onChange={this.handleTextChange}
+                  placeholder={intl.formatMessage(messages.locationPlaceholder)}
+                />
+              </FormGroup>
+
+              <FormGroup
+                labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
+              >
+                <Input
+                  name='website'
+                  value={this.state.website}
+                  onChange={this.handleTextChange}
+                  placeholder={intl.formatMessage(messages.websitePlaceholder)}
+                />
+              </FormGroup>
+
+              <FormGroup
+                labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
+              >
+                <Textarea
+                  name='note'
+                  value={this.state.note}
+                  onChange={this.handleTextChange}
+                  autoComplete='off'
+                  placeholder={intl.formatMessage(messages.bioPlaceholder)}
+                />
+              </FormGroup>
+
+              <div className='grid grid-cols-2 gap-4'>
+                <ProfilePreview account={this.makePreviewAccount()} />
+
+                <div className='space-y-4'>
+                  <FormGroup
+                    labelText={<FormattedMessage id='edit_profile.fields.header_label' defaultMessage='Choose Background Picture' />}
+                    hintText={<FormattedMessage id='edit_profile.hints.header' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '1920x1080px' }} />}
+                  >
+                    <input type='file' name='header' onChange={this.handleFileChange(1920 * 1080)} className='text-sm' />
+                  </FormGroup>
+
+                  <FormGroup
+                    labelText={<FormattedMessage id='edit_profile.fields.avatar_label' defaultMessage='Choose Profile Picture' />}
+                    hintText={<FormattedMessage id='edit_profile.hints.avatar' defaultMessage='PNG, GIF or JPG. Will be downscaled to {size}' values={{ size: '400x400px' }} />}
+                  >
+                    <input type='file' name='avatar' onChange={this.handleFileChange(400 * 400)} className='text-sm' />
+                  </FormGroup>
                 </div>
               </div>
-              <Checkbox
+
+              {/*<Checkbox
                 label={<FormattedMessage id='edit_profile.fields.locked_label' defaultMessage='Lock account' />}
                 hint={<FormattedMessage id='edit_profile.hints.locked' defaultMessage='Requires you to manually approve followers' />}
                 name='locked'
@@ -359,7 +355,7 @@ class EditProfile extends ImmutablePureComponent {
                 name='discoverable'
                 checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
-              />
+              />*/}
               {supportsEmailList && <Checkbox
                 label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
                 hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
@@ -367,8 +363,8 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.accepts_email_list}
                 onChange={this.handleCheckboxChange}
               />}
-            </FieldsGroup>
-            <FieldsGroup>
+              {/* </FieldsGroup> */}
+              {/*<FieldsGroup>
               <div className='fields-row__column fields-group'>
                 <div className='input with_block_label'>
                   <label><FormattedMessage id='edit_profile.fields.meta_fields_label' defaultMessage='Profile metadata' /></label>
@@ -406,14 +402,20 @@ class EditProfile extends ImmutablePureComponent {
                   }
                 </div>
               </div>
-            </FieldsGroup>
-          </fieldset>
-          <div className='actions'>
-            <button name='button' type='submit' className='btn button button-primary'>
-              <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
-            </button>
-          </div>
-        </SimpleForm>
+            </FieldsGroup>*/}
+              {/* </fieldset> */}
+              <FormActions>
+                <Button to='/settings' theme='ghost'>
+                  {intl.formatMessage(messages.cancel)}
+                </Button>
+
+                <Button theme='primary' type='submit' disabled={this.state.isLoading}>
+                  <FormattedMessage id='edit_profile.save' defaultMessage='Save' />
+                </Button>
+              </FormActions>
+            </Form>
+          </CardBody>
+        </Card>
       </Column>
     );
   }

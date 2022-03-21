@@ -90,9 +90,9 @@ export default function relationships(state = initialState, action) {
   case ACCOUNTS_IMPORT:
     return importPleromaAccounts(state, action.accounts);
   case ACCOUNT_FOLLOW_REQUEST:
-    return state.setIn([action.id, 'requested'], true);
+    return state.setIn([action.id, 'following'], true);
   case ACCOUNT_FOLLOW_FAIL:
-    return state.setIn([action.id, 'requested'], false);
+    return state.setIn([action.id, 'following'], false);
   case ACCOUNT_UNFOLLOW_REQUEST:
     return state.setIn([action.id, 'following'], false);
   case ACCOUNT_UNFOLLOW_FAIL:

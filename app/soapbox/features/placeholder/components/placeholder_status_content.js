@@ -3,22 +3,19 @@ import React from 'react';
 
 import { randomIntFromInterval, generateText } from '../utils';
 
-export default class PlaceholderStatusContent extends React.Component {
+const PlaceholderStatusContent = ({ minLength, maxLength }) => {
+  const length = randomIntFromInterval(maxLength, minLength);
 
-  static propTypes = {
-    maxLength: PropTypes.number.isRequired,
-    minLength: PropTypes.number.isRequired,
-  }
+  return (
+    <div className='flex flex-col text-slate-200'>
+      <p className='break-words'>{generateText(length)}</p>
+    </div>
+  );
+};
 
-  render() {
-    const { maxLength, minLength } = this.props;
-    const length = randomIntFromInterval(maxLength, minLength);
+PlaceholderStatusContent.propTypes = {
+  maxLength: PropTypes.number.isRequired,
+  minLength: PropTypes.number.isRequired,
+};
 
-    return (
-      <div className='status__content status__content--placeholder' tabIndex='0' key='content'>
-        {generateText(length)}
-      </div>
-    );
-  }
-
-}
+export default PlaceholderStatusContent;

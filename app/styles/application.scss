@@ -1,9 +1,11 @@
 // Fonts from elsewhere
 @import '~line-awesome/dist/font-awesome-line-awesome/css/all.css';
-@import '~@fontsource/roboto/300.css';
-@import '~@fontsource/roboto/400.css';
-@import '~@fontsource/roboto/700.css';
-@import '~@fontsource/montserrat/800.css';
+@import '~@fontsource/inter/200.css';
+@import '~@fontsource/inter/300.css';
+@import '~@fontsource/inter/400.css';
+@import '~@fontsource/inter/500.css';
+@import '~@fontsource/inter/700.css';
+@import '~@fontsource/inter/900.css';
 
 @import 'mixins';
 @import 'themes';
@@ -13,7 +15,6 @@
 @import 'basics';
 @import 'containers';
 @import 'footer';
-@import 'forms';
 @import 'accounts';
 @import 'boost';
 @import 'loading';
@@ -31,7 +32,6 @@
 @import 'navigation';
 @import 'placeholder';
 @import 'autosuggest';
-@import 'developers';
 
 // COMPONENTS
 @import 'components/buttons';
@@ -63,7 +63,6 @@
 @import 'components/getting-started';
 @import 'components/promo-panel';
 @import 'components/still-image';
-@import 'components/timeline-queue-header';
 @import 'components/badge';
 @import 'components/theme-toggle';
 @import 'components/trends';
@@ -85,7 +84,6 @@
 @import 'components/admin';
 @import 'components/backups';
 @import 'components/crypto-donate';
-@import 'components/datepicker';
 @import 'components/remote-timeline';
 @import 'components/federation-restrictions';
 @import 'components/aliases';
@@ -98,3 +96,14 @@
 
 // Holiday
 @import 'holiday/halloween';
+
+// Truth custom styles
+@import 'truth';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import 'forms';
+@import 'utilities';
+@import 'components/datepicker';

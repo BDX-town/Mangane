@@ -6,8 +6,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { Spinner } from 'soapbox/components/ui';
+
 import { fetchDomainBlocks, expandDomainBlocks } from '../../actions/domain_blocks';
-import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import DomainContainer from '../../containers/domain_container';
 import Column from '../ui/components/column';
@@ -48,7 +49,7 @@ class Blocks extends ImmutablePureComponent {
     if (!domains) {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     }

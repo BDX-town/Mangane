@@ -1,81 +1,89 @@
+import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
-import { connect } from 'react-redux';
+import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import ShowablePassword from 'soapbox/components/showable_password';
-import { getFeatures } from 'soapbox/utils/features';
-import { getBaseURL } from 'soapbox/utils/state';
+import { Button, Form, FormActions, FormGroup, Input } from '../../../components/ui';
 
 const messages = defineMessages({
-  username: { id: 'login.fields.username_placeholder', defaultMessage: 'Username' },
-  password: { id: 'login.fields.password_placeholder', defaultMessage: 'Password' },
+  username: {
+    id: 'login.fields.username_placeholder',
+    defaultMessage: 'Username',
+  },
+  email: {
+    id: 'login.fields.email_placeholder',
+    defaultMessage: 'Email address',
+  },
+  password: {
+    id: 'login.fields.password_placeholder',
+    defaultMessage: 'Password',
+  },
 });
 
-const mapStateToProps = state => {
-  const instance = state.get('instance');
+const LoginForm = ({ isLoading, handleSubmit }) => {
+  const intl = useIntl();
 
-  return {
-    baseURL: getBaseURL(state),
-    features: getFeatures(instance),
-  };
-};
+  return (
+    <div>
+      <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
+        <h1 className='text-center font-bold text-2xl'>{intl.formatMessage({ id: 'login_form.header', defaultMessage: 'Sign In' })}</h1>
+      </div>
 
-export default @connect(mapStateToProps)
-@injectIntl
-class LoginForm extends ImmutablePureComponent {
+      <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
+        <Form onSubmit={handleSubmit} disabled={isLoading}>
+          <FormGroup labelText={intl.formatMessage(messages.email)}>
+            <Input
+              aria-label={intl.formatMessage(messages.email)}
+              placeholder={intl.formatMessage(messages.email)}
+              type='text'
+              name='username'
+              autoComplete='off'
+              autoCorrect='off'
+              autoCapitalize='off'
+              required
+            />
+          </FormGroup>
 
-  render() {
-    const { intl, isLoading, handleSubmit, baseURL, features } = this.props;
-
-    return (
-      <form className='simple_form new_user' method='post' onSubmit={handleSubmit}>
-        <fieldset disabled={isLoading}>
-          <div className='fields-group'>
-            <div className='input email user_email'>
-              <input
-                aria-label={intl.formatMessage(messages.username)}
-                className='string email'
-                placeholder={intl.formatMessage(messages.username)}
-                type='text'
-                name='username'
-                autoComplete='off'
-                autoCorrect='off'
-                autoCapitalize='off'
-                required
-              />
-            </div>
-            <ShowablePassword
+          <FormGroup
+            labelText={intl.formatMessage(messages.password)}
+            hintText={
+              <Link to='/reset-password' className='hover:underline'>
+                <FormattedMessage
+                  id='login.reset_password_hint'
+                  defaultMessage='Trouble logging in?'
+                />
+              </Link>
+            }
+          >
+            <Input
               aria-label={intl.formatMessage(messages.password)}
-              className='password user_password'
               placeholder={intl.formatMessage(messages.password)}
+              type='password'
               name='password'
               autoComplete='off'
               autoCorrect='off'
               autoCapitalize='off'
               required
             />
-            <p className='hint subtle-hint'>
-              {features.resetPasswordAPI ? (
-                <Link to='/auth/reset_password'>
-                  <FormattedMessage id='login.reset_password_hint' defaultMessage='Trouble logging in?' />
-                </Link>
-              ) : (
-                <a href={`${baseURL}/auth/password/new`}>
-                  <FormattedMessage id='login.reset_password_hint' defaultMessage='Trouble logging in?' />
-                </a>
-              )}
-            </p>
-          </div>
-        </fieldset>
-        <div className='actions'>
-          <button name='button' type='submit' className='btn button button-primary'>
-            <FormattedMessage id='login.log_in' defaultMessage='Log in' />
-          </button>
-        </div>
-      </form>
-    );
-  }
+          </FormGroup>
+          <FormActions>
+            <Button
+              theme='primary'
+              type='submit'
+              disabled={isLoading}
+            >
+              <FormattedMessage id='login.sign_in' defaultMessage='Sign in' />
+            </Button>
+          </FormActions>
+        </Form>
+      </div>
+    </div>
+  );
+};
 
-}
+LoginForm.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
+};
+
+export default LoginForm;

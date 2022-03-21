@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 
 import { getSettings } from 'soapbox/actions/settings';
 import Icon from 'soapbox/components/icon';
+import { Text } from 'soapbox/components/ui';
 
 const mapStateToProps = state => {
   const settings = getSettings(state);
@@ -96,18 +97,19 @@ class TimelineQueueButtonHeader extends React.PureComponent {
 
     const visible = count > 0 && scrolled;
 
-    const classes = classNames('timeline-queue-header', {
+    const classes = classNames('left-1/2 -translate-x-1/2 fixed top-20 z-50', {
       'hidden': !visible,
     });
 
     return (
       <div className={classes}>
-        <a className='timeline-queue-header__btn' onClick={this.handleClick}>
+        <a className='flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer' onClick={this.handleClick}>
           <Icon src={require('@tabler/icons/icons/arrow-bar-to-up.svg')} />
+
           {(count > 0) && (
-            <div className='timeline-queue-header__label'>
+            <Text theme='inherit' size='sm'>
               {intl.formatMessage(message, { count })}
-            </div>
+            </Text>
           )}
         </a>
       </div>

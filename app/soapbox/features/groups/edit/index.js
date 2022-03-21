@@ -6,10 +6,9 @@ import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import MissingIndicator from 'soapbox/components/missing_indicator';
+import { Column, Spinner } from 'soapbox/components/ui';
 
 import { changeValue, submit, setUp } from '../../../actions/group_editor';
-import Column from '../../../components/column';
-import LoadingIndicator from '../../../components/loading_indicator';
 
 const messages = defineMessages({
   title: { id: 'groups.form.title', defaultMessage: 'Title' },
@@ -95,14 +94,12 @@ class Edit extends React.PureComponent {
     if (typeof group === 'undefined') {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     } else if (group === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

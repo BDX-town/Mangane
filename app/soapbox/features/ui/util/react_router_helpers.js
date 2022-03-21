@@ -102,7 +102,7 @@ class WrappedRoute extends React.Component {
 
   loginRedirect = () => {
     const actualUrl = encodeURIComponent(`${this.props.computedMatch.url}${this.props.location.search}`); // eslint-disable-line react/prop-types
-    return <Redirect to={`/auth/sign_in?redirect_uri=${actualUrl}`} />;
+    return <Redirect to={`/login?redirect_uri=${actualUrl}`} />;
   }
 
   render() {

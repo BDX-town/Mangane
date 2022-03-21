@@ -2,10 +2,10 @@
 
 exports[`<TimelineQueueButtonHeader /> renders correctly 1`] = `
 <div
-  className="timeline-queue-header hidden"
+  className="left-1/2 -translate-x-1/2 fixed top-20 z-50 hidden"
 >
   <a
-    className="timeline-queue-header__btn"
+    className="flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer"
     onClick={[Function]}
   >
     <div
@@ -25,10 +25,10 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 1`] = `
 
 exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
 <div
-  className="timeline-queue-header hidden"
+  className="left-1/2 -translate-x-1/2 fixed top-20 z-50 hidden"
 >
   <a
-    className="timeline-queue-header__btn"
+    className="flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer"
     onClick={[Function]}
   >
     <div
@@ -42,21 +42,22 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
         }
       />
     </div>
-    <div
-      className="timeline-queue-header__label"
+    <p
+      className="text-sm text-inherit font-normal tracking-normal font-sans"
+      style={null}
     >
       Click to see 1 new post
-    </div>
+    </p>
   </a>
 </div>
 `;
 
 exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
 <div
-  className="timeline-queue-header hidden"
+  className="left-1/2 -translate-x-1/2 fixed top-20 z-50 hidden"
 >
   <a
-    className="timeline-queue-header__btn"
+    className="flex items-center bg-primary-600 hover:bg-primary-700 hover:scale-105 active:scale-100 transition-transform text-white rounded-full px-4 py-2 space-x-1.5 cursor-pointer"
     onClick={[Function]}
   >
     <div
@@ -70,11 +71,12 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
         }
       />
     </div>
-    <div
-      className="timeline-queue-header__label"
+    <p
+      className="text-sm text-inherit font-normal tracking-normal font-sans"
+      style={null}
     >
       Click to see 9999999 new posts
-    </div>
+    </p>
   </a>
 </div>
 `;

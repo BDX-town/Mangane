@@ -1,194 +1,267 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<LoginForm /> renders for Mastodon 1`] = `
-<form
-  className="simple_form new_user"
-  method="post"
->
-  <fieldset>
-    <div
-      className="fields-group"
+<div>
+  <div
+    className="pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10"
+  >
+    <h1
+      className="text-center font-bold text-2xl"
     >
-      <div
-        className="input email user_email"
-      >
-        <input
-          aria-label="Username"
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          className="string email"
-          name="username"
-          placeholder="Username"
-          required={true}
-          type="text"
-        />
-      </div>
-      <div
-        className="input required showable-password password user_password"
-      >
-        <input
-          aria-label="Password"
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          name="password"
-          placeholder="Password"
-          required={true}
-          type="password"
-        />
-        <button
-          aria-label="Show password"
-          className="icon-button"
-          disabled={false}
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          onKeyPress={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-          tabIndex="0"
-          title="Show password"
-          type="button"
+      Sign In
+    </h1>
+  </div>
+  <div
+    className="sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto"
+  >
+    <form
+      className="space-y-4"
+      onSubmit={[Function]}
+    >
+      <div>
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="field-1"
+        >
+          Email address
+        </label>
+        <div
+          className="mt-1"
         >
           <div
-            style={Object {}}
+            className="mt-1 relative rounded-md shadow-sm"
           >
+            <input
+              aria-label="Email address"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
+              className="block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              id="field-1"
+              name="username"
+              placeholder="Email address"
+              required={true}
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="field-1"
+        >
+          Password
+        </label>
+        <div
+          className="mt-1"
+        >
+          <div
+            className="mt-1 relative rounded-md shadow-sm"
+          >
+            <input
+              aria-label="Password"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
+              className="block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7"
+              id="field-1"
+              name="password"
+              placeholder="Password"
+              required={true}
+              type="password"
+            />
             <div
-              aria-hidden="true"
-              className="svg-icon"
-              fixedWidth={true}
+              className="absolute inset-y-0 right-0 flex items-center"
+              data-reach-tooltip-trigger=""
+              data-state="tooltip-hidden"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              onMouseMove={[Function]}
+              onPointerDown={[Function]}
+              onPointerEnter={[Function]}
+              onPointerLeave={[Function]}
+              onPointerMove={[Function]}
             >
-              <svg
-                id={
-                  Object {
-                    "process": [Function],
+              <button
+                className="text-gray-400 hover:text-gray-500 h-full px-2 focus:ring-primary-500 focus:ring-2"
+                onClick={[Function]}
+                tabIndex={-1}
+                type="button"
+              >
+                <svg
+                  id={
+                    Object {
+                      "process": [Function],
+                    }
                   }
-                }
-              />
+                />
+              </button>
             </div>
           </div>
+          <p
+            className="mt-0.5 text-xs text-gray-400"
+          >
+            <a
+              className="hover:underline"
+              href="/reset-password"
+              onClick={[Function]}
+            >
+              Trouble logging in?
+            </a>
+          </p>
+        </div>
+      </div>
+      <div
+        className="flex justify-end space-x-2"
+      >
+        <button
+          className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+          disabled={false}
+          onClick={[Function]}
+          type="submit"
+        >
+          Sign in
         </button>
       </div>
-      <p
-        className="hint subtle-hint"
-      >
-        <a
-          href="/auth/password/new"
-        >
-          Trouble logging in?
-        </a>
-      </p>
-    </div>
-  </fieldset>
-  <div
-    className="actions"
-  >
-    <button
-      className="btn button button-primary"
-      name="button"
-      type="submit"
-    >
-      Log in
-    </button>
+    </form>
   </div>
-</form>
+</div>
 `;
 
 exports[`<LoginForm /> renders for Pleroma 1`] = `
-<form
-  className="simple_form new_user"
-  method="post"
->
-  <fieldset>
-    <div
-      className="fields-group"
+<div>
+  <div
+    className="pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10"
+  >
+    <h1
+      className="text-center font-bold text-2xl"
     >
-      <div
-        className="input email user_email"
-      >
-        <input
-          aria-label="Username"
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          className="string email"
-          name="username"
-          placeholder="Username"
-          required={true}
-          type="text"
-        />
-      </div>
-      <div
-        className="input required showable-password password user_password"
-      >
-        <input
-          aria-label="Password"
-          autoCapitalize="off"
-          autoComplete="off"
-          autoCorrect="off"
-          name="password"
-          placeholder="Password"
-          required={true}
-          type="password"
-        />
-        <button
-          aria-label="Show password"
-          className="icon-button"
-          disabled={false}
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          onKeyPress={[Function]}
-          onKeyUp={[Function]}
-          onMouseDown={[Function]}
-          onMouseEnter={[Function]}
-          onMouseLeave={[Function]}
-          tabIndex="0"
-          title="Show password"
-          type="button"
+      Sign In
+    </h1>
+  </div>
+  <div
+    className="sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto"
+  >
+    <form
+      className="space-y-4"
+      onSubmit={[Function]}
+    >
+      <div>
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="field-1"
+        >
+          Email address
+        </label>
+        <div
+          className="mt-1"
         >
           <div
-            style={Object {}}
+            className="mt-1 relative rounded-md shadow-sm"
           >
+            <input
+              aria-label="Email address"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
+              className="block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+              id="field-1"
+              name="username"
+              placeholder="Email address"
+              required={true}
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <label
+          className="block text-sm font-medium text-gray-700"
+          htmlFor="field-1"
+        >
+          Password
+        </label>
+        <div
+          className="mt-1"
+        >
+          <div
+            className="mt-1 relative rounded-md shadow-sm"
+          >
+            <input
+              aria-label="Password"
+              autoCapitalize="off"
+              autoComplete="off"
+              autoCorrect="off"
+              className="block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 pr-7"
+              id="field-1"
+              name="password"
+              placeholder="Password"
+              required={true}
+              type="password"
+            />
             <div
-              aria-hidden="true"
-              className="svg-icon"
-              fixedWidth={true}
+              className="absolute inset-y-0 right-0 flex items-center"
+              data-reach-tooltip-trigger=""
+              data-state="tooltip-hidden"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+              onMouseMove={[Function]}
+              onPointerDown={[Function]}
+              onPointerEnter={[Function]}
+              onPointerLeave={[Function]}
+              onPointerMove={[Function]}
             >
-              <svg
-                id={
-                  Object {
-                    "process": [Function],
+              <button
+                className="text-gray-400 hover:text-gray-500 h-full px-2 focus:ring-primary-500 focus:ring-2"
+                onClick={[Function]}
+                tabIndex={-1}
+                type="button"
+              >
+                <svg
+                  id={
+                    Object {
+                      "process": [Function],
+                    }
                   }
-                }
-              />
+                />
+              </button>
             </div>
           </div>
+          <p
+            className="mt-0.5 text-xs text-gray-400"
+          >
+            <a
+              className="hover:underline"
+              href="/reset-password"
+              onClick={[Function]}
+            >
+              Trouble logging in?
+            </a>
+          </p>
+        </div>
+      </div>
+      <div
+        className="flex justify-end space-x-2"
+      >
+        <button
+          className="inline-flex items-center border font-medium rounded-full focus:outline-none appearance-none transition-all border-transparent text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500 focus:ring-2 focus:ring-offset-2 px-4 py-2 text-sm"
+          disabled={false}
+          onClick={[Function]}
+          type="submit"
+        >
+          Sign in
         </button>
       </div>
-      <p
-        className="hint subtle-hint"
-      >
-        <a
-          href="/auth/reset_password"
-          onClick={[Function]}
-        >
-          Trouble logging in?
-        </a>
-      </p>
-    </div>
-  </fieldset>
-  <div
-    className="actions"
-  >
-    <button
-      className="btn button button-primary"
-      name="button"
-      type="submit"
-    >
-      Log in
-    </button>
+    </form>
   </div>
-</form>
+</div>
 `;

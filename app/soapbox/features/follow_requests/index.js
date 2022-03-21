@@ -6,8 +6,9 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { Spinner } from 'soapbox/components/ui';
+
 import { fetchFollowRequests, expandFollowRequests } from '../../actions/accounts';
-import LoadingIndicator from '../../components/loading_indicator';
 import ScrollableList from '../../components/scrollable_list';
 import Column from '../ui/components/column';
 
@@ -48,7 +49,7 @@ class FollowRequests extends ImmutablePureComponent {
     if (!accountIds) {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     }

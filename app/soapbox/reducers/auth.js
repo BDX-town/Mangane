@@ -257,6 +257,7 @@ const importMastodonPreload = (state, data) => {
   });
 };
 
+
 const persistAuthAccount = account => {
   if (account && account.url) {
     KVStore.setItem(`authAccount:${account.url}`, account).catch(console.error);

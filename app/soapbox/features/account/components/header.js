@@ -1,28 +1,21 @@
 'use strict';
 
-import classNames from 'classnames';
 import { List as ImmutableList, Map as ImmutableMap } from 'immutable';
-import { debounce, throttle } from 'lodash';
+import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import InlineSVG from 'react-inlinesvg';
+import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 
 import { openModal } from 'soapbox/actions/modals';
 import Avatar from 'soapbox/components/avatar';
 import Badge from 'soapbox/components/badge';
-import Icon from 'soapbox/components/icon';
-import IconButton from 'soapbox/components/icon_button';
 import StillImage from 'soapbox/components/still_image';
-import VerificationBadge from 'soapbox/components/verification_badge';
-import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
+import { HStack, IconButton, Menu, MenuButton, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action_button';
-import SubscriptionButton from 'soapbox/features/ui/components/subscription_button';
-import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
-import { ProfileInfoPanel } from 'soapbox/features/ui/util/async-components';
 import {
   isStaff,
   isAdmin,
@@ -31,10 +24,7 @@ import {
   isRemote,
   getDomain,
 } from 'soapbox/utils/accounts';
-import { getAcct } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
-import { shortNumberFormat } from 'soapbox/utils/numbers';
-import { displayFqn } from 'soapbox/utils/state';
 
 const messages = defineMessages({
   edit_profile: { id: 'account.edit_profile', defaultMessage: 'Edit profile' },
@@ -61,8 +51,6 @@ const messages = defineMessages({
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
   endorse: { id: 'account.endorse', defaultMessage: 'Feature on profile' },
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
-  createNote: { id: 'account.create_note', defaultMessage: 'Create a note' },
-  editNote: { id: 'account.edit_note', defaultMessage: 'Edit note' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   deactivateUser: { id: 'admin.users.actions.deactivate_user', defaultMessage: 'Deactivate @{name}' },
@@ -77,8 +65,6 @@ const messages = defineMessages({
   unsubscribe: { id: 'account.unsubscribe', defaultMessage: 'Unsubscribe to notifications from @{name}' },
   suggestUser: { id: 'admin.users.actions.suggest_user', defaultMessage: 'Suggest @{name}' },
   unsuggestUser: { id: 'admin.users.actions.unsuggest_user', defaultMessage: 'Unsuggest @{name}' },
-  deactivated: { id: 'account.deactivated', defaultMessage: 'Deactivated' },
-  bot: { id: 'account.badges.bot', defaultMessage: 'Bot' },
 });
 
 const mapStateToProps = state => {
@@ -91,8 +77,6 @@ const mapStateToProps = state => {
     me,
     meAccount: account,
     features,
-    displayFqn: displayFqn(state),
-
   };
 };
 
@@ -107,12 +91,10 @@ class Header extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,
     features: PropTypes.object,
-    displayFqn: PropTypes.bool,
   };
 
   state = {
     isSmallScreen: (window.innerWidth <= 895),
-    isLocked: false,
   }
 
   isStatusesPageActive = (match, location) => {
@@ -124,17 +106,11 @@ class Header extends ImmutablePureComponent {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('resize', this.handleResize, { passive: true });
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('resize', this.handleResize);
-  }
-
-  setRef = (c) => {
-    this.node = c;
   }
 
   handleResize = debounce(() => {
@@ -142,15 +118,6 @@ class Header extends ImmutablePureComponent {
   }, 5, {
     trailing: true,
   });
-
-  handleScroll = throttle(() => {
-    const { top } = this.node.getBoundingClientRect();
-    const isLocked = top <= 60;
-
-    if (this.state.isLocked !== isLocked) {
-      this.setState({ isLocked });
-    }
-  }, 100, { trailing: true });
 
   onAvatarClick = () => {
     const avatar_url = this.props.account.get('avatar');
@@ -210,7 +177,7 @@ class Header extends ImmutablePureComponent {
       menu.push({
         text: intl.formatMessage(messages.share, { name: account.get('username') }),
         action: this.handleShare,
-        icon: require('feather-icons/dist/icons/share.svg'),
+        icon: require('@tabler/icons/icons/upload.svg'),
       });
       menu.push(null);
     }
@@ -223,15 +190,15 @@ class Header extends ImmutablePureComponent {
       });
       menu.push({
         text: intl.formatMessage(messages.preferences),
-        to: '/settings/preferences',
+        to: '/settings',
         icon: require('@tabler/icons/icons/settings.svg'),
       });
-      menu.push(null);
-      menu.push({
-        text: intl.formatMessage(messages.follow_requests),
-        to: '/follow_requests',
-        icon: require('@tabler/icons/icons/user-plus.svg'),
-      });
+      // menu.push(null);
+      // menu.push({
+      //   text: intl.formatMessage(messages.follow_requests),
+      //   to: '/follow_requests',
+      //   icon: require('@tabler/icons/icons/user-plus.svg'),
+      // });
       menu.push(null);
       menu.push({
         text: intl.formatMessage(messages.mutes),
@@ -243,39 +210,31 @@ class Header extends ImmutablePureComponent {
         to: '/blocks',
         icon: require('@tabler/icons/icons/ban.svg'),
       });
-      menu.push({
-        text: intl.formatMessage(messages.domain_blocks),
-        to: '/domain_blocks',
-        icon: require('@tabler/icons/icons/ban.svg'),
-      });
+      // menu.push({
+      //   text: intl.formatMessage(messages.domain_blocks),
+      //   to: '/domain_blocks',
+      //   icon: require('@tabler/icons/icons/ban.svg'),
+      // });
     } else {
       menu.push({
         text: intl.formatMessage(messages.mention, { name: account.get('username') }),
         action: this.props.onMention,
-        icon: require('feather-icons/dist/icons/at-sign.svg'),
+        icon: require('@tabler/icons/icons/at.svg'),
       });
 
-      if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
-        menu.push({
-          text: intl.formatMessage(messages.chat, { name: account.get('username') }),
-          action: this.props.onChat,
-          icon: require('@tabler/icons/icons/messages.svg'),
-        });
-      } else {
-        menu.push({
-          text: intl.formatMessage(messages.direct, { name: account.get('username') }),
-          action: this.props.onDirect,
-          icon: require('@tabler/icons/icons/mail.svg'),
-        });
-      }
-
-      if (features.notes) {
-        menu.push({
-          text: intl.formatMessage(account.getIn(['relationship', 'note']) ? messages.editNote : messages.createNote),
-          action: this.props.onShowNote,
-          icon: require('@tabler/icons/icons/note.svg'),
-        });
-      }
+      // if (account.getIn(['pleroma', 'accepts_chat_messages'], false) === true) {
+      //   menu.push({
+      //     text: intl.formatMessage(messages.chat, { name: account.get('username') }),
+      //     action: this.props.onChat,
+      //     icon: require('@tabler/icons/icons/messages.svg'),
+      //   });
+      // } else {
+      //   menu.push({
+      //     text: intl.formatMessage(messages.direct, { name: account.get('username') }),
+      //     action: this.props.onDirect,
+      //     icon: require('@tabler/icons/icons/mail.svg'),
+      //   });
+      // }
 
       if (account.getIn(['relationship', 'following'])) {
         if (account.getIn(['relationship', 'showing_reblogs'])) {
@@ -292,21 +251,7 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        if (features.accountNotifies) {
-          if (account.getIn(['relationship', 'notifying'])) {
-            menu.push({
-              text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
-              action: this.props.onNotifyToggle,
-              icon: require('@tabler/icons/icons/bell.svg'),
-            });
-          } else {
-            menu.push({
-              text: intl.formatMessage(messages.subscribe, { name: account.get('username') }),
-              action: this.props.onNotifyToggle,
-              icon: require('@tabler/icons/icons/bell-off.svg'),
-            });
-          }
-        } else if (features.accountSubscriptions) {
+        if (features.accountSubscriptions) {
           if (account.getIn(['relationship', 'subscribing'])) {
             menu.push({
               text: intl.formatMessage(messages.unsubscribe, { name: account.get('username') }),
@@ -330,14 +275,7 @@ class Header extends ImmutablePureComponent {
           });
         }
 
-        if (features.accountEndorsements) {
-          menu.push({
-            text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse),
-            action: this.props.onEndorseToggle,
-            icon: require('@tabler/icons/icons/user-check.svg'),
-          });
-        }
-
+        // menu.push({ text: intl.formatMessage(account.getIn(['relationship', 'endorsed']) ? messages.unendorse : messages.endorse), action: this.props.onEndorseToggle });
         menu.push(null);
       } else if (features.lists && features.unrestrictedLists) {
         menu.push({
@@ -488,7 +426,6 @@ class Header extends ImmutablePureComponent {
         });
         menu.push({
           text: intl.formatMessage(messages.deleteUser, { name: account.get('username') }),
-          action: this.props.onDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
         });
       }
@@ -498,22 +435,46 @@ class Header extends ImmutablePureComponent {
   }
 
   makeInfo() {
-    const { account, me } = this.props;
+    const { account, intl, me } = this.props;
 
     const info = [];
 
     if (!account || !me) return info;
 
     if (me !== account.get('id') && account.getIn(['relationship', 'followed_by'])) {
-      info.push(<span key='followed_by' className='relationship-tag'><FormattedMessage id='account.follows_you' defaultMessage='Follows you' /></span>);
+      info.push(
+        <Badge
+          key='followed_by'
+          slug='opaque'
+          title={intl.formatMessage({ id: 'account.follows_you', defaultMessage: 'Follows you' })}
+        />,
+      );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'blocking'])) {
-      info.push(<span key='blocked' className='relationship-tag'><FormattedMessage id='account.blocked' defaultMessage='Blocked' /></span>);
+      info.push(
+        <Badge
+          key='blocked'
+          slug='opaque'
+          title={intl.formatMessage({ id: 'account.blocked', defaultMessage: 'Blocked' })}
+        />,
+      );
     }
 
     if (me !== account.get('id') && account.getIn(['relationship', 'muting'])) {
-      info.push(<span key='muted' className='relationship-tag'><FormattedMessage id='account.muted' defaultMessage='Muted' /></span>);
+      info.push(
+        <Badge
+          key='muted'
+          slug='opaque'
+          title={intl.formatMessage({ id: 'account.muted', defaultMessage: 'Muted' })}
+        />,
+      );
     } else if (me !== account.get('id') && account.getIn(['relationship', 'domain_blocking'])) {
-      info.push(<span key='domain_blocked' className='relationship-tag'><FormattedMessage id='account.domain_blocked' defaultMessage='Domain hidden' /></span>);
+      info.push(
+        <Badge
+          key='domain_blocked'
+          slug='opaque'
+          title={intl.formatMessage({ id: 'account.domain_blocked', defaultMessage: 'Domain hidden' })}
+        />,
+      );
     }
 
     return info;
@@ -542,6 +503,8 @@ class Header extends ImmutablePureComponent {
           src={require('@tabler/icons/icons/mail.svg')}
           onClick={this.props.onDirect}
           title={intl.formatMessage(messages.direct, { name: account.get('username') })}
+          className='text-primary-700 bg-primary-100 hover:bg-primary-200 p-2'
+          iconClassName='w-5 h-5'
         />
       );
     }
@@ -557,139 +520,118 @@ class Header extends ImmutablePureComponent {
 
     return (
       <IconButton
-        src={require('feather-icons/dist/icons/share.svg')}
+        src={require('@tabler/icons/icons/upload.svg')}
         onClick={this.handleShare}
         title={intl.formatMessage(messages.share, { name: account.get('username') })}
+        className='text-primary-700 bg-primary-100 hover:bg-primary-200 p-2'
+        iconClassName='w-5 h-5'
       />
     );
   }
 
   render() {
-    const { account, displayFqn, intl, username, me, features } = this.props;
-    const { isSmallScreen, isLocked } = this.state;
+    const { account, me } = this.props;
 
     if (!account) {
       return (
-        <div className='account__header'>
-          <div className='account__header__image account__header__image--none' />
-          <div className='account__header__bar' ref={this.setRef}>
-            <div className='account__header__extra'>
-              <div className='account__header__card'>
-                <div className='account__header__avatar' />
+        <div className='-mt-4 -mx-4'>
+          <div>
+            <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200' />
+          </div>
+
+          <div className='px-4 sm:px-6'>
+            <div className='-mt-12 flex items-end space-x-5'>
+              <div className='flex relative'>
+                <div
+                  className='h-24 w-24 bg-gray-400 rounded-full ring-4 ring-white'
+                />
               </div>
             </div>
-            {isSmallScreen && (
-              <div className='account-mobile-container account-mobile-container--nonuser'>
-                <BundleContainer fetchComponent={ProfileInfoPanel}>
-                  {Component => <Component username={username} />}
-                </BundleContainer>
-              </div>
-            )}
           </div>
         </div>
       );
     }
 
-    const ownAccount = account.get('id') === me;
     const info = this.makeInfo();
     const menu = this.makeMenu();
-
     const header = account.get('header', '');
-    // const headerMissing = !header || ['/images/banner.png', '/headers/original/missing.png'].some(path => header.endsWith(path));
-    const avatarSize = isSmallScreen ? 90 : 200;
-    const deactivated = !account.getIn(['pleroma', 'is_active'], true);
 
-    const displayNameHtml = deactivated ? { __html: intl.formatMessage(messages.deactivated) } : { __html: account.get('display_name_html') };
-    const verified = account.getIn(['pleroma', 'tags'], ImmutableList()).includes('verified');
+    // NOTE: Removing Subscription element
+    //   {features.accountSubscriptions && <div className='account__header__subscribe'>
+    //   <SubscriptionButton account={account} />
+    // </div>}
 
     return (
-      <div className={classNames('account__header', { inactive: !!account.get('moved'), deactivated: deactivated })}>
-        <div className={classNames('account__header__image', { /* 'account__header__image--none': headerMissing || deactivated */ })}>
-          <div className='account__header__info'>
-            {info}
-          </div>
-
-          {header && <a className='account__header__header' href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
-            <StillImage src={account.get('header')} alt='' className='parallax' />
-          </a>}
-
-          {(features.accountNotifies || features.accountSubscriptions) && <div className='account__header__subscribe'>
-            <SubscriptionButton account={account} features={features} />
-          </div>}
-        </div>
-
-        <div className='account__header__bar' ref={this.setRef}>
-          <div className='account__header__extra'>
-
-            <div className={classNames('account__header__card', { 'is-locked': !isSmallScreen && isLocked })}>
-              <a className='account__header__avatar' href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank' aria-hidden={!isSmallScreen && isLocked}>
-                <Avatar account={account} size={avatarSize} />
+      <div className='-mt-4 -mx-4'>
+        <div>
+          <div className='relative h-32 w-full lg:h-48 md:rounded-t-xl bg-gray-200'>
+            {header && (
+              <a href={account.get('header')} onClick={this.handleHeaderClick} target='_blank'>
+                <StillImage
+                  src={account.get('header')}
+                  alt='Profile Header'
+                  className='absolute inset-0 object-cover md:rounded-t-xl'
+                />
               </a>
-              <div className='account__header__name' aria-hidden={isSmallScreen || !isLocked}>
-                <Avatar account={account} size={40} />
-                <div>
-                  <span dangerouslySetInnerHTML={displayNameHtml} className={classNames('profile-info-panel__name-content', { 'with-badge': verified })} />
-                  {verified && <VerificationBadge />}
-                  {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
-                  <small>
-                    @{getAcct(account, displayFqn)}
-                    {account.get('locked') && (
-                      <Icon src={require('@tabler/icons/icons/lock.svg')} title={intl.formatMessage(messages.account_locked)} />
-                    )}
-                  </small>
-                </div>
-              </div>
-            </div>
-
-            <div className='account__header__extra__links'>
-
-              <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/@${account.get('acct')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                <span>{shortNumberFormat(account.get('statuses_count'))}</span>
-                <span><FormattedMessage id='account.posts' defaultMessage='Posts' /></span>
-              </NavLink>
-
-              {(ownAccount || !account.getIn(['pleroma', 'hide_follows'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                {account.getIn(['pleroma', 'hide_follows_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('following_count'))}</span>}
-                <span><FormattedMessage id='account.follows' defaultMessage='Follows' /></span>
-              </NavLink>}
-
-              {(ownAccount || !account.getIn(['pleroma', 'hide_followers'], false)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                {account.getIn(['pleroma', 'hide_followers_count'], false) ? <span>•</span> : <span>{shortNumberFormat(account.get('followers_count'))}</span>}
-                <span><FormattedMessage id='account.followers' defaultMessage='Followers' /></span>
-              </NavLink>}
-
-              {(ownAccount || !account.getIn(['pleroma', 'hide_favorites'], true)) && <NavLink exact activeClassName='active' to={`/@${account.get('acct')}/favorites`}>
-                { /* : TODO : shortNumberFormat(account.get('favourite_count')) */ }
-                <span>•</span>
-                <span><FormattedMessage id='navigation_bar.favourites' defaultMessage='Likes' /></span>
-              </NavLink>}
-
-              {ownAccount &&
-                <NavLink
-                  exact activeClassName='active' to={`/@${account.get('acct')}/pins`}
-                >
-                  { /* : TODO : shortNumberFormat(account.get('pinned_count')) */ }
-                  <span>•</span>
-                  <span><FormattedMessage id='navigation_bar.pins' defaultMessage='Pins' /></span>
-                </NavLink>
-              }
-            </div>
-
-            {isSmallScreen && (
-              <div className={classNames('account-mobile-container', { 'deactivated': deactivated })}>
-                <BundleContainer fetchComponent={ProfileInfoPanel}>
-                  {Component => <Component username={username} account={account} />}
-                </BundleContainer>
-              </div>
             )}
 
-            <div className='account__header__extra__buttons'>
-              {me && <DropdownMenuContainer items={menu} src={require('@tabler/icons/icons/dots.svg')} direction='right' />}
-              {this.renderShareButton()}
-              {this.renderMessageButton()}
-              <ActionButton account={account} />
+            <div className='absolute top-2 left-2'>
+              <HStack alignItems='center' space={1}>
+                {info}
+              </HStack>
+            </div>
+          </div>
+        </div>
+
+        <div className='px-4 sm:px-6'>
+          <div className='-mt-12 flex items-end space-x-5'>
+            <div className='flex'>
+              <a href={account.get('avatar')} onClick={this.handleAvatarClick} target='_blank'>
+                <Avatar
+                  account={account}
+                  className='h-24 w-24 rounded-full ring-4 ring-white'
+                />
+              </a>
             </div>
 
+            <div className='mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1'>
+              <div className='mt-10 flex justify-stretch flex-row space-y-0 space-x-2'>
+                {me && (
+                  <Menu>
+                    <MenuButton
+                      as={IconButton}
+                      src={require('@tabler/icons/icons/dots.svg')}
+                      className='text-primary-700 bg-primary-100 hover:bg-primary-200 p-2'
+                      iconClassName='w-5 h-5'
+                    />
+
+                    <MenuList>
+                      {menu.map((menuItem, idx) => {
+                        if (typeof menuItem?.text === 'undefined') {
+                          return <MenuDivider key={idx} />;
+                        } else {
+                          return (
+                            <MenuLink key={idx} href={menuItem.to} onClick={menuItem.action} className='group'>
+                              <div className='flex items-center'>
+                                <InlineSVG src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500' />
+
+                                <div className='truncate'>{menuItem.text}</div>
+                              </div>
+                            </MenuLink>
+                          );
+                        }
+                      })}
+                    </MenuList>
+                  </Menu>
+
+                )}
+
+                {this.renderShareButton()}
+                {/* {this.renderMessageButton()} */}
+
+                <ActionButton account={account} />
+              </div>
+            </div>
           </div>
         </div>
       </div>

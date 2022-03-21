@@ -11,8 +11,8 @@ import {
   subscribeAccount,
   unsubscribeAccount,
 } from 'soapbox/actions/accounts';
-import Button from 'soapbox/components/button';
 import Icon from 'soapbox/components/icon';
+import { Button } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   subscribe: { id: 'account.subscribe', defaultMessage: 'Subscribe to notifications from @{name}' },

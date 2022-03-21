@@ -31,7 +31,7 @@ const mapStateToProps = state => {
     isUploading: state.getIn(['compose', 'is_uploading']),
     showSearch: state.getIn(['search', 'submitted']) && !state.getIn(['search', 'hidden']),
     anyMedia: state.getIn(['compose', 'media_attachments']).size > 0,
-    isModalOpen: state.get('modals').size && state.get('modals').last().modalType === 'COMPOSE',
+    isModalOpen: Boolean(state.get('modals').size && state.get('modals').last().modalType === 'COMPOSE'),
     maxTootChars: state.getIn(['instance', 'configuration', 'statuses', 'max_characters']),
     scheduledAt: state.getIn(['compose', 'schedule']),
     scheduledStatusCount: state.get('scheduled_statuses').size,

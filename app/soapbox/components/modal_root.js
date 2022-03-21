@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { createBrowserHistory } from 'history';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -189,21 +190,36 @@ class ModalRoot extends React.PureComponent {
   }
 
   render() {
-    const { children } = this.props;
+    const { children, type } = this.props;
     const { revealed } = this.state;
     const visible = !!children;
 
     if (!visible) {
       return (
-        <div className='modal-root' ref={this.setRef} style={{ opacity: 0 }} />
+        <div className='z-50 transition-all' ref={this.setRef} style={{ opacity: 0 }} />
       );
     }
 
     return (
-      <div className='modal-root' ref={this.setRef} style={{ opacity: revealed ? 1 : 0 }}>
-        <div style={{ pointerEvents: visible ? 'auto' : 'none' }}>
-          <div role='presentation' className='modal-root__overlay' onClick={this.handleOnClose} />
-          <div role='dialog' className='modal-root__container'>{children}</div>
+      <div
+        ref={this.setRef}
+        className={classNames({
+          'fixed top-0 left-0 z-1000 w-full h-full overflow-x-hidden overflow-y-auto': true,
+          'pointer-events-none': !visible,
+        })}
+        style={{ opacity: revealed ? 1 : 0 }}
+      >
+        <div role='presentation' id='modal-overlay' className='fixed inset-0 bg-gray-600 bg-opacity-90' onClick={this.handleOnClose} />
+
+        <div
+          role='dialog'
+          className={classNames({
+            'my-2 mx-auto relative pointer-events-none flex items-center': true,
+            'p-4 md:p-0': type !== 'MEDIA',
+          })}
+          style={{ minHeight: 'calc(100% - 3.5rem)' }}
+        >
+          {children}
         </div>
       </div>
     );

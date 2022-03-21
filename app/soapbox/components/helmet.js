@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
-import sourceCode from 'soapbox/utils/code';
+// import sourceCode from 'soapbox/utils/code';
 import FaviconService from 'soapbox/utils/favicon_service';
 
 FaviconService.initFaviconService();
@@ -22,7 +22,7 @@ const mapStateToProps = state => {
   const settings = getSettings(state);
 
   return {
-    siteTitle: state.getIn(['instance', 'title'], sourceCode.displayName),
+    siteTitle: state.getIn(['instance', 'title'], 'Truth Social'),
     unreadCount: getNotifTotals(state),
     demetricator: settings.get('demetricator'),
   };

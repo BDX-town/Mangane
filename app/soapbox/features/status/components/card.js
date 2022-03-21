@@ -7,6 +7,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import Icon from 'soapbox/components/icon';
+import { HStack } from 'soapbox/components/ui';
 
 const IDNA_PREFIX = 'xn--';
 
@@ -105,8 +106,10 @@ export default class Card extends React.PureComponent {
     );
   };
 
-  handleEmbedClick = () => {
+  handleEmbedClick = (e) => {
     const { card } = this.props;
+
+    e.stopPropagation();
 
     if (card.get('type') === 'photo') {
       this.handlePhotoClick();
@@ -167,12 +170,12 @@ export default class Card extends React.PureComponent {
     const interactive = card.get('type') !== 'link';
     const horizontal  = interactive || embedded;
     const className   = classnames('status-card', { horizontal, compact, interactive }, `status-card--${card.get('type')}`);
-    const title       = interactive ? <a className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
+    const title       = interactive ? <a onClick={(e) => e.stopPropagation()} className='status-card__title' href={card.get('url')} title={card.get('title')} rel='noopener' target='_blank'><strong>{card.get('title')}</strong></a> : <strong className='status-card__title' title={card.get('title')}>{card.get('title')}</strong>;
     const ratio       = this.getRatio(card);
     const height      = (compact && !embedded) ? (width / (16 / 9)) : (width / ratio);
 
     const description = (
-      <div className='status-card__content'>
+      <div className='status-card__content cursor-default'>
         <span className='status-card__title'>{title}</span>
         <p className='status-card__description'>{trim(card.get('description') || '', maxDescription)}</p>
         <span className='status-card__host'><Icon src={require('@tabler/icons/icons/link.svg')} /> {provider}</span>
@@ -197,10 +200,31 @@ export default class Card extends React.PureComponent {
           <div className='status-card__image'>
             {thumbnail}
 
-            <div className='status-card__actions'>
-              <div>
-                <button onClick={this.handleEmbedClick}><Icon src={iconVariant} /></button>
-                {horizontal && <a href={card.get('url')} target='_blank' rel='noopener'><Icon src={require('@tabler/icons/icons/external-link.svg')} /></a>}
+            <div className='absolute inset-0 flex items-center justify-center'>
+              <div className='bg-white shadow-md rounded-md p-2 flex items-center justify-center'>
+                <HStack space={3} alignItems='center'>
+                  <button onClick={this.handleEmbedClick} className='appearance-none text-gray-400 hover:text-gray-600'>
+                    <Icon
+                      src={iconVariant}
+                      className='w-5 h-5 text-inherit'
+                    />
+                  </button>
+
+                  {horizontal && (
+                    <a
+                      onClick={(e) => e.stopPropagation()}
+                      href={card.get('url')}
+                      target='_blank'
+                      rel='noopener'
+                      className='text-gray-400 hover:text-gray-600'
+                    >
+                      <Icon
+                        src={require('@tabler/icons/icons/external-link.svg')}
+                        className='w-5 h-5 text-inherit'
+                      />
+                    </a>
+                  )}
+                </HStack>
               </div>
             </div>
           </div>

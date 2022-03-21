@@ -10,7 +10,7 @@ import Icon from 'soapbox/components/icon';
 
 import Motion from '../features/ui/util/optional_motion';
 
-import IconButton from './icon_button';
+import { IconButton } from './ui';
 
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
@@ -233,6 +233,7 @@ export default class Dropdown extends React.PureComponent {
 
   handleClick = e => {
     const { onOpen, onShiftClick, openDropdownId } = this.props;
+    e.stopPropagation();
 
     if (onShiftClick && e.shiftKey) {
       e.preventDefault();
@@ -286,12 +287,12 @@ export default class Dropdown extends React.PureComponent {
     const { action, to } = this.props.items[i];
 
     this.handleClose();
+    e.preventDefault();
+    e.stopPropagation();
 
     if (typeof action === 'function') {
-      e.preventDefault();
-      action();
+      action(e);
     } else if (to) {
-      e.preventDefault();
       this.context.router.history.push(to);
     }
   }
@@ -311,31 +312,33 @@ export default class Dropdown extends React.PureComponent {
   }
 
   render() {
-    const { icon, src, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard, active, pressed, text } = this.props;
+    const { src, items, size, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard, pressed, text } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
-      <div>
+      <>
         <IconButton
-          icon={icon}
-          src={src}
-          title={title}
-          active={open || active}
-          pressed={pressed}
           disabled={disabled}
+          className={classNames({
+            'text-gray-400 hover:text-gray-600': true,
+            'text-gray-600': open,
+          })}
+          title={title}
+          src={src}
+          pressed={pressed}
           size={size}
           text={text}
-          ref={this.setTargetRef}
           onClick={this.handleClick}
           onMouseDown={this.handleMouseDown}
           onKeyDown={this.handleButtonKeyDown}
           onKeyPress={this.handleKeyPress}
+          ref={this.setTargetRef}
         />
 
         <Overlay show={open} placement={dropdownPlacement} target={this.findTarget}>
           <DropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} />
         </Overlay>
-      </div>
+      </>
     );
   }
 

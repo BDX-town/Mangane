@@ -8,16 +8,11 @@ import { connect } from 'react-redux';
 
 import { createApp } from 'soapbox/actions/apps';
 import { obtainOAuthToken } from 'soapbox/actions/oauth';
-import {
-  SimpleForm,
-  TextInput,
-  SimpleTextarea,
-  FieldsGroup,
-} from 'soapbox/features/forms';
-import Accordion from 'soapbox/features/ui/components/accordion';
 import Column from 'soapbox/features/ui/components/column';
 import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { Button, Form, FormActions, FormGroup, Input, Stack, Text, Textarea } from '../../../components/ui';
 
 const messages = defineMessages({
   heading: { id: 'column.app_create', defaultMessage: 'Create app' },
@@ -60,7 +55,6 @@ class CreateApp extends ImmutablePureComponent {
       app: null,
       token: null,
       isLoading: false,
-      explanationExpanded: true,
     };
   }
 
@@ -128,59 +122,53 @@ class CreateApp extends ImmutablePureComponent {
     this.scrollToTop();
   }
 
-  toggleExplanation = expanded => {
-    this.setState({ explanationExpanded: expanded });
-  }
-
   scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   renderResults = () => {
     const { intl } = this.props;
-    const { app, token, explanationExpanded } = this.state;
+    const { app, token } = this.state;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <SimpleForm>
-          <FieldsGroup>
-            <Accordion
-              headline={<FormattedMessage id='app_create.results.explanation_title' defaultMessage='App created successfully' />}
-              expanded={explanationExpanded}
-              onToggle={this.toggleExplanation}
-            >
+      <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
+        <Form>
+          <Stack>
+            <Text size='lg' weight='medium'>
+              <FormattedMessage id='app_create.results.explanation_title' defaultMessage='App created successfully' />
+            </Text>
+            <Text theme='muted'>
               <FormattedMessage
                 id='app_create.results.explanation_text'
                 defaultMessage='You created a new app and token! Please copy the credentials somewhere; you will not see them again after navigating away from this page.'
               />
-            </Accordion>
-          </FieldsGroup>
-          <FieldsGroup>
-            <div className='code-editor'>
-              <SimpleTextarea
-                label={<FormattedMessage id='app_create.results.app_label' defaultMessage='App' />}
-                value={JSON.stringify(app, null, 2)}
-                rows={10}
-                readOnly
-              />
-            </div>
-          </FieldsGroup>
-          <FieldsGroup>
-            <div className='code-editor'>
-              <SimpleTextarea
-                label={<FormattedMessage id='app_create.results.token_label' defaultMessage='OAuth token' />}
-                value={JSON.stringify(token, null, 2)}
-                rows={10}
-                readOnly
-              />
-            </div>
-          </FieldsGroup>
-          <div className='actions'>
-            <button name='button' onClick={this.handleReset} className='btn button button-primary'>
+            </Text>
+          </Stack>
+
+          <FormGroup labelText={<FormattedMessage id='app_create.results.app_label' defaultMessage='App' />}>
+            <Textarea
+              value={JSON.stringify(app, null, 2)}
+              rows={10}
+              readOnly
+              isCodeEditor
+            />
+          </FormGroup>
+
+          <FormGroup labelText={<FormattedMessage id='app_create.results.token_label' defaultMessage='OAuth token' />}>
+            <Textarea
+              value={JSON.stringify(token, null, 2)}
+              rows={10}
+              readOnly
+              isCodeEditor
+            />
+          </FormGroup>
+
+          <FormActions>
+            <Button theme='primary' type='button' onClick={this.handleReset}>
               <FormattedMessage id='app_create.restart' defaultMessage='Create another' />
-            </button>
-          </div>
-        </SimpleForm>
+            </Button>
+          </FormActions>
+        </Form>
       </Column>
     );
   }
@@ -194,43 +182,49 @@ class CreateApp extends ImmutablePureComponent {
     }
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <SimpleForm onSubmit={this.handleSubmit}>
-          <fieldset disabled={isLoading}>
-            <TextInput
-              label={<FormattedMessage id='app_create.name_label' defaultMessage='App name' />}
+      <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
+        <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+          <FormGroup labelText={<FormattedMessage id='app_create.name_label' defaultMessage='App name' />}>
+            <Input
               placeholder={intl.formatMessage(messages.namePlaceholder)}
               onChange={this.handleParamChange('client_name')}
               value={params.get('client_name')}
               required
             />
-            <TextInput
-              label={<FormattedMessage id='app_create.website_label' defaultMessage='Website' />}
+          </FormGroup>
+
+          <FormGroup labelText={<FormattedMessage id='app_create.website_label' defaultMessage='Website' />}>
+            <Input
               placeholder='https://soapbox.pub'
               onChange={this.handleParamChange('website')}
               value={params.get('website')}
             />
-            <TextInput
-              label={<FormattedMessage id='app_create.redirect_uri_label' defaultMessage='Redirect URIs' />}
+          </FormGroup>
+
+          <FormGroup labelText={<FormattedMessage id='app_create.redirect_uri_label' defaultMessage='Redirect URIs' />}>
+            <Input
               placeholder='https://example.com'
               onChange={this.handleParamChange('redirect_uris')}
               value={params.get('redirect_uris')}
               required
             />
-            <TextInput
-              label={<FormattedMessage id='app_create.scopes_label' defaultMessage='Scopes' />}
+          </FormGroup>
+
+          <FormGroup labelText={<FormattedMessage id='app_create.scopes_label' defaultMessage='Scopes' />}>
+            <Input
               placeholder={intl.formatMessage(messages.scopesPlaceholder)}
               onChange={this.handleParamChange('scopes')}
               value={params.get('scopes')}
               required
             />
-            <div className='actions'>
-              <button name='button' type='submit' className='btn button button-primary'>
-                <FormattedMessage id='app_create.submit' defaultMessage='Create app' />
-              </button>
-            </div>
-          </fieldset>
-        </SimpleForm>
+          </FormGroup>
+
+          <FormActions>
+            <Button theme='primary' type='submit'>
+              <FormattedMessage id='app_create.submit' defaultMessage='Create app' />
+            </Button>
+          </FormActions>
+        </Form>
       </Column>
     );
   }

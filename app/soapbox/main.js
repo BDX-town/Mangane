@@ -1,11 +1,11 @@
 'use strict';
 
 import './precheck';
-import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
+// import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NODE_ENV } from 'soapbox/build_config';
+// import { NODE_ENV } from 'soapbox/build_config';
 
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
@@ -23,10 +23,10 @@ function main() {
 
     ReactDOM.render(<Soapbox />, mountNode);
 
-    if (NODE_ENV === 'production') {
-      // avoid offline in dev mode because it's harder to debug
-      OfflinePluginRuntime.install();
-    }
+    // if (NODE_ENV === 'production') {
+    //   // avoid offline in dev mode because it's harder to debug
+    //   OfflinePluginRuntime.install();
+    // }
     perf.stop('main()');
   });
 }

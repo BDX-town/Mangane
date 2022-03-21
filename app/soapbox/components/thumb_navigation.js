@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 import { NavLink, withRouter } from 'react-router-dom';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { isStaff } from 'soapbox/utils/accounts';
+import { Icon, Text } from 'soapbox/components/ui';
 import { getFeatures } from 'soapbox/utils/features';
 
 const mapStateToProps = state => {
@@ -43,43 +42,55 @@ class ThumbNavigation extends React.PureComponent {
   }
 
   render() {
-    const { account, notificationCount, chatsCount, dashboardCount, location, features } = this.props;
+    const { account, notificationCount, chatsCount, location, features } = this.props;
 
     return (
       <div className='thumb-navigation'>
         <NavLink to='/' exact className='thumb-navigation__link'>
           <Icon
-            src={require('icons/home-square.svg')}
-            className={classNames('svg-icon--home', { 'svg-icon--active': location.pathname === '/' })}
+            src={require('icons/feed.svg')}
+            className={classNames({
+              'h-5 w-5': true,
+              'text-gray-600': location.pathname !== '/',
+              'text-primary-600': location.pathname === '/',
+            })}
           />
-          <span>
+
+          <Text tag='span' size='xs'>
             <FormattedMessage id='navigation.home' defaultMessage='Home' />
-          </span>
+          </Text>
         </NavLink>
 
         <NavLink to='/search' className='thumb-navigation__link'>
           <Icon
             src={require('@tabler/icons/icons/search.svg')}
-            className={classNames({ 'svg-icon--active': location.pathname === '/search' })}
+            className={classNames({
+              'h-5 w-5': true,
+              'text-gray-600': location.pathname !== '/search',
+              'text-primary-600': location.pathname === '/search',
+            })}
           />
-          <span>
+
+          <Text tag='span' size='xs'>
             <FormattedMessage id='navigation.search' defaultMessage='Search' />
-          </span>
+          </Text>
         </NavLink>
 
         {account && (
           <NavLink to='/notifications' className='thumb-navigation__link'>
-            <IconWithCounter
+            <Icon
               src={require('@tabler/icons/icons/bell.svg')}
               className={classNames({
-                'svg-icon--active': location.pathname === '/notifications',
-                'svg-icon--unread': notificationCount > 0,
+                'h-5 w-5': true,
+                'text-gray-600': location.pathname !== '/notifications',
+                'text-primary-600': location.pathname === '/notifications',
               })}
               count={notificationCount}
             />
-            <span>
-              <FormattedMessage id='navigation.notifications' defaultMessage='Notifications' />
-            </span>
+
+            <Text tag='span' size='xs'>
+              <FormattedMessage id='navigation.notifications' defaultMessage='Alerts' />
+            </Text>
           </NavLink>
         )}
 
@@ -99,26 +110,37 @@ class ThumbNavigation extends React.PureComponent {
             <NavLink to='/messages' className='thumb-navigation__link'>
               <Icon
                 src={require('@tabler/icons/icons/mail.svg')}
-                className={classNames({ 'svg-icon--active': ['/messages', '/conversations'].includes(location.pathname) })}
+                className={classNames({
+                  'h-5 w-5': true,
+                  'text-gray-600': !['/messages', '/conversations'].includes(location.pathname),
+                  'text-primary-600': ['/messages', '/conversations'].includes(location.pathname),
+                })}
               />
-              <span>
+
+              <Text tag='span' size='xs'>
                 <FormattedMessage id='navigation.direct_messages' defaultMessage='Messages' />
-              </span>
+              </Text>
             </NavLink>
           )
         )}
 
-        {(account && isStaff(account)) && (
-          <NavLink key='dashboard' to='/admin' className='thumb-navigation__link'>
-            <IconWithCounter
-              src={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+        {/* (account && isStaff(account)) && (
+          <NavLink to='/admin' className='thumb-navigation__link'>
+            <Icon
+              src={require('@tabler/icons/icons/dashboard.svg')}
+              className={classNames({
+                'h-5 w-5': true,
+                'text-gray-600': !location.pathname.startsWith('/admin'),
+                'text-primary-600': location.pathname.startsWith('/admin'),
+              })}
               count={dashboardCount}
             />
-            <span>
+
+            <Text tag='span' size='xs'>
               <FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />
-            </span>
+            </Text>
           </NavLink>
-        )}
+        ) */}
       </div>
     );
   }

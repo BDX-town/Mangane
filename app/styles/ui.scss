@@ -168,11 +168,11 @@
 
     .spoiler-input__input,
     .autosuggest-textarea__textarea {
-      background-color: var(--background-color);
+      // background-color: var(--background-color);
     }
 
     .autosuggest-textarea__textarea {
-      padding: 14px 32px 13px 10px !important;
+      // padding: 14px 32px 13px 10px !important;
     }
 
     .compose-form__autosuggest-wrapper {
@@ -208,6 +208,7 @@
 }
 
 .emojione {
+  display: inline-block;
   font-size: inherit;
   vertical-align: middle;
   object-fit: contain;
@@ -220,9 +221,7 @@
   }
 }
 
-.status__relative-time,
-.notification__relative_time,
-.quoted-status__relative-time {
+.status__relative-time {
   color: var(--primary-text-color--faint);
   float: right;
   font-size: 14px;
@@ -313,20 +312,12 @@ article:last-child > .domain {
 }
 
 .zoomable-image {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply relative w-full h-full flex items-center justify-center;
 
   img {
+    @apply w-auto h-auto object-contain shadow-2xl;
     max-width: $media-modal-media-max-width;
     max-height: $media-modal-media-max-height;
-    width: auto;
-    height: auto;
-    object-fit: contain;
-    box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -349,6 +340,14 @@ article:last-child > .domain {
   display: block;
   width: 100%;
   padding: 0 0 calc(var(--thumb-navigation-height) + 86px);
+
+  .bg-shape-container {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 
   .page {
     display: flex;
@@ -379,39 +378,14 @@ article:last-child > .domain {
 }
 
 .floating-action-button {
-  z-index: 1000;
-  display: none;
-  position: fixed;
-  bottom: calc(var(--thumb-navigation-height) + 14px);
-  right: 14px;
-  width: 58px;
-  height: 58px;
-  background-color: var(--brand-color);
-  color: white;
-  border: 0;
-  border-radius: 10px;
-  font-size: 30px;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-
-  @media screen and (max-width: 630px) {
-    display: flex;
-  }
-
-  &:hover,
-  &:focus,
-  &:active {
-    background-color: var(--brand-color--hicontrast);
-  }
+  @apply z-40 lg:hidden transition-all fixed bottom-24 right-4 p-4 text-white bg-accent-300 hover:bg-accent-500 rounded-full;
 
   .svg-icon {
-    width: 30px;
-    height: 30px;
+    @apply w-6 h-6;
 
     svg {
+      @apply w-6; // iOS fix
       stroke-width: 1.5px;
-      width: 30px; // iOS fix
     }
   }
 }
@@ -428,7 +402,6 @@ article:last-child > .domain {
   height: 100%;
 
   &__badge {
-    @include font-montserrat;
     @include font-size(14);
     @include line-height(14);
     position: absolute;
@@ -639,7 +612,6 @@ article:last-child > .domain {
 
 .filter-bar,
 .account__section-headline {
-  border-bottom: 1px solid var(--brand-color--faint);
   cursor: default;
   display: flex;
   flex-shrink: 0;
@@ -651,37 +623,13 @@ article:last-child > .domain {
 
   button,
   a {
-    display: block;
-    flex: 1 1 auto;
-    color: var(--primary-text-color--faint);
-    padding: 15px 0;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: center;
-    text-decoration: none;
-    position: relative;
-    background: transparent;
+    @apply block flex-1 text-gray-500 py-4 text-sm font-semibold text-center relative no-underline;
 
     &:active,
     &:focus,
     &:hover,
     &.active {
-      color: var(--primary-text-color);
-    }
-
-    &.active {
-      &::before,
-      &::after {
-        display: block;
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 100%;
-        height: 3px;
-        transform: translateX(-50%);
-        background-color: var(--accent-color);
-      }
+      @apply text-gray-900;
     }
 
     .svg-icon {
@@ -693,13 +641,14 @@ article:last-child > .domain {
 }
 
 .filter-bar {
-  position: relative;
+  @apply relative;
 
   &__active {
-    position: absolute;
-    height: 3px;
-    bottom: 0;
-    background-color: var(--accent-color);
+    @apply absolute h-[3px] bottom-0 bg-primary-600;
+  }
+
+  &__bottom {
+    @apply absolute h-[3px] w-full bottom-0 bg-primary-200;
   }
 }
 
@@ -729,23 +678,11 @@ article:last-child > .domain {
   100% { opacity: 1; }
 }
 
-.verified-icon {
-  display: inline-flex;
-  margin: 0 4px 0 1px;
-  vertical-align: top;
-  position: relative;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-  color: var(--brand-color);
-}
-
 .icon-with-counter {
   position: relative;
   display: inline;
 
   &__counter {
-    @include font-montserrat;
     @include font-size(14);
     @include line-height(14);
     position: absolute;
@@ -766,4 +703,12 @@ article:last-child > .domain {
   @media screen and (max-width: 580px) {
     padding-top: 10px;
   }
+}
+
+.text-muted {
+  color: var(--gray-500);
+}
+
+.mb-10 {
+  margin-bottom: 10px;
 }

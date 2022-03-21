@@ -5,27 +5,22 @@ import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { getDomain } from 'soapbox/utils/accounts';
 
+import AccountContainer from '../containers/account_container';
 import Card from '../features/status/components/card';
 import Bundle from '../features/ui/components/bundle';
 import { MediaGallery, Video, Audio } from '../features/ui/util/async-components';
 
 import AttachmentThumbs from './attachment_thumbs';
-import Avatar from './avatar';
-import AvatarComposite from './avatar_composite';
-import AvatarOverlay from './avatar_overlay';
-import DisplayName from './display_name';
-import RelativeTimestamp from './relative_timestamp';
 import StatusActionBar from './status_action_bar';
 import StatusContent from './status_content';
 import StatusReplyMentions from './status_reply_mentions';
+import { HStack, Text } from './ui';
 
 export const textForScreenReader = (intl, status, rebloggedByText = false) => {
   const displayName = status.getIn(['account', 'display_name']);
@@ -314,12 +309,18 @@ class Status extends ImmutablePureComponent {
     this.node = c;
   }
 
+  setRef = c => {
+    if (c) {
+      this.setState({ mediaWrapperWidth: c.offsetWidth });
+    }
+  }
+
   render() {
     let media = null;
     const poll = null;
-    let statusAvatar, prepend, rebloggedByText, reblogContent;
+    let prepend, rebloggedByText, reblogContent, reblogElement, reblogElementMobile;
 
-    const { intl, hidden, featured, otherAccounts, unread, group } = this.props;
+    const { intl, hidden, featured, unread, group } = this.props;
 
     // FIXME: why does this need to reassign status and account??
     let { status, account, ...other } = this.props; // eslint-disable-line prefer-const
@@ -354,38 +355,77 @@ class Status extends ImmutablePureComponent {
 
     if (featured) {
       prepend = (
-        <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'>
-            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='status__prepend-icon status__prepend-icon--pinned' />
-          </div>
-          <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+        <div className='pt-4 px-4'>
+          <HStack alignItems='center' space={1}>
+            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='text-gray-600' />
+
+            <Text size='sm' theme='muted' weight='medium'>
+              <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
+            </Text>
+          </HStack>
         </div>
       );
-    } else if (status.get('reblog', null) !== null && typeof status.get('reblog') === 'object') {
-      const display_name_html = { __html: status.getIn(['account', 'display_name_html']) };
+    }
 
-      prepend = (
-        <div className='status__prepend'>
-          <div className='status__prepend-icon-wrapper'>
-            <Icon src={require('feather-icons/dist/icons/repeat.svg')} className='status__prepend-icon' />
-          </div>
-          <FormattedMessage
-            id='status.reblogged_by' defaultMessage='{name} reposted' values={{
-              name: <NavLink to={`/@${status.getIn(['account', 'acct'])}`} className='status__display-name muted'>
-                <bdi>
-                  <strong dangerouslySetInnerHTML={display_name_html} />
-                </bdi>
-              </NavLink>,
-            }}
-          />
+    if (status.get('reblog', null) !== null && typeof status.get('reblog') === 'object') {
+      const displayNameHtml = { __html: status.getIn(['account', 'display_name_html']) };
+
+      reblogElement = (
+        <NavLink
+          to={`/@${status.getIn(['account', 'acct'])}`}
+          onClick={(event) => event.stopPropagation()}
+          className='hidden sm:flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
+        >
+          <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
+
+          <HStack alignItems='center'>
+            <FormattedMessage
+              id='status.reblogged_by'
+              defaultMessage='{name} reposted'
+              values={{
+                name: <bdi className='max-w-[100px] truncate pr-1'>
+                  <strong className='text-gray-800' dangerouslySetInnerHTML={displayNameHtml} />
+                </bdi>,
+              }}
+            />
+          </HStack>
+        </NavLink>
+      );
+
+      reblogElementMobile = (
+        <div className='pt-4 px-4 sm:hidden truncate'>
+          <NavLink
+            to={`/@${status.getIn(['account', 'acct'])}`}
+            onClick={(event) => event.stopPropagation()}
+            className='flex items-center text-gray-500 text-xs font-medium space-x-1 hover:underline'
+          >
+            <Icon src={require('@tabler/icons/icons/repeat.svg')} className='text-green-600' />
+
+            <span>
+              <FormattedMessage
+                id='status.reblogged_by'
+                defaultMessage='{name} reposted'
+                values={{
+                  name: <bdi>
+                    <strong className='text-gray-800' dangerouslySetInnerHTML={displayNameHtml} />
+                  </bdi>,
+                }}
+              />
+            </span>
+          </NavLink>
         </div>
       );
 
-      rebloggedByText = intl.formatMessage({ id: 'status.reblogged_by', defaultMessage: '{name} reposted' }, { name: status.getIn(['account', 'acct']) });
+      rebloggedByText = intl.formatMessage({
+        id: 'status.reblogged_by',
+        defaultMessage: '{name} reposted',
+      }, {
+        name: status.getIn(['account', 'acct']),
+      });
 
       account = status.get('account');
       reblogContent = status.get('contentHtml');
-      status        = status.get('reblog');
+      status = status.get('reblog');
     }
 
     const size = status.get('media_attachments').size;
@@ -402,27 +442,51 @@ class Status extends ImmutablePureComponent {
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
-        media = (
-          <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
-            {Component => (
-              <Component
-                preview={video.get('preview_url')}
-                blurhash={video.get('blurhash')}
-                src={video.get('url')}
-                alt={video.get('description')}
-                aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
-                width={this.props.cachedMediaWidth}
-                height={285}
-                inline
-                sensitive={status.get('sensitive')}
-                onOpenVideo={this.handleOpenVideo}
-                cacheWidth={this.props.cacheMediaWidth}
-                visible={this.state.showMedia}
-                onToggleVisibility={this.handleToggleMediaVisibility}
-              />
-            )}
-          </Bundle>
-        );
+        const external_id = (video.get('external_video_id'));
+        if (external_id) {
+          const { mediaWrapperWidth } = this.state;
+          const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
+          media = (
+            <div className='status-card horizontal compact interactive status-card--video'>
+              <div
+                ref={this.setRef}
+                className='status-card__image status-card-video'
+                style={height ? { height } : {}}
+              >
+                <iframe
+                  src={`https://rumble.com/embed/${external_id}/`}
+                  frameBorder='0'
+                  allowFullScreen
+                  webkitallowfullscreen='true'
+                  mozallowfullscreen='true'
+                  title=''
+                />
+              </div>
+            </div>
+          );
+        } else {
+          media = (
+            <Bundle fetchComponent={Video} loading={this.renderLoadingVideoPlayer} >
+              {Component => (
+                <Component
+                  preview={video.get('preview_url')}
+                  blurhash={video.get('blurhash')}
+                  src={video.get('url')}
+                  alt={video.get('description')}
+                  aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
+                  width={this.props.cachedMediaWidth}
+                  height={285}
+                  inline
+                  sensitive={status.get('sensitive')}
+                  onOpenVideo={this.handleOpenVideo}
+                  cacheWidth={this.props.cacheMediaWidth}
+                  visible={this.state.showMedia}
+                  onToggleVisibility={this.handleToggleMediaVisibility}
+                />
+              )}
+            </Bundle>
+          );
+        }
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
         const attachment = status.getIn(['media_attachments', 0]);
 
@@ -492,14 +556,6 @@ class Status extends ImmutablePureComponent {
       }
     }
 
-    if (otherAccounts && otherAccounts.size > 1) {
-      statusAvatar = <AvatarComposite accounts={otherAccounts} size={48} />;
-    } else if (account === undefined || account === null) {
-      statusAvatar = <Avatar account={status.get('account')} size={48} />;
-    } else {
-      statusAvatar = <AvatarOverlay account={status.get('account')} friend={account} />;
-    }
-
     const handlers = this.props.muted ? {} : {
       reply: this.handleHotkeyReply,
       favourite: this.handleHotkeyFavourite,
@@ -516,70 +572,76 @@ class Status extends ImmutablePureComponent {
     };
 
     const statusUrl = `/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`;
-    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
-    const domain = getDomain(status.get('account'));
+    // const favicon = status.getIn(['account', 'pleroma', 'favicon']);
+    // const domain = getDomain(status.get('account'));
 
     return (
       <HotKeys handlers={handlers}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id'), read: unread === false, focusable: this.props.focusable && !this.props.muted })} tabIndex={this.props.focusable && !this.props.muted ? 0 : null} data-featured={featured ? 'true' : null} aria-label={textForScreenReader(intl, status, rebloggedByText)} ref={this.handleRef}>
+        <div
+          className='status cursor-pointer'
+          tabIndex={this.props.focusable && !this.props.muted ? 0 : null}
+          data-featured={featured ? 'true' : null}
+          aria-label={textForScreenReader(intl, status, rebloggedByText)}
+          ref={this.handleRef}
+          onClick={() => this.context.router.history.push(statusUrl)}
+          role='link'
+        >
           {prepend}
+          {reblogElementMobile}
 
-          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted, read: unread === false })} data-id={status.get('id')}>
-            <div className='status__expand' onClick={this.handleExpandClick} role='presentation' />
-            <div className='status__info'>
-              <NavLink to={statusUrl} className='status__relative-time'>
-                <RelativeTimestamp timestamp={status.get('created_at')} />
-              </NavLink>
-
-              {favicon &&
-                <div className='status__favicon'>
-                  <Link to={`/timeline/${domain}`}>
-                    <img src={favicon} alt='' title={domain} />
-                  </Link>
-                </div>}
-
-              <div className='status__profile'>
-                <div className='status__avatar'>
-                  <HoverRefWrapper accountId={status.getIn(['account', 'id'])}>
-                    <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
-                      {statusAvatar}
-                    </NavLink>
-                  </HoverRefWrapper>
-                </div>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                  <DisplayName account={status.get('account')} others={otherAccounts} />
-                </NavLink>
-              </div>
+          <div
+            className={classNames({
+              'status__wrapper': true,
+              [`status-${status.get('visibility')}`]: true,
+              'status-reply': !!status.get('in_reply_to_id'),
+              muted: this.props.muted,
+              read: unread === false,
+            })}
+            data-id={status.get('id')}
+          >
+            <div className='mb-4'>
+              <HStack justifyContent='between' alignItems='start'>
+                <AccountContainer
+                  key={status.getIn(['account', 'id'])}
+                  id={status.getIn(['account', 'id'])}
+                  timestamp={status.get('created_at')}
+                  timestampUrl={statusUrl}
+                  action={reblogElement}
+                  hideActions={!reblogElement}
+                />
+              </HStack>
             </div>
 
-            {!group && status.get('group') && (
-              <div className='status__meta'>
-                Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
-              </div>
-            )}
+            <div className='status__content-wrapper'>
+              {!group && status.get('group') && (
+                <div className='status__meta'>
+                  Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
+                </div>
+              )}
 
-            <StatusReplyMentions status={this._properStatus()} />
+              <StatusReplyMentions status={this._properStatus()} />
 
-            <StatusContent
-              status={status}
-              reblogContent={reblogContent}
-              onClick={this.handleClick}
-              expanded={!status.get('hidden')}
-              onExpandedToggle={this.handleExpandedToggle}
-              collapsable
-            />
+              <StatusContent
+                status={status}
+                reblogContent={reblogContent}
+                onClick={this.handleClick}
+                expanded={!status.get('hidden')}
+                onExpandedToggle={this.handleExpandedToggle}
+                collapsable
+              />
 
-            {media}
-            {poll}
-            {quote}
+              {media}
+              {poll}
+              {quote}
 
-            <StatusActionBar
-              status={status}
-              account={account}
-              emojiSelectorFocused={this.state.emojiSelectorFocused}
-              handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
-              {...other}
-            />
+              <StatusActionBar
+                status={status}
+                account={account}
+                emojiSelectorFocused={this.state.emojiSelectorFocused}
+                handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}
+                {...other}
+              />
+            </div>
           </div>
         </div>
       </HotKeys>

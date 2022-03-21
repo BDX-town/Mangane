@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
-import { SimpleForm, TextInput } from 'soapbox/features/forms';
+import { Button, Form, FormActions, FormGroup, Input, Text } from 'soapbox/components/ui';
+
 
 import Column from '../ui/components/column';
 
@@ -54,31 +55,36 @@ class DevelopersChallenge extends React.Component {
 }`;
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
-        <div className='developers-challenge'>
-          <SimpleForm onSubmit={this.handleSubmit}>
+      <Column label={intl.formatMessage(messages.heading)}>
+        <Form onSubmit={this.handleSubmit}>
+          <Text>
             <FormattedMessage
               id='developers.challenge.message'
               defaultMessage='What is the result of calling {function}?'
-              values={{ function: <span className='code'>soapbox()</span> }}
+              values={{ function: <span className='font-mono'>soapbox()</span> }}
             />
-            <pre className='code'>
-              {challenge}
-            </pre>
-            <TextInput
+          </Text>
+          <Text tag='pre' family='mono'>
+            {challenge}
+          </Text>
+
+          <FormGroup
+            labelText={intl.formatMessage(messages.answerLabel)}
+          >
+            <Input
               name='answer'
-              label={intl.formatMessage(messages.answerLabel)}
               placeholder={intl.formatMessage(messages.answerPlaceholder)}
               onChange={this.handleChangeAnswer}
               value={this.state.answer}
             />
-            <div className='actions'>
-              <button name='button' type='submit' className='btn button button-primary'>
-                <FormattedMessage id='developers.challenge.submit' defaultMessage='Become a developer' />
-              </button>
-            </div>
-          </SimpleForm>
-        </div>
+          </FormGroup>
+
+          <FormActions>
+            <Button theme='primary' type='submit'>
+              <FormattedMessage id='developers.challenge.submit' defaultMessage='Become a developer' />
+            </Button>
+          </FormActions>
+        </Form>
       </Column>
     );
   }

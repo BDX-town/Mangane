@@ -1,73 +1,52 @@
 .notification-list {
-  position: fixed;
-  bottom: var(--thumb-navigation-height);
-  z-index: 1000; /* Above ThumbNavigation */
-  width: 100%;
-
-  @media (min-width: 895px) {
-    bottom: 0;
-  }
+  @apply w-full flex flex-col items-center space-y-2 sm:items-end;
 }
 
-.snackbar {
-  font-size: 16px !important;
-  padding: 10px 20px 10px 14px !important;
-  position: absolute !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.notification-bar {
+  @apply max-w-sm w-full flex flex-row items-center bg-white shadow-lg rounded-lg pointer-events-auto ring-1 ring-black ring-opacity-5 overflow-hidden;
 
   &::before {
     font-family: 'Font Awesome 5 Free';
     font-weight: 900;
     font-size: 20px;
-    margin-right: 8px;
   }
+}
 
-  &--info {
-    background-color: #19759e !important;
+.notification-bar-success {
+  @apply text-success-500;
 
-    &::before {
-      content: '\f05a';
-    }
+  &::before {
+    @apply ml-4;
+    content: '\f058';
   }
+}
 
-  &--post {
-    background-color: #0482d8 !important;
+.notification-bar-error {
+  @apply text-danger-500 ml-4;
+
+  &::before {
+    @apply ml-4;
+    content: '\f057';
   }
+}
 
-  &--success {
-    background-color: #199e5a !important;
+.notification-bar-info {
+  @apply text-primary-500 ml-4;
 
-    &::before {
-      content: '\f00c';
-    }
+  &::before {
+    @apply ml-4;
+    content: '\f05a';
   }
+}
 
-  &--error {
-    background-color: #9e1919 !important;
+.notification-bar-wrapper {
+  @apply p-4 flex items-start;
+}
 
-    &::before {
-      content: '\f05e';
-    }
-  }
+.notification-bar-title {
+  @apply mb-1 text-sm font-medium text-gray-900;
+}
 
-  .notification-bar-wrapper {
-    transform: translateY(1px);
-  }
-
-  .notification-bar-action a {
-    @include font-roboto;
-    font-size: 16px;
-    color: white;
-    font-weight: 700;
-    text-decoration: none;
-    text-transform: none;
-
-    &:hover,
-    &:active,
-    &:focus {
-      text-decoration: underline;
-    }
-  }
+.notification-bar-message {
+  @apply text-sm text-gray-700;
 }

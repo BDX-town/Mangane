@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import IconWithCounter from 'soapbox/components/icon_with_counter';
-import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
 const messages = defineMessages({
@@ -21,7 +20,6 @@ const messages = defineMessages({
 
 const mapStateToProps = state => {
   const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
 
   const instance = state.get('instance');
   const features = getFeatures(instance);
@@ -29,7 +27,6 @@ const mapStateToProps = state => {
   return {
     isLocked: state.getIn(['accounts', me, 'locked']),
     followRequestsCount: state.getIn(['user_lists', 'follow_requests', 'items'], ImmutableOrderedSet()).count(),
-    baseURL: getBaseURL(account),
     features,
   };
 };
@@ -42,22 +39,15 @@ class FeaturesPanel extends React.PureComponent {
     intl: PropTypes.object.isRequired,
     isLocked: PropTypes.bool,
     followRequestsCount: PropTypes.number,
-    baseURL: PropTypes.string,
     features: PropTypes.object.isRequired,
   };
 
   render() {
-    const { intl, isLocked, followRequestsCount, baseURL, features } = this.props;
+    const { intl, isLocked, followRequestsCount, features } = this.props;
 
     return (
-      <div className='wtf-panel promo-panel'>
+      <div className='wtf-panel promo-panel panel'>
         <div className='promo-panel__container'>
-
-          <NavLink className='promo-panel-item' to='/settings/profile'>
-            <Icon src={require('@tabler/icons/icons/user.svg')} className='promo-panel-item__icon' />
-            {intl.formatMessage(messages.edit_profile)}
-          </NavLink>
-
           {(isLocked || followRequestsCount > 0) && <NavLink className='promo-panel-item' to='/follow_requests'>
             <IconWithCounter src={require('@tabler/icons/icons/user-plus.svg')} count={followRequestsCount} className='promo-panel-item__icon' />
             {intl.formatMessage(messages.follow_requests)}
@@ -76,31 +66,6 @@ class FeaturesPanel extends React.PureComponent {
               {intl.formatMessage(messages.lists)}
             </NavLink>
           )}
-
-          {features.securityAPI ? (
-            <NavLink className='promo-panel-item' to='/auth/edit'>
-              <Icon src={require('@tabler/icons/icons/lock.svg')} className='promo-panel-item__icon' />
-              {intl.formatMessage(messages.security)}
-            </NavLink>
-          ) : (
-            <a className='promo-panel-item' href={`${baseURL}/auth/edit`}>
-              <Icon src={require('@tabler/icons/icons/lock.svg')} className='promo-panel-item__icon' />
-              {intl.formatMessage(messages.security)}
-            </a>
-          )}
-
-          {features.settingsStore ? (
-            <NavLink className='promo-panel-item' to='/settings/preferences'>
-              <Icon src={require('@tabler/icons/icons/settings.svg')} className='promo-panel-item__icon' />
-              {intl.formatMessage(messages.preferences)}
-            </NavLink>
-          ) : (
-            <a className='promo-panel-item' href={`${baseURL}/settings/preferences`}>
-              <Icon src={require('@tabler/icons/icons/settings.svg')} className='promo-panel-item__icon' />
-              {intl.formatMessage(messages.preferences)}
-            </a>
-          )}
-
         </div>
       </div>
     );

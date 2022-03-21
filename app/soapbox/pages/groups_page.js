@@ -7,7 +7,7 @@ import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import LinkFooter from '../features/ui/components/link_footer';
 import PromoPanel from '../features/ui/components/promo_panel';
 import UserPanel from '../features/ui/components/user_panel';
-import WhoToFollowPanel from '../features/ui/components/who_to_follow_panel';
+import WhoToFollowPanel from '../features/ui/components/who-to-follow-panel';
 
 const mapStateToProps = state => {
   const me = state.get('me');

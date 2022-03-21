@@ -13,8 +13,8 @@ import { getFeatures } from 'soapbox/utils/features';
 import { blockAccount } from '../../../actions/accounts';
 import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
 import { expandAccountTimeline } from '../../../actions/timelines';
-import Button from '../../../components/button';
 import IconButton from '../../../components/icon_button';
+import { Button } from '../../../components/ui';
 import { makeGetAccount } from '../../../selectors';
 import StatusCheckBox from '../../report/containers/status_check_box_container';
 
@@ -147,7 +147,7 @@ class ReportModal extends ImmutablePureComponent {
               </div>
             </div>
 
-            <Button disabled={isSubmitting} text={intl.formatMessage(messages.submit)} onClick={this.handleSubmit} />
+            <Button disabled={isSubmitting} onClick={this.handleSubmit}>{intl.formatMessage(messages.submit)}</Button>
           </div>
 
           <div className='report-modal__statuses'>

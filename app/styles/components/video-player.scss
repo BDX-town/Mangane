@@ -115,7 +115,7 @@
     }
   }
 
-  &.inline {
+  &--inline {
     video {
       object-fit: contain;
       position: relative;
@@ -139,7 +139,7 @@
     }
   }
 
-  &.inactive {
+  &--inactive {
     min-height: 300px;
 
     video,

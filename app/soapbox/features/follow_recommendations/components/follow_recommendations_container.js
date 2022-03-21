@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from 'soapbox/components/button';
+import { Button } from 'soapbox/components/ui';
 
 import FollowRecommendationsList from './follow_recommendations_list';
 
@@ -20,8 +20,9 @@ export default class FollowRecommendationsContainer extends React.Component {
     return (
       <div className='scrollable follow-recommendations-container'>
         <div className='column-title'>
-          <h3><FormattedMessage id='follow_recommendations.heading' defaultMessage="Follow people you'd like to see posts from! Here are some suggestions." /></h3>
-          <p><FormattedMessage id='follow_recommendations.lead' defaultMessage="Posts from people you follow will show up in chronological order on your home feed. Don't be afraid to make mistakes, you can unfollow people just as easily any time!" /></p>
+          <h3><FormattedMessage id='follow_recommendations.heading' defaultMessage='Welcome to TRUTH Social' />&nbsp;<span className='follow_heading'>(Beta)</span></h3>
+          <h2 className='follow_subhead'><FormattedMessage id='follow_recommendation.subhead' defaultMessage='Let&#39;s get started!' /></h2>
+          <p><FormattedMessage id='follow_recommendations.lead' defaultMessage='Don&#39;t be afraid to make mistakes; you can unfollow people at any time.' /></p>
         </div>
 
         <FollowRecommendationsList />

@@ -5,6 +5,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { v4 as uuidv4 } from 'uuid';
 
+import { Select } from '../../components/ui';
+
 export const FormPropTypes = {
   label: PropTypes.oneOfType([
     PropTypes.string,
@@ -246,7 +248,7 @@ export class SelectDropdown extends ImmutablePureComponent {
       <option key={item} value={item}>{items[item]}</option>
     ));
 
-    const selectElem = <div className='select-wrapper'><select {...props}>{optionElems}</select></div>;
+    const selectElem = <Select {...props}>{optionElems}</Select>;
 
     return label ? (
       <LabelInputContainer label={label} hint={hint}>{selectElem}</LabelInputContainer>

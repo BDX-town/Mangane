@@ -9,7 +9,7 @@ import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { expandHomeTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
+import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 function FollowRecommendationsContainer() {
@@ -119,6 +119,7 @@ class HomeTimeline extends React.PureComponent {
             onLoadMore={this.handleLoadMore}
             onRefresh={this.handleRefresh}
             timelineId='home'
+            divideType='space'
             emptyMessage={<FormattedMessage id='empty_column.home' defaultMessage='Your home timeline is empty! Visit {public} to get started and meet other users.' values={{ public: <Link to='/timeline/local'><FormattedMessage id='empty_column.home.local_tab' defaultMessage='the {site_title} tab' values={{ site_title: siteTitle }} /></Link> }} />}
           />
         )}

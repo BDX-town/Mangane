@@ -5,8 +5,8 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, defineMessages } from 'react-intl';
 
-import MaterialStatus from 'soapbox/components/material_status';
-import PlaceholderMaterialStatus from 'soapbox/features/placeholder/components/placeholder_material_status';
+import StatusContainer from 'soapbox/containers/status_container';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
 import LoadGap from './load_gap';
@@ -38,7 +38,12 @@ export default class StatusList extends ImmutablePureComponent {
     withGroupAdmin: PropTypes.bool,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
+    divideType: PropTypes.oneOf(['space', 'border']),
   };
+
+  static defaultProps = {
+    divideType: 'border',
+  }
 
   componentDidMount() {
     this.handleDequeueTimeline();
@@ -112,7 +117,7 @@ export default class StatusList extends ImmutablePureComponent {
     const { timelineId, withGroupAdmin, group }  = this.props;
 
     return (
-      <MaterialStatus
+      <StatusContainer
         key={statusId}
         id={statusId}
         onMoveUp={this.handleMoveUp}
@@ -150,7 +155,7 @@ export default class StatusList extends ImmutablePureComponent {
     if (!featuredStatusIds) return null;
 
     return featuredStatusIds.map(statusId => (
-      <MaterialStatus
+      <StatusContainer
         key={`f-${statusId}`}
         id={statusId}
         featured
@@ -191,7 +196,7 @@ export default class StatusList extends ImmutablePureComponent {
   }
 
   render() {
-    const { statusIds, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other }  = this.props;
+    const { statusIds, divideType, featuredStatusIds, onLoadMore, timelineId, totalQueuedItemsCount, isLoading, isPartial, withGroupAdmin, group, ...other }  = this.props;
 
     if (isPartial) {
       return (
@@ -218,9 +223,10 @@ export default class StatusList extends ImmutablePureComponent {
         isLoading={isLoading}
         showLoading={isLoading && statusIds.size === 0}
         onLoadMore={onLoadMore && this.handleLoadOlder}
-        placeholderComponent={PlaceholderMaterialStatus}
+        placeholderComponent={() => <PlaceholderStatus />}
         placeholderCount={20}
         ref={this.setRef}
+        className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 sm:divide-none'}
         {...other}
       >
         {this.renderScrollableContent()}

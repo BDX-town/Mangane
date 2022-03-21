@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
@@ -9,7 +10,6 @@ import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
 import BirthdayReminders from 'soapbox/components/birthday_reminders';
-import SubNavigation from 'soapbox/components/sub_navigation';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -18,12 +18,12 @@ import {
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import Column from '../../components/column';
 import LoadGap from '../../components/load_gap';
 import ScrollableList from '../../components/scrollable_list';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
+import { Column } from '../../components/ui';
 
-import ColumnSettingsContainer from './containers/column_settings_container';
+import { NOTIFICATION_TYPES } from './components/notification';
 import FilterBarContainer from './containers/filter_bar_container';
 import NotificationContainer from './containers/notification_container';
 
@@ -138,7 +138,7 @@ class Notifications extends React.PureComponent {
   }
 
   _selectChild(index, align_top) {
-    const container = this.column.node;
+    const container = this.column;
     const element = container.querySelector(`article:nth-of-type(${index + 1}) .focusable`);
 
     if (element) {
@@ -200,12 +200,13 @@ class Notifications extends React.PureComponent {
     }
 
     this.scrollableContent = scrollableContent;
+    const notificationsToRender = notifications.filter((notification) => NOTIFICATION_TYPES.includes(notification.get('type')));
 
     const scrollContainer = (
       <ScrollableList
         scrollKey='notifications'
         isLoading={isLoading}
-        showLoading={isLoading && notifications.size === 0}
+        showLoading={isLoading && notificationsToRender.size === 0}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
         placeholderComponent={PlaceholderNotification}
@@ -214,14 +215,17 @@ class Notifications extends React.PureComponent {
         onRefresh={this.handleRefresh}
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
+        className={classNames({
+          'divide-y divide-gray-200 divide-solid': notificationsToRender.size > 0,
+          'space-y-2': notificationsToRender.size === 0,
+        })}
       >
         {scrollableContent}
       </ScrollableList>
     );
 
     return (
-      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} className='column--notifications'>
-        <SubNavigation message={intl.formatMessage(messages.title)} settings={ColumnSettingsContainer} />
+      <Column ref={this.setColumnRef} label={intl.formatMessage(messages.title)} withHeader={false}>
         {filterBarContainer}
         <TimelineQueueButtonHeader
           onClick={this.handleDequeueNotifications}

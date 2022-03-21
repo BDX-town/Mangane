@@ -8,8 +8,8 @@ import AccountSearch from 'soapbox/components/account_search';
 
 import { connectDirectStream } from '../../actions/streaming';
 import { expandDirectTimeline } from '../../actions/timelines';
-import Column from '../../components/column';
 import ColumnHeader from '../../components/column_header';
+import { Column } from '../../components/ui';
 import StatusListContainer from '../ui/containers/status_list_container';
 
 const messages = defineMessages({

@@ -5,12 +5,12 @@ import { FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { Column, Spinner } from 'soapbox/components/ui';
+
 import ComposeFormContainer from '../../../../soapbox/features/compose/containers/compose_form_container';
 import { connectGroupStream } from '../../../actions/streaming';
 import { expandGroupTimeline } from '../../../actions/timelines';
 import Avatar from '../../../components/avatar';
-import Column from '../../../components/column';
-import LoadingIndicator from '../../../components/loading_indicator';
 import MissingIndicator from '../../../components/missing_indicator';
 import StatusListContainer from '../../ui/containers/status_list_container';
 
@@ -71,14 +71,12 @@ class GroupTimeline extends React.PureComponent {
     if (typeof group === 'undefined' || !relationships) {
       return (
         <Column>
-          <LoadingIndicator />
+          <Spinner />
         </Column>
       );
     } else if (group === false) {
       return (
-        <Column>
-          <MissingIndicator />
-        </Column>
+        <MissingIndicator />
       );
     }
 

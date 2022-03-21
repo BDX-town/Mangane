@@ -3,13 +3,15 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import IconButton from 'soapbox/components/icon_button';
 import { getFeatures } from 'soapbox/utils/features';
+
+import { Modal, Stack, Text } from '../../../components/ui';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -49,7 +51,12 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
+@withRouter
 class UnauthorizedModal extends ImmutablePureComponent {
+
+  static contextTypes = {
+    router: PropTypes.object.isRequired,
+  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -88,6 +95,20 @@ class UnauthorizedModal extends ImmutablePureComponent {
           dispatch(snackbar.error(intl.formatMessage(messages.userNotFoundError)));
         }
       });
+  }
+
+  onLogin = (e) => {
+    e.preventDefault();
+
+    this.context.router.history.push('/login');
+    this.onClickClose();
+  }
+
+  onRegister = (e) => {
+    e.preventDefault();
+
+    this.context.router.history.push('/');
+    this.onClickClose();
   }
 
   renderRemoteInteractions() {
@@ -147,7 +168,7 @@ class UnauthorizedModal extends ImmutablePureComponent {
               </Link>
             </>
           )}
-          <Link to='/auth/sign_in' className='unauthorized-modal-content__button button button-secondary' onClick={this.onClickClose}>
+          <Link to='/login' className='unauthorized-modal-content__button button button-secondary' onClick={this.onClickClose}>
             <FormattedMessage id='account.login' defaultMessage='Log in' />
           </Link>
         </div>
@@ -156,34 +177,25 @@ class UnauthorizedModal extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, features, siteTitle, action } = this.props;
+    const { features, siteTitle, action } = this.props;
 
     if (action && features.remoteInteractionsAPI && features.federating) return this.renderRemoteInteractions();
 
     return (
-      <div className='modal-root__modal compose-modal unauthorized-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'><FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} /></h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
-        </div>
-        <div className='compose-modal__content'>
-          <div className='unauthorized-modal__content'>
-            <span className='unauthorized-modal-content__text'>
-              <FormattedMessage id='unauthorized_modal.text' defaultMessage='You need to be logged in to do that.' />
-            </span>
-            <Link to='/' className='unauthorized-modal-content__button button'>
-              <FormattedMessage id='account.register' defaultMessage='Sign up' />
-            </Link>
-          </div>
-        </div>
-        <div className='unauthorized-modal__footer'>
-          <FormattedMessage
-            id='unauthorized_modal.footer' defaultMessage='Already have an account? {login}.' values={{
-              login: <Link to='/auth/sign_in'><FormattedMessage id='account.login' defaultMessage='Log in' /></Link>,
-            }}
-          />
-        </div>
-      </div>
+      <Modal
+        title={<FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} />}
+        onClose={this.onClickClose}
+        confirmationAction={this.onLogin}
+        confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
+        secondaryAction={this.onRegister}
+        secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+      >
+        <Stack>
+          <Text>
+            <FormattedMessage id='unauthorized_modal.text' defaultMessage='You need to be logged in to do that.' />
+          </Text>
+        </Stack>
+      </Modal>
     );
   }
 

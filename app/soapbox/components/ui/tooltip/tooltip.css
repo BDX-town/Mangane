@@ -1,0 +1,8 @@
+:root {
+  --reach-tooltip: 1;
+}
+
+[data-reach-tooltip] {
+  @apply pointer-events-none absolute px-2.5 py-1.5 rounded shadow whitespace-nowrap text-xs font-medium bg-gray-800 text-white;
+  z-index: 1;
+}

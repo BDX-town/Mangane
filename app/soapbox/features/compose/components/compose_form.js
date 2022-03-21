@@ -2,7 +2,6 @@ import classNames from 'classnames';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-// import TextCharacterCounter from './text_character_counter';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage } from 'react-intl';
@@ -13,7 +12,7 @@ import Icon from 'soapbox/components/icon';
 
 import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
-import Button from '../../../components/button';
+import { Button } from '../../../components/ui';
 import { isMobile } from '../../../is_mobile';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
@@ -32,6 +31,7 @@ import UploadFormContainer from '../containers/upload_form_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
+import TextCharacterCounter from './text_character_counter';
 import VisualCharacterCounter from './visual_character_counter';
 
 const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u202f\u205f\u3000\u2028\u2029\u0009\u000a\u000b\u000c\u000d';
@@ -39,7 +39,7 @@ const allowedAroundShortCode = '><\u0085\u0020\u00a0\u1680\u2000\u2001\u2002\u20
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What\'s on your mind?' },
   spoiler_placeholder: { id: 'compose_form.spoiler_placeholder', defaultMessage: 'Write your warning here' },
-  publish: { id: 'compose_form.publish', defaultMessage: 'Publish' },
+  publish: { id: 'compose_form.publish', defaultMessage: 'Truth' },
   publishLoud: { id: 'compose_form.publish_loud', defaultMessage: '{publish}!' },
   message: { id: 'compose_form.message', defaultMessage: 'Message' },
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
@@ -124,7 +124,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       this.getClickableArea(),
       document.querySelector('.privacy-dropdown__dropdown'),
       document.querySelector('.emoji-picker-dropdown__menu'),
-      document.querySelector('.modal-root__overlay'),
+      document.getElementById('modal-overlay'),
     ].some(element => element?.contains(e.target));
   }
 
@@ -286,13 +286,8 @@ export default class ComposeForm extends ImmutablePureComponent {
       publishText = intl.formatMessage(messages.schedule);
     }
 
-    const composeClassNames = classNames({
-      'compose-form': true,
-      'condensed': condensed,
-    });
-
     return (
-      <div className={composeClassNames} ref={this.setForm} onClick={this.handleClick}>
+      <div className='w-full' ref={this.setForm} onClick={this.handleClick}>
         {scheduledStatusCount > 0 && (
           <Warning
             message={(
@@ -318,7 +313,12 @@ export default class ComposeForm extends ImmutablePureComponent {
 
         {!shouldCondense && <ReplyMentions />}
 
-        <div className={`spoiler-input ${this.props.spoiler ? 'spoiler-input--visible' : ''}`}>
+        <div
+          className={classNames({
+            'relative transition-height': true,
+            'hidden': !this.props.spoiler,
+          })}
+        >
           <AutosuggestInput
             placeholder={intl.formatMessage(messages.spoiler_placeholder)}
             value={this.props.spoilerText}
@@ -332,7 +332,7 @@ export default class ComposeForm extends ImmutablePureComponent {
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
             searchTokens={[':']}
             id='cw-spoiler-input'
-            className='spoiler-input__input'
+            className='mb-2'
             autoFocus
           />
         </div>
@@ -351,8 +351,9 @@ export default class ComposeForm extends ImmutablePureComponent {
           onSuggestionSelected={this.onSuggestionSelected}
           onPaste={onPaste}
           autoFocus={shouldAutoFocus}
+          condensed={condensed}
+          id='compose-textarea'
         >
-          <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           {
             !condensed &&
             <div className='compose-form__modifiers'>
@@ -365,23 +366,30 @@ export default class ComposeForm extends ImmutablePureComponent {
 
         <QuotedStatusContainer />
 
-        <div className='compose-form__buttons-wrapper'>
-          <div className='compose-form__buttons'>
+        <div
+          className={classNames('flex items-center justify-between', {
+            'hidden': condensed,
+          })}
+        >
+          <div className='flex items-center space-x-2'>
             {features.media && <UploadButtonContainer />}
             {features.polls && <PollButtonContainer />}
             {features.privacyScopes && <PrivacyDropdownContainer />}
             {features.scheduledStatuses && <ScheduleButtonContainer />}
             {features.spoilers && <SpoilerButtonContainer />}
             {features.richText && <MarkdownButtonContainer />}
+            <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           </div>
-          {maxTootChars && (
-            <div className='compose-form__counter'>
-              {/* <TextCharacterCounter max={maxTootChars} text={text} /> */}
-              <VisualCharacterCounter max={maxTootChars} text={text} />
-            </div>
-          )}
-          <div className='compose-form__publish'>
-            <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
+
+          <div className='flex items-center space-x-4 ml-4'>
+            {maxTootChars && (
+              <div className='flex items-center space-x-1'>
+                <TextCharacterCounter max={maxTootChars} text={text} />
+                <VisualCharacterCounter max={maxTootChars} text={text} />
+              </div>
+            )}
+
+            <Button theme='primary' text={publishText} onClick={this.handleSubmit} disabled={disabledButton} />
           </div>
         </div>
       </div>
