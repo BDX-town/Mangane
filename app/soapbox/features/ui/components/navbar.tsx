@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import Icon from 'soapbox/components/icon';
-import { Avatar, Button } from 'soapbox/components/ui';
+import { Avatar, Button, Icon } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -54,7 +53,7 @@ const Navbar = () => {
               </Link>
             ) : (
               <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-                <Icon alt='Logo' src={require('icons/home-square.svg')} className='h-5 lg:h-6 w-auto text-primary-700' />
+                <Icon alt='Logo' src={require('@tabler/icons/icons/home.svg')} className='h-5 lg:h-6 w-auto text-primary-700' />
                 <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
               </Link>
             )}
