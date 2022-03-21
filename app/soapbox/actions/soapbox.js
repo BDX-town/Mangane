@@ -5,7 +5,7 @@ import { getHost } from 'soapbox/actions/instance';
 import KVStore from 'soapbox/storage/kv_store';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { staticClient } from '../api';
+import api, { staticClient } from '../api';
 
 export const SOAPBOX_CONFIG_REQUEST_SUCCESS = 'SOAPBOX_CONFIG_REQUEST_SUCCESS';
 export const SOAPBOX_CONFIG_REQUEST_FAIL    = 'SOAPBOX_CONFIG_REQUEST_FAIL';
@@ -88,19 +88,17 @@ export function rememberSoapboxConfig(host) {
 }
 
 export function fetchSoapboxConfig(host) {
-  return fetchSoapboxJson(host);
-
-  // return (dispatch, getState) => {
-  //   api(getState).get('/api/pleroma/frontend_configurations').then(response => {
-  //     if (response.data.soapbox_fe) {
-  //       dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
-  //     } else {
-  //       dispatch(fetchSoapboxJson(host));
-  //     }
-  //   }).catch(error => {
-  //     dispatch(fetchSoapboxJson(host));
-  //   });
-  // };
+  return (dispatch, getState) => {
+    api(getState).get('/api/pleroma/frontend_configurations').then(response => {
+      if (response.data.soapbox_fe) {
+        dispatch(importSoapboxConfig(response.data.soapbox_fe, host));
+      } else {
+        dispatch(fetchSoapboxJson(host));
+      }
+    }).catch(error => {
+      dispatch(fetchSoapboxJson(host));
+    });
+  };
 }
 
 // Tries to remember the config from browser storage before fetching it
