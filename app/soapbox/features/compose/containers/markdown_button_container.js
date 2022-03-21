@@ -12,7 +12,10 @@ const mapStateToProps = (state, { intl }) => {
 const mapDispatchToProps = dispatch => ({
 
   onClick() {
-    dispatch(changeComposeContentType(this.active ? 'text/plain' : 'text/markdown'));
+    dispatch((_, getState) => {
+      const active = getState().getIn(['compose', 'content_type']) === 'text/markdown';
+      dispatch(changeComposeContentType(active ? 'text/plain' : 'text/markdown'));
+    });
   },
 
 });

@@ -1,9 +1,8 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
-import IconButton from '../../../components/icon_button';
+import ComposeFormButton from './compose_form_button';
 
 const messages = defineMessages({
   add_schedule: { id: 'schedule_button.add_schedule', defaultMessage: 'Schedule post for later' },
@@ -29,15 +28,13 @@ class ScheduleButton extends React.PureComponent {
     const { intl, active, disabled } = this.props;
 
     return (
-      <div className='compose-form__schedule-button'>
-        <IconButton
-          className={classNames('compose-form__schedule-button-icon', { active })}
-          src={require('@tabler/icons/icons/calendar-stats.svg')}
-          title={intl.formatMessage(active ? messages.remove_schedule : messages.add_schedule)}
-          disabled={disabled}
-          onClick={this.handleClick}
-        />
-      </div>
+      <ComposeFormButton
+        icon={require('@tabler/icons/icons/calendar-stats.svg')}
+        title={intl.formatMessage(active ? messages.remove_schedule : messages.add_schedule)}
+        active={active}
+        disabled={disabled}
+        onClick={this.handleClick}
+      />
     );
   }
 
