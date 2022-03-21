@@ -96,23 +96,6 @@ const Header = () => {
             />
 
             <div className='hidden md:flex items-center space-x-6'>
-              <HStack space={6} alignItems='center'>
-                <a
-                  href='https://apps.apple.com/us/app/truth-social/id1586018825'
-                  target='_blank'
-                  className='text-sm font-medium text-gray-500 hover:text-gray-900'
-                >
-                  Download
-                </a>
-                <a
-                  href='#'
-                  target='_blank'
-                  className='text-sm font-medium text-gray-500 hover:text-gray-900'
-                >
-                  Help Center
-                </a>
-              </HStack>
-
               <HStack space={2} className='xl:hidden'>
                 <Button to='/login' theme='secondary'>
                   {intl.formatMessage(messages.login)}
