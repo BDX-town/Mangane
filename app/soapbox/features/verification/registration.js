@@ -21,6 +21,7 @@ const Registration = () => {
   const intl = useIntl();
 
   const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
+  const siteTitle = useSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
   const [shouldRedirect, setShouldRedirect] = React.useState(false);
@@ -41,8 +42,8 @@ const Registration = () => {
           snackbar.success(
             intl.formatMessage({
               id: 'registrations.success',
-              defaultMessage: 'Welcome to Truth Social!',
-            }),
+              defaultMessage: 'Welcome to {siteTitle}!',
+            }, { siteTitle }),
           ),
         );
       })

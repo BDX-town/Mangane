@@ -47,7 +47,7 @@ export const makeDefaultConfig = features => {
     }),
     extensions: ImmutableMap(),
     defaultSettings: ImmutableMap(),
-    copyright: `©${year} TRUTH Social`,
+    copyright: `♥${year}. Copying is an act of love. Please copy and share.`,
     navlinks: ImmutableMap({
       homeFooter: ImmutableList(),
     }),

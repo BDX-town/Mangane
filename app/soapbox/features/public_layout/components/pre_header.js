@@ -3,6 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { IconButton } from 'soapbox/components/ui';
+import { useAppSelector } from 'soapbox/hooks';
 
 const messages = defineMessages({
   close: { id: 'pre_header.close', defaultMessage: 'Close' },
@@ -12,6 +13,7 @@ export default () => {
   const intl = useIntl();
 
   const [hidden, setHidden] = React.useState(false);
+  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const handleClose = () => {
     localStorage.setItem('soapbox:welcome-banner', '0');
@@ -33,7 +35,7 @@ export default () => {
       <div className='max-w-7xl flex justify-between mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='h-14 flex items-center space-x-3'>
           <p className='text-white font-semibold'>
-            <span>Welcome to TRUTH Social</span>
+            <span>Welcome to {siteTitle}</span>
           </p>
 
           <Link className='text-sea-blue text-sm lowercase hover:underline' to='/beta'>
