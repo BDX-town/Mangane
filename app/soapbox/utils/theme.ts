@@ -1,15 +1,18 @@
 import { Map as ImmutableMap } from 'immutable';
 
-export const generateThemeCss = (brandColor, accentColor) => {
+type RGB = { r: number, g: number, b: number };
+type HSL = { h: number, s: number, l: number };
+
+export const generateThemeCss = (brandColor: string, accentColor: string): string => {
   if (!brandColor) return null;
   return themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
 };
 
 // https://stackoverflow.com/a/5624139
-function hexToRgb(hex) {
+function hexToRgb(hex: string): RGB {
   // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (m, r, g, b) => (
+  hex = hex.replace(shorthandRegex, (_m, r, g, b) => (
     r + r + g + g + b + b
   ));
 
@@ -28,7 +31,7 @@ function hexToRgb(hex) {
 
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js
-const rgbToHsl = value => {
+const rgbToHsl = (value: RGB): HSL => {
   const r = value.r / 255;
   const g = value.g / 255;
   const b = value.b / 255;
@@ -65,7 +68,7 @@ const rgbToHsl = value => {
   };
 };
 
-const parseShades = (obj, color, shades) => {
+const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>) => {
   if (typeof shades === 'string') {
     const { r, g, b } = hexToRgb(shades);
     return obj[`--color-${color}`] = `${r} ${g} ${b}`;
@@ -77,21 +80,21 @@ const parseShades = (obj, color, shades) => {
   });
 };
 
-const parseColors = colors => {
+const parseColors = (colors: Record<string, any>): Record<string, any> => {
   return Object.keys(colors).reduce((obj, color) => {
     parseShades(obj, color, colors[color]);
     return obj;
   }, {});
 };
 
-export const colorsToCss = colors => {
+export const colorsToCss = (colors: Record<string, any>): string => {
   const parsed = parseColors(colors);
   return Object.keys(parsed).reduce((css, variable) => {
     return css + `${variable}:${parsed[variable]};`;
   }, '');
 };
 
-export const brandColorToThemeData = brandColor => {
+export const brandColorToThemeData = (brandColor: string): ImmutableMap<string, any> => {
   const { h, s, l } = rgbToHsl(hexToRgb(brandColor));
   return ImmutableMap({
     'brand-color_h': h,
@@ -100,7 +103,7 @@ export const brandColorToThemeData = brandColor => {
   });
 };
 
-export const accentColorToThemeData = (brandColor, accentColor) => {
+export const accentColorToThemeData = (brandColor: string, accentColor: string): ImmutableMap<string, any> => {
   if (accentColor) {
     const { h, s, l } = rgbToHsl(hexToRgb(accentColor));
 
@@ -119,10 +122,11 @@ export const accentColorToThemeData = (brandColor, accentColor) => {
   });
 };
 
-export const themeDataToCss = themeData => (
+export const themeDataToCss = (themeData: ImmutableMap<string, any>): string => (
   themeData
     .entrySeq()
     .reduce((acc, cur) => acc + `--${cur[0]}:${cur[1]};`, '')
 );
 
-export const themeColorsToCSS = (brandColor, accentColor) => themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
+export const themeColorsToCSS = (brandColor: string, accentColor: string): string =>
+  themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
