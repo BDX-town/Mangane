@@ -13,7 +13,6 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { IAccount } from 'soapbox/types';
 import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
@@ -200,7 +199,7 @@ const normalizeFqn = (account: ImmutableMap<string, any>) => {
   return account.set('fqn', acctFull(account));
 };
 
-export const normalizeAccount = (account: Record<string, any>): IAccount => {
+export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
       normalizePleromaLegacyFields(account);

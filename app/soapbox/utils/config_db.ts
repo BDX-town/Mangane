@@ -6,17 +6,25 @@ import {
 } from 'immutable';
 import { trimStart } from 'lodash';
 
-const find = (configs, group, key) => {
+type Config = ImmutableMap<string, any>;
+type Policy = ImmutableMap<string, any>;
+
+const find = (
+  configs: ImmutableList<Config>,
+  group: string,
+  key: string,
+): Config => {
   return configs.find(config =>
-    config.isSuperset({ group, key }),
+    config.isSuperset(ImmutableMap({ group, key })),
   );
 };
 
-const toSimplePolicy = configs => {
+const toSimplePolicy = (configs: ImmutableList<Config>): Policy => {
   const config = find(configs, ':pleroma', ':mrf_simple');
 
-  const reducer = (acc, curr) => {
-    const { tuple: [key, hosts] } = curr.toJS();
+  const reducer = (acc: ImmutableMap<string, any>, curr: ImmutableMap<string, any>) => {
+    const key = curr.getIn(['tuple', 0]) as string;
+    const hosts = curr.getIn(['tuple', 1]) as ImmutableList<string>;
     return acc.set(trimStart(key, ':'), ImmutableSet(hosts));
   };
 
@@ -28,8 +36,9 @@ const toSimplePolicy = configs => {
   }
 };
 
-const fromSimplePolicy = simplePolicy => {
-  const mapper = (hosts, key) => fromJS({ tuple: [`:${key}`, hosts.toJS()] });
+const fromSimplePolicy = (simplePolicy: Policy): ImmutableList<Config> => {
+  const mapper = (hosts: ImmutableList<string>, key: string) => fromJS({ tuple: [`:${key}`, hosts.toJS()] });
+
   const value = simplePolicy.map(mapper).toList();
 
   return ImmutableList([

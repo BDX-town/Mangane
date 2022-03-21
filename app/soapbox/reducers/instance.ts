@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { AnyAction } from 'redux';
 
 import { ADMIN_CONFIG_UPDATE_REQUEST, ADMIN_CONFIG_UPDATE_SUCCESS } from 'soapbox/actions/admin';
 import { PLEROMA_PRELOAD_IMPORT } from 'soapbox/actions/preload';
@@ -15,9 +16,9 @@ import {
 
 const initialState = normalizeInstance(ImmutableMap());
 
-const nodeinfoToInstance = nodeinfo => {
+const nodeinfoToInstance = (nodeinfo: ImmutableMap<string, any>) => {
   // Match Pleroma's develop branch
-  return ImmutableMap({
+  return normalizeInstance(ImmutableMap({
     pleroma: ImmutableMap({
       metadata: ImmutableMap({
         account_activation_required: nodeinfo.getIn(['metadata', 'accountActivationRequired']),
@@ -28,30 +29,30 @@ const nodeinfoToInstance = nodeinfo => {
         }),
       }),
     }),
-  });
+  }));
 };
 
-const importInstance = (state, instance) => {
+const importInstance = (_state: typeof initialState, instance: ImmutableMap<string, any>) => {
   return normalizeInstance(instance);
 };
 
-const importNodeinfo = (state, nodeinfo) => {
+const importNodeinfo = (state: typeof initialState, nodeinfo: ImmutableMap<string, any>) => {
   return nodeinfoToInstance(nodeinfo).mergeDeep(state);
 };
 
-const preloadImport = (state, action, path) => {
+const preloadImport = (state: typeof initialState, action: Record<string, any>, path: string) => {
   const instance = action.data[path];
-  return instance ? importInstance(state, fromJS(instance)) : state;
+  return instance ? importInstance(state, ImmutableMap(fromJS(instance))) : state;
 };
 
-const getConfigValue = (instanceConfig, key) => {
+const getConfigValue = (instanceConfig: ImmutableMap<string, any>, key: string) => {
   const v = instanceConfig
     .find(value => value.getIn(['tuple', 0]) === key);
 
   return v ? v.getIn(['tuple', 1]) : undefined;
 };
 
-const importConfigs = (state, configs) => {
+const importConfigs = (state: typeof initialState, configs: ImmutableList<any>) => {
   // FIXME: This is pretty hacked together. Need to make a cleaner map.
   const config = ConfigDB.find(configs, ':pleroma', ':instance');
   const simplePolicy = ConfigDB.toSimplePolicy(configs);
@@ -74,15 +75,15 @@ const importConfigs = (state, configs) => {
   });
 };
 
-const handleAuthFetch = state => {
+const handleAuthFetch = (state: typeof initialState) => {
   // Authenticated fetch is enabled, so make the instance appear censored
-  return ImmutableMap({
+  return state.mergeWith((o, n) => o || n, {
     title: '██████',
     description: '████████████',
-  }).merge(state);
+  });
 };
 
-const getHost = instance => {
+const getHost = (instance: { uri: string }) => {
   try {
     return new URL(instance.uri).host;
   } catch {
@@ -94,7 +95,7 @@ const getHost = instance => {
   }
 };
 
-const persistInstance = instance => {
+const persistInstance = (instance: { uri: string }) => {
   const host = getHost(instance);
 
   if (host) {
@@ -102,7 +103,7 @@ const persistInstance = instance => {
   }
 };
 
-const handleInstanceFetchFail = (state, error) => {
+const handleInstanceFetchFail = (state: typeof initialState, error: Record<string, any>) => {
   if (error.response?.status === 401) {
     return handleAuthFetch(state);
   } else {
@@ -110,22 +111,22 @@ const handleInstanceFetchFail = (state, error) => {
   }
 };
 
-export default function instance(state = initialState, action) {
+export default function instance(state = initialState, action: AnyAction) {
   switch(action.type) {
   case PLEROMA_PRELOAD_IMPORT:
     return preloadImport(state, action, '/api/v1/instance');
   case INSTANCE_REMEMBER_SUCCESS:
-    return importInstance(state, fromJS(action.instance));
+    return importInstance(state, ImmutableMap(fromJS(action.instance)));
   case INSTANCE_FETCH_SUCCESS:
     persistInstance(action.instance);
-    return importInstance(state, fromJS(action.instance));
+    return importInstance(state, ImmutableMap(fromJS(action.instance)));
   case INSTANCE_FETCH_FAIL:
     return handleInstanceFetchFail(state, action.error);
   case NODEINFO_FETCH_SUCCESS:
-    return importNodeinfo(state, fromJS(action.nodeinfo));
+    return importNodeinfo(state, ImmutableMap(fromJS(action.nodeinfo)));
   case ADMIN_CONFIG_UPDATE_REQUEST:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return importConfigs(state, fromJS(action.configs));
+    return importConfigs(state, ImmutableList(fromJS(action.configs)));
   default:
     return state;
   }

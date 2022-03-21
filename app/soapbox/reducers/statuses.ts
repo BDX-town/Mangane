@@ -1,10 +1,11 @@
 import escapeTextContentForBrowser from 'escape-html';
-import { Map as ImmutableMap, List as ImmutableList, fromJS } from 'immutable';
+import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
+import { AnyAction } from 'redux';
 
 import emojify from 'soapbox/features/emoji/emoji';
-import { normalizeStatus } from 'soapbox/normalizers/status';
+import { normalizeStatus } from 'soapbox/normalizers';
 import { simulateEmojiReact, simulateUnEmojiReact } from 'soapbox/utils/emoji_reacts';
-import { stripCompatibilityFeatures } from 'soapbox/utils/html';
+import { stripCompatibilityFeatures, unescapeHTML } from 'soapbox/utils/html';
 import { makeEmojiMap } from 'soapbox/utils/normalizers';
 
 import {
@@ -33,7 +34,13 @@ import { TIMELINE_DELETE } from '../actions/timelines';
 
 const domParser = new DOMParser();
 
-const minifyStatus = status => {
+type StatusRecord = ReturnType<typeof normalizeStatus>;
+type APIEntity = Record<string, any>;
+type APIEntities = Array<APIEntity>;
+
+type State = ImmutableMap<string, StatusRecord>;
+
+const minifyStatus = (status: StatusRecord): StatusRecord => {
   return status.mergeWith((o, n) => n || o, {
     account: status.getIn(['account', 'id']),
     reblog: status.getIn(['reblog', 'id']),
@@ -42,48 +49,69 @@ const minifyStatus = status => {
   });
 };
 
+// Gets titles of poll options from status
+const getPollOptionTitles = (status: StatusRecord): Array<string> => {
+  return status.poll?.options.map(({ title }: { title: string }) => title);
+};
+
+// Creates search text from the status
+const buildSearchContent = (status: StatusRecord): string => {
+  const pollOptionTitles = getPollOptionTitles(status);
+
+  const fields = ImmutableList([
+    status.spoiler_text,
+    status.content,
+  ]).concat(pollOptionTitles);
+
+  return unescapeHTML(fields.join('\n\n'));
+};
+
 // Only calculate these values when status first encountered
 // Otherwise keep the ones already in the reducer
-export const calculateStatus = (status, oldStatus, expandSpoilers = false) => {
+export const calculateStatus = (
+  status: StatusRecord,
+  oldStatus: StatusRecord,
+  expandSpoilers: boolean = false,
+): StatusRecord => {
   if (oldStatus) {
     return status.merge({
-      search_index: oldStatus.get('search_index'),
-      contentHtml: oldStatus.get('contentHtml'),
-      spoilerHtml: oldStatus.get('spoilerHtml'),
-      hidden: oldStatus.get('hidden'),
+      search_index: oldStatus.search_index,
+      contentHtml: oldStatus.contentHtml,
+      spoilerHtml: oldStatus.spoilerHtml,
+      hidden: oldStatus.hidden,
     });
   } else {
-    const spoilerText   = status.get('spoiler_text') || '';
-    const searchContent = (ImmutableList([spoilerText, status.get('content')]).concat(status.getIn(['poll', 'options'], ImmutableList()).map(option => option.get('title')))).join('\n\n').replace(/<br\s*\/?>/g, '\n').replace(/<\/p><p>/g, '\n\n');
-    const emojiMap      = makeEmojiMap(status.get('emojis'));
+    const spoilerText   = status.spoiler_text;
+    const searchContent = buildSearchContent(status);
+    const emojiMap      = makeEmojiMap(status.emojis);
 
     return status.merge({
       search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
-      contentHtml: stripCompatibilityFeatures(emojify(status.get('content'), emojiMap)),
+      contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
-      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.get('sensitive'),
+      hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,
     });
   }
 };
 
 // Check whether a status is a quote by secondary characteristics
-const isQuote = status => {
-  return Boolean(status.get('quote_id') || status.getIn(['pleroma', 'quote_url']));
+const isQuote = (status: StatusRecord) => {
+  return Boolean(status.getIn(['pleroma', 'quote_url']));
 };
 
 // Preserve quote if an existing status already has it
-const fixQuote = (status, oldStatus) => {
-  if (oldStatus && !status.get('quote') && isQuote(status)) {
+const fixQuote = (status: StatusRecord, oldStatus: StatusRecord): StatusRecord => {
+  if (oldStatus && !status.quote && isQuote(status)) {
     return status
-      .set('quote', oldStatus.get('quote'))
+      .set('quote', oldStatus.quote)
       .updateIn(['pleroma', 'quote_visible'], visible => visible || oldStatus.getIn(['pleroma', 'quote_visible']));
   } else {
     return status;
   }
 };
 
-const fixStatus = (state, status, expandSpoilers) => {
-  const oldStatus = state.get(status.get('id'));
+const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): StatusRecord => {
+  const oldStatus: StatusRecord = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
@@ -92,13 +120,13 @@ const fixStatus = (state, status, expandSpoilers) => {
   });
 };
 
-const importStatus = (state, status, expandSpoilers) =>
-  state.set(status.id, fixStatus(state, fromJS(status), expandSpoilers));
+const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
+  state.set(status.id, fixStatus(state, status, expandSpoilers));
 
-const importStatuses = (state, statuses, expandSpoilers) =>
+const importStatuses = (state: State, statuses: APIEntities, expandSpoilers: boolean): State =>
   state.withMutations(mutable => statuses.forEach(status => importStatus(mutable, status, expandSpoilers)));
 
-const deleteStatus = (state, id, references) => {
+const deleteStatus = (state: State, id: string, references: Array<string>) => {
   references.forEach(ref => {
     state = deleteStatus(state, ref[0], []);
   });
@@ -106,25 +134,25 @@ const deleteStatus = (state, id, references) => {
   return state.delete(id);
 };
 
-const importPendingStatus = (state, { in_reply_to_id }) => {
+const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => count + 1);
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => count + 1);
   } else {
     return state;
   }
 };
 
-const deletePendingStatus = (state, { in_reply_to_id }) => {
+const deletePendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => Math.max(0, count - 1));
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => Math.max(0, count - 1));
   } else {
     return state;
   }
 };
 
-const initialState = ImmutableMap();
+const initialState: State = ImmutableMap();
 
-export default function statuses(state = initialState, action) {
+export default function statuses(state = initialState, action: AnyAction): State {
   switch(action.type) {
   case STATUS_IMPORT:
     return importStatus(state, action.status, action.expandSpoilers);
@@ -172,7 +200,7 @@ export default function statuses(state = initialState, action) {
     return state.setIn([action.id, 'muted'], false);
   case STATUS_REVEAL:
     return state.withMutations(map => {
-      action.ids.forEach(id => {
+      action.ids.forEach((id: string) => {
         if (!(state.get(id) === undefined)) {
           map.setIn([id, 'hidden'], false);
         }
@@ -180,7 +208,7 @@ export default function statuses(state = initialState, action) {
     });
   case STATUS_HIDE:
     return state.withMutations(map => {
-      action.ids.forEach(id => {
+      action.ids.forEach((id: string) => {
         if (!(state.get(id) === undefined)) {
           map.setIn([id, 'hidden'], true);
         }
