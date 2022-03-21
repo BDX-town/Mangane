@@ -2,17 +2,16 @@ import classNames from 'classnames';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-export default class FilterBar extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+export default @withRouter
+class FilterBar extends React.PureComponent {
 
   static propTypes = {
     items: PropTypes.array.isRequired,
     active: PropTypes.string,
     className: PropTypes.string,
+    history: PropTypes.object,
   };
 
   state = {
@@ -88,7 +87,7 @@ export default class FilterBar extends React.PureComponent {
       action(e);
     } else if (to) {
       e.preventDefault();
-      this.context.router.history.push(to);
+      this.props.history.push(to);
     }
   }
 

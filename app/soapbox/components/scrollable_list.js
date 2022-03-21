@@ -4,6 +4,7 @@ import { throttle } from 'lodash';
 import PropTypes from 'prop-types';
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import PullToRefresh from 'soapbox/components/pull_to_refresh';
@@ -26,11 +27,8 @@ const mapStateToProps = state => {
 };
 
 export default @connect(mapStateToProps, null, null, { forwardRef: true })
+@withRouter
 class ScrollableList extends PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     scrollKey: PropTypes.string.isRequired,
@@ -50,6 +48,7 @@ class ScrollableList extends PureComponent {
     autoload: PropTypes.bool,
     onRefresh: PropTypes.func,
     className: PropTypes.string,
+    location: PropTypes.object,
   };
 
   state = {
@@ -304,7 +303,7 @@ class ScrollableList extends PureComponent {
               index={index}
               listLength={childrenCount}
               intersectionObserverWrapper={this.intersectionObserverWrapper}
-              saveHeightKey={trackScroll ? `${this.context.router.route.location.key}:${scrollKey}` : null}
+              saveHeightKey={trackScroll ? `${this.props.location.key}:${scrollKey}` : null}
             >
               {React.cloneElement(child, {
                 getScrollPosition: this.getScrollPosition,

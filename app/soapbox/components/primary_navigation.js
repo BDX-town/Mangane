@@ -38,10 +38,6 @@ const mapStateToProps = state => {
 export default @withRouter @connect(mapStateToProps)
 class PrimaryNavigation extends React.PureComponent {
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     logo: PropTypes.string,

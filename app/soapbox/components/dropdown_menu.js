@@ -5,6 +5,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import spring from 'react-motion/lib/spring';
 import Overlay from 'react-overlays/lib/Overlay';
+import { withRouter } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 
@@ -15,11 +16,8 @@ import IconButton from './icon_button';
 const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
 
+@withRouter
 class DropdownMenu extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     items: PropTypes.array.isRequired,
@@ -29,6 +27,7 @@ class DropdownMenu extends React.PureComponent {
     arrowOffsetLeft: PropTypes.string,
     arrowOffsetTop: PropTypes.string,
     openedViaKeyboard: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   static defaultProps = {
@@ -124,7 +123,7 @@ class DropdownMenu extends React.PureComponent {
       action(e);
     } else if (to) {
       e.preventDefault();
-      this.context.router.history.push(to);
+      this.props.history.push(to);
     }
   }
 
@@ -196,11 +195,8 @@ class DropdownMenu extends React.PureComponent {
 
 }
 
-export default class Dropdown extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+export default @withRouter
+class Dropdown extends React.PureComponent {
 
   static propTypes = {
     icon: PropTypes.string,
@@ -221,6 +217,7 @@ export default class Dropdown extends React.PureComponent {
     openedViaKeyboard: PropTypes.bool,
     text: PropTypes.string,
     onShiftClick: PropTypes.func,
+    history: PropTypes.object,
   };
 
   static defaultProps = {
@@ -292,7 +289,7 @@ export default class Dropdown extends React.PureComponent {
       action();
     } else if (to) {
       e.preventDefault();
-      this.context.router.history.push(to);
+      this.props.history.push(to);
     }
   }
 

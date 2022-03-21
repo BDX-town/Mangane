@@ -6,6 +6,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage } from 'react-intl';
 import { injectIntl, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { openChat, launchChat, toggleMainWindow } from 'soapbox/actions/chats';
@@ -52,17 +53,15 @@ const makeMapStateToProps = () => {
 
 export default @connect(makeMapStateToProps)
 @injectIntl
+@withRouter
 class ChatPanes extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     mainWindowState: PropTypes.string,
     panes: ImmutablePropTypes.list,
+    history: PropTypes.object,
   }
 
   handleClickChat = (chat) => {
@@ -70,7 +69,7 @@ class ChatPanes extends ImmutablePureComponent {
   }
 
   handleSuggestion = accountId => {
-    this.props.dispatch(launchChat(accountId, this.context.router.history));
+    this.props.dispatch(launchChat(accountId, this.props.history));
   }
 
   handleMainWindowToggle = () => {

@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
+import { withRouter } from 'react-router-dom';
 
 import InnerHeader from '../../account/components/header';
 
 import MovedNote from './moved_note';
 
-export default class Header extends ImmutablePureComponent {
+export default @withRouter
+class Header extends ImmutablePureComponent {
 
   static propTypes = {
     account: ImmutablePropTypes.map,
@@ -25,10 +27,7 @@ export default class Header extends ImmutablePureComponent {
     onEndorseToggle: PropTypes.func.isRequired,
     onAddToList: PropTypes.func.isRequired,
     username: PropTypes.string,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object,
+    history: PropTypes.object,
   };
 
   handleFollow = () => {
@@ -40,11 +39,11 @@ export default class Header extends ImmutablePureComponent {
   }
 
   handleMention = () => {
-    this.props.onMention(this.props.account, this.context.router.history);
+    this.props.onMention(this.props.account, this.props.history);
   }
 
   handleDirect = () => {
-    this.props.onDirect(this.props.account, this.context.router.history);
+    this.props.onDirect(this.props.account, this.props.history);
   }
 
   handleReport = () => {
@@ -84,7 +83,7 @@ export default class Header extends ImmutablePureComponent {
   }
 
   handleChat = () => {
-    this.props.onChat(this.props.account, this.context.router.history);
+    this.props.onChat(this.props.account, this.props.history);
   }
 
   handleEndorseToggle = () => {

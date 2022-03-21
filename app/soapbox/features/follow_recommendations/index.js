@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 import Column from 'soapbox/features/ui/components/column';
 
 import FollowRecommendationsContainer from './components/follow_recommendations_container';
 
-export default class FollowRecommendations extends React.Component {
+export default @withRouter
+class FollowRecommendations extends React.Component {
 
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
+  static propTypes = {
+    history: PropTypes.object.isRequired,
   };
 
   onDone = () => {
-    const { router } = this.context;
-
-    router.history.push('/');
+    this.props.history.push('/');
   }
 
   render() {

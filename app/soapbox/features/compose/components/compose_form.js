@@ -6,7 +6,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, FormattedMessage } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { length } from 'stringz';
 
 import Icon from 'soapbox/components/icon';
@@ -45,15 +45,12 @@ const messages = defineMessages({
   schedule: { id: 'compose_form.schedule', defaultMessage: 'Schedule' },
 });
 
-export default class ComposeForm extends ImmutablePureComponent {
+export default @withRouter
+class ComposeForm extends ImmutablePureComponent {
 
   state = {
     composeFocused: false,
   }
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -155,7 +152,7 @@ export default class ComposeForm extends ImmutablePureComponent {
       return;
     }
 
-    this.props.onSubmit(this.context.router ? this.context.router.history : null, this.props.group);
+    this.props.onSubmit(this.props.history ? this.props.history : null, this.props.group);
   }
 
   onSuggestionsClearRequested = () => {

@@ -5,6 +5,7 @@ import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import emojify from 'soapbox/features/emoji/emoji';
@@ -22,12 +23,8 @@ const notificationForScreenReader = (intl, message, timestamp) => {
   return output.join(', ');
 };
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Notification extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     notification: ImmutablePropTypes.map.isRequired,
@@ -59,7 +56,7 @@ class Notification extends ImmutablePureComponent {
     const { notification } = this.props;
 
     if (notification.get('status')) {
-      this.context.router.history.push(`/@${notification.getIn(['account', 'acct'])}/posts/${notification.getIn(['status', 'id'])}`);
+      this.props.history.push(`/@${notification.getIn(['account', 'acct'])}/posts/${notification.getIn(['status', 'id'])}`);
     } else {
       this.handleOpenProfile();
     }
@@ -67,14 +64,14 @@ class Notification extends ImmutablePureComponent {
 
   handleOpenProfile = () => {
     const { notification } = this.props;
-    this.context.router.history.push(`/@${notification.getIn(['account', 'acct'])}`);
+    this.props.history.push(`/@${notification.getIn(['account', 'acct'])}`);
   }
 
   handleMention = e => {
     e.preventDefault();
 
     const { notification, onMention } = this.props;
-    onMention(notification.get('account'), this.context.router.history);
+    onMention(notification.get('account'), this.props.history);
   }
 
   handleHotkeyFavourite = () => {

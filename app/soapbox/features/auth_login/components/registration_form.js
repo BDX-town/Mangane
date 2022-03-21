@@ -7,7 +7,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import { accountLookup } from 'soapbox/actions/accounts';
@@ -52,6 +52,7 @@ const mapStateToProps = (state, props) => ({
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class RegistrationForm extends ImmutablePureComponent {
 
   static propTypes = {
@@ -64,11 +65,8 @@ class RegistrationForm extends ImmutablePureComponent {
     supportsAccountLookup: PropTypes.bool,
     inviteToken: PropTypes.string,
     birthdayRequired: PropTypes.bool,
+    history: PropTypes.object,
   }
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   state = {
     captchaLoading: true,
@@ -168,14 +166,13 @@ class RegistrationForm extends ImmutablePureComponent {
   }
 
   postRegisterAction = ({ access_token }) => {
-    const { dispatch, needsConfirmation, needsApproval } = this.props;
-    const { router } = this.context;
+    const { dispatch, needsConfirmation, needsApproval, history } = this.props;
 
     if (needsConfirmation || needsApproval) {
       return this.launchModal();
     } else {
       return dispatch(verifyCredentials(access_token)).then(() => {
-        router.history.push('/');
+        history.push('/');
       });
     }
   }

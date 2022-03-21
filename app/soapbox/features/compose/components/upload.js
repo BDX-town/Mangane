@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import spring from 'react-motion/lib/spring';
+import { withRouter } from 'react-router-dom';
 
 import Blurhash from 'soapbox/components/blurhash';
 import Icon from 'soapbox/components/icon';
@@ -51,12 +52,8 @@ const messages = defineMessages({
   delete: { id: 'upload_form.undo', defaultMessage: 'Delete' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Upload extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     media: ImmutablePropTypes.map.isRequired,
@@ -65,6 +62,7 @@ class Upload extends ImmutablePureComponent {
     onDescriptionChange: PropTypes.func.isRequired,
     onOpenFocalPoint: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   state = {
@@ -81,7 +79,7 @@ class Upload extends ImmutablePureComponent {
 
   handleSubmit = () => {
     this.handleInputBlur();
-    this.props.onSubmit(this.context.router.history);
+    this.props.onSubmit(this.props.history);
   }
 
   handleUndoClick = e => {

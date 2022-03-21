@@ -3,7 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import Avatar from 'soapbox/components/avatar';
@@ -16,29 +16,26 @@ const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class QuotedStatus extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map,
     onCancel: PropTypes.func,
     intl: PropTypes.object.isRequired,
     compose: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   handleExpandClick = e => {
     const { compose, status } = this.props;
 
     if (!compose && e.button === 0) {
-      if (!this.context.router) {
+      if (!this.props.history) {
         return;
       }
 
-      this.context.router.history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`);
+      this.props.history.push(`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`);
 
       e.preventDefault();
     }

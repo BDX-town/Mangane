@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { changeValue, submit, reset } from '../../../actions/group_editor';
 
@@ -31,11 +32,8 @@ const mapDispatchToProps = dispatch => ({
 
 export default @connect(mapStateToProps, mapDispatchToProps)
 @injectIntl
+@withRouter
 class Create extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  }
 
   static propTypes = {
     title: PropTypes.string.isRequired,
@@ -48,6 +46,7 @@ class Create extends React.PureComponent {
     reset: PropTypes.func.isRequired,
     onDescriptionChange: PropTypes.func.isRequired,
     onCoverImageChange: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   constructor(props) {
@@ -69,7 +68,7 @@ class Create extends React.PureComponent {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.context.router.history);
+    this.props.onSubmit(this.props.history);
   }
 
   render() {

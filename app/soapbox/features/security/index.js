@@ -4,6 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedDate } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import {
   changeEmail,
@@ -243,11 +244,8 @@ class ChangePasswordForm extends ImmutablePureComponent {
 
 @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class SetUpMfa extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
@@ -255,7 +253,7 @@ class SetUpMfa extends ImmutablePureComponent {
   };
 
   handleMfaClick = e => {
-    this.context.router.history.push('../auth/mfa');
+    this.props.history.push('../auth/mfa');
   }
 
   componentDidMount() {

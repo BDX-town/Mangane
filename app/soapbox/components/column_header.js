@@ -2,6 +2,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
 // import classNames from 'classnames';
 // import { injectIntl, defineMessages } from 'react-intl';
@@ -13,11 +14,8 @@ import SubNavigation from 'soapbox/components/sub_navigation';
 //   hide: { id: 'column_header.hide_settings', defaultMessage: 'Hide settings' },
 // });
 
-export default class ColumnHeader extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
+export default @withRouter
+class ColumnHeader extends React.PureComponent {
 
   static propTypes = {
     // intl: PropTypes.object.isRequired,
@@ -26,6 +24,7 @@ export default class ColumnHeader extends React.PureComponent {
     active: PropTypes.bool,
     extraButton: PropTypes.node,
     children: PropTypes.node,
+    history: PropTypes.object,
   };
 
   state = {
@@ -35,9 +34,9 @@ export default class ColumnHeader extends React.PureComponent {
 
   historyBack = () => {
     if (window.history?.length === 1) {
-      this.context.router.history.push('/');
+      this.props.history.push('/');
     } else {
-      this.context.router.history.goBack();
+      this.props.history.goBack();
     }
   }
 

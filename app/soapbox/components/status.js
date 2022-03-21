@@ -5,7 +5,7 @@ import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage } from 'react-intl';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import Icon from 'soapbox/components/icon';
@@ -56,12 +56,8 @@ export const defaultMediaVisibility = (status, displayMedia) => {
   return (displayMedia !== 'hide_all' && !status.get('sensitive') || displayMedia === 'show_all');
 };
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class Status extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map,
@@ -98,6 +94,7 @@ class Status extends ImmutablePureComponent {
     displayMedia: PropTypes.string,
     allowedEmoji: ImmutablePropTypes.list,
     focusable: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   static defaultProps = {
@@ -181,20 +178,20 @@ class Status extends ImmutablePureComponent {
       return;
     }
 
-    if (!this.context.router) {
+    if (!this.props.history) {
       return;
     }
 
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
   }
 
   handleExpandClick = (e) => {
     if (e.button === 0) {
-      if (!this.context.router) {
+      if (!this.props.history) {
         return;
       }
 
-      this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+      this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
     }
   }
 
@@ -239,7 +236,7 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyReply = e => {
     e.preventDefault();
-    this.props.onReply(this._properStatus(), this.context.router.history);
+    this.props.onReply(this._properStatus(), this.props.history);
   }
 
   handleHotkeyFavourite = () => {
@@ -252,15 +249,15 @@ class Status extends ImmutablePureComponent {
 
   handleHotkeyMention = e => {
     e.preventDefault();
-    this.props.onMention(this._properStatus().get('account'), this.context.router.history);
+    this.props.onMention(this._properStatus().get('account'), this.props.history);
   }
 
   handleHotkeyOpen = () => {
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}/posts/${this._properStatus().get('id')}`);
   }
 
   handleHotkeyOpenProfile = () => {
-    this.context.router.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}`);
+    this.props.history.push(`/@${this._properStatus().getIn(['account', 'acct'])}`);
   }
 
   handleHotkeyMoveUp = e => {
