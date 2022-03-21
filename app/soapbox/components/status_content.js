@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
@@ -23,11 +24,8 @@ const mapStateToProps = state => ({
 });
 
 export default @connect(mapStateToProps)
+@withRouter
 class StatusContent extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
@@ -37,6 +35,7 @@ class StatusContent extends React.PureComponent {
     onClick: PropTypes.func,
     collapsable: PropTypes.bool,
     greentext: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   state = {
@@ -118,18 +117,18 @@ class StatusContent extends React.PureComponent {
   }
 
   onMentionClick = (mention, e) => {
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (this.props.history && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/@${mention.get('acct')}`);
+      this.props.history.push(`/@${mention.get('acct')}`);
     }
   }
 
   onHashtagClick = (hashtag, e) => {
     hashtag = hashtag.replace(/^#/, '').toLowerCase();
 
-    if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
+    if (this.props.history && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      this.context.router.history.push(`/tags/${hashtag}`);
+      this.props.history.push(`/tags/${hashtag}`);
     }
   }
 
@@ -202,7 +201,7 @@ class StatusContent extends React.PureComponent {
     const spoilerContent = { __html: status.get('spoilerHtml') };
     const directionStyle = { direction: 'ltr' };
     const classNames = classnames('status__content', {
-      'status__content--with-action': this.props.onClick && this.context.router,
+      'status__content--with-action': this.props.onClick && this.props.history,
       'status__content--with-spoiler': status.get('spoiler_text').length > 0,
       'status__content--collapsed': this.state.collapsed === true,
       'status__content--big': onlyEmoji,

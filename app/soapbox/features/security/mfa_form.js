@@ -5,6 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { Spinner } from 'soapbox/components/ui';
@@ -49,16 +50,14 @@ const mapStateToProps = state => ({
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class MfaForm extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     mfa: ImmutablePropTypes.map.isRequired,
+    history: PropTypes.object,
   };
 
   state = {
@@ -105,15 +104,13 @@ class MfaForm extends ImmutablePureComponent {
 
 @connect()
 @injectIntl
+@withRouter
 class DisableOtpForm extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   state = {
@@ -133,7 +130,7 @@ class DisableOtpForm extends ImmutablePureComponent {
 
     dispatch(disableMfa('totp', password)).then(() => {
       dispatch(snackbar.success(intl.formatMessage(messages.mfaDisableSuccess)));
-      this.context.router.history.push('../auth/edit');
+      this.props.history.push('../auth/edit');
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.disableFail)));
       this.setState({ isLoading: false });
@@ -189,15 +186,13 @@ class DisableOtpForm extends ImmutablePureComponent {
 
 @connect()
 @injectIntl
+@withRouter
 class EnableOtpForm extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
+    history: PropTypes.object,
   };
 
   state = {
@@ -215,7 +210,7 @@ class EnableOtpForm extends ImmutablePureComponent {
   }
 
   handleCancelClick = e => {
-    this.context.router.history.push('../auth/edit');
+    this.props.history.push('../auth/edit');
     e.preventDefault();
   }
 
@@ -280,14 +275,12 @@ class EnableOtpForm extends ImmutablePureComponent {
 
 @connect()
 @injectIntl
+@withRouter
 class OtpConfirmForm extends ImmutablePureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   state = {
@@ -313,7 +306,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
   }
 
   handleCancelClick = e => {
-    this.context.router.history.push('../auth/edit');
+    this.props.history.push('../auth/edit');
     e.preventDefault();
   }
 
@@ -325,7 +318,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
 
     dispatch(confirmMfa('totp', code, password)).then(() => {
       dispatch(snackbar.success(intl.formatMessage(messages.mfaConfirmSuccess)));
-      this.context.router.history.push('../auth/edit');
+      this.props.history.push('../auth/edit');
     }).catch(error => {
       dispatch(snackbar.error(intl.formatMessage(messages.confirmFail)));
       this.setState({ isLoading: false });

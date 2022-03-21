@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { withRouter } from 'react-router-dom';
 import ReactSwipeableViews from 'react-swipeable-views';
 
 import ExtendedVideoPlayer from 'soapbox/components/extended_video_player';
@@ -20,7 +21,7 @@ const messages = defineMessages({
   next: { id: 'lightbox.next', defaultMessage: 'Next' },
 });
 
-export default @injectIntl
+export default @injectIntl @withRouter
 class MediaModal extends ImmutablePureComponent {
 
   static propTypes = {
@@ -30,11 +31,8 @@ class MediaModal extends ImmutablePureComponent {
     index: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
-
-  static contextTypes = {
-    router: PropTypes.object,
-  }
 
   state = {
     index: null,
@@ -97,7 +95,7 @@ class MediaModal extends ImmutablePureComponent {
       const { status, account } = this.props;
       const acct = account.get('acct');
       const statusId = status.get('id');
-      this.context.router.history.push(`/@${acct}/posts/${statusId}`);
+      this.props.history.push(`/@${acct}/posts/${statusId}`);
       this.props.onClose(null, true);
     }
   }

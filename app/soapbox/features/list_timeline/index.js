@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { FormattedMessage, defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { Button, Spinner } from 'soapbox/components/ui';
 import Column from 'soapbox/features/ui/components/column';
@@ -27,11 +28,8 @@ const mapStateToProps = (state, props) => ({
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class ListTimeline extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     params: PropTypes.object.isRequired,
@@ -39,6 +37,7 @@ class ListTimeline extends React.PureComponent {
     // hasUnread: PropTypes.bool,
     list: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     intl: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
@@ -92,7 +91,7 @@ class ListTimeline extends React.PureComponent {
       confirm: intl.formatMessage(messages.deleteConfirm),
       onConfirm: () => {
         dispatch(deleteList(id));
-        this.context.router.history.push('/lists');
+        this.props.history.push('/lists');
       },
     }));
   }

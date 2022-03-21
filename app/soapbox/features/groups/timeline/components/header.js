@@ -25,10 +25,6 @@ class Header extends ImmutablePureComponent {
     toggleMembership: PropTypes.func.isRequired,
   };
 
-  static contextTypes = {
-    router: PropTypes.object,
-  };
-
   toggle = () => {
     const { group, relationships, toggleMembership } = this.props;
     toggleMembership(group, relationships);

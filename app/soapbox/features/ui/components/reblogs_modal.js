@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { fetchReblogs } from 'soapbox/actions/interactions';
 import { fetchStatus } from 'soapbox/actions/statuses';
@@ -18,11 +19,8 @@ const mapStateToProps = (state, props) => {
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class ReblogsModal extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     onClose: PropTypes.func.isRequired,
@@ -31,6 +29,7 @@ class ReblogsModal extends React.PureComponent {
     username: PropTypes.string.isRequired,
     dispatch: PropTypes.func.isRequired,
     accountIds: ImmutablePropTypes.orderedSet,
+    history: PropTypes.object,
   };
 
   fetchData = () => {
@@ -42,7 +41,7 @@ class ReblogsModal extends React.PureComponent {
 
   componentDidMount() {
     this.fetchData();
-    this.unlistenHistory = this.context.router.history.listen((_, action) => {
+    this.unlistenHistory = this.props.history.listen((_, action) => {
       if (action === 'PUSH') {
         this.onClickClose(null, true);
       }

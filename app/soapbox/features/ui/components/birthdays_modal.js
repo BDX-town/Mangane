@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import IconButton from 'soapbox/components/icon_button';
 import ScrollableList from 'soapbox/components/scrollable_list';
@@ -23,20 +24,18 @@ const mapStateToProps = (state) => {
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class BirthdaysModal extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
     accountIds: ImmutablePropTypes.orderedSet,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
-    this.unlistenHistory = this.context.router.history.listen((_, action) => {
+    this.unlistenHistory = this.props.history.listen((_, action) => {
       if (action === 'PUSH') {
         this.onClickClose(null, true);
       }

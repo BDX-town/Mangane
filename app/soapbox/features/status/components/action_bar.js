@@ -4,6 +4,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { isUserTouching } from 'soapbox/is_mobile';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
@@ -79,11 +80,8 @@ const mapDispatchToProps = (dispatch, { status }) => ({
   },
 });
 
+@withRouter
 class ActionBar extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     status: ImmutablePropTypes.map.isRequired,
@@ -117,6 +115,7 @@ class ActionBar extends React.PureComponent {
     handleEmojiSelectorExpand: PropTypes.func.isRequired,
     handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
     features: PropTypes.object.isRequired,
+    history: PropTypes.object,
   };
 
   static defaultProps = {
@@ -153,7 +152,7 @@ class ActionBar extends React.PureComponent {
   handleQuoteClick = () => {
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
-      onQuote(status, this.context.router.history);
+      onQuote(status, this.props.history);
     } else {
       onOpenUnauthorizedModal('REBLOG');
     }
@@ -225,23 +224,23 @@ class ActionBar extends React.PureComponent {
   }
 
   handleDeleteClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history);
+    this.props.onDelete(this.props.status, this.props.history);
   }
 
   handleRedraftClick = () => {
-    this.props.onDelete(this.props.status, this.context.router.history, true);
+    this.props.onDelete(this.props.status, this.props.history, true);
   }
 
   handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.context.router.history);
+    this.props.onDirect(this.props.status.get('account'), this.props.history);
   }
 
   handleChatClick = () => {
-    this.props.onChat(this.props.status.get('account'), this.context.router.history);
+    this.props.onChat(this.props.status.get('account'), this.props.history);
   }
 
   handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.context.router.history);
+    this.props.onMention(this.props.status.get('account'), this.props.history);
   }
 
   handleMuteClick = () => {

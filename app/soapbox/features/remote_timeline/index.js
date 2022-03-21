@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
 import IconButton from 'soapbox/components/icon_button';
@@ -35,11 +36,8 @@ const mapStateToProps = (state, props) => {
 
 export default @connect(mapStateToProps)
 @injectIntl
+@withRouter
 class RemoteTimeline extends React.PureComponent {
-
-  static contextTypes = {
-    router: PropTypes.object,
-  };
 
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -49,6 +47,7 @@ class RemoteTimeline extends React.PureComponent {
     timelineId: PropTypes.string,
     instance: PropTypes.string.isRequired,
     pinned: PropTypes.bool,
+    history: PropTypes.object,
   };
 
   componentDidMount() {
@@ -75,7 +74,7 @@ class RemoteTimeline extends React.PureComponent {
   }
 
   handleCloseClick = e => {
-    this.context.router.history.push('/timeline/fediverse');
+    this.props.history.push('/timeline/fediverse');
   }
 
   handleLoadMore = maxId => {

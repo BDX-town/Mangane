@@ -5,6 +5,7 @@ import React from 'react';
 import 'wicg-inert';
 import { injectIntl, FormattedMessage, defineMessages } from 'react-intl';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { cancelReplyCompose } from '../actions/compose';
 import { openModal, closeModal } from '../actions/modals';
@@ -41,6 +42,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
+@withRouter
 class ModalRoot extends React.PureComponent {
 
   static propTypes = {
@@ -53,10 +55,7 @@ class ModalRoot extends React.PureComponent {
     hasComposeContent: PropTypes.bool,
     type: PropTypes.string,
     onCancel: PropTypes.func,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object,
+    history: PropTypes.object,
   };
 
   state = {
@@ -116,7 +115,7 @@ class ModalRoot extends React.PureComponent {
   componentDidMount() {
     window.addEventListener('keyup', this.handleKeyUp, false);
     window.addEventListener('keydown', this.handleKeyDown, false);
-    this.history = this.context.router ? this.context.router.history : createBrowserHistory();
+    this.history = this.props.history || createBrowserHistory();
   }
 
   componentDidUpdate(prevProps) {
