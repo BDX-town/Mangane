@@ -39,10 +39,10 @@ const buildLink = (account) => (
 export const NOTIFICATION_TYPES = ['follow', 'mention', 'favourite', 'reblog'];
 
 const icons = {
-  follow: 'user-plus',
-  mention: 'at',
-  favourite: 'heart',
-  reblog: 'repeat',
+  follow: require('@tabler/icons/icons/user-plus.svg'),
+  mention: require('@tabler/icons/icons/at.svg'),
+  favourite: require('@tabler/icons/icons/heart.svg'),
+  reblog: require('@tabler/icons/icons/repeat.svg'),
 };
 
 const messages = {
@@ -199,7 +199,7 @@ const Notification = (props) => {
           <div className='mb-2'>
             <HStack alignItems='center' space={1.5}>
               <Icon
-                src={require(`@tabler/icons/icons/${icons[type]}.svg`)}
+                src={icons[type]}
                 className='text-primary-600'
               />
 
