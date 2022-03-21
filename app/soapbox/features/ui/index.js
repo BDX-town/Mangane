@@ -89,7 +89,7 @@ import {
   EditPassword,
   EmailConfirmation,
   DeleteAccount,
-  // SoapboxConfig,
+  SoapboxConfig,
   // ExportData,
   // ImportData,
   // Backups,
@@ -330,7 +330,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
         <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
         {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
-        {/* <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} /> */}
+        <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
         {/*
         <Redirect from='/admin/dashboard' to='/admin' exact />

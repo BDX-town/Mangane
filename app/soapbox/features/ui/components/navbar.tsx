@@ -48,7 +48,7 @@ const Navbar = () => {
           >
             {logo ? (
               <Link key='logo' to='/' data-preview-title-id='column.home' className='flex-shrink-0 flex items-center'>
-                <img alt='Logo' src={logo} className='h-5 lg:h-6 w-auto lg:min-w-[160px] cursor-pointer' />
+                <img alt='Logo' src={logo} className='h-5 lg:h-6 w-auto cursor-pointer' />
                 <span className='hidden'><FormattedMessage id='tabs_bar.home' defaultMessage='Home' /></span>
               </Link>
             ) : (
