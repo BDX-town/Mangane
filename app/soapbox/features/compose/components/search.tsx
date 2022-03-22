@@ -5,7 +5,7 @@ import * as React from 'react';
 import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
 import { useAppSelector } from 'soapbox/hooks';
@@ -32,7 +32,7 @@ function redirectToAccount(accountId: number, routerHistory: any) {
   };
 }
 
-interface ISearch extends RouteComponentProps<any> {
+interface ISearch {
   autoFocus?: boolean,
   autoSubmit?: boolean,
   autosuggest?: boolean,
@@ -44,11 +44,11 @@ const Search = (props: ISearch) => {
     autoFocus = false,
     autoSubmit = false,
     autosuggest = false,
-    history,
     openInRoute = false,
   } = props;
 
   const dispatch = useDispatch();
+  const history = useHistory();
   const intl = useIntl();
 
   const value = useAppSelector((state) => state.search.get('value'));
@@ -156,4 +156,4 @@ const Search = (props: ISearch) => {
   );
 };
 
-export default withRouter(Search);
+export default Search;

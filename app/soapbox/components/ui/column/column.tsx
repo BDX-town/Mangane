@@ -1,11 +1,11 @@
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Helmet from 'soapbox/components/helmet';
 
 import { Card, CardBody, CardHeader, CardTitle } from '../card/card';
 
-interface IColumn extends RouteComponentProps {
+interface IColumn {
   backHref?: string,
   label?: string,
   transparent?: boolean,
@@ -13,7 +13,9 @@ interface IColumn extends RouteComponentProps {
 }
 
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, history, transparent = false, withHeader = true } = props;
+  const { backHref, children, label, transparent = false, withHeader = true } = props;
+
+  const history = useHistory();
 
   const handleBackClick = () => {
     if (backHref) {
@@ -57,4 +59,4 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
   );
 });
 
-export default withRouter(Column);
+export default Column;

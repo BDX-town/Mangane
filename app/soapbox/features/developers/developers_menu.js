@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import InlineSVG from 'react-inlinesvg';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { changeSettingImmediate } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
@@ -16,9 +15,10 @@ const messages = defineMessages({
   leave: { id: 'developers.leave', defaultMessage: 'You have left developers' },
 });
 
-const Developers = ({ history }) => {
-  const intl = useIntl();
+const Developers = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const intl = useIntl();
 
   const leaveDevelopers = (e) => {
     e.preventDefault();
@@ -67,8 +67,4 @@ const Developers = ({ history }) => {
   );
 };
 
-Developers.propTypes = {
-  history: PropTypes.object,
-};
-
-export default withRouter(Developers);
+export default Developers;

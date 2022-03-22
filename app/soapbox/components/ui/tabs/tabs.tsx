@@ -7,7 +7,7 @@ import {
 } from '@reach/tabs';
 import classNames from 'classnames';
 import * as React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import './tabs.css';
 
@@ -87,13 +87,15 @@ type Item = {
   action?: () => void,
   name: string
 }
-interface ITabs extends RouteComponentProps<any> {
+interface ITabs {
   items: Item[],
   activeItem: string,
 }
 
-const Tabs = ({ items, activeItem, history }: ITabs) => {
+const Tabs = ({ items, activeItem }: ITabs) => {
   const defaultIndex = items.findIndex(({ name }) => name === activeItem);
+
+  const history = useHistory();
 
   const onChange = (selectedIndex: number) => {
     const item = items[selectedIndex];
@@ -130,4 +132,4 @@ const Tabs = ({ items, activeItem, history }: ITabs) => {
   );
 };
 
-export default withRouter(Tabs);
+export default Tabs;

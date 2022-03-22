@@ -119,7 +119,7 @@ const Account = ({
     );
   }
 
-  const LinkEl = showProfileHoverCard ? Link : 'div';
+  const LinkEl: any = showProfileHoverCard ? Link : 'div';
 
   return (
     <div className='flex-shrink-0 group block w-full overflow-hidden' ref={overflowRef}>
@@ -132,7 +132,7 @@ const Account = ({
             <LinkEl
               to={`/@${account.get('acct')}`}
               title={account.get('acct')}
-              onClick={(event) => event.stopPropagation()}
+              onClick={(event: React.MouseEvent) => event.stopPropagation()}
             >
               <Avatar src={account.get('avatar')} size={avatarSize} />
             </LinkEl>
@@ -146,7 +146,7 @@ const Account = ({
               <LinkEl
                 to={`/@${account.get('acct')}`}
                 title={account.get('acct')}
-                onClick={(event) => event.stopPropagation()}
+                onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
                 <div className='flex items-center space-x-1 flex-grow' style={style}>
                   <Text

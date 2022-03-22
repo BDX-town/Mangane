@@ -1,15 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, useIntl } from 'react-intl';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { getSettings, changeSettingImmediate } from 'soapbox/actions/settings';
 import {
   SimpleForm,
   SelectDropdown,
 } from 'soapbox/features/forms';
+import { useAppSelector } from 'soapbox/hooks';
 
 import List, { ListItem } from '../../components/list';
 import { Card, CardBody, CardHeader, CardTitle } from '../../components/ui';
@@ -21,14 +19,11 @@ const messages = defineMessages({
   display_media_show_all: { id: 'preferences.fields.display_media.show_all', defaultMessage: 'Always show media' },
 });
 
-const mapStateToProps = state => {
-  return {
-    settings: getSettings(state),
-  };
-};
-
-const MediaDisplay = ({ history, settings, dispatch }) => {
+const MediaDisplay = () => {
+  const dispatch = useDispatch();
   const intl = useIntl();
+
+  const settings = useAppSelector((state) => getSettings(state));
 
   const displayMediaOptions = {
     default: intl.formatMessage(messages.display_media_default),
@@ -65,10 +60,4 @@ const MediaDisplay = ({ history, settings, dispatch }) => {
   );
 };
 
-MediaDisplay.propTypes = {
-  history: PropTypes.object,
-  dispatch: PropTypes.func.isRequired,
-  settings: ImmutablePropTypes.map,
-};
-
-export default withRouter(connect(mapStateToProps)(MediaDisplay));
+export default MediaDisplay;
