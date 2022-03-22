@@ -1,37 +1,10 @@
-import { Map as ImmutableMap } from 'immutable';
+import tintify, { hexToRgb } from './colors';
 
-type RGB = { r: number, g: number, b: number };
-type HSL = { h: number, s: number, l: number };
-
-export const generateThemeCss = (brandColor: string, accentColor: string): string => {
-  if (!brandColor) return null;
-  return themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
-};
-
-// https://stackoverflow.com/a/5624139
-function hexToRgb(hex: string): RGB {
-  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
-  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, (_m, r, g, b) => (
-    r + r + g + g + b + b
-  ));
-
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
-  } : {
-    // fall back to Azure
-    r: 4,
-    g: 130,
-    b: 216,
-  };
-}
+import type { Rgb, Hsl, TailwindColorPalette } from 'soapbox/types/colors';
 
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js
-const rgbToHsl = (value: RGB): HSL => {
+const rgbToHsl = (value: Rgb): Hsl => {
   const r = value.r / 255;
   const g = value.g / 255;
   const b = value.b / 255;
@@ -68,6 +41,31 @@ const rgbToHsl = (value: RGB): HSL => {
   };
 };
 
+// https://stackoverflow.com/a/44134328
+function hslToHex(color: Hsl): string {
+  const { h, s } = color;
+  let { l } = color;
+
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0'); // convert to Hex and prefix "0" if needed
+  };
+
+  return `#${f(0)}${f(8)}${f(4)}`;
+}
+
+// Generate accent color from brand color
+const generateAccent = (brandColor: string): string => {
+  console.log(brandColor);
+  console.log(hexToRgb(brandColor));
+  const { h } = rgbToHsl(hexToRgb(brandColor));
+  return hslToHex({ h: h - 15, s: 86, l: 44 });
+};
+
 const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>) => {
   if (typeof shades === 'string') {
     const { r, g, b } = hexToRgb(shades);
@@ -80,53 +78,29 @@ const parseShades = (obj: Record<string, any>, color: string, shades: Record<str
   });
 };
 
-const parseColors = (colors: Record<string, any>): Record<string, any> => {
+// Convert colors as CSS variables
+const parseColors = (colors: TailwindColorPalette): TailwindColorPalette => {
   return Object.keys(colors).reduce((obj, color) => {
     parseShades(obj, color, colors[color]);
     return obj;
   }, {});
 };
 
-export const colorsToCss = (colors: Record<string, any>): string => {
+export const colorsToCss = (colors: TailwindColorPalette): string => {
   const parsed = parseColors(colors);
   return Object.keys(parsed).reduce((css, variable) => {
     return css + `${variable}:${parsed[variable]};`;
   }, '');
 };
 
-export const brandColorToThemeData = (brandColor: string): ImmutableMap<string, any> => {
-  const { h, s, l } = rgbToHsl(hexToRgb(brandColor));
-  return ImmutableMap({
-    'brand-color_h': h,
-    'brand-color_s': `${s}%`,
-    'brand-color_l': `${l}%`,
-  });
+const legacyColorsToTailwind = (brandColor: string, accentColor: string): TailwindColorPalette => {
+  return {
+    primary: tintify(brandColor),
+    accent: tintify(accentColor ? accentColor : generateAccent(brandColor)),
+  };
 };
 
-export const accentColorToThemeData = (brandColor: string, accentColor: string): ImmutableMap<string, any> => {
-  if (accentColor) {
-    const { h, s, l } = rgbToHsl(hexToRgb(accentColor));
-
-    return ImmutableMap({
-      'accent-color_h': h,
-      'accent-color_s': `${s}%`,
-      'accent-color_l': `${l}%`,
-    });
-  }
-
-  const { h } = rgbToHsl(hexToRgb(brandColor));
-  return ImmutableMap({
-    'accent-color_h': h - 15,
-    'accent-color_s': '86%',
-    'accent-color_l': '44%',
-  });
+export const themeColorsToCSS = (brandColor: string, accentColor: string): string => {
+  const colors = legacyColorsToTailwind(brandColor, accentColor);
+  return colorsToCss(colors);
 };
-
-export const themeDataToCss = (themeData: ImmutableMap<string, any>): string => (
-  themeData
-    .entrySeq()
-    .reduce((acc, cur) => acc + `--${cur[0]}:${cur[1]};`, '')
-);
-
-export const themeColorsToCSS = (brandColor: string, accentColor: string): string =>
-  themeDataToCss(brandColorToThemeData(brandColor).merge(accentColorToThemeData(brandColor, accentColor)));
