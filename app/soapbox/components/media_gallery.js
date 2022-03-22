@@ -17,6 +17,7 @@ import { isIOS } from '../is_mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 
 import IconButton from './icon_button';
+import { Button, Text } from './ui';
 
 const ATTACHMENT_LIMIT = 4;
 const MAX_FILENAME_LENGTH = 45;
@@ -602,10 +603,19 @@ class MediaGallery extends React.PureComponent {
                 onClick={this.handleOpen}
               />
             ) : (
-              <button type='button' onClick={this.handleOpen} className='spoiler-button__overlay'>
-                <span className='spoiler-button__overlay__label'>
-                  {warning}
-                </span>
+              <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
+                <div className='p-4 rounded-xl shadow-xl backdrop-blur-sm bg-white/75 text-center inline-block space-y-4 max-w-[280px]'>
+                  <div className='space-y-1'>
+                    <Text weight='semibold'>{warning}</Text>
+                    <Text size='sm'>
+                      {intl.formatMessage({ id: 'status.sensitive_warning.subtitle', defaultMessage: 'This content may not be suitable for all audiences.' })}
+                    </Text>
+                  </div>
+
+                  <Button type='button' theme='primary' size='sm' icon={require('@tabler/icons/icons/eye.svg')}>
+                    {intl.formatMessage({ id: 'status.sensitive_warning.action', defaultMessage: 'Show content' })}
+                  </Button>
+                </div>
               </button>
             )
           )}
