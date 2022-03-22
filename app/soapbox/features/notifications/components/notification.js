@@ -3,7 +3,7 @@ import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import {  FormattedMessage, useIntl } from 'react-intl';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Icon from '../../../components/icon';
 import Permalink from '../../../components/permalink';
@@ -77,9 +77,11 @@ const buildMessage = (type, account) => {
 };
 
 const Notification = (props) => {
-  const { hidden, history, notification, onMoveUp, onMoveDown } = props;
+  const { hidden, notification, onMoveUp, onMoveDown } = props;
 
+  const history = useHistory();
   const intl = useIntl();
+
   const type = notification.get('type');
   const timestamp = notification.get('created_at');
   const account = notification.get('account');
@@ -226,7 +228,6 @@ const Notification = (props) => {
 
 Notification.propTypes = {
   hidden: PropTypes.bool,
-  history: PropTypes.object.isRequired,
   notification: ImmutablePropTypes.map.isRequired,
   onMoveUp: PropTypes.func.isRequired,
   onMoveDown: PropTypes.func.isRequired,
@@ -241,4 +242,4 @@ Notification.propTypes = {
   siteTitle: PropTypes.string,
 };
 
-export default withRouter(Notification);
+export default Notification;

@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import { useIntl } from 'react-intl';
 import { usePopper } from 'react-popper';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { fetchRelationships } from 'soapbox/actions/accounts';
 import {
@@ -52,8 +52,9 @@ const handleMouseLeave = (dispatch) => {
   };
 };
 
-export const ProfileHoverCard = ({ history, visible }) => {
+export const ProfileHoverCard = ({ visible }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const intl = useIntl();
 
   const [popperElement, setPopperElement] = useState(null);
@@ -134,11 +135,10 @@ ProfileHoverCard.propTypes = {
   visible: PropTypes.bool,
   accountId: PropTypes.string,
   account: ImmutablePropTypes.map,
-  history: PropTypes.object.isRequired,
 };
 
 ProfileHoverCard.defaultProps = {
   visible: true,
 };
 
-export default withRouter(ProfileHoverCard);
+export default ProfileHoverCard;

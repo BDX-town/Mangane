@@ -2,6 +2,7 @@ import throttle from 'lodash/throttle';
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
@@ -42,16 +43,13 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const isCurrentAccountStaff = isStaff(currentAccount) || false;
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
 
-  const handleLogOut = (event: React.MouseEvent) => {
-    event.preventDefault();
-
+  const handleLogOut = () => {
     dispatch(logOut(intl));
   };
 
   const handleSwitchAccount = (account: AccountEntity) => {
-    return (event: React.MouseEvent) => {
+    return () => {
       dispatch(switchAccount(account.id));
-      event.preventDefault();
     };
   };
 
@@ -115,7 +113,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
             return <MenuDivider key={idx} />;
           } else {
             const Comp: any = menuItem.action ? MenuItem : MenuLink;
-            const itemProps = menuItem.action ? { onSelect: menuItem.action } : { href: menuItem.to };
+            const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link };
 
             return (
               <Comp key={idx} {...itemProps}>
