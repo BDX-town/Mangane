@@ -6,10 +6,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { logOut } from 'soapbox/actions/auth';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Text } from 'soapbox/components/ui';
 import emojify from 'soapbox/features/emoji/emoji';
 import { getBaseURL } from 'soapbox/utils/accounts';
-// import sourceCode from 'soapbox/utils/code';
+import sourceCode from 'soapbox/utils/code';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { openModal } from '../../../actions/modals';
@@ -19,9 +20,11 @@ const mapStateToProps = state => {
   const account = state.getIn(['accounts', me]);
   const instance = state.get('instance');
   const features = getFeatures(instance);
+  const soapboxConfig = getSoapboxConfig(state);
 
   return {
     account,
+    soapboxConfig,
     profileDirectory: features.profileDirectory,
     federating: features.federating,
     showAliases: features.accountAliasesAPI,
@@ -41,7 +44,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 });
 
-const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, showAliases, importAPI, onClickLogOut, baseURL }) => (
+const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, showAliases, importAPI, onClickLogOut, baseURL, soapboxConfig }) => (
   <div className='space-y-2'>
     <ul className='flex flex-wrap items-center divide-x-dot'>
       {account && <>
@@ -68,26 +71,29 @@ const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, show
     </ul>
 
     <Text theme='muted' size='sm'>
-      {/*<FormattedMessage
-        id='getting_started.open_source_notice'
-        defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
-        values={{
-          code_name: sourceCode.displayName,
-          code_link: <a href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a>,
-          code_version: sourceCode.version,
-        }}
-      />*/}
-      <FormattedMessage
-        id='link_footer.made_in_usa'
-        defaultMessage='Proudly made in the United States of America. {emoji}'
-        values={{ emoji: <span className='inline-block align-middle' dangerouslySetInnerHTML={{ __html: emojify('🇺🇸') }} /> }}
-      />
+      {soapboxConfig.get('linkFooterMessage') ? (
+        <span
+          className='inline-block align-middle'
+          dangerouslySetInnerHTML={{ __html: emojify(soapboxConfig.get('linkFooterMessage')) }}
+        />
+      ) : (
+        <FormattedMessage
+          id='getting_started.open_source_notice'
+          defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
+          values={{
+            code_name: sourceCode.displayName,
+            code_link: <a href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a>,
+            code_version: sourceCode.version,
+          }}
+        />
+      )}
     </Text>
   </div>
 );
 
 LinkFooter.propTypes = {
   account: ImmutablePropTypes.map,
+  soapboxConfig: ImmutablePropTypes.map,
   profileDirectory: PropTypes.bool,
   federating: PropTypes.bool,
   showAliases: PropTypes.bool,
