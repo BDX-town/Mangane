@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { fetchMfa } from 'soapbox/actions/mfa';
 
@@ -22,9 +21,11 @@ const messages = defineMessages({
   deleteAccount: { id: 'settings.delete_account', defaultMessage: 'Delete Account' },
 });
 
-const Settings = ({ history }) => {
-  const intl = useIntl();
+const Settings = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const intl = useIntl();
+
   const mfa = useSelector((state) => state.getIn(['security', 'mfa']));
   const me = useSelector((state) => state.get('me'));
   const account = useSelector((state) => state.getIn(['accounts', me]));
@@ -92,8 +93,4 @@ const Settings = ({ history }) => {
   );
 };
 
-Settings.propTypes = {
-  history: PropTypes.object,
-};
-
-export default withRouter(Settings);
+export default Settings;

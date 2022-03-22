@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import snackbar from 'soapbox/actions/snackbar';
 import { confirmEmailVerification } from 'soapbox/actions/verification';
@@ -95,8 +94,8 @@ const TokenExpired = () => {
 const EmailPassThru = ({ match }) => {
   const { token } = match.params;
 
-  const intl = useIntl();
   const dispatch = useDispatch();
+  const intl = useIntl();
 
   const [status, setStatus] = React.useState(Statuses.IDLE);
 
@@ -160,4 +159,4 @@ EmailPassThru.propTypes = {
   match: PropTypes.object,
 };
 
-export default withRouter(EmailPassThru);
+export default EmailPassThru;
