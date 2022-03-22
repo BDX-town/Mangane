@@ -111,11 +111,17 @@ const Preferences = () => {
   return (
     <Form>
       <List>
-        <ListItem label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reTRUTHs' />}>
+        <ListItem
+          label={<FormattedMessage id='home.column_settings.show_reblogs' defaultMessage='Show reTRUTHs' />}
+          hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
+        >
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reblog']} onChange={onToggleChange} />
         </ListItem>
 
-        <ListItem label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />}>
+        <ListItem
+          label={<FormattedMessage id='home.column_settings.show_replies' defaultMessage='Show replies' />}
+          hint={<FormattedMessage id='preferences.hints.feed' defaultMessage='In your home feed' />}
+        >
           <SettingToggle settings={settings} settingPath={['home', 'shows', 'reply']} onChange={onToggleChange} />
         </ListItem>
 

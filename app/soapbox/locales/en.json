@@ -713,6 +713,7 @@
   "preferences.fields.system_font_label": "Use system's default font",
   "preferences.fields.underline_links_label": "Always underline links in posts",
   "preferences.fields.unfollow_modal_label": "Show confirmation dialog before unfollowing someone",
+  "preferences.hints.feed": "In your home feed",
   "preferences.hints.content_type_markdown": "Warning: experimental!",
   "preferences.hints.demetricator": "Decrease social media anxiety by hiding all numbers from the site.",
   "preferences.hints.halloween": "Beware: SPOOKY! Supports light/dark toggle.",
