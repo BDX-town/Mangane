@@ -29,6 +29,7 @@ interface IHStack {
   justifyContent?: 'between' | 'center',
   space?: 0.5 | 1 | 1.5 | 2 | 3 | 4 | 6,
   grow?: boolean,
+  style?: React.CSSProperties
 }
 
 const HStack: React.FC<IHStack> = (props) => {

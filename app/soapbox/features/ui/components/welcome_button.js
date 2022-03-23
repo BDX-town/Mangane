@@ -40,7 +40,7 @@ class WelcomeButton extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     onClick: PropTypes.func.isRequired,
   };
 

@@ -86,8 +86,8 @@ export default @connect(mapStateToProps)
 class Header extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
-    meAccount: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
+    meaccount: ImmutablePropTypes.record,
     identity_props: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,

@@ -18,7 +18,7 @@ class ProfileStats extends React.PureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     className: PropTypes.string,
     onClickHandler: PropTypes.func,
   }

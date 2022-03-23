@@ -11,7 +11,7 @@ import { MediaGallery, Video, Audio } from '../../ui/util/async-components';
 export default class StatusCheckBox extends React.PureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     checked: PropTypes.bool,
     onToggle: PropTypes.func.isRequired,
     disabled: PropTypes.bool,

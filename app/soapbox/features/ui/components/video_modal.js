@@ -12,8 +12,8 @@ class VideoModal extends ImmutablePureComponent {
 
   static propTypes = {
     media: ImmutablePropTypes.map.isRequired,
-    status: ImmutablePropTypes.map,
-    account: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
+    account: ImmutablePropTypes.record,
     time: PropTypes.number,
     onClose: PropTypes.func.isRequired,
     history: PropTypes.object,

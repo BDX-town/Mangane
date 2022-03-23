@@ -19,7 +19,7 @@ import { makeGetAccount } from '../../../selectors';
 class UserPanel extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     displayFqn: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     domain: PropTypes.string,

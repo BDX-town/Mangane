@@ -30,7 +30,7 @@ class WrappedRoute extends React.Component {
     content: PropTypes.node,
     componentParams: PropTypes.object,
     layout: PropTypes.object,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     settings: ImmutablePropTypes.map.isRequired,
     publicRoute: PropTypes.bool,
     staffOnly: PropTypes.bool,

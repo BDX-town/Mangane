@@ -22,7 +22,7 @@ export default @connect()
 class ReportStatus extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     report: ImmutablePropTypes.map,
   };
 

@@ -256,8 +256,6 @@ class PrivacyDropdown extends React.PureComponent {
             className='text-gray-400 hover:text-gray-600'
             src={valueOption.icon}
             title={intl.formatMessage(messages.change_privacy)}
-            expanded={open}
-            active={open}
             onClick={this.handleToggle}
             onMouseDown={this.handleMouseDown}
             onKeyDown={this.handleButtonKeyDown}

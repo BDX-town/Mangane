@@ -20,7 +20,7 @@ export default @injectIntl @withRouter
 class QuotedStatus extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     onCancel: PropTypes.func,
     intl: PropTypes.object.isRequired,
     compose: PropTypes.bool,

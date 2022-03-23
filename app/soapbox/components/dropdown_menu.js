@@ -207,7 +207,7 @@ class Dropdown extends React.PureComponent {
     pressed: PropTypes.bool,
     title: PropTypes.string,
     disabled: PropTypes.bool,
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     isUserTouching: PropTypes.func,
     isModalOpen: PropTypes.bool.isRequired,
     onOpen: PropTypes.func.isRequired,

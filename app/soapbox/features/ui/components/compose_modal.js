@@ -29,7 +29,7 @@ const mapStateToProps = state => {
 class ComposeModal extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     intl: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     composeText: PropTypes.string,

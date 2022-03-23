@@ -61,7 +61,7 @@ const addAutoPlay = html => {
 export default class Card extends React.PureComponent {
 
   static propTypes = {
-    card: ImmutablePropTypes.map,
+    card: ImmutablePropTypes.record,
     maxDescription: PropTypes.number,
     onOpenMedia: PropTypes.func.isRequired,
     compact: PropTypes.bool,

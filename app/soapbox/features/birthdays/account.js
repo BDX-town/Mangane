@@ -36,7 +36,7 @@ class Account extends ImmutablePureComponent {
   static propTypes = {
     accountId: PropTypes.string.isRequired,
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
   };
 
   static defaultProps = {

@@ -116,7 +116,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
             const itemProps = menuItem.action ? { onSelect: menuItem.action } : { to: menuItem.to, as: Link };
 
             return (
-              <Comp key={idx} {...itemProps}>
+              <Comp key={idx} {...itemProps} className='truncate'>
                 {menuItem.text}
               </Comp>
             );

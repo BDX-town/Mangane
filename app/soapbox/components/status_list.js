@@ -223,7 +223,7 @@ export default class StatusList extends ImmutablePureComponent {
         isLoading={isLoading}
         showLoading={isLoading && statusIds.size === 0}
         onLoadMore={onLoadMore && this.handleLoadOlder}
-        placeholderComponent={() => <PlaceholderStatus />}
+        placeholderComponent={PlaceholderStatus}
         placeholderCount={20}
         ref={this.setRef}
         className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 sm:divide-none'}

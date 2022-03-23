@@ -69,7 +69,7 @@ const messages = defineMessages({
 class StatusActionBar extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,
     onOpenReblogsModal: PropTypes.func.isRequired,
     onReply: PropTypes.func,

@@ -45,7 +45,7 @@ const shouldLetterbox = attachment => {
 class Item extends React.PureComponent {
 
   static propTypes = {
-    attachment: ImmutablePropTypes.map.isRequired,
+    attachment: ImmutablePropTypes.record.isRequired,
     standalone: PropTypes.bool,
     index: PropTypes.number.isRequired,
     size: PropTypes.number.isRequired,

@@ -97,7 +97,7 @@ class SoapboxMount extends React.PureComponent {
   static propTypes = {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     instanceLoaded: PropTypes.bool,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,

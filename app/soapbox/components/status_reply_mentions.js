@@ -23,7 +23,7 @@ export default @connect(null, mapDispatchToProps)
 class StatusReplyMentions extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     onOpenMentionsModal: PropTypes.func,
   }
 
