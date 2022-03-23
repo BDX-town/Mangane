@@ -44,6 +44,8 @@ module.exports = {
         'gradient-purple': true,
         'gradient-blue': true,
         'sea-blue': true,
+        'bg-shape-1': true,
+        'bg-shape-2': true,
       }),
     },
   },
