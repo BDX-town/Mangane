@@ -25,7 +25,7 @@ import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
 import { makeGetAccount } from 'soapbox/selectors';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
-import { themeColorsToCSS } from 'soapbox/utils/theme';
+import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { INTRODUCTION_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
@@ -84,7 +84,7 @@ const mapStateToProps = (state) => {
     dyslexicFont: settings.get('dyslexicFont'),
     demetricator: settings.get('demetricator'),
     locale: validLocale(locale) ? locale : 'en',
-    themeCss: themeColorsToCSS(soapboxConfig.get('brandColor') || '#0482d8', soapboxConfig.get('accentColor', '')),
+    themeCss: generateThemeCss(soapboxConfig),
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     singleUserMode,

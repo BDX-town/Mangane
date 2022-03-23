@@ -1,6 +1,8 @@
-import tintify, { hexToRgb } from './colors';
+import { hexToRgb } from './colors';
+import { toTailwind } from './tailwind';
 
-import type { Rgb, Hsl, TailwindColorPalette } from 'soapbox/types/colors';
+import type { Map as ImmutableMap } from 'immutable';
+import type { Rgb, Hsl, TailwindColorPalette, TailwindColorObject } from 'soapbox/types/colors';
 
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js
@@ -59,9 +61,7 @@ function hslToHex(color: Hsl): string {
 }
 
 // Generate accent color from brand color
-const generateAccent = (brandColor: string): string => {
-  console.log(brandColor);
-  console.log(hexToRgb(brandColor));
+export const generateAccent = (brandColor: string): string => {
   const { h } = rgbToHsl(hexToRgb(brandColor));
   return hslToHex({ h: h - 15, s: 86, l: 44 });
 };
@@ -81,7 +81,7 @@ const parseShades = (obj: Record<string, any>, color: string, shades: Record<str
 // Convert colors as CSS variables
 const parseColors = (colors: TailwindColorPalette): TailwindColorPalette => {
   return Object.keys(colors).reduce((obj, color) => {
-    parseShades(obj, color, colors[color]);
+    parseShades(obj, color, colors[color] as TailwindColorObject);
     return obj;
   }, {});
 };
@@ -93,27 +93,6 @@ export const colorsToCss = (colors: TailwindColorPalette): string => {
   }, '');
 };
 
-const legacyColorsToTailwind = (brandColor: string, accentColor: string): TailwindColorPalette => {
-  return {
-    primary: tintify(brandColor),
-    accent: tintify(accentColor ? accentColor : generateAccent(brandColor)),
-    gray: {
-      50: '#f9fafb',
-      100: '#f3f4f6',
-      200: '#e5e7eb',
-      300: '#d1d5db',
-      400: '#9ca3af',
-      500: '#6b7280',
-      600: '#4b5563',
-      700: '#374151',
-      800: '#1f2937',
-      900: '#111827',
-    },
-    'sea-blue': '#2feecc',
-  };
-};
-
-export const themeColorsToCSS = (brandColor: string, accentColor: string): string => {
-  const colors = legacyColorsToTailwind(brandColor, accentColor);
-  return colorsToCss(colors);
+export const generateThemeCss = (soapboxConfig: ImmutableMap<string, any>): string => {
+  return colorsToCss(toTailwind(soapboxConfig).get('colors').toJS() as TailwindColorPalette);
 };

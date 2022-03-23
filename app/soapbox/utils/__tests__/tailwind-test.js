@@ -3,21 +3,31 @@ import { Map as ImmutableMap } from 'immutable';
 import { toTailwind, fromLegacyColors, expandPalette } from '../tailwind';
 
 describe('toTailwind()', () => {
+  it('handles empty Soapbox config', () => {
+    const soapboxConfig = ImmutableMap();
+    const result = toTailwind(soapboxConfig);
+    const expected = ImmutableMap({ colors: ImmutableMap() });
+    expect(result).toEqual(expected);
+  });
+
   it('converts brandColor into a Tailwind color palette', () => {
     const soapboxConfig = ImmutableMap({ brandColor: '#0482d8' });
 
     const expected = {
-      primary: {
-        50: '#f2f9fd',
-        100: '#e6f3fb',
-        200: '#c0e0f5',
-        300: '#9bcdef',
-        400: '#4fa8e4',
-        500: '#0482d8',
-        600: '#0475c2',
-        700: '#0362a2',
-        800: '#024e82',
-        900: '#02406a',
+      brandColor: '#0482d8',
+      colors: {
+        primary: {
+          50: '#f2f9fd',
+          100: '#e6f3fb',
+          200: '#c0e0f5',
+          300: '#9bcdef',
+          400: '#4fa8e4',
+          500: '#0482d8',
+          600: '#0475c2',
+          700: '#0362a2',
+          800: '#024e82',
+          900: '#02406a',
+        },
       },
     };
 
@@ -36,17 +46,20 @@ describe('toTailwind()', () => {
     });
 
     const expected = {
-      primary: {
-        50: '#f2f9fd',
-        100: '#e6f3fb',
-        200: '#c0e0f5',
-        300: '#ff0000', // <--
-        400: '#4fa8e4',
-        500: '#0482d8',
-        600: '#0475c2',
-        700: '#0362a2',
-        800: '#024e82',
-        900: '#02406a',
+      brandColor: '#0482d8',
+      colors: {
+        primary: {
+          50: '#f2f9fd',
+          100: '#e6f3fb',
+          200: '#c0e0f5',
+          300: '#ff0000', // <--
+          400: '#4fa8e4',
+          500: '#0482d8',
+          600: '#0475c2',
+          700: '#0362a2',
+          800: '#024e82',
+          900: '#02406a',
+        },
       },
     };
 
@@ -71,6 +84,19 @@ describe('fromLegacyColors()', () => {
         700: '#0362a2',
         800: '#024e82',
         900: '#02406a',
+      },
+      // Accent color is generated from brandColor
+      accent: {
+        50: '#f3fbfd',
+        100: '#e7f7fa',
+        200: '#c3ecf4',
+        300: '#9fe1ed',
+        400: '#58cadf',
+        500: '#10b3d1',
+        600: '#0ea1bc',
+        700: '#0c869d',
+        800: '#0a6b7d',
+        900: '#085866',
       },
     };
 

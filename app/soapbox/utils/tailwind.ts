@@ -1,6 +1,7 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
 
 import tintify from 'soapbox/utils/colors';
+import { generateAccent } from 'soapbox/utils/theme';
 
 import type { TailwindColorPalette } from 'soapbox/types/colors';
 
@@ -19,7 +20,7 @@ export const expandPalette = (palette: TailwindColorPalette): TailwindColorPalet
     // Conditionally handle hex color and Tailwind color object
     if (typeof color === 'string' && isHex(color)) {
       result[colorName] = tintify(color);
-    } else if (typeof color === 'object') {
+    } else if (color && typeof color === 'object') {
       result[colorName] = color;
     }
 
@@ -27,18 +28,26 @@ export const expandPalette = (palette: TailwindColorPalette): TailwindColorPalet
   }, {});
 };
 
+// Generate accent color only if brandColor is present
+const maybeGenerateAccentColor = (brandColor: any): string | null => {
+  return isHex(brandColor) ? generateAccent(brandColor) : null;
+};
+
 /** Build a color object from legacy colors */
 export const fromLegacyColors = (soapboxConfig: SoapboxConfig): TailwindColorPalette => {
+  const brandColor = soapboxConfig.get('brandColor');
+  const accentColor = soapboxConfig.get('accentColor');
+
   return expandPalette({
-    primary: soapboxConfig.get('brandColor'),
-    accent: soapboxConfig.get('accentColor'),
+    primary: isHex(brandColor) ? brandColor : null,
+    accent: isHex(accentColor) ? accentColor : maybeGenerateAccentColor(brandColor),
   });
 };
 
 /** Convert Soapbox Config into Tailwind colors */
-export const toTailwind = (soapboxConfig: SoapboxConfig): SoapboxColors => {
+export const toTailwind = (soapboxConfig: SoapboxConfig): SoapboxConfig => {
   const colors: SoapboxColors = ImmutableMap(soapboxConfig.get('colors'));
   const legacyColors: SoapboxColors = ImmutableMap(fromJS(fromLegacyColors(soapboxConfig)));
 
-  return legacyColors.mergeDeep(colors);
+  return soapboxConfig.set('colors', legacyColors.mergeDeep(colors));
 };
