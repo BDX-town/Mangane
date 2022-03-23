@@ -12,6 +12,8 @@ class Permalink extends React.PureComponent {
     children: PropTypes.node,
     onInterceptClick: PropTypes.func,
     history: PropTypes.object,
+    title: PropTypes.string,
+    dangerouslySetInnerHTML: PropTypes.object,
   };
 
   handleClick = e => {
@@ -27,10 +29,10 @@ class Permalink extends React.PureComponent {
   }
 
   render() {
-    const { href, children, className, onInterceptClick, ...other } = this.props;
+    const { href, children, className, title, dangerouslySetInnerHTML } = this.props;
 
     return (
-      <a target='_blank' href={href} onClick={this.handleClick} {...other} className={`permalink${className ? ' ' + className : ''}`}>
+      <a target='_blank' href={href} onClick={this.handleClick} dangerouslySetInnerHTML={dangerouslySetInnerHTML} title={title} className={`permalink${className ? ' ' + className : ''}`}>
         {children}
       </a>
     );
