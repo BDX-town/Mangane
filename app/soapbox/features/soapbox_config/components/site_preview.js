@@ -3,7 +3,7 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 
 import { defaultSettings } from 'soapbox/actions/settings';
-import { themeColorsToCSS } from 'soapbox/utils/theme';
+import { generateThemeCss } from 'soapbox/utils/theme';
 
 export default function SitePreview({ soapbox }) {
 
@@ -18,7 +18,7 @@ export default function SitePreview({ soapbox }) {
 
   return (
     <div className={bodyClass}>
-      <style>{`.site-preview {${themeColorsToCSS(soapbox.get('brandColor'), soapbox.get('accentColor'))}}`}</style>
+      <style>{`.site-preview {${generateThemeCss(soapbox)}}`}</style>
       <div className='app-holder'>
         <div>
           <div className='ui'>
