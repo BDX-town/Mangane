@@ -1,4 +1,4 @@
-const { parseColorMatrix, withOpacityValue } = require('./tailwind/colors');
+const { parseColorMatrix } = require('./tailwind/colors');
 
 module.exports = {
   content: ['./app/**/*.{html,js,ts,tsx}'],
@@ -33,7 +33,7 @@ module.exports = {
           'Noto Color Emoji',
         ],
       },
-      colors: Object.assign(parseColorMatrix({
+      colors: parseColorMatrix({
         // Define color matrix (of available colors)
         // Colors are configured at runtime with CSS variables in soapbox.json
         gray: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
@@ -41,10 +41,9 @@ module.exports = {
         success: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
         danger: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900],
         accent: [300, 500],
-      }), {
-        'gradient-purple': withOpacityValue('--color-gradient-purple'),
-        'gradient-blue': withOpacityValue('--color-gradient-blue'),
-        'sea-blue': withOpacityValue('--color-sea-blue'),
+        'gradient-purple': true,
+        'gradient-blue': true,
+        'sea-blue': true,
       }),
     },
   },
