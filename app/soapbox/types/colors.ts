@@ -6,5 +6,5 @@ export type TailwindColorObject = {
 };
 
 export type TailwindColorPalette = {
-  [key: string]: TailwindColorObject,
+  [key: string]: TailwindColorObject | string,
 }

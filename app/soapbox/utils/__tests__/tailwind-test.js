@@ -1,0 +1,189 @@
+import { Map as ImmutableMap } from 'immutable';
+
+import { toTailwind, fromLegacyColors, expandPalette } from '../tailwind';
+
+describe('toTailwind()', () => {
+  it('converts brandColor into a Tailwind color palette', () => {
+    const soapboxConfig = ImmutableMap({ brandColor: '#0482d8' });
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+    };
+
+    const result = toTailwind(soapboxConfig);
+    expect(result.toJS()).toMatchObject(expected);
+  });
+
+  it('prefers Tailwind colors object over legacy colors', () => {
+    const soapboxConfig = ImmutableMap({
+      brandColor: '#0482d8',
+      colors: ImmutableMap({
+        primary: ImmutableMap({
+          300: '#ff0000',
+        }),
+      }),
+    });
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#ff0000', // <--
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+    };
+
+    const result = toTailwind(soapboxConfig);
+    expect(result.toJS()).toMatchObject(expected);
+  });
+});
+
+describe('fromLegacyColors()', () => {
+  it('converts only brandColor', () => {
+    const soapboxConfig = ImmutableMap({ brandColor: '#0482d8' });
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+    };
+
+    const result = fromLegacyColors(soapboxConfig);
+    expect(result).toEqual(expected);
+  });
+
+  it('converts both legacy colors', () => {
+    const soapboxConfig = ImmutableMap({
+      brandColor: '#0482d8',
+      accentColor: '#2bd110',
+    });
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+      accent: {
+        50: '#f4fdf3',
+        100: '#eafae7',
+        200: '#caf4c3',
+        300: '#aaed9f',
+        400: '#6bdf58',
+        500: '#2bd110',
+        600: '#27bc0e',
+        700: '#209d0c',
+        800: '#1a7d0a',
+        900: '#156608',
+      },
+    };
+
+    const result = fromLegacyColors(soapboxConfig);
+    expect(result).toEqual(expected);
+  });
+});
+
+describe('expandPalette()', () => {
+  it('expands one color', () => {
+    const palette = { primary: '#0482d8' };
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+    };
+
+    const result = expandPalette(palette);
+    expect(result).toEqual(expected);
+  });
+
+  it('expands mixed palette', () => {
+    const palette = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+      accent: '#2bd110',
+    };
+
+    const expected = {
+      primary: {
+        50: '#f2f9fd',
+        100: '#e6f3fb',
+        200: '#c0e0f5',
+        300: '#9bcdef',
+        400: '#4fa8e4',
+        500: '#0482d8',
+        600: '#0475c2',
+        700: '#0362a2',
+        800: '#024e82',
+        900: '#02406a',
+      },
+      accent: {
+        50: '#f4fdf3',
+        100: '#eafae7',
+        200: '#caf4c3',
+        300: '#aaed9f',
+        400: '#6bdf58',
+        500: '#2bd110',
+        600: '#27bc0e',
+        700: '#209d0c',
+        800: '#1a7d0a',
+        900: '#156608',
+      },
+    };
+
+    const result = expandPalette(palette);
+    expect(result).toEqual(expected);
+  });
+});
