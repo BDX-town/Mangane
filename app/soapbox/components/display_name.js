@@ -22,7 +22,7 @@ export default @connect(mapStateToProps)
 class DisplayName extends React.PureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     displayFqn: PropTypes.bool,
     others: ImmutablePropTypes.list,
     children: PropTypes.node,

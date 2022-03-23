@@ -74,7 +74,7 @@ const ActionsModal = ({ status, actions, onClick, onClose }) => {
 };
 
 ActionsModal.propTypes = {
-  status: ImmutablePropTypes.map,
+  status: ImmutablePropTypes.record,
   actions: PropTypes.array,
   onClick: PropTypes.func,
   onClose: PropTypes.func.isRequired,

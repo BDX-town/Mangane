@@ -27,7 +27,7 @@ export default @injectIntl
 class DetailedStatus extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     onOpenMedia: PropTypes.func.isRequired,
     onOpenVideo: PropTypes.func.isRequired,
     onToggleHidden: PropTypes.func.isRequired,

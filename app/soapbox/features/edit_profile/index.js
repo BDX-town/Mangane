@@ -88,7 +88,7 @@ class EditProfile extends ImmutablePureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     maxFields: PropTypes.number,
     verifiedCanEditName: PropTypes.bool,
   };

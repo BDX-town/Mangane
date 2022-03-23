@@ -39,7 +39,7 @@ const ProfilePreview = ({ account, displayFqn }) => (
 );
 
 ProfilePreview.propTypes = {
-  account: ImmutablePropTypes.map,
+  account: ImmutablePropTypes.record,
   displayFqn: PropTypes.bool,
 };
 

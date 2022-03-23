@@ -43,7 +43,7 @@ class ScrollableList extends PureComponent {
     children: PropTypes.node,
     onScrollToTop: PropTypes.func,
     onScroll: PropTypes.func,
-    placeholderComponent: PropTypes.func,
+    placeholderComponent: PropTypes.object,
     placeholderCount: PropTypes.number,
     autoload: PropTypes.bool,
     onRefresh: PropTypes.func,

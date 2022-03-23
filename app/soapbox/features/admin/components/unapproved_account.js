@@ -35,7 +35,7 @@ class UnapprovedAccount extends ImmutablePureComponent {
 
   static propTypes = {
     intl: PropTypes.object.isRequired,
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
   };
 
   handleApprove = () => {

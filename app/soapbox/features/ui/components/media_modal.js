@@ -26,8 +26,8 @@ class MediaModal extends ImmutablePureComponent {
 
   static propTypes = {
     media: ImmutablePropTypes.list.isRequired,
-    status: ImmutablePropTypes.map,
-    account: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
+    account: ImmutablePropTypes.record,
     index: PropTypes.number.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,

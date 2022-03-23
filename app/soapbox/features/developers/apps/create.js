@@ -40,7 +40,7 @@ class CreateApp extends ImmutablePureComponent {
   static propTypes = {
     intl: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     defaultScopes: PropTypes.string,
   }
 

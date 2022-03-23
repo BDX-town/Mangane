@@ -55,8 +55,8 @@ export default @injectIntl @withRouter
 class Status extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map,
-    account: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
+    account: ImmutablePropTypes.record,
     otherAccounts: ImmutablePropTypes.list,
     onClick: PropTypes.func,
     onReply: PropTypes.func,

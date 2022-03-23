@@ -92,7 +92,7 @@ const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, show
 );
 
 LinkFooter.propTypes = {
-  account: ImmutablePropTypes.map,
+  account: ImmutablePropTypes.record,
   soapboxConfig: ImmutablePropTypes.map,
   profileDirectory: PropTypes.bool,
   federating: PropTypes.bool,

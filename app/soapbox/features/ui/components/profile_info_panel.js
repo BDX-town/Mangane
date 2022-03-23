@@ -37,7 +37,7 @@ const messages = defineMessages({
 class ProfileInfoPanel extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     identity_proofs: ImmutablePropTypes.list,
     intl: PropTypes.object.isRequired,
     username: PropTypes.string,

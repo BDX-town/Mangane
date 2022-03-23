@@ -16,7 +16,7 @@ import MediaItem from '../../account_gallery/components/media_item';
 class ProfileMediaPanel extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     attachments: ImmutablePropTypes.list,
     dispatch: PropTypes.func.isRequired,
   };

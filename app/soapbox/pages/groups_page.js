@@ -20,7 +20,7 @@ export default @connect(mapStateToProps)
 class GroupsPage extends ImmutablePureComponent {
 
     static propTypes = {
-      account: ImmutablePropTypes.map,
+      account: ImmutablePropTypes.record,
     };
 
     render() {

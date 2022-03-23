@@ -134,7 +134,7 @@ export const ProfileHoverCard = ({ visible }) => {
 ProfileHoverCard.propTypes = {
   visible: PropTypes.bool,
   accountId: PropTypes.string,
-  account: ImmutablePropTypes.map,
+  account: ImmutablePropTypes.record,
 };
 
 ProfileHoverCard.defaultProps = {
