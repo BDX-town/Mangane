@@ -40,7 +40,7 @@
 }
 
 .notification-bar-wrapper {
-  @apply p-4 flex items-start;
+  @apply p-4 flex items-center justify-between w-full space-x-2;
 }
 
 .notification-bar-title {
@@ -49,4 +49,11 @@
 
 .notification-bar-message {
   @apply text-sm text-gray-700;
+}
+
+.notification-bar-action a {
+  @apply inline-flex items-center px-2.5 py-1 border border-solid border-gray-300
+    shadow-sm text-xs font-medium rounded-full text-gray-700 bg-white
+    hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2
+    focus:ring-primary-500;
 }
