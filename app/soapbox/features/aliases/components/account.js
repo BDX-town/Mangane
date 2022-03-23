@@ -49,7 +49,7 @@ export default @connect(makeMapStateToProps, mapDispatchToProps)
 class Account extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     apId: PropTypes.string.isRequired,
     intl: PropTypes.object.isRequired,
     onAdd: PropTypes.func.isRequired,

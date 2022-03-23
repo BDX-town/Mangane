@@ -12,7 +12,7 @@ import { isRtl } from '../../../rtl';
 export default class ReplyIndicator extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     onCancel: PropTypes.func.isRequired,
     hideActions: PropTypes.bool,
   };

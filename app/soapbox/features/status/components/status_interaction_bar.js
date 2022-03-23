@@ -55,7 +55,7 @@ export default @connect(mapStateToProps, mapDispatchToProps)
 class StatusInteractionBar extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     me: SoapboxPropTypes.me,
     allowedEmoji: ImmutablePropTypes.list,
     features: PropTypes.object.isRequired,

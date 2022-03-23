@@ -35,7 +35,7 @@ class GroupTimeline extends React.PureComponent {
     hasUnread: PropTypes.bool,
     group: PropTypes.oneOfType([ImmutablePropTypes.map, PropTypes.bool]),
     relationships: ImmutablePropTypes.map,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     intl: PropTypes.object.isRequired,
   };
 

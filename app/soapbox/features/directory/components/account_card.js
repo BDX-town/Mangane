@@ -34,7 +34,7 @@ class AccountCard extends ImmutablePureComponent {
 
   static propTypes = {
     me: SoapboxPropTypes.me,
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     autoPlayGif: PropTypes.bool,
   };
 

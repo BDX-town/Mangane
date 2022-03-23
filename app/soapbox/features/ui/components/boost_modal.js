@@ -18,7 +18,7 @@ export default @injectIntl @withRouter
 class BoostModal extends ImmutablePureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     onReblog: PropTypes.func.isRequired,
     onClose: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,

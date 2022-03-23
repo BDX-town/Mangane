@@ -8,7 +8,7 @@ import StillImage from 'soapbox/components/still_image';
 export default class Avatar extends React.PureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     size: PropTypes.number,
     style: PropTypes.object,
     className: PropTypes.string,

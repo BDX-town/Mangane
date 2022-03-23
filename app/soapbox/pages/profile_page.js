@@ -68,7 +68,7 @@ export default @connect(mapStateToProps)
 class ProfilePage extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     accountUsername: PropTypes.string.isRequired,
     displayFqn: PropTypes.bool,
     features: PropTypes.object,

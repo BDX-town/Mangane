@@ -50,7 +50,7 @@ class Dashboard extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     instance: ImmutablePropTypes.map.isRequired,
     supportsEmailList: PropTypes.bool,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
   };
 
   handleSubscribersClick = e => {

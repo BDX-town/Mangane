@@ -84,7 +84,7 @@ const mapDispatchToProps = (dispatch, { status }) => ({
 class ActionBar extends React.PureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     onReply: PropTypes.func.isRequired,
     onReblog: PropTypes.func.isRequired,
     onQuote: PropTypes.func.isRequired,

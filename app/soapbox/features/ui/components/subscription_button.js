@@ -49,7 +49,7 @@ export default @connect(mapStateToProps, mapDispatchToProps)
 class SubscriptionButton extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     features: PropTypes.object.isRequired,
   };
 

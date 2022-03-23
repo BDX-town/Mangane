@@ -53,7 +53,7 @@ class ReportModal extends ImmutablePureComponent {
 
   static propTypes = {
     isSubmitting: PropTypes.bool,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     statusIds: ImmutablePropTypes.orderedSet.isRequired,
     comment: PropTypes.string.isRequired,
     forward: PropTypes.bool,

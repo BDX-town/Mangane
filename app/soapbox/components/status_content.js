@@ -28,7 +28,7 @@ export default @connect(mapStateToProps)
 class StatusContent extends React.PureComponent {
 
   static propTypes = {
-    status: ImmutablePropTypes.map.isRequired,
+    status: ImmutablePropTypes.record.isRequired,
     reblogContent: PropTypes.string,
     expanded: PropTypes.bool,
     onExpandedToggle: PropTypes.func,

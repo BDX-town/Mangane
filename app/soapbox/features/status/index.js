@@ -165,7 +165,7 @@ class Status extends ImmutablePureComponent {
   static propTypes = {
     params: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    status: ImmutablePropTypes.map,
+    status: ImmutablePropTypes.record,
     ancestorsIds: ImmutablePropTypes.orderedSet,
     descendantsIds: ImmutablePropTypes.orderedSet,
     intl: PropTypes.object.isRequired,

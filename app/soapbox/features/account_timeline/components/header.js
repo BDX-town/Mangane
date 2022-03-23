@@ -12,7 +12,7 @@ export default @withRouter
 class Header extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     identity_proofs: ImmutablePropTypes.list,
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,

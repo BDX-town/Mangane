@@ -228,7 +228,7 @@ const Notification = (props) => {
 
 Notification.propTypes = {
   hidden: PropTypes.bool,
-  notification: ImmutablePropTypes.map.isRequired,
+  notification: ImmutablePropTypes.record.isRequired,
   onMoveUp: PropTypes.func.isRequired,
   onMoveDown: PropTypes.func.isRequired,
   onMention: PropTypes.func.isRequired,

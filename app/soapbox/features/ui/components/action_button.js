@@ -68,7 +68,7 @@ export default @connect(mapStateToProps, mapDispatchToProps)
 class ActionButton extends ImmutablePureComponent {
 
   static propTypes = {
-    account: ImmutablePropTypes.map.isRequired,
+    account: ImmutablePropTypes.record.isRequired,
     onFollow: PropTypes.func.isRequired,
     onBlock: PropTypes.func.isRequired,
     onOpenUnauthorizedModal: PropTypes.func.isRequired,

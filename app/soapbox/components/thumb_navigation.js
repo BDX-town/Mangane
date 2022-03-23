@@ -33,7 +33,7 @@ class ThumbNavigation extends React.PureComponent {
 
   static propTypes = {
     logo: PropTypes.string,
-    account: ImmutablePropTypes.map,
+    account: ImmutablePropTypes.record,
     dashboardCount: PropTypes.number,
     notificationCount: PropTypes.number,
     chatsCount: PropTypes.number,
