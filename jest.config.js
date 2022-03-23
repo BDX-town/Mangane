@@ -1,7 +1,4 @@
 module.exports = {
-  'projects': [
-    '<rootDir>/app/soapbox',
-  ],
   'testPathIgnorePatterns': [
     '<rootDir>/node_modules/',
     '<rootDir>/vendor/',
