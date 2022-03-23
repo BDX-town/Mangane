@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import ActionButton from 'soapbox/features/ui/components/action_button';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useOnScreen } from 'soapbox/hooks';
 import { getAcct } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
@@ -52,8 +52,9 @@ const Account = ({
   timestampUrl,
   withRelationship = true,
 }: IAccount) => {
-  const overflowRef = React.useRef(null);
-  const actionRef = React.useRef(null);
+  const overflowRef = React.useRef<HTMLDivElement>(null);
+  const actionRef = React.useRef<HTMLDivElement>(null);
+  const isOnScreen = useOnScreen(overflowRef);
 
   const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
 
@@ -93,18 +94,19 @@ const Account = ({
   };
 
   React.useEffect(() => {
-    const style: React.CSSProperties = {};
+    if (isOnScreen) {
+      const style: React.CSSProperties = {};
+      const actionWidth = actionRef.current?.clientWidth;
 
-    const actionWidth = actionRef.current?.clientWidth;
+      if (overflowRef.current) {
+        style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
+      } else {
+        style.visibility = 'hidden';
+      }
 
-    if (overflowRef.current) {
-      style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
-    } else {
-      style.visibility = 'hidden';
+      setStyle(style);
     }
-
-    setStyle(style);
-  }, [overflowRef, actionRef]);
+  }, [isOnScreen, overflowRef, actionRef]);
 
   if (!account) {
     return null;
@@ -161,8 +163,8 @@ const Account = ({
               </LinkEl>
             </ProfilePopper>
 
-            <HStack alignItems='center' space={1}>
-              <Text theme='muted' size='sm'>@{username}</Text>
+            <HStack alignItems='center' space={1} style={style}>
+              <Text theme='muted' size='sm' truncate>@{username}</Text>
 
               {(timestamp) ? (
                 <>
