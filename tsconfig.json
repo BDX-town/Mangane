@@ -4,7 +4,7 @@
     "sourceMap": true,
     "alwaysStrict": false,
     "strictNullChecks": false,
-    "strictBindCallApply": false,
+    "strictBindCallApply": true,
     "strictFunctionTypes": false,
     "strictPropertyInitialization": false,
     "noImplicitAny": true,
