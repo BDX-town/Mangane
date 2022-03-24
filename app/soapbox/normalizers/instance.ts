@@ -82,7 +82,7 @@ const pleromaToMastodonConfig = (instance: ImmutableMap<string, any>) => {
 };
 
 // Get the software's default attachment limit
-const getAttachmentLimit = (software: string) => software === PLEROMA ? Infinity : 4;
+const getAttachmentLimit = (software: string | null) => software === PLEROMA ? Infinity : 4;
 
 // Normalize version
 const normalizeVersion = (instance: ImmutableMap<string, any>) => {

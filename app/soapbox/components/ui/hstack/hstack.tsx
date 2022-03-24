@@ -39,12 +39,14 @@ const HStack: React.FC<IHStack> = (props) => {
     <div
       {...filteredProps}
       className={classNames('flex', {
+        // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
+        // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
+        // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
-        [className]: typeof className !== 'undefined',
         'flex-grow': grow,
-      })}
+      }, className)}
     />
   );
 };

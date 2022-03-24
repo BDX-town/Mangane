@@ -16,38 +16,42 @@ import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
+import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
+
+type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
+
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
-  account: null,
-  application: null,
+  account: null as EmbeddedEntity<Account>,
+  application: null as ImmutableMap<string, any> | null,
   bookmarked: false,
-  card: null,
+  card: null as EmbeddedEntity<Card>,
   content: '',
   created_at: new Date(),
-  emojis: ImmutableList(),
+  emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
-  in_reply_to_account_id: null,
-  in_reply_to_id: null,
+  in_reply_to_account_id: null as string | null,
+  in_reply_to_id: null as string | null,
   id: '',
-  language: null,
-  media_attachments: ImmutableList(),
-  mentions: ImmutableList(),
+  language: null as string | null,
+  media_attachments: ImmutableList<Attachment>(),
+  mentions: ImmutableList<Mention>(),
   muted: false,
   pinned: false,
-  pleroma: ImmutableMap(),
-  poll: null,
-  quote: null,
-  reblog: null,
+  pleroma: ImmutableMap<string, any>(),
+  poll: null as EmbeddedEntity<Poll>,
+  quote: null as EmbeddedEntity<any>,
+  reblog: null as EmbeddedEntity<any>,
   reblogged: false,
   reblogs_count: 0,
   replies_count: 0,
   sensitive: false,
   spoiler_text: '',
-  tags: ImmutableList(),
+  tags: ImmutableList<ImmutableMap<string, any>>(),
   uri: '',
   url: '',
-  visibility: 'public',
+  visibility: 'public' as StatusVisibility,
 
   // Internal fields
   contentHtml: '',

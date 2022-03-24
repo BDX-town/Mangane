@@ -44,7 +44,6 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 2`] = `
     </div>
     <p
       className="text-sm text-inherit font-normal tracking-normal font-sans"
-      style={null}
     >
       Click to see 1 new post
     </p>
@@ -73,7 +72,6 @@ exports[`<TimelineQueueButtonHeader /> renders correctly 3`] = `
     </div>
     <p
       className="text-sm text-inherit font-normal tracking-normal font-sans"
-      style={null}
     >
       Click to see 9999999 new posts
     </p>

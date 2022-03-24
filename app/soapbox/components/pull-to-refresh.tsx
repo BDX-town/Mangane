@@ -25,9 +25,9 @@ const PullToRefresh = ({ children, onRefresh, ...rest }: IPullToRefresh) => {
   return (
     <PTRComponent
       onRefresh={handleRefresh}
-      pullingContent={null}
-      // `undefined` will fallback to the default, while `null` will render nothing
-      refreshingContent={onRefresh ? <Spinner size={30} withText={false} /> : null}
+      pullingContent={<></>}
+      // `undefined` will fallback to the default, while `<></>` will render nothing
+      refreshingContent={onRefresh ? <Spinner size={30} withText={false} /> : <></>}
       pullDownThreshold={67}
       maxPullDownDistance={95}
       resistance={2}

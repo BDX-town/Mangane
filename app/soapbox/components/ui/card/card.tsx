@@ -28,8 +28,7 @@ const Card: React.FC<ICard> = React.forwardRef(({ children, variant, size = 'md'
       'space-y-4': true,
       'bg-white dark:bg-slate-800 sm:shadow-lg dark:sm:shadow-inset overflow-hidden': variant === 'rounded',
       [sizes[size]]: true,
-      [className]: typeof className !== 'undefined',
-    })}
+    }, className)}
   >
     {children}
   </div>

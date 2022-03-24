@@ -32,6 +32,7 @@ import {
 import { CHATS_FETCH_SUCCESS, CHATS_EXPAND_SUCCESS, CHAT_FETCH_SUCCESS } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 import { normalizeAccount } from 'soapbox/normalizers/account';
+import { normalizeId } from 'soapbox/utils/normalizers';
 
 import {
   ACCOUNT_IMPORT,
@@ -50,7 +51,7 @@ const initialState: State = ImmutableMap();
 
 const minifyAccount = (account: AccountRecord): AccountRecord => {
   return account.mergeWith((o, n) => n || o, {
-    moved: account.getIn(['moved', 'id']),
+    moved: normalizeId(account.getIn(['moved', 'id'])),
   });
 };
 
@@ -201,8 +202,8 @@ const importAdminUser = (state: State, adminUser: ImmutableMap<string, any>): St
 
 const importAdminUsers = (state: State, adminUsers: Array<Record<string, any>>): State => {
   return state.withMutations((state: State) => {
-    fromJS(adminUsers).forEach(adminUser => {
-      importAdminUser(state, ImmutableMap(adminUser));
+    adminUsers.forEach(adminUser => {
+      importAdminUser(state, ImmutableMap(fromJS(adminUser)));
     });
   });
 };

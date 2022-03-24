@@ -25,8 +25,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
       type='button'
       className={classNames('flex items-center space-x-2 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-0 focus:ring-primary-500', {
         'bg-white dark:bg-transparent': !transparent,
-        [className]: typeof className !== 'undefined',
-      })}
+      }, className)}
       {...filteredProps}
     >
       <InlineSVG src={src} className={iconClassName} />
