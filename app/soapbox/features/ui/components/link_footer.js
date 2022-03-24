@@ -65,7 +65,6 @@ const LinkFooter = ({ onOpenHotkeys, account, profileDirectory, federating, show
         {(federating && showAliases) && <li><Link to='/settings/aliases' className='text-gray-400 hover:text-gray-500 hover:underline'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></Link></li>}
         {/* <li><a href='#' onClick={onOpenHotkeys}><FormattedMessage id='navigation_bar.keyboard_shortcuts' defaultMessage='Hotkeys' /></a></li> */}
       </>}
-      <li><a target='_blank' href='https://help.truthsocial.com/legal' className='text-gray-400 hover:text-gray-500 hover:underline'><FormattedMessage id='navigation_bar.legal' defaultMessage='Legal' /></a></li>
       {/* <li><Link to='/about'><FormattedMessage id='navigation_bar.info' defaultMessage='About this server' /></Link></li> */}
       {account && <li><Link to='/auth/sign_out' onClick={onClickLogOut} className='text-gray-400 hover:text-gray-500 hover:underline'><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></Link></li>}
     </ul>
