@@ -7,7 +7,7 @@ import type Account from 'soapbox/types/entities/account';
 // FIXME: getAccount() has the wrong type??
 const getAccount: (state: any, accountId: any) => any = makeGetAccount();
 
-/** Get an account from the store (by default, your own account) */
-export const useAccount = (accountId?: string): Account => {
-  return useAppSelector((state) =>  getAccount(state, accountId || state.me));
+/** Get the logged-in account from the store, if any */
+export const useOwnAccount = (): Account | null => {
+  return useAppSelector((state) =>  getAccount(state, state.me));
 };

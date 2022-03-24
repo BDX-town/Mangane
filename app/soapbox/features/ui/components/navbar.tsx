@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { Avatar, Button, Icon } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 
 import { openSidebar } from '../../../actions/sidebar';
 
@@ -16,7 +16,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const node = React.useRef(null);
 
-  const account = useAccount();
+  const account = useOwnAccount();
   const settings = useSettings();
   const soapboxConfig = useSoapboxConfig();
   const singleUserMode = soapboxConfig.get('singleUserMode');
