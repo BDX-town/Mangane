@@ -86,7 +86,7 @@ export const calculateStatus = (
     const emojiMap      = makeEmojiMap(status.emojis);
 
     return status.merge({
-      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent,
+      search_index: domParser.parseFromString(searchContent, 'text/html').documentElement.textContent || undefined,
       contentHtml: stripCompatibilityFeatures(emojify(status.content, emojiMap)),
       spoilerHtml: emojify(escapeTextContentForBrowser(spoilerText), emojiMap),
       hidden: expandSpoilers ? false : spoilerText.length > 0 || status.sensitive,

@@ -59,7 +59,7 @@ export function fetchInstance() {
     return api(getState).get('/api/v1/instance').then(({ data: instance }: { data: Record<string, any> }) => {
       dispatch({ type: INSTANCE_FETCH_SUCCESS, instance });
       if (needsNodeinfo(instance)) {
-        dispatch(fetchNodeinfo()); // Pleroma < 2.1 backwards compatibility
+        dispatch(fetchNodeinfo() as any); // Pleroma < 2.1 backwards compatibility
       }
     }).catch(error => {
       console.error(error);
@@ -73,8 +73,10 @@ export function loadInstance() {
   return (dispatch: AppDispatch, getState: () => RootState) => {
     const host = getHost(getState());
 
-    return dispatch(rememberInstance(host)).finally(() => {
-      return dispatch(fetchInstance());
+    if (!host) return new Promise(r => r(null));
+
+    return dispatch(rememberInstance(host) as any).finally(() => {
+      return dispatch(fetchInstance() as any);
     });
   };
 }
