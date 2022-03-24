@@ -8,7 +8,7 @@ interface MissingIndicatorProps {
 }
 
 const MissingIndicator = ({ nested = false }: MissingIndicatorProps): JSX.Element => (
-  <Card variant={nested ? null : 'rounded'} size='lg'>
+  <Card variant={nested ? undefined : 'rounded'} size='lg'>
     <CardBody>
       <Stack space={2}>
         <Text weight='medium' align='center' size='lg'>

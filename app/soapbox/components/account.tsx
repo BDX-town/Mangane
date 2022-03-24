@@ -54,6 +54,7 @@ const Account = ({
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
   const actionRef = React.useRef<HTMLDivElement>(null);
+  // @ts-ignore
   const isOnScreen = useOnScreen(overflowRef);
 
   const [style, setStyle] = React.useState<React.CSSProperties>({ visibility: 'hidden' });
@@ -62,6 +63,7 @@ const Account = ({
   const username = useAppSelector((state) => account ? getAcct(account, displayFqn(state)) : null);
 
   const handleAction = () => {
+    // @ts-ignore
     onActionClick(account);
   };
 
@@ -96,7 +98,7 @@ const Account = ({
   React.useEffect(() => {
     if (isOnScreen) {
       const style: React.CSSProperties = {};
-      const actionWidth = actionRef.current?.clientWidth;
+      const actionWidth = actionRef.current?.clientWidth || 0;
 
       if (overflowRef.current) {
         style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;

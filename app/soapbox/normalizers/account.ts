@@ -17,17 +17,19 @@ import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
+import type { Emoji, Field, EmbeddedEntity } from 'soapbox/types/entities';
+
 // https://docs.joinmastodon.org/entities/account/
 export const AccountRecord = ImmutableRecord({
   acct: '',
   avatar: '',
   avatar_static: '',
-  birthday: undefined,
+  birthday: undefined as Date | undefined,
   bot: false,
   created_at: new Date(),
   display_name: '',
-  emojis: ImmutableList(),
-  fields: ImmutableList(),
+  emojis: ImmutableList<Emoji>(),
+  fields: ImmutableList<Field>(),
   followers_count: 0,
   following_count: 0,
   fqn: '',
@@ -37,10 +39,10 @@ export const AccountRecord = ImmutableRecord({
   last_status_at: new Date(),
   location: '',
   locked: false,
-  moved: null,
+  moved: null as EmbeddedEntity<any> | null,
   note: '',
-  pleroma: ImmutableMap(),
-  source: ImmutableMap(),
+  pleroma: ImmutableMap<string, any>(),
+  source: ImmutableMap<string, any>(),
   statuses_count: 0,
   uri: '',
   url: '',
@@ -52,8 +54,8 @@ export const AccountRecord = ImmutableRecord({
   display_name_html: '',
   note_emojified: '',
   note_plain: '',
-  patron: ImmutableMap(),
-  relationship: ImmutableList(),
+  patron: ImmutableMap<string, any>(),
+  relationship: ImmutableList<ImmutableMap<string, any>>(),
   should_refetch: false,
 });
 
@@ -61,7 +63,7 @@ export const AccountRecord = ImmutableRecord({
 export const FieldRecord = ImmutableRecord({
   name: '',
   value: '',
-  verified_at: null,
+  verified_at: null as Date | null,
 
   // Internal fields
   name_emojified: '',

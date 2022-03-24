@@ -83,11 +83,13 @@ const Text: React.FC<IText> = React.forwardRef(
 
     const Comp: React.ElementType = tag;
 
+    const alignmentClass = typeof align === 'string' ? alignments[align] : '';
+
     return (
       <Comp
         {...filteredProps}
         ref={ref}
-        style={tag === 'abbr' ? { textDecoration: 'underline dotted' } : null}
+        style={tag === 'abbr' ? { textDecoration: 'underline dotted' } : undefined}
         className={classNames({
           'cursor-default': tag === 'abbr',
           truncate: truncate,
@@ -96,9 +98,8 @@ const Text: React.FC<IText> = React.forwardRef(
           [weights[weight]]: true,
           [trackingSizes[tracking]]: true,
           [families[family]]: true,
-          [alignments[align]]: typeof align !== 'undefined',
-          [className]: typeof className !== 'undefined',
-        })}
+          [alignmentClass]: typeof align !== 'undefined',
+        }, className)}
       />
     );
   },

@@ -35,11 +35,13 @@ const Stack: React.FC<IStack> = (props) => {
     <div
       {...filteredProps}
       className={classNames('flex flex-col', {
+        // @ts-ignore
         [spaces[space]]: typeof space !== 'undefined',
+        // @ts-ignore
         [alignItemsOptions[alignItems]]: typeof alignItems !== 'undefined',
+        // @ts-ignore
         [justifyContentOptions[justifyContent]]: typeof justifyContent !== 'undefined',
-        [className]: typeof className !== 'undefined',
-      })}
+      }, className)}
     />
   );
 };

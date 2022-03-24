@@ -90,7 +90,7 @@ const Search = (props: ISearch) => {
 
       handleSubmit();
     } else if (event.key === 'Escape') {
-      document.querySelector('.ui').parentElement.focus();
+      document.querySelector('.ui')?.parentElement?.focus();
     }
   };
 

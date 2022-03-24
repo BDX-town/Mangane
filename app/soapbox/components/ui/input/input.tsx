@@ -54,8 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 true,
             'pr-7': isPassword,
             'pl-8': typeof icon !== 'undefined',
-            [className]: typeof className !== 'undefined',
-          })}
+          }, className)}
         />
 
         {isPassword ? (

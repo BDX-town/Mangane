@@ -1,7 +1,7 @@
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
-import type Account from 'soapbox/types/entities/account';
+import type { Account } from 'soapbox/types/entities';
 
 // FIXME: There is no reason this selector shouldn't be global accross the whole app
 // FIXME: getAccount() has the wrong type??

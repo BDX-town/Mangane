@@ -25,7 +25,7 @@ interface IProfileDropdown {
 }
 
 type IMenuItem = {
-  text: string | React.ReactElement,
+  text: string | React.ReactElement | null,
   to?: string,
   icon?: string,
   action?: (event: React.MouseEvent) => void

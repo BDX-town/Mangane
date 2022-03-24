@@ -24,13 +24,21 @@ const AnimatedTabs: React.FC<IAnimatedInterface> = ({ children, ...rest }) => {
   const ref = React.useRef();
   const rect = useRect(ref);
 
+  // @ts-ignore
   const top: number = (activeRect && activeRect.bottom) - (rect && rect.top);
+  // @ts-ignore
   const width: number = activeRect && activeRect.width - HORIZONTAL_PADDING * 2;
+  // @ts-ignore
   const left: number = (activeRect && activeRect.left) - (rect && rect.left) + HORIZONTAL_PADDING;
 
   return (
+    // @ts-ignore
     <AnimatedContext.Provider value={setActiveRect}>
-      <ReachTabs {...rest} ref={ref}>
+      <ReachTabs
+        {...rest}
+        // @ts-ignore
+        ref={ref}
+      >
         <div
           className='w-full h-[3px] bg-primary-200 absolute'
           style={{ top }}
@@ -70,11 +78,13 @@ const AnimatedTab: React.FC<IAnimatedTab> = ({ index, ...props }) => {
   // callup to set styles whenever we're active
   React.useLayoutEffect(() => {
     if (isSelected) {
+      // @ts-ignore
       setActiveRect(rect);
     }
   }, [isSelected, rect, setActiveRect]);
 
   return (
+    // @ts-ignore
     <ReachTab ref={ref} {...props} />
   );
 };
@@ -115,6 +125,7 @@ const Tabs = ({ items, activeItem }: ITabs) => {
         key={name}
         as='button'
         role='button'
+        // @ts-ignore
         title={title}
         index={idx}
       >
