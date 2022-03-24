@@ -30,7 +30,7 @@ const Navbar = () => {
   const onOpenSidebar = () => dispatch(openSidebar());
 
   return (
-    <nav className='bg-white shadow z-50 sticky top-0' ref={node}>
+    <nav className='bg-white dark:bg-slate-800 shadow z-50 sticky top-0' ref={node}>
       <div className='max-w-7xl mx-auto px-2 sm:px-6 lg:px-8'>
         <div className='relative flex justify-between h-12 lg:h-16'>
           {account && (
