@@ -166,15 +166,16 @@ class SoapboxMount extends React.PureComponent {
 
     return (
       <IntlProvider locale={locale} messages={this.state.messages}>
+        <Helmet>
+          <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
+          <body className={bodyClass} />
+          {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+          <meta name='theme-color' content={this.props.brandColor} />
+        </Helmet>
+
         <ErrorBoundary>
           <BrowserRouter basename={FE_SUBDIRECTORY}>
             <>
-              <Helmet>
-                <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
-                <body className={bodyClass} />
-                {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-                <meta name='theme-color' content={this.props.brandColor} />
-              </Helmet>
               <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
                 <Switch>
                   <Redirect from='/v1/verify_email/:token' to='/auth/verify/email/:token' />
