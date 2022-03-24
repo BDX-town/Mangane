@@ -1,6 +1,7 @@
 import {
   Map as ImmutableMap,
   List as ImmutableList,
+  OrderedSet as ImmutableOrderedSet,
   fromJS,
 } from 'immutable';
 import { AnyAction } from 'redux';
@@ -82,8 +83,8 @@ const addTags = (
 ): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
-        v.toOrderedSet().union(tags).toList(),
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        ImmutableOrderedSet(fromJS(v)).union(tags).toList(),
       );
     });
   });
@@ -96,8 +97,8 @@ const removeTags = (
 ): State => {
   return state.withMutations(state => {
     accountIds.forEach(id => {
-      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), (v: ImmutableList<string>) =>
-        v.toOrderedSet().subtract(tags).toList(),
+      state.updateIn([id, 'pleroma', 'tags'], ImmutableList(), v =>
+        ImmutableOrderedSet(fromJS(v)).subtract(tags).toList(),
       );
     });
   });

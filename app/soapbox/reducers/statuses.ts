@@ -136,7 +136,9 @@ const deleteStatus = (state: State, id: string, references: Array<string>) => {
 
 const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => count + 1);
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
+      return typeof count === 'number' ? count + 1 : 0;
+    });
   } else {
     return state;
   }
@@ -144,7 +146,9 @@ const importPendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
 
 const deletePendingStatus = (state: State, { in_reply_to_id }: APIEntity) => {
   if (in_reply_to_id) {
-    return state.updateIn([in_reply_to_id, 'replies_count'], 0, (count: number) => Math.max(0, count - 1));
+    return state.updateIn([in_reply_to_id, 'replies_count'], 0, count => {
+      return typeof count === 'number' ? Math.max(0, count - 1) : 0;
+    });
   } else {
     return state;
   }
