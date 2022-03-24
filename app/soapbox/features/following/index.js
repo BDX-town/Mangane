@@ -105,19 +105,15 @@ class Following extends ImmutablePureComponent {
 
     if (accountId === -1 || (!accountIds)) {
       return (
-        <Column>
-          <Spinner />
-        </Column>
+        <Spinner />
       );
     }
 
     if (unavailable) {
       return (
-        <Column>
-          <div className='empty-column-indicator'>
-            <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
-          </div>
-        </Column>
+        <div className='empty-column-indicator'>
+          <FormattedMessage id='empty_column.account_unavailable' defaultMessage='Profile unavailable' />
+        </div>
       );
     }
 

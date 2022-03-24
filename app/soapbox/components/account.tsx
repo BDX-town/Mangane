@@ -96,18 +96,16 @@ const Account = ({
   };
 
   React.useEffect(() => {
-    if (isOnScreen) {
-      const style: React.CSSProperties = {};
-      const actionWidth = actionRef.current?.clientWidth || 0;
+    const style: React.CSSProperties = {};
+    const actionWidth = actionRef.current?.clientWidth || 0;
 
-      if (overflowRef.current) {
-        style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
-      } else {
-        style.visibility = 'hidden';
-      }
-
-      setStyle(style);
+    if (overflowRef.current) {
+      style.maxWidth = overflowRef.current.clientWidth - 30 - avatarSize - actionWidth;
+    } else {
+      style.visibility = 'hidden';
     }
+
+    setStyle(style);
   }, [isOnScreen, overflowRef, actionRef]);
 
   if (!account) {
