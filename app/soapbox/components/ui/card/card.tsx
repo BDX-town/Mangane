@@ -4,6 +4,8 @@ import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
+import { Text } from 'soapbox/components/ui';
+
 const sizes = {
   md: 'p-4 sm:rounded-xl',
   lg: 'p-4 sm:p-6 sm:rounded-xl',
@@ -51,7 +53,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
     const backAttributes = backHref ? { to: backHref } : { onClick: onBackClick };
 
     return (
-      <Comp {...backAttributes} className='mr-2' aria-label={intl.formatMessage(messages.back)}>
+      <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
         <InlineSVG src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
         <span className='sr-only'>Back</span>
       </Comp>
@@ -72,7 +74,7 @@ interface ICardTitle {
 }
 
 const CardTitle = ({ title }: ICardTitle): JSX.Element => (
-  <h1 className='text-xl font-bold'>{title}</h1>
+  <Text size='xl' weight='bold' tag='h1'>{title}</Text>
 );
 
 const CardBody: React.FC = ({ children }): JSX.Element => (

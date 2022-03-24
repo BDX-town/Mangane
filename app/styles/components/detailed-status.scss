@@ -168,7 +168,7 @@
 }
 
 .thread {
-  @apply sm:bg-white p-4 sm:shadow-xl sm:p-6 sm:rounded-xl;
+  @apply sm:bg-white sm:dark:bg-slate-800 p-4 sm:shadow-xl sm:p-6 sm:rounded-xl;
 
   &__status {
     @apply relative;
@@ -222,7 +222,7 @@
   // }
 
   &__connector {
-    @apply bg-gray-200 absolute w-0.5 left-5 hidden;
+    @apply bg-gray-200 dark:bg-gray-600 absolute w-0.5 left-5 hidden;
 
     &--bottom {
       @apply block;
