@@ -9,7 +9,7 @@
     "strictPropertyInitialization": false,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "useUnknownInCatchVariables": false,
+    "useUnknownInCatchVariables": true,
     "module": "es6",
     "target": "es5",
     "jsx": "react",
