@@ -186,7 +186,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
             <Text size='sm' dangerouslySetInnerHTML={content} />
           }
 
-          <div className='flex flex-col md:flex-row items-start md:items-center space-x-0 md:space-x-2'>
+          <div className='flex flex-col md:flex-row items-start md:flex-wrap md:items-center gap-2'>
             {isLocal(account) ? (
               <HStack alignItems='center' space={0.5}>
                 <Icon
@@ -224,13 +224,15 @@ class ProfileInfoPanel extends ImmutablePureComponent {
                   className='w-4 h-4 text-gray-800'
                 />
 
-                <Text size='sm'>
-                  {isSafeUrl(account.get('website')) ? (
-                    <a className='text-primary-600 hover:underline' href={account.get('website')} target='_blank'>{account.get('website')}</a>
-                  ) : (
-                    account.get('website')
-                  )}
-                </Text>
+                <div className='max-w-[300px]'>
+                  <Text size='sm' truncate>
+                    {isSafeUrl(account.get('website')) ? (
+                      <a className='text-primary-600 hover:underline' href={account.get('website')} target='_blank'>{account.get('website')}</a>
+                    ) : (
+                      account.get('website')
+                    )}
+                  </Text>
+                </div>
               </HStack>
             ) : null}
 
