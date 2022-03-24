@@ -8,12 +8,14 @@ export const useOnScreen = (ref: React.MutableRefObject<HTMLElement>) =>  {
   );
 
   React.useEffect(() => {
-    observer.observe(ref.current);
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
 
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [ref.current]);
 
   return isIntersecting;
 };

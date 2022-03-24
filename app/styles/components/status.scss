@@ -160,7 +160,7 @@
 }
 
 .status-link {
-  @apply hover:underline text-primary-600 hover:text-primary-800;
+  @apply hover:underline text-primary-600 dark:text-primary-400 hover:text-primary-800 dark:hover:text-primary-500;
 }
 
 .status {
@@ -238,7 +238,7 @@
 }
 
 .status__wrapper {
-  @apply bg-white px-4 py-6 sm:shadow-xl sm:p-5 sm:rounded-xl;
+  @apply bg-white dark:bg-slate-800 px-4 py-6 sm:shadow-xl dark:sm:shadow-inset sm:p-5 sm:rounded-xl;
 }
 
 [column-type=filled] .status__wrapper,
@@ -379,7 +379,7 @@
 
 .status__content,
 .reply-indicator__content {
-  @apply text-gray-900 break-words text-ellipsis overflow-hidden relative;
+  @apply text-gray-900 dark:text-gray-300 break-words text-ellipsis overflow-hidden relative;
 
   &:focus {
     @apply outline-none;
@@ -410,7 +410,7 @@
   }
 
   a {
-    @apply text-primary-600 hover:underline;
+    @apply text-primary-600 dark:text-primary-400 hover:underline;
 
     .fa {
       color: var(--primary-text-color);
@@ -469,11 +469,11 @@
 }
 
 .status-card {
-  @apply flex text-sm border border-solid border-gray-200 rounded-lg text-gray-800 mt-3 min-h-[150px] no-underline overflow-hidden;
+  @apply flex text-sm border border-solid border-gray-200 dark:border-gray-700 rounded-lg text-gray-800 dark:text-gray-200 mt-3 min-h-[150px] no-underline overflow-hidden;
 }
 
 a.status-card {
-  @apply cursor-pointer hover:bg-gray-50 hover:no-underline;
+  @apply cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-900 hover:no-underline;
 }
 
 .status-card-photo {
@@ -489,7 +489,7 @@ a.status-card {
 }
 
 .status-card__title {
-  @apply block font-medium mb-2 text-gray-800 no-underline;
+  @apply block font-medium mb-2 text-gray-800 dark:text-gray-200 no-underline;
 }
 
 .status-card__content {
@@ -497,7 +497,7 @@ a.status-card {
 }
 
 .status-card__description {
-  @apply text-gray-500;
+  @apply text-gray-500 dark:text-gray-400;
 }
 
 .status-card__host {
@@ -549,7 +549,7 @@ a.status-card {
 }
 
 .status-card.compact {
-  @apply border-gray-200;
+  @apply border-gray-200 dark:border-gray-700;
 }
 
 .status-card__image-image {

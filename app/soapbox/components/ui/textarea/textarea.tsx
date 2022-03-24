@@ -18,7 +18,7 @@ const Textarea = React.forwardRef(
         {...props}
         ref={ref}
         className={classNames({
-          'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md':
+          'dark:bg-slate-800 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md':
               true,
           'font-mono': isCodeEditor,
         })}

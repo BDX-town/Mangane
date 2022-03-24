@@ -15,7 +15,7 @@ const PlaceholderAvatar = ({ size }) => {
 
   return (
     <div
-      className='rounded-full bg-slate-200'
+      className='rounded-full bg-slate-200 dark:bg-slate-700'
       style={style}
       alt=''
     />
