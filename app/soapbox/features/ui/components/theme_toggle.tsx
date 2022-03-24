@@ -5,6 +5,7 @@ import Toggle from 'react-toggle';
 import { v4 as uuidv4 } from 'uuid';
 
 import { changeSetting } from 'soapbox/actions/settings';
+import { Icon } from 'soapbox/components/ui';
 import { useSettings } from 'soapbox/hooks';
 
 const messages = defineMessages({
@@ -13,7 +14,7 @@ const messages = defineMessages({
 });
 
 interface IThemeToggle {
-  showLabel: boolean,
+  showLabel?: boolean,
 }
 
 function ThemeToggle({ showLabel }: IThemeToggle) {
@@ -35,6 +36,10 @@ function ThemeToggle({ showLabel }: IThemeToggle) {
         <Toggle
           id={id}
           checked={themeMode === 'light'}
+          icons={{
+            checked: <Icon src={require('@tabler/icons/icons/sun.svg')} />,
+            unchecked: <Icon src={require('@tabler/icons/icons/moon.svg')} />,
+          }}
           onChange={onToggle}
         />
         {showLabel && (<label htmlFor={id} className='setting-toggle__label'>{label}</label>)}
