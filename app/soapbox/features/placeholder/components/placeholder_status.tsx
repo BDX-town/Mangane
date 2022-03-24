@@ -12,8 +12,8 @@ interface IPlaceholderStatus {
 const PlaceholderStatus = ({ thread = false }: IPlaceholderStatus) => (
   <div
     className={classNames({
-      'status-placeholder bg-white': true,
-      'sm:shadow-xl sm:rounded-xl px-4 py-6 sm:p-6': !thread,
+      'status-placeholder bg-white dark:bg-slate-800': true,
+      'sm:shadow-xl dark:sm:shadow-inset sm:rounded-xl px-4 py-6 sm:p-6': !thread,
     })}
   >
     <div className='w-full animate-pulse overflow-hidden'>

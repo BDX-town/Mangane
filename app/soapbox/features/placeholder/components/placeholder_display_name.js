@@ -8,7 +8,7 @@ const PlaceholderDisplayName = ({ minLength, maxLength }) => {
   const acctLength = randomIntFromInterval(maxLength, minLength);
 
   return (
-    <div className='flex flex-col text-slate-200'>
+    <div className='flex flex-col text-slate-200 dark:text-slate-700'>
       <p>{generateText(length)}</p>
       <p>{generateText(acctLength)}</p>
     </div>
