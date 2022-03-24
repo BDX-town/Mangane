@@ -7,7 +7,7 @@ const PlaceholderStatusContent = ({ minLength, maxLength }) => {
   const length = randomIntFromInterval(maxLength, minLength);
 
   return (
-    <div className='flex flex-col text-slate-200'>
+    <div className='flex flex-col text-slate-200 dark:text-slate-700'>
       <p className='break-words'>{generateText(length)}</p>
     </div>
   );

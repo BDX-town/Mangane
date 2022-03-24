@@ -6,7 +6,7 @@ exports[`<Column /> renders correctly with minimal props 1`] = `
   role="region"
 >
   <div
-    className="space-y-4 bg-white sm:shadow-lg overflow-hidden p-4 sm:rounded-xl"
+    className="space-y-4 bg-white dark:bg-slate-800 sm:shadow-lg dark:sm:shadow-inset overflow-hidden p-4 sm:rounded-xl"
   >
     <div
       className="mb-4 flex flex-row items-center"

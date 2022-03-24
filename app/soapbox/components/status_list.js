@@ -226,7 +226,7 @@ export default class StatusList extends ImmutablePureComponent {
         placeholderComponent={PlaceholderStatus}
         placeholderCount={20}
         ref={this.setRef}
-        className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 sm:divide-none'}
+        className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200 dark:divide-gray-800' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 dark:divide-gray-800 sm:divide-none'}
         {...other}
       >
         {this.renderScrollableContent()}

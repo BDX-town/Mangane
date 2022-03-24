@@ -607,7 +607,7 @@ class StatusActionBar extends ImmutablePureComponent {
         <IconButton
           disabled={!publicStatus}
           className={classNames({
-            'text-gray-400 hover:text-gray-600': !status.get('reblogged'),
+            'text-gray-400 hover:text-gray-600 dark:hover:text-white': !status.get('reblogged'),
             'text-success-600 hover:text-success-600': status.get('reblogged'),
           })}
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
@@ -631,7 +631,7 @@ class StatusActionBar extends ImmutablePureComponent {
           title={intl.formatMessage(messages.share)}
           src={require('@tabler/icons/icons/upload.svg')}
           onClick={this.handleShareClick}
-          className='text-gray-400 hover:text-gray-600'
+          className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
         />
       </div>
     );
@@ -643,7 +643,7 @@ class StatusActionBar extends ImmutablePureComponent {
             title={replyTitle}
             src={require('@tabler/icons/icons/message-circle.svg')}
             onClick={this.handleReplyClick}
-            className='text-gray-400 hover:text-gray-600'
+            className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
           />
 
           {replyCount !== 0 ? (
@@ -672,7 +672,7 @@ class StatusActionBar extends ImmutablePureComponent {
           /> */}
           <IconButton
             className={classNames({
-              'text-gray-400 hover:text-gray-600': !meEmojiReact,
+              'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
               'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
             })}
             title={meEmojiTitle}
