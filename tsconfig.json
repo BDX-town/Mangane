@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": "app/",
     "sourceMap": true,
-    "alwaysStrict": false,
+    "alwaysStrict": true,
     "strictNullChecks": false,
     "strictBindCallApply": true,
     "strictFunctionTypes": false,
