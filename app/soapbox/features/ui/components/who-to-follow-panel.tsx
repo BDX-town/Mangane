@@ -46,6 +46,7 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
         {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
           <AccountContainer
             key={suggestion.get('account')}
+            // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
             id={suggestion.get('account')}
             actionIcon={require('@tabler/icons/icons/x.svg')}
             actionTitle={intl.formatMessage(messages.dismissSuggestion)}
