@@ -13,7 +13,7 @@ const find = (
   configs: ImmutableList<Config>,
   group: string,
   key: string,
-): Config => {
+): Config | undefined => {
   return configs.find(config =>
     config.isSuperset(ImmutableMap({ group, key })),
   );

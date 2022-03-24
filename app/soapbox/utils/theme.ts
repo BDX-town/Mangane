@@ -61,19 +61,28 @@ function hslToHex(color: Hsl): string {
 }
 
 // Generate accent color from brand color
-export const generateAccent = (brandColor: string): string => {
-  const { h } = rgbToHsl(hexToRgb(brandColor));
+export const generateAccent = (brandColor: string): string | null => {
+  const rgb = hexToRgb(brandColor);
+  if (!rgb) return null;
+
+  const { h } = rgbToHsl(rgb);
   return hslToHex({ h: h - 15, s: 86, l: 44 });
 };
 
 const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>) => {
   if (typeof shades === 'string') {
-    const { r, g, b } = hexToRgb(shades);
+    const rgb = hexToRgb(shades);
+    if (!rgb) return obj;
+
+    const { r, g, b } = rgb;
     return obj[`--color-${color}`] = `${r} ${g} ${b}`;
   }
 
   return Object.keys(shades).forEach(shade => {
-    const { r, g, b } = hexToRgb(shades[shade]);
+    const rgb = hexToRgb(shades[shade]);
+    if (!rgb) return;
+
+    const { r, g, b } = rgb;
     obj[`--color-${color}-${shade}`] = `${r} ${g} ${b}`;
   });
 };
