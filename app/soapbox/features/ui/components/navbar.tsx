@@ -4,11 +4,9 @@ import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { getSettings } from 'soapbox/actions/settings';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Avatar, Button, Icon } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
-import { useAppSelector } from 'soapbox/hooks';
+import { useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 
 import { openSidebar } from '../../../actions/sidebar';
 
@@ -18,10 +16,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const node = React.useRef(null);
 
-  const me = useAppSelector((state) => state.me);
-  const account = useAppSelector((state) => state.accounts.get(me));
-  const settings = useAppSelector((state) => getSettings(state));
-  const soapboxConfig = useAppSelector((state) => getSoapboxConfig(state));
+  const account = useOwnAccount();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
   const singleUserMode = soapboxConfig.get('singleUserMode');
 
   // In demo mode, use the Soapbox logo
