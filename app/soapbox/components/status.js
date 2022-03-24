@@ -580,7 +580,7 @@ class Status extends ImmutablePureComponent {
           data-featured={featured ? 'true' : null}
           aria-label={textForScreenReader(intl, status, rebloggedByText)}
           ref={this.handleRef}
-          onClick={() => this.context.router.history.push(statusUrl)}
+          onClick={() => this.props.history.push(statusUrl)}
           role='link'
         >
           {prepend}
