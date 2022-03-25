@@ -3,11 +3,11 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
+import { Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import { fetchTrends } from '../../../actions/trends';
 import Hashtag from '../../../components/hashtag';
-import { Stack, Text } from '../../../components/ui';
 
 interface ITrendsPanel {
   limit: number
@@ -35,17 +35,11 @@ const TrendsPanel = ({ limit }: ITrendsPanel) => {
   }
 
   return (
-    <Stack space={2}>
-      <Text size='xl' weight='bold'>
-        <FormattedMessage id='trends.title' defaultMessage='Trends' />
-      </Text>
-
-      <Stack space={3}>
-        {sortedTrends.map((hashtag: ImmutableMap<string, any>) => (
-          <Hashtag key={hashtag.get('name')} hashtag={hashtag} />
-        ))}
-      </Stack>
-    </Stack>
+    <Widget title={<FormattedMessage id='trends.title' defaultMessage='Trends' />}>
+      {sortedTrends.map((hashtag: ImmutableMap<string, any>) => (
+        <Hashtag key={hashtag.get('name')} hashtag={hashtag} />
+      ))}
+    </Widget>
   );
 };
 

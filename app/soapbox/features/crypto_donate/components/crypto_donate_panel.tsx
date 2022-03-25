@@ -1,9 +1,8 @@
-import classNames from 'classnames';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import Icon from 'soapbox/components/icon';
+import { Widget } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 import SiteWallet from './site_wallet';
@@ -24,13 +23,7 @@ const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Ele
   const hasMore = more > 0;
 
   return (
-    <div className={classNames('wtf-panel funding-panel crypto-donate-panel', { 'crypto-donate-panel--has-more': hasMore })}>
-      <div className='wtf-panel-header'>
-        <Icon src={require('@tabler/icons/icons/currency-bitcoin.svg')} className='wtf-panel-header__icon' />
-        <span className='wtf-panel-header__label'>
-          <span><FormattedMessage id='crypto_donate_panel.heading' defaultMessage='Donate Cryptocurrency' /></span>
-        </span>
-      </div>
+    <Widget title={<FormattedMessage id='crypto_donate_panel.heading' defaultMessage='Donate Cryptocurrency' />}>
       <div className='wtf-panel__content'>
         <div className='crypto-donate-panel__message'>
           <FormattedMessage
@@ -48,7 +41,7 @@ const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Ele
           values={{ count: more }}
         />
       </Link>}
-    </div>
+    </Widget>
   );
 };
 

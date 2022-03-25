@@ -27,3 +27,4 @@ export { default as Tabs } from './tabs/tabs';
 export { default as Text } from './text/text';
 export { default as Textarea } from './textarea/textarea';
 export { default as Tooltip } from './tooltip/tooltip';
+export { default as Widget } from './widget/widget';
