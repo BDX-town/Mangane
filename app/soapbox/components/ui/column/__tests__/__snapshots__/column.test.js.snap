@@ -13,7 +13,7 @@ exports[`<Column /> renders correctly with minimal props 1`] = `
     >
       <button
         aria-label="Back"
-        className="mr-2"
+        className="mr-2 text-gray-900 dark:text-gray-100"
         onClick={[Function]}
       >
         <svg
@@ -30,7 +30,7 @@ exports[`<Column /> renders correctly with minimal props 1`] = `
         </span>
       </button>
       <h1
-        className="text-xl font-bold"
+        className="text-xl text-gray-900 dark:text-gray-100 font-bold tracking-normal font-sans"
       />
     </div>
     <div />
