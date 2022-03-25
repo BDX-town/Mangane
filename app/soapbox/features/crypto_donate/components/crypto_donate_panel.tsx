@@ -2,7 +2,7 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Widget } from 'soapbox/components/ui';
+import { Text, Widget } from 'soapbox/components/ui';
 import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 import SiteWallet from './site_wallet';
@@ -24,16 +24,16 @@ const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Ele
 
   return (
     <Widget title={<FormattedMessage id='crypto_donate_panel.heading' defaultMessage='Donate Cryptocurrency' />}>
-      <div className='wtf-panel__content'>
-        <div className='crypto-donate-panel__message'>
-          <FormattedMessage
-            id='crypto_donate_panel.intro.message'
-            defaultMessage='{siteTitle} accepts cryptocurrency donations to fund our service. Thank you for your support!'
-            values={{ siteTitle }}
-          />
-        </div>
-        <SiteWallet limit={limit} />
-      </div>
+      <Text>
+        <FormattedMessage
+          id='crypto_donate_panel.intro.message'
+          defaultMessage='{siteTitle} accepts cryptocurrency donations to fund our service. Thank you for your support!'
+          values={{ siteTitle }}
+        />
+      </Text>
+
+      <SiteWallet limit={limit} />
+
       {hasMore && <Link className='wtf-panel__expand-btn' to='/donate/crypto'>
         <FormattedMessage
           id='crypto_donate_panel.actions.more'
