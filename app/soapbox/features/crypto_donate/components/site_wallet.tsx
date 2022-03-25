@@ -1,6 +1,7 @@
 import { trimStart } from 'lodash';
 import React from 'react';
 
+import { Stack } from 'soapbox/components/ui';
 import { useSoapboxConfig } from 'soapbox/hooks';
 
 import CryptoAddress from './crypto_address';
@@ -28,7 +29,7 @@ const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {
   const coinList = typeof limit === 'number' ? addresses.take(limit) : addresses;
 
   return (
-    <div>
+    <Stack space={4}>
       {coinList.map(coin => (
         <CryptoAddress
           key={coin.get('ticker')}
@@ -37,7 +38,7 @@ const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {
           note={coin.get('note')}
         />
       ))}
-    </div>
+    </Stack>
   );
 };
 

@@ -303,7 +303,7 @@ export class CopyableInput extends ImmutablePureComponent {
     return (
       <div className='copyable-input'>
         <input ref={this.setInputRef} type='text' value={value} readOnly />
-        <button onClick={this.handleCopyClick}>
+        <button className='p-2 text-white bg-primary-600' onClick={this.handleCopyClick}>
           <FormattedMessage id='forms.copy' defaultMessage='Copy' />
         </button>
       </div>

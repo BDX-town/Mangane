@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
-import Icon from 'soapbox/components/icon';
+import { Text, Icon, Stack, HStack } from 'soapbox/components/ui';
 import { CopyableInput } from 'soapbox/features/forms';
 
 import { getExplorerUrl } from '../utils/block_explorer';
@@ -30,28 +30,37 @@ const CryptoAddress: React.FC<ICryptoAddress> = (props): JSX.Element => {
   const explorerUrl = getExplorerUrl(ticker, address);
 
   return (
-    <div className='crypto-address'>
-      <div className='crypto-address__head'>
+    <Stack>
+      <HStack alignItems='center' className='mb-1'>
         <CryptoIcon
-          className='crypto-address__icon'
+          className='flex items-start justify-center w-6 mr-2.5'
           ticker={ticker}
           title={title}
         />
-        <div className='crypto-address__title'>{title || ticker.toUpperCase()}</div>
-        <div className='crypto-address__actions'>
-          <a href='#' onClick={handleModalClick}>
+
+        <Text weight='bold'>{title || ticker.toUpperCase()}</Text>
+
+        <HStack alignItems='center' className='ml-auto'>
+          <a className='text-gray-500 ml-1' href='#' onClick={handleModalClick}>
             <Icon src={require('@tabler/icons/icons/qrcode.svg')} />
           </a>
-          {explorerUrl && <a href={explorerUrl} target='_blank'>
-            <Icon src={require('@tabler/icons/icons/external-link.svg')} />
-          </a>}
-        </div>
-      </div>
-      {note && <div className='crypto-address__note'>{note}</div>}
+
+          {explorerUrl && (
+            <a className='text-gray-500 ml-1' href={explorerUrl} target='_blank'>
+              <Icon src={require('@tabler/icons/icons/external-link.svg')} />
+            </a>
+          )}
+        </HStack>
+      </HStack>
+
+      {note && (
+        <Text>{note}</Text>
+      )}
+
       <div className='crypto-address__address simple_form'>
         <CopyableInput value={address} />
       </div>
-    </div>
+    </Stack>
   );
 };
 

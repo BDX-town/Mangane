@@ -34,13 +34,17 @@ const CryptoDonatePanel: React.FC<ICryptoDonatePanel> = ({ limit = 3 }): JSX.Ele
 
       <SiteWallet limit={limit} />
 
-      {hasMore && <Link className='wtf-panel__expand-btn' to='/donate/crypto'>
-        <FormattedMessage
-          id='crypto_donate_panel.actions.more'
-          defaultMessage='Click to see {count} more {count, plural, one {wallet} other {wallets}}'
-          values={{ count: more }}
-        />
-      </Link>}
+      {hasMore && (
+        <Link className='wtf-panel__expand-btn' to='/donate/crypto'>
+          <Text>
+            <FormattedMessage
+              id='crypto_donate_panel.actions.more'
+              defaultMessage='Click to see {count} more {count, plural, one {wallet} other {wallets}}'
+              values={{ count: more }}
+            />
+          </Text>
+        </Link>
+      )}
     </Widget>
   );
 };
