@@ -18,15 +18,17 @@ const normalizeAddress = (address: Address): Address => {
 };
 
 interface ISiteWallet {
-  limit: number,
+  limit?: number,
 }
 
 const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {
-  const addresses: ImmutableList<Address> = useSoapboxConfig().get('cryptoAddresses');
-  const coinList = addresses.map(normalizeAddress).take(limit);
+  const addresses: ImmutableList<Address> =
+    useSoapboxConfig().get('cryptoAddresses').map(normalizeAddress);
+
+  const coinList = typeof limit === 'number' ? addresses.take(limit) : addresses;
 
   return (
-    <div className='site-wallet'>
+    <div>
       {coinList.map(coin => (
         <CryptoAddress
           key={coin.get('ticker')}

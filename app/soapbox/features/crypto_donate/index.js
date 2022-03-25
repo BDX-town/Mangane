@@ -4,9 +4,8 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
+import { Column } from 'soapbox/components/ui';
 import Accordion from 'soapbox/features/ui/components/accordion';
-
-import Column from '../ui/components/column';
 
 import SiteWallet from './components/site_wallet';
 
@@ -39,7 +38,7 @@ class CryptoDonate extends ImmutablePureComponent {
     const { explanationBoxExpanded } = this.state;
 
     return (
-      <Column icon='bitcoin' heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)} withHeader>
         <div className='crypto-donate'>
           <div className='explanation-box'>
             <Accordion

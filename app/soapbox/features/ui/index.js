@@ -102,7 +102,7 @@ import {
   // AwaitingApproval,
   // Reports,
   // ModerationLog,
-  // CryptoDonate,
+  CryptoDonate,
   // ScheduledStatuses,
   // UserIndex,
   // FederationRestrictions,
@@ -347,8 +347,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
         <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
-        {/*
         <WrappedRoute path='/donate/crypto' publicRoute page={DefaultPage} component={CryptoDonate} content={children} />
+        {/*
         <WrappedRoute path='/federation_restrictions' publicRoute page={DefaultPage} component={FederationRestrictions} content={children} />
         */}
 
