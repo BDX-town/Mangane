@@ -32,7 +32,9 @@ const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {
       {coinList.map(coin => (
         <CryptoAddress
           key={coin.get('ticker')}
-          {...coin.toJS()}
+          address={coin.get('address')}
+          ticker={coin.get('ticker')}
+          note={coin.get('note')}
         />
       ))}
     </div>
