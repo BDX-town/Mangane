@@ -647,28 +647,6 @@ class Status extends ImmutablePureComponent {
         <div className='px-4 pt-4 sm:p-0'>
           <SubNavigation message={intl.formatMessage(titleMessage, { username })} />
         </div>
-        {/*
-          Eye icon to show/hide all CWs in a thread.
-          I'm not convinced of the value of this. It needs a better design at the very least.
-        */}
-        {/* me &&
-          <ColumnHeader
-            extraButton={(
-              <button
-                className='column-header__button'
-                title={intl.formatMessage(status.get('hidden') ? messages.revealAll : messages.hideAll)}
-                aria-label={intl.formatMessage(status.get('hidden') ? messages.revealAll : messages.hideAll)}
-                onClick={this.handleToggleAll}
-                aria-pressed={
-                  status.get('hidden') ? 'false' : 'true'}
-              >
-                <Icon id={status.get('hidden') ? 'eye-slash' : 'eye'
-                }
-                />
-              </button>
-            )}
-          />
-        */}
 
         <div ref={this.setRef} className='thread'>
           <PullToRefresh onRefresh={this.handleRefresh}>
@@ -689,7 +667,7 @@ class Status extends ImmutablePureComponent {
                     onToggleMediaVisibility={this.handleToggleMediaVisibility}
                   />
 
-                  <hr className='mb-2' />
+                  <hr className='mb-2 dark:border-slate-600' />
 
                   <ActionBar
                     status={status}
@@ -724,7 +702,7 @@ class Status extends ImmutablePureComponent {
 
             {descendants && (
               <>
-                <hr className='mt-2' />
+                <hr className='mt-2 dark:border-slate-600' />
                 <div className='thread__descendants space-y-4'>{descendants}</div>
               </>
             )}
