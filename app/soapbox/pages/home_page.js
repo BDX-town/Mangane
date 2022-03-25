@@ -10,6 +10,7 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
+  CryptoDonatePanel,
 } from 'soapbox/features/ui/util/async-components';
 // import GroupSidebarPanel from '../features/groups/sidebar_panel';
 import { getFeatures } from 'soapbox/utils/features';
@@ -31,10 +32,9 @@ const mapStateToProps = state => {
     me,
     account: state.getIn(['accounts', me]),
     showFundingPanel: hasPatron,
-    showCryptoDonatePanel: hasCrypto && cryptoLimit > 0,
+    hasCrypto,
     cryptoLimit,
-    showTrendsPanel: features.trends,
-    showWhoToFollowPanel: features.suggestions,
+    features,
   };
 };
 
@@ -47,7 +47,7 @@ class HomePage extends ImmutablePureComponent {
   }
 
   render() {
-    const { me, children, account, showTrendsPanel, showWhoToFollowPanel } = this.props;
+    const { me, children, account, features, hasCrypto, cryptoLimit } = this.props;
 
     const acct = account ? account.get('acct') : '';
 
@@ -80,17 +80,22 @@ class HomePage extends ImmutablePureComponent {
         <Layout.Aside>
           {!me && (
             <BundleContainer fetchComponent={SignUpPanel}>
-              {Component => <Component key='sign-up-panel' />}
+              {Component => <Component />}
             </BundleContainer>
           )}
-          {showTrendsPanel && (
+          {features.trends && (
             <BundleContainer fetchComponent={TrendsPanel}>
-              {Component => <Component limit={3} key='trends-panel' />}
+              {Component => <Component limit={3} />}
             </BundleContainer>
           )}
-          {showWhoToFollowPanel && (
+          {hasCrypto && cryptoLimit > 0 && (
+            <BundleContainer fetchComponent={CryptoDonatePanel}>
+              {Component => <Component limit={cryptoLimit} />}
+            </BundleContainer>
+          )}
+          {features.suggestions && (
             <BundleContainer fetchComponent={WhoToFollowPanel}>
-              {Component => <Component limit={5} key='wtf-panel' />}
+              {Component => <Component limit={5} />}
             </BundleContainer>
           )}
           <LinkFooter key='link-footer' />

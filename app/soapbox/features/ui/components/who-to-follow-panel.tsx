@@ -3,7 +3,7 @@ import * as React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
-import { Stack, Text } from 'soapbox/components/ui';
+import { Widget } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import { fetchSuggestions, dismissSuggestion } from '../../../actions/suggestions';
@@ -37,24 +37,18 @@ const WhoToFollowPanel = ({ limit }: IWhoToFollowPanel) => {
   }
 
   return (
-    <Stack space={2}>
-      <Text size='xl' weight='bold'>
-        <FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />
-      </Text>
-
-      <Stack space={3}>
-        {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
-          <AccountContainer
-            key={suggestion.get('account')}
-            // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-            id={suggestion.get('account')}
-            actionIcon={require('@tabler/icons/icons/x.svg')}
-            actionTitle={intl.formatMessage(messages.dismissSuggestion)}
-            onActionClick={handleDismiss}
-          />
-        ))}
-      </Stack>
-    </Stack>
+    <Widget title={<FormattedMessage id='who_to_follow.title' defaultMessage='People To Follow' />}>
+      {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
+        <AccountContainer
+          key={suggestion.get('account')}
+          // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
+          id={suggestion.get('account')}
+          actionIcon={require('@tabler/icons/icons/x.svg')}
+          actionTitle={intl.formatMessage(messages.dismissSuggestion)}
+          onActionClick={handleDismiss}
+        />
+      ))}
+    </Widget>
   );
 };
 
