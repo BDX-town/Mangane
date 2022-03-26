@@ -1,19 +1,18 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
-import spring from 'react-motion/lib/spring';
+import { defineMessages, injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
 import { Text } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional_motion';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import RelativeTimestamp from './relative_timestamp';
+
+import type { Poll as PollEntity, PollOption } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
@@ -21,25 +20,30 @@ const messages = defineMessages({
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
 
-export default @injectIntl
-class Poll extends ImmutablePureComponent {
+interface IPoll {
+  poll?: PollEntity,
+  intl: IntlShape,
+  dispatch?: Function,
+  disabled?: boolean,
+  me?: string | null | false | undefined,
+  status?: string,
+}
 
-  static propTypes = {
-    poll: ImmutablePropTypes.map,
-    intl: PropTypes.object.isRequired,
-    dispatch: PropTypes.func,
-    disabled: PropTypes.bool,
-    me: SoapboxPropTypes.me,
-    status: PropTypes.string,
-  };
+interface IPollState {
+  selected: Record<string, boolean>,
+}
+
+class Poll extends ImmutablePureComponent<IPoll, IPollState> {
 
   state = {
-    selected: {},
+    selected: {} as Record<string, boolean>,
   };
 
-  _toggleOption = value => {
-    if (this.props.me) {
-      if (this.props.poll.get('multiple')) {
+  _toggleOption = (value: string) => {
+    const { me, poll } = this.props;
+
+    if (me) {
+      if (poll?.multiple) {
         const tmp = { ...this.state.selected };
         if (tmp[value]) {
           delete tmp[value];
@@ -48,7 +52,7 @@ class Poll extends ImmutablePureComponent {
         }
         this.setState({ selected: tmp });
       } else {
-        const tmp = {};
+        const tmp: Record<string, boolean> = {};
         tmp[value] = true;
         this.setState({ selected: tmp });
       }
@@ -57,28 +61,32 @@ class Poll extends ImmutablePureComponent {
     }
   }
 
-  handleOptionChange = ({ target: { value } }) => {
-    this._toggleOption(value);
+  handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    this._toggleOption(e.currentTarget.value);
   };
 
-  handleOptionKeyPress = (e) => {
+  handleOptionKeyPress = (e: React.KeyboardEvent): void => {
     if (e.key === 'Enter' || e.key === ' ') {
-      this._toggleOption(e.target.getAttribute('data-index'));
+      const dataIndex = e.currentTarget.getAttribute('data-index');
+
+      if (dataIndex) {
+        this._toggleOption(dataIndex);
+      }
+
       e.stopPropagation();
       e.preventDefault();
     }
   }
 
   handleVote = () => {
-    if (this.props.disabled) {
-      return;
-    }
-
-    this.props.dispatch(vote(this.props.poll.get('id'), Object.keys(this.state.selected)));
+    const { disabled, dispatch, poll } = this.props;
+    if (disabled || !dispatch || !poll) return;
+    dispatch(vote(poll.id, Object.keys(this.state.selected)));
   };
 
   openUnauthorizedModal = () => {
     const { dispatch, status } = this.props;
+    if (!dispatch) return;
     dispatch(openModal('UNAUTHORIZED', {
       action: 'POLL_VOTE',
       ap_id: status,
@@ -86,21 +94,20 @@ class Poll extends ImmutablePureComponent {
   }
 
   handleRefresh = () => {
-    if (this.props.disabled) {
-      return;
-    }
-
-    this.props.dispatch(fetchPoll(this.props.poll.get('id')));
+    const { disabled, dispatch, poll } = this.props;
+    if (disabled || !poll || !dispatch) return;
+    dispatch(fetchPoll(poll.id));
   };
 
-  renderOption(option, optionIndex, showResults) {
+  renderOption(option: PollOption, optionIndex: number, showResults: boolean): JSX.Element | null {
     const { poll, disabled, intl } = this.props;
+    if (!poll) return null;
 
-    const percent = poll.get('votes_count') === 0 ? 0 : (option.get('votes_count') / poll.get('votes_count')) * 100;
-    const leading = poll.get('options').filterNot(other => other.get('title') === option.get('title')).every(other => option.get('votes_count') >= other.get('votes_count'));
+    const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
+    const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
     const active  = !!this.state.selected[`${optionIndex}`];
     const voted   = poll.own_votes?.includes(optionIndex);
-    const titleEmojified = option.get('title_emojified');
+    const titleEmojified = option.title_emojified;
 
     return (
       <li key={option.get('title')}>
@@ -115,7 +122,7 @@ class Poll extends ImmutablePureComponent {
         <label className={classNames('poll__text', { selectable: !showResults })}>
           <input
             name='vote-options'
-            type={poll.get('multiple') ? 'checkbox' : 'radio'}
+            type={poll.multiple ? 'checkbox' : 'radio'}
             value={optionIndex}
             checked={active}
             onChange={this.handleOptionChange}
@@ -124,19 +131,21 @@ class Poll extends ImmutablePureComponent {
 
           {!showResults && (
             <span
-              className={classNames('poll__input', { checkbox: poll.get('multiple'), active })}
-              tabIndex='0'
-              role={poll.get('multiple') ? 'checkbox' : 'radio'}
+              className={classNames('poll__input', { checkbox: poll.multiple, active })}
+              tabIndex={0}
+              role={poll.multiple ? 'checkbox' : 'radio'}
               onKeyPress={this.handleOptionKeyPress}
               aria-checked={active}
-              aria-label={option.get('title')}
+              aria-label={option.title}
               data-index={optionIndex}
             />
           )}
-          {showResults && <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.get('votes_count') })}>
-            {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
-            {Math.round(percent)}%
-          </span>}
+          {showResults && (
+            <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.votes_count })}>
+              {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
+              {Math.round(percent)}%
+            </span>
+          )}
 
           <span dangerouslySetInnerHTML={{ __html: titleEmojified }} />
         </label>
@@ -151,15 +160,14 @@ class Poll extends ImmutablePureComponent {
       return null;
     }
 
-    const timeRemaining = poll.get('expired') ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.get('expires_at')} futureDate />;
-    const showResults   = poll.get('voted') || poll.get('expired');
+    const timeRemaining = poll.expired ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.expires_at} futureDate />;
+    const showResults   = poll.voted || poll.expired;
     const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
-    const voted         = poll.voted;
 
     return (
-      <div className={classNames('poll', { voted })}>
+      <div className={classNames('poll', { voted: poll.voted })}>
         <ul>
-          {poll.get('options').map((option, i) => this.renderOption(option, i, showResults))}
+          {poll.options.map((option, i) => this.renderOption(option, i, showResults))}
         </ul>
 
         <div className='poll__footer'>
@@ -170,8 +178,8 @@ class Poll extends ImmutablePureComponent {
                 <Text><FormattedMessage id='poll.refresh' defaultMessage='Refresh' /></Text>
               </button> · </span>
             )}
-            <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.get('votes_count') }} />
-            {poll.get('expires_at') && <span> · {timeRemaining}</span>}
+            <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.votes_count }} />
+            {poll.expires_at && <span> · {timeRemaining}</span>}
           </Text>
         </div>
       </div>
@@ -179,3 +187,5 @@ class Poll extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(Poll);
