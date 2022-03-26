@@ -13,9 +13,10 @@ const overrides = custom('features');
 const any = arr => arr.some(Boolean);
 
 // For uglification
-export const MASTODON = 'Mastodon';
-export const PLEROMA  = 'Pleroma';
-export const MITRA    = 'Mitra';
+export const MASTODON    = 'Mastodon';
+export const PLEROMA     = 'Pleroma';
+export const MITRA       = 'Mitra';
+export const TRUTHSOCIAL = 'TruthSocial';
 
 export const getFeatures = createSelector([instance => instance], instance => {
   const v = parseVersion(instance.get('version'));
@@ -24,9 +25,9 @@ export const getFeatures = createSelector([instance => instance], instance => {
 
   return Object.assign({
     media: true,
-    privacyScopes: true,
-    spoilers: true,
-    filters: true,
+    privacyScopes: v.software !== TRUTHSOCIAL,
+    spoilers: v.software !== TRUTHSOCIAL,
+    filters: v.software !== TRUTHSOCIAL,
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
@@ -77,8 +78,14 @@ export const getFeatures = createSelector([instance => instance], instance => {
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
     federating: federation.get('enabled', true), // Assume true unless explicitly false
     richText: v.software === PLEROMA,
-    securityAPI: v.software === PLEROMA,
-    settingsStore: v.software === PLEROMA,
+    securityAPI: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
+    settingsStore: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
     accountAliasesAPI: v.software === PLEROMA,
     resetPasswordAPI: v.software === PLEROMA,
     exposableReactions: features.includes('exposable_reactions'),
@@ -98,7 +105,10 @@ export const getFeatures = createSelector([instance => instance], instance => {
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    explicitAddressing: any([
+      v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: any([
       v.software === PLEROMA && gte(v.version, '2.4.50'),
