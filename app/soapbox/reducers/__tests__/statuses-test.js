@@ -143,15 +143,13 @@ Promoting free speech, even for people and ideas you dislike`;
 
       const expected = `DMs are definitely only federated to the servers of the recipients tho. So if I DM a kfcc user, the kfcc admins can see it, but no other instance admins can.
 
+@crunklord420@kiwifarms.cc
 
+@becassine@kiwifarms.cc
 
-crunklord420
+@King_Porgi@poa.st
 
-becassine
-
-King_Porgi
-
-ademan`;
+@ademan@thebag.social`;
 
       const result = reducer(undefined, action).getIn(['AHcweewcCh0iPUtMdk', 'search_index']);
       expect(result).toEqual(expected);
