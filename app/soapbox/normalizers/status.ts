@@ -27,6 +27,7 @@ export const StatusRecord = ImmutableRecord({
   emojis: ImmutableList(),
   favourited: false,
   favourites_count: 0,
+  filtered: false,
   in_reply_to_account_id: null,
   in_reply_to_id: null,
   id: '',
