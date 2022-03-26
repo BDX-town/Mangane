@@ -136,6 +136,26 @@ Promoting free speech, even for people and ideas you dislike`;
       const result = reducer(undefined, action).getIn(['103874034847713213', 'search_index']);
       expect(result).toEqual(expected);
     });
+
+    it('builds search_index with mentions', () => {
+      const status = require('soapbox/__fixtures__/pleroma-status-reply-with-mentions.json');
+      const action = { type: STATUS_IMPORT, status };
+
+      const expected = `DMs are definitely only federated to the servers of the recipients tho. So if I DM a kfcc user, the kfcc admins can see it, but no other instance admins can.
+
+
+
+crunklord420
+
+becassine
+
+King_Porgi
+
+ademan`;
+
+      const result = reducer(undefined, action).getIn(['AHcweewcCh0iPUtMdk', 'search_index']);
+      expect(result).toEqual(expected);
+    });
   });
 
   describe('STATUS_CREATE_REQUEST', () => {
