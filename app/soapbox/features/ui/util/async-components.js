@@ -238,10 +238,6 @@ export function Search() {
   return import(/*webpackChunkName: "features/search" */'../../search');
 }
 
-export function Explore() {
-  return import(/* webpackChunkName: "features/explore" */'../../explore');
-}
-
 export function LoginPage() {
   return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/login_page');
 }
