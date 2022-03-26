@@ -72,6 +72,7 @@
     "@types/lodash": "^4.14.180",
     "@types/qrcode.react": "^1.0.2",
     "@types/react-helmet": "^6.1.5",
+    "@types/react-motion": "^0.0.32",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-toggle": "^4.0.3",
     "@types/semver": "^7.3.9",
