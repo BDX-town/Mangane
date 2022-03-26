@@ -51,6 +51,7 @@ export const StatusRecord = ImmutableRecord({
 
   // Internal fields
   contentHtml: '',
+  filtered: false,
   hidden: false,
   search_index: '',
   spoilerHtml: '',

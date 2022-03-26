@@ -54,14 +54,20 @@ const getPollOptionTitles = (status: StatusRecord): Array<string> => {
   return status.poll?.options.map(({ title }: { title: string }) => title);
 };
 
+// Gets usernames of mentioned users from status
+const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> => {
+  return status.mentions?.map(({ username }: { username: string }) => username);
+};
+
 // Creates search text from the status
 const buildSearchContent = (status: StatusRecord): string => {
   const pollOptionTitles = getPollOptionTitles(status);
+  const mentionedUsernames = getMentionedUsernames(status);
 
   const fields = ImmutableList([
     status.spoiler_text,
     status.content,
-  ]).concat(pollOptionTitles);
+  ]).concat(pollOptionTitles).concat(mentionedUsernames);
 
   return unescapeHTML(fields.join('\n\n'));
 };
