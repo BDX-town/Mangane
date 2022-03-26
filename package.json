@@ -74,6 +74,7 @@
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-toggle": "^4.0.3",
+    "@types/semver": "^7.3.9",
     "@types/uuid": "^8.3.4",
     "array-includes": "^3.0.3",
     "autoprefixer": "^10.4.2",

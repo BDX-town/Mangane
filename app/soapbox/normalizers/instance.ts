@@ -35,6 +35,7 @@ export const InstanceRecord = ImmutableRecord({
   description: '',
   description_limit: 1500,
   email: '',
+  feature_quote: false,
   fedibird_capabilities: ImmutableList(),
   invites_enabled: false,
   languages: ImmutableList(),
