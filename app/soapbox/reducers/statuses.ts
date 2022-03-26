@@ -55,8 +55,8 @@ const getPollOptionTitles = (status: StatusRecord): Array<string> => {
 };
 
 // Gets usernames of mentioned users from status
-const getMentionedUsernames = (status: StatusRecord): Array<string> => {
-  return (status as any).mentions?.map(({ username }: { username: string }) => username);
+const getMentionedUsernames = (status: StatusRecord): ImmutableList<string> => {
+  return status.mentions?.map(({ username }: { username: string }) => username);
 };
 
 // Creates search text from the status
