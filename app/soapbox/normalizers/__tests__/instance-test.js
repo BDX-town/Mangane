@@ -23,6 +23,7 @@ describe('normalizeInstance()', () => {
       description: '',
       description_limit: 1500,
       email: '',
+      feature_quote: false,
       fedibird_capabilities: [],
       invites_enabled: false,
       languages: [],

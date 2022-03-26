@@ -6,27 +6,30 @@ import lt from 'semver/functions/lt';
 
 import { custom } from 'soapbox/custom';
 
+import type { Instance } from 'soapbox/types/entities';
+
 // Import custom overrides, if exists
 const overrides = custom('features');
 
 // Truthy array convenience function
-const any = arr => arr.some(Boolean);
+const any = (arr: Array<any>): boolean => arr.some(Boolean);
 
 // For uglification
-export const MASTODON = 'Mastodon';
-export const PLEROMA  = 'Pleroma';
-export const MITRA    = 'Mitra';
+export const MASTODON    = 'Mastodon';
+export const PLEROMA     = 'Pleroma';
+export const MITRA       = 'Mitra';
+export const TRUTHSOCIAL = 'TruthSocial';
 
-export const getFeatures = createSelector([instance => instance], instance => {
+const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.get('version'));
-  const features = instance.getIn(['pleroma', 'metadata', 'features'], ImmutableList());
-  const federation = instance.getIn(['pleroma', 'metadata', 'federation'], ImmutableMap());
+  const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
+  const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
 
-  return Object.assign({
+  return {
     media: true,
-    privacyScopes: true,
-    spoilers: true,
-    filters: true,
+    privacyScopes: v.software !== TRUTHSOCIAL,
+    spoilers: v.software !== TRUTHSOCIAL,
+    filters: v.software !== TRUTHSOCIAL,
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
@@ -77,8 +80,14 @@ export const getFeatures = createSelector([instance => instance], instance => {
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
     federating: federation.get('enabled', true), // Assume true unless explicitly false
     richText: v.software === PLEROMA,
-    securityAPI: v.software === PLEROMA,
-    settingsStore: v.software === PLEROMA,
+    securityAPI: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
+    settingsStore: any([
+      v.software === PLEROMA,
+      v.software === TRUTHSOCIAL,
+    ]),
     accountAliasesAPI: v.software === PLEROMA,
     resetPasswordAPI: v.software === PLEROMA,
     exposableReactions: features.includes('exposable_reactions'),
@@ -98,11 +107,14 @@ export const getFeatures = createSelector([instance => instance], instance => {
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
     remoteInteractionsAPI: v.software === PLEROMA && gte(v.version, '2.4.50'),
-    explicitAddressing: v.software === PLEROMA && gte(v.version, '1.0.0'),
+    explicitAddressing: any([
+      v.software === PLEROMA && gte(v.version, '1.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
     accountEndorsements: v.software === PLEROMA && gte(v.version, '2.4.50'),
     quotePosts: any([
       v.software === PLEROMA && gte(v.version, '2.4.50'),
-      instance.get('feature_quote') === true,
+      instance.feature_quote === true,
     ]),
     birthdays: v.software === PLEROMA && gte(v.version, '2.4.50'),
     ethereumLogin: v.software === MITRA,
@@ -111,11 +123,26 @@ export const getFeatures = createSelector([instance => instance], instance => {
       v.software === MASTODON && gte(v.compatVersion, '3.2.0'),
       v.software === PLEROMA && gte(v.version, '2.4.50'),
     ]),
-  }, overrides);
+  };
+};
+
+type Features = ReturnType<typeof getInstanceFeatures>;
+
+export const getFeatures = createSelector([
+  (instance: Instance) => instance,
+], (instance): Features => {
+  const features = getInstanceFeatures(instance);
+  return Object.assign(features, overrides) as Features;
 });
 
-export const parseVersion = version => {
-  const regex = /^([\w\.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
+interface Backend {
+  software: string | null,
+  version: string,
+  compatVersion: string,
+}
+
+export const parseVersion = (version: string): Backend => {
+  const regex = /^([\w.]*)(?: \(compatible; ([\w]*) (.*)\))?$/;
   const match = regex.exec(version);
 
   if (match) {
