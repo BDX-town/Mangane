@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage, IntlShape } from 'react-intl';
+import { defineMessages, injectIntl, useIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { spring } from 'react-motion';
 
 import { openModal } from 'soapbox/actions/modals';
@@ -12,13 +12,113 @@ import Motion from 'soapbox/features/ui/util/optional_motion';
 
 import RelativeTimestamp from './relative_timestamp';
 
-import type { Poll as PollEntity, PollOption } from 'soapbox/types/entities';
+import type { Poll as PollEntity, PollOption as PollOptionEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   closed: { id: 'poll.closed', defaultMessage: 'Closed' },
   voted: { id: 'poll.voted', defaultMessage: 'You voted for this answer' },
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
+
+interface IPollPercentageBar {
+  percent: number,
+  leading: boolean,
+}
+
+const PollPercentageBar: React.FC<IPollPercentageBar> = ({ percent, leading }): JSX.Element => {
+  return (
+    <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { stiffness: 180, damping: 12 }) }}>
+      {({ width }) =>(
+        <span
+          className={classNames('poll__chart bg-gray-300 dark:bg-slate-900', {
+            'bg-primary-300 dark:bg-primary-400': leading,
+          })}
+          style={{ width: `${width}%` }}
+        />
+      )}
+    </Motion>
+  );
+};
+
+interface IPollOption {
+  poll: PollEntity,
+  option: PollOptionEntity,
+  index: number,
+  showResults?: boolean,
+  disabled?: boolean,
+  active: boolean,
+  onToggle: (value: number) => void,
+}
+
+const PollOption: React.FC<IPollOption> = ({
+  poll,
+  option,
+  index,
+  showResults,
+  disabled,
+  active,
+  onToggle,
+}): JSX.Element | null => {
+  const intl = useIntl();
+
+  if (!poll) return null;
+
+  const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
+  const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
+  const voted   = poll.own_votes?.includes(index);
+
+  const handleOptionChange = (): void => {
+    onToggle(index);
+  };
+
+  const handleOptionKeyPress = (e: React.KeyboardEvent): void => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      onToggle(index);
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <li key={option.title}>
+      {showResults && (
+        <PollPercentageBar percent={percent} leading={leading} />
+      )}
+
+      <label className={classNames('poll__text', { selectable: !showResults })}>
+        <input
+          name='vote-options'
+          type={poll.multiple ? 'checkbox' : 'radio'}
+          value={index}
+          checked={active}
+          onChange={handleOptionChange}
+          disabled={disabled}
+        />
+
+        {!showResults && (
+          <span
+            className={classNames('poll__input', { checkbox: poll.multiple, active })}
+            tabIndex={0}
+            role={poll.multiple ? 'checkbox' : 'radio'}
+            onKeyPress={handleOptionKeyPress}
+            aria-checked={active}
+            aria-label={option.title}
+            data-index={index}
+          />
+        )}
+
+        {showResults && (
+          <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.votes_count })}>
+            {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
+            {Math.round(percent)}%
+          </span>
+        )}
+
+        <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
+      </label>
+    </li>
+  );
+};
 
 interface IPoll {
   poll?: PollEntity,
@@ -30,16 +130,16 @@ interface IPoll {
 }
 
 interface IPollState {
-  selected: Record<string, boolean>,
+  selected: Record<number, boolean>,
 }
 
 class Poll extends ImmutablePureComponent<IPoll, IPollState> {
 
   state = {
-    selected: {} as Record<string, boolean>,
+    selected: {} as Record<number, boolean>,
   };
 
-  _toggleOption = (value: string) => {
+  toggleOption = (value: number) => {
     const { me, poll } = this.props;
 
     if (me) {
@@ -52,29 +152,12 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
         }
         this.setState({ selected: tmp });
       } else {
-        const tmp: Record<string, boolean> = {};
+        const tmp: Record<number, boolean> = {};
         tmp[value] = true;
         this.setState({ selected: tmp });
       }
     } else {
       this.openUnauthorizedModal();
-    }
-  }
-
-  handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this._toggleOption(e.currentTarget.value);
-  };
-
-  handleOptionKeyPress = (e: React.KeyboardEvent): void => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      const dataIndex = e.currentTarget.getAttribute('data-index');
-
-      if (dataIndex) {
-        this._toggleOption(dataIndex);
-      }
-
-      e.stopPropagation();
-      e.preventDefault();
     }
   }
 
@@ -99,60 +182,6 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
     dispatch(fetchPoll(poll.id));
   };
 
-  renderOption(option: PollOption, optionIndex: number, showResults: boolean): JSX.Element | null {
-    const { poll, disabled, intl } = this.props;
-    if (!poll) return null;
-
-    const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
-    const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
-    const active  = !!this.state.selected[`${optionIndex}`];
-    const voted   = poll.own_votes?.includes(optionIndex);
-    const titleEmojified = option.title_emojified;
-
-    return (
-      <li key={option.get('title')}>
-        {showResults && (
-          <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { stiffness: 180, damping: 12 }) }}>
-            {({ width }) =>
-              <span className={classNames('poll__chart bg-gray-300 dark:bg-slate-900', { 'bg-primary-300 dark:bg-primary-400': leading })} style={{ width: `${width}%` }} />
-            }
-          </Motion>
-        )}
-
-        <label className={classNames('poll__text', { selectable: !showResults })}>
-          <input
-            name='vote-options'
-            type={poll.multiple ? 'checkbox' : 'radio'}
-            value={optionIndex}
-            checked={active}
-            onChange={this.handleOptionChange}
-            disabled={disabled}
-          />
-
-          {!showResults && (
-            <span
-              className={classNames('poll__input', { checkbox: poll.multiple, active })}
-              tabIndex={0}
-              role={poll.multiple ? 'checkbox' : 'radio'}
-              onKeyPress={this.handleOptionKeyPress}
-              aria-checked={active}
-              aria-label={option.title}
-              data-index={optionIndex}
-            />
-          )}
-          {showResults && (
-            <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.votes_count })}>
-              {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
-              {Math.round(percent)}%
-            </span>
-          )}
-
-          <span dangerouslySetInnerHTML={{ __html: titleEmojified }} />
-        </label>
-      </li>
-    );
-  }
-
   render() {
     const { poll, intl } = this.props;
 
@@ -167,7 +196,18 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
     return (
       <div className={classNames('poll', { voted: poll.voted })}>
         <ul>
-          {poll.options.map((option, i) => this.renderOption(option, i, showResults))}
+          {poll.options.map((option, i) => (
+            <PollOption
+              key={i}
+              poll={poll}
+              option={option}
+              index={i}
+              showResults={showResults}
+              disabled={disabled}
+              active={!!this.state.selected[i]}
+              onToggle={this.toggleOption}
+            />
+          ))}
         </ul>
 
         <div className='poll__footer'>
