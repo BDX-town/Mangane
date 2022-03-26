@@ -9,6 +9,7 @@ import spring from 'react-motion/lib/spring';
 import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
+import { Text } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional_motion';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
@@ -106,7 +107,7 @@ class Poll extends ImmutablePureComponent {
         {showResults && (
           <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { stiffness: 180, damping: 12 }) }}>
             {({ width }) =>
-              <span className={classNames('poll__chart', { leading })} style={{ width: `${width}%` }} />
+              <span className={classNames('poll__chart bg-gray-300 dark:bg-slate-900', { 'bg-primary-300 dark:bg-primary-400': leading })} style={{ width: `${width}%` }} />
             }
           </Motion>
         )}
@@ -163,9 +164,15 @@ class Poll extends ImmutablePureComponent {
 
         <div className='poll__footer'>
           {!showResults && <button className='button button-secondary' disabled={disabled} onClick={this.handleVote}><FormattedMessage id='poll.vote' defaultMessage='Vote' /></button>}
-          {showResults && !this.props.disabled && <span><button className='poll__link' onClick={this.handleRefresh}><FormattedMessage id='poll.refresh' defaultMessage='Refresh' /></button> · </span>}
-          <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.get('votes_count') }} />
-          {poll.get('expires_at') && <span> · {timeRemaining}</span>}
+          <Text>
+            {showResults && !this.props.disabled && (
+              <span><button className='poll__link' onClick={this.handleRefresh}>
+                <Text><FormattedMessage id='poll.refresh' defaultMessage='Refresh' /></Text>
+              </button> · </span>
+            )}
+            <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.get('votes_count') }} />
+            {poll.get('expires_at') && <span> · {timeRemaining}</span>}
+          </Text>
         </div>
       </div>
     );

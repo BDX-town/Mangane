@@ -27,6 +27,7 @@ type PollOption = ReturnType<typeof PollOptionRecord>;
 type Status = ReturnType<typeof StatusRecord>;
 
 // Utility types
+type APIEntity = Record<string, any>;
 type EmbeddedEntity<T extends object> = null | string | ReturnType<ImmutableRecord.Factory<T>>;
 
 export {
@@ -43,5 +44,6 @@ export {
   Status,
 
   // Utility types
+  APIEntity,
   EmbeddedEntity,
 };
