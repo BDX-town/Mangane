@@ -1,6 +1,5 @@
 import escapeTextContentForBrowser from 'escape-html';
 import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
-import { AnyAction } from 'redux';
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeStatus } from 'soapbox/normalizers';
@@ -31,6 +30,8 @@ import {
   STATUS_HIDE,
 } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
+
+import type { AnyAction } from 'redux';
 
 const domParser = new DOMParser();
 
