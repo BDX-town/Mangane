@@ -1,7 +1,6 @@
 import classNames from 'classnames';
-import React from 'react';
-import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, useIntl, FormattedMessage, IntlShape } from 'react-intl';
+import React, { useState } from 'react';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { spring } from 'react-motion';
 import { useDispatch } from 'react-redux';
 
@@ -10,6 +9,7 @@ import { vote, fetchPoll } from 'soapbox/actions/polls';
 import Icon from 'soapbox/components/icon';
 import { Text, Button, Stack, HStack } from 'soapbox/components/ui';
 import Motion from 'soapbox/features/ui/util/optional_motion';
+import { useAppSelector } from 'soapbox/hooks';
 
 import RelativeTimestamp from './relative_timestamp';
 
@@ -130,18 +130,6 @@ const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
   );
 };
 
-interface IPoll {
-  poll?: PollEntity,
-  intl: IntlShape,
-  dispatch?: Function,
-  me?: string | null | false | undefined,
-  status?: string,
-}
-
-interface IPollState {
-  selected: Selected,
-}
-
 const RefreshButton: React.FC<{poll: PollEntity}> = ({ poll }): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -197,77 +185,75 @@ const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX
 
 type Selected = Record<number, boolean>;
 
-class Poll extends ImmutablePureComponent<IPoll, IPollState> {
+interface IPoll {
+  id: string,
+  status?: string,
+}
 
-  state = {
-    selected: {} as Selected,
+const Poll: React.FC<IPoll> = ({ id, status }): JSX.Element | null => {
+  const dispatch = useDispatch();
+
+  const me = useAppSelector((state) => state.me);
+  const poll = useAppSelector((state) => state.polls.get(id));
+
+  const [selected, setSelected] = useState({} as Selected);
+
+  const openUnauthorizedModal = () => {
+    dispatch(openModal('UNAUTHORIZED', {
+      action: 'POLL_VOTE',
+      ap_id: status,
+    }));
   };
 
-  toggleOption = (value: number) => {
-    const { me, poll } = this.props;
-
+  const toggleOption = (value: number) => {
     if (me) {
       if (poll?.multiple) {
-        const tmp = { ...this.state.selected };
+        const tmp = { ...selected };
         if (tmp[value]) {
           delete tmp[value];
         } else {
           tmp[value] = true;
         }
-        this.setState({ selected: tmp });
+        setSelected(tmp);
       } else {
         const tmp: Selected = {};
         tmp[value] = true;
-        this.setState({ selected: tmp });
+        setSelected(tmp);
       }
     } else {
-      this.openUnauthorizedModal();
+      openUnauthorizedModal();
     }
-  }
+  };
 
-  openUnauthorizedModal = () => {
-    const { dispatch, status } = this.props;
-    if (!dispatch) return;
-    dispatch(openModal('UNAUTHORIZED', {
-      action: 'POLL_VOTE',
-      ap_id: status,
-    }));
-  }
+  if (!poll) return null;
 
-  render() {
-    const { poll } = this.props;
-    if (!poll) return null;
+  const showResults = poll.voted || poll.expired;
 
-    const { selected } = this.state;
-    const showResults = poll.voted || poll.expired;
-
-    return (
-      <div onClick={e => e.stopPropagation()}>
-        <Stack className={classNames('my-2', { voted: poll.voted })}>
-          <Stack>
-            {poll.options.map((option, i) => (
-              <PollOption
-                key={i}
-                poll={poll}
-                option={option}
-                index={i}
-                showResults={showResults}
-                active={!!this.state.selected[i]}
-                onToggle={this.toggleOption}
-              />
-            ))}
-          </Stack>
-
-          <PollFooter
-            poll={poll}
-            showResults={showResults}
-            selected={selected}
-          />
+  return (
+    <div onClick={e => e.stopPropagation()}>
+      <Stack className={classNames('my-2', { voted: poll.voted })}>
+        <Stack>
+          {poll.options.map((option, i) => (
+            <PollOption
+              key={i}
+              poll={poll}
+              option={option}
+              index={i}
+              showResults={showResults}
+              active={!!selected[i]}
+              onToggle={toggleOption}
+            />
+          ))}
         </Stack>
-      </div>
-    );
-  }
 
-}
+        <PollFooter
+          poll={poll}
+          showResults={showResults}
+          selected={selected}
+        />
+      </Stack>
+    </div>
+  );
+};
 
-export default injectIntl(Poll);
+export default Poll;
