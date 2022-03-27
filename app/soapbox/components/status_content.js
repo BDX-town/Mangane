@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
-import PollContainer from 'soapbox/containers/poll_container';
+import Poll from 'soapbox/components/poll';
 import { addGreentext } from 'soapbox/utils/greentext';
 import { onlyEmoji } from 'soapbox/utils/rich_content';
 
@@ -244,7 +244,7 @@ class StatusContent extends React.PureComponent {
 
           <div tabIndex={!hidden ? 0 : null} className={`status__content__text ${!hidden ? 'status__content__text--visible' : ''}`} style={directionStyle} dangerouslySetInnerHTML={content} lang={status.get('language')} />
 
-          {!hidden && !!status.get('poll') && <PollContainer pollId={status.get('poll')} status={status.get('url')} />}
+          {!hidden && !!status.get('poll') && <Poll id={status.get('poll')} status={status.get('url')} />}
         </div>
       );
     } else if (this.props.onClick) {
@@ -267,7 +267,7 @@ class StatusContent extends React.PureComponent {
       }
 
       if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} key='poll' status={status.get('url')} />);
+        output.push(<Poll id={status.get('poll')} key='poll' status={status.get('url')} />);
       }
 
       return output;
@@ -287,7 +287,7 @@ class StatusContent extends React.PureComponent {
       ];
 
       if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} key='poll' status={status.get('url')} />);
+        output.push(<Poll id={status.get('poll')} key='poll' status={status.get('url')} />);
       }
 
       return output;
