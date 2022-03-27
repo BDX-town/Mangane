@@ -21,7 +21,7 @@ const ComposeFormButton: React.FC<IComposeFormButton> = ({
   return (
     <div>
       <IconButton
-        className={classNames('text-gray-400 hover:text-gray-600', { 'text-gray-600': active })}
+        className={classNames('text-gray-400 hover:text-gray-600', { 'text-primary-600 hover:text-primary-500': active })}
         src={icon}
         title={title}
         disabled={disabled}

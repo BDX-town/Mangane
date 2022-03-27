@@ -329,7 +329,7 @@ class ComposeForm extends ImmutablePureComponent {
             onSuggestionSelected={this.onSpoilerSuggestionSelected}
             searchTokens={[':']}
             id='cw-spoiler-input'
-            className='mb-2'
+            className='mb-2 border-none shadow-none px-0 py-2 text-base'
             autoFocus
           />
         </div>
