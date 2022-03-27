@@ -3,6 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, useIntl, FormattedMessage, IntlShape } from 'react-intl';
 import { spring } from 'react-motion';
+import { useDispatch } from 'react-redux';
 
 import { openModal } from 'soapbox/actions/modals';
 import { vote, fetchPoll } from 'soapbox/actions/polls';
@@ -20,12 +21,7 @@ const messages = defineMessages({
   votes: { id: 'poll.votes', defaultMessage: '{votes, plural, one {# vote} other {# votes}}' },
 });
 
-interface IPollPercentageBar {
-  percent: number,
-  leading: boolean,
-}
-
-const PollPercentageBar: React.FC<IPollPercentageBar> = ({ percent, leading }): JSX.Element => {
+const PollPercentageBar: React.FC<{percent: number, leading: boolean}> = ({ percent, leading }): JSX.Element => {
   return (
     <Motion defaultStyle={{ width: 0 }} style={{ width: spring(percent, { stiffness: 180, damping: 12 }) }}>
       {({ width }) =>(
@@ -44,7 +40,7 @@ interface IPollOptionText extends IPollOption {
   percent: number,
 }
 
-const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active, disabled, percent, showResults, onToggle }) => {
+const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active, percent, showResults, onToggle }) => {
   const intl = useIntl();
   const voted = poll.own_votes?.includes(index);
 
@@ -68,7 +64,6 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
         value={index}
         checked={active}
         onChange={handleOptionChange}
-        disabled={disabled}
       />
 
       {!showResults && (
@@ -100,7 +95,6 @@ interface IPollOption {
   option: PollOptionEntity,
   index: number,
   showResults?: boolean,
-  disabled?: boolean,
   active: boolean,
   onToggle: (value: number) => void,
 }
@@ -127,19 +121,68 @@ interface IPoll {
   poll?: PollEntity,
   intl: IntlShape,
   dispatch?: Function,
-  disabled?: boolean,
   me?: string | null | false | undefined,
   status?: string,
 }
 
 interface IPollState {
-  selected: Record<number, boolean>,
+  selected: Selected,
 }
+
+const RefreshButton: React.FC<{poll: PollEntity}> = ({ poll }): JSX.Element => {
+  const dispatch = useDispatch();
+  const handleRefresh = () => dispatch(fetchPoll(poll.id));
+
+  return (
+    <span>
+      <button className='poll__link' onClick={handleRefresh}>
+        <Text><FormattedMessage id='poll.refresh' defaultMessage='Refresh' /></Text>
+      </button>
+    </span>
+  );
+};
+
+const VoteButton: React.FC<{poll: PollEntity, selected: Selected}> = ({ poll, selected }): JSX.Element => {
+  const dispatch = useDispatch();
+  const handleVote = dispatch(vote(poll.id, Object.keys(selected)));
+
+  return (
+    <button className='button button-secondary' onClick={handleVote}>
+      <FormattedMessage id='poll.vote' defaultMessage='Vote' />
+    </button>
+  );
+};
+
+interface IPollFooter {
+  poll: PollEntity,
+  showResults: boolean,
+  selected: Selected,
+}
+
+const PollFooter: React.FC<IPollFooter> = ({ poll, showResults, selected }): JSX.Element => {
+  const intl = useIntl();
+  const timeRemaining = poll.expired ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.expires_at} futureDate />;
+
+  return (
+    <div className='poll__footer'>
+      {!showResults && <VoteButton poll={poll} selected={selected} />}
+      <Text>
+        {showResults && (
+          <><RefreshButton poll={poll} /> · </>
+        )}
+        <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.votes_count }} />
+        {poll.expires_at && <span> · {timeRemaining}</span>}
+      </Text>
+    </div>
+  );
+};
+
+type Selected = Record<number, boolean>;
 
 class Poll extends ImmutablePureComponent<IPoll, IPollState> {
 
   state = {
-    selected: {} as Record<number, boolean>,
+    selected: {} as Selected,
   };
 
   toggleOption = (value: number) => {
@@ -155,7 +198,7 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
         }
         this.setState({ selected: tmp });
       } else {
-        const tmp: Record<number, boolean> = {};
+        const tmp: Selected = {};
         tmp[value] = true;
         this.setState({ selected: tmp });
       }
@@ -165,8 +208,8 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
   }
 
   handleVote = () => {
-    const { disabled, dispatch, poll } = this.props;
-    if (disabled || !dispatch || !poll) return;
+    const { dispatch, poll } = this.props;
+    if (!dispatch || !poll) return;
     dispatch(vote(poll.id, Object.keys(this.state.selected)));
   };
 
@@ -179,22 +222,12 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
     }));
   }
 
-  handleRefresh = () => {
-    const { disabled, dispatch, poll } = this.props;
-    if (disabled || !poll || !dispatch) return;
-    dispatch(fetchPoll(poll.id));
-  };
-
   render() {
-    const { poll, intl } = this.props;
+    const { poll } = this.props;
+    if (!poll) return null;
 
-    if (!poll) {
-      return null;
-    }
-
-    const timeRemaining = poll.expired ? intl.formatMessage(messages.closed) : <RelativeTimestamp timestamp={poll.expires_at} futureDate />;
-    const showResults   = poll.voted || poll.expired;
-    const disabled      = this.props.disabled || Object.entries(this.state.selected).every(item => !item);
+    const { selected } = this.state;
+    const showResults = poll.voted || poll.expired;
 
     return (
       <div className={classNames('poll', { voted: poll.voted })}>
@@ -206,25 +239,17 @@ class Poll extends ImmutablePureComponent<IPoll, IPollState> {
               option={option}
               index={i}
               showResults={showResults}
-              disabled={disabled}
               active={!!this.state.selected[i]}
               onToggle={this.toggleOption}
             />
           ))}
         </ul>
 
-        <div className='poll__footer'>
-          {!showResults && <button className='button button-secondary' disabled={disabled} onClick={this.handleVote}><FormattedMessage id='poll.vote' defaultMessage='Vote' /></button>}
-          <Text>
-            {showResults && !this.props.disabled && (
-              <span><button className='poll__link' onClick={this.handleRefresh}>
-                <Text><FormattedMessage id='poll.refresh' defaultMessage='Refresh' /></Text>
-              </button> · </span>
-            )}
-            <FormattedMessage id='poll.total_votes' defaultMessage='{count, plural, one {# vote} other {# votes}}' values={{ count: poll.votes_count }} />
-            {poll.expires_at && <span> · {timeRemaining}</span>}
-          </Text>
-        </div>
+        <PollFooter
+          poll={poll}
+          showResults={showResults}
+          selected={selected}
+        />
       </div>
     );
   }
