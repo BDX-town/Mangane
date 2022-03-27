@@ -40,32 +40,13 @@ const PollPercentageBar: React.FC<IPollPercentageBar> = ({ percent, leading }): 
   );
 };
 
-interface IPollOption {
-  poll: PollEntity,
-  option: PollOptionEntity,
-  index: number,
-  showResults?: boolean,
-  disabled?: boolean,
-  active: boolean,
-  onToggle: (value: number) => void,
+interface IPollOptionText extends IPollOption {
+  percent: number,
 }
 
-const PollOption: React.FC<IPollOption> = ({
-  poll,
-  option,
-  index,
-  showResults,
-  disabled,
-  active,
-  onToggle,
-}): JSX.Element | null => {
+const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active, disabled, percent, showResults, onToggle }) => {
   const intl = useIntl();
-
-  if (!poll) return null;
-
-  const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
-  const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
-  const voted   = poll.own_votes?.includes(index);
+  const voted = poll.own_votes?.includes(index);
 
   const handleOptionChange = (): void => {
     onToggle(index);
@@ -80,42 +61,64 @@ const PollOption: React.FC<IPollOption> = ({
   };
 
   return (
+    <label className={classNames('poll__text', { selectable: !showResults })}>
+      <input
+        name='vote-options'
+        type={poll.multiple ? 'checkbox' : 'radio'}
+        value={index}
+        checked={active}
+        onChange={handleOptionChange}
+        disabled={disabled}
+      />
+
+      {!showResults && (
+        <span
+          className={classNames('poll__input', { checkbox: poll.multiple, active })}
+          tabIndex={0}
+          role={poll.multiple ? 'checkbox' : 'radio'}
+          onKeyPress={handleOptionKeyPress}
+          aria-checked={active}
+          aria-label={option.title}
+          data-index={index}
+        />
+      )}
+
+      {showResults && (
+        <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.votes_count })}>
+          {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
+          {Math.round(percent)}%
+        </span>
+      )}
+
+      <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
+    </label>
+  );
+};
+
+interface IPollOption {
+  poll: PollEntity,
+  option: PollOptionEntity,
+  index: number,
+  showResults?: boolean,
+  disabled?: boolean,
+  active: boolean,
+  onToggle: (value: number) => void,
+}
+
+const PollOption: React.FC<IPollOption> = (props): JSX.Element | null => {
+  const { poll, option, showResults } = props;
+  if (!poll) return null;
+
+  const percent = poll.votes_count === 0 ? 0 : (option.votes_count / poll.votes_count) * 100;
+  const leading = poll.options.filterNot(other => other.title === option.title).every(other => option.votes_count >= other.votes_count);
+
+  return (
     <li key={option.title}>
       {showResults && (
         <PollPercentageBar percent={percent} leading={leading} />
       )}
 
-      <label className={classNames('poll__text', { selectable: !showResults })}>
-        <input
-          name='vote-options'
-          type={poll.multiple ? 'checkbox' : 'radio'}
-          value={index}
-          checked={active}
-          onChange={handleOptionChange}
-          disabled={disabled}
-        />
-
-        {!showResults && (
-          <span
-            className={classNames('poll__input', { checkbox: poll.multiple, active })}
-            tabIndex={0}
-            role={poll.multiple ? 'checkbox' : 'radio'}
-            onKeyPress={handleOptionKeyPress}
-            aria-checked={active}
-            aria-label={option.title}
-            data-index={index}
-          />
-        )}
-
-        {showResults && (
-          <span className='poll__number' title={intl.formatMessage(messages.votes, { votes: option.votes_count })}>
-            {!!voted && <Icon src={require('@tabler/icons/icons/check.svg')} className='poll__vote__mark' title={intl.formatMessage(messages.voted)} />}
-            {Math.round(percent)}%
-          </span>
-        )}
-
-        <span dangerouslySetInnerHTML={{ __html: option.title_emojified }} />
-      </label>
+      <PollOptionText percent={percent} {...props} />
     </li>
   );
 };
