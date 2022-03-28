@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
+import { formatBytes } from 'soapbox/utils/media';
 
 import api from '../api';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
@@ -299,6 +300,8 @@ export function uploadCompose(files) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
     const attachmentLimit = getState().getIn(['instance', 'configuration', 'statuses', 'max_media_attachments']);
+    const maxImageSize = getState().getIn(['instance', 'configuration', 'media_attachments', 'image_size_limit']);
+    const maxVideoSize = getState().getIn(['instance', 'configuration', 'media_attachments', 'video_size_limit']);
 
     const media  = getState().getIn(['compose', 'media_attachments']);
     const progress = new Array(files.length).fill(0);
@@ -313,6 +316,20 @@ export function uploadCompose(files) {
 
     Array.from(files).forEach((f, i) => {
       if (media.size + i > attachmentLimit - 1) return;
+
+      const isImage = f.type.match(/image.*/);
+      const isVideo = f.type.match(/video.*/);
+      if (isImage && maxImageSize && (f.size > maxImageSize)) {
+        const message = `Image exceeds the current file size limit (${formatBytes(maxImageSize)})`;
+        dispatch(snackbar.error(message));
+        dispatch(uploadComposeFail(true));
+        return;
+      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
+        const message = `Video exceeds the current file size limit (${formatBytes(maxVideoSize)})`;
+        dispatch(snackbar.error(message));
+        dispatch(uploadComposeFail(true));
+        return;
+      }
 
       // FIXME: Don't define function in loop
       /* eslint-disable no-loop-func */
