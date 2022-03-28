@@ -12,8 +12,8 @@ import { connect } from 'react-redux';
 import { updateConfig } from 'soapbox/actions/admin';
 import { uploadMedia } from 'soapbox/actions/media';
 import snackbar from 'soapbox/actions/snackbar';
-import { makeDefaultConfig } from 'soapbox/actions/soapbox';
 import Icon from 'soapbox/components/icon';
+import { Column } from 'soapbox/components/ui';
 import {
   SimpleForm,
   FieldsGroup,
@@ -26,10 +26,9 @@ import {
 } from 'soapbox/features/forms';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
 import { isMobile } from 'soapbox/is_mobile';
-import { getFeatures } from 'soapbox/utils/features';
+import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 
 import Accordion from '../ui/components/accordion';
-import Column from '../ui/components/column';
 
 import IconPickerDropdown from './components/icon_picker_dropdown';
 import SitePreview from './components/site_preview';
@@ -71,11 +70,8 @@ const templates = {
 };
 
 const mapStateToProps = state => {
-  const instance = state.get('instance');
-
   return {
-    soapbox: state.get('soapbox'),
-    features: getFeatures(instance),
+    initialData: state.soapbox,
   };
 };
 
@@ -84,37 +80,36 @@ export default @connect(mapStateToProps)
 class SoapboxConfig extends ImmutablePureComponent {
 
   static propTypes = {
-    soapbox: ImmutablePropTypes.map.isRequired,
-    features: PropTypes.object.isRequired,
+    initialData: ImmutablePropTypes.map.isRequired,
     dispatch: PropTypes.func.isRequired,
     intl: PropTypes.object.isRequired,
   };
 
   state = {
     isLoading: false,
-    soapbox: this.props.soapbox,
+    data: this.props.initialData,
     jsonEditorExpanded: false,
     rawJSON: JSON.stringify(this.props.soapbox, null, 2),
     jsonValid: true,
   }
 
   setConfig = (path, value) => {
-    const { soapbox } = this.state;
-    const config = soapbox.setIn(path, value);
-    this.setState({ soapbox: config, jsonValid: true });
+    const { data } = this.state;
+    const newData = data.setIn(path, value);
+    this.setState({ data: newData, jsonValid: true });
   };
 
-  putConfig = config => {
-    this.setState({ soapbox: config, jsonValid: true });
+  putConfig = data => {
+    this.setState({ data, jsonValid: true });
   };
 
   getParams = () => {
-    const { soapbox } = this.state;
+    const { data } = this.state;
     return [{
       group: ':pleroma',
       key: ':frontend_configurations',
       value: [{
-        tuple: [':soapbox_fe', soapbox.toJS()],
+        tuple: [':soapbox_fe', data.toJS()],
       }],
     }];
   }
@@ -158,8 +153,8 @@ class SoapboxConfig extends ImmutablePureComponent {
 
   handleDeleteItem = path => {
     return e => {
-      const soapbox = this.state.soapbox.deleteIn(path);
-      this.setState({ soapbox });
+      const data = this.state.data.deleteIn(path);
+      this.setState({ data });
     };
   };
 
@@ -195,20 +190,18 @@ class SoapboxConfig extends ImmutablePureComponent {
   }
 
   getSoapboxConfig = () => {
-    const { features } = this.props;
-    const { soapbox } = this.state;
-    return makeDefaultConfig(features).mergeDeep(soapbox);
+    return normalizeSoapboxConfig(this.state.data);
   }
 
   toggleJSONEditor = (value) => this.setState({ jsonEditorExpanded: value });
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.soapbox !== this.props.soapbox) {
-      this.putConfig(this.props.soapbox);
+    if (prevProps.initialData !== this.props.initialData) {
+      this.putConfig(this.props.initialData);
     }
 
-    if (prevState.soapbox !== this.state.soapbox) {
-      this.setState({ rawJSON: JSON.stringify(this.state.soapbox, null, 2) });
+    if (prevState.data !== this.state.data) {
+      this.setState({ rawJSON: JSON.stringify(this.state.data, null, 2) });
     }
 
     if (prevState.rawJSON !== this.state.rawJSON) {
@@ -226,7 +219,7 @@ class SoapboxConfig extends ImmutablePureComponent {
     const soapbox = this.getSoapboxConfig();
 
     return (
-      <Column icon='cog' heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <SimpleForm onSubmit={this.handleSubmit}>
           <fieldset disabled={this.state.isLoading}>
             <SitePreview soapbox={soapbox} />

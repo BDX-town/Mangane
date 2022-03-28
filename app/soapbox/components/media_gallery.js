@@ -157,8 +157,6 @@ class Item extends React.PureComponent {
         </div>
       );
     } else if (attachment.get('type') === 'image') {
-      const previewUrl = attachment.get('preview_url');
-
       const originalUrl = attachment.get('url');
       const letterboxed = shouldLetterbox(attachment);
 
@@ -169,7 +167,7 @@ class Item extends React.PureComponent {
           onClick={this.handleClick}
           target='_blank'
         >
-          <StillImage src={previewUrl} alt={attachment.get('description')} />
+          <StillImage src={originalUrl} alt={attachment.get('description')} />
         </a>
       );
     } else if (attachment.get('type') === 'gifv') {
