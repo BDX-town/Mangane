@@ -6,7 +6,7 @@ import FaviconService from 'soapbox/utils/favicon_service';
 
 FaviconService.initFaviconService();
 
-const getNotifTotals = (state: any) => {
+const getNotifTotals = (state: any): number => {
   const notifications = state.getIn(['notifications', 'unread'], 0);
   const chats = state.getIn(['chats', 'items']).reduce((acc: any, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0);
   const reports = state.getIn(['admin', 'openReports']).count();
@@ -15,16 +15,14 @@ const getNotifTotals = (state: any) => {
 };
 
 const Helmet: React.FC = ({ children }) => {
-  const settings = useSettings();
-
-  const title = useAppSelector((state) => state.instance.get('title'));
+  const title = useAppSelector((state) => state.instance.title);
   const unreadCount = useAppSelector((state) => getNotifTotals(state));
-  const demetricator = useAppSelector((state) => settings.get('demetricator'));
+  const demetricator = useSettings().get('demetricator');
 
   const hasUnreadNotifications = React.useMemo(() => !(unreadCount < 1 || demetricator), [unreadCount, demetricator]);
 
   const addCounter = (string: string) => {
-    return hasUnreadNotifications ? `(${unreadCount}) ${title}` : title;
+    return hasUnreadNotifications ? `(${unreadCount}) ${string}` : string;
   };
 
   const updateFaviconBadge = () => {
