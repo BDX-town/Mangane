@@ -51,7 +51,7 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
   };
 
   return (
-    <div role='region' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
+    <div role='region' className='relative' ref={ref} aria-label={label} column-type={transparent ? 'transparent' : 'filled'}>
       <Helmet><title>{label}</title></Helmet>
 
       {renderChildren()}
