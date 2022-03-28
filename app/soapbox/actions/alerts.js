@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
 
+import { httpErrorMessages } from 'soapbox/utils/errors';
+
 const messages = defineMessages({
   unexpectedTitle: { id: 'alert.unexpected.title', defaultMessage: 'Oops!' },
   unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'An unexpected error occurred.' },
@@ -47,14 +49,14 @@ export function showAlertForError(error) {
         return dispatch(noOp);
       }
 
-      if (status === 413) {
-        return dispatch(showAlert('', 'File exceeds the file size limit', 'error'));
-      }
-
-      let message = statusText || status;
+      let message = statusText;
 
       if (data.error) {
         message = data.error;
+      }
+
+      if (!message) {
+        message = httpErrorMessages.find((httpError) => httpError.code === status)?.description;
       }
 
       return dispatch(showAlert('', message, 'error'));
