@@ -24,7 +24,7 @@ interface ISiteWallet {
 
 const SiteWallet: React.FC<ISiteWallet> = ({ limit }): JSX.Element => {
   const addresses: ImmutableList<Address> =
-    useSoapboxConfig().get('cryptoAddresses').map(normalizeAddress);
+    useSoapboxConfig().cryptoAddresses.map(normalizeAddress);
 
   const coinList = typeof limit === 'number' ? addresses.take(limit) : addresses;
 
