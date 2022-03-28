@@ -203,7 +203,7 @@ class ModalRoot extends React.PureComponent {
       <div
         ref={this.setRef}
         className={classNames({
-          'fixed top-0 left-0 z-1000 w-full h-full overflow-x-hidden overflow-y-auto': true,
+          'fixed top-0 left-0 z-[100] w-full h-full overflow-x-hidden overflow-y-auto': true,
           'pointer-events-none': !visible,
         })}
         style={{ opacity: revealed ? 1 : 0 }}

@@ -34,7 +34,7 @@ export function showAlert(title = messages.unexpectedTitle, message = messages.u
 }
 
 export function showAlertForError(error) {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     if (error.response) {
       const { data, status, statusText } = error.response;
 
@@ -47,14 +47,17 @@ export function showAlertForError(error) {
         return dispatch(noOp);
       }
 
-      let message = statusText;
-      const title = `${status}`;
+      if (status === 413) {
+        return dispatch(showAlert('', 'File exceeds the file size limit', 'error'));
+      }
+
+      let message = statusText || status;
 
       if (data.error) {
         message = data.error;
       }
 
-      return dispatch(showAlert(title, message, 'error'));
+      return dispatch(showAlert('', message, 'error'));
     } else {
       console.error(error);
       return dispatch(showAlert(undefined, undefined, 'error'));

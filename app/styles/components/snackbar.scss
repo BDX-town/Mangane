@@ -1,5 +1,5 @@
 .notification-list {
-  @apply w-full flex flex-col items-center space-y-2 sm:items-end;
+  @apply w-full flex flex-col items-center space-y-2 sm:items-end z-[1001] relative;
 }
 
 .notification-bar {
