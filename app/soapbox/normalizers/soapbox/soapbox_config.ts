@@ -6,13 +6,16 @@ import {
 } from 'immutable';
 import { trimStart } from 'lodash';
 
+import { toTailwind } from 'soapbox/utils/tailwind';
+import { generateAccent } from 'soapbox/utils/theme';
+
 import type {
   PromoPanelItem,
   FooterItem,
   CryptoAddress,
 } from 'soapbox/types/soapbox';
 
-const DEFAULT_COLORS = ImmutableMap({
+const DEFAULT_COLORS = ImmutableMap<string, any>({
   gray: ImmutableMap({
     50: '#f9fafb',
     100: '#f3f4f6',
@@ -124,15 +127,44 @@ const normalizeCryptoAddresses = (soapboxConfig: SoapboxConfigMap): SoapboxConfi
   return soapboxConfig.set('cryptoAddresses', addresses.map(normalizeCryptoAddress));
 };
 
+const normalizeBrandColor = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const brandColor = soapboxConfig.get('brandColor') || soapboxConfig.getIn(['colors', 'primary', '500']) || '';
+  return soapboxConfig.set('brandColor', brandColor);
+};
+
+const normalizeAccentColor = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const brandColor = soapboxConfig.get('brandColor');
+
+  const accentColor = soapboxConfig.get('accentColor')
+    || soapboxConfig.getIn(['colors', 'accent', '500'])
+    || (brandColor ? generateAccent(brandColor) : '');
+
+  return soapboxConfig.set('accentColor', accentColor);
+};
+
 const normalizeColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   const colors = DEFAULT_COLORS.mergeDeep(soapboxConfig.get('colors'));
-  return soapboxConfig.set('colors', colors);
+  return toTailwind(soapboxConfig.set('colors', colors));
+};
+
+const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const colors = soapboxConfig.get('colors');
+
+  const missing = {
+    'bg-shape-1': colors.getIn(['accent', '50']),
+    'bg-shape-2': colors.getIn(['primary', '500']),
+  };
+
+  return soapboxConfig.set('colors', colors.mergeDeep(missing));
 };
 
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
+      normalizeBrandColor(soapboxConfig);
+      normalizeAccentColor(soapboxConfig);
       normalizeColors(soapboxConfig);
+      maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
     }),
   );

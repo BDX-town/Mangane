@@ -1,8 +1,7 @@
 import { hexToRgb } from './colors';
-import { toTailwind } from './tailwind';
 
-import type { Map as ImmutableMap } from 'immutable';
 import type { Rgb, Hsl, TailwindColorPalette, TailwindColorObject } from 'soapbox/types/colors';
+import type { SoapboxConfig } from 'soapbox/types/soapbox';
 
 // Taken from chromatism.js
 // https://github.com/graypegg/chromatism/blob/master/src/conversions/rgb.js
@@ -69,16 +68,19 @@ export const generateAccent = (brandColor: string): string | null => {
   return hslToHex({ h: h - 15, s: 86, l: 44 });
 };
 
-const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>) => {
+const parseShades = (obj: Record<string, any>, color: string, shades: Record<string, any>): void => {
+  if (!shades) return;
+
   if (typeof shades === 'string') {
     const rgb = hexToRgb(shades);
-    if (!rgb) return obj;
+    if (!rgb) return;
 
     const { r, g, b } = rgb;
-    return obj[`--color-${color}`] = `${r} ${g} ${b}`;
+    obj[`--color-${color}`] = `${r} ${g} ${b}`;
+    return;
   }
 
-  return Object.keys(shades).forEach(shade => {
+  Object.keys(shades).forEach(shade => {
     const rgb = hexToRgb(shades[shade]);
     if (!rgb) return;
 
@@ -102,6 +104,6 @@ export const colorsToCss = (colors: TailwindColorPalette): string => {
   }, '');
 };
 
-export const generateThemeCss = (soapboxConfig: ImmutableMap<string, any>): string => {
-  return colorsToCss(toTailwind(soapboxConfig).get('colors').toJS() as TailwindColorPalette);
+export const generateThemeCss = (soapboxConfig: SoapboxConfig): string => {
+  return colorsToCss(soapboxConfig.colors.toJS() as TailwindColorPalette);
 };
