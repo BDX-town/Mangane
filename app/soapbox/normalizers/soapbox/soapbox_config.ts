@@ -4,6 +4,13 @@ import {
   Record as ImmutableRecord,
   fromJS,
 } from 'immutable';
+import { trimStart } from 'lodash';
+
+import type {
+  PromoPanelItem,
+  FooterItem,
+  CryptoAddress,
+} from 'soapbox/types/soapbox';
 
 const DEFAULT_COLORS = ImmutableMap({
   gray: ImmutableMap({
@@ -47,6 +54,23 @@ const DEFAULT_COLORS = ImmutableMap({
   'sea-blue': '#2feecc',
 });
 
+export const PromoPanelItemRecord = ImmutableRecord({
+  icon: '',
+  text: '',
+  url: '',
+});
+
+export const FooterItemRecord = ImmutableRecord({
+  title: '',
+  url: '',
+});
+
+export const CryptoAddressRecord = ImmutableRecord({
+  address: '',
+  note: '',
+  ticker: '',
+});
+
 export const SoapboxConfigRecord = ImmutableRecord({
   logo: '',
   banner: '',
@@ -59,10 +83,10 @@ export const SoapboxConfigRecord = ImmutableRecord({
   extensions: ImmutableMap(),
   greentext: false,
   promoPanel: ImmutableMap({
-    items: ImmutableList(),
+    items: ImmutableList<PromoPanelItem>(),
   }),
   navlinks: ImmutableMap({
-    homeFooter: ImmutableList(),
+    homeFooter: ImmutableList<FooterItem>(),
   }),
   allowedEmoji: ImmutableList<string>([
     '👍',
@@ -75,7 +99,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   verifiedIcon: '',
   verifiedCanEditName: false,
   displayFqn: true,
-  cryptoAddresses: ImmutableList<ImmutableMap<string, any>>(),
+  cryptoAddresses: ImmutableList<CryptoAddress>(),
   cryptoDonatePanel: ImmutableMap({
     limit: 1,
   }),
@@ -89,6 +113,17 @@ export const SoapboxConfigRecord = ImmutableRecord({
 
 type SoapboxConfigMap = ImmutableMap<string, any>;
 
+const normalizeCryptoAddress = (address: unknown): CryptoAddress => {
+  return CryptoAddressRecord(ImmutableMap(fromJS(address))).update('ticker', ticker => {
+    return trimStart(ticker, '$').toLowerCase();
+  });
+};
+
+const normalizeCryptoAddresses = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const addresses = ImmutableList(soapboxConfig.get('cryptoAddresses'));
+  return soapboxConfig.set('cryptoAddresses', addresses.map(normalizeCryptoAddress));
+};
+
 const normalizeColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   const colors = DEFAULT_COLORS.mergeDeep(soapboxConfig.get('colors'));
   return soapboxConfig.set('colors', colors);
@@ -98,6 +133,7 @@ export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
       normalizeColors(soapboxConfig);
+      normalizeCryptoAddresses(soapboxConfig);
     }),
   );
 };
