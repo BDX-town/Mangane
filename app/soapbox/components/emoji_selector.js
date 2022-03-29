@@ -102,7 +102,7 @@ class EmojiSelector extends ImmutablePureComponent {
         className='emoji-react-selector-container'
       >
         <div
-          className={classNames('emoji-react-selector', { 'emoji-react-selector--visible': visible, 'emoji-react-selector--focused': focused })}
+          className={classNames('emoji-react-selector w-max', { 'emoji-react-selector--visible': visible, 'emoji-react-selector--focused': focused })}
           onBlur={this.handleBlur}
           ref={this.setRef}
         >

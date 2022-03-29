@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import EmojiSelector from 'soapbox/components/emoji_selector';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
@@ -541,7 +542,8 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   render() {
-    const { status, intl, allowedEmoji, features, me } = this.props;
+    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
+    const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
 
@@ -660,16 +662,16 @@ class StatusActionBar extends ImmutablePureComponent {
 
         <div
           ref={this.setRef}
-          className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-          // onMouseEnter={this.handleLikeButtonHover}
-          // onMouseLeave={this.handleLikeButtonLeave}
+          className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
+          onMouseEnter={this.handleLikeButtonHover}
+          onMouseLeave={this.handleLikeButtonLeave}
         >
-          {/* <EmojiSelector
+          <EmojiSelector
             onReact={this.handleReactClick}
             visible={features.emojiReacts && emojiSelectorVisible}
             focused={emojiSelectorFocused}
             onUnfocus={handleEmojiSelectorUnfocus}
-          /> */}
+          />
           <IconButton
             className={classNames({
               'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
