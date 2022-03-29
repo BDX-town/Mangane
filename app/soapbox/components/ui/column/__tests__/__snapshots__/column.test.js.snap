@@ -2,6 +2,7 @@
 
 exports[`<Column /> renders correctly with minimal props 1`] = `
 <div
+  className="relative"
   column-type="filled"
   role="region"
 >
