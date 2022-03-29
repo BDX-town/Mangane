@@ -30,9 +30,10 @@ interface IAccount {
   avatarSize?: number,
   hidden?: boolean,
   hideActions?: boolean,
+  id?: string,
   onActionClick?: (account: any) => void,
   showProfileHoverCard?: boolean,
-  timestamp?: string,
+  timestamp?: string | Date,
   timestampUrl?: string,
   withRelationship?: boolean,
 }
