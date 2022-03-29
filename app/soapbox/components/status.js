@@ -381,7 +381,7 @@ class Status extends ImmutablePureComponent {
               defaultMessage='{name} reposted'
               values={{
                 name: <bdi className='max-w-[100px] truncate pr-1'>
-                  <strong className='text-gray-800' dangerouslySetInnerHTML={displayNameHtml} />
+                  <strong className='text-gray-800 dark:text-gray-200' dangerouslySetInnerHTML={displayNameHtml} />
                 </bdi>,
               }}
             />

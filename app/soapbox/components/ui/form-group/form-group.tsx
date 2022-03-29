@@ -24,12 +24,12 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
     <div>
       <label
         htmlFor={formFieldId}
-        className='block text-sm font-medium text-gray-700'
+        className='block text-sm font-medium text-gray-700 dark:text-gray-400'
       >
         {labelText}
       </label>
 
-      <div className='mt-1'>
+      <div className='mt-1 dark:text-white'>
         {firstChild}
         {inputChildren.filter((_, i) => i !== 0)}
 

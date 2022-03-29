@@ -46,11 +46,11 @@ const Modal: React.FC<IModal> = ({
   }, [buttonRef]);
 
   return (
-    <div className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl pointer-events-auto'>
+    <div className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 shadow-xl rounded-2xl pointer-events-auto'>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           <div className='w-full flex flex-row justify-between items-center'>
-            <h3 className='text-lg leading-6 font-medium text-gray-900'>
+            <h3 className='text-lg leading-6 font-medium text-gray-900 dark:text-white'>
               {title}
             </h3>
 

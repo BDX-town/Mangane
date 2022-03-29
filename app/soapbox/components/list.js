@@ -43,10 +43,10 @@ const ListItem = ({ label, hint, children, onClick }) => {
       {...linkProps}
     >
       <div className='flex flex-col py-1.5 pr-4'>
-        <LabelComp htmlFor={domId}>{label}</LabelComp>
+        <LabelComp className='text-black dark:text-white' htmlFor={domId}>{label}</LabelComp>
 
         {hint ? (
-          <span className='text-sm text-gray-500'>{hint}</span>
+          <span className='text-sm text-gray-500 dark:text-gray-400'>{hint}</span>
         ) : null}
       </div>
 

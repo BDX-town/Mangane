@@ -43,7 +43,7 @@ export default class ReplyIndicator extends ImmutablePureComponent {
     }
 
     return (
-      <Stack space={2} className='p-4 rounded-lg bg-gray-100'>
+      <Stack space={2} className='p-4 rounded-lg bg-gray-100 dark:bg-slate-700'>
         <AccountContainer
           {...actions}
           id={status.getIn(['account', 'id'])}

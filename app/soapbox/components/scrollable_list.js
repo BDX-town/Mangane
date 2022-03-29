@@ -276,7 +276,7 @@ class ScrollableList extends PureComponent {
       <div className={classNames('mt-2', className)} ref={this.setRef}>
         {alwaysPrepend && prepend}
 
-        <div className='bg-primary-50 mt-2 rounded-lg text-center p-8'>
+        <div className='bg-primary-50 dark:bg-slate-700 mt-2 rounded-lg text-center p-8'>
           <Text>{emptyMessage}</Text>
         </div>
       </div>

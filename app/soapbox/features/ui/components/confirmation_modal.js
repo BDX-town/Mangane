@@ -63,7 +63,7 @@ class ConfirmationModal extends React.PureComponent {
         secondaryText={secondary}
         sectondaryAction={this.handleSecondary}
       >
-        <p className='text-gray-600'>{message}</p>
+        <p className='text-gray-600 dark:text-gray-300'>{message}</p>
 
         <div className='mt-2'>
           {checkbox && <div className='confirmation-modal__checkbox'>
