@@ -53,7 +53,7 @@ class FederationRestrictions extends ImmutablePureComponent {
     const emptyMessage = disclosed ? messages.emptyMessage : messages.notDisclosed;
 
     return (
-      <Column icon='gavel' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='gavel' label={intl.formatMessage(messages.heading)}>
         <div className='explanation-box'>
           <Accordion
             headline={intl.formatMessage(messages.boxTitle)}

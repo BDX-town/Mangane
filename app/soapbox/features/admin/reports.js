@@ -64,7 +64,7 @@ class Reports extends ImmutablePureComponent {
     const showLoading = isLoading && reports.count() === 0;
 
     return (
-      <Column icon='gavel' heading={intl.formatMessage(messages.heading)} menu={this.makeColumnMenu()}>
+      <Column icon='gavel' label={intl.formatMessage(messages.heading)} menu={this.makeColumnMenu()}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

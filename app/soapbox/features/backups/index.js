@@ -70,7 +70,7 @@ class Backups extends ImmutablePureComponent {
     );
 
     return (
-      <Column icon='cloud-download' heading={intl.formatMessage(messages.heading)} menu={this.makeColumnMenu()}>
+      <Column icon='cloud-download' label={intl.formatMessage(messages.heading)} menu={this.makeColumnMenu()}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

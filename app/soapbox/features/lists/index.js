@@ -63,7 +63,7 @@ class Lists extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.lists' defaultMessage="You don't have any lists yet. When you create one, it will show up here." />;
 
     return (
-      <Column icon='list-ul' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='list-ul' label={intl.formatMessage(messages.heading)}>
         <br />
         <ColumnSubheading text={intl.formatMessage(messages.add)} />
         <NewListForm />

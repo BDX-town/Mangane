@@ -52,7 +52,7 @@ class PinnedStatuses extends ImmutablePureComponent {
     }
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <StatusList
           statusIds={statusIds}
           scrollKey='pinned_statuses'
