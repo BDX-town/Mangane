@@ -216,7 +216,7 @@ class Notifications extends React.PureComponent {
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
         className={classNames({
-          'divide-y divide-gray-200 divide-solid': notificationsToRender.size > 0,
+          'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notificationsToRender.size > 0,
           'space-y-2': notificationsToRender.size === 0,
         })}
       >

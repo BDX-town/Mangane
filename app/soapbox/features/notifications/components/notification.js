@@ -27,7 +27,7 @@ function FormattedMessageFixed(props) {
 const buildLink = (account) => (
   <bdi>
     <Permalink
-      className='text-gray-800 font-bold hover:underline'
+      className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
       href={`/@${account.get('acct')}`}
       title={account.get('acct')}
       to={`/@${account.get('acct')}`}

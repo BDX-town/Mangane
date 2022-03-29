@@ -99,12 +99,16 @@ class ThumbNavigation extends React.PureComponent {
             <NavLink to='/chats' className='thumb-navigation__link'>
               <IconWithCounter
                 src={require('@tabler/icons/icons/messages.svg')}
-                className={classNames({ 'svg-icon--active': location.pathname === '/chats' })}
+                className={classNames({
+                  'h-5 w-5': true,
+                  'text-gray-600': location.pathname !== '/chats',
+                  'text-primary-600': location.pathname === '/chats',
+                })}
                 count={chatsCount}
               />
-              <span>
+              <Text tag='span' size='xs'>
                 <FormattedMessage id='navigation.chats' defaultMessage='Chats' />
-              </span>
+              </Text>
             </NavLink>
           ) : (
             <NavLink to='/messages' className='thumb-navigation__link'>

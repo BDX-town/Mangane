@@ -40,7 +40,7 @@ class AudioToggle extends React.PureComponent {
 
   render() {
     const { intl, checked, showLabel } = this.props;
-    const id ='chats-audio-toggle';
+    const id = 'chats-audio-toggle';
     const label = intl.formatMessage(checked ? messages.switchOff : messages.switchOn);
 
     return (
