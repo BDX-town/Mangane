@@ -84,7 +84,7 @@ class Dashboard extends ImmutablePureComponent {
     if (!account) return null;
 
     return (
-      <Column icon='tachometer-alt' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='tachometer-alt' label={intl.formatMessage(messages.heading)}>
         <div className='dashcounters'>
           {mau && <div className='dashcounter'>
             <div>

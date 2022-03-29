@@ -135,7 +135,7 @@ class Filters extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.filters' defaultMessage="You haven't created any muted words yet." />;
 
     return (
-      <Column className='filter-settings-panel' icon='filter' heading={intl.formatMessage(messages.heading)}>
+      <Column className='filter-settings-panel' icon='filter' label={intl.formatMessage(messages.heading)}>
         <ColumnSubheading text={intl.formatMessage(messages.subheading_add_new)} />
         <SimpleForm>
           <div className='filter-settings-panel'>

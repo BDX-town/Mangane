@@ -21,7 +21,7 @@ const alignItemsOptions = {
   center: 'items-center',
 };
 
-interface IStack {
+interface IStack extends React.HTMLAttributes<HTMLDivElement  > {
   space?: SIZES,
   alignItems?: 'center',
   justifyContent?: 'center',

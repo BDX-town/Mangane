@@ -102,7 +102,7 @@ class UserIndex extends ImmutablePureComponent {
     const showLoading = isLoading && accountIds.isEmpty();
 
     return (
-      <Column heading={intl.formatMessage(messages.heading)}>
+      <Column label={intl.formatMessage(messages.heading)}>
         <SimpleForm style={{ paddingBottom: 0 }}>
           <TextInput
             onChange={this.handleQueryChange}

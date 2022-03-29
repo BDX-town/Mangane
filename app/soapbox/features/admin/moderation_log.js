@@ -62,7 +62,7 @@ class ModerationLog extends ImmutablePureComponent {
     const showLoading = isLoading && items.count() === 0;
 
     return (
-      <Column icon='balance-scale' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='balance-scale' label={intl.formatMessage(messages.heading)}>
         <ScrollableList
           isLoading={isLoading}
           showLoading={showLoading}

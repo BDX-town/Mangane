@@ -50,7 +50,7 @@ class ScheduledStatuses extends ImmutablePureComponent {
     const emptyMessage = <FormattedMessage id='empty_column.scheduled_statuses' defaultMessage="You don't have any scheduled statuses yet. When you add one, it will show up here." />;
 
     return (
-      <Column icon='calendar' heading={intl.formatMessage(messages.heading)}>
+      <Column icon='calendar' label={intl.formatMessage(messages.heading)}>
         <ScrollableList
           scrollKey='scheduled_statuses'
           emptyMessage={emptyMessage}
