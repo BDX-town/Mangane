@@ -21,13 +21,13 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
     >
       <div>
         <label
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-400"
           htmlFor="field-1"
         >
           Email address
         </label>
         <div
-          className="mt-1"
+          className="mt-1 dark:text-white"
         >
           <div
             className="mt-1 relative rounded-md shadow-sm"
@@ -49,13 +49,13 @@ exports[`<LoginPage /> renders correctly on load 1`] = `
       </div>
       <div>
         <label
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-400"
           htmlFor="field-1"
         >
           Password
         </label>
         <div
-          className="mt-1"
+          className="mt-1 dark:text-white"
         >
           <div
             className="mt-1 relative rounded-md shadow-sm"
