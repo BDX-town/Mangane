@@ -439,7 +439,7 @@ class Status extends ImmutablePureComponent {
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
-        if (video.external_video_id) {
+        if (video.external_video_id && status.card?.html) {
           const { mediaWrapperWidth } = this.state;
           const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
           media = (
