@@ -31,32 +31,32 @@ const Developers = () => {
   return (
     <Column label={intl.formatMessage(messages.heading)}>
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2'>
-        <Link to='/developers/apps/create' className='bg-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <InlineSVG src={require('@tabler/icons/icons/apps.svg')} />
+        <Link to='/developers/apps/create' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
+          <InlineSVG src={require('@tabler/icons/icons/apps.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.app_create_label' defaultMessage='Create an app' />
           </Text>
         </Link>
 
-        <Link to='/developers/settings_store' className='bg-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <InlineSVG src={require('@tabler/icons/icons/code-plus.svg')} />
+        <Link to='/developers/settings_store' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
+          <InlineSVG src={require('@tabler/icons/icons/code-plus.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.settings_store_label' defaultMessage='Settings store' />
           </Text>
         </Link>
 
-        <Link to='/error' className='bg-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <InlineSVG src={require('@tabler/icons/icons/mood-sad.svg')} />
+        <Link to='/error' className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
+          <InlineSVG src={require('@tabler/icons/icons/mood-sad.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.intentional_error_label' defaultMessage='Trigger an error' />
           </Text>
         </Link>
 
-        <button onClick={leaveDevelopers} className='bg-gray-200 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
-          <InlineSVG src={require('@tabler/icons/icons/logout.svg')} />
+        <button onClick={leaveDevelopers} className='bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center justify-center space-y-2 hover:-translate-y-1 transition-transform'>
+          <InlineSVG src={require('@tabler/icons/icons/logout.svg')} className='dark:text-gray-100' />
 
           <Text>
             <FormattedMessage id='developers.navigation.leave_developers_label' defaultMessage='Leave developers' />

@@ -86,7 +86,7 @@
 }
 
 .thumb-navigation {
-  @apply fixed lg:hidden bottom-0 bg-white border-t border-solid border-gray-200 left-0 right-0 shadow-2xl w-full flex z-50;
+  @apply fixed lg:hidden bottom-0 bg-white dark:bg-slate-800 border-t border-solid border-gray-200 dark:border-gray-700 left-0 right-0 shadow-2xl w-full flex z-50;
   padding-bottom: env(safe-area-inset-bottom); /* iOS PWA */
   overflow-x: auto;
   scrollbar-width: thin;

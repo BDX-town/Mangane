@@ -20,7 +20,7 @@ const MenuList = (props: IMenuList) => (
   <MenuPopover position={props.position === 'left' ? positionDefault : positionRight}>
     <MenuItems
       onKeyDown={(event) => event.nativeEvent.stopImmediatePropagation()}
-      className='py-1 bg-white rounded-lg shadow-menu'
+      className='py-1 bg-white dark:bg-slate-900 rounded-lg shadow-menu'
       {...props}
     />
   </MenuPopover>

@@ -3,7 +3,6 @@ import React from 'react';
 import { defineMessages, injectIntl } from 'react-intl';
 
 import Column from './column';
-import ColumnHeader from './column_header';
 
 const messages = defineMessages({
   title: { id: 'column_forbidden.title', defaultMessage: 'Forbidden' },
@@ -20,8 +19,7 @@ class ColumnForbidden extends React.PureComponent {
     const { intl: { formatMessage } } = this.props;
 
     return (
-      <Column>
-        <ColumnHeader icon='exclamation-circle' type={formatMessage(messages.title)} />
+      <Column label={formatMessage(messages.title)}>
         <div className='error-column'>
           {formatMessage(messages.body)}
         </div>
