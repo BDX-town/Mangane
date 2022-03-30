@@ -150,12 +150,12 @@ const normalizeColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
 const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
   const colors = soapboxConfig.get('colors');
 
-  const missing = {
+  const missing = ImmutableMap({
     'bg-shape-1': colors.getIn(['accent', '50']),
     'bg-shape-2': colors.getIn(['primary', '500']),
-  };
+  });
 
-  return soapboxConfig.set('colors', colors.mergeDeep(missing));
+  return soapboxConfig.set('colors', missing.mergeDeep(colors));
 };
 
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
