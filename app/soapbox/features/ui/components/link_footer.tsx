@@ -37,31 +37,31 @@ const LinkFooter: React.FC = (): JSX.Element => {
 
   return (
     <div className='space-y-2'>
-      <ul className='flex flex-wrap items-center divide-x-dot'>
+      <div className='flex flex-wrap items-center divide-x-dot'>
         {account && <>
           {features.profileDirectory && (
-            <li><FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink></li>
+            <FooterLink to='/directory'><FormattedMessage id='navigation_bar.profile_directory' defaultMessage='Profile directory' /></FooterLink>
           )}
-          <li><FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink></li>
-          <li><FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink></li>
+          <FooterLink to='/blocks'><FormattedMessage id='navigation_bar.blocks' defaultMessage='Blocks' /></FooterLink>
+          <FooterLink to='/mutes'><FormattedMessage id='navigation_bar.mutes' defaultMessage='Mutes' /></FooterLink>
           {features.filters && (
-            <li><FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink></li>
+            <FooterLink to='/filters'><FormattedMessage id='navigation_bar.filters' defaultMessage='Filters' /></FooterLink>
           )}
           {features.federating && (
-            <li><FooterLink to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></FooterLink></li>
+            <FooterLink to='/domain_blocks'><FormattedMessage id='navigation_bar.domain_blocks' defaultMessage='Domain blocks' /></FooterLink>
           )}
           {account.locked && (
-            <li><FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink></li>
+            <FooterLink to='/follow_requests'><FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' /></FooterLink>
           )}
           {features.importAPI && (
-            <li><FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink></li>
+            <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
           )}
           {(features.federating && features.accountAliasesAPI) && (
-            <li><FooterLink to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></FooterLink></li>
+            <FooterLink to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></FooterLink>
           )}
-          <li><FooterLink to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink></li>
+          <FooterLink to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}
-      </ul>
+      </div>
 
       <Text theme='muted' size='sm'>
         {soapboxConfig.linkFooterMessage ? (
