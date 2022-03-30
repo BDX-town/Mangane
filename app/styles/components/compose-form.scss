@@ -321,7 +321,7 @@
 }
 
 .privacy-dropdown__dropdown {
-  @apply absolute bg-white dark:bg-slate-900 z-40 rounded-md shadow-lg ml-10 text-sm;
+  @apply absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
 
   &.top {
     transform-origin: 50% 100%;
