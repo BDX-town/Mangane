@@ -6,6 +6,7 @@ import { defineMessages } from 'react-intl';
 import snackbar from 'soapbox/actions/snackbar';
 import { isLoggedIn } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
+import { formatBytes } from 'soapbox/utils/media';
 
 import api from '../api';
 import { search as emojiSearch } from '../features/emoji/emoji_mart_search_light';
@@ -78,10 +79,12 @@ export const COMPOSE_ADD_TO_MENTIONS = 'COMPOSE_ADD_TO_MENTIONS';
 export const COMPOSE_REMOVE_FROM_MENTIONS = 'COMPOSE_REMOVE_FROM_MENTIONS';
 
 const messages = defineMessages({
-  uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
-  uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
+  exceededImageSizeLimit: { id: 'upload_error.image_size_limit', defaultMessage: 'Image exceeds the current file size limit ({limit})' },
+  exceededVideoSizeLimit: { id: 'upload_error.video_size_limit', defaultMessage: 'Video exceeds the current file size limit ({limit})' },
   scheduleError: { id: 'compose.invalid_schedule', defaultMessage: 'You must schedule a post at least 5 minutes out.'  },
   success: { id: 'compose.submit_success', defaultMessage: 'Your post was sent' },
+  uploadErrorLimit: { id: 'upload_error.limit', defaultMessage: 'File upload limit exceeded.' },
+  uploadErrorPoll:  { id: 'upload_error.poll', defaultMessage: 'File upload not allowed with polls.' },
   view: { id: 'snackbar.view', defaultMessage: 'View' },
 });
 
@@ -295,10 +298,12 @@ export function submitComposeFail(error) {
   };
 }
 
-export function uploadCompose(files) {
+export function uploadCompose(files, intl) {
   return function(dispatch, getState) {
     if (!isLoggedIn(getState)) return;
     const attachmentLimit = getState().getIn(['instance', 'configuration', 'statuses', 'max_media_attachments']);
+    const maxImageSize = getState().getIn(['instance', 'configuration', 'media_attachments', 'image_size_limit']);
+    const maxVideoSize = getState().getIn(['instance', 'configuration', 'media_attachments', 'video_size_limit']);
 
     const media  = getState().getIn(['compose', 'media_attachments']);
     const progress = new Array(files.length).fill(0);
@@ -313,6 +318,22 @@ export function uploadCompose(files) {
 
     Array.from(files).forEach((f, i) => {
       if (media.size + i > attachmentLimit - 1) return;
+
+      const isImage = f.type.match(/image.*/);
+      const isVideo = f.type.match(/video.*/);
+      if (isImage && maxImageSize && (f.size > maxImageSize)) {
+        const limit = formatBytes(maxImageSize);
+        const message = intl.formatMessage(messages.exceededImageSizeLimit, { limit });
+        dispatch(snackbar.error(message));
+        dispatch(uploadComposeFail(true));
+        return;
+      } else if (isVideo && maxVideoSize && (f.size > maxVideoSize)) {
+        const limit = formatBytes(maxVideoSize);
+        const message = intl.formatMessage(messages.exceededVideoSizeLimit, { limit });
+        dispatch(snackbar.error(message));
+        dispatch(uploadComposeFail(true));
+        return;
+      }
 
       // FIXME: Don't define function in loop
       /* eslint-disable no-loop-func */

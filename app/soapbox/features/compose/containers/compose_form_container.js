@@ -39,7 +39,7 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onChange(text) {
     dispatch(changeCompose(text));
@@ -66,7 +66,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 
   onPaste(files) {
-    dispatch(uploadCompose(files));
+    dispatch(uploadCompose(files, intl));
   },
 
   onPickEmoji(position, data, needsSpace) {
