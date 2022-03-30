@@ -15,14 +15,17 @@ interface IThumbNavigationLink {
 }
 
 const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text, to, exact, paths }): JSX.Element => {
-  const location = useLocation();
+  const { pathname } = useLocation();
 
-  const active = paths
-    ? paths.some(location.pathname.startsWith)
-    : (exact
-      ? location.pathname === to
-      : location.pathname.startsWith(to));
+  const isActive = (): boolean => {
+    if (paths) {
+      return paths.some(path =>  pathname.startsWith(path));
+    } else {
+      return exact ? pathname === to : pathname.startsWith(to);
+    }
+  };
 
+  const active = isActive();
 
   return (
     <NavLink to={to} exact={exact} className='thumb-navigation__link'>
