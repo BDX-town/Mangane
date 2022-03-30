@@ -133,7 +133,7 @@ const getInstanceFeatures = (instance: Instance) => {
   };
 };
 
-type Features = ReturnType<typeof getInstanceFeatures>;
+export type Features = ReturnType<typeof getInstanceFeatures>;
 
 export const getFeatures = createSelector([
   (instance: Instance) => instance,
