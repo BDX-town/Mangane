@@ -151,7 +151,7 @@ const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   const colors = soapboxConfig.get('colors');
 
   const missing = ImmutableMap({
-    'bg-shape-1': colors.getIn(['accent', '50']),
+    'bg-shape-1': colors.getIn(['accent', '500']),
     'bg-shape-2': colors.getIn(['primary', '500']),
   });
 
