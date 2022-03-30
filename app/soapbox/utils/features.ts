@@ -48,14 +48,19 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
     suggestions: any([
       v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
+      v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
     suggestionsV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
     blockersVisible: features.includes('blockers_visible'),
-    trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+    trends: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
       // Even though Pleroma supports these endpoints, it has disadvantages
