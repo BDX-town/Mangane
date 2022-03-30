@@ -426,7 +426,7 @@ class UI extends React.PureComponent {
     this.dragTargets = [];
 
     if (e.dataTransfer && e.dataTransfer.files.length >= 1) {
-      this.props.dispatch(uploadCompose(e.dataTransfer.files));
+      this.props.dispatch(uploadCompose(e.dataTransfer.files, this.props.intl));
     }
   }
 

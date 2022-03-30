@@ -34,6 +34,10 @@ describe('uploadCompose()', () => {
     });
 
     it('creates an alert if exceeds max size', async() => {
+      const mockIntl = {
+        formatMessage: jest.fn().mockReturnValue('Image exceeds the current file size limit (10 Bytes)'),
+      };
+
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },
         {
@@ -46,7 +50,7 @@ describe('uploadCompose()', () => {
         { type: 'COMPOSE_UPLOAD_FAIL', error: true, skipLoading: true },
       ];
 
-      await store.dispatch(uploadCompose(files));
+      await store.dispatch(uploadCompose(files, mockIntl));
       const actions = store.getActions();
 
       expect(actions).toEqual(expectedActions);
@@ -82,6 +86,10 @@ describe('uploadCompose()', () => {
     });
 
     it('creates an alert if exceeds max size', async() => {
+      const mockIntl = {
+        formatMessage: jest.fn().mockReturnValue('Video exceeds the current file size limit (10 Bytes)'),
+      };
+
       const expectedActions = [
         { type: 'COMPOSE_UPLOAD_REQUEST', skipLoading: true },
         {
@@ -94,7 +102,7 @@ describe('uploadCompose()', () => {
         { type: 'COMPOSE_UPLOAD_FAIL', error: true, skipLoading: true },
       ];
 
-      await store.dispatch(uploadCompose(files));
+      await store.dispatch(uploadCompose(files, mockIntl));
       const actions = store.getActions();
 
       expect(actions).toEqual(expectedActions);

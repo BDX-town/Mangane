@@ -1,3 +1,4 @@
+import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { uploadCompose } from '../../../actions/compose';
@@ -8,12 +9,12 @@ const mapStateToProps = state => ({
   resetFileKey: state.getIn(['compose', 'resetFileKey']),
 });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, { intl }) => ({
 
   onSelectFile(files) {
-    dispatch(uploadCompose(files));
+    dispatch(uploadCompose(files, intl));
   },
 
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadButton);
+export default injectIntl(connect(mapStateToProps, mapDispatchToProps)(UploadButton));
