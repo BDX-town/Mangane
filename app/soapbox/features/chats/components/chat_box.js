@@ -12,8 +12,8 @@ import {
 } from 'soapbox/actions/chats';
 import { uploadMedia } from 'soapbox/actions/media';
 import IconButton from 'soapbox/components/icon_button';
+import UploadProgress from 'soapbox/features/compose/components/upload-progress';
 import UploadButton from 'soapbox/features/compose/components/upload_button';
-import UploadProgress from 'soapbox/features/compose/components/upload_progress';
 import { truncateFilename } from 'soapbox/utils/media';
 
 import ChatMessageList from './chat_message_list';
