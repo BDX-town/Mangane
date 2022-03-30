@@ -439,8 +439,7 @@ class Status extends ImmutablePureComponent {
       } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
 
-        const external_id = (video.get('external_video_id'));
-        if (external_id) {
+        if (video.external_video_id) {
           const { mediaWrapperWidth } = this.state;
           const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
           media = (
@@ -449,16 +448,8 @@ class Status extends ImmutablePureComponent {
                 ref={this.setRef}
                 className='status-card__image status-card-video'
                 style={height ? { height } : {}}
-              >
-                <iframe
-                  src={`https://rumble.com/embed/${external_id}/`}
-                  frameBorder='0'
-                  allowFullScreen
-                  webkitallowfullscreen='true'
-                  mozallowfullscreen='true'
-                  title=''
-                />
-              </div>
+                dangerouslySetInnerHTML={{ __html: status.card.html }}
+              />
             </div>
           );
         } else {
