@@ -21,7 +21,7 @@ export const MITRA       = 'Mitra';
 export const TRUTHSOCIAL = 'TruthSocial';
 
 const getInstanceFeatures = (instance: Instance) => {
-  const v = parseVersion(instance.get('version'));
+  const v = parseVersion(instance.version);
   const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
   const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
 
