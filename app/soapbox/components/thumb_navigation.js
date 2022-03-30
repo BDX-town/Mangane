@@ -51,7 +51,7 @@ class ThumbNavigation extends React.PureComponent {
             src={require('icons/feed.svg')}
             className={classNames({
               'h-5 w-5': true,
-              'text-gray-600': location.pathname !== '/',
+              'text-gray-600 dark:text-gray-300': location.pathname !== '/',
               'text-primary-600': location.pathname === '/',
             })}
           />
@@ -66,7 +66,7 @@ class ThumbNavigation extends React.PureComponent {
             src={require('@tabler/icons/icons/search.svg')}
             className={classNames({
               'h-5 w-5': true,
-              'text-gray-600': location.pathname !== '/search',
+              'text-gray-600 dark:text-gray-300': location.pathname !== '/search',
               'text-primary-600': location.pathname === '/search',
             })}
           />
@@ -82,7 +82,7 @@ class ThumbNavigation extends React.PureComponent {
               src={require('@tabler/icons/icons/bell.svg')}
               className={classNames({
                 'h-5 w-5': true,
-                'text-gray-600': location.pathname !== '/notifications',
+                'text-gray-600 dark:text-gray-300': location.pathname !== '/notifications',
                 'text-primary-600': location.pathname === '/notifications',
               })}
               count={notificationCount}
@@ -101,7 +101,7 @@ class ThumbNavigation extends React.PureComponent {
                 src={require('@tabler/icons/icons/messages.svg')}
                 className={classNames({
                   'h-5 w-5': true,
-                  'text-gray-600': location.pathname !== '/chats',
+                  'text-gray-600 dark:text-gray-300': location.pathname !== '/chats',
                   'text-primary-600': location.pathname === '/chats',
                 })}
                 count={chatsCount}
@@ -116,7 +116,7 @@ class ThumbNavigation extends React.PureComponent {
                 src={require('@tabler/icons/icons/mail.svg')}
                 className={classNames({
                   'h-5 w-5': true,
-                  'text-gray-600': !['/messages', '/conversations'].includes(location.pathname),
+                  'text-gray-600 dark:text-gray-300': !['/messages', '/conversations'].includes(location.pathname),
                   'text-primary-600': ['/messages', '/conversations'].includes(location.pathname),
                 })}
               />

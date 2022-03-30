@@ -5,7 +5,7 @@ import PlaceholderDisplayName from './placeholder_display_name';
 import PlaceholderStatusContent from './placeholder_status_content';
 
 const PlaceholderNotification = () => (
-  <div className='bg-white px-4 py-6 sm:p-6'>
+  <div className='bg-white dark:bg-slate-800 px-4 py-6 sm:p-6'>
     <div className='w-full animate-pulse'>
       <div className='mb-2'>
         <PlaceholderStatusContent minLength={20} maxLength={20} />
