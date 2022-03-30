@@ -56,8 +56,8 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {features.importAPI && (
             <FooterLink to='/settings/import'><FormattedMessage id='navigation_bar.import_data' defaultMessage='Import data' /></FooterLink>
           )}
-          {(features.federating && features.accountAliasesAPI) && (
-            <FooterLink to='/settings/aliases'><FormattedMessage id='navigation_bar.account_aliases' defaultMessage='Account aliases' /></FooterLink>
+          {(features.federating && features.accountMoving) && (
+            <FooterLink to='/settings/migration'><FormattedMessage id='navigation_bar.account_migration' defaultMessage='Move account' /></FooterLink>
           )}
           <FooterLink to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}
