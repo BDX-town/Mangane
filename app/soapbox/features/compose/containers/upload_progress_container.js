@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import UploadProgress from '../components/upload_progress';
+import UploadProgress from '../components/upload-progress';
 
 const mapStateToProps = state => ({
   active: state.getIn(['compose', 'is_uploading']),

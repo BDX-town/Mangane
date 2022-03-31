@@ -1,10 +1,15 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 
 import Icon from 'soapbox/components/icon';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
-const IconWithCounter = ({ icon, count, ...rest }) => {
+interface IIconWithCounter extends React.HTMLAttributes<HTMLDivElement> {
+  count: number,
+  icon?: string;
+  src?: string;
+}
+
+const IconWithCounter: React.FC<IIconWithCounter> = ({ icon, count, ...rest }) => {
   return (
     <div className='relative'>
       <Icon id={icon} {...rest} />
@@ -14,11 +19,6 @@ const IconWithCounter = ({ icon, count, ...rest }) => {
       </i>}
     </div>
   );
-};
-
-IconWithCounter.propTypes = {
-  icon: PropTypes.string,
-  count: PropTypes.number.isRequired,
 };
 
 export default IconWithCounter;

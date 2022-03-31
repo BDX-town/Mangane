@@ -73,8 +73,8 @@
       text-align: left;
 
       strong {
+        @apply text-black dark:text-white;
         font-size: 15px;
-        color: var(--primary-text-color);
         font-weight: 500;
         overflow: hidden;
         text-overflow: ellipsis;

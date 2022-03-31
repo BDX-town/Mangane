@@ -320,56 +320,8 @@
   transform: translateY(1px);
 }
 
-.upload-progress {
-  padding: 10px;
-  color: var(--highlight-text-color);
-  overflow: hidden;
-  display: flex;
-
-  .fa {
-    font-size: 34px;
-    margin-right: 10px;
-  }
-
-  span {
-    font-size: 12px;
-    text-transform: uppercase;
-    font-weight: 500;
-    display: block;
-  }
-}
-
-.upload-progess__message {
-  flex: 1 1 auto;
-}
-
-.upload-progress__backdrop {
-  width: 100%;
-  height: 6px;
-  border-radius: 6px;
-  background: var(--brand-color--med);
-  position: relative;
-  margin-top: 5px;
-}
-
-.upload-progress__tracker {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 6px;
-  background: var(--brand-color);
-  border-radius: 6px;
-}
-
 .privacy-dropdown__dropdown {
-  font-size: 14px;
-  position: absolute;
-  background: var(--foreground-color);
-  box-shadow: 2px 4px 15px rgba($base-shadow-color, 0.4);
-  border-radius: 4px;
-  margin-left: 40px;
-  overflow: hidden;
-  z-index: 10000;
+  @apply absolute bg-white dark:bg-slate-900 z-[1000] rounded-md shadow-lg ml-10 text-sm;
 
   &.top {
     transform-origin: 50% 100%;
@@ -381,50 +333,38 @@
 }
 
 .privacy-dropdown__option {
-  color: var(--primary-text-color);
-  padding: 10px;
-  cursor: pointer;
-  display: flex;
+  @apply flex p-2.5 text-sm text-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-slate-800 cursor-pointer;
+
+  &.active {
+    @apply bg-gray-100 dark:bg-slate-800;
+  }
 
   &:hover,
   &.active {
-    background: var(--brand-color--med);
-    color: var(--primary-text-color);
-    outline: 0;
-
-    .privacy-dropdown__option__content {
-      color: var(--primary-text-color);
-
-      strong {
-        color: var(--primary-text-color);
-      }
+    .privacy-dropdown__option__content,
+    .privacy-dropdown__option__content strong {
+      @apply text-black dark:text-white;
     }
   }
 
-  &.active:hover {
-    background: hsla(var(--brand-color_hsl), 0.5);
+  &.active {
+    @apply hover:bg-gray-200 dark:hover:bg-slate-700;
   }
 }
 
 .privacy-dropdown__option__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 10px;
+  @apply flex items-center justify-center mr-2.5;
 }
 
 .privacy-dropdown__option__content {
-  flex: 1 1 auto;
-  color: var(--highlight-text-color);
+  @apply flex-auto text-primary-600 dark:text-primary-400;
 
   strong {
-    font-weight: 500;
-    display: block;
-    color: var(--primary-text-color);
+    @apply block font-medium text-black dark:text-white;
 
     @each $lang in $cjk-langs {
       &:lang(#{$lang}) {
-        font-weight: 700;
+        @apply font-bold;
       }
     }
   }
@@ -450,12 +390,11 @@
   }
 
   &.top .privacy-dropdown__value {
-    border-radius: 0 0 4px 4px;
+    @apply rounded-t-md;
   }
 
   .privacy-dropdown__dropdown {
-    display: block;
-    box-shadow: 2px 4px 6px rgba($base-shadow-color, 0.1);
+    @apply block shadow-md;
   }
 }
 

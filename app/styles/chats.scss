@@ -280,26 +280,6 @@
 }
 
 .chat-box {
-  .upload-progress {
-    padding: 0 10px;
-    align-items: center;
-    height: 25px;
-
-    .fa {
-      font-size: 22px;
-    }
-
-    &__message {
-      font-size: 13px;
-      flex: 1;
-      align-items: center;
-    }
-
-    &__backdrop {
-      margin-top: 2px;
-    }
-  }
-
   &__attachment {
     display: flex;
     align-items: center;

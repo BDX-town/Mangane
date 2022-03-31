@@ -36,6 +36,7 @@ const hidesNetwork = account => {
 
 const messages = defineMessages({
   heading: { id: 'column.edit_profile', defaultMessage: 'Edit profile' },
+  header: { id: 'edit_profile.header', defaultMessage: 'Edit Profile' },
   metaFieldLabel: { id: 'edit_profile.fields.meta_fields.label_placeholder', defaultMessage: 'Label' },
   metaFieldContent: { id: 'edit_profile.fields.meta_fields.content_placeholder', defaultMessage: 'Content' },
   verified: { id: 'edit_profile.fields.verified_display_name', defaultMessage: 'Verified users may not update their display name' },
@@ -246,7 +247,7 @@ class EditProfile extends ImmutablePureComponent {
     const canEditName = verifiedCanEditName || !verified;
 
     return (
-      <Column label='Edit Profile'>
+      <Column label={intl.formatMessage(messages.header)}>
         <Form onSubmit={this.handleSubmit}>
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.display_name_label' defaultMessage='Display name' />}

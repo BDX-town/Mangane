@@ -11,6 +11,7 @@ import Avatar from 'soapbox/components/avatar';
 import DisplayName from 'soapbox/components/display_name';
 import Permalink from 'soapbox/components/permalink';
 import RelativeTimestamp from 'soapbox/components/relative_timestamp';
+import { Text } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import { makeGetAccount } from 'soapbox/selectors';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
@@ -73,9 +74,9 @@ class AccountCard extends ImmutablePureComponent {
         </div>
 
         <div className='directory__card__extra'>
-          <div className='accounts-table__count'>{shortNumberFormat(account.get('statuses_count'))} <small><FormattedMessage id='account.posts' defaultMessage='Toots' /></small></div>
-          <div className='accounts-table__count'>{shortNumberFormat(account.get('followers_count'))} <small><FormattedMessage id='account.followers' defaultMessage='Followers' /></small></div>
-          <div className='accounts-table__count'>{account.get('last_status_at') === null ? <FormattedMessage id='account.never_active' defaultMessage='Never' /> : <RelativeTimestamp timestamp={account.get('last_status_at')} />} <small><FormattedMessage id='account.last_status' defaultMessage='Last active' /></small></div>
+          <div className='accounts-table__count'><Text theme='primary' size='sm'>{shortNumberFormat(account.get('statuses_count'))}</Text> <small><FormattedMessage id='account.posts' defaultMessage='Toots' /></small></div>
+          <div className='accounts-table__count'><Text theme='primary' size='sm'>{shortNumberFormat(account.get('followers_count'))}</Text> <small><FormattedMessage id='account.followers' defaultMessage='Followers' /></small></div>
+          <div className='accounts-table__count'>{account.get('last_status_at') === null ? <Text theme='primary' size='sm'><FormattedMessage id='account.never_active' defaultMessage='Never' /></Text> : <RelativeTimestamp className='text-primary-600' timestamp={account.get('last_status_at')} />} <small><FormattedMessage id='account.last_status' defaultMessage='Last active' /></small></div>
         </div>
       </div>
     );

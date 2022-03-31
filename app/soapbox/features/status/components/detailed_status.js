@@ -110,8 +110,7 @@ class DetailedStatus extends ImmutablePureComponent {
     if (size > 0) {
       if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
         const video = status.getIn(['media_attachments', 0]);
-        const external_id = (video.get('external_video_id'));
-        if (external_id) {
+        if (video.external_video_id && status.card?.html) {
           const { mediaWrapperWidth } = this.state;
           const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
           media = (
@@ -120,16 +119,8 @@ class DetailedStatus extends ImmutablePureComponent {
                 ref={this.setRef}
                 className='status-card-video'
                 style={{ height }}
-              >
-                <iframe
-                  src={`https://rumble.com/embed/${external_id}/`}
-                  frameborder='0'
-                  allowFullScreen='true'
-                  webkitallowfullscreen='true'
-                  mozallowfullscreen='true'
-                  title='Video'
-                />
-              </div>
+                dangerouslySetInnerHTML={{ __html: status.card.html }}
+              />
             </div>
           );
         } else {

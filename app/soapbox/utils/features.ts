@@ -21,7 +21,7 @@ export const MITRA       = 'Mitra';
 export const TRUTHSOCIAL = 'TruthSocial';
 
 const getInstanceFeatures = (instance: Instance) => {
-  const v = parseVersion(instance.get('version'));
+  const v = parseVersion(instance.version);
   const features = instance.pleroma.getIn(['metadata', 'features'], ImmutableList()) as ImmutableList<string>;
   const federation = instance.pleroma.getIn(['metadata', 'federation'], ImmutableMap()) as ImmutableMap<string, any>;
 
@@ -48,14 +48,19 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
     suggestions: any([
       v.software === MASTODON && gte(v.compatVersion, '2.4.3'),
+      v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
     suggestionsV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.4.0'),
+      v.software === TRUTHSOCIAL,
       features.includes('v2_suggestions'),
     ]),
     blockersVisible: features.includes('blockers_visible'),
-    trends: v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+    trends: any([
+      v.software === MASTODON && gte(v.compatVersion, '3.0.0'),
+      v.software === TRUTHSOCIAL,
+    ]),
     mediaV2: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.3'),
       // Even though Pleroma supports these endpoints, it has disadvantages
@@ -128,7 +133,7 @@ const getInstanceFeatures = (instance: Instance) => {
   };
 };
 
-type Features = ReturnType<typeof getInstanceFeatures>;
+export type Features = ReturnType<typeof getInstanceFeatures>;
 
 export const getFeatures = createSelector([
   (instance: Instance) => instance,

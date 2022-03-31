@@ -5,7 +5,7 @@
 }
 
 .emoji-mart {
-  @apply text-base inline-block text-gray-900 rounded bg-white shadow-lg;
+  @apply text-base inline-block text-gray-900 dark:text-gray-100 rounded bg-white dark:bg-slate-900 shadow-lg;
 }
 
 .emoji-mart .emoji-mart-emoji {
@@ -33,7 +33,7 @@
 }
 
 .emoji-mart-anchor {
-  @apply relative block flex-auto text-gray-400 text-center overflow-hidden transition-colors py-3 px-1;
+  @apply relative block flex-auto text-gray-400 dark:text-gray-500 text-center overflow-hidden transition-colors py-3 px-1;
 }
 
 .emoji-mart-anchor:focus { outline: 0; }
@@ -41,7 +41,7 @@
 .emoji-mart-anchor:hover,
 .emoji-mart-anchor:focus,
 .emoji-mart-anchor-selected {
-  @apply text-gray-600;
+  @apply text-gray-600 dark:text-gray-300;
 }
 
 .emoji-mart-anchor-selected .emoji-mart-anchor-bar {
@@ -73,11 +73,11 @@
 }
 
 .emoji-mart-search {
-  @apply relative mt-1.5 p-2.5 pr-12 bg-white;
+  @apply relative mt-1.5 p-2.5 pr-12 bg-white dark:bg-slate-900;
 }
 
 .emoji-mart-search input {
-  @apply text-sm pr-9 block w-full border-gray-300 rounded-full focus:ring-primary-500 focus:border-primary-500;
+  @apply text-sm pr-9 block w-full border-gray-300 dark:border-gray-600 rounded-full focus:ring-primary-500 focus:border-primary-500;
 
   &::-moz-focus-inner {
     border: 0;
@@ -125,6 +125,7 @@
 }
 
 .emoji-mart-category .emoji-mart-emoji:hover::before {
+  @apply bg-gray-50 dark:bg-slate-800;
   z-index: 0;
   content: "";
   position: absolute;
@@ -132,7 +133,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #f4f4f4;
   border-radius: 100%;
 }
 
@@ -145,12 +145,11 @@
 }
 
 .emoji-mart-category-label span {
+  @apply bg-white dark:bg-slate-900;
   display: block;
   width: 100%;
   font-weight: 500;
   padding: 5px 6px;
-  background-color: #fff;
-  background-color: rgba(255, 255, 255, 0.95);
 }
 
 .emoji-mart-category-list {
@@ -181,7 +180,7 @@
 }
 
 .emoji-mart-no-results {
-  @apply text-sm text-center text-gray-600;
+  @apply text-sm text-center text-gray-600 dark:text-gray-300;
   padding-top: 70px;
 }
 
@@ -242,22 +241,18 @@
 }
 
 .emoji-picker-dropdown__modifiers__menu {
-  @apply absolute bg-white rounded-3xl shadow overflow-hidden;
+  @apply absolute bg-white dark:bg-slate-900 rounded-3xl shadow overflow-hidden;
   z-index: 4;
   top: -4px;
   left: -8px;
 
   button {
-    display: block;
-    cursor: pointer;
-    border: 0;
-    padding: 4px 8px;
-    background: transparent;
+    @apply block cursor-pointer border-0 px-2 py-1 bg-transparent;
 
     &:hover,
     &:focus,
     &:active {
-      background: hsla(var(--background-color_hsl), 0.4);
+      @apply bg-gray-300 dark:bg-slate-600;
     }
   }
 

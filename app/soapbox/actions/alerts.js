@@ -1,5 +1,7 @@
 import { defineMessages } from 'react-intl';
 
+import { httpErrorMessages } from 'soapbox/utils/errors';
+
 const messages = defineMessages({
   unexpectedTitle: { id: 'alert.unexpected.title', defaultMessage: 'Oops!' },
   unexpectedMessage: { id: 'alert.unexpected.message', defaultMessage: 'An unexpected error occurred.' },
@@ -34,7 +36,7 @@ export function showAlert(title = messages.unexpectedTitle, message = messages.u
 }
 
 export function showAlertForError(error) {
-  return (dispatch, getState) => {
+  return (dispatch, _getState) => {
     if (error.response) {
       const { data, status, statusText } = error.response;
 
@@ -48,13 +50,16 @@ export function showAlertForError(error) {
       }
 
       let message = statusText;
-      const title = `${status}`;
 
       if (data.error) {
         message = data.error;
       }
 
-      return dispatch(showAlert(title, message, 'error'));
+      if (!message) {
+        message = httpErrorMessages.find((httpError) => httpError.code === status)?.description;
+      }
+
+      return dispatch(showAlert('', message, 'error'));
     } else {
       console.error(error);
       return dispatch(showAlert(undefined, undefined, 'error'));
