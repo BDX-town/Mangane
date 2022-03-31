@@ -166,7 +166,7 @@ const httpErrorMessages: { code: number, name: string, description: string }[] =
   {
     code: 500,
     name: 'Internal Server Error',
-    description: 'A generic error message',
+    description: 'An unexpected error occurred',
   },
   {
     code: 501,
