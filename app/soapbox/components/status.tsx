@@ -465,9 +465,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         );
       } else if (size === 1 && firstAttachment.type === 'video') {
         const video = firstAttachment;
-        const html = String(status.getIn(['card', 'html']));
 
-        if (video.external_video_id && html) {
+        if (video.external_video_id && status.card) {
           const { mediaWrapperWidth } = this.state;
 
           const getHeight = (): number => {
@@ -484,7 +483,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                 ref={this.setRef}
                 className='status-card__image status-card-video'
                 style={height ? { height } : undefined}
-                dangerouslySetInnerHTML={{ __html: html }}
+                dangerouslySetInnerHTML={{ __html: status.card.html }}
               />
             </div>
           );

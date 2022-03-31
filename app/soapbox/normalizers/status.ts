@@ -25,7 +25,7 @@ export const StatusRecord = ImmutableRecord({
   account: null as EmbeddedEntity<Account>,
   application: null as ImmutableMap<string, any> | null,
   bookmarked: false,
-  card: null as EmbeddedEntity<Card>,
+  card: null as Card | null,
   content: '',
   created_at: new Date(),
   emojis: ImmutableList<Emoji>(),
