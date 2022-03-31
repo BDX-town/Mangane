@@ -8,7 +8,7 @@ exports[`<EmojiSelector /> renders correctly 1`] = `
   tabIndex="-1"
 >
   <div
-    className="emoji-react-selector"
+    className="emoji-react-selector w-max"
     onBlur={[Function]}
   >
     <button
