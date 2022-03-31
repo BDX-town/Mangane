@@ -195,7 +195,7 @@ type Alert = ReturnType<typeof buildAlert>;
 
 export const getAlerts = createSelector([getAlertsBase], (base): Alert[] => {
   const arr: Alert[] = [];
-  base.forEach((item: any) => arr.push(buildAlert(item)));
+  base.forEach(item => arr.push(buildAlert(item)));
   return arr;
 });
 
