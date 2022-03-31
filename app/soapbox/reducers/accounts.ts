@@ -45,14 +45,18 @@ type AccountMap = ImmutableMap<string, any>;
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string | number, AccountRecord>;
+export interface ReducerAccount extends AccountRecord {
+  moved: string | null,
+}
+
+type State = ImmutableMap<string | number, ReducerAccount>;
 
 const initialState: State = ImmutableMap();
 
-const minifyAccount = (account: AccountRecord): AccountRecord => {
+const minifyAccount = (account: AccountRecord): ReducerAccount => {
   return account.mergeWith((o, n) => n || o, {
     moved: normalizeId(account.getIn(['moved', 'id'])),
-  });
+  }) as ReducerAccount;
 };
 
 const fixAccount = (state: State, account: APIEntity) => {
@@ -194,9 +198,9 @@ const importAdminUser = (state: State, adminUser: ImmutableMap<string, any>): St
   const account = state.get(id);
 
   if (!account) {
-    return state.set(id, buildAccount(adminUser));
+    return state.set(id, minifyAccount(buildAccount(adminUser)));
   } else {
-    return state.set(id, mergeAdminUser(account, adminUser));
+    return state.set(id, minifyAccount(mergeAdminUser(account, adminUser)));
   }
 };
 
@@ -223,7 +227,7 @@ export default function accounts(state: State = initialState, action: AnyAction)
   case ACCOUNTS_IMPORT:
     return normalizeAccounts(state, action.accounts);
   case ACCOUNT_FETCH_FAIL_FOR_USERNAME_LOOKUP:
-    return state.set(-1, normalizeAccount({ username: action.username }));
+    return fixAccount(state, { id: -1, username: action.username });
   case CHATS_FETCH_SUCCESS:
   case CHATS_EXPAND_SUCCESS:
     return importAccountsFromChats(state, action.chats);

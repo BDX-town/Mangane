@@ -26,8 +26,8 @@ export const AttachmentRecord = ImmutableRecord({
 
   // Internal fields
   // TODO: Remove these? They're set in selectors/index.js
-  account: null,
-  status: null,
+  account: null as any,
+  status: null as any,
 });
 
 // Ensure attachments have required fields

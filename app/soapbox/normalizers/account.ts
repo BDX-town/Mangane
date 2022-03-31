@@ -13,7 +13,6 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -197,8 +196,29 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
+const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
+  try {
+    const url = account.get('url');
+    return new URL(url).host;
+  } catch {
+    return '';
+  }
+};
+
+export const guessFqn = (account: ImmutableMap<string, any>): string => {
+  const acct = account.get('acct', '');
+  const [user, domain] = acct.split('@');
+
+  if (domain) {
+    return acct;
+  } else {
+    return [user, getDomainFromURL(account)].join('@');
+  }
+};
+
 const normalizeFqn = (account: ImmutableMap<string, any>) => {
-  return account.set('fqn', acctFull(account));
+  const fqn = account.get('fqn') || guessFqn(account);
+  return account.set('fqn', fqn);
 };
 
 export const normalizeAccount = (account: Record<string, any>) => {
