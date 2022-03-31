@@ -2,6 +2,7 @@ import {
   Map as ImmutableMap,
   List as ImmutableList,
   OrderedSet as ImmutableOrderedSet,
+  fromJS,
 } from 'immutable';
 import { createSelector } from 'reselect';
 
@@ -261,9 +262,9 @@ export const makeGetReport = () => {
 
   return createSelector(
     [
-      (state: RootState, id: string) => state.admin.getIn(['reports', id]),
-      (state: RootState, id: string) => state.admin.getIn(['reports', id, 'statuses']).map(
-        (statusId: string) => state.statuses.get(statusId))
+      (state: RootState, id: string) => state.admin.reports.get(id),
+      (state: RootState, id: string) => ImmutableList(fromJS(state.admin.reports.getIn([id, 'statuses']))).map(
+        statusId => state.statuses.get(normalizeId(statusId)))
         .filter((s: any) => s)
         .map((s: any) => getStatus(state, s.toJS())),
     ],
@@ -306,7 +307,7 @@ export const makeGetOtherAccounts = () => {
 
 const getSimplePolicy = createSelector([
   (state: RootState) => state.admin.configs,
-  (state: RootState) => state.instance.pleroma.getIn(['metadata', 'federation', 'mrf_simple'], ImmutableMap()),
+  (state: RootState) => state.instance.pleroma.getIn(['metadata', 'federation', 'mrf_simple'], ImmutableMap()) as ImmutableMap<string, any>,
 ], (configs, instancePolicy: ImmutableMap<string, any>) => {
   return instancePolicy.merge(ConfigDB.toSimplePolicy(configs));
 });
