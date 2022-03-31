@@ -39,7 +39,7 @@ export const AccountRecord = ImmutableRecord({
   last_status_at: new Date(),
   location: '',
   locked: false,
-  moved: null as EmbeddedEntity<any> | null,
+  moved: null as EmbeddedEntity<any>,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),

@@ -31,6 +31,7 @@ export const StatusRecord = ImmutableRecord({
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
+  group: null as EmbeddedEntity<any>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -55,6 +56,7 @@ export const StatusRecord = ImmutableRecord({
 
   // Internal fields
   contentHtml: '',
+  expectsCard: false,
   filtered: false,
   hidden: false,
   search_index: '',
