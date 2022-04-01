@@ -97,19 +97,7 @@
 }
 
 .status__content__read-more-button {
-  display: block;
-  font-size: 15px;
-  line-height: 20px;
-  color: var(--highlight-text-color);
-  border: 0;
-  background: transparent;
-  padding: 0;
-  padding-top: 8px;
-
-  &:hover,
-  &:active {
-    text-decoration: underline;
-  }
+  @apply block text-gray-900 dark:text-gray-300 border-0 bg-transparent p-0 pt-2 hover:underline active:underline;
 }
 
 .status__content__spoiler-link {

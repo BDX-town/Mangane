@@ -1,4 +1,5 @@
 .icon-button {
+  @apply text-black dark:text-white;
   display: inline-flex;
   align-items: center;
   padding: 0;

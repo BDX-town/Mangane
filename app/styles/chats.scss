@@ -1,15 +1,6 @@
 .pane {
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.3);
-  border-radius: 6px 6px 0 0;
-  position: fixed;
-  bottom: 0;
-  right: 20px;
-  width: 265px;
-  height: 350px;
+  @apply flex flex-col shadow-md rounded-t-md fixed bottom-0 right-5 w-[256px] h-[350px] z-[1000];
   max-height: calc(100vh - 70px);
-  display: flex;
-  flex-direction: column;
-  z-index: 1000; // Above AccountHeader
   transition: 0.05s;
 
   &--main {
@@ -39,9 +30,8 @@
   }
 
   &__header {
+    @apply bg-primary-900 text-white;
     box-sizing: border-box;
-    background: var(--brand-color);
-    color: #fff;
     padding: 0 10px;
     font-weight: bold;
     border-radius: 6px 6px 0 0;
@@ -104,21 +94,14 @@
   }
 
   &__content {
-    background: var(--foreground-color);
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    overflow: hidden;
+    @apply flex flex-1 flex-col overflow-hidden bg-white dark:bg-slate-800;
 
     .chat-box {
-      display: flex;
-      flex: 1;
-      flex-direction: column;
-      overflow: hidden;
+      @apply flex flex-1 flex-col overflow-hidden;
     }
 
     .chat-list {
-      overflow-y: auto;
+      @apply overflow-y-auto;
     }
   }
 
