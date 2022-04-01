@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import React from 'react';
 
 import { joinPublicPath } from 'soapbox/utils/static';
@@ -44,7 +43,7 @@ const Emoji: React.FC<IEmoji> = ({ className, emoji }): JSX.Element | null => {
   return (
     <img
       draggable='false'
-      className={classNames('emojione', className)}
+      className={className}
       alt={emoji}
       src={joinPublicPath(`packs/emoji/${filename}.svg`)}
     />
