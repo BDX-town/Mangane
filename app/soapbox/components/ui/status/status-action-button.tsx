@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { IconButton, Text } from 'soapbox/components/ui';
+import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 interface IStatusActionCounter {
   count: number,
@@ -23,7 +24,7 @@ const StatusActionCounter: React.FC<IStatusActionCounter> = ({ to = '#', onClick
 
   return (
     <Link to={to} onClick={handleClick}>
-      <Text size='xs' theme='muted'>{count}</Text>
+      <Text size='xs' theme='muted'>{shortNumberFormat(count)}</Text>
     </Link>
   );
 };
