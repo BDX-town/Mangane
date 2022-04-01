@@ -211,13 +211,13 @@ export default function statuses(state = initialState, action: AnyAction): State
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji),
       );
   case UNEMOJI_REACT_REQUEST:
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateUnEmojiReact(emojiReacts as any, action.emoji),
       );
   case FAVOURITE_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);

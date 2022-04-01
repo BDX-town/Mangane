@@ -3,31 +3,36 @@ import {
   List as ImmutableList,
 } from 'immutable';
 
+import type { Me } from 'soapbox/types/soapbox';
+
 // https://emojipedia.org/facebook
 // I've customized them.
-export const ALLOWED_EMOJI = [
+export const ALLOWED_EMOJI = ImmutableList([
   '👍',
   '❤️',
   '😆',
   '😮',
   '😢',
   '😩',
-];
+]);
 
-export const sortEmoji = emojiReacts => (
+type Account = ImmutableMap<string, any>;
+type EmojiReact = ImmutableMap<string, any>;
+
+export const sortEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
   emojiReacts.sortBy(emojiReact => -emojiReact.get('count'))
 );
 
-export const mergeEmoji = emojiReacts => (
+export const mergeEmoji = (emojiReacts: ImmutableList<EmojiReact>): ImmutableList<EmojiReact> => (
   emojiReacts // TODO: Merge similar emoji
 );
 
-export const mergeEmojiFavourites = (emojiReacts = ImmutableList(), favouritesCount, favourited) => {
+export const mergeEmojiFavourites = (emojiReacts = ImmutableList<EmojiReact>(), favouritesCount: number, favourited: boolean) => {
   if (!favouritesCount) return emojiReacts;
   const likeIndex = emojiReacts.findIndex(emojiReact => emojiReact.get('name') === '👍');
   if (likeIndex > -1) {
-    const likeCount = emojiReacts.getIn([likeIndex, 'count']);
-    favourited = favourited || emojiReacts.getIn([likeIndex, 'me'], false);
+    const likeCount = Number(emojiReacts.getIn([likeIndex, 'count']));
+    favourited = favourited || Boolean(emojiReacts.getIn([likeIndex, 'me'], false));
     return emojiReacts
       .setIn([likeIndex, 'count'], likeCount + favouritesCount)
       .setIn([likeIndex, 'me'], favourited);
@@ -36,24 +41,24 @@ export const mergeEmojiFavourites = (emojiReacts = ImmutableList(), favouritesCo
   }
 };
 
-const hasMultiReactions = (emojiReacts, account) => (
+const hasMultiReactions = (emojiReacts: ImmutableList<EmojiReact>, account: Account): boolean => (
   emojiReacts.filter(
     e => e.get('accounts').filter(
-      a => a.get('id') === account.get('id'),
+      (a: Account) => a.get('id') === account.get('id'),
     ).count() > 0,
   ).count() > 1
 );
 
-const inAccounts = (accounts, id) => (
+const inAccounts = (accounts: ImmutableList<Account>, id: string): boolean => (
   accounts.filter(a => a.get('id') === id).count() > 0
 );
 
-export const oneEmojiPerAccount = (emojiReacts, me) => {
+export const oneEmojiPerAccount = (emojiReacts: ImmutableList<EmojiReact>, me: Me) => {
   emojiReacts = emojiReacts.reverse();
 
   return emojiReacts.reduce((acc, cur, idx) => {
     const accounts = cur.get('accounts', ImmutableList())
-      .filter(a => !hasMultiReactions(acc, a));
+      .filter((a: Account) => !hasMultiReactions(acc, a));
 
     return acc.set(idx, cur.merge({
       accounts: accounts,
@@ -65,30 +70,31 @@ export const oneEmojiPerAccount = (emojiReacts, me) => {
     .reverse();
 };
 
-export const filterEmoji = (emojiReacts, allowedEmoji=ALLOWED_EMOJI) => (
+export const filterEmoji = (emojiReacts: ImmutableList<EmojiReact>, allowedEmoji=ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
   emojiReacts.filter(emojiReact => (
     allowedEmoji.includes(emojiReact.get('name'))
   )));
 
-export const reduceEmoji = (emojiReacts, favouritesCount, favourited, allowedEmoji=ALLOWED_EMOJI) => (
+export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCount: number, favourited: boolean, allowedEmoji=ALLOWED_EMOJI): ImmutableList<EmojiReact> => (
   filterEmoji(sortEmoji(mergeEmoji(mergeEmojiFavourites(
     emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
-export const getReactForStatus = (status, allowedEmoji=ALLOWED_EMOJI) => {
-  return reduceEmoji(
+export const getReactForStatus = (status: any, allowedEmoji=ALLOWED_EMOJI): string => {
+  return String(reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
     status.get('favourites_count', 0),
     status.get('favourited'),
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name']);
+    .getIn([0, 'name'], ''));
 };
 
-export const simulateEmojiReact = (emojiReacts, emoji) => {
+export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {
   const idx = emojiReacts.findIndex(e => e.get('name') === emoji);
-  if (idx > -1) {
-    const emojiReact = emojiReacts.get(idx);
+  const emojiReact = emojiReacts.get(idx);
+
+  if (emojiReact) {
     return emojiReacts.set(idx, emojiReact.merge({
       count: emojiReact.get('count') + 1,
       me: true,
@@ -102,12 +108,13 @@ export const simulateEmojiReact = (emojiReacts, emoji) => {
   }
 };
 
-export const simulateUnEmojiReact = (emojiReacts, emoji) => {
+export const simulateUnEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {
   const idx = emojiReacts.findIndex(e =>
     e.get('name') === emoji && e.get('me') === true);
 
-  if (idx > -1) {
-    const emojiReact = emojiReacts.get(idx);
+  const emojiReact = emojiReacts.get(idx);
+
+  if (emojiReact) {
     const newCount = emojiReact.get('count') - 1;
     if (newCount < 1) return emojiReacts.delete(idx);
     return emojiReacts.set(idx, emojiReact.merge({

@@ -32,7 +32,7 @@ const StatusActionCounter: React.FC<IStatusActionCounter> = ({ to = '#', onClick
 interface IStatusActionButton {
   icon: string,
   onClick: () => void,
-  count: number,
+  count?: number,
   active?: boolean,
   title?: string,
   to?: string,

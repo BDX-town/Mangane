@@ -29,15 +29,15 @@ export const getAcct = (account: Account, displayFqn: boolean): string => (
   displayFqn === true ? account.fqn : account.acct
 );
 
-export const isStaff = (account: ImmutableMap<any, any> = ImmutableMap()): boolean => (
+export const isStaff = (account: Account): boolean => (
   [isAdmin, isModerator].some(f => f(account) === true)
 );
 
-export const isAdmin = (account: ImmutableMap<string, any>): boolean => (
+export const isAdmin = (account: Account): boolean => (
   account.getIn(['pleroma', 'is_admin']) === true
 );
 
-export const isModerator = (account: ImmutableMap<string, any>): boolean => (
+export const isModerator = (account: Account): boolean => (
   account.getIn(['pleroma', 'is_moderator']) === true
 );
 
