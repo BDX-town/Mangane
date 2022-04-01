@@ -1,19 +1,15 @@
 .emoji-react {
-  display: inline-block;
-  transition: 0.1s;
-  color: var(--primary-text-color--faint);
-  text-decoration: none;
+  @apply inline-block text-gray-900 dark:text-gray-300 no-underline;
 
   &__emoji {
     img {
-      width: 20px;
-      height: 20px;
+      @apply w-5 h-5;
       filter: drop-shadow(2px 0 0 var(--foreground-color));
     }
   }
 
   &__count {
-    display: none;
+    @apply hidden;
   }
 
   + .emoji-react {
