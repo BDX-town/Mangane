@@ -16,7 +16,7 @@ const mapStateToProps = (state: RootState) => ({
 
 interface IEmojiSelector {
   allowedEmoji: ImmutableList<string>,
-  onReact: (emoji: string) => (e?: MouseEvent) => void,
+  onReact: (emoji: string) => void,
   onUnfocus: () => void,
   visible: boolean,
   focused?: boolean,
@@ -25,7 +25,7 @@ interface IEmojiSelector {
 class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
 
   static defaultProps: Partial<IEmojiSelector> = {
-    onReact: () => () => {},
+    onReact: () => {},
     onUnfocus: () => {},
     visible: false,
   }
@@ -87,10 +87,10 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     }
   }
 
-  handleReact = (emoji: string) => () => {
+  handleReact = (emoji: string) => (): void => {
     const { onReact, focused, onUnfocus } = this.props;
 
-    onReact(emoji)();
+    onReact(emoji);
 
     if (focused) {
       onUnfocus();

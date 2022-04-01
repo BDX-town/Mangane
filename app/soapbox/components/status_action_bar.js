@@ -168,24 +168,28 @@ class StatusActionBar extends ImmutablePureComponent {
 
     if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
-        this.handleReactClick(meEmojiReact)();
+        this.handleReact(meEmojiReact);
       } else {
         this.setState({ emojiSelectorVisible: true });
       }
     } else {
-      this.handleReactClick(meEmojiReact)();
+      this.handleReact(meEmojiReact);
     }
+  }
+
+  handleReact = emoji => {
+    const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
+    if (me) {
+      dispatch(simpleEmojiReact(status, emoji));
+    } else {
+      onOpenUnauthorizedModal('FAVOURITE');
+    }
+    this.setState({ emojiSelectorVisible: false });
   }
 
   handleReactClick = emoji => {
     return e => {
-      const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
-      if (me) {
-        dispatch(simpleEmojiReact(status, emoji));
-      } else {
-        onOpenUnauthorizedModal('FAVOURITE');
-      }
-      this.setState({ emojiSelectorVisible: false });
+      this.handleReact(emoji);
     };
   }
 
@@ -667,7 +671,7 @@ class StatusActionBar extends ImmutablePureComponent {
           onMouseLeave={this.handleLikeButtonLeave}
         >
           <EmojiSelector
-            onReact={this.handleReactClick}
+            onReact={this.handleReact}
             visible={features.emojiReacts && emojiSelectorVisible}
             focused={emojiSelectorFocused}
             onUnfocus={handleEmojiSelectorUnfocus}
