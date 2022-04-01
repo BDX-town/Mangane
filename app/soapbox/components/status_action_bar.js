@@ -10,6 +10,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import EmojiSelector from 'soapbox/components/emoji_selector';
+import { StatusAction, StatusActionButton } from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
@@ -643,25 +644,18 @@ class StatusActionBar extends ImmutablePureComponent {
 
     return (
       <div className='pt-4 flex flex-row space-x-2'>
-        <div className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-          <IconButton
-            title={replyTitle}
-            src={require('@tabler/icons/icons/message-circle.svg')}
-            onClick={this.handleReplyClick}
-            className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
-          />
+        <StatusActionButton
+          title={replyTitle}
+          icon={require('@tabler/icons/icons/message-circle.svg')}
+          onClick={this.handleReplyClick}
+          to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`}
+          count={replyCount}
+        />
 
-          {replyCount !== 0 ? (
-            <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`}>
-              <Text size='xs' theme='muted'>{replyCount}</Text>
-            </Link>
-          ) : null}
-        </div>
-
-        <div className='flex items-center space-x-0.5 p-1 text-gray-400 hover:text-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
+        <StatusAction>
           {reblogButton}
           {reblogCount !== 0 && <Text size='xs' theme='muted' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</Text>}
-        </div>
+        </StatusAction>
 
         <div
           ref={this.setRef}
@@ -704,9 +698,9 @@ class StatusActionBar extends ImmutablePureComponent {
 
         {shareButton}
 
-        <div className='flex items-center space-x-0.5 p-1 text-gray-400 hover:text-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
+        <StatusAction>
           <DropdownMenuContainer items={menu} title={intl.formatMessage(messages.more)} status={status} src={require('@tabler/icons/icons/dots.svg')} direction='right' />
-        </div>
+        </StatusAction>
       </div>
     );
   }

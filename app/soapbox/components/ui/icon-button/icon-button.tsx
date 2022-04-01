@@ -10,7 +10,7 @@ interface IIconButton {
   iconClassName?: string,
   disabled?: boolean,
   src: string,
-  onClick?: () => void,
+  onClick?: React.EventHandler<React.MouseEvent>,
   text?: string,
   title?: string,
   transparent?: boolean
