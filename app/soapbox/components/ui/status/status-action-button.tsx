@@ -6,13 +6,26 @@ import { IconButton, Text } from 'soapbox/components/ui';
 
 interface IStatusActionCounter {
   count: number,
+  onClick?: () => void,
   to?: string,
 }
 
 /** Action button numerical counter, eg "5" likes */
-const StatusActionCounter: React.FC<IStatusActionCounter> = ({ to, count = 0 }): JSX.Element => {
-  const text = <Text size='xs' theme='muted'>{count}</Text>;
-  return to ? <Link to={to}>{text}</Link> : text;
+const StatusActionCounter: React.FC<IStatusActionCounter> = ({ to = '#', onClick, count = 0 }): JSX.Element => {
+
+  const handleClick: React.EventHandler<React.MouseEvent> = e => {
+    if (onClick) {
+      onClick();
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
+
+  return (
+    <Link to={to} onClick={handleClick}>
+      <Text size='xs' theme='muted'>{count}</Text>
+    </Link>
+  );
 };
 
 interface IStatusActionButton {
@@ -61,4 +74,3 @@ const StatusActionButton: React.FC<IStatusActionButton> = ({ icon, title, to, ac
 };
 
 export { StatusAction, StatusActionButton, StatusActionCounter };
-export default StatusActionButton;

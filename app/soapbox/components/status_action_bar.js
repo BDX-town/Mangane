@@ -6,11 +6,15 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import EmojiSelector from 'soapbox/components/emoji_selector';
-import { StatusAction, StatusActionButton } from 'soapbox/components/status-action-button';
+import {
+  StatusAction,
+  StatusActionButton,
+  StatusActionCounter,
+} from 'soapbox/components/ui/status/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { isStaff, isAdmin } from 'soapbox/utils/accounts';
@@ -20,7 +24,7 @@ import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import { openModal } from '../actions/modals';
 
-import { IconButton, Text, Hoverable } from './ui';
+import { IconButton, Hoverable } from './ui';
 
 
 const messages = defineMessages({
@@ -345,10 +349,8 @@ class StatusActionBar extends ImmutablePureComponent {
     this.props.onToggleStatusSensitivity(this.props.status);
   }
 
-  handleOpenReblogsModal = (event) => {
+  handleOpenReblogsModal = () => {
     const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
-
-    event.stopPropagation();
 
     if (!me) onOpenUnauthorizedModal();
     else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
@@ -631,17 +633,6 @@ class StatusActionBar extends ImmutablePureComponent {
 
     const canShare = ('share' in navigator) && status.get('visibility') === 'public';
 
-    const shareButton = canShare && (
-      <div className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-        <IconButton
-          title={intl.formatMessage(messages.share)}
-          src={require('@tabler/icons/icons/upload.svg')}
-          onClick={this.handleShareClick}
-          className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
-        />
-      </div>
-    );
-
     return (
       <div className='pt-4 flex flex-row space-x-2'>
         <StatusActionButton
@@ -654,7 +645,9 @@ class StatusActionBar extends ImmutablePureComponent {
 
         <StatusAction>
           {reblogButton}
-          {reblogCount !== 0 && <Text size='xs' theme='muted' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</Text>}
+          {reblogCount > 0 && (
+            <StatusActionCounter onClick={this.handleOpenReblogsModal} count={reblogCount} />
+          )}
         </StatusAction>
 
         <div
@@ -685,18 +678,25 @@ class StatusActionBar extends ImmutablePureComponent {
             />
           </Hoverable>
 
-          {emojiReactCount !== 0 && (
+          {emojiReactCount > 0 && (
             (features.exposableReactions && !features.emojiReacts) ? (
-              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='pointer-events-none'>
-                <Text size='xs' theme='muted'>{emojiReactCount}</Text>
-              </Link>
+              <StatusActionCounter
+                to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`}
+                count={emojiReactCount}
+              />
             ) : (
-              <span className='detailed-status__link'>{emojiReactCount}</span>
+              <StatusActionCounter count={emojiReactCount} />
             )
           )}
         </div>
 
-        {shareButton}
+        {canShare && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.share)}
+            icon={require('@tabler/icons/icons/upload.svg')}
+            onClick={this.handleShareClick}
+          />
+        )}
 
         <StatusAction>
           <DropdownMenuContainer items={menu} title={intl.formatMessage(messages.more)} status={status} src={require('@tabler/icons/icons/dots.svg')} direction='right' />
