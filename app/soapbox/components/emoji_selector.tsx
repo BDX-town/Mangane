@@ -1,5 +1,4 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -8,51 +7,64 @@ import { connect } from 'react-redux';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import emojify from 'soapbox/features/emoji/emoji';
 
-const mapStateToProps = state => ({
-  allowedEmoji: getSoapboxConfig(state).get('allowedEmoji'),
+import type { List as ImmutableList } from 'immutable';
+import type { RootState } from 'soapbox/store';
+
+const mapStateToProps = (state: RootState) => ({
+  allowedEmoji: getSoapboxConfig(state).allowedEmoji,
 });
 
-export default @connect(mapStateToProps)
-class EmojiSelector extends ImmutablePureComponent {
+interface IEmojiSelector {
+  allowedEmoji: ImmutableList<string>,
+  onReact: (emoji: string) => (e?: MouseEvent) => void,
+  onUnfocus: () => void,
+  visible: boolean,
+  focused?: boolean,
+}
 
-  static propTypes = {
-    onReact: PropTypes.func.isRequired,
-    onUnfocus: PropTypes.func,
-    visible: PropTypes.bool,
-    focused: PropTypes.bool,
-  }
+class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
 
-  static defaultProps = {
-    onReact: () => {},
+  static defaultProps: Partial<IEmojiSelector> = {
+    onReact: () => () => {},
     onUnfocus: () => {},
     visible: false,
   }
 
-  handleBlur = e => {
+  node?: HTMLDivElement = undefined;
+
+  handleBlur: React.FocusEventHandler<HTMLDivElement> = e => {
     const { focused, onUnfocus } = this.props;
 
-    if (focused && (!e.relatedTarget || !e.relatedTarget.classList.contains('emoji-react-selector__emoji'))) {
+    if (focused && (!e.currentTarget || !e.currentTarget.classList.contains('emoji-react-selector__emoji'))) {
       onUnfocus();
     }
   }
 
-  _selectPreviousEmoji = i => {
+  _selectPreviousEmoji = (i: number): void => {
+    if (!this.node) return;
+
     if (i !== 0) {
-      this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i})`).focus();
+      const button: HTMLButtonElement | null = this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i})`);
+      button?.focus();
     } else {
-      this.node.querySelector('.emoji-react-selector__emoji:last-child').focus();
+      const button: HTMLButtonElement | null = this.node.querySelector('.emoji-react-selector__emoji:last-child');
+      button?.focus();
     }
   };
 
-  _selectNextEmoji = i => {
+  _selectNextEmoji = (i: number) => {
+    if (!this.node) return;
+
     if (i !== this.props.allowedEmoji.size - 1) {
-      this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i + 2})`).focus();
+      const button: HTMLButtonElement | null = this.node.querySelector(`.emoji-react-selector__emoji:nth-child(${i + 2})`);
+      button?.focus();
     } else {
-      this.node.querySelector('.emoji-react-selector__emoji:first-child').focus();
+      const button: HTMLButtonElement | null = this.node.querySelector('.emoji-react-selector__emoji:first-child');
+      button?.focus();
     }
   };
 
-  handleKeyDown = i => e => {
+  handleKeyDown = (i: number): React.KeyboardEventHandler => e => {
     const { onUnfocus } = this.props;
 
     switch (e.key) {
@@ -75,7 +87,7 @@ class EmojiSelector extends ImmutablePureComponent {
     }
   }
 
-  handleReact = emoji => () => {
+  handleReact = (emoji: string) => () => {
     const { onReact, focused, onUnfocus } = this.props;
 
     onReact(emoji)();
@@ -89,7 +101,7 @@ class EmojiSelector extends ImmutablePureComponent {
     open: () => {},
   };
 
-  setRef = c => {
+  setRef = (c: HTMLDivElement): void => {
     this.node = c;
   }
 
@@ -112,7 +124,7 @@ class EmojiSelector extends ImmutablePureComponent {
               className='emoji-react-selector__emoji'
               dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
               onClick={this.handleReact(emoji)}
-              onKeyDown={this.handleKeyDown(i, emoji)}
+              onKeyDown={this.handleKeyDown(i)}
               tabIndex={(visible || focused) ? 0 : -1}
             />
           ))}
@@ -122,3 +134,5 @@ class EmojiSelector extends ImmutablePureComponent {
   }
 
 }
+
+export default connect(mapStateToProps)(EmojiSelector);
