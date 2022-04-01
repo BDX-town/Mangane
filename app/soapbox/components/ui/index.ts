@@ -7,6 +7,7 @@ export { default as EmojiSelector } from './emoji-selector/emoji-selector';
 export { default as Form } from './form/form';
 export { default as FormActions } from './form-actions/form-actions';
 export { default as FormGroup } from './form-group/form-group';
+export { default as Hoverable } from './hoverable/hoverable';
 export { default as HStack } from './hstack/hstack';
 export { default as Icon } from './icon/icon';
 export { default as IconButton } from './icon-button/icon-button';

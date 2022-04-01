@@ -19,7 +19,7 @@ import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import { openModal } from '../actions/modals';
 
-import { IconButton, Text } from './ui';
+import { IconButton, Text, Hoverable } from './ui';
 
 
 const messages = defineMessages({
@@ -547,7 +547,6 @@ class StatusActionBar extends ImmutablePureComponent {
 
   render() {
     const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
-    const { emojiSelectorVisible } = this.state;
 
     const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
 
@@ -664,18 +663,17 @@ class StatusActionBar extends ImmutablePureComponent {
           {reblogCount !== 0 && <Text size='xs' theme='muted' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</Text>}
         </div>
 
-        <div
+        <Hoverable
           ref={this.setRef}
           className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-          onMouseEnter={this.handleLikeButtonHover}
-          onMouseLeave={this.handleLikeButtonLeave}
+          component={(
+            <EmojiSelector
+              onReact={this.handleReact}
+              focused={emojiSelectorFocused}
+              onUnfocus={handleEmojiSelectorUnfocus}
+            />
+          )}
         >
-          <EmojiSelector
-            onReact={this.handleReact}
-            visible={features.emojiReacts && emojiSelectorVisible}
-            focused={emojiSelectorFocused}
-            onUnfocus={handleEmojiSelectorUnfocus}
-          />
           <IconButton
             className={classNames({
               'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
@@ -698,7 +696,7 @@ class StatusActionBar extends ImmutablePureComponent {
               <span className='detailed-status__link'>{emojiReactCount}</span>
             )
           )}
-        </div>
+        </Hoverable>
 
         {shareButton}
 
