@@ -5,7 +5,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import emojify from 'soapbox/features/emoji/emoji';
+import { Emoji } from 'soapbox/components/ui';
 
 import type { List as ImmutableList } from 'immutable';
 import type { RootState } from 'soapbox/store';
@@ -109,12 +109,9 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
     const { visible, focused, allowedEmoji } = this.props;
 
     return (
-      <HotKeys
-        handlers={this.handlers}
-        className='emoji-react-selector-container'
-      >
+      <HotKeys handlers={this.handlers}>
         <div
-          className={classNames('emoji-react-selector w-max', { 'emoji-react-selector--visible': visible, 'emoji-react-selector--focused': focused })}
+          className={classNames('flex absolute bg-white dark:bg-slate-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
           onBlur={this.handleBlur}
           ref={this.setRef}
         >
@@ -122,11 +119,12 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
             <button
               key={i}
               className='emoji-react-selector__emoji'
-              dangerouslySetInnerHTML={{ __html: emojify(emoji) }}
               onClick={this.handleReact(emoji)}
               onKeyDown={this.handleKeyDown(i)}
               tabIndex={(visible || focused) ? 0 : -1}
-            />
+            >
+              <Emoji emoji={emoji} />
+            </button>
           ))}
         </div>
       </HotKeys>
