@@ -62,7 +62,12 @@ const StatusActionButton: React.FC<IStatusActionButton> = ({ icon, title, to, ac
         src={icon}
         onClick={handleClick}
         className={classNames('text-gray-400 hover:text-gray-600 dark:hover:text-white', {
-          'text-success-600 hover:text-success-600': active,
+          'text-accent-300 hover:text-accent-300': active,
+          // TODO: repost button
+          // 'text-success-600 hover:text-success-600': active,
+        })}
+        iconClassName={classNames({
+          'fill-accent-300': active,
         })}
       />
 

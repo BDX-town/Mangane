@@ -167,8 +167,6 @@ class StatusActionBar extends ImmutablePureComponent {
   handleLikeButtonClick = e => {
     const { features } = this.props;
 
-    e.stopPropagation();
-
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
 
     if (features.emojiReacts && isUserTouching()) {
@@ -650,45 +648,56 @@ class StatusActionBar extends ImmutablePureComponent {
           )}
         </StatusAction>
 
-        <div
-          ref={this.setRef}
-          className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-        >
-          <Hoverable
-            component={(
-              <EmojiSelector
-                onReact={this.handleReact}
-                focused={emojiSelectorFocused}
-                onUnfocus={handleEmojiSelectorUnfocus}
-              />
-            )}
+        {features.emojiReacts ? (
+          <div
+            ref={this.setRef}
+            className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
           >
-            <IconButton
-              className={classNames({
-                'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
-                'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
-              })}
-              title={meEmojiTitle}
-              src={require('@tabler/icons/icons/heart.svg')}
-              iconClassName={classNames({
-                'fill-accent-300': Boolean(meEmojiReact),
-              })}
-              // emoji={meEmojiReact}
-              onClick={this.handleLikeButtonClick}
-            />
-          </Hoverable>
-
-          {emojiReactCount > 0 && (
-            (features.exposableReactions && !features.emojiReacts) ? (
-              <StatusActionCounter
-                to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`}
-                count={emojiReactCount}
+            <Hoverable
+              component={(
+                <EmojiSelector
+                  onReact={this.handleReact}
+                  focused={emojiSelectorFocused}
+                  onUnfocus={handleEmojiSelectorUnfocus}
+                />
+              )}
+            >
+              <IconButton
+                className={classNames({
+                  'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
+                  'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+                })}
+                title={meEmojiTitle}
+                src={require('@tabler/icons/icons/heart.svg')}
+                iconClassName={classNames({
+                  'fill-accent-300': Boolean(meEmojiReact),
+                })}
+                // emoji={meEmojiReact}
+                onClick={this.handleLikeButtonClick}
               />
-            ) : (
-              <StatusActionCounter count={emojiReactCount} />
-            )
-          )}
-        </div>
+            </Hoverable>
+
+            {emojiReactCount > 0 && (
+              (features.exposableReactions && !features.emojiReacts) ? (
+                <StatusActionCounter
+                  to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`}
+                  count={emojiReactCount}
+                />
+              ) : (
+                <StatusActionCounter count={emojiReactCount} />
+              )
+            )}
+          </div>
+        ): (
+          <StatusActionButton
+            title={intl.formatMessage(messages.favourite)}
+            icon={require('@tabler/icons/icons/heart.svg')}
+            onClick={this.handleLikeButtonClick}
+            active={Boolean(meEmojiReact)}
+            to={features.exposableReactions ? `/@${status.getIn(['account', 'acct'])}/posts/${status.id}/likes`: undefined}
+            count={favouriteCount}
+          />
+        )}
 
         {canShare && (
           <StatusActionButton
