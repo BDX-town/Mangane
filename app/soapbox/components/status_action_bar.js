@@ -663,30 +663,34 @@ class StatusActionBar extends ImmutablePureComponent {
           {reblogCount !== 0 && <Text size='xs' theme='muted' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</Text>}
         </div>
 
-        <Hoverable
+        <div
           ref={this.setRef}
           className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-          component={(
-            <EmojiSelector
-              onReact={this.handleReact}
-              focused={emojiSelectorFocused}
-              onUnfocus={handleEmojiSelectorUnfocus}
-            />
-          )}
         >
-          <IconButton
-            className={classNames({
-              'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
-              'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
-            })}
-            title={meEmojiTitle}
-            src={require('@tabler/icons/icons/heart.svg')}
-            iconClassName={classNames({
-              'fill-accent-300': Boolean(meEmojiReact),
-            })}
-            // emoji={meEmojiReact}
-            onClick={this.handleLikeButtonClick}
-          />
+          <Hoverable
+            component={(
+              <EmojiSelector
+                onReact={this.handleReact}
+                focused={emojiSelectorFocused}
+                onUnfocus={handleEmojiSelectorUnfocus}
+              />
+            )}
+          >
+            <IconButton
+              className={classNames({
+                'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
+                'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+              })}
+              title={meEmojiTitle}
+              src={require('@tabler/icons/icons/heart.svg')}
+              iconClassName={classNames({
+                'fill-accent-300': Boolean(meEmojiReact),
+              })}
+              // emoji={meEmojiReact}
+              onClick={this.handleLikeButtonClick}
+            />
+          </Hoverable>
+
           {emojiReactCount !== 0 && (
             (features.exposableReactions && !features.emojiReacts) ? (
               <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='pointer-events-none'>
@@ -696,7 +700,7 @@ class StatusActionBar extends ImmutablePureComponent {
               <span className='detailed-status__link'>{emojiReactCount}</span>
             )
           )}
-        </Hoverable>
+        </div>
 
         {shareButton}
 
