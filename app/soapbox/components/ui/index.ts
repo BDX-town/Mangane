@@ -3,6 +3,7 @@ export { default as Button } from './button/button';
 export { Card, CardBody, CardHeader, CardTitle } from './card/card';
 export { default as Column } from './column/column';
 export { default as Emoji } from './emoji/emoji';
+export { default as EmojiSelector } from './emoji-selector/emoji-selector';
 export { default as Form } from './form/form';
 export { default as FormActions } from './form-actions/form-actions';
 export { default as FormGroup } from './form-group/form-group';

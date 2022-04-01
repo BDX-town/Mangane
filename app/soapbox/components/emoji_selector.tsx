@@ -1,11 +1,11 @@
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import { Emoji } from 'soapbox/components/ui';
+import { EmojiSelector as RealEmojiSelector } from 'soapbox/components/ui';
 
 import type { List as ImmutableList } from 'immutable';
 import type { RootState } from 'soapbox/store';
@@ -106,11 +106,11 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
   }
 
   render() {
-    const { visible, focused, allowedEmoji } = this.props;
+    const { visible, focused, allowedEmoji, onReact } = this.props;
 
     return (
       <HotKeys handlers={this.handlers}>
-        <div
+        {/*<div
           className={classNames('flex absolute bg-white dark:bg-slate-500 px-2 py-3 rounded-full shadow-md opacity-0 pointer-events-none duration-100 w-max', { 'opacity-100 pointer-events-auto z-[999]': visible || focused })}
           onBlur={this.handleBlur}
           ref={this.setRef}
@@ -126,7 +126,13 @@ class EmojiSelector extends ImmutablePureComponent<IEmojiSelector> {
               <Emoji emoji={emoji} />
             </button>
           ))}
-        </div>
+        </div>*/}
+        <RealEmojiSelector
+          emojis={allowedEmoji.toArray()}
+          onReact={onReact}
+          visible={visible}
+          focused={focused}
+        />
       </HotKeys>
     );
   }
