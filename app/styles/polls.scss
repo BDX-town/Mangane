@@ -134,9 +134,7 @@
   }
 
   &__footer {
-    padding-top: 6px;
-    padding-bottom: 5px;
-    color: var(--primary-text-color);
+    @apply pt-1.5 pb-[5px] text-black dark:text-white;
   }
 
   &__link {
@@ -167,11 +165,10 @@
   }
 
   &__cancel {
-    height: 20px;
+    @apply h-5;
 
     .svg-icon {
-      height: 20px;
-      width: 20px;
+      @apply h-5 w-5;
     }
   }
 }
@@ -196,13 +193,7 @@
   }
 
   .button.button-secondary {
-    font-size: 14px;
-    font-weight: 400;
-    padding: 6px 10px;
-    height: auto;
-    line-height: inherit;
-    color: var(--brand-color);
-    border-color: var(--brand-color);
+    @apply h-auto py-1.5 px-2.5 text-primary-600 border-primary-600;
   }
 
   li {
