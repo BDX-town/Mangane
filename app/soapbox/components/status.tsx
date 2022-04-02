@@ -3,7 +3,7 @@ import React from 'react';
 import { HotKeys } from 'react-hotkeys';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl, FormattedMessage, IntlShape } from 'react-intl';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter, RouteComponentProps } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
@@ -61,7 +61,7 @@ export const defaultMediaVisibility = (status: StatusEntity, displayMedia: strin
   return (displayMedia !== 'hide_all' && !status.sensitive || displayMedia === 'show_all');
 };
 
-interface IStatus {
+interface IStatus extends RouteComponentProps {
   intl: IntlShape,
   status: StatusEntity,
   account: AccountEntity,
@@ -674,5 +674,4 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
 }
 
-// @ts-ignore WHY
 export default withRouter(injectIntl(Status));
