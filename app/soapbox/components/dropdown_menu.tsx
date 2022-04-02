@@ -223,12 +223,12 @@ const RouterDropdownMenu = withRouter(DropdownMenu);
 
 export interface IDropdown extends RouteComponentProps {
   icon?: string,
-  src: string,
+  src?: string,
   items: Menu,
   size?: number,
   active?: boolean,
   pressed?: boolean,
-  title: string,
+  title?: string,
   disabled?: boolean,
   status?: Status,
   isUserTouching?: () => boolean,
@@ -245,6 +245,7 @@ export interface IDropdown extends RouteComponentProps {
   openedViaKeyboard?: boolean,
   text?: string,
   onShiftClick?: React.EventHandler<React.MouseEvent | React.KeyboardEvent>,
+  children?: JSX.Element,
 }
 
 interface IDropdownState {
@@ -355,27 +356,38 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
   }
 
   render() {
-    const { src, items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text } = this.props;
+    const { src = require('@tabler/icons/icons/dots.svg'), items, title, disabled, dropdownPlacement, openDropdownId, openedViaKeyboard = false, pressed, text, children } = this.props;
     const open = this.state.id === openDropdownId;
 
     return (
       <>
-        <IconButton
-          disabled={disabled}
-          className={classNames({
-            'text-gray-400 hover:text-gray-600': true,
-            'text-gray-600': open,
-          })}
-          title={title}
-          src={src}
-          aria-pressed={pressed}
-          text={text}
-          onClick={this.handleClick}
-          onMouseDown={this.handleMouseDown}
-          onKeyDown={this.handleButtonKeyDown}
-          onKeyPress={this.handleKeyPress}
-          ref={this.setTargetRef}
-        />
+        {children ? (
+          React.cloneElement(children, {
+            disabled,
+            onClick: this.handleClick,
+            onMouseDown: this.handleMouseDown,
+            onKeyDown: this.handleButtonKeyDown,
+            onKeyPress: this.handleKeyPress,
+            ref: this.setTargetRef,
+          })
+        ) : (
+          <IconButton
+            disabled={disabled}
+            className={classNames({
+              'text-gray-400 hover:text-gray-600': true,
+              'text-gray-600': open,
+            })}
+            title={title}
+            src={src}
+            aria-pressed={pressed}
+            text={text}
+            onClick={this.handleClick}
+            onMouseDown={this.handleMouseDown}
+            onKeyDown={this.handleButtonKeyDown}
+            onKeyPress={this.handleKeyPress}
+            ref={this.setTargetRef}
+          />
+        )}
 
         <Overlay show={open} placement={dropdownPlacement} target={this.findTarget}>
           <RouterDropdownMenu items={items} onClose={this.handleClose} openedViaKeyboard={openedViaKeyboard} />

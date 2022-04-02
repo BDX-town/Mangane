@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
@@ -8,19 +7,14 @@ import { withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import EmojiSelector from 'soapbox/components/emoji_selector';
-import {
-  StatusAction,
-  StatusActionButton,
-  StatusActionCounter,
-} from 'soapbox/components/ui/status/status-action-button';
+import Hoverable from 'soapbox/components/hoverable';
+import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 
 import { openModal } from '../actions/modals';
-
-import { IconButton, Hoverable } from './ui';
 
 import type { History } from 'history';
 import type { AnyAction, Dispatch } from 'redux';
@@ -171,7 +165,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     }
   }
 
-  handleLikeButtonClick = () => {
+  handleLikeButtonClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { features } = this.props;
 
     const reactForStatus = getReactForStatus(this.props.status, this.props.allowedEmoji);
@@ -186,6 +180,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     } else {
       this.handleReact(meEmojiReact);
     }
+
+    e.stopPropagation();
   }
 
   handleReact = (emoji: string): void => {
@@ -204,13 +200,15 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     };
   }
 
-  handleFavouriteClick: React.EventHandler<React.MouseEvent> = () => {
+  handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { me, onFavourite, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
       onFavourite(status);
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
+
+    e.stopPropagation();
   }
 
   handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -589,47 +587,30 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    let reblogButton;
+    const reblogMenu = [
+      {
+        text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
+        action: this.handleReblogClick,
+        icon: require('@tabler/icons/icons/repeat.svg'),
+      },
+      {
+        text: intl.formatMessage(messages.quotePost),
+        action: this.handleQuoteClick,
+        icon: require('@tabler/icons/icons/quote.svg'),
+      },
+    ];
 
-    if (me && features.quotePosts) {
-      const reblogMenu = [
-        {
-          text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
-          action: this.handleReblogClick,
-          icon: require('@tabler/icons/icons/repeat.svg'),
-        },
-        {
-          text: intl.formatMessage(messages.quotePost),
-          action: this.handleQuoteClick,
-          icon: require('@tabler/icons/icons/quote.svg'),
-        },
-      ];
-
-      reblogButton = (
-        <DropdownMenuContainer
-          items={reblogMenu}
-          disabled={!publicStatus}
-          active={status.reblogged}
-          pressed={status.reblogged}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          onShiftClick={this.handleReblogClick}
-        />
-      );
-    } else {
-      reblogButton = (
-        <IconButton
-          disabled={!publicStatus}
-          className={classNames({
-            'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-white': !status.reblogged,
-            'text-success-600 group-hover:text-success-600': status.reblogged,
-          })}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          onClick={this.handleReblogClick}
-        />
-      );
-    }
+    const reblogButton = (
+      <StatusActionButton
+        icon={reblogIcon}
+        color='success'
+        disabled={!publicStatus}
+        title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+        active={status.reblogged}
+        onClick={this.handleReblogClick}
+        count={reblogCount}
+      />
+    );
 
     if (!status.in_reply_to_id) {
       replyTitle = intl.formatMessage(messages.reply);
@@ -648,55 +629,40 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           count={replyCount}
         />
 
-        <StatusAction>
-          {reblogButton}
-          {reblogCount > 0 && (
-            <StatusActionCounter count={reblogCount} />
-          )}
-        </StatusAction>
+        {features.quotePosts && me ? (
+          <DropdownMenuContainer items={reblogMenu} onShiftClick={this.handleReblogClick}>
+            {reblogButton}
+          </DropdownMenuContainer>
+        ) : (
+          reblogButton
+        )}
 
         {features.emojiReacts ? (
-          <div
-            ref={this.setRef}
-            className='group flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-          >
-            <Hoverable
-              component={(
-                <EmojiSelector
-                  onReact={this.handleReact}
-                  focused={emojiSelectorFocused}
-                  onUnfocus={handleEmojiSelectorUnfocus}
-                /> as any
-              )}
-            >
-              <IconButton
-                className={classNames({
-                  'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-white': !meEmojiReact,
-                  'text-accent-300 group-hover:text-accent-300': Boolean(meEmojiReact),
-                })}
-                title={meEmojiTitle}
-                src={require('@tabler/icons/icons/heart.svg')}
-                iconClassName={classNames({
-                  'fill-accent-300': Boolean(meEmojiReact),
-                })}
-                // emoji={meEmojiReact}
-                onClick={this.handleLikeButtonClick}
+          <Hoverable
+            component={(
+              <EmojiSelector
+                onReact={this.handleReact}
+                focused={emojiSelectorFocused}
+                onUnfocus={handleEmojiSelectorUnfocus}
               />
-            </Hoverable>
-
-            {emojiReactCount > 0 && (
-              (features.exposableReactions && !features.emojiReacts) ? (
-                <StatusActionCounter count={emojiReactCount} />
-              ) : (
-                <StatusActionCounter count={emojiReactCount} />
-              )
             )}
-          </div>
+          >
+            <StatusActionButton
+              title={meEmojiTitle}
+              icon={require('@tabler/icons/icons/thumb-up.svg')}
+              color='accent'
+              onClick={this.handleLikeButtonClick}
+              active={Boolean(meEmojiReact)}
+              count={emojiReactCount}
+            />
+          </Hoverable>
         ): (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}
             icon={require('@tabler/icons/icons/heart.svg')}
-            onClick={this.handleLikeButtonClick}
+            color='accent'
+            fill='accent'
+            onClick={this.handleFavouriteClick}
             active={Boolean(meEmojiReact)}
             count={favouriteCount}
           />
@@ -710,14 +676,12 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           />
         )}
 
-        <StatusAction>
-          <DropdownMenuContainer
-            items={menu}
+        <DropdownMenuContainer items={menu} status={status}>
+          <StatusActionButton
             title={intl.formatMessage(messages.more)}
-            status={status}
-            src={require('@tabler/icons/icons/dots.svg')}
+            icon={require('@tabler/icons/icons/dots.svg')}
           />
-        </StatusAction>
+        </DropdownMenuContainer>
       </div>
     );
   }

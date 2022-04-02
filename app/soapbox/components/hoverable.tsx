@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { usePopper } from 'react-popper';
 
 interface IHoverable {
-  component: React.Component,
+  component: JSX.Element,
 }
 
 /** Wrapper to render a given component when hovered */
