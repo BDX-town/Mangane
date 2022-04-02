@@ -646,21 +646,20 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           title={replyTitle}
           icon={require('@tabler/icons/icons/message-circle.svg')}
           onClick={this.handleReplyClick}
-          to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`}
           count={replyCount}
         />
 
         <StatusAction>
           {reblogButton}
           {reblogCount > 0 && (
-            <StatusActionCounter onClick={this.handleOpenReblogsModal} count={reblogCount} />
+            <StatusActionCounter count={reblogCount} />
           )}
         </StatusAction>
 
         {features.emojiReacts ? (
           <div
             ref={this.setRef}
-            className='flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
+            className='group flex relative items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
           >
             <Hoverable
               component={(
@@ -673,8 +672,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
             >
               <IconButton
                 className={classNames({
-                  'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
-                  'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+                  'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-white': !meEmojiReact,
+                  'text-accent-300 group-hover:text-accent-300': Boolean(meEmojiReact),
                 })}
                 title={meEmojiTitle}
                 src={require('@tabler/icons/icons/heart.svg')}
@@ -688,10 +687,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
             {emojiReactCount > 0 && (
               (features.exposableReactions && !features.emojiReacts) ? (
-                <StatusActionCounter
-                  to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`}
-                  count={emojiReactCount}
-                />
+                <StatusActionCounter count={emojiReactCount} />
               ) : (
                 <StatusActionCounter count={emojiReactCount} />
               )
@@ -703,7 +699,6 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
             icon={require('@tabler/icons/icons/heart.svg')}
             onClick={this.handleLikeButtonClick}
             active={Boolean(meEmojiReact)}
-            to={features.exposableReactions ? `/@${status.getIn(['account', 'acct'])}/posts/${status.id}/likes`: undefined}
             count={favouriteCount}
           />
         )}
