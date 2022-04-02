@@ -622,8 +622,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         <IconButton
           disabled={!publicStatus}
           className={classNames({
-            'text-gray-400 hover:text-gray-600 dark:hover:text-white': !status.get('reblogged'),
-            'text-success-600 hover:text-success-600': status.get('reblogged'),
+            'text-gray-400 group-hover:text-gray-600 dark:group-hover:text-white': !status.reblogged,
+            'text-success-600 group-hover:text-success-600': status.reblogged,
           })}
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
           src={reblogIcon}
