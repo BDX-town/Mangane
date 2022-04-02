@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { injectIntl, defineMessages } from 'react-intl';
+import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import IconButton from 'soapbox/components/icon_button';
+import { setupListEditor, clearListSuggestions, resetListEditor } from 'soapbox/actions/lists';
+import { Modal } from 'soapbox/components/ui';
 
-import { setupListEditor, clearListSuggestions, resetListEditor } from '../../actions/lists';
 import ColumnSubheading from '../ui/components/column_subheading';
 
 import Account from './components/account';
@@ -66,13 +66,10 @@ class ListEditor extends ImmutablePureComponent {
     const { accountIds, searchAccountIds, intl } = this.props;
 
     return (
-      <div className='modal-root__modal compose-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            {intl.formatMessage(messages.editList)}
-          </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
-        </div>
+      <Modal
+        title={<FormattedMessage id='lists.edit' defaultMessage='Edit list' />}
+        onClose={this.onClickClose}
+      >
         <div className='compose-modal__content list-editor__content'>
           <div className='list-editor'>
             <ColumnSubheading text={intl.formatMessage(messages.changeTitle)} />
@@ -97,7 +94,7 @@ class ListEditor extends ImmutablePureComponent {
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 

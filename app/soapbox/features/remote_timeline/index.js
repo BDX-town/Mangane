@@ -107,6 +107,7 @@ class RemoteTimeline extends React.PureComponent {
               values={{ instance }}
             />
           }
+          divideType='space'
         />
       </Column>
     );
