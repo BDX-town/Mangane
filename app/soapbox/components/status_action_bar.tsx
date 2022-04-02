@@ -24,6 +24,7 @@ import { IconButton, Hoverable } from './ui';
 
 import type { History } from 'history';
 import type { AnyAction, Dispatch } from 'redux';
+import type { Menu } from 'soapbox/components/dropdown_menu';
 import type { RootState } from 'soapbox/store';
 import type { Status } from 'soapbox/types/entities';
 import type { Features } from 'soapbox/utils/features';
@@ -367,7 +368,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     const ownAccount = status.getIn(['account', 'id']) === me;
     const username = String(status.getIn(['account', 'username']));
 
-    const menu = [];
+    const menu: Menu = [];
 
     menu.push({
       text: intl.formatMessage(messages.open),
@@ -487,13 +488,13 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           text: intl.formatMessage(messages.admin_account, { name: username }),
           href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
           icon: require('@tabler/icons/icons/gavel.svg'),
-          action: (event: Event) => event.stopPropagation(),
+          action: (event) => event.stopPropagation(),
         });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
           href: `/pleroma/admin/#/statuses/${status.get('id')}/`,
           icon: require('@tabler/icons/icons/pencil.svg'),
-          action: (event: Event) => event.stopPropagation(),
+          action: (event) => event.stopPropagation(),
         });
       }
 
@@ -607,13 +608,11 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       reblogButton = (
         <DropdownMenuContainer
           items={reblogMenu}
-          // @ts-ignore
           disabled={!publicStatus}
-          active={status.get('reblogged')}
-          pressed={status.get('reblogged')}
+          active={status.reblogged}
+          pressed={status.reblogged}
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
           src={reblogIcon}
-          direction='right'
           onShiftClick={this.handleReblogClick}
         />
       );
@@ -714,11 +713,9 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         <StatusAction>
           <DropdownMenuContainer
             items={menu}
-            // @ts-ignore
             title={intl.formatMessage(messages.more)}
             status={status}
             src={require('@tabler/icons/icons/dots.svg')}
-            direction='right'
           />
         </StatusAction>
       </div>
