@@ -149,6 +149,7 @@ class ListTimeline extends React.PureComponent {
           timelineId={`list:${id}`}
           onLoadMore={this.handleLoadMore}
           emptyMessage={emptyMessage}
+          divideType='space'
         />
       </Column>
     );

@@ -7,15 +7,15 @@ import { defineMessages, FormattedMessage, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import Toggle from 'react-toggle';
 
+import { blockAccount } from 'soapbox/actions/accounts';
+import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from 'soapbox/actions/reports';
+import { expandAccountTimeline } from 'soapbox/actions/timelines';
+import { Button, Modal } from 'soapbox/components/ui';
+import { makeGetAccount } from 'soapbox/selectors';
 import { isRemote, getDomain } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
-import { blockAccount } from '../../../actions/accounts';
-import { changeReportComment, changeReportForward, changeReportBlock, submitReport } from '../../../actions/reports';
-import { expandAccountTimeline } from '../../../actions/timelines';
-import IconButton from '../../../components/icon_button';
-import { Button } from '../../../components/ui';
-import { makeGetAccount } from '../../../selectors';
+
 import StatusCheckBox from '../../report/containers/status_check_box_container';
 
 const messages = defineMessages({
@@ -107,12 +107,10 @@ class ReportModal extends ImmutablePureComponent {
     }
 
     return (
-      <div className='modal-root__modal report-modal'>
-        <div className='report-modal__target'>
-          <IconButton className='media-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
-          <FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>{account.get('acct')}</strong> }} />
-        </div>
-
+      <Modal
+        title={<FormattedMessage id='report.target' defaultMessage='Reporting {target}' values={{ target: <strong>{account.get('acct')}</strong> }} />}
+        onClose={onClose}
+      >
         <div className='report-modal__container'>
           <div className='report-modal__comment'>
             <p><FormattedMessage id='report.hint' defaultMessage='The report will be sent to your server moderators. You can provide an explanation of why you are reporting this account below:' /></p>
@@ -156,7 +154,7 @@ class ReportModal extends ImmutablePureComponent {
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 

@@ -6,13 +6,14 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
+import { fetchLists } from 'soapbox/actions/lists';
+import ScrollableList from 'soapbox/components/scrollable_list';
 import { Spinner } from 'soapbox/components/ui';
+import { CardHeader, CardTitle } from 'soapbox/components/ui';
 
-import { fetchLists } from '../../actions/lists';
-import ScrollableList from '../../components/scrollable_list';
+
 import Column from '../ui/components/column';
 import ColumnLink from '../ui/components/column_link';
-import ColumnSubheading from '../ui/components/column_subheading';
 
 import NewListForm from './components/new_list_form';
 
@@ -65,10 +66,14 @@ class Lists extends ImmutablePureComponent {
     return (
       <Column icon='list-ul' label={intl.formatMessage(messages.heading)}>
         <br />
-        <ColumnSubheading text={intl.formatMessage(messages.add)} />
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.add)} />
+        </CardHeader>
         <NewListForm />
         <br />
-        <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
+        <CardHeader>
+          <CardTitle title={intl.formatMessage(messages.subheading)} />
+        </CardHeader>
         <ScrollableList
           scrollKey='lists'
           emptyMessage={emptyMessage}
