@@ -83,7 +83,7 @@ const Header = () => {
               />
             </div>
             <Link to='/' className='z-10'>
-              <img alt='Logo' src={logo} className='h-6 w-auto min-w-[160px] cursor-pointer' />
+              <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
               <span className='hidden'>{intl.formatMessage(messages.home)}</span>
             </Link>
           </div>
