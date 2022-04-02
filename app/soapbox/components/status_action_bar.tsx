@@ -148,8 +148,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleShareClick = () => {
     navigator.share({
-      text: this.props.status.get('search_index'),
-      url: this.props.status.get('url'),
+      text: this.props.status.search_index,
+      url: this.props.status.url,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
@@ -256,22 +256,22 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onMention(this.props.status.get('account'), this.props.history);
+    this.props.onMention(this.props.status.account, this.props.history);
   }
 
   handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDirect(this.props.status.get('account'), this.props.history);
+    this.props.onDirect(this.props.status.account, this.props.history);
   }
 
   handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onChat(this.props.status.get('account'), this.props.history);
+    this.props.onChat(this.props.status.account, this.props.history);
   }
 
   handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onMute(this.props.status.get('account'));
+    this.props.onMute(this.props.status.account);
   }
 
   handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
@@ -281,7 +281,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.id}`);
   }
 
   handleEmbed = () => {
@@ -299,7 +299,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   }
 
   handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
-    const url      = this.props.status.get('url');
+    const { url }  = this.props.status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
@@ -332,7 +332,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   //
   //   e.stopPropagation();
   //
-  //   this.props.onGroupRemoveStatus(status.getIn(['group', 'id']), status.get('id'));
+  //   this.props.onGroupRemoveStatus(status.getIn(['group', 'id']), status.id);
   // }
 
   handleDeactivateUser: React.EventHandler<React.MouseEvent> = (e) => {
@@ -364,7 +364,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
   _makeMenu = (publicStatus: boolean) => {
     const { status, intl, withDismiss, me, features, isStaff, isAdmin } = this.props;
-    const mutingConversation = status.get('muted');
+    const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
     const username = String(status.getIn(['account', 'username']));
 
@@ -395,9 +395,9 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
 
     if (features.bookmarks) {
       menu.push({
-        text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+        text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: this.handleBookmarkClick,
-        icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+        icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
       });
     }
 
@@ -415,14 +415,14 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     if (ownAccount) {
       if (publicStatus) {
         menu.push({
-          text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin),
+          text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: this.handlePinClick,
           icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
         });
       } else {
-        if (status.get('visibility') === 'private') {
+        if (status.visibility === 'private') {
           menu.push({
-            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
             icon: require('@tabler/icons/icons/repeat.svg'),
           });
@@ -492,14 +492,14 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
-          href: `/pleroma/admin/#/statuses/${status.get('id')}/`,
+          href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/icons/pencil.svg'),
           action: (event) => event.stopPropagation(),
         });
       }
 
       menu.push({
-        text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+        text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
         action: this.handleToggleStatusSensitivity,
         icon: require('@tabler/icons/icons/alert-triangle.svg'),
       });
@@ -558,11 +558,11 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   render() {
     const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
 
-    const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
+    const publicStatus = ['public', 'unlisted'].includes(status.visibility);
 
-    const replyCount = status.get('replies_count');
-    const reblogCount = status.get('reblogs_count');
-    const favouriteCount = status.get('favourites_count');
+    const replyCount = status.replies_count;
+    const reblogCount = status.reblogs_count;
+    const favouriteCount = status.favourites_count;
     const emojiReactCount = reduceEmoji(
       (status.getIn(['pleroma', 'emoji_reactions']) || ImmutableList()) as ImmutableList<any>,
       favouriteCount,
@@ -583,9 +583,9 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
     let replyTitle;
 
-    if (status.get('visibility') === 'direct') {
+    if (status.visibility === 'direct') {
       reblogIcon = require('@tabler/icons/icons/mail.svg');
-    } else if (status.get('visibility') === 'private') {
+    } else if (status.visibility === 'private') {
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
@@ -594,7 +594,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     if (me && features.quotePosts) {
       const reblogMenu = [
         {
-          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
+          text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
           action: this.handleReblogClick,
           icon: require('@tabler/icons/icons/repeat.svg'),
         },
@@ -631,13 +631,13 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       );
     }
 
-    if (status.get('in_reply_to_id', null) === null) {
+    if (!status.in_reply_to_id) {
       replyTitle = intl.formatMessage(messages.reply);
     } else {
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
-    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
+    const canShare = ('share' in navigator) && status.visibility === 'public';
 
     return (
       <div className='pt-4 flex flex-row space-x-2'>
