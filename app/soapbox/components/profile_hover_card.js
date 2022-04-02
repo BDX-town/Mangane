@@ -17,7 +17,6 @@ import ActionButton from 'soapbox/features/ui/components/action_button';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import { UserPanel } from 'soapbox/features/ui/util/async-components';
 import { makeGetAccount } from 'soapbox/selectors';
-import { isAdmin, isModerator } from 'soapbox/utils/accounts';
 
 import { showProfileHoverCard } from './hover_ref_wrapper';
 import { Card, CardBody, Stack, Text } from './ui';
@@ -27,9 +26,9 @@ const getAccount = makeGetAccount();
 const getBadges = (account) => {
   const badges = [];
 
-  if (isAdmin(account)) {
+  if (account.admin) {
     badges.push(<Badge key='admin' slug='admin' title='Admin' />);
-  } else if (isModerator(account)) {
+  } else if (account.moderator) {
     badges.push(<Badge key='moderator' slug='moderator' title='Moderator' />);
   }
 

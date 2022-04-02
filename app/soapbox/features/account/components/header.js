@@ -18,12 +18,8 @@ import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import {
-  isStaff,
-  isAdmin,
-  isModerator,
   isLocal,
   isRemote,
-  getDomain,
 } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -322,7 +318,7 @@ class Header extends ImmutablePureComponent {
     }
 
     if (isRemote(account)) {
-      const domain = getDomain(account);
+      const domain = account.fqn.split('@')[1];
 
       menu.push(null);
 
@@ -341,10 +337,10 @@ class Header extends ImmutablePureComponent {
       }
     }
 
-    if (isStaff(meAccount)) {
+    if (meAccount.staff) {
       menu.push(null);
 
-      if (isAdmin(meAccount)) {
+      if (meAccount.admin) {
         menu.push({
           text: intl.formatMessage(messages.admin_account, { name: account.get('username') }),
           to: `/pleroma/admin/#/users/${account.id}/`,
@@ -353,8 +349,8 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (account.get('id') !== me && isLocal(account) && isAdmin(meAccount)) {
-        if (isAdmin(account)) {
+      if (account.id !== me && isLocal(account) && meAccount.admin) {
+        if (account.admin) {
           menu.push({
             text: intl.formatMessage(messages.demoteToModerator, { name: account.get('username') }),
             action: this.props.onPromoteToModerator,
@@ -365,7 +361,7 @@ class Header extends ImmutablePureComponent {
             action: this.props.onDemoteToUser,
             icon: require('@tabler/icons/icons/arrow-down-circle.svg'),
           });
-        } else if (isModerator(account)) {
+        } else if (account.moderator) {
           menu.push({
             text: intl.formatMessage(messages.promoteToAdmin, { name: account.get('username') }),
             action: this.props.onPromoteToAdmin,
@@ -404,7 +400,7 @@ class Header extends ImmutablePureComponent {
         });
       }
 
-      if (features.suggestionsV2 && isAdmin(meAccount)) {
+      if (features.suggestionsV2 && meAccount.admin) {
         if (account.getIn(['pleroma', 'is_suggested'])) {
           menu.push({
             text: intl.formatMessage(messages.unsuggestUser, { name: account.get('username') }),

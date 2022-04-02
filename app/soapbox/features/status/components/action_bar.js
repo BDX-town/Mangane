@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { isUserTouching } from 'soapbox/is_mobile';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
@@ -65,8 +64,8 @@ const mapStateToProps = state => {
 
   return {
     me,
-    isStaff: account ? isStaff(account) : false,
-    isAdmin: account ? isAdmin(account) : false,
+    isStaff: account ? account.staff : false,
+    isAdmin: account ? account.admin : false,
     features: getFeatures(instance),
   };
 };

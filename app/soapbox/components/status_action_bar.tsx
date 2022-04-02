@@ -15,7 +15,6 @@ import {
 } from 'soapbox/components/ui/status/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -739,8 +738,8 @@ const mapStateToProps = (state: RootState) => {
 
   return {
     me,
-    isStaff: account ? isStaff(account) : false,
-    isAdmin: account ? isAdmin(account) : false,
+    isStaff: account ? account.staff : false,
+    isAdmin: account ? account.admin : false,
     features: getFeatures(instance),
   };
 };

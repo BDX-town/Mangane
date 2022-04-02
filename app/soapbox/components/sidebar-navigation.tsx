@@ -70,7 +70,7 @@ const SidebarNavigation = () => {
           )
         )}
 
-        {/* {(account && isStaff(account)) && (
+        {/* {(account && account.staff) && (
           <SidebarNavigationLink
             to='/admin'
             icon={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}

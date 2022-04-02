@@ -11,7 +11,6 @@ import { openModal } from 'soapbox/actions/modals';
 import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import InstanceRestrictions from 'soapbox/features/federation_restrictions/components/instance_restrictions';
 import { makeGetRemoteInstance } from 'soapbox/selectors';
-import { isAdmin } from 'soapbox/utils/accounts';
 
 const getRemoteInstance = makeGetRemoteInstance();
 
@@ -20,13 +19,13 @@ const messages = defineMessages({
 });
 
 const mapStateToProps = (state, { host }) => {
-  const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
+  const { me, instance } = state;
+  const account = state.accounts.get(me);
 
   return {
-    instance: state.get('instance'),
+    instance,
     remoteInstance: getRemoteInstance(state, host),
-    isAdmin: isAdmin(account),
+    isAdmin: account.admin,
   };
 };
 

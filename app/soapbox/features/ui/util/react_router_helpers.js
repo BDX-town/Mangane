@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { Redirect, Route } from 'react-router-dom';
 
 import { getSettings } from 'soapbox/actions/settings';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 
 import BundleColumnError from '../components/bundle_column_error';
 import ColumnForbidden from '../components/column_forbidden';
@@ -111,8 +110,8 @@ class WrappedRoute extends React.Component {
     const authorized = [
       account || publicRoute,
       developerOnly ? settings.get('isDeveloper') : true,
-      staffOnly ? account && isStaff(account) : true,
-      adminOnly ? account && isAdmin(account) : true,
+      staffOnly ? account && account.staff : true,
+      adminOnly ? account && account.admin : true,
     ].every(c => c);
 
     if (!authorized) {

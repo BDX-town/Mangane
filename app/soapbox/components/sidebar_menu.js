@@ -15,7 +15,6 @@ import { getFeatures } from 'soapbox/utils/features';
 
 import { closeSidebar } from '../actions/sidebar';
 import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
-import { isAdmin, isStaff } from '../utils/accounts';
 
 import { HStack, Icon, IconButton, Text } from './ui';
 
@@ -155,7 +154,7 @@ const SidebarMenu = () => {
                   <Account account={account} showProfileHoverCard={false} />
                 </Link>
 
-                {isStaff(account) && (
+                {account.staff && (
                   <Stack>
                     <button type='button' onClick={handleSwitcherClick} className='py-1'>
                       <HStack alignItems='center' justifyContent='between'>
@@ -232,7 +231,7 @@ const SidebarMenu = () => {
                   />
                 )}
 
-                {isAdmin(account) && (
+                {account.admin && (
                   <SidebarLink
                     to='/soapbox/config'
                     icon={require('@tabler/icons/icons/settings.svg')}

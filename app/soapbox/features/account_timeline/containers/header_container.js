@@ -37,7 +37,6 @@ import { initReport } from 'soapbox/actions/reports';
 import { getSettings } from 'soapbox/actions/settings';
 import snackbar from 'soapbox/actions/snackbar';
 import { makeGetAccount } from 'soapbox/selectors';
-import { isAdmin } from 'soapbox/utils/accounts';
 
 import Header from '../components/header';
 
@@ -216,7 +215,7 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
   },
 
   onPromoteToModerator(account) {
-    const messageType = isAdmin(account) ? messages.demotedToModerator : messages.promotedToModerator;
+    const messageType = account.admin ? messages.demotedToModerator : messages.promotedToModerator;
     const message = intl.formatMessage(messageType, { acct: account.get('acct') });
 
     dispatch(promoteToModerator(account.get('id')))

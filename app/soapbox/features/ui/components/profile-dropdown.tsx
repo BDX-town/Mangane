@@ -9,7 +9,6 @@ import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
-import { isStaff } from 'soapbox/utils/accounts';
 
 import Account from '../../../components/account';
 
@@ -31,7 +30,7 @@ type IMenuItem = {
   action?: (event: React.MouseEvent) => void
 }
 
-const getAccount: any = makeGetAccount();
+const getAccount = makeGetAccount();
 
 const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const dispatch = useDispatch();
@@ -40,7 +39,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const me = useAppSelector((state) => state.me);
   const currentAccount = useAppSelector((state) => getAccount(state, me));
   const authUsers = useAppSelector((state) => state.auth.get('users'));
-  const isCurrentAccountStaff = isStaff(currentAccount) || false;
+  const isCurrentAccountStaff = Boolean(currentAccount?.staff);
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));
 
   const handleLogOut = () => {

@@ -50,12 +50,15 @@ export const AccountRecord = ImmutableRecord({
   verified: false,
 
   // Internal fields
+  admin: false,
   display_name_html: '',
+  moderator: false,
   note_emojified: '',
   note_plain: '',
   patron: ImmutableMap<string, any>(),
   relationship: ImmutableList<ImmutableMap<string, any>>(),
   should_refetch: false,
+  staff: false,
 });
 
 // https://docs.joinmastodon.org/entities/field/
@@ -221,6 +224,18 @@ const normalizeFqn = (account: ImmutableMap<string, any>) => {
   return account.set('fqn', fqn);
 };
 
+const addStaffFields = (account: ImmutableMap<string, any>) => {
+  const admin = account.getIn(['pleroma', 'is_admin']) === true;
+  const moderator = account.getIn(['pleroma', 'is_moderator']) === true;
+  const staff = admin || moderator;
+
+  return account.merge({
+    admin,
+    moderator,
+    staff,
+  });
+};
+
 export const normalizeAccount = (account: Record<string, any>) => {
   return AccountRecord(
     ImmutableMap(fromJS(account)).withMutations(account => {
@@ -233,6 +248,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeBirthday(account);
       normalizeLocation(account);
       normalizeFqn(account);
+      addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
       addInternalFields(account);

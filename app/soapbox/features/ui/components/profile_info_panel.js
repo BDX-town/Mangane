@@ -12,7 +12,7 @@ import { initAccountNoteModal } from 'soapbox/actions/account_notes';
 import Badge from 'soapbox/components/badge';
 import { Icon, HStack, Stack, Text } from 'soapbox/components/ui';
 import VerificationBadge from 'soapbox/components/verification_badge';
-import { getAcct, isAdmin, isModerator, isLocal } from 'soapbox/utils/accounts';
+import { isLocal } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import ProfileStats from './profile_stats';
@@ -48,9 +48,9 @@ class ProfileInfoPanel extends ImmutablePureComponent {
   getStaffBadge = () => {
     const { account } = this.props;
 
-    if (isAdmin(account)) {
+    if (account?.admin) {
       return <Badge slug='admin' title='Admin' key='staff' />;
-    } else if (isModerator(account)) {
+    } else if (account?.moderator) {
       return <Badge slug='moderator' title='Moderator' key='staff' />;
     } else {
       return null;
@@ -155,7 +155,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
               {verified && <VerificationBadge />}
 
-              {account.get('bot') && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
+              {account.bot && <Badge slug='bot' title={intl.formatMessage(messages.bot)} />}
 
               {badges.length > 0 && (
                 <HStack space={1} alignItems='center'>
@@ -166,7 +166,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
 
             <HStack alignItems='center' space={0.5}>
               <Text size='sm' theme='muted'>
-                @{getAcct(account, displayFqn)}
+                @{displayFqn ? account.fqn : account.acct}
               </Text>
 
               {account.get('locked') && (

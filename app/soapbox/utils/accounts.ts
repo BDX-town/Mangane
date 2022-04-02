@@ -1,6 +1,6 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/types/entities';
 
 const getDomainFromURL = (account: Account): string => {
   try {
@@ -27,18 +27,6 @@ export const getBaseURL = (account: ImmutableMap<string, any>): string => {
 
 export const getAcct = (account: Account, displayFqn: boolean): string => (
   displayFqn === true ? account.fqn : account.acct
-);
-
-export const isStaff = (account: Account): boolean => (
-  [isAdmin, isModerator].some(f => f(account) === true)
-);
-
-export const isAdmin = (account: Account): boolean => (
-  account.getIn(['pleroma', 'is_admin']) === true
-);
-
-export const isModerator = (account: Account): boolean => (
-  account.getIn(['pleroma', 'is_moderator']) === true
 );
 
 export const getFollowDifference = (state: ImmutableMap<string, any>, accountId: string, type: string): number => {
