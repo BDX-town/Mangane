@@ -174,13 +174,11 @@ class ChatBox extends ImmutablePureComponent {
     const { resetFileKey } = this.state;
 
     return this.canSubmit() ? (
-      <div className='chat-box__send'>
-        <IconButton
-          src={require('@tabler/icons/icons/send.svg')}
-          title={intl.formatMessage(messages.send)}
-          onClick={this.sendMessage}
-        />
-      </div>
+      <IconButton
+        src={require('@tabler/icons/icons/send.svg')}
+        title={intl.formatMessage(messages.send)}
+        onClick={this.sendMessage}
+      />
     ) : (
       <UploadButton onSelectFile={this.handleFiles} resetFileKey={resetFileKey} />
     );
@@ -197,7 +195,9 @@ class ChatBox extends ImmutablePureComponent {
         {this.renderAttachment()}
         <UploadProgress active={isUploading} progress={uploadProgress*100} />
         <div className='chat-box__actions simple_form'>
-          {this.renderActionButton()}
+          <div className='chat-box__send'>
+            {this.renderActionButton()}
+          </div>
           <textarea
             rows={1}
             placeholder={intl.formatMessage(messages.placeholder)}

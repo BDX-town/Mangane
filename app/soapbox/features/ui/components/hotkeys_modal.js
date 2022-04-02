@@ -1,13 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
-import IconButton from 'soapbox/components/icon_button';
-
-const messages = defineMessages({
-  close: { id: 'lightbox.close', defaultMessage: 'Close' },
-});
+import { Modal } from 'soapbox/components/ui';
 
 export default @injectIntl
 class HotkeysModal extends ImmutablePureComponent {
@@ -18,14 +14,13 @@ class HotkeysModal extends ImmutablePureComponent {
   };
 
   render() {
-    const { intl, onClose } = this.props;
+    const { onClose } = this.props;
 
     return (
-      <div className='modal-root__modal hotkeys-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'><FormattedMessage id='keyboard_shortcuts.heading' defaultMessage='Keyboard shortcuts' /></h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={onClose} />
-        </div>
+      <Modal
+        title={<FormattedMessage id='keyboard_shortcuts.heading' defaultMessage='Keyboard shortcuts' />}
+        onClose={onClose}
+      >
         <div className='compose-modal__content'>
           <table>
             <thead>
@@ -159,7 +154,7 @@ class HotkeysModal extends ImmutablePureComponent {
             </tbody>
           </table>
         </div>
-      </div>
+      </Modal>
     );
   }
 

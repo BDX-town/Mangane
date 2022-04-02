@@ -51,53 +51,6 @@
     }
   }
 
-  .alias__container {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-
-    span.alias__list-label {
-      padding-right: 5px;
-      color: var(--primary-text-color--faint);
-    }
-
-    span.alias__list-value span {
-      padding-right: 5px;
-      text-transform: capitalize;
-
-      &::after {
-        content: ',';
-      }
-
-      &:last-of-type {
-        &::after {
-          content: '';
-        }
-      }
-    }
-
-    .alias__delete {
-      display: flex;
-      align-items: baseline;
-      cursor: pointer;
-
-      span.alias__delete-label {
-        color: var(--primary-text-color--faint);
-        font-size: 14px;
-        font-weight: 800;
-      }
-
-      .alias__delete-icon {
-        background: none;
-        color: var(--primary-text-color--faint);
-        padding: 0 5px;
-        margin: 0 auto;
-        font-size: 16px;
-      }
-    }
-  }
-
   .slist--flex {
     height: 100%;
   }

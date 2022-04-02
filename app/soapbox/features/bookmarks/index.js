@@ -74,6 +74,7 @@ class Bookmarks extends ImmutablePureComponent {
           shouldUpdateScroll={shouldUpdateScroll}
           emptyMessage={emptyMessage}
           bindToDocument={!multiColumn}
+          divideType='space'
         />
       </Column>
     );

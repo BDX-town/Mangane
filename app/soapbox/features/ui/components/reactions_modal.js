@@ -7,9 +7,8 @@ import { connect } from 'react-redux';
 
 import { fetchFavourites, fetchReactions } from 'soapbox/actions/interactions';
 import FilterBar from 'soapbox/components/filter_bar';
-import IconButton from 'soapbox/components/icon_button';
 import ScrollableList from 'soapbox/components/scrollable_list';
-import { Spinner } from 'soapbox/components/ui';
+import { Modal, Spinner } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
 
 const messages = defineMessages({
@@ -89,7 +88,7 @@ class ReactionsModal extends React.PureComponent {
   }
 
   render() {
-    const { intl, reactions } = this.props;
+    const { reactions } = this.props;
     const { reaction } = this.state;
 
     const accounts = reactions && (reaction
@@ -118,20 +117,12 @@ class ReactionsModal extends React.PureComponent {
 
 
     return (
-      <div className='modal-root__modal reactions-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            <FormattedMessage id='column.reactions' defaultMessage='Reactions' />
-          </h3>
-          <IconButton
-            className='compose-modal__close'
-            title={intl.formatMessage(messages.close)}
-            src={require('@tabler/icons/icons/x.svg')}
-            onClick={this.onClickClose} size={20}
-          />
-        </div>
+      <Modal
+        title={<FormattedMessage id='column.reactions' defaultMessage='Reactions' />}
+        onClose={this.onClickClose}
+      >
         {body}
-      </div>
+      </Modal>
     );
   }
 

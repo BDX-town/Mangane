@@ -12,6 +12,7 @@ import { createSelector } from 'reselect';
 import { fetchChatMessages, deleteChatMessage } from 'soapbox/actions/chats';
 import { openModal } from 'soapbox/actions/modals';
 import { initReportById } from 'soapbox/actions/reports';
+import { Text } from 'soapbox/components/ui';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import emojify from 'soapbox/features/emoji/emoji';
 import Bundle from 'soapbox/features/ui/components/bundle';
@@ -293,10 +294,7 @@ class ChatMessageList extends ImmutablePureComponent {
           tabIndex={0}
         >
           {this.maybeRenderMedia(chatMessage)}
-          <span
-            className='chat-message__content'
-            dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }}
-          />
+          <Text size='sm' dangerouslySetInnerHTML={{ __html: this.parseContent(chatMessage) }} />
           <div className='chat-message__menu'>
             <DropdownMenuContainer
               items={menu}

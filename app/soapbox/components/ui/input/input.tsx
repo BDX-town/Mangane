@@ -50,7 +50,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
           type={revealed ? 'text' : type}
           ref={ref}
           className={classNames({
-            'block w-full sm:text-sm border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500':
+            'dark:bg-slate-800 block w-full sm:text-sm border-gray-300 dark:border-gray-600 rounded-md focus:ring-indigo-500 focus:border-indigo-500':
                 true,
             'pr-7': isPassword,
             'pl-8': typeof icon !== 'undefined',

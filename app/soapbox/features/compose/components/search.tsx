@@ -120,7 +120,7 @@ const Search = (props: ISearch) => {
 
       <div className='relative'>
         <Component
-          className='block w-full pl-3 pr-10 py-2 border border-gray-100 dark:border-slate-600 rounded-full leading-5 bg-gray-100 placeholder-gray-500 dark:bg-slate-900 focus:bg-white focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
+          className='block w-full pl-3 pr-10 py-2 border border-gray-100 dark:border-slate-600 rounded-full leading-5 bg-gray-100 dark:text-white placeholder-gray-500 dark:placeholder-gray-300 dark:bg-slate-900 focus:bg-white focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm'
           type='text'
           id='search'
           placeholder={intl.formatMessage(messages.placeholder)}

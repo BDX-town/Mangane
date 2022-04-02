@@ -51,7 +51,7 @@ const ListItem = ({ label, hint, children, onClick }) => {
       </div>
 
       {onClick ? (
-        <div className='flex flex-row items-center text-gray-500'>
+        <div className='flex flex-row items-center text-gray-500 dark:text-gray-400'>
           {children}
 
           <Icon src={require('@tabler/icons/icons/chevron-right.svg')} className='ml-1' />

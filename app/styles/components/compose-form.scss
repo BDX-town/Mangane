@@ -28,21 +28,14 @@
   }
 
   &__warning {
-    color: var(--primary-text-color);
-    margin-bottom: 10px;
-    background: var(--brand-color--faint);
-    box-shadow: 0 2px 6px rgba($base-shadow-color, 0.3);
-    padding: 8px 10px;
-    border-radius: 4px;
-    font-size: 13px;
-    font-weight: 400;
+    @apply text-xs mb-2.5 px-2.5 py-2 shadow-md rounded bg-accent-300 text-white;
 
     strong {
-      color: var(--primary-text-color);
-      font-weight: 500;
+      @apply font-medium;
+
       @each $lang in $cjk-langs {
         &:lang(#{$lang}) {
-          font-weight: 700;
+          @apply font-bold;
         }
       }
     }

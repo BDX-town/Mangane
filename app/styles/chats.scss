@@ -30,13 +30,7 @@
   }
 
   &__header {
-    @apply bg-primary-900 text-white;
-    box-sizing: border-box;
-    padding: 0 10px;
-    font-weight: bold;
-    border-radius: 6px 6px 0 0;
-    display: flex;
-    align-items: center;
+    @apply flex items-center py-0 px-2.5 box-border rounded-t-md font-bold bg-primary-600 text-white;
     height: 31px;
 
     .account__avatar {
@@ -151,11 +145,8 @@
   display: flex;
 
   &__bubble {
-    font-size: 15px;
-    padding: 4px 10px;
+    @apply px-2.5 py-1 rounded-lg bg-primary-50 dark:bg-slate-700;
     max-width: 70%;
-    border-radius: 10px;
-    background-color: var(--background-color);
     text-overflow: ellipsis;
     overflow-wrap: break-word;
     white-space: break-spaces;
@@ -185,8 +176,8 @@
   }
 
   &--me .chat-message__bubble {
+    @apply bg-primary-200 dark:bg-primary-900;
     margin-left: auto;
-    background-color: hsla(var(--brand-color_hsl), 0.2);
   }
 
   &--pending .chat-message__bubble {
@@ -286,25 +277,6 @@
     padding: 6px;
     position: relative;
 
-    .icon-button {
-      color: var(--primary-text-color);
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
-      height: auto;
-      background: transparent !important;
-      border: 0;
-      padding: 0;
-      margin: 0;
-
-      .svg-icon {
-        width: 18px;
-        height: 18px;
-      }
-    }
-
     textarea {
       width: 100%;
       height: 100%;
@@ -318,6 +290,20 @@
       color: var(--primary-text-color);
       font-size: 15px;
       overflow: hidden;
+    }
+  }
+
+  &__send {
+    .icon-button,
+    button {
+      @apply absolute right-2.5 w-auto h-auto border-0 p-0 m-0 text-black dark:text-white;
+      top: 50%;
+      transform: translateY(-50%);
+
+      .svg-icon,
+      svg {
+        @apply w-[18px] h-[18px];
+      }
     }
   }
 }
@@ -491,9 +477,7 @@
 }
 
 .chat-messages__divider {
-  text-align: center;
-  text-transform: uppercase;
+  @apply pt-3.5 pb-0.5 text-center uppercase text-black dark:text-white;
   font-size: 13px;
-  padding: 14px 0 2px;
   opacity: 0.8;
 }
