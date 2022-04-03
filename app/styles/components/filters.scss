@@ -1,12 +1,4 @@
 .filter-settings-panel {
-  h1 {
-    font-size: 18px;
-    line-height: 1.25;
-    color: var(--primary-text-color);
-    font-weight: 400;
-    margin: 20px auto;
-  }
-
   .item-list article {
     border-bottom: 1px solid var(--primary-text-color--faint);
 
@@ -43,62 +35,67 @@
     }
   }
 
+  .input.boolean {
+    .label_input {
+      @apply relative pl-7 text-black dark:text-white;
+
+      label {
+        @apply text-sm;
+      }
+
+      &__wrapper {
+        @apply static;
+      }
+
+      input[type="checkbox"] {
+        position: absolute;
+        top: 3px;
+        left: 0;
+      }
+    }
+
+    .hint {
+      @apply block pl-7 text-xs text-gray-500 dark:text-gray-400;
+    }
+  }
+
   .filter__container {
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    font-size: 14px;
+    @apply flex justify-between py-5 px-2 text-sm text-black dark:text-white;
 
     .filter__phrase,
     .filter__contexts,
     .filter__details {
-      padding: 5px 0;
+      @apply py-1;
     }
 
     span.filter__list-label {
-      padding-right: 5px;
-      color: var(--primary-text-color--faint);
+      @apply pr-1 text-gray-500 dark:text-gray-400;
     }
 
     span.filter__list-value span {
-      padding-right: 5px;
-      text-transform: capitalize;
+      @apply pr-1 capitalize;
 
       &::after {
-        content: ',';
+        content: ",";
       }
 
       &:last-of-type {
         &::after {
-          content: '';
+          content: "";
         }
       }
     }
 
     .filter__delete {
-      display: flex;
-      margin: 10px;
-      align-items: baseline;
-      cursor: pointer;
-      height: 20px;
+      @apply flex items-baseline h-5 m-2.5 cursor-pointer;
 
       span.filter__delete-label {
-        color: var(--primary-text-color--faint);
-        font-size: 14px;
-        font-weight: 800;
+        @apply text-gray-500 dark:text-gray-400 font-semibold;
       }
 
       .filter__delete-icon {
-        background: none;
-        color: var(--primary-text-color--faint);
-        padding: 0 5px;
-        margin: 0 auto;
-        font-size: 16px;
+        @apply px-1 mx-auto text-base text-gray-500 dark:text-gray-400;
       }
     }
   }
-
-  // .simple_form select {
-  //   margin-top: 0;
-  // }
 }

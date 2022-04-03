@@ -10,8 +10,7 @@
 
 .info__brand {
   .brand h1 {
-    color: var(--primary-text-color);
-    font-size: 26px;
+    @apply text-2xl text-black dark:text-white;
   }
 
   .brand__tagline {

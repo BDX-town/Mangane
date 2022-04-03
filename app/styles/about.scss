@@ -1105,9 +1105,9 @@ $fluid-breakpoint: $maximum-width + 20px;
 }
 
 .brand__tagline {
+  @apply text-black dark:text-white;
   display: block;
   width: 470px;
-  color: var(--primary-text-color);
   font-size: 24px;
   line-height: 1.4;
   margin-top: 25px;

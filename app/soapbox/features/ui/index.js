@@ -89,8 +89,8 @@ import {
   EmailConfirmation,
   DeleteAccount,
   SoapboxConfig,
-  // ExportData,
-  // ImportData,
+  ExportData,
+  ImportData,
   // Backups,
   MfaForm,
   ChatIndex,
@@ -318,8 +318,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/auth/password/new' to='/reset-password' />
         <Redirect from='/auth/password/edit' to='/edit-password' />
         <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
-        {/* <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} /> */}
-        {/* <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} /> */}
+        <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
+        <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
         {features.accountAliasesAPI && <WrappedRoute path='/settings/aliases' page={DefaultPage} component={Aliases} content={children} />}
         {features.accountMoving && <WrappedRoute path='/settings/migration' page={DefaultPage} component={Migration} content={children} />}
         <WrappedRoute path='/settings/email' page={DefaultPage} component={EditEmail} content={children} />
