@@ -1,10 +1,11 @@
 .directory {
   &__filter-form {
     display: flex;
+    gap: 30px;
     background: var(--foreground-color);
 
     &__column {
-      padding: 10px 15px;
+      padding-bottom: 10px;
     }
 
     .radio-button {
@@ -17,7 +18,6 @@
     grid-gap: 10px;
     grid-template-columns: minmax(0, 50%) minmax(0, 50%);
     width: 100%;
-    padding: 10px;
     transition: opacity 100ms ease-in;
     box-sizing: border-box;
 
@@ -117,6 +117,11 @@
           font-weight: 400;
           overflow: hidden;
           text-overflow: ellipsis;
+        }
+
+        .verified-icon div,
+        .verified-icon svg {
+          @apply inline;
         }
       }
     }

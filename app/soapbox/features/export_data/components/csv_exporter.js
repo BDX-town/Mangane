@@ -4,7 +4,7 @@ import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { SimpleForm } from 'soapbox/features/forms';
+import { Button, Form, FormActions, Text } from 'soapbox/components/ui';
 
 export default @connect()
 @injectIntl
@@ -36,15 +36,18 @@ class CSVExporter extends ImmutablePureComponent {
     const { intl, messages } = this.props;
 
     return (
-      <SimpleForm>
-        <h2 className='export-title'>{intl.formatMessage(messages.input_label)}</h2>
-        <div>
-          <p className='export-hint hint'>{intl.formatMessage(messages.input_hint)}</p>
-          <button name='button' type='button' className='button button-primary' onClick={this.handleClick}>
-            {intl.formatMessage(messages.submit)}
-          </button>
-        </div>
-      </SimpleForm>
+      <>
+        <Form>
+          <Text size='xl' weight='bold'>{intl.formatMessage(messages.input_label)}</Text>
+          <Text theme='muted'>{intl.formatMessage(messages.input_hint)}</Text>
+
+          <FormActions>
+            <Button theme='primary' onClick={this.handleClick}>
+              {intl.formatMessage(messages.submit)}
+            </Button>
+          </FormActions>
+        </Form>
+      </>
     );
   }
 

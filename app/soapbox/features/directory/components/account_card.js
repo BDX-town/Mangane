@@ -67,7 +67,7 @@ class AccountCard extends ImmutablePureComponent {
         </div>
 
         <div className='directory__card__extra'>
-          <div
+          <Text
             className={classNames('account__header__content', (account.get('note').length === 0 || account.get('note') === '<p></p>') && 'empty')}
             dangerouslySetInnerHTML={{ __html: account.get('note_emojified') }}
           />

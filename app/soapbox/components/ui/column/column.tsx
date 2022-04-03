@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
@@ -10,10 +11,11 @@ interface IColumn {
   label?: string,
   transparent?: boolean,
   withHeader?: boolean,
+  className?: string,
 }
 
 const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedRef<HTMLDivElement>): JSX.Element => {
-  const { backHref, children, label, transparent = false, withHeader = true } = props;
+  const { backHref, children, label, transparent = false, withHeader = true, className } = props;
 
   const history = useHistory();
 
@@ -32,11 +34,11 @@ const Column: React.FC<IColumn> = React.forwardRef((props, ref: React.ForwardedR
 
   const renderChildren = () => {
     if (transparent) {
-      return <div className='bg-white dark:bg-slate-800 sm:bg-transparent sm:dark:bg-transparent'>{children}</div>;
+      return <div className={classNames('bg-white dark:bg-slate-800 sm:bg-transparent sm:dark:bg-transparent', className)}>{children}</div>;
     }
 
     return (
-      <Card variant='rounded'>
+      <Card variant='rounded' className={className}>
         {withHeader ? (
           <CardHeader onBackClick={handleBackClick}>
             <CardTitle title={label} />
