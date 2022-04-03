@@ -68,14 +68,18 @@ const HotkeysModal: React.FC<IHotkeysModal> = ({ onClose }) => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><kbd>x</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
-            </tr>
-            <tr>
-              <td><kbd>h</kbd></td>
-              <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
-            </tr>
+            {features.spoilers && (
+              <tr>
+                <td><kbd>x</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_hidden' defaultMessage='to show/hide text behind CW' /></td>
+              </tr>
+            )}
+            {features.spoilers && (
+              <tr>
+                <td><kbd>h</kbd></td>
+                <td><FormattedMessage id='keyboard_shortcuts.toggle_sensitivity' defaultMessage='to show/hide media' /></td>
+              </tr>
+            )}
             <tr>
               <td><kbd>up</kbd>, <kbd>k</kbd></td>
               <td><FormattedMessage id='keyboard_shortcuts.up' defaultMessage='to move up in the list' /></td>
