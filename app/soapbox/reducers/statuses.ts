@@ -39,15 +39,22 @@ type StatusRecord = ReturnType<typeof normalizeStatus>;
 type APIEntity = Record<string, any>;
 type APIEntities = Array<APIEntity>;
 
-type State = ImmutableMap<string, StatusRecord>;
+type State = ImmutableMap<string, ReducerStatus>;
 
-const minifyStatus = (status: StatusRecord): StatusRecord => {
+export interface ReducerStatus extends StatusRecord {
+  account: string | null,
+  reblog: string | null,
+  poll: string | null,
+  quote: string | null,
+}
+
+const minifyStatus = (status: StatusRecord): ReducerStatus => {
   return status.mergeWith((o, n) => n || o, {
     account: normalizeId(status.getIn(['account', 'id'])),
     reblog: normalizeId(status.getIn(['reblog', 'id'])),
     poll: normalizeId(status.getIn(['poll', 'id'])),
     quote: normalizeId(status.getIn(['quote', 'id'])),
-  });
+  }) as ReducerStatus;
 };
 
 // Gets titles of poll options from status
@@ -121,14 +128,14 @@ const fixQuote = (status: StatusRecord, oldStatus?: StatusRecord): StatusRecord 
   }
 };
 
-const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): StatusRecord => {
+const fixStatus = (state: State, status: APIEntity, expandSpoilers: boolean): ReducerStatus => {
   const oldStatus = state.get(status.id);
 
   return normalizeStatus(status).withMutations(status => {
     fixQuote(status, oldStatus);
     calculateStatus(status, oldStatus, expandSpoilers);
     minifyStatus(status);
-  });
+  }) as ReducerStatus;
 };
 
 const importStatus = (state: State, status: APIEntity, expandSpoilers: boolean): State =>
@@ -204,13 +211,13 @@ export default function statuses(state = initialState, action: AnyAction): State
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateEmojiReact(emojiReacts as any, action.emoji),
       );
   case UNEMOJI_REACT_REQUEST:
     return state
       .updateIn(
         [action.status.get('id'), 'pleroma', 'emoji_reactions'],
-        emojiReacts => simulateUnEmojiReact(emojiReacts, action.emoji),
+        emojiReacts => simulateUnEmojiReact(emojiReacts as any, action.emoji),
       );
   case FAVOURITE_FAIL:
     return state.get(action.status.get('id')) === undefined ? state : state.setIn([action.status.get('id'), 'favourited'], false);

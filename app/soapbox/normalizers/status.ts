@@ -16,21 +16,23 @@ import { normalizeEmoji } from 'soapbox/normalizers/emoji';
 import { normalizeMention } from 'soapbox/normalizers/mention';
 import { normalizePoll } from 'soapbox/normalizers/poll';
 
+import type { ReducerAccount } from 'soapbox/reducers/accounts';
 import type { Account, Attachment, Card, Emoji, Mention, Poll, EmbeddedEntity } from 'soapbox/types/entities';
 
 type StatusVisibility = 'public' | 'unlisted' | 'private' | 'direct';
 
 // https://docs.joinmastodon.org/entities/status/
 export const StatusRecord = ImmutableRecord({
-  account: null as EmbeddedEntity<Account>,
+  account: null as EmbeddedEntity<Account | ReducerAccount>,
   application: null as ImmutableMap<string, any> | null,
   bookmarked: false,
-  card: null as EmbeddedEntity<Card>,
+  card: null as Card | null,
   content: '',
   created_at: new Date(),
   emojis: ImmutableList<Emoji>(),
   favourited: false,
   favourites_count: 0,
+  group: null as EmbeddedEntity<any>,
   in_reply_to_account_id: null as string | null,
   in_reply_to_id: null as string | null,
   id: '',
@@ -55,6 +57,7 @@ export const StatusRecord = ImmutableRecord({
 
   // Internal fields
   contentHtml: '',
+  expectsCard: false,
   filtered: false,
   hidden: false,
   search_index: '',

@@ -26,7 +26,6 @@ import HomePage from 'soapbox/pages/home_page';
 import ProfilePage from 'soapbox/pages/profile_page';
 import RemoteInstancePage from 'soapbox/pages/remote_instance_page';
 import StatusPage from 'soapbox/pages/status_page';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getAccessToken } from 'soapbox/utils/auth';
 import { getVapidKey } from 'soapbox/utils/auth';
 import { getFeatures } from 'soapbox/utils/features';
@@ -495,12 +494,12 @@ class UI extends React.PureComponent {
       dispatch(fetchChats());
     }
 
-    if (isStaff(account)) {
+    if (account.staff) {
       dispatch(fetchReports({ state: 'open' }));
       dispatch(fetchUsers(['local', 'need_approval']));
     }
 
-    if (isAdmin(account)) {
+    if (account.admin) {
       dispatch(fetchConfig());
     }
 

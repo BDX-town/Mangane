@@ -4,15 +4,10 @@ import InlineSVG from 'react-inlinesvg';
 
 import Text from '../text/text';
 
-interface IIconButton {
-  alt?: string,
-  className?: string,
+interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconClassName?: string,
-  disabled?: boolean,
   src: string,
-  onClick?: () => void,
   text?: string,
-  title?: string,
   transparent?: boolean
 }
 

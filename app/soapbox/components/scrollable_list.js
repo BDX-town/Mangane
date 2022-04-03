@@ -107,7 +107,7 @@ class ScrollableList extends PureComponent {
 
     this.attachScrollListener();
     this.attachIntersectionObserver();
-    // Handle initial scroll posiiton
+    // Handle initial scroll position
     this.handleScroll();
   }
 
@@ -115,7 +115,7 @@ class ScrollableList extends PureComponent {
     if (this.documentElement && (this.documentElement.scrollTop > 0 || this.mouseMovedRecently)) {
       return { height: this.documentElement.scrollHeight, top: this.documentElement.scrollTop };
     } else {
-      return null;
+      return undefined;
     }
   }
 

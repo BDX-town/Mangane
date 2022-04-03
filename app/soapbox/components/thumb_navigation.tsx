@@ -55,9 +55,9 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
             paths={['/messages', '/conversations']}
           />
         )
-      )} 
+      )}
 
-      {/* (account && isStaff(account)) && (
+      {/* (account && account.staff && (
         <ThumbNavigationLink
           src={require('@tabler/icons/icons/dashboard.svg')}
           text={<FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />}

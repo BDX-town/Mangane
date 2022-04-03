@@ -1,25 +1,27 @@
-import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
+import EmojiSelector from 'soapbox/components/emoji_selector';
+import Hoverable from 'soapbox/components/hoverable';
+import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
-import { isStaff, isAdmin } from 'soapbox/utils/accounts';
 import { getReactForStatus, reduceEmoji } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import { openModal } from '../actions/modals';
 
-import { IconButton, Text } from './ui';
-
+import type { History } from 'history';
+import type { AnyAction, Dispatch } from 'redux';
+import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { RootState } from 'soapbox/store';
+import type { Status } from 'soapbox/types/entities';
+import type { Features } from 'soapbox/utils/features';
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -66,47 +68,54 @@ const messages = defineMessages({
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
-class StatusActionBar extends ImmutablePureComponent {
+interface IStatusActionBar {
+  status: Status,
+  onOpenUnauthorizedModal: (modalType?: string) => void,
+  onOpenReblogsModal: (acct: string, statusId: string) => void,
+  onReply: (status: Status, history: History) => void,
+  onFavourite: (status: Status) => void,
+  onBookmark: (status: Status) => void,
+  onReblog: (status: Status, e: React.MouseEvent) => void,
+  onQuote: (status: Status, history: History) => void,
+  onDelete: (status: Status, history: History, redraft?: boolean) => void,
+  onDirect: (account: any, history: History) => void,
+  onChat: (account: any, history: History) => void,
+  onMention: (account: any, history: History) => void,
+  onMute: (account: any) => void,
+  onBlock: (status: Status) => void,
+  onReport: (status: Status) => void,
+  onEmbed: (status: Status) => void,
+  onDeactivateUser: (status: Status) => void,
+  onDeleteUser: (status: Status) => void,
+  onToggleStatusSensitivity: (status: Status) => void,
+  onDeleteStatus: (status: Status) => void,
+  onMuteConversation: (status: Status) => void,
+  onPin: (status: Status) => void,
+  withDismiss: boolean,
+  withGroupAdmin: boolean,
+  intl: IntlShape,
+  me: string | null | false | undefined,
+  isStaff: boolean,
+  isAdmin: boolean,
+  allowedEmoji: ImmutableList<string>,
+  emojiSelectorFocused: boolean,
+  handleEmojiSelectorUnfocus: () => void,
+  features: Features,
+  history: History,
+  dispatch: Dispatch,
+}
 
-  static propTypes = {
-    status: ImmutablePropTypes.record.isRequired,
-    onOpenUnauthorizedModal: PropTypes.func.isRequired,
-    onOpenReblogsModal: PropTypes.func.isRequired,
-    onReply: PropTypes.func,
-    onFavourite: PropTypes.func,
-    onBookmark: PropTypes.func,
-    onReblog: PropTypes.func,
-    onQuote: PropTypes.func,
-    onDelete: PropTypes.func,
-    onDirect: PropTypes.func,
-    onChat: PropTypes.func,
-    onMention: PropTypes.func,
-    onMute: PropTypes.func,
-    onBlock: PropTypes.func,
-    onReport: PropTypes.func,
-    onEmbed: PropTypes.func,
-    onDeactivateUser: PropTypes.func,
-    onDeleteUser: PropTypes.func,
-    onToggleStatusSensitivity: PropTypes.func,
-    onDeleteStatus: PropTypes.func,
-    onMuteConversation: PropTypes.func,
-    onPin: PropTypes.func,
-    withDismiss: PropTypes.bool,
-    withGroupAdmin: PropTypes.bool,
-    intl: PropTypes.object.isRequired,
-    me: SoapboxPropTypes.me,
-    isStaff: PropTypes.bool.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    allowedEmoji: ImmutablePropTypes.list,
-    emojiSelectorFocused: PropTypes.bool,
-    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
-    features: PropTypes.object.isRequired,
-    history: PropTypes.object,
-  };
+interface IStatusActionBarState {
+  emojiSelectorVisible: boolean,
+}
 
-  static defaultProps = {
+class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusActionBarState> {
+
+  static defaultProps: Partial<IStatusActionBar> = {
     isStaff: false,
   }
+
+  node?: HTMLDivElement = undefined;
 
   state = {
     emojiSelectorVisible: false,
@@ -114,15 +123,15 @@ class StatusActionBar extends ImmutablePureComponent {
 
   // Avoid checking props that are functions (and whose equality will always
   // evaluate to false. See react-immutable-pure-component for usage.
+  // @ts-ignore: the type checker is wrong.
   updateOnProps = [
     'status',
     'withDismiss',
     'emojiSelectorFocused',
   ]
 
-  handleReplyClick = (event) => {
+  handleReplyClick = () => {
     const { me, onReply, onOpenUnauthorizedModal, status } = this.props;
-    event.stopPropagation();
 
     if (me) {
       onReply(status, this.props.history);
@@ -131,18 +140,16 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleShareClick = (e) => {
-    e.stopPropagation();
-
+  handleShareClick = () => {
     navigator.share({
-      text: this.props.status.get('search_index'),
-      url: this.props.status.get('url'),
+      text: this.props.status.search_index,
+      url: this.props.status.url,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
   }
 
-  handleLikeButtonHover = e => {
+  handleLikeButtonHover: React.EventHandler<React.MouseEvent> = () => {
     const { features } = this.props;
 
     if (features.emojiReacts && !isUserTouching()) {
@@ -150,7 +157,7 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleLikeButtonLeave = e => {
+  handleLikeButtonLeave: React.EventHandler<React.MouseEvent> = () => {
     const { features } = this.props;
 
     if (features.emojiReacts && !isUserTouching()) {
@@ -158,51 +165,58 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleLikeButtonClick = e => {
+  handleLikeButtonClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { features } = this.props;
 
-    e.stopPropagation();
-
-    const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
+    const reactForStatus = getReactForStatus(this.props.status, this.props.allowedEmoji);
+    const meEmojiReact = typeof reactForStatus === 'string' ? reactForStatus : '👍';
 
     if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
-        this.handleReactClick(meEmojiReact)();
+        this.handleReact(meEmojiReact);
       } else {
         this.setState({ emojiSelectorVisible: true });
       }
     } else {
-      this.handleReactClick(meEmojiReact)();
+      this.handleReact(meEmojiReact);
     }
+
+    e.stopPropagation();
   }
 
-  handleReactClick = emoji => {
-    return e => {
-      const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
-      if (me) {
-        dispatch(simpleEmojiReact(status, emoji));
-      } else {
-        onOpenUnauthorizedModal('FAVOURITE');
-      }
-      this.setState({ emojiSelectorVisible: false });
+  handleReact = (emoji: string): void => {
+    const { me, dispatch, onOpenUnauthorizedModal, status } = this.props;
+    if (me) {
+      dispatch(simpleEmojiReact(status, emoji) as any);
+    } else {
+      onOpenUnauthorizedModal('FAVOURITE');
+    }
+    this.setState({ emojiSelectorVisible: false });
+  }
+
+  handleReactClick = (emoji: string): React.EventHandler<React.MouseEvent> => {
+    return () => {
+      this.handleReact(emoji);
     };
   }
 
-  handleFavouriteClick = () => {
+  handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { me, onFavourite, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
       onFavourite(status);
     } else {
       onOpenUnauthorizedModal('FAVOURITE');
     }
+
+    e.stopPropagation();
   }
 
-  handleBookmarkClick = (e) => {
+  handleBookmarkClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onBookmark(this.props.status);
   }
 
-  handleReblogClick = e => {
+  handleReblogClick: React.EventHandler<React.MouseEvent> = e => {
     const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     e.stopPropagation();
 
@@ -213,7 +227,7 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleQuoteClick = (e) => {
+  handleQuoteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
@@ -223,67 +237,67 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleDeleteClick = (e) => {
+  handleDeleteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDelete(this.props.status, this.props.history);
   }
 
-  handleRedraftClick = (e) => {
+  handleRedraftClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDelete(this.props.status, this.props.history, true);
   }
 
-  handlePinClick = (e) => {
+  handlePinClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onPin(this.props.status);
   }
 
-  handleMentionClick = (e) => {
+  handleMentionClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onMention(this.props.status.get('account'), this.props.history);
+    this.props.onMention(this.props.status.account, this.props.history);
   }
 
-  handleDirectClick = (e) => {
+  handleDirectClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onDirect(this.props.status.get('account'), this.props.history);
+    this.props.onDirect(this.props.status.account, this.props.history);
   }
 
-  handleChatClick = (e) => {
+  handleChatClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onChat(this.props.status.get('account'), this.props.history);
+    this.props.onChat(this.props.status.account, this.props.history);
   }
 
-  handleMuteClick = (e) => {
+  handleMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.onMute(this.props.status.get('account'));
+    this.props.onMute(this.props.status.account);
   }
 
-  handleBlockClick = (e) => {
+  handleBlockClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onBlock(this.props.status);
   }
 
-  handleOpen = (e) => {
+  handleOpen: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
-    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.get('id')}`);
+    this.props.history.push(`/@${this.props.status.getIn(['account', 'acct'])}/posts/${this.props.status.id}`);
   }
 
   handleEmbed = () => {
     this.props.onEmbed(this.props.status);
   }
 
-  handleReport = (e) => {
+  handleReport: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onReport(this.props.status);
   }
 
-  handleConversationMuteClick = (e) => {
+  handleConversationMuteClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onMuteConversation(this.props.status);
   }
 
-  handleCopy = (e) => {
-    const url      = this.props.status.get('url');
+  handleCopy: React.EventHandler<React.MouseEvent> = (e) => {
+    const { url }  = this.props.status;
     const textarea = document.createElement('textarea');
 
     e.stopPropagation();
@@ -303,57 +317,56 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
-  handleGroupRemoveAccount = (e) => {
-    const { status } = this.props;
+  // handleGroupRemoveAccount: React.EventHandler<React.MouseEvent> = (e) => {
+  //   const { status } = this.props;
+  //
+  //   e.stopPropagation();
+  //
+  //   this.props.onGroupRemoveAccount(status.getIn(['group', 'id']), status.getIn(['account', 'id']));
+  // }
+  //
+  // handleGroupRemovePost: React.EventHandler<React.MouseEvent> = (e) => {
+  //   const { status } = this.props;
+  //
+  //   e.stopPropagation();
+  //
+  //   this.props.onGroupRemoveStatus(status.getIn(['group', 'id']), status.id);
+  // }
 
-    e.stopPropagation();
-
-    this.props.onGroupRemoveAccount(status.getIn(['group', 'id']), status.getIn(['account', 'id']));
-  }
-
-  handleGroupRemovePost = (e) => {
-    const { status } = this.props;
-
-    e.stopPropagation();
-
-    this.props.onGroupRemoveStatus(status.getIn(['group', 'id']), status.get('id'));
-  }
-
-  handleDeactivateUser = (e) => {
+  handleDeactivateUser: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDeactivateUser(this.props.status);
   }
 
-  handleDeleteUser = (e) => {
+  handleDeleteUser: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDeleteUser(this.props.status);
   }
 
-  handleDeleteStatus = (e) => {
+  handleDeleteStatus: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onDeleteStatus(this.props.status);
   }
 
-  handleToggleStatusSensitivity = (e) => {
+  handleToggleStatusSensitivity: React.EventHandler<React.MouseEvent> = (e) => {
     e.stopPropagation();
     this.props.onToggleStatusSensitivity(this.props.status);
   }
 
-  handleOpenReblogsModal = (event) => {
+  handleOpenReblogsModal = () => {
     const { me, status, onOpenUnauthorizedModal, onOpenReblogsModal } = this.props;
 
-    event.stopPropagation();
-
     if (!me) onOpenUnauthorizedModal();
-    else onOpenReblogsModal(status.getIn(['account', 'acct']), status.get('id'));
+    else onOpenReblogsModal(String(status.getIn(['account', 'acct'])), status.id);
   }
 
-  _makeMenu = (publicStatus) => {
-    const { status, intl, withDismiss, withGroupAdmin, me, features, isStaff, isAdmin } = this.props;
-    const mutingConversation = status.get('muted');
+  _makeMenu = (publicStatus: boolean) => {
+    const { status, intl, withDismiss, me, features, isStaff, isAdmin } = this.props;
+    const mutingConversation = status.muted;
     const ownAccount = status.getIn(['account', 'id']) === me;
+    const username = String(status.getIn(['account', 'username']));
 
-    const menu = [];
+    const menu: Menu = [];
 
     menu.push({
       text: intl.formatMessage(messages.open),
@@ -380,9 +393,9 @@ class StatusActionBar extends ImmutablePureComponent {
 
     if (features.bookmarks) {
       menu.push({
-        text: intl.formatMessage(status.get('bookmarked') ? messages.unbookmark : messages.bookmark),
+        text: intl.formatMessage(status.bookmarked ? messages.unbookmark : messages.bookmark),
         action: this.handleBookmarkClick,
-        icon: require(status.get('bookmarked') ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
+        icon: require(status.bookmarked ? '@tabler/icons/icons/bookmark-off.svg' : '@tabler/icons/icons/bookmark.svg'),
       });
     }
 
@@ -400,14 +413,14 @@ class StatusActionBar extends ImmutablePureComponent {
     if (ownAccount) {
       if (publicStatus) {
         menu.push({
-          text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin),
+          text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
           action: this.handlePinClick,
           icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
         });
       } else {
-        if (status.get('visibility') === 'private') {
+        if (status.visibility === 'private') {
           menu.push({
-            text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
+            text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog_private),
             action: this.handleReblogClick,
             icon: require('@tabler/icons/icons/repeat.svg'),
           });
@@ -428,20 +441,20 @@ class StatusActionBar extends ImmutablePureComponent {
       });
     } else {
       menu.push({
-        text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }),
+        text: intl.formatMessage(messages.mention, { name: username }),
         action: this.handleMentionClick,
         icon: require('@tabler/icons/icons/at.svg'),
       });
 
       // if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
       //   menu.push({
-      //     text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }),
+      //     text: intl.formatMessage(messages.chat, { name: username }),
       //     action: this.handleChatClick,
       //     icon: require('@tabler/icons/icons/messages.svg'),
       //   });
       // } else {
       //   menu.push({
-      //     text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }),
+      //     text: intl.formatMessage(messages.direct, { name: username }),
       //     action: this.handleDirectClick,
       //     icon: require('@tabler/icons/icons/mail.svg'),
       //   });
@@ -449,17 +462,17 @@ class StatusActionBar extends ImmutablePureComponent {
 
       menu.push(null);
       menu.push({
-        text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }),
+        text: intl.formatMessage(messages.mute, { name: username }),
         action: this.handleMuteClick,
         icon: require('@tabler/icons/icons/circle-x.svg'),
       });
       menu.push({
-        text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }),
+        text: intl.formatMessage(messages.block, { name: username }),
         action: this.handleBlockClick,
         icon: require('@tabler/icons/icons/ban.svg'),
       });
       menu.push({
-        text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }),
+        text: intl.formatMessage(messages.report, { name: username }),
         action: this.handleReport,
         icon: require('@tabler/icons/icons/flag.svg'),
       });
@@ -470,33 +483,33 @@ class StatusActionBar extends ImmutablePureComponent {
 
       if (isAdmin) {
         menu.push({
-          text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.admin_account, { name: username }),
           href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
           icon: require('@tabler/icons/icons/gavel.svg'),
           action: (event) => event.stopPropagation(),
         });
         menu.push({
           text: intl.formatMessage(messages.admin_status),
-          href: `/pleroma/admin/#/statuses/${status.get('id')}/`,
+          href: `/pleroma/admin/#/statuses/${status.id}/`,
           icon: require('@tabler/icons/icons/pencil.svg'),
           action: (event) => event.stopPropagation(),
         });
       }
 
       menu.push({
-        text: intl.formatMessage(status.get('sensitive') === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
+        text: intl.formatMessage(status.sensitive === false ? messages.markStatusSensitive : messages.markStatusNotSensitive),
         action: this.handleToggleStatusSensitivity,
         icon: require('@tabler/icons/icons/alert-triangle.svg'),
       });
 
       if (!ownAccount) {
         menu.push({
-          text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.deactivateUser, { name: username }),
           action: this.handleDeactivateUser,
           icon: require('@tabler/icons/icons/user-off.svg'),
         });
         menu.push({
-          text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.deleteUser, { name: username }),
           action: this.handleDeleteUser,
           icon: require('@tabler/icons/icons/user-minus.svg'),
           destructive: true,
@@ -510,223 +523,194 @@ class StatusActionBar extends ImmutablePureComponent {
       }
     }
 
-    if (!ownAccount && withGroupAdmin) {
-      menu.push(null);
-      menu.push({
-        text: intl.formatMessage(messages.group_remove_account),
-        action: this.handleGroupRemoveAccount,
-        icon: require('@tabler/icons/icons/user-x.svg'),
-        destructive: true,
-      });
-      menu.push({
-        text: intl.formatMessage(messages.group_remove_post),
-        action: this.handleGroupRemovePost,
-        icon: require('@tabler/icons/icons/trash.svg'),
-        destructive: true,
-      });
-    }
+    // if (!ownAccount && withGroupAdmin) {
+    //   menu.push(null);
+    //   menu.push({
+    //     text: intl.formatMessage(messages.group_remove_account),
+    //     action: this.handleGroupRemoveAccount,
+    //     icon: require('@tabler/icons/icons/user-x.svg'),
+    //     destructive: true,
+    //   });
+    //   menu.push({
+    //     text: intl.formatMessage(messages.group_remove_post),
+    //     action: this.handleGroupRemovePost,
+    //     icon: require('@tabler/icons/icons/trash.svg'),
+    //     destructive: true,
+    //   });
+    // }
 
     return menu;
   }
 
-  setRef = c => {
+  setRef = (c: HTMLDivElement) => {
     this.node = c;
   }
 
   componentDidMount() {
-    document.addEventListener('click', e => {
-      if (this.node && !this.node.contains(e.target))
+    document.addEventListener('click', (e) => {
+      if (this.node && !this.node.contains(e.target as Node))
         this.setState({ emojiSelectorVisible: false });
     });
   }
 
   render() {
-    const { status, intl, allowedEmoji, features, me } = this.props;
+    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
 
-    const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
+    const publicStatus = ['public', 'unlisted'].includes(status.visibility);
 
-    const replyCount = status.get('replies_count');
-    const reblogCount = status.get('reblogs_count');
-    const favouriteCount = status.get('favourites_count');
+    const replyCount = status.replies_count;
+    const reblogCount = status.reblogs_count;
+    const favouriteCount = status.favourites_count;
+
     const emojiReactCount = reduceEmoji(
-      status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
+      (status.getIn(['pleroma', 'emoji_reactions']) || ImmutableList()) as ImmutableList<any>,
       favouriteCount,
-      status.get('favourited'),
+      status.favourited,
       allowedEmoji,
     ).reduce((acc, cur) => acc + cur.get('count'), 0);
-    const meEmojiReact = getReactForStatus(status, allowedEmoji);
-    const meEmojiTitle = intl.formatMessage({
+
+    const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+
+    const reactMessages = {
       '👍': messages.reactionLike,
       '❤️': messages.reactionHeart,
       '😆': messages.reactionLaughing,
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
-    }[meEmojiReact] || messages.favourite);
+    };
+
+    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
     let replyTitle;
 
-    if (status.get('visibility') === 'direct') {
+    if (status.visibility === 'direct') {
       reblogIcon = require('@tabler/icons/icons/mail.svg');
-    } else if (status.get('visibility') === 'private') {
+    } else if (status.visibility === 'private') {
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    let reblogButton;
+    const reblogMenu = [{
+      text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
+      action: this.handleReblogClick,
+      icon: require('@tabler/icons/icons/repeat.svg'),
+    }, {
+      text: intl.formatMessage(messages.quotePost),
+      action: this.handleQuoteClick,
+      icon: require('@tabler/icons/icons/quote.svg'),
+    }];
 
-    if (me && features.quotePosts) {
-      const reblogMenu = [
-        {
-          text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
-          action: this.handleReblogClick,
-          icon: require('@tabler/icons/icons/repeat.svg'),
-        },
-        {
-          text: intl.formatMessage(messages.quotePost),
-          action: this.handleQuoteClick,
-          icon: require('@tabler/icons/icons/quote.svg'),
-        },
-      ];
+    const reblogButton = (
+      <StatusActionButton
+        icon={reblogIcon}
+        color='success'
+        disabled={!publicStatus}
+        title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
+        active={status.reblogged}
+        onClick={this.handleReblogClick}
+        count={reblogCount}
+      />
+    );
 
-      reblogButton = (
-        <DropdownMenuContainer
-          items={reblogMenu}
-          disabled={!publicStatus}
-          active={status.get('reblogged')}
-          pressed={status.get('reblogged')}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          direction='right'
-          onShiftClick={this.handleReblogClick}
-        />
-      );
-    } else {
-      reblogButton = (
-        <IconButton
-          disabled={!publicStatus}
-          className={classNames({
-            'text-gray-400 hover:text-gray-600 dark:hover:text-white': !status.get('reblogged'),
-            'text-success-600 hover:text-success-600': status.get('reblogged'),
-          })}
-          title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
-          src={reblogIcon}
-          onClick={this.handleReblogClick}
-        />
-      );
-    }
-
-    if (status.get('in_reply_to_id', null) === null) {
+    if (!status.in_reply_to_id) {
       replyTitle = intl.formatMessage(messages.reply);
     } else {
       replyTitle = intl.formatMessage(messages.replyAll);
     }
 
-    const canShare = ('share' in navigator) && status.get('visibility') === 'public';
-
-    const shareButton = canShare && (
-      <div className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-        <IconButton
-          title={intl.formatMessage(messages.share)}
-          src={require('@tabler/icons/icons/upload.svg')}
-          onClick={this.handleShareClick}
-          className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
-        />
-      </div>
-    );
+    const canShare = ('share' in navigator) && status.visibility === 'public';
 
     return (
       <div className='pt-4 flex flex-row space-x-2'>
-        <div className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-          <IconButton
-            title={replyTitle}
-            src={require('@tabler/icons/icons/message-circle.svg')}
-            onClick={this.handleReplyClick}
-            className='text-gray-400 hover:text-gray-600 dark:hover:text-white'
+        <StatusActionButton
+          title={replyTitle}
+          icon={require('@tabler/icons/icons/message-circle.svg')}
+          onClick={this.handleReplyClick}
+          count={replyCount}
+        />
+
+        {features.quotePosts && me ? (
+          <DropdownMenuContainer items={reblogMenu} onShiftClick={this.handleReblogClick}>
+            {reblogButton}
+          </DropdownMenuContainer>
+        ) : (
+          reblogButton
+        )}
+
+        {features.emojiReacts ? (
+          <Hoverable
+            component={(
+              <EmojiSelector
+                onReact={this.handleReact}
+                focused={emojiSelectorFocused}
+                onUnfocus={handleEmojiSelectorUnfocus}
+              />
+            )}
+          >
+            <StatusActionButton
+              title={meEmojiTitle}
+              icon={require('@tabler/icons/icons/thumb-up.svg')}
+              color='accent'
+              onClick={this.handleLikeButtonClick}
+              active={Boolean(meEmojiReact)}
+              count={emojiReactCount}
+            />
+          </Hoverable>
+        ): (
+          <StatusActionButton
+            title={intl.formatMessage(messages.favourite)}
+            icon={require('@tabler/icons/icons/heart.svg')}
+            color='accent'
+            filled
+            onClick={this.handleFavouriteClick}
+            active={Boolean(meEmojiReact)}
+            count={favouriteCount}
           />
+        )}
 
-          {replyCount !== 0 ? (
-            <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}`}>
-              <Text size='xs' theme='muted'>{replyCount}</Text>
-            </Link>
-          ) : null}
-        </div>
-
-        <div className='flex items-center space-x-0.5 p-1 text-gray-400 hover:text-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-          {reblogButton}
-          {reblogCount !== 0 && <Text size='xs' theme='muted' role='presentation' onClick={this.handleOpenReblogsModal}>{reblogCount}</Text>}
-        </div>
-
-        <div
-          ref={this.setRef}
-          className='flex items-center space-x-0.5 p-1 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'
-          // onMouseEnter={this.handleLikeButtonHover}
-          // onMouseLeave={this.handleLikeButtonLeave}
-        >
-          {/* <EmojiSelector
-            onReact={this.handleReactClick}
-            visible={features.emojiReacts && emojiSelectorVisible}
-            focused={emojiSelectorFocused}
-            onUnfocus={handleEmojiSelectorUnfocus}
-          /> */}
-          <IconButton
-            className={classNames({
-              'text-gray-400 hover:text-gray-600 dark:hover:text-white': !meEmojiReact,
-              'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
-            })}
-            title={meEmojiTitle}
-            src={require('@tabler/icons/icons/heart.svg')}
-            iconClassName={classNames({
-              'fill-accent-300': Boolean(meEmojiReact),
-            })}
-            // emoji={meEmojiReact}
-            onClick={this.handleLikeButtonClick}
+        {canShare && (
+          <StatusActionButton
+            title={intl.formatMessage(messages.share)}
+            icon={require('@tabler/icons/icons/upload.svg')}
+            onClick={this.handleShareClick}
           />
-          {emojiReactCount !== 0 && (
-            (features.exposableReactions && !features.emojiReacts) ? (
-              <Link to={`/@${status.getIn(['account', 'acct'])}/posts/${status.get('id')}/likes`} className='pointer-events-none'>
-                <Text size='xs' theme='muted'>{emojiReactCount}</Text>
-              </Link>
-            ) : (
-              <span className='detailed-status__link'>{emojiReactCount}</span>
-            )
-          )}
-        </div>
+        )}
 
-        {shareButton}
-
-        <div className='flex items-center space-x-0.5 p-1 text-gray-400 hover:text-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500'>
-          <DropdownMenuContainer items={menu} title={intl.formatMessage(messages.more)} status={status} src={require('@tabler/icons/icons/dots.svg')} direction='right' />
-        </div>
+        <DropdownMenuContainer items={menu} status={status}>
+          <StatusActionButton
+            title={intl.formatMessage(messages.more)}
+            icon={require('@tabler/icons/icons/dots.svg')}
+          />
+        </DropdownMenuContainer>
       </div>
     );
   }
 
 }
 
-const mapStateToProps = state => {
-  const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
-  const instance = state.get('instance');
+const mapStateToProps = (state: RootState) => {
+  const { me, instance } = state;
+  const account = state.accounts.get(me);
 
   return {
     me,
-    isStaff: account ? isStaff(account) : false,
-    isAdmin: account ? isAdmin(account) : false,
+    isStaff: account ? account.staff : false,
+    isAdmin: account ? account.admin : false,
     features: getFeatures(instance),
   };
 };
 
-const mapDispatchToProps = (dispatch, { status }) => ({
+const mapDispatchToProps = (dispatch: Dispatch, { status }: { status: Status}) => ({
   dispatch,
-  onOpenUnauthorizedModal(action) {
+  onOpenUnauthorizedModal(action: AnyAction) {
     dispatch(openModal('UNAUTHORIZED', {
       action,
-      ap_id: status.get('url'),
+      ap_id: status.url,
     }));
   },
-  onOpenReblogsModal(username, statusId) {
+  onOpenReblogsModal(username: string, statusId: string) {
     dispatch(openModal('REBLOGS', {
       username,
       statusId,
@@ -734,6 +718,9 @@ const mapDispatchToProps = (dispatch, { status }) => ({
   },
 });
 
+// @ts-ignore
 export default withRouter(injectIntl(
+  // @ts-ignore
   connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
+  // @ts-ignore
   )(StatusActionBar)));

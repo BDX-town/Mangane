@@ -1,25 +1,19 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 
-import { Account } from 'soapbox/types/entities';
+import type { Account } from 'soapbox/types/entities';
 
-const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
+const getDomainFromURL = (account: Account): string => {
   try {
-    const url = account.get('url');
+    const url = account.url;
     return new URL(url).host;
   } catch {
     return '';
   }
 };
 
-export const getDomain = (account: ImmutableMap<string, any>): string => {
-  const domain = account.get('acct', '').split('@')[1];
+export const getDomain = (account: Account): string => {
+  const domain = account.acct.split('@')[1];
   return domain ? domain : getDomainFromURL(account);
-};
-
-export const guessFqn = (account: ImmutableMap<string, any>): string => {
-  const [user, domain] = account.get('acct', '').split('@');
-  if (!domain) return [user, getDomainFromURL(account)].join('@');
-  return account.get('acct', '');
 };
 
 export const getBaseURL = (account: ImmutableMap<string, any>): string => {
@@ -31,25 +25,8 @@ export const getBaseURL = (account: ImmutableMap<string, any>): string => {
   }
 };
 
-// user@domain even for local users
-export const acctFull = (account: ImmutableMap<string, any>): string => (
-  account.get('fqn') || guessFqn(account) || ''
-);
-
 export const getAcct = (account: Account, displayFqn: boolean): string => (
   displayFqn === true ? account.fqn : account.acct
-);
-
-export const isStaff = (account: ImmutableMap<any, any> = ImmutableMap()): boolean => (
-  [isAdmin, isModerator].some(f => f(account) === true)
-);
-
-export const isAdmin = (account: ImmutableMap<string, any>): boolean => (
-  account.getIn(['pleroma', 'is_admin']) === true
-);
-
-export const isModerator = (account: ImmutableMap<string, any>): boolean => (
-  account.getIn(['pleroma', 'is_moderator']) === true
 );
 
 export const getFollowDifference = (state: ImmutableMap<string, any>, accountId: string, type: string): number => {

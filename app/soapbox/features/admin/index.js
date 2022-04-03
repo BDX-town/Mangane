@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
-import { isAdmin } from 'soapbox/utils/accounts';
 import sourceCode from 'soapbox/utils/code';
 import { parseVersion } from 'soapbox/utils/features';
 import { getFeatures } from 'soapbox/utils/features';
@@ -139,7 +138,7 @@ class Dashboard extends ImmutablePureComponent {
             </div>
           </div>
         </div>
-        {isAdmin(account) && <RegistrationModePicker />}
+        {account.admin && <RegistrationModePicker />}
         <div className='dashwidgets'>
           <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.software_header' defaultMessage='Software' /></h4>
@@ -148,7 +147,7 @@ class Dashboard extends ImmutablePureComponent {
               <li>{v.software} <span className='pull-right'>{v.version}</span></li>
             </ul>
           </div>
-          {supportsEmailList && isAdmin(account) && <div className='dashwidget'>
+          {supportsEmailList && account.admin && <div className='dashwidget'>
             <h4><FormattedMessage id='admin.dashwidgets.email_list_header' defaultMessage='Email list' /></h4>
             <ul>
               <li><a href='#' onClick={this.handleSubscribersClick} target='_blank'>subscribers.csv</a></li>

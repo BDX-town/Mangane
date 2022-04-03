@@ -11,19 +11,18 @@ import {
   InstanceInfoPanel,
   InstanceModerationPanel,
 } from 'soapbox/features/ui/util/async-components';
-import { isAdmin } from 'soapbox/utils/accounts';
 import { federationRestrictionsDisclosed } from 'soapbox/utils/state';
 
 import { Layout } from '../components/ui';
 
 const mapStateToProps = state => {
-  const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
+  const me = state.me;
+  const account = state.accounts.get(me);
 
   return {
     me,
     disclosed: federationRestrictionsDisclosed(state),
-    isAdmin: isAdmin(account),
+    isAdmin: Boolean(account?.admin),
   };
 };
 

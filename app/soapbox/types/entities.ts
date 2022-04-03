@@ -14,7 +14,6 @@ import {
 
 import type { Record as ImmutableRecord } from 'immutable';
 
-type Account = ReturnType<typeof AccountRecord>;
 type Attachment = ReturnType<typeof AttachmentRecord>;
 type Card = ReturnType<typeof CardRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
@@ -24,7 +23,18 @@ type Mention = ReturnType<typeof MentionRecord>;
 type Notification = ReturnType<typeof NotificationRecord>;
 type Poll = ReturnType<typeof PollRecord>;
 type PollOption = ReturnType<typeof PollOptionRecord>;
-type Status = ReturnType<typeof StatusRecord>;
+
+interface Account extends ReturnType<typeof AccountRecord> {
+  // HACK: we can't do a circular reference in the Record definition itself,
+  // so do it here.
+  moved: EmbeddedEntity<Account>;
+}
+
+interface Status extends ReturnType<typeof StatusRecord> {
+  // HACK: same as above
+  quote: EmbeddedEntity<Status>;
+  reblog: EmbeddedEntity<Status>;
+}
 
 // Utility types
 type APIEntity = Record<string, any>;

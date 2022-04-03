@@ -21,33 +21,54 @@ import {
   ADMIN_USERS_APPROVE_SUCCESS,
 } from '../actions/admin';
 
+import type { AnyAction } from 'redux';
+import type { Config } from 'soapbox/utils/config_db';
+
 const ReducerRecord = ImmutableRecord({
-  reports: ImmutableMap(),
-  openReports: ImmutableOrderedSet(),
-  users: ImmutableMap(),
-  latestUsers: ImmutableOrderedSet(),
-  awaitingApproval: ImmutableOrderedSet(),
-  configs: ImmutableList(),
+  reports: ImmutableMap<string, any>(),
+  openReports: ImmutableOrderedSet<string>(),
+  users: ImmutableMap<string, any>(),
+  latestUsers: ImmutableOrderedSet<string>(),
+  awaitingApproval: ImmutableOrderedSet<string>(),
+  configs: ImmutableList<Config>(),
   needsReboot: false,
 });
 
-const FILTER_UNAPPROVED = ['local', 'need_approval'];
-const FILTER_LATEST     = ['local', 'active'];
+type State = ReturnType<typeof ReducerRecord>;
 
-const filtersMatch = (f1, f2) => is(ImmutableSet(f1), ImmutableSet(f2));
-const toIds = items => items.map(item => item.id);
+// Umm... based?
+// https://itnext.io/typescript-extract-unpack-a-type-from-a-generic-baca7af14e51
+type InnerRecord<R> = R extends ImmutableRecord<infer TProps> ? TProps : never;
 
-const mergeSet = (state, key, users) => {
+type InnerState = InnerRecord<State>;
+
+// Lol https://javascript.plainenglish.io/typescript-essentials-conditionally-filter-types-488705bfbf56
+type FilterConditionally<Source, Condition> = Pick<Source, {[K in keyof Source]: Source[K] extends Condition ? K : never}[keyof Source]>;
+
+type SetKeys = keyof FilterConditionally<InnerState, ImmutableOrderedSet<string>>;
+
+type APIReport = { id: string, state: string, statuses: any[] };
+type APIUser = { id: string, email: string, nickname: string, registration_reason: string };
+
+type Filter = 'local' | 'need_approval' | 'active';
+
+const FILTER_UNAPPROVED: Filter[] = ['local', 'need_approval'];
+const FILTER_LATEST: Filter[]     = ['local', 'active'];
+
+const filtersMatch = (f1: string[], f2: string[]) => is(ImmutableSet(f1), ImmutableSet(f2));
+const toIds = (items: any[]) => items.map(item => item.id);
+
+const mergeSet = (state: State, key: SetKeys, users: APIUser[]): State => {
   const newIds = toIds(users);
-  return state.update(key, ImmutableOrderedSet(), ids => ids.union(newIds));
+  return state.update(key, (ids: ImmutableOrderedSet<string>) => ids.union(newIds));
 };
 
-const replaceSet = (state, key, users) => {
+const replaceSet = (state: State, key: SetKeys, users: APIUser[]): State => {
   const newIds = toIds(users);
   return state.set(key, ImmutableOrderedSet(newIds));
 };
 
-const maybeImportUnapproved = (state, users, filters) => {
+const maybeImportUnapproved = (state: State, users: APIUser[], filters: Filter[]): State => {
   if (filtersMatch(FILTER_UNAPPROVED, filters)) {
     return mergeSet(state, 'awaitingApproval', users);
   } else {
@@ -55,7 +76,7 @@ const maybeImportUnapproved = (state, users, filters) => {
   }
 };
 
-const maybeImportLatest = (state, users, filters, page) => {
+const maybeImportLatest = (state: State, users: APIUser[], filters: Filter[], page: number): State => {
   if (page === 1 && filtersMatch(FILTER_LATEST, filters)) {
     return replaceSet(state, 'latestUsers', users);
   } else {
@@ -63,14 +84,14 @@ const maybeImportLatest = (state, users, filters, page) => {
   }
 };
 
-const importUser = (state, user) => (
+const importUser = (state: State, user: APIUser): State => (
   state.setIn(['users', user.id], ImmutableMap({
     email: user.email,
     registration_reason: user.registration_reason,
   }))
 );
 
-function importUsers(state, users, filters, page) {
+function importUsers(state: State, users: APIUser[], filters: Filter[], page: number): State {
   return state.withMutations(state => {
     maybeImportUnapproved(state, users, filters);
     maybeImportLatest(state, users, filters, page);
@@ -81,7 +102,7 @@ function importUsers(state, users, filters, page) {
   });
 }
 
-function deleteUsers(state, accountIds) {
+function deleteUsers(state: State, accountIds: string[]): State {
   return state.withMutations(state => {
     accountIds.forEach(id => {
       state.update('awaitingApproval', orderedSet => orderedSet.delete(id));
@@ -90,7 +111,7 @@ function deleteUsers(state, accountIds) {
   });
 }
 
-function approveUsers(state, users) {
+function approveUsers(state: State, users: APIUser[]): State {
   return state.withMutations(state => {
     users.forEach(user => {
       state.update('awaitingApproval', orderedSet => orderedSet.delete(user.nickname));
@@ -99,7 +120,7 @@ function approveUsers(state, users) {
   });
 }
 
-function importReports(state, reports) {
+function importReports(state: State, reports: APIReport[]): State {
   return state.withMutations(state => {
     reports.forEach(report => {
       report.statuses = report.statuses.map(status => status.id);
@@ -111,7 +132,7 @@ function importReports(state, reports) {
   });
 }
 
-function handleReportDiffs(state, reports) {
+function handleReportDiffs(state: State, reports: APIReport[]) {
   // Note: the reports here aren't full report objects
   // hence the need for a new function.
   return state.withMutations(state => {
@@ -127,11 +148,21 @@ function handleReportDiffs(state, reports) {
   });
 }
 
-export default function admin(state = ReducerRecord(), action) {
+const normalizeConfig = (config: any): Config => ImmutableMap(fromJS(config));
+
+const normalizeConfigs = (configs: any): ImmutableList<Config> => {
+  return ImmutableList(fromJS(configs)).map(normalizeConfig);
+};
+
+const importConfigs = (state: State, configs: any): State => {
+  return state.set('configs', normalizeConfigs(configs));
+};
+
+export default function admin(state: State = ReducerRecord(), action: AnyAction): State {
   switch(action.type) {
   case ADMIN_CONFIG_FETCH_SUCCESS:
   case ADMIN_CONFIG_UPDATE_SUCCESS:
-    return state.set('configs', fromJS(action.configs));
+    return importConfigs(state, action.configs);
   case ADMIN_REPORTS_FETCH_SUCCESS:
     return importReports(state, action.reports);
   case ADMIN_REPORTS_PATCH_REQUEST:

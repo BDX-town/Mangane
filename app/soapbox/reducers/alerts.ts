@@ -15,24 +15,31 @@ const AlertRecord = ImmutableRecord({
   actionLink: '',
 });
 
-const initialState = ImmutableList();
+import type { AnyAction } from 'redux';
+
+type PlainAlert = Record<string, any>;
+type Alert = ReturnType<typeof AlertRecord>;
+type State = ImmutableList<Alert>;
 
 // Get next key based on last alert
-const getNextKey = state => state.size > 0 ? state.last().get('key') + 1 : 0;
+const getNextKey = (state: State): number => {
+  const last = state.last();
+  return last ? last.key + 1 : 0;
+};
 
 // Import the alert
-const importAlert = (state, alert) => {
+const importAlert = (state: State, alert: PlainAlert): State => {
   const key = getNextKey(state);
   const record = AlertRecord({ ...alert, key });
   return state.push(record);
 };
 
 // Delete an alert by its key
-const deleteAlert = (state, alert) => {
+const deleteAlert = (state: State, alert: PlainAlert): State => {
   return state.filterNot(item => item.key === alert.key);
 };
 
-export default function alerts(state = initialState, action) {
+export default function alerts(state: State = ImmutableList<Alert>(), action: AnyAction): State {
   switch(action.type) {
   case ALERT_SHOW:
     return importAlert(state, action);

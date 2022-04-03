@@ -13,7 +13,6 @@ import {
 
 import emojify from 'soapbox/features/emoji/emoji';
 import { normalizeEmoji } from 'soapbox/normalizers/emoji';
-import { acctFull } from 'soapbox/utils/accounts';
 import { unescapeHTML } from 'soapbox/utils/html';
 import { mergeDefined, makeEmojiMap } from 'soapbox/utils/normalizers';
 
@@ -39,7 +38,7 @@ export const AccountRecord = ImmutableRecord({
   last_status_at: new Date(),
   location: '',
   locked: false,
-  moved: null as EmbeddedEntity<any> | null,
+  moved: null as EmbeddedEntity<any>,
   note: '',
   pleroma: ImmutableMap<string, any>(),
   source: ImmutableMap<string, any>(),
@@ -51,12 +50,15 @@ export const AccountRecord = ImmutableRecord({
   verified: false,
 
   // Internal fields
+  admin: false,
   display_name_html: '',
+  moderator: false,
   note_emojified: '',
   note_plain: '',
   patron: ImmutableMap<string, any>(),
   relationship: ImmutableList<ImmutableMap<string, any>>(),
   should_refetch: false,
+  staff: false,
 });
 
 // https://docs.joinmastodon.org/entities/field/
@@ -197,8 +199,41 @@ const addInternalFields = (account: ImmutableMap<string, any>) => {
   });
 };
 
+const getDomainFromURL = (account: ImmutableMap<string, any>): string => {
+  try {
+    const url = account.get('url');
+    return new URL(url).host;
+  } catch {
+    return '';
+  }
+};
+
+export const guessFqn = (account: ImmutableMap<string, any>): string => {
+  const acct = account.get('acct', '');
+  const [user, domain] = acct.split('@');
+
+  if (domain) {
+    return acct;
+  } else {
+    return [user, getDomainFromURL(account)].join('@');
+  }
+};
+
 const normalizeFqn = (account: ImmutableMap<string, any>) => {
-  return account.set('fqn', acctFull(account));
+  const fqn = account.get('fqn') || guessFqn(account);
+  return account.set('fqn', fqn);
+};
+
+const addStaffFields = (account: ImmutableMap<string, any>) => {
+  const admin = account.getIn(['pleroma', 'is_admin']) === true;
+  const moderator = account.getIn(['pleroma', 'is_moderator']) === true;
+  const staff = admin || moderator;
+
+  return account.merge({
+    admin,
+    moderator,
+    staff,
+  });
 };
 
 export const normalizeAccount = (account: Record<string, any>) => {
@@ -213,6 +248,7 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeBirthday(account);
       normalizeLocation(account);
       normalizeFqn(account);
+      addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
       addInternalFields(account);
