@@ -406,14 +406,8 @@
   }
 
   .status__content__spoiler-link {
-    background: var(--brand-color--med);
+    @apply bg-primary-100 dark:bg-primary-900 hover:bg-primary-300 dark:hover:bg-primary-600 focus:bg-primary-200 dark:focus:bg-primary-600 text-black dark:text-white hover:no-underline;
     transition: 0.2s;
-
-    &:hover,
-    &:focus {
-      background: hsla(var(--brand-color_hsl), 0.5);
-      text-decoration: none;
-    }
 
     &::-moz-focus-inner {
       border: 0;
