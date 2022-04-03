@@ -661,7 +661,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
             title={intl.formatMessage(messages.favourite)}
             icon={require('@tabler/icons/icons/heart.svg')}
             color='accent'
-            fill='accent'
+            filled
             onClick={this.handleFavouriteClick}
             active={Boolean(meEmojiReact)}
             count={favouriteCount}

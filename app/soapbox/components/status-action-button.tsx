@@ -6,18 +6,11 @@ import { Text } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const COLORS = {
-  accent: 'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300',
-  success: 'text-success-600 hover:text-success-600 dark:hover:text-success-600',
-  '': '',
-};
-
-const FILL_COLORS = {
-  accent: 'fill-accent-300 hover:fill-accent-300',
-  '': '',
+  accent: 'accent',
+  success: 'success',
 };
 
 type Color = keyof typeof COLORS;
-type FillColor = keyof typeof FILL_COLORS;
 
 interface IStatusActionCounter {
   count: number,
@@ -38,11 +31,11 @@ interface IStatusActionButton extends React.ButtonHTMLAttributes<HTMLButtonEleme
   count?: number,
   active?: boolean,
   color?: Color,
-  fill?: FillColor,
+  filled?: boolean,
 }
 
 const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: React.ForwardedRef<HTMLButtonElement>): JSX.Element => {
-  const { icon, className, iconClassName, active, color = '', fill = '', count = 0, ...filteredProps } = props;
+  const { icon, className, iconClassName, active, color, filled = false, count = 0, ...filteredProps } = props;
 
   return (
     <button
@@ -53,7 +46,8 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
         'text-gray-400 hover:text-gray-600 dark:hover:text-white',
         'bg-white dark:bg-transparent',
         {
-          [COLORS[color]]: active,
+          'text-accent-300 hover:text-accent-300 dark:hover:text-accent-300': active && color === COLORS.accent,
+          'text-success-600 hover:text-success-600 dark:hover:text-success-600': active && color === COLORS.success,
         },
         className,
       )}
@@ -65,7 +59,7 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
           'p-1 rounded-full box-content',
           'group-focus:outline-none group-focus:ring-2 group-focus:ring-offset-2 dark:ring-offset-0 group-focus:ring-primary-500',
           {
-            [FILL_COLORS[fill]]: active,
+            'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
           },
           iconClassName,
         )}
