@@ -561,21 +561,26 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
     const replyCount = status.replies_count;
     const reblogCount = status.reblogs_count;
     const favouriteCount = status.favourites_count;
+
     const emojiReactCount = reduceEmoji(
       (status.getIn(['pleroma', 'emoji_reactions']) || ImmutableList()) as ImmutableList<any>,
       favouriteCount,
       status.favourited,
       allowedEmoji,
     ).reduce((acc, cur) => acc + cur.get('count'), 0);
-    const meEmojiReact = getReactForStatus(status, allowedEmoji);
-    const meEmojiTitle = intl.formatMessage({
+
+    const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+
+    const reactMessages = {
       '👍': messages.reactionLike,
       '❤️': messages.reactionHeart,
       '😆': messages.reactionLaughing,
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
-    }[meEmojiReact] || messages.favourite);
+    };
+
+    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
@@ -587,18 +592,15 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       reblogIcon = require('@tabler/icons/icons/lock.svg');
     }
 
-    const reblogMenu = [
-      {
-        text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
-        action: this.handleReblogClick,
-        icon: require('@tabler/icons/icons/repeat.svg'),
-      },
-      {
-        text: intl.formatMessage(messages.quotePost),
-        action: this.handleQuoteClick,
-        icon: require('@tabler/icons/icons/quote.svg'),
-      },
-    ];
+    const reblogMenu = [{
+      text: intl.formatMessage(status.reblogged ? messages.cancel_reblog_private : messages.reblog),
+      action: this.handleReblogClick,
+      icon: require('@tabler/icons/icons/repeat.svg'),
+    }, {
+      text: intl.formatMessage(messages.quotePost),
+      action: this.handleQuoteClick,
+      icon: require('@tabler/icons/icons/quote.svg'),
+    }];
 
     const reblogButton = (
       <StatusActionButton

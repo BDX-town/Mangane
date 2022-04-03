@@ -80,21 +80,23 @@ export const reduceEmoji = (emojiReacts: ImmutableList<EmojiReact>, favouritesCo
     emojiReacts, favouritesCount, favourited,
   ))), allowedEmoji));
 
-export const getReactForStatus = (status: any, allowedEmoji=ALLOWED_EMOJI): string => {
-  return String(reduceEmoji(
+export const getReactForStatus = (status: any, allowedEmoji=ALLOWED_EMOJI): string | undefined => {
+  const result = reduceEmoji(
     status.getIn(['pleroma', 'emoji_reactions'], ImmutableList()),
     status.get('favourites_count', 0),
     status.get('favourited'),
     allowedEmoji,
   ).filter(e => e.get('me') === true)
-    .getIn([0, 'name'], ''));
+    .getIn([0, 'name']);
+
+  return typeof result === 'string' ? result : undefined;
 };
 
 export const simulateEmojiReact = (emojiReacts: ImmutableList<EmojiReact>, emoji: string) => {
   const idx = emojiReacts.findIndex(e => e.get('name') === emoji);
   const emojiReact = emojiReacts.get(idx);
 
-  if (emojiReact) {
+  if (idx > -1 && emojiReact) {
     return emojiReacts.set(idx, emojiReact.merge({
       count: emojiReact.get('count') + 1,
       me: true,
