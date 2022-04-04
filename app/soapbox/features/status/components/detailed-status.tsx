@@ -19,7 +19,7 @@ import scheduleIdleTask from '../../ui/util/schedule_idle_task';
 import Video from '../../video';
 
 import Card from './card';
-import StatusInteractionBar from './status_interaction_bar';
+import StatusInteractionBar from './status-interaction-bar';
 
 import type { List as ImmutableList } from 'immutable';
 import type { Attachment as AttachmentEntity, Status as StatusEntity } from 'soapbox/types/entities';
