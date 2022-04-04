@@ -66,6 +66,7 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
               required
             />
           </FormGroup>
+
           <FormActions>
             <Button
               theme='primary'
