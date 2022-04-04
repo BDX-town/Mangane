@@ -29,6 +29,7 @@ module.exports = {
     '<rootDir>/node_modules',
     '<rootDir>/app',
   ],
+  'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
   'testEnvironment': 'jsdom',
   'moduleNameMapper': {
     '^.+.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$': 'jest-transform-stub',
