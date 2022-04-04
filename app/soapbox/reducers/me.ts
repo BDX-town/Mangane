@@ -10,17 +10,21 @@ import {
   ME_PATCH_SUCCESS,
 } from '../actions/me';
 
-const initialState = null;
+import type { AxiosError } from 'axios';
+import type { AnyAction } from 'redux';
+import type { Me } from 'soapbox/types/soapbox';
 
-const handleForbidden = (state, error) => {
-  if ([401, 403].includes(error.response?.status)) {
+const initialState: Me = null;
+
+const handleForbidden = (state: Me, error: AxiosError) => {
+  if (([401, 403] as any[]).includes(error.response?.status)) {
     return false;
   } else {
     return state;
   }
 };
 
-export default function me(state = initialState, action) {
+export default function me(state: Me = initialState, action: AnyAction): Me {
   switch(action.type) {
   case ME_FETCH_SUCCESS:
   case ME_PATCH_SUCCESS:
