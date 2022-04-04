@@ -49,7 +49,7 @@ export interface ReducerAccount extends AccountRecord {
   moved: string | null,
 }
 
-type State = ImmutableMap<string | number, ReducerAccount>;
+type State = ImmutableMap<any, ReducerAccount>;
 
 const initialState: State = ImmutableMap();
 

@@ -1,19 +1,26 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
-import { defineMessages, injectIntl } from 'react-intl';
+import { defineMessages, injectIntl, WrappedComponentProps as IntlComponentProps } from 'react-intl';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 
 import { openModal } from '../../../actions/modals';
 import { HStack, IconButton } from '../../../components/ui';
 import DropdownMenuContainer from '../../../containers/dropdown_menu_container';
+
+import type { History } from 'history';
+import type { List as ImmutableList } from 'immutable';
+import type { AnyAction } from 'redux';
+import type { ThunkDispatch } from 'redux-thunk';
+import type { Menu } from 'soapbox/components/dropdown_menu';
+import type { RootState } from 'soapbox/store';
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+
+type Dispatch = ThunkDispatch<RootState, void, AnyAction>;
 
 const messages = defineMessages({
   delete: { id: 'status.delete', defaultMessage: 'Delete' },
@@ -57,10 +64,10 @@ const messages = defineMessages({
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
-const mapStateToProps = state => {
-  const me = state.get('me');
-  const account = state.getIn(['accounts', me]);
-  const instance = state.get('instance');
+const mapStateToProps = (state: RootState) => {
+  const me = state.me;
+  const account = state.accounts.get(me);
+  const instance = state.instance;
 
   return {
     me,
@@ -70,54 +77,56 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = (dispatch, { status }) => ({
-  onOpenUnauthorizedModal(action) {
+const mapDispatchToProps = (dispatch: Dispatch, { status }: OwnProps) => ({
+  onOpenUnauthorizedModal(action: string) {
     dispatch(openModal('UNAUTHORIZED', {
       action,
-      ap_id: status.get('url'),
+      ap_id: status.url,
     }));
   },
 });
 
-@withRouter
-class ActionBar extends React.PureComponent {
+interface OwnProps {
+  status: StatusEntity,
+  onReply: (status: StatusEntity) => void,
+  onReblog: (status: StatusEntity, e: React.MouseEvent) => void,
+  onQuote: (status: StatusEntity, history: History) => void,
+  onFavourite: (status: StatusEntity) => void,
+  onEmojiReact: (status: StatusEntity, emoji: string) => void,
+  onDelete: (status: StatusEntity, history: History, redraft?: boolean) => void,
+  onBookmark: (status: StatusEntity) => void,
+  onDirect: (account: AccountEntity, history: History) => void,
+  onChat: (account: AccountEntity, history: History) => void,
+  onMention: (account: AccountEntity, history: History) => void,
+  onMute: (account: AccountEntity) => void,
+  onMuteConversation: (status: StatusEntity) => void,
+  onBlock: (status: StatusEntity) => void,
+  onReport: (status: StatusEntity) => void,
+  onPin: (status: StatusEntity) => void,
+  onEmbed: (status: StatusEntity) => void,
+  onDeactivateUser: (status: StatusEntity) => void,
+  onDeleteUser: (status: StatusEntity) => void,
+  onDeleteStatus: (status: StatusEntity) => void,
+  onToggleStatusSensitivity: (status: StatusEntity) => void,
+  allowedEmoji: ImmutableList<string>,
+  emojiSelectorFocused: boolean,
+  handleEmojiSelectorExpand: React.EventHandler<React.KeyboardEvent>,
+  handleEmojiSelectorUnfocus: React.EventHandler<React.KeyboardEvent>,
+}
 
-  static propTypes = {
-    status: ImmutablePropTypes.record.isRequired,
-    onReply: PropTypes.func.isRequired,
-    onReblog: PropTypes.func.isRequired,
-    onQuote: PropTypes.func.isRequired,
-    onFavourite: PropTypes.func.isRequired,
-    onEmojiReact: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onBookmark: PropTypes.func,
-    onDirect: PropTypes.func.isRequired,
-    onChat: PropTypes.func,
-    onMention: PropTypes.func.isRequired,
-    onMute: PropTypes.func,
-    onMuteConversation: PropTypes.func,
-    onBlock: PropTypes.func,
-    onReport: PropTypes.func,
-    onPin: PropTypes.func,
-    onEmbed: PropTypes.func,
-    onDeactivateUser: PropTypes.func,
-    onDeleteUser: PropTypes.func,
-    onDeleteStatus: PropTypes.func,
-    onToggleStatusSensitivity: PropTypes.func,
-    intl: PropTypes.object.isRequired,
-    onOpenUnauthorizedModal: PropTypes.func.isRequired,
-    me: SoapboxPropTypes.me,
-    isStaff: PropTypes.bool.isRequired,
-    isAdmin: PropTypes.bool.isRequired,
-    allowedEmoji: ImmutablePropTypes.list,
-    emojiSelectorFocused: PropTypes.bool,
-    handleEmojiSelectorExpand: PropTypes.func.isRequired,
-    handleEmojiSelectorUnfocus: PropTypes.func.isRequired,
-    features: PropTypes.object.isRequired,
-    history: PropTypes.object,
-  };
+type StateProps = ReturnType<typeof mapStateToProps>;
+type DispatchProps = ReturnType<typeof mapDispatchToProps>;
 
-  static defaultProps = {
+type IActionBar = OwnProps & StateProps & DispatchProps & RouteComponentProps & IntlComponentProps;
+
+interface IActionBarState {
+  emojiSelectorVisible: boolean,
+  emojiSelectorFocused: boolean,
+}
+
+class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
+
+  static defaultProps: Partial<IActionBar> = {
     isStaff: false,
   }
 
@@ -126,7 +135,9 @@ class ActionBar extends React.PureComponent {
     emojiSelectorFocused: false,
   }
 
-  handleReplyClick = (e) => {
+  node: HTMLDivElement | null = null;
+
+  handleReplyClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { me, onReply, onOpenUnauthorizedModal } = this.props;
     e.preventDefault();
 
@@ -137,7 +148,7 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleReblogClick = (e) => {
+  handleReblogClick: React.EventHandler<React.MouseEvent> = (e) => {
     const { me, onReblog, onOpenUnauthorizedModal, status } = this.props;
     e.preventDefault();
 
@@ -148,7 +159,7 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleQuoteClick = () => {
+  handleQuoteClick: React.EventHandler<React.MouseEvent> = () => {
     const { me, onQuote, onOpenUnauthorizedModal, status } = this.props;
     if (me) {
       onQuote(status, this.props.history);
@@ -157,12 +168,12 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleBookmarkClick = () => {
+  handleBookmarkClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onBookmark(this.props.status);
   }
 
-  handleFavouriteClick = (e) => {
-    const { me, onFavourite, onOpenUnauthorizedModal } = this.props;
+  handleFavouriteClick: React.EventHandler<React.MouseEvent> = (e) => {
+    const { me, onFavourite, onOpenUnauthorizedModal, status } = this.props;
 
     e.preventDefault();
 
@@ -173,7 +184,7 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleLikeButtonHover = e => {
+  handleLikeButtonHover: React.EventHandler<React.MouseEvent> = () => {
     const { features } = this.props;
 
     if (features.emojiReacts && !isUserTouching()) {
@@ -181,7 +192,7 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleLikeButtonLeave = e => {
+  handleLikeButtonLeave: React.EventHandler<React.MouseEvent> = () => {
     const { features } = this.props;
 
     if (features.emojiReacts && !isUserTouching()) {
@@ -189,23 +200,23 @@ class ActionBar extends React.PureComponent {
     }
   }
 
-  handleLikeButtonClick = e => {
+  handleLikeButtonClick: React.EventHandler<React.MouseEvent> = e => {
     const { features } = this.props;
     const meEmojiReact = getReactForStatus(this.props.status, this.props.allowedEmoji) || '👍';
 
     if (features.emojiReacts && isUserTouching()) {
       if (this.state.emojiSelectorVisible) {
-        this.handleReactClick(meEmojiReact)();
+        this.handleReactClick(meEmojiReact)(e);
       } else {
         this.setState({ emojiSelectorVisible: true });
       }
     } else {
-      this.handleReactClick(meEmojiReact)();
+      this.handleReactClick(meEmojiReact)(e);
     }
   }
 
-  handleReactClick = emoji => {
-    return e => {
+  handleReactClick = (emoji: string): React.EventHandler<React.MouseEvent> => {
+    return () => {
       const { me, onEmojiReact, onOpenUnauthorizedModal, status } = this.props;
       if (me) {
         onEmojiReact(status, emoji);
@@ -222,35 +233,43 @@ class ActionBar extends React.PureComponent {
     this.setState({ emojiSelectorVisible: !emojiSelectorVisible });
   }
 
-  handleDeleteClick = () => {
+  handleDeleteClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onDelete(this.props.status, this.props.history);
   }
 
-  handleRedraftClick = () => {
+  handleRedraftClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onDelete(this.props.status, this.props.history, true);
   }
 
-  handleDirectClick = () => {
-    this.props.onDirect(this.props.status.get('account'), this.props.history);
+  handleDirectClick: React.EventHandler<React.MouseEvent> = () => {
+    const { account } = this.props.status;
+    if (!account || typeof account !== 'object') return;
+    this.props.onDirect(account, this.props.history);
   }
 
-  handleChatClick = () => {
-    this.props.onChat(this.props.status.get('account'), this.props.history);
+  handleChatClick: React.EventHandler<React.MouseEvent> = () => {
+    const { account } = this.props.status;
+    if (!account || typeof account !== 'object') return;
+    this.props.onChat(account, this.props.history);
   }
 
-  handleMentionClick = () => {
-    this.props.onMention(this.props.status.get('account'), this.props.history);
+  handleMentionClick: React.EventHandler<React.MouseEvent> = () => {
+    const { account } = this.props.status;
+    if (!account || typeof account !== 'object') return;
+    this.props.onMention(account, this.props.history);
   }
 
-  handleMuteClick = () => {
-    this.props.onMute(this.props.status.get('account'));
+  handleMuteClick: React.EventHandler<React.MouseEvent> = () => {
+    const { account } = this.props.status;
+    if (!account || typeof account !== 'object') return;
+    this.props.onMute(account);
   }
 
-  handleConversationMuteClick = () => {
+  handleConversationMuteClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onMuteConversation(this.props.status);
   }
 
-  handleBlockClick = () => {
+  handleBlockClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onBlock(this.props.status);
   }
 
@@ -258,14 +277,14 @@ class ActionBar extends React.PureComponent {
     this.props.onReport(this.props.status);
   }
 
-  handlePinClick = () => {
+  handlePinClick: React.EventHandler<React.MouseEvent> = () => {
     this.props.onPin(this.props.status);
   }
 
   handleShare = () => {
     navigator.share({
-      text: this.props.status.get('search_index'),
-      url: this.props.status.get('url'),
+      text: this.props.status.search_index,
+      url: this.props.status.url,
     });
   }
 
@@ -274,7 +293,7 @@ class ActionBar extends React.PureComponent {
   }
 
   handleCopy = () => {
-    const url      = this.props.status.get('url');
+    const url      = this.props.status.url;
     const textarea = document.createElement('textarea');
 
     textarea.textContent    = url;
@@ -308,13 +327,13 @@ class ActionBar extends React.PureComponent {
     this.props.onDeleteStatus(this.props.status);
   }
 
-  setRef = c => {
+  setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
   }
 
   componentDidMount() {
     document.addEventListener('click', e => {
-      if (this.node && !this.node.contains(e.target))
+      if (this.node && !this.node.contains(e.target as Element))
         this.setState({ emojiSelectorVisible: false, emojiSelectorFocused: false });
     });
   }
@@ -322,20 +341,25 @@ class ActionBar extends React.PureComponent {
   render() {
     const { status, intl, me, isStaff, isAdmin, allowedEmoji, features } = this.props;
     const ownAccount = status.getIn(['account', 'id']) === me;
+    const username = String(status.getIn(['account', 'acct']));
 
-    const publicStatus = ['public', 'unlisted'].includes(status.get('visibility'));
-    const mutingConversation = status.get('muted');
-    const meEmojiReact = getReactForStatus(status, allowedEmoji);
-    const meEmojiTitle = intl.formatMessage({
+    const publicStatus = ['public', 'unlisted'].includes(status.visibility);
+    const mutingConversation = status.muted;
+
+    const meEmojiReact = getReactForStatus(status, allowedEmoji) as keyof typeof reactMessages | undefined;
+
+    const reactMessages = {
       '👍': messages.reactionLike,
       '❤️': messages.reactionHeart,
       '😆': messages.reactionLaughing,
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
-    }[meEmojiReact] || messages.favourite);
+    };
 
-    const menu = [];
+    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
+
+    const menu: Menu = [];
 
     if (publicStatus) {
       menu.push({
@@ -364,12 +388,12 @@ class ActionBar extends React.PureComponent {
       if (ownAccount) {
         if (publicStatus) {
           menu.push({
-            text: intl.formatMessage(status.get('pinned') ? messages.unpin : messages.pin),
+            text: intl.formatMessage(status.pinned ? messages.unpin : messages.pin),
             action: this.handlePinClick,
             icon: require(mutingConversation ? '@tabler/icons/icons/pinned-off.svg' : '@tabler/icons/icons/pin.svg'),
           });
         } else {
-          if (status.get('visibility') === 'private') {
+          if (status.visibility === 'private') {
             menu.push({
               text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog_private),
               action: this.handleReblogClick,
@@ -399,20 +423,20 @@ class ActionBar extends React.PureComponent {
         });
       } else {
         menu.push({
-          text: intl.formatMessage(messages.mention, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.mention, { name: username }),
           action: this.handleMentionClick,
           icon: require('@tabler/icons/icons/at.svg'),
         });
 
         // if (status.getIn(['account', 'pleroma', 'accepts_chat_messages'], false) === true) {
         //   menu.push({
-        //     text: intl.formatMessage(messages.chat, { name: status.getIn(['account', 'username']) }),
+        //     text: intl.formatMessage(messages.chat, { name: username }),
         //     action: this.handleChatClick,
         //     icon: require('@tabler/icons/icons/messages.svg'),
         //   });
         // } else {
         //   menu.push({
-        //     text: intl.formatMessage(messages.direct, { name: status.getIn(['account', 'username']) }),
+        //     text: intl.formatMessage(messages.direct, { name: username }),
         //     action: this.handleDirectClick,
         //     icon: require('@tabler/icons/icons/mail.svg'),
         //   });
@@ -420,17 +444,17 @@ class ActionBar extends React.PureComponent {
 
         menu.push(null);
         menu.push({
-          text: intl.formatMessage(messages.mute, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.mute, { name: username }),
           action: this.handleMuteClick,
           icon: require('@tabler/icons/icons/circle-x.svg'),
         });
         menu.push({
-          text: intl.formatMessage(messages.block, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.block, { name: username }),
           action: this.handleBlockClick,
           icon: require('@tabler/icons/icons/ban.svg'),
         });
         menu.push({
-          text: intl.formatMessage(messages.report, { name: status.getIn(['account', 'username']) }),
+          text: intl.formatMessage(messages.report, { name: username }),
           action: this.handleReport,
           icon: require('@tabler/icons/icons/flag.svg'),
         });
@@ -441,13 +465,13 @@ class ActionBar extends React.PureComponent {
 
         if (isAdmin) {
           menu.push({
-            text: intl.formatMessage(messages.admin_account, { name: status.getIn(['account', 'username']) }),
+            text: intl.formatMessage(messages.admin_account, { name: username }),
             href: `/pleroma/admin/#/users/${status.getIn(['account', 'id'])}/`,
             icon: require('@tabler/icons/icons/gavel.svg'),
           });
           menu.push({
             text: intl.formatMessage(messages.admin_status),
-            href: `/pleroma/admin/#/statuses/${status.get('id')}/`,
+            href: `/pleroma/admin/#/statuses/${status.id}/`,
             icon: require('@tabler/icons/icons/pencil.svg'),
           });
         }
@@ -460,12 +484,12 @@ class ActionBar extends React.PureComponent {
 
         if (!ownAccount) {
           menu.push({
-            text: intl.formatMessage(messages.deactivateUser, { name: status.getIn(['account', 'username']) }),
+            text: intl.formatMessage(messages.deactivateUser, { name: username }),
             action: this.handleDeactivateUser,
             icon: require('@tabler/icons/icons/user-off.svg'),
           });
           menu.push({
-            text: intl.formatMessage(messages.deleteUser, { name: status.getIn(['account', 'username']) }),
+            text: intl.formatMessage(messages.deleteUser, { name: username }),
             action: this.handleDeleteUser,
             icon: require('@tabler/icons/icons/user-minus.svg'),
             destructive: true,
@@ -496,7 +520,7 @@ class ActionBar extends React.PureComponent {
     let reblogButton;
 
     if (me && features.quotePosts) {
-      const reblogMenu = [
+      const reblogMenu: Menu = [
         {
           text: intl.formatMessage(status.get('reblogged') ? messages.cancel_reblog_private : messages.reblog),
           action: this.handleReblogClick,
@@ -517,7 +541,6 @@ class ActionBar extends React.PureComponent {
           pressed={status.get('reblogged')}
           title={!publicStatus ? intl.formatMessage(messages.cannot_reblog) : intl.formatMessage(messages.reblog)}
           src={reblogIcon}
-          direction='right'
           text={intl.formatMessage(messages.reblog)}
           onShiftClick={this.handleReblogClick}
         />
@@ -577,7 +600,6 @@ class ActionBar extends React.PureComponent {
         <DropdownMenuContainer
           src={require('@tabler/icons/icons/dots.svg')}
           items={menu}
-          direction='left'
           title='More'
         />
       </HStack>
@@ -586,5 +608,5 @@ class ActionBar extends React.PureComponent {
 
 }
 
-export default injectIntl(
-  connect(mapStateToProps, mapDispatchToProps)(ActionBar));
+const WrappedComponent = withRouter(injectIntl(ActionBar));
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedComponent);

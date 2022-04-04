@@ -3,7 +3,7 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, IntlShape } from 'react-intl';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import EmojiSelector from 'soapbox/components/emoji_selector';
@@ -68,7 +68,7 @@ const messages = defineMessages({
   quotePost: { id: 'status.quote', defaultMessage: 'Quote post' },
 });
 
-interface IStatusActionBar {
+interface IStatusActionBar extends RouteComponentProps {
   status: Status,
   onOpenUnauthorizedModal: (modalType?: string) => void,
   onOpenReblogsModal: (acct: string, statusId: string) => void,
@@ -718,9 +718,6 @@ const mapDispatchToProps = (dispatch: Dispatch, { status }: { status: Status}) =
   },
 });
 
+const WrappedComponent = withRouter(injectIntl(StatusActionBar));
 // @ts-ignore
-export default withRouter(injectIntl(
-  // @ts-ignore
-  connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true },
-  // @ts-ignore
-  )(StatusActionBar)));
+export default connect(mapStateToProps, mapDispatchToProps, null, { forwardRef: true })(WrappedComponent);

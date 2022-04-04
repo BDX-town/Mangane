@@ -98,12 +98,12 @@ const toServerSideType = (columnType: string): string => {
   }
 };
 
-type FilterContext = { contextType: string };
+type FilterContext = { contextType?: string };
 
-export const getFilters = (state: RootState, { contextType }: FilterContext) => {
+export const getFilters = (state: RootState, query: FilterContext) => {
   return state.filters.filter((filter): boolean => {
-    return contextType
-      && filter.get('context').includes(toServerSideType(contextType))
+    return query?.contextType
+      && filter.get('context').includes(toServerSideType(query.contextType))
       && (filter.get('expires_at') === null
       || Date.parse(filter.get('expires_at')) > new Date().getTime());
   });
@@ -132,7 +132,7 @@ export const regexFromFilters = (filters: ImmutableList<ImmutableMap<string, any
   }).join('|'), 'i');
 };
 
-type APIStatus = { id: string, username: string };
+type APIStatus = { id: string, username?: string };
 
 export const makeGetStatus = () => {
   return createSelector(
