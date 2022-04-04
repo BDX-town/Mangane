@@ -1,13 +1,11 @@
 import classNames from 'classnames';
 import { List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
+import { defineMessages, injectIntl, FormattedMessage, WrappedComponentProps as IntlComponentProps } from 'react-intl';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { launchChat } from 'soapbox/actions/chats';
@@ -58,9 +56,19 @@ import { textForScreenReader, defaultMediaVisibility } from '../../components/st
 import { makeGetStatus } from '../../selectors';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
-import ActionBar from './components/action_bar';
+import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed_status';
 import ThreadStatus from './components/thread_status';
+
+import type { History } from 'history';
+import type { AnyAction } from 'redux';
+import type { ThunkDispatch } from 'redux-thunk';
+import type { RootState } from 'soapbox/store';
+import type {
+  Account as AccountEntity,
+  Attachment as AttachmentEntity,
+  Status as StatusEntity,
+} from 'soapbox/types/entities';
 
 const messages = defineMessages({
   title: { id: 'status.title', defaultMessage: '@{username}\'s Post' },
@@ -84,8 +92,8 @@ const makeMapStateToProps = () => {
   const getStatus = makeGetStatus();
 
   const getAncestorsIds = createSelector([
-    (_, { id }) => id,
-    state => state.getIn(['contexts', 'inReplyTos']),
+    (_: RootState, statusId: string) => statusId,
+    (state: RootState) => state.contexts.get('inReplyTos'),
   ], (statusId, inReplyTos) => {
     let ancestorsIds = ImmutableOrderedSet();
     let id = statusId;
@@ -99,8 +107,8 @@ const makeMapStateToProps = () => {
   });
 
   const getDescendantsIds = createSelector([
-    (_, { id }) => id,
-    state => state.getIn(['contexts', 'replies']),
+    (_: RootState, statusId: string) => statusId,
+    (state: RootState) => state.contexts.get('replies'),
   ], (statusId, contextReplies) => {
     let descendantsIds = ImmutableOrderedSet();
     const ids = [statusId];
@@ -118,7 +126,7 @@ const makeMapStateToProps = () => {
       }
 
       if (replies) {
-        replies.reverse().forEach(reply => {
+        replies.reverse().forEach((reply: string) => {
           ids.unshift(reply);
         });
       }
@@ -127,15 +135,15 @@ const makeMapStateToProps = () => {
     return descendantsIds;
   });
 
-  const mapStateToProps = (state, props) => {
+  const mapStateToProps = (state: RootState, props: { params: RouteParams }) => {
     const status = getStatus(state, { id: props.params.statusId });
     let ancestorsIds = ImmutableOrderedSet();
     let descendantsIds = ImmutableOrderedSet();
 
     if (status) {
-      const statusId = status.get('id');
-      ancestorsIds = getAncestorsIds(state, { id: state.getIn(['contexts', 'inReplyTos', statusId]) });
-      descendantsIds = getDescendantsIds(state, { id: statusId });
+      const statusId = status.id;
+      ancestorsIds = getAncestorsIds(state, state.contexts.getIn(['inReplyTos', statusId]));
+      descendantsIds = getDescendantsIds(state, statusId);
       ancestorsIds = ancestorsIds.delete(statusId).subtract(descendantsIds);
       descendantsIds = descendantsIds.delete(statusId).subtract(ancestorsIds);
     }
@@ -146,34 +154,40 @@ const makeMapStateToProps = () => {
       status,
       ancestorsIds,
       descendantsIds,
-      askReplyConfirmation: state.getIn(['compose', 'text']).trim().length !== 0,
-      domain: state.getIn(['meta', 'domain']),
-      me: state.get('me'),
+      askReplyConfirmation: state.compose.get('text', '').trim().length !== 0,
+      me: state.me,
       displayMedia: getSettings(state).get('displayMedia'),
-      allowedEmoji: soapbox.get('allowedEmoji'),
+      allowedEmoji: soapbox.allowedEmoji,
     };
   };
 
   return mapStateToProps;
 };
 
-export default @connect(makeMapStateToProps)
-@injectIntl
-@withRouter
-class Status extends ImmutablePureComponent {
+type DisplayMedia = 'default' | 'hide_all' | 'show_all';
+type RouteParams = { statusId: string };
 
-  static propTypes = {
-    params: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    status: ImmutablePropTypes.record,
-    ancestorsIds: ImmutablePropTypes.orderedSet,
-    descendantsIds: ImmutablePropTypes.orderedSet,
-    intl: PropTypes.object.isRequired,
-    askReplyConfirmation: PropTypes.bool,
-    domain: PropTypes.string,
-    displayMedia: PropTypes.string,
-    history: PropTypes.object,
-  };
+interface IStatus extends RouteComponentProps, IntlComponentProps {
+  params: RouteParams,
+  dispatch: ThunkDispatch<RootState, void, AnyAction>,
+  status: StatusEntity,
+  ancestorsIds: ImmutableOrderedSet<string>,
+  descendantsIds: ImmutableOrderedSet<string>,
+  askReplyConfirmation: boolean,
+  displayMedia: DisplayMedia,
+  allowedEmoji: ImmutableList<string>,
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
+  onOpenVideo: (video: AttachmentEntity, time: number) => void,
+}
+
+interface IStatusState {
+  fullscreen: boolean,
+  showMedia: boolean,
+  loadedStatusId?: string,
+  emojiSelectorFocused: boolean,
+}
+
+class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
   state = {
     fullscreen: false,
@@ -181,6 +195,10 @@ class Status extends ImmutablePureComponent {
     loadedStatusId: undefined,
     emojiSelectorFocused: false,
   };
+
+  node: HTMLDivElement | null = null;
+  status: HTMLDivElement | null = null;
+  _scrolledIntoView: boolean = false;
 
   fetchData = () => {
     const { dispatch, params } = this.props;
@@ -198,35 +216,35 @@ class Status extends ImmutablePureComponent {
     this.setState({ showMedia: !this.state.showMedia });
   }
 
-  handleEmojiReactClick = (status, emoji) => {
+  handleEmojiReactClick = (status: StatusEntity, emoji: string) => {
     this.props.dispatch(simpleEmojiReact(status, emoji));
   }
 
-  handleFavouriteClick = (status) => {
-    if (status.get('favourited')) {
+  handleFavouriteClick = (status: StatusEntity) => {
+    if (status.favourited) {
       this.props.dispatch(unfavourite(status));
     } else {
       this.props.dispatch(favourite(status));
     }
   }
 
-  handlePin = (status) => {
-    if (status.get('pinned')) {
+  handlePin = (status: StatusEntity) => {
+    if (status.pinned) {
       this.props.dispatch(unpin(status));
     } else {
       this.props.dispatch(pin(status));
     }
   }
 
-  handleBookmark = (status) => {
-    if (status.get('bookmarked')) {
+  handleBookmark = (status: StatusEntity) => {
+    if (status.bookmarked) {
       this.props.dispatch(unbookmark(status));
     } else {
       this.props.dispatch(bookmark(status));
     }
   }
 
-  handleReplyClick = (status) => {
+  handleReplyClick = (status: StatusEntity) => {
     const { askReplyConfirmation, dispatch, intl } = this.props;
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
@@ -239,14 +257,14 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  handleModalReblog = (status) => {
+  handleModalReblog = (status: StatusEntity) => {
     this.props.dispatch(reblog(status));
   }
 
-  handleReblogClick = (status, e) => {
+  handleReblogClick = (status: StatusEntity, e?: React.MouseEvent) => {
     this.props.dispatch((_, getState) => {
       const boostModal = getSettings(getState()).get('boostModal');
-      if (status.get('reblogged')) {
+      if (status.reblogged) {
         this.props.dispatch(unreblog(status));
       } else {
         if ((e && e.shiftKey) || !boostModal) {
@@ -258,7 +276,7 @@ class Status extends ImmutablePureComponent {
     });
   }
 
-  handleQuoteClick = (status, e) => {
+  handleQuoteClick = (status: StatusEntity) => {
     const { askReplyConfirmation, dispatch, intl } = this.props;
     if (askReplyConfirmation) {
       dispatch(openModal('CONFIRM', {
@@ -271,147 +289,148 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  handleDeleteClick = (status, history, withRedraft = false) => {
+  handleDeleteClick = (status: StatusEntity, history: History, withRedraft = false) => {
     const { dispatch, intl } = this.props;
 
     this.props.dispatch((_, getState) => {
       const deleteModal = getSettings(getState()).get('deleteModal');
       if (!deleteModal) {
-        dispatch(deleteStatus(status.get('id'), history, withRedraft));
+        dispatch(deleteStatus(status.id, history, withRedraft));
       } else {
         dispatch(openModal('CONFIRM', {
           icon: withRedraft ? require('@tabler/icons/icons/edit.svg') : require('@tabler/icons/icons/trash.svg'),
           heading: intl.formatMessage(withRedraft ? messages.redraftHeading : messages.deleteHeading),
           message: intl.formatMessage(withRedraft ? messages.redraftMessage : messages.deleteMessage),
           confirm: intl.formatMessage(withRedraft ? messages.redraftConfirm : messages.deleteConfirm),
-          onConfirm: () => dispatch(deleteStatus(status.get('id'), history, withRedraft)),
+          onConfirm: () => dispatch(deleteStatus(status.id, history, withRedraft)),
         }));
       }
     });
   }
 
-  handleDirectClick = (account, router) => {
+  handleDirectClick = (account: AccountEntity, router: History) => {
     this.props.dispatch(directCompose(account, router));
   }
 
-  handleChatClick = (account, router) => {
-    this.props.dispatch(launchChat(account.get('id'), router));
+  handleChatClick = (account: AccountEntity, router: History) => {
+    this.props.dispatch(launchChat(account.id, router));
   }
 
-  handleMentionClick = (account, router) => {
+  handleMentionClick = (account: AccountEntity, router: History) => {
     this.props.dispatch(mentionCompose(account, router));
   }
 
-  handleOpenMedia = (media, index) => {
+  handleOpenMedia = (media: ImmutableList<AttachmentEntity>, index: number) => {
     this.props.dispatch(openModal('MEDIA', { media, index }));
   }
 
-  handleOpenVideo = (media, time) => {
+  handleOpenVideo = (media: ImmutableList<AttachmentEntity>, time: number) => {
     this.props.dispatch(openModal('VIDEO', { media, time }));
   }
 
-  handleHotkeyOpenMedia = e => {
-    const { onOpenMedia, onOpenVideo } = this.props;
-    const status = this._properStatus();
+  handleHotkeyOpenMedia = (e?: KeyboardEvent) => {
+    const { status, onOpenMedia, onOpenVideo } = this.props;
+    const firstAttachment = status.media_attachments.get(0);
 
-    e.preventDefault();
+    e?.preventDefault();
 
-    if (status.get('media_attachments').size > 0) {
-      if (status.getIn(['media_attachments', 0, 'type']) === 'video') {
-        onOpenVideo(status.getIn(['media_attachments', 0]), 0);
+    if (status.media_attachments.size > 0 && firstAttachment) {
+      if (firstAttachment.type === 'video') {
+        onOpenVideo(firstAttachment, 0);
       } else {
-        onOpenMedia(status.get('media_attachments'), 0);
+        onOpenMedia(status.media_attachments, 0);
       }
     }
   }
 
-  handleMuteClick = (account) => {
+  handleMuteClick = (account: AccountEntity) => {
     this.props.dispatch(initMuteModal(account));
   }
 
-  handleConversationMuteClick = (status) => {
-    if (status.get('muted')) {
-      this.props.dispatch(unmuteStatus(status.get('id')));
+  handleConversationMuteClick = (status: StatusEntity) => {
+    if (status.muted) {
+      this.props.dispatch(unmuteStatus(status.id));
     } else {
-      this.props.dispatch(muteStatus(status.get('id')));
+      this.props.dispatch(muteStatus(status.id));
     }
   }
 
-  handleToggleHidden = (status) => {
-    if (status.get('hidden')) {
-      this.props.dispatch(revealStatus(status.get('id')));
+  handleToggleHidden = (status: StatusEntity) => {
+    if (status.hidden) {
+      this.props.dispatch(revealStatus(status.id));
     } else {
-      this.props.dispatch(hideStatus(status.get('id')));
+      this.props.dispatch(hideStatus(status.id));
     }
   }
 
   handleToggleAll = () => {
     const { status, ancestorsIds, descendantsIds } = this.props;
-    const statusIds = [status.get('id')].concat(ancestorsIds.toJS(), descendantsIds.toJS());
+    const statusIds = [status.id].concat(ancestorsIds.toArray(), descendantsIds.toArray());
 
-    if (status.get('hidden')) {
+    if (status.hidden) {
       this.props.dispatch(revealStatus(statusIds));
     } else {
       this.props.dispatch(hideStatus(statusIds));
     }
   }
 
-  handleBlockClick = (status) => {
+  handleBlockClick = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    const account = status.get('account');
+    const { account } = status;
+    if (!account || typeof account !== 'object') return;
 
     dispatch(openModal('CONFIRM', {
       icon: require('@tabler/icons/icons/ban.svg'),
-      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.get('acct') }} />,
-      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.get('acct')}</strong> }} />,
+      heading: <FormattedMessage id='confirmations.block.heading' defaultMessage='Block @{name}' values={{ name: account.acct }} />,
+      message: <FormattedMessage id='confirmations.block.message' defaultMessage='Are you sure you want to block {name}?' values={{ name: <strong>@{account.acct}</strong> }} />,
       confirm: intl.formatMessage(messages.blockConfirm),
-      onConfirm: () => dispatch(blockAccount(account.get('id'))),
+      onConfirm: () => dispatch(blockAccount(account.id)),
       secondary: intl.formatMessage(messages.blockAndReport),
       onSecondary: () => {
-        dispatch(blockAccount(account.get('id')));
+        dispatch(blockAccount(account.id));
         dispatch(initReport(account, status));
       },
     }));
   }
 
-  handleReport = (status) => {
-    this.props.dispatch(initReport(status.get('account'), status));
+  handleReport = (status: StatusEntity) => {
+    this.props.dispatch(initReport(status.account, status));
   }
 
-  handleEmbed = (status) => {
-    this.props.dispatch(openModal('EMBED', { url: status.get('url') }));
+  handleEmbed = (status: StatusEntity) => {
+    this.props.dispatch(openModal('EMBED', { url: status.url }));
   }
 
-  handleDeactivateUser = (status) => {
+  handleDeactivateUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
     dispatch(deactivateUserModal(intl, status.getIn(['account', 'id'])));
   }
 
-  handleDeleteUser = (status) => {
+  handleDeleteUser = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
     dispatch(deleteUserModal(intl, status.getIn(['account', 'id'])));
   }
 
-  handleToggleStatusSensitivity = (status) => {
+  handleToggleStatusSensitivity = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(toggleStatusSensitivityModal(intl, status.get('id'), status.get('sensitive')));
+    dispatch(toggleStatusSensitivityModal(intl, status.id, status.sensitive));
   }
 
-  handleDeleteStatus = (status) => {
+  handleDeleteStatus = (status: StatusEntity) => {
     const { dispatch, intl } = this.props;
-    dispatch(deleteStatusModal(intl, status.get('id')));
+    dispatch(deleteStatusModal(intl, status.id));
   }
 
   handleHotkeyMoveUp = () => {
-    this.handleMoveUp(this.props.status.get('id'));
+    this.handleMoveUp(this.props.status.id);
   }
 
   handleHotkeyMoveDown = () => {
-    this.handleMoveDown(this.props.status.get('id'));
+    this.handleMoveDown(this.props.status.id);
   }
 
-  handleHotkeyReply = e => {
-    e.preventDefault();
+  handleHotkeyReply = (e?: KeyboardEvent) => {
+    e?.preventDefault();
     this.handleReplyClick(this.props.status);
   }
 
@@ -423,9 +442,11 @@ class Status extends ImmutablePureComponent {
     this.handleReblogClick(this.props.status);
   }
 
-  handleHotkeyMention = e => {
-    e.preventDefault();
-    this.handleMentionClick(this.props.status.get('account'));
+  handleHotkeyMention = (e?: KeyboardEvent) => {
+    e?.preventDefault();
+    const { account } = this.props.status;
+    if (!account || typeof account !== 'object') return;
+    this.handleMentionClick(account, this.props.history);
   }
 
   handleHotkeyOpenProfile = () => {
@@ -444,10 +465,10 @@ class Status extends ImmutablePureComponent {
     this._expandEmojiSelector();
   }
 
-  handleMoveUp = id => {
+  handleMoveUp = (id: string) => {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
-    if (id === status.get('id')) {
+    if (id === status.id) {
       this._selectChild(ancestorsIds.size - 1, true);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
@@ -461,10 +482,10 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  handleMoveDown = id => {
+  handleMoveDown = (id: string) => {
     const { status, ancestorsIds, descendantsIds } = this.props;
 
-    if (id === status.get('id')) {
+    if (id === status.id) {
       this._selectChild(ancestorsIds.size + 1, false);
     } else {
       let index = ImmutableList(ancestorsIds).indexOf(id);
@@ -478,26 +499,28 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  handleEmojiSelectorExpand = e => {
+  handleEmojiSelectorExpand: React.EventHandler<React.KeyboardEvent> = e => {
     if (e.key === 'Enter') {
       this._expandEmojiSelector();
     }
     e.preventDefault();
   }
 
-  handleEmojiSelectorUnfocus = () => {
+  handleEmojiSelectorUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
     this.setState({ emojiSelectorFocused: false });
   }
 
   _expandEmojiSelector = () => {
+    if (!this.status) return;
     this.setState({ emojiSelectorFocused: true });
-    const firstEmoji = this.status.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
-    firstEmoji.focus();
+    const firstEmoji: HTMLButtonElement | null = this.status.querySelector('.emoji-react-selector .emoji-react-selector__emoji');
+    firstEmoji?.focus();
   };
 
-  _selectChild(index, align_top) {
+  _selectChild(index: number, align_top: boolean) {
     const container = this.node;
-    const element = container.querySelectorAll('.focusable')[index];
+    if (!container) return;
+    const element = container.querySelectorAll('.focusable')[index] as HTMLButtonElement;
 
     if (element) {
       if (align_top && container.scrollTop > element.offsetTop) {
@@ -509,7 +532,7 @@ class Status extends ImmutablePureComponent {
     }
   }
 
-  renderTombstone(id) {
+  renderTombstone(id: string) {
     return (
       <div className='tombstone' key={id}>
         <p><FormattedMessage id='statuses.tombstone' defaultMessage='One or more posts is unavailable.' /></p>
@@ -517,14 +540,14 @@ class Status extends ImmutablePureComponent {
     );
   }
 
-  renderStatus(id) {
+  renderStatus(id: string) {
     const { status } = this.props;
 
     return (
       <ThreadStatus
         key={id}
         id={id}
-        focusedStatusId={status && status.get('id')}
+        focusedStatusId={status.id}
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
@@ -532,7 +555,8 @@ class Status extends ImmutablePureComponent {
     );
   }
 
-  renderPendingStatus(id) {
+  renderPendingStatus(id: string) {
+    const { status } = this.props;
     const idempotencyKey = id.replace(/^末pending-/, '');
 
     return (
@@ -540,7 +564,7 @@ class Status extends ImmutablePureComponent {
         className='thread__status'
         key={id}
         idempotencyKey={idempotencyKey}
-        focusedStatusId={status && status.get('id')}
+        focusedStatusId={status.id}
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
         contextType='thread'
@@ -548,7 +572,7 @@ class Status extends ImmutablePureComponent {
     );
   }
 
-  renderChildren(list) {
+  renderChildren(list: ImmutableOrderedSet<string>) {
     return list.map(id => {
       if (id.endsWith('-tombstone')) {
         return this.renderTombstone(id);
@@ -560,16 +584,16 @@ class Status extends ImmutablePureComponent {
     });
   }
 
-  setRef = c => {
+  setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
   }
 
-  setStatusRef = c => {
+  setStatusRef: React.RefCallback<HTMLDivElement> = c => {
     this.status = c;
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { params, status } = this.props;
+  componentDidUpdate(prevProps: IStatus, prevState: IStatusState) {
+    const { params, status, displayMedia } = this.props;
     const { ancestorsIds } = prevProps;
 
     if (params.statusId !== prevProps.params.statusId) {
@@ -577,8 +601,8 @@ class Status extends ImmutablePureComponent {
       this.fetchData();
     }
 
-    if (status && status.get('id') !== prevState.loadedStatusId) {
-      this.setState({ showMedia: defaultMediaVisibility(status), loadedStatusId: status.get('id') });
+    if (status && status.id !== prevState.loadedStatusId) {
+      this.setState({ showMedia: defaultMediaVisibility(status, displayMedia), loadedStatusId: status.id });
     }
 
     if (this._scrolledIntoView) {
@@ -589,7 +613,7 @@ class Status extends ImmutablePureComponent {
       const element = this.node.querySelector('.detailed-status');
 
       window.requestAnimationFrame(() => {
-        element.scrollIntoView(true);
+        element?.scrollIntoView(true);
       });
       this._scrolledIntoView = true;
     }
@@ -609,7 +633,7 @@ class Status extends ImmutablePureComponent {
 
   render() {
     let ancestors, descendants;
-    const { status, ancestorsIds, descendantsIds, intl, domain } = this.props;
+    const { status, ancestorsIds, descendantsIds, intl } = this.props;
 
     if (status === null) {
       return (
@@ -625,7 +649,9 @@ class Status extends ImmutablePureComponent {
       descendants = this.renderChildren(descendantsIds);
     }
 
-    const handlers = {
+    type HotkeyHandlers = { [key: string]: (keyEvent?: KeyboardEvent) => void };
+
+    const handlers: HotkeyHandlers = {
       moveUp: this.handleHotkeyMoveUp,
       moveDown: this.handleHotkeyMoveDown,
       reply: this.handleHotkeyReply,
@@ -639,8 +665,8 @@ class Status extends ImmutablePureComponent {
       react: this.handleHotkeyReact,
     };
 
-    const username = status.getIn(['account', 'acct']);
-    const titleMessage = status && status.get('visibility') === 'direct' ? messages.titleDirect : messages.title;
+    const username = String(status.getIn(['account', 'acct']));
+    const titleMessage = status.visibility === 'direct' ? messages.titleDirect : messages.title;
 
     return (
       <Column label={intl.formatMessage(titleMessage, { username })} transparent>
@@ -656,13 +682,18 @@ class Status extends ImmutablePureComponent {
 
             <div className='thread__status thread__status--focused'>
               <HotKeys handlers={handlers}>
-                <div ref={this.setStatusRef} className={classNames('detailed-status__wrapper')} tabIndex='0' aria-label={textForScreenReader(intl, status, false)}>
+                <div
+                  ref={this.setStatusRef}
+                  className={classNames('detailed-status__wrapper')}
+                  tabIndex={0}
+                  // FIXME: no "reblogged by" text is added for the screen reader
+                  aria-label={textForScreenReader(intl, status)}
+                >
                   <DetailedStatus
                     status={status}
                     onOpenVideo={this.handleOpenVideo}
                     onOpenMedia={this.handleOpenMedia}
                     onToggleHidden={this.handleToggleHidden}
-                    domain={domain}
                     showMedia={this.state.showMedia}
                     onToggleMediaVisibility={this.handleToggleMediaVisibility}
                   />
@@ -713,3 +744,7 @@ class Status extends ImmutablePureComponent {
   }
 
 }
+
+const WrappedComponent = withRouter(injectIntl(Status));
+// @ts-ignore
+export default connect(makeMapStateToProps)(WrappedComponent);

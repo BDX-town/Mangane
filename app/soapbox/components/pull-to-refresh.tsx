@@ -4,7 +4,6 @@ import PTRComponent from 'react-simple-pull-to-refresh';
 import { Spinner } from 'soapbox/components/ui';
 
 interface IPullToRefresh {
-  children: JSX.Element & React.ReactNode,
   onRefresh?: () => Promise<any>
 }
 
@@ -12,7 +11,7 @@ interface IPullToRefresh {
  * PullToRefresh:
  * Wrapper around a third-party PTR component with Soapbox defaults.
  */
-const PullToRefresh = ({ children, onRefresh, ...rest }: IPullToRefresh) => {
+const PullToRefresh: React.FC<IPullToRefresh> = ({ children, onRefresh, ...rest }): JSX.Element => {
   const handleRefresh = () => {
     if (onRefresh) {
       return onRefresh();
@@ -33,7 +32,8 @@ const PullToRefresh = ({ children, onRefresh, ...rest }: IPullToRefresh) => {
       resistance={2}
       {...rest}
     >
-      {children}
+      {/* This thing really wants a single JSX element as its child (TypeScript), so wrap it in one */}
+      <>{children}</>
     </PTRComponent>
   );
 };
