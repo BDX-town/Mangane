@@ -1,15 +1,13 @@
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { Button, Stack, Text } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 const SignUpPanel = () => {
-  const soapboxConfig = useAppSelector((state) => getSoapboxConfig(state));
-  const siteTitle: string = useAppSelector((state) => state.instance.title);
-  const me: boolean | null = useAppSelector((state) => state.me);
-  const singleUserMode: boolean = soapboxConfig.get('singleUserMode');
+  const { singleUserMode } = useSoapboxConfig();
+  const siteTitle = useAppSelector((state) => state.instance.title);
+  const me = useAppSelector((state) => state.me);
 
   if (me || singleUserMode) return null;
 

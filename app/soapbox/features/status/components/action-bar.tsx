@@ -66,7 +66,7 @@ const messages = defineMessages({
 
 const mapStateToProps = (state: RootState) => {
   const me = state.me;
-  const account = state.accounts.get(me as any);
+  const account = state.accounts.get(me);
   const instance = state.instance;
 
   return {
