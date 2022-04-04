@@ -18,12 +18,12 @@ NODE_ENV=development
 - `yarn manage:translations` - Normalizes translation files. Should always be run after editing i18n strings.
 
 ## Tests
-- `yarn test` - Runs all tests.
+- `yarn test:all` - Runs all tests and linters.
 
-- `yarn test:lint` - Runs all linter tests.
+- `yarn test` - Runs Jest for frontend unit tests.
 
-- `yarn test:lint:js` - Runs only JavaScript linter.
+- `yarn lint` - Runs all linters.
 
-- `yarn test:lint:sass` - Runs only SASS linter.
+- `yarn lint:js` - Runs only JavaScript linter.
 
-- `yarn test:jest` - Frontend unit tests.
+- `yarn lint:sass` - Runs only SASS linter.
