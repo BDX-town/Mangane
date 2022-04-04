@@ -87,8 +87,8 @@ interface IStatus extends RouteComponentProps {
   muted: boolean,
   hidden: boolean,
   unread: boolean,
-  onMoveUp: (statusId: string, featured: string) => void,
-  onMoveDown: (statusId: string, featured: string) => void,
+  onMoveUp: (statusId: string, featured?: string) => void,
+  onMoveDown: (statusId: string, featured?: string) => void,
   getScrollPosition?: () => ScrollPosition | undefined,
   updateScrollBottom?: (bottom: number) => void,
   cacheMediaWidth: () => void,
@@ -658,8 +658,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
               {quote}
 
               <StatusActionBar
-                // @ts-ignore what?
                 status={status}
+                // @ts-ignore what?
                 account={account}
                 emojiSelectorFocused={this.state.emojiSelectorFocused}
                 handleEmojiSelectorUnfocus={this.handleEmojiSelectorUnfocus}

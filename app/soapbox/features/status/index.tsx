@@ -59,7 +59,7 @@ import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from
 
 import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed_status';
-import ThreadStatus from './components/thread_status';
+import ThreadStatus from './components/thread-status';
 
 import type { AxiosError } from 'axios';
 import type { History } from 'history';
@@ -558,9 +558,9 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
         key={id}
         id={id}
         focusedStatusId={status.id}
+        // @ts-ignore FIXME
         onMoveUp={this.handleMoveUp}
         onMoveDown={this.handleMoveDown}
-        contextType='thread'
       />
     );
   }
