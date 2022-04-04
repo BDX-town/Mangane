@@ -59,7 +59,7 @@ const EditPassword = () => {
         </CardHeader>
 
         <CardBody>
-          <Form onSubmit={handleSubmit} disabled={isLoading}>
+          <Form onSubmit={handleSubmit}>
             <FormGroup labelText={intl.formatMessage(messages.oldPasswordFieldLabel)}>
               <Input
                 type='password'

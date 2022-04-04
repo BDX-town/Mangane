@@ -12,15 +12,17 @@ module.exports = {
     'raf/polyfill',
   ],
   'setupFilesAfterEnv': [
-    '<rootDir>/app/soapbox/test_setup.js',
+    '<rootDir>/app/soapbox/jest/test-setup.ts',
   ],
   'collectCoverageFrom': [
     'app/soapbox/**/*.js',
+    'app/soapbox/**/*.ts',
+    'app/soapbox/**/*.tsx',
     '!app/soapbox/features/emoji/emoji_compressed.js',
     '!app/soapbox/locales/locale-data/*.js',
     '!app/soapbox/service_worker/entry.js',
-    '!app/soapbox/test_setup.js',
-    '!app/soapbox/test_helpers.js',
+    '!app/soapbox/jest/test-setup.ts',
+    '!app/soapbox/jest/test-helpers.ts',
   ],
   'coverageDirectory': '<rootDir>/coverage',
   'moduleDirectories': [

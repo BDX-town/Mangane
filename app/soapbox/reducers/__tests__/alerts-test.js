@@ -5,7 +5,7 @@ import {
   ALERT_DISMISS,
   ALERT_CLEAR,
 } from 'soapbox/actions/alerts';
-import { applyActions } from 'soapbox/test_helpers';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer from '../alerts';
 

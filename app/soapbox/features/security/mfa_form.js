@@ -144,7 +144,7 @@ class DisableOtpForm extends ImmutablePureComponent {
     const { isLoading, password } = this.state;
 
     return (
-      <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+      <Form onSubmit={this.handleSubmit}>
         <Stack>
           <Text weight='medium'>
             <FormattedMessage id='mfa.otp_enabled_title' defaultMessage='OTP Enabled' />
@@ -335,7 +335,7 @@ class OtpConfirmForm extends ImmutablePureComponent {
       <Stack space={4}>
         <hr className='mt-4' />
 
-        <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+        <Form onSubmit={this.handleSubmit}>
           <Stack>
             <Text weight='semibold' size='lg'>
               1. <FormattedMessage id='mfa.mfa_setup_scan_title' defaultMessage='Scan' />

@@ -217,15 +217,15 @@ module.exports = {
     'import/newline-after-import': 'error',
     'import/no-extraneous-dependencies': [
       'error',
-      {
-        devDependencies: [
-          'webpack/**',
-          'app/soapbox/test_setup.js',
-          'app/soapbox/test_helpers.js',
-          'app/**/__tests__/**',
-          'app/**/__mocks__/**',
-        ],
-      },
+      // {
+      //   devDependencies: [
+      //     'webpack/**',
+      //     'app/soapbox/test_setup.js',
+      //     'app/soapbox/test_helpers.js',
+      //     'app/**/__tests__/**',
+      //     'app/**/__mocks__/**',
+      //   ],
+      // },
     ],
     'import/no-unresolved': 'error',
     'import/no-webpack-loader-syntax': 'error',

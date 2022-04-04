@@ -1,6 +1,6 @@
+import { mockStore } from 'soapbox/jest/test-helpers';
 import { InstanceRecord } from 'soapbox/normalizers';
 import rootReducer from 'soapbox/reducers';
-import { mockStore } from 'soapbox/test_helpers';
 
 import { uploadCompose } from '../compose';
 

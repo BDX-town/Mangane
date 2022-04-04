@@ -19,7 +19,7 @@ const AuthLayout = () => (
     <main className='relative flex flex-col h-screen'>
       <header className='pt-10 flex justify-center relative'>
         <Link to='/' className='cursor-pointer'>
-          <img src='/instance/images/truth-logo.svg' alt='Logo' class='h-7' />
+          <img src='/instance/images/truth-logo.svg' alt='Logo' className='h-7' />
         </Link>
       </header>
 

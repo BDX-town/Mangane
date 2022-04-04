@@ -20,7 +20,7 @@ const Registration = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
+  const isLoading = useSelector((state) => state.verification.get('isLoading'));
   const siteTitle = useSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
@@ -89,7 +89,7 @@ const Registration = () => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto space-y-4'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Your username'>
             <Input
               name='username'

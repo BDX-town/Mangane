@@ -90,7 +90,7 @@ class SettingsStore extends ImmutablePureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
-        <Form onSubmit={this.handleSubmit} disabled={!jsonValid || isLoading}>
+        <Form onSubmit={this.handleSubmit}>
           <FormGroup
             hintText={intl.formatMessage(messages.hint)}
             errors={jsonValid ? [] : ['is invalid']}
