@@ -16,7 +16,6 @@ import { truncateFilename } from 'soapbox/utils/media';
 import { isIOS } from '../is_mobile';
 import { isPanoramic, isPortrait, isNonConformingRatio, minimumAspectRatio, maximumAspectRatio } from '../utils/media_aspect_ratio';
 
-import IconButton from './icon_button';
 import { Button, Text } from './ui';
 
 const ATTACHMENT_LIMIT = 4;
@@ -594,11 +593,12 @@ class MediaGallery extends React.PureComponent {
         <div className={classNames('spoiler-button', { 'spoiler-button--minified': visible || compact })}>
           {sensitive && (
             (visible || compact) ? (
-              <IconButton
-                title={intl.formatMessage(messages.toggle_visible)}
-                src={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
-                overlay
+              <Button
+                text={intl.formatMessage(messages.toggle_visible)}
+                icon={visible ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
                 onClick={this.handleOpen}
+                theme='transparent'
+                size='sm'
               />
             ) : (
               <button type='button' onClick={this.handleOpen} className='bg-transparent w-full h-full border-0'>
