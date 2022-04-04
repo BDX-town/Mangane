@@ -28,9 +28,9 @@ const AgeVerification = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
-  const ageMinimum = useSelector((state) => state.getIn(['verification', 'ageMinimum']));
-  const siteTitle = useSelector((state) => state.instance.title);
+  const isLoading = useSelector((state) => state.verification.get('isLoading'));
+  const ageMinimum = useSelector((state) => state.verification.get('ageMinimum'));
+  const siteTitle = useSelector((state) => state.instance.get('title'));
 
   const [date, setDate] = React.useState('');
   const isValid = typeof date === 'object';
@@ -65,7 +65,7 @@ const AgeVerification = () => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Birth Date'>
             <DatePicker
               selected={date}

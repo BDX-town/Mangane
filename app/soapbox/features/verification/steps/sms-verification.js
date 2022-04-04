@@ -21,7 +21,7 @@ const SmsVerification = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
+  const isLoading = useSelector((state) => state.verification.get('isLoading'));
 
   const [phone, setPhone] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
@@ -147,7 +147,7 @@ const SmsVerification = () => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Phone Number'>
             <Input
               type='text'

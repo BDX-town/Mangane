@@ -50,7 +50,7 @@ const EmailVerification = () => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const isLoading = useSelector((state) => state.getIn(['verification', 'isLoading']));
+  const isLoading = useSelector((state) => state.verification.get('isLoading'));
 
   const [email, setEmail] = React.useState('');
   const [status, setStatus] = React.useState(Statuses.IDLE);
@@ -110,7 +110,7 @@ const EmailVerification = () => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Email Address' errors={errors}>
             <Input
               type='email'
