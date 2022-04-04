@@ -1,8 +1,7 @@
 import React from 'react';
 import { defineMessages } from 'react-intl';
 
-import { createComponent } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../jest/test-helpers';
 import TimelineQueueButtonHeader from '../timeline_queue_button_header';
 
 const messages = defineMessages({
@@ -10,32 +9,35 @@ const messages = defineMessages({
 });
 
 describe('<TimelineQueueButtonHeader />', () => {
-  it('renders correctly', () => {
-    expect(createComponent(
+  it('renders correctly', async() => {
+    render(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={0}
         message={messages.queue}
       />,
-    ).toJSON()).toMatchSnapshot();
+    );
+    expect(screen.queryAllByRole('link')).toHaveLength(0);
 
-    expect(createComponent(
+    render(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={1}
         message={messages.queue}
       />,
-    ).toJSON()).toMatchSnapshot();
+    );
+    expect(screen.getByText('Click to see 1 new post', { hidden: true })).toBeInTheDocument();
 
-    expect(createComponent(
+    render(
       <TimelineQueueButtonHeader
         key='timeline-queue-button-header'
         onClick={() => {}} // eslint-disable-line react/jsx-no-bind
         count={9999999}
         message={messages.queue}
       />,
-    ).toJSON()).toMatchSnapshot();
+    );
+    expect(screen.getByText('Click to see 9999999 new posts', { hidden: true })).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
 
+import { render, screen } from '../../jest/test-helpers';
 import AutosuggestEmoji from '../autosuggest_emoji';
 
 describe('<AutosuggestEmoji />', () => {
@@ -9,10 +9,11 @@ describe('<AutosuggestEmoji />', () => {
       native: '💙',
       colons: ':foobar:',
     };
-    const component = renderer.create(<AutosuggestEmoji emoji={emoji} />);
-    const tree      = component.toJSON();
 
-    expect(tree).toMatchSnapshot();
+    render(<AutosuggestEmoji emoji={emoji} />);
+
+    expect(screen.getByTestId('emoji')).toHaveTextContent('foobar');
+    expect(screen.getByRole('img').getAttribute('src')).not.toBe('http://example.com/emoji.png');
   });
 
   it('renders emoji with custom url', () => {
@@ -22,9 +23,10 @@ describe('<AutosuggestEmoji />', () => {
       native: 'foobar',
       colons: ':foobar:',
     };
-    const component = renderer.create(<AutosuggestEmoji emoji={emoji} />);
-    const tree      = component.toJSON();
 
-    expect(tree).toMatchSnapshot();
+    render(<AutosuggestEmoji emoji={emoji} />);
+
+    expect(screen.getByTestId('emoji')).toHaveTextContent('foobar');
+    expect(screen.getByRole('img').getAttribute('src')).toBe('http://example.com/emoji.png');
   });
 });

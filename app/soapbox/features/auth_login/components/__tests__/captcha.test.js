@@ -1,16 +1,14 @@
 import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
-import renderer from 'react-test-renderer';
 
-import { createComponent } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../../../jest/test-helpers';
 import CaptchaField, { NativeCaptchaField } from '../captcha';
 
 describe('<CaptchaField />', () => {
   it('renders null by default', () => {
-    expect(createComponent(
-      <CaptchaField />,
-    ).toJSON()).toMatchSnapshot();
+    render(<CaptchaField />);
+
+    expect(screen.queryAllByRole('textbox')).toHaveLength(0);
   });
 });
 
@@ -23,11 +21,13 @@ describe('<NativeCaptchaField />', () => {
       url: 'data:image/png;base64,...',
     });
 
-    expect(renderer.create(
+    render(
       <NativeCaptchaField
         captcha={captcha}
         onChange={() => {}} // eslint-disable-line react/jsx-no-bind
       />,
-    ).toJSON()).toMatchSnapshot();
+    );
+
+    expect(screen.queryAllByRole('textbox')).toHaveLength(1);
   });
 });

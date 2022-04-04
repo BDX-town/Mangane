@@ -1,21 +1,20 @@
+import { Map as ImmutableMap } from 'immutable';
 import React from 'react';
 
-import rootReducer from 'soapbox/reducers';
-import { createComponent, mockStore } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../../../jest/test-helpers';
 import LoginPage from '../login_page';
 
 describe('<LoginPage />', () => {
   it('renders correctly on load', () => {
-    const state = rootReducer(undefined, {})
-      .set('me', '1234')
-      .update('instance', instance => instance.set('version', '2.7.2 (compatible; Pleroma 2.3.0)'));
-    const store = mockStore(state);
+    const store = {
+      instance: ImmutableMap({
+        version: '2.7.2 (compatible; Pleroma 2.3.0)',
+      }),
+    };
 
-    expect(createComponent(
-      <LoginPage />,
-      { store },
-    ).toJSON()).toMatchSnapshot();
+    render(<LoginPage />, null, store);
+
+    expect(screen.getByRole('heading')).toHaveTextContent('Sign In');
   });
 
   // it('renders the OTP form when logIn returns with mfa_required', () => {

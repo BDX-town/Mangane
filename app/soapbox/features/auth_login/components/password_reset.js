@@ -49,7 +49,7 @@ class PasswordReset extends ImmutablePureComponent {
         </div>
 
         <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-          <Form onSubmit={this.handleSubmit} disabled={this.state.isLoading}>
+          <Form onSubmit={this.handleSubmit}>
             <FormGroup labelText={intl.formatMessage(messages.nicknameOrEmail)}>
               <Input
                 name='nickname_or_email'

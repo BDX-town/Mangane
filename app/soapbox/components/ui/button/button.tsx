@@ -64,6 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       onClick={handleClick}
       ref={ref}
       type={type}
+      data-testid='button'
     >
       {renderIcon()}
       {text || children}

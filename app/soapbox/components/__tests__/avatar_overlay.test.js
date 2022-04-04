@@ -1,8 +1,7 @@
 import { fromJS } from 'immutable';
 import React from 'react';
 
-import { createComponent } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../jest/test-helpers';
 import AvatarOverlay from '../avatar_overlay';
 
 describe('<AvatarOverlay', () => {
@@ -23,9 +22,7 @@ describe('<AvatarOverlay', () => {
   });
 
   it('renders a overlay avatar', () => {
-    const component = createComponent(<AvatarOverlay account={account} friend={friend} />);
-    const tree      = component.toJSON();
-
-    expect(tree).toMatchSnapshot();
+    render(<AvatarOverlay account={account} friend={friend} />);
+    expect(screen.queryAllByRole('img')).toHaveLength(2);
   });
 });

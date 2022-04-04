@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { createShallowComponent } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../../../jest/test-helpers';
 import { Card, CardBody, CardHeader, CardTitle } from '../card';
 
 describe('<Card />', () => {
   it('renders the CardTitle and CardBody', () => {
-    const component = createShallowComponent(
+    render(
       <Card>
         <CardHeader>
           <CardTitle title='Card Title' />
@@ -18,13 +17,13 @@ describe('<Card />', () => {
       </Card>,
     );
 
-    expect(component.text()).toContain('Card Title');
-    expect(component.text()).toContain('Card Body');
-    expect(component.text()).not.toContain('Back');
+    expect(screen.getByTestId('card-title')).toHaveTextContent('Card Title');
+    expect(screen.getByTestId('card-body')).toHaveTextContent('Card Body');
+    expect(screen.queryByTestId('back-button')).not.toBeInTheDocument();
   });
 
   it('renders the Back Button', () => {
-    const component = createShallowComponent(
+    render(
       <Card>
         <CardHeader backHref='/'>
           <CardTitle title='Card Title' />
@@ -32,6 +31,6 @@ describe('<Card />', () => {
       </Card>,
     );
 
-    expect(component.text()).toContain('Back');
+    expect(screen.getByTestId('back-button')).toBeInTheDocument();
   });
 });

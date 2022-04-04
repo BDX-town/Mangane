@@ -28,7 +28,7 @@ import {
   NOTIFICATIONS_MARK_READ_REQUEST,
 } from 'soapbox/actions/notifications';
 import { TIMELINE_DELETE } from 'soapbox/actions/timelines';
-import { applyActions } from 'soapbox/test_helpers';
+import { applyActions } from 'soapbox/jest/test-helpers';
 
 import reducer from '../notifications';
 

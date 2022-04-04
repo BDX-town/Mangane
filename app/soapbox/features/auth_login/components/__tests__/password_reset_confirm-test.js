@@ -1,17 +1,15 @@
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 import { Route, Switch } from 'react-router-dom';
 
 import { __stub } from 'soapbox/api';
-import rootReducer from 'soapbox/reducers';
-import { createShallowComponent, mockStore } from 'soapbox/test_helpers';
 
+import { fireEvent, render, screen, waitFor } from '../../../../jest/test-helpers';
 import PasswordResetConfirm from '../password_reset_confirm';
 
 const TestableComponent = () => (
   <Switch>
     <Route path='/edit' exact><PasswordResetConfirm /></Route>
-    <Route path='/' exact><span>Homepage</span></Route>
+    <Route path='/' exact><span data-testid='home'>Homepage</span></Route>
   </Switch>
 );
 
@@ -22,24 +20,23 @@ describe('<PasswordResetConfirm />', () => {
         .reply(200, {});
     });
 
-    const state = rootReducer(undefined, {});
-    const store = mockStore(state);
-    const component = createShallowComponent(
+    render(
       <TestableComponent />,
-      { store },
+      {},
+      null,
       { initialEntries: ['/edit'] },
     );
 
-    await component.find('form').at(0).simulate('submit', {
-      preventDefault: () => {},
-    });
-    await act(async() => {
-      await new Promise(resolve => setTimeout(resolve, 0));
-      component.update();
-    });
+    fireEvent.submit(
+      screen.getByTestId('form'), {
+        preventDefault: () => {},
+      },
+    );
 
-    expect(component.text()).toContain('Homepage');
-    expect(component.text()).not.toContain('Expired token');
+    await waitFor(() => {
+      expect(screen.getByTestId('home')).toHaveTextContent('Homepage');
+      expect(screen.queryByTestId('form-group-error')).not.toBeInTheDocument();
+    });
   });
 
   it('handles failed responses from the API', async() => {
@@ -48,23 +45,22 @@ describe('<PasswordResetConfirm />', () => {
         .reply(403, {});
     });
 
-    const state = rootReducer(undefined, {});
-    const store = mockStore(state);
-    const component = createShallowComponent(
+    render(
       <TestableComponent />,
-      { store },
+      {},
+      null,
       { initialEntries: ['/edit'] },
     );
 
-    await component.find('form').at(0).simulate('submit', {
-      preventDefault: () => {},
-    });
-    await act(async() => {
-      await new Promise(resolve => setTimeout(resolve, 0));
-      component.update();
-    });
+    await fireEvent.submit(
+      screen.getByTestId('form'), {
+        preventDefault: () => {},
+      },
+    );
 
-    expect(component.text()).toContain('Expired token');
-    expect(component.text()).not.toContain('Homepage');
+    await waitFor(() => {
+      expect(screen.queryByTestId('home')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('form-group-error')).toBeInTheDocument();
+    });
   });
 });

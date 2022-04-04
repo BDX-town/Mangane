@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { createComponent } from 'soapbox/test_helpers';
-
+import { render, screen } from '../../jest/test-helpers';
 import EmojiSelector from '../emoji_selector';
 
 describe('<EmojiSelector />', () => {
@@ -9,8 +8,8 @@ describe('<EmojiSelector />', () => {
     const children = <EmojiSelector />;
     children.__proto__.addEventListener = () => {};
 
-    const component = createComponent(children, {}, true);
-    const tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    render(children);
+
+    expect(screen.queryAllByRole('button')).toHaveLength(6);
   });
 });

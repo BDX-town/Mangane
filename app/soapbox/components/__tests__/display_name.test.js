@@ -1,16 +1,15 @@
 import React from 'react';
 
 import { normalizeAccount } from 'soapbox/normalizers';
-import { createComponent } from 'soapbox/test_helpers';
 
+import { render, screen } from '../../jest/test-helpers';
 import DisplayName from '../display_name';
 
 describe('<DisplayName />', () => {
   it('renders display name + account name', () => {
     const account = normalizeAccount({ acct: 'bar@baz' });
-    const component = createComponent(<DisplayName account={account} />);
-    const tree      = component.toJSON();
+    render(<DisplayName account={account} />);
 
-    expect(tree).toMatchSnapshot();
+    expect(screen.getByTestId('display-name')).toHaveTextContent('bar@baz');
   });
 });
