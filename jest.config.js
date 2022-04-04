@@ -22,7 +22,7 @@ module.exports = {
     '!app/soapbox/locales/locale-data/*.js',
     '!app/soapbox/service_worker/entry.js',
     '!app/soapbox/jest/test-setup.ts',
-    '!app/soapbox/jest/test-helpers.tsx',
+    '!app/soapbox/jest/test-helpers.ts',
   ],
   'coverageDirectory': '<rootDir>/coverage',
   'moduleDirectories': [

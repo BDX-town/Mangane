@@ -1,6 +1,5 @@
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import '@testing-library/jest-dom';
 
 import { __stub } from 'soapbox/api';
 import { fireEvent, render, screen, waitFor } from 'soapbox/jest/test-helpers';

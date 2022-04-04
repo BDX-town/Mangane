@@ -15,7 +15,7 @@ export default class Icon extends React.PureComponent {
 
   static propTypes = {
     id: PropTypes.string,
-    src: PropTypes.string,
+    src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     className: PropTypes.string,
     fixedWidth: PropTypes.bool,
   };
