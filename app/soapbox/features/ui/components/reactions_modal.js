@@ -107,6 +107,7 @@ class ReactionsModal extends React.PureComponent {
         <ScrollableList
           scrollKey='reactions'
           emptyMessage={emptyMessage}
+          className='space-y-3'
         >
           {accounts.map((account) =>
             <AccountContainer key={`${account.id}-${account.reaction}`} id={account.id} withNote={false} reaction={account.reaction} />,

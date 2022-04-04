@@ -379,7 +379,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
       prepend = (
         <div className='pt-4 px-4'>
           <HStack alignItems='center' space={1}>
-            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='text-gray-600' />
+            <Icon src={require('@tabler/icons/icons/pinned.svg')} className='text-gray-600 dark:text-gray-400' />
 
             <Text size='sm' theme='muted' weight='medium'>
               <FormattedMessage id='status.pinned' defaultMessage='Pinned post' />
