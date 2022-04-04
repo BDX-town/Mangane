@@ -1,11 +1,9 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import { FormattedMessage, injectIntl } from 'react-intl';
+import { FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from 'react-intl';
 import { FormattedDate } from 'react-intl';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
@@ -23,27 +21,37 @@ import Video from '../../video';
 import Card from './card';
 import StatusInteractionBar from './status_interaction_bar';
 
-export default @injectIntl
-class DetailedStatus extends ImmutablePureComponent {
+import type { List as ImmutableList } from 'immutable';
+import type { Attachment as AttachmentEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
-  static propTypes = {
-    status: ImmutablePropTypes.record,
-    onOpenMedia: PropTypes.func.isRequired,
-    onOpenVideo: PropTypes.func.isRequired,
-    onToggleHidden: PropTypes.func.isRequired,
-    measureHeight: PropTypes.bool,
-    onHeightChange: PropTypes.func,
-    domain: PropTypes.string,
-    compact: PropTypes.bool,
-    showMedia: PropTypes.bool,
-    onToggleMediaVisibility: PropTypes.func,
-  };
+interface IDetailedStatus extends IntlProps {
+  status: StatusEntity,
+  onOpenMedia: (media: ImmutableList<AttachmentEntity>, index: number) => void,
+  onOpenVideo: (media: ImmutableList<AttachmentEntity>, start: number) => void,
+  onToggleHidden: (status: StatusEntity) => void,
+  measureHeight: boolean,
+  onHeightChange: () => void,
+  domain: string,
+  compact: boolean,
+  showMedia: boolean,
+  onToggleMediaVisibility: () => void,
+}
+
+interface IDetailedStatusState {
+  height: number | null,
+  mediaWrapperWidth: number,
+}
+
+class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedStatusState> {
 
   state = {
     height: null,
+    mediaWrapperWidth: NaN,
   };
 
-  handleOpenVideo = (media, startTime) => {
+  node: HTMLDivElement | null = null;
+
+  handleOpenVideo = (media: ImmutableList<AttachmentEntity>, startTime: number) => {
     this.props.onOpenVideo(media, startTime);
   }
 
@@ -51,7 +59,7 @@ class DetailedStatus extends ImmutablePureComponent {
     this.props.onToggleHidden(this.props.status);
   }
 
-  _measureHeight(heightJustChanged) {
+  _measureHeight(heightJustChanged = false) {
     if (this.props.measureHeight && this.node) {
       scheduleIdleTask(() => this.node && this.setState({ height: Math.ceil(this.node.scrollHeight) + 1 }));
 
@@ -61,7 +69,7 @@ class DetailedStatus extends ImmutablePureComponent {
     }
   }
 
-  setRef = c => {
+  setRef: React.RefCallback<HTMLDivElement> = c => {
     this.node = c;
     this._measureHeight();
 
@@ -70,35 +78,41 @@ class DetailedStatus extends ImmutablePureComponent {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: IDetailedStatus, prevState: IDetailedStatusState) {
     this._measureHeight(prevState.height !== this.state.height);
   }
 
-  handleModalLink = e => {
-    e.preventDefault();
+  // handleModalLink = e => {
+  //   e.preventDefault();
+  //
+  //   let href;
+  //
+  //   if (e.target.nodeName !== 'A') {
+  //     href = e.target.parentNode.href;
+  //   } else {
+  //     href = e.target.href;
+  //   }
+  //
+  //   window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
+  // }
 
-    let href;
-
-    if (e.target.nodeName !== 'A') {
-      href = e.target.parentNode.href;
-    } else {
-      href = e.target.href;
-    }
-
-    window.open(href, 'soapbox-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
+  getActualStatus = () => {
+    const { status } = this.props;
+    if (!status) return undefined;
+    return status.reblog && typeof status.reblog === 'object' ? status.reblog : status;
   }
 
   render() {
-    const status = (this.props.status && this.props.status.get('reblog')) ? this.props.status.get('reblog') : this.props.status;
-    const outerStyle = { boxSizing: 'border-box' };
-    const { compact } = this.props;
-    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
-    const domain = getDomain(status.get('account'));
-    const size = status.get('media_attachments').size;
+    const status = this.getActualStatus();
+    if (!status) return null;
+    const { account } = status;
+    if (!account || typeof account !== 'object') return null;
 
-    if (!status) {
-      return null;
-    }
+    const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
+    const { compact } = this.props;
+    const favicon = account.getIn(['pleroma', 'favicon']);
+    const domain = getDomain(account);
+
 
     let media = null;
     let statusTypeIcon = null;
@@ -107,12 +121,15 @@ class DetailedStatus extends ImmutablePureComponent {
       outerStyle.height = `${this.state.height}px`;
     }
 
-    if (size > 0) {
-      if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'video') {
-        const video = status.getIn(['media_attachments', 0]);
+    const size = status.media_attachments.size;
+    const firstAttachment = status.media_attachments.get(0);
+
+    if (size > 0 && firstAttachment) {
+      if (size === 1 && firstAttachment.type === 'video') {
+        const video = firstAttachment;
         if (video.external_video_id && status.card?.html) {
           const { mediaWrapperWidth } = this.state;
-          const height = mediaWrapperWidth / (video.getIn(['meta', 'original', 'width']) / video.getIn(['meta', 'original', 'height']));
+          const height = mediaWrapperWidth / Number(video.meta.getIn(['original', 'width'])) / Number(video.meta.getIn(['original', 'height']));
           media = (
             <div className='status-card horizontal interactive status-card--video'>
               <div
@@ -126,33 +143,33 @@ class DetailedStatus extends ImmutablePureComponent {
         } else {
           media = (
             <Video
-              preview={video.get('preview_url')}
-              blurhash={video.get('blurhash')}
-              src={video.get('url')}
-              alt={video.get('description')}
-              aspectRatio={video.getIn(['meta', 'original', 'aspect'])}
+              preview={video.preview_url}
+              blurhash={video.blurhash}
+              src={video.url}
+              alt={video.description}
+              aspectRatio={video.meta.getIn(['original', 'aspect'])}
               width={300}
               height={150}
               inline
               onOpenVideo={this.handleOpenVideo}
-              sensitive={status.get('sensitive')}
+              sensitive={status.sensitive}
               visible={this.props.showMedia}
               onToggleVisibility={this.props.onToggleMediaVisibility}
             />
           );
         }
-      } else if (size === 1 && status.getIn(['media_attachments', 0, 'type']) === 'audio' && status.get('media_attachments').size === 1) {
-        const attachment = status.getIn(['media_attachments', 0]);
+      } else if (size === 1 && firstAttachment.type === 'audio') {
+        const attachment = firstAttachment;
 
         media = (
           <Audio
-            src={attachment.get('url')}
-            alt={attachment.get('description')}
-            duration={attachment.getIn(['meta', 'original', 'duration'], 0)}
-            poster={attachment.get('preview_url') !== attachment.get('url') ? attachment.get('preview_url') : status.getIn(['account', 'avatar_static'])}
-            backgroundColor={attachment.getIn(['meta', 'colors', 'background'])}
-            foregroundColor={attachment.getIn(['meta', 'colors', 'foreground'])}
-            accentColor={attachment.getIn(['meta', 'colors', 'accent'])}
+            src={attachment.url}
+            alt={attachment.description}
+            duration={attachment.meta.getIn(['original', 'duration', 0])}
+            poster={attachment.preview_url !== attachment.url ? attachment.preview_url : account.avatar_static}
+            backgroundColor={attachment.meta.getIn(['colors', 'background'])}
+            foregroundColor={attachment.meta.getIn(['colors', 'foreground'])}
+            accentColor={attachment.meta.getIn(['colors', 'accent'])}
             height={150}
           />
         );
@@ -160,8 +177,8 @@ class DetailedStatus extends ImmutablePureComponent {
         media = (
           <MediaGallery
             standalone
-            sensitive={status.get('sensitive')}
-            media={status.get('media_attachments')}
+            sensitive={status.sensitive}
+            media={status.media_attachments}
             height={300}
             onOpenMedia={this.props.onOpenMedia}
             visible={this.props.showMedia}
@@ -169,27 +186,27 @@ class DetailedStatus extends ImmutablePureComponent {
           />
         );
       }
-    } else if (status.get('spoiler_text').length === 0 && !status.get('quote')) {
-      media = <Card onOpenMedia={this.props.onOpenMedia} card={status.get('card', null)} />;
+    } else if (status.spoiler_text.length === 0 && !status.quote) {
+      media = <Card onOpenMedia={this.props.onOpenMedia} card={status.card} />;
     }
 
     let quote;
 
-    if (status.get('quote')) {
-      if (status.getIn(['pleroma', 'quote_visible'], true) === false) {
+    if (status.quote) {
+      if (status.pleroma.get('quote_visible', true) === false) {
         quote = (
           <div className='quoted-status-tombstone'>
             <p><FormattedMessage id='statuses.quote_tombstone' defaultMessage='Post is unavailable.' /></p>
           </div>
         );
       } else {
-        quote = <QuotedStatus statusId={status.get('quote')} />;
+        quote = <QuotedStatus statusId={status.quote} />;
       }
     }
 
-    if (status.get('visibility') === 'direct') {
+    if (status.visibility === 'direct') {
       statusTypeIcon = <Icon src={require('@tabler/icons/icons/mail.svg')} />;
-    } else if (status.get('visibility') === 'private') {
+    } else if (status.visibility === 'private') {
       statusTypeIcon = <Icon src={require('@tabler/icons/icons/lock.svg')} />;
     }
 
@@ -198,25 +215,25 @@ class DetailedStatus extends ImmutablePureComponent {
         <div ref={this.setRef} className={classNames('detailed-status', { compact })}>
           <div className='mb-4'>
             <AccountContainer
-              key={status.getIn(['account', 'id'])}
-              id={status.getIn(['account', 'id'])}
-              timestamp={status.get('created_at')}
+              key={account.id}
+              id={account.id}
+              timestamp={status.created_at}
               avatarSize={42}
               hideActions
             />
           </div>
 
-          {status.get('group') && (
+          {/* status.group && (
             <div className='status__meta'>
               Posted in <NavLink to={`/groups/${status.getIn(['group', 'id'])}`}>{status.getIn(['group', 'title'])}</NavLink>
             </div>
-          )}
+          )*/}
 
           <StatusReplyMentions status={status} />
 
           <StatusContent
             status={status}
-            expanded={!status.get('hidden')}
+            expanded={!status.hidden}
             onExpandedToggle={this.handleExpandedToggle}
           />
 
@@ -227,18 +244,19 @@ class DetailedStatus extends ImmutablePureComponent {
             <StatusInteractionBar status={status} />
 
             <div className='detailed-status__timestamp'>
-              {favicon &&
+              {typeof favicon === 'string' && (
                 <div className='status__favicon'>
                   <Link to={`/timeline/${domain}`}>
                     <img src={favicon} alt='' title={domain} />
                   </Link>
-                </div>}
+                </div>
+              )}
 
               {statusTypeIcon}
 
-              <a href={status.get('url')} target='_blank' rel='noopener' className='hover:underline'>
+              <a href={status.url} target='_blank' rel='noopener' className='hover:underline'>
                 <Text tag='span' theme='muted' size='sm'>
-                  <FormattedDate value={new Date(status.get('created_at'))} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
+                  <FormattedDate value={new Date(status.created_at)} hour12={false} year='numeric' month='short' day='2-digit' hour='2-digit' minute='2-digit' />
                 </Text>
               </a>
             </div>
@@ -249,3 +267,5 @@ class DetailedStatus extends ImmutablePureComponent {
   }
 
 }
+
+export default injectIntl(DetailedStatus);

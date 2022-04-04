@@ -58,7 +58,7 @@ import { makeGetStatus } from '../../selectors';
 import { attachFullscreenListener, detachFullscreenListener, isFullscreen } from '../ui/util/fullscreen';
 
 import ActionBar from './components/action-bar';
-import DetailedStatus from './components/detailed_status';
+import DetailedStatus from './components/detailed-status';
 import ThreadStatus from './components/thread-status';
 
 import type { AxiosError } from 'axios';
@@ -704,6 +704,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
                   // FIXME: no "reblogged by" text is added for the screen reader
                   aria-label={textForScreenReader(intl, status)}
                 >
+                  {/* @ts-ignore */}
                   <DetailedStatus
                     status={status}
                     onOpenVideo={this.handleOpenVideo}
