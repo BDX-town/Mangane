@@ -20,6 +20,7 @@ import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import SubNavigation from 'soapbox/components/sub_navigation';
 import { Column } from 'soapbox/components/ui';
+import PlaceholderStatus from 'soapbox/features/placeholder/components/placeholder_status';
 import PendingStatus from 'soapbox/features/ui/components/pending_status';
 
 import { blockAccount } from '../../actions/accounts';
@@ -60,6 +61,7 @@ import ActionBar from './components/action-bar';
 import DetailedStatus from './components/detailed_status';
 import ThreadStatus from './components/thread_status';
 
+import type { AxiosError } from 'axios';
 import type { History } from 'history';
 import type { AnyAction } from 'redux';
 import type { ThunkDispatch } from 'redux-thunk';
@@ -185,6 +187,8 @@ interface IStatusState {
   showMedia: boolean,
   loadedStatusId?: string,
   emojiSelectorFocused: boolean,
+  isLoaded: boolean,
+  error?: AxiosError,
 }
 
 class Status extends ImmutablePureComponent<IStatus, IStatusState> {
@@ -194,6 +198,8 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     showMedia: defaultMediaVisibility(this.props.status, this.props.displayMedia),
     loadedStatusId: undefined,
     emojiSelectorFocused: false,
+    isLoaded: Boolean(this.props.status),
+    error: undefined,
   };
 
   node: HTMLDivElement | null = null;
@@ -208,7 +214,11 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   }
 
   componentDidMount() {
-    this.fetchData();
+    this.fetchData().then(() => {
+      this.setState({ isLoaded: true });
+    }).catch(error => {
+      this.setState({ error, isLoaded: true });
+    });
     attachFullscreenListener(this.onFullScreenChange);
   }
 
@@ -635,9 +645,14 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     let ancestors, descendants;
     const { status, ancestorsIds, descendantsIds, intl } = this.props;
 
-    if (status === null) {
+    if (!status && this.state.isLoaded) {
+      // TODO: handle errors other than 404 with `this.state.error?.response?.status`
       return (
         <MissingIndicator />
+      );
+    } else if (!status) {
+      return (
+        <PlaceholderStatus />
       );
     }
 
