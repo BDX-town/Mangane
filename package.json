@@ -194,12 +194,12 @@
     "wicg-inert": "^3.1.1"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/user-event": "^14.0.3",
     "@typescript-eslint/eslint-plugin": "^5.15.0",
     "@typescript-eslint/parser": "^5.15.0",
     "babel-eslint": "^10.1.0",
-    "babel-jest": "^27.1.0",
+    "babel-jest": "^27.5.1",
     "eslint": "^7.0.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -216,7 +216,7 @@
     "stylelint-config-standard": "^22.0.0",
     "stylelint-scss": "^3.18.0",
     "tailwindcss": "^3.0.15",
-    "ts-jest": "^27.0.5",
+    "ts-jest": "^27.1.4",
     "webpack-dev-server": "^4.1.0",
     "yargs": "^16.0.3"
   }
