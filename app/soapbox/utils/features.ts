@@ -130,6 +130,7 @@ const getInstanceFeatures = (instance: Instance) => {
     ]),
     trendingTruths: v.software === TRUTHSOCIAL,
     trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
+    pepe: v.software === TRUTHSOCIAL,
   };
 };
 
