@@ -1,3 +1,5 @@
+const ASSET_EXTS = 'css|styl|less|sass|scss|png|jpg|svg|ogg|oga|mp3|ttf|woff|woff2';
+
 module.exports = {
   'testPathIgnorePatterns': [
     '<rootDir>/node_modules/',
@@ -32,11 +34,12 @@ module.exports = {
   ],
   'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
   'testEnvironment': 'jsdom',
-  'moduleNameMapper': {
-    '^.+.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$': 'jest-transform-stub',
-  },
+  'transformIgnorePatterns': [
+    // Ignore node_modules, except static assets
+    `/node_modules/(?!.+\\.(${ASSET_EXTS}))`,
+  ],
   'transform': {
     '\\.[jt]sx?$': 'babel-jest',
-    '.+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$': 'jest-transform-stub',
+    [`.+\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.js',
   },
 };
