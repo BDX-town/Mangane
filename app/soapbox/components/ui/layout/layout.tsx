@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import Sticky from 'react-stickynode';
 
-const Layout = ({ children }) => (
+const Layout: React.FC = ({ children }) => (
   <div className='sm:py-4 relative pb-36'>
     <div className='max-w-3xl mx-auto sm:px-6 md:max-w-7xl md:px-8 md:grid md:grid-cols-12 md:gap-8'>
       {children}
@@ -11,52 +11,37 @@ const Layout = ({ children }) => (
 );
 
 
-const Sidebar = ({ children }) => (
+const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
-    <div className='sticky top-20'>
+    <Sticky top={80} innerClass='pb-4'>
       {children}
-    </div>
+    </Sticky>
   </div>
 );
 
-const Main = ({ children, className }) => (
+const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, className }) => (
   <main
     className={classNames({
       'md:col-span-12 lg:col-span-9 xl:col-span-6 sm:space-y-4': true,
-      [className]: typeof className !== 'undefined',
-    })}
+    }, className)}
   >
     {children}
   </main>
 );
 
-const Aside = ({ children }) => (
+const Aside: React.FC = ({ children }) => (
   <aside className='hidden xl:block xl:col-span-3'>
-    <div className='sticky top-20 space-y-6'>
+    <Sticky top={80} innerClass='space-y-6 pb-4'>
       {children}
-    </div>
+    </Sticky>
   </aside>
 );
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
-
-Sidebar.propTypes = {
-  children: PropTypes.node,
-};
-
-Main.propTypes = {
-  children: PropTypes.node,
-  className: PropTypes.string,
-};
-
-Aside.propTypes = {
-  children: PropTypes.node,
-};
-
+// @ts-ignore
 Layout.Sidebar = Sidebar;
+// @ts-ignore
 Layout.Main = Main;
+// @ts-ignore
 Layout.Aside = Aside;
 
 export default Layout;
