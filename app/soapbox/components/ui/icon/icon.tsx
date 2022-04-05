@@ -9,7 +9,7 @@ interface IIcon {
 }
 
 const Icon = ({ src, alt, count, ...filteredProps }: IIcon): JSX.Element => (
-  <div className='relative'>
+  <div className='relative' data-testid='icon'>
     {count ? (
       <span className='absolute -top-2 -right-3 block px-1.5 py-0.5 bg-accent-500 text-xs text-white rounded-full ring-2 ring-white'>
         {count}
