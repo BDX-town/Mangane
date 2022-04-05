@@ -62,7 +62,7 @@ const PasswordResetConfirm = ({ resetPasswordConfirm }) => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText='Password' errors={renderErrors()}>
             <Input
               type='password'

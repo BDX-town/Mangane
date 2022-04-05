@@ -30,7 +30,7 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
       </div>
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.email)}>
             <Input
               aria-label={intl.formatMessage(messages.email)}
@@ -66,6 +66,7 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
               required
             />
           </FormGroup>
+
           <FormActions>
             <Button
               theme='primary'

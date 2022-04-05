@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import Icon from 'soapbox/components/icon';
+import Icon from '../icon/icon';
 
 import { useButtonStyles } from './useButtonStyles';
 
@@ -48,7 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       return null;
     }
 
-    return <Icon src={icon} className='mr-2' />;
+    return <Icon src={icon} className='mr-2 w-4 h-4' />;
   };
 
   const handleClick = React.useCallback((event) => {
@@ -64,6 +64,7 @@ const Button = React.forwardRef<HTMLButtonElement, IButton>((props, ref): JSX.El
       onClick={handleClick}
       ref={ref}
       type={type}
+      data-testid='button'
     >
       {renderIcon()}
       {text || children}

@@ -28,7 +28,7 @@ export default class AutosuggestEmoji extends React.PureComponent {
     }
 
     return (
-      <div className='autosuggest-emoji'>
+      <div className='autosuggest-emoji' data-testid='emoji'>
         <img
           className='emojione'
           src={url}

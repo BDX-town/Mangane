@@ -83,7 +83,7 @@ export default (getState: () => RootState, authType: string = 'user'): AxiosInst
   const state = getState();
   const accessToken = getToken(state, authType);
   const me = state.me;
-  const baseURL = getAuthBaseURL(state, me);
+  const baseURL = me ? getAuthBaseURL(state, me) : '';
 
   return baseClient(accessToken, baseURL);
 };

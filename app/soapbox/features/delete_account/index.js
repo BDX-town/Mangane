@@ -53,7 +53,7 @@ const DeleteAccount = () => {
           {intl.formatMessage(messages.deleteText)}
         </p>
 
-        <Form onSubmit={handleSubmit} disabled={isLoading}>
+        <Form onSubmit={handleSubmit}>
           <FormGroup labelText={intl.formatMessage(messages.passwordFieldLabel)}>
             <Input
               type='password'

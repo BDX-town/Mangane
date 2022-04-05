@@ -22,7 +22,7 @@ before_script:
 
 lint-js:
   stage: lint
-  script: yarn test:lint:js
+  script: yarn lint:js
   only:
     changes:
       - "**/*.js"
@@ -34,7 +34,7 @@ lint-js:
 
 lint-sass:
   stage: lint
-  script: yarn test:lint:sass
+  script: yarn lint:sass
   only:
     changes:
       - "**/*.scss"
@@ -43,7 +43,7 @@ lint-sass:
 
 jest:
   stage: test
-  script: yarn test:jest
+  script: yarn test:coverage
   only:
     changes:
       - "**/*.js"

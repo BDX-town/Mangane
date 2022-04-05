@@ -1,3 +1,5 @@
+const ASSET_EXTS = 'css|styl|less|sass|scss|png|jpg|svg|ogg|oga|mp3|ttf|woff|woff2';
+
 module.exports = {
   'testPathIgnorePatterns': [
     '<rootDir>/node_modules/',
@@ -12,27 +14,32 @@ module.exports = {
     'raf/polyfill',
   ],
   'setupFilesAfterEnv': [
-    '<rootDir>/app/soapbox/test_setup.js',
+    '<rootDir>/app/soapbox/jest/test-setup.ts',
   ],
   'collectCoverageFrom': [
     'app/soapbox/**/*.js',
+    'app/soapbox/**/*.ts',
+    'app/soapbox/**/*.tsx',
     '!app/soapbox/features/emoji/emoji_compressed.js',
     '!app/soapbox/locales/locale-data/*.js',
     '!app/soapbox/service_worker/entry.js',
-    '!app/soapbox/test_setup.js',
-    '!app/soapbox/test_helpers.js',
+    '!app/soapbox/jest/test-setup.ts',
+    '!app/soapbox/jest/test-helpers.ts',
   ],
-  'coverageDirectory': '<rootDir>/coverage',
+  'coverageDirectory': '<rootDir>/.coverage/',
+  'coverageReporters': ['html', 'text', 'text-summary', 'cobertura'],
   'moduleDirectories': [
     '<rootDir>/node_modules',
     '<rootDir>/app',
   ],
+  'testMatch': ['**/*/__tests__/**/?(*.|*-)+(test).(ts|js)?(x)'],
   'testEnvironment': 'jsdom',
-  'moduleNameMapper': {
-    '^.+.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$': 'jest-transform-stub',
-  },
+  'transformIgnorePatterns': [
+    // Ignore node_modules, except static assets
+    `/node_modules/(?!.+\\.(${ASSET_EXTS}))`,
+  ],
   'transform': {
     '\\.[jt]sx?$': 'babel-jest',
-    '.+\\.(css|styl|less|sass|scss|png|jpg|svg|ttf|woff|woff2)$': 'jest-transform-stub',
+    [`.+\\.(${ASSET_EXTS})$`]: '<rootDir>/jest/assetTransformer.js',
   },
 };

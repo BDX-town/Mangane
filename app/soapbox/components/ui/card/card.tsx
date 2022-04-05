@@ -55,7 +55,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
     return (
       <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
         <InlineSVG src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
-        <span className='sr-only'>Back</span>
+        <span className='sr-only' data-testid='back-button'>Back</span>
       </Comp>
     );
   };
@@ -74,11 +74,11 @@ interface ICardTitle {
 }
 
 const CardTitle = ({ title }: ICardTitle): JSX.Element => (
-  <Text size='xl' weight='bold' tag='h1'>{title}</Text>
+  <Text size='xl' weight='bold' tag='h1' data-testid='card-title'>{title}</Text>
 );
 
 const CardBody: React.FC = ({ children }): JSX.Element => (
-  <div>{children}</div>
+  <div data-testid='card-body'>{children}</div>
 );
 
 export { Card, CardHeader, CardTitle, CardBody };

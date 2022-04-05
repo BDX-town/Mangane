@@ -6,5 +6,5 @@ export default function InlineSVG({ src }) {
 }
 
 InlineSVG.propTypes = {
-  src: PropTypes.node.isRequired,
+  src: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };

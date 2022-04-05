@@ -24,6 +24,7 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
     <div>
       <label
         htmlFor={formFieldId}
+        data-testid='form-group-label'
         className='block text-sm font-medium text-gray-700 dark:text-gray-400'
       >
         {labelText}
@@ -34,13 +35,16 @@ const FormGroup: React.FC<IFormGroup> = (props) => {
         {inputChildren.filter((_, i) => i !== 0)}
 
         {errors?.length > 0 && (
-          <p className='mt-0.5 text-xs text-danger-900 bg-danger-200 rounded-md inline-block px-2 py-1 relative form-error'>
+          <p
+            data-testid='form-group-error'
+            className='mt-0.5 text-xs text-danger-900 bg-danger-200 rounded-md inline-block px-2 py-1 relative form-error'
+          >
             {errors.join(', ')}
           </p>
         )}
 
         {hintText ? (
-          <p className='mt-0.5 text-xs text-gray-400'>
+          <p data-testid='form-group-hint' className='mt-0.5 text-xs text-gray-400'>
             {hintText}
           </p>
         ) : null}

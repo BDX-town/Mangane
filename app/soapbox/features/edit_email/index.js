@@ -60,7 +60,7 @@ const EditEmail = () => {
         </CardHeader>
 
         <CardBody>
-          <Form onSubmit={handleSubmit} disabled={isLoading}>
+          <Form onSubmit={handleSubmit}>
             <FormGroup labelText={intl.formatMessage(messages.emailFieldLabel)}>
               <Input
                 placeholder={intl.formatMessage({ id: 'edit_email.placeholder', defaultMessage: 'me@example.com' })}

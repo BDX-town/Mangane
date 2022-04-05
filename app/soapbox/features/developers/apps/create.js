@@ -183,7 +183,7 @@ class CreateApp extends ImmutablePureComponent {
 
     return (
       <Column label={intl.formatMessage(messages.heading)} backHref='/developers'>
-        <Form onSubmit={this.handleSubmit} disabled={isLoading}>
+        <Form onSubmit={this.handleSubmit}>
           <FormGroup labelText={<FormattedMessage id='app_create.name_label' defaultMessage='App name' />}>
             <Input
               placeholder={intl.formatMessage(messages.namePlaceholder)}
@@ -220,7 +220,7 @@ class CreateApp extends ImmutablePureComponent {
           </FormGroup>
 
           <FormActions>
-            <Button theme='primary' type='submit'>
+            <Button theme='primary' type='submit' disabled={isLoading}>
               <FormattedMessage id='app_create.submit' defaultMessage='Create app' />
             </Button>
           </FormActions>

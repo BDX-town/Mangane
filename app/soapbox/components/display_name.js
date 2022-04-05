@@ -72,7 +72,7 @@ class DisplayName extends React.PureComponent {
     }
 
     return (
-      <span className='display-name'>
+      <span className='display-name' data-testid='display-name'>
         <HoverRefWrapper accountId={account.get('id')} inline>
           {displayName}
         </HoverRefWrapper>

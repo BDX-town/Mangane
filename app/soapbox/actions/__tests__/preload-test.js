@@ -1,7 +1,7 @@
 import { Map as ImmutableMap } from 'immutable';
 
 import { __stub } from 'soapbox/api';
-import { mockStore } from 'soapbox/test_helpers';
+import { mockStore } from 'soapbox/jest/test-helpers';
 
 import { VERIFY_CREDENTIALS_REQUEST } from '../auth';
 import { ACCOUNTS_IMPORT } from '../importer';

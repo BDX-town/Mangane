@@ -3,7 +3,7 @@ import React from 'react';
 import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 
-import Icon from '../../icon';
+import Icon from '../icon/icon';
 import Tooltip from '../tooltip/tooltip';
 
 const messages = defineMessages({

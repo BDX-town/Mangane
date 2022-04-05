@@ -34,7 +34,7 @@ import {
   revealStatus,
 } from '../../../actions/statuses';
 import { makeGetStatus } from '../../../selectors';
-import DetailedStatus from '../components/detailed_status';
+import DetailedStatus from '../components/detailed-status';
 
 const messages = defineMessages({
   deleteConfirm: { id: 'confirmations.delete.confirm', defaultMessage: 'Delete' },

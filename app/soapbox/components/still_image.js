@@ -54,7 +54,7 @@ class StillImage extends React.PureComponent {
     const hoverToPlay = this.hoverToPlay();
 
     return (
-      <div className={classNames(className, 'still-image', { 'still-image--play-on-hover': hoverToPlay })} style={style}>
+      <div data-testid='still-image-container' className={classNames(className, 'still-image', { 'still-image--play-on-hover': hoverToPlay })} style={style}>
         <img src={src} alt={alt} ref={this.setImageRef} onLoad={this.handleImageLoad} />
         {hoverToPlay && <canvas ref={this.setCanvasRef} />}
       </div>

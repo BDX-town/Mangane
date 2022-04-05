@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
 import { Menu, MenuButton, MenuDivider, MenuItem, MenuLink, MenuList } from 'soapbox/components/ui';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { makeGetAccount } from 'soapbox/selectors';
 
 import Account from '../../../components/account';
@@ -36,8 +36,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const me = useAppSelector((state) => state.me);
-  const currentAccount = useAppSelector((state) => getAccount(state, me));
+  const currentAccount = useOwnAccount();
   const authUsers = useAppSelector((state) => state.auth.get('users'));
   const isCurrentAccountStaff = Boolean(currentAccount?.staff);
   const otherAccounts = useAppSelector((state) => authUsers.map((authUser: any) => getAccount(state, authUser.get('id'))));

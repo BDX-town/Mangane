@@ -16,7 +16,7 @@ const listenerOptions = supportsPassiveEvents ? { passive: true } : false;
 let id = 0;
 
 export interface MenuItem {
-  action: React.EventHandler<React.KeyboardEvent | React.MouseEvent>,
+  action?: React.EventHandler<React.KeyboardEvent | React.MouseEvent>,
   middleClick?: React.EventHandler<React.MouseEvent>,
   text: string,
   href?: string,
