@@ -261,7 +261,7 @@ class RegistrationForm extends ImmutablePureComponent {
     const isLoading = this.state.captchaLoading || this.state.submissionLoading;
 
     return (
-      <SimpleForm onSubmit={this.onSubmit}>
+      <SimpleForm onSubmit={this.onSubmit} data-testid='registrations-open'>
         <fieldset disabled={isLoading}>
           <div className='simple_form__overlay-area'>
             <div className='fields-group'>

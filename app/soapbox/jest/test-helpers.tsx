@@ -69,4 +69,5 @@ export {
   mockStore,
   applyActions,
   rootState,
+  rootReducer,
 };
