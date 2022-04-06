@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "typeRoots": [ "./types", "./node_modules/@types"]
   },
   "exclude": ["node_modules", "types", "**/*.test.*", "**/__mocks__/*", "**/__tests__/*"]
