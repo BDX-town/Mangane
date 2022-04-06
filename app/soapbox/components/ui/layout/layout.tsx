@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import Sticky from 'react-stickynode';
+import StickyBox from 'react-sticky-box';
 
 const Layout: React.FC = ({ children }) => (
   <div className='sm:py-4 relative pb-36'>
@@ -13,9 +13,9 @@ const Layout: React.FC = ({ children }) => (
 
 const Sidebar: React.FC = ({ children }) => (
   <div className='hidden lg:block lg:col-span-3'>
-    <Sticky top={80} innerClass='pb-4'>
+    <StickyBox offsetTop={80} className='pb-4'>
       {children}
-    </Sticky>
+    </StickyBox>
   </div>
 );
 
@@ -31,9 +31,9 @@ const Main: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, classN
 
 const Aside: React.FC = ({ children }) => (
   <aside className='hidden xl:block xl:col-span-3'>
-    <Sticky top={80} innerClass='space-y-6 pb-4'>
+    <StickyBox offsetTop={80} className='space-y-6 pb-4' >
       {children}
-    </Sticky>
+    </StickyBox>
   </aside>
 );
 
