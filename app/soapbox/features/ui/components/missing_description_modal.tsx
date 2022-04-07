@@ -10,41 +10,26 @@ const messages = defineMessages({
 });
 
 interface IMissingDescriptionModal {
-  onClose: Function,
-  onContinue: Function,
+  onClose: () => void,
+  onContinue: () => void,
   intl: IntlShape,
 }
 
-class MissingDescriptionModal extends React.PureComponent<IMissingDescriptionModal> {
-
-  handleContinue = () => {
-    this.props.onClose();
-    this.props.onContinue();
-  }
-
-  handleCancel = () => {
-    this.props.onClose();
-  }
-
-  render() {
-    const { intl } = this.props;
-
-    return (
-      <Modal
-        title={intl.formatMessage(messages.modalTitle)}
-        confirmationAction={this.handleContinue}
-        confirmationText={intl.formatMessage(messages.post)}
-        confirmationTheme='danger'
-        cancelText={intl.formatMessage(messages.cancel)}
-        cancelAction={this.handleCancel}
-      >
-        <p className='text-gray-600 dark:text-gray-300'>
-          <FormattedMessage id='missing_description_modal.description' defaultMessage='Continue anyway?' />
-        </p>
-      </Modal>
-    );
-  }
-
-}
+const MissingDescriptionModal: React.FC<IMissingDescriptionModal> = ({ onClose, onContinue, intl }) => {
+  return (
+    <Modal
+      title={intl.formatMessage(messages.modalTitle)}
+      confirmationAction={onContinue}
+      confirmationText={intl.formatMessage(messages.post)}
+      confirmationTheme='danger'
+      cancelText={intl.formatMessage(messages.cancel)}
+      cancelAction={onClose}
+    >
+      <p className='text-gray-600 dark:text-gray-300'>
+        <FormattedMessage id='missing_description_modal.description' defaultMessage='Continue anyway?' />
+      </p>
+    </Modal>
+  );
+};
 
 export default injectIntl(MissingDescriptionModal);
