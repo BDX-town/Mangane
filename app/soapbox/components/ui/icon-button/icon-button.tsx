@@ -22,6 +22,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
         'bg-white dark:bg-transparent': !transparent,
       }, className)}
       {...filteredProps}
+      data-testid='icon-button'
     >
       <InlineSVG src={src} className={iconClassName} />
 
