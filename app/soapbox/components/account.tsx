@@ -125,7 +125,7 @@ const Account = ({
   const LinkEl: any = showProfileHoverCard ? Link : 'div';
 
   return (
-    <div className='flex-shrink-0 group block w-full overflow-hidden' ref={overflowRef}>
+    <div data-testid='account' className='flex-shrink-0 group block w-full overflow-hidden' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
         <HStack alignItems='center' space={3} grow>
           <ProfilePopper
