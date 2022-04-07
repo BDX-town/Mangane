@@ -61,7 +61,7 @@ class ConfirmationModal extends React.PureComponent {
         cancelText={<FormattedMessage id='confirmation_modal.cancel' defaultMessage='Cancel' />}
         cancelAction={this.handleCancel}
         secondaryText={secondary}
-        secondaryAction={this.handleSecondary}
+        secondaryAction={this.props.onSecondary && this.handleSecondary}
       >
         <p className='text-gray-600 dark:text-gray-300'>{message}</p>
 
