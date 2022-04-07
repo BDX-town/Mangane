@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Icon from '../icon/icon';
+import SvgIcon from '../icon/svg-icon';
 import Tooltip from '../tooltip/tooltip';
 
 const messages = defineMessages({
@@ -72,7 +72,7 @@ const Input = React.forwardRef<HTMLInputElement, IInput>(
                 tabIndex={-1}
                 className='text-gray-400 hover:text-gray-500 h-full px-2 focus:ring-primary-500 focus:ring-2'
               >
-                <InlineSVG
+                <SvgIcon
                   src={revealed ? require('@tabler/icons/icons/eye-off.svg') : require('@tabler/icons/icons/eye.svg')}
                   className='h-4 w-4'
                 />

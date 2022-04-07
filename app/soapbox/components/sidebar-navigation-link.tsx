@@ -37,16 +37,14 @@ const SidebarNavigationLink = ({ icon, text, to, count }: ISidebarNavigationLink
           </span>
         ) : null}
 
-        <div className='h-5 w-5'>
-          <Icon
-            src={icon}
-            className={classNames({
-              'h-full w-full': true,
-              'text-primary-700 dark:text-white': !isActive,
-              'text-white': isActive,
-            })}
-          />
-        </div>
+        <Icon
+          src={icon}
+          size={20}
+          className={classNames({
+            'text-primary-700 dark:text-white': !isActive,
+            'text-white': isActive,
+          })}
+        />
       </span>
 
       <Text weight='semibold' theme='inherit'>{text}</Text>

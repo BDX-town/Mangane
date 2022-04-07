@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import { Text } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 
 const sizes = {
   md: 'p-4 sm:rounded-xl',
@@ -54,7 +54,7 @@ const CardHeader: React.FC<ICardHeader> = ({ children, backHref, onBackClick }):
 
     return (
       <Comp {...backAttributes} className='mr-2 text-gray-900 dark:text-gray-100' aria-label={intl.formatMessage(messages.back)}>
-        <InlineSVG src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
+        <SvgIcon src={require('@tabler/icons/icons/arrow-left.svg')} className='h-6 w-6' />
         <span className='sr-only' data-testid='back-button'>Back</span>
       </Comp>
     );
