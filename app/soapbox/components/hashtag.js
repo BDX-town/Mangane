@@ -16,7 +16,7 @@ const Hashtag = ({ hashtag }) => {
   const brandColor = useSelector((state) => getSoapboxConfig(state).get('brandColor'));
 
   return (
-    <HStack alignItems='center' justifyContent='between'>
+    <HStack alignItems='center' justifyContent='between' data-testid='hashtag'>
       <Stack>
         <Permalink href={hashtag.get('url')} to={`/tags/${hashtag.get('name')}`} className='hover:underline'>
           <Text tag='span' size='sm' weight='semibold'>#{hashtag.get('name')}</Text>
