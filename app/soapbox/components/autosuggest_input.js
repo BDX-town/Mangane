@@ -289,6 +289,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
           aria-autocomplete='list'
           id={id}
           maxLength={maxLength}
+          data-testid='autosuggest-input'
         />
 
         <div className={classNames({

@@ -29,12 +29,12 @@ const toCodePoints = (unicodeSurrogates: string): string[] => {
   return points;
 };
 
-interface IEmoji {
-  className?: string,
+interface IEmoji extends React.ImgHTMLAttributes<HTMLImageElement> {
   emoji: string,
 }
 
-const Emoji: React.FC<IEmoji> = ({ className, emoji }): JSX.Element | null => {
+const Emoji: React.FC<IEmoji> = (props): JSX.Element | null => {
+  const { emoji, alt, ...rest } = props;
   const codepoints = toCodePoints(removeVS16s(emoji));
   const filename = codepoints.join('-');
 
@@ -43,9 +43,9 @@ const Emoji: React.FC<IEmoji> = ({ className, emoji }): JSX.Element | null => {
   return (
     <img
       draggable='false'
-      className={className}
-      alt={emoji}
+      alt={alt || emoji}
       src={joinPublicPath(`packs/emoji/${filename}.svg`)}
+      {...rest}
     />
   );
 };

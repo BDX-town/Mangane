@@ -17,7 +17,7 @@ interface IModal {
   confirmationDisabled?: boolean,
   confirmationText?: string,
   confirmationTheme?: 'danger',
-  onClose: () => void,
+  onClose?: () => void,
   secondaryAction?: () => void,
   secondaryText?: string,
   title: string | React.ReactNode,
@@ -46,7 +46,7 @@ const Modal: React.FC<IModal> = ({
   }, [buttonRef]);
 
   return (
-    <div className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
+    <div data-testid='modal' className='block w-full max-w-xl p-6 mx-auto overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-slate-800 text-black dark:text-white shadow-xl rounded-2xl pointer-events-auto'>
       <div className='sm:flex sm:items-start w-full justify-between'>
         <div className='w-full'>
           <div className='w-full flex flex-row justify-between items-center'>
@@ -71,7 +71,7 @@ const Modal: React.FC<IModal> = ({
       </div>
 
       {confirmationAction && (
-        <div className='mt-5 flex flex-row justify-between'>
+        <div className='mt-5 flex flex-row justify-between' data-testid='modal-actions'>
           <div className='flex-grow'>
             {cancelAction && (
               <Button
