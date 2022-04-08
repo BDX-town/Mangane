@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { fetchBirthdayReminders } from 'soapbox/actions/accounts';
 import { openModal } from 'soapbox/actions/modals';
 import Icon from 'soapbox/components/icon';
+import { HStack, Text } from 'soapbox/components/ui';
 import { makeGetAccount } from 'soapbox/selectors';
 
 const mapStateToProps = (state, props) => {
@@ -72,7 +73,7 @@ class BirthdayReminders extends ImmutablePureComponent {
     const link = (
       <bdi>
         <Link
-          className='notification__display-name'
+          className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
           title={account.get('acct')}
           to={`/@${account.get('acct')}`}
           dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
@@ -137,14 +138,20 @@ class BirthdayReminders extends ImmutablePureComponent {
     return (
       <HotKeys handlers={this.getHandlers()}>
         <div className='notification notification-birthday focusable' tabIndex='0' title={this.renderMessageForScreenReader()}>
-          <div className='notification__message'>
-            <div className='notification__icon-wrapper'>
-              <Icon src={require('@tabler/icons/icons/ballon.svg')} />
-            </div>
+          <div className='p-4 focusable'>
+            <HStack alignItems='center' space={1.5}>
+              <Icon
+                src={require('@tabler/icons/icons/ballon.svg')}
+                className='text-primary-600'
+              />
 
-            <span>
-              {this.renderMessage()}
-            </span>
+              <Text
+                theme='muted'
+                size='sm'
+              >
+                {this.renderMessage()}
+              </Text>
+            </HStack>
           </div>
         </div>
       </HotKeys>

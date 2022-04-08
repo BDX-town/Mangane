@@ -236,7 +236,10 @@ export function submitCompose(routerHistory, force = false) {
 
     if (!force && needsDescriptions(state)) {
       dispatch(openModal('MISSING_DESCRIPTION', {
-        onContinue: () => dispatch(submitCompose(routerHistory, true)),
+        onContinue: () => {
+          dispatch(closeModal('MISSING_DESCRIPTION'));
+          dispatch(submitCompose(routerHistory, true));
+        },
       }));
       return;
     }

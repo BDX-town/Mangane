@@ -92,7 +92,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
       <HStack alignItems='center' space={0.5}>
         <Icon
           src={require('@tabler/icons/icons/ballon.svg')}
-          className='w-4 h-4 text-gray-800'
+          className='w-4 h-4 text-gray-800 dark:text-gray-200'
         />
 
         <Text size='sm'>
@@ -191,7 +191,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/icons/calendar.svg')}
-                  className='w-4 h-4 text-gray-800'
+                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <Text size='sm'>
@@ -208,7 +208,7 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/icons/map-pin.svg')}
-                  className='w-4 h-4 text-gray-800'
+                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <Text size='sm'>
@@ -221,13 +221,13 @@ class ProfileInfoPanel extends ImmutablePureComponent {
               <HStack alignItems='center' space={0.5}>
                 <Icon
                   src={require('@tabler/icons/icons/link.svg')}
-                  className='w-4 h-4 text-gray-800'
+                  className='w-4 h-4 text-gray-800 dark:text-gray-200'
                 />
 
                 <div className='max-w-[300px]'>
                   <Text size='sm' truncate>
                     {isSafeUrl(account.get('website')) ? (
-                      <a className='text-primary-600 hover:underline' href={account.get('website')} target='_blank'>{account.get('website')}</a>
+                      <a className='text-primary-600 dark:text-primary-400 hover:underline' href={account.get('website')} target='_blank'>{account.get('website')}</a>
                     ) : (
                       account.get('website')
                     )}

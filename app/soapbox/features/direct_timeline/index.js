@@ -75,6 +75,7 @@ class DirectTimeline extends React.PureComponent {
           timelineId='direct'
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='empty_column.direct' defaultMessage="You don't have any direct messages yet. When you send or receive one, it will show up here." />}
+          divideType='space'
         />
       </Column>
     );
