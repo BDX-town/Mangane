@@ -32,7 +32,7 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = state.getIn(['accounts', me]);
 
-    const parentTo = statusToMentionsAccountIdsArray(state, status, account);
+    const parentTo = statusToMentionsAccountIdsArray(status, account);
 
     return {
       to,

@@ -113,7 +113,7 @@ export const statusToMentionsArray = (status, account) => {
     .delete(account.get('acct'));
 };
 
-export const statusToMentionsAccountIdsArray = (state, status, account) => {
+export const statusToMentionsAccountIdsArray = (status, account) => {
   const author = status.getIn(['account', 'id']);
   const mentions = status.get('mentions', []).map(m => m.get('id'));
 
