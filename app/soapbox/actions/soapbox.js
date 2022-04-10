@@ -30,7 +30,7 @@ export const getSoapboxConfig = createSelector([
     // If RGI reacts aren't supported, strip VS16s
     // // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
     if (!features.emojiReactsRGI) {
-      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(emoji => removeVS16s(emoji)));
+      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
     }
   });
 });
