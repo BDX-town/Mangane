@@ -1,5 +1,5 @@
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
+import InlineSVG from 'react-inlinesvg'; // eslint-disable-line no-restricted-imports
 
 interface ISvgIcon {
   className?: string,

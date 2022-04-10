@@ -94,6 +94,12 @@ module.exports = {
     'no-loop-func': 'error',
     'no-mixed-spaces-and-tabs': 'error',
     'no-nested-ternary': 'warn',
+    'no-restricted-imports': ['error', {
+      patterns: [{
+        group: ['react-inlinesvg'],
+        message: 'Use the SvgIcon component instead.',
+      }],
+    }],
     'no-trailing-spaces': 'warn',
     'no-undef': 'error',
     'no-unreachable': 'error',
