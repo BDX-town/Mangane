@@ -25,7 +25,7 @@ export default class SvgIcon extends React.PureComponent {
         className={classNames('svg-icon', className)}
         {...other}
       >
-        <InlineSVG src={src} title={alt} />
+        <InlineSVG src={src} title={alt} loader={<></>} />
       </div>
     );
   }
