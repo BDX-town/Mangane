@@ -1,10 +1,13 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 
-export default @injectIntl
+import api from 'soapbox/api';
+
+export default @connect()
+@injectIntl
 class EmbedModal extends ImmutablePureComponent {
 
   static propTypes = {
@@ -19,12 +22,18 @@ class EmbedModal extends ImmutablePureComponent {
     oembed: null,
   };
 
-  componentDidMount() {
-    const { url } = this.props;
+  fetchEmbed = () => {
+    const { dispatch, url } = this.props;
 
+    return dispatch((dispatch, getState) => {
+      return api(getState).get('/api/oembed', { params: { url } });
+    });
+  }
+
+  componentDidMount() {
     this.setState({ loading: true });
 
-    axios.post('/api/web/embed', { url }).then(res => {
+    this.fetchEmbed().then(res => {
       this.setState({ loading: false, oembed: res.data });
 
       const iframeDocument = this.iframe.contentWindow.document;

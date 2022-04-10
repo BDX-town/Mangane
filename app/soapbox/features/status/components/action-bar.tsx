@@ -368,11 +368,14 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
         action: this.handleCopy,
         icon: require('@tabler/icons/icons/link.svg'),
       });
-      // menu.push({
-      //   text: intl.formatMessage(messages.embed),
-      //   action: this.handleEmbed,
-      //   icon: require('feather-icons/dist/icons/link-2.svg'),
-      // });
+
+      if (features.embeds) {
+        menu.push({
+          text: intl.formatMessage(messages.embed),
+          action: this.handleEmbed,
+          icon: require('feather-icons/dist/icons/link-2.svg'),
+        });
+      }
     }
 
     if (me) {

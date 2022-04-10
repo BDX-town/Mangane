@@ -30,6 +30,7 @@ const getInstanceFeatures = (instance: Instance) => {
     privacyScopes: v.software !== TRUTHSOCIAL,
     spoilers: v.software !== TRUTHSOCIAL,
     filters: v.software !== TRUTHSOCIAL,
+    embeds: v.software === MASTODON,
     polls: any([
       v.software === MASTODON && gte(v.version, '2.8.0'),
       v.software === PLEROMA,
