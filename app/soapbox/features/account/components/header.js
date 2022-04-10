@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
-import InlineSVG from 'react-inlinesvg';
 import { defineMessages, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -16,6 +15,7 @@ import Avatar from 'soapbox/components/avatar';
 import Badge from 'soapbox/components/badge';
 import StillImage from 'soapbox/components/still_image';
 import { HStack, IconButton, Menu, MenuButton, MenuItem, MenuList, MenuLink, MenuDivider } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import {
   isLocal,
@@ -614,7 +614,7 @@ class Header extends ImmutablePureComponent {
                           return (
                             <Comp key={idx} {...itemProps} className='group'>
                               <div className='flex items-center'>
-                                <InlineSVG src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500' />
+                                <SvgIcon src={menuItem.icon} className='mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500' />
 
                                 <div className='truncate'>{menuItem.text}</div>
                               </div>

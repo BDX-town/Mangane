@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
 
-import { Text } from 'soapbox/components/ui';
+import { Text, Icon } from 'soapbox/components/ui';
 import { shortNumberFormat } from 'soapbox/utils/numbers';
 
 const COLORS = {
@@ -53,10 +52,10 @@ const StatusActionButton = React.forwardRef((props: IStatusActionButton, ref: Re
       )}
       {...filteredProps}
     >
-      <InlineSVG
+      <Icon
         src={icon}
         className={classNames(
-          'p-1 rounded-full box-content',
+          'rounded-full',
           'group-focus:outline-none group-focus:ring-2 group-focus:ring-offset-2 dark:ring-offset-0 group-focus:ring-primary-500',
           {
             'fill-accent-300 hover:fill-accent-300': active && filled && color === COLORS.accent,
