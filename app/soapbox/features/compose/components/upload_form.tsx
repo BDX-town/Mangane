@@ -3,11 +3,11 @@ import React from 'react';
 
 import { useAppSelector } from 'soapbox/hooks';
 
-import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
-
 // import SensitiveButtonContainer from '../containers/sensitive_button_container';
 import UploadProgress from '../components/upload-progress';
 import UploadContainer from '../containers/upload_container';
+
+import type { Attachment as AttachmentEntity } from 'soapbox/types/entities';
 
 const UploadForm = () => {
   const mediaIds = useAppSelector((state) => state.compose.get('media_attachments').map((item: AttachmentEntity) => item.get('id')));
