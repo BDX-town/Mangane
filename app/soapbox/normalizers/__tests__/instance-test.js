@@ -185,4 +185,10 @@ describe('normalizeInstance()', () => {
 
     expect(result.version).toEqual('3.5.0-rc1');
   });
+
+  it('normalizes Pixelfed instance', () => {
+    const instance = require('soapbox/__fixtures__/pixelfed-instance.json');
+    const result = normalizeInstance(instance);
+    expect(result.title).toBe('pixelfed');
+  });
 });

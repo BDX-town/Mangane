@@ -23,6 +23,15 @@ describe('parseVersion', () => {
       compatVersion: '3.0.0',
     });
   });
+
+  it('with a Pixelfed version string', () => {
+    const version = '2.7.2 (compatible; Pixelfed 0.11.2)';
+    expect(parseVersion(version)).toEqual({
+      software: 'Pixelfed',
+      version: '0.11.2',
+      compatVersion: '2.7.2',
+    });
+  });
 });
 
 describe('getFeatures', () => {
