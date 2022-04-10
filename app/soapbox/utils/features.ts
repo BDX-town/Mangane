@@ -19,6 +19,7 @@ export const MASTODON    = 'Mastodon';
 export const PLEROMA     = 'Pleroma';
 export const MITRA       = 'Mitra';
 export const TRUTHSOCIAL = 'TruthSocial';
+export const PIXELFED    = 'Pixelfed';
 
 const getInstanceFeatures = (instance: Instance) => {
   const v = parseVersion(instance.version);
@@ -41,6 +42,7 @@ const getInstanceFeatures = (instance: Instance) => {
     bookmarks: any([
       v.software === MASTODON && gte(v.compatVersion, '3.1.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === PIXELFED,
     ]),
     lists: any([
       v.software === MASTODON && gte(v.compatVersion, '2.1.0'),
@@ -73,6 +75,7 @@ const getInstanceFeatures = (instance: Instance) => {
     conversations: any([
       v.software === MASTODON && gte(v.compatVersion, '2.6.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
+      v.software === PIXELFED,
     ]),
     emojiReacts: v.software === PLEROMA && gte(v.version, '2.0.0'),
     emojiReactsRGI: v.software === PLEROMA && gte(v.version, '2.2.49'),
