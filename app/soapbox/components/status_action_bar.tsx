@@ -578,9 +578,10 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
+      '': messages.favourite,
     };
 
-    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
+    const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
