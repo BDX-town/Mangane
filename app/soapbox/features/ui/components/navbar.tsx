@@ -68,9 +68,7 @@ const Navbar = () => {
           </div>
 
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
-            {settings.get('isDeveloper') && (
-              <ThemeToggle />
-            )}
+            <ThemeToggle />
 
             {account ? (
               <div className='hidden relative lg:flex items-center'>
