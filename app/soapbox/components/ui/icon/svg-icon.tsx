@@ -16,7 +16,7 @@ const SvgIcon = ({ src, alt, size = 24, className }: ISvgIcon): JSX.Element => (
     title={alt}
     width={size}
     height={size}
-    loader={<div style={{ width: size, height: size }} />}
+    loader={<svg className={className} width={size} height={size} />}
   />
 );
 

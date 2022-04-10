@@ -39,8 +39,8 @@ const SidebarNavigationLink = ({ icon, text, to, count }: ISidebarNavigationLink
 
         <Icon
           src={icon}
-          size={20}
           className={classNames({
+            'h-5 w-5': true,
             'text-primary-700 dark:text-white': !isActive,
             'text-white': isActive,
           })}
