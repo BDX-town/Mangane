@@ -83,7 +83,7 @@ const getInstanceFeatures = (instance: Instance) => {
     chats: v.software === PLEROMA && gte(v.version, '2.1.0'),
     chatsV2: v.software === PLEROMA && gte(v.version, '2.3.0'),
     scopes: v.software === PLEROMA ? 'read write follow push admin' : 'read write follow push',
-    federating: federation.get('enabled', true), // Assume true unless explicitly false
+    federating: federation.get('enabled', true) === true, // Assume true unless explicitly false
     richText: v.software === PLEROMA,
     securityAPI: any([
       v.software === PLEROMA,
