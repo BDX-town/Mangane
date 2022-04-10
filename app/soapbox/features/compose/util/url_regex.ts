@@ -1,7 +1,6 @@
-const regexen = {};
+const regexen: { [x: string]: string | RegExp } = {};
 
-const regexSupplant = function(regex, flags) {
-  flags = flags || '';
+const regexSupplant = function(regex: string | RegExp, flags = '') {
   if (typeof regex !== 'string') {
     if (regex.global && flags.indexOf('g') < 0) {
       flags += 'g';
@@ -24,7 +23,7 @@ const regexSupplant = function(regex, flags) {
   }), flags);
 };
 
-const stringSupplant = function(str, values) {
+const stringSupplant = function(str: string, values: { [x: string]: any; }) {
   return str.replace(/#\{(\w+)\}/g, function(match, name) {
     return values[name] || '';
   });

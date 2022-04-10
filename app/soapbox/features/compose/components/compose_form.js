@@ -14,6 +14,8 @@ import AutosuggestInput from '../../../components/autosuggest_input';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import { Button } from '../../../components/ui';
 import { isMobile } from '../../../is_mobile';
+import ReplyMentions from '../components/reply_mentions';
+import UploadForm from '../components/upload_form';
 import Warning from '../components/warning';
 import EmojiPickerDropdown from '../containers/emoji_picker_dropdown_container';
 import MarkdownButtonContainer from '../containers/markdown_button_container';
@@ -22,12 +24,10 @@ import PollFormContainer from '../containers/poll_form_container';
 import PrivacyDropdownContainer from '../containers/privacy_dropdown_container';
 import QuotedStatusContainer from '../containers/quoted_status_container';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
-import ReplyMentions from '../containers/reply_mentions_container';
 import ScheduleButtonContainer from '../containers/schedule_button_container';
 import ScheduleFormContainer from '../containers/schedule_form_container';
 import SpoilerButtonContainer from '../containers/spoiler_button_container';
 import UploadButtonContainer from '../containers/upload_button_container';
-import UploadFormContainer from '../containers/upload_form_container';
 import WarningContainer from '../containers/warning_container';
 import { countableText } from '../util/counter';
 
@@ -354,7 +354,7 @@ class ComposeForm extends ImmutablePureComponent {
           {
             !condensed &&
             <div className='compose-form__modifiers'>
-              <UploadFormContainer />
+              <UploadForm />
               <PollFormContainer />
               <ScheduleFormContainer />
             </div>
