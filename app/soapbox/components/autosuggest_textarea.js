@@ -6,7 +6,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import Textarea from 'react-textarea-autosize';
 
-import AutosuggestAccountContainer from '../features/compose/containers/autosuggest_account_container';
+import AutosuggestAccount from '../features/compose/components/autosuggest_account';
 import { isRtl } from '../rtl';
 
 import AutosuggestEmoji from './autosuggest_emoji';
@@ -205,7 +205,7 @@ export default class AutosuggestTextarea extends ImmutablePureComponent {
       inner = suggestion;
       key   = suggestion;
     } else {
-      inner = <AutosuggestAccountContainer id={suggestion} />;
+      inner = <AutosuggestAccount id={suggestion} />;
       key   = suggestion;
     }
 
