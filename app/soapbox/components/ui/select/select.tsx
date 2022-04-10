@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
 import * as React from 'react';
 
-const Select = React.forwardRef((props, ref) => {
+const Select = React.forwardRef<HTMLSelectElement>((props, ref) => {
   const { children, ...filteredProps } = props;
 
   return (
@@ -14,9 +13,5 @@ const Select = React.forwardRef((props, ref) => {
     </select>
   );
 });
-
-Select.propTypes = {
-  children: PropTypes.node,
-};
 
 export default Select;
