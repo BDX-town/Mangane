@@ -81,7 +81,7 @@ class BirthdayReminders extends ImmutablePureComponent {
     );
 
     if (birthdays.size === 1) {
-      return <FormattedMessage id='notification.birthday' defaultMessage='{name} has birthday today' values={{ name: link }} />;
+      return <FormattedMessage id='notification.birthday' defaultMessage='{name} has a birthday today' values={{ name: link }} />;
     }
 
     return (
@@ -108,7 +108,7 @@ class BirthdayReminders extends ImmutablePureComponent {
     const { intl, birthdays, account } = this.props;
 
     if (birthdays.size === 1) {
-      return intl.formatMessage({ id: 'notification.birthday', defaultMessage: '{name} has birthday today' }, { name: account.get('display_name') });
+      return intl.formatMessage({ id: 'notification.birthday', defaultMessage: '{name} has a birthday today' }, { name: account.get('display_name') });
     }
 
     return intl.formatMessage(
