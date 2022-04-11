@@ -7,6 +7,8 @@ import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
 import { openModal } from 'soapbox/actions/modals';
 import EmojiSelector from 'soapbox/components/ui/emoji-selector/emoji-selector';
 import { useAppSelector, useOwnAccount, useSoapboxConfig } from 'soapbox/hooks';
+import { isUserTouching } from 'soapbox/is_mobile';
+import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 
 interface IEmojiButtonWrapper {
   statusId: string,
@@ -62,6 +64,22 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     setVisible(false);
   };
 
+  const handleClick: React.EventHandler<React.MouseEvent> = e => {
+    const meEmojiReact = getReactForStatus(status, soapboxConfig.allowedEmoji) || '👍';
+
+    if (isUserTouching()) {
+      if (visible) {
+        handleReact(meEmojiReact);
+      } else {
+        setVisible(true);
+      }
+    } else {
+      handleReact(meEmojiReact);
+    }
+
+    e.stopPropagation();
+  };
+
   // const handleUnfocus: React.EventHandler<React.KeyboardEvent> = () => {
   //   setFocused(false);
   // };
@@ -87,6 +105,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   return (
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
+        onClick: handleClick,
         ref,
       })}
 

@@ -588,7 +588,6 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
                 'fill-accent-300': Boolean(meEmojiReact),
               })}
               text={meEmojiTitle}
-              onClick={this.handleLikeButtonClick}
             />
           </EmojiButtonWrapper>
         ) : (

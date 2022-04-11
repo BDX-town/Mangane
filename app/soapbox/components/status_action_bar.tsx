@@ -645,7 +645,6 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
               title={meEmojiTitle}
               icon={require('@tabler/icons/icons/thumb-up.svg')}
               color='accent'
-              onClick={this.handleLikeButtonClick}
               active={Boolean(meEmojiReact)}
               count={emojiReactCount}
             />
