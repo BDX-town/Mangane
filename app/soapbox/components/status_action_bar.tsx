@@ -553,7 +553,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   }
 
   render() {
-    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
+    const { status, intl, allowedEmoji, features, me } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.visibility);
 
