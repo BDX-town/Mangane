@@ -1,9 +1,9 @@
-import { Map as ImmutableMap, List as ImmutableList } from 'immutable';
 import { createSelector } from 'reselect';
 
 import { getHost } from 'soapbox/actions/instance';
 import { normalizeSoapboxConfig } from 'soapbox/normalizers';
 import KVStore from 'soapbox/storage/kv_store';
+import { removeVS16s } from 'soapbox/utils/emoji';
 import { getFeatures } from 'soapbox/utils/features';
 
 import api, { staticClient } from '../api';
@@ -15,38 +15,24 @@ export const SOAPBOX_CONFIG_REMEMBER_REQUEST = 'SOAPBOX_CONFIG_REMEMBER_REQUEST'
 export const SOAPBOX_CONFIG_REMEMBER_SUCCESS = 'SOAPBOX_CONFIG_REMEMBER_SUCCESS';
 export const SOAPBOX_CONFIG_REMEMBER_FAIL    = 'SOAPBOX_CONFIG_REMEMBER_FAIL';
 
-const allowedEmoji = ImmutableList([
-  '👍',
-  '❤',
-  '😆',
-  '😮',
-  '😢',
-  '😩',
-]);
-
-// https://git.pleroma.social/pleroma/pleroma/-/issues/2355
-const allowedEmojiRGI = ImmutableList([
-  '👍',
-  '❤️',
-  '😆',
-  '😮',
-  '😢',
-  '😩',
-]);
-
-export const makeDefaultConfig = features => {
-  return ImmutableMap({
-    allowedEmoji: features.emojiReactsRGI ? allowedEmojiRGI : allowedEmoji,
-    displayFqn: Boolean(features.federating),
-  });
-};
-
 export const getSoapboxConfig = createSelector([
-  state => state.get('soapbox'),
-  state => getFeatures(state.get('instance')),
+  state => state.soapbox,
+  state => getFeatures(state.instance),
 ], (soapbox, features) => {
-  const defaultConfig = makeDefaultConfig(features);
-  return normalizeSoapboxConfig(soapbox).merge(defaultConfig);
+  // Do some additional normalization with the state
+  return normalizeSoapboxConfig(soapbox).withMutations(soapboxConfig => {
+
+    // If displayFqn isn't set, infer it from federation
+    if (soapbox.get('displayFqn') === undefined) {
+      soapboxConfig.set('displayFqn', features.federating);
+    }
+
+    // If RGI reacts aren't supported, strip VS16s
+    // // https://git.pleroma.social/pleroma/pleroma/-/issues/2355
+    if (!features.emojiReactsRGI) {
+      soapboxConfig.set('allowedEmoji', soapboxConfig.allowedEmoji.map(removeVS16s));
+    }
+  });
 });
 
 export function rememberSoapboxConfig(host) {

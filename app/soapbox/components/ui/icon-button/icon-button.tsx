@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import InlineSVG from 'react-inlinesvg';
 
+import SvgIcon from '../icon/svg-icon';
 import Text from '../text/text';
 
 interface IIconButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -24,7 +24,7 @@ const IconButton = React.forwardRef((props: IIconButton, ref: React.ForwardedRef
       {...filteredProps}
       data-testid='icon-button'
     >
-      <InlineSVG src={src} className={iconClassName} />
+      <SvgIcon src={src} className={iconClassName} />
 
       {text ? (
         <Text tag='span' theme='muted' size='sm'>

@@ -33,7 +33,7 @@ const SidebarNavigation = () => {
         {account && (
           <>
             <SidebarNavigationLink
-              to={`/@${account.get('acct')}`}
+              to={`/@${account.acct}`}
               icon={require('icons/user.svg')}
               text={<FormattedMessage id='tabs_bar.profile' defaultMessage='Profile' />}
             />
@@ -79,7 +79,7 @@ const SidebarNavigation = () => {
           />
         )} */}
 
-        {(account && instance.get('invites_enabled')) && (
+        {(account && instance.invites_enabled) && (
           <SidebarNavigationLink
             to={`${baseURL}/invites`}
             icon={require('@tabler/icons/icons/mailbox.svg')}
@@ -101,7 +101,7 @@ const SidebarNavigation = () => {
               src={require('@tabler/icons/icons/users.svg')}
               className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/timeline/local' })}
             />
-            {instance.get('title')}
+            {instance.title}
           </NavLink>
         ) : (
           <NavLink to='/timeline/local' className='btn grouped'>

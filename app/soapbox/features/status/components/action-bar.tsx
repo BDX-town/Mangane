@@ -355,9 +355,10 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
+      '': messages.favourite,
     };
 
-    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
+    const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
 
     const menu: Menu = [];
 

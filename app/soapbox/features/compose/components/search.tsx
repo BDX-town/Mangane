@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import { Map as ImmutableMap } from 'immutable';
 import debounce from 'lodash/debounce';
 import * as React from 'react';
-import InlineSVG from 'react-inlinesvg';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import AutosuggestAccountInput from 'soapbox/components/autosuggest_account_input';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { useAppSelector } from 'soapbox/hooks';
 
 import {
@@ -140,12 +140,12 @@ const Search = (props: ISearch) => {
           className='absolute inset-y-0 right-0 px-3 flex items-center cursor-pointer'
           onClick={handleClear}
         >
-          <InlineSVG
+          <SvgIcon
             src={require('@tabler/icons/icons/search.svg')}
             className={classNames('h-4 w-4 text-gray-400', { hidden: hasValue })}
           />
 
-          <InlineSVG
+          <SvgIcon
             src={require('@tabler/icons/icons/x.svg')}
             className={classNames('h-4 w-4 text-gray-400', { hidden: !hasValue })}
             aria-label={intl.formatMessage(messages.placeholder)}
