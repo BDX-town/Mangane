@@ -19,7 +19,7 @@ const EmojiButton: React.FC<IEmojiButton> = ({ emoji, className, onClick, tabInd
 };
 
 interface IEmojiSelector {
-  emojis: string[],
+  emojis: Iterable<string>,
   onReact: (emoji: string) => void,
   visible?: boolean,
   focused?: boolean,
@@ -40,7 +40,7 @@ const EmojiSelector: React.FC<IEmojiSelector> = ({ emojis, onReact, visible = fa
       space={2}
       className={classNames('bg-white dark:bg-slate-900 p-3 rounded-full shadow-md z-[999] w-max')}
     >
-      {emojis.map((emoji, i) => (
+      {Array.from(emojis).map((emoji, i) => (
         <EmojiButton
           key={i}
           emoji={emoji}
