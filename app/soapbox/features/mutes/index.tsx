@@ -47,7 +47,7 @@ const Mutes: React.FC = () => {
         emptyMessage={emptyMessage}
         className='space-y-4'
       >
-        {accountIds.map(id =>
+        {accountIds.map((id: string) =>
           <AccountContainer key={id} id={id} />,
         )}
       </ScrollableList>
