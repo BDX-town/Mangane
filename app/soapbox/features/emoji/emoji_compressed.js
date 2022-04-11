@@ -14,7 +14,7 @@ const { unicodeToFilename } = require('./unicode_to_filename');
 const { unicodeToUnifiedName } = require('./unicode_to_unified_name');
 
 
-if(data.compressed) {
+if (data.compressed) {
   data = emojiMartUncompress(data);
 }
 

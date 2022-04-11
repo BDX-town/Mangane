@@ -35,12 +35,12 @@ const chatDateComparator = (chatA, chatB) => {
   return 0;
 };
 
-const makeMapStateToProps = () => {
-  const sortedChatIdsSelector = createSelector(
-    [getSortedChatIds],
-    chats => chats,
-  );
+const sortedChatIdsSelector = createSelector(
+  [getSortedChatIds],
+  chats => chats,
+);
 
+const makeMapStateToProps = () => {
   const mapStateToProps = state => ({
     chatIds: sortedChatIdsSelector(state.getIn(['chats', 'items'])),
     hasMore: !!state.getIn(['chats', 'next']),

@@ -31,7 +31,7 @@ const getToken = (state: RootState, authType: string) => {
 const maybeParseJSON = (data: string) => {
   try {
     return JSON.parse(data);
-  } catch(Exception) {
+  } catch (Exception) {
     return data;
   }
 };

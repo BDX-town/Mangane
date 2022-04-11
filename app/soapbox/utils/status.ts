@@ -1,6 +1,8 @@
 import { isIntegerId } from 'soapbox/utils/numbers';
 
-export const getFirstExternalLink = status => {
+import type { Status as StatusEntity } from 'soapbox/types/entities';
+
+export const getFirstExternalLink = (status: StatusEntity) => {
   try {
     // Pulled from Pleroma's media parser
     const selector = 'a:not(.mention,.hashtag,.attachment,[rel~="tag"])';
@@ -12,11 +14,11 @@ export const getFirstExternalLink = status => {
   }
 };
 
-export const shouldHaveCard = status => {
+export const shouldHaveCard = (status: StatusEntity) => {
   return Boolean(getFirstExternalLink(status));
 };
 
 // https://gitlab.com/soapbox-pub/soapbox-fe/-/merge_requests/1087
-export const hasIntegerMediaIds = status => {
+export const hasIntegerMediaIds = (status: StatusEntity) => {
   return status.media_attachments.some(({ id }) => isIntegerId(id));
 };

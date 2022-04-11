@@ -87,7 +87,7 @@ class StatusContent extends React.PureComponent {
       && this.state.collapsed === null
       && this.props.status.get('spoiler_text').length === 0
     ) {
-      if (node.clientHeight > MAX_HEIGHT){
+      if (node.clientHeight > MAX_HEIGHT) {
         this.setState({ collapsed: true });
       }
     }
