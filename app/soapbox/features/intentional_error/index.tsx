@@ -4,10 +4,8 @@ import React from 'react';
  * IntentionalError:
  * For testing logging/monitoring & previewing ErrorBoundary design.
  */
-export default class IntentionalError extends React.Component {
+const IntentionalError: React.FC = () => {
+  throw 'This error is intentional.';
+};
 
-  render() {
-    throw 'This error is intentional.';
-  }
-
-}
+export default IntentionalError;
