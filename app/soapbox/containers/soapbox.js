@@ -19,7 +19,9 @@ import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 import { NODE_ENV } from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
 import AuthLayout from 'soapbox/features/auth_layout';
+import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
+import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
@@ -27,10 +29,9 @@ import { makeGetAccount } from 'soapbox/selectors';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { INTRODUCTION_VERSION } from '../actions/onboarding';
+import { checkOnboardingStatus } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
-// import Introduction from '../features/introduction';
 import UI from '../features/ui';
 import { store } from '../store';
 
@@ -54,6 +55,7 @@ store.dispatch(fetchMe())
     // Postpone for authenticated fetch
     store.dispatch(loadInstance());
     store.dispatch(loadSoapboxConfig());
+    store.dispatch(checkOnboardingStatus());
 
     if (!account) {
       store.dispatch(fetchVerificationConfig());
@@ -66,7 +68,6 @@ const makeAccount = makeGetAccount();
 const mapStateToProps = (state) => {
   const me = state.get('me');
   const account = makeAccount(state, me);
-  const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
   const settings = getSettings(state);
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
@@ -74,7 +75,6 @@ const mapStateToProps = (state) => {
   const singleUserMode = soapboxConfig.get('singleUserMode') && soapboxConfig.get('singleUserModeProfile');
 
   return {
-    showIntroduction,
     me,
     account,
     instanceLoaded: isInstanceLoaded(state),
@@ -88,6 +88,7 @@ const mapStateToProps = (state) => {
     brandColor: soapboxConfig.get('brandColor'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
+    needsOnboarding: state.onboarding.needsOnboarding,
   };
 };
 
@@ -95,13 +96,13 @@ const mapStateToProps = (state) => {
 class SoapboxMount extends React.PureComponent {
 
   static propTypes = {
-    showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
     account: ImmutablePropTypes.record,
     instanceLoaded: PropTypes.bool,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
+    needsOnboarding: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
@@ -151,11 +152,23 @@ class SoapboxMount extends React.PureComponent {
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
 
     // Disabling introduction for launch
-    // const { showIntroduction } = this.props;
-    //
-    // if (showIntroduction) {
-    //   return <Introduction />;
-    // }
+    const { needsOnboarding } = this.props;
+
+    if (needsOnboarding) {
+      return (
+        <IntlProvider locale={locale} messages={this.state.messages}>
+          <Helmet>
+            <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
+            <body className={bodyClass} />
+            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+            <meta name='theme-color' content={this.props.brandColor} />
+          </Helmet>
+
+          <OnboardingWizard />
+          <NotificationsContainer />
+        </IntlProvider>
+      );
+    }
 
     const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
       'no-reduce-motion': !this.props.reduceMotion,
