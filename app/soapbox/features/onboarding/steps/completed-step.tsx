@@ -16,7 +16,7 @@ const CompletedStep = ({ onComplete }: { onComplete: () => void }) => (
         <Text theme='muted' align='center'>
           <FormattedMessage
             id='onboarding.finished.message'
-            defaultMessage='We are very excited to welcome you to our Truth Seeking community! Tap the button below to start enjoying Truth Social.'
+            defaultMessage='We are very excited to welcome you to our community! Tap the button below to get started.'
           />
         </Text>
       </Stack>
