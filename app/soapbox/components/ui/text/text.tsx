@@ -6,6 +6,7 @@ type Weights = 'normal' | 'medium' | 'semibold' | 'bold'
 type Sizes = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl'
 type Alignments = 'left' | 'center' | 'right'
 type TrackingSizes = 'normal' | 'wide'
+type TransformProperties = 'uppercase' | 'normal'
 type Families = 'sans' | 'mono'
 type Tags = 'abbr' | 'p' | 'span' | 'pre' | 'time' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 
@@ -48,6 +49,11 @@ const trackingSizes = {
   wide: 'tracking-wide',
 };
 
+const transformProperties = {
+  normal: 'normal-case',
+  uppercase: 'uppercase',
+};
+
 const families = {
   sans: 'font-sans',
   mono: 'font-mono',
@@ -62,6 +68,7 @@ interface IText extends Pick<React.HTMLAttributes<HTMLParagraphElement>, 'danger
   tag?: Tags,
   theme?: Themes,
   tracking?: TrackingSizes,
+  transform?: TransformProperties,
   truncate?: boolean,
   weight?: Weights
 }
@@ -76,6 +83,7 @@ const Text: React.FC<IText> = React.forwardRef(
       tag = 'p',
       theme = 'default',
       tracking = 'normal',
+      transform = 'normal',
       truncate = false,
       weight = 'normal',
       ...filteredProps
@@ -99,6 +107,7 @@ const Text: React.FC<IText> = React.forwardRef(
           [trackingSizes[tracking]]: true,
           [families[family]]: true,
           [alignmentClass]: typeof align !== 'undefined',
+          [transformProperties[transform]]: typeof transform !== 'undefined',
         }, className)}
       />
     );
