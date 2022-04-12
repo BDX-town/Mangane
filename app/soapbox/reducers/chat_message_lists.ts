@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import { AnyAction } from 'redux';
 
 import {
   CHATS_FETCH_SUCCESS,
@@ -10,41 +11,46 @@ import {
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
 
-const initialState = ImmutableMap();
+type APIEntity = Record<string, any>;
+type APIEntities = Array<APIEntity>;
 
-const idComparator = (a, b) => {
+type State = ImmutableMap<string, ImmutableOrderedSet<string>>;
+
+const initialState: State = ImmutableMap();
+
+const idComparator = (a: string, b: string) => {
   if (a < b) return -1;
   if (a > b) return 1;
   return 0;
 };
 
-const updateList = (state, chatId, messageIds) => {
+const updateList = (state: State, chatId: string, messageIds: string[]) => {
   const ids = state.get(chatId, ImmutableOrderedSet());
-  const newIds = ids.union(messageIds).sort(idComparator);
+  const newIds = (ids.union(messageIds) as ImmutableOrderedSet<string>).sort(idComparator);
   return state.set(chatId, newIds);
 };
 
-const importMessage = (state, chatMessage) => {
+const importMessage = (state: State, chatMessage: APIEntity) => {
   return updateList(state, chatMessage.chat_id, [chatMessage.id]);
 };
 
-const importMessages = (state, chatMessages) => (
+const importMessages = (state: State, chatMessages: APIEntities) => (
   state.withMutations(map =>
     chatMessages.forEach(chatMessage =>
       importMessage(map, chatMessage)))
 );
 
-const importLastMessages = (state, chats) =>
+const importLastMessages = (state: State, chats: APIEntities) =>
   state.withMutations(mutable =>
     chats.forEach(chat => {
       if (chat.last_message) importMessage(mutable, chat.last_message);
     }));
 
-const replaceMessage = (state, chatId, oldId, newId) => {
-  return state.update(chatId, chat => chat.delete(oldId).add(newId).sort(idComparator));
+const replaceMessage = (state: State, chatId: string, oldId: string, newId: string) => {
+  return state.update(chatId, chat => chat!.delete(oldId).add(newId).sort(idComparator));
 };
 
-export default function chatMessageLists(state = initialState, action) {
+export default function chatMessageLists(state = initialState, action: AnyAction) {
   switch(action.type) {
   case CHAT_MESSAGE_SEND_REQUEST:
     return updateList(state, action.chatId, [action.uuid]);
@@ -58,11 +64,11 @@ export default function chatMessageLists(state = initialState, action) {
     else
       return state;
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return updateList(state, action.chatId, action.chatMessages.map(chat => chat.id));
+    return updateList(state, action.chatId, action.chatMessages.map((chat: APIEntity) => chat.id));
   case CHAT_MESSAGE_SEND_SUCCESS:
     return replaceMessage(state, action.chatId, action.uuid, action.chatMessage.id);
   case CHAT_MESSAGE_DELETE_SUCCESS:
-    return state.update(action.chatId, chat => chat.delete(action.messageId));
+    return state.update(action.chatId, chat => chat!.delete(action.messageId));
   default:
     return state;
   }
