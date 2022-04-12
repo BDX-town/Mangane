@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -61,11 +62,11 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
           <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
-                Choose a profile picture
+                <FormattedMessage id='onboarding.avatar.title' defaultMessage='Choose a profile picture' />
               </Text>
 
               <Text theme='muted' align='center'>
-                Just have fun with it.
+                <FormattedMessage id='onboarding.avatar.subtitle' defaultMessage='Just have fun with it.' />
               </Text>
             </Stack>
           </div>
@@ -100,11 +101,17 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
               <Stack justifyContent='center' space={2}>
                 <Button block theme='primary' type='submit' disabled={isDisabled || isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving...' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
                 {isDisabled && (
-                  <Button block theme='link' type='button' onClick={onNext}>Skip for now</Button>
+                  <Button block theme='link' type='button' onClick={onNext}>
+                    <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
+                  </Button>
                 )}
               </Stack>
             </Stack>

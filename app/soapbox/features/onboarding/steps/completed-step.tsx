@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedMessage } from'react-intl';
 
 import { Button, Card, CardBody, Icon, Stack, Text } from 'soapbox/components/ui';
 
@@ -9,13 +10,14 @@ const CompletedStep = ({ onComplete }: { onComplete: () => void }) => (
         <Icon strokeWidth={1} src={require('@tabler/icons/icons/confetti.svg')} className='w-16 h-16 mx-auto text-primary-600' />
 
         <Text size='2xl' align='center' weight='bold'>
-          Onboarding complete
+          <FormattedMessage id='onboarding.finished.title' defaultMessage='Onboarding complete' />
         </Text>
 
         <Text theme='muted' align='center'>
-          We are very excited to welcome you to our Truth Seeking
-          community! Tap the button below to start enjoying
-          Truth Social.
+          <FormattedMessage
+            id='onboarding.finished.message'
+            defaultMessage='We are very excited to welcome you to our Truth Seeking community! Tap the button below to start enjoying Truth Social.'
+          />
         </Text>
       </Stack>
 
@@ -26,7 +28,7 @@ const CompletedStep = ({ onComplete }: { onComplete: () => void }) => (
             theme='primary'
             onClick={onComplete}
           >
-            View Feed
+            <FormattedMessage id='onboarding.view_feed' defaultMessage='View Feed' />
           </Button>
         </Stack>
       </div>

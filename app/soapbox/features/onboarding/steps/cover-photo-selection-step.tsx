@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios';
 import classNames from 'classnames';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -64,11 +65,11 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
           <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
-                Pick a cover image
+                <FormattedMessage id='onboarding.header.title' defaultMessage='Pick a cover image' />
               </Text>
 
               <Text theme='muted' align='center'>
-                This will be shown at the top of your profile.
+                <FormattedMessage id='onboarding.header.subtitle' defaultMessage='This will be shown at the top of your profile.' />
               </Text>
             </Stack>
           </div>
@@ -128,7 +129,9 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
                 </Button>
 
                 {isDisabled && (
-                  <Button block theme='link' type='button' onClick={onNext}>Skip for now</Button>
+                  <Button block theme='link' type='button' onClick={onNext}>
+                    <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
+                  </Button>
                 )}
               </Stack>
             </Stack>

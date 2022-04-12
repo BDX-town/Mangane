@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 
 import { patchMe } from 'soapbox/actions/me';
@@ -44,11 +45,11 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
           <div className='pb-4 sm:pb-10 mb-4 border-b border-gray-200 border-solid -mx-4 sm:-mx-10'>
             <Stack space={2}>
               <Text size='2xl' align='center' weight='bold'>
-                Write a short bio
+                <FormattedMessage id='onboarding.note.title' defaultMessage='Write a short bio' />
               </Text>
 
               <Text theme='muted' align='center'>
-                You can always edit this later.
+                <FormattedMessage id='onboarding.note.subtitle' defaultMessage='You can always edit this later.' />
               </Text>
             </Stack>
           </div>
@@ -78,10 +79,16 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
                   disabled={isDisabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  {isSubmitting ? 'Saving...' : 'Next'}
+                  {isSubmitting ? (
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving...' />
+                  ) : (
+                    <FormattedMessage id='onboarding.next' defaultMessage='Next' />
+                  )}
                 </Button>
 
-                <Button block theme='link' type='button' onClick={onNext}>Skip for now</Button>
+                <Button block theme='link' type='button' onClick={onNext}>
+                  <FormattedMessage id='onboarding.skip' defaultMessage='Skip for now' />
+                </Button>
               </Stack>
             </div>
           </Stack>
