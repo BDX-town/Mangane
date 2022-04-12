@@ -39,6 +39,7 @@ import meta from './meta';
 import modals from './modals';
 import mutes from './mutes';
 import notifications from './notifications';
+import onboarding from './onboarding';
 import patron from './patron';
 import pending_statuses from './pending_statuses';
 import polls from './polls';
@@ -118,6 +119,7 @@ const reducers = {
   accounts_meta,
   trending_statuses,
   verification,
+  onboarding,
 };
 
 // Build a default state from all reducers: it has the key and `undefined`
