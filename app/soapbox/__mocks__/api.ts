@@ -9,7 +9,7 @@ export const __stub = (func: Function) => mocks.push(func);
 export const __clear = (): Function[] => mocks = [];
 
 const setupMock = (axios: AxiosInstance) => {
-  const mock = new MockAdapter(axios);
+  const mock = new MockAdapter(axios, { onNoMatch: 'throwException' });
   mocks.map(func => func(mock));
 };
 
