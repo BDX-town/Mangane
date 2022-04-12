@@ -22,7 +22,7 @@ const isSafeUrl = text => {
   try {
     const url = new URL(text);
     return ['http:', 'https:'].includes(url.protocol);
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 };

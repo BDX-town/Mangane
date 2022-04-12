@@ -2,6 +2,8 @@ import {
   AccountRecord,
   AttachmentRecord,
   CardRecord,
+  ChatRecord,
+  ChatMessageRecord,
   EmojiRecord,
   FieldRecord,
   InstanceRecord,
@@ -16,6 +18,8 @@ import type { Record as ImmutableRecord } from 'immutable';
 
 type Attachment = ReturnType<typeof AttachmentRecord>;
 type Card = ReturnType<typeof CardRecord>;
+type Chat = ReturnType<typeof ChatRecord>;
+type ChatMessage = ReturnType<typeof ChatMessageRecord>;
 type Emoji = ReturnType<typeof EmojiRecord>;
 type Field = ReturnType<typeof FieldRecord>;
 type Instance = ReturnType<typeof InstanceRecord>;
@@ -44,6 +48,8 @@ export {
   Account,
   Attachment,
   Card,
+  Chat,
+  ChatMessage,
   Emoji,
   Field,
   Instance,

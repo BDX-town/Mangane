@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
   },
 
   onOpenModal: media => {
-    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0, onClose: console.log }));
+    dispatch(openModal('MEDIA', { media: ImmutableList.of(media), index: 0 }));
   },
 
   onSubmit(router) {

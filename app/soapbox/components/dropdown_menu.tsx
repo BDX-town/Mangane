@@ -278,7 +278,7 @@ class Dropdown extends React.PureComponent<IDropdown, IDropdownState> {
       onShiftClick(e);
     } else if (this.state.id === openDropdownId) {
       this.handleClose();
-    } else if(onOpen) {
+    } else if (onOpen) {
       const { top } = e.currentTarget.getBoundingClientRect();
       const placement: DropdownPlacement = top * 2 < innerHeight ? 'bottom' : 'top';
 

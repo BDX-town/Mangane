@@ -12,6 +12,7 @@ import { validId } from 'soapbox/utils/auth';
 import ConfigDB from 'soapbox/utils/config_db';
 import { shouldFilter } from 'soapbox/utils/timelines';
 
+import type { ReducerChat } from 'soapbox/reducers/chats';
 import type { RootState } from 'soapbox/store';
 import type { Notification } from 'soapbox/types/entities';
 
@@ -241,16 +242,18 @@ type APIChat = { id: string, last_message: string };
 export const makeGetChat = () => {
   return createSelector(
     [
-      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]),
+      (state: RootState, { id }: APIChat) => state.chats.getIn(['items', id]) as ReducerChat,
       (state: RootState, { id }: APIChat) => state.accounts.get(state.chats.getIn(['items', id, 'account'])),
       (state: RootState, { last_message }: APIChat) => state.chat_messages.get(last_message),
     ],
 
-    (chat, account, lastMessage: string) => {
-      if (!chat) return null;
+    (chat, account, lastMessage) => {
+      if (!chat || !account) return null;
 
-      return chat.withMutations((map: ImmutableMap<string, any>) => {
+      return chat.withMutations((map) => {
+        // @ts-ignore
         map.set('account', account);
+        // @ts-ignore
         map.set('last_message', lastMessage);
       });
     },

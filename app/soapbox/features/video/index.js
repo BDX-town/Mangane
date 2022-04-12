@@ -216,12 +216,12 @@ class Video extends React.PureComponent {
   handleMouseVolSlide = throttle(e => {
     const { x } = getPointerPosition(this.volume, e);
 
-    if(!isNaN(x)) {
+    if (!isNaN(x)) {
       let slideamt = x;
 
-      if(x > 1) {
+      if (x > 1) {
         slideamt = 1;
-      } else if(x < 0) {
+      } else if (x < 0) {
         slideamt = 0;
       }
 

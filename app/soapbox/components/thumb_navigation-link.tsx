@@ -31,7 +31,7 @@ const ThumbNavigationLink: React.FC<IThumbNavigationLink> = ({ count, src, text,
     <NavLink to={to} exact={exact} className='thumb-navigation__link'>
       {count !== undefined ? (
         <IconWithCounter
-          src={require('@tabler/icons/icons/messages.svg')}
+          src={src}
           className={classNames({
             'h-5 w-5': true,
             'text-gray-600 dark:text-gray-300': !active,

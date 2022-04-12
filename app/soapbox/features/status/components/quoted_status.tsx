@@ -8,7 +8,8 @@ import { withRouter } from 'react-router-dom';
 import AttachmentThumbs from 'soapbox/components/attachment_thumbs';
 import { Stack, Text } from 'soapbox/components/ui';
 import AccountContainer from 'soapbox/containers/account_container';
-import { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
+
+import type { Account as AccountEntity, Status as StatusEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   cancel: { id: 'reply_indicator.cancel', defaultMessage: 'Cancel' },
