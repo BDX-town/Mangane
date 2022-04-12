@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 
-type SIZES = 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5
+type SIZES = 0.5 | 1 | 1.5 | 2 | 3 | 4 | 5 | 10
 
 const spaces = {
   '0.5': 'space-y-0.5',
@@ -11,6 +11,7 @@ const spaces = {
   3: 'space-y-3',
   4: 'space-y-4',
   5: 'space-y-5',
+  10: 'space-y-10',
 };
 
 const justifyContentOptions = {
