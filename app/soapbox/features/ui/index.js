@@ -229,8 +229,10 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
 
-        // NOTE: we cannot nest routes in a fragment
-        // https://stackoverflow.com/a/68637108
+        {/*
+          NOTE: we cannot nest routes in a fragment
+          https://stackoverflow.com/a/68637108
+        */}
         {features.federating && <WrappedRoute path='/timeline/local' exact page={HomePage} component={CommunityTimeline} content={children} publicRoute />}
         {features.federating && <WrappedRoute path='/timeline/fediverse' exact page={HomePage} component={PublicTimeline} content={children} publicRoute />}
         {features.federating && <WrappedRoute path='/timeline/:instance' exact page={RemoteInstancePage} component={RemoteTimeline} content={children} />}

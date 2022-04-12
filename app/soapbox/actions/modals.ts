@@ -1,7 +1,8 @@
 export const MODAL_OPEN  = 'MODAL_OPEN';
 export const MODAL_CLOSE = 'MODAL_CLOSE';
 
-export function openModal(type, props) {
+/** Open a modal of the given type */
+export function openModal(type: string, props?: any) {
   return {
     type: MODAL_OPEN,
     modalType: type,
@@ -9,7 +10,8 @@ export function openModal(type, props) {
   };
 }
 
-export function closeModal(type) {
+/** Close the modal */
+export function closeModal(type: string) {
   return {
     type: MODAL_CLOSE,
     modalType: type,
