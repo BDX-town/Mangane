@@ -151,9 +151,7 @@ class SoapboxMount extends React.PureComponent {
 
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
 
-    // Disabling introduction for launch
     const { needsOnboarding } = this.props;
-
     if (!waitlisted && needsOnboarding) {
       return (
         <IntlProvider locale={locale} messages={this.state.messages}>
