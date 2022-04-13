@@ -41,7 +41,7 @@ import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';
 import { expandHomeTimeline } from '../../actions/timelines';
-import PreHeader from '../../features/public_layout/components/pre_header';
+// import PreHeader from '../../features/public_layout/components/pre_header';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
@@ -727,7 +727,7 @@ class UI extends React.PureComponent {
           <BackgroundShapes />
 
           <div className='z-10 flex flex-col'>
-            <PreHeader />
+            {/* <PreHeader /> */}
             <Navbar />
 
             <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>
