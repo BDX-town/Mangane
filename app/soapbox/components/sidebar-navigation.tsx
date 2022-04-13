@@ -27,7 +27,7 @@ const SidebarNavigation = () => {
         <SidebarNavigationLink
           to='/'
           icon={require('icons/feed.svg')}
-          text={<FormattedMessage id='tabs_bar.home' defaultMessage='Feed' />}
+          text={<FormattedMessage id='tabs_bar.home' defaultMessage='Home' />}
         />
 
         {account && (
@@ -42,7 +42,7 @@ const SidebarNavigation = () => {
               to='/notifications'
               icon={require('icons/alert.svg')}
               count={notificationCount}
-              text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Alerts' />}
+              text={<FormattedMessage id='tabs_bar.notifications' defaultMessage='Notifications' />}
             />
 
             <SidebarNavigationLink
@@ -95,27 +95,25 @@ const SidebarNavigation = () => {
           />
         )}
 
-        {/* {features.federating ? (
-          <NavLink to='/timeline/local' className='btn grouped'>
-            <Icon
-              src={require('@tabler/icons/icons/users.svg')}
-              className={classNames('primary-navigation__icon', { 'svg-icon--active': location.pathname === '/timeline/local' })}
-            />
-            {instance.title}
-          </NavLink>
-        ) : (
-          <NavLink to='/timeline/local' className='btn grouped'>
-            <Icon src={require('@tabler/icons/icons/world.svg')} className='primary-navigation__icon' />
-            <FormattedMessage id='tabs_bar.all' defaultMessage='All' />
-          </NavLink>
+        {(features.localTimeline || features.publicTimeline) && (
+          <hr className='dark:border-slate-700' />
         )}
 
-        {features.federating && (
-          <NavLink to='/timeline/fediverse' className='btn grouped'>
-            <Icon src={require('icons/fediverse.svg')} className='column-header__icon' />
-            <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />
-          </NavLink>
-        )} */}
+        {features.localTimeline && (
+          <SidebarNavigationLink
+            to='/timeline/local'
+            icon={features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg')}
+            text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+          />
+        )}
+
+        {(features.publicTimeline && features.federating) && (
+          <SidebarNavigationLink
+            to='/timeline/fediverse'
+            icon={require('icons/fediverse.svg')}
+            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+          />
+        )}
       </div>
 
       {account && (

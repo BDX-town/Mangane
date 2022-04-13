@@ -68,6 +68,14 @@ const getInstanceFeatures = (instance: Instance) => {
       // Even though Pleroma supports these endpoints, it has disadvantages
       // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
+    localTimeline: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+    publicTimeline: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),

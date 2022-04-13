@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -37,7 +37,7 @@ const messages = defineMessages({
 interface ISidebarLink {
   to: string,
   icon: string,
-  text: string,
+  text: string | JSX.Element,
   onClick: React.EventHandler<React.MouseEvent>,
 }
 
@@ -62,6 +62,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
   const { logo } = useSoapboxConfig();
   const features = useFeatures();
   const getAccount = makeGetAccount();
+  const instance = useAppSelector((state) => state.instance);
   const me = useAppSelector((state) => state.me);
   const account = useAppSelector((state) =>  me ? getAccount(state, me) : null);
   const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
@@ -130,7 +131,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
               <HStack alignItems='center' justifyContent='between'>
                 <Link to='/' onClick={onClose}>
                   {logo ? (
-                    <img alt='Logo' src={logo} className='h-5 w-auto min-w-[140px] cursor-pointer' />
+                    <img alt='Logo' src={logo} className='h-5 w-auto cursor-pointer' />
                   ):  (
                     <Icon
                       alt='Logo'
@@ -154,6 +155,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   <Account account={account} showProfileHoverCard={false} />
                 </Link>
 
+                {/* TODO: make this available to everyone */}
                 {account.staff && (
                   <Stack>
                     <button type='button' onClick={handleSwitcherClick} className='py-1'>
@@ -189,6 +191,28 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                   text={intl.formatMessage(messages.profile)}
                   onClick={onClose}
                 />
+
+                {(features.localTimeline || features.publicTimeline) && (
+                  <hr className='dark:border-slate-700' />
+                )}
+
+                {features.localTimeline && (
+                  <SidebarLink
+                    to='/timeline/local'
+                    icon={features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg')}
+                    text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                    onClick={onClose}
+                  />
+                )}
+
+                {(features.publicTimeline && features.federating) && (
+                  <SidebarLink
+                    to='/timeline/fediverse'
+                    icon={require('icons/fediverse.svg')}
+                    text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                    onClick={onClose}
+                  />
+                )}
 
                 <hr />
 
