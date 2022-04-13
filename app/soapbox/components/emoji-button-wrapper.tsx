@@ -44,10 +44,16 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   if (!status) return null;
 
   const handleMouseEnter = () => {
-    setVisible(true);
+    if (!isUserTouching()) {
+      setVisible(true);
+    }
   };
 
   const handleMouseLeave = () => {
+    setVisible(false);
+  };
+
+  const handleUnfocus = () => {
     setVisible(false);
   };
 
@@ -77,6 +83,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       handleReact(meEmojiReact);
     }
 
+    e.preventDefault();
     e.stopPropagation();
   };
 
@@ -106,6 +113,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
         onClick: handleClick,
+        onBlur: handleUnfocus,
         ref,
       })}
 

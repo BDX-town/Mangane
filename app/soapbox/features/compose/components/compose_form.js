@@ -364,7 +364,7 @@ class ComposeForm extends ImmutablePureComponent {
         <QuotedStatusContainer />
 
         <div
-          className={classNames('flex items-center justify-between', {
+          className={classNames('flex flex-wrap items-center justify-between', {
             'hidden': condensed,
           })}
         >
@@ -378,7 +378,7 @@ class ComposeForm extends ImmutablePureComponent {
             <EmojiPickerDropdown onPickEmoji={this.handleEmojiPick} />
           </div>
 
-          <div className='flex items-center space-x-4 ml-4'>
+          <div className='flex items-center space-x-4 ml-auto'>
             {maxTootChars && (
               <div className='flex items-center space-x-1'>
                 <TextCharacterCounter max={maxTootChars} text={text} />
