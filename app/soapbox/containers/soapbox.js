@@ -154,7 +154,7 @@ class SoapboxMount extends React.PureComponent {
     // Disabling introduction for launch
     const { needsOnboarding } = this.props;
 
-    if (needsOnboarding) {
+    if (!waitlisted && needsOnboarding) {
       return (
         <IntlProvider locale={locale} messages={this.state.messages}>
           <Helmet>
