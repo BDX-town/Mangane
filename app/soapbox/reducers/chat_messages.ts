@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, fromJS } from 'immutable';
+import { AnyAction } from 'redux';
 
 import {
   CHATS_FETCH_SUCCESS,
@@ -10,25 +11,32 @@ import {
   CHAT_MESSAGE_DELETE_SUCCESS,
 } from 'soapbox/actions/chats';
 import { STREAMING_CHAT_UPDATE } from 'soapbox/actions/streaming';
+import { normalizeChatMessage } from 'soapbox/normalizers';
 
-const initialState = ImmutableMap();
+type ChatMessageRecord = ReturnType<typeof normalizeChatMessage>;
+type APIEntity = Record<string, any>;
+type APIEntities = Array<APIEntity>;
 
-const importMessage = (state, message) => {
-  return state.set(message.get('id'), message);
+type State = ImmutableMap<string, ChatMessageRecord>;
+
+const importMessage = (state: State, message: APIEntity) => {
+  return state.set(message.id, normalizeChatMessage(message));
 };
 
-const importMessages = (state, messages) =>
+const importMessages = (state: State, messages: APIEntities) =>
   state.withMutations(mutable =>
     messages.forEach(message => importMessage(mutable, message)));
 
-const importLastMessages = (state, chats) =>
+const importLastMessages = (state: State, chats: APIEntities) =>
   state.withMutations(mutable =>
     chats.forEach(chat => {
-      if (chat.get('last_message'))
-        importMessage(mutable, chat.get('last_message'));
+      if (chat.last_message)
+        importMessage(mutable, chat.last_message);
     }));
 
-export default function chatMessages(state = initialState, action) {
+const initialState: State = ImmutableMap();
+
+export default function chatMessages(state = initialState, action: AnyAction) {
   switch(action.type) {
   case CHAT_MESSAGE_SEND_REQUEST:
     return importMessage(state, fromJS({
@@ -41,16 +49,16 @@ export default function chatMessages(state = initialState, action) {
     }));
   case CHATS_FETCH_SUCCESS:
   case CHATS_EXPAND_SUCCESS:
-    return importLastMessages(state, fromJS(action.chats));
+    return importLastMessages(state, action.chats);
   case CHAT_MESSAGES_FETCH_SUCCESS:
-    return importMessages(state, fromJS(action.chatMessages));
+    return importMessages(state, action.chatMessages);
   case CHAT_MESSAGE_SEND_SUCCESS:
     return importMessage(state, fromJS(action.chatMessage)).delete(action.uuid);
   case STREAMING_CHAT_UPDATE:
-    return importLastMessages(state, fromJS([action.chat]));
+    return importLastMessages(state, [action.chat]);
   case CHAT_MESSAGE_DELETE_REQUEST:
     return state.update(action.messageId, chatMessage =>
-      chatMessage.set('pending', true).set('deleting', true));
+      chatMessage!.set('pending', true).set('deleting', true));
   case CHAT_MESSAGE_DELETE_SUCCESS:
     return state.delete(action.messageId);
   default:

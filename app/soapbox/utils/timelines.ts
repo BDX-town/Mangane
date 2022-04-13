@@ -1,6 +1,8 @@
 import { Map as ImmutableMap } from 'immutable';
 
-export const shouldFilter = (status, columnSettings) => {
+import type { Status as StatusEntity } from 'soapbox/types/entities';
+
+export const shouldFilter = (status: StatusEntity, columnSettings: any) => {
   const shows = ImmutableMap({
     reblog: status.get('reblog') !== null,
     reply: status.get('in_reply_to_id') !== null,

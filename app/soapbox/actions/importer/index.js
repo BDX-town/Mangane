@@ -93,7 +93,7 @@ const isBroken = status => {
     // https://gitlab.com/soapbox-pub/soapbox/-/issues/28
     if (status.reblog && !status.reblog.account.id) return true;
     return false;
-  } catch(e) {
+  } catch (e) {
     return true;
   }
 };

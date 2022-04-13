@@ -6,8 +6,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
 import { simpleEmojiReact } from 'soapbox/actions/emoji_reacts';
-import EmojiSelector from 'soapbox/components/emoji_selector';
-import Hoverable from 'soapbox/components/hoverable';
+import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import StatusActionButton from 'soapbox/components/status-action-button';
 import DropdownMenuContainer from 'soapbox/containers/dropdown_menu_container';
 import { isUserTouching } from 'soapbox/is_mobile';
@@ -554,7 +553,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   }
 
   render() {
-    const { status, intl, allowedEmoji, emojiSelectorFocused, handleEmojiSelectorUnfocus, features, me } = this.props;
+    const { status, intl, allowedEmoji, features, me } = this.props;
 
     const publicStatus = ['public', 'unlisted'].includes(status.visibility);
 
@@ -578,9 +577,10 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
       '😮': messages.reactionOpenMouth,
       '😢': messages.reactionCry,
       '😩': messages.reactionWeary,
+      '': messages.favourite,
     };
 
-    const meEmojiTitle = intl.formatMessage(meEmojiReact ? reactMessages[meEmojiReact] : messages.favourite);
+    const meEmojiTitle = intl.formatMessage(reactMessages[meEmojiReact || ''] || messages.favourite);
 
     const menu = this._makeMenu(publicStatus);
     let reblogIcon = require('@tabler/icons/icons/repeat.svg');
@@ -640,24 +640,15 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
         )}
 
         {features.emojiReacts ? (
-          <Hoverable
-            component={(
-              <EmojiSelector
-                onReact={this.handleReact}
-                focused={emojiSelectorFocused}
-                onUnfocus={handleEmojiSelectorUnfocus}
-              />
-            )}
-          >
+          <EmojiButtonWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
               icon={require('@tabler/icons/icons/thumb-up.svg')}
               color='accent'
-              onClick={this.handleLikeButtonClick}
               active={Boolean(meEmojiReact)}
               count={emojiReactCount}
             />
-          </Hoverable>
+          </EmojiButtonWrapper>
         ): (
           <StatusActionButton
             title={intl.formatMessage(messages.favourite)}

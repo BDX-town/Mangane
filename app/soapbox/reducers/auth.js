@@ -44,7 +44,7 @@ const localState = fromJS(JSON.parse(localStorage.getItem(STORAGE_KEY)));
 const validUser = user => {
   try {
     return validId(user.get('id')) && validId(user.get('access_token'));
-  } catch(e) {
+  } catch (e) {
     return false;
   }
 };

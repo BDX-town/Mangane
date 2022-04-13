@@ -1,0 +1,66 @@
+{
+  "uri": "pixelfed.social",
+  "title": "pixelfed",
+  "short_description": "Pixelfed is an image sharing platform, an ethical alternative to centralized platforms",
+  "description": "Pixelfed is an image sharing platform, an ethical alternative to centralized platforms",
+  "email": "hello@pixelfed.org",
+  "version": "2.7.2 (compatible; Pixelfed 0.11.2)",
+  "urls": {
+    "streaming_api": "wss://pixelfed.social"
+  },
+  "stats": {
+    "user_count": 45061,
+    "status_count": 301357,
+    "domain_count": 5028
+  },
+  "thumbnail": "https://pixelfed.social/img/pixelfed-icon-color.png",
+  "languages": [
+    "en"
+  ],
+  "registrations": true,
+  "approval_required": false,
+  "contact_account": {
+    "id": "1",
+    "username": "admin",
+    "acct": "admin",
+    "display_name": "Admin",
+    "discoverable": true,
+    "locked": false,
+    "followers_count": 419,
+    "following_count": 2,
+    "statuses_count": 6,
+    "note": "pixelfed.social Admin. Managed by @dansup",
+    "url": "https://pixelfed.social/admin",
+    "avatar": "https://pixelfed.social/storage/avatars/000/000/000/001/LSHNCgwbby7wu3iCYV6H_avatar.png?v=4",
+    "created_at": "2018-06-01T03:54:08.000000Z",
+    "avatar_static": "https://pixelfed.social/storage/avatars/000/000/000/001/LSHNCgwbby7wu3iCYV6H_avatar.png?v=4",
+    "bot": false,
+    "emojis": [],
+    "fields": [],
+    "header": "https://pixelfed.social/storage/headers/missing.png",
+    "header_static": "https://pixelfed.social/storage/headers/missing.png",
+    "last_status_at": null
+  },
+  "rules": [
+    {
+      "id": "1",
+      "text": "Sexually explicit or violent media must be marked as sensitive when posting"
+    },
+    {
+      "id": "2",
+      "text": "No racism, sexism, homophobia, transphobia, xenophobia, or casteism"
+    },
+    {
+      "id": "3",
+      "text": "No incitement of violence or promotion of violent ideologies"
+    },
+    {
+      "id": "4",
+      "text": "No harassment, dogpiling or doxxing of other users"
+    },
+    {
+      "id": "5",
+      "text": "No content illegal in United States"
+    }
+  ]
+}

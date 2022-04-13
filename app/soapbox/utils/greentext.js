@@ -15,7 +15,7 @@ export const addGreentext = html => {
       } else {
         return string;
       }
-    } catch(e) {
+    } catch (e) {
       return string;
     }
   });

@@ -38,6 +38,34 @@ For example:
 
 See `app/soapbox/utils/features.js` for the full list of features.
 
+### Embedded app (`custom/app.json`)
+
+By default, Soapbox will create a new OAuth app every time a user tries to register or log in.
+This is usually the desired behavior, as it works "out of the box" without any additional configuration, and it is resistant to tampering and subtle client bugs.
+However, some larger servers may wish to skip this step for performance reasons.
+
+If an app is supplied in `custom/app.json`, it will be used for authorization.
+The full app entity must be provided, for example:
+
+```json
+{
+  "client_id": "cf5yI6ffXH1UcDkEApEIrtHpwCi5Tv9xmju8IKdMAkE",
+  "client_secret": "vHmSDpm6BJGUvR4_qWzmqWjfHcSYlZumxpFfohRwNNQ",
+  "id": "7132",
+  "name": "Soapbox FE",
+  "redirect_uri": "urn:ietf:wg:oauth:2.0:oob",
+  "website": "https://soapbox.pub/",
+  "vapid_key": "BLElLQVJVmY_e4F5JoYxI5jXiVOYNsJ9p-amkykc9NcI-jwa9T1Y2GIbDqbY-HqC6ayPkfW4K4o9vgBFKYmkuS4"
+}
+```
+
+It is crucial that the app has the expected scopes.
+You can obtain one with the following curl command (replace `MY_DOMAIN`):
+
+```sh
+curl -X POST -H "Content-Type: application/json" -d '{"client_name": "Soapbox FE", "redirect_uris": "urn:ietf:wg:oauth:2.0:oob", "scopes": "read write follow push admin", "website": "https://soapbox.pub/"}' "https://MY_DOMAIN.com/api/v1/apps"
+```
+
 ### Custom files (`custom/instance/*`)
 
 You can place arbitrary files of any type in the `custom/instance/` directory.
