@@ -1,22 +1,23 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
+import { useDispatch } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
 import { logOut, switchAccount } from 'soapbox/actions/auth';
 import { fetchOwnAccounts } from 'soapbox/actions/auth';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import Account from 'soapbox/components/account';
 import { Stack } from 'soapbox/components/ui';
 import ProfileStats from 'soapbox/features/ui/components/profile_stats';
-import { getFeatures } from 'soapbox/utils/features';
+import { useAppSelector, useSoapboxConfig, useFeatures } from 'soapbox/hooks';
 
 import { closeSidebar } from '../actions/sidebar';
 import { makeGetAccount, makeGetOtherAccounts } from '../selectors';
 
 import { HStack, Icon, IconButton, Text } from './ui';
+
+import type { List as ImmutableList } from 'immutable';
+import type { Account as AccountEntity } from 'soapbox/types/entities';
 
 const messages = defineMessages({
   followers: { id: 'account.followers', defaultMessage: 'Followers' },
@@ -33,7 +34,14 @@ const messages = defineMessages({
   logout: { id: 'navigation_bar.logout', defaultMessage: 'Logout' },
 });
 
-const SidebarLink = ({ to, icon, text, onClick }) => (
+interface ISidebarLink {
+  to: string,
+  icon: string,
+  text: string | JSX.Element,
+  onClick: React.EventHandler<React.MouseEvent>,
+}
+
+const SidebarLink: React.FC<ISidebarLink> = ({ to, icon, text, onClick }) => (
   <NavLink className='group py-1 rounded-md' to={to} onClick={onClick}>
     <HStack space={2} alignItems='center'>
       <div className='bg-primary-50 dark:bg-slate-700 relative rounded inline-flex p-2'>
@@ -45,25 +53,20 @@ const SidebarLink = ({ to, icon, text, onClick }) => (
   </NavLink>
 );
 
-SidebarLink.propTypes = {
-  to: PropTypes.string.isRequired,
-  icon: PropTypes.string.isRequired,
-  text: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-};
+const getOtherAccounts = makeGetOtherAccounts();
 
-const SidebarMenu = () => {
+const SidebarMenu: React.FC = (): JSX.Element | null => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const logo = useSelector((state) => getSoapboxConfig(state).get('logo'));
-  const features = useSelector((state) => getFeatures(state.get('instance')));
+  const { logo } = useSoapboxConfig();
+  const features = useFeatures();
   const getAccount = makeGetAccount();
-  const getOtherAccounts = makeGetOtherAccounts();
-  const me = useSelector((state) => state.get('me'));
-  const account = useSelector((state) => getAccount(state, me));
-  const otherAccounts = useSelector((state) => getOtherAccounts(state));
-  const sidebarOpen = useSelector((state) => state.get('sidebar').sidebarOpen);
+  const instance = useAppSelector((state) => state.instance);
+  const me = useAppSelector((state) => state.me);
+  const account = useAppSelector((state) =>  me ? getAccount(state, me) : null);
+  const otherAccounts: ImmutableList<AccountEntity> = useAppSelector((state) => getOtherAccounts(state));
+  const sidebarOpen = useAppSelector((state) => state.sidebar.sidebarOpen);
 
   const closeButtonRef = React.useRef(null);
 
@@ -76,25 +79,27 @@ const SidebarMenu = () => {
     onClose();
   };
 
-  const handleSwitchAccount = (event, account) => {
-    event.preventDefault();
-    switchAccount(account);
-    dispatch(switchAccount(account.get('id')));
+  const handleSwitchAccount = (account: AccountEntity): React.EventHandler<React.MouseEvent> => {
+    return (e) => {
+      e.preventDefault();
+      switchAccount(account);
+      dispatch(switchAccount(account.id));
+    };
   };
 
-  const onClickLogOut = (event) => {
-    event.preventDefault();
+  const onClickLogOut: React.EventHandler<React.MouseEvent> = (e) => {
+    e.preventDefault();
     dispatch(logOut(intl));
   };
 
-  const handleSwitcherClick = (e) => {
+  const handleSwitcherClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
 
     setSwitcher((prevState) => (!prevState));
   };
 
-  const renderAccount = (account) => (
-    <a href='/' className='block py-2' onClick={(event) => handleSwitchAccount(event, account)} key={account.get('id')}>
+  const renderAccount = (account: AccountEntity) => (
+    <a href='/' className='block py-2' onClick={handleSwitchAccount(account)} key={account.id}>
       <Account account={account} showProfileHoverCard={false} />
     </a>
   );
@@ -103,17 +108,13 @@ const SidebarMenu = () => {
     dispatch(fetchOwnAccounts());
   }, []);
 
-  if (!account) {
-    return null;
-  }
-
-  const acct = account.get('acct');
-  const classes = classNames('sidebar-menu__root', {
-    'sidebar-menu__root--visible': sidebarOpen,
-  });
+  if (!account) return null;
 
   return (
-    <div className={classes}>
+    <div className={classNames('sidebar-menu__root', {
+      'sidebar-menu__root--visible': sidebarOpen,
+    })}
+    >
       <div
         className={classNames({
           'fixed inset-0 bg-gray-600 bg-opacity-90 z-1000': true,
@@ -130,7 +131,7 @@ const SidebarMenu = () => {
               <HStack alignItems='center' justifyContent='between'>
                 <Link to='/' onClick={onClose}>
                   {logo ? (
-                    <img alt='Logo' src={logo} className='h-5 w-auto min-w-[140px] cursor-pointer' />
+                    <img alt='Logo' src={logo} className='h-5 w-auto cursor-pointer' />
                   ):  (
                     <Icon
                       alt='Logo'
@@ -150,10 +151,11 @@ const SidebarMenu = () => {
               </HStack>
 
               <Stack space={1}>
-                <Link to={`/@${acct}`} onClick={onClose}>
+                <Link to={`/@${account.acct}`} onClick={onClose}>
                   <Account account={account} showProfileHoverCard={false} />
                 </Link>
 
+                {/* TODO: make this available to everyone */}
                 {account.staff && (
                   <Stack>
                     <button type='button' onClick={handleSwitcherClick} className='py-1'>
@@ -184,11 +186,33 @@ const SidebarMenu = () => {
                 <hr />
 
                 <SidebarLink
-                  to={`/@${acct}`}
+                  to={`/@${account.acct}`}
                   icon={require('@tabler/icons/icons/user.svg')}
                   text={intl.formatMessage(messages.profile)}
                   onClick={onClose}
                 />
+
+                {(features.localTimeline || features.publicTimeline) && (
+                  <hr className='dark:border-slate-700' />
+                )}
+
+                {features.localTimeline && (
+                  <SidebarLink
+                    to='/timeline/local'
+                    icon={features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg')}
+                    text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
+                    onClick={onClose}
+                  />
+                )}
+
+                {(features.publicTimeline && features.federating) && (
+                  <SidebarLink
+                    to='/timeline/fediverse'
+                    icon={require('icons/fediverse.svg')}
+                    text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
+                    onClick={onClose}
+                  />
+                )}
 
                 <hr />
 
