@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Button, Icon } from 'soapbox/components/ui';
 import Search from 'soapbox/features/compose/components/search';
 import ThemeToggle from 'soapbox/features/ui/components/theme_toggle';
-import { useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useOwnAccount, useSoapboxConfig, useSettings, useFeatures } from 'soapbox/hooks';
 
 import { openSidebar } from '../../../actions/sidebar';
 
@@ -19,6 +19,7 @@ const Navbar = () => {
 
   const account = useOwnAccount();
   const settings = useSettings();
+  const features = useFeatures();
   const soapboxConfig = useSoapboxConfig();
   const singleUserMode = soapboxConfig.get('singleUserMode');
 
@@ -68,7 +69,10 @@ const Navbar = () => {
           </div>
 
           <div className='absolute inset-y-0 right-0 flex items-center pr-2 lg:static lg:inset-auto lg:ml-6 lg:pr-0 space-x-3'>
-            <ThemeToggle />
+            {/* TODO: make this available for everyone when it's ready (possibly in a different place) */}
+            {(features.darkMode || settings.get('isDeveloper')) && (
+              <ThemeToggle />
+            )}
 
             {account ? (
               <div className='hidden relative lg:flex items-center'>
