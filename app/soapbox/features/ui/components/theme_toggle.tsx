@@ -37,8 +37,8 @@ function ThemeToggle({ showLabel }: IThemeToggle) {
           id={id}
           checked={themeMode === 'light'}
           icons={{
-            checked: <Icon src={require('@tabler/icons/icons/sun.svg')} />,
-            unchecked: <Icon src={require('@tabler/icons/icons/moon.svg')} />,
+            checked: <Icon className='w-4 h-4' src={require('@tabler/icons/icons/sun.svg')} />,
+            unchecked: <Icon className='w-4 h-4' src={require('@tabler/icons/icons/moon.svg')} />,
           }}
           onChange={onToggle}
         />
