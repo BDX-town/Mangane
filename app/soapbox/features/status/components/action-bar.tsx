@@ -4,6 +4,7 @@ import { defineMessages, injectIntl, WrappedComponentProps as IntlComponentProps
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 
+import EmojiButtonWrapper from 'soapbox/components/emoji-button-wrapper';
 import { isUserTouching } from 'soapbox/is_mobile';
 import { getReactForStatus } from 'soapbox/utils/emoji_reacts';
 import { getFeatures } from 'soapbox/utils/features';
@@ -574,19 +575,36 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
 
         {reblogButton}
 
-        <IconButton
-          className={classNames({
-            'text-gray-400 hover:text-gray-600': !meEmojiReact,
-            'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
-          })}
-          title={meEmojiTitle}
-          src={require('@tabler/icons/icons/heart.svg')}
-          iconClassName={classNames({
-            'fill-accent-300': Boolean(meEmojiReact),
-          })}
-          text={meEmojiTitle}
-          onClick={this.handleLikeButtonClick}
-        />
+        {features.emojiReacts ? (
+          <EmojiButtonWrapper statusId={status.id}>
+            <IconButton
+              className={classNames({
+                'text-gray-400 hover:text-gray-600': !meEmojiReact,
+                'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+              })}
+              title={meEmojiTitle}
+              src={require('@tabler/icons/icons/heart.svg')}
+              iconClassName={classNames({
+                'fill-accent-300': Boolean(meEmojiReact),
+              })}
+              text={meEmojiTitle}
+            />
+          </EmojiButtonWrapper>
+        ) : (
+          <IconButton
+            className={classNames({
+              'text-gray-400 hover:text-gray-600': !meEmojiReact,
+              'text-accent-300 hover:text-accent-300': Boolean(meEmojiReact),
+            })}
+            title={meEmojiTitle}
+            src={require('@tabler/icons/icons/heart.svg')}
+            iconClassName={classNames({
+              'fill-accent-300': Boolean(meEmojiReact),
+            })}
+            text={meEmojiTitle}
+            onClick={this.handleLikeButtonClick}
+          />
+        )}
 
         {canShare && (
           <IconButton

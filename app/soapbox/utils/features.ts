@@ -68,6 +68,14 @@ const getInstanceFeatures = (instance: Instance) => {
       // Even though Pleroma supports these endpoints, it has disadvantages
       // v.software === PLEROMA && gte(v.version, '2.1.0'),
     ]),
+    localTimeline: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
+    publicTimeline: any([
+      v.software === MASTODON,
+      v.software === PLEROMA,
+    ]),
     directTimeline: any([
       v.software === MASTODON && lt(v.compatVersion, '3.0.0'),
       v.software === PLEROMA && gte(v.version, '0.9.9'),
@@ -134,6 +142,10 @@ const getInstanceFeatures = (instance: Instance) => {
     trendingTruths: v.software === TRUTHSOCIAL,
     trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
     pepe: v.software === TRUTHSOCIAL,
+
+    // FIXME: long-term this shouldn't be a feature,
+    // but for now we want it to be overrideable in the build
+    darkMode: true,
   };
 };
 

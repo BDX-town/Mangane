@@ -27,8 +27,11 @@
     }
   }
 
-  .svg-icon {
-    width: 18px;
-    height: 18px;
+  .react-toggle-track {
+    @apply dark:bg-slate-600;
+  }
+
+  .react-toggle-thumb {
+    @apply dark:bg-slate-900 dark:border-slate-800;
   }
 }
