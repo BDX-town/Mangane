@@ -17,6 +17,7 @@ const SidebarNavigation = () => {
   const account = useAppSelector((state) => state.accounts.get(me));
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.get('items').reduce((acc: any, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0));
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
   const baseURL = getBaseURL(ImmutableMap(account));
   const features = getFeatures(instance);
@@ -70,14 +71,14 @@ const SidebarNavigation = () => {
           )
         )}
 
-        {/* {(account && account.staff) && (
+        {(account && account.staff) && (
           <SidebarNavigationLink
             to='/admin'
-            icon={location.pathname.startsWith('/admin') ? require('icons/dashboard-filled.svg') : require('@tabler/icons/icons/dashboard.svg')}
+            icon={require('@tabler/icons/icons/dashboard.svg')}
             text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
             count={dashboardCount}
           />
-        )} */}
+        )}
 
         {(account && instance.invites_enabled) && (
           <SidebarNavigationLink

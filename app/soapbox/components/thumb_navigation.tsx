@@ -9,7 +9,7 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
   const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.unread);
   const chatsCount = useAppSelector((state) => state.chats.get('items').reduce((acc: number, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0));
-  // const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
   const features = getFeatures(useAppSelector((state) => state.instance));
 
   return (
@@ -57,14 +57,14 @@ const ThumbNavigation: React.FC = (): JSX.Element => {
         )
       )}
 
-      {/* (account && account.staff && (
+      {(account && account.staff) && (
         <ThumbNavigationLink
           src={require('@tabler/icons/icons/dashboard.svg')}
           text={<FormattedMessage id='navigation.dashboard' defaultMessage='Dashboard' />}
           to='/admin'
           count={dashboardCount}
         />
-      ) */}
+      )}
     </div>
   );
 };
