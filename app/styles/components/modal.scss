@@ -341,7 +341,7 @@
 
 .actions-modal {
   .dropdown-menu__separator {
-    @apply block m-2 h-[1px] bg-gray-200;
+    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
   }
 }
 
@@ -521,7 +521,7 @@
 }
 
 .actions-modal {
-  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white;
+  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white dark:bg-slate-800;
 
   .status {
     overflow-y: auto;
@@ -540,7 +540,7 @@
     li:not(:empty) {
       a,
       button {
-        @apply flex items-center px-4 py-3 text-gray-600 no-underline hover:bg-gray-100 hover:text-gray-800;
+        @apply flex items-center px-4 py-3 text-gray-600 dark:text-gray-300 no-underline hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200;
 
         &.destructive {
           @apply text-danger-600;

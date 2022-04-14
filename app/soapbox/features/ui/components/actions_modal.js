@@ -46,7 +46,7 @@ const ActionsModal = ({ status, actions, onClick, onClose }) => {
       {({ top }) => (
         <div className='modal-root__modal actions-modal' style={{ top: `${top}%` }}>
           {status && (
-            <Stack space={2} className='p-4 bg-gray-50 border-b border-solid border-gray-200'>
+            <Stack space={2} className='p-4 bg-gray-50 dark:bg-slate-800 border-b border-solid border-gray-200 dark:border-gray-700'>
               <AccountContainer
                 account={status.get('account')}
                 showProfileHoverCard={false}
