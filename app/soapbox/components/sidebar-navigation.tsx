@@ -1,26 +1,109 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { getSettings } from 'soapbox/actions/settings';
+import DropdownMenu from 'soapbox/containers/dropdown_menu_container';
 import ComposeButton from 'soapbox/features/ui/components/compose-button';
-import { useAppSelector } from 'soapbox/hooks';
+import { useAppSelector, useOwnAccount } from 'soapbox/hooks';
 import { getBaseURL } from 'soapbox/utils/accounts';
 import { getFeatures } from 'soapbox/utils/features';
 
 import SidebarNavigationLink from './sidebar-navigation-link';
 
+import type { Menu } from 'soapbox/components/dropdown_menu';
+
 const SidebarNavigation = () => {
-  const me = useAppSelector((state) => state.me);
   const instance = useAppSelector((state) => state.instance);
   const settings = useAppSelector((state) => getSettings(state));
-  const account = useAppSelector((state) => state.accounts.get(me));
+  const account = useOwnAccount();
   const notificationCount = useAppSelector((state) => state.notifications.get('unread'));
   const chatsCount = useAppSelector((state) => state.chats.get('items').reduce((acc: any, curr: any) => acc + Math.min(curr.get('unread', 0), 1), 0));
-  const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
+  const followRequestsCount = useAppSelector((state) => state.user_lists.getIn(['follow_requests', 'items'], ImmutableOrderedSet()).count());
+  // const dashboardCount = useAppSelector((state) => state.admin.openReports.count() + state.admin.awaitingApproval.count());
 
-  const baseURL = getBaseURL(ImmutableMap(account));
+  const baseURL = account ? getBaseURL(ImmutableMap(account)) : '';
   const features = getFeatures(instance);
+
+  const makeMenu = (): Menu => {
+    const menu: Menu = [];
+
+    if (account?.locked || followRequestsCount > 0) {
+      menu.push({
+        to: '/follow_requests',
+        text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
+        icon: require('@tabler/icons/icons/user-plus.svg'),
+        // TODO: let menu items have a counter
+        // count: followRequestsCount,
+      });
+    }
+
+    if (features.bookmarks) {
+      menu.push({
+        to: '/bookmarks',
+        text: <FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />,
+        icon: require('@tabler/icons/icons/bookmark.svg'),
+      });
+    }
+
+    if (features.lists) {
+      menu.push({
+        to: '/lists',
+        text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
+        icon: require('@tabler/icons/icons/list.svg'),
+      });
+    }
+
+    if (account && instance.invites_enabled) {
+      menu.push({
+        to: `${baseURL}/invites`,
+        icon: require('@tabler/icons/icons/mailbox.svg'),
+        text: <FormattedMessage id='navigation.invites' defaultMessage='Invites' />,
+      });
+    }
+
+    if (settings.get('isDeveloper')) {
+      menu.push({
+        to: '/developers',
+        icon: require('@tabler/icons/icons/code.svg'),
+        text: <FormattedMessage id='navigation.developers' defaultMessage='Developers' />,
+      });
+    }
+
+    if (account && account.staff) {
+      menu.push({
+        to: '/admin',
+        icon: require('@tabler/icons/icons/dashboard.svg'),
+        text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
+        // TODO: let menu items have a counter
+        // count: dashboardCount,
+      });
+    }
+
+    if (features.localTimeline || features.publicTimeline) {
+      menu.push(null);
+    }
+
+    if (features.localTimeline) {
+      menu.push({
+        to: '/timeline/local',
+        icon: features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg'),
+        text: features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />,
+      });
+    }
+
+    if (features.localTimeline && features.federating) {
+      menu.push({
+        to: '/timeline/fediverse',
+        icon: require('icons/fediverse.svg'),
+        text: <FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />,
+      });
+    }
+
+    return menu;
+  };
+
+  const menu = makeMenu();
 
   return (
     <div>
@@ -71,49 +154,13 @@ const SidebarNavigation = () => {
           )
         )}
 
-        {(account && account.staff) && (
-          <SidebarNavigationLink
-            to='/admin'
-            icon={require('@tabler/icons/icons/dashboard.svg')}
-            text={<FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />}
-            count={dashboardCount}
-          />
-        )}
-
-        {(account && instance.invites_enabled) && (
-          <SidebarNavigationLink
-            to={`${baseURL}/invites`}
-            icon={require('@tabler/icons/icons/mailbox.svg')}
-            text={<FormattedMessage id='navigation.invites' defaultMessage='Invites' />}
-          />
-        )}
-
-        {(settings.get('isDeveloper')) && (
-          <SidebarNavigationLink
-            to='/developers'
-            icon={require('@tabler/icons/icons/code.svg')}
-            text={<FormattedMessage id='navigation.developers' defaultMessage='Developers' />}
-          />
-        )}
-
-        {(features.localTimeline || features.publicTimeline) && (
-          <hr className='dark:border-slate-700' />
-        )}
-
-        {features.localTimeline && (
-          <SidebarNavigationLink
-            to='/timeline/local'
-            icon={features.federating ? require('@tabler/icons/icons/users.svg') : require('@tabler/icons/icons/world.svg')}
-            text={features.federating ? instance.title : <FormattedMessage id='tabs_bar.all' defaultMessage='All' />}
-          />
-        )}
-
-        {(features.publicTimeline && features.federating) && (
-          <SidebarNavigationLink
-            to='/timeline/fediverse'
-            icon={require('icons/fediverse.svg')}
-            text={<FormattedMessage id='tabs_bar.fediverse' defaultMessage='Fediverse' />}
-          />
+        {menu.length > 0 && (
+          <DropdownMenu items={menu}>
+            <SidebarNavigationLink
+              icon={require('@tabler/icons/icons/dots-circle-horizontal.svg')}
+              text={<FormattedMessage id='tabs_bar.more' defaultMessage='More' />}
+            />
+          </DropdownMenu>
         )}
       </div>
 
