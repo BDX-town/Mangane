@@ -24,10 +24,10 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   const dispatch = useAppDispatch();
   const intl = useIntl();
 
-  const accountIds = useAppSelector<ImmutableOrderedSet<string>>((state) => state.admin.get('latestUsers'));
+  const accountIds = useAppSelector<ImmutableOrderedSet<string>>((state) => state.admin.get('latestUsers').take(limit));
   const hasDates = useAppSelector((state) => accountIds.every(id => !!state.accounts.getIn([id, 'created_at'])));
 
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(accountIds.size);
 
   useEffect(() => {
     dispatch(fetchUsers(['local', 'active'], 1, null, limit))
@@ -49,7 +49,7 @@ const LatestAccountsPanel: React.FC<ILatestAccountsPanel> = ({ limit = 5 }) => {
   return (
     <Widget title={intl.formatMessage(messages.title)}>
       {accountIds.take(limit).map((account) => (
-        <AccountContainer key={account} id={account} withRelationship={false} />
+        <AccountContainer key={account} id={account} withRelationship={false} withDate />
       ))}
       {!!expandCount && (
         <Link className='wtf-panel__expand-btn' to='/admin/users'>
