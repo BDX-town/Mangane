@@ -325,6 +325,41 @@ class Notification extends ImmutablePureComponent {
     );
   }
 
+  renderStatus(notification) {
+    const { intl } = this.props;
+
+    const account = notification.get('account');
+    const link    = this.renderLink(account);
+
+    return (
+      <HotKeys handlers={this.getHandlers()}>
+        <div className='notification notification-status focusable' tabIndex='0' aria-label={notificationForScreenReader(intl, intl.formatMessage({ id: 'notification.status', defaultMessage: '{name} just posted' }, { name: notification.getIn(['account', 'acct']) }), notification.get('created_at'))}>
+          <div className='notification__message'>
+            <div className='notification__icon-wrapper'>
+              <Icon src={require('@tabler/icons/icons/home.svg')} />
+            </div>
+
+            <span title={notification.get('created_at')}>
+              <FormattedMessage id='notification.status' defaultMessage='{name} just posted' values={{ name: link }} />
+            </span>
+          </div>
+
+          <StatusContainer
+            id={notification.getIn(['status', 'id'])}
+            account={notification.get('account')}
+            muted
+            withDismiss
+            hidden={this.props.hidden}
+            getScrollPosition={this.props.getScrollPosition}
+            updateScrollBottom={this.props.updateScrollBottom}
+            cachedMediaWidth={this.props.cachedMediaWidth}
+            cacheMediaWidth={this.props.cacheMediaWidth}
+          />
+        </div>
+      </HotKeys>
+    );
+  }
+
   renderPoll(notification) {
     const { intl } = this.props;
 
@@ -398,6 +433,8 @@ class Notification extends ImmutablePureComponent {
       return this.renderFavourite(notification);
     case 'reblog':
       return this.renderReblog(notification);
+    case 'status':
+      return this.renderStatus(notification);
     case 'poll':
       return this.renderPoll(notification);
     case 'move':
