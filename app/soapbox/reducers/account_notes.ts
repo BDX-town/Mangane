@@ -1,4 +1,5 @@
-import { Map as ImmutableMap } from 'immutable';
+import { Record as ImmutableRecord } from 'immutable';
+import { AnyAction } from 'redux';
 
 import {
   ACCOUNT_NOTE_INIT_MODAL,
@@ -8,15 +9,19 @@ import {
   ACCOUNT_NOTE_SUBMIT_SUCCESS,
 } from '../actions/account_notes';
 
-const initialState = ImmutableMap({
-  edit: ImmutableMap({
-    isSubmitting: false,
-    account: null,
-    comment: null,
-  }),
+const EditRecord = ImmutableRecord({
+  isSubmitting: false,
+  account: null,
+  comment: null,
 });
 
-export default function account_notes(state = initialState, action) {
+const ReducerRecord = ImmutableRecord({
+  edit: EditRecord(),
+});
+
+type State = ReturnType<typeof ReducerRecord>;
+
+export default function account_notes(state: State = ReducerRecord(), action: AnyAction) {
   switch (action.type) {
   case ACCOUNT_NOTE_INIT_MODAL:
     return state.withMutations((state) => {
