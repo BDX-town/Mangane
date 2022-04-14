@@ -482,6 +482,10 @@ export function SettingsStore() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
 }
 
+export function TestTimeline() {
+  return import(/* webpackChunkName: "features/test_timeline" */'../../test_timeline');
+}
+
 export function DatePicker() {
   return import(/* webpackChunkName: "date_picker" */'../../birthdays/date_picker');
 }
