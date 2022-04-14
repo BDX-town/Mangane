@@ -7,7 +7,6 @@ import LinkFooter from 'soapbox/features/ui/components/link_footer';
 import BundleContainer from 'soapbox/features/ui/containers/bundle_container';
 import {
   PromoPanel,
-  FeaturesPanel,
   InstanceInfoPanel,
   InstanceModerationPanel,
 } from 'soapbox/features/ui/util/async-components';
@@ -30,7 +29,7 @@ export default @connect(mapStateToProps)
 class RemoteInstancePage extends ImmutablePureComponent {
 
   render() {
-    const { me, children, params: { instance: host }, disclosed, isAdmin } = this.props;
+    const { children, params: { instance: host }, disclosed, isAdmin } = this.props;
 
     return (
       <Layout>
@@ -43,11 +42,6 @@ class RemoteInstancePage extends ImmutablePureComponent {
         </Layout.Main>
 
         <Layout.Aside>
-          {me && (
-            <BundleContainer fetchComponent={FeaturesPanel}>
-              {Component => <Component key='features-panel' />}
-            </BundleContainer>
-          )}
           <BundleContainer fetchComponent={PromoPanel}>
             {Component => <Component key='promo-panel' />}
           </BundleContainer>

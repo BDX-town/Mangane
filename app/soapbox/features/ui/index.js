@@ -41,7 +41,6 @@ import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';
 import { expandHomeTimeline } from '../../actions/timelines';
-// import PreHeader from '../../features/public_layout/components/pre_header';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
@@ -120,6 +119,7 @@ import {
   Developers,
   CreateApp,
   SettingsStore,
+  TestTimeline,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -341,6 +341,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
         <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
+        <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
         <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
         <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
@@ -727,7 +728,6 @@ class UI extends React.PureComponent {
           <BackgroundShapes />
 
           <div className='z-10 flex flex-col'>
-            {/* <PreHeader /> */}
             <Navbar />
 
             <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>

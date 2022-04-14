@@ -86,6 +86,7 @@ const mapStateToProps = (state) => {
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(soapboxConfig),
     brandColor: soapboxConfig.get('brandColor'),
+    appleAppId: soapboxConfig.get('appleAppId'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
   };
@@ -108,6 +109,7 @@ class SoapboxMount extends React.PureComponent {
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
     brandColor: PropTypes.string,
+    appleAppId: PropTypes.string,
     dispatch: PropTypes.func,
     singleUserMode: PropTypes.bool,
   };
@@ -171,6 +173,10 @@ class SoapboxMount extends React.PureComponent {
           <body className={bodyClass} />
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           <meta name='theme-color' content={this.props.brandColor} />
+
+          {this.props.appleAppId && (
+            <meta name='apple-itunes-app' content={`app-id=${this.props.appleAppId}`} />
+          )}
         </Helmet>
 
         <ErrorBoundary>
