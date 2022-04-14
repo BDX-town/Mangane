@@ -9,6 +9,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const AssetsManifestPlugin = require('webpack-assets-manifest');
+const DeadCodePlugin = require('webpack-deadcode-plugin');
 
 const { env, settings, output } = require('./configuration');
 const rules = require('./rules');
@@ -85,6 +86,19 @@ module.exports = {
       entrypoints: true,
       writeToDisk: true,
       publicPath: true,
+    }),
+    // https://github.com/MQuy/webpack-deadcode-plugin
+    new DeadCodePlugin({
+      patterns: [
+        'app/**/*',
+      ],
+      exclude: [
+        '**/*.test.*',
+        '**/__*__/*',
+        '**/(LICENSE|README|COPYING)(.md|.txt)?',
+        // This file is imported with @preval
+        'app/soapbox/features/emoji/emoji_map.json',
+      ],
     }),
     // https://github.com/jantimon/html-webpack-plugin#options
     new HtmlWebpackPlugin(makeHtmlConfig()),

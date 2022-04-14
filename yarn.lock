@@ -10786,6 +10786,14 @@ webpack-cli@^4.8.0:
     v8-compile-cache "^2.2.0"
     webpack-merge "^5.7.3"
 
+webpack-deadcode-plugin@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/webpack-deadcode-plugin/-/webpack-deadcode-plugin-0.1.16.tgz#f58ec7bd908325247396438a50afc209bfd01bdd"
+  integrity sha512-T3oRlzftN4jU8Wm8rjx9mzYC8zr4CND5kNgh6EBJyhWy68F5kZ334EjdBjOKDEpUHuybBuxi/SviVUFsP0gx4g==
+  dependencies:
+    chalk "^3.0.0"
+    fast-glob "^3.1.1"
+
 webpack-dev-middleware@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-5.1.0.tgz#90a645b077e85f661c5bb967dc32adc3eceb5cfd"
