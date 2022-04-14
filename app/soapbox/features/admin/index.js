@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getSubscribersCsv, getUnsubscribersCsv, getCombinedCsv } from 'soapbox/actions/email_list';
+import { Text } from 'soapbox/components/ui';
 import sourceCode from 'soapbox/utils/code';
 import { parseVersion } from 'soapbox/utils/features';
 import { getFeatures } from 'soapbox/utils/features';
@@ -86,56 +87,46 @@ class Dashboard extends ImmutablePureComponent {
       <Column icon='tachometer-alt' label={intl.formatMessage(messages.heading)}>
         <div className='dashcounters'>
           {mau && <div className='dashcounter'>
-            <div>
-              <div className='dashcounter__num'>
-                <FormattedNumber value={mau} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />
-              </div>
-            </div>
+            <Text align='center' size='2xl' weight='medium'>
+              <FormattedNumber value={mau} />
+            </Text>
+            <Text align='center'>
+              <FormattedMessage id='admin.dashcounters.mau_label' defaultMessage='monthly active users' />
+            </Text>
           </div>}
-          <div className='dashcounter'>
-            <Link to='/admin/users'>
-              <div className='dashcounter__num'>
-                <FormattedNumber value={userCount} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
-              </div>
-            </Link>
-          </div>
+          <Link className='dashcounter' to='/admin/users'>
+            <Text align='center' size='2xl' weight='medium'>
+              <FormattedNumber value={userCount} />
+            </Text>
+            <Text align='center'>
+              <FormattedMessage id='admin.dashcounters.user_count_label' defaultMessage='total users' />
+            </Text>
+          </Link>
           {isNumber(retention) && (
             <div className='dashcounter'>
-              <div>
-                <div className='dashcounter__num'>
-                  {retention}%
-                </div>
-                <div className='dashcounter__label'>
-                  <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
-                </div>
-              </div>
+              <Text align='center' size='2xl' weight='medium'>
+                {retention}%
+              </Text>
+              <Text align='center'>
+                <FormattedMessage id='admin.dashcounters.retention_label' defaultMessage='user retention' />
+              </Text>
             </div>
           )}
+          <Link className='dashcounter' to='/timeline/local'>
+            <Text align='center' size='2xl' weight='medium'>
+              <FormattedNumber value={instance.getIn(['stats', 'status_count'])} />
+            </Text>
+            <Text align='center'>
+              <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
+            </Text>
+          </Link>
           <div className='dashcounter'>
-            <Link to='/timeline/local'>
-              <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'status_count'])} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.status_count_label' defaultMessage='posts' />
-              </div>
-            </Link>
-          </div>
-          <div className='dashcounter'>
-            <div>
-              <div className='dashcounter__num'>
-                <FormattedNumber value={instance.getIn(['stats', 'domain_count'])} />
-              </div>
-              <div className='dashcounter__label'>
-                <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />
-              </div>
-            </div>
+            <Text align='center' size='2xl' weight='medium'>
+              <FormattedNumber value={instance.getIn(['stats', 'domain_count'])} />
+            </Text>
+            <Text align='center'>
+              <FormattedMessage id='admin.dashcounters.domain_count_label' defaultMessage='peers' />
+            </Text>
           </div>
         </div>
         {account.admin && <RegistrationModePicker />}
