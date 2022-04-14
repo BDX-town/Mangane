@@ -1,5 +1,5 @@
 .reply-mentions {
-  @apply text-gray-500 mb-1 text-sm;
+  @apply text-gray-500 dark:text-gray-400 mb-1 text-sm;
 
   &__account {
     @apply text-primary-600 no-underline;
