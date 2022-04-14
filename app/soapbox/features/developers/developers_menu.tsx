@@ -20,7 +20,7 @@ const Developers = () => {
   const history = useHistory();
   const intl = useIntl();
 
-  const leaveDevelopers = (e) => {
+  const leaveDevelopers = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     dispatch(changeSettingImmediate(['isDeveloper'], false));

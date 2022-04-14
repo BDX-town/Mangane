@@ -19,7 +19,7 @@ interface IInput extends Pick<React.InputHTMLAttributes<HTMLInputElement>, 'onCh
   name?: string,
   placeholder?: string,
   value?: string,
-  onChange?: () => void,
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
   type: 'text' | 'email' | 'tel' | 'password'
 }
 
