@@ -36,13 +36,14 @@ const buildLink = (account) => (
   </bdi>
 );
 
-export const NOTIFICATION_TYPES = ['follow', 'mention', 'favourite', 'reblog'];
+export const NOTIFICATION_TYPES = ['follow', 'mention', 'favourite', 'reblog', 'status'];
 
 const icons = {
   follow: require('@tabler/icons/icons/user-plus.svg'),
   mention: require('@tabler/icons/icons/at.svg'),
   favourite: require('@tabler/icons/icons/heart.svg'),
   reblog: require('@tabler/icons/icons/repeat.svg'),
+  status: require('@tabler/icons/icons/home.svg'),
 };
 
 const messages = {
@@ -61,6 +62,10 @@ const messages = {
   reblog: {
     id: 'notification.reblog',
     defaultMessage: '{name} re-TRUTH your TRUTH',
+  },
+  status: {
+    id: 'notification.status',
+    defaultMessage: '{name} just posted',
   },
 };
 
@@ -153,6 +158,7 @@ const Notification = (props) => {
     case 'favourite':
     case 'mention':
     case 'reblog':
+    case 'status':
       return (
         <StatusContainer
           id={notification.getIn(['status', 'id'])}
