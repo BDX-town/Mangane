@@ -338,10 +338,6 @@ export function UserPanel() {
   return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
 }
 
-export function FeaturesPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/features_panel');
-}
-
 export function PromoPanel() {
   return import(/* webpackChunkName: "features/ui" */'../components/promo_panel');
 }
