@@ -3,7 +3,7 @@ import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { fetchChats, launchChat } from 'soapbox/actions/chats';
+import { launchChat } from 'soapbox/actions/chats';
 import AccountSearch from 'soapbox/components/account_search';
 import AudioToggle from 'soapbox/features/chats/components/audio_toggle';
 
@@ -29,10 +29,6 @@ const ChatIndex: React.FC = () => {
     history.push(`/chats/${chat.id}`);
   };
 
-  const handleRefresh = () => {
-    return dispatch(fetchChats());
-  };
-
   return (
     <Column label={intl.formatMessage(messages.title)}>
       <div className='column__switch'>
@@ -46,7 +42,7 @@ const ChatIndex: React.FC = () => {
 
       <ChatList
         onClickChat={handleClickChat}
-        onRefresh={handleRefresh}
+        useWindowScroll
       />
     </Column>
   );

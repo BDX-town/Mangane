@@ -61,14 +61,14 @@ export function fetchChatsV2() {
 export function fetchChats() {
   return (dispatch, getState) => {
     const state = getState();
-    const instance = state.get('instance');
+    const { instance } = state;
     const features = getFeatures(instance);
 
     dispatch({ type: CHATS_FETCH_REQUEST });
     if (features.chatsV2) {
-      dispatch(fetchChatsV2());
+      return dispatch(fetchChatsV2());
     } else {
-      dispatch(fetchChatsV1());
+      return dispatch(fetchChatsV1());
     }
   };
 }
