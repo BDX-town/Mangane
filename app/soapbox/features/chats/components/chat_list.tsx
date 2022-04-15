@@ -1,12 +1,13 @@
 import { Map as ImmutableMap } from 'immutable';
-import { debounce } from 'lodash';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { Virtuoso } from 'react-virtuoso';
 import { createSelector } from 'reselect';
 
-import { expandChats } from 'soapbox/actions/chats';
-import ScrollableList from 'soapbox/components/scrollable_list';
+import { fetchChats, expandChats } from 'soapbox/actions/chats';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
+import { Text } from 'soapbox/components/ui';
 import PlaceholderChat from 'soapbox/features/placeholder/components/placeholder_chat';
 import { useAppSelector } from 'soapbox/hooks';
 
@@ -15,10 +16,6 @@ import Chat from './chat';
 const messages = defineMessages({
   emptyMessage: { id: 'chat_panels.main_window.empty', defaultMessage: 'No chats found. To start a chat, visit a user\'s profile' },
 });
-
-const handleLoadMore = debounce((dispatch) => {
-  dispatch(expandChats());
-}, 300, { leading: true });
 
 const getSortedChatIds = (chats: ImmutableMap<string, any>) => (
   chats
@@ -45,10 +42,10 @@ const sortedChatIdsSelector = createSelector(
 
 interface IChatList {
   onClickChat: (chat: any) => void,
-  onRefresh: () => void,
+  useWindowScroll?: boolean,
 }
 
-const ChatList: React.FC<IChatList> = ({ onClickChat, onRefresh }) => {
+const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false }) => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
@@ -56,28 +53,41 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, onRefresh }) => {
   const hasMore = useAppSelector(state => !!state.chats.get('next'));
   const isLoading = useAppSelector(state => state.chats.get('isLoading'));
 
+  const handleLoadMore = useCallback(() => {
+    if (hasMore && !isLoading) {
+      dispatch(expandChats());
+    }
+  }, [dispatch, hasMore, isLoading]);
+
+  const handleRefresh = () => {
+    return dispatch(fetchChats()) as any;
+  };
+
   return (
-    <ScrollableList
-      className='chat-list'
-      scrollKey='awaiting-approval'
-      emptyMessage={intl.formatMessage(messages.emptyMessage)}
-      hasMore={hasMore}
-      isLoading={isLoading}
-      showLoading={isLoading && chatIds.size === 0}
-      onLoadMore={() => handleLoadMore(dispatch)}
-      onRefresh={onRefresh}
-      placeholderComponent={PlaceholderChat}
-      placeholderCount={20}
-    >
-      {chatIds.map((chatId: string) => (
-        <div key={chatId} className='chat-list-item'>
-          <Chat
-            chatId={chatId}
-            onClick={onClickChat}
-          />
-        </div>
-      ))}
-    </ScrollableList>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <Virtuoso
+        className='chat-list'
+        useWindowScroll={useWindowScroll}
+        data={chatIds.toArray()}
+        endReached={handleLoadMore}
+        itemContent={(_index, chatId) => (
+          <Chat chatId={chatId} onClick={onClickChat} />
+        )}
+        components={{
+          ScrollSeekPlaceholder: () => <PlaceholderChat />,
+          Footer: () => hasMore ? <PlaceholderChat /> : null,
+          EmptyPlaceholder: () => {
+            if (isLoading) {
+              return (
+                <>{Array(20).fill(<PlaceholderChat />)}</>
+              );
+            } else {
+              return <Text>{intl.formatMessage(messages.emptyMessage)}</Text>;
+            }
+          },
+        }}
+      />
+    </PullToRefresh>
   );
 };
 
