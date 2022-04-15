@@ -342,7 +342,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   render() {
     let media = null;
     const poll = null;
-    let prepend, rebloggedByText, reblogContent, reblogElement, reblogElementMobile;
+    let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
     const { intl, hidden, featured, unread, group } = this.props;
 
@@ -447,7 +447,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
       // @ts-ignore what the FUCK
       account = status.account;
-      reblogContent = status.contentHtml;
       status = status.reblog;
     }
 
@@ -646,7 +645,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
               <StatusContent
                 status={status}
-                reblogContent={reblogContent}
                 onClick={this.handleClick}
                 expanded={!status.hidden}
                 onExpandedToggle={this.handleExpandedToggle}
