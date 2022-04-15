@@ -65,7 +65,6 @@ const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) 
 
 interface IStatusContent {
   status: Status,
-  reblogContent?: string, // FIXME: not used!
   expanded?: boolean,
   onExpandedToggle?: () => void,
   onClick?: () => void,
@@ -106,26 +105,27 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
     const links = node.current.querySelectorAll('a');
 
-    for (let i = 0; i < links.length; ++i) {
-      const link = links[i];
-      if (link.classList.contains('status-link')) {
-        continue;
-      }
+    links.forEach(link => {
+      // Skip already processed
+      if (link.classList.contains('status-link')) return;
+
+      // Add attributes
       link.classList.add('status-link');
       link.setAttribute('rel', 'nofollow noopener');
       link.setAttribute('target', '_blank');
 
       const mention = status.mentions.find(mention => link.href === `${mention.url}`);
 
+      // Add event listeners on mentions and hashtags
       if (mention) {
         link.addEventListener('click', onMentionClick.bind(link, mention), false);
         link.setAttribute('title', mention.acct);
-      } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling && link.previousSibling.textContent && link.previousSibling.textContent[link.previousSibling.textContent.length - 1] === '#')) {
+      } else if (link.textContent?.charAt(0) === '#' || (link.previousSibling?.textContent?.charAt(link.previousSibling.textContent.length - 1) === '#')) {
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
         link.setAttribute('title', link.href);
       }
-    }
+    });
   };
 
   const maybeSetCollapsed = (): void => {
@@ -191,11 +191,6 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
       setHidden(!hidden);
     }
   };
-
-  // const handleCollapsedClick: React.EventHandler<React.MouseEvent> = (e) => {
-  //   e.preventDefault();
-  //   setCollapsed(!collapsed);
-  // };
 
   const getHtmlContent = (): string => {
     const { contentHtml: html } = status;
