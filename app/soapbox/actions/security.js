@@ -6,6 +6,7 @@
 
 import snackbar from 'soapbox/actions/snackbar';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
+import { getVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import api from '../api';
 
@@ -84,12 +85,22 @@ export function changePassword(oldPassword, newPassword, confirmation) {
 
 export function resetPassword(usernameOrEmail) {
   return (dispatch, getState) => {
+    const state = getState();
+    const v = getVersion(state.instance);
+
     dispatch({ type: RESET_PASSWORD_REQUEST });
+
     const params =
       usernameOrEmail.includes('@')
         ? { email: usernameOrEmail }
-        : { username: usernameOrEmail };
-    return api(getState).post('/api/v1/truth/password_reset/request', params).then(() => {
+        : { nickname: usernameOrEmail, username: usernameOrEmail };
+
+    const endpoint =
+      v.software === TRUTHSOCIAL
+        ? '/api/v1/truth/password_reset/request'
+        : '/auth/password';
+
+    return api(getState).post(endpoint, params).then(() => {
       dispatch({ type: RESET_PASSWORD_SUCCESS });
     }).catch(error => {
       dispatch({ type: RESET_PASSWORD_FAIL, error });
