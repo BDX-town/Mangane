@@ -15,6 +15,7 @@ const messages = defineMessages({
   follows: { id: 'notifications.filter.follows', defaultMessage: 'Follows' },
   moves: { id: 'notifications.filter.moves', defaultMessage: 'Moves' },
   emoji_reacts: { id: 'notifications.filter.emoji_reacts', defaultMessage: 'Emoji reacts' },
+  statuses: { id: 'notifications.filter.statuses', defaultMessage: 'Updates from people you follow' },
 });
 
 export default @injectIntl
@@ -79,6 +80,12 @@ class NotificationFilterBar extends React.PureComponent {
         title: intl.formatMessage(messages.polls),
         action: this.onClick('poll'),
         name: 'poll',
+      });
+      items.push({
+        text: <Icon src={require('@tabler/icons/icons/home.svg')} />,
+        title: intl.formatMessage(messages.statuses),
+        action: this.onClick('status'),
+        name: 'status',
       });
       items.push({
         text: <Icon src={require('@tabler/icons/icons/user-plus.svg')} />,

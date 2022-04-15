@@ -35,6 +35,7 @@ interface IAccount {
   showProfileHoverCard?: boolean,
   timestamp?: string | Date,
   timestampUrl?: string,
+  withDate?: boolean,
   withRelationship?: boolean,
 }
 
@@ -51,6 +52,7 @@ const Account = ({
   showProfileHoverCard = true,
   timestamp,
   timestampUrl,
+  withDate = false,
   withRelationship = true,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
@@ -121,6 +123,8 @@ const Account = ({
       </>
     );
   }
+
+  if (withDate) timestamp = account.created_at;
 
   const LinkEl: any = showProfileHoverCard ? Link : 'div';
 

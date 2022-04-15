@@ -206,8 +206,8 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         key={key}
         data-index={i}
         className={classNames({
-          'px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 group': true,
-          'bg-gray-100 hover:bg-gray-100': i === selectedSuggestion,
+          'px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 group': true,
+          'bg-gray-100 dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-gray-700': i === selectedSuggestion,
         })}
         onMouseDown={this.onSuggestionClick}
       >
@@ -238,7 +238,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
 
     return menu.map((item, i) => (
       <a
-        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 cursor-pointer hover:bg-gray-100', { selected: suggestions.size - selectedSuggestion === i })}
+        className={classNames('flex items-center space-x-2 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-400 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700', { selected: suggestions.size - selectedSuggestion === i })}
         href='#'
         role='button'
         tabIndex='0'
@@ -293,7 +293,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         />
 
         <div className={classNames({
-          'absolute top-full w-full z-50 shadow bg-white rounded-lg py-1': true,
+          'absolute top-full w-full z-50 shadow bg-white dark:bg-slate-800 rounded-lg py-1': true,
           hidden: !visible,
           block: visible,
           'autosuggest-textarea__suggestions--visible': visible,

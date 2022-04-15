@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
 
 import { deleteAccount } from 'soapbox/actions/security';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, CardHeader, CardTitle, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
+import { useAppDispatch } from 'soapbox/hooks';
 
 const messages = defineMessages({
   passwordFieldLabel: { id: 'security.fields.password.label', defaultMessage: 'Password' },
@@ -18,12 +18,12 @@ const messages = defineMessages({
 
 const DeleteAccount = () => {
   const intl = useIntl();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const [password, setPassword] = React.useState('');
   const [isLoading, setLoading] = React.useState(false);
 
-  const handleInputChange = React.useCallback((event) => {
+  const handleInputChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     event.persist();
 
     setPassword(event.target.value);

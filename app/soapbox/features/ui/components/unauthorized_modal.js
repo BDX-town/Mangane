@@ -3,15 +3,13 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import { remoteInteraction } from 'soapbox/actions/interactions';
 import snackbar from 'soapbox/actions/snackbar';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import IconButton from 'soapbox/components/icon_button';
+import { Button, Modal, Stack, Text } from 'soapbox/components/ui';
 import { getFeatures } from 'soapbox/utils/features';
-
-import { Modal, Stack, Text } from '../../../components/ui';
 
 const messages = defineMessages({
   close: { id: 'lightbox.close', defaultMessage: 'Close' },
@@ -133,11 +131,14 @@ class UnauthorizedModal extends ImmutablePureComponent {
     }
 
     return (
-      <div className='modal-root__modal compose-modal unauthorized-modal remote-interaction-modal'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>{header}</h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
-        </div>
+      <Modal
+        title={header}
+        onClose={this.onClickClose}
+        confirmationAction={!singleUserMode && this.onLogin}
+        confirmationText={<FormattedMessage id='account.login' defaultMessage='Log in' />}
+        secondaryAction={this.onRegister}
+        secondaryText={<FormattedMessage id='account.register' defaultMessage='Sign up' />}
+      >
         <div className='remote-interaction-modal__content'>
           <form className='simple_form remote-interaction-modal__fields'>
             <input
@@ -150,26 +151,20 @@ class UnauthorizedModal extends ImmutablePureComponent {
               onChange={this.onAccountChange}
               required
             />
-            <button className='button' onClick={this.onClickProceed}>{button}</button>
+            <Button theme='primary' onClick={this.onClickProceed}>{button}</Button>
           </form>
           <div className='remote-interaction-modal__divider'>
-            <span>
+            <Text align='center'>
               <FormattedMessage id='remote_interaction.divider' defaultMessage='or' />
-            </span>
+            </Text>
           </div>
           {!singleUserMode && (
-            <>
-              <h3 className='compose-modal__header__title'><FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} /></h3>
-              <Link to='/' className='unauthorized-modal-content__button button' onClick={this.onClickClose}>
-                <FormattedMessage id='account.register' defaultMessage='Sign up' />
-              </Link>
-            </>
+            <Text size='lg' weight='medium'>
+              <FormattedMessage id='unauthorized_modal.title' defaultMessage='Sign up for {site_title}' values={{ site_title: siteTitle }} />
+            </Text>
           )}
-          <Link to='/login' className='unauthorized-modal-content__button button button-secondary' onClick={this.onClickClose}>
-            <FormattedMessage id='account.login' defaultMessage='Log in' />
-          </Link>
         </div>
-      </div>
+      </Modal>
     );
   }
 
