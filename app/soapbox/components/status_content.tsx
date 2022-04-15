@@ -11,8 +11,6 @@ import { onlyEmoji as isOnlyEmoji } from 'soapbox/utils/rich_content';
 
 import { isRtl } from '../rtl';
 
-// import Permalink from './permalink';
-
 import type { Status, Mention } from 'soapbox/types/entities';
 
 const MAX_HEIGHT = 642; // 20px * 32 (+ 2px padding at the top)
@@ -23,15 +21,58 @@ type Point = [
   y: number,
 ]
 
+interface IReadMoreButton {
+  onClick: React.MouseEventHandler,
+}
+
+/** Button to expand a truncated status (due to too much content) */
+const ReadMoreButton: React.FC<IReadMoreButton> = ({ onClick }) => (
+  <button className='status__content__read-more-button' onClick={onClick}>
+    <FormattedMessage id='status.read_more' defaultMessage='Read more' />
+    <Icon id='angle-right' fixedWidth />
+  </button>
+);
+
+interface ISpoilerButton {
+  onClick: React.MouseEventHandler,
+  hidden: boolean,
+  tabIndex?: number,
+}
+
+/** Button to expand status text behind a content warning */
+const SpoilerButton: React.FC<ISpoilerButton> = ({ onClick, hidden, tabIndex }) => (
+  <button
+    tabIndex={tabIndex}
+    className={classNames(
+      'inline-block rounded-md px-1.5 py-0.5 ml-[0.5em]',
+      'text-black dark:text-white',
+      'font-bold text-[11px] uppercase',
+      'bg-primary-100 dark:bg-primary-900',
+      'hover:bg-primary-300 dark:hover:bg-primary-600',
+      'focus:bg-primary-200 dark:focus:bg-primary-600',
+      'hover:no-underline',
+      'duration-100',
+    )}
+    onClick={onClick}
+  >
+    {hidden ? (
+      <FormattedMessage id='status.show_more' defaultMessage='Show more' />
+    ) : (
+      <FormattedMessage id='status.show_less' defaultMessage='Show less' />
+    )}
+  </button>
+);
+
 interface IStatusContent {
   status: Status,
-  reblogContent?: string,
+  reblogContent?: string, // FIXME: not used!
   expanded?: boolean,
   onExpandedToggle?: () => void,
   onClick?: () => void,
   collapsable?: boolean,
 }
 
+/** Renders the text content of a status */
 const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onExpandedToggle, onClick, collapsable = false }) => {
   const history = useHistory();
 
@@ -141,6 +182,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
   const handleSpoilerClick: React.EventHandler<React.MouseEvent> = (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (onExpandedToggle) {
       // The parent manages the state
@@ -181,47 +223,18 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     directionStyle.direction = 'rtl';
   }
 
-  const readMoreButton = (
-    <button className='status__content__read-more-button' onClick={onClick} key='read-more'>
-      <FormattedMessage id='status.read_more' defaultMessage='Read more' /><Icon id='angle-right' fixedWidth />
-    </button>
-  );
-
   if (status.spoiler_text.length > 0) {
-    // let mentionsPlaceholder: React.ReactNode = '';
-    //
-    // const mentionLinks = status.mentions.map(mention => (
-    //   <Permalink to={`/@${mention.acct}`} href={`/@${mention.acct}`} key={mention.id} className='mention'>
-    //     @<span>{mention.username}</span>
-    //   </Permalink>
-    // )).reduce((aggregate, mention) => [...aggregate, mention, ' '], []);
-    //
-    // if (isHidden) {
-    //   mentionsPlaceholder = <div>{mentionLinks}</div>;
-    // }
-
     return (
       <div className={className} ref={node} tabIndex={0} style={directionStyle} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
         <p style={{ marginBottom: isHidden && status.mentions.isEmpty() ? 0 : undefined }}>
           <span dangerouslySetInnerHTML={spoilerContent} lang={status.language || undefined} />
 
-          <button
+          <SpoilerButton
             tabIndex={0}
-            className={classNames('status__content__spoiler-link', {
-              'status__content__spoiler-link--show-more': isHidden,
-              'status__content__spoiler-link--show-less': !isHidden,
-            })}
             onClick={handleSpoilerClick}
-          >
-            {isHidden ? (
-              <FormattedMessage id='status.show_more' defaultMessage='Show more' />
-            ) : (
-              <FormattedMessage id='status.show_less' defaultMessage='Show less' />
-            )}
-          </button>
+            hidden={isHidden}
+          />
         </p>
-
-        {/* mentionsPlaceholder */}
 
         <div
           tabIndex={!isHidden ? 0 : undefined}
@@ -254,7 +267,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
     ];
 
     if (collapsed) {
-      output.push(readMoreButton);
+      output.push(<ReadMoreButton onClick={onClick} key='read-more' />);
     }
 
     if (status.poll && typeof status.poll === 'string') {
