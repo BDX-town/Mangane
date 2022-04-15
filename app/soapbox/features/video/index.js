@@ -13,6 +13,8 @@ import Icon from 'soapbox/components/icon';
 import { isPanoramic, isPortrait, minimumAspectRatio, maximumAspectRatio } from '../../utils/media_aspect_ratio';
 import { isFullscreen, requestFullscreen, exitFullscreen } from '../ui/util/fullscreen';
 
+const DEFAULT_HEIGHT = 300;
+
 const messages = defineMessages({
   play: { id: 'video.play', defaultMessage: 'Play' },
   pause: { id: 'video.pause', defaultMessage: 'Pause' },
@@ -513,7 +515,7 @@ class Video extends React.PureComponent {
         height = Math.floor(containerWidth / aspectRatio);
       }
 
-      if (height) playerStyle.height = height;
+      playerStyle.height = height || DEFAULT_HEIGHT;
     }
 
     let warning;
@@ -553,7 +555,7 @@ class Video extends React.PureComponent {
           aria-label={alt}
           title={alt}
           width={width}
-          height={height || 300}
+          height={height || DEFAULT_HEIGHT}
           volume={volume}
           onClick={this.togglePlay}
           onKeyDown={this.handleVideoKeyDown}
