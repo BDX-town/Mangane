@@ -6,7 +6,7 @@
 
 import snackbar from 'soapbox/actions/snackbar';
 import { getLoggedInAccount } from 'soapbox/utils/auth';
-import { getVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
+import { parseVersion, TRUTHSOCIAL } from 'soapbox/utils/features';
 
 import api from '../api';
 
@@ -86,7 +86,7 @@ export function changePassword(oldPassword, newPassword, confirmation) {
 export function resetPassword(usernameOrEmail) {
   return (dispatch, getState) => {
     const state = getState();
-    const v = getVersion(state.instance);
+    const v = parseVersion(state.instance);
 
     dispatch({ type: RESET_PASSWORD_REQUEST });
 
