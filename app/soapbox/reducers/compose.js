@@ -1,4 +1,5 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet, fromJS } from 'immutable';
+import { v4 as uuid } from 'uuid';
 
 import { tagHistory } from 'soapbox/settings';
 import { PLEROMA } from 'soapbox/utils/features';
@@ -55,7 +56,6 @@ import { SETTING_CHANGE, FE_NAME } from '../actions/settings';
 import { REDRAFT } from '../actions/statuses';
 import { TIMELINE_DELETE } from '../actions/timelines';
 import { unescapeHTML } from '../utils/html';
-import uuid from '../uuid';
 
 const initialState = ImmutableMap({
   id: null,
