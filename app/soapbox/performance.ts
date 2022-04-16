@@ -1,6 +1,6 @@
 'use strict';
 
-import { NODE_ENV } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
 
 //
 // Tools for performance debugging, only enabled in development mode.
@@ -8,9 +8,9 @@ import { NODE_ENV } from 'soapbox/build_config';
 // Also see config/webpack/loaders/mark.js for the webpack loader marks.
 //
 
-let marky;
+let marky: any;
 
-if (NODE_ENV === 'development') {
+if (BuildConfig.NODE_ENV === 'development') {
   if (typeof performance !== 'undefined' && performance.setResourceTimingBufferSize) {
     // Increase Firefox's performance entry limit; otherwise it's capped to 150.
     // See: https://bugzilla.mozilla.org/show_bug.cgi?id=1331135
@@ -22,14 +22,10 @@ if (NODE_ENV === 'development') {
   //window.ReactPerf.start();
 }
 
-export function start(name) {
-  if (NODE_ENV === 'development') {
-    marky.mark(name);
-  }
+export function start(name: string): void {
+  marky?.mark(name);
 }
 
-export function stop(name) {
-  if (NODE_ENV === 'development') {
-    marky.stop(name);
-  }
+export function stop(name: string): void {
+  marky?.stop(name);
 }

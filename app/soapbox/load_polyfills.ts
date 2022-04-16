@@ -14,11 +14,16 @@ function importExtraPolyfills() {
 
 function loadPolyfills() {
   const needsBasePolyfills = !(
+    // @ts-ignore
     Array.prototype.includes &&
+    // @ts-ignore
     HTMLCanvasElement.prototype.toBlob &&
     window.Intl &&
+    // @ts-ignore
     Number.isNaN &&
+    // @ts-ignore
     Object.assign &&
+    // @ts-ignore
     Object.values &&
     window.Symbol
   );

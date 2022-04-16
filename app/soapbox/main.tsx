@@ -5,7 +5,7 @@ import * as OfflinePluginRuntime from '@lcdp/offline-plugin/runtime';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NODE_ENV } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
 
 import { default as Soapbox } from './containers/soapbox';
 import * as monitoring from './monitoring';
@@ -19,11 +19,11 @@ function main() {
   monitoring.start();
 
   ready(() => {
-    const mountNode = document.getElementById('soapbox');
+    const mountNode = document.getElementById('soapbox') as HTMLElement;
 
     ReactDOM.render(<Soapbox />, mountNode);
 
-    if (NODE_ENV === 'production') {
+    if (BuildConfig.NODE_ENV === 'production') {
       // avoid offline in dev mode because it's harder to debug
       OfflinePluginRuntime.install();
     }
