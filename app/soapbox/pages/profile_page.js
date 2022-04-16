@@ -13,6 +13,7 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   ProfileInfoPanel,
+  ProfileMediaPanel,
   SignUpPanel,
 } from 'soapbox/features/ui/util/async-components';
 import { findAccountByUsername } from 'soapbox/selectors';
@@ -155,6 +156,9 @@ class ProfilePage extends ImmutablePureComponent {
               {Component => <Component key='sign-up-panel' />}
             </BundleContainer>
           )}
+          <BundleContainer fetchComponent={ProfileMediaPanel}>
+            {Component => <Component account={account} />}
+          </BundleContainer>
           {showTrendsPanel && (
             <BundleContainer fetchComponent={TrendsPanel}>
               {Component => <Component limit={3} key='trends-panel' />}

@@ -47,13 +47,11 @@
   }
 
   &__list {
-    padding: 0 5px;
     display: flex;
     flex-wrap: wrap;
   }
 
   &__empty {
-    padding: 0 15px 10px 15px;
     font-size: 14px;
     color: var(--primary-text-color--faint);
   }
