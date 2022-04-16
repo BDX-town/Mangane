@@ -1,4 +1,4 @@
-// Use new value only if old value is undefined
+/** Use new value only if old value is undefined */
 export const mergeDefined = (oldVal: any, newVal: any) => oldVal === undefined ? newVal : oldVal;
 
 export const makeEmojiMap = (emojis: any) => emojis.reduce((obj: any, emoji: any) => {

@@ -7,6 +7,8 @@ import punycode from 'punycode';
 
 import { Record as ImmutableRecord, Map as ImmutableMap, fromJS } from 'immutable';
 
+import { mergeDefined } from 'soapbox/utils/normalizers';
+
 // https://docs.joinmastodon.org/entities/card/
 export const CardRecord = ImmutableRecord({
   author_name: '',
@@ -41,27 +43,15 @@ const getHostname = (url: string): string => {
 };
 
 /** Fall back to Pleroma's OG data */
-const normalizeWidth = (card: ImmutableMap<string, any>) => {
-  const width = card.get('width') || card.getIn(['pleroma', 'opengraph', 'width']) || 0;
-  return card.set('width', width);
-};
+const normalizePleromaOpengraph = (card: ImmutableMap<string, any>) => {
+  const opengraph = ImmutableMap({
+    width:  card.getIn(['pleroma', 'opengraph', 'width']),
+    height: card.getIn(['pleroma', 'opengraph', 'height']),
+    html:   card.getIn(['pleroma', 'opengraph', 'html']),
+    image:  card.getIn(['pleroma', 'opengraph', 'thumbnail_url']),
+  });
 
-/** Fall back to Pleroma's OG data */
-const normalizeHeight = (card: ImmutableMap<string, any>) => {
-  const height = card.get('height') || card.getIn(['pleroma', 'opengraph', 'height']) || 0;
-  return card.set('height', height);
-};
-
-/** Fall back to Pleroma's OG data */
-const normalizeHtml = (card: ImmutableMap<string, any>) => {
-  const html = card.get('html') || card.getIn(['pleroma', 'opengraph', 'html']) || '';
-  return card.set('html', html);
-};
-
-/** Fall back to Pleroma's OG data */
-const normalizeImage = (card: ImmutableMap<string, any>) => {
-  const image = card.get('image') || card.getIn(['pleroma', 'opengraph', 'thumbnail_url']) || null;
-  return card.set('image', image);
+  return card.mergeWith(mergeDefined, opengraph);
 };
 
 /** Set provider from URL if not found */
@@ -73,10 +63,7 @@ const normalizeProviderName = (card: ImmutableMap<string, any>) => {
 export const normalizeCard = (card: Record<string, any>) => {
   return CardRecord(
     ImmutableMap(fromJS(card)).withMutations(card => {
-      normalizeWidth(card);
-      normalizeHeight(card);
-      normalizeHtml(card);
-      normalizeImage(card);
+      normalizePleromaOpengraph(card);
       normalizeProviderName(card);
     }),
   );
