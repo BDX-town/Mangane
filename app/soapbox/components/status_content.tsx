@@ -87,6 +87,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
   const onMentionClick = (mention: Mention, e: MouseEvent) => {
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
+      e.stopPropagation();
       history.push(`/@${mention.acct}`);
     }
   };
@@ -96,8 +97,14 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
 
     if (e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
+      e.stopPropagation();
       history.push(`/tags/${hashtag}`);
     }
+  };
+
+  /** For regular links, just stop propogation */
+  const onLinkClick = (e: MouseEvent) => {
+    e.stopPropagation();
   };
 
   const updateStatusLinks = () => {
@@ -124,6 +131,7 @@ const StatusContent: React.FC<IStatusContent> = ({ status, expanded = false, onE
         link.addEventListener('click', onHashtagClick.bind(link, link.text), false);
       } else {
         link.setAttribute('title', link.href);
+        link.addEventListener('click', onLinkClick.bind(link), false);
       }
     });
   };

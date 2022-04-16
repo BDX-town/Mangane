@@ -186,7 +186,7 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
           />
         );
       }
-    } else if (status.spoiler_text.length === 0 && !status.quote) {
+    } else if (status.spoiler_text.length === 0 && !status.quote && status.card) {
       media = <Card onOpenMedia={this.props.onOpenMedia} card={status.card} />;
     }
 
