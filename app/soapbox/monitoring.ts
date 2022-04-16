@@ -1,13 +1,13 @@
-import { NODE_ENV, SENTRY_DSN } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
 
-export const start = () => {
+export const start = (): void => {
   Promise.all([
     import(/* webpackChunkName: "error" */'@sentry/react'),
     import(/* webpackChunkName: "error" */'@sentry/tracing'),
   ]).then(([Sentry, { Integrations: Integrations }]) => {
     Sentry.init({
-      dsn: SENTRY_DSN,
-      environment: NODE_ENV,
+      dsn: BuildConfig.SENTRY_DSN,
+      environment: BuildConfig.NODE_ENV,
       debug: false,
       integrations: [new Integrations.BrowserTracing()],
 
@@ -18,7 +18,7 @@ export const start = () => {
   }).catch(console.error);
 };
 
-export const captureException = error => {
+export const captureException = (error: Error): void => {
   import(/* webpackChunkName: "error" */'@sentry/react')
     .then(Sentry => {
       Sentry.captureException(error);

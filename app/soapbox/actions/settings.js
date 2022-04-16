@@ -1,11 +1,10 @@
 import { Map as ImmutableMap, List as ImmutableList, OrderedSet as ImmutableOrderedSet } from 'immutable';
 import { defineMessages } from 'react-intl';
 import { createSelector } from 'reselect';
+import { v4 as uuid } from 'uuid';
 
 import { patchMe } from 'soapbox/actions/me';
 import { isLoggedIn } from 'soapbox/utils/auth';
-
-import uuid from '../uuid';
 
 import { showAlertForError } from './alerts';
 import snackbar from './snackbar';

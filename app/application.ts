@@ -1,5 +1,6 @@
 import loadPolyfills from './soapbox/load_polyfills';
 
+// @ts-ignore
 require.context('./images/', true);
 
 // Load stylesheet

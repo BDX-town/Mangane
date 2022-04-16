@@ -35,7 +35,7 @@ const makeHtmlConfig = (params = {}) => {
 
 module.exports = {
   entry: {
-    application: resolve('app/application.js'),
+    application: resolve('app/application.ts'),
   },
 
   output: {
