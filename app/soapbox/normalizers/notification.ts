@@ -11,7 +11,7 @@ import {
 
 import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
 
-type NotificationType = ''
+export type NotificationType = ''
   | 'follow'
   | 'follow_request'
   | 'mention'

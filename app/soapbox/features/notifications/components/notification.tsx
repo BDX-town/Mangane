@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { HotKeys } from 'react-hotkeys';
-import ImmutablePropTypes from 'react-immutable-proptypes';
 import {  FormattedMessage, useIntl } from 'react-intl';
 import { useHistory } from 'react-router-dom';
 
@@ -11,7 +9,12 @@ import { HStack, Text } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 
-const notificationForScreenReader = (intl, message, timestamp) => {
+import type { History } from 'history';
+import type { ScrollPosition } from 'soapbox/components/status';
+import type { NotificationType } from 'soapbox/normalizers/notification';
+import type { Account, Status, Notification as NotificationEntity } from 'soapbox/types/entities';
+
+const notificationForScreenReader = (intl: ReturnType<typeof useIntl>, message: string, timestamp: Date) => {
   const output = [message];
 
   output.push(intl.formatDate(timestamp, { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' }));
@@ -20,18 +23,18 @@ const notificationForScreenReader = (intl, message, timestamp) => {
 };
 
 // Workaround for dynamic messages (https://github.com/formatjs/babel-plugin-react-intl/issues/119#issuecomment-326202499)
-function FormattedMessageFixed(props) {
+function FormattedMessageFixed(props: any) {
   return <FormattedMessage {...props} />;
 }
 
-const buildLink = (account) => (
+const buildLink = (account: Account): JSX.Element => (
   <bdi>
     <Permalink
       className='text-gray-800 dark:text-gray-200 font-bold hover:underline'
-      href={`/@${account.get('acct')}`}
-      title={account.get('acct')}
-      to={`/@${account.get('acct')}`}
-      dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
+      href={`/@${account.acct}`}
+      title={account.acct}
+      to={`/@${account.acct}`}
+      dangerouslySetInnerHTML={{ __html: account.display_name_html }}
     />
   </bdi>
 );
@@ -46,7 +49,8 @@ const icons = {
   status: require('@tabler/icons/icons/home.svg'),
 };
 
-const messages = {
+// @ts-ignore
+const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
@@ -57,11 +61,11 @@ const messages = {
   },
   favourite: {
     id: 'notification.favourite',
-    defaultMessage: '{name} liked your TRUTH',
+    defaultMessage: '{name} liked your post',
   },
   reblog: {
     id: 'notification.reblog',
-    defaultMessage: '{name} re-TRUTH your TRUTH',
+    defaultMessage: '{name} reposted your post',
   },
   status: {
     id: 'notification.status',
@@ -69,7 +73,7 @@ const messages = {
   },
 };
 
-const buildMessage = (type, account) => {
+const buildMessage = (type: NotificationType, account: Account): JSX.Element => {
   const link = buildLink(account);
 
   return (
@@ -81,15 +85,30 @@ const buildMessage = (type, account) => {
   );
 };
 
-const Notification = (props) => {
-  const { hidden, notification, onMoveUp, onMoveDown } = props;
+interface INotificaton {
+  hidden?: boolean,
+  notification: NotificationEntity,
+  onMoveUp: (notificationId: string) => void,
+  onMoveDown: (notificationId: string) => void,
+  onMention: (account: Account, history: History) => void,
+  onFavourite: (status: Status) => void,
+  onReblog: (status: Status, e?: KeyboardEvent) => void,
+  onToggleHidden: (status: Status) => void,
+  getScrollPosition?: () => ScrollPosition | undefined,
+  updateScrollBottom?: (bottom: number) => void,
+  cacheMediaWidth: () => void,
+  cachedMediaWidth: number,
+  siteTitle?: string,
+}
+
+const Notification: React.FC<INotificaton> = (props) => {
+  const { hidden = false, notification, onMoveUp, onMoveDown } = props;
 
   const history = useHistory();
   const intl = useIntl();
 
-  const type = notification.get('type');
-  const timestamp = notification.get('created_at');
-  const account = notification.get('account');
+  const type = notification.type;
+  const { account, status } = notification;
 
   const getHandlers = () => ({
     reply: handleMention,
@@ -104,64 +123,71 @@ const Notification = (props) => {
   });
 
   const handleOpen = () => {
-    if (notification.get('status')) {
-      history.push(`/@${notification.getIn(['account', 'acct'])}/posts/${notification.getIn(['status', 'id'])}`);
+    if (status && typeof status === 'object' && account && typeof account === 'object') {
+      history.push(`/@${account.acct}/posts/${status.id}`);
     } else {
       handleOpenProfile();
     }
   };
 
   const handleOpenProfile = () => {
-    history.push(`/@${notification.getIn(['account', 'acct'])}`);
+    if (account && typeof account === 'object') {
+      history.push(`/@${account.acct}`);
+    }
   };
 
-  const handleMention = (event) => {
-    event.preventDefault();
+  const handleMention = (e?: KeyboardEvent) => {
+    e?.preventDefault();
 
-    props.onMention(notification.get('account'), history);
+    if (account && typeof account === 'object') {
+      props.onMention(account, history);
+    }
   };
 
-  const handleHotkeyFavourite = () => {
-    const status = notification.get('status');
-    if (status) props.onFavourite(status);
+  const handleHotkeyFavourite = (e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      props.onFavourite(status);
+    }
   };
 
-  const handleHotkeyBoost = (e) => {
-    const status = notification.get('status');
-    if (status) props.onReblog(status, e);
+  const handleHotkeyBoost = (e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      props.onReblog(status, e);
+    }
   };
 
-  const handleHotkeyToggleHidden = () => {
-    const status = notification.get('status');
-    if (status) props.onToggleHidden(status);
+  const handleHotkeyToggleHidden = (e?: KeyboardEvent) => {
+    if (status && typeof status === 'object') {
+      props.onToggleHidden(status);
+    }
   };
 
   const handleMoveUp = () => {
-    onMoveUp(notification.get('id'));
+    onMoveUp(notification.id);
   };
 
   const handleMoveDown = () => {
-    onMoveDown(notification.get('id'));
+    onMoveDown(notification.id);
   };
 
   const renderContent = () => {
     switch (type) {
     case 'follow':
-      return (
+      return account && typeof account === 'object' ? (
         <AccountContainer
-          id={notification.getIn(['account', 'id'])}
-          withNote={false}
+          id={account.id}
           hidden={hidden}
           avatarSize={48}
         />
-      );
+      ) : null;
     case 'favourite':
     case 'mention':
     case 'reblog':
     case 'status':
-      return (
+      return status && typeof status === 'object' ? (
         <StatusContainer
-          id={notification.getIn(['status', 'id'])}
+          // @ts-ignore
+          id={status.id}
           withDismiss
           hidden={hidden}
           onMoveDown={handleMoveDown}
@@ -172,7 +198,7 @@ const Notification = (props) => {
           cachedMediaWidth={props.cachedMediaWidth}
           cacheMediaWidth={props.cacheMediaWidth}
         />
-      );
+      ) : null;
     default:
       return null;
     }
@@ -182,13 +208,13 @@ const Notification = (props) => {
     return null;
   }
 
-  const message = buildMessage(type, account);
+  const message: React.ReactNode = account && typeof account === 'object' ? buildMessage(type, account) : null;
 
   return (
     <HotKeys handlers={getHandlers()}>
       <div
         className='notification focusable'
-        tabIndex='0'
+        tabIndex={0}
         aria-label={
           notificationForScreenReader(
             intl,
@@ -197,9 +223,9 @@ const Notification = (props) => {
               defaultMessage: messages[type].defaultMessage,
             },
             {
-              name: notification.getIn(['account', 'acct']),
+              name: account && typeof account === 'object' ? account.acct : '',
             }),
-            notification.get('created_at'),
+            notification.created_at,
           )
         }
       >
@@ -207,6 +233,7 @@ const Notification = (props) => {
           <div className='mb-2'>
             <HStack alignItems='center' space={1.5}>
               <Icon
+                // @ts-ignore
                 src={icons[type]}
                 className='text-primary-600'
               />
@@ -215,7 +242,6 @@ const Notification = (props) => {
                 <Text
                   theme='muted'
                   size='sm'
-                  title={timestamp}
                 >
                   {message}
                 </Text>
@@ -230,22 +256,6 @@ const Notification = (props) => {
       </div>
     </HotKeys>
   );
-};
-
-Notification.propTypes = {
-  hidden: PropTypes.bool,
-  notification: ImmutablePropTypes.record.isRequired,
-  onMoveUp: PropTypes.func.isRequired,
-  onMoveDown: PropTypes.func.isRequired,
-  onMention: PropTypes.func.isRequired,
-  onFavourite: PropTypes.func.isRequired,
-  onReblog: PropTypes.func.isRequired,
-  onToggleHidden: PropTypes.func.isRequired,
-  getScrollPosition: PropTypes.func,
-  updateScrollBottom: PropTypes.func,
-  cacheMediaWidth: PropTypes.func,
-  cachedMediaWidth: PropTypes.number,
-  siteTitle: PropTypes.string,
 };
 
 export default Notification;

@@ -29,7 +29,7 @@ import type {
 } from 'soapbox/types/entities';
 
 // Defined in components/scrollable_list
-type ScrollPosition = { height: number, top: number };
+export type ScrollPosition = { height: number, top: number };
 
 export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
   const { account } = status;
