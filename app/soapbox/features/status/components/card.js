@@ -252,7 +252,14 @@ export default class Card extends React.PureComponent {
     }
 
     return (
-      <a href={card.get('url')} className={className} target='_blank' rel='noopener' ref={this.setRef}>
+      <a
+        href={card.get('url')}
+        className={className}
+        target='_blank'
+        rel='noopener'
+        ref={this.setRef}
+        onClick={e => e.stopPropagation()}
+      >
         {embed}
         {description}
       </a>
