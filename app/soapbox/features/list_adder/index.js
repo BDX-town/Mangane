@@ -6,16 +6,15 @@ import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
 
-import IconButton from 'soapbox/components/icon_button';
+import { setupListAdder, resetListAdder } from 'soapbox/actions/lists';
+import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
 
-import { setupListAdder, resetListAdder } from '../../actions/lists';
 import NewListForm from '../lists/components/new_list_form';
-import ColumnSubheading from '../ui/components/column_subheading';
 
 import Account from './components/account';
 import List from './components/list';
-// hack
 
+// hack
 const getOrderedLists = createSelector([state => state.get('lists')], lists => {
   if (!lists) {
     return lists;
@@ -72,13 +71,10 @@ class ListAdder extends ImmutablePureComponent {
     const { accountId, listIds, intl } = this.props;
 
     return (
-      <div className='modal-root__modal compose-modal list-editor__content'>
-        <div className='compose-modal__header'>
-          <h3 className='compose-modal__header__title'>
-            <FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />
-          </h3>
-          <IconButton className='compose-modal__close' title={intl.formatMessage(messages.close)} src={require('@tabler/icons/icons/x.svg')} onClick={this.onClickClose} />
-        </div>
+      <Modal
+        title={<FormattedMessage id='list_adder.header_title' defaultMessage='Add or Remove from Lists' />}
+        onClose={this.onClickClose}
+      >
         <div className='compose-modal__content'>
           <div className='list-adder'>
             <div className='list-adder__account'>
@@ -87,18 +83,22 @@ class ListAdder extends ImmutablePureComponent {
 
             <br />
 
-            <ColumnSubheading text={intl.formatMessage(messages.add)} />
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.add)} />
+            </CardHeader>
             <NewListForm />
 
             <br />
 
-            <ColumnSubheading text={intl.formatMessage(messages.subheading)} />
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.subheading)} />
+            </CardHeader>
             <div className='list-adder__lists'>
               {listIds.map(ListId => <List key={ListId} listId={ListId} />)}
             </div>
           </div>
         </div>
-      </div>
+      </Modal>
     );
   }
 
