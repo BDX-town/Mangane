@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import Icon from '../../../components/icon';
 import Permalink from '../../../components/permalink';
-import { HStack, Text } from '../../../components/ui';
+import { HStack, Text, Emoji } from '../../../components/ui';
 import AccountContainer from '../../../containers/account_container';
 import StatusContainer from '../../../containers/status_container';
 
@@ -39,21 +39,27 @@ const buildLink = (account: Account): JSX.Element => (
   </bdi>
 );
 
-export const NOTIFICATION_TYPES = ['follow', 'mention', 'favourite', 'reblog', 'status'];
-
-const icons = {
+const icons: Record<NotificationType, string> = {
   follow: require('@tabler/icons/icons/user-plus.svg'),
+  follow_request: require('@tabler/icons/icons/user-plus.svg'),
   mention: require('@tabler/icons/icons/at.svg'),
   favourite: require('@tabler/icons/icons/heart.svg'),
   reblog: require('@tabler/icons/icons/repeat.svg'),
   status: require('@tabler/icons/icons/home.svg'),
+  poll: require('@tabler/icons/icons/chart-bar.svg'),
+  move: require('@tabler/icons/icons/briefcase.svg'),
+  'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
+  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'), // FIXME: show the actual emoji
 };
 
-// @ts-ignore
 const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
   follow: {
     id: 'notification.follow',
     defaultMessage: '{name} followed you',
+  },
+  follow_request: {
+    id: 'notification.follow_request',
+    defaultMessage: '{name} has requested to follow you',
   },
   mention: {
     id: 'notification.mentioned',
@@ -70,6 +76,22 @@ const messages: Record<NotificationType, { id: string, defaultMessage: string }>
   status: {
     id: 'notification.status',
     defaultMessage: '{name} just posted',
+  },
+  poll: {
+    id: 'notification.poll',
+    defaultMessage: 'A poll you have voted in has ended',
+  },
+  move: {
+    id: 'notification.move',
+    defaultMessage: '{name} moved to {targetName}',
+  },
+  'pleroma:chat_mention': {
+    id: 'notification.chat_mention',
+    defaultMessage: '{name} sent you a message',
+  },
+  'pleroma:emoji_reaction': {
+    id: 'notification.pleroma:emoji_reaction',
+    defaultMessage: '{name} reacted to your post',
   },
 };
 
@@ -170,9 +192,30 @@ const Notification: React.FC<INotificaton> = (props) => {
     onMoveDown(notification.id);
   };
 
+  const renderIcon = (): React.ReactNode => {
+    if (type === 'pleroma:emoji_reaction' && notification.emoji) {
+      return (
+        <Emoji
+          emoji={notification.emoji}
+          className='w-4 h-4'
+        />
+      );
+    } else if (type) {
+      return (
+        <Icon
+          src={icons[type]}
+          className='text-primary-600'
+        />
+      );
+    } else {
+      return null;
+    }
+  };
+
   const renderContent = () => {
     switch (type) {
     case 'follow':
+    case 'follow_request':
       return account && typeof account === 'object' ? (
         <AccountContainer
           id={account.id}
@@ -180,10 +223,14 @@ const Notification: React.FC<INotificaton> = (props) => {
           avatarSize={48}
         />
       ) : null;
+    case 'move':
+      // TODO
+      return null;
     case 'favourite':
     case 'mention':
     case 'reblog':
     case 'status':
+    case 'pleroma:emoji_reaction':
       return status && typeof status === 'object' ? (
         <StatusContainer
           // @ts-ignore
@@ -204,11 +251,7 @@ const Notification: React.FC<INotificaton> = (props) => {
     }
   };
 
-  if (!NOTIFICATION_TYPES.includes(type)) {
-    return null;
-  }
-
-  const message: React.ReactNode = account && typeof account === 'object' ? buildMessage(type, account) : null;
+  const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account) : null;
 
   return (
     <HotKeys handlers={getHandlers()}>
@@ -219,8 +262,8 @@ const Notification: React.FC<INotificaton> = (props) => {
           notificationForScreenReader(
             intl,
             intl.formatMessage({
-              id: messages[type].id,
-              defaultMessage: messages[type].defaultMessage,
+              id: type && messages[type].id,
+              defaultMessage: type && messages[type].defaultMessage,
             },
             {
               name: account && typeof account === 'object' ? account.acct : '',
@@ -232,11 +275,7 @@ const Notification: React.FC<INotificaton> = (props) => {
         <div className='p-4 focusable'>
           <div className='mb-2'>
             <HStack alignItems='center' space={1.5}>
-              <Icon
-                // @ts-ignore
-                src={icons[type]}
-                className='text-primary-600'
-              />
+              {renderIcon()}
 
               <div>
                 <Text

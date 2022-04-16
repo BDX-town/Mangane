@@ -23,7 +23,6 @@ import ScrollableList from '../../components/scrollable_list';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
 import { Column } from '../../components/ui';
 
-import { NOTIFICATION_TYPES } from './components/notification';
 import FilterBarContainer from './containers/filter_bar_container';
 import NotificationContainer from './containers/notification_container';
 
@@ -200,13 +199,12 @@ class Notifications extends React.PureComponent {
     }
 
     this.scrollableContent = scrollableContent;
-    const notificationsToRender = notifications.filter((notification) => NOTIFICATION_TYPES.includes(notification.get('type')));
 
     const scrollContainer = (
       <ScrollableList
         scrollKey='notifications'
         isLoading={isLoading}
-        showLoading={isLoading && notificationsToRender.size === 0}
+        showLoading={isLoading && notifications.size === 0}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
         placeholderComponent={PlaceholderNotification}
@@ -216,8 +214,8 @@ class Notifications extends React.PureComponent {
         onScrollToTop={this.handleScrollToTop}
         onScroll={this.handleScroll}
         className={classNames({
-          'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notificationsToRender.size > 0,
-          'space-y-2': notificationsToRender.size === 0,
+          'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
+          'space-y-2': notifications.size === 0,
         })}
       >
         {scrollableContent}
