@@ -84,7 +84,7 @@ export const defaultSettings = ImmutableMap({
 
     shows: ImmutableMap({
       follow: true,
-      follow_request: false,
+      follow_request: true,
       favourite: true,
       reblog: true,
       mention: true,
