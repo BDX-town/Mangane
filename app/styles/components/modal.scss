@@ -709,9 +709,6 @@
     display: flex;
     flex-direction: row;
     flex: 1;
-    padding: 10px;
-    padding-left: max(10px, env(safe-area-inset-left));
-    padding-right: max(10px, env(safe-area-inset-right));
     overflow-y: hidden;
 
     &--scroll {

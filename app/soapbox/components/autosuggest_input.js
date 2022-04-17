@@ -272,7 +272,7 @@ export default class AutosuggestInput extends ImmutablePureComponent {
         <input
           type='text'
           className={classNames({
-            'block w-full sm:text-sm focus:ring-indigo-500 focus:border-indigo-500': true,
+            'block w-full sm:text-sm dark:bg-slate-800 dark:text-white dark:placeholder:text-gray-500 focus:ring-indigo-500 focus:border-indigo-500': true,
             [className]: typeof className !== 'undefined',
           })}
           ref={this.setInput}

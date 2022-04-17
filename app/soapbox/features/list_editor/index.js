@@ -6,9 +6,7 @@ import { injectIntl, defineMessages, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { setupListEditor, clearListSuggestions, resetListEditor } from 'soapbox/actions/lists';
-import { Modal } from 'soapbox/components/ui';
-
-import ColumnSubheading from '../ui/components/column_subheading';
+import { CardHeader, CardTitle, Modal } from 'soapbox/components/ui';
 
 import Account from './components/account';
 import EditListForm from './components/edit_list_form';
@@ -72,14 +70,18 @@ class ListEditor extends ImmutablePureComponent {
       >
         <div className='compose-modal__content list-editor__content'>
           <div className='list-editor'>
-            <ColumnSubheading text={intl.formatMessage(messages.changeTitle)} />
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.changeTitle)} />
+            </CardHeader>
             <EditListForm />
             <br />
 
             {
               accountIds.size > 0 &&
               <div>
-                <ColumnSubheading text={intl.formatMessage(messages.removeFromList)} />
+                <CardHeader>
+                  <CardTitle title={intl.formatMessage(messages.removeFromList)} />
+                </CardHeader>
                 <div className='list-editor__accounts'>
                   {accountIds.map(accountId => <Account key={accountId} accountId={accountId} added />)}
                 </div>
@@ -87,7 +89,9 @@ class ListEditor extends ImmutablePureComponent {
             }
 
             <br />
-            <ColumnSubheading text={intl.formatMessage(messages.addToList)} />
+            <CardHeader>
+              <CardTitle title={intl.formatMessage(messages.addToList)} />
+            </CardHeader>
             <Search />
             <div className='list-editor__accounts'>
               {searchAccountIds.map(accountId => <Account key={accountId} accountId={accountId} />)}
