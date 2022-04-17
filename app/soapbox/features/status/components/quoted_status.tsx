@@ -39,6 +39,7 @@ class QuotedStatus extends ImmutablePureComponent<IQuotedStatus> {
 
       this.props.history.push(`/@${account.acct}/posts/${status.id}`);
 
+      e.stopPropagation();
       e.preventDefault();
     }
   }

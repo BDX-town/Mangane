@@ -1,0 +1,73 @@
+{
+  "account": {
+    "acct": "dave",
+    "avatar": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "avatar_static": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "bot": false,
+    "created_at": "2020-02-01T07:28:46.000Z",
+    "display_name": "Elden Beedle 🇺🇦 🇫🇷",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 490,
+    "following_count": 367,
+    "fqn": "dave@gleasonator.com",
+    "header": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "header_static": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "id": "9v5c0Pkz3MT5KTfam8",
+    "last_status_at": "2022-04-16T19:57:10",
+    "locked": false,
+    "note": "Beedle is back, baby!<br/><br/>Mostly just crosspost memes and stuff I find on the internet",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "also_known_as": [],
+      "ap_id": "https://gleasonator.com/users/dave",
+      "background_image": null,
+      "birthday": "1990-01-01",
+      "deactivated": false,
+      "favicon": "https://gleasonator.com/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_confirmed": true,
+      "is_moderator": false,
+      "is_suggested": true,
+      "location": null,
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [],
+      "note": "Beedle is back, baby!\r\n\r\nMostly just crosspost memes and stuff I find on the internet",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 16758,
+    "url": "https://gleasonator.com/users/dave",
+    "username": "dave"
+  },
+  "chat_message": {
+    "account_id": "9v5c0Pkz3MT5KTfam8",
+    "attachment": null,
+    "card": null,
+    "chat_id": "9yX4Q9DiC2te6lvk5g",
+    "content": "Cool, it works, I&#39;ll keep letting you know when I find broken stuff",
+    "created_at": "2022-04-16T19:22:54.000Z",
+    "emojis": [],
+    "id": "AIW4bHoICoZ9CsRTW4",
+    "unread": false
+  },
+  "created_at": "2022-04-16T19:22:55.000Z",
+  "id": "429247",
+  "pleroma": {
+    "is_muted": false,
+    "is_seen": true
+  },
+  "type": "pleroma:chat_mention"
+}

@@ -56,12 +56,13 @@ const makeMapStateToProps = () => {
     const me = state.get('me');
     const account = getAccount(state, me);
     const soapbox = getSoapboxConfig(state);
+    const features = getFeatures(state.instance);
 
     return {
       account,
+      features,
       maxFields: state.getIn(['instance', 'pleroma', 'metadata', 'fields_limits', 'max_fields'], 4),
       verifiedCanEditName: soapbox.get('verifiedCanEditName'),
-      supportsEmailList: getFeatures(state.get('instance')).emailList,
     };
   };
 
@@ -242,7 +243,7 @@ class EditProfile extends ImmutablePureComponent {
   }
 
   render() {
-    const { intl, account, verifiedCanEditName, supportsEmailList /* maxFields */ } = this.props;
+    const { intl, account, verifiedCanEditName, features /* maxFields */ } = this.props;
     const verified = account.get('verified');
     const canEditName = verifiedCanEditName || !verified;
 
@@ -262,27 +263,31 @@ class EditProfile extends ImmutablePureComponent {
             />
           </FormGroup>
 
-          <FormGroup
-            labelText={<FormattedMessage id='edit_profile.fields.location_label' defaultMessage='Location' />}
-          >
-            <Input
-              name='location'
-              value={this.state.location}
-              onChange={this.handleTextChange}
-              placeholder={intl.formatMessage(messages.locationPlaceholder)}
-            />
-          </FormGroup>
+          {features.accountLocation && (
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.location_label' defaultMessage='Location' />}
+            >
+              <Input
+                name='location'
+                value={this.state.location}
+                onChange={this.handleTextChange}
+                placeholder={intl.formatMessage(messages.locationPlaceholder)}
+              />
+            </FormGroup>
+          )}
 
-          <FormGroup
-            labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
-          >
-            <Input
-              name='website'
-              value={this.state.website}
-              onChange={this.handleTextChange}
-              placeholder={intl.formatMessage(messages.websitePlaceholder)}
-            />
-          </FormGroup>
+          {features.accountWebsite && (
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.website_label' defaultMessage='Website' />}
+            >
+              <Input
+                name='website'
+                value={this.state.website}
+                onChange={this.handleTextChange}
+                placeholder={intl.formatMessage(messages.websitePlaceholder)}
+              />
+            </FormGroup>
+          )}
 
           <FormGroup
             labelText={<FormattedMessage id='edit_profile.fields.bio_label' defaultMessage='Bio' />}
@@ -351,13 +356,15 @@ class EditProfile extends ImmutablePureComponent {
                 checked={this.state.discoverable}
                 onChange={this.handleCheckboxChange}
               />*/}
-          {supportsEmailList && <Checkbox
-            label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
-            hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
-            name='accepts_email_list'
-            checked={this.state.accepts_email_list}
-            onChange={this.handleCheckboxChange}
-          />}
+          {features.emailList && (
+            <Checkbox
+              label={<FormattedMessage id='edit_profile.fields.accepts_email_list_label' defaultMessage='Subscribe to newsletter' />}
+              hint={<FormattedMessage id='edit_profile.hints.accepts_email_list' defaultMessage='Opt-in to news and marketing updates.' />}
+              name='accepts_email_list'
+              checked={this.state.accepts_email_list}
+              onChange={this.handleCheckboxChange}
+            />
+          )}
           {/* </FieldsGroup> */}
           {/*<FieldsGroup>
               <div className='fields-row__column fields-group'>

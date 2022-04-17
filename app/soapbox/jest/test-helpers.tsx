@@ -70,4 +70,5 @@ export {
   applyActions,
   rootState,
   rootReducer,
+  createTestStore,
 };
