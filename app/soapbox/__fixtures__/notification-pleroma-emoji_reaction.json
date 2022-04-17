@@ -1,0 +1,301 @@
+{
+  "account": {
+    "acct": "dave",
+    "avatar": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "avatar_static": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "bot": false,
+    "created_at": "2020-02-01T07:28:46.000Z",
+    "display_name": "Elden Beedle 🇺🇦 🇫🇷",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 490,
+    "following_count": 367,
+    "fqn": "dave@gleasonator.com",
+    "header": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "header_static": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "id": "9v5c0Pkz3MT5KTfam8",
+    "last_status_at": "2022-04-16T19:57:10",
+    "locked": false,
+    "note": "Beedle is back, baby!<br/><br/>Mostly just crosspost memes and stuff I find on the internet",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "also_known_as": [],
+      "ap_id": "https://gleasonator.com/users/dave",
+      "background_image": null,
+      "birthday": "1990-01-01",
+      "deactivated": false,
+      "favicon": "https://gleasonator.com/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_confirmed": true,
+      "is_moderator": false,
+      "is_suggested": true,
+      "location": null,
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [],
+      "note": "Beedle is back, baby!\r\n\r\nMostly just crosspost memes and stuff I find on the internet",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 16758,
+    "url": "https://gleasonator.com/users/dave",
+    "username": "dave"
+  },
+  "created_at": "2022-04-16T16:52:15.000Z",
+  "emoji": "😮",
+  "id": "429071",
+  "pleroma": {
+    "is_muted": false,
+    "is_seen": true
+  },
+  "status": {
+    "account": {
+      "acct": "alex",
+      "avatar": "https://media.gleasonator.com/6d64aecb17348b23aaff78db4687b9476cb0da1c07cc6a819c2e6ec7144c18b1.png",
+      "avatar_static": "https://media.gleasonator.com/6d64aecb17348b23aaff78db4687b9476cb0da1c07cc6a819c2e6ec7144c18b1.png",
+      "bot": false,
+      "created_at": "2020-01-08T01:25:43.000Z",
+      "display_name": "Alex Gleason",
+      "emojis": [],
+      "fields": [
+        {
+          "name": "Website",
+          "value": "<a href=\"https://alexgleason.me\" rel=\"ugc\">https://alexgleason.me</a>"
+        },
+        {
+          "name": "Soapbox",
+          "value": "<a href=\"https://soapbox.pub\" rel=\"ugc\">https://soapbox.pub</a>"
+        },
+        {
+          "name": "Email",
+          "value": "alex@alexgleason.me"
+        },
+        {
+          "name": "Gender identity",
+          "value": "Soyboy"
+        },
+        {
+          "name": "Donate (PayPal)",
+          "value": "<a href=\"https://paypal.me/gleasonator\" rel=\"ugc\">https://paypal.me/gleasonator</a>"
+        },
+        {
+          "name": "$BTC",
+          "value": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n"
+        },
+        {
+          "name": "$ETH",
+          "value": "0xAc9aB5Fc04Dc1cB1789Af75b523Bd23C70B2D717"
+        },
+        {
+          "name": "$DOGE",
+          "value": "D5zVZs6jrRakaPVGiErkQiHt9sayzm6V5D"
+        },
+        {
+          "name": "$XMR",
+          "value": "45JDCLrjJ4bgVUSbbs2yjy9m5Mf4VLPW8fG7jw9sq5u69rXZZopQogZNeyYkMBnXpkaip4p4QwaaJNhdTotPa9g44DBCzdK"
+        }
+      ],
+      "follow_requests_count": 0,
+      "followers_count": 2602,
+      "following_count": 1603,
+      "fqn": "alex@gleasonator.com",
+      "header": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+      "header_static": "https://media.gleasonator.com/accounts/headers/000/000/001/original/9d0e4dbf1c9dbc8f.png",
+      "id": "9v5bmRalQvjOy0ECcC",
+      "last_status_at": "2022-04-16T19:23:50",
+      "locked": false,
+      "note": "I create Fediverse software that empowers people online.<br/><br/>I&#39;m vegan btw<br/><br/>Note: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.",
+      "pleroma": {
+        "accepts_chat_messages": true,
+        "accepts_email_list": true,
+        "allow_following_move": true,
+        "also_known_as": [
+          "https://mitra.social/users/alex"
+        ],
+        "ap_id": "https://gleasonator.com/users/alex",
+        "background_image": null,
+        "birthday": "1993-07-03",
+        "deactivated": false,
+        "email": "alex@alexgleason.me",
+        "favicon": "https://gleasonator.com/favicon.png",
+        "hide_favorites": true,
+        "hide_followers": false,
+        "hide_followers_count": false,
+        "hide_follows": false,
+        "hide_follows_count": false,
+        "is_admin": true,
+        "is_confirmed": true,
+        "is_moderator": false,
+        "is_suggested": true,
+        "location": "Texas",
+        "notification_settings": {
+          "block_from_strangers": false,
+          "hide_notification_contents": false
+        },
+        "relationship": {},
+        "skip_thread_containment": false,
+        "tags": [],
+        "unread_conversation_count": 392,
+        "unread_notifications_count": 0
+      },
+      "source": {
+        "fields": [
+          {
+            "name": "Website",
+            "value": "https://alexgleason.me"
+          },
+          {
+            "name": "Soapbox",
+            "value": "https://soapbox.pub"
+          },
+          {
+            "name": "Email",
+            "value": "alex@alexgleason.me"
+          },
+          {
+            "name": "Gender identity",
+            "value": "Soyboy"
+          },
+          {
+            "name": "Donate (PayPal)",
+            "value": "https://paypal.me/gleasonator"
+          },
+          {
+            "name": "$BTC",
+            "value": "bc1q9cx35adpm73aq2fw40ye6ts8hfxqzjr5unwg0n"
+          },
+          {
+            "name": "$ETH",
+            "value": "0xAc9aB5Fc04Dc1cB1789Af75b523Bd23C70B2D717"
+          },
+          {
+            "name": "$DOGE",
+            "value": "D5zVZs6jrRakaPVGiErkQiHt9sayzm6V5D"
+          },
+          {
+            "name": "$XMR",
+            "value": "45JDCLrjJ4bgVUSbbs2yjy9m5Mf4VLPW8fG7jw9sq5u69rXZZopQogZNeyYkMBnXpkaip4p4QwaaJNhdTotPa9g44DBCzdK"
+          }
+        ],
+        "note": "I create Fediverse software that empowers people online.\r\n\r\nI'm vegan btw\r\n\r\nNote: If you have a question for me, please tag me publicly. This gives the opportunity for others to chime in, and bystanders to learn.",
+        "pleroma": {
+          "actor_type": "Person",
+          "discoverable": false,
+          "no_rich_text": false,
+          "show_birthday": true,
+          "show_role": true
+        },
+        "privacy": "public",
+        "sensitive": false
+      },
+      "statuses_count": 24050,
+      "url": "https://gleasonator.com/users/alex",
+      "username": "alex"
+    },
+    "application": {
+      "name": "Soapbox FE",
+      "website": "https://soapbox.pub/"
+    },
+    "bookmarked": false,
+    "card": {
+      "author_name": "Kaze Emanuar",
+      "author_url": "https://www.youtube.com/c/KazeEmanuar",
+      "blurhash": null,
+      "description": "",
+      "embed_url": null,
+      "height": 113,
+      "html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/t_rzYnXEQlE?feature=oembed\" allowfullscreen=\"\"></iframe>",
+      "image": "https://gleasonator.com/proxy/mI004Vq00johZtAUmMp0fC_XAuM/aHR0cHM6Ly9pLnl0aW1nLmNvbS92aS90X3J6WW5YRVFsRS9ocWRlZmF1bHQuanBn/hqdefault.jpg",
+      "provider_name": "YouTube",
+      "provider_url": "https://www.youtube.com/",
+      "title": "FIXING the ENTIRE SM64 Source Code (INSANE N64 performance)",
+      "type": "video",
+      "url": "https://youtu.be/t_rzYnXEQlE",
+      "width": 200
+    },
+    "content": "<p>Bruh. This guy rewrote the reversed engineered Super Mario 64 code for 10x performance. Games need to be open source. <a href=\"https://youtu.be/t_rzYnXEQlE\">https://youtu.be/t_rzYnXEQlE</a></p>",
+    "created_at": "2022-04-16T16:40:28.000Z",
+    "emojis": [],
+    "favourited": false,
+    "favourites_count": 11,
+    "id": "AIVq6SrJg5yb8eGVsm",
+    "in_reply_to_account_id": null,
+    "in_reply_to_id": null,
+    "language": null,
+    "media_attachments": [],
+    "mentions": [],
+    "muted": false,
+    "pinned": false,
+    "pleroma": {
+      "content": {
+        "text/plain": "Bruh. This guy rewrote the reversed engineered Super Mario 64 code for 10x performance. Games need to be open source. https://youtu.be/t_rzYnXEQlE"
+      },
+      "content_type": null,
+      "conversation_id": "AIVq6SqFk37r5LlfE0",
+      "direct_conversation_id": null,
+      "emoji_reactions": [
+        {
+          "count": 1,
+          "me": false,
+          "name": "❤️"
+        },
+        {
+          "count": 2,
+          "me": false,
+          "name": "😮"
+        },
+        {
+          "count": 1,
+          "me": false,
+          "name": "😆"
+        },
+        {
+          "count": 1,
+          "me": false,
+          "name": "👍🏻"
+        },
+        {
+          "count": 1,
+          "me": false,
+          "name": "🔥"
+        }
+      ],
+      "expires_at": null,
+      "in_reply_to_account_acct": null,
+      "local": true,
+      "parent_visible": false,
+      "pinned_at": null,
+      "quote": null,
+      "quote_url": null,
+      "quote_visible": false,
+      "spoiler_text": {
+        "text/plain": ""
+      },
+      "thread_muted": false
+    },
+    "poll": null,
+    "reblog": null,
+    "reblogged": false,
+    "reblogs_count": 7,
+    "replies_count": 2,
+    "sensitive": false,
+    "spoiler_text": "",
+    "tags": [],
+    "text": null,
+    "uri": "https://gleasonator.com/objects/160dcbb2-73bc-4cd2-971e-e7f6a38602a0",
+    "url": "https://gleasonator.com/notice/AIVq6SrJg5yb8eGVsm",
+    "visibility": "public"
+  },
+  "type": "pleroma:emoji_reaction"
+}

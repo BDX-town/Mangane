@@ -1,4 +1,7 @@
-import { Map as ImmutableMap, OrderedSet as ImmutableOrderedSet } from 'immutable';
+import {
+  Map as ImmutableMap,
+  OrderedSet as ImmutableOrderedSet,
+} from 'immutable';
 
 import {
   FOLLOWERS_FETCH_SUCCESS,
@@ -68,13 +71,13 @@ const normalizeList = (state, type, id, accounts, next) => {
 
 const appendToList = (state, type, id, accounts, next) => {
   return state.updateIn([type, id], map => {
-    return map.set('next', next).update('items', list => list.concat(accounts.map(item => item.id)));
+    return map.set('next', next).update('items', ImmutableOrderedSet(), list => list.concat(accounts.map(item => item.id)));
   });
 };
 
 const normalizeFollowRequest = (state, notification) => {
-  return state.updateIn(['follow_requests', 'items'], list => {
-    return list.filterNot(item => item === notification.account.id).unshift(notification.account.id);
+  return state.updateIn(['follow_requests', 'items'], ImmutableOrderedSet(), list => {
+    return ImmutableOrderedSet([notification.account.id]).union(list);
   });
 };
 

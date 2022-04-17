@@ -598,7 +598,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     // const domain = getDomain(status.account);
 
     return (
-      <HotKeys handlers={handlers}>
+      <HotKeys handlers={handlers} data-testid='status'>
         <div
           className='status cursor-pointer'
           tabIndex={this.props.focusable && !this.props.muted ? 0 : undefined}

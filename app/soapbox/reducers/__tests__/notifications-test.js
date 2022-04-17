@@ -188,6 +188,16 @@ describe('notifications reducer', () => {
       expect(result.items.get('10743').type).toEqual('favourite');
     });
 
+    it('imports follow_request notification', () => {
+      const action = {
+        type: NOTIFICATIONS_UPDATE,
+        notification: require('soapbox/__fixtures__/notification-follow_request.json'),
+      };
+
+      const result = reducer(initialState, action);
+      expect(result.items.get('87967').type).toEqual('follow_request');
+    });
+
     it('increments `unread` counter when top is false', () => {
       const action = { type: NOTIFICATIONS_UPDATE, notification };
       const result = reducer(initialState, action);

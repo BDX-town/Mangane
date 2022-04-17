@@ -49,7 +49,7 @@ const icons: Record<NotificationType, string> = {
   poll: require('@tabler/icons/icons/chart-bar.svg'),
   move: require('@tabler/icons/icons/briefcase.svg'),
   'pleroma:chat_mention': require('@tabler/icons/icons/messages.svg'),
-  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'), // FIXME: show the actual emoji
+  'pleroma:emoji_reaction': require('@tabler/icons/icons/mood-happy.svg'),
 };
 
 const messages: Record<NotificationType, { id: string, defaultMessage: string }> = {
@@ -224,12 +224,18 @@ const Notification: React.FC<INotificaton> = (props) => {
         />
       ) : null;
     case 'move':
-      // TODO
-      return null;
+      return account && typeof account === 'object' && notification.target && typeof notification.target === 'object' ? (
+        <AccountContainer
+          id={notification.target.id}
+          hidden={hidden}
+          avatarSize={48}
+        />
+      ) : null;
     case 'favourite':
     case 'mention':
     case 'reblog':
     case 'status':
+    case 'poll':
     case 'pleroma:emoji_reaction':
       return status && typeof status === 'object' ? (
         <StatusContainer
@@ -254,7 +260,7 @@ const Notification: React.FC<INotificaton> = (props) => {
   const message: React.ReactNode = type && account && typeof account === 'object' ? buildMessage(type, account) : null;
 
   return (
-    <HotKeys handlers={getHandlers()}>
+    <HotKeys handlers={getHandlers()} data-testid='notification'>
       <div
         className='notification focusable'
         tabIndex={0}
@@ -267,6 +273,7 @@ const Notification: React.FC<INotificaton> = (props) => {
             },
             {
               name: account && typeof account === 'object' ? account.acct : '',
+              targetName: notification.target && typeof notification.target === 'object' ? notification.target.acct : '',
             }),
             notification.created_at,
           )
