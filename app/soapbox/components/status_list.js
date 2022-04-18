@@ -134,19 +134,15 @@ export default class StatusList extends ImmutablePureComponent {
     const idempotencyKey = statusId.replace(/^末pending-/, '');
 
     return (
-      <div className='material-status' key={statusId}>
-        <div className='material-status__status focusable'>
-          <PendingStatus
-            key={statusId}
-            idempotencyKey={idempotencyKey}
-            onMoveUp={this.handleMoveUp}
-            onMoveDown={this.handleMoveDown}
-            contextType={timelineId}
-            group={group}
-            withGroupAdmin={withGroupAdmin}
-          />
-        </div>
-      </div>
+      <PendingStatus
+        key={statusId}
+        idempotencyKey={idempotencyKey}
+        onMoveUp={this.handleMoveUp}
+        onMoveDown={this.handleMoveDown}
+        contextType={timelineId}
+        group={group}
+        withGroupAdmin={withGroupAdmin}
+      />
     );
   }
 

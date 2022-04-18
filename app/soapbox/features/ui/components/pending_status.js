@@ -3,17 +3,14 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
 
-import Avatar from 'soapbox/components/avatar';
-import DisplayName from 'soapbox/components/display_name';
-import RelativeTimestamp from 'soapbox/components/relative_timestamp';
 import StatusContent from 'soapbox/components/status_content';
 import StatusReplyMentions from 'soapbox/components/status_reply_mentions';
+import { HStack } from 'soapbox/components/ui';
+import AccountContainer from 'soapbox/containers/account_container';
 import PlaceholderCard from 'soapbox/features/placeholder/components/placeholder_card';
 import PlaceholderMediaGallery from 'soapbox/features/placeholder/components/placeholder_media_gallery';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { getDomain } from 'soapbox/utils/accounts';
 
 import { buildStatus } from '../util/pending_status_builder';
 
@@ -56,50 +53,36 @@ class PendingStatus extends ImmutablePureComponent {
     if (!status) return null;
     if (!status.get('account')) return null;
 
-    const favicon = status.getIn(['account', 'pleroma', 'favicon']);
-    const domain = getDomain(status.get('account'));
-
     return (
-      <div className={classNames('pending-status', className)}>
-        <div className={classNames('status__wrapper', `status__wrapper-${status.get('visibility')}`, { 'status__wrapper-reply': !!status.get('in_reply_to_id') })} tabIndex={this.props.muted ? null : 0}>
-          <div className={classNames('status', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
-            <div className='status__expand' role='presentation' />
-            <div className='status__info'>
-              <span className='status__relative-time'>
-                <RelativeTimestamp timestamp={status.get('created_at')} />
-              </span>
-
-              {favicon &&
-                <div className='status__favicon'>
-                  <Link to={`/timeline/${domain}`}>
-                    <img src={favicon} alt='' title={domain} />
-                  </Link>
-                </div>}
-
-              <div className='status__profile'>
-                <div className='status__avatar'>
-                  <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])}>
-                    <Avatar account={status.get('account')} size={48} />
-                  </NavLink>
-                </div>
-                <NavLink to={`/@${status.getIn(['account', 'acct'])}`} title={status.getIn(['account', 'acct'])} className='status__display-name'>
-                  <DisplayName account={status.get('account')} />
-                </NavLink>
-              </div>
+      <div className={classNames('opacity-50', className)}>
+        <div className={classNames('status', { 'status-reply': !!status.get('in_reply_to_id'), muted: this.props.muted })} data-id={status.get('id')}>
+          <div className={classNames('status__wrapper', `status-${status.get('visibility')}`, { 'status-reply': !!status.get('in_reply_to_id') })} tabIndex={this.props.muted ? null : 0}>
+            <div className='mb-4'>
+              <HStack justifyContent='between' alignItems='start'>
+                <AccountContainer
+                  key={String(status.getIn(['account', 'id']))}
+                  id={String(status.getIn(['account', 'id']))}
+                  timestamp={status.created_at}
+                  timestampUrl={status.get('created_at')}
+                  hideActions
+                />
+              </HStack>
             </div>
 
-            <StatusReplyMentions status={status} />
+            <div className='status__content-wrapper'>
+              <StatusReplyMentions status={status} />
 
-            <StatusContent
-              status={status}
-              expanded
-              collapsable
-            />
+              <StatusContent
+                status={status}
+                expanded
+                collapsable
+              />
 
-            {this.renderMedia()}
-            {status.get('poll') && <PollPreview poll={status.get('poll')} />}
+              {this.renderMedia()}
+              {status.get('poll') && <PollPreview poll={status.get('poll')} />}
 
-            {status.get('quote') && <QuotedStatus statusId={status.get('quote')} />}
+              {status.get('quote') && <QuotedStatus statusId={status.get('quote')} />}
+            </div>
 
             {/* TODO */}
             {/* <PlaceholderActionBar /> */}

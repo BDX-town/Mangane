@@ -3,11 +3,9 @@ import React from 'react';
 import ImmutablePureComponent from 'react-immutable-pure-component';
 import { FormattedMessage, injectIntl, WrappedComponentProps as IntlProps } from 'react-intl';
 import { FormattedDate } from 'react-intl';
-import { Link } from 'react-router-dom';
 
 import Icon from 'soapbox/components/icon';
 import QuotedStatus from 'soapbox/features/status/containers/quoted_status_container';
-import { getDomain } from 'soapbox/utils/accounts';
 
 import MediaGallery from '../../../components/media_gallery';
 import StatusContent from '../../../components/status_content';
@@ -110,9 +108,6 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
 
     const outerStyle: React.CSSProperties = { boxSizing: 'border-box' };
     const { compact } = this.props;
-    const favicon = account.getIn(['pleroma', 'favicon']);
-    const domain = getDomain(account);
-
 
     let media = null;
     let statusTypeIcon = null;
@@ -244,14 +239,6 @@ class DetailedStatus extends ImmutablePureComponent<IDetailedStatus, IDetailedSt
             <StatusInteractionBar status={status} />
 
             <div className='detailed-status__timestamp'>
-              {typeof favicon === 'string' && (
-                <div className='status__favicon'>
-                  <Link to={`/timeline/${domain}`}>
-                    <img src={favicon} alt='' title={domain} />
-                  </Link>
-                </div>
-              )}
-
               {statusTypeIcon}
 
               <a href={status.url} target='_blank' rel='noopener' className='hover:underline'>
