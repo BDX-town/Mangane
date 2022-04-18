@@ -129,7 +129,7 @@ const Account = ({
   const LinkEl: any = showProfileHoverCard ? Link : 'div';
 
   return (
-    <div data-testid='account' className='flex-shrink-0 group block w-full overflow-hidden' ref={overflowRef}>
+    <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
         <HStack alignItems='center' space={3} grow>
           <ProfilePopper
@@ -177,10 +177,10 @@ const Account = ({
 
                   {timestampUrl ? (
                     <Link to={timestampUrl} className='hover:underline'>
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
                     </Link>
                   ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
                   )}
                 </>
               ) : null}
