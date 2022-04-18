@@ -1,5 +1,4 @@
 import React from 'react';
-import { useEffect } from 'react';
 import { defineMessages, useIntl } from 'react-intl';
 
 import Avatar from 'soapbox/components/avatar';
@@ -17,18 +16,17 @@ const getAccount = makeGetAccount();
 
 interface IAccount {
   accountId: string,
-  fetchAccount: (id: string) => void,
 }
 
-const Account: React.FC<IAccount> = ({ accountId, fetchAccount }) => {
+const Account: React.FC<IAccount> = ({ accountId }) => {
   const intl = useIntl();
   const account = useAppSelector((state) => getAccount(state, accountId));
 
-  useEffect(() => {
-    if (accountId && !account) {
-      fetchAccount(accountId);
-    }
-  }, [accountId]);
+  // useEffect(() => {
+  //   if (accountId && !account) {
+  //     fetchAccount(accountId);
+  //   }
+  // }, [accountId]);
 
   if (!account) return null;
 
@@ -48,7 +46,7 @@ const Account: React.FC<IAccount> = ({ accountId, fetchAccount }) => {
           </div>
         </Permalink>
         <div
-          className='account__birthday'
+          className='flex items-center gap-0.5'
           title={intl.formatMessage(messages.birthday, {
             date: formattedBirthday,
           })}
