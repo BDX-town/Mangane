@@ -5,7 +5,7 @@ import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import VerificationBadge from 'soapbox/components/verification_badge';
 import ActionButton from 'soapbox/features/ui/components/action_button';
 import { useAppSelector, useOnScreen } from 'soapbox/hooks';
-import { getAcct } from 'soapbox/utils/accounts';
+import { getAcct, getDomain } from 'soapbox/utils/accounts';
 import { displayFqn } from 'soapbox/utils/state';
 
 import RelativeTimestamp from './relative_timestamp';
@@ -128,6 +128,9 @@ const Account = ({
 
   const LinkEl: any = showProfileHoverCard ? Link : 'div';
 
+  const favicon = account.pleroma.get('favicon');
+  const domain = getDomain(account);
+
   return (
     <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
@@ -170,6 +173,12 @@ const Account = ({
 
             <HStack alignItems='center' space={1} style={style}>
               <Text theme='muted' size='sm' truncate>@{username}</Text>
+
+              {favicon && (
+                <Link to={`/timeline/${domain}`} className='w-4 h-4'>
+                  <img src={favicon} alt='' title={domain} className='w-full max-h-full' />
+                </Link>
+              )}
 
               {(timestamp) ? (
                 <>
