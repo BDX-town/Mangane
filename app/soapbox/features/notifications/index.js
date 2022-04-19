@@ -1,4 +1,3 @@
-import classNames from 'classnames';
 import { List as ImmutableList } from 'immutable';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
@@ -6,10 +5,12 @@ import React from 'react';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import { defineMessages, injectIntl, FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
+import { Virtuoso } from 'react-virtuoso';
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
 import BirthdayReminders from 'soapbox/components/birthday_reminders';
+import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
 import { getFeatures } from 'soapbox/utils/features';
 
@@ -18,10 +19,8 @@ import {
   scrollTopNotifications,
   dequeueNotifications,
 } from '../../actions/notifications';
-import LoadGap from '../../components/load_gap';
-import ScrollableList from '../../components/scrollable_list';
 import TimelineQueueButtonHeader from  '../../components/timeline_queue_button_header';
-import { Column } from '../../components/ui';
+import { Column, Text } from '../../components/ui';
 
 import FilterBarContainer from './containers/filter_bar_container';
 import NotificationContainer from './containers/notification_container';
@@ -30,6 +29,30 @@ const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
   queue: { id: 'notifications.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {notification} other {notifications}}' },
 });
+
+const Header = ({ context }) => (
+  context.showBirthdayReminders ? (
+    <BirthdayReminders onMoveDown={context.handleMoveBelowBirthdays} />
+  ) : null
+);
+
+const Footer = ({ context }) => (
+  context.hasMore ? (
+    <PlaceholderNotification />
+  ) : null
+);
+
+const EmptyPlaceholder = ({ context }) => {
+  if (context.isLoading) {
+    return <PlaceholderNotification />;
+  } else {
+    return <Text>{context.emptyMessage}</Text>;
+  }
+};
+
+const Item = ({ context, ...rest }) => (
+  <div className='border-solid border-b border-gray-200 dark:border-gray-600' {...rest} />
+);
 
 const getNotifications = createSelector([
   state => getSettings(state).getIn(['notifications', 'quickFilter', 'show']),
@@ -163,63 +186,42 @@ class Notifications extends React.PureComponent {
     const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, showBirthdayReminders } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 
-    let scrollableContent = null;
-
     const filterBarContainer = showFilterBar
       ? (<FilterBarContainer />)
       : null;
 
-    if (isLoading && this.scrollableContent) {
-      scrollableContent = this.scrollableContent;
-    } else if (notifications.size > 0 || hasMore) {
-      scrollableContent = notifications.map((item, index) => item === null ? (
-        <LoadGap
-          key={'gap:' + notifications.getIn([index + 1, 'id'])}
-          disabled={isLoading}
-          maxId={index > 0 ? notifications.getIn([index - 1, 'id']) : null}
-          onClick={this.handleLoadGap}
+    const scrollContainer  = (
+      <PullToRefresh onRefresh={this.handleRefresh}>
+        <Virtuoso
+          useWindowScroll
+          data={notifications.toArray()}
+          startReached={this.handleScrollToTop}
+          endReached={this.handleLoadOlder}
+          isScrolling={isScrolling => isScrolling && this.handleScroll}
+          itemContent={(_index, notification) => (
+            <NotificationContainer
+              key={notification.id}
+              notification={notification}
+              onMoveUp={this.handleMoveUp}
+              onMoveDown={this.handleMoveDown}
+            />
+          )}
+          context={{
+            hasMore,
+            showBirthdayReminders,
+            handleMoveBelowBirthdays: this.handleMoveBelowBirthdays,
+            isLoading,
+            emptyMessage,
+          }}
+          components={{
+            Header,
+            ScrollSeekPlaceholder: PlaceholderNotification,
+            Footer,
+            EmptyPlaceholder,
+            Item,
+          }}
         />
-      ) : (
-        <NotificationContainer
-          key={item.get('id')}
-          notification={item}
-          onMoveUp={this.handleMoveUp}
-          onMoveDown={this.handleMoveDown}
-        />
-      ));
-
-      if (showBirthdayReminders) scrollableContent = scrollableContent.unshift(
-        <BirthdayReminders
-          key='birthdays'
-          onMoveDown={this.handleMoveBelowBirthdays}
-        />,
-      );
-    } else {
-      scrollableContent = null;
-    }
-
-    this.scrollableContent = scrollableContent;
-
-    const scrollContainer = (
-      <ScrollableList
-        scrollKey='notifications'
-        isLoading={isLoading}
-        showLoading={isLoading && notifications.size === 0}
-        hasMore={hasMore}
-        emptyMessage={emptyMessage}
-        placeholderComponent={PlaceholderNotification}
-        placeholderCount={20}
-        onLoadMore={this.handleLoadOlder}
-        onRefresh={this.handleRefresh}
-        onScrollToTop={this.handleScrollToTop}
-        onScroll={this.handleScroll}
-        className={classNames({
-          'divide-y divide-gray-200 dark:divide-gray-600 divide-solid': notifications.size > 0,
-          'space-y-2': notifications.size === 0,
-        })}
-      >
-        {scrollableContent}
-      </ScrollableList>
+      </PullToRefresh>
     );
 
     return (
