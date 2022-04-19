@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, FormActions, FormGroup, Input } from '../../../components/ui';
+import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   username: {
@@ -20,7 +19,12 @@ const messages = defineMessages({
   },
 });
 
-const LoginForm = ({ isLoading, handleSubmit }) => {
+interface ILoginForm {
+  isLoading: boolean,
+  handleSubmit: React.FormEventHandler,
+}
+
+const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
   const intl = useIntl();
 
   return (
@@ -80,11 +84,6 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
       </div>
     </div>
   );
-};
-
-LoginForm.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default LoginForm;
