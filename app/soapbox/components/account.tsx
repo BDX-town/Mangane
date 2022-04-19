@@ -175,7 +175,7 @@ const Account = ({
               <Text theme='muted' size='sm' truncate>@{username}</Text>
 
               {favicon && (
-                <Link to={`/timeline/${domain}`} className='w-4 h-4'>
+                <Link to={`/timeline/${domain}`} className='w-4 h-4 flex-none'>
                   <img src={favicon} alt='' title={domain} className='w-full max-h-full' />
                 </Link>
               )}

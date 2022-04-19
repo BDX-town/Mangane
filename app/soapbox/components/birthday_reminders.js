@@ -51,7 +51,7 @@ class BirthdayReminders extends ImmutablePureComponent {
     const day = date.getDate();
     const month = date.getMonth() + 1;
 
-    dispatch(fetchBirthdayReminders(day, month));
+    dispatch(fetchBirthdayReminders(month, day));
   }
 
   getHandlers() {

@@ -150,6 +150,7 @@ class EditProfile extends ImmutablePureComponent {
       display_name: state.display_name,
       website: state.website,
       location: state.location,
+      birthday: state.birthday,
       note: state.note,
       avatar: state.avatar_file,
       header: state.header_file,
@@ -262,6 +263,18 @@ class EditProfile extends ImmutablePureComponent {
               disabled={!canEditName}
             />
           </FormGroup>
+
+          {features.birthdays && (
+            <FormGroup
+              labelText={<FormattedMessage id='edit_profile.fields.birthday_label' defaultMessage='Birthday' />}
+            >
+              <Input
+                name='birthday'
+                value={this.state.birthday}
+                onChange={this.handleTextChange}
+              />
+            </FormGroup>
+          )}
 
           {features.accountLocation && (
             <FormGroup
