@@ -13,7 +13,7 @@ const Logout: React.FC = () => {
   const [done, setDone] = useState(false);
 
   useEffect(() => {
-    (dispatch(logOut(intl)) as any)
+    dispatch(logOut(intl) as any)
       .then(() => setDone(true))
       .catch(console.warn);
   });
