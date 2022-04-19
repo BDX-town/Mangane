@@ -36,7 +36,7 @@ const Widget: React.FC<IWidget> = ({
         <WidgetTitle title={title} />
         {onActionClick && (
           <IconButton
-            className='w-6 h-6 ml-2'
+            className='w-6 h-6 ml-2 text-black dark:text-white'
             src={actionIcon}
             onClick={onActionClick}
             title={actionTitle}
