@@ -1,16 +1,18 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
 
 import Pulse from './pulse';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
@@ -24,8 +26,8 @@ const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const logo = useSelector((state) => getSoapboxConfig(state).get('logo'));
-  const instance = useSelector((state) => state.get('instance'));
+  const { logo } = useSoapboxConfig();
+  const instance = useAppSelector((state) => state.instance);
   const isOpen = instance.get('registrations', false) === true;
 
   const [isLoading, setLoading] = React.useState(false);
@@ -36,24 +38,24 @@ const Header = () => {
 
   const open = () => dispatch(openModal('LANDING_PAGE'));
 
-  const handleSubmit = (event) => {
+  const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, email, password))
-      .then(({ access_token }) => {
+    dispatch(logIn(intl, email, password) as any)
+      .then(({ access_token }: { access_token: string }) => {
         return (
-          dispatch(verifyCredentials(access_token))
+          dispatch(verifyCredentials(access_token) as any)
             // Refetch the instance for authenticated fetch
             .then(() => dispatch(fetchInstance()))
             .then(() => setShouldRedirect(true))
         );
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         setLoading(false);
 
-        const data = error.response && error.response.data;
-        if (data && data.error === 'mfa_required') {
+        const data = error.response?.data;
+        if (data?.error === 'mfa_required') {
           setMfaToken(data.mfa_token);
         }
       });
