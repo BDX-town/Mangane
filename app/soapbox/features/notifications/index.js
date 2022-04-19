@@ -9,10 +9,8 @@ import { Virtuoso } from 'react-virtuoso';
 import { createSelector } from 'reselect';
 
 import { getSettings } from 'soapbox/actions/settings';
-import BirthdayReminders from 'soapbox/components/birthday_reminders';
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
 import PlaceholderNotification from 'soapbox/features/placeholder/components/placeholder_notification';
-import { getFeatures } from 'soapbox/utils/features';
 
 import {
   expandNotifications,
@@ -29,12 +27,6 @@ const messages = defineMessages({
   title: { id: 'column.notifications', defaultMessage: 'Notifications' },
   queue: { id: 'notifications.queue_label', defaultMessage: 'Click to see {count} new {count, plural, one {notification} other {notifications}}' },
 });
-
-const Header = ({ context }) => (
-  context.showBirthdayReminders ? (
-    <BirthdayReminders onMoveDown={context.handleMoveBelowBirthdays} />
-  ) : null
-);
 
 const Footer = ({ context }) => (
   context.hasMore ? (
@@ -71,10 +63,6 @@ const getNotifications = createSelector([
 
 const mapStateToProps = state => {
   const settings = getSettings(state);
-  const instance = state.get('instance');
-  const features = getFeatures(instance);
-  const showBirthdayReminders = settings.getIn(['notifications', 'birthdays', 'show']) && settings.getIn(['notifications', 'quickFilter', 'active']) === 'all' && features.birthdays;
-  const birthdays = showBirthdayReminders && state.getIn(['user_lists', 'birthday_reminders', state.get('me')]);
 
   return {
     showFilterBar: settings.getIn(['notifications', 'quickFilter', 'show']),
@@ -83,8 +71,6 @@ const mapStateToProps = state => {
     isUnread: state.getIn(['notifications', 'unread']) > 0,
     hasMore: state.getIn(['notifications', 'hasMore']),
     totalQueuedNotificationsCount: state.getIn(['notifications', 'totalQueuedNotificationsCount'], 0),
-    showBirthdayReminders,
-    hasBirthdays: !!birthdays,
   };
 };
 
@@ -102,8 +88,6 @@ class Notifications extends React.PureComponent {
     hasMore: PropTypes.bool,
     dequeueNotifications: PropTypes.func,
     totalQueuedNotificationsCount: PropTypes.number,
-    showBirthdayReminders: PropTypes.bool,
-    hasBirthdays: PropTypes.bool,
   };
 
   componentWillUnmount() {
@@ -140,23 +124,13 @@ class Notifications extends React.PureComponent {
   }
 
   handleMoveUp = id => {
-    const { hasBirthdays } = this.props;
-
-    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
-    if (hasBirthdays) elementIndex++;
+    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) - 1;
     this._selectChild(elementIndex, true);
   }
 
   handleMoveDown = id => {
-    const { hasBirthdays } = this.props;
-
-    let elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
-    if (hasBirthdays) elementIndex++;
+    const elementIndex = this.props.notifications.findIndex(item => item !== null && item.get('id') === id) + 1;
     this._selectChild(elementIndex, false);
-  }
-
-  handleMoveBelowBirthdays = () => {
-    this._selectChild(1, false);
   }
 
   _selectChild(index, align_top) {
@@ -183,7 +157,7 @@ class Notifications extends React.PureComponent {
   }
 
   render() {
-    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount, showBirthdayReminders } = this.props;
+    const { intl, notifications, isLoading, hasMore, showFilterBar, totalQueuedNotificationsCount } = this.props;
     const emptyMessage = <FormattedMessage id='empty_column.notifications' defaultMessage="You don't have any notifications yet. Interact with others to start the conversation." />;
 
     const filterBarContainer = showFilterBar
@@ -208,13 +182,10 @@ class Notifications extends React.PureComponent {
           )}
           context={{
             hasMore,
-            showBirthdayReminders,
-            handleMoveBelowBirthdays: this.handleMoveBelowBirthdays,
             isLoading,
             emptyMessage,
           }}
           components={{
-            Header,
             ScrollSeekPlaceholder: PlaceholderNotification,
             Footer,
             EmptyPlaceholder,
