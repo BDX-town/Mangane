@@ -1,6 +1,5 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import Lottie from 'react-lottie';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -8,9 +7,10 @@ import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 
-import animationData from '../../../../images/circles.json';
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
+
+import Pulse from './pulse';
 
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
@@ -19,13 +19,6 @@ const messages = defineMessages({
   emailAddress: { id: 'header.login.email.placeholder', defaultMessage: 'Email address' },
   password: { id: 'header.login.password.label', defaultMessage: 'Password' },
 });
-
-const defaultOptions = {
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-};
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -75,12 +68,7 @@ const Header = () => {
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
           <div className='flex items-center relative'>
             <div className='hidden sm:block absolute z-0 left-0 top-0 -ml-[330px] -mt-[400px]'>
-              <Lottie
-                options={defaultOptions}
-                height={800}
-                width={800}
-                isClickToPauseDisabled
-              />
+              <Pulse />
             </div>
             <Link to='/' className='z-10'>
               <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
