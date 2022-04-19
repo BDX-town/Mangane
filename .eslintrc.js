@@ -150,7 +150,6 @@ module.exports = {
     'react/jsx-wrap-multilines': 'error',
     'react/no-multi-comp': 'off',
     'react/no-string-refs': 'error',
-    'react/prop-types': 'error',
     'react/self-closing-comp': 'error',
 
     'jsx-a11y/accessible-emoji': 'warn',
@@ -264,7 +263,6 @@ module.exports = {
       files: ['**/*.ts', '**/*.tsx'],
       rules: {
         'no-undef': 'off', // https://stackoverflow.com/a/69155899
-        'react/prop-types': 'off',
       },
       parser: '@typescript-eslint/parser',
     },

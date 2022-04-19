@@ -78,9 +78,7 @@ const ChatList: React.FC<IChatList> = ({ onClickChat, useWindowScroll = false })
           Footer: () => hasMore ? <PlaceholderChat /> : null,
           EmptyPlaceholder: () => {
             if (isLoading) {
-              return (
-                <>{Array(20).fill(<PlaceholderChat />)}</>
-              );
+              return <PlaceholderChat />;
             } else {
               return <Text>{intl.formatMessage(messages.emptyMessage)}</Text>;
             }
