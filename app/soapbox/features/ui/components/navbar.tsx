@@ -24,7 +24,7 @@ const Navbar = () => {
   const singleUserMode = soapboxConfig.get('singleUserMode');
 
   // In demo mode, use the Soapbox logo
-  const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : soapboxConfig.get('logo');
+  const logo = settings.get('demo') ? require('images/soapbox-logo.svg') : soapboxConfig.logo;
 
   const onOpenSidebar = () => dispatch(openSidebar());
 
