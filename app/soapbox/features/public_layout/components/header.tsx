@@ -5,7 +5,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { useAppSelector, useSoapboxConfig } from 'soapbox/hooks';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
@@ -28,8 +28,10 @@ const Header = () => {
   const intl = useIntl();
 
   const { logo } = useSoapboxConfig();
+  const features = useFeatures();
   const instance = useAppSelector((state) => state.instance);
-  const isOpen = instance.get('registrations', false) === true;
+  const isOpen   = instance.get('registrations', false) === true;
+  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
   const [username, setUsername] = React.useState('');
@@ -92,9 +94,9 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {isOpen && (
+                {(isOpen || features.pepe && pepeOpen) && (
                   <Button
-                    to='/auth/verify'
+                    to={features.pepe ? '/auth/verify' : '/signup'} // FIXME: actually route this somewhere
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}
