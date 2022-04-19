@@ -6,12 +6,8 @@ import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/
 
 const messages = defineMessages({
   username: {
-    id: 'login.fields.username_placeholder',
-    defaultMessage: 'Username',
-  },
-  email: {
-    id: 'login.fields.email_placeholder',
-    defaultMessage: 'Email address',
+    id: 'login.fields.username_label',
+    defaultMessage: 'Email or username',
   },
   password: {
     id: 'login.fields.password_placeholder',
@@ -35,10 +31,10 @@ const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.email)}>
+          <FormGroup labelText={intl.formatMessage(messages.username)}>
             <Input
-              aria-label={intl.formatMessage(messages.email)}
-              placeholder={intl.formatMessage(messages.email)}
+              aria-label={intl.formatMessage(messages.username)}
+              placeholder={intl.formatMessage(messages.username)}
               type='text'
               name='username'
               autoComplete='off'
