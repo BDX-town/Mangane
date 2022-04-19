@@ -18,8 +18,9 @@ const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   register: { id: 'header.register.label', defaultMessage: 'Register' },
-  emailAddress: { id: 'header.login.email.placeholder', defaultMessage: 'Email address' },
+  username: { id: 'header.login.username.placeholder', defaultMessage: 'Email or username' },
   password: { id: 'header.login.password.label', defaultMessage: 'Password' },
+  forgotPassword: { id: 'header.login.forgot_password', defaultMessage: 'Forgot password?' },
 });
 
 const Header = () => {
@@ -31,7 +32,7 @@ const Header = () => {
   const isOpen = instance.get('registrations', false) === true;
 
   const [isLoading, setLoading] = React.useState(false);
-  const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [shouldRedirect, setShouldRedirect] = React.useState(false);
   const [mfaToken, setMfaToken] = React.useState(false);
@@ -42,7 +43,7 @@ const Header = () => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, email, password) as any)
+    dispatch(logIn(intl, username, password) as any)
       .then(({ access_token }: { access_token: string }) => {
         return (
           dispatch(verifyCredentials(access_token) as any)
@@ -105,10 +106,10 @@ const Header = () => {
             <Form className='hidden xl:flex space-x-2 items-center' onSubmit={handleSubmit}>
               <Input
                 required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
                 type='text'
-                placeholder={intl.formatMessage(messages.emailAddress)}
+                placeholder={intl.formatMessage(messages.username)}
                 className='max-w-[200px]'
               />
 
@@ -122,7 +123,7 @@ const Header = () => {
               />
 
               <Link to='/reset-password'>
-                <Tooltip text='Forgot password?'>
+                <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
                     src={require('@tabler/icons/icons/help.svg')}
                     className='bg-transparent text-gray-400 hover:text-gray-700 cursor-pointer'
