@@ -48,18 +48,21 @@ const loadInitial = () => {
   return async(dispatch, getState) => {
     // Await for authenticated fetch
     await dispatch(fetchMe());
+    // Await for feature detection
+    await dispatch(loadInstance());
 
-    await Promise.all([
-      dispatch(loadInstance()),
-      dispatch(loadSoapboxConfig()),
-    ]);
+    const promises = [];
+
+    promises.push(dispatch(loadSoapboxConfig()));
 
     const state = getState();
     const features = getFeatures(state.instance);
 
     if (features.pepe && !state.me) {
-      await dispatch(fetchVerificationConfig());
+      promises.push(dispatch(fetchVerificationConfig()));
     }
+
+    await Promise.all(promises);
   };
 };
 
