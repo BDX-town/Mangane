@@ -250,6 +250,10 @@ export function ExternalLogin() {
   return import(/* webpackChunkName: "features/external_login" */'../../external_login');
 }
 
+export function LogoutPage() {
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/logout');
+}
+
 export function Settings() {
   return import(/* webpackChunkName: "features/settings" */'../../settings');
 }

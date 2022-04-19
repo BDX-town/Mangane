@@ -30,7 +30,7 @@ class PublicLayout extends ImmutablePureComponent {
     const { standalone } = this.props;
 
     if (standalone) {
-      return <Redirect to='/auth/external' />;
+      return <Redirect to='/login/external' />;
     }
 
     return (

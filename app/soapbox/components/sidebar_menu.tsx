@@ -285,7 +285,7 @@ const SidebarMenu: React.FC = (): JSX.Element | null => {
                 <hr />
 
                 <SidebarLink
-                  to='/auth/sign_out'
+                  to='/logout'
                   icon={require('@tabler/icons/icons/logout.svg')}
                   text={intl.formatMessage(messages.logout)}
                   onClick={onClickLogOut}

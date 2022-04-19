@@ -42,7 +42,7 @@ function createExternalApp(instance, baseURL) {
 
     const params = {
       client_name:   sourceCode.displayName,
-      redirect_uris: `${window.location.origin}/auth/external`,
+      redirect_uris: `${window.location.origin}/login/external`,
       website:       sourceCode.homepage,
       scopes,
     };

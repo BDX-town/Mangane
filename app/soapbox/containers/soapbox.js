@@ -201,10 +201,6 @@ class SoapboxMount extends React.PureComponent {
                   <Route path='/reset-password' component={AuthLayout} />
                   <Route path='/edit-password' component={AuthLayout} />
 
-                  <Redirect from='/auth/reset_password' to='/reset-password' />
-                  <Redirect from='/auth/edit_password' to='/edit-password' />
-                  <Redirect from='/auth/sign_in' to='/login' />
-
                   <Route path='/' component={UI} />
                 </Switch>
               </ScrollContext>

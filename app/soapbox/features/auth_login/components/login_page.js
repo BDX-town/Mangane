@@ -76,7 +76,7 @@ class LoginPage extends ImmutablePureComponent {
     const { standalone } = this.props;
     const { isLoading, mfa_auth_needed, mfa_token, shouldRedirect } = this.state;
 
-    if (standalone) return <Redirect to='/auth/external' />;
+    if (standalone) return <Redirect to='/login/external' />;
 
     if (shouldRedirect) return <Redirect to='/' />;
 

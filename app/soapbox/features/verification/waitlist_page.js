@@ -34,7 +34,7 @@ const WaitlistPage = ({ account }) => {
             </Link>
 
             <div className='absolute inset-y-0 right-0 flex items-center pr-2 space-x-3'>
-              <Button onClick={onClickLogOut} theme='primary' to='/auth/sign_out'>
+              <Button onClick={onClickLogOut} theme='primary' to='/logout'>
                 Sign out
               </Button>
             </div>
