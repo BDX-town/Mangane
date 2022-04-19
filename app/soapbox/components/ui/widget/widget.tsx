@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Stack, HStack, Text, IconButton } from 'soapbox/components/ui';
+import { Text, IconButton } from 'soapbox/components/ui';
+import HStack from 'soapbox/components/ui/hstack/hstack';
+import Stack from 'soapbox/components/ui/stack/stack';
 
 interface IWidgetTitle {
   title: string | React.ReactNode,
