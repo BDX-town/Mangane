@@ -6,10 +6,44 @@ Soapbox supports compile-time customizations in the form of environment variable
 
 You can place files into the `custom/` directory to customize the Soapbox build.
 
+### Custom snippets (`custom/snippets.html`)
+
+If you'd like to include analytics snippets, custom meta tags, or anything else in the `<head>` of the document, you may do so by creating a `custom/snippets.html` file.
+
+For example:
+
+```html
+<link href='/icons/icon-57x57.png' rel='apple-touch-icon' sizes='57x57'>
+<link href='/icons/icon-64x64.png' rel='apple-touch-icon' sizes='64x64'>
+<link href='/icons/icon-72x72.png' rel='apple-touch-icon' sizes='72x72'>
+<link href='/icons/icon-114x114.png' rel='apple-touch-icon' sizes='114x114'>
+<link href='/icons/icon-120x120.png' rel='apple-touch-icon' sizes='120x120'>
+<link href='/icons/icon-180x180.png' rel='apple-touch-icon' sizes='180x180'>
+<link href='/icons/icon-192x192.png' rel='apple-touch-icon' sizes='192x192'>
+<link href='/icons/icon-512x512.png' rel='apple-touch-icon' sizes='512x512'>
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//trk.bonsa.net/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '12345678']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+```
+
+The snippet will be included **before** any Soapbox application code.
+
 ### Custom locales (`custom/locales/*.json`)
 
 It is possible to override locale messages by creating a file for each language, eg `custom/locales/en.json`.
 In this file, add only the messages you want to be overridden.
+
 For example:
 
 ```json
@@ -26,6 +60,7 @@ These messages will be merged into the language file shipped with Soapbox.
 ### Feature overrides (`custom/features.json`)
 
 You can create a file called `custom/features.json` to disable version-checking and force some features on or off.
+
 For example:
 
 ```json
