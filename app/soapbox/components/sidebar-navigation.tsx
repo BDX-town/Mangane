@@ -28,60 +28,62 @@ const SidebarNavigation = () => {
   const makeMenu = (): Menu => {
     const menu: Menu = [];
 
-    if (account?.locked || followRequestsCount > 0) {
-      menu.push({
-        to: '/follow_requests',
-        text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
-        icon: require('@tabler/icons/icons/user-plus.svg'),
-        // TODO: let menu items have a counter
-        // count: followRequestsCount,
-      });
-    }
+    if (account) {
+      if (account.locked || followRequestsCount > 0) {
+        menu.push({
+          to: '/follow_requests',
+          text: <FormattedMessage id='navigation_bar.follow_requests' defaultMessage='Follow requests' />,
+          icon: require('@tabler/icons/icons/user-plus.svg'),
+          // TODO: let menu items have a counter
+          // count: followRequestsCount,
+        });
+      }
 
-    if (features.bookmarks) {
-      menu.push({
-        to: '/bookmarks',
-        text: <FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />,
-        icon: require('@tabler/icons/icons/bookmark.svg'),
-      });
-    }
+      if (features.bookmarks) {
+        menu.push({
+          to: '/bookmarks',
+          text: <FormattedMessage id='column.bookmarks' defaultMessage='Bookmarks' />,
+          icon: require('@tabler/icons/icons/bookmark.svg'),
+        });
+      }
 
-    if (features.lists) {
-      menu.push({
-        to: '/lists',
-        text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
-        icon: require('@tabler/icons/icons/list.svg'),
-      });
-    }
+      if (features.lists) {
+        menu.push({
+          to: '/lists',
+          text: <FormattedMessage id='column.lists' defaultMessage='Lists' />,
+          icon: require('@tabler/icons/icons/list.svg'),
+        });
+      }
 
-    if (account && instance.invites_enabled) {
-      menu.push({
-        to: `${baseURL}/invites`,
-        icon: require('@tabler/icons/icons/mailbox.svg'),
-        text: <FormattedMessage id='navigation.invites' defaultMessage='Invites' />,
-      });
-    }
+      if (instance.invites_enabled) {
+        menu.push({
+          to: `${baseURL}/invites`,
+          icon: require('@tabler/icons/icons/mailbox.svg'),
+          text: <FormattedMessage id='navigation.invites' defaultMessage='Invites' />,
+        });
+      }
 
-    if (settings.get('isDeveloper')) {
-      menu.push({
-        to: '/developers',
-        icon: require('@tabler/icons/icons/code.svg'),
-        text: <FormattedMessage id='navigation.developers' defaultMessage='Developers' />,
-      });
-    }
+      if (settings.get('isDeveloper')) {
+        menu.push({
+          to: '/developers',
+          icon: require('@tabler/icons/icons/code.svg'),
+          text: <FormattedMessage id='navigation.developers' defaultMessage='Developers' />,
+        });
+      }
 
-    if (account && account.staff) {
-      menu.push({
-        to: '/admin',
-        icon: require('@tabler/icons/icons/dashboard.svg'),
-        text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
-        // TODO: let menu items have a counter
-        // count: dashboardCount,
-      });
-    }
+      if (account.staff) {
+        menu.push({
+          to: '/admin',
+          icon: require('@tabler/icons/icons/dashboard.svg'),
+          text: <FormattedMessage id='tabs_bar.dashboard' defaultMessage='Dashboard' />,
+          // TODO: let menu items have a counter
+          // count: dashboardCount,
+        });
+      }
 
-    if (features.localTimeline || features.publicTimeline) {
-      menu.push(null);
+      if (features.localTimeline || features.publicTimeline) {
+        menu.push(null);
+      }
     }
 
     if (features.localTimeline) {
