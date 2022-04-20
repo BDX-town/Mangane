@@ -10,6 +10,7 @@ import {
   WhoToFollowPanel,
   TrendsPanel,
   SignUpPanel,
+  PromoPanel,
   CryptoDonatePanel,
   BirthdayPanel,
 } from 'soapbox/features/ui/util/async-components';
@@ -94,6 +95,9 @@ class HomePage extends ImmutablePureComponent {
               {Component => <Component limit={cryptoLimit} />}
             </BundleContainer>
           )}
+          <BundleContainer fetchComponent={PromoPanel}>
+            {Component => <Component />}
+          </BundleContainer>
           {features.birthdays && (
             <BundleContainer fetchComponent={BirthdayPanel}>
               {Component => <Component limit={10} />}

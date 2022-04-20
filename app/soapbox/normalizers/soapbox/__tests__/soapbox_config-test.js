@@ -27,4 +27,11 @@ describe('normalizeSoapboxConfig()', () => {
     expect(ImmutableRecord.isRecord(result.cryptoAddresses.get(0))).toBe(true);
     expect(result.toJS()).toMatchObject(expected);
   });
+
+  it('normalizes promoPanel', () => {
+    const result = normalizeSoapboxConfig(require('soapbox/__fixtures__/spinster-soapbox.json'));
+    expect(ImmutableRecord.isRecord(result.promoPanel)).toBe(true);
+    expect(ImmutableRecord.isRecord(result.promoPanel.items.get(0))).toBe(true);
+    expect(result.promoPanel.items.get(2).icon).toBe('question-circle');
+  });
 });

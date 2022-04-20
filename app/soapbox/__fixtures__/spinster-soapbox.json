@@ -1,0 +1,119 @@
+{
+  "allowedEmoji": [
+    "👍",
+    "❤️",
+    "😆",
+    "😮",
+    "😢",
+    "😡",
+    "😩"
+  ],
+  "brandColor": "#990099",
+  "copyright": "♡2021. Copying is an act of love. Please copy and share.",
+  "cryptoAddresses": [
+    {
+      "address": "bc1qv7lk3algpfg4zpyuhvxfm0uza9ck4parz3y3l5",
+      "note": "",
+      "ticker": "btc"
+    },
+    {
+      "address": "0xadc66B63bFee7677CD27CFb81b16a8860f1A1226",
+      "note": "",
+      "ticker": "eth"
+    },
+    {
+      "address": "DSf7UmRf7DGGsjh4QYhzQaqtjJMTXZ8k79",
+      "note": "",
+      "ticker": "doge"
+    },
+    {
+      "address": "ltc1q642pnkuvw0gpuuvddw6vafvl9hhp3efyl9mnqz",
+      "note": "",
+      "ticker": "ltc"
+    },
+    {
+      "address": "t1faHDsoa4bd3pGaLjaU7DiuUtBPzbnEEse",
+      "note": "",
+      "ticker": "zec"
+    },
+    {
+      "address": "XchTLkcSMsDoZGESwr4tqtxSU5dideAZVQ",
+      "note": "",
+      "ticker": "dash"
+    },
+    {
+      "address": "bitcoincash:qp8f80z27294phmhdk55yf05p3f0tkxl4v9r2aavw5",
+      "note": "",
+      "ticker": "bch"
+    }
+  ],
+  "cryptoDonatePanel": {
+    "limit": 1
+  },
+  "customCss": [
+    "/instance/spinster.css"
+  ],
+  "defaultSettings": {
+    "autoPlayGif": false,
+    "themeMode": "light"
+  },
+  "extensions": {
+    "patron": {
+      "enabled": true
+    }
+  },
+  "logo": "https://spinster.xyz/instance/images/spinster-logo.svg",
+  "navlinks": {
+    "homeFooter": [
+      {
+        "title": "About",
+        "url": "/about"
+      },
+      {
+        "title": "Terms of Service",
+        "url": "/about/tos"
+      },
+      {
+        "title": "Privacy Policy",
+        "url": "/about/privacy"
+      },
+      {
+        "title": "DMCA",
+        "url": "/about/dmca"
+      },
+      {
+        "title": "Source Code",
+        "url": "/about#opensource"
+      }
+    ]
+  },
+  "promoPanel": {
+    "items": [
+      {
+        "icon": "shopping-basket",
+        "text": "Buy Spinster Merch",
+        "url": "https://shop.4w.pub/collections/spinster"
+      },
+      {
+        "icon": "eye-slash",
+        "text": "Privacy Guide",
+        "url": "https://4w.pub/your-guide-to-spinster-privacy-options/"
+      },
+      {
+        "icon": "question-circle",
+        "text": "Spinster FAQs",
+        "url": "https://spinster.xyz/about#faqs"
+      },
+      {
+        "icon": "bug",
+        "text": "Report a Bug",
+        "url": "https://gitlab.com/soapbox-pub/soapbox-fe/-/issues/"
+      },
+      {
+        "icon": "fediverse",
+        "text": "About the Fediverse",
+        "url": "https://jointhefedi.com/"
+      }
+    ]
+  }
+}
