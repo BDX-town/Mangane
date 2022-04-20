@@ -30,7 +30,7 @@ import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { checkOnboardingStatus } from '../actions/onboarding';
+import { ONBOARDING_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
@@ -43,9 +43,6 @@ createGlobals(store);
 
 // Preload happens synchronously
 store.dispatch(preload());
-
-// This happens synchronously
-store.dispatch(checkOnboardingStatus());
 
 /** Load initial data from the backend */
 const loadInitial = () => {
@@ -76,6 +73,7 @@ const mapStateToProps = (state) => {
   const me = state.get('me');
   const account = makeAccount(state, me);
   const settings = getSettings(state);
+  const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
@@ -95,7 +93,7 @@ const mapStateToProps = (state) => {
     appleAppId: soapboxConfig.get('appleAppId'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
-    needsOnboarding: state.onboarding.needsOnboarding,
+    needsOnboarding,
   };
 };
 
@@ -157,7 +155,7 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, account, themeCss, locale, singleUserMode } = this.props;
+    const { me, account, themeCss, locale, needsOnboarding, singleUserMode } = this.props;
     if (me === null) return null;
     if (me && !account) return null;
     if (!this.state.isLoaded) return null;
@@ -165,8 +163,7 @@ class SoapboxMount extends React.PureComponent {
 
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
 
-    const { needsOnboarding } = this.props;
-    if (!waitlisted && needsOnboarding) {
+    if (account && !waitlisted && needsOnboarding) {
       return (
         <IntlProvider locale={locale} messages={this.state.messages}>
           <Helmet>
@@ -176,8 +173,12 @@ class SoapboxMount extends React.PureComponent {
             <meta name='theme-color' content={this.props.brandColor} />
           </Helmet>
 
-          <OnboardingWizard />
-          <NotificationsContainer />
+          <ErrorBoundary>
+            <BrowserRouter basename={FE_SUBDIRECTORY}>
+              <OnboardingWizard />
+              <NotificationsContainer />
+            </BrowserRouter>
+          </ErrorBoundary>
         </IntlProvider>
       );
     }

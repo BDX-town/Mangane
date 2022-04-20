@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { startOnboarding } from 'soapbox/actions/onboarding';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/verification';
 import { removeStoredVerification } from 'soapbox/actions/verification';
@@ -41,7 +40,6 @@ const Registration = () => {
       .then(() => {
         setShouldRedirect(true);
         removeStoredVerification();
-        dispatch(startOnboarding());
         dispatch(
           snackbar.success(
             intl.formatMessage({

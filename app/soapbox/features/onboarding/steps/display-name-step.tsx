@@ -6,11 +6,13 @@ import { useDispatch } from 'react-redux';
 import { patchMe } from 'soapbox/actions/me';
 import snackbar from 'soapbox/actions/snackbar';
 import { Button, Card, CardBody, FormGroup, Input, Stack, Text } from 'soapbox/components/ui';
+import { useOwnAccount } from 'soapbox/hooks';
 
 const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
 
-  const [value, setValue] = React.useState<string>('');
+  const account = useOwnAccount();
+  const [value, setValue] = React.useState<string>(account?.display_name || '');
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [errors, setErrors] = React.useState<string[]>([]);
 

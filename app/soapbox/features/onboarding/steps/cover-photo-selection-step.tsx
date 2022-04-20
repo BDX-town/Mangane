@@ -11,6 +11,17 @@ import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soap
 import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize_image';
 
+/** Default header filenames from various backends */
+const DEFAULT_HEADERS = [
+  '/headers/original/missing.png', // Mastodon
+  '/images/banner.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+const isDefaultHeader = (url: string) => {
+  return DEFAULT_HEADERS.every(header => url.endsWith(header));
+};
+
 const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
   const account = useOwnAccount();
@@ -19,6 +30,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const [selectedFile, setSelectedFile] = React.useState<string | null>();
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [isDisabled, setDisabled] = React.useState<boolean>(true);
+  const isDefault = account ? isDefaultHeader(account.header) : false;
 
   const openFilePicker = () => {
     fileInput.current?.click();
@@ -27,8 +39,6 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const maxPixels = 1920 * 1080;
     const [rawFile] = event.target.files || [] as any;
-
-    console.log('fike', rawFile);
 
     resizeImage(rawFile, maxPixels).then((file) => {
       const url = file ? URL.createObjectURL(file) : account?.header as string;
@@ -124,7 +134,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
               </div>
 
               <Stack justifyContent='center' space={2}>
-                <Button block theme='primary' type='submit' disabled={isDisabled || isSubmitting}>
+                <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
                   {isSubmitting ? 'Saving...' : 'Next'}
                 </Button>
 

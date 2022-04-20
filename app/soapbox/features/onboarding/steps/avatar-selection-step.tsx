@@ -10,6 +10,17 @@ import { Avatar, Button, Card, CardBody, Icon, Spinner, Stack, Text } from 'soap
 import { useOwnAccount } from 'soapbox/hooks';
 import resizeImage from 'soapbox/utils/resize_image';
 
+/** Default avatar filenames from various backends */
+const DEFAULT_AVATARS = [
+  '/avatars/original/missing.png', // Mastodon
+  '/images/avi.png', // Pleroma
+];
+
+/** Check if the avatar is a default avatar */
+const isDefaultAvatar = (url: string) => {
+  return DEFAULT_AVATARS.every(avatar => url.endsWith(avatar));
+};
+
 const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const dispatch = useDispatch();
   const account = useOwnAccount();
@@ -18,6 +29,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
   const [selectedFile, setSelectedFile] = React.useState<string | null>();
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   const [isDisabled, setDisabled] = React.useState<boolean>(true);
+  const isDefault = account ? isDefaultAvatar(account.avatar) : false;
 
   const openFilePicker = () => {
     fileInput.current?.click();
@@ -100,7 +112,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
               </div>
 
               <Stack justifyContent='center' space={2}>
-                <Button block theme='primary' type='submit' disabled={isDisabled || isSubmitting}>
+                <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
                   {isSubmitting ? (
                     <FormattedMessage id='onboarding.saving' defaultMessage='Saving...' />
                   ) : (

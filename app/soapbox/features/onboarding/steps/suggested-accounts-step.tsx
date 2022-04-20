@@ -61,7 +61,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
                   theme='primary'
                   onClick={onNext}
                 >
-                  Done
+                  <FormattedMessage id='onboarding.done' defaultMessage='Done' />
                 </Button>
 
                 <Button block theme='link' type='button' onClick={onNext}>
