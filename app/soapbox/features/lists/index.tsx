@@ -2,16 +2,17 @@ import React from 'react';
 import { useEffect } from 'react';
 import { defineMessages, useIntl, FormattedMessage } from 'react-intl';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { createSelector } from 'reselect';
 
 import { fetchLists } from 'soapbox/actions/lists';
+import Icon from 'soapbox/components/icon';
 import ScrollableList from 'soapbox/components/scrollable_list';
 import { Spinner } from 'soapbox/components/ui';
 import { CardHeader, CardTitle } from 'soapbox/components/ui';
 import { useAppSelector } from 'soapbox/hooks';
 
 import Column from '../ui/components/column';
-import ColumnLink from '../ui/components/column_link';
 
 import NewListForm from './components/new_list_form';
 
@@ -66,9 +67,12 @@ const Lists: React.FC = () => {
         scrollKey='lists'
         emptyMessage={emptyMessage}
       >
-        {lists.map((list: any) =>
-          <ColumnLink key={list.get('id')} to={`/list/${list.get('id')}`} src={require('@tabler/icons/icons/list.svg')} text={list.get('title')} />,
-        )}
+        {lists.map((list: any) => (
+          <Link key={list.get('id')} to={`/list/${list.get('id')}`} className='flex items-center gap-1.5 p-2 my-2 text-black dark:text-white hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg'>
+            <Icon src={require('@tabler/icons/icons/list.svg')} fixedWidth />
+            {list.get('title')}
+          </Link>
+        ))}
       </ScrollableList>
     </Column>
   );
