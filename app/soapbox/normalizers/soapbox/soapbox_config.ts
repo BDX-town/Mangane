@@ -61,6 +61,11 @@ export const PromoPanelItemRecord = ImmutableRecord({
   icon: '',
   text: '',
   url: '',
+  textLocales: ImmutableMap<string, string>(),
+});
+
+export const PromoPanelRecord = ImmutableRecord({
+  items: ImmutableList<PromoPanelItem>(),
 });
 
 export const FooterItemRecord = ImmutableRecord({
@@ -86,9 +91,7 @@ export const SoapboxConfigRecord = ImmutableRecord({
   defaultSettings: ImmutableMap(),
   extensions: ImmutableMap(),
   greentext: false,
-  promoPanel: ImmutableMap({
-    items: ImmutableList<PromoPanelItem>(),
-  }),
+  promoPanel: PromoPanelRecord(),
   navlinks: ImmutableMap({
     homeFooter: ImmutableList<FooterItem>(),
   }),
@@ -160,12 +163,19 @@ const maybeAddMissingColors = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMa
   return soapboxConfig.set('colors', missing.mergeDeep(colors));
 };
 
+const normalizePromoPanel = (soapboxConfig: SoapboxConfigMap): SoapboxConfigMap => {
+  const promoPanel = PromoPanelRecord(soapboxConfig.get('promoPanel'));
+  const items = promoPanel.items.map(PromoPanelItemRecord);
+  return soapboxConfig.set('promoPanel', promoPanel.set('items', items));
+};
+
 export const normalizeSoapboxConfig = (soapboxConfig: Record<string, any>) => {
   return SoapboxConfigRecord(
     ImmutableMap(fromJS(soapboxConfig)).withMutations(soapboxConfig => {
       normalizeBrandColor(soapboxConfig);
       normalizeAccentColor(soapboxConfig);
       normalizeColors(soapboxConfig);
+      normalizePromoPanel(soapboxConfig);
       maybeAddMissingColors(soapboxConfig);
       normalizeCryptoAddresses(soapboxConfig);
     }),
