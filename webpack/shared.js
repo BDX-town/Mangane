@@ -1,5 +1,6 @@
 // Note: You must restart bin/webpack-dev-server for changes to take effect
 
+const fs = require('fs');
 const { join, resolve } = require('path');
 
 const CopyPlugin = require('copy-webpack-plugin');
@@ -16,6 +17,15 @@ const rules = require('./rules');
 
 const { FE_SUBDIRECTORY, FE_INSTANCE_SOURCE_DIR } = require(join(__dirname, '..', 'app', 'soapbox', 'build_config'));
 
+// Return file as string, or return empty string
+const readFile = filename => {
+  try {
+    return fs.readFileSync(filename, 'utf8');
+  } catch {
+    return '';
+  }
+};
+
 const makeHtmlConfig = (params = {}) => {
   return Object.assign({
     template: 'app/index.ejs',
@@ -29,6 +39,9 @@ const makeHtmlConfig = (params = {}) => {
       removeScriptTypeAttributes: true,
       removeStyleLinkTypeAttributes: true,
       useShortDoctype: true,
+    },
+    templateParameters: {
+      snippets: readFile(resolve('custom/snippets.html')),
     },
   }, params);
 };
