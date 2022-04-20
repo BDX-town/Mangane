@@ -19,9 +19,39 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
     dispatch(fetchSuggestions());
   }, []);
 
-  if (suggestionsToRender.isEmpty()) {
-    return null;
-  }
+  const renderSuggestions = () => {
+    return (
+      <div className='sm:pt-4 sm:pb-10 flex flex-col divide-y divide-solid divide-gray-200'>
+        {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
+          <div key={suggestion.get('account')} className='py-2'>
+            <AccountContainer
+              // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
+              id={suggestion.get('account')}
+              showProfileHoverCard={false}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  const renderEmpty = () => {
+    return (
+      <div className='bg-primary-50 dark:bg-slate-700 my-2 rounded-lg text-center p-8'>
+        <Text>
+          <FormattedMessage id='empty_column.follow_recommendations' defaultMessage='Looks like no suggestions could be generated for you. You can try using search to look for people you might know or explore trending hashtags.' />
+        </Text>
+      </div>
+    );
+  };
+
+  const renderBody = () => {
+    if (suggestionsToRender.isEmpty()) {
+      return renderEmpty();
+    } else {
+      return renderSuggestions();
+    }
+  };
 
   return (
     <Card variant='rounded' size='xl'>
@@ -39,17 +69,7 @@ const SuggestedAccountsStep = ({ onNext }: { onNext: () => void }) => {
             </Stack>
           </div>
 
-          <div className='sm:pt-4 sm:pb-10 flex flex-col divide-y divide-solid divide-gray-200'>
-            {suggestionsToRender.map((suggestion: ImmutableMap<string, any>) => (
-              <div key={suggestion.get('account')} className='py-2'>
-                <AccountContainer
-                  // @ts-ignore: TS thinks `id` is passed to <Account>, but it isn't
-                  id={suggestion.get('account')}
-                  showProfileHoverCard={false}
-                />
-              </div>
-            ))}
-          </div>
+          {renderBody()}
 
           <div className='sm:w-2/3 md:w-1/2 mx-auto'>
             <Stack>
