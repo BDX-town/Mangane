@@ -618,6 +618,7 @@
   "login.fields.otp_code_hint": "Wprowadź kod uwierzytelniania dwuetapowego wygenerowany przez aplikację mobilną lub jeden z kodów zapasowych",
   "login.fields.otp_code_label": "Kod uwierzytelniania dwuetapowego:",
   "login.fields.password_placeholder": "Hasło",
+  "login.fields.username_label": "Nazwa użytkownika lub e-mail",
   "login.fields.username_placeholder": "Nazwa użytkownika",
   "login.log_in": "Zaloguj się",
   "login.otp_log_in": "Login OTP",
