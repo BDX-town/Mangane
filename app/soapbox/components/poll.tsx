@@ -74,7 +74,7 @@ const PollOptionText: React.FC<IPollOptionText> = ({ poll, option, index, active
       <HStack alignItems='center' className='p-1 text-gray-900 dark:text-gray-300'>
         {!showResults && (
           <span
-            className={classNames('inline-block w-4 h-4 mr-2.5 border border-solid border-primary-600 rounded-full', {
+            className={classNames('inline-block w-4 h-4 flex-none mr-2.5 border border-solid border-primary-600 rounded-full', {
               'bg-primary-600': active,
               'rounded': poll.multiple,
             })}

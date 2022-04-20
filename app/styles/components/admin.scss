@@ -1,65 +1,9 @@
 .dashcounters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  margin: 0 -5px 0;
-  padding: 20px;
+  @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mb-4;
 }
 
 .dashcounter {
-  box-sizing: border-box;
-  flex: 0 0 33.333%;
-  padding: 0 5px;
-  margin-bottom: 10px;
-
-  > a,
-  > div {
-    box-sizing: border-box;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    padding: 20px;
-    background: var(--accent-color--faint);
-    border-radius: 4px;
-    transition: 0.2s;
-    height: 100%;
-  }
-
-  > a:hover {
-    background: var(--accent-color--med);
-    transform: translateY(-2px);
-  }
-
-  &__num,
-  &__icon,
-  &__text {
-    text-align: center;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 30px;
-    color: var(--primary-text-color);
-    margin-bottom: 10px;
-  }
-
-  &__icon {
-    display: flex;
-    justify-content: center;
-
-    .svg-icon {
-      width: 48px;
-      height: 48px;
-
-      svg {
-        stroke-width: 1px;
-      }
-    }
-  }
-
-  &__label {
-    font-size: 14px;
-    color: hsla(var(--primary-text-color_hsl), 0.6);
-    text-align: center;
-    font-weight: 500;
-  }
+  @apply bg-gray-200 dark:bg-gray-600 p-4 rounded flex flex-col items-center space-y-2 hover:-translate-y-1 transition-transform cursor-pointer;
 }
 
 .dashwidgets {

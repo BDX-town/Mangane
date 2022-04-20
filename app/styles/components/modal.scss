@@ -341,7 +341,7 @@
 
 .actions-modal {
   .dropdown-menu__separator {
-    @apply block m-2 h-[1px] bg-gray-200;
+    @apply block m-2 h-[1px] bg-gray-200 dark:bg-gray-600;
   }
 }
 
@@ -521,7 +521,7 @@
 }
 
 .actions-modal {
-  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white;
+  @apply w-full max-h-full max-w-lg mt-auto mb-2 bg-white dark:bg-slate-800;
 
   .status {
     overflow-y: auto;
@@ -540,7 +540,7 @@
     li:not(:empty) {
       a,
       button {
-        @apply flex items-center px-4 py-3 text-gray-600 no-underline hover:bg-gray-100 hover:text-gray-800;
+        @apply flex items-center px-4 py-3 text-gray-600 dark:text-gray-300 no-underline hover:bg-gray-100 dark:bg-gray-800 hover:text-gray-800 dark:hover:text-gray-200;
 
         &.destructive {
           @apply text-danger-600;
@@ -709,9 +709,6 @@
     display: flex;
     flex-direction: row;
     flex: 1;
-    padding: 10px;
-    padding-left: max(10px, env(safe-area-inset-left));
-    padding-right: max(10px, env(safe-area-inset-right));
     overflow-y: hidden;
 
     &--scroll {
@@ -817,9 +814,7 @@
   &__content {
     display: flex;
     flex-direction: column;
-    // align-items: center;
     row-gap: 10px;
-    padding: 10px;
 
     .unauthorized-modal-content__button {
       margin: 0 auto;
@@ -832,11 +827,8 @@
     gap: 10px;
     width: 100%;
 
-    .button {
-      width: auto;
-      margin: 0;
-      text-transform: none;
-      overflow: unset;
+    button {
+      align-self: flex-end;
     }
   }
 
@@ -848,9 +840,9 @@
 
     &::before,
     &::after {
+      @apply border-b border-gray-300 dark:border-gray-600;
       content: "";
       flex: 1;
-      border-bottom: 1px solid hsla(var(--primary-text-color_hsl), 0.2);
     }
   }
 

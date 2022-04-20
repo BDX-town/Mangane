@@ -1,0 +1,202 @@
+{
+  "account": {
+    "acct": "dave",
+    "avatar": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "avatar_static": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+    "bot": false,
+    "created_at": "2020-02-01T07:28:46.000Z",
+    "display_name": "Elden Beedle 🇺🇦 🇫🇷",
+    "emojis": [],
+    "fields": [],
+    "followers_count": 490,
+    "following_count": 367,
+    "fqn": "dave@gleasonator.com",
+    "header": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "header_static": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+    "id": "9v5c0Pkz3MT5KTfam8",
+    "last_status_at": "2022-04-16T19:57:10",
+    "locked": false,
+    "note": "Beedle is back, baby!<br/><br/>Mostly just crosspost memes and stuff I find on the internet",
+    "pleroma": {
+      "accepts_chat_messages": true,
+      "also_known_as": [],
+      "ap_id": "https://gleasonator.com/users/dave",
+      "background_image": null,
+      "birthday": "1990-01-01",
+      "deactivated": false,
+      "favicon": "https://gleasonator.com/favicon.png",
+      "hide_favorites": true,
+      "hide_followers": false,
+      "hide_followers_count": false,
+      "hide_follows": false,
+      "hide_follows_count": false,
+      "is_admin": false,
+      "is_confirmed": true,
+      "is_moderator": false,
+      "is_suggested": true,
+      "location": null,
+      "relationship": {},
+      "skip_thread_containment": false,
+      "tags": []
+    },
+    "source": {
+      "fields": [],
+      "note": "Beedle is back, baby!\r\n\r\nMostly just crosspost memes and stuff I find on the internet",
+      "pleroma": {
+        "actor_type": "Person",
+        "discoverable": false
+      },
+      "sensitive": false
+    },
+    "statuses_count": 16758,
+    "url": "https://gleasonator.com/users/dave",
+    "username": "dave"
+  },
+  "created_at": "2022-04-14T01:12:27.000Z",
+  "id": "427339",
+  "pleroma": {
+    "is_muted": false,
+    "is_seen": true
+  },
+  "status": {
+    "account": {
+      "acct": "dave",
+      "avatar": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+      "avatar_static": "https://media.gleasonator.com/68c29c30c18f30dd2898f85466bf1670312dda816617e6d31421c7e4c30a8265.png",
+      "bot": false,
+      "created_at": "2020-02-01T07:28:46.000Z",
+      "display_name": "Elden Beedle 🇺🇦 🇫🇷",
+      "emojis": [],
+      "fields": [],
+      "followers_count": 490,
+      "following_count": 367,
+      "fqn": "dave@gleasonator.com",
+      "header": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+      "header_static": "https://media.gleasonator.com/47e8907c322a0e55d12b211846aa27c6b386e947326fe14bb09c89ef7317901d.jpg",
+      "id": "9v5c0Pkz3MT5KTfam8",
+      "last_status_at": "2022-04-16T19:57:10",
+      "locked": false,
+      "note": "Beedle is back, baby!<br/><br/>Mostly just crosspost memes and stuff I find on the internet",
+      "pleroma": {
+        "accepts_chat_messages": true,
+        "also_known_as": [],
+        "ap_id": "https://gleasonator.com/users/dave",
+        "background_image": null,
+        "birthday": "1990-01-01",
+        "deactivated": false,
+        "favicon": "https://gleasonator.com/favicon.png",
+        "hide_favorites": true,
+        "hide_followers": false,
+        "hide_followers_count": false,
+        "hide_follows": false,
+        "hide_follows_count": false,
+        "is_admin": false,
+        "is_confirmed": true,
+        "is_moderator": false,
+        "is_suggested": true,
+        "location": null,
+        "relationship": {},
+        "skip_thread_containment": false,
+        "tags": []
+      },
+      "source": {
+        "fields": [],
+        "note": "Beedle is back, baby!\r\n\r\nMostly just crosspost memes and stuff I find on the internet",
+        "pleroma": {
+          "actor_type": "Person",
+          "discoverable": false
+        },
+        "sensitive": false
+      },
+      "statuses_count": 16758,
+      "url": "https://gleasonator.com/users/dave",
+      "username": "dave"
+    },
+    "application": {
+      "name": "Soapbox FE",
+      "website": "https://soapbox.pub/"
+    },
+    "bookmarked": false,
+    "card": null,
+    "content": "<p>Focusing on just the look, what do you guys think?</p>",
+    "created_at": "2022-04-13T01:12:26.000Z",
+    "emojis": [],
+    "favourited": false,
+    "favourites_count": 1,
+    "id": "AIOHjtGEaqUHoXGVf6",
+    "in_reply_to_account_id": "9v5c0Pkz3MT5KTfam8",
+    "in_reply_to_id": "AIOFTLqQrljhdNBNHE",
+    "language": null,
+    "media_attachments": [],
+    "mentions": [
+      {
+        "acct": "dave",
+        "id": "9v5c0Pkz3MT5KTfam8",
+        "url": "https://gleasonator.com/users/dave",
+        "username": "dave"
+      }
+    ],
+    "muted": false,
+    "pinned": false,
+    "pleroma": {
+      "content": {
+        "text/plain": "Focusing on just the look, what do you guys think?"
+      },
+      "content_type": null,
+      "conversation_id": "AIOFTLp0x2bNYyWF4C",
+      "direct_conversation_id": null,
+      "emoji_reactions": [],
+      "expires_at": null,
+      "in_reply_to_account_acct": "dave",
+      "local": true,
+      "parent_visible": true,
+      "pinned_at": null,
+      "quote": null,
+      "quote_url": null,
+      "quote_visible": false,
+      "spoiler_text": {
+        "text/plain": ""
+      },
+      "thread_muted": false
+    },
+    "poll": {
+      "emojis": [],
+      "expired": true,
+      "expires_at": "2022-04-14T01:12:26.000Z",
+      "id": "AIOHjtAuucEZY2mGNE",
+      "multiple": false,
+      "options": [
+        {
+          "title": "Looks good, looking forward to wider deployment",
+          "votes_count": 10
+        },
+        {
+          "title": "Not a fan, l'll stick to the current UI thanks",
+          "votes_count": 1
+        },
+        {
+          "title": "Hard to say, need to actually try to decide honestly",
+          "votes_count": 1
+        }
+      ],
+      "own_votes": [
+        0
+      ],
+      "voted": true,
+      "voters_count": 12,
+      "votes_count": 12
+    },
+    "reblog": null,
+    "reblogged": false,
+    "reblogs_count": 1,
+    "replies_count": 1,
+    "sensitive": false,
+    "spoiler_text": "",
+    "tags": [],
+    "text": null,
+    "uri": "https://gleasonator.com/objects/a8465271-a48d-4c39-a0a9-d3eda3ab2735",
+    "url": "https://gleasonator.com/notice/AIOHjtGEaqUHoXGVf6",
+    "visibility": "public"
+  },
+  "type": "poll"
+}

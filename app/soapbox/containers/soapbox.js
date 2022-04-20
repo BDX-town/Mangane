@@ -26,6 +26,7 @@ import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
 import { makeGetAccount } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -37,31 +38,37 @@ import { store } from '../store';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
-// Delay rendering until instance has loaded or failed (for feature detection)
-const isInstanceLoaded = state => {
-  const v = state.getIn(['instance', 'version'], '0.0.0');
-  const fetchFailed = state.getIn(['meta', 'instance_fetch_failed'], false);
-
-  return v !== '0.0.0' || fetchFailed;
-};
-
 // Configure global functions for developers
 createGlobals(store);
 
+// Preload happens synchronously
 store.dispatch(preload());
 
-store.dispatch(fetchMe())
-  .then(account => {
-    // Postpone for authenticated fetch
-    store.dispatch(loadInstance());
-    store.dispatch(loadSoapboxConfig());
-    store.dispatch(checkOnboardingStatus());
+// This happens synchronously
+store.dispatch(checkOnboardingStatus());
 
-    if (!account) {
-      store.dispatch(fetchVerificationConfig());
+/** Load initial data from the backend */
+const loadInitial = () => {
+  return async(dispatch, getState) => {
+    // Await for authenticated fetch
+    await dispatch(fetchMe());
+    // Await for feature detection
+    await dispatch(loadInstance());
+
+    const promises = [];
+
+    promises.push(dispatch(loadSoapboxConfig()));
+
+    const state = getState();
+    const features = getFeatures(state.instance);
+
+    if (features.pepe && !state.me) {
+      promises.push(dispatch(fetchVerificationConfig()));
     }
-  })
-  .catch(console.error);
+
+    await Promise.all(promises);
+  };
+};
 
 const makeAccount = makeGetAccount();
 
@@ -77,7 +84,6 @@ const mapStateToProps = (state) => {
   return {
     me,
     account,
-    instanceLoaded: isInstanceLoaded(state),
     reduceMotion: settings.get('reduceMotion'),
     underlineLinks: settings.get('underlineLinks'),
     systemFont: settings.get('systemFont'),
@@ -86,6 +92,7 @@ const mapStateToProps = (state) => {
     locale: validLocale(locale) ? locale : 'en',
     themeCss: generateThemeCss(soapboxConfig),
     brandColor: soapboxConfig.get('brandColor'),
+    appleAppId: soapboxConfig.get('appleAppId'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
     needsOnboarding: state.onboarding.needsOnboarding,
@@ -98,7 +105,6 @@ class SoapboxMount extends React.PureComponent {
   static propTypes = {
     me: SoapboxPropTypes.me,
     account: ImmutablePropTypes.record,
-    instanceLoaded: PropTypes.bool,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
@@ -109,6 +115,7 @@ class SoapboxMount extends React.PureComponent {
     themeCss: PropTypes.string,
     themeMode: PropTypes.string,
     brandColor: PropTypes.string,
+    appleAppId: PropTypes.string,
     dispatch: PropTypes.func,
     singleUserMode: PropTypes.bool,
   };
@@ -116,6 +123,7 @@ class SoapboxMount extends React.PureComponent {
   state = {
     messages: {},
     localeLoading: true,
+    isLoaded: false,
   }
 
   setMessages = () => {
@@ -132,6 +140,12 @@ class SoapboxMount extends React.PureComponent {
 
   componentDidMount() {
     this.setMessages();
+
+    this.props.dispatch(loadInitial()).then(() => {
+      this.setState({ isLoaded: true });
+    }).catch(() => {
+      this.setState({ isLoaded: false });
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -143,10 +157,10 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, account, instanceLoaded, themeCss, locale, singleUserMode } = this.props;
+    const { me, account, themeCss, locale, singleUserMode } = this.props;
     if (me === null) return null;
     if (me && !account) return null;
-    if (!instanceLoaded) return null;
+    if (!this.state.isLoaded) return null;
     if (this.state.localeLoading) return null;
 
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
@@ -182,6 +196,10 @@ class SoapboxMount extends React.PureComponent {
           <body className={bodyClass} />
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           <meta name='theme-color' content={this.props.brandColor} />
+
+          {this.props.appleAppId && (
+            <meta name='apple-itunes-app' content={`app-id=${this.props.appleAppId}`} />
+          )}
         </Helmet>
 
         <ErrorBoundary>
@@ -205,10 +223,6 @@ class SoapboxMount extends React.PureComponent {
                   <Route path='/auth/verify' component={AuthLayout} />
                   <Route path='/reset-password' component={AuthLayout} />
                   <Route path='/edit-password' component={AuthLayout} />
-
-                  <Redirect from='/auth/reset_password' to='/reset-password' />
-                  <Redirect from='/auth/edit_password' to='/edit-password' />
-                  <Redirect from='/auth/sign_in' to='/login' />
 
                   <Route path='/' component={UI} />
                 </Switch>

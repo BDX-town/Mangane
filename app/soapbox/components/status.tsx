@@ -29,7 +29,7 @@ import type {
 } from 'soapbox/types/entities';
 
 // Defined in components/scrollable_list
-type ScrollPosition = { height: number, top: number };
+export type ScrollPosition = { height: number, top: number };
 
 export const textForScreenReader = (intl: IntlShape, status: StatusEntity, rebloggedByText?: string): string => {
   const { account } = status;
@@ -342,7 +342,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
   render() {
     let media = null;
     const poll = null;
-    let prepend, rebloggedByText, reblogContent, reblogElement, reblogElementMobile;
+    let prepend, rebloggedByText, reblogElement, reblogElementMobile;
 
     const { intl, hidden, featured, unread, group } = this.props;
 
@@ -447,7 +447,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
       // @ts-ignore what the FUCK
       account = status.account;
-      reblogContent = status.contentHtml;
       status = status.reblog;
     }
 
@@ -599,7 +598,7 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
     // const domain = getDomain(status.account);
 
     return (
-      <HotKeys handlers={handlers}>
+      <HotKeys handlers={handlers} data-testid='status'>
         <div
           className='status cursor-pointer'
           tabIndex={this.props.focusable && !this.props.muted ? 0 : undefined}
@@ -646,7 +645,6 @@ class Status extends ImmutablePureComponent<IStatus, IStatusState> {
 
               <StatusContent
                 status={status}
-                reblogContent={reblogContent}
                 onClick={this.handleClick}
                 expanded={!status.hidden}
                 onExpandedToggle={this.handleExpandedToggle}

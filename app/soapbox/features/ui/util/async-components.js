@@ -222,6 +222,10 @@ export function BirthdaysModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/birthdays_modal');
 }
 
+export function BirthdayPanel() {
+  return import(/* webpackChunkName: "features/ui" */'../../../components/birthday-panel');
+}
+
 export function AccountNoteModal() {
   return import(/* webpackChunkName: "features/ui" */'../components/account_note_modal');
 }
@@ -244,6 +248,10 @@ export function LoginPage() {
 
 export function ExternalLogin() {
   return import(/* webpackChunkName: "features/external_login" */'../../external_login');
+}
+
+export function LogoutPage() {
+  return import(/* webpackChunkName: "features/auth_login" */'../../auth_login/components/logout');
 }
 
 export function Settings() {
@@ -336,10 +344,6 @@ export function ModerationLog() {
 
 export function UserPanel() {
   return import(/* webpackChunkName: "features/ui" */'../components/user_panel');
-}
-
-export function FeaturesPanel() {
-  return import(/* webpackChunkName: "features/ui" */'../components/features_panel');
 }
 
 export function PromoPanel() {
@@ -484,6 +488,10 @@ export function CreateApp() {
 
 export function SettingsStore() {
   return import(/* webpackChunkName: "features/developers" */'../../developers/settings_store');
+}
+
+export function TestTimeline() {
+  return import(/* webpackChunkName: "features/test_timeline" */'../../test_timeline');
 }
 
 export function DatePicker() {

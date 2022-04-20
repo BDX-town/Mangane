@@ -11,8 +11,8 @@ import {
 
 import type { Account, Status, EmbeddedEntity } from 'soapbox/types/entities';
 
-type NotificationType = ''
-  | 'follow'
+export type NotificationType =
+  'follow'
   | 'follow_request'
   | 'mention'
   | 'reblog'
@@ -32,7 +32,7 @@ export const NotificationRecord = ImmutableRecord({
   id: '',
   status: null as EmbeddedEntity<Status>,
   target: null as EmbeddedEntity<Account>, // move
-  type: '' as NotificationType,
+  type: '' as NotificationType | '',
 });
 
 export const normalizeNotification = (notification: Record<string, any>) => {

@@ -87,7 +87,7 @@ const ProfileDropdown: React.FC<IProfileDropdown> = ({ account, children }) => {
 
     menu.push({
       text: intl.formatMessage(messages.logout, { acct: account.acct }),
-      to: '/auth/sign_out',
+      to: '/logout',
       action: handleLogOut,
       icon: require('@tabler/icons/icons/logout.svg'),
     });

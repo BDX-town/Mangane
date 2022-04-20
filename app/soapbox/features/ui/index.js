@@ -41,7 +41,6 @@ import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
 import { connectUserStream } from '../../actions/streaming';
 import { expandHomeTimeline } from '../../actions/timelines';
-// import PreHeader from '../../features/public_layout/components/pre_header';
 // import GroupSidebarPanel from '../groups/sidebar_panel';
 
 import BackgroundShapes from './components/background_shapes';
@@ -120,6 +119,8 @@ import {
   Developers,
   CreateApp,
   SettingsStore,
+  TestTimeline,
+  LogoutPage,
 } from './util/async-components';
 import { WrappedRoute } from './util/react_router_helpers';
 
@@ -221,11 +222,16 @@ class SwitchingColumnsArea extends React.PureComponent {
     const authenticatedProfile = soapbox.get('authenticatedProfile');
     const hasCrypto = soapbox.get('cryptoAddresses').size > 0;
 
+    // NOTE: Mastodon and Pleroma route some basenames to the backend.
+    // When adding new routes, use a basename that does NOT conflict
+    // with a known backend route, but DO redirect the backend route
+    // to the corresponding component as a fallback.
+    // Ex: use /login instead of /auth, but redirect /auth to /login
     return (
       <Switch>
-        <WrappedRoute path='/auth/external' component={ExternalLogin} publicRoute exact />
-        <WrappedRoute path='/auth/mfa' page={DefaultPage} component={MfaForm} exact />
-        <WrappedRoute path='/auth/confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
+        <WrappedRoute path='/login/external' component={ExternalLogin} publicRoute exact />
+        <WrappedRoute path='/email-confirmation' page={EmptyPage} component={EmailConfirmation} publicRoute exact />
+        <WrappedRoute path='/logout' page={EmptyPage} component={LogoutPage} publicRoute exact />
 
         <WrappedRoute path='/' exact page={HomePage} component={HomeTimeline} content={children} />
 
@@ -240,6 +246,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/conversations' page={DefaultPage} component={Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         <WrappedRoute path='/messages' page={DefaultPage} component={features.directTimeline ? DirectTimeline : Conversations} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
 
+        {/* Gab groups */}
         {/*
         <WrappedRoute path='/groups' exact page={GroupsPage} component={Groups} content={children} componentParams={{ activeTab: 'featured' }} />
         <WrappedRoute path='/groups/create' page={GroupsPage} component={Groups} content={children} componentParams={{ showCreateForm: true, activeTab: 'featured' }} />
@@ -251,7 +258,7 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/groups/:id' page={GroupPage} component={GroupTimeline} content={children} />
         */}
 
-        {/* Redirects from Mastodon, Pleroma FE, etc. to fix old bookmarks */}
+        {/* Mastodon web routes */}
         <Redirect from='/web/:path1/:path2/:path3' to='/:path1/:path2/:path3' />
         <Redirect from='/web/:path1/:path2' to='/:path1/:path2' />
         <Redirect from='/web/:path' to='/:path' />
@@ -259,6 +266,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/timelines/public/local' to='/timeline/local' />
         <Redirect from='/timelines/public' to='/timeline/fediverse' />
         <Redirect from='/timelines/direct' to='/messages' />
+
+        {/* Pleroma FE web routes */}
         <Redirect from='/main/all' to='/timeline/fediverse' />
         <Redirect from='/main/public' to='/timeline/local' />
         <Redirect from='/main/friends' to='/' />
@@ -268,12 +277,35 @@ class SwitchingColumnsArea extends React.PureComponent {
         <Redirect from='/users/:username/statuses/:statusId' to='/@:username/posts/:statusId' />
         <Redirect from='/users/:username/chats' to='/chats' />
         <Redirect from='/users/:username' to='/@:username' />
-        <Redirect from='/terms' to='/about' />
+        <Redirect from='/registration' to='/' exact />
+
+        {/* Gab */}
         <Redirect from='/home' to='/' />
+
+        {/* Mastodon rendered pages */}
+        <Redirect from='/admin/dashboard' to='/admin' exact />
+        <Redirect from='/terms' to='/about' />
+        <Redirect from='/settings/preferences' to='/settings' />
+        <Redirect from='/settings/two_factor_authentication_methods' to='/settings/mfa' />
+        <Redirect from='/settings/otp_authentication' to='/settings/mfa' />
+        <Redirect from='/settings/applications' to='/developers' />
+        <Redirect from='/auth/edit' to='/settings' />
+        <Redirect from='/auth/confirmation' to={`/email-confirmation${this.props.location.search}`} />
+        <Redirect from='/auth/reset_password' to='/reset-password' />
+        <Redirect from='/auth/edit_password' to='/edit-password' />
+        <Redirect from='/auth/sign_in' to='/login' />
+        <Redirect from='/auth/sign_out' to='/logout' />
+
+        {/* Pleroma hard-coded email URLs */}
+        <Redirect from='/registration/:token' to='/invite/:token' />
 
         {/* Soapbox Legacy redirects */}
         <Redirect from='/canary' to='/about/canary' />
         <Redirect from='/canary.txt' to='/about/canary' />
+        <Redirect from='/auth/external' to='/login/external' />
+        <Redirect from='/auth/mfa' to='/settings/mfa' />
+        <Redirect from='/auth/password/new' to='/reset-password' />
+        <Redirect from='/auth/password/edit' to='/edit-password' />
 
         <WrappedRoute path='/tags/:id' publicRoute page={DefaultPage} component={HashtagTimeline} content={children} />
 
@@ -310,14 +342,8 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/statuses/:statusId' exact component={Status} content={children} componentParams={{ shouldUpdateScroll: this.shouldUpdateScroll }} />
         {features.scheduledStatuses && <WrappedRoute path='/scheduled_statuses' page={DefaultPage} component={ScheduledStatuses} content={children} />}
 
-        <Redirect from='/registration/:token' to='/invite/:token' />
-        <Redirect from='/registration' to='/' />
         <WrappedRoute path='/invite/:token' component={RegisterInvite} content={children} publicRoute />
 
-        <Redirect from='/auth/edit' to='/settings' />
-        <Redirect from='/settings/preferences' to='/settings' />
-        <Redirect from='/auth/password/new' to='/reset-password' />
-        <Redirect from='/auth/password/edit' to='/edit-password' />
         <WrappedRoute path='/settings/profile' page={DefaultPage} component={EditProfile} content={children} />
         <WrappedRoute path='/settings/export' page={DefaultPage} component={ExportData} content={children} />
         <WrappedRoute path='/settings/import' page={DefaultPage} component={ImportData} content={children} />
@@ -327,11 +353,11 @@ class SwitchingColumnsArea extends React.PureComponent {
         <WrappedRoute path='/settings/password' page={DefaultPage} component={EditPassword} content={children} />
         <WrappedRoute path='/settings/account' page={DefaultPage} component={DeleteAccount} content={children} />
         <WrappedRoute path='/settings/media_display' page={DefaultPage} component={MediaDisplay} content={children} />
+        <WrappedRoute path='/settings/mfa' page={DefaultPage} component={MfaForm} exact />
         <WrappedRoute path='/settings' page={DefaultPage} component={Settings} content={children} />
         {/* <WrappedRoute path='/backups' page={DefaultPage} component={Backups} content={children} /> */}
         <WrappedRoute path='/soapbox/config' adminOnly page={DefaultPage} component={SoapboxConfig} content={children} />
 
-        <Redirect from='/admin/dashboard' to='/admin' exact />
         <WrappedRoute path='/admin' staffOnly page={AdminPage} component={Dashboard} content={children} exact />
         <WrappedRoute path='/admin/approval' staffOnly page={AdminPage} component={AwaitingApproval} content={children} exact />
         <WrappedRoute path='/admin/reports' staffOnly page={AdminPage} component={Reports} content={children} exact />
@@ -341,6 +367,7 @@ class SwitchingColumnsArea extends React.PureComponent {
 
         <WrappedRoute path='/developers/apps/create' developerOnly page={DefaultPage} component={CreateApp} content={children} />
         <WrappedRoute path='/developers/settings_store' developerOnly page={DefaultPage} component={SettingsStore} content={children} />
+        <WrappedRoute path='/developers/timeline' developerOnly page={DefaultPage} component={TestTimeline} content={children} />
         <WrappedRoute path='/developers' page={DefaultPage} component={Developers} content={children} />
         <WrappedRoute path='/error' page={EmptyPage} component={IntentionalError} content={children} />
 
@@ -727,7 +754,6 @@ class UI extends React.PureComponent {
           <BackgroundShapes />
 
           <div className='z-10 flex flex-col'>
-            {/* <PreHeader /> */}
             <Navbar />
 
             <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>

@@ -2,16 +2,17 @@ import { Map as ImmutableMap, fromJS } from 'immutable';
 import React from 'react';
 
 import { render, screen } from '../../../../jest/test-helpers';
+import { normalizeAccount } from '../../../../normalizers';
 import WhoToFollowPanel from '../who-to-follow-panel';
 
 describe('<WhoToFollow />', () => {
   it('renders suggested accounts', () => {
     const store = {
       accounts: ImmutableMap({
-        '1': ImmutableMap({
+        '1': normalizeAccount({
           id: '1',
           acct: 'username',
-          display_name_html: 'My name',
+          display_name: 'My name',
           avatar: 'test.jpg',
         }),
       }),
@@ -30,16 +31,16 @@ describe('<WhoToFollow />', () => {
   it('renders multiple accounts', () => {
     const store = {
       accounts: ImmutableMap({
-        '1': ImmutableMap({
+        '1': normalizeAccount({
           id: '1',
           acct: 'username',
-          display_name_html: 'My name',
+          display_name: 'My name',
           avatar: 'test.jpg',
         }),
-        '2': ImmutableMap({
+        '2': normalizeAccount({
           id: '1',
           acct: 'username2',
-          display_name_html: 'My other name',
+          display_name: 'My other name',
           avatar: 'test.jpg',
         }),
       }),
@@ -64,16 +65,16 @@ describe('<WhoToFollow />', () => {
   it('respects the limit prop', () => {
     const store = {
       accounts: ImmutableMap({
-        '1': ImmutableMap({
+        '1': normalizeAccount({
           id: '1',
           acct: 'username',
-          display_name_html: 'My name',
+          display_name: 'My name',
           avatar: 'test.jpg',
         }),
-        '2': ImmutableMap({
+        '2': normalizeAccount({
           id: '1',
           acct: 'username2',
-          display_name_html: 'My other name',
+          display_name: 'My other name',
           avatar: 'test.jpg',
         }),
       }),
@@ -98,16 +99,16 @@ describe('<WhoToFollow />', () => {
   it('renders empty', () => {
     const store = {
       accounts: ImmutableMap({
-        '1': ImmutableMap({
+        '1': normalizeAccount({
           id: '1',
           acct: 'username',
-          display_name_html: 'My name',
+          display_name: 'My name',
           avatar: 'test.jpg',
         }),
-        '2': ImmutableMap({
+        '2': normalizeAccount({
           id: '1',
           acct: 'username2',
-          display_name_html: 'My other name',
+          display_name: 'My other name',
           avatar: 'test.jpg',
         }),
       }),

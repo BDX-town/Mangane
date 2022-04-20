@@ -249,10 +249,12 @@ export function logOut(intl) {
     const account = getLoggedInAccount(state);
     const standalone = isStandalone(state);
 
+    if (!account) return dispatch(noOp);
+
     const params = {
       client_id: state.getIn(['auth', 'app', 'client_id']),
       client_secret: state.getIn(['auth', 'app', 'client_secret']),
-      token: state.getIn(['auth', 'users', account.get('url'), 'access_token']),
+      token: state.getIn(['auth', 'users', account.url, 'access_token']),
     };
 
     return Promise.all([

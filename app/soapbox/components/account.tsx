@@ -35,6 +35,7 @@ interface IAccount {
   showProfileHoverCard?: boolean,
   timestamp?: string | Date,
   timestampUrl?: string,
+  withDate?: boolean,
   withRelationship?: boolean,
 }
 
@@ -51,6 +52,7 @@ const Account = ({
   showProfileHoverCard = true,
   timestamp,
   timestampUrl,
+  withDate = false,
   withRelationship = true,
 }: IAccount) => {
   const overflowRef = React.useRef<HTMLDivElement>(null);
@@ -89,7 +91,7 @@ const Account = ({
       );
     }
 
-    if (account.get('id') !== me && account.get('relationship', null) !== null) {
+    if (account.id !== me) {
       return <ActionButton account={account} />;
     }
 
@@ -116,39 +118,41 @@ const Account = ({
   if (hidden) {
     return (
       <>
-        {account.get('display_name')}
-        {account.get('username')}
+        {account.display_name}
+        {account.username}
       </>
     );
   }
 
+  if (withDate) timestamp = account.created_at;
+
   const LinkEl: any = showProfileHoverCard ? Link : 'div';
 
   return (
-    <div data-testid='account' className='flex-shrink-0 group block w-full overflow-hidden' ref={overflowRef}>
+    <div data-testid='account' className='flex-shrink-0 group block w-full' ref={overflowRef}>
       <HStack alignItems={actionAlignment} justifyContent='between'>
         <HStack alignItems='center' space={3} grow>
           <ProfilePopper
             condition={showProfileHoverCard}
-            wrapper={(children) => <HoverRefWrapper accountId={account.get('id')} inline>{children}</HoverRefWrapper>}
+            wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
           >
             <LinkEl
-              to={`/@${account.get('acct')}`}
-              title={account.get('acct')}
+              to={`/@${account.acct}`}
+              title={account.acct}
               onClick={(event: React.MouseEvent) => event.stopPropagation()}
             >
-              <Avatar src={account.get('avatar')} size={avatarSize} />
+              <Avatar src={account.avatar} size={avatarSize} />
             </LinkEl>
           </ProfilePopper>
 
           <div className='flex-grow'>
             <ProfilePopper
               condition={showProfileHoverCard}
-              wrapper={(children) => <HoverRefWrapper accountId={account.get('id')} inline>{children}</HoverRefWrapper>}
+              wrapper={(children) => <HoverRefWrapper accountId={account.id} inline>{children}</HoverRefWrapper>}
             >
               <LinkEl
-                to={`/@${account.get('acct')}`}
-                title={account.get('acct')}
+                to={`/@${account.acct}`}
+                title={account.acct}
                 onClick={(event: React.MouseEvent) => event.stopPropagation()}
               >
                 <div className='flex items-center space-x-1 flex-grow' style={style}>
@@ -156,10 +160,10 @@ const Account = ({
                     size='sm'
                     weight='semibold'
                     truncate
-                    dangerouslySetInnerHTML={{ __html: account.get('display_name_html') }}
+                    dangerouslySetInnerHTML={{ __html: account.display_name_html }}
                   />
 
-                  {account.get('verified') && <VerificationBadge />}
+                  {account.verified && <VerificationBadge />}
                 </div>
               </LinkEl>
             </ProfilePopper>
@@ -167,16 +171,22 @@ const Account = ({
             <HStack alignItems='center' space={1} style={style}>
               <Text theme='muted' size='sm' truncate>@{username}</Text>
 
+              {account.favicon && (
+                <Link to={`/timeline/${account.domain}`} className='w-4 h-4 flex-none' onClick={e => e.stopPropagation()}>
+                  <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
+                </Link>
+              )}
+
               {(timestamp) ? (
                 <>
                   <Text tag='span' theme='muted' size='sm'>&middot;</Text>
 
                   {timestampUrl ? (
                     <Link to={timestampUrl} className='hover:underline'>
-                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                      <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
                     </Link>
                   ) : (
-                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' />
+                    <RelativeTimestamp timestamp={timestamp} theme='muted' size='sm' className='whitespace-nowrap' />
                   )}
                 </>
               ) : null}

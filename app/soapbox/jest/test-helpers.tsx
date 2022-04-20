@@ -88,4 +88,5 @@ export {
   rootState,
   rootReducer,
   mockWindowProperty,
+  createTestStore,
 };

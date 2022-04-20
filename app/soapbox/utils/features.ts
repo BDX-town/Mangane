@@ -142,6 +142,9 @@ const getInstanceFeatures = (instance: Instance) => {
     trendingTruths: v.software === TRUTHSOCIAL,
     trendingStatuses: v.software === MASTODON && gte(v.compatVersion, '3.5.0'),
     pepe: v.software === TRUTHSOCIAL,
+    accountLocation: v.software === TRUTHSOCIAL,
+    accountWebsite: v.software === TRUTHSOCIAL,
+    frontendConfigurations: v.software === PLEROMA,
 
     // FIXME: long-term this shouldn't be a feature,
     // but for now we want it to be overrideable in the build

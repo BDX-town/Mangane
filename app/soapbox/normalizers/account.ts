@@ -28,6 +28,7 @@ export const AccountRecord = ImmutableRecord({
   created_at: new Date(),
   display_name: '',
   emojis: ImmutableList<Emoji>(),
+  favicon: '',
   fields: ImmutableList<Field>(),
   followers_count: 0,
   following_count: 0,
@@ -52,6 +53,7 @@ export const AccountRecord = ImmutableRecord({
   // Internal fields
   admin: false,
   display_name_html: '',
+  domain: '',
   moderator: false,
   note_emojified: '',
   note_plain: '',
@@ -224,6 +226,16 @@ const normalizeFqn = (account: ImmutableMap<string, any>) => {
   return account.set('fqn', fqn);
 };
 
+const normalizeFavicon = (account: ImmutableMap<string, any>) => {
+  const favicon = account.getIn(['pleroma', 'favicon']) || '';
+  return account.set('favicon', favicon);
+};
+
+const addDomain = (account: ImmutableMap<string, any>) => {
+  const domain = account.get('fqn', '').split('@')[1] || '';
+  return account.set('domain', domain);
+};
+
 const addStaffFields = (account: ImmutableMap<string, any>) => {
   const admin = account.getIn(['pleroma', 'is_admin']) === true;
   const moderator = account.getIn(['pleroma', 'is_moderator']) === true;
@@ -248,6 +260,8 @@ export const normalizeAccount = (account: Record<string, any>) => {
       normalizeBirthday(account);
       normalizeLocation(account);
       normalizeFqn(account);
+      normalizeFavicon(account);
+      addDomain(account);
       addStaffFields(account);
       fixUsername(account);
       fixDisplayName(account);
