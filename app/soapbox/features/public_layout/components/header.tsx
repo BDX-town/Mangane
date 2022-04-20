@@ -1,66 +1,64 @@
 import React from 'react';
 import { defineMessages, useIntl } from 'react-intl';
-import Lottie from 'react-lottie';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
 import { fetchInstance } from 'soapbox/actions/instance';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import { useAppSelector, useFeatures, useSoapboxConfig } from 'soapbox/hooks';
 
-import animationData from '../../../../images/circles.json';
 import { openModal } from '../../../actions/modals';
 import { Button, Form, HStack, IconButton, Input, Tooltip } from '../../../components/ui';
+
+import Pulse from './pulse';
+
+import type { AxiosError } from 'axios';
 
 const messages = defineMessages({
   home: { id: 'header.home.label', defaultMessage: 'Home' },
   login: { id: 'header.login.label', defaultMessage: 'Log in' },
   register: { id: 'header.register.label', defaultMessage: 'Register' },
-  emailAddress: { id: 'header.login.email.placeholder', defaultMessage: 'Email address' },
+  username: { id: 'header.login.username.placeholder', defaultMessage: 'Email or username' },
   password: { id: 'header.login.password.label', defaultMessage: 'Password' },
+  forgotPassword: { id: 'header.login.forgot_password', defaultMessage: 'Forgot password?' },
 });
-
-const defaultOptions = {
-  renderer: 'svg',
-  loop: true,
-  autoplay: true,
-  animationData: animationData,
-};
 
 const Header = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const logo = useSelector((state) => getSoapboxConfig(state).get('logo'));
-  const instance = useSelector((state) => state.get('instance'));
-  const isOpen = instance.get('registrations', false) === true;
+  const { logo } = useSoapboxConfig();
+  const features = useFeatures();
+  const instance = useAppSelector((state) => state.instance);
+  const isOpen   = instance.get('registrations', false) === true;
+  const pepeOpen = useAppSelector(state => state.verification.getIn(['instance', 'registrations'], false) === true);
 
   const [isLoading, setLoading] = React.useState(false);
-  const [email, setEmail] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [shouldRedirect, setShouldRedirect] = React.useState(false);
   const [mfaToken, setMfaToken] = React.useState(false);
 
   const open = () => dispatch(openModal('LANDING_PAGE'));
 
-  const handleSubmit = (event) => {
+  const handleSubmit: React.FormEventHandler = (event) => {
     event.preventDefault();
     setLoading(true);
 
-    dispatch(logIn(intl, email, password))
-      .then(({ access_token }) => {
+    dispatch(logIn(intl, username, password) as any)
+      .then(({ access_token }: { access_token: string }) => {
         return (
-          dispatch(verifyCredentials(access_token))
+          dispatch(verifyCredentials(access_token) as any)
             // Refetch the instance for authenticated fetch
             .then(() => dispatch(fetchInstance()))
             .then(() => setShouldRedirect(true))
         );
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         setLoading(false);
 
-        const data = error.response && error.response.data;
-        if (data && data.error === 'mfa_required') {
+        const data = error.response?.data;
+        if (data?.error === 'mfa_required') {
           setMfaToken(data.mfa_token);
         }
       });
@@ -73,14 +71,9 @@ const Header = () => {
     <header>
       <nav className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8' aria-label='Header'>
         <div className='w-full py-6 flex items-center justify-between border-b border-indigo-500 lg:border-none'>
-          <div className='flex items-center relative'>
+          <div className='flex items-center justify-center relative w-36'>
             <div className='hidden sm:block absolute z-0 left-0 top-0 -ml-[330px] -mt-[400px]'>
-              <Lottie
-                options={defaultOptions}
-                height={800}
-                width={800}
-                isClickToPauseDisabled
-              />
+              <Pulse />
             </div>
             <Link to='/' className='z-10'>
               <img alt='Logo' src={logo} className='h-6 w-auto cursor-pointer' />
@@ -101,9 +94,9 @@ const Header = () => {
                   {intl.formatMessage(messages.login)}
                 </Button>
 
-                {isOpen && (
+                {(isOpen || features.pepe && pepeOpen) && (
                   <Button
-                    to='/auth/verify'
+                    to={features.pepe ? '/auth/verify' : '/signup'} // FIXME: actually route this somewhere
                     theme='primary'
                   >
                     {intl.formatMessage(messages.register)}
@@ -115,10 +108,10 @@ const Header = () => {
             <Form className='hidden xl:flex space-x-2 items-center' onSubmit={handleSubmit}>
               <Input
                 required
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
                 type='text'
-                placeholder={intl.formatMessage(messages.emailAddress)}
+                placeholder={intl.formatMessage(messages.username)}
                 className='max-w-[200px]'
               />
 
@@ -132,7 +125,7 @@ const Header = () => {
               />
 
               <Link to='/reset-password'>
-                <Tooltip text='Forgot password?'>
+                <Tooltip text={intl.formatMessage(messages.forgotPassword)}>
                   <IconButton
                     src={require('@tabler/icons/icons/help.svg')}
                     className='bg-transparent text-gray-400 hover:text-gray-700 cursor-pointer'

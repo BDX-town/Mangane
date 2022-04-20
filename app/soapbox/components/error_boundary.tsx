@@ -1,43 +1,58 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
-import { NODE_ENV } from 'soapbox/build_config';
+import { getSoapboxConfig } from 'soapbox/actions/soapbox';
+import BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
+import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { captureException } from 'soapbox/monitoring';
 import sourceCode from 'soapbox/utils/code';
 
-import { getSoapboxConfig } from '../actions/soapbox';
+import type { RootState } from 'soapbox/store';
 
-const mapStateToProps = (state) => {
-  const soapboxConfig = getSoapboxConfig(state);
+const goHome = () => location.href = '/';
+
+/** Unregister the ServiceWorker */
+// https://stackoverflow.com/a/49771828/8811886
+const unregisterSw = async() => {
+  if (!navigator.serviceWorker) return;
+  const registrations = await navigator.serviceWorker.getRegistrations();
+  const unregisterAll = registrations.map(r => r.unregister());
+  await Promise.all(unregisterAll);
+};
+
+const mapStateToProps = (state: RootState) => {
+  const { links, logo } = getSoapboxConfig(state);
 
   return {
     siteTitle: state.instance.title,
-    helpLink: soapboxConfig.getIn(['links', 'help']),
-    supportLink: soapboxConfig.getIn(['links', 'support']),
-    statusLink: soapboxConfig.getIn(['links', 'status']),
+    logo,
+    links,
   };
 };
 
-@connect(mapStateToProps)
-class ErrorBoundary extends React.PureComponent {
+type Props = ReturnType<typeof mapStateToProps>;
 
-  static propTypes = {
-    children: PropTypes.node,
-    siteTitle: PropTypes.string,
-    supportLink: PropTypes.string,
-    helpLink: PropTypes.string,
-    statusLink: PropTypes.string,
-  };
+type State = {
+  hasError: boolean,
+  error: any,
+  componentStack: any,
+  browser?: Bowser.Parser.Parser,
+}
 
-  state = {
+class ErrorBoundary extends React.PureComponent<Props, State> {
+
+  state: State = {
     hasError: false,
+    error: undefined,
     componentStack: undefined,
+    browser: undefined,
   }
 
-  componentDidCatch(error, info) {
+  textarea: HTMLTextAreaElement | null = null;
+
+  componentDidCatch(error: any, info: any): void {
     captureException(error);
 
     this.setState({
@@ -55,11 +70,11 @@ class ErrorBoundary extends React.PureComponent {
       .catch(() => {});
   }
 
-  setTextareaRef = c => {
+  setTextareaRef: React.RefCallback<HTMLTextAreaElement> = c => {
     this.textarea = c;
   }
 
-  handleCopy = e => {
+  handleCopy: React.MouseEventHandler = () => {
     if (!this.textarea) return;
 
     this.textarea.select();
@@ -68,25 +83,30 @@ class ErrorBoundary extends React.PureComponent {
     document.execCommand('copy');
   }
 
-  getErrorText = () => {
+  getErrorText = (): string => {
     const { error, componentStack } = this.state;
     return error + componentStack;
   }
 
-  clearCookies = e => {
+  clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
     sessionStorage.clear();
+
+    if ('serviceWorker' in navigator) {
+      e.preventDefault();
+      unregisterSw().then(goHome).catch(goHome);
+    }
   }
 
   render() {
     const { browser, hasError } = this.state;
-    const { children, siteTitle, helpLink, statusLink, supportLink } = this.props;
+    const { children, siteTitle, logo, links } = this.props;
 
     if (!hasError) {
       return children;
     }
 
-    const isProduction = NODE_ENV === 'production';
+    const isProduction = BuildConfig.NODE_ENV === 'production';
 
     const errorText = this.getErrorText();
 
@@ -95,7 +115,11 @@ class ErrorBoundary extends React.PureComponent {
         <main className='flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
           <div className='flex-shrink-0 flex justify-center'>
             <a href='/' className='inline-flex'>
-              <img className='h-12 w-12' src='/instance/images/app-icon.png' alt={siteTitle} />
+              {logo ? (
+                <img className='h-12 w-12' src={logo} alt={siteTitle} />
+              ) : (
+                <SvgIcon className='h-12 w-12' src={require('@tabler/icons/icons/home.svg')} alt={siteTitle} />
+              )}
             </a>
           </div>
 
@@ -105,14 +129,18 @@ class ErrorBoundary extends React.PureComponent {
                 <FormattedMessage id='alert.unexpected.message' defaultMessage='Something went wrong.' />
               </h1>
               <p className='text-lg text-gray-500'>
-                We're sorry for the interruption. If the problem persists, please reach out to our support team. You
-                may also try to <a href='/' onClick={this.clearCookies} className='text-gray-700 hover:underline'>
-                  <FormattedMessage
-                    id='alert.unexpected.clear_cookies'
-                    defaultMessage='clear cookies and browser data'
-                  />
-                </a>
-                {' ' }(this will log you out).
+                <FormattedMessage
+                  id='alert.unexpected.body'
+                  defaultMessage="We're sorry for the interruption. If the problem persists, please reach out to our support team. You may also try to {clearCookies} (this will log you out)."
+                  values={{ clearCookies: (
+                    <a href='/' onClick={this.clearCookies} className='text-gray-700 hover:underline'>
+                      <FormattedMessage
+                        id='alert.unexpected.clear_cookies'
+                        defaultMessage='clear cookies and browser data'
+                      />
+                    </a>
+                  ) }}
+                />
               </p>
 
               <Text theme='muted'>
@@ -144,7 +172,7 @@ class ErrorBoundary extends React.PureComponent {
 
                 {browser && (
                   <Stack>
-                    <Text weight='semibold'>Browser</Text>
+                    <Text weight='semibold'><FormattedMessage id='alert.unexpected.browser' defaultMessage='Browser' /></Text>
                     <Text theme='muted'>{browser.getBrowserName()} {browser.getBrowserVersion()}</Text>
                   </Stack>
                 )}
@@ -155,28 +183,28 @@ class ErrorBoundary extends React.PureComponent {
 
         <footer className='flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
           <nav className='flex justify-center space-x-4'>
-            {statusLink && (
+            {links.get('status') && (
               <>
-                <a href={statusLink} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
-                  Status
+                <a href={links.get('status')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
+                  <FormattedMessage id='alert.unexpected.links.status' defaultMessage='Status' />
                 </a>
               </>
             )}
 
-            {helpLink && (
+            {links.get('help') && (
               <>
                 <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-                <a href={helpLink} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
-                  Help Center
+                <a href={links.get('help')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
+                  <FormattedMessage id='alert.unexpected.links.help' defaultMessage='Help Center' />
                 </a>
               </>
             )}
 
-            {supportLink && (
+            {links.get('support') && (
               <>
                 <span className='inline-block border-l border-gray-300' aria-hidden='true' />
-                <a href={supportLink} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
-                  Support
+                <a href={links.get('support')} className='text-sm font-medium text-gray-500 hover:text-gray-600'>
+                  <FormattedMessage id='alert.unexpected.links.support' defaultMessage='Support' />
                 </a>
               </>
             )}
@@ -188,4 +216,4 @@ class ErrorBoundary extends React.PureComponent {
 
 }
 
-export default ErrorBoundary;
+export default connect(mapStateToProps)(ErrorBoundary as any);

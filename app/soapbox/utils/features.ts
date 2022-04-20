@@ -144,6 +144,7 @@ const getInstanceFeatures = (instance: Instance) => {
     pepe: v.software === TRUTHSOCIAL,
     accountLocation: v.software === TRUTHSOCIAL,
     accountWebsite: v.software === TRUTHSOCIAL,
+    frontendConfigurations: v.software === PLEROMA,
 
     // FIXME: long-term this shouldn't be a feature,
     // but for now we want it to be overrideable in the build

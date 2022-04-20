@@ -21,7 +21,7 @@ import { Button, Card, CardBody, CardHeader, CardTitle, Column, Form, FormAction
 
 /*
 Security settings page for user account
-Routed to /auth/mfa
+Routed to /settings/mfa
 Includes following features:
 - Set up Multi-factor Auth
 */

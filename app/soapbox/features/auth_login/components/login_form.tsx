@@ -1,18 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { FormattedMessage, defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
-import { Button, Form, FormActions, FormGroup, Input } from '../../../components/ui';
+import { Button, Form, FormActions, FormGroup, Input } from 'soapbox/components/ui';
 
 const messages = defineMessages({
   username: {
-    id: 'login.fields.username_placeholder',
-    defaultMessage: 'Username',
-  },
-  email: {
-    id: 'login.fields.email_placeholder',
-    defaultMessage: 'Email address',
+    id: 'login.fields.username_label',
+    defaultMessage: 'Email or username',
   },
   password: {
     id: 'login.fields.password_placeholder',
@@ -20,7 +15,12 @@ const messages = defineMessages({
   },
 });
 
-const LoginForm = ({ isLoading, handleSubmit }) => {
+interface ILoginForm {
+  isLoading: boolean,
+  handleSubmit: React.FormEventHandler,
+}
+
+const LoginForm: React.FC<ILoginForm> = ({ isLoading, handleSubmit }) => {
   const intl = useIntl();
 
   return (
@@ -31,10 +31,10 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
 
       <div className='sm:pt-10 sm:w-2/3 md:w-1/2 mx-auto'>
         <Form onSubmit={handleSubmit}>
-          <FormGroup labelText={intl.formatMessage(messages.email)}>
+          <FormGroup labelText={intl.formatMessage(messages.username)}>
             <Input
-              aria-label={intl.formatMessage(messages.email)}
-              placeholder={intl.formatMessage(messages.email)}
+              aria-label={intl.formatMessage(messages.username)}
+              placeholder={intl.formatMessage(messages.username)}
               type='text'
               name='username'
               autoComplete='off'
@@ -80,11 +80,6 @@ const LoginForm = ({ isLoading, handleSubmit }) => {
       </div>
     </div>
   );
-};
-
-LoginForm.propTypes = {
-  isLoading: PropTypes.bool.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

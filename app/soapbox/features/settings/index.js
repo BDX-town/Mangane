@@ -33,7 +33,7 @@ const Settings = () => {
 
   const navigateToChangeEmail = React.useCallback(() => history.push('/settings/email'), [history]);
   const navigateToChangePassword = React.useCallback(() => history.push('/settings/password'), [history]);
-  const navigateToMfa = React.useCallback(() => history.push('/auth/mfa'), [history]);
+  const navigateToMfa = React.useCallback(() => history.push('/settings/mfa'), [history]);
   const navigateToEditProfile = React.useCallback(() => history.push('/settings/profile'), [history]);
 
   const isMfaEnabled = mfa.getIn(['settings', 'totp']);

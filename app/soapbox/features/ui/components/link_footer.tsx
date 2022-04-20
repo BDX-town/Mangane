@@ -59,7 +59,7 @@ const LinkFooter: React.FC = (): JSX.Element => {
           {(features.federating && features.accountMoving) && (
             <FooterLink to='/settings/migration'><FormattedMessage id='navigation_bar.account_migration' defaultMessage='Move account' /></FooterLink>
           )}
-          <FooterLink to='/auth/sign_out' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
+          <FooterLink to='/logout' onClick={onClickLogOut}><FormattedMessage id='navigation_bar.logout' defaultMessage='Logout' /></FooterLink>
         </>}
       </div>
 

@@ -2,6 +2,7 @@ import * as React from 'react';
 
 interface IForm {
   onSubmit?: (event: React.FormEvent) => void,
+  className?: string,
 }
 
 const Form: React.FC<IForm> = ({ onSubmit, children, ...filteredProps }) => {

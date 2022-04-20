@@ -52,7 +52,7 @@ class BoostModal extends ImmutablePureComponent {
 
     return (
       <Modal
-        title='ReTruth?'
+        title='Repost?'
         confirmationAction={this.handleReblog}
         confirmationText={intl.formatMessage(buttonText)}
       >

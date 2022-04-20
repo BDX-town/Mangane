@@ -24,6 +24,7 @@ import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
 import { makeGetAccount } from 'soapbox/selectors';
+import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
@@ -36,30 +37,34 @@ import { store } from '../store';
 
 const validLocale = locale => Object.keys(messages).includes(locale);
 
-// Delay rendering until instance has loaded or failed (for feature detection)
-const isInstanceLoaded = state => {
-  const v = state.getIn(['instance', 'version'], '0.0.0');
-  const fetchFailed = state.getIn(['meta', 'instance_fetch_failed'], false);
-
-  return v !== '0.0.0' || fetchFailed;
-};
-
 // Configure global functions for developers
 createGlobals(store);
 
+// Preload happens synchronously
 store.dispatch(preload());
 
-store.dispatch(fetchMe())
-  .then(account => {
-    // Postpone for authenticated fetch
-    store.dispatch(loadInstance());
-    store.dispatch(loadSoapboxConfig());
+/** Load initial data from the backend */
+const loadInitial = () => {
+  return async(dispatch, getState) => {
+    // Await for authenticated fetch
+    await dispatch(fetchMe());
+    // Await for feature detection
+    await dispatch(loadInstance());
 
-    if (!account) {
-      store.dispatch(fetchVerificationConfig());
+    const promises = [];
+
+    promises.push(dispatch(loadSoapboxConfig()));
+
+    const state = getState();
+    const features = getFeatures(state.instance);
+
+    if (features.pepe && !state.me) {
+      promises.push(dispatch(fetchVerificationConfig()));
     }
-  })
-  .catch(console.error);
+
+    await Promise.all(promises);
+  };
+};
 
 const makeAccount = makeGetAccount();
 
@@ -77,7 +82,6 @@ const mapStateToProps = (state) => {
     showIntroduction,
     me,
     account,
-    instanceLoaded: isInstanceLoaded(state),
     reduceMotion: settings.get('reduceMotion'),
     underlineLinks: settings.get('underlineLinks'),
     systemFont: settings.get('systemFont'),
@@ -99,7 +103,6 @@ class SoapboxMount extends React.PureComponent {
     showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
     account: ImmutablePropTypes.record,
-    instanceLoaded: PropTypes.bool,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
@@ -117,6 +120,7 @@ class SoapboxMount extends React.PureComponent {
   state = {
     messages: {},
     localeLoading: true,
+    isLoaded: false,
   }
 
   setMessages = () => {
@@ -133,6 +137,12 @@ class SoapboxMount extends React.PureComponent {
 
   componentDidMount() {
     this.setMessages();
+
+    this.props.dispatch(loadInitial()).then(() => {
+      this.setState({ isLoaded: true });
+    }).catch(() => {
+      this.setState({ isLoaded: false });
+    });
   }
 
   componentDidUpdate(prevProps) {
@@ -144,20 +154,13 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, account, instanceLoaded, themeCss, locale, singleUserMode } = this.props;
+    const { me, account, themeCss, locale, singleUserMode } = this.props;
     if (me === null) return null;
     if (me && !account) return null;
-    if (!instanceLoaded) return null;
+    if (!this.state.isLoaded) return null;
     if (this.state.localeLoading) return null;
 
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
-
-    // Disabling introduction for launch
-    // const { showIntroduction } = this.props;
-    //
-    // if (showIntroduction) {
-    //   return <Introduction />;
-    // }
 
     const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
       'no-reduce-motion': !this.props.reduceMotion,
@@ -200,10 +203,6 @@ class SoapboxMount extends React.PureComponent {
                   <Route path='/auth/verify' component={AuthLayout} />
                   <Route path='/reset-password' component={AuthLayout} />
                   <Route path='/edit-password' component={AuthLayout} />
-
-                  <Redirect from='/auth/reset_password' to='/reset-password' />
-                  <Redirect from='/auth/edit_password' to='/edit-password' />
-                  <Redirect from='/auth/sign_in' to='/login' />
 
                   <Route path='/' component={UI} />
                 </Switch>
