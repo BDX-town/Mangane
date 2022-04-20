@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { usePopper } from 'react-popper';
 import { useDispatch } from 'react-redux';
 
@@ -25,12 +25,13 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
   const [visible, setVisible] = useState(false);
   // const [focused, setFocused] = useState(false);
 
-  const ref = useRef<HTMLDivElement>(null);
-  const popperRef = useRef<HTMLDivElement>(null);
+  // `useRef` won't trigger a re-render, while `useState` does.
+  // https://popper.js.org/react-popper/v2/
+  const [referenceElement, setReferenceElement] = useState<HTMLDivElement | null>(null);
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(null);
 
-  const { styles, attributes } = usePopper(ref.current, popperRef.current, {
+  const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: 'top-start',
-    strategy: 'fixed',
     modifiers: [
       {
         name: 'offset',
@@ -93,10 +94,10 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
 
   const selector = (
     <div
-      className={classNames('fixed z-50 transition-opacity duration-100', {
+      className={classNames('z-50 transition-opacity duration-100', {
         'opacity-0 pointer-events-none': !visible,
       })}
-      ref={popperRef}
+      ref={setPopperElement}
       style={styles.popper}
       {...attributes.popper}
     >
@@ -114,7 +115,7 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
       {React.cloneElement(children, {
         onClick: handleClick,
         onBlur: handleUnfocus,
-        ref,
+        ref: setReferenceElement,
       })}
 
       {selector}
