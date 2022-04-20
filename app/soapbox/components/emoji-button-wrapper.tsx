@@ -54,10 +54,6 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     setVisible(false);
   };
 
-  const handleUnfocus = () => {
-    setVisible(false);
-  };
-
   const handleReact = (emoji: string): void => {
     if (ownAccount) {
       dispatch(simpleEmojiReact(status, emoji));
@@ -114,7 +110,6 @@ const EmojiButtonWrapper: React.FC<IEmojiButtonWrapper> = ({ statusId, children 
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       {React.cloneElement(children, {
         onClick: handleClick,
-        onBlur: handleUnfocus,
         ref: setReferenceElement,
       })}
 
