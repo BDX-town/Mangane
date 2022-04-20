@@ -285,7 +285,7 @@ class ActionBar extends React.PureComponent<IActionBar, IActionBarState> {
   handleShare = () => {
     navigator.share({
       text: this.props.status.search_index,
-      url: this.props.status.url,
+      url: this.props.status.uri,
     });
   }
 

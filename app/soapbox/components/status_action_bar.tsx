@@ -142,7 +142,7 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
   handleShareClick = () => {
     navigator.share({
       text: this.props.status.search_index,
-      url: this.props.status.url,
+      url: this.props.status.uri,
     }).catch((e) => {
       if (e.name !== 'AbortError') console.error(e);
     });
