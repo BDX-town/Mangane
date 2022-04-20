@@ -643,7 +643,8 @@ class StatusActionBar extends ImmutablePureComponent<IStatusActionBar, IStatusAc
           <EmojiButtonWrapper statusId={status.id}>
             <StatusActionButton
               title={meEmojiTitle}
-              icon={require('@tabler/icons/icons/thumb-up.svg')}
+              icon={require('@tabler/icons/icons/heart.svg')}
+              filled
               color='accent'
               active={Boolean(meEmojiReact)}
               count={emojiReactCount}
