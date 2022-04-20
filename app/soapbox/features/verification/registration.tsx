@@ -1,6 +1,7 @@
+import { AxiosError } from 'axios';
 import * as React from 'react';
 import { useIntl } from 'react-intl';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { logIn, verifyCredentials } from 'soapbox/actions/auth';
@@ -8,6 +9,7 @@ import { fetchInstance } from 'soapbox/actions/instance';
 import snackbar from 'soapbox/actions/snackbar';
 import { createAccount } from 'soapbox/actions/verification';
 import { removeStoredVerification } from 'soapbox/actions/verification';
+import { useAppSelector } from 'soapbox/hooks';
 
 import { Button, Form, FormGroup, Input } from '../../components/ui';
 
@@ -20,11 +22,11 @@ const Registration = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
-  const isLoading = useSelector((state) => state.verification.get('isLoading'));
-  const siteTitle = useSelector((state) => state.instance.title);
+  const isLoading = useAppSelector((state) => state.verification.get('isLoading') as boolean);
+  const siteTitle = useAppSelector((state) => state.instance.title);
 
   const [state, setState] = React.useState(initialState);
-  const [shouldRedirect, setShouldRedirect] = React.useState(false);
+  const [shouldRedirect, setShouldRedirect] = React.useState<boolean>(false);
   const { username, password } = state;
 
   const handleSubmit = React.useCallback((event) => {
@@ -33,7 +35,7 @@ const Registration = () => {
     // TODO: handle validation errors from Pepe
     dispatch(createAccount(username, password))
       .then(() => dispatch(logIn(intl, username, password)))
-      .then(({ access_token }) => dispatch(verifyCredentials(access_token)))
+      .then(({ access_token }: any) => dispatch(verifyCredentials(access_token)))
       .then(() => dispatch(fetchInstance()))
       .then(() => {
         setShouldRedirect(true);
@@ -47,7 +49,7 @@ const Registration = () => {
           ),
         );
       })
-      .catch((error) => {
+      .catch((error: AxiosError) => {
         if (error?.response?.status === 422) {
           dispatch(
             snackbar.error(

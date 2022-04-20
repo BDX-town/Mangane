@@ -2,7 +2,7 @@ import React from 'react';
 
 import SvgIcon from './svg-icon';
 
-interface IIcon {
+interface IIcon extends Pick<React.SVGAttributes<SVGAElement>, 'strokeWidth'> {
   className?: string,
   count?: number,
   alt?: string,

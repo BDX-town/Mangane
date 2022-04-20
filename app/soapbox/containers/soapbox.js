@@ -19,7 +19,9 @@ import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 import { NODE_ENV } from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
 import AuthLayout from 'soapbox/features/auth_layout';
+import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
 import PublicLayout from 'soapbox/features/public_layout';
+import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
 import messages from 'soapbox/locales/messages';
@@ -28,10 +30,9 @@ import { getFeatures } from 'soapbox/utils/features';
 import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
-import { INTRODUCTION_VERSION } from '../actions/onboarding';
+import { ONBOARDING_VERSION } from '../actions/onboarding';
 import { preload } from '../actions/preload';
 import ErrorBoundary from '../components/error_boundary';
-// import Introduction from '../features/introduction';
 import UI from '../features/ui';
 import { store } from '../store';
 
@@ -71,15 +72,14 @@ const makeAccount = makeGetAccount();
 const mapStateToProps = (state) => {
   const me = state.get('me');
   const account = makeAccount(state, me);
-  const showIntroduction = account ? state.getIn(['settings', 'introductionVersion'], 0) < INTRODUCTION_VERSION : false;
   const settings = getSettings(state);
+  const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
   const soapboxConfig = getSoapboxConfig(state);
   const locale = settings.get('locale');
 
   const singleUserMode = soapboxConfig.get('singleUserMode') && soapboxConfig.get('singleUserModeProfile');
 
   return {
-    showIntroduction,
     me,
     account,
     reduceMotion: settings.get('reduceMotion'),
@@ -93,6 +93,7 @@ const mapStateToProps = (state) => {
     appleAppId: soapboxConfig.get('appleAppId'),
     themeMode: settings.get('themeMode'),
     singleUserMode,
+    needsOnboarding,
   };
 };
 
@@ -100,12 +101,12 @@ const mapStateToProps = (state) => {
 class SoapboxMount extends React.PureComponent {
 
   static propTypes = {
-    showIntroduction: PropTypes.bool,
     me: SoapboxPropTypes.me,
     account: ImmutablePropTypes.record,
     reduceMotion: PropTypes.bool,
     underlineLinks: PropTypes.bool,
     systemFont: PropTypes.bool,
+    needsOnboarding: PropTypes.bool,
     dyslexicFont: PropTypes.bool,
     demetricator: PropTypes.bool,
     locale: PropTypes.string.isRequired,
@@ -154,13 +155,33 @@ class SoapboxMount extends React.PureComponent {
   }
 
   render() {
-    const { me, account, themeCss, locale, singleUserMode } = this.props;
+    const { me, account, themeCss, locale, needsOnboarding, singleUserMode } = this.props;
     if (me === null) return null;
     if (me && !account) return null;
     if (!this.state.isLoaded) return null;
     if (this.state.localeLoading) return null;
 
     const waitlisted = account && !account.getIn(['source', 'approved'], true);
+
+    if (account && !waitlisted && needsOnboarding) {
+      return (
+        <IntlProvider locale={locale} messages={this.state.messages}>
+          <Helmet>
+            <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
+            <body className={bodyClass} />
+            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+            <meta name='theme-color' content={this.props.brandColor} />
+          </Helmet>
+
+          <ErrorBoundary>
+            <BrowserRouter basename={FE_SUBDIRECTORY}>
+              <OnboardingWizard />
+              <NotificationsContainer />
+            </BrowserRouter>
+          </ErrorBoundary>
+        </IntlProvider>
+      );
+    }
 
     const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
       'no-reduce-motion': !this.props.reduceMotion,

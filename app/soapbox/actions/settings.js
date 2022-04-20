@@ -20,7 +20,7 @@ const messages = defineMessages({
 });
 
 export const defaultSettings = ImmutableMap({
-  onboarded: false,
+  onboardingVersion: 0,
   skinTone: 1,
   reduceMotion: false,
   underlineLinks: false,

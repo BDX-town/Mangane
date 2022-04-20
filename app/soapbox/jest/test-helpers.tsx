@@ -63,6 +63,23 @@ const customRender = (
   ...options,
 });
 
+const mockWindowProperty = (property: any, value: any) => {
+  const { [property]: originalProperty } = window;
+  delete window[property];
+
+  beforeAll(() => {
+    Object.defineProperty(window, property, {
+      configurable: true,
+      writable: true,
+      value,
+    });
+  });
+
+  afterAll(() => {
+    window[property] = originalProperty;
+  });
+};
+
 export * from '@testing-library/react';
 export {
   customRender as render,
@@ -70,5 +87,6 @@ export {
   applyActions,
   rootState,
   rootReducer,
+  mockWindowProperty,
   createTestStore,
 };

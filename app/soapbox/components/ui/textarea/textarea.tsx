@@ -1,14 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 
-interface ITextarea {
+interface ITextarea extends Pick<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'maxLength' | 'onChange' | 'required'> {
   autoFocus?: boolean,
   defaultValue?: string,
   name?: string,
   isCodeEditor?: boolean,
   placeholder?: string,
   value?: string,
-  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
 }
 
 const Textarea = React.forwardRef(
