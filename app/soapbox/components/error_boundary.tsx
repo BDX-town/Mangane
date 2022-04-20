@@ -7,6 +7,7 @@ import BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { captureException } from 'soapbox/monitoring';
+import KVStore from 'soapbox/storage/kv_store';
 import sourceCode from 'soapbox/utils/code';
 
 import type { RootState } from 'soapbox/store';
@@ -91,6 +92,7 @@ class ErrorBoundary extends React.PureComponent<Props, State> {
   clearCookies: React.MouseEventHandler = (e) => {
     localStorage.clear();
     sessionStorage.clear();
+    KVStore.clear();
 
     if ('serviceWorker' in navigator) {
       e.preventDefault();
