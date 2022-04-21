@@ -20,7 +20,7 @@ const Pulse: React.FC = () => {
         setAnimationData(json);
       })
       .catch(console.error);
-  });
+  }, []);
 
   if (animationData) {
     return (

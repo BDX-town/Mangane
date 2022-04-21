@@ -36,7 +36,7 @@ const ExternalLoginForm: React.FC = () => {
     if (code) {
       dispatch(loginWithCode(code));
     }
-  });
+  }, [code]);
 
   if (code) {
     return <Spinner />;

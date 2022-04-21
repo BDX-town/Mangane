@@ -18,8 +18,8 @@ const PromoPanel: React.FC = () => {
     <Widget title={siteTitle}>
       <Stack space={2}>
         {promoItems.map((item, i) => (
-          <Text>
-            <a className='flex items-center' href={item.url} target='_blank' key={i}>
+          <Text key={i}>
+            <a className='flex items-center' href={item.url} target='_blank'>
               <Icon id={item.icon} className='flex-none text-lg mr-2' fixedWidth />
               {item.textLocales.get(locale) || item.text}
             </a>
