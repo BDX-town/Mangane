@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import HoverRefWrapper from 'soapbox/components/hover_ref_wrapper';
 import VerificationBadge from 'soapbox/components/verification_badge';
@@ -12,6 +12,25 @@ import RelativeTimestamp from './relative_timestamp';
 import { Avatar, HStack, IconButton, Text } from './ui';
 
 import type { Account as AccountEntity } from 'soapbox/types/entities';
+
+interface IInstanceFavicon {
+  account: AccountEntity,
+}
+
+const InstanceFavicon: React.FC<IInstanceFavicon> = ({ account }) => {
+  const history = useHistory();
+
+  const handleClick: React.MouseEventHandler = (e) => {
+    e.stopPropagation();
+    history.push(`/timeline/${account.domain}`);
+  };
+
+  return (
+    <button className='w-4 h-4 flex-none' onClick={handleClick}>
+      <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
+    </button>
+  );
+};
 
 interface IProfilePopper {
   condition: boolean,
@@ -172,9 +191,7 @@ const Account = ({
               <Text theme='muted' size='sm' truncate>@{username}</Text>
 
               {account.favicon && (
-                <Link to={`/timeline/${account.domain}`} className='w-4 h-4 flex-none' onClick={e => e.stopPropagation()}>
-                  <img src={account.favicon} alt='' title={account.domain} className='w-full max-h-full' />
-                </Link>
+                <InstanceFavicon account={account} />
               )}
 
               {(timestamp) ? (

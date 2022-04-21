@@ -40,7 +40,7 @@ class ChatBox extends ImmutablePureComponent {
     intl: PropTypes.object.isRequired,
     chatId: PropTypes.string.isRequired,
     chatMessageIds: ImmutablePropTypes.orderedSet,
-    chat: ImmutablePropTypes.map,
+    chat: ImmutablePropTypes.record,
     onSetInputRef: PropTypes.func,
     me: PropTypes.node,
   }
