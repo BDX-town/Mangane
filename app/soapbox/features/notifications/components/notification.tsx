@@ -197,14 +197,14 @@ const Notification: React.FC<INotificaton> = (props) => {
       return (
         <Emoji
           emoji={notification.emoji}
-          className='w-4 h-4'
+          className='w-4 h-4 flex-none'
         />
       );
     } else if (type) {
       return (
         <Icon
           src={icons[type]}
-          className='text-primary-600'
+          className='text-primary-600 flex-none'
         />
       );
     } else {
