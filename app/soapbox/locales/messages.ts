@@ -1,16 +1,19 @@
-// Import custom messages
-const importCustom = locale => {
+type MessageJson   = Record<string, string>;
+type MessageModule = { default: MessageJson };
+
+/** Import custom messages */
+const importCustom = (locale: string): Promise<MessageModule> => {
   return import(/* webpackChunkName: "locale_[request]" */`custom/locales/${locale}.json`)
-    .catch(error => ({ default: {} }));
+    .catch(() => ({ default: {} }));
 };
 
-// Import git-checked messages
-const importMessages = locale => {
+/** Import git-checked messages */
+const importMessages = (locale: string): Promise<MessageModule> => {
   return import(/* webpackChunkName: "locale_[request]" */`./${locale}.json`);
 };
 
-// Override custom messages
-const importMessagesWithCustom = locale => {
+/** Override custom messages */
+const importMessagesWithCustom = (locale: string): Promise<MessageJson> => {
   return Promise.all([
     importMessages(locale),
     importCustom(locale),
@@ -23,7 +26,7 @@ const importMessagesWithCustom = locale => {
   });
 };
 
-const locales = [
+const locales: string[] = [
   'ar',
   'ast',
   'bg',
@@ -89,10 +92,10 @@ const locales = [
   'zh-TW',
 ];
 
-// Build the export
+/** Soapbox locales map */
 const messages = locales.reduce((acc, locale) => {
   acc[locale] = () => importMessagesWithCustom(locale);
   return acc;
-}, {});
+}, {} as Record<string, () => Promise<MessageJson>>);
 
 export default messages;

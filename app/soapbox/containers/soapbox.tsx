@@ -3,15 +3,16 @@
 import classNames from 'classnames';
 import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
+// @ts-ignore: it doesn't have types
 import { ScrollContext } from 'react-router-scroll-4';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
-import { FE_SUBDIRECTORY } from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
 import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
@@ -19,7 +20,7 @@ import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
-import { useAppSelector, useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import { useAppSelector, useAppDispatch, useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
 import MESSAGES from 'soapbox/locales/messages';
 import { getFeatures } from 'soapbox/utils/features';
 import { generateThemeCss } from 'soapbox/utils/theme';
@@ -31,16 +32,17 @@ import UI from '../features/ui';
 import { store } from '../store';
 
 /** Ensure the given locale exists in our codebase */
-const validLocale = locale => Object.keys(MESSAGES).includes(locale);
+const validLocale = (locale: string): boolean => Object.keys(MESSAGES).includes(locale);
 
 // Configure global functions for developers
 createGlobals(store);
 
 // Preload happens synchronously
-store.dispatch(preload());
+store.dispatch(preload() as any);
 
 /** Load initial data from the backend */
 const loadInitial = () => {
+  // @ts-ignore
   return async(dispatch, getState) => {
     // Await for authenticated fetch
     await dispatch(fetchMe());
@@ -63,7 +65,7 @@ const loadInitial = () => {
 };
 
 const SoapboxMount = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const me = useAppSelector(state => state.me);
   const account = useOwnAccount();
@@ -75,7 +77,7 @@ const SoapboxMount = () => {
   const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
   const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
-  const [messages, setMessages] = useState({});
+  const [messages, setMessages] = useState<Record<string, string>>({});
   const [localeLoading, setLocaleLoading] = useState(true);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -98,6 +100,7 @@ const SoapboxMount = () => {
     });
   });
 
+  // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
   };
@@ -107,7 +110,14 @@ const SoapboxMount = () => {
   if (!isLoaded) return null;
   if (localeLoading) return null;
 
-  const waitlisted = account && !account.getIn(['source', 'approved'], true);
+  const waitlisted = account && !account.source.get('approved', true);
+
+  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
+    'no-reduce-motion': !settings.get('reduceMotion'),
+    'underline-links': settings.get('underlineLinks'),
+    'dyslexic': settings.get('dyslexicFont'),
+    'demetricator': settings.get('demetricator'),
+  });
 
   if (account && !waitlisted && needsOnboarding) {
     return (
@@ -120,7 +130,7 @@ const SoapboxMount = () => {
         </Helmet>
 
         <ErrorBoundary>
-          <BrowserRouter basename={FE_SUBDIRECTORY}>
+          <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
             <OnboardingWizard />
             <NotificationsContainer />
           </BrowserRouter>
@@ -128,13 +138,6 @@ const SoapboxMount = () => {
       </IntlProvider>
     );
   }
-
-  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
-    'no-reduce-motion': !settings.get('reduceMotion'),
-    'underline-links': settings.get('underlineLinks'),
-    'dyslexic': settings.get('dyslexicFont'),
-    'demetricator': settings.get('demetricator'),
-  });
 
   return (
     <IntlProvider locale={locale} messages={messages}>
@@ -150,7 +153,7 @@ const SoapboxMount = () => {
       </Helmet>
 
       <ErrorBoundary>
-        <BrowserRouter basename={FE_SUBDIRECTORY}>
+        <BrowserRouter basename={BuildConfig.FE_SUBDIRECTORY}>
           <>
             <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
               <Switch>
