@@ -1,19 +1,15 @@
 'use strict';
 
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import React from 'react';
-import ImmutablePropTypes from 'react-immutable-proptypes';
+import React, { useState, useEffect } from 'react';
 import { IntlProvider } from 'react-intl';
-import { Provider, connect } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { BrowserRouter, Switch, Redirect, Route } from 'react-router-dom';
 import { ScrollContext } from 'react-router-scroll-4';
 
 import { loadInstance } from 'soapbox/actions/instance';
 import { fetchMe } from 'soapbox/actions/me';
-import { getSettings } from 'soapbox/actions/settings';
 import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
-import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
@@ -23,10 +19,9 @@ import PublicLayout from 'soapbox/features/public_layout';
 import NotificationsContainer from 'soapbox/features/ui/containers/notifications_container';
 import WaitlistPage from 'soapbox/features/verification/waitlist_page';
 import { createGlobals } from 'soapbox/globals';
-import messages from 'soapbox/locales/messages';
-import { makeGetAccount } from 'soapbox/selectors';
+import { useAppSelector, useOwnAccount, useSoapboxConfig, useSettings } from 'soapbox/hooks';
+import MESSAGES from 'soapbox/locales/messages';
 import { getFeatures } from 'soapbox/utils/features';
-import SoapboxPropTypes from 'soapbox/utils/soapbox_prop_types';
 import { generateThemeCss } from 'soapbox/utils/theme';
 
 import { ONBOARDING_VERSION } from '../actions/onboarding';
@@ -35,7 +30,8 @@ import ErrorBoundary from '../components/error_boundary';
 import UI from '../features/ui';
 import { store } from '../store';
 
-const validLocale = locale => Object.keys(messages).includes(locale);
+/** Ensure the given locale exists in our codebase */
+const validLocale = locale => Object.keys(MESSAGES).includes(locale);
 
 // Configure global functions for developers
 createGlobals(store);
@@ -66,175 +62,124 @@ const loadInitial = () => {
   };
 };
 
-const makeAccount = makeGetAccount();
+const SoapboxMount = () => {
+  const dispatch = useDispatch();
 
-const mapStateToProps = (state) => {
-  const me = state.get('me');
-  const account = makeAccount(state, me);
-  const settings = getSettings(state);
+  const me = useAppSelector(state => state.me);
+  const account = useOwnAccount();
+  const settings = useSettings();
+  const soapboxConfig = useSoapboxConfig();
+
+  const locale = validLocale(settings.get('locale')) ? settings.get('locale') : 'en';
+
   const needsOnboarding = settings.get('onboardingVersion') < ONBOARDING_VERSION;
-  const soapboxConfig = getSoapboxConfig(state);
-  const locale = settings.get('locale');
+  const singleUserMode = soapboxConfig.singleUserMode && soapboxConfig.singleUserModeProfile;
 
-  const singleUserMode = soapboxConfig.get('singleUserMode') && soapboxConfig.get('singleUserModeProfile');
+  const [messages, setMessages] = useState({});
+  const [localeLoading, setLocaleLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  return {
-    me,
-    account,
-    reduceMotion: settings.get('reduceMotion'),
-    underlineLinks: settings.get('underlineLinks'),
-    systemFont: settings.get('systemFont'),
-    dyslexicFont: settings.get('dyslexicFont'),
-    demetricator: settings.get('demetricator'),
-    locale: validLocale(locale) ? locale : 'en',
-    themeCss: generateThemeCss(soapboxConfig),
-    brandColor: soapboxConfig.get('brandColor'),
-    appleAppId: soapboxConfig.get('appleAppId'),
-    themeMode: settings.get('themeMode'),
-    singleUserMode,
-    needsOnboarding,
-  };
-};
+  const themeCss = generateThemeCss(soapboxConfig);
 
-@connect(mapStateToProps)
-class SoapboxMount extends React.PureComponent {
-
-  static propTypes = {
-    me: SoapboxPropTypes.me,
-    account: ImmutablePropTypes.record,
-    reduceMotion: PropTypes.bool,
-    underlineLinks: PropTypes.bool,
-    systemFont: PropTypes.bool,
-    needsOnboarding: PropTypes.bool,
-    dyslexicFont: PropTypes.bool,
-    demetricator: PropTypes.bool,
-    locale: PropTypes.string.isRequired,
-    themeCss: PropTypes.string,
-    themeMode: PropTypes.string,
-    brandColor: PropTypes.string,
-    appleAppId: PropTypes.string,
-    dispatch: PropTypes.func,
-    singleUserMode: PropTypes.bool,
-  };
-
-  state = {
-    messages: {},
-    localeLoading: true,
-    isLoaded: false,
-  }
-
-  setMessages = () => {
-    messages[this.props.locale]().then(messages => {
-      this.setState({ messages, localeLoading: false });
+  // Load the user's locale
+  useEffect(() => {
+    MESSAGES[locale]().then(messages => {
+      setMessages(messages);
+      setLocaleLoading(false);
     }).catch(() => {});
-  }
+  }, [locale]);
 
-  maybeUpdateMessages = prevProps => {
-    if (this.props.locale !== prevProps.locale) {
-      this.setMessages();
-    }
-  }
-
-  componentDidMount() {
-    this.setMessages();
-
-    this.props.dispatch(loadInitial()).then(() => {
-      this.setState({ isLoaded: true });
+  // Load initial data from the API
+  useEffect(() => {
+    dispatch(loadInitial()).then(() => {
+      setIsLoaded(true);
     }).catch(() => {
-      this.setState({ isLoaded: false });
+      setIsLoaded(false);
     });
-  }
+  });
 
-  componentDidUpdate(prevProps) {
-    this.maybeUpdateMessages(prevProps);
-  }
-
-  shouldUpdateScroll(prevRouterProps, { location }) {
+  const shouldUpdateScroll = (prevRouterProps, { location }) => {
     return !(location.state?.soapboxModalKey && location.state?.soapboxModalKey !== prevRouterProps?.location?.state?.soapboxModalKey);
-  }
+  };
 
-  render() {
-    const { me, account, themeCss, locale, needsOnboarding, singleUserMode } = this.props;
-    if (me === null) return null;
-    if (me && !account) return null;
-    if (!this.state.isLoaded) return null;
-    if (this.state.localeLoading) return null;
+  if (me === null) return null;
+  if (me && !account) return null;
+  if (!isLoaded) return null;
+  if (localeLoading) return null;
 
-    const waitlisted = account && !account.getIn(['source', 'approved'], true);
+  const waitlisted = account && !account.getIn(['source', 'approved'], true);
 
-    if (account && !waitlisted && needsOnboarding) {
-      return (
-        <IntlProvider locale={locale} messages={this.state.messages}>
-          <Helmet>
-            <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
-            <body className={bodyClass} />
-            {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-            <meta name='theme-color' content={this.props.brandColor} />
-          </Helmet>
-
-          <ErrorBoundary>
-            <BrowserRouter basename={FE_SUBDIRECTORY}>
-              <OnboardingWizard />
-              <NotificationsContainer />
-            </BrowserRouter>
-          </ErrorBoundary>
-        </IntlProvider>
-      );
-    }
-
-    const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
-      'no-reduce-motion': !this.props.reduceMotion,
-      'underline-links': this.props.underlineLinks,
-      'dyslexic': this.props.dyslexicFont,
-      'demetricator': this.props.demetricator,
-    });
-
+  if (account && !waitlisted && needsOnboarding) {
     return (
-      <IntlProvider locale={locale} messages={this.state.messages}>
+      <IntlProvider locale={locale} messages={messages}>
         <Helmet>
-          <html lang='en' className={classNames({ dark: this.props.themeMode === 'dark' })} />
+          <html lang='en' className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
           <body className={bodyClass} />
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
-          <meta name='theme-color' content={this.props.brandColor} />
-
-          {this.props.appleAppId && (
-            <meta name='apple-itunes-app' content={`app-id=${this.props.appleAppId}`} />
-          )}
+          <meta name='theme-color' content={soapboxConfig.brandColor} />
         </Helmet>
 
         <ErrorBoundary>
           <BrowserRouter basename={FE_SUBDIRECTORY}>
-            <>
-              <ScrollContext shouldUpdateScroll={this.shouldUpdateScroll}>
-                <Switch>
-                  <Redirect from='/v1/verify_email/:token' to='/auth/verify/email/:token' />
-
-                  {waitlisted && <Route render={(props) => <WaitlistPage {...props} account={account} />} />}
-
-                  {!me && (singleUserMode
-                    ? <Redirect exact from='/' to={`/${singleUserMode}`} />
-                    : <Route exact path='/' component={PublicLayout} />)}
-
-                  {!me && <Route exact path='/' component={PublicLayout} />}
-                  <Route exact path='/about/:slug?' component={PublicLayout} />
-                  <Route exact path='/beta/:slug?' component={PublicLayout} />
-                  <Route exact path='/mobile/:slug?' component={PublicLayout} />
-                  <Route exact path='/login' component={AuthLayout} />
-                  <Route path='/auth/verify' component={AuthLayout} />
-                  <Route path='/reset-password' component={AuthLayout} />
-                  <Route path='/edit-password' component={AuthLayout} />
-
-                  <Route path='/' component={UI} />
-                </Switch>
-              </ScrollContext>
-            </>
+            <OnboardingWizard />
+            <NotificationsContainer />
           </BrowserRouter>
         </ErrorBoundary>
       </IntlProvider>
     );
   }
 
-}
+  const bodyClass = classNames('bg-white dark:bg-slate-900 text-base', {
+    'no-reduce-motion': !settings.get('reduceMotion'),
+    'underline-links': settings.get('underlineLinks'),
+    'dyslexic': settings.get('dyslexicFont'),
+    'demetricator': settings.get('demetricator'),
+  });
+
+  return (
+    <IntlProvider locale={locale} messages={messages}>
+      <Helmet>
+        <html lang='en' className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
+        <body className={bodyClass} />
+        {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
+        <meta name='theme-color' content={soapboxConfig.brandColor} />
+
+        {soapboxConfig.appleAppId && (
+          <meta name='apple-itunes-app' content={`app-id=${soapboxConfig.appleAppId}`} />
+        )}
+      </Helmet>
+
+      <ErrorBoundary>
+        <BrowserRouter basename={FE_SUBDIRECTORY}>
+          <>
+            <ScrollContext shouldUpdateScroll={shouldUpdateScroll}>
+              <Switch>
+                <Redirect from='/v1/verify_email/:token' to='/auth/verify/email/:token' />
+
+                {waitlisted && <Route render={(props) => <WaitlistPage {...props} account={account} />} />}
+
+                {!me && (singleUserMode
+                  ? <Redirect exact from='/' to={`/${singleUserMode}`} />
+                  : <Route exact path='/' component={PublicLayout} />)}
+
+                {!me && <Route exact path='/' component={PublicLayout} />}
+                <Route exact path='/about/:slug?' component={PublicLayout} />
+                <Route exact path='/beta/:slug?' component={PublicLayout} />
+                <Route exact path='/mobile/:slug?' component={PublicLayout} />
+                <Route exact path='/login' component={AuthLayout} />
+                <Route path='/auth/verify' component={AuthLayout} />
+                <Route path='/reset-password' component={AuthLayout} />
+                <Route path='/edit-password' component={AuthLayout} />
+
+                <Route path='/' component={UI} />
+              </Switch>
+            </ScrollContext>
+          </>
+        </BrowserRouter>
+      </ErrorBoundary>
+    </IntlProvider>
+  );
+};
 
 const Soapbox = () => {
   return (
