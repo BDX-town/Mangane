@@ -98,7 +98,7 @@ const SoapboxMount = () => {
     }).catch(() => {
       setIsLoaded(false);
     });
-  });
+  }, []);
 
   // @ts-ignore: I don't actually know what these should be, lol
   const shouldUpdateScroll = (prevRouterProps, { location }) => {
