@@ -16,7 +16,6 @@ import { loadSoapboxConfig } from 'soapbox/actions/soapbox';
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
 import { fetchVerificationConfig } from 'soapbox/actions/verification';
 import { FE_SUBDIRECTORY } from 'soapbox/build_config';
-import { NODE_ENV } from 'soapbox/build_config';
 import Helmet from 'soapbox/components/helmet';
 import AuthLayout from 'soapbox/features/auth_layout';
 import OnboardingWizard from 'soapbox/features/onboarding/onboarding-wizard';
@@ -237,40 +236,12 @@ class SoapboxMount extends React.PureComponent {
 
 }
 
-export default class Soapbox extends React.PureComponent {
+const Soapbox = () => {
+  return (
+    <Provider store={store}>
+      <SoapboxMount />
+    </Provider>
+  );
+};
 
-  printConsoleWarning = () => {
-    /* eslint-disable no-console */
-    console.log('%cStop!', [
-      'color: #ff0000',
-      'display: block',
-      'font-family: system-ui, -apple-system, BlinkMacSystemFont, Ubuntu, "Helvetica Neue", sans-serif',
-      'font-size: 50px',
-      'font-weight: 800',
-      'padding: 4px 0',
-    ].join(';'));
-    console.log('%cThis is a browser feature intended for developers. If someone told you to copy-paste something here it is a scam and will give them access to your account.', [
-      'color: #111111',
-      'display: block',
-      'font-family: system-ui, -apple-system, BlinkMacSystemFont, Ubuntu, "Helvetica Neue", sans-serif',
-      'font-size: 18px',
-      'padding: 4px 0 16px',
-    ].join(';'));
-    /* eslint-enable no-console */
-  }
-
-  componentDidMount() {
-    if (NODE_ENV === 'production') {
-      this.printConsoleWarning();
-    }
-  }
-
-  render() {
-    return (
-      <Provider store={store}>
-        <SoapboxMount />
-      </Provider>
-    );
-  }
-
-}
+export default Soapbox;
