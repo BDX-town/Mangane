@@ -52,5 +52,5 @@ export default function SitePreview({ soapbox }) {
 }
 
 SitePreview.propTypes = {
-  soapbox: ImmutablePropTypes.map.isRequired,
+  soapbox: ImmutablePropTypes.record.isRequired,
 };

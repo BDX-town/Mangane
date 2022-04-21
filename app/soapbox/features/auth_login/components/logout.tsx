@@ -16,7 +16,7 @@ const Logout: React.FC = () => {
     dispatch(logOut(intl) as any)
       .then(() => setDone(true))
       .catch(console.warn);
-  });
+  }, []);
 
   if (done) {
     return <Redirect to='/' />;

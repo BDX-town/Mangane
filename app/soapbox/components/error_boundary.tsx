@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 
 import { getSoapboxConfig } from 'soapbox/actions/soapbox';
-import BuildConfig from 'soapbox/build_config';
+import * as BuildConfig from 'soapbox/build_config';
 import { Text, Stack } from 'soapbox/components/ui';
 import SvgIcon from 'soapbox/components/ui/icon/svg-icon';
 import { captureException } from 'soapbox/monitoring';

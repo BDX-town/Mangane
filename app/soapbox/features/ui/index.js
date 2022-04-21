@@ -188,7 +188,7 @@ class SwitchingColumnsArea extends React.PureComponent {
     children: PropTypes.node,
     location: PropTypes.object,
     onLayoutChange: PropTypes.func.isRequired,
-    soapbox: ImmutablePropTypes.map.isRequired,
+    soapbox: ImmutablePropTypes.record.isRequired,
     features: PropTypes.object.isRequired,
   };
 
@@ -399,7 +399,7 @@ class UI extends React.PureComponent {
     streamingUrl: PropTypes.string,
     account: PropTypes.object,
     features: PropTypes.object.isRequired,
-    soapbox: ImmutablePropTypes.map.isRequired,
+    soapbox: ImmutablePropTypes.record.isRequired,
     vapidKey: PropTypes.string,
   };
 

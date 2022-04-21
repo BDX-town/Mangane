@@ -36,14 +36,14 @@ const ExternalLoginForm: React.FC = () => {
     if (code) {
       dispatch(loginWithCode(code));
     }
-  });
+  }, [code]);
 
   if (code) {
     return <Spinner />;
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} data-testid='external-login'>
       <FormGroup labelText={intl.formatMessage(messages.instanceLabel)}>
         <Input
           aria-label={intl.formatMessage(messages.instancePlaceholder)}
