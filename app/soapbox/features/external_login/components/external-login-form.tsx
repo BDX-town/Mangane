@@ -43,7 +43,7 @@ const ExternalLoginForm: React.FC = () => {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} data-testid='external-login'>
       <FormGroup labelText={intl.formatMessage(messages.instanceLabel)}>
         <Input
           aria-label={intl.formatMessage(messages.instancePlaceholder)}

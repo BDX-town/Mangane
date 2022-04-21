@@ -67,7 +67,7 @@ const OnboardingWizard = () => {
   }, []);
 
   return (
-    <div>
+    <div data-testid='onboarding-wizard'>
       <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 via-white to-cyan-50' />
 
       <main className='h-screen flex flex-col'>

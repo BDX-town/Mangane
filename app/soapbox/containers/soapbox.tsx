@@ -123,7 +123,7 @@ const SoapboxMount = () => {
     return (
       <IntlProvider locale={locale} messages={messages}>
         <Helmet>
-          <html lang='en' className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
+          <html lang={locale} className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
           <body className={bodyClass} />
           {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
           <meta name='theme-color' content={soapboxConfig.brandColor} />
@@ -142,7 +142,7 @@ const SoapboxMount = () => {
   return (
     <IntlProvider locale={locale} messages={messages}>
       <Helmet>
-        <html lang='en' className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
+        <html lang={locale} className={classNames({ dark: settings.get('themeMode') === 'dark' })} />
         <body className={bodyClass} />
         {themeCss && <style id='theme' type='text/css'>{`:root{${themeCss}}`}</style>}
         <meta name='theme-color' content={soapboxConfig.brandColor} />
