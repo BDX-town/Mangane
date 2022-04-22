@@ -54,7 +54,7 @@ class FavouritesModal extends React.PureComponent {
         <ScrollableList
           scrollKey='favourites'
           emptyMessage={emptyMessage}
-          className='space-y-3'
+          itemClassName='pb-3'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} />,

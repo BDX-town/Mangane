@@ -156,16 +156,18 @@ class Notifications extends React.PureComponent {
       ? (<FilterBarContainer />)
       : null;
 
+    const showLoading = isLoading && !notifications || notifications.isEmpty();
+
     const scrollContainer  = (
       <PullToRefresh onRefresh={this.handleRefresh}>
         <Virtuoso
           useWindowScroll
-          data={isLoading ? Array(20).fill() : notifications.toArray()}
+          data={showLoading ? Array(20).fill() : notifications.toArray()}
           startReached={this.handleScrollToTop}
           endReached={this.handleLoadOlder}
           isScrolling={isScrolling => isScrolling && this.handleScroll()}
           itemContent={(_index, notification) => (
-            isLoading ? (
+            showLoading ? (
               <PlaceholderNotification />
             ) : (
               <NotificationContainer

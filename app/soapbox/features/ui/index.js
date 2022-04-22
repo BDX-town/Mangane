@@ -35,7 +35,6 @@ import { fetchFollowRequests } from '../../actions/accounts';
 import { fetchReports, fetchUsers, fetchConfig } from '../../actions/admin';
 import { uploadCompose, resetCompose } from '../../actions/compose';
 import { fetchFilters } from '../../actions/filters';
-import { clearHeight } from '../../actions/height_cache';
 import { openModal } from '../../actions/modals';
 import { expandNotifications } from '../../actions/notifications';
 import { fetchScheduledStatuses } from '../../actions/scheduled_statuses';
@@ -187,7 +186,6 @@ class SwitchingColumnsArea extends React.PureComponent {
   static propTypes = {
     children: PropTypes.node,
     location: PropTypes.object,
-    onLayoutChange: PropTypes.func.isRequired,
     soapbox: ImmutablePropTypes.record.isRequired,
     features: PropTypes.object.isRequired,
   };
@@ -205,9 +203,6 @@ class SwitchingColumnsArea extends React.PureComponent {
   }
 
   handleResize = debounce(() => {
-    // The cached heights are no longer accurate, invalidate
-    this.props.onLayoutChange();
-
     this.setState({ mobile: isMobile(window.innerWidth) });
   }, 500, {
     trailing: true,
@@ -407,11 +402,6 @@ class UI extends React.PureComponent {
     draggingOver: false,
     mobile: isMobile(window.innerWidth),
   };
-
-  handleLayoutChange = () => {
-    // The cached heights are no longer accurate, invalidate
-    this.props.dispatch(clearHeight());
-  }
 
   handleDragEnter = (e) => {
     e.preventDefault();
@@ -756,7 +746,7 @@ class UI extends React.PureComponent {
           <div className='z-10 flex flex-col'>
             <Navbar />
 
-            <SwitchingColumnsArea location={location} onLayoutChange={this.handleLayoutChange} soapbox={soapbox} features={features}>
+            <SwitchingColumnsArea location={location} soapbox={soapbox} features={features}>
               {children}
             </SwitchingColumnsArea>
 

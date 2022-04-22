@@ -28,7 +28,6 @@ import group_editor from './group_editor';
 import group_lists from './group_lists';
 import group_relationships from './group_relationships';
 import groups from './groups';
-import height_cache from './height_cache';
 import identity_proofs from './identity_proofs';
 import instance from './instance';
 import listAdder from './list_adder';
@@ -83,7 +82,6 @@ const reducers = {
   compose,
   search,
   notifications,
-  height_cache,
   custom_emojis,
   identity_proofs,
   lists,

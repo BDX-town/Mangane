@@ -125,7 +125,7 @@ class Followers extends ImmutablePureComponent {
           diffCount={diffCount}
           onLoadMore={this.handleLoadMore}
           emptyMessage={<FormattedMessage id='account.followers.empty' defaultMessage='No one follows this user yet.' />}
-          className='space-y-4'
+          itemClassName='pb-4'
         >
           {accountIds.map(id =>
             <AccountContainer key={id} id={id} withNote={false} />,
