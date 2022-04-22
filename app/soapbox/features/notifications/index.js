@@ -163,7 +163,7 @@ class Notifications extends React.PureComponent {
           data={isLoading ? Array(20).fill() : notifications.toArray()}
           startReached={this.handleScrollToTop}
           endReached={this.handleLoadOlder}
-          isScrolling={isScrolling => isScrolling && this.handleScroll}
+          isScrolling={isScrolling => isScrolling && this.handleScroll()}
           itemContent={(_index, notification) => (
             isLoading ? (
               <PlaceholderNotification />
