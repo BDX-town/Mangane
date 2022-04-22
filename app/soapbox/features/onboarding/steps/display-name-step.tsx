@@ -87,7 +87,7 @@ const DisplayNameStep = ({ onNext }: { onNext: () => void }) => {
                   disabled={isDisabled || isSubmitting}
                   onClick={handleSubmit}
                 >
-                  {isSubmitting ? 'Saving...' : 'Next'}
+                  {isSubmitting ? 'Saving…' : 'Next'}
                 </Button>
 
                 <Button block theme='link' type='button' onClick={onNext}>

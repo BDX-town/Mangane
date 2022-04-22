@@ -68,13 +68,13 @@ const OnboardingWizard = () => {
 
   return (
     <div data-testid='onboarding-wizard'>
-      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 via-white to-cyan-50' />
+      <div className='fixed h-screen w-full bg-gradient-to-tr from-primary-50 dark:from-slate-700 via-white dark:via-slate-900 to-cyan-50 dark:to-cyan-900' />
 
-      <main className='h-screen flex flex-col'>
+      <main className='h-screen flex flex-col overflow-x-hidden'>
         <div className='flex flex-col justify-center items-center h-full'>
           <ReactSwipeableViews animateHeight index={currentStep} onChangeIndex={handleSwipe}>
             {steps.map((step, i) => (
-              <div key={i} className='py-6 sm:mx-auto w-full sm:max-w-lg md:max-w-2xl'>
+              <div key={i} className='py-6 sm:mx-auto w-full max-w-[100vw] sm:max-w-lg md:max-w-2xl'>
                 <div
                   className={classNames({
                     'transition-opacity ease-linear': true,

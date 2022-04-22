@@ -135,7 +135,7 @@ const CoverPhotoSelectionStep = ({ onNext }: { onNext: () => void }) => {
 
               <Stack justifyContent='center' space={2}>
                 <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
-                  {isSubmitting ? 'Saving...' : 'Next'}
+                  {isSubmitting ? 'Saving…' : 'Next'}
                 </Button>
 
                 {isDisabled && (

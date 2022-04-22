@@ -65,7 +65,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
               >
                 <Textarea
                   onChange={(event) => setValue(event.target.value)}
-                  placeholder='Tell the world a little about yourself...'
+                  placeholder='Tell the world a little about yourself…'
                   value={value}
                   maxLength={500}
                 />
@@ -82,7 +82,7 @@ const BioStep = ({ onNext }: { onNext: () => void }) => {
                   onClick={handleSubmit}
                 >
                   {isSubmitting ? (
-                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving...' />
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
                   ) : (
                     <FormattedMessage id='onboarding.next' defaultMessage='Next' />
                   )}

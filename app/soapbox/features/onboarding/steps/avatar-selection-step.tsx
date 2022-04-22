@@ -114,7 +114,7 @@ const AvatarSelectionStep = ({ onNext }: { onNext: () => void }) => {
               <Stack justifyContent='center' space={2}>
                 <Button block theme='primary' type='button' onClick={onNext} disabled={isDefault && isDisabled || isSubmitting}>
                   {isSubmitting ? (
-                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving...' />
+                    <FormattedMessage id='onboarding.saving' defaultMessage='Saving…' />
                   ) : (
                     <FormattedMessage id='onboarding.next' defaultMessage='Next' />
                   )}
