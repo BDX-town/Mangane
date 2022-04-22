@@ -6,6 +6,7 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 
 import { Spinner, Text } from './ui';
 
+// Ensure the className winds up here
 const List = React.forwardRef((props: any, ref: React.ForwardedRef<HTMLDivElement>) => {
   const { context, ...rest } = props;
   return <div ref={ref} className={context.listClassName} {...rest} />;
@@ -29,8 +30,10 @@ interface IScrollableList {
   className?: string,
 }
 
+/** Legacy ScrollableList with Virtuoso for backwards-compatibility */
 const ScrollableList: React.FC<IScrollableList> = ({
   prepend = null,
+  alwaysPrepend,
   children,
   isLoading,
   emptyMessage,
@@ -40,6 +43,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
   onScrollToTop,
   onLoadMore,
   className,
+  hasMore,
   placeholderComponent: Placeholder,
   placeholderCount = 0,
 }) => {
@@ -47,7 +51,26 @@ const ScrollableList: React.FC<IScrollableList> = ({
   // const autoload = settings.get('autoloadMore');
 
   const showPlaceholder = showLoading && Placeholder && placeholderCount > 0;
+  const data = showPlaceholder ? Array(placeholderCount).fill('') : Array.from(children || []);
 
+  /* Render an empty state instead of the scrollable list */
+  const renderEmpty = () => {
+    return (
+      <div className='mt-2'>
+        {alwaysPrepend && prepend}
+
+        <div className='bg-primary-50 dark:bg-slate-700 mt-2 rounded-lg text-center p-8'>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <Text>{emptyMessage}</Text>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  /** Render the actual item */
   const renderItem = (_i: number, element: JSX.Element) => {
     if (showPlaceholder) {
       return <Placeholder />;
@@ -56,12 +79,22 @@ const ScrollableList: React.FC<IScrollableList> = ({
     }
   };
 
+  // Don't use Virtuoso's EmptyPlaceholder component so it preserves height
+  if (data.length === 0) {
+    return renderEmpty();
+  }
+
+  // Don't use Virtuoso's Footer component so it preserves spacing
+  if (hasMore && Placeholder) {
+    data.push(<Placeholder />);
+  }
+
   return (
     <PullToRefresh onRefresh={onRefresh}>
       <Virtuoso
         useWindowScroll
         className={className}
-        data={showPlaceholder ? Array(placeholderCount).fill('') : Array.from(children || [])}
+        data={data}
         startReached={onScrollToTop}
         endReached={onLoadMore}
         isScrolling={isScrolling => isScrolling && onScroll && onScroll()}
@@ -72,11 +105,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
         components={{
           Header: () => prepend,
           ScrollSeekPlaceholder: Placeholder as any,
-          EmptyPlaceholder: () => isLoading ? (
-            <Spinner />
-          ) : (
-            <Text>{emptyMessage}</Text>
-          ),
+          EmptyPlaceholder: () => renderEmpty(),
           List,
         }}
       />
