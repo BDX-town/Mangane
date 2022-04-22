@@ -2,7 +2,6 @@ import React from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import PullToRefresh from 'soapbox/components/pull-to-refresh';
-// import { useSettings } from 'soapbox/hooks';
 
 import { Spinner, Text } from './ui';
 
@@ -65,9 +64,6 @@ const ScrollableList: React.FC<IScrollableList> = ({
   placeholderComponent: Placeholder,
   placeholderCount = 0,
 }) => {
-  // const settings = useSettings();
-  // const autoload = settings.get('autoloadMore');
-
   /** Normalized children */
   const elements = Array.from(children || []);
 
