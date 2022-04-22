@@ -6,10 +6,26 @@ import PullToRefresh from 'soapbox/components/pull-to-refresh';
 
 import { Spinner, Text } from './ui';
 
+type Context = {
+  itemClassName?: string,
+  listClassName?: string,
+}
+
+type VComponent = {
+  context?: Context,
+}
+
+// NOTE: It's crucial to space lists with **padding** instead of margin!
+// Pass an `itemClassName` like `pb-3`, NOT a `space-y-3` className
+// https://virtuoso.dev/troubleshooting#list-does-not-scroll-to-the-bottom--items-jump-around
+const Item: React.FC<VComponent> = ({ context, ...rest }) => (
+  <div className={context?.itemClassName} {...rest} />
+);
+
 // Ensure the className winds up here
-const List = React.forwardRef((props: any, ref: React.ForwardedRef<HTMLDivElement>) => {
+const List = React.forwardRef<HTMLDivElement, VComponent>((props, ref) => {
   const { context, ...rest } = props;
-  return <div ref={ref} className={context.listClassName} {...rest} />;
+  return <div ref={ref} className={context?.listClassName} {...rest} />;
 });
 
 interface IScrollableList {
@@ -28,6 +44,7 @@ interface IScrollableList {
   placeholderCount?: number,
   onRefresh?: () => Promise<any>,
   className?: string,
+  itemClassName?: string,
 }
 
 /** Legacy ScrollableList with Virtuoso for backwards-compatibility */
@@ -43,6 +60,7 @@ const ScrollableList: React.FC<IScrollableList> = ({
   onScrollToTop,
   onLoadMore,
   className,
+  itemClassName,
   hasMore,
   placeholderComponent: Placeholder,
   placeholderCount = 0,
@@ -101,12 +119,14 @@ const ScrollableList: React.FC<IScrollableList> = ({
         itemContent={renderItem}
         context={{
           listClassName: className,
+          itemClassName,
         }}
         components={{
           Header: () => prepend,
           ScrollSeekPlaceholder: Placeholder as any,
           EmptyPlaceholder: () => renderEmpty(),
           List,
+          Item,
         }}
       />
     </PullToRefresh>

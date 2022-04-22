@@ -28,7 +28,7 @@ const BirthdaysModal = ({ onClose }: IBirthdaysModal) => {
       <ScrollableList
         scrollKey='reblogs'
         emptyMessage={emptyMessage}
-        className='space-y-3'
+        itemClassName='pb-3'
       >
         {accountIds.map(id =>
           <Account key={id} accountId={id} />,

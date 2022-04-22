@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { debounce } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -222,7 +223,12 @@ export default class StatusList extends ImmutablePureComponent {
         placeholderComponent={PlaceholderStatus}
         placeholderCount={20}
         ref={this.setRef}
-        className={divideType === 'border' ? 'divide-y divide-solid divide-gray-200 dark:divide-gray-800' : 'sm:space-y-3 divide-y divide-solid divide-gray-200 dark:divide-gray-800 sm:divide-none'}
+        className={classNames('divide-y divide-solid divide-gray-200 dark:divide-slate-700', {
+          'sm:divide-none': divideType !== 'border',
+        })}
+        itemClassName={classNames({
+          'sm:pb-3': divideType !== 'border',
+        })}
         {...other}
       >
         {this.renderScrollableContent()}

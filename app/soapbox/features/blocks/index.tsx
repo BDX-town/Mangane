@@ -45,7 +45,7 @@ const Blocks: React.FC = () => {
         onLoadMore={() => handleLoadMore(dispatch)}
         hasMore={hasMore}
         emptyMessage={emptyMessage}
-        className='space-y-4'
+        itemClassName='pb-4'
       >
         {accountIds.map((id: string) =>
           <AccountContainer key={id} id={id} />,
