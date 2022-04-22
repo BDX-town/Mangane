@@ -508,7 +508,7 @@
   "forms.hide_password": "Hide password",
   "forms.show_password": "Show password",
   "group.detail.archived_group": "Archived group",
-  "getting_started.open_source_notice": "{code_name} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {code_link} (v{code_version}) sur Github.",
+  "getting_started.open_source_notice": "{code_name} est un logiciel libre. Vous pouvez contribuer et envoyer vos commentaires et rapports de bogues via {code_link} ({code_version}) sur Github.",
   "gif_picker.choose": "Choisir",
   "gif_picker.gif": "GIF",
   "gif_picker.proposed": "Proposé par",
