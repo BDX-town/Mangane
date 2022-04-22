@@ -34,14 +34,6 @@ const Footer = ({ context }) => (
   ) : null
 );
 
-const EmptyPlaceholder = ({ context }) => {
-  if (context.isLoading) {
-    return <PlaceholderNotification />;
-  } else {
-    return <Text>{context.emptyMessage}</Text>;
-  }
-};
-
 const Item = ({ context, ...rest }) => (
   <div className='border-solid border-b border-gray-200 dark:border-gray-600' {...rest} />
 );
@@ -168,27 +160,29 @@ class Notifications extends React.PureComponent {
       <PullToRefresh onRefresh={this.handleRefresh}>
         <Virtuoso
           useWindowScroll
-          data={notifications.toArray()}
+          data={isLoading ? Array(20).fill() : notifications.toArray()}
           startReached={this.handleScrollToTop}
           endReached={this.handleLoadOlder}
           isScrolling={isScrolling => isScrolling && this.handleScroll}
           itemContent={(_index, notification) => (
-            <NotificationContainer
-              key={notification.id}
-              notification={notification}
-              onMoveUp={this.handleMoveUp}
-              onMoveDown={this.handleMoveDown}
-            />
+            isLoading ? (
+              <PlaceholderNotification />
+            ) : (
+              <NotificationContainer
+                key={notification.id}
+                notification={notification}
+                onMoveUp={this.handleMoveUp}
+                onMoveDown={this.handleMoveDown}
+              />
+            )
           )}
           context={{
             hasMore,
-            isLoading,
-            emptyMessage,
           }}
           components={{
             ScrollSeekPlaceholder: PlaceholderNotification,
             Footer,
-            EmptyPlaceholder,
+            EmptyPlaceholder: () => <Text>{emptyMessage}</Text>,
             Item,
           }}
         />
