@@ -105,6 +105,8 @@ const ScrollableList: React.FC<IScrollableList> = ({
   // Don't use Virtuoso's Footer component so it preserves spacing
   if (hasMore && Placeholder) {
     data.push(<Placeholder />);
+  } else if (hasMore) {
+    data.push(<Spinner />);
   }
 
   return (
