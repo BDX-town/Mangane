@@ -63,7 +63,7 @@ const LinkFooter = ({ onOpenHotkeys, account, features, onClickLogOut, baseURL }
     <p>
       <FormattedMessage
         id='getting_started.open_source_notice'
-        defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} (v{code_version}).'
+        defaultMessage='{code_name} is open source software. You can contribute or report issues at {code_link} ({code_version}).'
         values={{
           code_name: sourceCode.displayName,
           code_link: <a href={sourceCode.url} rel='noopener' target='_blank'>{sourceCode.repository}</a>,

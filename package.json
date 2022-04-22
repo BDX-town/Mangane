@@ -1,6 +1,7 @@
 {
   "name": "mangane-fe",
-  "version": "agressive-capybara",
+  "displayName": "Mangane",
+  "version": "Agressive-capybara",
   "description": "Devanture pour https://bdx.town",
   "homepage": "https://bdx.town",
   "repository": {
