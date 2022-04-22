@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 import Icon from './icon';
 
-
 const List = ({ children }) => (
   <div className='space-y-0.5'>{children}</div>
 );
